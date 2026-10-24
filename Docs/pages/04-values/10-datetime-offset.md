@@ -37,10 +37,13 @@ await Expect.That(releaseDate).IsNotEqualTo(new DateTime(1970, 5, 8));
 <TabItem value="DateTimeOffset" label="DateTimeOffset">
 
 ```csharp
-DateTimeOffset releaseDate = new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1));
+DateTimeOffset releaseDate =
+  new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1));
 
-await Expect.That(releaseDate).IsEqualTo(new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1)));
-await Expect.That(releaseDate).IsNotEqualTo(new DateTimeOffset(1970, 5, 8, 10, 0, 0, TimeSpan.FromHours(1)));
+await Expect.That(releaseDate)
+  .IsEqualTo(new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1)));
+await Expect.That(releaseDate)
+  .IsNotEqualTo(new DateTimeOffset(1970, 5, 8, 10, 0, 0, TimeSpan.FromHours(1)));
 ```
 
 </TabItem>
@@ -56,15 +59,18 @@ You can verify that the `DateTime` or `DateTimeOffset` is one of many alternativ
 ```csharp
 DateTime releaseDate = new DateTime(1969, 9, 26);
 
-await Expect.That(releaseDate).IsOneOf([new DateTime(1969, 9, 26), new DateTime(1970, 5, 8)]);
-await Expect.That(releaseDate).IsNotOneOf([new DateTime(1965, 8, 6), new DateTime(1966, 8, 5)]);
+await Expect.That(releaseDate)
+  .IsOneOf([new DateTime(1969, 9, 26), new DateTime(1970, 5, 8)]);
+await Expect.That(releaseDate)
+  .IsNotOneOf([new DateTime(1965, 8, 6), new DateTime(1966, 8, 5)]);
 ```
 
 </TabItem>
 <TabItem value="DateTimeOffset" label="DateTimeOffset">
 
 ```csharp
-DateTimeOffset releaseDate = new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1));
+DateTimeOffset releaseDate =
+  new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1));
 
 await Expect.That(releaseDate).IsOneOf([
   new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1)),
@@ -98,13 +104,19 @@ await Expect.That(releaseDate).IsNotAfter(new DateTime(1970, 5, 8));
 <TabItem value="DateTimeOffset" label="DateTimeOffset">
 
 ```csharp
-DateTimeOffset releaseDate = new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1));
+DateTimeOffset releaseDate =
+  new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1));
 
-await Expect.That(releaseDate).IsAfter(new DateTimeOffset(1968, 11, 22, 10, 0, 0, TimeSpan.FromHours(1)));
-await Expect.That(releaseDate).IsOnOrAfter(new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1)));
-await Expect.That(releaseDate).IsBefore(new DateTimeOffset(1970, 5, 8, 10, 0, 0, TimeSpan.FromHours(1)));
-await Expect.That(releaseDate).IsOnOrBefore(new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1)));
-await Expect.That(releaseDate).IsNotAfter(new DateTimeOffset(1970, 5, 8, 10, 0, 0, TimeSpan.FromHours(1)));
+await Expect.That(releaseDate)
+  .IsAfter(new DateTimeOffset(1968, 11, 22, 10, 0, 0, TimeSpan.FromHours(1)));
+await Expect.That(releaseDate)
+  .IsOnOrAfter(new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1)));
+await Expect.That(releaseDate)
+  .IsBefore(new DateTimeOffset(1970, 5, 8, 10, 0, 0, TimeSpan.FromHours(1)));
+await Expect.That(releaseDate)
+  .IsOnOrBefore(new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1)));
+await Expect.That(releaseDate)
+  .IsNotAfter(new DateTimeOffset(1970, 5, 8, 10, 0, 0, TimeSpan.FromHours(1)));
 ```
 
 </TabItem>
@@ -120,15 +132,20 @@ You can verify that the `DateTime` or `DateTimeOffset` is between two values, or
 ```csharp
 DateTime releaseDate = new DateTime(1969, 9, 26);
 
-await Expect.That(releaseDate).IsBetween(new DateTime(1969, 1, 1)).And(new DateTime(1969, 12, 31));
-await Expect.That(releaseDate).IsNotBetween(new DateTime(1970, 1, 1)).And(new DateTime(1970, 12, 31));
+await Expect.That(releaseDate)
+  .IsBetween(new DateTime(1969, 1, 1))
+  .And(new DateTime(1969, 12, 31));
+await Expect.That(releaseDate)
+  .IsNotBetween(new DateTime(1970, 1, 1))
+  .And(new DateTime(1970, 12, 31));
 ```
 
 </TabItem>
 <TabItem value="DateTimeOffset" label="DateTimeOffset">
 
 ```csharp
-DateTimeOffset releaseDate = new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1));
+DateTimeOffset releaseDate =
+  new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1));
 
 await Expect.That(releaseDate)
   .IsBetween(new DateTimeOffset(1969, 1, 1, 0, 0, 0, TimeSpan.FromHours(1)))
@@ -157,7 +174,8 @@ await Expect.That(importedAt).IsEqualTo(DateTime.Now).Within(TimeSpan.FromSecond
 await Expect.That(importedAt).IsOneOf([DateTime.Now]).Within(TimeSpan.FromSeconds(1));
 await Expect.That(importedAt).IsAfter(DateTime.Now).Within(TimeSpan.FromSeconds(1));
 await Expect.That(importedAt).IsOnOrBefore(DateTime.Now).Within(TimeSpan.FromSeconds(1));
-await Expect.That(importedAt).IsBetween(DateTime.Today).And(DateTime.Now).Within(TimeSpan.FromSeconds(1));
+await Expect.That(importedAt).IsBetween(DateTime.Today).And(DateTime.Now)
+  .Within(TimeSpan.FromSeconds(1));
 ```
 
 ### Default tolerance
@@ -171,7 +189,8 @@ that is used when a `DateTime`, `DateTimeOffset`, `DateOnly`, `TimeOnly` or `Tim
 using aweXpect.Chronology; // from the aweXpect.Chronology package
 using aweXpect.Customization;
 
-IDisposable lifetime = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
+IDisposable lifetime = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance
+  .Set(15.Milliseconds());
 ```
 
 It also applies to the items of a collection of these types. An explicit `Within` always replaces the default
@@ -207,10 +226,13 @@ describe different instants: every comparison fails, except `IsNotEqualTo` and `
 DateTime releaseDate = new DateTime(1969, 9, 26, 0, 0, 0, DateTimeKind.Utc);
 
 // fails with "but it had kind Utc, which cannot be compared with Local"
-await Expect.That(releaseDate).IsBefore(new DateTime(1969, 9, 27, 0, 0, 0, DateTimeKind.Local));
+await Expect.That(releaseDate)
+  .IsBefore(new DateTime(1969, 9, 27, 0, 0, 0, DateTimeKind.Local));
 
-await Expect.That(releaseDate).IsNotEqualTo(new DateTime(1969, 9, 26, 0, 0, 0, DateTimeKind.Local));
-await Expect.That(releaseDate).IsEqualTo(new DateTime(1969, 9, 26, 0, 0, 0, DateTimeKind.Unspecified));
+await Expect.That(releaseDate)
+  .IsNotEqualTo(new DateTime(1969, 9, 26, 0, 0, 0, DateTimeKind.Local));
+await Expect.That(releaseDate)
+  .IsEqualTo(new DateTime(1969, 9, 26, 0, 0, 0, DateTimeKind.Unspecified));
 ```
 
 The same rule applies wherever a `DateTime` is compared as a value, e.g. in collection expectations and in
@@ -230,7 +252,8 @@ In a collection, two values that differ only in their kind never match:
 DateTime[] releaseDates = [new DateTime(1969, 9, 26, 0, 0, 0, DateTimeKind.Utc)];
 
 // fails, because the expected value denotes a different instant
-await Expect.That(releaseDates).Contains(new DateTime(1969, 9, 26, 0, 0, 0, DateTimeKind.Local));
+await Expect.That(releaseDates)
+  .Contains(new DateTime(1969, 9, 26, 0, 0, 0, DateTimeKind.Local));
 ```
 
 </details>
@@ -241,7 +264,8 @@ You can verify the properties of `DateTime` or `DateTimeOffset`:
 
 ```csharp
 DateTime importedAt = new DateTime(2024, 12, 31, 15, 16, 17, 189, DateTimeKind.Utc);
-// or: DateTimeOffset importedAt = new DateTimeOffset(2024, 12, 31, 15, 16, 17, 189, TimeSpan.FromMinutes(90));
+// or: DateTimeOffset importedAt =
+//   new DateTimeOffset(2024, 12, 31, 15, 16, 17, 189, TimeSpan.FromMinutes(90));
 
 await Expect.That(importedAt).HasYear(2024);
 await Expect.That(importedAt).HasMonth(12);
@@ -268,7 +292,8 @@ await Expect.That(importedAt).HasKind().NotEqualTo(DateTimeKind.Local);
 <TabItem value="DateTimeOffset" label="DateTimeOffset">
 
 ```csharp
-DateTimeOffset importedAt = new DateTimeOffset(2024, 12, 31, 15, 16, 17, 189, TimeSpan.FromMinutes(90));
+DateTimeOffset importedAt =
+  new DateTimeOffset(2024, 12, 31, 15, 16, 17, 189, TimeSpan.FromMinutes(90));
 
 await Expect.That(importedAt).HasOffset(TimeSpan.FromMinutes(90));
 await Expect.That(importedAt).HasOffset().GreaterThan(TimeSpan.Zero);

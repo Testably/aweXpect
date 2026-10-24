@@ -74,7 +74,8 @@ public static AndOrResult<Track, IThat<Track?>> HasTitleMatching(
     Func<string, bool> predicate,
     [CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new HasTitleMatchingConstraint(it, grammars, predicate, doNotPopulateThisValue)),
+            => new HasTitleMatchingConstraint(it, grammars,
+                predicate, doNotPopulateThisValue)),
         subject);
 ```
 
@@ -96,7 +97,8 @@ in `netstandard2.0` and `net48`. Declare it as an `internal` type in your own pa
   `aweXpect.Core.Extending`. It appends ` (did you mean "PlayCount"?)` only when a single candidate is close enough:
 
   ```csharp
-  private static void AppendMissingKey(StringBuilder stringBuilder, string it, string expected, string[] keys)
+  private static void AppendMissingKey(StringBuilder stringBuilder,
+      string it, string expected, string[] keys)
   {
       stringBuilder.Append(it).Append(" did not contain key ");
       Formatter.Format(stringBuilder, expected);
@@ -168,7 +170,8 @@ FormattingOptions options = FormattingOptions.Indented("") with
             ? ValueFormatting.Replace("{title}")
             : ValueFormatting.Write,
 };
-string snapshot = Formatter.Format(new Track("Let It Be", TimeSpan.FromSeconds(243)), options);
+string snapshot = Formatter.Format(
+    new Track("Let It Be", TimeSpan.FromSeconds(243)), options);
 ```
 
 The value itself is not offered, nor the keys of a dictionary, nor anything inside a value that a registered
@@ -245,24 +248,33 @@ private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars gr
     public ConstraintResult IsMetBy(Track? actual)
     {
         Actual = actual;
-        Outcome = actual?.Duration <= TimeSpan.FromMinutes(3) ? Outcome.Success : Outcome.Failure;
+        Outcome = actual?.Duration <= TimeSpan.FromMinutes(3)
+            ? Outcome.Success
+            : Outcome.Failure;
         return this;
     }
 
-    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append(Grammars.IsPlural() ? "are radio friendly" : "is radio friendly");
+    protected override void AppendNormalExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(
+            Grammars.IsPlural() ? "are radio friendly" : "is radio friendly");
 
-    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNormalResult(
+        StringBuilder stringBuilder, string? indentation = null)
     {
-        stringBuilder.Append(It).Append(Grammars.IsPlural() && It != "it" ? " were " : " was ");
+        stringBuilder.Append(It)
+            .Append(Grammars.IsPlural() && It != "it" ? " were " : " was ");
         Formatter.Format(stringBuilder, Actual?.Duration);
         stringBuilder.Append(" long");
     }
 
-    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append(Grammars.IsPlural() ? "are not radio friendly" : "is not radio friendly");
+    protected override void AppendNegatedExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(
+            Grammars.IsPlural() ? "are not radio friendly" : "is not radio friendly");
 
-    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNegatedResult(
+        StringBuilder stringBuilder, string? indentation = null)
         => AppendNormalResult(stringBuilder, indentation);
 }
 ```
@@ -294,16 +306,21 @@ private sealed class HasPlaylistConstraint(string it, ExpectationGrammars gramma
         }
     }
 
-    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNormalExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("has a playlist of up to 20 tracks");
 
-    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append(It).Append(" had ").Append(Actual?.Length).Append(" tracks");
+    protected override void AppendNormalResult(
+        StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(It).Append(" had ").Append(Actual?.Length)
+            .Append(" tracks");
 
-    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNegatedExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("does not have a playlist of up to 20 tracks");
 
-    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNegatedResult(
+        StringBuilder stringBuilder, string? indentation = null)
         => AppendNormalResult(stringBuilder, indentation);
 }
 ```

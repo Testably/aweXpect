@@ -12,12 +12,17 @@ string xml = """<track title="Let It Be" artist="The Beatles" />""";
 // verify that a string is a well-formed XML document
 await Expect.That(xml).IsValidXml();
 
-// verify that a string is equal to the expected XML, compared by its content instead of its formatting
-await Expect.That(xml).IsEqualTo("""<track artist="The Beatles" title="Let It Be"></track>""").AsXml();
+// verify that a string is equal to the expected XML,
+// compared by its content instead of its formatting
+await Expect.That(xml)
+    .IsEqualTo("""<track artist="The Beatles" title="Let It Be"></track>""").AsXml();
 
-// verify that an XElement or XDocument contains the expected XML, ignoring additional nodes
-XElement track = XElement.Parse("""<track title="Let It Be" artist="The Beatles"><genre>rock</genre></track>""");
-await Expect.That(track).Matches("""<track title="Let It Be"><genre>rock</genre></track>""");
+// verify that an XElement or XDocument contains the expected XML,
+// ignoring additional nodes
+XElement track = XElement.Parse(
+    """<track title="Let It Be" artist="The Beatles"><genre>rock</genre></track>""");
+await Expect.That(track)
+    .Matches("""<track title="Let It Be"><genre>rock</genre></track>""");
 
 // verify single attributes, child elements and their values
 await Expect.That(track).HasAttribute("artist").And

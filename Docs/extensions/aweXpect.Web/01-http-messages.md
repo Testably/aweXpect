@@ -51,8 +51,10 @@ The expected URI must be absolute. Scheme and host are compared ignoring case; p
 case-sensitive, unless you add `.IgnoringCase()`:
 
 ```csharp
-await Expect.That(request).HasRequestUri("https://music.example.com/Tracks/1").IgnoringCase();
-await Expect.That(request).DoesNotHaveRequestUri("https://music.example.com/Admin").IgnoringCase();
+await Expect.That(request).HasRequestUri("https://music.example.com/Tracks/1")
+    .IgnoringCase();
+await Expect.That(request).DoesNotHaveRequestUri("https://music.example.com/Admin")
+    .IgnoringCase();
 ```
 
 ### Request headers
@@ -78,7 +80,8 @@ When the header has multiple values, `WithValues` verifies that it has exactly t
 HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
 request.Headers.Add("Accept", ["application/json", "text/plain"]);
 
-await Expect.That(request).HasHeader("Accept").WithValues("application/json", "text/plain");
+await Expect.That(request).HasHeader("Accept")
+    .WithValues("application/json", "text/plain");
 ```
 
 `WithValues` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options),
@@ -146,7 +149,8 @@ content does not have the unexpected content. To negate the nested expectations,
 You can verify the status code of the `HttpResponseMessage`, either the exact value or its category:
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
+HttpResponseMessage response =
+    await httpClient.GetAsync("https://music.example.com/tracks/1");
 
 await Expect.That(response).HasStatusCode(HttpStatusCode.OK);
 await Expect.That(response).HasStatusCode().EqualTo(HttpStatusCode.OK);
@@ -158,9 +162,11 @@ The categories are `Success()` (2xx), `Redirection()` (3xx), `ClientError()` (4x
 `Error()` (4xx or 5xx). Combine them with `.Or` to allow several:
 
 ```csharp
-HttpResponseMessage response = await httpClient.PostAsync("https://music.example.com/tracks", new StringContent(""));
+HttpResponseMessage response = await httpClient.PostAsync(
+    "https://music.example.com/tracks", new StringContent(""));
 
-await Expect.That(response).HasStatusCode().ClientError().Or.HasStatusCode().ServerError();
+await Expect.That(response).HasStatusCode().ClientError()
+    .Or.HasStatusCode().ServerError();
 ```
 
 A failing expectation against a test server
@@ -199,17 +205,20 @@ You can verify that the `HttpResponseMessage` has a header, optionally with the 
 have it:
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
+HttpResponseMessage response =
+    await httpClient.GetAsync("https://music.example.com/tracks/1");
 
 await Expect.That(response).HasHeader("Cache-Control");
-await Expect.That(response).HasHeader("Cache-Control").WithValue("must-revalidate, max-age=0, private");
+await Expect.That(response).HasHeader("Cache-Control")
+    .WithValue("must-revalidate, max-age=0, private");
 await Expect.That(response).DoesNotHaveHeader("Set-Cookie");
 ```
 
 When the header has multiple values, `WithValues` verifies that it has exactly these values in the same order:
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
+HttpResponseMessage response =
+    await httpClient.GetAsync("https://music.example.com/tracks/1");
 
 await Expect.That(response).HasHeader("Vary").WithValues("Accept", "Accept-Encoding");
 ```
@@ -222,7 +231,8 @@ e.g. `.WithValues("text/plain", "application/json").InAnyOrder().IgnoringCase()`
 You can also add expectations on the header value or on all of its values:
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
+HttpResponseMessage response =
+    await httpClient.GetAsync("https://music.example.com/tracks/1");
 
 await Expect.That(response).HasHeader("ETag")
     .WhoseValue(value => value.IsNotEmpty());
@@ -283,7 +293,8 @@ HTTP-Response:
 You can verify that the `HttpResponseMessage` has the expected string content, or that it does not have it:
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
+HttpResponseMessage response =
+    await httpClient.GetAsync("https://music.example.com/tracks/1");
 
 await Expect.That(response).HasContent("*Let It Be*").AsWildcard();
 await Expect.That(response).HasContent(content => content.Contains("The Beatles"));
@@ -296,7 +307,8 @@ expectations, use `DoesNotComplyWith(it => it.HasContent(content => ...))`. With
 [aweXpect.Json](https://github.com/Testably/aweXpect.Json), the nested expectations can also verify JSON content:
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
+HttpResponseMessage response =
+    await httpClient.GetAsync("https://music.example.com/tracks/1");
 
 await Expect.That(response).HasContent(content => content
     .IsValidJsonMatching(new { title = "Let It Be", artist = "The Beatles" }));
@@ -309,7 +321,8 @@ You can verify that the content of the `HttpResponseMessage` is a valid
 optionally with the expected type, title, status, detail and instance:
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/42");
+HttpResponseMessage response =
+    await httpClient.GetAsync("https://music.example.com/tracks/42");
 
 await Expect.That(response)
     .HasProblemDetailsContent("https://httpstatuses.com/404")
@@ -326,7 +339,8 @@ There is no dedicated negation. `DoesNotComplyWith` succeeds when the content is
 in any of the given parts, and still fails when the content is no valid `ProblemDetails` object:
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/42");
+HttpResponseMessage response =
+    await httpClient.GetAsync("https://music.example.com/tracks/42");
 
 await Expect.That(response).DoesNotComplyWith(it => it
     .HasProblemDetailsContent().WithStatus(500));
@@ -337,7 +351,8 @@ await Expect.That(response).DoesNotComplyWith(it => it
 You can add expectations on the `HttpRequestMessage` that led to the `HttpResponseMessage`:
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
+HttpResponseMessage response =
+    await httpClient.GetAsync("https://music.example.com/tracks/1");
 
 await Expect.That(response).HasRequestMessage(request => request
     .HasMethod(HttpMethod.Get).And

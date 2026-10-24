@@ -27,7 +27,8 @@ Player player = new Player();
 
 // ↓ Records all events
 IEventRecording<Player> recording = player.Record().Events();
-IEventRecording<Player> trackRecording = player.Record().Events(nameof(Player.TrackStarted));
+IEventRecording<Player> trackRecording =
+    player.Record().Events(nameof(Player.TrackStarted));
 // ↑ Records only the TrackStarted event
 ```
 
@@ -77,7 +78,8 @@ while one of them waits with `Within(…)` also count for the following ones, as
 `.UntilDisposed()` keeps the recording running across multiple expectations and hands its lifetime to you:
 
 ```csharp
-using IDisposableEventRecording<Player> recording = player.Record().Events().UntilDisposed();
+using IDisposableEventRecording<Player> recording =
+    player.Record().Events().UntilDisposed();
 
 player.Play("Let It Be");
 await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Once();
@@ -131,7 +133,8 @@ IEventRecording<Player> recording = player.Record().Events();
 player.Play("Let It Be");
 player.Play("Yesterday");
 
-await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Between(1).And(2.Times());
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted))
+    .Between(1).And(2.Times());
 ```
 
 The same occurrence constraints as for [`Contains`](../05-collections/01-equality.md#contained-items) are available:
@@ -218,7 +221,8 @@ event:
 
 ```csharp
 AlbumViewModel album = // ...implements INotifyPropertyChanged
-using IDisposableEventRecording<AlbumViewModel> recording = album.Record().Events().UntilDisposed();
+using IDisposableEventRecording<AlbumViewModel> recording =
+    album.Record().Events().UntilDisposed();
 
 album.Rename("Let It Be... Naked");
 
@@ -237,7 +241,8 @@ The negated expectations verify that the event was not triggered:
 
 ```csharp
 AlbumViewModel album = // ...implements INotifyPropertyChanged
-using IDisposableEventRecording<AlbumViewModel> recording = album.Record().Events().UntilDisposed();
+using IDisposableEventRecording<AlbumViewModel> recording =
+    album.Record().Events().UntilDisposed();
 
 // do something that must not change the album
 

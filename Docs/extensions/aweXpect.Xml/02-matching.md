@@ -14,7 +14,8 @@ You can verify that an [`XElement`](https://learn.microsoft.com/en-us/dotnet/api
 expected XML:
 
 ```csharp
-XElement track = XElement.Parse("""<track title="Let It Be" artist="The Beatles"><genre>rock</genre></track>""");
+XElement track = XElement.Parse(
+    """<track title="Let It Be" artist="The Beatles"><genre>rock</genre></track>""");
 
 await Expect.That(track).Matches("""<track title="Let It Be" />""");
 await Expect.That(track).MatchesExactly("""
@@ -49,7 +50,8 @@ For an [`XDocument`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.lin
 compared, so that a document without a root element fails, also when the expectation is negated:
 
 ```csharp
-XDocument document = XDocument.Parse("""<?xml version="1.0"?><track title="Let It Be" />""");
+XDocument document = XDocument.Parse(
+    """<?xml version="1.0"?><track title="Let It Be" />""");
 
 await Expect.That(document).Matches("""<track title="Let It Be" />""");
 ```
@@ -62,7 +64,8 @@ You can also verify that an element does not match an expected XML:
 ```csharp
 XElement track = XElement.Parse("""<track title="Let It Be" />""");
 
-await Expect.That(track).DoesNotComplyWith(it => it.Matches("""<track title="Yesterday" />"""));
+await Expect.That(track).DoesNotComplyWith(
+    it => it.Matches("""<track title="Yesterday" />"""));
 ```
 
 ## Options
@@ -87,7 +90,8 @@ for `MatchesExactly`, `IsValidXmlMatchingExactly` and [`AsXml()`](./01-strings.m
 ```csharp
 string album = """<album id="42" year="1969"><track title="Come Together" /></album>""";
 
-await Expect.That(album).IsEqualTo("""<album id="42" />""").AsXml(o => o.IgnoringAdditionalNodes());
+await Expect.That(album).IsEqualTo("""<album id="42" />""")
+    .AsXml(o => o.IgnoringAdditionalNodes());
 ```
 
 The additional nodes are ignored on every level, and the expected nodes are still compared, so that missing nodes,
@@ -109,9 +113,14 @@ for `Matches`, `MatchesExactly`, `IsValidXmlMatching`, `IsValidXmlMatchingExactl
 [`AsXml()`](./01-strings.md#string-comparison-as-xml):
 
 ```csharp
-string album = """<album id="42" createdAt="2026-10-17"><track title="Come Together" etag="x1" /></album>""";
+string album = """
+               <album id="42" createdAt="2026-10-17">
+                 <track title="Come Together" etag="x1" />
+               </album>
+               """;
 
-await Expect.That(album).IsEqualTo("""<album id="1"><track title="Come Together" /></album>""")
+await Expect.That(album)
+    .IsEqualTo("""<album id="1"><track title="Come Together" /></album>""")
     .AsXml(o => o
         .IgnoringMember("/album/@id")
         .IgnoringMember("@createdAt")
@@ -153,9 +162,19 @@ is not needed.
 By default, the order of the child elements and texts is significant. You can ignore it for all compared elements:
 
 ```csharp
-XElement album = XElement.Parse("""<album><track title="Something" /><track title="Come Together" /></album>""");
+XElement album = XElement.Parse("""
+                                <album>
+                                  <track title="Something" />
+                                  <track title="Come Together" />
+                                </album>
+                                """);
 
-await Expect.That(album).MatchesExactly("""<album><track title="Come Together" /><track title="Something" /></album>""",
+await Expect.That(album).MatchesExactly("""
+                                        <album>
+                                          <track title="Come Together" />
+                                          <track title="Something" />
+                                        </album>
+                                        """,
     o => o.IgnoringElementOrder());
 ```
 

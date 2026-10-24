@@ -136,7 +136,8 @@ public void Play(Album album, int playCount)
 {
     if (playCount < 0)
     {
-        throw new ArgumentOutOfRangeException(nameof(playCount), playCount, "Play count must be positive.")
+        throw new ArgumentOutOfRangeException(
+            nameof(playCount), playCount, "Play count must be positive.")
         {
             Data = { ["Album"] = album.Title },
         };
@@ -145,7 +146,8 @@ public void Play(Album album, int playCount)
 ```
 
 ```csharp
-await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>().Which.MatchesSnapshot();
+await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>()
+    .Which.MatchesSnapshot();
 ```
 
 ```text title="PlayerTests.Rejects.awexpect-snapshot.txt"
@@ -172,7 +174,8 @@ ArgumentOutOfRangeException {
   [`.UniqueFor`](03-naming-snapshots.md#snapshots-per-environment):
 
   ```csharp
-  await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>().Which.MatchesSnapshot()
+  await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>()
+      .Which.MatchesSnapshot()
       .For.Members().WithName("Message").Ignore()
       .For.Members().WithName("ActualValue").Mask();
   ```

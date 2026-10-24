@@ -122,7 +122,8 @@ back to runtime types:
 ```csharp
 public static IEnumerable<Type> GetUsedTypes(Type type)
 {
-    using var assembly = Mono.Cecil.AssemblyDefinition.ReadAssembly(type.Assembly.Location);
+    using var assembly =
+        Mono.Cecil.AssemblyDefinition.ReadAssembly(type.Assembly.Location);
     var definition = assembly.MainModule.GetType(type.FullName!.Replace('+', '/'));
     foreach (var instruction in definition.Methods
                  .Where(method => method.HasBody)

@@ -97,7 +97,8 @@ Signaler<string> signaler = new();
 signaler.Signal("Yesterday");
 signaler.Signal("Let It Be");
 
-await Expect.That(signaler).Signaled().AtLeast(2.Times()).WhoseParameters.Contains("Let It Be");
+await Expect.That(signaler).Signaled().AtLeast(2.Times())
+    .WhoseParameters.Contains("Let It Be");
 ```
 
 A failure message lists the recorded parameters.
@@ -111,9 +112,11 @@ without blocking a thread, until the callback was signaled or the timeout expire
 Signaler<string> signaler = new();
 player.Play("Let It Be", title => signaler.Signal(title));
 
-SignalerResult<string> result = await signaler.WaitAsync(timeout: TimeSpan.FromSeconds(5));
+SignalerResult<string> result =
+    await signaler.WaitAsync(timeout: TimeSpan.FromSeconds(5));
 
-Fail.Unless(result.IsSuccess, $"only {result.Count} tracks completed: {string.Join(", ", result.Parameters)}");
+Fail.Unless(result.IsSuccess,
+    $"only {result.Count} tracks completed: {string.Join(", ", result.Parameters)}");
 ```
 
 `Wait` takes the same parameters, but blocks the calling thread while it waits, and `IsSignaled` returns immediately:
@@ -122,7 +125,8 @@ Fail.Unless(result.IsSuccess, $"only {result.Count} tracks completed: {string.Jo
 Signaler<string> signaler = new();
 
 bool isSignaled = signaler.IsSignaled(2.Times());
-SignalerResult<string> result = signaler.Wait(2.Times(), title => title.StartsWith("Let"));
+SignalerResult<string> result =
+    signaler.Wait(2.Times(), title => title.StartsWith("Let"));
 ```
 
 All parameters are optional and have the same meaning for `Wait` and `WaitAsync`:

@@ -147,7 +147,8 @@ string sql = """
               WHERE Title = 'Abbey Road'
              """;
 
-await Expect.That(sql).IsEqualTo("SELECT * FROM Albums WHERE Title = 'Abbey Road'").NormalizingWhiteSpace();
+await Expect.That(sql).IsEqualTo("SELECT * FROM Albums WHERE Title = 'Abbey Road'")
+    .NormalizingWhiteSpace();
 await Expect.That(sql).Contains("FROM Albums WHERE").NormalizingWhiteSpace();
 await Expect.That("AbbeyRoad").IsNotEqualTo("Abbey Road").NormalizingWhiteSpace();
 ```
@@ -320,7 +321,8 @@ You can also verify the lines themselves. `HasLines` applies the expectations on
 ```csharp
 await Expect.That(lyrics).HasLines(lines => lines.Contains("Right now"));
 await Expect.That(lyrics).HasLines(lines => lines.StartsWith("Come together"));
-await Expect.That(lyrics).HasLines(lines => lines.All().Satisfy(line => line?.Length < 20));
+await Expect.That(lyrics)
+    .HasLines(lines => lines.All().Satisfy(line => line?.Length < 20));
 ```
 
 Lines are separated by `\r\n`, `\n` or `\r`, which are all treated equivalently. A single trailing line terminator

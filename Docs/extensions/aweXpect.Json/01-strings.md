@@ -86,7 +86,8 @@ exceptions. You can also specify the
 ```csharp
 string track = """{"title": "Let It Be"}""";
 
-await Expect.That(track).IsValidJson(o => o with { CommentHandling = JsonCommentHandling.Disallow });
+await Expect.That(track).IsValidJson(
+    o => o with { CommentHandling = JsonCommentHandling.Disallow });
 ```
 
 You can add further expectations on the root
@@ -97,7 +98,8 @@ optionally followed by the `JsonDocumentOptions`:
 string track = """{"title": "Let It Be"}""";
 
 await Expect.That(track).IsValidJson(j => j.Matches(new { title = "Let It Be" }));
-await Expect.That(track).IsValidJson(j => j.IsObject(), o => o with { AllowTrailingCommas = true });
+await Expect.That(track).IsValidJson(j => j.IsObject(),
+    o => o with { AllowTrailingCommas = true });
 ```
 
 Or you can verify that the string is valid JSON and [matches](./02-matching.md) an expected value in one step:
@@ -106,7 +108,8 @@ Or you can verify that the string is valid JSON and [matches](./02-matching.md) 
 string track = """{"title": "Let It Be", "artist": "The Beatles"}""";
 
 await Expect.That(track).IsValidJsonMatching(new { title = "Let It Be" });
-await Expect.That(track).IsValidJsonMatchingExactly(new { title = "Let It Be", artist = "The Beatles" });
+await Expect.That(track).IsValidJsonMatchingExactly(
+    new { title = "Let It Be", artist = "The Beatles" });
 ```
 
 `IsValidJsonMatching(new { title = "Yesterday" })` would fail with:

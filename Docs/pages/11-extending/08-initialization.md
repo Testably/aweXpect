@@ -33,7 +33,8 @@ using System.Text;
 
 internal sealed class MyValueFormatter : IValueFormatter
 {
-    public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+    public bool TryFormat(
+        StringBuilder stringBuilder, object value, FormattingOptions? options)
     {
         if (value is not Track track)
         {
@@ -78,12 +79,14 @@ internal static class MyExtensionFormatting
 {
     private static readonly IValueFormatter VersionFormatter = new MyVersionFormatter();
 
-    internal static ExpectationBuilder WithVersionFormatter(this ExpectationBuilder expectationBuilder)
+    internal static ExpectationBuilder WithVersionFormatter(
+        this ExpectationBuilder expectationBuilder)
         => expectationBuilder.AddFormatter(VersionFormatter);
 
     private sealed class MyVersionFormatter : IValueFormatter
     {
-        public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+        public bool TryFormat(
+            StringBuilder stringBuilder, object value, FormattingOptions? options)
         {
             if (value is not Version version)
             {
@@ -128,7 +131,8 @@ namespace MyTests
         public void Fail(string message, Exception innerException)
             => throw new MyTestFailedException(message, innerException);
 
-        public void Inconclusive(string message) => throw new MyTestInconclusiveException(message);
+        public void Inconclusive(string message)
+            => throw new MyTestInconclusiveException(message);
     }
 
     internal static class MyTestFrameworkRegistration

@@ -8,10 +8,13 @@
 ## At a glance
 
 ```csharp
-string json = """{"title": "Let It Be", "artist": "The Beatles", "durationSeconds": 243}""";
+string json =
+    """{"title": "Let It Be", "artist": "The Beatles", "durationSeconds": 243}""";
 
 // compare JSON strings by their structure instead of their formatting
-await Expect.That(json).IsEqualTo("""{ "artist": "The Beatles", "title": "Let It Be", "durationSeconds": 243 }""").AsJson();
+await Expect.That(json).IsEqualTo(
+        """{ "artist": "The Beatles", "title": "Let It Be", "durationSeconds": 243 }""")
+    .AsJson();
 
 // verify that a string is valid JSON that matches an expected value
 await Expect.That(json).IsValidJsonMatching(new { title = "Let It Be" });

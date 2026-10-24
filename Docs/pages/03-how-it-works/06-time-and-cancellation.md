@@ -46,7 +46,8 @@ You can set a global provider for getting a `CancellationToken` that is applied 
 ```csharp
 // Uses the CancellationToken from the test context
 Customize.aweXpect.Global.Settings().TestCancellation
-    .Set(TestCancellation.FromCancellationToken(() => TestContext.Current.CancellationToken));
+    .Set(TestCancellation.FromCancellationToken(
+        () => TestContext.Current.CancellationToken));
 ```
 
 The setter again returns an `IDisposable` that removes the provider on `Dispose()`.
@@ -117,7 +118,8 @@ List<Track> playlist = new();
 // Start a background task that plays the track and fills the playlist
 
 await Expect.That(track).Satisfies(x => x.IsPlayed).Within(2.Seconds());
-await Expect.That(playlist).CompliesWith(x => x.HasCount().GreaterThanOrEqualTo(4)).Within(2.Seconds());
+await Expect.That(playlist).CompliesWith(x => x.HasCount().GreaterThanOrEqualTo(4))
+    .Within(2.Seconds());
 ```
 
 The condition is checked again every [`DefaultCheckInterval`](./07-configuration.md#settings) (defaults to `100ms`).
@@ -128,7 +130,8 @@ using aweXpect.Chronology; // from the aweXpect.Chronology package
 
 Track track = new();
 
-await Expect.That(track).Satisfies(x => x.IsPlayed).Within(2.Seconds()).CheckEvery(50.Milliseconds());
+await Expect.That(track).Satisfies(x => x.IsPlayed)
+    .Within(2.Seconds()).CheckEvery(50.Milliseconds());
 ```
 
 The interval must be positive, and `Within` and `CheckEvery` can each only be specified once.
@@ -161,7 +164,8 @@ using aweXpect.Chronology; // from the aweXpect.Chronology package
 
 Track track = new();
 
-await Expect.That(() => track.PlayCount).Eventually().Within(5.Seconds()).CheckEvery(50.Milliseconds())
+await Expect.That(() => track.PlayCount).Eventually()
+  .Within(5.Seconds()).CheckEvery(50.Milliseconds())
   .IsGreaterThan(3)
   .WithTimeout(2.Seconds());
 ```
@@ -235,7 +239,8 @@ and only return early when one event too many is recorded:
 IEventRecording<Player> recording = player.Record().Events();
 
 // Waits for 3 seconds and expects that no TrackStarted event is triggered in that time
-await Expect.That(recording).DidNotTrigger(nameof(Player.TrackStarted)).Within(3.Seconds());
+await Expect.That(recording).DidNotTrigger(nameof(Player.TrackStarted))
+    .Within(3.Seconds());
 ```
 
 ### Callbacks

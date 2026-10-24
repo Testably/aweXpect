@@ -77,9 +77,11 @@ To write `IsRadioFriendly` yourself, you specify the following method signature:
 
 ```csharp no-compile
 /// <summary>
-///     Verifies that the <paramref name="subject"/> is radio friendly, i.e. that it lasts at most three minutes.
+///     Verifies that the <paramref name="subject"/> is radio friendly,
+///     i.e. that it lasts at most three minutes.
 /// </summary>
-public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track?> subject)
+public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(
+    this IThat<Track?> subject)
 {
     // ...
 }
@@ -100,7 +102,8 @@ You can then use the `ExpectationBuilder` to add an `IsRadioFriendlyConstraint`:
 ```csharp
 using aweXpect.Core.Extending;
 
-public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track?> subject)
+public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(
+    this IThat<Track?> subject)
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new IsRadioFriendlyConstraint(it, grammars)),
         subject);

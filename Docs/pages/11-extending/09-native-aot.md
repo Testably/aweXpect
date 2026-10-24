@@ -52,8 +52,10 @@ internal static class MyExtensionMetadata
     internal static void Register()
         => TypeMetadataRegistry.RegisterBatch(() =>
         {
-            TypeMetadataRegistry.RegisterProperty<Track, string>("Title", track => track.Title);
-            TypeMetadataRegistry.RegisterProperty<Track, TimeSpan>("Duration", track => track.Duration);
+            TypeMetadataRegistry.RegisterProperty<Track, string>(
+                "Title", track => track.Title);
+            TypeMetadataRegistry.RegisterProperty<Track, TimeSpan>(
+                "Duration", track => track.Duration);
         });
 #pragma warning restore CA2255
 }

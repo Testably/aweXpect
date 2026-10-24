@@ -73,7 +73,8 @@ You can verify that items in a collection comply with an expectation on the indi
 ```csharp
 await Expect.That([1, 2, 3]).All().ComplyWith(item => item.IsLessThan(4));
 await Expect.That([1, 2, 3]).Any().ComplyWith(item => item.IsEqualTo(2));
-await Expect.That([1, 2, 3]).AtLeast(2).ComplyWith(item => item.IsGreaterThanOrEqualTo(2));
+await Expect.That([1, 2, 3]).AtLeast(2)
+    .ComplyWith(item => item.IsGreaterThanOrEqualTo(2));
 await Expect.That([1, 2, 3]).AtMost(1).ComplyWith(item => item.IsNegative());
 await Expect.That([1, 2, 3]).Between(2).And(3).ComplyWith(item => item.IsPositive());
 await Expect.That([1, 2, 3]).Exactly(1).ComplyWith(item => item.IsEqualTo(2));
@@ -99,7 +100,10 @@ expectations or predicates, where in any order such an item only decides when it
 You can verify that items in a collection satisfy a condition:
 
 ```csharp
-Track[] tracks = [new() { Title = "Let It Be", PlayCount = 3 }, new() { Title = "Get Back", PlayCount = 0 }];
+Track[] tracks = [
+    new() { Title = "Let It Be", PlayCount = 3 },
+    new() { Title = "Get Back", PlayCount = 0 }
+];
 
 await Expect.That(tracks).Any().Satisfy(track => track.PlayCount > 0);
 await Expect.That(tracks).None().Satisfy(track => track.Title == null);
@@ -123,7 +127,8 @@ Album expected = //...
 await Expect.That(albums).All().AreEqualTo(expected).Equivalent();
 await Expect.That(albums).All().AreEqualTo(expected).Using(new AlbumComparer());
 await Expect.That(albums).AtLeast(2).AreEquivalentTo(expected);
-await Expect.That(["let it be", "LET IT BE"]).All().AreEqualTo("Let It Be").IgnoringCase();
+await Expect.That(["let it be", "LET IT BE"]).All().AreEqualTo("Let It Be")
+    .IgnoringCase();
 ```
 
 ### Type
@@ -192,7 +197,8 @@ await Expect.That(artists).HasSingle().Matching<Band>(band => band.Members.Count
 
 // Similar to the expectations above, but verify the type exactly:
 await Expect.That(artists).HasSingle().MatchingExactly<Band>();
-await Expect.That(artists).HasSingle().MatchingExactly<Band>(band => band.Members.Count == 4);
+await Expect.That(artists).HasSingle()
+    .MatchingExactly<Band>(band => band.Members.Count == 4);
 ```
 
 Only one filter can be applied, so restrict the type and add a condition in the same call, e.g.
@@ -211,10 +217,12 @@ string song = await Expect.That(songs).HasSingle();
 You can verify that the collection contains an item that satisfies the expectation on a given index (or any index):
 
 ```csharp
-IEnumerable<string> songs = ["Two of Us", "Dig a Pony", "Across the Universe", "I Me Mine"];
+IEnumerable<string> songs =
+    ["Two of Us", "Dig a Pony", "Across the Universe", "I Me Mine"];
 
 await Expect.That(songs).HasItem("Dig a Pony").AtIndex(1); // at the zero-based index 1
-await Expect.That(songs).HasItem("Across the Universe").AtIndexFromEnd(1); // at the zero-based index 1 from end
+await Expect.That(songs).HasItem("Across the Universe")
+    .AtIndexFromEnd(1); // at the zero-based index 1 from end
 await Expect.That(songs).HasItem(it => it.StartsWith("I Me")); // at any index
 ```
 
@@ -226,20 +234,24 @@ IEnumerable<INotification> values = //...
 // Verify that the item at index 1 is of type `TrackAddedNotification`
 await Expect.That(values).HasItem().Matching<TrackAddedNotification>().AtIndex(1);
 // Verify that an item of type `TrackRemovedNotification` for the track with ID 3 exists
-await Expect.That(values).HasItem().Matching<TrackRemovedNotification>(x => x.TrackId == 3);
+await Expect.That(values).HasItem()
+    .Matching<TrackRemovedNotification>(x => x.TrackId == 3);
 
 // Similar to the expectations above, but verify the type exactly:
 await Expect.That(values).HasItem().MatchingExactly<TrackAddedNotification>().AtIndex(1);
-await Expect.That(values).HasItem().MatchingExactly<TrackRemovedNotification>(x => x.TrackId == 3);
+await Expect.That(values).HasItem()
+    .MatchingExactly<TrackRemovedNotification>(x => x.TrackId == 3);
 ```
 
 You can also use expectations on the individual items:
 
 ```csharp
-IEnumerable<string> songs = ["Two of Us", "Dig a Pony", "Across the Universe", "I Me Mine"];
+IEnumerable<string> songs =
+    ["Two of Us", "Dig a Pony", "Across the Universe", "I Me Mine"];
 
 await Expect.That(songs).HasItemThat(it => it.IsEqualTo("Dig a Pony")).AtIndex(1);
-await Expect.That(songs).HasItemThat(it => it.StartsWith("Across").And.EndsWith("Universe")); // at any index
+await Expect.That(songs).HasItemThat(
+    it => it.StartsWith("Across").And.EndsWith("Universe")); // at any index
 ```
 
 Each of these expectations has a negated counterpart. It is satisfied when the index holds a different item, and also
@@ -250,6 +262,7 @@ IEnumerable<string> songs = ["Two of Us", "Dig a Pony"];
 
 await Expect.That(songs).DoesNotHaveItem("I Me Mine").AtIndex(1);
 await Expect.That(songs).DoesNotHaveItem("Two of Us").AtIndex(4); // no item at index 4
-await Expect.That(songs).DoesNotHaveItem().Matching(it => it.StartsWith("I Me")).AtIndex(1);
+await Expect.That(songs).DoesNotHaveItem().Matching(it => it.StartsWith("I Me"))
+    .AtIndex(1);
 await Expect.That(songs).DoesNotHaveItemThat(it => it.StartsWith("I Me")).AtIndex(1);
 ```

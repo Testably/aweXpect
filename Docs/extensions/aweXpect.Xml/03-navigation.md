@@ -43,7 +43,8 @@ element did not have the attribute.
 You can verify that an element has a child element, and add expectations on it:
 
 ```csharp
-XElement album = XElement.Parse("""<album><artist><origin city="Liverpool" /></artist></album>""");
+XElement album = XElement.Parse(
+    """<album><artist><origin city="Liverpool" /></artist></album>""");
 
 await Expect.That(album).HasElement("artist", artist => artist
     .HasElement("origin", origin => origin
@@ -56,7 +57,8 @@ name, like by [`XElement.Element(name)`](https://learn.microsoft.com/en-us/dotne
 To verify a whole subtree, combine it with [`Matches`](./02-matching.md):
 
 ```csharp
-await Expect.That(album).HasElement("artist", artist => artist.Matches("""<artist><origin /></artist>"""));
+await Expect.That(album).HasElement("artist", artist => artist
+    .Matches("""<artist><origin /></artist>"""));
 ```
 
 To verify all child elements with a name, select them with
@@ -66,7 +68,13 @@ To verify all child elements with a name, select them with
 
 ```csharp
 XElement album = XElement.Parse(
-    """<album title="Abbey Road"><track title="Come Together" /><track title="Something" /><artist name="The Beatles" /></album>""");
+    """
+    <album title="Abbey Road">
+      <track title="Come Together" />
+      <track title="Something" />
+      <artist name="The Beatles" />
+    </album>
+    """);
 
 await Expect.That(album).Whose(a => a.Elements("track"), tracks => tracks.HasCount(2));
 await Expect.That(album).Whose(a => a.Elements("track"), tracks => tracks
@@ -97,7 +105,8 @@ You can add expectations on the value of an element with all string expectations
 ```csharp
 XElement track = XElement.Parse("""<track><title>Let It Be</title></track>""");
 
-await Expect.That(track).HasElement("title", title => title.HasValue(value => value.StartsWith("Let")));
+await Expect.That(track).HasElement("title", title => title
+    .HasValue(value => value.StartsWith("Let")));
 ```
 
 If the title was "Yesterday" instead, the expectation would fail with:
@@ -148,9 +157,11 @@ namespace:
 
 ```csharp
 XNamespace music = "urn:music";
-XElement album = XElement.Parse("""<album xmlns="urn:music"><track title="Come Together" /></album>""");
+XElement album = XElement.Parse(
+    """<album xmlns="urn:music"><track title="Come Together" /></album>""");
 
-await Expect.That(album).HasElement(music + "track", track => track.HasAttribute("title"));
+await Expect.That(album).HasElement(music + "track", track => track
+    .HasAttribute("title"));
 ```
 
 A name in a namespace is shown as `{urn:music}track` in the failure message.

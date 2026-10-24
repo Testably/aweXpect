@@ -41,7 +41,8 @@ IEnumerable<Track> tracks = //...
 Track expected = //...
 
 await Expect.That(tracks).All().AreEquivalentTo(expected);
-await Expect.That(tracks).AtLeast(2).AreEquivalentTo(expected, o => o.IgnoringMember("Title"));
+await Expect.That(tracks).AtLeast(2).AreEquivalentTo(expected, o => o
+  .IgnoringMember("Title"));
 ```
 
 The equivalency options go into `AreEquivalentTo` itself, which offers no `.Equivalent(...)` or `.Using(comparer)`
@@ -59,7 +60,8 @@ IEnumerable<Track> tracks = //...
 Track expectedTrack = //...
 await Expect.That(tracks).Contains(expectedTrack).Equivalent();
 await Expect.That(tracks).StartsWith(expectedTrack).Equivalent();
-await Expect.That(tracks).All().AreEqualTo(expectedTrack).Equivalent(o => o.IgnoringCollectionOrder());
+await Expect.That(tracks).All().AreEqualTo(expectedTrack)
+  .Equivalent(o => o.IgnoringCollectionOrder());
 ```
 
 Like `IsEquivalentTo`, a failure lists the equivalency options that were used.
@@ -133,7 +135,8 @@ reported as ambiguous. Failures name the kind of the *expected* member.
 await Expect.That(playlist).IsEquivalentTo(expectedPlaylist);
 
 // compares the tracks only
-await Expect.That(playlist).IsEquivalentTo(expectedPlaylist, o => o.IgnoringMember("Name"));
+await Expect.That(playlist).IsEquivalentTo(expectedPlaylist, o => o
+  .IgnoringMember("Name"));
 ```
 
 <details>

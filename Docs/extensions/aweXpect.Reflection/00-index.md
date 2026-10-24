@@ -11,10 +11,10 @@ or members you care about with `In` or `Types`, then **expect** a rule on them w
 
 ```csharp
 // "Every async method must end in 'Async'"
-await Expect.That(In.AssemblyContaining<PlaylistService>()    // ① pick a source
-        .Methods()                                            // ② navigate to a member kind
-        .WhichAreAsync())                                     // ③ filter it down
-    .HaveName("Async").AsSuffix();                            // ④ expect
+await Expect.That(In.AssemblyContaining<PlaylistService>()  // ① pick a source
+        .Methods()                                          // ② navigate to a member kind
+        .WhichAreAsync())                                   // ③ filter it down
+    .HaveName("Async").AsSuffix();                          // ④ expect
 ```
 
 Every expectation follows the same four-part shape:
@@ -42,7 +42,8 @@ The supported reflection subjects are
 ## Real-world examples
 
 ```csharp
-// Verify all test classes (those containing a [Fact] or [Theory] method) follow the naming convention
+// Verify all test classes (those containing a [Fact] or [Theory] method)
+// follow the naming convention
 await Expect.That(In.AllLoadedAssemblies()
         .Public.Classes()
         .WhichContainMethods(m => m.With<FactAttribute>().OrWith<TheoryAttribute>()))

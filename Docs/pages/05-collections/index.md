@@ -79,7 +79,8 @@ await Expect.That(albums).Contains("HELP!");
 await Expect.That(albums).IsEqualTo(["REVOLVER", "HELP!"]).InAnyOrder();
 await Expect.That(albums).IsContainedIn(["REVOLVER", "ABBEY ROAD", "HELP!"]).InAnyOrder();
 await Expect.That(albums).DoesNotContain("HELP!").Using(StringComparer.Ordinal);
-await Expect.That(albums).IsNotEqualTo(["REVOLVER", "HELP!"]).InAnyOrder().Using(StringComparer.Ordinal);
+await Expect.That(albums).IsNotEqualTo(["REVOLVER", "HELP!"]).InAnyOrder()
+    .Using(StringComparer.Ordinal);
 ```
 
 Whenever the comparer of the set decides, the expectation names it, e.g.

@@ -6,13 +6,15 @@ derive from `SnapshotStore` in the namespace `aweXpect.Snapshots`:
 ```csharp
 public sealed class FolderSnapshotStore(string root) : SnapshotStore
 {
-    public override ValueTask<byte[]?> ReadAsync(SnapshotId id, CancellationToken cancellationToken)
+    public override ValueTask<byte[]?> ReadAsync(
+        SnapshotId id, CancellationToken cancellationToken)
     {
         string path = GetPath(id, "snapshot");
         return new ValueTask<byte[]?>(File.Exists(path) ? File.ReadAllBytes(path) : null);
     }
 
-    public override ValueTask RecordMismatchAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken)
+    public override ValueTask RecordMismatchAsync(
+        SnapshotId id, byte[] actual, CancellationToken cancellationToken)
     {
         string path = GetPath(id, "pending");
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
@@ -20,7 +22,8 @@ public sealed class FolderSnapshotStore(string root) : SnapshotStore
         return default;
     }
 
-    public override ValueTask AcceptAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken)
+    public override ValueTask AcceptAsync(
+        SnapshotId id, byte[] actual, CancellationToken cancellationToken)
     {
         string path = GetPath(id, "snapshot");
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
@@ -34,7 +37,8 @@ public sealed class FolderSnapshotStore(string root) : SnapshotStore
     public override string? DescribeMismatch(SnapshotId id) => GetPath(id, "pending");
 
     private string GetPath(SnapshotId id, string kind)
-        => Path.Combine(root, Path.GetDirectoryName(id.SourceFile) ?? "", $"{id}.{kind}.{id.Extension}");
+        => Path.Combine(root, Path.GetDirectoryName(id.SourceFile) ?? "",
+            $"{id}.{kind}.{id.Extension}");
 }
 ```
 
@@ -73,9 +77,11 @@ content type; it is not part of `ToString()`.
 Set the store for all tests, e.g. in an assembly-level setup, or only for the current async flow:
 
 ```csharp
-Customize.aweXpect.Global.Snapshots().Store.Set(new FolderSnapshotStore("/shared/snapshots"));
+Customize.aweXpect.Global.Snapshots().Store.Set(
+    new FolderSnapshotStore("/shared/snapshots"));
 
-using (Customize.aweXpect.Snapshots().Store.Set(new FolderSnapshotStore("/shared/snapshots")))
+using (Customize.aweXpect.Snapshots().Store.Set(
+    new FolderSnapshotStore("/shared/snapshots")))
 {
     await Expect.That(description).MatchesSnapshot();
 }

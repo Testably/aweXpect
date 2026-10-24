@@ -177,7 +177,8 @@ You can verify the message of the thrown exception:
 ```csharp
 void Act() => throw new CustomException("Yesterday, all my troubles seemed so far away");
 
-await Expect.That(Act).Throws().WithMessage("Yesterday, all my troubles seemed so far away");
+await Expect.That(Act).Throws()
+  .WithMessage("Yesterday, all my troubles seemed so far away");
 await Expect.That(Act).Throws().WithMessage().NotEqualTo("Let It Be");
 await Expect.That(Act).Throws().WithMessage().Containing("troubles");
 await Expect.That(Act).Throws().WithMessage().NotContaining("Help!");
@@ -220,7 +221,8 @@ exists and is of the given type:
 void Act() => throw new CustomException("outer", new CustomException("inner"));
 
 await Expect.That(Act).Throws().WithInner(inner => inner.HasMessage("inner"));
-await Expect.That(Act).Throws().WithInner<CustomException>(inner => inner.HasMessage("inner"));
+await Expect.That(Act).Throws()
+  .WithInner<CustomException>(inner => inner.HasMessage("inner"));
 ```
 
 You can also verify that the thrown exception has no inner exception, or none of a given type:
@@ -244,7 +246,8 @@ You can recursively verify the collection of inner exceptions of the thrown exce
 void Act() => throw new AggregateException("outer", new CustomException("inner"));
 
 await Expect.That(Act).Throws()
-  .WithRecursiveInnerExceptions(innerExceptions => innerExceptions.AtLeast(1).Are<CustomException>());
+  .WithRecursiveInnerExceptions(innerExceptions => innerExceptions
+    .AtLeast(1).Are<CustomException>());
 ```
 
 The exception must have at least one inner exception.
@@ -275,7 +278,8 @@ The `ParamName` of an `ArgumentException` continues like the message:
 void Act() => throw new ArgumentNullException("album");
 
 await Expect.That(Act).Throws<ArgumentNullException>().WithParamName("album");
-await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().NotEqualTo("track");
+await Expect.That(Act).Throws<ArgumentNullException>()
+  .WithParamName().NotEqualTo("track");
 await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().StartingWith("al");
 ```
 
@@ -314,7 +318,8 @@ await Expect.That(PlayIntro).ExecutesIn().AtLeast(100.Milliseconds())
   .Because("the intro should play slower than 100ms");
 await Expect.That(PlayIntro).ExecutesIn(200.Milliseconds()).Within(50.Milliseconds())
   .Because("the intro should play within 200ms ± 50ms");
-await Expect.That(PlayIntro).ExecutesIn().Between(100.Milliseconds()).And(300.Milliseconds())
+await Expect.That(PlayIntro).ExecutesIn()
+  .Between(100.Milliseconds()).And(300.Milliseconds())
   .Because("the intro should play slower than 100ms and faster than 300ms");
 ```
 
@@ -332,7 +337,8 @@ a circuit breaker that trips, or an operation that runs into its own timeout, `A
 measured duration decide alone:
 
 ```csharp
-await Expect.That(() => retryPolicy.Execute(alwaysFailing)).ExecutesIn().AllowingExceptions()
+await Expect.That(() => retryPolicy.Execute(alwaysFailing)).ExecutesIn()
+  .AllowingExceptions()
   .AtLeast(300.Milliseconds())
   .Because("three attempts with a 100ms backoff must have been made before giving up");
 ```

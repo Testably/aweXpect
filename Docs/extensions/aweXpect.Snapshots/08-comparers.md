@@ -8,13 +8,15 @@ the namespace `aweXpect.Snapshots`:
 ```csharp
 public sealed class CoverArtComparer(double minimumSimilarity) : SnapshotComparer
 {
-    public override ValueTask<SnapshotComparison> CompareAsync(SnapshotComparisonContext context,
-        CancellationToken cancellationToken)
+    public override ValueTask<SnapshotComparison> CompareAsync(
+        SnapshotComparisonContext context, CancellationToken cancellationToken)
     {
-        double similarity = Images.Similarity(context.Snapshot.Bytes, context.Actual.Bytes);
+        double similarity = Images.Similarity(
+            context.Snapshot.Bytes, context.Actual.Bytes);
         return new ValueTask<SnapshotComparison>(similarity >= minimumSimilarity
             ? SnapshotComparison.Equal
-            : SnapshotComparison.Different($"only {similarity:P1} of the pixels are the same"));
+            : SnapshotComparison.Different(
+                $"only {similarity:P1} of the pixels are the same"));
     }
 }
 ```
@@ -26,7 +28,8 @@ like for [reporters](09-reporters.md): the `Bytes` as the store keeps them, and 
 Use the comparer for one expectation with `.ComparedWith(…)`, for strings, objects and binary data:
 
 ```csharp
-await Expect.That(cover).MatchesSnapshot().WithExtension("png").ComparedWith(new CoverArtComparer(0.99));
+await Expect.That(cover).MatchesSnapshot().WithExtension("png")
+    .ComparedWith(new CoverArtComparer(0.99));
 ```
 
 or for all snapshots that a condition selects, with the shorthand `ForExtension` (ignoring the case of the extension)
@@ -34,7 +37,8 @@ or with `When` and a predicate that sees the whole context:
 
 ```csharp
 Customize.aweXpect.Global.Snapshots().Comparers.Set([
-    SnapshotComparer.When(context => context.Id.Extension == "png" && context.Actual.Bytes.Length > 1_000,
+    SnapshotComparer.When(
+        context => context.Id.Extension == "png" && context.Actual.Bytes.Length > 1_000,
         new CoverArtComparer(0.99)),
     SnapshotComparer.ForExtension("svg", new SheetMusicComparer()),
 ]);
@@ -66,7 +70,8 @@ SnapshotComparisonContext context = new(new SnapshotId("AlbumTests.cs", "Cover")
     SnapshotContent.FromBytes(File.ReadAllBytes("abbey-road.png")),
     SnapshotContent.FromBytes(RenderCover("Abbey Road")));
 
-SnapshotComparison comparison = await new CoverArtComparer(0.99).CompareAsync(context, CancellationToken.None);
+SnapshotComparison comparison =
+    await new CoverArtComparer(0.99).CompareAsync(context, CancellationToken.None);
 
 await Expect.That(comparison.IsEqual).IsTrue();
 ```

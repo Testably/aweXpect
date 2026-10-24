@@ -21,8 +21,10 @@ You can add a simple customizable value (e.g. an `int`):
 ```csharp
 public static class MyCustomizationExtensions
 {
-    public static ICustomizationValueSetter<int> MyCustomization(this AwexpectCustomization awexpectCustomization)
-        => new CustomizationValue<int>(awexpectCustomization, "MyExtension.MyCustomization", 42);
+    public static ICustomizationValueSetter<int> MyCustomization(
+        this AwexpectCustomization awexpectCustomization)
+        => new CustomizationValue<int>(
+            awexpectCustomization, "MyExtension.MyCustomization", 42);
 }
 ```
 
@@ -46,7 +48,8 @@ using (Customize.aweXpect.MyCustomization().Set(43))
     // will now return 43
     int myCustomization = Customize.aweXpect.MyCustomization().Get();
 }
-// will now return again the default value of 42, because the customization lifetime was disposed
+// will now return again the default value of 42,
+// because the customization lifetime was disposed
 _ = Customize.aweXpect.MyCustomization().Get();
 ```
 
@@ -68,16 +71,21 @@ public static class JsonCustomizationExtensions
     {
         internal JsonCustomization(IAwexpectCustomization awexpectCustomization)
         {
-            DefaultJsonDocumentOptions = new CustomizationValue<JsonDocumentOptions>(awexpectCustomization,
-                "MyExtension.Json.DefaultJsonDocumentOptions", new JsonDocumentOptions { AllowTrailingCommas = true });
-            DefaultJsonSerializerOptions = new CustomizationValue<JsonSerializerOptions>(awexpectCustomization,
-                "MyExtension.Json.DefaultJsonSerializerOptions", new JsonSerializerOptions { AllowTrailingCommas = true },
+            DefaultJsonDocumentOptions = new CustomizationValue<JsonDocumentOptions>(
+                awexpectCustomization,
+                "MyExtension.Json.DefaultJsonDocumentOptions",
+                new JsonDocumentOptions { AllowTrailingCommas = true });
+            DefaultJsonSerializerOptions = new CustomizationValue<JsonSerializerOptions>(
+                awexpectCustomization,
+                "MyExtension.Json.DefaultJsonSerializerOptions",
+                new JsonSerializerOptions { AllowTrailingCommas = true },
                 value =>
                 {
                     if (value is null)
                     {
                         throw Tracing.WriteException(
-                            new ArgumentNullException(nameof(value), "The 'value' cannot be null."));
+                            new ArgumentNullException(nameof(value),
+                                "The 'value' cannot be null."));
                     }
                 });
         }
@@ -93,7 +101,8 @@ Expectations access each value on its own:
 
 ```csharp
  // will return the default value 'true'
-bool allowTrailingCommas = Customize.aweXpect.Json().DefaultJsonDocumentOptions.Get().AllowTrailingCommas;
+bool allowTrailingCommas =
+    Customize.aweXpect.Json().DefaultJsonDocumentOptions.Get().AllowTrailingCommas;
 ```
 
 And users customize each value on its own:
@@ -124,7 +133,8 @@ public static class MySettingsCustomizationExtensions
 {
     public static ICustomizationValueSetter<string[]> ExcludedTypePrefixes(
         this AwexpectCustomization.SettingsCustomization settings)
-        => new CustomizationValue<string[]>(settings, "MyExtension.Settings.ExcludedTypePrefixes", []);
+        => new CustomizationValue<string[]>(
+            settings, "MyExtension.Settings.ExcludedTypePrefixes", []);
 }
 ```
 

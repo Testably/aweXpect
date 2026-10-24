@@ -49,7 +49,8 @@ that were compiled against the assembly. Options configure what is written, for 
 `PublicApiDeclarations.GenerateFrom(…)`:
 
 ```csharp
-await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Ignoring.ForwardedTypes());
+await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
+    .Ignoring.ForwardedTypes());
 ```
 
 An attribute is written when consumers can see its class, or when compilers or analyzers read it by its name, e.g.
@@ -72,7 +73,8 @@ A record is written with the members that the compiler synthesizes for it, e.g. 
 be ignored, which keeps the primary constructor, the positional properties and the hand-written members of the record:
 
 ```csharp
-await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Ignoring.CompilerGeneratedMembers());
+await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
+    .Ignoring.CompilerGeneratedMembers());
 ```
 
 The public API can be restricted to namespaces, including their sub-namespaces, or to types, including their nested
@@ -96,7 +98,8 @@ line, write the parameters of methods, constructors, operators, delegates and in
 separate lines:
 
 ```csharp
-await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Formatting.ParametersOnSeparateLines());
+await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
+    .Formatting.ParametersOnSeparateLines());
 ```
 
 So instead of

@@ -8,7 +8,8 @@ public sealed class ChangedSnapshotsReporter : SnapshotReporter
 {
     public ConcurrentBag<SnapshotId> Changed { get; } = new();
 
-    public override ValueTask OnMismatchAsync(SnapshotMismatch mismatch, CancellationToken cancellationToken)
+    public override ValueTask OnMismatchAsync(
+        SnapshotMismatch mismatch, CancellationToken cancellationToken)
     {
         Changed.Add(mismatch.Id);
         return default;

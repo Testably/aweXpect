@@ -78,7 +78,8 @@ references into a type's own sub-namespaces:
 
 ```csharp
 await Expect.That(Types.InNamespace("MusicStore.Domain"))
-    .DependOnlyOn("MusicStore.Domain").ExcludingSubNamespaces().ExcludingOwnSubNamespaces();
+    .DependOnlyOn("MusicStore.Domain")
+    .ExcludingSubNamespaces().ExcludingOwnSubNamespaces();
 ```
 
 `HasDependenciesOutside` is the **positive counterpart** of `DependsOnlyOn` for finding the violators of an
@@ -88,7 +89,8 @@ chainable refinements):
 
 ```csharp
 // Select the current violators of an architecture rule (e.g. for a baseline)
-In.AllLoadedAssemblies().Types().WhichHaveDependenciesOutside("MusicStore.Application", "MusicStore.Domain")
+In.AllLoadedAssemblies().Types()
+    .WhichHaveDependenciesOutside("MusicStore.Application", "MusicStore.Domain")
 
 // Verify that a known legacy type still has its external dependency
 await Expect.That(typeof(LegacyImportService))
@@ -155,7 +157,8 @@ the family and returns through a *different* member of it (e.g.
 becomes an edge (and can form a cycle):
 
 ```csharp
-// Treat every namespace as its own node (MusicStore.Catalog ↔ MusicStore.Catalog.Domain can now form a cycle)
+// Treat every namespace as its own node
+// (MusicStore.Catalog ↔ MusicStore.Catalog.Domain can now form a cycle)
 await Expect.That(Types.InNamespace("MusicStore"))
     .HaveNoDependencyCycles().ExcludingSubNamespaces();
 ```
@@ -165,7 +168,8 @@ following the root), so that, for example, `MusicStore.Catalog`, `MusicStore.Cat
 `MusicStore.Catalog.Api` collapse into the single slice `MusicStore.Catalog`:
 
 ```csharp
-// Group MusicStore.Catalog.* / MusicStore.Billing.* / … into one slice each before looking for cycles
+// Group MusicStore.Catalog.* / MusicStore.Billing.* / … into one slice each
+// before looking for cycles
 await Expect.That(Types.InNamespace("MusicStore"))
     .HaveNoDependencyCycles("MusicStore");
 ```
@@ -192,7 +196,8 @@ filter vocabulary at your disposal), and an architecture rule is just an expecta
 ```csharp
 Filtered.Types domainTypes         = Types.InNamespace("MusicStore.Domain");
 Filtered.Types infrastructureTypes = Types.InNamespace("MusicStore.Infrastructure");
-Filtered.Types repositoryTypes     = Types.InNamespace("MusicStore.Data").WithName("Repository").AsSuffix();
+Filtered.Types repositoryTypes     = Types.InNamespace("MusicStore.Data")
+    .WithName("Repository").AsSuffix();
 ```
 
 The dependency expectations and filters accept such a selection as a **target**, alongside the namespace and
@@ -259,8 +264,10 @@ but
 Exemptions to a rule use the [`Except` filter](./02-filters.md) on the subject selection:
 
 ```csharp
-await Expect.That(domainTypes.Except<LegacyImportService>()).DoNotDependOn(infrastructureTypes);
-await Expect.That(domainTypes.Except(type => type.Name.StartsWith("Generated"))).AreSealed();
+await Expect.That(domainTypes.Except<LegacyImportService>())
+    .DoNotDependOn(infrastructureTypes);
+await Expect.That(domainTypes.Except(type => type.Name.StartsWith("Generated")))
+    .AreSealed();
 ```
 
 A layer spanning several namespaces is built by widening a dependency *target* with additional selections

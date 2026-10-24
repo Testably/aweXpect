@@ -17,7 +17,8 @@ You can verify that the `Guid` is equal to another one or not:
 Guid albumId = Guid.Parse("5c01d9d2-66f7-4782-8c14-e54eae9aaacc");
 
 await Expect.That(albumId).IsEqualTo(Guid.Parse("5c01d9d2-66f7-4782-8c14-e54eae9aaacc"));
-await Expect.That(albumId).IsNotEqualTo(Guid.Parse("cdd7a485-40a1-4bba-bb8b-d0e903704b02"));
+await Expect.That(albumId)
+    .IsNotEqualTo(Guid.Parse("cdd7a485-40a1-4bba-bb8b-d0e903704b02"));
 ```
 
 ## One of

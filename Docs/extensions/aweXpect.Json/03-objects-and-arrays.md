@@ -18,7 +18,8 @@ Describes the possible expectations for the kind and the content of a `JsonEleme
 You can verify that a `JsonElement` is a JSON object that satisfies some expectations:
 
 ```csharp
-JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
 
 await Expect.That(track).IsObject(o => o
     .With("title").Matching("Let It Be").And
@@ -39,7 +40,8 @@ JSON options:
 `Matching(…)` also accepts `It.Is…` expectations, e.g. to verify a value with the string expectations of aweXpect:
 
 ```csharp
-JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
 
 await Expect.That(track).IsObject(o => o
     .With("title").Matching(It.Is<string>().That.StartsWith("Let")));
@@ -64,7 +66,9 @@ You can verify that a property is another object, recursively:
 
 ```csharp
 JsonElement track = JsonDocument.Parse(
-    """{"title": "Let It Be", "album": {"title": "Let It Be", "year": 1970}}""").RootElement;
+    """
+    {"title": "Let It Be", "album": {"title": "Let It Be", "year": 1970}}
+    """).RootElement;
 
 await Expect.That(track).IsObject(o => o
     .With("album").AnObject(album => album
@@ -89,7 +93,9 @@ contain `.`, `[` or `]` can only be addressed with `With(…)`. The addressed va
 
 ```csharp
 JsonElement album = JsonDocument.Parse(
-    """{"artist": {"origin": {"city": "Liverpool"}}, "tracks": [{"title": "Come Together"}]}""").RootElement;
+    """
+    {"artist": {"origin": {"city": "Liverpool"}}, "tracks": [{"title": "Come Together"}]}
+    """).RootElement;
 
 await Expect.That(album).IsObject(o => o
     .At("artist.origin.city").Matching("Liverpool").And
@@ -112,7 +118,9 @@ You can verify the kind of a property value without pinning the value itself wit
 
 ```csharp
 JsonElement track = JsonDocument.Parse(
-    """{"title": "Let It Be", "durationSeconds": 243, "explicit": false, "label": null}""").RootElement;
+    """
+    {"title": "Let It Be", "durationSeconds": 243, "explicit": false, "label": null}
+    """).RootElement;
 
 await Expect.That(track).IsObject(o => o
     .With("title").AString().And
@@ -135,7 +143,8 @@ JSON options:
 You can verify the number of properties in a JSON object:
 
 ```csharp
-JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
 
 await Expect.That(track).IsObject(o => o.With(2).Properties());
 ```
@@ -144,7 +153,8 @@ You can verify that a JSON object does not contain a property. A property with t
 the expectation, unless `TreatingNullAsAbsent()` is set:
 
 ```csharp
-JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
 
 await Expect.That(track).IsObject(o => o
     .With("title").Matching("Let It Be").And
@@ -167,7 +177,8 @@ With `TreatingNullAsAbsent()`, a property with the value `null` counts as absent
 property fails as if it did not exist, and `With(…).Properties()` does not count it:
 
 ```csharp
-JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "label": null}""").RootElement;
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "label": null}""").RootElement;
 
 await Expect.That(track).IsObject(o => o
     .With("title").Matching("Let It Be").And
@@ -195,7 +206,9 @@ it occurs:
 
 ```csharp
 JsonElement track = JsonDocument.Parse(
-    """{"title": "Let It Be", "artist": "The Beatles", "album": "Let It Be"}""").RootElement;
+    """
+    {"title": "Let It Be", "artist": "The Beatles", "album": "Let It Be"}
+    """).RootElement;
 
 await Expect.That(track).IsObject().WhoseProperties
     .All().Satisfy(p => p.Value.ValueKind == JsonValueKind.String);
@@ -277,7 +290,9 @@ You can match nested arrays recursively (use `null` to skip an element):
 
 ```csharp
 JsonElement sides = JsonDocument.Parse(
-    """[["Come Together", "Something"], ["Here Comes the Sun"], ["The End", "Her Majesty"]]""").RootElement;
+    """
+    [["Come Together", "Something"], ["Here Comes the Sun"], ["The End", "Her Majesty"]]
+    """).RootElement;
 
 await Expect.That(sides).IsArray(a => a
     .WithArrays(

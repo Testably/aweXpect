@@ -87,7 +87,8 @@ With `IgnoringIPv4MappedToIPv6()`, IPv4-mapped addresses on either side are mapp
 ```csharp
 IPAddress address = IPAddress.Parse("10.0.0.1");
 
-await Expect.That(address).IsEqualTo(IPAddress.Parse("::ffff:10.0.0.1")).IgnoringIPv4MappedToIPv6();
+await Expect.That(address).IsEqualTo(IPAddress.Parse("::ffff:10.0.0.1"))
+    .IgnoringIPv4MappedToIPv6();
 ```
 
 Different addresses are still not equal, so
@@ -95,7 +96,8 @@ Different addresses are still not equal, so
 ```csharp
 IPAddress address = IPAddress.Parse("::ffff:10.0.0.2");
 
-await Expect.That(address).IsEqualTo(IPAddress.Parse("10.0.0.1")).IgnoringIPv4MappedToIPv6();
+await Expect.That(address).IsEqualTo(IPAddress.Parse("10.0.0.1"))
+    .IgnoringIPv4MappedToIPv6();
 ```
 
 fails with:

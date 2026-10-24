@@ -234,7 +234,8 @@ individual type and may use the full member-filter API:
 ```csharp
 // Types that contain at least one method with [Fact] or [Theory]
 In.AllLoadedAssemblies().Types()
-    .WhichContainMethods(methods => methods.With<FactAttribute>().OrWith<TheoryAttribute>())
+    .WhichContainMethods(methods => methods
+        .With<FactAttribute>().OrWith<TheoryAttribute>())
 
 // The same is available for the other member kinds
 In.AllLoadedAssemblies().Types()
@@ -280,11 +281,13 @@ await Expect.That(typeof(PlaylistServiceTests))
 
 // …with exactly one parameterless constructor
 await Expect.That(typeof(PlaylistService))
-    .ContainsConstructors(constructors => constructors.WithoutParameters()).Exactly(1.Times());
+    .ContainsConstructors(constructors => constructors.WithoutParameters())
+    .Exactly(1.Times());
 
 // Every type in a collection contains a matching property
 await Expect.That(types)
-    .ContainProperties(properties => properties.With<RequiredAttribute>()).AtLeast(1.Times());
+    .ContainProperties(properties => properties.With<RequiredAttribute>())
+    .AtLeast(1.Times());
 ```
 
 ### Generic type arguments
@@ -437,8 +440,10 @@ await Expect.That(typeof(TrackDuration)).DoesNotHaveOperator(Operator.Modulus);
 await Expect.That(typeof(TrackDuration)).HasOperator<int>(Operator.Addition);
 
 // Conversion operators are keyed by their source → target signature
-await Expect.That(typeof(TrackDuration)).HasImplicitConversionOperator<TrackDuration, TimeSpan>();
-await Expect.That(typeof(TrackDuration)).HasExplicitConversionOperator(typeof(TrackDuration), typeof(int));
+await Expect.That(typeof(TrackDuration))
+    .HasImplicitConversionOperator<TrackDuration, TimeSpan>();
+await Expect.That(typeof(TrackDuration))
+    .HasExplicitConversionOperator(typeof(TrackDuration), typeof(int));
 ```
 
 `HasOperator` / conversion operators match operators declared on the type itself; pass `inherit: true` to also
@@ -671,7 +676,8 @@ In.AllLoadedAssemblies().WithVersion(version => version.Major >= 2)
 await Expect.That(subject).HasVersion(version => version.Major >= 2);
 
 // Component form
-In.AllLoadedAssemblies().WithVersion().WithMajor.GreaterThanOrEqualTo(2).WithMinor.EqualTo(0)
+In.AllLoadedAssemblies().WithVersion()
+    .WithMajor.GreaterThanOrEqualTo(2).WithMinor.EqualTo(0)
 await Expect.That(subject).HasVersion().WithMajor.GreaterThanOrEqualTo(2);
 await Expect.That(subjects).HaveVersion().WithMajor.EqualTo(1);
 ```

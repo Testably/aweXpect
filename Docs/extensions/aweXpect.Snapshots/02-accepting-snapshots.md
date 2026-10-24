@@ -50,11 +50,15 @@ set), so that a variable that was forgotten in a pipeline cannot change the snap
 instead, which also applies on a build server:
 
 ```csharp
-await Expect.That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.All);  // a missing or different snapshot
-await Expect.That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.New);  // only a missing snapshot
-await Expect.That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.None); // never accepts
+// a missing or different snapshot
+await Expect.That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.All);
+// only a missing snapshot
+await Expect.That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.New);
+// never accepts
+await Expect.That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.None);
 
-Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.New);               // for the current async flow
+// for the current async flow
+Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.New);
 ```
 
 `Accepting(…)` takes precedence over `Customize.aweXpect.Snapshots().Acceptance`, which takes precedence over the

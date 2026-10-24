@@ -49,7 +49,8 @@ The factory passed to `AddConstraint` usually captures the arguments of the expe
 delegate for every expectation. To avoid that, pass the arguments as state to a `static` lambda:
 
 ```csharp
-public static AndOrResult<Track, IThat<Track?>> IsShorterThan(this IThat<Track?> subject, TimeSpan maximum)
+public static AndOrResult<Track, IThat<Track?>> IsShorterThan(
+    this IThat<Track?> subject, TimeSpan maximum)
     => new(subject.Get().ExpectationBuilder.AddConstraint(maximum,
             static (max, it, grammars) => new IsShorterThanConstraint(it, grammars, max)),
         subject);
@@ -84,24 +85,30 @@ private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars gr
     public ConstraintResult IsMetBy(Track? actual)
     {
         Actual = actual;
-        Outcome = actual?.Duration <= TimeSpan.FromMinutes(3) ? Outcome.Success : Outcome.Failure;
+        Outcome = actual?.Duration <= TimeSpan.FromMinutes(3)
+            ? Outcome.Success
+            : Outcome.Failure;
         return this;
     }
 
-    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNormalExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("is radio friendly");
 
-    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNormalResult(
+        StringBuilder stringBuilder, string? indentation = null)
     {
         stringBuilder.Append(It).Append(" was ");
         Formatter.Format(stringBuilder, Actual?.Duration);
         stringBuilder.Append(" long");
     }
 
-    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNegatedExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("is not radio friendly");
 
-    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNegatedResult(
+        StringBuilder stringBuilder, string? indentation = null)
     {
         stringBuilder.Append(It).Append(" was ");
         Formatter.Format(stringBuilder, Actual?.Duration);
@@ -130,21 +137,26 @@ private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars gr
     public ConstraintResult IsMetBy(Track? actual)
     {
         _actual = actual;
-        Outcome = actual?.Duration <= TimeSpan.FromMinutes(3) ? Outcome.Success : Outcome.Failure;
+        Outcome = actual?.Duration <= TimeSpan.FromMinutes(3)
+            ? Outcome.Success
+            : Outcome.Failure;
         return this;
     }
 
-    public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+    public override void AppendExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("is radio friendly");
 
-    public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
+    public override void AppendResult(
+        StringBuilder stringBuilder, string? indentation = null)
     {
         stringBuilder.Append(it).Append(" was ");
         Formatter.Format(stringBuilder, _actual?.Duration);
         stringBuilder.Append(" long");
     }
 
-    public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
+    public override bool TryGetStoredValue<TValue>(out TValue? value)
+        where TValue : default
     {
         if (_actual is TValue typedValue)
         {
@@ -202,12 +214,17 @@ nullability warnings for the subject after your expectation, as it does after `I
 
 ```csharp no-compile
 [GuaranteesNotNull]
-public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track?> subject)
+public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(
+    this IThat<Track?> subject)
     => // ...
 ```
 
 ```csharp
-Track[] tracks = [new("Love Me Do", new TimeSpan(0, 2, 22)), new("Hey Jude", new TimeSpan(0, 7, 11))];
+Track[] tracks =
+[
+    new("Love Me Do", new TimeSpan(0, 2, 22)),
+    new("Hey Jude", new TimeSpan(0, 7, 11)),
+];
 Track? track = tracks.FirstOrDefault(t => t.Title == "Love Me Do");
 
 await Expect.That(track).IsRadioFriendly();
@@ -280,36 +297,45 @@ public interface ITrackArchive
     Task AddAsync(Track track, CancellationToken cancellationToken);
 }
 
-private sealed class IsArchivedConstraint(string it, ExpectationGrammars grammars, ITrackArchive archive)
+private sealed class IsArchivedConstraint(
+    string it, ExpectationGrammars grammars, ITrackArchive archive)
     : ConstraintResult.WithNotNullValue<Track>(it, grammars),
         IContextConstraint<Track?>
 {
     public ConstraintResult IsMetBy(Track? actual, IEvaluationContext context)
     {
         Actual = actual;
-        Outcome = actual is not null && archive.Contains(actual) ? Outcome.Success : Outcome.Failure;
+        Outcome = actual is not null && archive.Contains(actual)
+            ? Outcome.Success
+            : Outcome.Failure;
         context.OnCompleted(OnCompletedAsync);
         return this;
     }
 
-    private async ValueTask OnCompletedAsync(CompletedEvaluation evaluation, CancellationToken cancellationToken)
+    private async ValueTask OnCompletedAsync(
+        CompletedEvaluation evaluation, CancellationToken cancellationToken)
     {
-        if (evaluation.Outcome == Outcome.Failure && Outcome == Outcome.Failure && !IsNegated && Actual is not null)
+        if (evaluation.Outcome == Outcome.Failure && Outcome == Outcome.Failure
+            && !IsNegated && Actual is not null)
         {
             await archive.AddAsync(Actual, cancellationToken);
         }
     }
 
-    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNormalExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("is archived");
 
-    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNormalResult(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append(It).Append(" was not");
 
-    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNegatedExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("is not archived");
 
-    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNegatedResult(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append(It).Append(" was");
 }
 ```
@@ -355,7 +381,9 @@ call it through `UserCode.Invoke`. An exception it throws then fails the expecta
 exception as inner exception, instead of aborting the evaluation:
 
 ```csharp no-compile
-Outcome = UserCode.Invoke(predicate, actual, "the predicate") ? Outcome.Success : Outcome.Failure;
+Outcome = UserCode.Invoke(predicate, actual, "the predicate")
+    ? Outcome.Success
+    : Outcome.Failure;
 ```
 
 The optional last argument names the code in the failure message, e.g. "the predicate did throw an
@@ -378,13 +406,15 @@ internal static void ThrowIfNull(object? value, string paramName)
 {
     if (value is null)
     {
-        throw Tracing.WriteException(new ArgumentNullException(paramName, $"The '{paramName}' cannot be null."));
+        throw Tracing.WriteException(
+            new ArgumentNullException(paramName, $"The '{paramName}' cannot be null."));
     }
 }
 ```
 
 ```csharp no-compile
-public static AndOrResult<Track, IThat<Track?>> HasTitle(this IThat<Track?> subject, string title)
+public static AndOrResult<Track, IThat<Track?>> HasTitle(
+    this IThat<Track?> subject, string title)
 {
     ThrowIfNull(title, nameof(title));
     // ...
@@ -398,7 +428,8 @@ that the expectation passes on. Awaiting the expectation returns this value, and
 also continues with `Whose` on a member of it:
 
 ```csharp
-public static AndOrWhoseResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track?> subject)
+public static AndOrWhoseResult<Track, IThat<Track?>> IsRadioFriendly(
+    this IThat<Track?> subject)
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new IsRadioFriendlyConstraint(it, grammars)),
         subject);
@@ -408,7 +439,8 @@ public static AndOrWhoseResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<
 Track track = new("Love Me Do", new TimeSpan(0, 2, 22));
 
 Track verifiedTrack = await Expect.That(track).IsRadioFriendly();
-await Expect.That(track).IsRadioFriendly().Whose(t => t.Title, title => title.StartsWith("Love"));
+await Expect.That(track).IsRadioFriendly()
+    .Whose(t => t.Title, title => title.StartsWith("Love"));
 ```
 
 Both ask the `TryGetStoredValue<TValue>` method of the `ConstraintResult` for the value, so a constraint that narrows

@@ -22,7 +22,8 @@ optional `bool`; with `false` it behaves as if it was not specified. The referen
 ```csharp
 string title = "Let It Be";
 
-await Expect.That(title).IsEqualTo("Let It Be").Because("it is the title of the last album");
+await Expect.That(title).IsEqualTo("Let It Be")
+    .Because("it is the title of the last album");
 ```
 
 On a [combination](./03-combining.md#on-different-subjects) of `Expect.ThatAll` or `Expect.ThatAny`, the reason is
@@ -37,7 +38,10 @@ leading and trailing whitespace:
 ```csharp
 string title = " Abbey Road ";
 
-await Expect.That(title).IsEqualTo("abbey road").IgnoringCase().IgnoringLeadingWhiteSpace().IgnoringTrailingWhiteSpace();
+await Expect.That(title).IsEqualTo("abbey road")
+    .IgnoringCase()
+    .IgnoringLeadingWhiteSpace()
+    .IgnoringTrailingWhiteSpace();
 await Expect.That(["Let It Be", "Help!"]).Contains("LET IT BE").IgnoringCase();
 ```
 
@@ -52,7 +56,8 @@ await Expect.That(["Let It Be", "Help!"]).Contains("LET IT BE").IgnoringCase();
 string title = "Abbey Road";
 
 await Expect.That(title).IsEqualTo("ABBEY ROAD").Using(StringComparer.OrdinalIgnoreCase);
-await Expect.That(new Album("Abbey Road")).IsEqualTo(new Album("Abbey Road")).Using(new AlbumComparer());
+await Expect.That(new Album("Abbey Road")).IsEqualTo(new Album("Abbey Road"))
+    .Using(new AlbumComparer());
 ```
 
 ## Equivalency
@@ -63,7 +68,8 @@ public members recursively instead of calling `Equals`:
 ```csharp
 Album[] albums = [new("Abbey Road"), new("Let It Be")];
 
-await Expect.That(new Album("Abbey Road")).IsEqualTo(new Album("Abbey Road")).Equivalent();
+await Expect.That(new Album("Abbey Road")).IsEqualTo(new Album("Abbey Road"))
+    .Equivalent();
 await Expect.That(albums).Contains(new Album("Let It Be")).Equivalent();
 ```
 
@@ -79,7 +85,8 @@ double duration = 4.02;
 DateTime releaseDate = new DateTime(1970, 5, 8, 12, 0, 0);
 
 await Expect.That(duration).IsEqualTo(4.0).Within(0.05);
-await Expect.That(releaseDate).IsEqualTo(new DateTime(1970, 5, 8)).Within(TimeSpan.FromDays(1));
+await Expect.That(releaseDate).IsEqualTo(new DateTime(1970, 5, 8))
+    .Within(TimeSpan.FromDays(1));
 await Expect.That([3.98, 4.01]).All().AreEqualTo(4.0).Within(0.05);
 ```
 
@@ -101,7 +108,9 @@ string[] songs = ["Two of Us", "Dig a Pony", "Let It Be"];
 
 await Expect.That(songs).IsEqualTo(["Let It Be", "Two of Us", "Dig a Pony"]).InAnyOrder();
 await Expect.That(songs).Contains(["Two of Us", "Let It Be"]).IgnoringInterspersedItems();
-await Expect.That(songs).IsContainedIn(["Two of Us", "Dig a Pony", "Let It Be", "Get Back"]).Properly();
+await Expect.That(songs)
+    .IsContainedIn(["Two of Us", "Dig a Pony", "Let It Be", "Get Back"])
+    .Properly();
 ```
 
 ## Time

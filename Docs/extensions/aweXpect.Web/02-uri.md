@@ -52,7 +52,8 @@ You can verify that the `Uri` uses the default port of its scheme, or that it do
 
 ```csharp
 await Expect.That(new Uri("https://music.example.com/tracks/1")).HasDefaultPort();
-await Expect.That(new Uri("https://music.example.com:8443/tracks/1")).DoesNotHaveDefaultPort();
+await Expect.That(new Uri("https://music.example.com:8443/tracks/1"))
+    .DoesNotHaveDefaultPort();
 ```
 
 ## Port
@@ -98,7 +99,8 @@ Uri uri = new("https://music.example.com/tracks/1");
 
 await Expect.That(uri).HasPath().EqualTo("/tracks/1");
 await Expect.That(uri).HasPath().StartingWith("/tracks/");
-await Expect.That(new Uri("https://music.example.com/my%20song")).HasPath().EqualTo("/my song");
+await Expect.That(new Uri("https://music.example.com/my%20song"))
+    .HasPath().EqualTo("/my song");
 ```
 
 ## Fragment

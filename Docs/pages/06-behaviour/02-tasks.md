@@ -18,7 +18,8 @@ that is already running. All expectations for a delegate without return value ar
 Task ImportAlbumAsync(string title) => Task.CompletedTask;
 
 await Expect.That(ImportAlbumAsync("Abbey Road")).DoesNotThrow();
-await Expect.That(Task.FromException(new CustomException("Yesterday"))).Throws<CustomException>();
+await Expect.That(Task.FromException(new CustomException("Yesterday")))
+    .Throws<CustomException>();
 ```
 
 The task is already running, so `ExecutesIn` only measures the remaining time and a timeout only stops waiting for it,

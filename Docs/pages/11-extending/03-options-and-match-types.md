@@ -27,7 +27,8 @@ public class TrackCountResult<TThat>(
     TThat returnValue,
     Quantifier quantifier,
     StringEqualityOptions options)
-    : AndOrResult<IEnumerable<Track>, TThat, TrackCountResult<TThat>>(expectationBuilder, returnValue),
+    : AndOrResult<IEnumerable<Track>, TThat, TrackCountResult<TThat>>(
+            expectationBuilder, returnValue),
         IOptionsProvider<Quantifier>,
         IOptionsProvider<StringEqualityOptions>
 {
@@ -101,7 +102,8 @@ The caller then allows a difference of whole days, e.g. for the release date of 
 ```csharp no-compile
 DateOnly releaseDate = new(1969, 9, 26);
 
-await Expect.That(releaseDate).IsOnSameDayAs(new DateOnly(1969, 9, 27)).Within(TimeSpan.FromDays(1));
+await Expect.That(releaseDate).IsOnSameDayAs(new DateOnly(1969, 9, 27))
+    .Within(TimeSpan.FromDays(1));
 ```
 
 In the constraint, compare with `tolerance.GetToleranceOrDefault()`. Without `.Within(…)`, it returns the
@@ -118,7 +120,8 @@ You can offer a comparison of your own: implement `IObjectMatchType` and set it 
 tracks with the same title can count as equal:
 
 ```csharp
-public static TSelf ByTitle<TSelf, TElement>(this IObjectEqualityResult<TSelf, TElement> result)
+public static TSelf ByTitle<TSelf, TElement>(
+    this IObjectEqualityResult<TSelf, TElement> result)
     where TSelf : IObjectEqualityResult<TSelf, TElement>
 {
     result.Options.SetMatchType(new ByTitleMatchType(), nameof(ByTitle));
@@ -127,7 +130,8 @@ public static TSelf ByTitle<TSelf, TElement>(this IObjectEqualityResult<TSelf, T
 
 private sealed class ByTitleMatchType : IObjectMatchType
 {
-    public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
+    public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(
+        TActual actual, TExpected expected)
         => new(HaveSameTitle(actual, expected));
 
     public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(
@@ -135,9 +139,11 @@ private sealed class ByTitleMatchType : IObjectMatchType
         => new(new ByTitleResult(HaveSameTitle(actual, expected)));
 
     public string GetExpectation(string expected, ExpectationGrammars grammars)
-        => $"{(grammars.IsPlural() ? "are" : "is")} {(grammars.IsNegated() ? "not " : "")}titled like {expected}";
+        => $"{(grammars.IsPlural() ? "are" : "is")} "
+           + $"{(grammars.IsNegated() ? "not " : "")}titled like {expected}";
 
-    public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
+    public string PrependItemAndComparison(
+        string expected, string? itemNoun = null, string? comparison = null)
         => $"{(itemNoun is null ? "" : itemNoun + " ")}titled like {expected}";
 
     public void AppendContexts(ResultContextCollector contexts)
@@ -145,15 +151,18 @@ private sealed class ByTitleMatchType : IObjectMatchType
     }
 
     private static bool HaveSameTitle(object? actual, object? expected)
-        => actual is Track a && expected is Track e ? a.Title == e.Title : actual is null && expected is null;
+        => actual is Track a && expected is Track e
+            ? a.Title == e.Title
+            : actual is null && expected is null;
 
     private sealed class ByTitleResult(bool isMatch) : IObjectMatchResult
     {
         public bool IsMatch => isMatch;
 
-        public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected,
-            string? indentation = null)
-            => $"{it}{(grammars.IsPlural() && it != "it" ? " were" : " was")} titled {Formatter.Format((actual as Track)?.Title)}";
+        public string GetExtendedFailure(string it, ExpectationGrammars grammars,
+            object? actual, object? expected, string? indentation = null)
+            => $"{it}{(grammars.IsPlural() && it != "it" ? " were" : " was")} titled "
+               + Formatter.Format((actual as Track)?.Title);
     }
 }
 ```
@@ -161,7 +170,8 @@ private sealed class ByTitleMatchType : IObjectMatchType
 ```csharp
 Track track = new("Hey Jude", new TimeSpan(0, 7, 11));
 
-await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4))).ByTitle();
+await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
+    .ByTitle();
 ```
 
 - `AreConsideredEqual` only decides, e.g. for each item of a collection. `AreConsideredEqualWithExplanation` compares
@@ -187,7 +197,8 @@ the same subject. Leave the method empty when the expectation text already expla
 
 ```csharp no-compile
 public void AppendContexts(ResultContextCollector contexts)
-    => contexts.Add(new ResultContext.Fixed("Title options", " - ignore leading articles"));
+    => contexts.Add(
+        new ResultContext.Fixed("Title options", " - ignore leading articles"));
 ```
 
 A constraint of your own that compares strings with `StringEqualityOptions` forwards these contexts from its

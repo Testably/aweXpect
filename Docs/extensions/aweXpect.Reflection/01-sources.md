@@ -38,7 +38,8 @@ after it to clarify the assembly source (it can only be specified once, before a
 await Expect.That(Types.InNamespace("MusicStore.Domain")).AreSealed();
 
 // Clarify the assembly source
-await Expect.That(Types.InNamespace("MusicStore.Domain").InAssemblyContaining<MusicStore.Startup>())
+await Expect.That(Types.InNamespace("MusicStore.Domain")
+        .InAssemblyContaining<MusicStore.Startup>())
     .AreSealed();
 ```
 

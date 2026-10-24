@@ -33,7 +33,8 @@ You can verify that the `TimeSpan` is one of many alternatives:
 TimeSpan duration = TimeSpan.FromSeconds(42);
 
 await Expect.That(duration).IsOneOf([TimeSpan.FromSeconds(40), TimeSpan.FromSeconds(42)]);
-await Expect.That(duration).IsNotOneOf([TimeSpan.FromSeconds(41), TimeSpan.FromSeconds(43)]);
+await Expect.That(duration)
+    .IsNotOneOf([TimeSpan.FromSeconds(41), TimeSpan.FromSeconds(43)]);
 ```
 
 ## Greater than / less than
@@ -60,8 +61,10 @@ You can verify that the `TimeSpan` is between two values:
 ```csharp
 TimeSpan duration = TimeSpan.FromSeconds(42);
 
-await Expect.That(duration).IsBetween(TimeSpan.FromSeconds(40)).And(TimeSpan.FromSeconds(50));
-await Expect.That(duration).IsNotBetween(TimeSpan.FromSeconds(43)).And(TimeSpan.FromSeconds(50));
+await Expect.That(duration).IsBetween(TimeSpan.FromSeconds(40))
+    .And(TimeSpan.FromSeconds(50));
+await Expect.That(duration).IsNotBetween(TimeSpan.FromSeconds(43))
+    .And(TimeSpan.FromSeconds(50));
 ```
 
 ## Positive / negative

@@ -36,7 +36,8 @@ await Expect.That(track).IsNotLongerThan(TimeSpan.FromMinutes(3));
   ```csharp no-compile
   [GenerateExpectation("Is{Not}OneOf", "is {not} one of {titles}")]
   private static async Task<bool> IsOneOf(Track track,
-      [EvaluationCancellationToken] CancellationToken cancellationToken, params string[] titles)
+      [EvaluationCancellationToken] CancellationToken cancellationToken,
+      params string[] titles)
       => titles.Contains(await LookUpTitle(track, cancellationToken));
   ```
 - It is declared in a top-level, non-generic, `static partial` class that is not `file`-local, which receives the
@@ -61,7 +62,8 @@ negated text in `NegatedExpectationText`, with the same placeholders. Every expe
 
 ```csharp no-compile
 [GenerateExpectation("HasTitle", "has title {title}",
-    NegatedName = "DoesNotHaveTitle", NegatedExpectationText = "does not have title {title}")]
+    NegatedName = "DoesNotHaveTitle",
+    NegatedExpectationText = "does not have title {title}")]
 private static bool HasTitle(Track track, string title)
     => track.Title == title;
 ```
@@ -70,7 +72,8 @@ The result after "but" shows the formatted subject. To describe it differently, 
 text after the subject in `Result`. It takes the subject, optionally followed by the other parameters:
 
 ```csharp no-compile
-[GenerateExpectation("Is{Not}LongerThan", "is {not} longer than {minimum}", Result = nameof(DescribeDuration))]
+[GenerateExpectation("Is{Not}LongerThan", "is {not} longer than {minimum}",
+    Result = nameof(DescribeDuration))]
 private static bool IsLongerThan(Track track, TimeSpan minimum)
     => track.Duration > minimum;
 
@@ -88,7 +91,8 @@ To describe the subject itself, the method can end with a `string` and an `Expec
 receives how the subject is referred to, e.g. "it", and returns the whole text after "but":
 
 ```csharp no-compile
-private static string DescribeDuration(Track track, string it, ExpectationGrammars grammars)
+private static string DescribeDuration(Track track,
+    string it, ExpectationGrammars grammars)
     => $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{track.Duration:m\\:ss} long";
 ```
 
@@ -152,7 +156,8 @@ e.g. `AreLongerThan` for `That(tracks).All().AreLongerThan(…)`. It takes the n
 item and its plural:
 
 ```csharp no-compile
-[GenerateCollectionExpectation("AreLongerThan", "is longer than {minimum}", "are longer than {minimum}")]
+[GenerateCollectionExpectation("AreLongerThan",
+    "is longer than {minimum}", "are longer than {minimum}")]
 private static bool IsLongerThan(Track track, TimeSpan minimum)
     => track.Duration > minimum;
 ```

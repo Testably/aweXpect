@@ -62,8 +62,10 @@ code fixes are available: switch to the `With…` twin, or insert `.Which`.
 ```csharp
 void Act() => throw new InvalidOperationException("Yesterday");
 
-await Expect.That(Act).Throws<InvalidOperationException>().HasMessage("Yesterday");    // reported
-await Expect.That(Act).Throws<InvalidOperationException>().WithMessage("Yesterday");   // fixed
+// reported
+await Expect.That(Act).Throws<InvalidOperationException>().HasMessage("Yesterday");
+// fixed
+await Expect.That(Act).Throws<InvalidOperationException>().WithMessage("Yesterday");
 ```
 
 The `Has…` vocabulary belongs after `.Which`. See
@@ -79,8 +81,10 @@ A code fix is available for a delegate that returns a value.
 ```csharp
 int Act() => 3;
 
-await Expect.That(Act).IsEqualTo(3);                              // reported: checks the delegate
-await Expect.That(Act).DoesNotThrow().WhoseResult.IsEqualTo(3);   // fixed: checks the returned value
+// reported: checks the delegate
+await Expect.That(Act).IsEqualTo(3);
+// fixed: checks the returned value
+await Expect.That(Act).DoesNotThrow().WhoseResult.IsEqualTo(3);
 ```
 
 See [Delegates](./06-behaviour/01-delegates.md#no-exception).
@@ -95,10 +99,12 @@ and is not observed by the test.
 ```csharp
 List<int> values = [1, 2, 3];
 
-values.ForEach(async x => await Expect.That(x).IsGreaterThan(0));   // reported: async void lambda
+// reported: async void lambda
+values.ForEach(async x => await Expect.That(x).IsGreaterThan(0));
 foreach (int x in values)
 {
-    await Expect.That(x).IsGreaterThan(0);                            // fixed: awaited by the test
+    // fixed: awaited by the test
+    await Expect.That(x).IsGreaterThan(0);
 }
 ```
 
@@ -113,8 +119,10 @@ A collection without a defined order, such as a set or a dictionary, is compared
 ```csharp
 HashSet<int> values = [1, 2, 3];
 
-await Expect.That(values).IsEqualTo([1, 2, 3]);                  // reported: depends on the enumeration order
-await Expect.That(values).IsEqualTo([1, 2, 3]).InAnyOrder();     // fixed
+// reported: depends on the enumeration order
+await Expect.That(values).IsEqualTo([1, 2, 3]);
+// fixed
+await Expect.That(values).IsEqualTo([1, 2, 3]).InAnyOrder();
 ```
 
 `IsEqualTo`, `Contains` and `IsContainedIn` compare by position unless `.InAnyOrder()` is appended, which the code fix
@@ -132,8 +140,10 @@ never awaited. A code fix is available.
 ```csharp
 async ValueTask Act() => await Task.Yield();
 
-await Expect.That(() => Act()).DoesNotThrow();            // reported on .NET Framework, .NET Standard 2.0, .NET 6 and .NET 7
-await Expect.That(() => Act().AsTask()).DoesNotThrow();   // fixed
+// reported on .NET Framework, .NET Standard 2.0, .NET 6 and .NET 7
+await Expect.That(() => Act()).DoesNotThrow();
+// fixed
+await Expect.That(() => Act().AsTask()).DoesNotThrow();
 ```
 
 These older targets are affected because they use the .NET Standard 2.0 build of aweXpect. On any target, the rule
@@ -152,8 +162,10 @@ so the value can be the `default`.
 ```csharp
 object subject = "Yesterday";
 
-int count = await Expect.That(subject).Is<string>().Or.Is<int>();   // reported: 0 when the subject is a string
-await Expect.That(subject).Is<string>().Or.Is<int>();               // fixed: the value is not used
+// reported: 0 when the subject is a string
+int count = await Expect.That(subject).Is<string>().Or.Is<int>();
+// fixed: the value is not used
+await Expect.That(subject).Is<string>().Or.Is<int>();
 ```
 
 The value is `default` (also `null` for a reference type that is not annotated as nullable) when another alternative

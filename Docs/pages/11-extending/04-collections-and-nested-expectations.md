@@ -31,13 +31,15 @@ public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> HasRad
             => new HasRadioFriendlyTracksConstraint(it, grammars, expected)),
         subject);
 
-private sealed class HasRadioFriendlyTracksConstraint(string it, ExpectationGrammars grammars, int expected)
+private sealed class HasRadioFriendlyTracksConstraint(
+    string it, ExpectationGrammars grammars, int expected)
     : ConstraintResult.WithNotNullValue<IEnumerable<Track>>(it, grammars),
         IContextConstraint<IEnumerable<Track>?>
 {
     private int _count;
 
-    public ConstraintResult IsMetBy(IEnumerable<Track>? actual, IEvaluationContext context)
+    public ConstraintResult IsMetBy(
+        IEnumerable<Track>? actual, IEvaluationContext context)
     {
         Actual = actual;
         if (actual is not null)
@@ -50,16 +52,22 @@ private sealed class HasRadioFriendlyTracksConstraint(string it, ExpectationGram
         return this;
     }
 
-    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNormalExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("has ").Append(expected).Append(" radio friendly tracks");
 
-    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append(It).Append(" had ").Append(_count).Append(" radio friendly tracks");
+    protected override void AppendNormalResult(
+        StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(It).Append(" had ").Append(_count)
+            .Append(" radio friendly tracks");
 
-    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("does not have ").Append(expected).Append(" radio friendly tracks");
+    protected override void AppendNegatedExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("does not have ").Append(expected)
+            .Append(" radio friendly tracks");
 
-    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNegatedResult(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append(It).Append(" did");
 }
 ```
@@ -97,7 +105,8 @@ public ConstraintResult IsMetBy(IEnumerable<Track>? actual, IEvaluationContext c
     if (actual is not null)
     {
         _missingTitles = titles
-            .Except(context.UseMaterializedEnumerable(actual).Select(track => track.Title))
+            .Except(context.UseMaterializedEnumerable(actual)
+                .Select(track => track.Title))
             .ToList();
         Outcome = _missingTitles.Count == 0 ? Outcome.Success : Outcome.Failure;
     }
@@ -120,8 +129,10 @@ public static AndOrResult<Track, IThat<Track?>> HasTitle(
     Action<IThatSubject<string?>> expectations)
     => new(subject.Get().ExpectationBuilder
             .ForMember(
-                MemberAccessor<Track?, string?>.FromFuncWithName(track => track?.Title, "title "),
-                (member, stringBuilder) => stringBuilder.Append("has ").Append(member).Append("that "))
+                MemberAccessor<Track?, string?>.FromFuncWithName(
+                    track => track?.Title, "title "),
+                (member, stringBuilder) => stringBuilder.Append("has ").Append(member)
+                    .Append("that "))
             .AddExpectations(expectations,
                 static (expectations, e) => expectations(new ThatSubject<string?>(e)),
                 grammars => grammars | ExpectationGrammars.Nested),
@@ -145,7 +156,8 @@ It selects the new subject from the value of the expectation, and the expectatio
 returned `ThatSubject<T>` apply to it:
 
 ```csharp
-public class LongestTrackResult(ExpectationBuilder expectationBuilder, IThat<Track[]?> returnValue)
+public class LongestTrackResult(
+    ExpectationBuilder expectationBuilder, IThat<Track[]?> returnValue)
     : AndOrResult<Track[], IThat<Track[]?>>(expectationBuilder, returnValue)
 {
     public IThatSubject<Track?> Which
@@ -176,42 +188,48 @@ cancellation of the evaluation also end these expectations.
 <summary>Example and details</summary>
 
 ```csharp
-public static AndOrResult<Track, IThat<Track?>> MatchesTrack(this IThat<Track?> subject, object expected)
+public static AndOrResult<Track, IThat<Track?>> MatchesTrack(
+    this IThat<Track?> subject, object expected)
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new MatchesTrackConstraint(it, grammars, expected)),
         subject);
 
-private sealed class MatchesTrackConstraint(string it, ExpectationGrammars grammars, object expected)
+private sealed class MatchesTrackConstraint(
+    string it, ExpectationGrammars grammars, object expected)
     : ConstraintResult.WithNotNullValue<Track>(it, grammars),
         IAsyncContextConstraint<Track?>
 {
     private readonly StringBuilder _differences = new();
 
-    public async ValueTask<ConstraintResult> IsMetBy(Track? actual, IEvaluationContext context,
-        CancellationToken cancellationToken)
+    public async ValueTask<ConstraintResult> IsMetBy(Track? actual,
+        IEvaluationContext context, CancellationToken cancellationToken)
     {
         Actual = actual;
         if (actual is not null)
         {
             _differences.Clear();
-            bool isEquivalent = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(),
-                _differences, context, cancellationToken);
+            bool isEquivalent = await EquivalencyComparison.Compare(actual, expected,
+                new EquivalencyOptions(), _differences, context, cancellationToken);
             Outcome = isEquivalent ? Outcome.Success : Outcome.Failure;
         }
 
         return this;
     }
 
-    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNormalExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("matches the expected track");
 
-    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNormalResult(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append(It).Append(" did not:").Append(_differences);
 
-    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNegatedExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("does not match the expected track");
 
-    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNegatedResult(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append(It).Append(" did");
 }
 ```
@@ -219,7 +237,8 @@ private sealed class MatchesTrackConstraint(string it, ExpectationGrammars gramm
 ```csharp
 Track track = new("Let It Be", new TimeSpan(0, 4, 3));
 
-await Expect.That(track).MatchesTrack(new { Title = It.Is<string>().That.StartsWith("Let") });
+await Expect.That(track)
+    .MatchesTrack(new { Title = It.Is<string>().That.StartsWith("Let") });
 ```
 
 When your constraint evaluates such an expectation itself, e.g. because it compares a format of its own, get its
@@ -228,9 +247,11 @@ it with the context and the token of your constraint. The expected value is the 
 `It.Is<string>().That.StartsWith("Let")`, so test for the builder rather than for the type `It.IsEquivalent<T>`:
 
 ```csharp no-compile
-if (EquivalencyExpectations.TryGetBuilder(expectedValue, out EquivalencyExpectationBuilder? expectation))
+if (EquivalencyExpectations.TryGetBuilder(expectedValue,
+    out EquivalencyExpectationBuilder? expectation))
 {
-    ConstraintResult result = await expectation.IsMetBy(actualValue, context, cancellationToken);
+    ConstraintResult result =
+        await expectation.IsMetBy(actualValue, context, cancellationToken);
     if (result.Outcome != Outcome.Success)
     {
         result.AppendResult(_differences);
@@ -274,7 +295,8 @@ private sealed class AreRadioFriendlyConstraint(
             g => g.IsPlural() ? "are radio friendly" : "is radio friendly", "were"),
         IContextConstraint<IEnumerable<Track>?>
 {
-    public ConstraintResult IsMetBy(IEnumerable<Track>? actual, IEvaluationContext context)
+    public ConstraintResult IsMetBy(
+        IEnumerable<Track>? actual, IEvaluationContext context)
     {
         StartEvaluation();
         Actual = actual;
@@ -294,7 +316,11 @@ private sealed class AreRadioFriendlyConstraint(
 ```
 
 ```csharp
-Track[] tracks = [new("Love Me Do", new TimeSpan(0, 2, 22)), new("She Loves You", new TimeSpan(0, 2, 21))];
+Track[] tracks =
+[
+    new("Love Me Do", new TimeSpan(0, 2, 22)),
+    new("She Loves You", new TimeSpan(0, 2, 21)),
+];
 
 await Expect.That(tracks).All().AreRadioFriendly();
 ```
@@ -348,7 +374,8 @@ When the caller passes expectations for the items, like the built-in `ComplyWith
 public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> AreTracksThat(
     this IEnumerableElements<Track> elements, Action<IThatSubject<Track>> expectations)
     => new(elements.Subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new AreTracksThatConstraint(it, grammars, elements.Quantifier, expectations)),
+            => new AreTracksThatConstraint(it, grammars,
+                elements.Quantifier, expectations)),
         elements.Subject);
 
 private sealed class AreTracksThatConstraint
@@ -358,8 +385,8 @@ private sealed class AreTracksThatConstraint
 {
     private readonly ManualExpectationBuilder<Track> _itemExpectations;
 
-    public AreTracksThatConstraint(string it, ExpectationGrammars grammars, EnumerableQuantifier quantifier,
-        Action<IThatSubject<Track>> expectations)
+    public AreTracksThatConstraint(string it, ExpectationGrammars grammars,
+        EnumerableQuantifier quantifier, Action<IThatSubject<Track>> expectations)
         : base(it, grammars, quantifier)
     {
         _itemExpectations = new ManualExpectationBuilder<Track>(grammars);
@@ -368,8 +395,8 @@ private sealed class AreTracksThatConstraint
 
     protected override string Verb => _itemExpectations.GetResultVerb();
 
-    public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Track>? actual, IEvaluationContext context,
-        CancellationToken cancellationToken)
+    public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Track>? actual,
+        IEvaluationContext context, CancellationToken cancellationToken)
     {
         StartEvaluation();
         Actual = actual;
@@ -378,7 +405,8 @@ private sealed class AreTracksThatConstraint
         {
             foreach (Track track in context.UseMaterializedEnumerable(actual))
             {
-                Record(track, await _itemExpectations.IsMetBy(track, context, cancellationToken));
+                Record(track,
+                    await _itemExpectations.IsMetBy(track, context, cancellationToken));
             }
 
             Complete();
@@ -387,24 +415,26 @@ private sealed class AreTracksThatConstraint
         return this;
     }
 
-    public async ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
-        CancellationToken cancellationToken)
+    public async ValueTask<ConstraintResult> GetExpectationResult(
+        IEvaluationContext context, CancellationToken cancellationToken)
     {
         await _itemExpectations.PrepareExpectation(context, cancellationToken);
         return this;
     }
 
-    protected override void AppendItemExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
-        string? indentation)
+    protected override void AppendItemExpectation(StringBuilder stringBuilder,
+        ExpectationGrammars grammars, string? indentation)
         => _itemExpectations.AppendExpectation(stringBuilder, indentation);
 
-    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNormalExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
     {
         base.AppendNormalExpectation(stringBuilder, indentation);
         _itemExpectations.AppendReasons(stringBuilder);
     }
 
-    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNegatedExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
     {
         base.AppendNegatedExpectation(stringBuilder, indentation);
         _itemExpectations.AppendReasons(stringBuilder);
@@ -413,7 +443,11 @@ private sealed class AreTracksThatConstraint
 ```
 
 ```csharp
-Track[] playlist = [new("Love Me Do", new TimeSpan(0, 2, 22)), new("She Loves You", new TimeSpan(0, 2, 21))];
+Track[] playlist =
+[
+    new("Love Me Do", new TimeSpan(0, 2, 22)),
+    new("She Loves You", new TimeSpan(0, 2, 21)),
+];
 
 await Expect.That(playlist).All().AreTracksThat(track => track.IsRadioFriendly());
 ```

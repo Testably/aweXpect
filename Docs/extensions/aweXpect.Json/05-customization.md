@@ -34,5 +34,6 @@ accepted, with `WithDocumentOptions(…)`:
 string track = """{"title": "Let It Be", /* 1970 */ "artist": "The Beatles"}""";
 
 await Expect.That(track).IsValidJsonMatching(new { title = "Let It Be" },
-    o => o.WithDocumentOptions(d => d with { CommentHandling = JsonCommentHandling.Skip }));
+    o => o.WithDocumentOptions(
+        d => d with { CommentHandling = JsonCommentHandling.Skip }));
 ```

@@ -88,8 +88,10 @@ JsonSerializerOptions serializerOptions = new(JsonSerializerDefaults.Web)
     Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) },
 };
 
-await Expect.That(track).IsJsonSerializedAs("""{"title": "Let It Be", "genre": "rock"}""", serializerOptions);
-await Expect.That(track).IsJsonSerializedAs(new { title = "Let It Be", genre = "rock" }, serializerOptions);
+await Expect.That(track).IsJsonSerializedAs(
+    """{"title": "Let It Be", "genre": "rock"}""", serializerOptions);
+await Expect.That(track).IsJsonSerializedAs(
+    new { title = "Let It Be", genre = "rock" }, serializerOptions);
 ```
 
 With `new JsonSerializerOptions(JsonSerializerDefaults.Web)` instead, the first expectation would fail with:
@@ -121,9 +123,13 @@ how the subject is actually serialized. To serialize the expected object with ot
 [`o => o.WithSerializerOptions(…)`](./02-matching.md#serializer-options):
 
 ```csharp
-JsonSerializerOptions camelCase = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+JsonSerializerOptions camelCase = new()
+{
+    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+};
 
-await Expect.That(track).IsJsonSerializedAs(new { Title = "Let It Be", Genre = 2, Album = (string?)null },
+await Expect.That(track).IsJsonSerializedAs(
+    new { Title = "Let It Be", Genre = 2, Album = (string?)null },
     camelCase, o => o.WithSerializerOptions(camelCase));
 ```
 
@@ -132,7 +138,8 @@ The serialized JSON is compared exactly, like in `MatchesExactly`, so additional
 `IgnoringArrayOrder()`, `TreatingNullAsAbsent()` or `IgnoringMember(name)`:
 
 ```csharp
-await Expect.That(track).IsJsonSerializedAs(new { title = "Let It Be" }, serializerOptions,
+await Expect.That(track).IsJsonSerializedAs(
+    new { title = "Let It Be" }, serializerOptions,
     o => o.IgnoringAdditionalProperties());
 ```
 
@@ -145,7 +152,8 @@ the source-generated `JsonTypeInfo<T>` of the subject together with the expected
 [JsonSerializable(typeof(Track))]
 internal partial class TrackContext : JsonSerializerContext;
 
-await Expect.That(track).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2}""", TrackContext.Default.Track,
+await Expect.That(track).IsJsonSerializedAs(
+    """{"Title": "Let It Be", "Genre": 2}""", TrackContext.Default.Track,
     o => o.TreatingNullAsAbsent());
 ```
 

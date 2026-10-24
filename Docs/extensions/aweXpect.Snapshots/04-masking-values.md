@@ -6,12 +6,12 @@ masked, converted or left out before the subject is compared, so that the snapsh
 
 ```csharp
 await Expect.That(album).MatchesSnapshot()
-    .For.Members().WithName("PlayCount").Ignore()                       // left out with its name
-    .For.Members().WithName("Id").Mask()                                // numbered: Id = {Id_1}
-    .For.Members().WithPath("Artist.StreamToken").Mask("{token}")       // fixed text
-    .For.Values().OfType<Guid>().Mask()                                 // numbered: {Guid_1}
+    .For.Members().WithName("PlayCount").Ignore()                 // omitted with its name
+    .For.Members().WithName("Id").Mask()                          // numbered: Id = {Id_1}
+    .For.Members().WithPath("Artist.StreamToken").Mask("{token}") // fixed text
+    .For.Values().OfType<Guid>().Mask()                           // numbered: {Guid_1}
     .For.Members().DeclaredIn<Album>().WithName(nameof(Album.Released)).OfType<DateTime>()
-        .Convert(released => released.Year);                            // Released = 1969
+        .Convert(released => released.Year);                      // Released = 1969
 
 await Expect.That(log).MatchesSnapshot()
     .For.Lines().Containing("elapsed").IgnoringCase().Ignore()
@@ -134,7 +134,9 @@ await Expect.That(album).MatchesSnapshot()
     .For.Members().DeclaredIn<Album>().WithName(nameof(Album.Duration)).Ignore()
     .For.Members().WithName("Url").AsSuffix().IgnoringCase().Ignore()
     .For.Members().DeclaredIn<Track>().WithName(nameof(Track.Id)).Mask()
-    .For.Values().Which(value => value.Path.StartsWith("Artist.", StringComparison.Ordinal)).Mask("<artist>");
+    .For.Values()
+        .Which(value => value.Path.StartsWith("Artist.", StringComparison.Ordinal))
+        .Mask("<artist>");
 ```
 
 `Ignore()` leaves out a member together with its name. On `.For.Values()`, it also leaves out the items of tuples,
@@ -190,7 +192,8 @@ Label {
 Members that are often empty, e.g. the bonus tracks of an album, can be left out while they are empty:
 
 ```csharp
-await Expect.That(album).MatchesSnapshot().For.Members().WhichAreEmptyCollections().Ignore();
+await Expect.That(album).MatchesSnapshot()
+    .For.Members().WhichAreEmptyCollections().Ignore();
 ```
 
 ```text title="Snapshot"
@@ -220,7 +223,8 @@ track. `Convert(…)` replaces the value with the result of the converter:
 await Expect.That(album).MatchesSnapshot()
     .For.Members().DeclaredIn<Album>().WithName(nameof(Album.Released)).OfType<DateTime>()
         .Convert(released => released.Year)
-    .For.Values().OfType<TimeSpan>().Convert(duration => Math.Round(duration.TotalMinutes));
+    .For.Values().OfType<TimeSpan>()
+        .Convert(duration => Math.Round(duration.TotalMinutes));
 ```
 
 ```text title="Snapshot"
@@ -286,7 +290,8 @@ await Expect.That(json).MatchesSnapshot()
     .For.Text(album.Id.ToString()).Mask("<album-id>")
     .For.Text("abbey road").IgnoringCase().Mask("<title>")
     .For.Text("Track ?:*").AsWildcard().Mask("<track>")
-    .For.Text(@"(\w+\.fm):\d+").AsRegex().Mask("$1:<port>");   // "radio.fm:8000" → "radio.fm:<port>"
+    // "radio.fm:8000" → "radio.fm:<port>"
+    .For.Text(@"(\w+\.fm):\d+").AsRegex().Mask("$1:<port>");
 ```
 
 - The text is compared ordinally, unless `.IgnoringCase()` follows.
@@ -308,7 +313,8 @@ The text rules are applied in the order in which they are written, so put a spec
 
 ```csharp
 await Expect.That(playlist).MatchesSnapshot()
-    .For.Text(DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)).Mask("<today>")
+    .For.Text(DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))
+        .Mask("<today>")
     .For.Text(@"\d{4}-\d{2}-\d{2}").AsRegex().Mask("<date>");
 ```
 

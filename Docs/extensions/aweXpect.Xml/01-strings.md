@@ -87,13 +87,15 @@ exception:
 ```csharp
 await Expect.That(albums).All().AreEqualTo("""<album id="42" />""").AsXml();
 await Expect.That(albums).Contains("""<album id="42" />""").AsXml();
-await Expect.That(Act).Throws<InvalidOperationException>().WithMessage("""<error code="42" />""").AsXml();
+await Expect.That(Act).Throws<InvalidOperationException>()
+    .WithMessage("""<error code="42" />""").AsXml();
 ```
 
 The options are available there as well, e.g. to find an item that contains the expected XML:
 
 ```csharp
-await Expect.That(albums).Contains("""<album id="42" />""").AsXml(o => o.IgnoringAdditionalNodes());
+await Expect.That(albums).Contains("""<album id="42" />""")
+    .AsXml(o => o.IgnoringAdditionalNodes());
 ```
 
 ## Validation
@@ -137,7 +139,8 @@ You can add further expectations on the root
 ```csharp
 string track = """<track title="Let It Be" artist="The Beatles" />""";
 
-await Expect.That(track).IsValidXml(root => root.Matches("""<track title="Let It Be" />"""));
+await Expect.That(track).IsValidXml(
+    root => root.Matches("""<track title="Let It Be" />"""));
 ```
 
 The expectations are only verified when the string is valid XML. Like with
@@ -150,7 +153,8 @@ Or you can verify that the string is valid XML and [matches](./02-matching.md) a
 string track = """<track title="Let It Be" artist="The Beatles" />""";
 
 await Expect.That(track).IsValidXmlMatching("""<track title="Let It Be" />""");
-await Expect.That(track).IsValidXmlMatchingExactly("""<track artist="The Beatles" title="Let It Be" />""");
+await Expect.That(track).IsValidXmlMatchingExactly(
+    """<track artist="The Beatles" title="Let It Be" />""");
 ```
 
 `IsValidXmlMatching("""<track title="Yesterday" />""")` would fail with:

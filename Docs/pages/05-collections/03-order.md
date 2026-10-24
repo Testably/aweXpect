@@ -21,7 +21,8 @@ await Expect.That(["Help!", "Abbey Road", "Let It Be"]).IsNotInDescendingOrder()
 You can also specify a custom comparer:
 
 ```csharp
-await Expect.That(["abbey road", "Help!", "let it be"]).IsInAscendingOrder().Using(StringComparer.OrdinalIgnoreCase);
+await Expect.That(["abbey road", "Help!", "let it be"]).IsInAscendingOrder()
+    .Using(StringComparer.OrdinalIgnoreCase);
 ```
 
 For objects, you can also verify the sort order on a member:

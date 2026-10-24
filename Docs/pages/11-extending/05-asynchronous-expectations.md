@@ -20,12 +20,15 @@ An `IAsyncConstraint<T>` receives the `CancellationToken` of the expectation, wh
 (`WithTimeout`) elapses or the caller cancels (`WithCancellation`). Pass it on to the asynchronous work:
 
 ```csharp no-compile
-public async ValueTask<ConstraintResult> IsMetBy(Track? actual, CancellationToken cancellationToken)
+public async ValueTask<ConstraintResult> IsMetBy(
+    Track? actual, CancellationToken cancellationToken)
 {
     Actual = actual;
     if (actual is not null)
     {
-        Outcome = await IsInCatalogAsync(actual, cancellationToken) ? Outcome.Success : Outcome.Failure;
+        Outcome = await IsInCatalogAsync(actual, cancellationToken)
+            ? Outcome.Success
+            : Outcome.Failure;
     }
 
     return this;
@@ -65,11 +68,14 @@ public class Player
 ```
 
 ```csharp
-public static RepeatedCheckResult<Player, IThat<Player?>> IsPlaying(this IThat<Player?> subject)
+public static RepeatedCheckResult<Player, IThat<Player?>> IsPlaying(
+    this IThat<Player?> subject)
 {
     RepeatedCheckOptions options = new();
-    return new RepeatedCheckResult<Player, IThat<Player?>>(subject.Get().ExpectationBuilder
-            .AddConstraint((it, grammars) => new IsPlayingConstraint(it, grammars, options)),
+    return new RepeatedCheckResult<Player, IThat<Player?>>(
+        subject.Get().ExpectationBuilder
+            .AddConstraint((it, grammars)
+                => new IsPlayingConstraint(it, grammars, options)),
         subject,
         options);
 }
@@ -81,8 +87,8 @@ private sealed class IsPlayingConstraint(
     : ConstraintResult.WithNotNullValue<Player>(it, grammars),
         IAsyncContextConstraint<Player?>
 {
-    public async ValueTask<ConstraintResult> IsMetBy(Player? actual, IEvaluationContext context,
-        CancellationToken cancellationToken)
+    public async ValueTask<ConstraintResult> IsMetBy(Player? actual,
+        IEvaluationContext context, CancellationToken cancellationToken)
     {
         Actual = actual;
         if (actual is not null)
@@ -102,16 +108,20 @@ private sealed class IsPlayingConstraint(
         return this;
     }
 
-    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNormalExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("is playing").Append(options);
 
-    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNormalResult(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append(It).Append(" was not playing");
 
-    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNegatedExpectation(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("is not playing").Append(options);
 
-    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+    protected override void AppendNegatedResult(
+        StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append(It).Append(" was playing");
 }
 ```
@@ -120,7 +130,8 @@ private sealed class IsPlayingConstraint(
 Player player = new();
 _ = Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(_ => player.Play("Let It Be"));
 
-await Expect.That(player).IsPlaying().Within(TimeSpan.FromSeconds(5)).CheckEvery(TimeSpan.FromMilliseconds(100));
+await Expect.That(player).IsPlaying()
+    .Within(TimeSpan.FromSeconds(5)).CheckEvery(TimeSpan.FromMilliseconds(100));
 ```
 
 - `CheckRepeatedly` makes the first check immediately. When `IsRepeated` is `true`, because `Within` set a positive
@@ -157,7 +168,8 @@ instead of `.GetAwaiter().GetResult()`:
 
 ```csharp no-compile
 public IEnumerator<Track> GetEnumerator()
-    => _tracks.Where(track => SynchronousBoundary.Wait(() => IsInCatalogAsync(track))).GetEnumerator();
+    => _tracks.Where(track => SynchronousBoundary.Wait(() => IsInCatalogAsync(track)))
+        .GetEnumerator();
 ```
 
 The expectations of aweXpect run on the synchronization context of the caller, e.g. on the UI thread of a WPF or

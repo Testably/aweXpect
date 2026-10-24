@@ -15,10 +15,12 @@ You can verify that a `JsonElement` matches an expected object. `Matches` ignore
 `MatchesExactly` also fails for them:
 
 ```csharp
-JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
 
 await Expect.That(track).Matches(new { title = "Let It Be" });
-await Expect.That(track).MatchesExactly(new { title = "Let It Be", artist = "The Beatles" });
+await Expect.That(track).MatchesExactly(
+    new { title = "Let It Be", artist = "The Beatles" });
 ```
 
 `Matches` accepts the same values as `MatchesExactly` with the option `IgnoringAdditionalProperties()`.
@@ -35,7 +37,8 @@ but it differed as $.artist had unexpected "The Beatles"
 You can verify that a `JsonElement` matches an expected array:
 
 ```csharp
-JsonElement titles = JsonDocument.Parse("""["Let It Be", "Yesterday", "Hey Jude"]""").RootElement;
+JsonElement titles = JsonDocument.Parse(
+    """["Let It Be", "Yesterday", "Hey Jude"]""").RootElement;
 
 await Expect.That(titles).Matches(["Let It Be", "Yesterday", "Hey Jude"]);
 await Expect.That(titles).MatchesExactly(["Let It Be", "Yesterday", "Hey Jude"]);
@@ -75,7 +78,8 @@ The expected value can also be a `JsonElement`, a `JsonDocument` or a `JsonNode`
 match an expected JSON text:
 
 ```csharp
-JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
 
 await Expect.That(track).Matches(JsonDocument.Parse("""{"title": "Let It Be"}"""));
 ```
@@ -114,11 +118,13 @@ By default, a property with the value `null` differs from a missing property. Wi
 property with the value `null` counts as absent, in both directions:
 
 ```csharp
-JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "album": null}""").RootElement;
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "album": null}""").RootElement;
 
 await Expect.That(track).MatchesExactly(new { title = "Let It Be" },
     o => o.TreatingNullAsAbsent());
-await Expect.That(track).MatchesExactly(new { title = "Let It Be", artist = (string?)null },
+await Expect.That(track).MatchesExactly(
+    new { title = "Let It Be", artist = (string?)null },
     o => o.TreatingNullAsAbsent());
 ```
 
@@ -138,7 +144,8 @@ With `IgnoringAdditionalArrayElements()`, the additional elements of all compare
 ignored:
 
 ```csharp
-JsonElement titles = JsonDocument.Parse("""["Let It Be", "Yesterday", "Hey Jude"]""").RootElement;
+JsonElement titles = JsonDocument.Parse(
+    """["Let It Be", "Yesterday", "Hey Jude"]""").RootElement;
 
 await Expect.That(titles).Matches(["Let It Be", "Yesterday"],
     o => o.IgnoringAdditionalArrayElements());
@@ -150,7 +157,8 @@ By default, arrays are compared by index. With `IgnoringArrayOrder()`, the eleme
 nested ones, can be in any order:
 
 ```csharp
-JsonElement titles = JsonDocument.Parse("""["Let It Be", "Yesterday", "Hey Jude"]""").RootElement;
+JsonElement titles = JsonDocument.Parse(
+    """["Let It Be", "Yesterday", "Hey Jude"]""").RootElement;
 
 await Expect.That(titles).MatchesExactly(["Hey Jude", "Let It Be", "Yesterday"],
     o => o.IgnoringArrayOrder());
@@ -192,10 +200,14 @@ unexpected:
 
 ```csharp
 JsonElement track = JsonDocument.Parse(
-    """{"id": 42, "title": "Let It Be", "meta": {"createdAt": "2026-10-16", "etag": "abc"}}""").RootElement;
+    """
+    {"id": 42, "title": "Let It Be", "meta": {"createdAt": "2026-10-16", "etag": "abc"}}
+    """).RootElement;
 
-await Expect.That(track).MatchesExactly(new { id = 1, title = "Let It Be", meta = new { createdAt = "2026-01-01" } },
-    o => o.IgnoringMember("id").IgnoringMember("createdAt").Ignoring(path => path.EndsWith(".etag")));
+await Expect.That(track).MatchesExactly(
+    new { id = 1, title = "Let It Be", meta = new { createdAt = "2026-01-01" } },
+    o => o.IgnoringMember("id").IgnoringMember("createdAt")
+        .Ignoring(path => path.EndsWith(".etag")));
 ```
 
 The name is matched against the JSON path, as it is shown in failure messages, and must cover whole trailing segments
@@ -231,7 +243,8 @@ when it differs from the expected number by at most the tolerance, and with `Com
 by at most the percentage of the expected number. The option can be combined with the other options:
 
 ```csharp
-JsonElement album = JsonDocument.Parse("""{"durationMinutes": 47.050000000000004, "rating": 4.6005}""").RootElement;
+JsonElement album = JsonDocument.Parse(
+    """{"durationMinutes": 47.050000000000004, "rating": 4.6005}""").RootElement;
 
 await Expect.That(album).MatchesExactly(new { durationMinutes = 47.05, rating = 4.6m },
     o => o.ComparingNumbersWithin(0.001));
@@ -264,10 +277,15 @@ are kept as they are, so a subject with camelCase names needs `new { title = "Le
 e.g. with a naming policy:
 
 ```csharp
-JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
-JsonSerializerOptions camelCase = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
+JsonSerializerOptions camelCase = new()
+{
+    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+};
 
-await Expect.That(track).MatchesExactly(new { Title = "Let It Be", Artist = "The Beatles" },
+await Expect.That(track).MatchesExactly(
+    new { Title = "Let It Be", Artist = "The Beatles" },
     o => o.WithSerializerOptions(camelCase));
 ```
 

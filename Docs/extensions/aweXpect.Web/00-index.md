@@ -8,14 +8,16 @@
 ## At a glance
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
+HttpResponseMessage response =
+    await httpClient.GetAsync("https://music.example.com/tracks/1");
 
 // verify the status code, either the exact value or its category
 await Expect.That(response).HasStatusCode().Success();
 
 // verify the media type and the headers of the response
 await Expect.That(response).HasContentType("application/json");
-await Expect.That(response).HasHeader("Cache-Control").WithValue("must-revalidate, max-age=0, private");
+await Expect.That(response).HasHeader("Cache-Control")
+    .WithValue("must-revalidate, max-age=0, private");
 
 // verify the content of the response
 await Expect.That(response).HasContent("*Let It Be*").AsWildcard();
