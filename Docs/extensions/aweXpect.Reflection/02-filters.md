@@ -7,7 +7,7 @@ each other: a filter has an `Is…`/`Are…` expectation counterpart for the sam
 | Section                                                     | Applies to                    | Filters / expectations                                                                                               |
 |-------------------------------------------------------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------|
 | [Inheritance](#inheritance)                                 | types and members             | `Directly`, `IncludingInherited`, `IncludingObjectMembers`                                                           |
-| [Access modifiers](#access-modifiers)                       | types and members             | `WhichArePublic` / `IsPublic`, `WhichAreInternal` / `IsInternal`, …                                                  |
+| [Access modifiers](#access-modifiers)                       | types and members             | `WhichArePublic` / `IsPublic`, `WhichAre(AccessModifiers)` / `Is(AccessModifiers)`, …                                |
 | [Attributes](#attributes)                                   | types, members and assemblies | `With<TAttribute>` / `Has<TAttribute>`, `Without<TAttribute>` / `DoesNotHave<TAttribute>`                            |
 | [Obsolete](#obsolete)                                       | types and members             | `WhichAreObsolete` / `IsObsolete`, `WhichAreNotObsolete` / `IsNotObsolete`                                           |
 | [Names and namespaces](#names-and-namespaces)               | types and members             | `WithName` / `HasName`, `WithNamespace` / `HasNamespace`, `WhichAreWithinNamespace` / `IsWithinNamespace`            |
@@ -94,6 +94,7 @@ events and constructors.
 | protected          | `.WhichAreProtected()` / `.Protected`                  | `.IsProtected()`         | `.AreProtected()`         |
 | private protected  | `.WhichArePrivateProtected()` / `.Private.Protected`   | `.IsPrivateProtected()`  | `.ArePrivateProtected()`  |
 | protected internal | `.WhichAreProtectedInternal()` / `.Protected.Internal` | `.IsProtectedInternal()` | `.AreProtectedInternal()` |
+| as a value         | `.WhichAre(AccessModifiers)`                           | `.Is(AccessModifiers)`   | `.Are(AccessModifiers)`   |
 
 ```csharp
 // Filter, then verify
@@ -104,9 +105,11 @@ await Expect.That(method).IsPublic();
 await Expect.That(methods).ArePublic();
 ```
 
-When the access modifier is a runtime value, e.g. a test parameter, use `.WhichAre(AccessModifiers)` or
-`.WhichAreNot(AccessModifiers)` on types and on every member kind. `AccessModifiers` is a flags enum, so values
-can be combined, and `AccessModifiers.Any` keeps everything:
+To pass the modifier as a value, e.g. in a parameterized test, use `.WhichAre(AccessModifiers)` /
+`.WhichAreNot(AccessModifiers)` on types and on every member kind, `.Is(AccessModifiers)` /
+`.IsNot(AccessModifiers)` and `.Are(AccessModifiers)` / `.AreNot(AccessModifiers)`. Combined flags are met by any
+of them, e.g. `AccessModifiers.Public | AccessModifiers.Internal` reads "is public or internal", and
+`AccessModifiers.Any` is met by every type and member.
 
 ```csharp
 [Test]
@@ -117,6 +120,16 @@ public async Task TypesAreNotNested(AccessModifiers modifier)
     await Expect.That(In.AssemblyContaining<Foo>().Types().WhichAre(modifier))
         .AreNotNested();
 }
+
+[Test]
+[Arguments(typeof(PlaylistService), AccessModifiers.Public)]
+[Arguments(typeof(TrackCache), AccessModifiers.Internal)]
+public async Task TypeHasTheExpectedAccessModifier(Type type, AccessModifiers modifier)
+{
+    await Expect.That(type).Is(modifier);
+}
+
+await Expect.That(methods).AreNot(AccessModifiers.Private | AccessModifiers.PrivateProtected);
 ```
 
 ## Attributes
@@ -482,7 +495,7 @@ variants and `>>>` (`UnsignedRightShift`).
 | Scope               | Filter                         | Expect (single)                                      | Expect (many)                                         |
 |---------------------|--------------------------------|------------------------------------------------------|-------------------------------------------------------|
 | any operator method | `.WhichAreOperators()`         | `.IsAnOperator()`                                    | `.AreOperators()`                                     |
-| specific operator   | `.WhichAreOperators(Operator)` | `.IsAnOperator(Operator)`                            | n/a                                                   |
+| specific operator   | `.WhichAreOperators(Operator)` | `.IsAnOperator(Operator)`                            | `.AreOperators(Operator)`                             |
 | type has operator   | n/a                            | `.HasOperator(Operator)`                             | `.HaveOperator(Operator)`                             |
 | implicit conversion | n/a                            | `.HasImplicitConversionOperator<TSource, TTarget>()` | `.HaveImplicitConversionOperator<TSource, TTarget>()` |
 | explicit conversion | n/a                            | `.HasExplicitConversionOperator<TSource, TTarget>()` | `.HaveExplicitConversionOperator<TSource, TTarget>()` |
@@ -490,6 +503,7 @@ variants and `>>>` (`UnsignedRightShift`).
 ```csharp
 // Method-level: narrow an operator method to a specific operator
 await Expect.That(methodInfo).IsAnOperator(Operator.Equality);
+await Expect.That(methods).AreOperators(Operator.Equality);
 
 // Type-level presence (op_* lookup), including the operators of base types
 await Expect.That(typeof(TrackDuration)).HasOperator(Operator.Addition);
@@ -519,7 +533,7 @@ every *other* operator would surprise more than help. If you want the other oper
 :::
 
 :::note[Negation]
-`IsNotAnOperator(Operator)`, `DoesNotHaveOperator(Operator)` / `DoNotHaveOperator(Operator)`
+`IsNotAnOperator(Operator)`, `AreNotOperators(Operator)`, `DoesNotHaveOperator(Operator)` / `DoNotHaveOperator(Operator)`
 (including the operand overloads, e.g. `DoesNotHaveOperator<int>(Operator)`),
 `DoesNotHave…ConversionOperator…` / `DoNotHave…ConversionOperator…` and `WhichAreNotOperators(Operator)`.
 :::
@@ -559,7 +573,10 @@ In addition to [access modifiers](#access-modifiers),
 The `static`, `nullable`, `abstract`, `sealed`, `virtual`, `required`, `indexer`,
 `extension property`, `read-only` *(fields)* and `constant` rows have a negated form: `WhichAreNot…` on filters
 and `IsNot…` / `AreNot…` on expectations (e.g. `WhichAreNotConstant()`, `IsNotConstant()`, `AreNotConstant()`);
-`override` uses `WhichDoNotOverride()` / `DoesNotOverride()` / `DoNotOverride()`.
+`override` uses `WhichDoNotOverride()` / `DoesNotOverride()` / `DoNotOverride()`, `has setter` uses
+`WhichDoNotHaveASetter()` / `DoesNotHaveASetter()` / `DoNotHaveASetter()` and `has init setter` uses
+`WhichDoNotHaveAnInitSetter()` / `DoesNotHaveAnInitSetter()` / `DoNotHaveAnInitSetter()`. An init-only setter
+is not a (regular) setter: a property with only an init-only setter has no setter.
 
 The `readable`, `writable`, `read-only` and `write-only` rows of properties have no negated form, as each
 negation is another row: for *not read-only* use `IsWritable`, for *not writable* use `IsReadOnly`, for

@@ -13,4 +13,12 @@ public static partial class PropertyFilters
 		=> @this.Which(Filter.Suffix<PropertyInfo>(
 			property => property.HasInitSetter(),
 			"with an init setter "));
+
+	/// <summary>
+	///     Filters for properties that do not have an init-only setter.
+	/// </summary>
+	public static Filtered.Properties WhichDoNotHaveAnInitSetter(this Filtered.Properties @this)
+		=> @this.Which(Filter.Suffix<PropertyInfo>(
+			property => !property.HasInitSetter(),
+			"without an init setter "));
 }
