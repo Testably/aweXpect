@@ -217,7 +217,6 @@ namespace aweXpect.Core
     [System.Diagnostics.StackTraceHidden]
     public abstract class Expectation
     {
-        protected Expectation() { }
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public override bool Equals(object? obj) { }
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
