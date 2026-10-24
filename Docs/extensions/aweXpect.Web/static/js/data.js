@@ -612,6 +612,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
@@ -716,7 +722,8 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
@@ -824,7 +831,8 @@ window.BENCHMARK_DATA = {
           394.73227947098866,
           192.5266225973765,
           410.2365667819977,
-          307.415507384709
+          307.415507384709,
+          306.05904026031493
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -868,6 +876,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -1053,7 +1062,8 @@ window.BENCHMARK_DATA = {
           917.1831768035888,
           467.0176292101542,
           1007.7311004638672,
-          724.2105277606419
+          724.2105277606419,
+          745.3751484325954
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1065,6 +1075,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1792,6 +1803,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
@@ -1896,7 +1913,8 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
@@ -2004,7 +2022,8 @@ window.BENCHMARK_DATA = {
           198.73733024937766,
           95.51217988332112,
           191.6370835854457,
-          153.9755081176758
+          153.9755081176758,
+          145.97726241747537
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2052,6 +2071,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -2233,7 +2253,8 @@ window.BENCHMARK_DATA = {
           236.43879178592138,
           124.03376846654075,
           247.0366392771403,
-          209.85495923246657
+          209.85495923246657,
+          203.12200587136405
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2245,6 +2266,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -2912,6 +2934,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
@@ -3006,7 +3034,8 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
@@ -3104,7 +3133,8 @@ window.BENCHMARK_DATA = {
           633.1192996978759,
           305.11236355854913,
           615.512622833252,
-          434.24450394085477
+          434.24450394085477,
+          463.54948417957013
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3138,6 +3168,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -3313,7 +3344,8 @@ window.BENCHMARK_DATA = {
           903.2982810565403,
           468.5191352707999,
           932.8774153164455,
-          714.690636062622
+          714.690636062622,
+          708.8754029955182
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3325,6 +3357,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -3982,6 +4015,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
@@ -4076,7 +4115,8 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
@@ -4174,7 +4214,8 @@ window.BENCHMARK_DATA = {
           1649.8458331181453,
           966.8560736338297,
           1783.5405803407941,
-          1306.2454899379186
+          1306.2454899379186,
+          1301.0962627410888
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4208,6 +4249,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -4383,7 +4425,8 @@ window.BENCHMARK_DATA = {
           20279.937778727213,
           9109.606759643555,
           23612.004082815987,
-          14531.96526184082
+          14531.96526184082,
+          13535.343477521625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4480,6 +4523,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -5052,6 +5096,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
@@ -5146,7 +5196,8 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
@@ -5244,7 +5295,8 @@ window.BENCHMARK_DATA = {
           682.1333766664777,
           352.581090259552,
           703.9267375946044,
-          508.0177865982056
+          508.0177865982056,
+          492.408513768514
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5274,6 +5326,7 @@ window.BENCHMARK_DATA = {
           1408,
           1408,
           1120,
+          1080,
           1080,
           1080,
           1080,
@@ -5453,7 +5506,8 @@ window.BENCHMARK_DATA = {
           1258.8771352132162,
           631.5017298062643,
           1409.5004053751627,
-          1058.4884824117025
+          1058.4884824117025,
+          981.1547349294027
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5465,6 +5519,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -6122,6 +6177,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
@@ -6216,7 +6277,8 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
@@ -6314,7 +6376,8 @@ window.BENCHMARK_DATA = {
           1081.0616600854057,
           580.2710478122418,
           1125.6362609863281,
-          831.1548063278199
+          831.1548063278199,
+          816.7212429682414
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6348,6 +6411,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -6523,7 +6587,8 @@ window.BENCHMARK_DATA = {
           705.5220362345377,
           378.39466791152955,
           744.1103338514056,
-          617.6426342646281
+          617.6426342646281,
+          590.2086533766526
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6535,6 +6600,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
