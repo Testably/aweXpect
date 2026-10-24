@@ -10,7 +10,7 @@ public sealed class NonNullableResultTests
 	private const string Layer2Namespace = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2";
 	private const string Reason = "the awaited result is the verified subject, which cannot be null";
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task AssembliesHave_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<Assembly?> subject = [typeof(NonNullableResultTests).Assembly,];
@@ -20,7 +20,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task AssembliesHaveVersion_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<Assembly?> subject = [typeof(NonNullableResultTests).Assembly,];
@@ -30,7 +30,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task AssemblyHas_ShouldReturnNonNullableAssembly()
 	{
 		Assembly? subject = typeof(NonNullableResultTests).Assembly;
@@ -40,17 +40,17 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task ConstructorHas_ShouldReturnNonNullableConstructor()
 	{
 		ConstructorInfo? subject = typeof(TestClass).GetConstructor(Type.EmptyTypes);
 
-		ConstructorInfo result = await That(subject).Has<TestAttribute>();
+		ConstructorInfo result = await That(subject).Has<MarkerAttribute>();
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task ConstructorHasInParameter_ShouldReturnNonNullableConstructor()
 	{
 		ConstructorInfo? subject = GetParameterConstructor();
@@ -60,7 +60,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task ConstructorHasOptionalParameter_ShouldReturnNonNullableConstructor()
 	{
 		ConstructorInfo? subject = GetParameterConstructor();
@@ -70,7 +70,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task ConstructorHasOutParameter_ShouldReturnNonNullableConstructor()
 	{
 		ConstructorInfo? subject = GetParameterConstructor();
@@ -80,7 +80,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task ConstructorHasParameter_ShouldReturnNonNullableConstructor()
 	{
 		ConstructorInfo? subject = GetParameterConstructor();
@@ -90,7 +90,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task ConstructorHasParameterExactly_ShouldReturnNonNullableConstructor()
 	{
 		ConstructorInfo? subject = GetParameterConstructor();
@@ -100,7 +100,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task ConstructorHasParamsParameter_ShouldReturnNonNullableConstructor()
 	{
 		ConstructorInfo? subject = GetParameterConstructor();
@@ -110,7 +110,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task ConstructorHasRefParameter_ShouldReturnNonNullableConstructor()
 	{
 		ConstructorInfo? subject = GetParameterConstructor();
@@ -120,17 +120,17 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task ConstructorsHave_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<ConstructorInfo?> subject = [typeof(TestClass).GetConstructor(Type.EmptyTypes),];
 
-		IEnumerable<ConstructorInfo?> result = await That(subject).Have<TestAttribute>();
+		IEnumerable<ConstructorInfo?> result = await That(subject).Have<MarkerAttribute>();
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task ConstructorsHaveParameter_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<ConstructorInfo?> subject = [GetParameterConstructor(),];
@@ -140,17 +140,17 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task EventHas_ShouldReturnNonNullableEvent()
 	{
 		EventInfo? subject = typeof(TestClass).GetEvent(nameof(TestClass.Event));
 
-		EventInfo result = await That(subject).Has<TestAttribute>();
+		EventInfo result = await That(subject).Has<MarkerAttribute>();
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task EventIsOfExactType_ShouldReturnNonNullableEvent()
 	{
 		EventInfo? subject = typeof(TestClass).GetEvent(nameof(TestClass.Event));
@@ -160,7 +160,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task EventIsOfType_ShouldReturnNonNullableEvent()
 	{
 		EventInfo? subject = typeof(TestClass).GetEvent(nameof(TestClass.Event));
@@ -170,7 +170,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task EventsAreOfExactType_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<EventInfo?> subject = [typeof(TestClass).GetEvent(nameof(TestClass.Event)),];
@@ -180,7 +180,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task EventsAreOfType_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<EventInfo?> subject = [typeof(TestClass).GetEvent(nameof(TestClass.Event)),];
@@ -190,27 +190,27 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task EventsHave_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<EventInfo?> subject = [typeof(TestClass).GetEvent(nameof(TestClass.Event)),];
 
-		IEnumerable<EventInfo?> result = await That(subject).Have<TestAttribute>();
+		IEnumerable<EventInfo?> result = await That(subject).Have<MarkerAttribute>();
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task FieldHas_ShouldReturnNonNullableField()
 	{
 		FieldInfo? subject = typeof(TestClass).GetField(nameof(TestClass.Field));
 
-		FieldInfo result = await That(subject).Has<TestAttribute>();
+		FieldInfo result = await That(subject).Has<MarkerAttribute>();
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task FieldIsOfExactType_ShouldReturnNonNullableField()
 	{
 		FieldInfo? subject = typeof(TestClass).GetField(nameof(TestClass.Field));
@@ -220,7 +220,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task FieldIsOfType_ShouldReturnNonNullableField()
 	{
 		FieldInfo? subject = typeof(TestClass).GetField(nameof(TestClass.Field));
@@ -230,7 +230,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task FieldsAreOfExactType_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<FieldInfo?> subject = [typeof(TestClass).GetField(nameof(TestClass.Field)),];
@@ -240,7 +240,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task FieldsAreOfType_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<FieldInfo?> subject = [typeof(TestClass).GetField(nameof(TestClass.Field)),];
@@ -250,17 +250,17 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task FieldsHave_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<FieldInfo?> subject = [typeof(TestClass).GetField(nameof(TestClass.Field)),];
 
-		IEnumerable<FieldInfo?> result = await That(subject).Have<TestAttribute>();
+		IEnumerable<FieldInfo?> result = await That(subject).Have<MarkerAttribute>();
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MemberDoesNotHaveName_ShouldReturnNonNullableMember()
 	{
 		PropertyInfo? subject = typeof(TestClass).GetProperty(nameof(TestClass.Property));
@@ -270,7 +270,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MemberHasName_ShouldReturnNonNullableMember()
 	{
 		PropertyInfo? subject = typeof(TestClass).GetProperty(nameof(TestClass.Property));
@@ -280,7 +280,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MemberIsNotObsolete_ShouldReturnNonNullableMember()
 	{
 		PropertyInfo? subject = typeof(TestClass).GetProperty(nameof(TestClass.Property));
@@ -290,7 +290,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MemberIsPublic_ShouldReturnNonNullableMember()
 	{
 		PropertyInfo? subject = typeof(TestClass).GetProperty(nameof(TestClass.Property));
@@ -300,17 +300,17 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodHas_ShouldReturnNonNullableMethod()
 	{
 		MethodInfo? subject = typeof(TestClass).GetMethod(nameof(TestClass.Method));
 
-		MethodInfo result = await That(subject).Has<TestAttribute>();
+		MethodInfo result = await That(subject).Has<MarkerAttribute>();
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodHasInParameter_ShouldReturnNonNullableMethod()
 	{
 		MethodInfo? subject = typeof(TestClass).GetMethod(nameof(TestClass.ParameterMethod));
@@ -320,7 +320,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodHasOptionalParameter_ShouldReturnNonNullableMethod()
 	{
 		MethodInfo? subject = typeof(TestClass).GetMethod(nameof(TestClass.ParameterMethod));
@@ -330,7 +330,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodHasOutParameter_ShouldReturnNonNullableMethod()
 	{
 		MethodInfo? subject = typeof(TestClass).GetMethod(nameof(TestClass.ParameterMethod));
@@ -340,7 +340,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodHasParameter_ShouldReturnNonNullableMethod()
 	{
 		MethodInfo? subject = typeof(TestClass).GetMethod(nameof(TestClass.ParameterMethod));
@@ -350,7 +350,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodHasParameterAtIndex_ShouldReturnNonNullableMethod()
 	{
 		MethodInfo? subject = typeof(TestClass).GetMethod(nameof(TestClass.ParameterMethod));
@@ -360,7 +360,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodHasParameterExactly_ShouldReturnNonNullableMethod()
 	{
 		MethodInfo? subject = typeof(TestClass).GetMethod(nameof(TestClass.ParameterMethod));
@@ -370,7 +370,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodHasParamsParameter_ShouldReturnNonNullableMethod()
 	{
 		MethodInfo? subject = typeof(TestClass).GetMethod(nameof(TestClass.ParameterMethod));
@@ -380,7 +380,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodHasRefParameter_ShouldReturnNonNullableMethod()
 	{
 		MethodInfo? subject = typeof(TestClass).GetMethod(nameof(TestClass.ParameterMethod));
@@ -390,7 +390,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodIsGeneric_ShouldReturnNonNullableMethod()
 	{
 		MethodInfo? subject = typeof(Array).GetMethod(nameof(Array.Empty));
@@ -400,7 +400,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodReturns_ShouldReturnNonNullableMethod()
 	{
 		MethodInfo? subject = typeof(TestClass).GetMethod(nameof(TestClass.Method));
@@ -410,7 +410,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodReturnsExactly_ShouldReturnNonNullableMethod()
 	{
 		MethodInfo? subject = typeof(TestClass).GetMethod(nameof(TestClass.Method));
@@ -420,7 +420,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodReturnsVoid_ShouldReturnNonNullableMethod()
 	{
 		MethodInfo? subject = typeof(TestClass).GetMethod(nameof(TestClass.VoidMethod));
@@ -430,7 +430,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodsAreGeneric_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<MethodInfo?> subject = [typeof(Array).GetMethod(nameof(Array.Empty)),];
@@ -440,17 +440,17 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodsHave_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<MethodInfo?> subject = [typeof(TestClass).GetMethod(nameof(TestClass.Method)),];
 
-		IEnumerable<MethodInfo?> result = await That(subject).Have<TestAttribute>();
+		IEnumerable<MethodInfo?> result = await That(subject).Have<MarkerAttribute>();
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodsHaveParameter_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<MethodInfo?> subject = [typeof(TestClass).GetMethod(nameof(TestClass.ParameterMethod)),];
@@ -460,7 +460,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodsReturn_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<MethodInfo?> subject = [typeof(TestClass).GetMethod(nameof(TestClass.Method)),];
@@ -470,7 +470,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodsReturnExactly_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<MethodInfo?> subject = [typeof(TestClass).GetMethod(nameof(TestClass.Method)),];
@@ -480,7 +480,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task MethodsReturnVoid_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<MethodInfo?> subject = [typeof(TestClass).GetMethod(nameof(TestClass.VoidMethod)),];
@@ -490,7 +490,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task PropertiesAreOfExactType_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<PropertyInfo?> subject = [typeof(TestClass).GetProperty(nameof(TestClass.Property)),];
@@ -500,7 +500,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task PropertiesAreOfType_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<PropertyInfo?> subject = [typeof(TestClass).GetProperty(nameof(TestClass.Property)),];
@@ -510,27 +510,27 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task PropertiesHave_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<PropertyInfo?> subject = [typeof(TestClass).GetProperty(nameof(TestClass.Property)),];
 
-		IEnumerable<PropertyInfo?> result = await That(subject).Have<TestAttribute>();
+		IEnumerable<PropertyInfo?> result = await That(subject).Have<MarkerAttribute>();
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task PropertyHas_ShouldReturnNonNullableProperty()
 	{
 		PropertyInfo? subject = typeof(TestClass).GetProperty(nameof(TestClass.Property));
 
-		PropertyInfo result = await That(subject).Has<TestAttribute>();
+		PropertyInfo result = await That(subject).Has<MarkerAttribute>();
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task PropertyIsOfExactType_ShouldReturnNonNullableProperty()
 	{
 		PropertyInfo? subject = typeof(TestClass).GetProperty(nameof(TestClass.Property));
@@ -540,7 +540,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task PropertyIsOfType_ShouldReturnNonNullableProperty()
 	{
 		PropertyInfo? subject = typeof(TestClass).GetProperty(nameof(TestClass.Property));
@@ -550,7 +550,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeContainsConstructors_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(TestClass);
@@ -560,7 +560,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeContainsEvents_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(TestClass);
@@ -570,7 +570,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeContainsFields_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(TestClass);
@@ -580,7 +580,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeContainsMethods_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(TestClass);
@@ -590,7 +590,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeContainsProperties_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(TestClass);
@@ -600,7 +600,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeDependsOn_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(TestClass);
@@ -610,7 +610,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeDependsOnlyOnNamespace_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(OnlyLayer1);
@@ -620,7 +620,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeDependsOnlyOnTypeSet_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(OnlyLayer1);
@@ -631,7 +631,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeDependsOnNamespace_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(OnlyLayer1);
@@ -641,7 +641,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeDependsOnTypeSet_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(OnlyLayer1);
@@ -652,7 +652,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeDoesNotDependOn_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(TestClass);
@@ -662,7 +662,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeDoesNotDependOnNamespace_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(OnlyLayer1);
@@ -672,7 +672,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeDoesNotDependOnTypeSet_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(OnlyLayer1);
@@ -682,17 +682,17 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeHas_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(TestClass);
 
-		Type result = await That(subject).Has<TestAttribute>();
+		Type result = await That(subject).Has<MarkerAttribute>();
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeHasDependenciesOutsideNamespace_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(Layer1AndLayer2);
@@ -702,7 +702,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeHasDependenciesOutsideTypeSet_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(Layer1AndLayer2);
@@ -713,7 +713,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeIsGeneric_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(List<Uri>);
@@ -723,7 +723,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypeIsGenericWithArgumentAtIndex_ShouldReturnNonNullableType()
 	{
 		Type? subject = typeof(List<Uri>);
@@ -733,7 +733,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypesAreGeneric_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<Type?> subject = [typeof(List<Uri>),];
@@ -743,7 +743,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypesContainProperties_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<Type?> subject = [typeof(TestClass),];
@@ -753,7 +753,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypesDependOnlyOnNamespace_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<Type?> subject = [typeof(OnlyLayer1),];
@@ -763,7 +763,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypesDependOnlyOnTypeSet_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<Type?> subject = [typeof(OnlyLayer1),];
@@ -773,7 +773,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypesDependOnNamespace_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<Type?> subject = [typeof(OnlyLayer1),];
@@ -783,7 +783,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypesDependOnTypeSet_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<Type?> subject = [typeof(OnlyLayer1),];
@@ -793,17 +793,17 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypesHave_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<Type?> subject = [typeof(TestClass),];
 
-		IEnumerable<Type?> result = await That(subject).Have<TestAttribute>();
+		IEnumerable<Type?> result = await That(subject).Have<MarkerAttribute>();
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypesHaveDependenciesOutsideNamespace_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<Type?> subject = [typeof(Layer1AndLayer2),];
@@ -813,7 +813,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypesHaveDependenciesOutsideTypeSet_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<Type?> subject = [typeof(Layer1AndLayer2),];
@@ -823,7 +823,7 @@ public sealed class NonNullableResultTests
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
-	[TUnit.Core.Test]
+	[Test]
 	public async Task TypesHaveNoDependencyCycles_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<Type?> subject = [typeof(OnlyLayer1),];
@@ -840,25 +840,25 @@ public sealed class NonNullableResultTests
 		]);
 
 	[AttributeUsage(AttributeTargets.All)]
-	private sealed class TestAttribute : Attribute;
+	private sealed class MarkerAttribute : Attribute;
 
-	[Test]
+	[Marker]
 	private sealed class TestClass
 	{
-		[Test] public Uri Field = new("https://awexpect.com");
+		[Marker] public Uri Field = new("https://awexpect.com");
 
-		[Test]
+		[Marker]
 		public TestClass()
 		{
 		}
 
 		public TestClass(in int a, out int b, ref int c, int d = 0, params int[] e) => b = a + c + d + e.Length;
 
-		[Test] public Uri? Property { get; set; }
+		[Marker] public Uri? Property { get; set; }
 
-		[Test] public event EventHandler? Event;
+		[Marker] public event EventHandler? Event;
 
-		[Test]
+		[Marker]
 		public Uri? Method() => Field;
 
 		public static void ParameterMethod(in int a, out int b, ref int c, int d = 0, params int[] e)

@@ -12,7 +12,7 @@ public sealed partial class ThatConstructors
 	{
 		public sealed class AttributeTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAllConstructorsHaveAttribute_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> subject = new[]
@@ -22,13 +22,13 @@ public sealed partial class ThatConstructors
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>();
+					await That(subject).Have<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAllConstructorsHaveMatchingAttribute_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> subject = new[]
@@ -38,13 +38,13 @@ public sealed partial class ThatConstructors
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Constructor"));
+					await That(subject).Have<MarkerAttribute>(attr => attr.Value.StartsWith("Constructor"));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenNotAllConstructorsHaveAttribute_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> subject = new[]
@@ -54,13 +54,13 @@ public sealed partial class ThatConstructors
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>();
+					await That(subject).Have<MarkerAttribute>();
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have ThatConstructors.Have.AttributeTests.TestAttribute,
+					             all have ThatConstructors.Have.AttributeTests.MarkerAttribute,
 					             but it contained not matching constructors
 
 					             Not matching items:
@@ -70,7 +70,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenNotAllConstructorsHaveMatchingAttribute_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> subject = new[]
@@ -80,13 +80,13 @@ public sealed partial class ThatConstructors
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+					await That(subject).Have<MarkerAttribute>(attr => attr.Value == "WrongValue");
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have ThatConstructors.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+					             all have ThatConstructors.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
 					             but it contained not matching constructors
 
 					             Not matching items:
@@ -100,7 +100,7 @@ public sealed partial class ThatConstructors
 #if NET8_0_OR_GREATER
 			public sealed class AsyncEnumerableTests
 			{
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenAllConstructorsHaveAttribute_ShouldSucceed()
 				{
 					IAsyncEnumerable<ConstructorInfo?> subject = new[]
@@ -110,13 +110,13 @@ public sealed partial class ThatConstructors
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>();
+						await That(subject).Have<MarkerAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenAllConstructorsHaveMatchingAttribute_ShouldSucceed()
 				{
 					IAsyncEnumerable<ConstructorInfo?> subject = new[]
@@ -126,13 +126,13 @@ public sealed partial class ThatConstructors
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Constructor"));
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value.StartsWith("Constructor"));
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenNotAllConstructorsHaveAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<ConstructorInfo?> subject = new[]
@@ -142,13 +142,13 @@ public sealed partial class ThatConstructors
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>();
+						await That(subject).Have<MarkerAttribute>();
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatConstructors.Have.AttributeTests.TestAttribute,
+						             all have ThatConstructors.Have.AttributeTests.MarkerAttribute,
 						             but it contained not matching constructors
 
 						             Not matching items:
@@ -158,7 +158,7 @@ public sealed partial class ThatConstructors
 						             """);
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenNotAllConstructorsHaveMatchingAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<ConstructorInfo?> subject = new[]
@@ -168,13 +168,13 @@ public sealed partial class ThatConstructors
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "WrongValue");
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatConstructors.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+						             all have ThatConstructors.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
 						             but it contained not matching constructors
 
 						             Not matching items:
@@ -188,7 +188,7 @@ public sealed partial class ThatConstructors
 #endif
 
 			[AttributeUsage(AttributeTargets.Constructor)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -199,10 +199,10 @@ public sealed partial class ThatConstructors
 			{
 				public TestClass() { }
 
-				[Test(Value = "ConstructorValue1")]
+				[Marker(Value = "ConstructorValue1")]
 				public TestClass(string value) { }
 
-				[Test(Value = "ConstructorValue2")]
+				[Marker(Value = "ConstructorValue2")]
 				public TestClass(int value) { }
 			}
 			// ReSharper restore UnusedParameter.Local
@@ -213,7 +213,7 @@ public sealed partial class ThatConstructors
 		{
 			public sealed class AttributeTests
 			{
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenConstructorsHaveBothAttributes_ShouldSucceed()
 				{
 					IEnumerable<ConstructorInfo> subject = new[]
@@ -223,13 +223,13 @@ public sealed partial class ThatConstructors
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenConstructorsHaveFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<ConstructorInfo> subject = new[]
@@ -239,13 +239,13 @@ public sealed partial class ThatConstructors
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenConstructorsHaveMatchingFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<ConstructorInfo> subject = new[]
@@ -255,14 +255,14 @@ public sealed partial class ThatConstructors
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "Constructor1Value")
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "Constructor1Value")
 							.OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenConstructorsHaveMatchingSecondAttribute_ShouldSucceed()
 				{
 					IEnumerable<ConstructorInfo> subject = new[]
@@ -272,14 +272,14 @@ public sealed partial class ThatConstructors
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>()
+						await That(subject).Have<MarkerAttribute>()
 							.OrHave<BarAttribute>(attr => attr.Name == "bar");
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenConstructorsHaveNeitherAttribute_ShouldFail()
 				{
 					IEnumerable<ConstructorInfo> subject = new[]
@@ -289,13 +289,13 @@ public sealed partial class ThatConstructors
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatConstructors.Have.OrHave.AttributeTests.TestAttribute or ThatConstructors.Have.OrHave.AttributeTests.BarAttribute,
+						             all have ThatConstructors.Have.OrHave.AttributeTests.MarkerAttribute or ThatConstructors.Have.OrHave.AttributeTests.BarAttribute,
 						             but it contained not matching constructors
 
 						             Not matching items:
@@ -305,7 +305,7 @@ public sealed partial class ThatConstructors
 						             """);
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenConstructorsHaveSecondAttribute_ShouldSucceed()
 				{
 					IEnumerable<ConstructorInfo> subject = new[]
@@ -315,13 +315,13 @@ public sealed partial class ThatConstructors
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WithInheritance_ShouldWorkCorrectly()
 				{
 					IEnumerable<ConstructorInfo> subject = new[]
@@ -331,14 +331,14 @@ public sealed partial class ThatConstructors
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>();
+						await That(subject).Have<MarkerAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
 				[AttributeUsage(AttributeTargets.Constructor)]
-				private class TestAttribute : Attribute
+				private class MarkerAttribute : Attribute
 				{
 					public string Value { get; set; } = "";
 				}
@@ -355,10 +355,10 @@ public sealed partial class ThatConstructors
 				{
 					public TestClass() { }
 
-					[Test(Value = "Constructor1Value")]
+					[Marker(Value = "Constructor1Value")]
 					public TestClass(string value) { }
 
-					[Test(Value = "Constructor2Value")]
+					[Marker(Value = "Constructor2Value")]
 					public TestClass(int value) { }
 
 					[Bar(Name = "bar")]
@@ -367,7 +367,7 @@ public sealed partial class ThatConstructors
 					[Bar(Name = "bar2")]
 					public TestClass(float value) { }
 
-					[Test(Value = "BothValue")]
+					[Marker(Value = "BothValue")]
 					[Bar(Name = "both")]
 					public TestClass(long value) { }
 				}
@@ -378,7 +378,7 @@ public sealed partial class ThatConstructors
 
 		public sealed class NegatedTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAllConstructorsHaveAttribute_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> subject = new[]
@@ -388,13 +388,13 @@ public sealed partial class ThatConstructors
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it => it.Have<TestAttribute>());
+					await That(subject).DoesNotComplyWith(it => it.Have<MarkerAttribute>());
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             not all have ThatConstructors.Have.NegatedTests.TestAttribute,
+					             not all have ThatConstructors.Have.NegatedTests.MarkerAttribute,
 					             but it only contained matching constructors
 
 					             Collection:
@@ -405,7 +405,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenNotAllConstructorsHaveAttribute_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> subject = new[]
@@ -415,14 +415,14 @@ public sealed partial class ThatConstructors
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it => it.Have<TestAttribute>());
+					await That(subject).DoesNotComplyWith(it => it.Have<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
 			[AttributeUsage(AttributeTargets.Constructor)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				// ReSharper disable once UnusedAutoPropertyAccessor.Local
 				public string Value { get; set; } = "";
@@ -434,10 +434,10 @@ public sealed partial class ThatConstructors
 			{
 				public TestClass() { }
 
-				[Test(Value = "Constructor1Value")]
+				[Marker(Value = "Constructor1Value")]
 				public TestClass(string value) { }
 
-				[Test(Value = "Constructor2Value")]
+				[Marker(Value = "Constructor2Value")]
 				public TestClass(int value) { }
 			}
 			// ReSharper restore UnusedParameter.Local

@@ -96,8 +96,8 @@ The slow tests of `aweXpect.Docs.Tests`:
   failure message shown in `Docs/extensions/aweXpect.Web/00-index.md`; change both together.
 - `System.Xml` messages are localized on .NET Framework. Tests that assert one use `[UseEnglishMessages]` from
   `Tests/aweXpect.Xml.Tests/Helpers`.
-- In `aweXpect.Reflection.Tests`, files that declare their own nested `TestAttribute` mark test methods with
-  `[TUnit.Core.Test]`. Sample types live in `TestHelpers/Types`, dependency layers for the architecture rules in
+- In `aweXpect.Reflection.Tests`, fixture attributes are named `MarkerAttribute`, as a nested `TestAttribute` would
+  shadow TUnit's `[Test]`. Sample types live in `TestHelpers/Types`, dependency layers for the architecture rules in
   `TestHelpers/Dependencies`. Filter tests are usually named `Should<Behaviour>`.
 - Snapshot tests:
   - `aweXpect.Snapshots.Tests` covers the expectations, rules, stores, comparers, reporters and acceptance. Its tests use

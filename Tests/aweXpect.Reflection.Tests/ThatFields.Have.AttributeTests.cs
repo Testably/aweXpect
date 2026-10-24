@@ -12,7 +12,7 @@ public sealed partial class ThatFields
 	{
 		public sealed class AttributeTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAllFieldsHaveAttribute_ShouldSucceed()
 			{
 				IEnumerable<FieldInfo> subject = new[]
@@ -22,13 +22,13 @@ public sealed partial class ThatFields
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>();
+					await That(subject).Have<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAllFieldsHaveMatchingAttribute_ShouldSucceed()
 			{
 				IEnumerable<FieldInfo> subject = new[]
@@ -38,13 +38,13 @@ public sealed partial class ThatFields
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Field"));
+					await That(subject).Have<MarkerAttribute>(attr => attr.Value.StartsWith("Field"));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenNotAllFieldsHaveAttribute_ShouldFail()
 			{
 				IEnumerable<FieldInfo> subject = new[]
@@ -54,13 +54,13 @@ public sealed partial class ThatFields
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>();
+					await That(subject).Have<MarkerAttribute>();
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have ThatFields.Have.AttributeTests.TestAttribute,
+					             all have ThatFields.Have.AttributeTests.MarkerAttribute,
 					             but it contained not matching fields
 
 					             Not matching items:
@@ -70,7 +70,7 @@ public sealed partial class ThatFields
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenNotAllFieldsHaveMatchingAttribute_ShouldFail()
 			{
 				IEnumerable<FieldInfo> subject = new[]
@@ -80,13 +80,13 @@ public sealed partial class ThatFields
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+					await That(subject).Have<MarkerAttribute>(attr => attr.Value == "WrongValue");
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have ThatFields.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+					             all have ThatFields.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
 					             but it contained not matching fields
 
 					             Not matching items:
@@ -100,7 +100,7 @@ public sealed partial class ThatFields
 #if NET8_0_OR_GREATER
 			public sealed class AsyncEnumerableTests
 			{
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenAllFieldsHaveAttribute_ShouldSucceed()
 				{
 					IAsyncEnumerable<FieldInfo?> subject = new[]
@@ -110,13 +110,13 @@ public sealed partial class ThatFields
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>();
+						await That(subject).Have<MarkerAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenAllFieldsHaveMatchingAttribute_ShouldSucceed()
 				{
 					IAsyncEnumerable<FieldInfo?> subject = new[]
@@ -126,13 +126,13 @@ public sealed partial class ThatFields
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Field"));
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value.StartsWith("Field"));
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenNotAllFieldsHaveAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<FieldInfo?> subject = new[]
@@ -142,13 +142,13 @@ public sealed partial class ThatFields
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>();
+						await That(subject).Have<MarkerAttribute>();
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatFields.Have.AttributeTests.TestAttribute,
+						             all have ThatFields.Have.AttributeTests.MarkerAttribute,
 						             but it contained not matching fields
 
 						             Not matching items:
@@ -158,7 +158,7 @@ public sealed partial class ThatFields
 						             """);
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenNotAllFieldsHaveMatchingAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<FieldInfo?> subject = new[]
@@ -168,13 +168,13 @@ public sealed partial class ThatFields
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "WrongValue");
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatFields.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+						             all have ThatFields.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
 						             but it contained not matching fields
 
 						             Not matching items:
@@ -188,7 +188,7 @@ public sealed partial class ThatFields
 #endif
 
 			[AttributeUsage(AttributeTargets.Field)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -198,9 +198,9 @@ public sealed partial class ThatFields
 			{
 				public string NoAttributeField = "";
 
-				[Test(Value = "Field1Value")] public string TestField1 = "";
+				[Marker(Value = "Field1Value")] public string TestField1 = "";
 
-				[Test(Value = "Field2Value")] public string TestField2 = "";
+				[Marker(Value = "Field2Value")] public string TestField2 = "";
 			}
 #pragma warning restore CS0414
 		}
@@ -209,7 +209,7 @@ public sealed partial class ThatFields
 		{
 			public sealed class AttributeTests
 			{
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenFieldsHaveBothAttributes_ShouldSucceed()
 				{
 					IEnumerable<FieldInfo> subject = new[]
@@ -219,13 +219,13 @@ public sealed partial class ThatFields
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenFieldsHaveFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<FieldInfo> subject = new[]
@@ -235,13 +235,13 @@ public sealed partial class ThatFields
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenFieldsHaveMatchingFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<FieldInfo> subject = new[]
@@ -251,14 +251,14 @@ public sealed partial class ThatFields
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "Field1Value")
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "Field1Value")
 							.OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenFieldsHaveMatchingSecondAttribute_ShouldSucceed()
 				{
 					IEnumerable<FieldInfo> subject = new[]
@@ -268,14 +268,14 @@ public sealed partial class ThatFields
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "NonExistent")
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "NonExistent")
 							.OrHave<BarAttribute>(attr => attr.Name == "bar");
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenFieldsHaveNeitherAttribute_ShouldFail()
 				{
 					IEnumerable<FieldInfo> subject = new[]
@@ -285,13 +285,13 @@ public sealed partial class ThatFields
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatFields.Have.OrHave.AttributeTests.TestAttribute or ThatFields.Have.OrHave.AttributeTests.BarAttribute,
+						             all have ThatFields.Have.OrHave.AttributeTests.MarkerAttribute or ThatFields.Have.OrHave.AttributeTests.BarAttribute,
 						             but it contained not matching fields
 
 						             Not matching items:
@@ -301,7 +301,7 @@ public sealed partial class ThatFields
 						             """);
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenFieldsHaveSecondAttribute_ShouldSucceed()
 				{
 					IEnumerable<FieldInfo> subject = new[]
@@ -311,13 +311,13 @@ public sealed partial class ThatFields
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WithPredicate_WhenFieldsHaveNotMatchingAttribute_ShouldFail()
 				{
 					IEnumerable<FieldInfo> subject = new[]
@@ -327,14 +327,14 @@ public sealed partial class ThatFields
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue")
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "WrongValue")
 							.OrHave<BarAttribute>(attr => attr.Name == "wrong");
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatFields.Have.OrHave.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue" or ThatFields.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
+						             all have ThatFields.Have.OrHave.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue" or ThatFields.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
 						             but it contained not matching fields
 
 						             Not matching items:
@@ -345,7 +345,7 @@ public sealed partial class ThatFields
 				}
 
 				[AttributeUsage(AttributeTargets.Field)]
-				private class TestAttribute : Attribute
+				private class MarkerAttribute : Attribute
 				{
 					public string Value { get; set; } = "";
 				}
@@ -361,12 +361,12 @@ public sealed partial class ThatFields
 				{
 					[Bar(Name = "bar")] public string BarField = "";
 
-					[Test(Value = "BothValue")] [Bar(Name = "both")]
+					[Marker(Value = "BothValue")] [Bar(Name = "both")]
 					public string BothField = "";
 
 					public string NoAttributeField = "";
 
-					[Test(Value = "Field1Value")] public string TestField1 = "";
+					[Marker(Value = "Field1Value")] public string TestField1 = "";
 				}
 #pragma warning restore CS0414
 			}
@@ -374,7 +374,7 @@ public sealed partial class ThatFields
 
 		public sealed class NegatedTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenFieldsDoNotHaveAttribute_ShouldSucceed()
 			{
 				IEnumerable<FieldInfo> subjects = new[]
@@ -384,13 +384,13 @@ public sealed partial class ThatFields
 
 				async Task Act()
 				{
-					await That(subjects).DoesNotComplyWith(they => they.Have<TestAttribute>());
+					await That(subjects).DoesNotComplyWith(they => they.Have<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenFieldsDoNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				IEnumerable<FieldInfo> subjects = new[]
@@ -401,13 +401,13 @@ public sealed partial class ThatFields
 				async Task Act()
 				{
 					await That(subjects).DoesNotComplyWith(they
-						=> they.Have<TestAttribute>(attr => attr.Value == "NonExistent"));
+						=> they.Have<MarkerAttribute>(attr => attr.Value == "NonExistent"));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenFieldsHaveAttribute_ShouldFail()
 			{
 				IEnumerable<FieldInfo> subjects = new[]
@@ -418,13 +418,13 @@ public sealed partial class ThatFields
 				async Task Act()
 				{
 					await That(subjects).DoesNotComplyWith(they
-						=> they.Have<TestAttribute>().OrHave<TestAttribute>(x => x.Value == "foo"));
+						=> they.Have<MarkerAttribute>().OrHave<MarkerAttribute>(x => x.Value == "foo"));
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
-					             not all have ThatFields.Have.NegatedTests.TestAttribute or ThatFields.Have.NegatedTests.TestAttribute matching x => x.Value == "foo",
+					             not all have ThatFields.Have.NegatedTests.MarkerAttribute or ThatFields.Have.NegatedTests.MarkerAttribute matching x => x.Value == "foo",
 					             but it only contained matching fields
 
 					             Collection:
@@ -435,7 +435,7 @@ public sealed partial class ThatFields
 			}
 
 			[AttributeUsage(AttributeTargets.Field)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -444,7 +444,7 @@ public sealed partial class ThatFields
 			private class TestClass
 			{
 				public string NoAttributeField = "";
-				[Test(Value = "Field1Value")] public string TestField1 = "";
+				[Marker(Value = "Field1Value")] public string TestField1 = "";
 			}
 #pragma warning restore CS0414
 		}

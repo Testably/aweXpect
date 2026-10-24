@@ -12,7 +12,7 @@ public sealed partial class ThatProperties
 	{
 		public sealed class AttributeTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAllPropertiesHaveAttribute_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = new[]
@@ -22,13 +22,13 @@ public sealed partial class ThatProperties
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>();
+					await That(subject).Have<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAllPropertiesHaveMatchingAttribute_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = new[]
@@ -38,13 +38,13 @@ public sealed partial class ThatProperties
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Property"));
+					await That(subject).Have<MarkerAttribute>(attr => attr.Value.StartsWith("Property"));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAllPropertiesInheritAttributeFromOverriddenProperties_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = new[]
@@ -54,14 +54,14 @@ public sealed partial class ThatProperties
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>();
+					await That(subject).Have<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow()
 					.Because("the attribute on the overridden base property is inherited, as in the Properties().With<TAttribute>() filter");
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenNotAllPropertiesHaveAttribute_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = new[]
@@ -71,13 +71,13 @@ public sealed partial class ThatProperties
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>();
+					await That(subject).Have<MarkerAttribute>();
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have ThatProperties.Have.AttributeTests.TestAttribute,
+					             all have ThatProperties.Have.AttributeTests.MarkerAttribute,
 					             but it contained not matching properties
 
 					             Not matching items:
@@ -87,7 +87,7 @@ public sealed partial class ThatProperties
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenNotAllPropertiesHaveMatchingAttribute_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = new[]
@@ -97,13 +97,13 @@ public sealed partial class ThatProperties
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+					await That(subject).Have<MarkerAttribute>(attr => attr.Value == "WrongValue");
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have ThatProperties.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+					             all have ThatProperties.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
 					             but it contained not matching properties
 
 					             Not matching items:
@@ -114,20 +114,20 @@ public sealed partial class ThatProperties
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertiesAreFilteredByInheritedAttribute_ShouldSucceed()
 			{
 				async Task Act()
 				{
-					await That(In.Type<DerivedClass>().Properties().With<TestAttribute>())
-						.IsNotEmpty().And.Have<TestAttribute>();
+					await That(In.Type<DerivedClass>().Properties().With<MarkerAttribute>())
+						.IsNotEmpty().And.Have<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow()
 					.Because("the expectation must agree with the filter on the inherited attribute");
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WithInheritFalse_WhenAllPropertiesInheritAttributeFromOverriddenProperties_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = new[]
@@ -137,13 +137,13 @@ public sealed partial class ThatProperties
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>(false);
+					await That(subject).Have<MarkerAttribute>(false);
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have direct ThatProperties.Have.AttributeTests.TestAttribute,
+					             all have direct ThatProperties.Have.AttributeTests.MarkerAttribute,
 					             but it contained not matching properties
 
 					             Not matching items:
@@ -157,7 +157,7 @@ public sealed partial class ThatProperties
 #if NET8_0_OR_GREATER
 			public sealed class AsyncEnumerableTests
 			{
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenAllPropertiesHaveAttribute_ShouldSucceed()
 				{
 					IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -167,13 +167,13 @@ public sealed partial class ThatProperties
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>();
+						await That(subject).Have<MarkerAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenAllPropertiesHaveMatchingAttribute_ShouldSucceed()
 				{
 					IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -183,13 +183,13 @@ public sealed partial class ThatProperties
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Property"));
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value.StartsWith("Property"));
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenNotAllPropertiesHaveAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -199,13 +199,13 @@ public sealed partial class ThatProperties
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>();
+						await That(subject).Have<MarkerAttribute>();
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatProperties.Have.AttributeTests.TestAttribute,
+						             all have ThatProperties.Have.AttributeTests.MarkerAttribute,
 						             but it contained not matching properties
 
 						             Not matching items:
@@ -215,7 +215,7 @@ public sealed partial class ThatProperties
 						             """);
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenNotAllPropertiesHaveMatchingAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -225,13 +225,13 @@ public sealed partial class ThatProperties
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "WrongValue");
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatProperties.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+						             all have ThatProperties.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
 						             but it contained not matching properties
 
 						             Not matching items:
@@ -245,7 +245,7 @@ public sealed partial class ThatProperties
 #endif
 
 			[AttributeUsage(AttributeTargets.Property)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -253,16 +253,16 @@ public sealed partial class ThatProperties
 			// ReSharper disable UnusedMember.Local
 			private class TestClass
 			{
-				[Test(Value = "Property1Value")] public string TestProperty1 { get; set; } = "";
+				[Marker(Value = "Property1Value")] public string TestProperty1 { get; set; } = "";
 
-				[Test(Value = "Property2Value")] public string TestProperty2 { get; set; } = "";
+				[Marker(Value = "Property2Value")] public string TestProperty2 { get; set; } = "";
 
 				public string NoAttributeProperty { get; set; } = "";
 			}
 
 			private class BaseClass
 			{
-				[Test(Value = "BaseValue")] public virtual string InheritedProperty { get; set; } = "";
+				[Marker(Value = "BaseValue")] public virtual string InheritedProperty { get; set; } = "";
 			}
 
 			private class DerivedClass : BaseClass
@@ -276,7 +276,7 @@ public sealed partial class ThatProperties
 		{
 			public sealed class AttributeTests
 			{
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenPropertiesHaveBothAttributes_ShouldSucceed()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -286,13 +286,13 @@ public sealed partial class ThatProperties
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenPropertiesHaveFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -302,13 +302,13 @@ public sealed partial class ThatProperties
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenPropertiesHaveMatchingFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -318,14 +318,14 @@ public sealed partial class ThatProperties
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "Property1Value")
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "Property1Value")
 							.OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenPropertiesHaveMatchingSecondAttribute_ShouldSucceed()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -335,14 +335,14 @@ public sealed partial class ThatProperties
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "NonExistent")
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "NonExistent")
 							.OrHave<BarAttribute>(attr => attr.Name == "bar");
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenPropertiesHaveNeitherAttribute_ShouldFail()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -352,13 +352,13 @@ public sealed partial class ThatProperties
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatProperties.Have.OrHave.AttributeTests.TestAttribute or ThatProperties.Have.OrHave.AttributeTests.BarAttribute,
+						             all have ThatProperties.Have.OrHave.AttributeTests.MarkerAttribute or ThatProperties.Have.OrHave.AttributeTests.BarAttribute,
 						             but it contained not matching properties
 
 						             Not matching items:
@@ -368,7 +368,7 @@ public sealed partial class ThatProperties
 						             """);
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenPropertiesHaveSecondAttribute_ShouldSucceed()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -378,13 +378,13 @@ public sealed partial class ThatProperties
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WithPredicate_WhenPropertiesHaveNotMatchingAttribute_ShouldFail()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -394,14 +394,14 @@ public sealed partial class ThatProperties
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue")
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "WrongValue")
 							.OrHave<BarAttribute>(attr => attr.Name == "wrong");
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatProperties.Have.OrHave.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue" or ThatProperties.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
+						             all have ThatProperties.Have.OrHave.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue" or ThatProperties.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
 						             but it contained not matching properties
 
 						             Not matching items:
@@ -412,7 +412,7 @@ public sealed partial class ThatProperties
 				}
 
 				[AttributeUsage(AttributeTargets.Property)]
-				private class TestAttribute : Attribute
+				private class MarkerAttribute : Attribute
 				{
 					public string Value { get; set; } = "";
 				}
@@ -426,11 +426,11 @@ public sealed partial class ThatProperties
 				// ReSharper disable UnusedMember.Local
 				private class TestClass
 				{
-					[Test(Value = "Property1Value")] public string TestProperty1 { get; set; } = "";
+					[Marker(Value = "Property1Value")] public string TestProperty1 { get; set; } = "";
 
 					[Bar(Name = "bar")] public string BarProperty { get; set; } = "";
 
-					[Test(Value = "BothValue")]
+					[Marker(Value = "BothValue")]
 					[Bar(Name = "both")]
 					public string BothProperty { get; set; } = "";
 
@@ -442,7 +442,7 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertiesDoNotHaveAttribute_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subjects = new[]
@@ -452,13 +452,13 @@ public sealed partial class ThatProperties
 
 				async Task Act()
 				{
-					await That(subjects).DoesNotComplyWith(they => they.Have<TestAttribute>());
+					await That(subjects).DoesNotComplyWith(they => they.Have<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertiesDoNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subjects = new[]
@@ -469,13 +469,13 @@ public sealed partial class ThatProperties
 				async Task Act()
 				{
 					await That(subjects).DoesNotComplyWith(they
-						=> they.Have<TestAttribute>(attr => attr.Value == "NonExistent"));
+						=> they.Have<MarkerAttribute>(attr => attr.Value == "NonExistent"));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertiesHaveAttribute_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subjects = new[]
@@ -486,13 +486,13 @@ public sealed partial class ThatProperties
 				async Task Act()
 				{
 					await That(subjects).DoesNotComplyWith(they
-						=> they.Have<TestAttribute>().OrHave<TestAttribute>(x => x.Value == "foo"));
+						=> they.Have<MarkerAttribute>().OrHave<MarkerAttribute>(x => x.Value == "foo"));
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
-					             not all have ThatProperties.Have.NegatedTests.TestAttribute or ThatProperties.Have.NegatedTests.TestAttribute matching x => x.Value == "foo",
+					             not all have ThatProperties.Have.NegatedTests.MarkerAttribute or ThatProperties.Have.NegatedTests.MarkerAttribute matching x => x.Value == "foo",
 					             but it only contained matching properties
 
 					             Collection:
@@ -503,7 +503,7 @@ public sealed partial class ThatProperties
 			}
 
 			[AttributeUsage(AttributeTargets.Property)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -511,7 +511,7 @@ public sealed partial class ThatProperties
 			// ReSharper disable UnusedMember.Local
 			private class TestClass
 			{
-				[Test(Value = "Property1Value")] public string TestProperty1 { get; set; } = "";
+				[Marker(Value = "Property1Value")] public string TestProperty1 { get; set; } = "";
 
 				public string NoAttributeProperty { get; set; } = "";
 			}
