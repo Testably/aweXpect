@@ -104,6 +104,21 @@ await Expect.That(method).IsPublic();
 await Expect.That(methods).ArePublic();
 ```
 
+When the access modifier is a runtime value, e.g. a test parameter, use `.WhichAre(AccessModifiers)` or
+`.WhichAreNot(AccessModifiers)` on types and on every member kind. `AccessModifiers` is a flags enum, so values
+can be combined, and `AccessModifiers.Any` keeps everything:
+
+```csharp
+[Test]
+[Arguments(AccessModifiers.Public)]
+[Arguments(AccessModifiers.Public | AccessModifiers.Internal)]
+public async Task TypesAreNotNested(AccessModifiers modifier)
+{
+    await Expect.That(In.AssemblyContaining<Foo>().Types().WhichAre(modifier))
+        .AreNotNested();
+}
+```
+
 ## Attributes
 
 Shared by all types, members, and assemblies.

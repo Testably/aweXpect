@@ -29,27 +29,27 @@ public interface ITypeAssemblies
 	/// <summary>
 	///     Get all interfaces in the filtered assemblies.
 	/// </summary>
-	Filtered.Types Interfaces(AccessModifiers accessModifier = AccessModifiers.Any);
+	Filtered.Types Interfaces();
 
 	/// <summary>
 	///     Get all records in the filtered assemblies.
 	/// </summary>
-	Filtered.Types Records(AccessModifiers accessModifier = AccessModifiers.Any);
+	Filtered.Types Records();
 
 	/// <summary>
 	///     Get all enums in the filtered assemblies.
 	/// </summary>
-	Filtered.Types Enums(AccessModifiers accessModifier = AccessModifiers.Any);
+	Filtered.Types Enums();
 
 	/// <summary>
 	///     Get all record structs in the filtered assemblies.
 	/// </summary>
-	Filtered.Types RecordStructs(AccessModifiers accessModifier = AccessModifiers.Any);
+	Filtered.Types RecordStructs();
 
 	/// <summary>
 	///     Get all structs in the filtered assemblies.
 	/// </summary>
-	Filtered.Types Structs(AccessModifiers accessModifier = AccessModifiers.Any);
+	Filtered.Types Structs();
 
 	/// <summary>
 	///     An interface to allow filtering for types in assemblies.

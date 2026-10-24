@@ -23,7 +23,7 @@ public sealed partial class Filtered
 				public async Task ShouldConsiderAccessModifier(AccessModifiers accessModifier, Func<Type, bool> check)
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
-						.Interfaces(accessModifier);
+						.Interfaces().WhichAre(accessModifier);
 
 					await That(types).All().Satisfy(type => type.IsInterface && check(type));
 				}

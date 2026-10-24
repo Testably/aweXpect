@@ -22,7 +22,7 @@ public sealed partial class Filtered
 				public async Task ShouldConsiderAccessModifier()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
-						.Nested.Enums(AccessModifiers.Public);
+						.Public.Nested.Enums();
 
 					await That(types).All().Satisfy(type
 						=> type is { IsEnum: true, IsNested: true, IsNestedPublic: true, });
