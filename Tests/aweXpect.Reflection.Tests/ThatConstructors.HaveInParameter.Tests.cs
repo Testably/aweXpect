@@ -406,7 +406,17 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveInParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with name "value" with in modifier,
+					             but it contained constructors without a matching parameter
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveInParameter.ClassWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -438,7 +448,17 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveInParameterExactly(typeof(int));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type int with in modifier,
+					             but it contained constructors without a matching parameter
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveInParameter.ClassWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -484,7 +504,17 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveInParameter(typeof(int));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with in modifier,
+					             but it contained constructors without a matching parameter
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveInParameter.ClassWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 #endif
 #if NET8_0_OR_GREATER

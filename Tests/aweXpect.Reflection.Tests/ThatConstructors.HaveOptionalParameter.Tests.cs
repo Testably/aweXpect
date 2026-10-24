@@ -406,7 +406,17 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with name "value" with optional modifier,
+					             but it contained constructors without a matching parameter
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -438,7 +448,17 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameterExactly(typeof(int));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type int with optional modifier,
+					             but it contained constructors without a matching parameter
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -484,7 +504,17 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter(typeof(int));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with optional modifier,
+					             but it contained constructors without a matching parameter
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 
 			[Test]

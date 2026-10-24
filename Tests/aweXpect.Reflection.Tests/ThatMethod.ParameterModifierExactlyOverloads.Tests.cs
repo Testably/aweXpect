@@ -35,7 +35,12 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasInParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of exact type Stream with in modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -74,7 +79,12 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasInParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of exact type int with name "other" with in modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -113,7 +123,12 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasOptionalParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of exact type int with name "other" with optional modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -139,7 +154,12 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasOutParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of exact type Stream with out modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -178,7 +198,12 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasOutParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of exact type int with name "other" with out modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -217,7 +242,12 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasParamsParameterExactly<int[]>("other");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of exact type int[] with name "other" with params modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]

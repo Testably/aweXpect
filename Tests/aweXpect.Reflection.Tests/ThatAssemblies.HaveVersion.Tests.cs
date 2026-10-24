@@ -245,19 +245,20 @@ public sealed partial class ThatAssemblies
 			}
 
 			[Test]
-			[Arguments("GreaterThan", 0)]
-			[Arguments("GreaterThanOrEqualTo", 1)]
-			[Arguments("LessThan", 0)]
-			[Arguments("LessThanOrEqualTo", -1)]
-			[Arguments("EqualTo", 1)]
-			[Arguments("NotEqualTo", 0)]
-			public async Task WhenComparisonIsNotSatisfied_ShouldFail(string comparison, int offset)
+			[Arguments("GreaterThan", 0, "greater than")]
+			[Arguments("GreaterThanOrEqualTo", 1, "greater than or equal to")]
+			[Arguments("LessThan", 0, "less than")]
+			[Arguments("LessThanOrEqualTo", -1, "less than or equal to")]
+			[Arguments("EqualTo", 1, "equal to")]
+			[Arguments("NotEqualTo", 0, "not equal to")]
+			public async Task WhenComparisonIsNotSatisfied_ShouldFail(string comparison, int offset, string wording)
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int expected = assembly.GetName().Version!.Major + offset;
 
 				async Task Act()
 				{
-					int expected = typeof(PublicAbstractClass).Assembly.GetName().Version!.Major + offset;
 					await (comparison switch
 					{
 						"GreaterThan" => That(subject).HaveVersion().WithMajor.GreaterThan(expected),
@@ -269,7 +270,17 @@ public sealed partial class ThatAssemblies
 					});
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that in assembly containing type PublicAbstractClass
+					              all have major version {wording} {expected},
+					              but it contained assemblies with a non-matching version
+
+					              Not matching items:
+					              [
+					                {assembly.FullName}
+					              ]
+					              """);
 			}
 
 			[Test]

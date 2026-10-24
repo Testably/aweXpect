@@ -181,7 +181,17 @@ public sealed partial class ThatMethods
 					await That(methods).HaveRefParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream with ref modifier,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.ParameterModifierExactlyOverloads.ModifierMethods.RefMemoryStream(ref MemoryStream value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -270,7 +280,17 @@ public sealed partial class ThatMethods
 					await That(methods).HaveRefParameterExactly<int>();
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type int with ref modifier,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.ParameterModifierExactlyOverloads.ModifierMethods.PlainInt(int value)
+					             ]
+					             """);
 			}
 
 			[Test]

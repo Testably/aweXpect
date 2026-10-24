@@ -295,19 +295,20 @@ public sealed partial class ThatAssembly
 			}
 
 			[Test]
-			[Arguments("GreaterThan", 0)]
-			[Arguments("GreaterThanOrEqualTo", 1)]
-			[Arguments("LessThan", 0)]
-			[Arguments("LessThanOrEqualTo", -1)]
-			[Arguments("EqualTo", 1)]
-			[Arguments("NotEqualTo", 0)]
-			public async Task WhenComparisonIsNotSatisfied_ShouldFail(string comparison, int offset)
+			[Arguments("GreaterThan", 0, "greater than")]
+			[Arguments("GreaterThanOrEqualTo", 1, "greater than or equal to")]
+			[Arguments("LessThan", 0, "less than")]
+			[Arguments("LessThanOrEqualTo", -1, "less than or equal to")]
+			[Arguments("EqualTo", 1, "equal to")]
+			[Arguments("NotEqualTo", 0, "not equal to")]
+			public async Task WhenComparisonIsNotSatisfied_ShouldFail(string comparison, int offset, string wording)
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+				int expected = major + offset;
 
 				async Task Act()
 				{
-					int expected = assembly.GetName().Version!.Major + offset;
 					await (comparison switch
 					{
 						"GreaterThan" => That(assembly).HasVersion().WithMajor.GreaterThan(expected),
@@ -319,7 +320,12 @@ public sealed partial class ThatAssembly
 					});
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that assembly
+					              has major version {wording} {expected},
+					              but it had major version {major}
+					              """);
 			}
 
 			[Test]

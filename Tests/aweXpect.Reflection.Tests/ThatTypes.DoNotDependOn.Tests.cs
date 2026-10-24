@@ -169,7 +169,17 @@ public sealed partial class ThatTypes
 						.OrOn(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all do not depend on types within namespace "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2" in all loaded assemblies or types within namespace "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1" in all loaded assemblies,
+					             but it contained types with the dependency
+
+					             Not matching items:
+					             [
+					               OnlyLayer1
+					             ]
+					             """);
 			}
 		}
 

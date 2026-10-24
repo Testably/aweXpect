@@ -182,7 +182,17 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveRefParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type Stream with ref modifier,
+					             but it contained constructors without a matching parameter
+
+					             Not matching items:
+					             [
+					               ThatConstructors.ParameterModifierExactlyOverloads.RefMemoryStreamCtor(ref MemoryStream value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -270,7 +280,17 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveRefParameterExactly<int>();
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type int with ref modifier,
+					             but it contained constructors without a matching parameter
+
+					             Not matching items:
+					             [
+					               ThatConstructors.ParameterModifierExactlyOverloads.PlainIntCtor(int value)
+					             ]
+					             """);
 			}
 
 			[Test]

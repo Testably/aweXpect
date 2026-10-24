@@ -89,7 +89,17 @@ public sealed partial class ThatMethods
 					await That(methods).HaveRefParameter(typeof(int));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with ref modifier,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveRefParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -121,7 +131,17 @@ public sealed partial class ThatMethods
 					await That(methods).HaveRefParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with name "value" with ref modifier,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveRefParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -153,7 +173,17 @@ public sealed partial class ThatMethods
 					await That(methods).HaveRefParameterExactly(typeof(int));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type int with ref modifier,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveRefParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -199,7 +229,17 @@ public sealed partial class ThatMethods
 					await That(methods).HaveRefParameter(typeof(int));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with ref modifier,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveRefParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 #endif
 		}

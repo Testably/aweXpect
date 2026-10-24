@@ -119,7 +119,17 @@ public sealed partial class ThatType
 					await That(subject).DependsOn(Layer1Namespace).ExcludingSubNamespaces();
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             depends on namespace "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1",
+					             but it did not
+
+					             Dependencies:
+					             [
+					               "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1.Sub"
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -274,7 +284,12 @@ public sealed partial class ThatType
 					await That(subject).DependsOn(Layer1Namespace);
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             depends on namespace "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1",
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -682,7 +697,12 @@ public sealed partial class ThatType
 					await That(subject).DependsOn(Types.InNamespace("Non.Existent.Namespace"));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             depends on types within namespace "Non.Existent.Namespace" in all loaded assemblies,
+					             but it did not
+					             """);
 			}
 
 			[Test]

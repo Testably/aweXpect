@@ -89,7 +89,17 @@ public sealed partial class ThatMethods
 					await That(methods).HaveInParameter(typeof(int));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with in modifier,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveInParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -121,7 +131,17 @@ public sealed partial class ThatMethods
 					await That(methods).HaveInParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with name "value" with in modifier,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveInParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -153,7 +173,17 @@ public sealed partial class ThatMethods
 					await That(methods).HaveInParameterExactly(typeof(int));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type int with in modifier,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveInParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -199,7 +229,17 @@ public sealed partial class ThatMethods
 					await That(methods).HaveInParameter(typeof(int));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with in modifier,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveInParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 #endif
 		}
