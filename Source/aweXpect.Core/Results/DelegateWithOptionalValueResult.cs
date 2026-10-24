@@ -11,7 +11,7 @@ namespace aweXpect.Results;
 ///     thrown at all.
 /// </remarks>
 public class DelegateWithOptionalValueResult<T>(ExpectationBuilder expectationBuilder)
-	: ExpectationResult(expectationBuilder)
+	: ExpectationResultWithoutValue<DelegateWithOptionalValueResult<T>>(expectationBuilder)
 {
 	/// <inheritdoc cref="DelegateWithValueResult{T}.WhoseResult" />
 	public IThat<T> WhoseResult => DelegateWithValueResult<T>.ContinueWithResult(ExpectationBuilder);

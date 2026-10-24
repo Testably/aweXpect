@@ -15,9 +15,21 @@ namespace aweXpect.Results;
 /// <summary>
 ///     The result of an expectation without an underlying value.
 /// </summary>
-[StackTraceHidden]
 public class ExpectationResult(ExpectationBuilder expectationBuilder)
+	: ExpectationResultWithoutValue<ExpectationResult>(expectationBuilder);
+
+/// <summary>
+///     The result of an expectation without an underlying value.
+/// </summary>
+/// <remarks>
+///     <see cref="Because(string)" />, <see cref="WithTimeout(TimeSpan)" /> and
+///     <see cref="WithCancellation(CancellationToken)" /> return the <typeparamref name="TSelf" />, so that a derived
+///     result keeps its own members after them.
+/// </remarks>
+[StackTraceHidden]
+public class ExpectationResultWithoutValue<TSelf>(ExpectationBuilder expectationBuilder)
 	: Expectation, IExpectationBuilderProvider
+	where TSelf : ExpectationResultWithoutValue<TSelf>
 {
 	/// <summary>
 	///     The <see cref="Core.ExpectationBuilder" /> of the expectation.
@@ -37,14 +49,14 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	/// <remarks>
 	///     When the <paramref name="reason" /> is <see langword="null" />, empty or only whitespace, it is ignored.
 	/// </remarks>
-	public ExpectationResult Because(string? reason)
+	public TSelf Because(string? reason)
 	{
 		if (!string.IsNullOrWhiteSpace(reason))
 		{
 			ExpectationBuilder.AddReason(reason);
 		}
 
-		return this;
+		return (TSelf)this;
 	}
 
 	/// <summary>
@@ -56,10 +68,10 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     A <paramref name="reason" /> that is still pending when the timeout elapses or the evaluation is canceled is
 	///     not awaited any longer, and the failure message states that the reason was not available in time.
 	/// </remarks>
-	public ExpectationResult Because(Task<string?> reason)
+	public TSelf Because(Task<string?> reason)
 	{
 		ExpectationBuilder.AddReason(reason);
-		return this;
+		return (TSelf)this;
 	}
 
 	/// <summary>
@@ -79,10 +91,10 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     to apply the <paramref name="cancellationToken" /> globally.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">A cancellation token is already set.</exception>
-	public ExpectationResult WithCancellation(CancellationToken cancellationToken)
+	public TSelf WithCancellation(CancellationToken cancellationToken)
 	{
 		ExpectationBuilder.WithCancellation(cancellationToken);
-		return this;
+		return (TSelf)this;
 	}
 
 	/// <summary>
@@ -105,10 +117,10 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     to apply the <paramref name="timeout" /> globally.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
-	public ExpectationResult WithTimeout(TimeSpan timeout)
+	public TSelf WithTimeout(TimeSpan timeout)
 	{
 		ExpectationBuilder.WithTimeout(timeout);
-		return this;
+		return (TSelf)this;
 	}
 
 	/// <summary>
@@ -402,7 +414,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	internal override void AddFormatters(List<IValueFormatter> formatters)
 		=> ExpectationBuilder.AddFormattersTo(formatters);
 
-	/// <inheritdoc cref="ExpectationResult.FromFailure(ConstraintResult)" />
+	/// <inheritdoc cref="ExpectationResultWithoutValue{TSelf}.FromFailure(ConstraintResult)" />
 	private async Task<string> FromFailure(ConstraintResult failure)
 	{
 		try

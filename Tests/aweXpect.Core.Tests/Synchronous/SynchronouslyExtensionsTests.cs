@@ -108,6 +108,21 @@ public class SynchronouslyExtensionsTests
 	}
 
 	[Test]
+	public void WhenAndResultFails_ShouldFail()
+	{
+		void Act() => That(() => ThrowIf(true)).ExecutesIn().AtMost(TimeSpan.FromMilliseconds(500))
+			.Because("it must be fast").VerifySynchronously();
+
+		That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that () => ThrowIf(true)
+			             executes in at most 0:00.500, because it must be fast,
+			             but it did throw a MyException:
+			               WhenAndResultFails_ShouldFail
+			             """).VerifySynchronously();
+	}
+
+	[Test]
 	public void WhenEvaluationYieldsOnABlockedSynchronizationContext_ShouldNotDeadlock()
 	{
 		bool completed = BlockedSynchronizationContext.Run(()

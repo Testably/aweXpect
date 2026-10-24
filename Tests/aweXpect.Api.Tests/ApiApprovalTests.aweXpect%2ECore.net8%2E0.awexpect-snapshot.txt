@@ -1680,12 +1680,6 @@ namespace aweXpect.Results
             public TResult And(long maximum) { }
         }
     }
-    public class AndOrResult<TThat> : aweXpect.Results.ExpectationResult
-    {
-        public AndOrResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue) { }
-        public TThat And { get; }
-        public TThat Or { get; }
-    }
     public class AndOrResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.AndOrResult<TType, TThat>>
     {
         public AndOrResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue) { }
@@ -1718,7 +1712,7 @@ namespace aweXpect.Results
             public aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult AndWhose<TMember>(System.Func<TType, TMember?> memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
         }
     }
-    public class AndResult<TThat> : aweXpect.Results.ExpectationResult
+    public class AndResult<TThat> : aweXpect.Results.ExpectationResultWithoutValue<aweXpect.Results.AndResult<TThat>>
     {
         public AndResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue) { }
         public TThat And { get; }
@@ -1773,12 +1767,12 @@ namespace aweXpect.Results
         public TTarget Once() { }
         public TTarget Twice() { }
     }
-    public class DelegateWithOptionalValueResult<T> : aweXpect.Results.ExpectationResult
+    public class DelegateWithOptionalValueResult<T> : aweXpect.Results.ExpectationResultWithoutValue<aweXpect.Results.DelegateWithOptionalValueResult<T>>
     {
         public DelegateWithOptionalValueResult(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
         public aweXpect.Core.IThat<T> WhoseResult { get; }
     }
-    public class DelegateWithValueResult<T> : aweXpect.Results.ExpectationResult<T>
+    public class DelegateWithValueResult<T> : aweXpect.Results.ExpectationResult<T, aweXpect.Results.DelegateWithValueResult<T>>
     {
         public DelegateWithValueResult(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
         public aweXpect.Core.IThat<T> WhoseResult { get; }
@@ -1802,17 +1796,9 @@ namespace aweXpect.Results
         public aweXpect.Results.ExecutesInToleranceResult<TResult> AllowingExceptions(bool allowExceptions = true) { }
         public TResult Within(System.TimeSpan tolerance) { }
     }
-    [System.Diagnostics.StackTraceHidden]
-    public class ExpectationResult : aweXpect.Core.Expectation
+    public class ExpectationResult : aweXpect.Results.ExpectationResultWithoutValue<aweXpect.Results.ExpectationResult>
     {
         public ExpectationResult(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
-        protected aweXpect.Core.ExpectationBuilder ExpectationBuilder { get; }
-        public aweXpect.Results.ExpectationResult Because(System.Threading.Tasks.Task<string?> reason) { }
-        public aweXpect.Results.ExpectationResult Because(string? reason) { }
-        public System.Runtime.CompilerServices.TaskAwaiter GetAwaiter() { }
-        public override string? ToString() { }
-        public aweXpect.Results.ExpectationResult WithCancellation(System.Threading.CancellationToken cancellationToken) { }
-        public aweXpect.Results.ExpectationResult WithTimeout(System.TimeSpan timeout) { }
     }
     public class ExpectationResult<TType> : aweXpect.Results.ExpectationResult<TType, aweXpect.Results.ExpectationResult<TType>>
     {
@@ -1827,6 +1813,18 @@ namespace aweXpect.Results
         public TSelf Because(string? reason) { }
         [System.Diagnostics.StackTraceHidden]
         public System.Runtime.CompilerServices.ValueTaskAwaiter<TType> GetAwaiter() { }
+        public override string? ToString() { }
+        public TSelf WithCancellation(System.Threading.CancellationToken cancellationToken) { }
+        public TSelf WithTimeout(System.TimeSpan timeout) { }
+    }
+    [System.Diagnostics.StackTraceHidden]
+    public class ExpectationResultWithoutValue<TSelf> : aweXpect.Core.Expectation where TSelf : aweXpect.Results.ExpectationResultWithoutValue<TSelf>
+    {
+        public ExpectationResultWithoutValue(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
+        protected aweXpect.Core.ExpectationBuilder ExpectationBuilder { get; }
+        public TSelf Because(System.Threading.Tasks.Task<string?> reason) { }
+        public TSelf Because(string? reason) { }
+        public System.Runtime.CompilerServices.TaskAwaiter GetAwaiter() { }
         public override string? ToString() { }
         public TSelf WithCancellation(System.Threading.CancellationToken cancellationToken) { }
         public TSelf WithTimeout(System.TimeSpan timeout) { }
@@ -2092,13 +2090,13 @@ namespace aweXpect.Synchronous
     {
         public static TType Verify<TType, TSelf>(aweXpect.Results.ExpectationResult<TType, TSelf> result) where TSelf : aweXpect.Results.ExpectationResult<TType, TSelf> { }
         public static void Verify(aweXpect.Core.Expectation.Combination combination) { }
-        public static void Verify(aweXpect.Results.ExpectationResult result) { }
+        public static void Verify<TSelf>(aweXpect.Results.ExpectationResultWithoutValue<TSelf> result) where TSelf : aweXpect.Results.ExpectationResultWithoutValue<TSelf> { }
     }
     public static class SynchronouslyExtensions
     {
         public static TType VerifySynchronously<TType, TSelf>(this aweXpect.Results.ExpectationResult<TType, TSelf> result) where TSelf : aweXpect.Results.ExpectationResult<TType, TSelf> { }
         public static void VerifySynchronously(this aweXpect.Core.Expectation.Combination combination) { }
-        public static void VerifySynchronously(this aweXpect.Results.ExpectationResult result) { }
+        public static void VerifySynchronously<TSelf>(this aweXpect.Results.ExpectationResultWithoutValue<TSelf> result) where TSelf : aweXpect.Results.ExpectationResultWithoutValue<TSelf> { }
     }
 }
 

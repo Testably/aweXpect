@@ -8,21 +8,6 @@ namespace aweXpect.Core.Tests.Results;
 public class AndOrResultTests
 {
 	[Test]
-	public async Task And_ShouldReturnSubject()
-	{
-		int subject = 1;
-		AndOrResult<IThat<int>> sut = CreateSut(subject);
-
-		IThat<int> result = sut.And;
-
-		async Task Act()
-			=> await result.IsEqualTo(1);
-
-		await That(Act).DoesNotThrow();
-		await That(result.Get().ExpectationBuilder.GetRootNode()).Is<AndNode>();
-	}
-
-	[Test]
 	public async Task Generic_And_ShouldReturnSubject()
 	{
 		int subject = 1;
@@ -61,42 +46,6 @@ public class AndOrResultTests
 		int result = await sut;
 
 		await That(result).IsEqualTo(subject);
-	}
-
-	[Test]
-	public async Task Or_ShouldReturnSubject()
-	{
-		int subject = 1;
-		AndOrResult<IThat<int>> sut = CreateSut(subject);
-
-		IThat<int> result = sut.Or;
-
-		async Task Act()
-			=> await result.IsEqualTo(1);
-
-		await That(Act).DoesNotThrow();
-		await That(result.Get().ExpectationBuilder.GetRootNode()).Is<OrNode>();
-	}
-
-	[Test]
-	public async Task ShouldBeAwaitable()
-	{
-		int subject = 1;
-		AndOrResult<IThat<int>> sut = CreateSut(subject);
-
-		async Task Act() => await sut;
-
-		await That(Act).DoesNotThrow();
-	}
-
-	private static AndOrResult<IThat<T>> CreateSut<T>(T subject)
-	{
-#pragma warning disable aweXpect0001
-		IThat<T> source = That(subject);
-#pragma warning restore aweXpect0001
-		return new AndOrResult<IThat<T>>(source.Get().ExpectationBuilder.AddConstraint((it, _)
-				=> new DummyConstraint(it)),
-			source);
 	}
 
 	private static AndOrResult<T, IThat<T>> CreateGenericSut<T>(T subject)

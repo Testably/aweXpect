@@ -21,7 +21,8 @@ public static class SynchronouslyExtensions
 	///     It blocks the thread until the expectation is evaluated, so only use it where awaiting is impossible, e.g.
 ///     for a <c>ref struct</c> such as <c>Span&lt;T&gt;</c>, inside a <c>lock</c> or in a synchronous callback.
 	/// </remarks>
-	public static void VerifySynchronously(this ExpectationResult result)
+	public static void VerifySynchronously<TSelf>(this ExpectationResultWithoutValue<TSelf> result)
+		where TSelf : ExpectationResultWithoutValue<TSelf>
 		=> Synchronously.Verify(result);
 
 	/// <summary>

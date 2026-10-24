@@ -12,7 +12,7 @@ namespace aweXpect.Results;
 ///     Result for a delegate with a value that does not throw.
 /// </summary>
 public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
-	: ExpectationResult<T>(expectationBuilder)
+	: ExpectationResult<T, DelegateWithValueResult<T>>(expectationBuilder)
 {
 	/// <summary>
 	///     Returns the result returned from the delegate.
