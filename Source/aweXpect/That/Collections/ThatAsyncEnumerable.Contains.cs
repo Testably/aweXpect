@@ -272,11 +272,11 @@ public static partial class ThatAsyncEnumerable
 	internal static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		ContainsFromExpectationsCore<TItem>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
-			IEnumerable<Action<IThatSubject<TItem?>>> expected,
+			IEnumerable<Action<IThatSubject<TItem>>> expected,
 			string expectedExpression,
 			bool negated)
 	{
-		IEnumerable<Action<IThatSubject<TItem?>>> expectedValues =
+		IEnumerable<Action<IThatSubject<TItem>>> expectedValues =
 			expected.ToNonEmptyValues(negated).WithoutNullElements(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;

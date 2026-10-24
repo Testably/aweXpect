@@ -138,11 +138,11 @@ public static partial class ThatAsyncEnumerable
 	internal static CollectionMatchResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		IsEqualToFromExpectationsCore<TItem>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
-			IEnumerable<Action<IThatSubject<TItem?>>>? expected,
+			IEnumerable<Action<IThatSubject<TItem>>>? expected,
 			string expectedExpression,
 			bool negated)
 	{
-		IEnumerable<Action<IThatSubject<TItem?>>>? expectedValues = expected.WithoutNullElements(negated);
+		IEnumerable<Action<IThatSubject<TItem>>>? expectedValues = expected.WithoutNullElements(negated);
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionMatchResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>(

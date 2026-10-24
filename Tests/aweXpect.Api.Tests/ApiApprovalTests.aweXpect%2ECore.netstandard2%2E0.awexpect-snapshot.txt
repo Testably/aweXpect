@@ -1494,7 +1494,7 @@ namespace aweXpect.Options
         }
         public sealed class ExpectationItem<TItem>
         {
-            public ExpectationItem(System.Action<aweXpect.Core.IThatSubject<TItem?>> expectation, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
+            public ExpectationItem(System.Action<aweXpect.Core.IThatSubject<TItem>> expectation, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
             public bool IsUndecided { get; }
             public override bool Equals(object? obj) { }
             public override int GetHashCode() { }

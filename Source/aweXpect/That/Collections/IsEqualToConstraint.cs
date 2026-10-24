@@ -627,7 +627,7 @@ internal abstract class IsEqualToFromExpectationsConstraintBase<TValue, TItem>(
 	string it,
 	ExpectationGrammars grammars,
 	string? expectedExpression,
-	IEnumerable<Action<IThatSubject<TItem?>>>? expected,
+	IEnumerable<Action<IThatSubject<TItem>>>? expected,
 	CollectionMatchOptions matchOptions,
 	bool failsForNullSubject)
 	: CollectionMatchConstraintBase<TValue>(it, grammars, expected is null, failsForNullSubject, matchOptions)
@@ -635,7 +635,7 @@ internal abstract class IsEqualToFromExpectationsConstraintBase<TValue, TItem>(
 	private CollectionMatchOptions.ExpectationItem<TItem>[] _expectations = [];
 
 	// Not reset by Start, so that a sequence that is not a collection is enumerated once for all evaluations.
-	private ICollection<Action<IThatSubject<TItem?>>>? _materializedExpected;
+	private ICollection<Action<IThatSubject<TItem>>>? _materializedExpected;
 	private bool _showsExpected;
 
 	/// <inheritdoc />
@@ -657,7 +657,7 @@ internal abstract class IsEqualToFromExpectationsConstraintBase<TValue, TItem>(
 			return null;
 		}
 
-		_materializedExpected ??= expected as ICollection<Action<IThatSubject<TItem?>>> ?? expected.ToArray();
+		_materializedExpected ??= expected as ICollection<Action<IThatSubject<TItem>>> ?? expected.ToArray();
 		_expectations = _materializedExpected.Select(expectation
 				=> new CollectionMatchOptions.ExpectationItem<TItem>(expectation,
 					Grammars & ~ExpectationGrammars.Negated,
@@ -697,7 +697,7 @@ internal sealed class IsEqualToFromExpectationsConstraint<TEnumerable, TItem, TM
 	string it,
 	ExpectationGrammars grammars,
 	string? expectedExpression,
-	IEnumerable<Action<IThatSubject<TItem?>>>? expected,
+	IEnumerable<Action<IThatSubject<TItem>>>? expected,
 	CollectionMatchOptions matchOptions,
 	bool failsForNullSubject = false)
 	: IsEqualToFromExpectationsConstraintBase<TEnumerable?, TItem>(it, grammars, expectedExpression,
@@ -869,7 +869,7 @@ internal sealed class AsyncIsEqualToFromExpectationsConstraint<TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
 	string expectedExpression,
-	IEnumerable<Action<IThatSubject<TItem?>>>? expected,
+	IEnumerable<Action<IThatSubject<TItem>>>? expected,
 	CollectionMatchOptions matchOptions,
 	bool failsForNullSubject = false)
 	: IsEqualToFromExpectationsConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, expectedExpression,
