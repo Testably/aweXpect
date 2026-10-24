@@ -314,10 +314,10 @@ public sealed partial class ExpectedSerializerOptionsTests
 	[Test]
 	public async Task WithSerializerOptions_WhenNull_ShouldThrowArgumentNullException()
 	{
-		JsonOptions sut = await JsonOptionsTests.DefaultOptions();
+		JsonElement subject = Parse("1");
 
-		void Act()
-			=> sut.WithSerializerOptions(null!);
+		async Task Act()
+			=> await That(subject).MatchesExactly(1, o => o.WithSerializerOptions(null!));
 
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("serializerOptions").And
