@@ -468,6 +468,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
@@ -548,7 +554,8 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
@@ -632,7 +639,8 @@ window.BENCHMARK_DATA = {
           222.87557382583617,
           383.17745078404744,
           412.76016426086426,
-          413.8617702211653
+          413.8617702211653,
+          230.41401382593008
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -676,6 +684,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -813,7 +822,8 @@ window.BENCHMARK_DATA = {
           547.8302759806315,
           953.1084223429363,
           1039.4963851341834,
-          1012.7240455627441
+          1012.7240455627441,
+          585.3375666936239
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -825,6 +835,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1384,6 +1395,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
@@ -1464,7 +1481,8 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
@@ -1548,7 +1566,8 @@ window.BENCHMARK_DATA = {
           112.87162331172398,
           183.05687061945596,
           210.67126162846884,
-          204.14735911687214
+          204.14735911687214,
+          106.93414230530078
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1596,6 +1615,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -1729,7 +1749,8 @@ window.BENCHMARK_DATA = {
           158.33815803527833,
           260.6052479426066,
           282.18141657511393,
-          257.3448562939962
+          257.3448562939962,
+          135.88817761739094
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1741,6 +1762,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -2240,6 +2262,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
@@ -2310,7 +2338,8 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
@@ -2384,7 +2413,8 @@ window.BENCHMARK_DATA = {
           352.3491025311606,
           565.3211576461792,
           671.1110255559286,
-          625.4612544377645
+          625.4612544377645,
+          368.15118753910065
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2418,6 +2448,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -2545,7 +2576,8 @@ window.BENCHMARK_DATA = {
           538.6996406408457,
           894.2586400849478,
           1056.425248336792,
-          960.7464949289957
+          960.7464949289957,
+          538.7910346984863
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2557,6 +2589,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -3046,6 +3079,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
@@ -3116,7 +3155,8 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
@@ -3190,7 +3230,8 @@ window.BENCHMARK_DATA = {
           1059.6640184842622,
           1646.5433853694371,
           1711.952152633667,
-          1772.881751759847
+          1772.881751759847,
+          1104.8566191746638
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3224,6 +3265,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -3351,7 +3393,8 @@ window.BENCHMARK_DATA = {
           10854.874990190778,
           17582.774169921875,
           22609.194880167644,
-          20965.88822065081
+          20965.88822065081,
+          11042.498340861002
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3422,6 +3465,7 @@ window.BENCHMARK_DATA = {
           34712,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -3852,6 +3896,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
@@ -3922,7 +3972,8 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
@@ -3996,7 +4047,8 @@ window.BENCHMARK_DATA = {
           377.5990890094212,
           638.7152755601065,
           687.5476997375488,
-          745.1118661880494
+          745.1118661880494,
+          380.1355583667755
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4026,6 +4078,7 @@ window.BENCHMARK_DATA = {
           1408,
           1408,
           1120,
+          1080,
           1080,
           1080,
           1080,
@@ -4157,7 +4210,8 @@ window.BENCHMARK_DATA = {
           809.5433173546425,
           1262.2933538981847,
           1448.0826936449323,
-          1323.6651947021485
+          1323.6651947021485,
+          707.9585289001465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4169,6 +4223,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -4658,6 +4713,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
@@ -4728,7 +4789,8 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
@@ -4802,7 +4864,8 @@ window.BENCHMARK_DATA = {
           687.937394062678,
           1030.1249033610027,
           1138.9138442993165,
-          1098.5001433445857
+          1098.5001433445857,
+          640.2496321996053
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4836,6 +4899,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -4963,7 +5027,8 @@ window.BENCHMARK_DATA = {
           493.63346726553783,
           763.5152582441058,
           860.174117565155,
-          740.7243648937771
+          740.7243648937771,
+          425.13423497336254
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4975,6 +5040,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
