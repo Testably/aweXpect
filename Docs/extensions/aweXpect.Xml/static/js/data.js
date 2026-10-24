@@ -516,6 +516,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -604,7 +610,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -696,7 +703,8 @@ window.BENCHMARK_DATA = {
           786.9106901804606,
           535.1321917374929,
           371.48939200810025,
-          731.1171910921732
+          731.1171910921732,
+          578.5845244481013
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -736,6 +744,7 @@ window.BENCHMARK_DATA = {
           1160,
           1160,
           1160,
+          1120,
           1120,
           1120,
           1120,
@@ -893,7 +902,8 @@ window.BENCHMARK_DATA = {
           677.5861765316555,
           579.5811695371356,
           333.49723625183105,
-          732.5181983947754
+          732.5181983947754,
+          562.030303700765
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -905,6 +915,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -1520,6 +1531,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -1608,7 +1625,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -1700,7 +1718,8 @@ window.BENCHMARK_DATA = {
           4415.6176900227865,
           3260.9461220961352,
           2635.628235880534,
-          4892.531984965007
+          4892.531984965007,
+          3439.1511510213218
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1772,6 +1791,7 @@ window.BENCHMARK_DATA = {
           24047,
           24114,
           24047,
+          24119,
           24119,
           24119,
           24119,
@@ -1897,7 +1917,8 @@ window.BENCHMARK_DATA = {
           5069.611690227802,
           3922.5485727945966,
           2845.152089436849,
-          5567.349698893229
+          5567.349698893229,
+          3817.41641671317
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1909,6 +1930,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -2464,6 +2486,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -2542,7 +2570,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -2624,7 +2653,8 @@ window.BENCHMARK_DATA = {
           2676.6508934020994,
           1876.2194380078997,
           1369.043931520902,
-          2737.9994013468427
+          2737.9994013468427,
+          2082.167187030499
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2711,7 +2741,8 @@ window.BENCHMARK_DATA = {
           12856,
           12780,
           12780,
-          12780
+          12780,
+          12856
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2801,7 +2832,8 @@ window.BENCHMARK_DATA = {
           3394.0853655497235,
           2579.708838242751,
           1842.628172047933,
-          3720.0865071614585
+          3720.0865071614585,
+          2863.505627187093
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2813,6 +2845,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -3358,6 +3391,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -3436,7 +3475,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -3518,7 +3558,8 @@ window.BENCHMARK_DATA = {
           14205.218841552734,
           10664.058569771903,
           7648.511424255371,
-          14355.400197347006
+          14355.400197347006,
+          10510.61460571289
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3605,7 +3646,8 @@ window.BENCHMARK_DATA = {
           25568,
           25494,
           25494,
-          25494
+          25494,
+          25568
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3695,7 +3737,8 @@ window.BENCHMARK_DATA = {
           358449.90481770836,
           211837.90339006696,
           180366.3747639974,
-          373493.0899414063
+          373493.0899414063,
+          252144.77561848957
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3781,6 +3824,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544245,
+          544335,
           544335,
           544335
         ],
