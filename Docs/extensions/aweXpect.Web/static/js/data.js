@@ -600,6 +600,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:56:57 2026 \u002B0200",
         "message": "refactor!: hide the public plumbing of aweXpect.Core (#2002)"
+      },
+      {
+        "sha": "b7f4f05b9482287de98e19c9af9e73893d007d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
+        "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
       }
     ],
     "labels": [
@@ -702,7 +708,8 @@ window.BENCHMARK_DATA = {
       "f19d2281",
       "5703bc6b",
       "7d17a8ab",
-      "5d9a56d9"
+      "5d9a56d9",
+      "b7f4f05b"
     ],
     "datasets": [
       {
@@ -808,7 +815,8 @@ window.BENCHMARK_DATA = {
           398.35737838745115,
           226.28219922383627,
           394.73227947098866,
-          192.5266225973765
+          192.5266225973765,
+          410.2365667819977
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -852,6 +860,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -1033,7 +1042,8 @@ window.BENCHMARK_DATA = {
           948.1669720869797,
           552.51024048669,
           917.1831768035888,
-          467.0176292101542
+          467.0176292101542,
+          1007.7311004638672
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1045,6 +1055,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1758,6 +1769,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:56:57 2026 \u002B0200",
         "message": "refactor!: hide the public plumbing of aweXpect.Core (#2002)"
+      },
+      {
+        "sha": "b7f4f05b9482287de98e19c9af9e73893d007d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
+        "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
       }
     ],
     "labels": [
@@ -1860,7 +1877,8 @@ window.BENCHMARK_DATA = {
       "f19d2281",
       "5703bc6b",
       "7d17a8ab",
-      "5d9a56d9"
+      "5d9a56d9",
+      "b7f4f05b"
     ],
     "datasets": [
       {
@@ -1966,7 +1984,8 @@ window.BENCHMARK_DATA = {
           199.86948927811213,
           105.66829151373643,
           198.73733024937766,
-          95.51217988332112
+          95.51217988332112,
+          191.6370835854457
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2014,6 +2033,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -2191,7 +2211,8 @@ window.BENCHMARK_DATA = {
           243.81545237132482,
           139.0907293319702,
           236.43879178592138,
-          124.03376846654075
+          124.03376846654075,
+          247.0366392771403
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2203,6 +2224,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -2856,6 +2878,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:56:57 2026 \u002B0200",
         "message": "refactor!: hide the public plumbing of aweXpect.Core (#2002)"
+      },
+      {
+        "sha": "b7f4f05b9482287de98e19c9af9e73893d007d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
+        "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
       }
     ],
     "labels": [
@@ -2948,7 +2976,8 @@ window.BENCHMARK_DATA = {
       "f19d2281",
       "5703bc6b",
       "7d17a8ab",
-      "5d9a56d9"
+      "5d9a56d9",
+      "b7f4f05b"
     ],
     "datasets": [
       {
@@ -3044,7 +3073,8 @@ window.BENCHMARK_DATA = {
           602.429693882282,
           336.834752813975,
           633.1192996978759,
-          305.11236355854913
+          305.11236355854913,
+          615.512622833252
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3078,6 +3108,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -3249,7 +3280,8 @@ window.BENCHMARK_DATA = {
           934.6151384206919,
           544.5173427875226,
           903.2982810565403,
-          468.5191352707999
+          468.5191352707999,
+          932.8774153164455
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3261,6 +3293,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -3904,6 +3937,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:56:57 2026 \u002B0200",
         "message": "refactor!: hide the public plumbing of aweXpect.Core (#2002)"
+      },
+      {
+        "sha": "b7f4f05b9482287de98e19c9af9e73893d007d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
+        "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
       }
     ],
     "labels": [
@@ -3996,7 +4035,8 @@ window.BENCHMARK_DATA = {
       "f19d2281",
       "5703bc6b",
       "7d17a8ab",
-      "5d9a56d9"
+      "5d9a56d9",
+      "b7f4f05b"
     ],
     "datasets": [
       {
@@ -4092,7 +4132,8 @@ window.BENCHMARK_DATA = {
           1682.992104750413,
           1054.0428434371947,
           1649.8458331181453,
-          966.8560736338297
+          966.8560736338297,
+          1783.5405803407941
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4126,6 +4167,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -4297,7 +4339,8 @@ window.BENCHMARK_DATA = {
           20210.343588692802,
           10858.554996744791,
           20279.937778727213,
-          9109.606759643555
+          9109.606759643555,
+          23612.004082815987
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4394,6 +4437,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -4952,6 +4996,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:56:57 2026 \u002B0200",
         "message": "refactor!: hide the public plumbing of aweXpect.Core (#2002)"
+      },
+      {
+        "sha": "b7f4f05b9482287de98e19c9af9e73893d007d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
+        "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
       }
     ],
     "labels": [
@@ -5044,7 +5094,8 @@ window.BENCHMARK_DATA = {
       "f19d2281",
       "5703bc6b",
       "7d17a8ab",
-      "5d9a56d9"
+      "5d9a56d9",
+      "b7f4f05b"
     ],
     "datasets": [
       {
@@ -5140,7 +5191,8 @@ window.BENCHMARK_DATA = {
           648.0986965043204,
           364.5047551668607,
           682.1333766664777,
-          352.581090259552
+          352.581090259552,
+          703.9267375946044
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5170,6 +5222,7 @@ window.BENCHMARK_DATA = {
           1408,
           1408,
           1120,
+          1080,
           1080,
           1080,
           1080,
@@ -5345,7 +5398,8 @@ window.BENCHMARK_DATA = {
           1324.9387998580933,
           707.3799436887106,
           1258.8771352132162,
-          631.5017298062643
+          631.5017298062643,
+          1409.5004053751627
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5357,6 +5411,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -6000,6 +6055,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:56:57 2026 \u002B0200",
         "message": "refactor!: hide the public plumbing of aweXpect.Core (#2002)"
+      },
+      {
+        "sha": "b7f4f05b9482287de98e19c9af9e73893d007d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
+        "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
       }
     ],
     "labels": [
@@ -6092,7 +6153,8 @@ window.BENCHMARK_DATA = {
       "f19d2281",
       "5703bc6b",
       "7d17a8ab",
-      "5d9a56d9"
+      "5d9a56d9",
+      "b7f4f05b"
     ],
     "datasets": [
       {
@@ -6188,7 +6250,8 @@ window.BENCHMARK_DATA = {
           1080.020769412701,
           621.452502822876,
           1081.0616600854057,
-          580.2710478122418
+          580.2710478122418,
+          1125.6362609863281
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6222,6 +6285,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -6393,7 +6457,8 @@ window.BENCHMARK_DATA = {
           733.2570141474406,
           431.39760633877347,
           705.5220362345377,
-          378.39466791152955
+          378.39466791152955,
+          744.1103338514056
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6405,6 +6470,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
