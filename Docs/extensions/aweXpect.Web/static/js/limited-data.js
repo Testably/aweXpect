@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
-        "message": "refactor!: take nested JSON expectations as an Action (#1937)"
-      },
-      {
         "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
-      "fc3af334",
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          402.8297758102417,
           313.5394807815552,
           367.46315101214816,
           387.323452105889,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           409.32089284750134,
           344.3765674273173,
           443.42809163607086,
-          356.7696855068207
+          356.7696855068207,
+          416.48378423282077
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          989.0161020914713,
           812.6626326243082,
           1085.5130675179619,
           1017.244617325919,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           966.4597745622907,
           990.0870785032,
           1005.3163151059832,
-          943.3736949920655
+          943.3736949920655,
+          1097.9800065994264
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
-        "message": "refactor!: take nested JSON expectations as an Action (#1937)"
-      },
-      {
         "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
-      "fc3af334",
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          188.68938121795654,
           161.38451027870178,
           196.80615649223327,
           184.33467540740966,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           204.8996229512351,
           191.2691992010389,
           200.2507420539856,
-          189.04937202135721
+          189.04937202135721,
+          196.80501375198364
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          250.58998107910156,
           226.80491277149744,
           299.2352420171102,
           245.9917560895284,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           268.6409015973409,
           268.8747660432543,
           268.615898166384,
-          263.35365692774457
+          263.35365692774457,
+          271.6400808606829
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
-        "message": "refactor!: take nested JSON expectations as an Action (#1937)"
-      },
-      {
         "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
-      "fc3af334",
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          618.0547684987386,
           496.79806166428784,
           589.1827468236287,
           592.3354431152344,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           665.044859568278,
           592.4834735734122,
           630.8778647104899,
-          570.9022811253866
+          570.9022811253866,
+          607.3748012270246
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          934.4378175001877,
           820.1712608337402,
           1002.5956145066482,
           949.1115576426188,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           930.6448301587786,
           949.3286008834839,
           1025.7848145802816,
-          909.4116854985555
+          909.4116854985555,
+          1039.7940177281698
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
-        "message": "refactor!: take nested JSON expectations as an Action (#1937)"
-      },
-      {
         "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
-      "fc3af334",
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1841.6635111490884,
           1270.9593681922327,
           1354.2231997081212,
           1617.6525829315185,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1724.9559368133546,
           1258.729504585266,
           1703.9086700439452,
-          1292.0750061915471
+          1292.0750061915471,
+          1769.8177486419677
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          23258.36558227539,
           13445.226335797992,
           15357.098996675932,
           20450.44499308268,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           21102.107744489396,
           14823.98594556536,
           22255.65346883138,
-          14773.613700279822
+          14773.613700279822,
+          19042.2948832194
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          34713,
           34712,
           34712,
           34713,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34713,
           34712,
           34713,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
-        "message": "refactor!: take nested JSON expectations as an Action (#1937)"
-      },
       {
         "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
-      "fc3af334",
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          678.6202979769025,
           550.5181542714437,
           616.3446112360273,
           695.8637508392334,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           712.9255067280361,
           607.8492760976155,
           768.3135033925374,
-          585.1712422688802
+          585.1712422688802,
+          665.4601954142253
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1364.8793743678502,
           1140.2347684224446,
           1405.9346648624964,
           1288.2501042683919,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1297.702448299953,
           1254.8571048464094,
           1310.455684153239,
-          1247.9527597427368
+          1247.9527597427368,
+          1374.1340159098306
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
-        "message": "refactor!: take nested JSON expectations as an Action (#1937)"
-      },
-      {
         "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
-      "fc3af334",
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1111.4268319056584,
           833.8486576080322,
           891.6429926798894,
           1071.2037959780012,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1120.2399353299822,
           918.1541979129498,
           1089.6834097544352,
-          853.8127340316772
+          853.8127340316772,
+          1086.208152516683
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          790.3754138946533,
           683.5088927586874,
           845.3514110565186,
           729.7602513177054,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           812.6957330067952,
           819.4260051591056,
           760.8382181803386,
-          753.312181854248
+          753.312181854248,
+          808.1741786956787
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
