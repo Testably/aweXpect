@@ -11,18 +11,9 @@ public static partial class ThatAsyncEnumerable
 	///     Verifies that in the collection all items…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static Elements<TItem> All<TItem>(
+	public static IQuantifiedAsyncEnumerableItems<TItem> All<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject)
-		=> new(subject,
-			EnumerableQuantifier.All());
-
-	/// <summary>
-	///     Verifies that in the collection all items…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static Elements All(
-		this IThat<IAsyncEnumerable<string?>?> subject)
-		=> new(subject,
+		=> new Items<TItem>(subject,
 			EnumerableQuantifier.All());
 }
 #endif

@@ -227,7 +227,7 @@ public partial class CollectionMatchOptions(
 		IEnumerable<Expression<Func<TItem, bool>>> expected)
 		where TItem : TMatch
 	{
-		Expression<Func<TItem, bool>>[] predicates = WithoutNullElements(expected, nameof(expected));
+		Expression<Func<TItem, bool>>[] predicates = WithoutNullItems(expected, nameof(expected));
 		return (_inAnyOrder, _ignoringDuplicates) switch
 		{
 			(true, true) => new AnyOrderIgnoreDuplicatesFromPredicateCollectionMatcher<TItem, TMatch>(
@@ -252,7 +252,7 @@ public partial class CollectionMatchOptions(
 		IEnumerable<ExpectationItem<TItem>> expected)
 		where TItem : TMatch
 	{
-		ExpectationItem<TItem>[] expectations = WithoutNullElements(expected, nameof(expected));
+		ExpectationItem<TItem>[] expectations = WithoutNullItems(expected, nameof(expected));
 		return (_inAnyOrder, _ignoringDuplicates) switch
 		{
 			(true, true) => new AnyOrderIgnoreDuplicatesFromExpectationCollectionMatcher<TItem, TMatch>(
@@ -271,18 +271,18 @@ public partial class CollectionMatchOptions(
 	///     Materializes the <paramref name="expected" /> predicates or expectations, which the matcher needs anyway,
 	///     and rejects a <see langword="null" /> one, because it could not be evaluated for any item.
 	/// </summary>
-	private static T[] WithoutNullElements<T>(IEnumerable<T> expected, string paramName)
+	private static T[] WithoutNullItems<T>(IEnumerable<T> expected, string paramName)
 		where T : class
 	{
-		T[] elements = expected as T[] ?? expected.ToArray();
-		if (elements.Any(element => element is null))
+		T[] items = expected as T[] ?? expected.ToArray();
+		if (items.Any(item => item is null))
 		{
 			// ReSharper disable once LocalizableElement
 			throw Tracing.WriteException(new ArgumentException(
 				$"The '{paramName}' collection cannot contain <null>.", paramName));
 		}
 
-		return elements;
+		return items;
 	}
 
 	/// <summary>

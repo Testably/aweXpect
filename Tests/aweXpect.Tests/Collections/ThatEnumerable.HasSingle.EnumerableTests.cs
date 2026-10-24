@@ -327,7 +327,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
-			public async Task WhenEnumerableContainsNoMatchingElements_ShouldFail()
+			public async Task WhenEnumerableContainsNoMatchingItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,], x => new MyBaseClass(x));
 

@@ -17,12 +17,12 @@ public class ExceptionHelpersTests
 	}
 
 	[Test]
-	public async Task WithoutNullElements_WhenCollectionContainsNull_ShouldThrowAtTheCall()
+	public async Task WithoutNullItems_WhenCollectionContainsNull_ShouldThrowAtTheCall()
 	{
 		string[] parameter = ["a", null!,];
 
 		void Act()
-			=> _ = parameter.WithoutNullElements();
+			=> _ = parameter.WithoutNullItems();
 
 		await That(Act).Throws<ArgumentException>()
 			.WithParamName("parameter").And
@@ -30,23 +30,23 @@ public class ExceptionHelpersTests
 	}
 
 	[Test]
-	public async Task WithoutNullElements_WhenCollectionHasNoNull_ShouldReturnTheSameInstance()
+	public async Task WithoutNullItems_WhenCollectionHasNoNull_ShouldReturnTheSameInstance()
 	{
 		string[] parameter = ["a", "b",];
 
-		IEnumerable<string> result = parameter.WithoutNullElements();
+		IEnumerable<string> result = parameter.WithoutNullItems();
 
 		await That(result).IsSameAs(parameter);
 	}
 
 	[Test]
-	public async Task WithoutNullElements_WhenCollectionOfALessSpecificTypeContainsNull_ShouldThrowAtTheCall()
+	public async Task WithoutNullItems_WhenCollectionOfALessSpecificTypeContainsNull_ShouldThrowAtTheCall()
 	{
 		List<Action<object>> list = [_ => { }, null!,];
 		IEnumerable<Action<string>> parameter = list;
 
 		void Act()
-			=> _ = parameter.WithoutNullElements();
+			=> _ = parameter.WithoutNullItems();
 
 		await That(Act).Throws<ArgumentException>()
 			.WithParamName("parameter");
@@ -55,13 +55,13 @@ public class ExceptionHelpersTests
 	[Test]
 	[Arguments(false, "expected")]
 	[Arguments(true, "unexpected")]
-	public async Task WithoutNullElements_WhenNegated_ShouldNameTheParameterAfterThePolarity(bool negated,
+	public async Task WithoutNullItems_WhenNegated_ShouldNameTheParameterAfterThePolarity(bool negated,
 		string expectedParamName)
 	{
 		string[] parameter = [null!,];
 
 		void Act()
-			=> _ = parameter.WithoutNullElements(negated);
+			=> _ = parameter.WithoutNullItems(negated);
 
 		await That(Act).Throws<ArgumentException>()
 			.WithParamName(expectedParamName).And
@@ -69,17 +69,17 @@ public class ExceptionHelpersTests
 	}
 
 	[Test]
-	public async Task WithoutNullElements_WhenNull_ShouldReturnNull()
+	public async Task WithoutNullItems_WhenNull_ShouldReturnNull()
 	{
 		IEnumerable<string>? parameter = null;
 
-		IEnumerable<string>? result = parameter.WithoutNullElements();
+		IEnumerable<string>? result = parameter.WithoutNullItems();
 
 		await That(result).IsNull();
 	}
 
 	[Test]
-	public async Task WithoutNullElements_WhenSequenceContainsNull_ShouldOnlyThrowWhenTheNullIsEnumerated()
+	public async Task WithoutNullItems_WhenSequenceContainsNull_ShouldOnlyThrowWhenTheNullIsEnumerated()
 	{
 		int enumerations = 0;
 
@@ -90,7 +90,7 @@ public class ExceptionHelpersTests
 			yield return null!;
 		}
 
-		IEnumerable<string> result = Parameter().WithoutNullElements(true);
+		IEnumerable<string> result = Parameter().WithoutNullItems(true);
 		int enumerationsAfterTheCall = enumerations;
 		string firstElement = result.First();
 
@@ -105,7 +105,7 @@ public class ExceptionHelpersTests
 	}
 
 	[Test]
-	public async Task WithoutNullElements_WhenSequenceHasNoNull_ShouldEnumerateItOncePerEnumeration()
+	public async Task WithoutNullItems_WhenSequenceHasNoNull_ShouldEnumerateItOncePerEnumeration()
 	{
 		int enumerations = 0;
 
@@ -116,7 +116,7 @@ public class ExceptionHelpersTests
 			yield return "b";
 		}
 
-		IEnumerable<string> result = Parameter().WithoutNullElements();
+		IEnumerable<string> result = Parameter().WithoutNullItems();
 		string[] elements = result.ToArray();
 
 		await That(elements).IsEqualTo(["a", "b",]);

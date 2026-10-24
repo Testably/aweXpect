@@ -2041,7 +2041,7 @@ public sealed partial class ThatObject
 		public sealed class RecursionTests
 		{
 			[Test]
-			public async Task WhenCollectionContainsSameInstanceTwice_ShouldCompareBothElements()
+			public async Task WhenCollectionContainsSameInstanceTwice_ShouldCompareBothItems()
 			{
 				InnerClass shared = new()
 				{

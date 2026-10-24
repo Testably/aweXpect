@@ -112,13 +112,11 @@ internal enum PredicateKind
 ///     One item type whose collections the expectation extends, with its own constraints.
 /// </summary>
 /// <param name="ItemType">The type of the items.</param>
-/// <param name="IsString">Whether the item type is <see langword="string" />, whose collections have their own elements.</param>
 /// <param name="ConstraintPrefix">The prefix of the names of the nested constraint classes.</param>
 /// <param name="FailsOnNull">Whether a <see langword="null" /> item does not match.</param>
 /// <param name="ItemArgument">The expression that passes the <c>item</c> to the predicate.</param>
 internal readonly record struct ItemModel(
 	string ItemType,
-	bool IsString,
 	string ConstraintPrefix,
 	bool FailsOnNull,
 	string ItemArgument);

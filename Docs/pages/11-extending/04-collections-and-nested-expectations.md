@@ -252,18 +252,21 @@ if (EquivalencyExpectations.TryGetBuilder(expectedValue, out EquivalencyExpectat
 
 ## Expectations on collection items
 
-An expectation on the items of a collection, i.e. an extension method on `IEnumerableElements<TItem>`, which
-`All()`, `AtLeast(2)` and the other quantifiers return, derives from `QuantifiedCollectionConstraint<TValue, TItem>`.
-`IEnumerableElements<TItem>` gives access to the quantifier and the subject. For a condition on a single item,
+An expectation on the items of a collection, i.e. an extension method on `IEnumerableItems<TItem>`, the items that
+`All()`, `AtLeast(2)` and the other quantifiers select, derives from `QuantifiedCollectionConstraint<TValue, TItem>`.
+`IEnumerableItems<TItem>` gives access to the quantifier and the subject. The built-in expectations on the items, like
+`Satisfy` or `AreEqualTo`, are such extension methods as well. The quantifiers return the derived
+`IQuantifiedEnumerableItems<TItem>`, which only adds the type checks `Are<TType>()` and `AreExactly<TType>()`, whose
+type argument cannot be inferred. For a condition on a single item,
 [`[GenerateCollectionExpectation]`](./01-generated-expectations.md#collections) generates such an expectation.
 
 ```csharp
 public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> AreRadioFriendly(
-    this IEnumerableElements<Track> elements)
+    this IEnumerableItems<Track> items)
 {
-    return new(elements.Subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new AreRadioFriendlyConstraint(it, grammars, elements.Quantifier)),
-        elements.Subject);
+    return new(items.Subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+            => new AreRadioFriendlyConstraint(it, grammars, items.Quantifier)),
+        items.Subject);
 }
 
 private sealed class AreRadioFriendlyConstraint(
@@ -305,11 +308,14 @@ await Expect.That(tracks).All().AreRadioFriendly();
 - The expectation text is for a single item and is never negated, as the quantifier carries the negation. The
   `Plural` grammar asks for the plural form, e.g. in "whose Tracks are radio friendly for at least 2 items".
 - The verb completes the result, e.g. "but only 1 of 3 were".
-- The other collections have their own interfaces: `IEnumerableStringElements` for strings,
-  `INonGenericEnumerableElements<TEnumerable>` for a non-generic `IEnumerable`,
-  `IStructEnumerableElements<TEnumerable, TItem>` and `IStructEnumerableStringElements<TEnumerable>` for an
-  `ImmutableArray`, and `IAsyncEnumerableElements<TItem>` and `IAsyncEnumerableStringElements` for an
-  `IAsyncEnumerable`.
+- The other collections have their own interfaces: `INonGenericEnumerableItems<TCollection>` for a non-generic
+  `IEnumerable`, `IStructEnumerableItems<TCollection, TItem>` for an `ImmutableArray` and
+  `IAsyncEnumerableItems<TItem>` for an `IAsyncEnumerable`. Strings have no interface of their own: an expectation
+  only for strings extends `IEnumerableItems<string?>`, and overload resolution prefers it over an expectation on
+  `IEnumerableItems<TItem>`.
+- The interfaces are covariant in `TItem`, so an expectation on the items of `Track?` also applies to the items of a
+  `List<Track>` or of a collection of a type derived from `Track`. Extend `IEnumerableItems<Track?>` to cover both
+  nullabilities.
 
 The base class renders the quantifier like the built-in `Satisfy`, also when negated or nested, and adds the matching
 or not matching items as [context](./06-message-conventions.md#contexts).
@@ -346,10 +352,10 @@ When the caller passes expectations for the items, like the built-in `ComplyWith
 
 ```csharp
 public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> AreTracksThat(
-    this IEnumerableElements<Track> elements, Action<IThatSubject<Track>> expectations)
-    => new(elements.Subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new AreTracksThatConstraint(it, grammars, elements.Quantifier, expectations)),
-        elements.Subject);
+    this IEnumerableItems<Track> items, Action<IThatSubject<Track>> expectations)
+    => new(items.Subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+            => new AreTracksThatConstraint(it, grammars, items.Quantifier, expectations)),
+        items.Subject);
 
 private sealed class AreTracksThatConstraint
     : QuantifiedCollectionConstraintBase<IEnumerable<Track>?, Track>,

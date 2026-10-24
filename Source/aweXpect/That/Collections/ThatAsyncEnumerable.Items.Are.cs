@@ -8,13 +8,13 @@ namespace aweXpect;
 
 public static partial class ThatAsyncEnumerable
 {
-	public partial class Elements<TItem>
+	internal sealed partial class Items<TItem>
 	{
 		/// <summary>
-		///     …are exactly of type <typeparamref name="TType" />.
+		///     …are of type <typeparamref name="TType" />.
 		/// </summary>
 		public AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
-			AreExactly<TType>()
+			Are<TType>()
 		{
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
@@ -23,16 +23,16 @@ public static partial class ThatAsyncEnumerable
 						=> new AsyncCollectionConstraint<TItem>(
 							it, grammars,
 							quantifier,
-							ElementOfType<TItem, TType>.ExactlyInstance,
+							ElementOfType<TItem, TType>.Instance,
 							"were")),
 				_subject);
 		}
 
 		/// <summary>
-		///     …are exactly of type <paramref name="type" />.
+		///     …are of type <paramref name="type" />.
 		/// </summary>
 		public AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
-			AreExactly(System.Type type)
+			Are(System.Type type)
 		{
 			type.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
@@ -42,7 +42,7 @@ public static partial class ThatAsyncEnumerable
 						=> new AsyncCollectionConstraint<TItem>(
 							it, grammars,
 							state.Quantifier,
-							new ElementOfType<TItem>(state.Type, true),
+							new ElementOfType<TItem>(state.Type, false),
 							"were")),
 				_subject);
 		}

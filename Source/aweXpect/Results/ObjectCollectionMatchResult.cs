@@ -10,18 +10,18 @@ namespace aweXpect.Results;
 ///     The options are specified via <see cref="CollectionMatchOptionsExtensions" /> and
 ///     <see cref="ObjectEqualityOptionsExtensions" />.
 /// </remarks>
-public class ObjectCollectionMatchResult<TType, TThat, TElement>
-	: AndOrResult<TType, TThat, ObjectCollectionMatchResult<TType, TThat, TElement>>,
+public class ObjectCollectionMatchResult<TType, TThat, TItem>
+	: AndOrResult<TType, TThat, ObjectCollectionMatchResult<TType, TThat, TItem>>,
 		IOptionsProvider<CollectionMatchOptions>,
-		IObjectEqualityResult<ObjectCollectionMatchResult<TType, TThat, TElement>, TElement>
+		IObjectEqualityResult<ObjectCollectionMatchResult<TType, TThat, TItem>, TItem>
 {
 	private readonly CollectionMatchOptions _collectionMatchOptions;
-	private readonly ObjectEqualityOptions<TElement> _options;
+	private readonly ObjectEqualityOptions<TItem> _options;
 
 	internal ObjectCollectionMatchResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		ObjectEqualityOptions<TElement> options,
+		ObjectEqualityOptions<TItem> options,
 		CollectionMatchOptions collectionMatchOptions)
 		: base(expectationBuilder, returnValue)
 	{
@@ -30,7 +30,7 @@ public class ObjectCollectionMatchResult<TType, TThat, TElement>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ObjectEqualityOptions<TElement> IOptionsProvider<ObjectEqualityOptions<TElement>>.Options => _options;
+	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	CollectionMatchOptions IOptionsProvider<CollectionMatchOptions>.Options => _collectionMatchOptions;

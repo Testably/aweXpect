@@ -11,7 +11,7 @@ public sealed partial class ThatObject
 		public sealed class ComparingTests
 		{
 			[Test]
-			public async Task WhenCollectionOrderIsIgnored_ShouldPairTheElementsByThePredicate()
+			public async Task WhenCollectionOrderIsIgnored_ShouldPairTheItemsByThePredicate()
 			{
 				Dto[] subject = [new(1, "a"), new(2, "b"), new(3, "c"),];
 				Entity[] expected = [new(3, "c"), new(1, "a"), new(2, "b"),];

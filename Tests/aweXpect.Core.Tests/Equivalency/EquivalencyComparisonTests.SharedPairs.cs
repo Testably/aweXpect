@@ -518,7 +518,7 @@ public sealed partial class EquivalencyComparisonTests
 	[Test]
 	[Arguments(false)]
 	[Arguments(true)]
-	public async Task WhenSharedPairsShareTheActualElementOnly_ShouldCompareBothExpectedElements(
+	public async Task WhenSharedPairsShareTheActualItemOnly_ShouldCompareBothExpectedItems(
 		bool ignoreCollectionOrder)
 	{
 		Heavy actualShared = new()

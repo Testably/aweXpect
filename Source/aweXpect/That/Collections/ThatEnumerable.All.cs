@@ -15,44 +15,25 @@ public static partial class ThatEnumerable
 	///     Verifies that in the collection all items…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static Elements<TItem> All<TItem>(
+	public static IQuantifiedEnumerableItems<TItem> All<TItem>(
 		this IThat<IEnumerable<TItem>?> subject)
-		=> new(subject, EnumerableQuantifier.All());
-
-	/// <summary>
-	///     Verifies that in the collection all items…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static Elements All(
-		this IThat<IEnumerable<string?>?> subject)
-		=> new(subject, EnumerableQuantifier.All());
+		=> new Items<TItem>(subject, EnumerableQuantifier.All());
 
 	/// <summary>
 	///     Verifies that in the collection all items…
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ElementsForEnumerable<IEnumerable> All(
+	public static INonGenericEnumerableItems<IEnumerable> All(
 		this IThat<IEnumerable?> subject)
-		=> new(subject, EnumerableQuantifier.All());
+		=> new NonGenericItems<IEnumerable>(subject, EnumerableQuantifier.All());
 
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that in the collection all items…
 	/// </summary>
-	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> All<TItem>(
+	public static IStructEnumerableItems<ImmutableArray<TItem>, TItem> All<TItem>(
 		this IThat<ImmutableArray<TItem>> subject)
-		=> new(subject, EnumerableQuantifier.All());
-#endif
-
-#if NET8_0_OR_GREATER
-#nullable disable annotations
-	/// <summary>
-	///     Verifies that in the collection all items…
-	/// </summary>
-	public static ElementsForStructEnumerable<ImmutableArray<string>> All(
-		this IThat<ImmutableArray<string>> subject)
-		=> new(subject, EnumerableQuantifier.All());
-#nullable restore annotations
+		=> new StructItems<ImmutableArray<TItem>, TItem>(subject, EnumerableQuantifier.All());
 #endif
 }

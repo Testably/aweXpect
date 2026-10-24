@@ -241,7 +241,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		IEnumerable<Expression<Func<TItem, bool>>> expectedValues =
-			expected.ToNonEmptyValues(negated).WithoutNullElements(negated);
+			expected.ToNonEmptyValues(negated).WithoutNullItems(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -277,7 +277,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		IEnumerable<Action<IThatSubject<TItem>>> expectedValues =
-			expected.ToNonEmptyValues(negated).WithoutNullElements(negated);
+			expected.ToNonEmptyValues(negated).WithoutNullItems(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(

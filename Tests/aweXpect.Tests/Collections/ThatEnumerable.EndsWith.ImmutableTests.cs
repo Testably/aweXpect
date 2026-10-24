@@ -39,7 +39,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
-			public async Task WhenEnumerableHasDifferentEndingElements_ShouldFail()
+			public async Task WhenEnumerableHasDifferentEndingItems_ShouldFail()
 			{
 				ImmutableArray<int> subject = [0, 0, 1, 2, 3,];
 				IEnumerable<int> expected = [1, 3,];
@@ -59,7 +59,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
-			public async Task WhenExpectedContainsAdditionalElements_ShouldFail()
+			public async Task WhenExpectedContainsAdditionalItems_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
 

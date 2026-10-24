@@ -4,7 +4,7 @@ using aweXpect.Options;
 namespace aweXpect;
 
 /// <summary>
-///     The expectation texts for expectations on the elements of a collection.
+///     The expectation texts for expectations on the items of a collection.
 /// </summary>
 /// <remarks>
 ///     Each text has to agree with the number of the subject: the plural form is used below a plural subject

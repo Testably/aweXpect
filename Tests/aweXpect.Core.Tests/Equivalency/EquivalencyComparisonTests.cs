@@ -730,7 +730,77 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
-	public async Task WhenCollectionElementsFormatIdentically_ShouldAppendTheRuntimeType()
+	public async Task WhenCollectionHasFewerItems_AndTheMissingItemIsIgnored_ShouldSucceed()
+	{
+		object?[] actual = [1,];
+		object?[] expected = [1, null,];
+		EquivalencyOptions options = new()
+		{
+			MembersToIgnore = [new MemberToIgnore.ByName("[1]"),],
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("an ignored element is not reported as missing");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenCollectionHasFewerItems_ShouldReportTheMissingItems()
+	{
+		int[] actual = [1,];
+		int[] expected = [1, 2, 3,];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [1] was missing 2 and
+		                                                  Element [2] was missing 3
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Test]
+	public async Task WhenCollectionHasMoreItems_AndTheSuperfluousItemIsIgnored_ShouldSucceed()
+	{
+		object?[] actual = [null, null,];
+		object?[] expected = [null,];
+		EquivalencyOptions options = new()
+		{
+			MembersToIgnore = [new MemberToIgnore.ByName("[1]"),],
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("an ignored element is not reported as superfluous");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenCollectionHasMoreItems_ShouldReportTheSuperfluousItems()
+	{
+		int[] actual = [1, 2, 3,];
+		int[] expected = [1,];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [1] had superfluous 2 and
+		                                                  Element [2] had superfluous 3
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Test]
+	public async Task WhenCollectionItemsFormatIdentically_ShouldAppendTheRuntimeType()
 	{
 		var actual = new
 		{
@@ -761,77 +831,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
-	public async Task WhenCollectionHasFewerElements_AndTheMissingElementIsIgnored_ShouldSucceed()
-	{
-		object?[] actual = [1,];
-		object?[] expected = [1, null,];
-		EquivalencyOptions options = new()
-		{
-			MembersToIgnore = [new MemberToIgnore.ByName("[1]"),],
-		};
-		StringBuilder failureBuilder = new();
-
-		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
-
-		await That(result).IsTrue()
-			.Because("an ignored element is not reported as missing");
-		await That(failureBuilder.ToString()).IsEmpty();
-	}
-
-	[Test]
-	public async Task WhenCollectionHasFewerElements_ShouldReportTheMissingElements()
-	{
-		int[] actual = [1,];
-		int[] expected = [1, 2, 3,];
-		StringBuilder failureBuilder = new();
-
-		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
-
-		await That(result).IsFalse();
-		await That(failureBuilder.ToString()).IsEqualTo("""
-
-		                                                  Element [1] was missing 2 and
-		                                                  Element [2] was missing 3
-		                                                """).IgnoringNewlineStyle();
-	}
-
-	[Test]
-	public async Task WhenCollectionHasMoreElements_AndTheSuperfluousElementIsIgnored_ShouldSucceed()
-	{
-		object?[] actual = [null, null,];
-		object?[] expected = [null,];
-		EquivalencyOptions options = new()
-		{
-			MembersToIgnore = [new MemberToIgnore.ByName("[1]"),],
-		};
-		StringBuilder failureBuilder = new();
-
-		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
-
-		await That(result).IsTrue()
-			.Because("an ignored element is not reported as superfluous");
-		await That(failureBuilder.ToString()).IsEmpty();
-	}
-
-	[Test]
-	public async Task WhenCollectionHasMoreElements_ShouldReportTheSuperfluousElements()
-	{
-		int[] actual = [1, 2, 3,];
-		int[] expected = [1,];
-		StringBuilder failureBuilder = new();
-
-		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
-
-		await That(result).IsFalse();
-		await That(failureBuilder.ToString()).IsEqualTo("""
-
-		                                                  Element [1] had superfluous 2 and
-		                                                  Element [2] had superfluous 3
-		                                                """).IgnoringNewlineStyle();
-	}
-
-	[Test]
-	public async Task WhenCollectionOrderIsIgnored_AndActualHasFewerElements_ShouldReportTheMissingElement()
+	public async Task WhenCollectionOrderIsIgnored_AndActualHasFewerItems_ShouldReportTheMissingItem()
 	{
 		int[] actual = [1, 2,];
 		int[] expected = [1, 2, 3,];
@@ -852,7 +852,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
-	public async Task WhenCollectionOrderIsIgnored_AndActualHasMoreElements_ShouldReportTheSuperfluousElement()
+	public async Task WhenCollectionOrderIsIgnored_AndActualHasMoreItems_ShouldReportTheSuperfluousItem()
 	{
 		int[] actual = [1, 2, 3,];
 		int[] expected = [1, 2,];
@@ -1141,8 +1141,52 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
+	public async Task WhenCollectionOrderIsIgnored_AndElementReferencesItself_ShouldNotExceedTheRecursionLimit()
+	{
+		NestedNode actualNode = new(1);
+		actualNode.Inner = actualNode;
+		NestedNode expectedNode = new(1);
+		expectedNode.Inner = expectedNode;
+		NestedNode[] actual = [actualNode,];
+		NestedNode[] expected = [expectedNode,];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+			MaxRecursionDepth = 2,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the cycle detection stops the walk before the depth limit can be reached, also while elements are matched");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenCollectionOrderIsIgnored_AndExpectedIsEmpty_ShouldReportEverySuperfluousElement()
+	{
+		int[] actual = [1, 2,];
+		int[] expected = [];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [0] had superfluous 1 and
+		                                                  Element [1] had superfluous 2
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Test]
 	public async Task
-		WhenCollectionOrderIsIgnored_AndElementIsEquivalentToMultipleExpectedElements_ShouldStillMatchEveryElement()
+		WhenCollectionOrderIsIgnored_AndItemIsEquivalentToMultipleExpectedItems_ShouldStillMatchEveryItem()
 	{
 		object[] actual = [new WithTwoPublicValues(1, 2), new WithTwoPublicValues(1, 3),];
 		object[] expected =
@@ -1171,30 +1215,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
-	public async Task WhenCollectionOrderIsIgnored_AndElementReferencesItself_ShouldNotExceedTheRecursionLimit()
-	{
-		NestedNode actualNode = new(1);
-		actualNode.Inner = actualNode;
-		NestedNode expectedNode = new(1);
-		expectedNode.Inner = expectedNode;
-		NestedNode[] actual = [actualNode,];
-		NestedNode[] expected = [expectedNode,];
-		EquivalencyOptions options = new()
-		{
-			IgnoreCollectionOrder = true,
-			MaxRecursionDepth = 2,
-		};
-		StringBuilder failureBuilder = new();
-
-		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
-
-		await That(result).IsTrue()
-			.Because("the cycle detection stops the walk before the depth limit can be reached, also while elements are matched");
-		await That(failureBuilder.ToString()).IsEmpty();
-	}
-
-	[Test]
-	public async Task WhenCollectionOrderIsIgnored_AndElementsAreCollections_ShouldMatchThemInAnyOrder()
+	public async Task WhenCollectionOrderIsIgnored_AndItemsAreCollections_ShouldMatchThemInAnyOrder()
 	{
 		int[][] actual = [[1, 2,], [3, 4,],];
 		int[][] expected = [[3, 4,], [1, 2,],];
@@ -1211,7 +1232,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
-	public async Task WhenCollectionOrderIsIgnored_AndElementsAreNotComparable_ShouldMatchThemInAnyOrder()
+	public async Task WhenCollectionOrderIsIgnored_AndItemsAreNotComparable_ShouldMatchThemInAnyOrder()
 	{
 		WithProperty[] actual = [new(1), new(2),];
 		WithProperty[] expected = [new(2), new(1),];
@@ -1229,7 +1250,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
-	public async Task WhenCollectionOrderIsIgnored_AndElementsAreNotComparable_WhenInTheSameOrder_ShouldSucceed()
+	public async Task WhenCollectionOrderIsIgnored_AndItemsAreNotComparable_WhenInTheSameOrder_ShouldSucceed()
 	{
 		WithProperty[] actual = [new(1), new(2),];
 		WithProperty[] expected = [new(1), new(2),];
@@ -1247,7 +1268,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
-	public async Task WhenCollectionOrderIsIgnored_AndElementsAreReversedWithDuplicates_ShouldReportTheDifference()
+	public async Task WhenCollectionOrderIsIgnored_AndItemsAreReversedWithDuplicates_ShouldReportTheDifference()
 	{
 		WithTwoPublicValues[] actual = [new(1, 10), new(2, 20), new(2, 20), new(3, 30),];
 		WithTwoPublicValues[] expected = [new(3, 30), new(2, 20), new(2, 21), new(1, 10),];
@@ -1270,7 +1291,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
-	public async Task WhenCollectionOrderIsIgnored_AndElementsHaveDifferentTypes_ShouldMatchThemInAnyOrder()
+	public async Task WhenCollectionOrderIsIgnored_AndItemsHaveDifferentTypes_ShouldMatchThemInAnyOrder()
 	{
 		object[] actual = [1, "a",];
 		object[] expected = ["a", 1,];
@@ -1285,27 +1306,6 @@ public sealed partial class EquivalencyComparisonTests
 		await That(result).IsTrue()
 			.Because("elements of unrelated types cannot be sorted against each other, but they can be compared");
 		await That(failureBuilder.ToString()).IsEmpty();
-	}
-
-	[Test]
-	public async Task WhenCollectionOrderIsIgnored_AndExpectedIsEmpty_ShouldReportEverySuperfluousElement()
-	{
-		int[] actual = [1, 2,];
-		int[] expected = [];
-		EquivalencyOptions options = new()
-		{
-			IgnoreCollectionOrder = true,
-		};
-		StringBuilder failureBuilder = new();
-
-		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
-
-		await That(result).IsFalse();
-		await That(failureBuilder.ToString()).IsEqualTo("""
-
-		                                                  Element [0] had superfluous 1 and
-		                                                  Element [1] had superfluous 2
-		                                                """).IgnoringNewlineStyle();
 	}
 
 	[Test]
@@ -1336,7 +1336,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
-	public async Task WhenCollectionOrderIsIgnored_AndManyPairsAreCompared_ShouldMatchAllElements()
+	public async Task WhenCollectionOrderIsIgnored_AndManyPairsAreCompared_ShouldMatchAllItems()
 	{
 		int[] actual = Enumerable.Range(1, 40).Select(i => i * 17 % 41).ToArray();
 		int[] expected = Enumerable.Range(1, 40).ToArray();
@@ -3662,7 +3662,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
-	public async Task WhenListElementsAreInDifferentOrder_ShouldReportTheDifference()
+	public async Task WhenListItemsAreInDifferentOrder_ShouldReportTheDifference()
 	{
 		List<int> actual = [1, 2, 3,];
 		List<int> expected = [3, 2, 1,];
@@ -4627,68 +4627,6 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
-	public async Task WhenSetElementsAreInDifferentOrder_ShouldSucceed()
-	{
-		var actual = new
-		{
-			Values = new HashSet<int>
-			{
-				1,
-				2,
-				3,
-			},
-		};
-		var expected = new
-		{
-			Values = new HashSet<int>
-			{
-				3,
-				2,
-				1,
-			},
-		};
-		StringBuilder failureBuilder = new();
-
-		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
-
-		await That(result).IsTrue()
-			.Because("a set has no order, so comparing two of them by position would only report how they happen to be stored");
-		await That(failureBuilder.ToString()).IsEmpty();
-	}
-
-	[Test]
-	public async Task WhenSetElementsAreObjects_AndAreInDifferentOrder_ShouldSucceed()
-	{
-		HashSet<WithProperty> actual = [new(1), new(2),];
-		HashSet<WithProperty> expected = [new(2), new(1),];
-		StringBuilder failureBuilder = new();
-
-		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
-
-		await That(result).IsTrue()
-			.Because("the elements of a set are matched by the equivalency comparison, which does not need them to be equal");
-		await That(failureBuilder.ToString()).IsEmpty();
-	}
-
-	[Test]
-	public async Task WhenSetElementsDiffer_ShouldReportTheDifference()
-	{
-		HashSet<int> actual = [1, 2,];
-		HashSet<int> expected = [1, 3,];
-		StringBuilder failureBuilder = new();
-
-		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
-
-		await That(result).IsFalse();
-		await That(failureBuilder.ToString()).IsEqualTo("""
-
-		                                                  Element [1] differed:
-		                                                      Actual: 2
-		                                                    Expected: 3
-		                                                """).IgnoringNewlineStyle();
-	}
-
-	[Test]
 	public async Task WhenSetIsComparedAgainstACollectionWithDuplicates_ShouldReportTheDifference()
 	{
 		HashSet<int> actual = [1, 2,];
@@ -4753,9 +4691,71 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
+	[Test]
+	public async Task WhenSetItemsAreInDifferentOrder_ShouldSucceed()
+	{
+		var actual = new
+		{
+			Values = new HashSet<int>
+			{
+				1,
+				2,
+				3,
+			},
+		};
+		var expected = new
+		{
+			Values = new HashSet<int>
+			{
+				3,
+				2,
+				1,
+			},
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a set has no order, so comparing two of them by position would only report how they happen to be stored");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenSetItemsAreObjects_AndAreInDifferentOrder_ShouldSucceed()
+	{
+		HashSet<WithProperty> actual = [new(1), new(2),];
+		HashSet<WithProperty> expected = [new(2), new(1),];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the elements of a set are matched by the equivalency comparison, which does not need them to be equal");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenSetItemsDiffer_ShouldReportTheDifference()
+	{
+		HashSet<int> actual = [1, 2,];
+		HashSet<int> expected = [1, 3,];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [1] differed:
+		                                                      Actual: 2
+		                                                    Expected: 3
+		                                                """).IgnoringNewlineStyle();
+	}
+
 #if NET8_0_OR_GREATER
 	[Test]
-	public async Task WhenSetOnlyImplementsTheReadOnlyInterface_AndElementsAreInDifferentOrder_ShouldSucceed()
+	public async Task WhenSetOnlyImplementsTheReadOnlyInterface_AndItemsAreInDifferentOrder_ShouldSucceed()
 	{
 		ReadOnlySetOnly<int> actual = new([1, 2, 3,]);
 		ReadOnlySetOnly<int> expected = new([3, 2, 1,]);

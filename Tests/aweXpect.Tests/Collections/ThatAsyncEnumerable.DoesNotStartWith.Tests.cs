@@ -194,7 +194,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Test]
-			public async Task WhenEnumerableHasDifferentStartingElements_ShouldSucceed()
+			public async Task WhenEnumerableHasDifferentStartingItems_ShouldSucceed()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 				IEnumerable<int> unexpected = [1, 3,];
@@ -260,7 +260,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Test]
-			public async Task WhenUnexpectedContainsAdditionalElements_ShouldSucceed()
+			public async Task WhenUnexpectedContainsAdditionalItems_ShouldSucceed()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 

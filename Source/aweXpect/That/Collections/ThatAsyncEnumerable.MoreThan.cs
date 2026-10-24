@@ -11,20 +11,10 @@ public static partial class ThatAsyncEnumerable
 	///     Verifies that in the collection more than <paramref name="minimum" /> items…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static Elements<TItem> MoreThan<TItem>(
+	public static IQuantifiedAsyncEnumerableItems<TItem> MoreThan<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject,
 		int minimum)
-		=> new(subject,
-			EnumerableQuantifier.MoreThan(minimum));
-
-	/// <summary>
-	///     Verifies that in the collection more than <paramref name="minimum" /> items…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static Elements MoreThan(
-		this IThat<IAsyncEnumerable<string?>?> subject,
-		int minimum)
-		=> new(subject,
+		=> new Items<TItem>(subject,
 			EnumerableQuantifier.MoreThan(minimum));
 }
 #endif

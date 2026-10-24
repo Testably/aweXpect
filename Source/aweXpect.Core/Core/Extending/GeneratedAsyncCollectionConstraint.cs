@@ -49,7 +49,7 @@ public abstract class GeneratedAsyncCollectionConstraint<TItem>(
 
 	/// <summary>
 	///     Whether the expectation is directly on the collection, e.g. <c>That(tracks).AreRadioFriendly()</c>, instead
-	///     of on the elements that a quantifier selected.
+	///     of on the items that a quantifier selected.
 	/// </summary>
 	/// <remarks>
 	///     Such an expectation reads the collection to its end, so that the failure message lists all items of a kind,

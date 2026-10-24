@@ -1074,7 +1074,7 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Test]
-				public async Task WhenToleranceIsZero_ShouldRequireEqualElements()
+				public async Task WhenToleranceIsZero_ShouldRequireEqualItems()
 				{
 					IEnumerable<TimeSpan> subject = [1.Hours(),];
 					IEnumerable<TimeSpan> expected = [3601.Seconds(),];

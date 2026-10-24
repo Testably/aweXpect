@@ -284,7 +284,7 @@ public static partial class EquivalencyComparison
 		///     differences.
 		/// </summary>
 		/// <remarks>
-		///     Set for a comparison whose differences nobody reads, e.g. of the items of a collection, and while elements
+		///     Set for a comparison whose differences nobody reads, e.g. of the items of a collection, and while items
 		///     whose order is ignored are paired, as most of the pairs that are tried are not equivalent and never
 		///     reported, so formatting their values would be wasted.
 		/// </remarks>
@@ -294,7 +294,7 @@ public static partial class EquivalencyComparison
 		///     Whether the comparison only counts the differences of the objects, without writing them.
 		/// </summary>
 		/// <remarks>
-		///     Set while the leftovers of elements whose order is ignored are ranked by their number of differences, as
+		///     Set while the leftovers of items whose order is ignored are ranked by their number of differences, as
 		///     only the pairs that are reported in the end are written.
 		/// </remarks>
 		public bool IsCountingOnly { get; set; }
@@ -601,7 +601,7 @@ public static partial class EquivalencyComparison
 	///     The path of a compared value, which is only joined into a <see langword="string" /> when it is read.
 	/// </summary>
 	/// <remarks>
-	///     Most members and elements are compared by value and are equal, so nothing ever reads their path: only ignore
+	///     Most members and items are compared by value and are equal, so nothing ever reads their path: only ignore
 	///     rules, failures, code of the caller that throws and the members of a nested object do.
 	/// </remarks>
 	private readonly struct MemberPath

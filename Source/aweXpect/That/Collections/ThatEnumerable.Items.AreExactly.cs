@@ -7,7 +7,7 @@ namespace aweXpect;
 
 public static partial class ThatEnumerable
 {
-	public partial class Elements<TItem>
+	internal sealed partial class Items<TItem>
 	{
 		/// <summary>
 		///     …are exactly of type <typeparamref name="TType" />.
@@ -47,19 +47,19 @@ public static partial class ThatEnumerable
 		}
 	}
 
-	public partial class ElementsForEnumerable<TEnumerable>
+	internal sealed partial class NonGenericItems<TCollection>
 	{
 		/// <summary>
 		///     …are exactly of type <typeparamref name="TType" />.
 		/// </summary>
-		public AndOrResult<TEnumerable, IThat<TEnumerable?>>
+		public AndOrResult<TCollection, IThat<TCollection?>>
 			AreExactly<TType>()
 		{
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
+			return new AndOrResult<TCollection, IThat<TCollection?>>(
 				expectationBuilder.AddConstraint(_quantifier,
 					static (quantifier, it, grammars)
-						=> new CollectionConstraint<TEnumerable, object?>(
+						=> new CollectionConstraint<TCollection, object?>(
 							it, grammars,
 							quantifier,
 							ElementOfType<object?, TType>.ExactlyInstance,
@@ -70,15 +70,15 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are exactly of type <paramref name="type" />.
 		/// </summary>
-		public AndOrResult<TEnumerable, IThat<TEnumerable?>>
+		public AndOrResult<TCollection, IThat<TCollection?>>
 			AreExactly(System.Type type)
 		{
 			type.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
+			return new AndOrResult<TCollection, IThat<TCollection?>>(
 				expectationBuilder.AddConstraint((Quantifier: _quantifier, Type: type),
 					static (state, it, grammars)
-						=> new CollectionConstraint<TEnumerable, object?>(
+						=> new CollectionConstraint<TCollection, object?>(
 							it, grammars,
 							state.Quantifier,
 							new ElementOfType<object?>(state.Type, true),
@@ -87,19 +87,19 @@ public static partial class ThatEnumerable
 		}
 	}
 
-	public partial class ElementsForStructEnumerable<TEnumerable, TItem>
+	internal sealed partial class StructItems<TCollection, TItem>
 	{
 		/// <summary>
 		///     …are exactly of type <typeparamref name="TType" />.
 		/// </summary>
-		public AndOrResult<TEnumerable, IThat<TEnumerable>>
+		public AndOrResult<TCollection, IThat<TCollection>>
 			AreExactly<TType>()
 		{
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
+			return new AndOrResult<TCollection, IThat<TCollection>>(
 				expectationBuilder.AddConstraint(_quantifier,
 					static (quantifier, it, grammars)
-						=> new CollectionConstraint<TEnumerable, object?>(
+						=> new CollectionConstraint<TCollection, object?>(
 							it, grammars,
 							quantifier,
 							ElementOfType<object?, TType>.ExactlyInstance,
@@ -110,15 +110,15 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are exactly of type <paramref name="type" />.
 		/// </summary>
-		public AndOrResult<TEnumerable, IThat<TEnumerable>>
+		public AndOrResult<TCollection, IThat<TCollection>>
 			AreExactly(System.Type type)
 		{
 			type.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
+			return new AndOrResult<TCollection, IThat<TCollection>>(
 				expectationBuilder.AddConstraint((Quantifier: _quantifier, Type: type),
 					static (state, it, grammars)
-						=> new CollectionConstraint<TEnumerable, object?>(
+						=> new CollectionConstraint<TCollection, object?>(
 							it, grammars,
 							state.Quantifier,
 							new ElementOfType<object?>(state.Type, true),

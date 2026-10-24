@@ -23,7 +23,7 @@ namespace aweXpect.Reflection.Helpers;
 internal abstract class CollectionConstraintResult<T>(string it, ExpectationGrammars grammars)
 	: ConstraintResult(grammars)
 {
-	private object? _elements;
+	private object? _items;
 	private List<T>? _matching;
 	private List<T>? _notMatching;
 	private Outcome _outcome = Outcome.Undecided;
@@ -58,33 +58,33 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 	public override string? TrailingSubject => GetSubjectOfResult(It);
 
 	/// <summary>
-	///     The matching elements of the last evaluation.
+	///     The matching items of the last evaluation.
 	/// </summary>
 	/// <remarks>
-	///     The elements are only copied into an array when they are needed for a failure.
+	///     The items are only copied into an array when they are needed for a failure.
 	/// </remarks>
 	protected T[] Matching => _matching?.ToArray() ?? [];
 
 	/// <summary>
-	///     The not matching elements of the last evaluation.
+	///     The not matching items of the last evaluation.
 	/// </summary>
 	protected T[] NotMatching => _notMatching?.ToArray() ?? [];
 
 	/// <summary>
-	///     Splits the <paramref name="elements" /> according to the <paramref name="predicate" /> into
+	///     Splits the <paramref name="items" /> according to the <paramref name="predicate" /> into
 	///     <see cref="Matching" /> and <see cref="NotMatching" />.
 	/// </summary>
-	protected ConstraintResult SetValue(IEnumerable<T>? elements, IEvaluationContext context,
+	protected ConstraintResult SetValue(IEnumerable<T>? items, IEvaluationContext context,
 		Func<T, bool> predicate)
 	{
-		if (!StartEvaluation(elements, typeof(IEnumerable<T>)))
+		if (!StartEvaluation(items, typeof(IEnumerable<T>)))
 		{
 			return this;
 		}
 
 		List<T> matching = [];
 		List<T>? notMatching = null;
-		foreach (T item in context.UseMaterializedEnumerable(elements!))
+		foreach (T item in context.UseMaterializedEnumerable(items!))
 		{
 			Add(predicate(item), item, matching, ref notMatching);
 		}
@@ -93,23 +93,23 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 	}
 
 	/// <summary>
-	///     Splits the <paramref name="elements" /> according to the <paramref name="predicate" /> into
+	///     Splits the <paramref name="items" /> according to the <paramref name="predicate" /> into
 	///     <see cref="Matching" /> and <see cref="NotMatching" />.
 	/// </summary>
 	/// <remarks>
 	///     Stops at a cancellation of the <paramref name="cancellationToken" /> and leaves the outcome undecided.
 	/// </remarks>
-	protected async ValueTask<ConstraintResult> SetValue(IEnumerable<T>? elements, IEvaluationContext context,
+	protected async ValueTask<ConstraintResult> SetValue(IEnumerable<T>? items, IEvaluationContext context,
 		Func<T, ValueTask<bool>> predicate, CancellationToken cancellationToken)
 	{
-		if (!StartEvaluation(elements, typeof(IEnumerable<T>)))
+		if (!StartEvaluation(items, typeof(IEnumerable<T>)))
 		{
 			return this;
 		}
 
 		List<T> matching = [];
 		List<T>? notMatching = null;
-		foreach (T item in context.UseMaterializedEnumerable(elements!))
+		foreach (T item in context.UseMaterializedEnumerable(items!))
 		{
 			if (cancellationToken.IsCancellationRequested)
 			{
@@ -124,27 +124,27 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Splits the <paramref name="elements" /> according to the <paramref name="predicate" /> into
+	///     Splits the <paramref name="items" /> according to the <paramref name="predicate" /> into
 	///     <see cref="Matching" /> and <see cref="NotMatching" />.
 	/// </summary>
 	/// <remarks>
 	///     Stops at a cancellation of the <paramref name="cancellationToken" /> and leaves the outcome undecided.
 	/// </remarks>
-	protected ValueTask<ConstraintResult> SetAsyncValue(IAsyncEnumerable<T>? elements, IEvaluationContext context,
+	protected ValueTask<ConstraintResult> SetAsyncValue(IAsyncEnumerable<T>? items, IEvaluationContext context,
 		Func<T, bool> predicate, CancellationToken cancellationToken)
-		=> SetAsyncValue(elements, context, item => new ValueTask<bool>(predicate(item)), cancellationToken);
+		=> SetAsyncValue(items, context, item => new ValueTask<bool>(predicate(item)), cancellationToken);
 
 	/// <summary>
-	///     Splits the <paramref name="elements" /> according to the <paramref name="predicate" /> into
+	///     Splits the <paramref name="items" /> according to the <paramref name="predicate" /> into
 	///     <see cref="Matching" /> and <see cref="NotMatching" />.
 	/// </summary>
 	/// <remarks>
 	///     Stops at a cancellation of the <paramref name="cancellationToken" /> and leaves the outcome undecided.
 	/// </remarks>
-	protected async ValueTask<ConstraintResult> SetAsyncValue(IAsyncEnumerable<T>? elements,
+	protected async ValueTask<ConstraintResult> SetAsyncValue(IAsyncEnumerable<T>? items,
 		IEvaluationContext context, Func<T, ValueTask<bool>> predicate, CancellationToken cancellationToken)
 	{
-		if (!StartEvaluation(elements, typeof(IAsyncEnumerable<T>)))
+		if (!StartEvaluation(items, typeof(IAsyncEnumerable<T>)))
 		{
 			return this;
 		}
@@ -153,7 +153,7 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 		List<T>? notMatching = null;
 		try
 		{
-			await foreach (T item in context.UseMaterializedAsyncEnumerable(elements!, cancellationToken))
+			await foreach (T item in context.UseMaterializedAsyncEnumerable(items!, cancellationToken))
 			{
 				if (cancellationToken.IsCancellationRequested)
 				{
@@ -272,7 +272,7 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 	/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
 	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 	{
-		if (_elements is TValue typedValue)
+		if (_items is TValue typedValue)
 		{
 			value = typedValue;
 			return true;
@@ -289,14 +289,14 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 		return this;
 	}
 
-	private bool StartEvaluation(object? elements, Type subjectType)
+	private bool StartEvaluation(object? items, Type subjectType)
 	{
-		_elements = elements;
+		_items = items;
 		_subjectType = subjectType;
 		_matching = null;
 		_notMatching = null;
-		_outcome = elements is null ? Outcome.FailureBothWays : Outcome.Undecided;
-		return elements is not null;
+		_outcome = items is null ? Outcome.FailureBothWays : Outcome.Undecided;
+		return items is not null;
 	}
 
 	private CollectionConstraintResult<T> Complete(List<T> matching, List<T>? notMatching)

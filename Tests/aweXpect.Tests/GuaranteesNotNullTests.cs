@@ -54,6 +54,19 @@ public sealed class GuaranteesNotNullTests
 		"IsNotTrue",
 	};
 
+	/// <summary>
+	///     The interfaces of the items that a quantifier like <c>All()</c> selects, on which the expectations on the items
+	///     are extension methods, and the interfaces that the quantifiers return.
+	/// </summary>
+	private static readonly Type[] ItemsInterfaces =
+	[
+		typeof(IEnumerableItems<>), typeof(IQuantifiedEnumerableItems<>), typeof(INonGenericEnumerableItems<>),
+		typeof(IStructEnumerableItems<,>),
+#if NET8_0_OR_GREATER
+		typeof(IAsyncEnumerableItems<>), typeof(IQuantifiedAsyncEnumerableItems<>),
+#endif
+	];
+
 	private static readonly Lazy<IReadOnlyList<Observation>> LazyObservations = new(Observe);
 
 	private static IReadOnlyList<Observation> Observations => LazyObservations.Value;
@@ -87,6 +100,37 @@ public sealed class GuaranteesNotNullTests
 		await That(deviations).IsEmpty()
 			.Because(
 				"a null subject must fail an expectation that DoesNotComplyWith negates just as it fails the expectation itself");
+	}
+
+	[Test]
+	public async Task EveryExpectationOnTheItemsOfAMarkedQuantifier_ShouldNarrowTheSubjectToNotNull()
+	{
+		List<Type> items = GetMarkedExpectations()
+			.Select(method => GetItemsInterface(method.ReturnType))
+			.OfType<Type>()
+			.Distinct()
+			.ToList();
+		List<Type> extendedItems = items
+			.SelectMany(type => type.GetInterfaces().Select(i => i.GetGenericTypeDefinition()).Prepend(type))
+			.Distinct()
+			.ToList();
+		List<MethodInfo> expectations = GetItemsExpectations()
+			.Where(method => extendedItems.Contains(method.GetParameters()[0].ParameterType.GetGenericTypeDefinition()))
+			.Concat(items.SelectMany(type => type.GetMethods()).Where(method => !method.IsSpecialName))
+			.ToList();
+
+		List<string> nullable = expectations
+			.Where(method => !HandsOutTheItemsSubject(method, false) || HandsOutTheItemsSubject(method, true))
+			.Select(GetIdentifier)
+			.Distinct().OrderBy(identifier => identifier, StringComparer.Ordinal)
+			.ToList();
+
+		await That(items).IsNotEmpty()
+			.Because("the lookup of the items that a marked quantifier selects must not silently degrade into an empty test set");
+		await That(expectations.Count).IsGreaterThan(items.Count)
+			.Because("the lookup of the expectations on the items must not silently degrade into an empty test set");
+		await That(nullable).IsEmpty()
+			.Because("a quantifier that rules a null subject out must hand out the subject as not nullable when an expectation on its items is awaited");
 	}
 
 	[Test]
@@ -855,9 +899,9 @@ public sealed class GuaranteesNotNullTests
 			: closedMethod;
 	}
 
-	private static Type[] CreateTypeArguments(Type[] genericArguments)
+	private static Type[] CreateTypeArguments(Type[] genericArguments, Dictionary<Type, Type>? bound = null)
 	{
-		Dictionary<Type, Type> resolved = new();
+		Dictionary<Type, Type> resolved = bound ?? new Dictionary<Type, Type>();
 		bool progressed = true;
 		while (resolved.Count < genericArguments.Length && progressed)
 		{
@@ -1148,6 +1192,7 @@ public sealed class GuaranteesNotNullTests
 			.Where(method => method.DeclaringType != typeof(object) && !method.IsSpecialName &&
 			                 !method.IsGenericMethodDefinition && method.ReturnType != typeof(void))
 			.Concat(GetExtensionContinuations(expectation.GetType()))
+			.Concat(GetItemsContinuations(expectation.GetType()))
 			.OrderBy(method => method.Name, StringComparer.Ordinal);
 
 	/// <summary>
@@ -1175,6 +1220,118 @@ public sealed class GuaranteesNotNullTests
 			                    interfaces.ContainsKey(receiver.GetGenericTypeDefinition()))
 			.Select(candidate => candidate.Method.MakeGenericMethod(
 				interfaces[candidate.Receiver!.GetGenericTypeDefinition()].GetGenericArguments()));
+	}
+
+	/// <summary>
+	///     Returns the expectations on the items that a quantifier like <c>All()</c> returned, closed for these items.
+	/// </summary>
+	/// <remarks>
+	///     They are extension methods on the interface of the items, so they are no instance methods of the result.
+	/// </remarks>
+	private static IEnumerable<MethodInfo> GetItemsContinuations(Type resultType)
+	{
+		Type[] items = resultType.GetInterfaces()
+			.Where(type => type.IsGenericType && ItemsInterfaces.Contains(type.GetGenericTypeDefinition()))
+			.ToArray();
+		return items.Length == 0
+			? []
+			: GetItemsExpectations().Select(method => CloseForItems(method, items)).OfType<MethodInfo>();
+	}
+
+	private static IEnumerable<MethodInfo> GetItemsExpectations()
+		=> new[]
+			{
+				typeof(GuaranteesNotNullAttribute).Assembly, typeof(aweXpect.ThatString).Assembly,
+			}
+			.SelectMany(assembly => assembly.GetExportedTypes())
+			.Where(type => type is { IsAbstract: true, IsSealed: true, } &&
+			               type.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute)))
+			.SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.Static))
+			.Where(method => method.ReturnType != typeof(void) &&
+			                 method.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute)) &&
+			                 method.GetParameters()[0].ParameterType is { IsGenericType: true, } receiver &&
+			                 ItemsInterfaces.Contains(receiver.GetGenericTypeDefinition()));
+
+	private static MethodInfo? CloseForItems(MethodInfo method, Type[] items)
+	{
+		Type receiver = method.GetParameters()[0].ParameterType;
+		foreach (Type candidate in items.Where(type
+			         => type.GetGenericTypeDefinition() == receiver.GetGenericTypeDefinition()))
+		{
+			if (!method.IsGenericMethodDefinition)
+			{
+				if (receiver.IsAssignableFrom(candidate))
+				{
+					return method;
+				}
+
+				continue;
+			}
+
+			Dictionary<Type, Type> resolved = new();
+			Type[] receiverArguments = receiver.GetGenericArguments();
+			Type[] candidateArguments = candidate.GetGenericArguments();
+			bool matches = true;
+			for (int index = 0; index < receiverArguments.Length && matches; index++)
+			{
+				if (receiverArguments[index].IsGenericParameter)
+				{
+					resolved[receiverArguments[index]] = candidateArguments[index];
+				}
+				else
+				{
+					matches = receiverArguments[index] == candidateArguments[index];
+				}
+			}
+
+			if (matches && TryClose(method, resolved) is { } closed)
+			{
+				return closed;
+			}
+		}
+
+		return null;
+	}
+
+	/// <remarks>
+	///     A method whose type arguments violate a constraint does not apply to the items.
+	/// </remarks>
+	private static MethodInfo? TryClose(MethodInfo method, Dictionary<Type, Type> resolved)
+	{
+		try
+		{
+			return method.MakeGenericMethod(CreateTypeArguments(method.GetGenericArguments(), resolved));
+		}
+		catch (Exception exception) when (exception is ArgumentException or NotInvocableException)
+		{
+			return null;
+		}
+	}
+
+	private static Type? GetItemsInterface(Type type)
+	{
+		Type items = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(BetweenResult<,>)
+			? type.GetGenericArguments()[0]
+			: type;
+		return items.IsGenericType && ItemsInterfaces.Contains(items.GetGenericTypeDefinition())
+			? items.GetGenericTypeDefinition()
+			: null;
+	}
+
+	/// <summary>
+	///     Whether an expectation on the items, or a type check declared on their interface, returns a result that names the
+	///     collection of the items as nullable (or as not nullable) outside the <c>IThat&lt;…&gt;</c> it continues with.
+	/// </summary>
+	private static bool HandsOutTheItemsSubject(MethodInfo method, bool asNullable)
+	{
+		Type receiver = method.IsStatic ? method.GetParameters()[0].ParameterType : method.DeclaringType!;
+		PropertyInfo subject = receiver.GetInterfaces().Prepend(receiver)
+			.Select(type => type.GetProperty("Subject"))
+			.OfType<PropertyInfo>()
+			.First();
+		Type subjectType = GetThatSubjectType(subject.PropertyType)!;
+		return Names(method.ReturnType, method.ReturnType,
+			GetNullableFlags(method.ReturnParameter.GetCustomAttributesData(), method), 0, subjectType, asNullable, []);
 	}
 
 	private static object? InvokeContinuation(MethodInfo continuation, object expectation, bool nullValues)

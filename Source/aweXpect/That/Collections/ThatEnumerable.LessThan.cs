@@ -15,49 +15,29 @@ public static partial class ThatEnumerable
 	///     Verifies that in the collection fewer than <paramref name="maximum" /> items…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static Elements<TItem> LessThan<TItem>(
+	public static IQuantifiedEnumerableItems<TItem> LessThan<TItem>(
 		this IThat<IEnumerable<TItem>?> subject,
 		int maximum)
-		=> new(subject, EnumerableQuantifier.LessThan(maximum));
-
-	/// <summary>
-	///     Verifies that in the collection fewer than <paramref name="maximum" /> items…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static Elements LessThan(
-		this IThat<IEnumerable<string?>?> subject,
-		int maximum)
-		=> new(subject, EnumerableQuantifier.LessThan(maximum));
+		=> new Items<TItem>(subject, EnumerableQuantifier.LessThan(maximum));
 
 	/// <summary>
 	///     Verifies that in the collection fewer than <paramref name="maximum" /> items…
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ElementsForEnumerable<IEnumerable> LessThan(
+	public static INonGenericEnumerableItems<IEnumerable> LessThan(
 		this IThat<IEnumerable?> subject,
 		int maximum)
-		=> new(subject, EnumerableQuantifier.LessThan(maximum));
+		=> new NonGenericItems<IEnumerable>(subject, EnumerableQuantifier.LessThan(maximum));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that in the collection fewer than <paramref name="maximum" /> items…
 	/// </summary>
-	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> LessThan<TItem>(
+	public static IStructEnumerableItems<ImmutableArray<TItem>, TItem> LessThan<TItem>(
 		this IThat<ImmutableArray<TItem>> subject,
 		int maximum)
-		=> new(subject, EnumerableQuantifier.LessThan(maximum));
-#endif
-
-#if NET8_0_OR_GREATER
-#nullable disable annotations
-	/// <summary>
-	///     Verifies that in the collection fewer than <paramref name="maximum" /> items…
-	/// </summary>
-	public static ElementsForStructEnumerable<ImmutableArray<string>> LessThan(
-		this IThat<ImmutableArray<string>> subject,
-		int maximum)
-		=> new(subject, EnumerableQuantifier.LessThan(maximum));
-#nullable restore annotations
+		=> new StructItems<ImmutableArray<TItem>, TItem>(subject,
+			EnumerableQuantifier.LessThan(maximum));
 #endif
 }

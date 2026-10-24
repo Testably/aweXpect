@@ -297,6 +297,36 @@ public sealed class CollectionConstraintTests
 	}
 
 	[Test]
+	public async Task WhenUsingAQuantifierOnDerivedTypes_ShouldApplyTheExpectationOfTheBaseType()
+	{
+		IEnumerable<System.Reflection.TypeInfo> subject =
+			[typeof(string).GetTypeInfo(), typeof(object).GetTypeInfo(),];
+
+		async Task Act()
+		{
+			await That(subject).All().AreSealed();
+		}
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is sealed for all items,
+			             but only 1 of 2 were
+
+			             Not matching items:
+			             [
+			               object
+			             ]
+
+			             Collection:
+			             [
+			               string,
+			               object
+			             ]
+			             """).Because("the expectation on the items of Type applies to the items of the derived TypeInfo");
+	}
+
+	[Test]
 	public async Task WhenUsingAQuantifierOnMembers_ShouldFormatTheMembers()
 	{
 		IEnumerable<MethodInfo> subject =

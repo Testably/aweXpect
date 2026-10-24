@@ -1421,7 +1421,7 @@ public static partial class EquivalencyComparison
 	}
 
 	/// <remarks>
-	///     The elements are paired by the equivalency comparison itself instead of being sorted, because sorting
+	///     The items are paired by the equivalency comparison itself instead of being sorted, because sorting
 	///     requires them to be comparable, which the objects that structural equivalency exists for usually are not.
 	///     The pairing is a maximum matching and not a greedy first match, because an actual element that is equivalent
 	///     to more than one expected element would otherwise be able to consume the only candidate of another expected
@@ -1491,7 +1491,7 @@ public static partial class EquivalencyComparison
 	}
 
 	/// <remarks>
-	///     Returns the indices of the elements that take part in the comparison. An ignored element has no pair it
+	///     Returns the indices of the items that take part in the comparison. An ignored item has no pair it
 	///     could be skipped in once the order is ignored, so it is left out of the matching on both sides: it neither
 	///     has to find a counterpart nor can it be reported as superfluous.
 	/// </remarks>
@@ -1525,7 +1525,7 @@ public static partial class EquivalencyComparison
 	}
 
 	/// <summary>
-	///     Matches the elements of two collections whose order is ignored against each other, using Kuhn's algorithm.
+	///     Matches the items of two collections whose order is ignored against each other, using Kuhn's algorithm.
 	/// </summary>
 	private sealed class ElementMatcher
 	{
@@ -1542,7 +1542,7 @@ public static partial class EquivalencyComparison
 		private readonly object?[] _expectedObjects;
 
 		/// <summary>
-		///     Whether two elements are the same for the comparer of the actual set, when it has one of its own.
+		///     Whether two items are the same for the comparer of the actual set, when it has one of its own.
 		/// </summary>
 		private readonly Func<object?, object?, bool>? _itemComparer;
 
@@ -1563,7 +1563,7 @@ public static partial class EquivalencyComparison
 		private readonly EquivalencyTypeOptions _typeOptions;
 
 		/// <summary>
-		///     The expected elements that no actual element could be matched to.
+		///     The expected items that no actual item could be matched to.
 		/// </summary>
 		private readonly List<int> _unmatchedExpected = [];
 
@@ -1608,7 +1608,7 @@ public static partial class EquivalencyComparison
 		public bool HasLeftovers => _unmatchedExpected.Count > 0 || Array.IndexOf(_matchedTo, -1) >= 0;
 
 		/// <summary>
-		///     Matches as many expected elements as possible.
+		///     Matches as many expected items as possible.
 		/// </summary>
 		public async ValueTask
 			MatchAll()
@@ -1631,14 +1631,14 @@ public static partial class EquivalencyComparison
 		}
 
 		/// <summary>
-		///     Returns the elements that were left over, as pairs of an actual and an expected index, where
+		///     Returns the items that were left over, as pairs of an actual and an expected index, where
 		///     <c>-1</c> stands for the side that has no counterpart left.
 		/// </summary>
 		/// <remarks>
 		///     The leftovers are paired greedily, starting with the pair that differs the least, because which two of
-		///     them are reported against each other decides how much the message helps: two elements that only differ
+		///     them are reported against each other decides how much the message helps: two items that only differ
 		///     in one member say what went wrong, while the positional pairing this replaces could just as well pick
-		///     two elements that have nothing in common and report every member of both. An exact assignment would
+		///     two items that have nothing in common and report every member of both. An exact assignment would
 		///     have to weigh all combinations against each other, which a failure message does not justify. Sorting
 		///     the candidates keeps the pairing to one sort on top of the comparisons the matching already needed.
 		/// </remarks>
@@ -1710,7 +1710,7 @@ public static partial class EquivalencyComparison
 			for (int actualIndex = previous + 1; actualIndex >= previous - 1; actualIndex -= 2)
 			{
 				if (actualIndex >= 0 && actualIndex < _actualIndices.Length && _matchedTo[actualIndex] < 0 &&
-				    await AreEquivalentElements(actualIndex, expectedIndex))
+				    await AreEquivalentItems(actualIndex, expectedIndex))
 				{
 					_matchedTo[actualIndex] = expectedIndex;
 					return actualIndex;
@@ -1728,7 +1728,7 @@ public static partial class EquivalencyComparison
 			{
 				// Starting at the same position pairs collections that are already in order without any search.
 				int actualIndex = (expectedIndex + offset) % _actualIndices.Length;
-				if (_visitedInSearch[actualIndex] == _search || !await AreEquivalentElements(actualIndex, expectedIndex))
+				if (_visitedInSearch[actualIndex] == _search || !await AreEquivalentItems(actualIndex, expectedIndex))
 				{
 					continue;
 				}
@@ -1749,7 +1749,7 @@ public static partial class EquivalencyComparison
 		///     reported. The code of the caller is still called as for a reported pair, so that it throws alike.
 		/// </remarks>
 		private async ValueTask<bool>
-			AreEquivalentElements(int actualIndex, int expectedIndex)
+			AreEquivalentItems(int actualIndex, int expectedIndex)
 		{
 			if (_results.TryGet(actualIndex, expectedIndex, out bool cachedResult))
 			{
@@ -1821,7 +1821,7 @@ public static partial class EquivalencyComparison
 		/// </summary>
 		/// <remarks>
 		///     A collection in or near the expected order only compares about one pair per element, so a table of all
-		///     pairs, which takes megabytes for a thousand elements, is only allocated once the sparse entries would
+		///     pairs, which takes megabytes for a thousand items, is only allocated once the sparse entries would
 		///     take more memory than it.
 		/// </remarks>
 		private sealed class PairResults(int actualCount, int expectedCount)
