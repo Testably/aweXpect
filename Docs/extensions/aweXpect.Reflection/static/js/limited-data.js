@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "ff85110db67927a962c2aa7f03ec78a37a984deb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
-        "message": "docs: write down the API conventions of extension packages (#1954)"
-      },
-      {
         "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:12:20 2026 \u002B0200",
         "message": "refactor!: let aweXpect.Reflection own Customize.aweXpect.Reflection() (#1986)"
+      },
+      {
+        "sha": "5b99ffec400fc66271f3aa5f41c30450878aa7f9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
+        "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
       }
     ],
     "labels": [
-      "ff85110d",
       "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
-      "c72faf85"
+      "c72faf85",
+      "5b99ffec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          726.2985399246215,
           364.4932472229004,
           709.4984261439397,
           712.4593811035156,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           391.30080515997753,
           753.2203694857084,
           734.1047382354736,
-          773.4644398008074
+          773.4644398008074,
+          706.7569433848063
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          903.5236897835365,
           504.5965037663778,
           885.6188193003337,
           899.1088951110839,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           507.8786028453282,
           947.5330730438233,
           1005.9056048075358,
-          962.1057693774884
+          962.1057693774884,
+          875.9277635574341
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "ff85110db67927a962c2aa7f03ec78a37a984deb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
-        "message": "docs: write down the API conventions of extension packages (#1954)"
-      },
-      {
         "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:12:20 2026 \u002B0200",
         "message": "refactor!: let aweXpect.Reflection own Customize.aweXpect.Reflection() (#1986)"
+      },
+      {
+        "sha": "5b99ffec400fc66271f3aa5f41c30450878aa7f9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
+        "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
       }
     ],
     "labels": [
-      "ff85110d",
       "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
-      "c72faf85"
+      "c72faf85",
+      "5b99ffec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          115.73385956654182,
           60.07044177850087,
           121.40318101247152,
           123.30812808672587,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           66.30877405405045,
           139.95416668256124,
           136.01847139994302,
-          147.47769470214843
+          147.47769470214843,
+          126.37143219312033
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          203.39102465311686,
           116.78994107246399,
           195.86891186237335,
           211.83564372062682,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           120.38757492701212,
           223.96829500198365,
           245.577839578901,
-          238.1439798672994
+          238.1439798672994,
+          194.47578207651773
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "ff85110db67927a962c2aa7f03ec78a37a984deb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
-        "message": "docs: write down the API conventions of extension packages (#1954)"
-      },
-      {
         "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:12:20 2026 \u002B0200",
         "message": "refactor!: let aweXpect.Reflection own Customize.aweXpect.Reflection() (#1986)"
+      },
+      {
+        "sha": "5b99ffec400fc66271f3aa5f41c30450878aa7f9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
+        "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
       }
     ],
     "labels": [
-      "ff85110d",
       "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
-      "c72faf85"
+      "c72faf85",
+      "5b99ffec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1916.668439047677,
           1016.181319173177,
           1991.2805603027343,
           1989.0674397786458,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           964.6900463104248,
           2024.5734389168877,
           1918.4849609375,
-          2075.7388264792307
+          2075.7388264792307,
+          1908.19892578125
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1474.6396399180094,
           935.9064225514729,
           1479.2349433898926,
           1518.6269055775233,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           775.949343094459,
           1516.7792696271624,
           1378.9539744513374,
-          1552.9948095594134
+          1552.9948095594134,
+          1428.3426189422607
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1897,
           1985,
           1897,
           1897,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1864,
-          1953
+          1953,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "ff85110db67927a962c2aa7f03ec78a37a984deb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
-        "message": "docs: write down the API conventions of extension packages (#1954)"
-      },
       {
         "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:12:20 2026 \u002B0200",
         "message": "refactor!: let aweXpect.Reflection own Customize.aweXpect.Reflection() (#1986)"
+      },
+      {
+        "sha": "5b99ffec400fc66271f3aa5f41c30450878aa7f9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
+        "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
       }
     ],
     "labels": [
-      "ff85110d",
       "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
-      "c72faf85"
+      "c72faf85",
+      "5b99ffec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2770.872496678279,
           1370.8455539067586,
           2847.4351821899413,
           2704.5054546991983,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1519.0138765062604,
           3002.2336112431117,
           2672.4381687457744,
-          2862.674478149414
+          2862.674478149414,
+          2868.1801869319033
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2247,7 +2247,6 @@ window.BENCHMARK_DATA = {
           3040,
           3040,
           3040,
-          3040,
           2984,
           2984,
           2984,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           2992,
           2992,
           3048,
-          3048
+          3048,
+          2992
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3824.6407351175944,
           2089.1836670466832,
           3885.742154802595,
           3841.3821187700546,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           2290.7360679081507,
           3821.642232767741,
           3905.2490615844727,
-          3942.6075803316558
+          3942.6075803316558,
+          3773.184170314244
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2370,7 +2370,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           4011,
-          4011,
           4012,
           4012,
           4011,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           3980,
           3980,
           3978,
+          3980,
           3980
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "ff85110db67927a962c2aa7f03ec78a37a984deb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
-        "message": "docs: write down the API conventions of extension packages (#1954)"
-      },
       {
         "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:12:20 2026 \u002B0200",
         "message": "refactor!: let aweXpect.Reflection own Customize.aweXpect.Reflection() (#1986)"
+      },
+      {
+        "sha": "5b99ffec400fc66271f3aa5f41c30450878aa7f9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
+        "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
       }
     ],
     "labels": [
-      "ff85110d",
       "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
-      "c72faf85"
+      "c72faf85",
+      "5b99ffec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          396.58689578374225,
           185.58334198364844,
           361.5782157580058,
           391.7545042037964,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           179.15772333511939,
           399.9740211623056,
           489.12750384012855,
-          387.1612222875868
+          387.1612222875868,
+          355.4702772299449
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2290.9949471609934,
           1319.0333035786946,
           2248.6266461885893,
           2336.7420885721845,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1268.7165821620397,
           2366.4956885746547,
           2444.136717224121,
-          2403.185688018799
+          2403.185688018799,
+          2262.9301157633463
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "ff85110db67927a962c2aa7f03ec78a37a984deb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
-        "message": "docs: write down the API conventions of extension packages (#1954)"
-      },
-      {
         "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:12:20 2026 \u002B0200",
         "message": "refactor!: let aweXpect.Reflection own Customize.aweXpect.Reflection() (#1986)"
+      },
+      {
+        "sha": "5b99ffec400fc66271f3aa5f41c30450878aa7f9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
+        "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
       }
     ],
     "labels": [
-      "ff85110d",
       "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
-      "c72faf85"
+      "c72faf85",
+      "5b99ffec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3504.784599939982,
           1982.2974724402795,
           3655.495449066162,
           3590.0820574442546,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1901.6206957499187,
           3740.77112696721,
           3542.6098185947963,
-          3501.956970487322
+          3501.956970487322,
+          3281.3380301339284
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3469,7 +3469,6 @@ window.BENCHMARK_DATA = {
           3673,
           3673,
           3673,
-          3673,
           3672,
           3673,
           3673,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           3705,
           3705,
           3704,
+          3104,
           3104
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          278197.02315848216,
           172192.001953125,
           280905.63349609374,
           285696.83232421876,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           170382.0391845703,
           283586.32272135414,
           272130.8645019531,
-          285723.4803385417
+          285723.4803385417,
+          275263.8832356771
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17609,
           17609,
           17609,
           17608,
@@ -3634,6 +3633,7 @@ window.BENCHMARK_DATA = {
           17574,
           17577,
           17558,
+          17577,
           17577
         ],
         "borderColor": "#FF671B",
