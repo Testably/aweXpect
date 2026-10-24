@@ -102,6 +102,10 @@ public static class ThatPublicApi
 			callerFilePath, callerMemberName);
 	}
 
+	/// <remarks>
+	///     The result stays nullable, unlike the one of the string snapshot, as awaiting it does not return the
+	///     generated public API.
+	/// </remarks>
 	[SuppressMessage("Minor Code Smell", "S3236:Caller information arguments should not be provided explicitly",
 		Justification = "The snapshot is named after the test that calls the public API expectation.")]
 	private static SnapshotResult<string?, IThat<string?>> AddPublicApiSnapshot<TSubject>(
@@ -117,7 +121,7 @@ public static class ThatPublicApi
 					value => value is null ? null : write(value), "public API"),
 				(_, stringBuilder) => stringBuilder.Append("has a public API which "))
 			.AddExpectations(expectationBuilder => result =
-				new ThatSubject<string?>(expectationBuilder).MatchesSnapshot(callerFilePath, callerMemberName));
+				new ThatSubject<string?>(expectationBuilder).MatchesSnapshot(callerFilePath, callerMemberName)!);
 		return result!;
 	}
 }

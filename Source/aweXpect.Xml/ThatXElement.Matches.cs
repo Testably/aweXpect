@@ -24,7 +24,7 @@ public static partial class ThatXElement
 	///     This is <see cref="MatchesExactly" /> with <see cref="XmlOptionsExtensions.IgnoringAdditionalNodes" /> preset.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XElement?, IThat<XElement?>> Matches(
+	public static AndOrResult<XElement, IThat<XElement?>> Matches(
 		this IThat<XElement?> subject,
 		string expected,
 		Func<XmlOptions, XmlOptions>? options = null)

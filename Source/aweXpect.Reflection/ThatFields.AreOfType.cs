@@ -24,7 +24,7 @@ public static partial class ThatFields
 	///     Verifies that all fields in the filtered collection are of type <typeparamref name="TField" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>?, IThat<IEnumerable<FieldInfo?>?>> AreOfType<TField>(
+	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreOfType<TField>(
 		this IThat<IEnumerable<FieldInfo?>?> subject)
 		=> AreOfType(subject, typeof(TField));
 
@@ -32,12 +32,12 @@ public static partial class ThatFields
 	///     Verifies that all fields in the filtered collection are of type <paramref name="fieldType" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>?, IThat<IEnumerable<FieldInfo?>?>> AreOfType(
+	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreOfType(
 		this IThat<IEnumerable<FieldInfo?>?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(fieldType, false);
-		return new FieldsOfTypeResult<IEnumerable<FieldInfo?>?, IThat<IEnumerable<FieldInfo?>?>>(
+		return new FieldsOfTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<FieldInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
@@ -50,7 +50,7 @@ public static partial class ThatFields
 	///     Verifies that all fields in the filtered collection are of type <typeparamref name="TField" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>?, IThat<IAsyncEnumerable<FieldInfo?>?>>
+	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>>
 		AreOfType<TField>(
 			this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
 		=> AreOfType(subject, typeof(TField));
@@ -59,12 +59,12 @@ public static partial class ThatFields
 	///     Verifies that all fields in the filtered collection are of type <paramref name="fieldType" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>?, IThat<IAsyncEnumerable<FieldInfo?>?>> AreOfType(
+	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> AreOfType(
 		this IThat<IAsyncEnumerable<FieldInfo?>?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(fieldType, false);
-		return new FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>?, IThat<IAsyncEnumerable<FieldInfo?>?>>(
+		return new FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<FieldInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
@@ -133,7 +133,7 @@ public static partial class ThatFields
 	public sealed partial class FieldsOfTypeResult<TValue, TResult>
 		: AndOrResult<TValue, TResult>,
 			IOptionsProvider<TypeFilterOptions>
-		where TResult : IThat<TValue>
+		where TResult : IThat<TValue?>
 	{
 		private readonly TypeFilterOptions _typeFilterOptions;
 

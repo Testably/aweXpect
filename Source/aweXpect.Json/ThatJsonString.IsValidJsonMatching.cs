@@ -17,7 +17,7 @@ public static partial class ThatJsonString
 	///     Verifies that the subject is a valid JSON string which matches the <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<string?, IThat<string?>> IsValidJsonMatching(
+	public static AndOrResult<string, IThat<string?>> IsValidJsonMatching(
 		this IThat<string?> subject,
 		object? expected,
 		Func<JsonOptions, JsonOptions>? options = null,
@@ -32,7 +32,7 @@ public static partial class ThatJsonString
 			defaultOptions = options(defaultOptions);
 		}
 
-		return new AndOrResult<string?, IThat<string?>>(
+		return new AndOrResult<string, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(Expected: expected, Expression: doNotPopulateThisValue, Options: defaultOptions),
 				static (s, it, grammar) => new MatchesJsonConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
@@ -43,7 +43,7 @@ public static partial class ThatJsonString
 	///     Verifies that the subject is a valid JSON string which matches the <paramref name="expected" /> array.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<string?, IThat<string?>> IsValidJsonMatching<T>(
+	public static AndOrResult<string, IThat<string?>> IsValidJsonMatching<T>(
 		this IThat<string?> subject,
 		IEnumerable<T> expected,
 		Func<JsonOptions, JsonOptions>? options = null,
@@ -58,7 +58,7 @@ public static partial class ThatJsonString
 			defaultOptions = options(defaultOptions);
 		}
 
-		return new AndOrResult<string?, IThat<string?>>(
+		return new AndOrResult<string, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(Expected: expected, Expression: doNotPopulateThisValue, Options: defaultOptions),
 				static (s, it, grammar) => new MatchesJsonConstraint(it, grammar, s.Expected, s.Expression, s.Options)),

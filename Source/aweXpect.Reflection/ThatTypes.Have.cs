@@ -29,14 +29,14 @@ public static partial class ThatTypes
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<Type?, IEnumerable<Type?>?> Have<TAttribute>(
+	public static HaveAttributeResult<Type?, IEnumerable<Type?>> Have<TAttribute>(
 		this IThat<IEnumerable<Type?>?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<Type?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HaveAttributeResult<Type?, IEnumerable<Type?>?>(
+		return new HaveAttributeResult<Type?, IEnumerable<Type?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<Type?>, IEnumerable<Type?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -53,7 +53,7 @@ public static partial class ThatTypes
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<Type?, IEnumerable<Type?>?> Have<TAttribute>(
+	public static HaveAttributeResult<Type?, IEnumerable<Type?>> Have<TAttribute>(
 		this IThat<IEnumerable<Type?>?> subject,
 		Func<TAttribute, bool> predicate,
 		bool inherit = true,
@@ -64,7 +64,7 @@ public static partial class ThatTypes
 		AttributeFilterOptions<Type?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimExpression());
-		return new HaveAttributeResult<Type?, IEnumerable<Type?>?>(
+		return new HaveAttributeResult<Type?, IEnumerable<Type?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<Type?>, IEnumerable<Type?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -82,14 +82,14 @@ public static partial class ThatTypes
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<Type?, IAsyncEnumerable<Type?>?> Have<TAttribute>(
+	public static HaveAttributeResult<Type?, IAsyncEnumerable<Type?>> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<Type?>?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<Type?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HaveAttributeResult<Type?, IAsyncEnumerable<Type?>?>(
+		return new HaveAttributeResult<Type?, IAsyncEnumerable<Type?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<Type?>, IAsyncEnumerable<Type?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -108,7 +108,7 @@ public static partial class ThatTypes
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<Type?, IAsyncEnumerable<Type?>?> Have<TAttribute>(
+	public static HaveAttributeResult<Type?, IAsyncEnumerable<Type?>> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Func<TAttribute, bool> predicate,
 		bool inherit = true,
@@ -119,7 +119,7 @@ public static partial class ThatTypes
 		AttributeFilterOptions<Type?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimExpression());
-		return new HaveAttributeResult<Type?, IAsyncEnumerable<Type?>?>(
+		return new HaveAttributeResult<Type?, IAsyncEnumerable<Type?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<Type?>, IAsyncEnumerable<Type?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),

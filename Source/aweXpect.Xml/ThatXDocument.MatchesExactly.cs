@@ -16,7 +16,7 @@ public static partial class ThatXDocument
 	///     element fails the expectation, also when it is negated.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XDocument?, IThat<XDocument?>> MatchesExactly(
+	public static AndOrResult<XDocument, IThat<XDocument?>> MatchesExactly(
 		this IThat<XDocument?> subject,
 		string expected,
 		Func<XmlOptions, XmlOptions>? options = null)

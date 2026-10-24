@@ -16,7 +16,7 @@ public static partial class ThatXElement
 	///     specified, e.g. <c>ns + "item"</c>, but not its prefix.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XElement?, IThat<XElement?>> HasElement(
+	public static AndOrResult<XElement, IThat<XElement?>> HasElement(
 		this IThat<XElement?> subject,
 		XName name)
 		=> HasNodeConstraint.HasElement(subject, name, false, static element => element);
@@ -31,7 +31,7 @@ public static partial class ThatXElement
 	///     the first child element with the <paramref name="name" />, when it exists.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XElement?, IThat<XElement?>> HasElement(
+	public static AndOrResult<XElement, IThat<XElement?>> HasElement(
 		this IThat<XElement?> subject,
 		XName name,
 		Action<IThatSubject<XElement?>> expectations)
@@ -44,7 +44,7 @@ public static partial class ThatXElement
 	///     The child element is looked up like by <see cref="XContainer.Element(XName)" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XElement?, IThat<XElement?>> DoesNotHaveElement(
+	public static AndOrResult<XElement, IThat<XElement?>> DoesNotHaveElement(
 		this IThat<XElement?> subject,
 		XName name)
 		=> HasNodeConstraint.HasElement(subject, name, true, static element => element);

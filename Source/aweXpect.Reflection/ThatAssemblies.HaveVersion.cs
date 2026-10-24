@@ -63,7 +63,7 @@ public static partial class ThatAssemblies
 	///     collection of <see cref="Assembly" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HaveVersionResult<IEnumerable<Assembly?>?> HaveVersion(this IThat<IEnumerable<Assembly?>?> subject)
+	public static HaveVersionResult<IEnumerable<Assembly?>> HaveVersion(this IThat<IEnumerable<Assembly?>?> subject)
 		=> new(subject, (expectationBuilder, checks)
 			=> expectationBuilder.AddConstraint<List<VersionComponentCheck>, IEnumerable<Assembly?>>(checks,
 				static (checks, it, grammars)
@@ -75,7 +75,7 @@ public static partial class ThatAssemblies
 	///     collection of <see cref="Assembly" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HaveVersionResult<IAsyncEnumerable<Assembly?>?> HaveVersion(
+	public static HaveVersionResult<IAsyncEnumerable<Assembly?>> HaveVersion(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject)
 		=> new(subject, (expectationBuilder, checks)
 			=> expectationBuilder.AddConstraint<List<VersionComponentCheck>, IAsyncEnumerable<Assembly?>>(checks,
@@ -87,17 +87,17 @@ public static partial class ThatAssemblies
 	///     The result of verifying the <see cref="AssemblyName.Version" /> of a collection of <see cref="Assembly" />,
 	///     allowing comparisons on the individual version components.
 	/// </summary>
-	public class HaveVersionResult<TCollection> : AndOrResult<TCollection, IThat<TCollection>>
+	public class HaveVersionResult<TCollection> : AndOrResult<TCollection, IThat<TCollection?>>
 	{
 		private readonly List<VersionComponentCheck> _checks = [];
 
-		internal HaveVersionResult(IThat<TCollection> subject,
+		internal HaveVersionResult(IThat<TCollection?> subject,
 			Func<ExpectationBuilder, List<VersionComponentCheck>, ExpectationBuilder> addConstraint)
 			: this(subject, subject.Get().ExpectationBuilder, addConstraint)
 		{
 		}
 
-		private HaveVersionResult(IThat<TCollection> subject, ExpectationBuilder expectationBuilder,
+		private HaveVersionResult(IThat<TCollection?> subject, ExpectationBuilder expectationBuilder,
 			Func<ExpectationBuilder, List<VersionComponentCheck>, ExpectationBuilder> addConstraint)
 			: base(expectationBuilder, subject)
 		{
