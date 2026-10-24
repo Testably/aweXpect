@@ -438,6 +438,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
         "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
+      },
+      {
+        "sha": "487fa47b4bcf3aed31e5c692ed1589317da8e6cf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
+        "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
       }
     ],
     "labels": [
@@ -513,7 +519,8 @@ window.BENCHMARK_DATA = {
       "4713c904",
       "906ecb34",
       "cba28a96",
-      "bb3fba51"
+      "bb3fba51",
+      "487fa47b"
     ],
     "datasets": [
       {
@@ -592,7 +599,8 @@ window.BENCHMARK_DATA = {
           733.3402072361538,
           754.8669413248698,
           748.7007006963094,
-          721.5072188695272
+          721.5072188695272,
+          621.8666557312011
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -637,6 +645,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -763,7 +772,8 @@ window.BENCHMARK_DATA = {
           922.6551093419392,
           939.92330493927,
           944.9550553162893,
-          910.5551670074462
+          910.5551670074462,
+          781.6665069716317
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -775,6 +785,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -1299,6 +1310,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
         "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
+      },
+      {
+        "sha": "487fa47b4bcf3aed31e5c692ed1589317da8e6cf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
+        "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
       }
     ],
     "labels": [
@@ -1374,7 +1391,8 @@ window.BENCHMARK_DATA = {
       "4713c904",
       "906ecb34",
       "cba28a96",
-      "bb3fba51"
+      "bb3fba51",
+      "487fa47b"
     ],
     "datasets": [
       {
@@ -1453,7 +1471,8 @@ window.BENCHMARK_DATA = {
           131.84668143590292,
           148.02381912867227,
           156.5667028767722,
-          131.647757879893
+          131.647757879893,
+          109.41192917029063
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1493,6 +1512,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -1624,7 +1644,8 @@ window.BENCHMARK_DATA = {
           207.43221095630102,
           221.21391172409056,
           225.90051326751708,
-          207.46092021465302
+          207.46092021465302,
+          189.31094408035278
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1636,6 +1657,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -2160,6 +2182,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
         "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
+      },
+      {
+        "sha": "487fa47b4bcf3aed31e5c692ed1589317da8e6cf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
+        "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
       }
     ],
     "labels": [
@@ -2235,7 +2263,8 @@ window.BENCHMARK_DATA = {
       "4713c904",
       "906ecb34",
       "cba28a96",
-      "bb3fba51"
+      "bb3fba51",
+      "487fa47b"
     ],
     "datasets": [
       {
@@ -2314,7 +2343,8 @@ window.BENCHMARK_DATA = {
           2032.680750165667,
           1999.9580086299352,
           2035.330158506121,
-          1953.0666931152343
+          1953.0666931152343,
+          1654.3341436386108
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2354,6 +2384,7 @@ window.BENCHMARK_DATA = {
           2104,
           2104,
           2104,
+          2080,
           2080,
           2080,
           2080,
@@ -2485,7 +2516,8 @@ window.BENCHMARK_DATA = {
           1467.797415460859,
           1478.588497543335,
           1491.4739665985107,
-          1407.1039803368706
+          1407.1039803368706,
+          1245.5581069946288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2569,7 +2601,8 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1953,
-          1864
+          1864,
+          1953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2961,6 +2994,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
         "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
+      },
+      {
+        "sha": "487fa47b4bcf3aed31e5c692ed1589317da8e6cf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
+        "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
       }
     ],
     "labels": [
@@ -3026,7 +3065,8 @@ window.BENCHMARK_DATA = {
       "4713c904",
       "906ecb34",
       "cba28a96",
-      "bb3fba51"
+      "bb3fba51",
+      "487fa47b"
     ],
     "datasets": [
       {
@@ -3095,7 +3135,8 @@ window.BENCHMARK_DATA = {
           2894.4048311869306,
           2700.60916595459,
           2841.2351455688477,
-          2699.980168269231
+          2699.980168269231,
+          2428.7684029170446
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3168,6 +3209,7 @@ window.BENCHMARK_DATA = {
           2984,
           3048,
           2992,
+          3048,
           3048,
           3048
         ],
@@ -3246,7 +3288,8 @@ window.BENCHMARK_DATA = {
           3840.424236551921,
           3904.213607788086,
           3882.7802217923677,
-          3753.3340249742782
+          3753.3340249742782,
+          3329.3921867370605
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3320,7 +3363,8 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3981,
-          3981
+          3981,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3712,6 +3756,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
         "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
+      },
+      {
+        "sha": "487fa47b4bcf3aed31e5c692ed1589317da8e6cf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
+        "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
       }
     ],
     "labels": [
@@ -3777,7 +3827,8 @@ window.BENCHMARK_DATA = {
       "4713c904",
       "906ecb34",
       "cba28a96",
-      "bb3fba51"
+      "bb3fba51",
+      "487fa47b"
     ],
     "datasets": [
       {
@@ -3846,7 +3897,8 @@ window.BENCHMARK_DATA = {
           395.43357407251995,
           398.6452196756999,
           402.75188032786053,
-          370.98606038093567
+          370.98606038093567,
+          302.6320881843567
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3876,6 +3928,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -3997,7 +4050,8 @@ window.BENCHMARK_DATA = {
           2362.3399047851562,
           2381.634467569987,
           2397.220523579915,
-          2264.880638376872
+          2264.880638376872,
+          1892.9634695786697
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4009,6 +4063,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -4463,6 +4518,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
         "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
+      },
+      {
+        "sha": "487fa47b4bcf3aed31e5c692ed1589317da8e6cf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
+        "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
       }
     ],
     "labels": [
@@ -4528,7 +4589,8 @@ window.BENCHMARK_DATA = {
       "4713c904",
       "906ecb34",
       "cba28a96",
-      "bb3fba51"
+      "bb3fba51",
+      "487fa47b"
     ],
     "datasets": [
       {
@@ -4597,7 +4659,8 @@ window.BENCHMARK_DATA = {
           3747.312799307016,
           3564.82501373291,
           3702.555071904109,
-          3644.9878232320148
+          3644.9878232320148,
+          3124.6211250305178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4656,6 +4719,7 @@ window.BENCHMARK_DATA = {
           3672,
           3672,
           3673,
+          3705,
           3705,
           3705,
           3705,
@@ -4748,7 +4812,8 @@ window.BENCHMARK_DATA = {
           281596.45872395835,
           283300.4671349159,
           282648.2638811384,
-          277855.8449707031
+          277855.8449707031,
+          276064.407421875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4818,6 +4883,7 @@ window.BENCHMARK_DATA = {
           17573,
           17719,
           17574,
+          17577,
           17577,
           17577,
           17577,
