@@ -433,6 +433,24 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task Comparers_ChangingTheReturnedList_ShouldThrowNotSupportedException()
+			{
+				SnapshotComparerRegistration comparer = SnapshotComparer.ForExtension("png", FakeSnapshotComparer.Equal());
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Comparers.Set([comparer,]);
+				IReadOnlyList<SnapshotComparerRegistration> comparers = Customize.aweXpect.Snapshots().Comparers.Get();
+
+				void Act() => ((IList<SnapshotComparerRegistration>)comparers)[0] =
+					SnapshotComparer.ForExtension("svg", FakeSnapshotComparer.Equal());
+
+				await That(Act).Throws<NotSupportedException>()
+					.WithMessage("Collection is read-only.");
+				await That(Customize.aweXpect.Snapshots().Comparers.Get()).IsEqualTo([comparer,])
+					.Because("changing the returned list must not bypass the scoping of the setting");
+			}
+#endif
+
 			[Test]
 			public async Task Comparers_ShouldDefaultToNone()
 			{

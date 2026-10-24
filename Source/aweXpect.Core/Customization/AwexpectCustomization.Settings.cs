@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
@@ -81,9 +83,10 @@ public partial class AwexpectCustomization
 							new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must not be negative."));
 					}
 				});
-			ExcludedAssemblyPrefixes = new CopiedOnGet(new CustomizationValue<string[]>(awexpectCustomization,
+			ExcludedAssemblyPrefixes = new CopyingSetter<string>(new CustomizationValue<IReadOnlyList<string>>(
+				awexpectCustomization,
 				KeyPrefix + nameof(ExcludedAssemblyPrefixes),
-				[
+				Array.AsReadOnly<string>([
 					"mscorlib",
 					"System",
 					"Microsoft",
@@ -94,7 +97,7 @@ public partial class AwexpectCustomization
 					"TUnit",
 					"Castle",
 					"DynamicProxyGenAssembly2",
-				],
+				]),
 				prefixes => prefixes.ThrowIfNull()));
 			TestCancellation = new CustomizationValue<TestCancellation?>(awexpectCustomization,
 				TestCancellationKey, null);
@@ -184,9 +187,10 @@ public partial class AwexpectCustomization
 		///     - xunit<br />
 		///     - TUnit<br />
 		///     - Castle<br />
-		///     - DynamicProxyGenAssembly2
+		///     - DynamicProxyGenAssembly2<br />
+		///     The list is copied, so changing it afterwards does not change the setting.
 		/// </remarks>
-		public ICustomizationValueSetter<string[]> ExcludedAssemblyPrefixes { get; }
+		public ICustomizationValueSetter<IReadOnlyList<string>> ExcludedAssemblyPrefixes { get; }
 
 		/// <summary>
 		///     If set, applies the cancellation logic for all tests.
@@ -202,15 +206,22 @@ public partial class AwexpectCustomization
 			=> _awexpectCustomization.Set(key, value);
 
 		/// <summary>
-		///     Returns a copy of the stored array, so that changing it cannot bypass the scoping of the setting.
+		///     Stores a read-only copy of the list, as a setting would otherwise change with a mutable list it was set
+		///     from or that was cast from the returned list, which would bypass the scoping of the setting.
 		/// </summary>
-		private sealed class CopiedOnGet(ICustomizationValueSetter<string[]> inner) : ICustomizationValueSetter<string[]>
+		/// <remarks>
+		///     A <see langword="null" /> list is passed on unchanged, so that the validation of the
+		///     <paramref name="inner" /> value rejects it.
+		/// </remarks>
+		private sealed class CopyingSetter<TItem>(ICustomizationValueSetter<IReadOnlyList<TItem>> inner)
+			: ICustomizationValueSetter<IReadOnlyList<TItem>>
 		{
 			/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Get()" />
-			public string[] Get() => (string[])inner.Get().Clone();
+			public IReadOnlyList<TItem> Get() => inner.Get();
 
 			/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Set(TValue)" />
-			public CustomizationLifetime Set(string[] value) => inner.Set(value);
+			public CustomizationLifetime Set(IReadOnlyList<TItem> value)
+				=> inner.Set(value is null ? value! : Array.AsReadOnly(value.ToArray()));
 		}
 	}
 }

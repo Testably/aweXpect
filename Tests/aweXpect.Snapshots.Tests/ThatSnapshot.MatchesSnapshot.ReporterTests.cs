@@ -465,6 +465,23 @@ public sealed partial class ThatSnapshot
 				await That(mismatch.Snapshot.Text).IsEqualTo("bar");
 			}
 
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task Reporters_ChangingTheReturnedList_ShouldThrowNotSupportedException()
+			{
+				RecordingReporter reporter = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Reporters.Set([reporter,]);
+				IReadOnlyList<SnapshotReporter> reporters = Customize.aweXpect.Snapshots().Reporters.Get();
+
+				void Act() => ((IList<SnapshotReporter>)reporters)[0] = new RecordingReporter();
+
+				await That(Act).Throws<NotSupportedException>()
+					.WithMessage("Collection is read-only.");
+				await That(Customize.aweXpect.Snapshots().Reporters.Get()).IsEqualTo([reporter,])
+					.Because("changing the returned list must not bypass the scoping of the setting");
+			}
+#endif
+
 			[Test]
 			public async Task Reporters_ShouldDefaultToNone()
 			{

@@ -783,6 +783,23 @@ public sealed partial class ThatSnapshot
 					.WithMessage("A member or value rule only applies to a snapshot of an object*").AsWildcard();
 			}
 
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task Rules_ChangingTheReturnedList_ShouldThrowNotSupportedException()
+			{
+				SnapshotRule rule = SnapshotRule.For.Members().WithName("Id").Ignore();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Rules.Set([rule,]);
+				IReadOnlyList<SnapshotRule> rules = Customize.aweXpect.Snapshots().Rules.Get();
+
+				void Act() => ((IList<SnapshotRule>)rules)[0] = SnapshotRule.For.Members().WithName("Name").Ignore();
+
+				await That(Act).Throws<NotSupportedException>()
+					.WithMessage("Collection is read-only.");
+				await That(Customize.aweXpect.Snapshots().Rules.Get()).IsEqualTo([rule,])
+					.Because("changing the returned list must not bypass the scoping of the setting");
+			}
+#endif
+
 			[Test]
 			public async Task Rules_ShouldBeEmptyByDefault()
 			{

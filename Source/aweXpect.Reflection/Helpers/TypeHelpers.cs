@@ -1021,7 +1021,7 @@ internal static class TypeHelpers
 	///     matches one of the <paramref name="excludedPrefixes" /> at a name-segment boundary
 	///     (see <see cref="AssemblyNameExtensions.IsExcludedAssemblyName" />).
 	/// </summary>
-	private static bool IsFrameworkDependency(this Type type, string[] excludedPrefixes)
+	private static bool IsFrameworkDependency(this Type type, IReadOnlyList<string> excludedPrefixes)
 	{
 		string assemblyName;
 		try
@@ -1078,7 +1078,8 @@ internal static class TypeHelpers
 			=> IsDependencyViolation(dependency, ownNamespace, allowed, excludedPrefixes)).Any();
 
 	private static bool IsDependencyViolation(
-		Type dependency, string? ownNamespace, NamespaceDependencyOptions allowed, string[] excludedPrefixes)
+		Type dependency, string? ownNamespace, NamespaceDependencyOptions allowed,
+		IReadOnlyList<string> excludedPrefixes)
 		=> !IsExemptDependency(dependency, ownNamespace, allowed.IncludeOwnSubNamespaces, excludedPrefixes) &&
 		   !allowed.Matches(dependency.Namespace);
 
@@ -1091,7 +1092,7 @@ internal static class TypeHelpers
 	///     change cannot be applied to one family and missed in the other.
 	/// </remarks>
 	private static bool IsExemptDependency(
-		Type dependency, string? ownNamespace, bool includeOwnSubNamespaces, string[] excludedPrefixes)
+		Type dependency, string? ownNamespace, bool includeOwnSubNamespaces, IReadOnlyList<string> excludedPrefixes)
 		=> dependency.IsFrameworkDependency(excludedPrefixes) ||
 		   IsOwnNamespace(dependency.Namespace, ownNamespace, includeOwnSubNamespaces);
 
@@ -1106,10 +1107,10 @@ internal static class TypeHelpers
 	///     first violation.
 	/// </remarks>
 	private static IEnumerable<Type> GetDependencyViolations(
-		this Type type, Func<Type, string?, string[], bool> isViolation)
+		this Type type, Func<Type, string?, IReadOnlyList<string>, bool> isViolation)
 	{
 		string? ownNamespace = type.Namespace;
-		string[] excludedPrefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
+		IReadOnlyList<string> excludedPrefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
 		return type.ResolveDependencies()
 			.Where(dependency => isViolation(dependency, ownNamespace, excludedPrefixes));
 	}
@@ -1167,7 +1168,7 @@ internal static class TypeHelpers
 			=> IsDependencyTypeSetViolation(dependency, ownNamespace, allowed, excludedPrefixes)).Any();
 
 	private static bool IsDependencyTypeSetViolation(
-		Type dependency, string? ownNamespace, ResolvedTypeSet allowed, string[] excludedPrefixes)
+		Type dependency, string? ownNamespace, ResolvedTypeSet allowed, IReadOnlyList<string> excludedPrefixes)
 		=> !IsExemptDependency(dependency, ownNamespace, allowed.IncludeOwnSubNamespaces, excludedPrefixes) &&
 		   !allowed.Matches(dependency);
 
@@ -1188,7 +1189,7 @@ internal static class TypeHelpers
 		Func<Type, IEnumerable<Type>> resolver =
 			Customization.DependencyResolver.Get() ?? SignatureDependencies;
 		if (ReferenceEquals(resolver, SignatureDependencies) &&
-		    Customization.ExcludedAttributeTypes.Get().Length > 0)
+		    Customization.ExcludedAttributeTypes.Get().Count > 0)
 		{
 			// A customized attribute exclusion changes the built-in dependency set, so it must not be baked into
 			// the customization-independent cache; the (rare) customized path recomputes instead.
@@ -1247,7 +1248,8 @@ internal static class TypeHelpers
 	///     traversed: they are separate types with their own dependency surface (the type collections
 	///     enumerate them individually).
 	/// </remarks>
-	internal static IEnumerable<Type> GetSignatureDependencies(this Type type, string[] excludedAttributeTypes)
+	internal static IEnumerable<Type> GetSignatureDependencies(this Type type,
+		IReadOnlyList<string> excludedAttributeTypes)
 	{
 		SignatureDependencyCollector collector = new(excludedAttributeTypes);
 
@@ -1735,7 +1737,7 @@ internal static class TypeHelpers
 	///     Extracted from <see cref="GetSignatureDependencies" /> so that each member kind is collected in its own
 	///     small method instead of one large one.
 	/// </remarks>
-	private sealed class SignatureDependencyCollector(string[] excludedAttributeTypes)
+	private sealed class SignatureDependencyCollector(IReadOnlyList<string> excludedAttributeTypes)
 	{
 		private const BindingFlags Flags = BindingFlags.Public |
 		                                   BindingFlags.NonPublic |
@@ -2109,8 +2111,20 @@ internal static class TypeHelpers
 
 		private bool IsCompilerEmittedAttribute(Type attributeType)
 			=> attributeType.FullName is { } fullName &&
-			   (CompilerEmittedAttributes.Contains(fullName) ||
-			    excludedAttributeTypes.Contains(fullName, StringComparer.Ordinal));
+			   (CompilerEmittedAttributes.Contains(fullName) || IsExcludedAttributeType(fullName));
+
+		private bool IsExcludedAttributeType(string fullName)
+		{
+			for (int i = 0; i < excludedAttributeTypes.Count; i++)
+			{
+				if (string.Equals(excludedAttributeTypes[i], fullName, StringComparison.Ordinal))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 
 		private static bool IsRequiredMembersObsolete(CustomAttributeData data)
 		{

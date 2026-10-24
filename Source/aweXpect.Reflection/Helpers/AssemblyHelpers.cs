@@ -113,7 +113,7 @@ internal static class AssemblyHelpers
 	public static async ValueTask<string?[]> GetDisallowedAssemblyDependencies(this Assembly assembly,
 		string[] allowed, StringEqualityOptions options)
 	{
-		string[] prefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
+		IReadOnlyList<string> prefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
 		List<string?> violations = [];
 		foreach (AssemblyName dependency in assembly.GetReferencedAssemblyNames())
 		{

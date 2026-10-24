@@ -101,15 +101,15 @@ To format your own types, register an `IValueFormatter` with `ValueFormatter.Reg
 
 Under `Customize.aweXpect.Settings()`:
 
-| Option                           | Type               | Default   | Description                                                                                                         |
-|----------------------------------|--------------------|-----------|---------------------------------------------------------------------------------------------------------------------|
-| `TestCancellation`               | `TestCancellation` | none      | A [timeout or `CancellationToken`](./06-time-and-cancellation.md) that is applied to all expectations.              |
-| `DefaultCheckInterval`           | `TimeSpan`         | 100 ms    | The interval for re-checking a condition, e.g. for [`Eventually()`](./06-time-and-cancellation.md#eventually).      |
-| `DefaultEventuallyTimeout`       | `TimeSpan`         | 30 s      | How long [`Eventually()`](./06-time-and-cancellation.md#eventually) retries until the expectations must be met.     |
-| `DefaultRegexTimeout`            | `TimeSpan`         | 1 s       | How long a [wildcard or regex pattern](../04-values/03-string.md#match-types) may take to match.                    |
-| `DefaultSignalerTimeout`         | `TimeSpan`         | 30 s      | How long a [`Signaler`](../06-behaviour/04-callbacks.md) expectation waits without `Within(…)`.                     |
-| `DefaultTimeComparisonTolerance` | `TimeSpan`         | 0         | The [tolerance](../04-values/10-datetime-offset.md#default-tolerance) for date and time values without `Within(…)`. |
-| `ExcludedAssemblyPrefixes`       | `string[]`         | see below | The assemblies that are not scanned for a test framework adapter, matched by name prefix.                           |
+| Option                           | Type                    | Default   | Description                                                                                                         |
+|----------------------------------|-------------------------|-----------|---------------------------------------------------------------------------------------------------------------------|
+| `TestCancellation`               | `TestCancellation`      | none      | A [timeout or `CancellationToken`](./06-time-and-cancellation.md) that is applied to all expectations.              |
+| `DefaultCheckInterval`           | `TimeSpan`              | 100 ms    | The interval for re-checking a condition, e.g. for [`Eventually()`](./06-time-and-cancellation.md#eventually).      |
+| `DefaultEventuallyTimeout`       | `TimeSpan`              | 30 s      | How long [`Eventually()`](./06-time-and-cancellation.md#eventually) retries until the expectations must be met.     |
+| `DefaultRegexTimeout`            | `TimeSpan`              | 1 s       | How long a [wildcard or regex pattern](../04-values/03-string.md#match-types) may take to match.                    |
+| `DefaultSignalerTimeout`         | `TimeSpan`              | 30 s      | How long a [`Signaler`](../06-behaviour/04-callbacks.md) expectation waits without `Within(…)`.                     |
+| `DefaultTimeComparisonTolerance` | `TimeSpan`              | 0         | The [tolerance](../04-values/10-datetime-offset.md#default-tolerance) for date and time values without `Within(…)`. |
+| `ExcludedAssemblyPrefixes`       | `IReadOnlyList<string>` | see below | The assemblies that are not scanned for a test framework adapter, matched by name prefix.                           |
 
 See [time and cancellation](./06-time-and-cancellation.md#cancellationtoken) for how to create a `TestCancellation`.
 

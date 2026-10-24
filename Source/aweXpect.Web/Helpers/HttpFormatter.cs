@@ -64,14 +64,15 @@ internal static class HttpFormatter
 		return messageBuilder.ToString().TrimEnd();
 	}
 
-	private static async Task AppendContent(IContentProcessor[] contentProcessors, StringBuilder messageBuilder,
+	private static async Task AppendContent(IReadOnlyList<IContentProcessor> contentProcessors,
+		StringBuilder messageBuilder,
 		HttpContent httpContent,
 		string indentation,
 		CancellationToken cancellationToken)
 	{
-		foreach (IContentProcessor? contentProcessor in contentProcessors)
+		for (int i = 0; i < contentProcessors.Count; i++)
 		{
-			if (await contentProcessor.AppendContentInfo(messageBuilder, httpContent, indentation, cancellationToken))
+			if (await contentProcessors[i].AppendContentInfo(messageBuilder, httpContent, indentation, cancellationToken))
 			{
 				return;
 			}
@@ -98,7 +99,7 @@ internal static class HttpFormatter
 		string indentation,
 		CancellationToken cancellationToken)
 	{
-		IContentProcessor[] contentProcessors = Customize.aweXpect.Web().ContentProcessors.Get();
+		IReadOnlyList<IContentProcessor> contentProcessors = Customize.aweXpect.Web().ContentProcessors.Get();
 
 		StringBuilder contentBuilder = new();
 		await AppendContent(contentProcessors, contentBuilder, content, indentation, cancellationToken);

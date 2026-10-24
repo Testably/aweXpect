@@ -937,7 +937,7 @@ namespace aweXpect.Customization
             public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultRegexTimeout { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultSignalerTimeout { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultTimeComparisonTolerance { get; }
-            public aweXpect.Customization.ICustomizationValueSetter<string[]> ExcludedAssemblyPrefixes { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<string>> ExcludedAssemblyPrefixes { get; }
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Customization.TestCancellation?> TestCancellation { get; }
         }
     }
