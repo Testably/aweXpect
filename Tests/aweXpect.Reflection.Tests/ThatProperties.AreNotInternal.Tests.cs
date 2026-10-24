@@ -21,10 +21,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             are all not internal,
-					             but it contained internal items
+					             none are internal,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -79,8 +84,8 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             also contain an internal item,
-					             but it contained no internal items
+					             at least one is internal,
+					             but none of * were
 
 					             Collection:
 					             *

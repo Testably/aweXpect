@@ -21,6 +21,10 @@ namespace aweXpect.Core.Extending;
 ///     kind of collection that can hold the item. A <see langword="null" /> item does not match, unless the item
 ///     parameter is nullable: then the method decides, and <c>[DisallowNull]</c> on the parameter restores that a
 ///     <see langword="null" /> item does not match.
+///     <para />
+///     Unlike for <see cref="GenerateExpectationAttribute" />, the type of the item can be the only type parameter of
+///     the method, when a constraint restricts it to reference types and no other parameter uses it. The expectations
+///     are then generic over the type of the items.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class GenerateCollectionExpectationAttribute : Attribute

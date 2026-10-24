@@ -54,6 +54,8 @@ internal sealed record ExpectationModel(
 /// <param name="OnCollection">Whether the expectation is also generated directly on the collection, for all items.</param>
 /// <param name="NegatedName">The name of the expectation directly on the collection for no item, if any.</param>
 /// <param name="FormattedItem">The method that returns the value which stands for an item in the failure message, if any.</param>
+/// <param name="ItemTypeParameter">The type parameter of the method that is the type of the item, if any.</param>
+/// <param name="ItemTypeConstraints">The constraints of the <paramref name="ItemTypeParameter" />.</param>
 /// <param name="SupportsAsyncEnumerables">Whether the referenced aweXpect.Core supports <c>IAsyncEnumerable</c>.</param>
 internal sealed record CollectionExpectationModel(
 	ClassModel Class,
@@ -70,6 +72,8 @@ internal sealed record CollectionExpectationModel(
 	bool OnCollection,
 	string? NegatedName,
 	string? FormattedItem,
+	string? ItemTypeParameter,
+	string? ItemTypeConstraints,
 	bool SupportsAsyncEnumerables)
 {
 	public bool PassesCancellationToken => CancellationTokenIndex >= 0;

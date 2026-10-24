@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using aweXpect.Core.Extending;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Results;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
 #endif
@@ -343,6 +344,47 @@ public sealed class GenerateCollectionExpectationAttributeTests
 			             """);
 	}
 #endif
+
+	[Test]
+	public async Task ItemTypeParameter_ShouldKeepTheTypeOfTheItems()
+	{
+		Moderator[] subject = [new("Ann"), new("Bob"),];
+
+		AndOrResult<IEnumerable<Moderator?>, IThat<IEnumerable<Moderator?>?>> result = That(subject).HaveShortNames();
+
+		async Task Act()
+			=> await result;
+
+		await That(Act).DoesNotThrow()
+			.Because("the expectation is generic over the type of the items, so that its result keeps that type");
+	}
+
+	[Test]
+	public async Task ItemTypeParameter_WhenNotMet_ShouldFail()
+	{
+		Moderator[] subject = [new("Bob"), new("Alice"),];
+
+		async Task Act()
+			=> await That(subject).HaveShortNames();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             all have short names,
+			             but only 1 of 2 did
+
+			             Not matching items:
+			             [
+			               Alice
+			             ]
+
+			             Collection:
+			             [
+			               Bob,
+			               Alice
+			             ]
+			             """);
+	}
 
 	[Test]
 	public async Task NegatedName_WhenAnItemMatches_ShouldFail()

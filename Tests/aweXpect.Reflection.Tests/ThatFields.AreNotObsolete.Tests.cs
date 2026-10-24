@@ -45,10 +45,15 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not obsolete,
-					             but it contained obsolete items
+					             none are obsolete,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -74,8 +79,8 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain an obsolete item,
-					             but it only contained non-obsolete items
+					             at least one is obsolete,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -122,8 +127,8 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain an obsolete item,
-					             but it only contained non-obsolete items
+					             at least one is obsolete,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -166,10 +171,15 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not obsolete,
-					             but it contained obsolete items
+					             none are obsolete,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

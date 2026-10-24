@@ -176,6 +176,67 @@ public sealed class CoreCollectionExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task ItemTypeParameter_ShouldGenerateGenericExpectations()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("ArePublic", "is public", "are public",
+				OnCollection = true, NegatedName = "AreNotPublic", FormattedItem = nameof(Describe))]
+			private static bool IsPublic<TMember>(TMember member) where TMember : System.Reflection.MemberInfo
+				=> member.Name.Length > 0;
+
+			private static object? Describe(System.Reflection.MemberInfo? member) => member?.Name;
+			""");
+
+		await ThatCompiles(result);
+		await ThatContainsLines(result,
+			"""
+				public static global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<TMember?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<TMember?>?>> ArePublic<TMember>(this global::aweXpect.IEnumerableElements<TMember?> elements)
+					where TMember : global::System.Reflection.MemberInfo
+			""");
+		await ThatContainsLines(result,
+			"""
+				public static global::aweXpect.Results.AndOrResult<TEnumerable, global::aweXpect.Core.IThat<TEnumerable>> ArePublic<TEnumerable, TMember>(this global::aweXpect.IStructEnumerableElements<TEnumerable, TMember?> elements)
+					where TEnumerable : struct, global::System.Collections.Generic.IEnumerable<TMember?>
+					where TMember : global::System.Reflection.MemberInfo
+			""");
+		await That(result.Generated)
+			.Contains(" AreNotPublic<TMember>(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<TMember?>?> subject)");
+		await That(result.Generated)
+			.Contains("new IsPublic_GeneratedElementsConstraint<global::System.Collections.Generic.IEnumerable<TMember?>?, TMember>(");
+		await That(result.Generated).Contains("new IsPublic_GeneratedAsyncElementsConstraint<TMember>(");
+		await ThatContainsLines(result,
+			"""
+				private sealed class IsPublic_GeneratedElementsConstraint<TCollection, TMember> : global::aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TMember?>
+					where TCollection : global::System.Collections.Generic.IEnumerable<TMember?>?
+					where TMember : global::System.Reflection.MemberInfo
+			""");
+		await That(result.Generated).Contains("!(item is null) && global::Lib.ThatSample.IsPublic<TMember>(item)")
+			.Exactly(2);
+		await That(result.Generated).Contains("item => (object?)global::Lib.ThatSample.Describe(item)").Exactly(2);
+	}
+
+	[Test]
+	[Arguments("private static bool IsZero<T>(T value) => value is null;")]
+	[Arguments("private static bool IsZero<T>(int value) where T : class => value == 0;")]
+	[Arguments("private static bool IsZero<T, TOther>(T value) where T : class => value is null;")]
+	[Arguments("private static bool IsZero<T>(T value, T other) where T : class => value == other;")]
+	[Arguments("private static bool IsZero<TCollection>(TCollection value) where TCollection : class => value is null;")]
+	public async Task ItemTypeParameterIsNotSupported_ShouldReportADiagnostic(string method)
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			$$"""
+			  [GenerateCollectionExpectation("AreZero", "is zero", "are zero")]
+			  {{method}}
+			  """);
+
+		await That(result.GeneratorDiagnostics.Select(x => $"{x.Id}: {x.GetMessage()}"))
+			.HasSingle().Which
+			.EndsWith("cannot generate an expectation, because it is generic, but not only in the type of the item, which a reference type constraint restricts");
+		await That(result.Generated).IsEmpty();
+	}
+
+	[Test]
 	public async Task LanguageVersionIsCSharp8_ShouldCompile()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -216,9 +277,15 @@ public sealed class CoreCollectionExpectationGeneratorTests
 						NegatedName = "AreNotSmall", FormattedItem = nameof(Describe))]
 					private static bool IsSmall(int value) => value < 3;
 
+					[GenerateCollectionExpectation("AreSet", "is set", "are set", OnCollection = true,
+						NegatedName = "AreUnset", FormattedItem = nameof(Describe))]
+					private static bool IsSet<TItem>(TItem? item) where TItem : class => item != null;
+
 					private static object? Describe(string? value) => value?.Length;
 
 					private static object Describe(int value) => value;
+
+					private static object? Describe(object? value) => value;
 				}
 			}
 			""", LanguageVersion.CSharp8);

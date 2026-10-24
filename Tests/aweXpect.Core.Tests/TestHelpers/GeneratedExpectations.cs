@@ -20,6 +20,21 @@ internal sealed class Badge(Account account)
 	public override string ToString() => $"{account.Name} (level {account.Level})";
 }
 
+internal class Member(string name)
+{
+	public string Name { get; } = name;
+
+	public override string ToString() => Name;
+}
+
+internal sealed class Moderator(string name) : Member(name);
+
+internal static partial class ThatMember
+{
+	[GenerateCollectionExpectation("HaveShortNames", "has a short name", "have short names", OnCollection = true)]
+	private static bool HasShortName<TMember>(TMember member) where TMember : Member => member.Name.Length <= 3;
+}
+
 internal static partial class ThatAccount
 {
 	[GenerateCollectionExpectation("HaveOwner", "have owner {owner}")]

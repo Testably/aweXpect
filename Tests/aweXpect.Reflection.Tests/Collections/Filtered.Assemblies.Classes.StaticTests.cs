@@ -30,10 +30,15 @@ public sealed partial class Filtered
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that static classes in all loaded assemblies
-						             are all internal,
-						             but it contained not matching items
+						             all are internal,
+						             but only * of * were
 
 						             Not matching items:
+						             [
+						               *
+						             ]
+
+						             Collection:
 						             [
 						               *
 						             ]

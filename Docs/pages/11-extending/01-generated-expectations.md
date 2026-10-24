@@ -184,6 +184,9 @@ await Expect.That(tracks).None().AreLongerThan(TimeSpan.FromMinutes(5));
   the collections of strings.
 - A `null` item does not match, unless the item parameter is nullable: then the method decides. `[DisallowNull]` and
   `NullableOverload` work like for a subject.
+- The type of the item can be the only type parameter of the method, when a constraint restricts it to reference
+  types and no other parameter uses it, e.g. `IsLive<TRecording>(TRecording recording) where TRecording : Recording`.
+  The expectations are then generic as well and keep the type of the items, e.g. for a collection of albums.
 - An item that the method [cannot answer](#questions-that-cannot-be-answered) fails the expectation and its negation,
   e.g. "but for the item at index 1, it had no duration", unless the items before already determine the outcome.
 - `Summary` and `Remarks` replace or extend the XML documentation, which is derived from the plural text.

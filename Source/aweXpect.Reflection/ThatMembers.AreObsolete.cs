@@ -1,136 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
+﻿using System.Reflection;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
 public static partial class ThatMembers
 {
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are obsolete (marked with
-	///     the <see cref="System.ObsoleteAttribute" />).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> AreObsolete<TMember>(
-		this IThat<IEnumerable<TMember>?> subject)
-		where TMember : MemberInfo?
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<TMember>>(static (it, grammars)
-				=> new AreObsoleteConstraint<TMember>(it, grammars)),
-			subject);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are obsolete (marked with
-	///     the <see cref="System.ObsoleteAttribute" />).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>> AreObsolete<TMember>(
-		this IThat<IAsyncEnumerable<TMember>?> subject)
-		where TMember : MemberInfo?
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>(static (it, grammars)
-				=> new AreObsoleteConstraint<TMember>(it, grammars)),
-			subject);
-#endif
-
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are not obsolete (not
-	///     marked with the <see cref="System.ObsoleteAttribute" />).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> AreNotObsolete<TMember>(
-		this IThat<IEnumerable<TMember>?> subject)
-		where TMember : MemberInfo?
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<TMember>>(static (it, grammars)
-				=> new AreNotObsoleteConstraint<TMember>(it, grammars)),
-			subject);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are not obsolete (not
-	///     marked with the <see cref="System.ObsoleteAttribute" />).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>> AreNotObsolete<TMember>(
-		this IThat<IAsyncEnumerable<TMember>?> subject)
-		where TMember : MemberInfo?
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>(static (it, grammars)
-				=> new AreNotObsoleteConstraint<TMember>(it, grammars)),
-			subject);
-#endif
-
-	private sealed class AreObsoleteConstraint<TMember>(
-		string it,
-		ExpectationGrammars grammars)
-		: CollectionConstraintResult<TMember>(it, grammars),
-			IContextConstraint<IEnumerable<TMember>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<TMember>>
-#endif
-		where TMember : MemberInfo?
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, member => member.IsObsolete(), cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<TMember> actual, IEvaluationContext context)
-			=> SetValue(actual, context, member => member.IsObsolete());
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are all obsolete");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained non-obsolete items");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are not all obsolete");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained obsolete items");
-	}
-
-	private sealed class AreNotObsoleteConstraint<TMember>(
-		string it,
-		ExpectationGrammars grammars)
-		: CollectionConstraintResult<TMember>(it, grammars),
-			IContextConstraint<IEnumerable<TMember>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<TMember>>
-#endif
-		where TMember : MemberInfo?
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, member => !member.IsObsolete(), cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<TMember> actual, IEvaluationContext context)
-			=> SetValue(actual, context, member => !member.IsObsolete());
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are all not obsolete");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained obsolete items");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("also contain an obsolete item");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained non-obsolete items");
-	}
+	[GenerateCollectionExpectation("AreObsolete", "is obsolete", "are obsolete",
+		OnCollection = true, NegatedName = "AreNotObsolete", FormattedItem = nameof(Formattable))]
+	private static PredicateResult IsObsoleteMember<TMember>(TMember? member)
+		where TMember : MemberInfo
+		=> member is null ? ItemResults.Null : member.IsObsolete();
 }

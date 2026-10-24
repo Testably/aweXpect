@@ -58,13 +58,13 @@ internal static class CollectionExpectationWriter
 			? "global::aweXpect.IEnumerableStringElements"
 			: $"global::aweXpect.IEnumerableElements<{item.ItemType}>";
 		AppendExpectation(sb, model, elements, $"{EnumerableType}<{item.ItemType}>",
-			$"{SyncConstraint(item)}<{EnumerableType}<{item.ItemType}>?>", null);
+			SyncConstraintOf(model, item, $"{EnumerableType}<{item.ItemType}>?"), null);
 
 		string structElements = item.IsString
 			? "global::aweXpect.IStructEnumerableStringElements<TEnumerable>"
 			: $"global::aweXpect.IStructEnumerableElements<TEnumerable, {item.ItemType}>";
 		AppendExpectation(sb, model, structElements, "TEnumerable",
-			$"{SyncConstraint(item)}<TEnumerable>", $"{EnumerableType}<{item.ItemType}>");
+			SyncConstraintOf(model, item, "TEnumerable"), $"{EnumerableType}<{item.ItemType}>");
 
 		if (model.SupportsAsyncEnumerables)
 		{
@@ -72,7 +72,7 @@ internal static class CollectionExpectationWriter
 				? "global::aweXpect.IAsyncEnumerableStringElements"
 				: $"global::aweXpect.IAsyncEnumerableElements<{item.ItemType}>";
 			AppendExpectation(sb, model, asyncElements, $"{AsyncEnumerableType}<{item.ItemType}>",
-				AsyncConstraint(item), null);
+				AsyncConstraintOf(model, item), null);
 		}
 
 		if (model.OnCollection)
@@ -104,11 +104,57 @@ internal static class CollectionExpectationWriter
 	{
 		string summary = $"Verifies that {items} {ToDocumentation(model.PluralText, model.Class)}.";
 		AppendCollectionExpectation(sb, model, name, $"{EnumerableType}<{item.ItemType}>",
-			$"{SyncConstraint(item)}<{EnumerableType}<{item.ItemType}>?>", quantifier, summary);
+			SyncConstraintOf(model, item, $"{EnumerableType}<{item.ItemType}>?"), quantifier, summary);
 		if (model.SupportsAsyncEnumerables)
 		{
 			AppendCollectionExpectation(sb, model, name, $"{AsyncEnumerableType}<{item.ItemType}>",
-				AsyncConstraint(item), quantifier, summary);
+				AsyncConstraintOf(model, item), quantifier, summary);
+		}
+	}
+
+	/// <summary>
+	///     The synchronous constraint of the <paramref name="item" /> for the <paramref name="collection" />.
+	/// </summary>
+	private static string SyncConstraintOf(CollectionExpectationModel model, ItemModel item, string collection)
+		=> model.ItemTypeParameter is { } itemType
+			? $"{SyncConstraint(item)}<{collection}, {itemType}>"
+			: $"{SyncConstraint(item)}<{collection}>";
+
+	/// <summary>
+	///     The asynchronous constraint of the <paramref name="item" />.
+	/// </summary>
+	private static string AsyncConstraintOf(CollectionExpectationModel model, ItemModel item)
+		=> model.ItemTypeParameter is { } itemType
+			? $"{AsyncConstraint(item)}<{itemType}>"
+			: AsyncConstraint(item);
+
+	/// <summary>
+	///     The type parameters of a generated method or class, with the type parameter of the item at the end.
+	/// </summary>
+	private static string TypeParameters(CollectionExpectationModel model, string? typeParameter)
+	{
+		List<string> typeParameters = [];
+		if (typeParameter is not null)
+		{
+			typeParameters.Add(typeParameter);
+		}
+
+		if (model.ItemTypeParameter is { } itemType)
+		{
+			typeParameters.Add(itemType);
+		}
+
+		return typeParameters.Count == 0 ? "" : $"<{string.Join(", ", typeParameters)}>";
+	}
+
+	/// <summary>
+	///     Appends the constraints of the type parameter of the item, if any.
+	/// </summary>
+	private static void AppendItemTypeConstraints(StringBuilder sb, CollectionExpectationModel model)
+	{
+		if (model.ItemTypeParameter is { } itemType)
+		{
+			sb.Append("\t\twhere ").Append(itemType).Append(" : ").AppendLine(model.ItemTypeConstraints);
 		}
 	}
 
@@ -137,7 +183,8 @@ internal static class CollectionExpectationWriter
 
 		sb.AppendLine("\t[global::aweXpect.Core.GuaranteesNotNull]");
 		sb.Append('\t').Append(classModel.MethodAccessibility).Append(" static ").Append(resultType).Append(' ')
-			.Append(name).Append("(this global::aweXpect.Core.IThat<").Append(collection).Append("?> subject");
+			.Append(name).Append(TypeParameters(model, null))
+			.Append("(this global::aweXpect.Core.IThat<").Append(collection).Append("?> subject");
 		foreach (ParameterModel parameter in classModel.Parameters.Values)
 		{
 			sb.Append(", ").Append(parameter.IsParams ? "params " : "").Append(parameter.Type).Append(' ')
@@ -145,6 +192,7 @@ internal static class CollectionExpectationWriter
 		}
 
 		sb.AppendLine(")");
+		AppendItemTypeConstraints(sb, model);
 		sb.AppendLine("\t{");
 		AppendNullChecks(sb, classModel.Parameters);
 		int count = classModel.Parameters.Count;
@@ -181,12 +229,12 @@ internal static class CollectionExpectationWriter
 		List<string> constraints = [];
 		foreach (ItemModel item in model.Items.Values)
 		{
-			constraints.Add(WriteConstraint(model, item, SyncConstraint(item), "<TCollection>",
+			constraints.Add(WriteConstraint(model, item, SyncConstraint(item), TypeParameters(model, "TCollection"),
 				$"global::aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, {item.ItemType}>",
 				$"{EnumerableType}<{item.ItemType}>?"));
 			if (model.SupportsAsyncEnumerables)
 			{
-				constraints.Add(WriteConstraint(model, item, AsyncConstraint(item), "",
+				constraints.Add(WriteConstraint(model, item, AsyncConstraint(item), TypeParameters(model, null),
 					$"global::aweXpect.Core.Extending.GeneratedAsyncCollectionConstraint<{item.ItemType}>", null));
 			}
 		}
@@ -229,7 +277,7 @@ internal static class CollectionExpectationWriter
 		}
 
 		sb.Append('\t').Append(classModel.MethodAccessibility).Append(" static ").Append(resultType).Append(' ')
-			.Append(model.Name).Append(structConstraint is null ? "" : "<TEnumerable>")
+			.Append(model.Name).Append(TypeParameters(model, structConstraint is null ? null : "TEnumerable"))
 			.Append("(this ").Append(elements).Append(" elements");
 		foreach (ParameterModel parameter in classModel.Parameters.Values)
 		{
@@ -243,6 +291,7 @@ internal static class CollectionExpectationWriter
 			sb.Append("\t\twhere TEnumerable : struct, ").AppendLine(structConstraint);
 		}
 
+		AppendItemTypeConstraints(sb, model);
 		sb.AppendLine("\t{");
 		AppendNullChecks(sb, classModel.Parameters);
 		int count = classModel.Parameters.Count;
@@ -286,6 +335,7 @@ internal static class CollectionExpectationWriter
 			sb.Append("\t\twhere TCollection : ").AppendLine(collectionConstraint);
 		}
 
+		AppendItemTypeConstraints(sb, model);
 		sb.AppendLine("\t{");
 		for (int i = 0; i < classModel.Parameters.Count; i++)
 		{
@@ -355,7 +405,7 @@ internal static class CollectionExpectationWriter
 	private static void AppendIsMatch(StringBuilder sb, CollectionExpectationModel model, ItemModel item)
 	{
 		ClassModel classModel = model.Class;
-		string call = $"{Owner(classModel)}.{classModel.PredicateName}({item.ItemArgument}"
+		string call = $"{Owner(classModel)}.{classModel.PredicateName}{TypeParameters(model, null)}({item.ItemArgument}"
 		              + $"{GetArguments(classModel.Parameters.Count, model.CancellationTokenIndex)})";
 		string result = $"{ExpectationWriter.ValueTask}<{PredicateResult}>";
 		// An asynchronous bool is awaited, as only the result itself converts to a PredicateResult.

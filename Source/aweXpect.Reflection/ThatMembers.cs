@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using aweXpect.Reflection.Formatting;
 
 namespace aweXpect;
 
@@ -7,4 +8,8 @@ namespace aweXpect;
 /// </summary>
 public static partial class ThatMembers
 {
+	/// <summary>
+	///     Lets the formatter of this package format the <paramref name="member" /> in a failure message.
+	/// </summary>
+	private static object? Formattable(MemberInfo? member) => FormattableMember.From(member);
 }
