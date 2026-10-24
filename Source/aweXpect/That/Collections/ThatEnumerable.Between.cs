@@ -16,20 +16,10 @@ public static partial class ThatEnumerable
 	///     Verifies that in the collection between <paramref name="minimum" />…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static BetweenResult<Elements<TItem>, Times>Between<TItem>(
+	public static BetweenResult<IQuantifiedEnumerableItems<TItem>, Times>Between<TItem>(
 		this IThat<IEnumerable<TItem>?> subject,
 		int minimum)
-		=> new(maximum => new Elements<TItem>(subject,
-			EnumerableQuantifier.Between(minimum, maximum)));
-
-	/// <summary>
-	///     Verifies that in the collection between <paramref name="minimum" />…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static BetweenResult<Elements, Times>Between(
-		this IThat<IEnumerable<string?>?> subject,
-		int minimum)
-		=> new(maximum => new Elements(subject,
+		=> new(maximum => new Items<TItem>(subject,
 			EnumerableQuantifier.Between(minimum, maximum)));
 
 	/// <summary>
@@ -37,33 +27,20 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static BetweenResult<ElementsForEnumerable<IEnumerable>, Times>Between(
+	public static BetweenResult<INonGenericEnumerableItems<IEnumerable>, Times>Between(
 		this IThat<IEnumerable?> subject,
 		int minimum)
-		=> new(maximum => new ElementsForEnumerable<IEnumerable>(subject,
+		=> new(maximum => new NonGenericItems<IEnumerable>(subject,
 			EnumerableQuantifier.Between(minimum, maximum)));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that in the collection between <paramref name="minimum" />…
 	/// </summary>
-	public static BetweenResult<ElementsForStructEnumerable<ImmutableArray<TItem>, TItem>, Times>Between<TItem>(
+	public static BetweenResult<IStructEnumerableItems<ImmutableArray<TItem>, TItem>, Times>Between<TItem>(
 		this IThat<ImmutableArray<TItem>> subject,
 		int minimum)
-		=> new(maximum => new ElementsForStructEnumerable<ImmutableArray<TItem>, TItem>(subject,
+		=> new(maximum => new StructItems<ImmutableArray<TItem>, TItem>(subject,
 			EnumerableQuantifier.Between(minimum, maximum)));
-#endif
-
-#if NET8_0_OR_GREATER
-#nullable disable annotations
-	/// <summary>
-	///     Verifies that in the collection between <paramref name="minimum" />…
-	/// </summary>
-	public static BetweenResult<ElementsForStructEnumerable<ImmutableArray<string>>, Times>Between(
-		this IThat<ImmutableArray<string>> subject,
-		int minimum)
-		=> new(maximum => new ElementsForStructEnumerable<ImmutableArray<string>>(subject,
-			EnumerableQuantifier.Between(minimum, maximum)));
-#nullable restore annotations
 #endif
 }

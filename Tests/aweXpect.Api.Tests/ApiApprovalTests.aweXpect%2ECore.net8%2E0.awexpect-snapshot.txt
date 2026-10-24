@@ -70,40 +70,47 @@ namespace aweXpect
         public FailException(string message) { }
         public FailException(string message, System.Exception? innerException) { }
     }
-    public interface IAsyncEnumerableElements<out TItem>
+    public interface IAsyncEnumerableItems<out TItem>
     {
         aweXpect.Options.EnumerableQuantifier Quantifier { get; }
         aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<out TItem>?> Subject { get; }
     }
-    public interface IAsyncEnumerableStringElements
-    {
-        aweXpect.Options.EnumerableQuantifier Quantifier { get; }
-        aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<string?>?> Subject { get; }
-    }
-    public interface IEnumerableElements<out TItem>
+    public interface IEnumerableItems<out TItem>
     {
         aweXpect.Options.EnumerableQuantifier Quantifier { get; }
         aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<out TItem>?> Subject { get; }
     }
-    public interface IEnumerableStringElements
+    public interface INonGenericEnumerableItems<TCollection> where TCollection : System.Collections.IEnumerable?
     {
         aweXpect.Options.EnumerableQuantifier Quantifier { get; }
-        aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> Subject { get; }
+        aweXpect.Core.IThat<TCollection?> Subject { get; }
+        aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection?>> Are(System.Type type);
+        aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection?>> Are<TType>();
+        aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection?>> AreExactly(System.Type type);
+        aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection?>> AreExactly<TType>();
     }
-    public interface INonGenericEnumerableElements<out TEnumerable> where TEnumerable : System.Collections.IEnumerable?
+    public interface IQuantifiedAsyncEnumerableItems<TItem> : aweXpect.IAsyncEnumerableItems<TItem>
     {
-        aweXpect.Options.EnumerableQuantifier Quantifier { get; }
-        aweXpect.Core.IThat<out TEnumerable?> Subject { get; }
+        aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>> Are(System.Type type);
+        aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>> Are<TType>();
+        aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>> AreExactly(System.Type type);
+        aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>> AreExactly<TType>();
     }
-    public interface IStructEnumerableElements<out TEnumerable, TItem> where TEnumerable : struct, System.Collections.Generic.IEnumerable<TItem>
+    public interface IQuantifiedEnumerableItems<TItem> : aweXpect.IEnumerableItems<TItem>
     {
-        aweXpect.Options.EnumerableQuantifier Quantifier { get; }
-        aweXpect.Core.IThat<out TEnumerable> Subject { get; }
+        aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> Are(System.Type type);
+        aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> Are<TType>();
+        aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> AreExactly(System.Type type);
+        aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> AreExactly<TType>();
     }
-    public interface IStructEnumerableStringElements<out TEnumerable> where TEnumerable : struct, System.Collections.Generic.IEnumerable<string?>
+    public interface IStructEnumerableItems<TCollection, out TItem> where TCollection : struct, System.Collections.Generic.IEnumerable<out TItem>
     {
         aweXpect.Options.EnumerableQuantifier Quantifier { get; }
-        aweXpect.Core.IThat<out TEnumerable> Subject { get; }
+        aweXpect.Core.IThat<TCollection> Subject { get; }
+        aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection>> Are(System.Type type);
+        aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection>> Are<TType>();
+        aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection>> AreExactly(System.Type type);
+        aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection>> AreExactly<TType>();
     }
     public class InconclusiveException : System.Exception
     {
@@ -2011,9 +2018,9 @@ namespace aweXpect.Results
             public WithinResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType> options) { }
         }
     }
-    public class ObjectCountResult<TType, TThat, TElement> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.ObjectCountResult<TType, TThat, TElement>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityOptions<TElement>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Results.IObjectEqualityResult<aweXpect.Results.ObjectCountResult<TType, TThat, TElement>, TElement>
+    public class ObjectCountResult<TType, TThat, TItem> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.ObjectCountResult<TType, TThat, TItem>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityOptions<TItem>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Results.IObjectEqualityResult<aweXpect.Results.ObjectCountResult<TType, TThat, TItem>, TItem>
     {
-        public ObjectCountResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.ObjectEqualityOptions<TElement> options) { }
+        public ObjectCountResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.ObjectEqualityOptions<TItem> options) { }
     }
     public class ObjectEqualityResult<TType, TThat, TElement> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityOptions<TElement>>, aweXpect.Results.IObjectEqualityResult<aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement>, TElement>
     {

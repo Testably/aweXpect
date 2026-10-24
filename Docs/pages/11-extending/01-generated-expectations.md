@@ -180,9 +180,10 @@ await Expect.That(tracks).None().AreLongerThan(TimeSpan.FromMinutes(5));
   carries the negation, so neither text contains `{not}`.
 - The result counts the items, e.g. "but only 1 of 3 were", with "did" instead of "were" when the text does not start
   with a form of "be". The failure message lists the matching or not matching items and the collection.
-- The expectation extends the elements of every kind of collection that can hold the item: an `IEnumerable<T>`, an
-  `ImmutableArray<T>` and, on .NET 8 or later, an `IAsyncEnumerable<T>`. A `string` item extends the elements of
-  the collections of strings.
+- The expectation extends the items of every kind of collection that can hold the item: an `IEnumerable<T>`, an
+  `ImmutableArray<T>` and, on .NET 8 or later, an `IAsyncEnumerable<T>`. The items of a reference type are extended
+  as nullable, so that the expectation applies to a `List<Track>`, a `List<Track?>` and a collection of a type
+  derived from `Track`.
 - A `null` item does not match, unless the item parameter is nullable: then the method decides. `[DisallowNull]` and
   `NullableOverload` work like for a subject.
 - The type of the item can be the only type parameter of the method, when a constraint restricts it to reference

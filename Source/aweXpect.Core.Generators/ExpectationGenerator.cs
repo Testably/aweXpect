@@ -86,7 +86,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 
 		IncrementalValueProvider<bool> supportsAsyncEnumerables = context.CompilationProvider
 			.Select(static (compilation, _)
-				=> compilation.GetTypeByMetadataName("aweXpect.IAsyncEnumerableElements`1") is not null);
+				=> compilation.GetTypeByMetadataName("aweXpect.IAsyncEnumerableItems`1") is not null);
 		IncrementalValuesProvider<CollectionExpectationResult> collectionExpectations = context.SyntaxProvider
 			.ForAttributeWithMetadataName(CollectionAttribute,
 				static (node, _) => node is MethodDeclarationSyntax,
@@ -229,7 +229,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 
 		ITypeParameterSymbol? itemTypeParameter = GetItemTypeParameter(signature.Method);
 		return new CollectionExpectationResult(new CollectionExpectationModel(
-			signature.ToClassModel(context, ".Elements"),
+			signature.ToClassModel(context, ".Items"),
 			name,
 			text,
 			pluralText,
@@ -764,23 +764,21 @@ public class ExpectationGenerator : IIncrementalGenerator
 
 		if (type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
 		{
-			return Items(new ItemModel(display, false, generatedPrefix, disallowNull,
+			return Items(new ItemModel(display, generatedPrefix, disallowNull,
 				disallowNull ? "item.Value" : "item"));
 		}
 
 		if (type.IsValueType)
 		{
-			ItemModel value = new(display, false, generatedPrefix, false, "item");
+			ItemModel value = new(display, generatedPrefix, false, "item");
 			return nullableOverload
-				? Items(value, new ItemModel(display + "?", false,
-					generatedPrefix + "Nullable", true, "item.Value"))
+				? Items(value, new ItemModel(display + "?", generatedPrefix + "Nullable", true, "item.Value"))
 				: Items(value);
 		}
 
 		string nullable = type.WithNullableAnnotation(NullableAnnotation.Annotated).ToDisplayString(TypeFormat);
 		bool failsOnNull = type.NullableAnnotation != NullableAnnotation.Annotated || disallowNull;
-		return Items(new ItemModel(nullable, type.SpecialType == SpecialType.System_String, generatedPrefix,
-			failsOnNull, "item"));
+		return Items(new ItemModel(nullable, generatedPrefix, failsOnNull, "item"));
 
 		static EquatableArray<ItemModel> Items(params ItemModel[] items)
 			=> new(items.ToImmutableArray());

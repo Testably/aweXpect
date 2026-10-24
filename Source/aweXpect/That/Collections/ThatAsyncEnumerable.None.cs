@@ -12,18 +12,9 @@ public static partial class ThatAsyncEnumerable
 	///     Verifies that in the collection no items…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static Elements<TItem> None<TItem>(
+	public static IQuantifiedAsyncEnumerableItems<TItem> None<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject)
-		=> new(subject,
-			EnumerableQuantifier.None(subject.Get().ExpectationBuilder.ExpectationGrammars));
-
-	/// <summary>
-	///     Verifies that in the collection no items…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static Elements None(
-		this IThat<IAsyncEnumerable<string?>?> subject)
-		=> new(subject,
+		=> new Items<TItem>(subject,
 			EnumerableQuantifier.None(subject.Get().ExpectationBuilder.ExpectationGrammars));
 }
 #endif

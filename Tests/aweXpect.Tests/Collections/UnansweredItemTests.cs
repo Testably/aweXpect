@@ -475,7 +475,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		private static aweXpect.ThatEnumerable.Elements<int> Quantify(IThat<IEnumerable<int>?> subject,
+		private static IEnumerableItems<int> Quantify(IThat<IEnumerable<int>?> subject,
 			string quantifier)
 			=> quantifier switch
 			{
@@ -948,7 +948,7 @@ public sealed class UnansweredItem
 				_ => throw new ArgumentOutOfRangeException(nameof(kind)),
 			};
 
-		private static aweXpect.ThatEnumerable.Elements<int> Quantify(IThat<IEnumerable<int>?> subject,
+		private static IEnumerableItems<int> Quantify(IThat<IEnumerable<int>?> subject,
 			string quantifier)
 			=> quantifier switch
 			{

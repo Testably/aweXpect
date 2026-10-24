@@ -53,7 +53,7 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	/// </summary>
 	/// <param name="it">The name of the subject.</param>
 	/// <param name="grammars">The grammars of the expectation.</param>
-	/// <param name="quantifier">The quantifier for the items, e.g. from <see cref="IEnumerableElements{TItem}" />.</param>
+	/// <param name="quantifier">The quantifier for the items, e.g. from <see cref="IEnumerableItems{TItem}" />.</param>
 	protected QuantifiedCollectionConstraintBase(
 		string it,
 		ExpectationGrammars grammars,

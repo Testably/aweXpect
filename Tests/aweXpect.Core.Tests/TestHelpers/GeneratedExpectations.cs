@@ -31,6 +31,9 @@ internal sealed class Moderator(string name) : Member(name);
 
 internal static partial class ThatMember
 {
+	[GenerateCollectionExpectation("HaveCapitalizedNames", "has a capitalized name", "have capitalized names")]
+	private static bool HasCapitalizedName(Member member) => member.Name.Length > 0 && char.IsUpper(member.Name[0]);
+
 	[GenerateCollectionExpectation("HaveShortNames", "has a short name", "have short names", CollectionOverload = true)]
 	private static bool HasShortName<TMember>(TMember member) where TMember : Member => member.Name.Length <= 3;
 }

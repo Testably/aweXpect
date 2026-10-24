@@ -15,20 +15,10 @@ public static partial class ThatEnumerable
 	///     Verifies that in the collection exactly <paramref name="expected" /> items…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static Elements<TItem> Exactly<TItem>(
+	public static IQuantifiedEnumerableItems<TItem> Exactly<TItem>(
 		this IThat<IEnumerable<TItem>?> subject,
 		int expected)
-		=> new(subject,
-			EnumerableQuantifier.Exactly(expected));
-
-	/// <summary>
-	///     Verifies that in the collection exactly <paramref name="expected" /> items…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static Elements Exactly(
-		this IThat<IEnumerable<string?>?> subject,
-		int expected)
-		=> new(subject,
+		=> new Items<TItem>(subject,
 			EnumerableQuantifier.Exactly(expected));
 
 	/// <summary>
@@ -36,30 +26,19 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ElementsForEnumerable<IEnumerable> Exactly(
+	public static INonGenericEnumerableItems<IEnumerable> Exactly(
 		this IThat<IEnumerable?> subject,
 		int expected)
-		=> new(subject, EnumerableQuantifier.Exactly(expected));
+		=> new NonGenericItems<IEnumerable>(subject, EnumerableQuantifier.Exactly(expected));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that in the collection exactly <paramref name="expected" /> items…
 	/// </summary>
-	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> Exactly<TItem>(
+	public static IStructEnumerableItems<ImmutableArray<TItem>, TItem> Exactly<TItem>(
 		this IThat<ImmutableArray<TItem>> subject,
 		int expected)
-		=> new(subject, EnumerableQuantifier.Exactly(expected));
-#endif
-
-#if NET8_0_OR_GREATER
-#nullable disable annotations
-	/// <summary>
-	///     Verifies that in the collection exactly <paramref name="expected" /> items…
-	/// </summary>
-	public static ElementsForStructEnumerable<ImmutableArray<string>> Exactly(
-		this IThat<ImmutableArray<string>> subject,
-		int expected)
-		=> new(subject, EnumerableQuantifier.Exactly(expected));
-#nullable restore annotations
+		=> new StructItems<ImmutableArray<TItem>, TItem>(subject,
+			EnumerableQuantifier.Exactly(expected));
 #endif
 }

@@ -17,7 +17,7 @@ public sealed class NegatedQuantifier
 		   string.Join($",{Environment.NewLine}", items.Split(',').Select(item => $"  \"{item}\"")) +
 		   $"{Environment.NewLine}]";
 
-	private static aweXpect.ThatEnumerable.Elements Quantify(IThat<IEnumerable<string>?> subject, string quantifier)
+	private static IEnumerableItems<string?> Quantify(IThat<IEnumerable<string>?> subject, string quantifier)
 		=> quantifier switch
 		{
 			"All" => subject.All(),

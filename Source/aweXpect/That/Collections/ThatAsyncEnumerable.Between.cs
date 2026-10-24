@@ -12,20 +12,10 @@ public static partial class ThatAsyncEnumerable
 	///     Verifies that in the collection between <paramref name="minimum" />…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static BetweenResult<Elements<TItem>, Times>Between<TItem>(
+	public static BetweenResult<IQuantifiedAsyncEnumerableItems<TItem>, Times>Between<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject,
 		int minimum)
-		=> new(maximum => new Elements<TItem>(subject,
-			EnumerableQuantifier.Between(minimum, maximum)));
-
-	/// <summary>
-	///     Verifies that in the collection between <paramref name="minimum" />…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static BetweenResult<Elements, Times>Between(
-		this IThat<IAsyncEnumerable<string?>?> subject,
-		int minimum)
-		=> new(maximum => new Elements(subject,
+		=> new(maximum => new Items<TItem>(subject,
 			EnumerableQuantifier.Between(minimum, maximum)));
 }
 #endif

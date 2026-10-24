@@ -348,6 +348,47 @@ public sealed class GenerateCollectionExpectationAttributeTests
 	}
 #endif
 
+#if NET8_0_OR_GREATER
+	[Test]
+	public async Task DerivedItems_InImmutableArray_ShouldApplyTheExpectationOfTheBaseType()
+	{
+		ImmutableArray<Moderator> subject = [new("Ann"),];
+
+		async Task Act()
+			=> await That(subject).All().HaveCapitalizedNames();
+
+		await That(Act).DoesNotThrow()
+			.Because("the expectation on the items of Member applies to the items of the derived Moderator");
+	}
+#endif
+
+	[Test]
+	public async Task DerivedItems_ShouldApplyTheExpectationOfTheBaseType()
+	{
+		List<Moderator> subject = [new("Ann"), new("bob"),];
+
+		async Task Act()
+			=> await That(subject).All().HaveCapitalizedNames();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             has a capitalized name for all items,
+			             but only 1 of 2 did
+
+			             Not matching items:
+			             [
+			               bob
+			             ]
+
+			             Collection:
+			             [
+			               Ann,
+			               bob
+			             ]
+			             """).Because("the expectation on the items of Member applies to the items of the derived Moderator");
+	}
+
 	[Test]
 	public async Task DoesNotComplyWith_ShouldNegateTheQuantifier()
 	{
@@ -860,7 +901,7 @@ public sealed class GenerateCollectionExpectationAttributeTests
 	}
 
 	[Test]
-	public async Task Strings_ShouldUseTheStringElements()
+	public async Task Strings_ShouldExtendTheItemsOfStrings()
 	{
 		string?[] subject = ["A", "b", null,];
 

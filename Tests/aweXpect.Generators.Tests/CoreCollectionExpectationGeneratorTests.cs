@@ -19,7 +19,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 
 		await ThatCompiles(result);
 		await That(result.Generated).Contains(" IsZero(this global::aweXpect.Core.IThat<int> subject)");
-		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableElements<int> elements)");
+		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableItems<int> items)");
 	}
 
 	[Test]
@@ -51,7 +51,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 
 		await ThatCompiles(result);
 		await That(result.Generated).Contains("global::Lib.ThatSample.IsZero(item, cancellationToken)");
-		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableElements<int> elements)")
+		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableItems<int> items)")
 			.Because("the cancellation token is no parameter of the expectation");
 	}
 
@@ -143,7 +143,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 
 		await ThatCompiles(result);
 		await That(result.Generated)
-			.Contains(" AreAnyOf(this global::aweXpect.IEnumerableElements<int> elements, params int[] values)");
+			.Contains(" AreAnyOf(this global::aweXpect.IEnumerableItems<int> items, params int[] values)");
 		await That(result.Generated).Contains("global::Lib.ThatSample.IsAnyOf(item, cancellationToken, _p0)").Exactly(2);
 	}
 
@@ -247,13 +247,13 @@ public sealed class CoreCollectionExpectationGeneratorTests
 		await ThatCompiles(result);
 		await ThatContainsLines(result,
 			"""
-				public static global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<TMember?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<TMember?>?>> ArePublic<TMember>(this global::aweXpect.IEnumerableElements<TMember?> elements)
+				public static global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<TMember?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<TMember?>?>> ArePublic<TMember>(this global::aweXpect.IEnumerableItems<TMember?> items)
 					where TMember : global::System.Reflection.MemberInfo
 			""");
 		await ThatContainsLines(result,
 			"""
-				public static global::aweXpect.Results.AndOrResult<TEnumerable, global::aweXpect.Core.IThat<TEnumerable>> ArePublic<TEnumerable, TMember>(this global::aweXpect.IStructEnumerableElements<TEnumerable, TMember?> elements)
-					where TEnumerable : struct, global::System.Collections.Generic.IEnumerable<TMember?>
+				public static global::aweXpect.Results.AndOrResult<TCollection, global::aweXpect.Core.IThat<TCollection>> ArePublic<TCollection, TMember>(this global::aweXpect.IStructEnumerableItems<TCollection, TMember?> items)
+					where TCollection : struct, global::System.Collections.Generic.IEnumerable<TMember?>
 					where TMember : global::System.Reflection.MemberInfo
 			""");
 		await That(result.Generated)
@@ -469,7 +469,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 			""");
 
 		await ThatCompiles(result);
-		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableElements<int?> elements)");
+		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableItems<int?> items)");
 		await That(result.Generated)
 			.Contains("=> new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(global::Lib.ThatSample.IsZero(item));")
 			.Exactly(2);
@@ -485,9 +485,9 @@ public sealed class CoreCollectionExpectationGeneratorTests
 			""");
 
 		await ThatCompiles(result);
-		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableElements<int?> elements)");
+		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableItems<int?> items)");
 		await That(result.Generated).Contains("!(item is null) && global::Lib.ThatSample.IsZero(item.Value)").Exactly(2);
-		await That(result.Generated).DoesNotContain("IEnumerableElements<int>");
+		await That(result.Generated).DoesNotContain("IEnumerableItems<int>");
 	}
 
 	[Test]
@@ -508,6 +508,22 @@ public sealed class CoreCollectionExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task ParameterNamedItems_ShouldRenameTheExtendedItems()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreIn", "is in {items}", "are in {items}", NullableOverload = false)]
+			private static bool IsIn(int value, int[] items) => Array.IndexOf(items, value) >= 0;
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated)
+			.Contains(" AreIn(this global::aweXpect.IEnumerableItems<int> __items, int[] items)")
+			.Because("the extended items must not collide with a parameter of the expectation");
+		await That(result.Generated).Contains("AddConstraint((__items.Quantifier, items), ").Exactly(3);
+	}
+
+	[Test]
 	public async Task Parameters_ShouldBeCheckedAndPassedToThePredicate()
 	{
 		GeneratorRunner.GeneratorResult result = RunOn(
@@ -518,7 +534,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 
 		await ThatCompiles(result);
 		await That(result.Generated)
-			.Contains("AddConstraint((elements.Quantifier, name, alias), (__state, __it, __grammars) => new ")
+			.Contains("AddConstraint((items.Quantifier, name, alias), (__state, __it, __grammars) => new ")
 			.Exactly(3);
 		await That(result.Generated).Contains("(__it, __grammars, __state.Item1, __state.Item2, __state.Item3)")
 			.Exactly(3);
@@ -540,7 +556,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 
 		await ThatCompiles(result);
 		await That(result.Generated)
-			.Contains(" AreAnyOf(this global::aweXpect.IEnumerableElements<int> elements, params int[] values)");
+			.Contains(" AreAnyOf(this global::aweXpect.IEnumerableItems<int> items, params int[] values)");
 	}
 
 	[Test]
@@ -597,17 +613,17 @@ public sealed class CoreCollectionExpectationGeneratorTests
 
 		await ThatCompiles(result);
 		await That(result.Generated)
-			.Contains("public static global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<global::Lib.Track?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<global::Lib.Track?>?>> AreLong(this global::aweXpect.IEnumerableElements<global::Lib.Track?> elements)");
+			.Contains("public static global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<global::Lib.Track?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<global::Lib.Track?>?>> AreLong(this global::aweXpect.IEnumerableItems<global::Lib.Track?> items)");
 		await That(result.Generated)
-			.Contains("public static global::aweXpect.Results.AndOrResult<TEnumerable, global::aweXpect.Core.IThat<TEnumerable>> AreLong<TEnumerable>(this global::aweXpect.IStructEnumerableElements<TEnumerable, global::Lib.Track?> elements)");
+			.Contains("public static global::aweXpect.Results.AndOrResult<TCollection, global::aweXpect.Core.IThat<TCollection>> AreLong<TCollection>(this global::aweXpect.IStructEnumerableItems<TCollection, global::Lib.Track?> items)");
 		await That(result.Generated)
-			.Contains("public static global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IAsyncEnumerable<global::Lib.Track?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IAsyncEnumerable<global::Lib.Track?>?>> AreLong(this global::aweXpect.IAsyncEnumerableElements<global::Lib.Track?> elements)");
+			.Contains("public static global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IAsyncEnumerable<global::Lib.Track?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IAsyncEnumerable<global::Lib.Track?>?>> AreLong(this global::aweXpect.IAsyncEnumerableItems<global::Lib.Track?> items)");
 		await That(result.Generated).Contains("!(item is null) && global::Lib.ThatTrack.IsLong(item)").Exactly(2)
 			.Because("a null item does not match");
 	}
 
 	[Test]
-	public async Task String_ShouldExtendTheStringElements()
+	public async Task String_ShouldExtendTheItemsOfNullableStrings()
 	{
 		GeneratorRunner.GeneratorResult result = RunOn(
 			"""
@@ -616,11 +632,11 @@ public sealed class CoreCollectionExpectationGeneratorTests
 			""");
 
 		await ThatCompiles(result);
-		await That(result.Generated).Contains(" AreEmpty(this global::aweXpect.IEnumerableStringElements elements)");
+		await That(result.Generated).Contains(" AreEmpty(this global::aweXpect.IEnumerableItems<string?> items)")
+			.Because("the covariant items of nullable strings also accept the items of not nullable strings");
 		await That(result.Generated)
-			.Contains(" AreEmpty<TEnumerable>(this global::aweXpect.IStructEnumerableStringElements<TEnumerable> elements)");
-		await That(result.Generated).Contains(" AreEmpty(this global::aweXpect.IAsyncEnumerableStringElements elements)");
-		await That(result.Generated).DoesNotContain("IEnumerableElements<");
+			.Contains(" AreEmpty<TCollection>(this global::aweXpect.IStructEnumerableItems<TCollection, string?> items)");
+		await That(result.Generated).Contains(" AreEmpty(this global::aweXpect.IAsyncEnumerableItems<string?> items)");
 	}
 
 	[Test]
@@ -711,8 +727,8 @@ public sealed class CoreCollectionExpectationGeneratorTests
 			""");
 
 		await ThatCompiles(result);
-		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableElements<int> elements)");
-		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableElements<int?> elements)");
+		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableItems<int> items)");
+		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableItems<int?> items)");
 		await That(result.Generated)
 			.Contains("=> item is null ? false : await global::Lib.ThatSample.IsZero(item.Value);")
 			.Exactly(2);

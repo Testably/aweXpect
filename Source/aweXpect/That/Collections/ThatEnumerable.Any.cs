@@ -15,44 +15,25 @@ public static partial class ThatEnumerable
 	///     Verifies that in the collection any (at least one) item…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static Elements<TItem> Any<TItem>(
+	public static IQuantifiedEnumerableItems<TItem> Any<TItem>(
 		this IThat<IEnumerable<TItem>?> subject)
-		=> new(subject, EnumerableQuantifier.AtLeast(1));
-
-	/// <summary>
-	///     Verifies that in the collection any (at least one) item…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static Elements Any(
-		this IThat<IEnumerable<string?>?> subject)
-		=> new(subject, EnumerableQuantifier.AtLeast(1));
+		=> new Items<TItem>(subject, EnumerableQuantifier.AtLeast(1));
 
 	/// <summary>
 	///     Verifies that in the collection any (at least one) item…
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ElementsForEnumerable<IEnumerable> Any(
+	public static INonGenericEnumerableItems<IEnumerable> Any(
 		this IThat<IEnumerable?> subject)
-		=> new(subject, EnumerableQuantifier.AtLeast(1));
+		=> new NonGenericItems<IEnumerable>(subject, EnumerableQuantifier.AtLeast(1));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that in the collection any (at least one) item…
 	/// </summary>
-	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> Any<TItem>(
+	public static IStructEnumerableItems<ImmutableArray<TItem>, TItem> Any<TItem>(
 		this IThat<ImmutableArray<TItem>> subject)
-		=> new(subject, EnumerableQuantifier.AtLeast(1));
-#endif
-
-#if NET8_0_OR_GREATER
-#nullable disable annotations
-	/// <summary>
-	///     Verifies that in the collection any (at least one) item…
-	/// </summary>
-	public static ElementsForStructEnumerable<ImmutableArray<string>> Any(
-		this IThat<ImmutableArray<string>> subject)
-		=> new(subject, EnumerableQuantifier.AtLeast(1));
-#nullable restore annotations
+		=> new StructItems<ImmutableArray<TItem>, TItem>(subject, EnumerableQuantifier.AtLeast(1));
 #endif
 }

@@ -10,8 +10,8 @@ namespace aweXpect.Core.Extending;
 ///     the outcome through an <see cref="EnumerableQuantifier" />.
 /// </summary>
 /// <remarks>
-///     Use it for an expectation on the elements of a collection, e.g. an extension method on
-///     <see cref="IEnumerableElements{TItem}" />, which exposes the <see cref="EnumerableQuantifier" /> and the subject.
+///     Use it for an expectation on the items of a collection, e.g. an extension method on
+///     <see cref="IEnumerableItems{TItem}" />, which exposes the <see cref="EnumerableQuantifier" /> and the subject.
 ///     Pass the quantifier to the constructor, set <see cref="ConstraintResult.WithValue{T}.Actual" /> in
 ///     <c>IsMetBy</c>, call <see cref="QuantifiedCollectionConstraintBase{TValue,TItem}.Record(TItem, bool)" /> for every item and
 ///     <see cref="QuantifiedCollectionConstraintBase{TValue,TItem}.Complete" /> afterwards. For a
@@ -25,7 +25,7 @@ namespace aweXpect.Core.Extending;
 /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
 /// <param name="it">The name of the subject.</param>
 /// <param name="grammars">The grammars of the expectation.</param>
-/// <param name="quantifier">The quantifier for the items, e.g. from <see cref="IEnumerableElements{TItem}" />.</param>
+/// <param name="quantifier">The quantifier for the items, e.g. from <see cref="IEnumerableItems{TItem}" />.</param>
 /// <param name="expectationText">
 ///     Returns the expectation for a single item for the given grammars, e.g. "is even", or "are even" when the
 ///     grammars are <see cref="ExpectationGrammars.Plural" />. The quantifier carries the negation, so the text is not

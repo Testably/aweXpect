@@ -54,24 +54,17 @@ internal static class CollectionExpectationWriter
 	/// </summary>
 	private static void AppendExpectations(StringBuilder sb, CollectionExpectationModel model, ItemModel item)
 	{
-		string elements = item.IsString
-			? "global::aweXpect.IEnumerableStringElements"
-			: $"global::aweXpect.IEnumerableElements<{item.ItemType}>";
-		AppendExpectation(sb, model, elements, $"{EnumerableType}<{item.ItemType}>",
+		AppendExpectation(sb, model, $"global::aweXpect.IEnumerableItems<{item.ItemType}>",
+			$"{EnumerableType}<{item.ItemType}>",
 			SyncConstraintOf(model, item, $"{EnumerableType}<{item.ItemType}>?"), null);
 
-		string structElements = item.IsString
-			? "global::aweXpect.IStructEnumerableStringElements<TEnumerable>"
-			: $"global::aweXpect.IStructEnumerableElements<TEnumerable, {item.ItemType}>";
-		AppendExpectation(sb, model, structElements, "TEnumerable",
-			SyncConstraintOf(model, item, "TEnumerable"), $"{EnumerableType}<{item.ItemType}>");
+		AppendExpectation(sb, model, $"global::aweXpect.IStructEnumerableItems<TCollection, {item.ItemType}>",
+			"TCollection", SyncConstraintOf(model, item, "TCollection"), $"{EnumerableType}<{item.ItemType}>");
 
 		if (model.SupportsAsyncEnumerables)
 		{
-			string asyncElements = item.IsString
-				? "global::aweXpect.IAsyncEnumerableStringElements"
-				: $"global::aweXpect.IAsyncEnumerableElements<{item.ItemType}>";
-			AppendExpectation(sb, model, asyncElements, $"{AsyncEnumerableType}<{item.ItemType}>",
+			AppendExpectation(sb, model, $"global::aweXpect.IAsyncEnumerableItems<{item.ItemType}>",
+				$"{AsyncEnumerableType}<{item.ItemType}>",
 				AsyncConstraintOf(model, item), null);
 		}
 
@@ -252,17 +245,18 @@ internal static class CollectionExpectationWriter
 
 	/// <param name="sb">The source to append to.</param>
 	/// <param name="model">The expectation.</param>
-	/// <param name="elements">The extended elements.</param>
+	/// <param name="items">The extended items.</param>
 	/// <param name="collection">The type of the collection that the expectation continues with.</param>
 	/// <param name="constraint">The constructed constraint.</param>
 	/// <param name="structConstraint">
-	///     The interface that a generic struct collection <c>TEnumerable</c> implements, or <see langword="null" /> when
+	///     The interface that a generic struct collection <c>TCollection</c> implements, or <see langword="null" /> when
 	///     the method is not generic.
 	/// </param>
-	private static void AppendExpectation(StringBuilder sb, CollectionExpectationModel model, string elements,
+	private static void AppendExpectation(StringBuilder sb, CollectionExpectationModel model, string items,
 		string collection, string constraint, string? structConstraint)
 	{
 		ClassModel classModel = model.Class;
+		string receiver = classModel.Parameters.Values.Any(p => p.Name == "items") ? "__items" : "items";
 		string thatType = structConstraint is null ? collection + "?" : collection;
 		string resultType =
 			$"global::aweXpect.Results.AndOrResult<{collection}, global::aweXpect.Core.IThat<{thatType}>>";
@@ -277,8 +271,8 @@ internal static class CollectionExpectationWriter
 		}
 
 		sb.Append('\t').Append(classModel.MethodAccessibility).Append(" static ").Append(resultType).Append(' ')
-			.Append(model.Name).Append(TypeParameters(model, structConstraint is null ? null : "TEnumerable"))
-			.Append("(this ").Append(elements).Append(" elements");
+			.Append(model.Name).Append(TypeParameters(model, structConstraint is null ? null : "TCollection"))
+			.Append("(this ").Append(items).Append(' ').Append(receiver);
 		foreach (ParameterModel parameter in classModel.Parameters.Values)
 		{
 			sb.Append(", ").Append(parameter.IsParams ? "params " : "").Append(parameter.Type).Append(' ')
@@ -288,7 +282,7 @@ internal static class CollectionExpectationWriter
 		sb.AppendLine(")");
 		if (structConstraint is not null)
 		{
-			sb.Append("\t\twhere TEnumerable : struct, ").AppendLine(structConstraint);
+			sb.Append("\t\twhere TCollection : struct, ").AppendLine(structConstraint);
 		}
 
 		AppendItemTypeConstraints(sb, model);
@@ -296,16 +290,17 @@ internal static class CollectionExpectationWriter
 		AppendNullChecks(sb, classModel.Parameters);
 		int count = classModel.Parameters.Count;
 		string state = count == 0
-			? "elements.Quantifier"
-			: $"(elements.Quantifier, {string.Join(", ", classModel.Parameters.Values.Select(p => p.Name))})";
+			? $"{receiver}.Quantifier"
+			: $"({receiver}.Quantifier, {string.Join(", ", classModel.Parameters.Values.Select(p => p.Name))})";
 		string arguments = (count == 0 ? "__state" : "__state.Item1") +
 		                   (model.HasCollectionExpectations ? ", false" : "") +
 		                   string.Concat(Enumerable.Range(0, count).Select(i => $", __state.Item{i + 2}"));
 		sb.Append("\t\treturn new ").Append(resultType)
-			.Append("(global::aweXpect.Core.Extending.ThatExtensions.Get(elements.Subject).ExpectationBuilder.AddConstraint(")
+			.Append("(global::aweXpect.Core.Extending.ThatExtensions.Get(").Append(receiver)
+			.Append(".Subject).ExpectationBuilder.AddConstraint(")
 			.Append(state).Append(", (__state, __it, __grammars) => new ").Append(constraint)
 			.Append("(__it, __grammars, ").Append(arguments).AppendLine(")),");
-		sb.AppendLine("\t\t\telements.Subject);");
+		sb.Append("\t\t\t").Append(receiver).AppendLine(".Subject);");
 		sb.AppendLine("\t}");
 		sb.AppendLine();
 	}

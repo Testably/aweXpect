@@ -9,8 +9,8 @@ namespace aweXpect.Results;
 /// <remarks>
 ///     The options are specified via <see cref="CollectionMatchOptionsExtensions" />.
 /// </remarks>
-public class CollectionMatchResult<TType, TThat, TElement>
-	: AndOrResult<TType, TThat, CollectionMatchResult<TType, TThat, TElement>>,
+public class CollectionMatchResult<TType, TThat, TItem>
+	: AndOrResult<TType, TThat, CollectionMatchResult<TType, TThat, TItem>>,
 		IOptionsProvider<CollectionMatchOptions>
 {
 	private readonly CollectionMatchOptions _collectionMatchOptions;

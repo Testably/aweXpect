@@ -11,20 +11,10 @@ public static partial class ThatAsyncEnumerable
 	///     Verifies that in the collection at most <paramref name="maximum" /> items…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static Elements<TItem> AtMost<TItem>(
+	public static IQuantifiedAsyncEnumerableItems<TItem> AtMost<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject,
 		int maximum)
-		=> new(subject,
-			EnumerableQuantifier.AtMost(maximum));
-
-	/// <summary>
-	///     Verifies that in the collection at most <paramref name="maximum" /> items…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static Elements AtMost(
-		this IThat<IAsyncEnumerable<string?>?> subject,
-		int maximum)
-		=> new(subject,
+		=> new Items<TItem>(subject,
 			EnumerableQuantifier.AtMost(maximum));
 }
 #endif

@@ -15,49 +15,29 @@ public static partial class ThatEnumerable
 	///     Verifies that in the collection at least <paramref name="minimum" /> items…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static Elements<TItem> AtLeast<TItem>(
+	public static IQuantifiedEnumerableItems<TItem> AtLeast<TItem>(
 		this IThat<IEnumerable<TItem>?> subject,
 		int minimum)
-		=> new(subject, EnumerableQuantifier.AtLeast(minimum));
-
-	/// <summary>
-	///     Verifies that in the collection at least <paramref name="minimum" /> items…
-	/// </summary>
-	[GuaranteesNotNull]
-	public static Elements AtLeast(
-		this IThat<IEnumerable<string?>?> subject,
-		int minimum)
-		=> new(subject, EnumerableQuantifier.AtLeast(minimum));
+		=> new Items<TItem>(subject, EnumerableQuantifier.AtLeast(minimum));
 
 	/// <summary>
 	///     Verifies that in the collection at least <paramref name="minimum" /> items…
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ElementsForEnumerable<IEnumerable> AtLeast(
+	public static INonGenericEnumerableItems<IEnumerable> AtLeast(
 		this IThat<IEnumerable?> subject,
 		int minimum)
-		=> new(subject, EnumerableQuantifier.AtLeast(minimum));
+		=> new NonGenericItems<IEnumerable>(subject, EnumerableQuantifier.AtLeast(minimum));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that in the collection at least <paramref name="minimum" /> items…
 	/// </summary>
-	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> AtLeast<TItem>(
+	public static IStructEnumerableItems<ImmutableArray<TItem>, TItem> AtLeast<TItem>(
 		this IThat<ImmutableArray<TItem>> subject,
 		int minimum)
-		=> new(subject, EnumerableQuantifier.AtLeast(minimum));
-#endif
-
-#if NET8_0_OR_GREATER
-#nullable disable annotations
-	/// <summary>
-	///     Verifies that in the collection at least <paramref name="minimum" /> items…
-	/// </summary>
-	public static ElementsForStructEnumerable<ImmutableArray<string>> AtLeast(
-		this IThat<ImmutableArray<string>> subject,
-		int minimum)
-		=> new(subject, EnumerableQuantifier.AtLeast(minimum));
-#nullable restore annotations
+		=> new StructItems<ImmutableArray<TItem>, TItem>(subject,
+			EnumerableQuantifier.AtLeast(minimum));
 #endif
 }

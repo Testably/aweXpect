@@ -158,13 +158,13 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 	public async Task IsMetBy_WhenTheEvaluationIsNotCompleted_ShouldFail()
 	{
 		int[] subject = [2, 4,];
-		IEnumerableElements<int> elements = That(subject).All();
+		IEnumerableItems<int> items = That(subject).All();
 
 		async Task Act()
 			=> await new AndOrResult<IEnumerable<int>, IThat<IEnumerable<int>?>>(
-				((IExpectThat<IEnumerable<int>?>)elements.Subject).ExpectationBuilder.AddConstraint((it, grammars)
-					=> new DoesNotCompleteConstraint(it, grammars, elements.Quantifier)),
-				elements.Subject);
+				((IExpectThat<IEnumerable<int>?>)items.Subject).ExpectationBuilder.AddConstraint((it, grammars)
+					=> new DoesNotCompleteConstraint(it, grammars, items.Quantifier)),
+				items.Subject);
 
 		await That(Act).ThrowsExactly<FailException>()
 			.WithMessage("""
@@ -467,12 +467,12 @@ internal static class AreVerifiedByExtensions
 	///     canceled evaluation.
 	/// </remarks>
 	public static AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>> AreVerifiedBy<TItem>(
-		this IEnumerableElements<TItem> elements, Action<IThat<TItem>> expectations, bool completesEarly = true,
+		this IEnumerableItems<TItem> items, Action<IThat<TItem>> expectations, bool completesEarly = true,
 		TItem? undecidedItem = default)
-		=> new(((IExpectThat<IEnumerable<TItem>?>)elements.Subject).ExpectationBuilder.AddConstraint((it, grammars)
-				=> new AreVerifiedByConstraint<TItem>(it, grammars, elements.Quantifier, expectations, completesEarly,
+		=> new(((IExpectThat<IEnumerable<TItem>?>)items.Subject).ExpectationBuilder.AddConstraint((it, grammars)
+				=> new AreVerifiedByConstraint<TItem>(it, grammars, items.Quantifier, expectations, completesEarly,
 					undecidedItem)),
-			elements.Subject);
+			items.Subject);
 
 	private sealed class AreVerifiedByConstraint<TItem>(
 		string it,
