@@ -1,63 +1,20 @@
 ﻿using System;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
 
 namespace aweXpect;
 
 public static partial class ThatType
 {
-	/// <summary>
-	///     Verifies that the <see cref="Type" /> is a read-only struct
-	///     (declared with the <c>readonly</c> modifier).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<Type, IThat<Type?>> IsReadOnly(
-		this IThat<Type?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsReadOnlyConstraint(it, grammars)),
-			subject);
+	[GenerateExpectation("Is{Not}ReadOnly", "is {not} read-only",
+		Result = nameof(DescribeReadOnlyType),
+		Summary = """
+		          Verifies that the <see cref="Type" /> is a read-only struct
+		          (declared with the <c>readonly</c> modifier).
+		          """,
+		NegatedSummary = "Verifies that the <see cref=\"Type\" /> is not a read-only struct.")]
+	private static bool IsReadOnlyType(Type type) => type.IsReadOnlyStruct();
 
-	/// <summary>
-	///     Verifies that the <see cref="Type" /> is not a read-only struct.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<Type, IThat<Type?>> IsNotReadOnly(
-		this IThat<Type?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsReadOnlyConstraint(it, grammars).Invert()),
-			subject);
-
-	private sealed class IsReadOnlyConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
-			IValueConstraint<Type?>
-	{
-		public ConstraintResult IsMetBy(Type? actual)
-		{
-			Actual = actual;
-			Outcome = actual.IsReadOnlyStruct() ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is read-only");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was not read-only ");
-			Formatter.Format(stringBuilder, Actual);
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not read-only");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was read-only ");
-			Formatter.Format(stringBuilder, Actual);
-		}
-	}
+	private static string DescribeReadOnlyType(Type type)
+		=> ResultTexts.Describe(type.IsReadOnlyStruct(), "was read-only", "was not read-only", type);
 }

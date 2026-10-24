@@ -1,63 +1,17 @@
 ﻿using System.Reflection;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
-using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
 
 namespace aweXpect;
 
 public static partial class ThatEvent
 {
-	/// <summary>
-	///     Verifies that the <see cref="EventInfo" /> is sealed.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsSealed(
-		this IThat<EventInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsSealedConstraint(it, grammars)),
-			subject);
+	[GenerateExpectation("Is{Not}Sealed", "is {not} sealed",
+		Result = nameof(DescribeSealedEvent),
+		Summary = "Verifies that the <see cref=\"EventInfo\" /> is sealed.",
+		NegatedSummary = "Verifies that the <see cref=\"EventInfo\" /> is not sealed.")]
+	private static bool IsSealedEvent(EventInfo @event) => @event.IsReallySealed();
 
-	/// <summary>
-	///     Verifies that the <see cref="EventInfo" /> is not sealed.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsNotSealed(
-		this IThat<EventInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsSealedConstraint(it, grammars).Invert()),
-			subject);
-
-	private sealed class IsSealedConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<EventInfo?>(it, grammars),
-			IValueConstraint<EventInfo?>
-	{
-		public ConstraintResult IsMetBy(EventInfo? actual)
-		{
-			Actual = actual;
-			Outcome = actual?.IsReallySealed() == true ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is sealed");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was non-sealed ");
-			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not sealed");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was sealed ");
-			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
-		}
-	}
+	private static string DescribeSealedEvent(EventInfo @event)
+		=> ResultTexts.Describe(@event.IsReallySealed(), "was sealed", "was non-sealed", @event);
 }

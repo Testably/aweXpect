@@ -11,6 +11,21 @@ public sealed partial class ThatType
 		public sealed class Tests
 		{
 			[Test]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				Type subject = typeof(ClassInNamespaceScope);
+
+				async Task Act()
+				{
+					await That(subject).IsWithinNamespace(null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' cannot be null.").AsPrefix();
+			}
+
+			[Test]
 			public async Task WhenNamespaceDiffersOnlyByCase_ShouldFail()
 			{
 				Type subject = typeof(ClassInNestedNamespaceScope);

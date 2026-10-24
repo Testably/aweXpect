@@ -1,65 +1,24 @@
 ﻿using System.Reflection;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
-using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
 
 namespace aweXpect;
 
 public static partial class ThatMethod
 {
-	/// <summary>
-	///     Verifies that the <see cref="MethodInfo" /> is an extension method (whose first parameter is declared with the
-	///     <see langword="this" /> modifier).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsAnExtensionMethod(
-		this IThat<MethodInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsAnExtensionMethodConstraint(it, grammars)),
-			subject);
+	[GenerateExpectation("Is{Not}AnExtensionMethod", "is {not} an extension method",
+		Result = nameof(DescribeExtensionMethod),
+		Summary = """
+		          Verifies that the <see cref="MethodInfo" /> is an extension method (whose first parameter is declared with the
+		          <see langword="this" /> modifier).
+		          """,
+		NegatedSummary = """
+		                 Verifies that the <see cref="MethodInfo" /> is not an extension method (whose first parameter is not declared with
+		                 the <see langword="this" /> modifier).
+		                 """)]
+	private static bool IsAnExtensionMethodInfo(MethodInfo method) => method.IsExtensionMethod();
 
-	/// <summary>
-	///     Verifies that the <see cref="MethodInfo" /> is not an extension method (whose first parameter is not declared with
-	///     the <see langword="this" /> modifier).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsNotAnExtensionMethod(
-		this IThat<MethodInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsAnExtensionMethodConstraint(it, grammars).Invert()),
-			subject);
-
-	private sealed class IsAnExtensionMethodConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<MethodInfo?>(it, grammars),
-			IValueConstraint<MethodInfo?>
-	{
-		public ConstraintResult IsMetBy(MethodInfo? actual)
-		{
-			Actual = actual;
-			Outcome = actual.IsExtensionMethod() ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is an extension method");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was not an extension method ");
-			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not an extension method");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was an extension method ");
-			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
-		}
-	}
+	private static string DescribeExtensionMethod(MethodInfo method)
+		=> ResultTexts.Describe(method.IsExtensionMethod(),
+			"was an extension method", "was not an extension method", method);
 }

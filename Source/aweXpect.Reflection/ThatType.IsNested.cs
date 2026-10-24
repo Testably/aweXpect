@@ -1,61 +1,17 @@
 ﻿using System;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
-using aweXpect.Results;
+using aweXpect.Reflection.Helpers;
 
 namespace aweXpect;
 
 public static partial class ThatType
 {
-	/// <summary>
-	///     Verifies that the <see cref="Type" /> is nested.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<Type, IThat<Type?>> IsNested(
-		this IThat<Type?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsNestedConstraint(it, grammars)),
-			subject);
+	[GenerateExpectation("Is{Not}Nested", "is {not} nested",
+		Result = nameof(DescribeNestedType),
+		Summary = "Verifies that the <see cref=\"Type\" /> is nested.",
+		NegatedSummary = "Verifies that the <see cref=\"Type\" /> is not nested.")]
+	private static bool IsNestedType(Type type) => type.IsNested;
 
-	/// <summary>
-	///     Verifies that the <see cref="Type" /> is not nested.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<Type, IThat<Type?>> IsNotNested(
-		this IThat<Type?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsNestedConstraint(it, grammars).Invert()),
-			subject);
-
-	private sealed class IsNestedConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
-			IValueConstraint<Type?>
-	{
-		public ConstraintResult IsMetBy(Type? actual)
-		{
-			Actual = actual;
-			Outcome = actual?.IsNested == true ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is nested");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was non-nested ");
-			Formatter.Format(stringBuilder, Actual);
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not nested");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was nested ");
-			Formatter.Format(stringBuilder, Actual);
-		}
-	}
+	private static string DescribeNestedType(Type type)
+		=> ResultTexts.Describe(type.IsNested, "was nested", "was non-nested", type);
 }
