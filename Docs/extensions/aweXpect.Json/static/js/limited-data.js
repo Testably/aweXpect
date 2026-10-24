@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "0bac86a9757dbb7f41900c137bdbb03928c007b8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
-        "message": "refactor: add expectations on a member without a closure (#1922)"
-      },
-      {
         "sha": "bbe7c60fa35f4cc79ff40eb2a83e6737e8673f32",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
-      "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
       "97d79191",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2089.276038851057,
           1223.462247303554,
           2061.8701985677085,
           1601.9165273393903,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           2077.84502919515,
           2096.4120679219563,
           1088.5809260050455,
-          1628.936642919268
+          1628.936642919268,
+          2059.2430502084585
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -422,7 +422,7 @@ window.BENCHMARK_DATA = {
         "data": [
           1288,
           1288,
-          1288,
+          1264,
           1264,
           1264,
           1264,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16405.978548177085,
           9062.060671997071,
           15508.647970581054,
           10721.465897878012,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           15683.67432814378,
           16112.966912841797,
           6610.846553548177,
-          10560.262005106608
+          10560.262005106608,
+          14304.517127482097
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "0bac86a9757dbb7f41900c137bdbb03928c007b8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
-        "message": "refactor: add expectations on a member without a closure (#1922)"
-      },
-      {
         "sha": "bbe7c60fa35f4cc79ff40eb2a83e6737e8673f32",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
-      "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
       "97d79191",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1479.4907387953538,
           866.4225905963352,
           1516.953324999128,
           1114.5266417185464,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1511.8478254590716,
           1481.8427160703218,
           790.2367533842722,
-          1143.701976776123
+          1143.701976776123,
+          1428.076683998108
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1030,7 +1030,7 @@ window.BENCHMARK_DATA = {
         "data": [
           1224,
           1224,
-          1224,
+          1200,
           1200,
           1200,
           1200,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14842.046515909831,
           8000.706635611398,
           14159.753789629254,
           10066.734174455914,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           14151.450436183384,
           14486.738298543294,
           6074.126847839356,
-          10380.56452331543
+          10380.56452331543,
+          12828.901016235352
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "0bac86a9757dbb7f41900c137bdbb03928c007b8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
-        "message": "refactor: add expectations on a member without a closure (#1922)"
-      },
-      {
         "sha": "bbe7c60fa35f4cc79ff40eb2a83e6737e8673f32",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
-      "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
       "97d79191",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4648.083818708147,
           2528.471649169922,
           4665.4366290752705,
           3501.7272371927897,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           4696.820342508951,
           4650.155782427107,
           2492.695984976632,
-          3612.62359085083
+          3612.62359085083,
+          4581.695713043213
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1638,7 +1638,7 @@ window.BENCHMARK_DATA = {
         "data": [
           3520,
           3520,
-          3520,
+          3472,
           3472,
           3472,
           3472,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          48116.435006277905,
           24321.01766531808,
           47337.006119791666,
           29030.70849609375,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           46746.01085486779,
           45795.19700270433,
           18058.38230074369,
-          30574.79249674479
+          30574.79249674479,
+          38482.76127929687
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61926,
           61921,
           61926,
           61925,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "0bac86a9757dbb7f41900c137bdbb03928c007b8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
-        "message": "refactor: add expectations on a member without a closure (#1922)"
-      },
       {
         "sha": "bbe7c60fa35f4cc79ff40eb2a83e6737e8673f32",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
-      "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
       "97d79191",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9377.361384073893,
           5670.498892102923,
           9100.6001563439,
           7407.413481140136,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           9320.324465070453,
           9302.502903238932,
           4604.548663838705,
-          7464.456149174617
+          7464.456149174617,
+          9297.990197988656
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2246,7 +2246,7 @@ window.BENCHMARK_DATA = {
         "data": [
           7048,
           7048,
-          7048,
+          7024,
           7024,
           7024,
           7024,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          302584.3828473772,
           172590.8935546875,
           292140.0075846354,
           202532.80174153644,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           293740.4150390625,
           304315.1563313802,
           129290.10226004464,
-          207047.54278971354
+          207047.54278971354,
+          272480.3418782552
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521542,
           521594,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "0bac86a9757dbb7f41900c137bdbb03928c007b8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
-        "message": "refactor: add expectations on a member without a closure (#1922)"
-      },
       {
         "sha": "bbe7c60fa35f4cc79ff40eb2a83e6737e8673f32",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
-      "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
       "97d79191",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2951.1923433031357,
           1823.3769211402307,
           2877.5854459490097,
           2245.8750046321325,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2901.782163347517,
           2861.5740786234537,
           1492.1467374165852,
-          2239.4649927956716
+          2239.4649927956716,
+          2774.2142036982946
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2854,7 +2854,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1544,
           1544,
-          1544,
           1520,
           1520,
           1520,
@@ -2870,6 +2869,7 @@ window.BENCHMARK_DATA = {
           1488,
           1488,
           1488,
+          1328,
           1328,
           1328,
           1328,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2093.6677487691245,
           1331.4039871509258,
           1894.1276854106359,
           1516.0781600134712,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1956.5905985514323,
           2010.372226969401,
           1009.2138515199933,
-          1534.3787896474203
+          1534.3787896474203,
+          1959.5409950843225
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "0bac86a9757dbb7f41900c137bdbb03928c007b8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
-        "message": "refactor: add expectations on a member without a closure (#1922)"
-      },
-      {
         "sha": "bbe7c60fa35f4cc79ff40eb2a83e6737e8673f32",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
-      "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
       "97d79191",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2054.2856057484946,
           1258.816874577449,
           2022.8973192068247,
           1585.805462019784,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2087.58590398516,
           2070.109078216553,
           1085.5600940159388,
-          1585.102479662214
+          1585.102479662214,
+          2062.30086517334
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3462,7 +3462,6 @@ window.BENCHMARK_DATA = {
         "data": [
           2872,
           2872,
-          2872,
           2848,
           2848,
           2848,
@@ -3489,6 +3488,7 @@ window.BENCHMARK_DATA = {
           2848,
           2848,
           2848,
+          2856,
           2856,
           2856,
           2856,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1869.58156644381,
           1298.6538293202718,
           1715.4791952768962,
           1425.9610136667886,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1755.5434099344106,
           1923.4046264648437,
           849.1343587557475,
-          1439.8897539774578
+          1439.8897539774578,
+          1801.9433146158854
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
