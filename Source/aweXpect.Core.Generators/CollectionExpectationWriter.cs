@@ -14,6 +14,8 @@ internal static class CollectionExpectationWriter
 {
 	private const string EnumerableType = "global::System.Collections.Generic.IEnumerable";
 	private const string AsyncEnumerableType = "global::System.Collections.Generic.IAsyncEnumerable";
+	private const string EnumerableQuantifier = "global::aweXpect.Options.EnumerableQuantifier";
+	private const string FormattingOptions = "global::aweXpect.Formatting.FormattingOptions";
 
 	public static string Write(CollectionExpectationModel model)
 	{
@@ -72,6 +74,103 @@ internal static class CollectionExpectationWriter
 			AppendExpectation(sb, model, asyncElements, $"{AsyncEnumerableType}<{item.ItemType}>",
 				AsyncConstraint(item), null);
 		}
+
+		if (model.OnCollection)
+		{
+			AppendCollectionExpectations(sb, model, item, model.Name, $"{EnumerableQuantifier}.All()", "all items");
+		}
+
+		if (model.NegatedName is { } negatedName)
+		{
+			AppendCollectionExpectations(sb, model, item, negatedName,
+				$"{EnumerableQuantifier}.None({Grammars}.Nested)", "no items");
+		}
+	}
+
+	/// <summary>
+	///     Appends the expectations directly on the collections of the <paramref name="item" /> that the
+	///     <paramref name="quantifier" /> applies to.
+	/// </summary>
+	/// <param name="sb">The source to append to.</param>
+	/// <param name="model">The expectation.</param>
+	/// <param name="item">The item type.</param>
+	/// <param name="name">The name of the expectation.</param>
+	/// <param name="quantifier">
+	///     The expression of the quantifier, which names the items in the nested form of the text, e.g. "none".
+	/// </param>
+	/// <param name="items">The items that the quantifier selects in the summary, e.g. "all items".</param>
+	private static void AppendCollectionExpectations(StringBuilder sb, CollectionExpectationModel model,
+		ItemModel item, string name, string quantifier, string items)
+	{
+		string summary = $"Verifies that {items} {ToDocumentation(model.PluralText, model.Class)}.";
+		AppendCollectionExpectation(sb, model, name, $"{EnumerableType}<{item.ItemType}>",
+			$"{SyncConstraint(item)}<{EnumerableType}<{item.ItemType}>?>", quantifier, summary);
+		if (model.SupportsAsyncEnumerables)
+		{
+			AppendCollectionExpectation(sb, model, name, $"{AsyncEnumerableType}<{item.ItemType}>",
+				AsyncConstraint(item), quantifier, summary);
+		}
+	}
+
+	/// <param name="sb">The source to append to.</param>
+	/// <param name="model">The expectation.</param>
+	/// <param name="name">The name of the expectation.</param>
+	/// <param name="collection">The type of the extended collection.</param>
+	/// <param name="constraint">The constructed constraint.</param>
+	/// <param name="quantifier">The expression of the quantifier.</param>
+	/// <param name="summary">The XML documentation of the summary.</param>
+	private static void AppendCollectionExpectation(StringBuilder sb, CollectionExpectationModel model, string name,
+		string collection, string constraint, string quantifier, string summary)
+	{
+		ClassModel classModel = model.Class;
+		string resultType =
+			$"global::aweXpect.Results.AndOrResult<{collection}, global::aweXpect.Core.IThat<{collection}?>>";
+		sb.AppendLine("\t/// <summary>");
+		AppendDocumentation(sb, summary);
+		sb.AppendLine("\t/// </summary>");
+		if (model.Remarks is { Length: > 0, } remarks)
+		{
+			sb.AppendLine("\t/// <remarks>");
+			AppendDocumentation(sb, remarks);
+			sb.AppendLine("\t/// </remarks>");
+		}
+
+		sb.AppendLine("\t[global::aweXpect.Core.GuaranteesNotNull]");
+		sb.Append('\t').Append(classModel.MethodAccessibility).Append(" static ").Append(resultType).Append(' ')
+			.Append(name).Append("(this global::aweXpect.Core.IThat<").Append(collection).Append("?> subject");
+		foreach (ParameterModel parameter in classModel.Parameters.Values)
+		{
+			sb.Append(", ").Append(parameter.IsParams ? "params " : "").Append(parameter.Type).Append(' ')
+				.Append(parameter.Name);
+		}
+
+		sb.AppendLine(")");
+		sb.AppendLine("\t{");
+		AppendNullChecks(sb, classModel.Parameters);
+		int count = classModel.Parameters.Count;
+		string arguments = string.Concat(Enumerable.Range(0, count)
+			.Select(i => count == 1 ? ", __state" : $", __state.Item{i + 1}"));
+		string newConstraint = $"new {constraint}(__it, __grammars, {quantifier}, true{arguments})";
+		sb.Append("\t\treturn new ").Append(resultType)
+			.Append("(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint(");
+		switch (count)
+		{
+			case 0:
+				sb.Append("(__it, __grammars) => ");
+				break;
+			case 1:
+				sb.Append(classModel.Parameters.Values[0].Name).Append(", (__state, __it, __grammars) => ");
+				break;
+			default:
+				sb.Append('(').Append(string.Join(", ", classModel.Parameters.Values.Select(p => p.Name)))
+					.Append("), (__state, __it, __grammars) => ");
+				break;
+		}
+
+		sb.Append(newConstraint).AppendLine("),");
+		sb.AppendLine("\t\t\tsubject);");
+		sb.AppendLine("\t}");
+		sb.AppendLine();
 	}
 
 	/// <summary>
@@ -150,9 +249,9 @@ internal static class CollectionExpectationWriter
 		string state = count == 0
 			? "elements.Quantifier"
 			: $"(elements.Quantifier, {string.Join(", ", classModel.Parameters.Values.Select(p => p.Name))})";
-		string arguments = count == 0
-			? "__state"
-			: string.Concat(Enumerable.Range(0, count + 1).Select(i => (i == 0 ? "" : ", ") + $"__state.Item{i + 1}"));
+		string arguments = (count == 0 ? "__state" : "__state.Item1") +
+		                   (model.HasCollectionExpectations ? ", false" : "") +
+		                   string.Concat(Enumerable.Range(0, count).Select(i => $", __state.Item{i + 2}"));
 		sb.Append("\t\treturn new ").Append(resultType)
 			.Append("(global::aweXpect.Core.Extending.ThatExtensions.Get(elements.Subject).ExpectationBuilder.AddConstraint(")
 			.Append(state).Append(", (__state, __it, __grammars) => new ").Append(constraint)
@@ -200,14 +299,16 @@ internal static class CollectionExpectationWriter
 		}
 
 		sb.Append("\t\tpublic ").Append(constraintName).Append("(string it, ").Append(Grammars)
-			.Append(" grammars, global::aweXpect.Options.EnumerableQuantifier quantifier");
+			.Append(" grammars, ").Append(EnumerableQuantifier).Append(" quantifier")
+			.Append(model.HasCollectionExpectations ? ", bool isOnCollection" : "");
 		for (int i = 0; i < classModel.Parameters.Count; i++)
 		{
 			sb.Append(", ").Append(classModel.Parameters.Values[i].Type).Append(" p").Append(i);
 		}
 
 		sb.AppendLine(")");
-		sb.AppendLine("\t\t\t: base(it, grammars, quantifier)");
+		sb.Append("\t\t\t: base(it, grammars, quantifier").Append(model.HasCollectionExpectations ? ", isOnCollection" : "")
+			.AppendLine(")");
 		sb.AppendLine("\t\t{");
 		for (int i = 0; i < classModel.Parameters.Count; i++)
 		{
@@ -220,17 +321,41 @@ internal static class CollectionExpectationWriter
 		sb.AppendLine();
 		AppendIsMatch(sb, model, item);
 		AppendItemExpectation(sb, model);
+		if (model.FormattedItem is { } formattedItem)
+		{
+			AppendFormatItems(sb, model, item, formattedItem);
+		}
+
 		sb.AppendLine("\t}");
 		return sb.ToString();
 	}
 
+	/// <remarks>
+	///     A <see langword="null" /> item of the nullable overload of a value type stays <see langword="null" />, as the
+	///     method takes the value type.
+	/// </remarks>
+	private static void AppendFormatItems(StringBuilder sb, CollectionExpectationModel model, ItemModel item,
+		string formattedItem)
+	{
+		string call = $"{Owner(model.Class)}.{formattedItem}({item.ItemArgument})";
+		string value = item.ItemArgument == "item" ? $"(object?){call}" : $"item is null ? null : (object?){call}";
+		sb.AppendLine();
+		sb.Append("\t\tprotected override string FormatItems(").Append(EnumerableType).Append('<')
+			.Append(item.ItemType).Append("> items, ").Append(FormattingOptions).AppendLine(" options)");
+		sb.Append("\t\t\t=> ").Append(ValueFormatters).Append(".Format<object?>(").Append(Formatter)
+			.Append(", global::System.Linq.Enumerable.Select<").Append(item.ItemType)
+			.Append(", object?>(items, item => ").Append(value).AppendLine("), options);");
+	}
+
+	private static string Owner(ClassModel classModel)
+		=> classModel.Namespace is null
+			? $"global::{classModel.ClassName}"
+			: $"global::{classModel.Namespace}.{classModel.ClassName}";
+
 	private static void AppendIsMatch(StringBuilder sb, CollectionExpectationModel model, ItemModel item)
 	{
 		ClassModel classModel = model.Class;
-		string owner = classModel.Namespace is null
-			? $"global::{classModel.ClassName}"
-			: $"global::{classModel.Namespace}.{classModel.ClassName}";
-		string call = $"{owner}.{classModel.PredicateName}({item.ItemArgument}"
+		string call = $"{Owner(classModel)}.{classModel.PredicateName}({item.ItemArgument}"
 		              + $"{GetArguments(classModel.Parameters.Count, model.CancellationTokenIndex)})";
 		string result = $"{ExpectationWriter.ValueTask}<{PredicateResult}>";
 		// An asynchronous bool is awaited, as only the result itself converts to a PredicateResult.

@@ -84,6 +84,17 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	protected abstract string Verb { get; }
 
 	/// <summary>
+	///     Formats the matching or not matching <paramref name="items" /> that the failure message lists, with the
+	///     layout of the <paramref name="options" />.
+	/// </summary>
+	/// <remarks>
+	///     Override it to let the items stand for something else in the failure message, e.g. a wrapper that a formatter
+	///     of your own formats.
+	/// </remarks>
+	protected virtual string FormatItems(IEnumerable<TItem> items, FormattingOptions options)
+		=> Formatter.Format(items, options);
+
+	/// <summary>
 	///     Appends the expectation on a single item for the <paramref name="grammars" />, e.g. "is even", or "are even"
 	///     when the grammars are <see cref="ExpectationGrammars.Plural" />.
 	/// </summary>
@@ -215,10 +226,12 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 			: Quantifier.GetQuantifierContext();
 		contexts.AddQuantifierContexts(Quantifier, shown,
 			_matchingItems is { Count: > 0, } matchingItems
-				? () => matchingItems.Format(actual, ItemType, matchingCount).AppendIsIncomplete(isIncomplete)
+				? () => matchingItems.Format(actual, ItemType, matchingCount, FormatItems)
+					.AppendIsIncomplete(isIncomplete)
 				: null,
 			_notMatchingItems is { Count: > 0, } notMatchingItems
-				? () => notMatchingItems.Format(actual, ItemType, notMatchingCount).AppendIsIncomplete(isIncomplete)
+				? () => notMatchingItems.Format(actual, ItemType, notMatchingCount, FormatItems)
+					.AppendIsIncomplete(isIncomplete)
 				: null);
 		if (shown.HasFlag(EnumerableQuantifier.QuantifierContexts.NotMatchingItems))
 		{

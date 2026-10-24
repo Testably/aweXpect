@@ -205,6 +205,7 @@ The source generator in `aweXpect.Core` reports an error for a method marked wit
 | `aweXpect4001` | the class of the method is not a top-level, non-generic, `static partial` class or is `file`-local        |
 | `aweXpect4002` | the method, its parameters, the name or the expectation text are not supported, with the reason           |
 | `aweXpect4003` | the `Result` names no `static` method that returns a `string` and takes the subject                       |
+| `aweXpect4004` | the `FormattedItem` names no `static` method that returns a value and takes the item                      |
 
 ## Test framework adapter
 

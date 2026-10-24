@@ -51,6 +51,9 @@ internal sealed record ExpectationModel(
 /// <param name="CancellationTokenIndex">The position of the evaluation cancellation token among the arguments after the item, or <c>-1</c> without one.</param>
 /// <param name="ReturnsPredicateResult">Whether the predicate returns a <c>PredicateResult</c> instead of a <see langword="bool" />.</param>
 /// <param name="Items">The item types whose collections are extended.</param>
+/// <param name="OnCollection">Whether the expectation is also generated directly on the collection, for all items.</param>
+/// <param name="NegatedName">The name of the expectation directly on the collection for no item, if any.</param>
+/// <param name="FormattedItem">The method that returns the value which stands for an item in the failure message, if any.</param>
 /// <param name="SupportsAsyncEnumerables">Whether the referenced aweXpect.Core supports <c>IAsyncEnumerable</c>.</param>
 internal sealed record CollectionExpectationModel(
 	ClassModel Class,
@@ -64,9 +67,17 @@ internal sealed record CollectionExpectationModel(
 	int CancellationTokenIndex,
 	bool ReturnsPredicateResult,
 	EquatableArray<ItemModel> Items,
+	bool OnCollection,
+	string? NegatedName,
+	string? FormattedItem,
 	bool SupportsAsyncEnumerables)
 {
 	public bool PassesCancellationToken => CancellationTokenIndex >= 0;
+
+	/// <summary>
+	///     Whether an expectation is generated directly on the collection, whose constraints are told so.
+	/// </summary>
+	public bool HasCollectionExpectations => OnCollection || NegatedName is not null;
 }
 
 /// <summary>

@@ -79,9 +79,44 @@ public sealed class GenerateCollectionExpectationAttribute : Attribute
 	public bool NullableOverload { get; set; } = true;
 
 	/// <summary>
+	///     Whether the expectation is also generated directly on the collection, where all items have to meet it, e.g.
+	///     <c>That(tracks).AreRadioFriendly()</c>.
+	/// </summary>
+	/// <remarks>
+	///     It extends an <see cref="System.Collections.Generic.IEnumerable{T}" /> and, on .NET 8 or later, an
+	///     <c>IAsyncEnumerable&lt;T&gt;</c> of the item, reads the collection to its end, so that the failure message
+	///     lists every item that does not meet it, and fails for a <see langword="null" /> collection.
+	/// </remarks>
+	public bool OnCollection { get; set; }
+
+	/// <summary>
+	///     The name of an expectation directly on the collection that no item may meet, e.g.
+	///     <c>AreNotRadioFriendly</c> for <c>That(tracks).AreNotRadioFriendly()</c>.
+	/// </summary>
+	/// <remarks>
+	///     It extends the same collections as <see cref="OnCollection" /> and lists every item that meets the
+	///     expectation in the failure message.
+	/// </remarks>
+	public string? NegatedName { get; set; }
+
+	/// <summary>
+	///     The name of a <see langword="static" /> method in the same class that returns the value which stands for an
+	///     item in the failure message, e.g. a wrapper that a formatter of your own formats.
+	/// </summary>
+	/// <remarks>
+	///     The method takes the item, which can be <see langword="null" /> for a reference type, and its result is
+	///     formatted instead of the item in the listed items and in the collection.
+	/// </remarks>
+	public string? FormattedItem { get; set; }
+
+	/// <summary>
 	///     The XML documentation of the summary of the expectation, instead of one that is derived from the
 	///     <see cref="PluralExpectationText" />.
 	/// </summary>
+	/// <remarks>
+	///     It documents the expectation on the elements that a quantifier selected; the summaries of the expectations
+	///     directly on the collection are derived from the <see cref="PluralExpectationText" />.
+	/// </remarks>
 	public string? Summary { get; set; }
 
 	/// <summary>

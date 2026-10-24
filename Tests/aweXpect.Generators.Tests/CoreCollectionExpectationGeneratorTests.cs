@@ -118,6 +118,64 @@ public sealed class CoreCollectionExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task FormattedItem_OfANullableValueTypeItem_ShouldKeepNull()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreZero", "is zero", "are zero", FormattedItem = nameof(Describe))]
+			private static bool IsZero(int value) => value == 0;
+
+			private static string Describe(int value) => $"#{value}";
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated)
+			.Contains("item => (object?)global::Lib.ThatSample.Describe(item)").Exactly(2);
+		await That(result.Generated)
+			.Contains("item => item is null ? null : (object?)global::Lib.ThatSample.Describe(item.Value)").Exactly(2)
+			.Because("the method takes the value type, so a null item of the nullable overload stays null");
+	}
+
+	[Test]
+	public async Task FormattedItem_ShouldFormatTheItemsWithTheMethod()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreEmpty", "is empty", "are empty", FormattedItem = nameof(Describe))]
+			private static bool IsEmpty(string value) => value.Length == 0;
+
+			private static object? Describe(string? value) => value?.Length;
+			""");
+
+		await ThatCompiles(result);
+		await ThatContainsLines(result,
+			"""
+					protected override string FormatItems(global::System.Collections.Generic.IEnumerable<string?> items, global::aweXpect.Formatting.FormattingOptions options)
+						=> global::aweXpect.Formatting.ValueFormatters.Format<object?>(global::aweXpect.Formatting.Format.Formatter, global::System.Linq.Enumerable.Select<string?, object?>(items, item => (object?)global::Lib.ThatSample.Describe(item)), options);
+			""");
+	}
+
+	[Test]
+	[Arguments("private static object? Describe(string value) => value;")]
+	[Arguments("private static void Describe(string? value) { }")]
+	[Arguments("private static object? Describe(int value) => value;")]
+	[Arguments("private object? Describe(string? value) => value;")]
+	[Arguments("private static object? Describe(string? value, int other) => value;")]
+	public async Task FormattedItemIsNotSuitable_ShouldReportADiagnostic(string method)
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			$$"""
+			  [GenerateCollectionExpectation("AreEmpty", "is empty", "are empty", FormattedItem = "Describe")]
+			  private static bool IsEmpty(string value) => value.Length == 0;
+
+			  {{method}}
+			  """);
+
+		await ThatReports(result,
+			"aweXpect4004: 'Describe' names no static method that returns a value and takes the item of 'ThatSample.IsEmpty(string)', which can be null for a reference type");
+	}
+
+	[Test]
 	public async Task LanguageVersionIsCSharp8_ShouldCompile()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -149,6 +207,18 @@ public sealed class CoreCollectionExpectationGeneratorTests
 					[GenerateCollectionExpectation("AreKnown", "is known", "are known")]
 					private static Task<PredicateResult> IsKnown(string value)
 						=> Task.FromResult(value.Length == 0 ? PredicateResult.FailureBothWays("was empty") : true);
+
+					[GenerateCollectionExpectation("AreLong", "is long", "are long", OnCollection = true,
+						NegatedName = "AreNotLong", FormattedItem = nameof(Describe))]
+					private static bool IsLong(string value, int minimum) => value.Length > minimum;
+
+					[GenerateCollectionExpectation("AreSmall", "is small", "are small", OnCollection = true,
+						NegatedName = "AreNotSmall", FormattedItem = nameof(Describe))]
+					private static bool IsSmall(int value) => value < 3;
+
+					private static object? Describe(string? value) => value?.Length;
+
+					private static object Describe(int value) => value;
 				}
 			}
 			""", LanguageVersion.CSharp8);
@@ -193,6 +263,49 @@ public sealed class CoreCollectionExpectationGeneratorTests
 
 		await ThatReports(result,
 			"aweXpect4002: 'ThatSample.IsZero(int)' cannot generate an expectation, because the name and the plural expectation text are required");
+	}
+
+	[Test]
+	public async Task NegatedName_ShouldGenerateTheExpectationThatNoItemMeetsOnTheCollection()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreZero", "is zero", "are zero", NullableOverload = false, NegatedName = "AreNotZero")]
+			private static bool IsZero(int value) => value == 0;
+			""");
+
+		await ThatCompiles(result);
+		await ThatContainsLines(result,
+			"""
+				/// <summary>
+				///     Verifies that no items are zero.
+				/// </summary>
+				[global::aweXpect.Core.GuaranteesNotNull]
+				public static global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<int>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<int>?>> AreNotZero(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<int>?> subject)
+				{
+					return new global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<int>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<int>?>>(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint((__it, __grammars) => new IsZero_GeneratedElementsConstraint<global::System.Collections.Generic.IEnumerable<int>?>(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.None(global::aweXpect.Core.ExpectationGrammars.Nested), true)),
+						subject);
+				}
+			""");
+		await That(result.Generated)
+			.Contains(" AreNotZero(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IAsyncEnumerable<int>?> subject)");
+		await That(result.Generated).DoesNotContain(" AreZero(this global::aweXpect.Core.IThat<")
+			.Because("only the negated name generates an expectation on the collection");
+	}
+
+	[Test]
+	[Arguments("AreZero")]
+	[Arguments("Are{Not}Zero")]
+	public async Task NegatedNameIsInvalid_ShouldReportADiagnostic(string negatedName)
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			$$"""
+			  [GenerateCollectionExpectation("AreZero", "is zero", "are zero", NegatedName = "{{negatedName}}")]
+			  private static bool IsZero(int value) => value == 0;
+			  """);
+
+		await ThatReports(result,
+			$"aweXpect4002: 'ThatSample.IsZero(int)' cannot generate an expectation, because the negated name '{negatedName}' is not a valid method name that differs from the name");
 	}
 
 	[Test]
@@ -252,6 +365,60 @@ public sealed class CoreCollectionExpectationGeneratorTests
 		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableElements<int?> elements)");
 		await That(result.Generated).Contains("!(item is null) && global::Lib.ThatSample.IsZero(item.Value)").Exactly(2);
 		await That(result.Generated).DoesNotContain("IEnumerableElements<int>");
+	}
+
+	[Test]
+	public async Task OnCollection_ShouldGenerateTheExpectationThatAllItemsMeetOnTheCollection()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreEmpty", "is empty", "are empty", OnCollection = true, Remarks = "Ignores whitespace.")]
+			private static bool IsEmpty(string value) => value.Trim().Length == 0;
+			""");
+
+		await ThatCompiles(result);
+		await ThatContainsLines(result,
+			"""
+				/// <summary>
+				///     Verifies that all items are empty.
+				/// </summary>
+				/// <remarks>
+				///     Ignores whitespace.
+				/// </remarks>
+				[global::aweXpect.Core.GuaranteesNotNull]
+				public static global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<string?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?>> AreEmpty(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?> subject)
+				{
+					return new global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<string?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?>>(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint((__it, __grammars) => new IsEmpty_GeneratedElementsConstraint<global::System.Collections.Generic.IEnumerable<string?>?>(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true)),
+						subject);
+				}
+			""");
+		await That(result.Generated)
+			.Contains("new IsEmpty_GeneratedAsyncElementsConstraint(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true)");
+		await That(result.Generated).Contains("(__it, __grammars, __state, false)").Exactly(3)
+			.Because("the expectations on the elements are not on the collection");
+		await That(result.Generated).Contains(": base(it, grammars, quantifier, isOnCollection)").Exactly(2);
+	}
+
+	[Test]
+	public async Task OnCollection_WithParameters_ShouldPassThemToTheConstraint()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreBetween", "is between {minimum} and {maximum}", "are between {minimum} and {maximum}",
+				NullableOverload = false, OnCollection = true, NegatedName = "AreNotBetween")]
+			private static bool IsBetween(int value, int minimum, int maximum) => value >= minimum && value <= maximum;
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated)
+			.Contains(" AreBetween(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<int>?> subject, int minimum, int maximum)");
+		await That(result.Generated)
+			.Contains("AddConstraint((minimum, maximum), (__state, __it, __grammars) => new IsBetween_GeneratedElementsConstraint<global::System.Collections.Generic.IEnumerable<int>?>(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true, __state.Item1, __state.Item2))");
+		await That(result.Generated)
+			.Contains("(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.None(global::aweXpect.Core.ExpectationGrammars.Nested), true, __state.Item1, __state.Item2)")
+			.Exactly(2);
+		await That(result.Generated).Contains("(__it, __grammars, __state.Item1, false, __state.Item2, __state.Item3)")
+			.Exactly(3);
 	}
 
 	[Test]

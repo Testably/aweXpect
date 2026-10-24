@@ -44,11 +44,22 @@ public static class ResultContextCollectorExtensions
 	/// </remarks>
 	public static void AddCollectionContext<TItem>(this ResultContextCollector contexts,
 		IEnumerable<TItem>? collection, bool isIncomplete = false, int? totalCount = null)
+		=> contexts.AddCollectionContext(collection, FormatItems, isIncomplete, totalCount);
+
+	/// <inheritdoc cref="AddCollectionContext{TItem}(ResultContextCollector, IEnumerable{TItem}, bool, int?)" />
+	/// <param name="contexts">The collector to add the context to.</param>
+	/// <param name="collection">The collection to list, or <see langword="null" /> to add no context.</param>
+	/// <param name="format">Formats the listed items with the layout of the options.</param>
+	/// <param name="isIncomplete">Whether the enumeration stopped before the end of the collection.</param>
+	/// <param name="totalCount">The number of items in total, when the collection holds only the first of them.</param>
+	internal static void AddCollectionContext<TItem>(this ResultContextCollector contexts,
+		IEnumerable<TItem>? collection, Func<IEnumerable<TItem>, FormattingOptions, string> format,
+		bool isIncomplete = false, int? totalCount = null)
 	{
 		if (collection is not null)
 		{
 			contexts.Add(new ResultContext.SyncCallback("Collection",
-				() => FormatCollection(collection, totalCount)?.AppendIsIncomplete(isIncomplete), -1));
+				() => FormatCollection(collection, totalCount, format)?.AppendIsIncomplete(isIncomplete), -1));
 		}
 	}
 
@@ -83,11 +94,21 @@ public static class ResultContextCollectorExtensions
 	/// </remarks>
 	public static void AddCollectionContext<TItem>(this ResultContextCollector contexts,
 		IMaterializedAsyncEnumerable<TItem>? collection, bool isIncomplete = false)
+		=> contexts.AddCollectionContext(collection, FormatItems, isIncomplete);
+
+	/// <inheritdoc cref="AddCollectionContext{TItem}(ResultContextCollector, IMaterializedAsyncEnumerable{TItem}, bool)" />
+	/// <param name="contexts">The collector to add the context to.</param>
+	/// <param name="collection">The collection to list, or <see langword="null" /> to add no context.</param>
+	/// <param name="format">Formats the listed items with the layout of the options.</param>
+	/// <param name="isIncomplete">Whether the enumeration stopped before the end of the collection.</param>
+	internal static void AddCollectionContext<TItem>(this ResultContextCollector contexts,
+		IMaterializedAsyncEnumerable<TItem>? collection, Func<IEnumerable<TItem>, FormattingOptions, string> format,
+		bool isIncomplete = false)
 	{
 		if (collection is not null)
 		{
 			contexts.Add(new ResultContext.SyncCallback("Collection",
-				() => FormatMaterializedItems(collection)?.AppendIsIncomplete(isIncomplete), -1));
+				() => FormatMaterializedItems(collection, format)?.AppendIsIncomplete(isIncomplete), -1));
 		}
 	}
 #endif
@@ -228,7 +249,8 @@ public static class ResultContextCollectorExtensions
 	///     When the <paramref name="totalCount" /> is known, the listed items are only the first ones, so the layout
 	///     follows their number, while the total names the remainder.
 	/// </remarks>
-	private static string? FormatCollection<TItem>(IEnumerable<TItem> value, int? totalCount)
+	private static string? FormatCollection<TItem>(IEnumerable<TItem> value, int? totalCount,
+		Func<IEnumerable<TItem>, FormattingOptions, string> format)
 	{
 		if (value is IKeyedCollection keyed)
 		{
@@ -238,17 +260,20 @@ public static class ResultContextCollectorExtensions
 		if (totalCount is not null)
 		{
 			int? count = ValueFormatters.GetCount(value) ?? CountItems(value);
-			return Formatter.Format(value, typeof(TItem).GetFormattingOption(count, totalCount));
+			return format(value, typeof(TItem).GetFormattingOption(count, totalCount));
 		}
 
 		if (value is IMaterializedEnumerable<TItem> { Count: null, } materialized)
 		{
-			return FormatReadItems(materialized.MaterializedItems, typeof(TItem));
+			return FormatReadItems(materialized.MaterializedItems, typeof(TItem), format);
 		}
 
 		totalCount = ValueFormatters.GetCount(value) ?? (value as ICountable)?.Count;
-		return Formatter.Format(value, typeof(TItem).GetFormattingOption(totalCount, totalCount));
+		return format(value, typeof(TItem).GetFormattingOption(totalCount, totalCount));
 	}
+
+	private static string FormatItems<TItem>(IEnumerable<TItem> items, FormattingOptions options)
+		=> Formatter.Format(items, options);
 
 	/// <remarks>
 	///     The count only decides the layout, so items whose enumeration throws are laid out like items of an unknown
@@ -270,7 +295,8 @@ public static class ResultContextCollectorExtensions
 	{
 		if (value is IMaterializedEnumerable { Count: null, } materialized)
 		{
-			return FormatReadItems(materialized.MaterializedItems, GetItemType(materialized.MaterializedItems));
+			return FormatReadItems(materialized.MaterializedItems, GetItemType(materialized.MaterializedItems),
+				FormatItems);
 		}
 
 		int? totalCount = ValueFormatters.GetCount(value) ?? (value as ICountable)?.Count;
@@ -279,7 +305,8 @@ public static class ResultContextCollectorExtensions
 	}
 
 #if NET8_0_OR_GREATER
-	private static string? FormatMaterializedItems<TItem>(IMaterializedAsyncEnumerable<TItem> value)
+	private static string? FormatMaterializedItems<TItem>(IMaterializedAsyncEnumerable<TItem> value,
+		Func<IEnumerable<TItem>, FormattingOptions, string> format)
 	{
 		if (value.MaterializedItems.Count == 0 && value.Count is null)
 		{
@@ -287,7 +314,7 @@ public static class ResultContextCollectorExtensions
 		}
 
 		int count = value.Count ?? value.MaterializedItems.Count;
-		return Formatter.Format(HideCount(value.MaterializedItems), typeof(TItem).GetFormattingOption(count, value.Count))
+		return format(HideCount(value.MaterializedItems), typeof(TItem).GetFormattingOption(count, value.Count))
 			.AppendIsIncomplete(value.Count is null);
 	}
 #endif
@@ -296,10 +323,11 @@ public static class ResultContextCollectorExtensions
 	///     No further items are read for the context, so that a source that blocks cannot hang the failure message. The
 	///     context is left out while nothing is known about the items.
 	/// </remarks>
-	private static string? FormatReadItems<TItem>(IReadOnlyList<TItem> items, Type itemType)
+	private static string? FormatReadItems<TItem>(IReadOnlyList<TItem> items, Type itemType,
+		Func<IEnumerable<TItem>, FormattingOptions, string> format)
 		=> items.Count == 0
 			? null
-			: Formatter.Format(HideCount(items), itemType.GetFormattingOption(items.Count)).AppendIsIncomplete(true);
+			: format(HideCount(items), itemType.GetFormattingOption(items.Count)).AppendIsIncomplete(true);
 
 	/// <summary>
 	///     The materialized items can be only the first items of the source, so their count must not be rendered as the

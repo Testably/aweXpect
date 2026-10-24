@@ -47,6 +47,15 @@ public class ExpectationGenerator : IIncrementalGenerator
 		true,
 		helpLinkUri: HelpLink);
 
+	private static readonly DiagnosticDescriptor InvalidFormattedItem = new(
+		"aweXpect4004",
+		"The formatted item method is not suitable",
+		"'{0}' names no static method that returns a value and takes the item of '{1}', which can be null for a reference type",
+		"aweXpect.Core.Generators",
+		DiagnosticSeverity.Error,
+		true,
+		helpLinkUri: HelpLink);
+
 	private static readonly SymbolDisplayFormat TypeFormat = SymbolDisplayFormat.FullyQualifiedFormat
 		.AddMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
 
@@ -211,6 +220,22 @@ public class ExpectationGenerator : IIncrementalGenerator
 				$"the placeholder '{{{unknownPlaceholder}}}' names no parameter of the expectation");
 		}
 
+		string? negatedName = GetNamedArgument<string>(attribute, "NegatedName");
+		if (negatedName is not null && (!SyntaxFacts.IsValidIdentifier(negatedName) || negatedName == name))
+		{
+			return signature.FailCollection(
+				$"the negated name '{negatedName}' is not a valid method name that differs from the name");
+		}
+
+		string? formattedItem = GetNamedArgument<string>(attribute, "FormattedItem");
+		string? formattedItemMethod = null;
+		if (formattedItem is not null &&
+		    !TryFindFormattedItemMethod(signature.Class, formattedItem, signature.Subject, out formattedItemMethod))
+		{
+			return new CollectionExpectationResult(null,
+				new Problem(InvalidFormattedItem, signature.Location, formattedItem, signature.MethodName));
+		}
+
 		return new CollectionExpectationResult(new CollectionExpectationModel(
 			signature.ToClassModel(context, ".Elements"),
 			name,
@@ -224,7 +249,35 @@ public class ExpectationGenerator : IIncrementalGenerator
 			signature.ReturnsPredicateResult,
 			GetItems(signature.Subject, signature.ConstraintPrefix,
 				GetNamedArgument<bool?>(attribute, "NullableOverload") ?? true),
+			GetNamedArgument<bool?>(attribute, "OnCollection") ?? false,
+			negatedName,
+			formattedItemMethod,
 			false), null);
+	}
+
+	/// <summary>
+	///     Finds the method that returns the value which stands for an item in the failure message: it takes the item,
+	///     which can be <see langword="null" /> for a reference type, and returns a value.
+	/// </summary>
+	private static bool TryFindFormattedItemMethod(INamedTypeSymbol classSymbol, string name, IParameterSymbol subject,
+		out string? method)
+	{
+		ITypeSymbol subjectType = subject.Type;
+		foreach (IMethodSymbol candidate in classSymbol.GetMembers(name).OfType<IMethodSymbol>())
+		{
+			if (candidate is { IsStatic: true, IsGenericMethod: false, ReturnsVoid: false, Parameters.Length: 1, } &&
+			    candidate.Parameters[0].RefKind == RefKind.None &&
+			    SymbolEqualityComparer.Default.Equals(candidate.Parameters[0].Type, subjectType) &&
+			    (subjectType.IsValueType ||
+			     candidate.Parameters[0].NullableAnnotation != NullableAnnotation.NotAnnotated))
+			{
+				method = Escape(name);
+				return true;
+			}
+		}
+
+		method = null;
+		return false;
 	}
 
 	/// <summary>

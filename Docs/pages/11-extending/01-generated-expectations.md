@@ -188,6 +188,50 @@ await Expect.That(tracks).None().AreLongerThan(TimeSpan.FromMinutes(5));
   e.g. "but for the item at index 1, it had no duration", unless the items before already determine the outcome.
 - `Summary` and `Remarks` replace or extend the XML documentation, which is derived from the plural text.
 
+### On the collection
+
+`OnCollection = true` also generates the expectation directly on the collection, which all items have to meet, and a
+`NegatedName` generates an expectation directly on the collection, which no item may meet:
+
+```csharp no-compile
+[GenerateCollectionExpectation("AreLongerThan", "is longer than {minimum}", "are longer than {minimum}",
+    OnCollection = true, NegatedName = "AreNotLongerThan")]
+private static bool IsLongerThan(Track track, TimeSpan minimum)
+    => track.Duration > minimum;
+```
+
+```csharp no-compile
+await Expect.That(tracks).AreLongerThan(TimeSpan.FromMinutes(2));
+await Expect.That(tracks).AreNotLongerThan(TimeSpan.FromMinutes(5));
+```
+
+- They extend an `IEnumerable<T>` and, on .NET 8 or later, an `IAsyncEnumerable<T>` of the item, and a `null`
+  collection fails them and their negations.
+- The quantifier is the subject of the text, e.g. "all are longer than …" and "none are longer than …", whose
+  negations read "not all are longer than …" and "at least one is longer than …". The result counts the items like
+  above, e.g. "but only 2 of 3 were".
+- The collection is read to its end, so that the failure message lists every item that does not meet the expectation,
+  or that meets it for the `NegatedName`. Use a quantifier like `All()` instead on a collection that never ends.
+- The summary of the XML documentation is derived from the plural text, e.g. "Verifies that all items are longer
+  than …" and "Verifies that no items are longer than …"; the `Remarks` apply to them as well.
+
+### Formatting the items
+
+The failure message lists the items with their formatter. To show something else for them, e.g. a wrapper that a
+[formatter of your own](./07-customization-values.md) formats, name a `static` method in the same class in
+`FormattedItem`. It takes the item, which can be `null` for a reference type, and its result stands for the item in
+the listed items and in the collection:
+
+```csharp no-compile
+[GenerateCollectionExpectation("AreLongerThan", "is longer than {minimum}", "are longer than {minimum}",
+    FormattedItem = nameof(ToTitle))]
+private static bool IsLongerThan(Track track, TimeSpan minimum)
+    => track.Duration > minimum;
+
+private static string? ToTitle(Track? track)
+    => track?.Title;
+```
+
 ## Diagnostics
 
 A method that the generator cannot turn into an expectation is reported as an error, see the

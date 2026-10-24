@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
@@ -79,10 +80,10 @@ internal static class QuantifiedCollectionHelpers
 	///     Only the first items are recorded, so <paramref name="totalCount" /> is how many were found in total.
 	/// </remarks>
 	internal static string Format<TItem>(this LimitedCollection<TItem> items, object? source, Type itemType,
-		int? totalCount)
+		int? totalCount, Func<IEnumerable<TItem>, FormattingOptions, string> format)
 		=> source is IKeyedCollection keyed
 			? keyed.Format(items.Indices, totalCount)
-			: Formatter.Format(items, itemType.GetFormattingOption(items.Count, totalCount));
+			: format(items, itemType.GetFormattingOption(items.Count, totalCount));
 
 	internal static string AppendIsIncomplete(this string formattedItems, bool isIncomplete)
 	{

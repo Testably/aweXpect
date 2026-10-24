@@ -161,6 +161,9 @@ public sealed class GenerateCollectionExpectationAttributeTests
 		GenerateCollectionExpectationAttribute subject = new("AreLucky", "is lucky", "are lucky")
 		{
 			NullableOverload = false,
+			OnCollection = true,
+			NegatedName = "AreUnlucky",
+			FormattedItem = "ToBadge",
 			Summary = "summary",
 			Remarks = "remarks",
 		};
@@ -169,6 +172,9 @@ public sealed class GenerateCollectionExpectationAttributeTests
 		await That(subject.ExpectationText).IsEqualTo("is lucky");
 		await That(subject.PluralExpectationText).IsEqualTo("are lucky");
 		await That(subject.NullableOverload).IsFalse();
+		await That(subject.OnCollection).IsTrue();
+		await That(subject.NegatedName).IsEqualTo("AreUnlucky");
+		await That(subject.FormattedItem).IsEqualTo("ToBadge");
 		await That(subject.Summary).IsEqualTo("summary");
 		await That(subject.Remarks).IsEqualTo("remarks");
 	}
@@ -183,6 +189,9 @@ public sealed class GenerateCollectionExpectationAttributeTests
 			.Because("the generator takes the text of [GenerateExpectation] on the same method");
 		await That(subject.PluralExpectationText).IsEqualTo("are lucky");
 		await That(subject.NullableOverload).IsTrue();
+		await That(subject.OnCollection).IsFalse();
+		await That(subject.NegatedName).IsNull();
+		await That(subject.FormattedItem).IsNull();
 	}
 
 	[Test]
@@ -255,6 +264,62 @@ public sealed class GenerateCollectionExpectationAttributeTests
 			.Because("an enumerable without a known count is only read until the outcome is determined");
 	}
 
+	[Test]
+	public async Task FormattedItem_ShouldStandForTheItemsInTheFailureMessage()
+	{
+		Account[] subject = [new("Alice", 9), new("Bob", 1), new("Carol", 2),];
+
+		async Task Act()
+			=> await That(subject).AreAdmins();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             all are admins,
+			             but only 1 of 3 were
+
+			             Not matching items:
+			             [
+			               Bob (level 1),
+			               Carol (level 2)
+			             ]
+
+			             Collection:
+			             [
+			               Alice (level 9),
+			               Bob (level 1),
+			               Carol (level 2)
+			             ]
+			             """);
+	}
+
+	[Test]
+	public async Task FormattedItem_WithQuantifier_ShouldStandForTheItemsInTheFailureMessage()
+	{
+		Account[] subject = [new("Alice", 9), new("Bob", 1),];
+
+		async Task Act()
+			=> await That(subject).None().AreAdmins();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is an admin for no items,
+			             but 1 of 2 were
+
+			             Matching items:
+			             [
+			               Alice (level 9)
+			             ]
+
+			             Collection:
+			             [
+			               Alice (level 9),
+			               Bob (level 1)
+			             ]
+			             """);
+	}
+
 #if NET8_0_OR_GREATER
 	[Test]
 	public async Task ImmutableArray_WhenNotMet_ShouldFail()
@@ -278,6 +343,58 @@ public sealed class GenerateCollectionExpectationAttributeTests
 			             """);
 	}
 #endif
+
+	[Test]
+	public async Task NegatedName_WhenAnItemMatches_ShouldFail()
+	{
+		int[] subject = [1, 2, 4,];
+
+		async Task Act()
+			=> await That(subject).AreNotEven();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             none are even,
+			             but 2 of 3 were
+
+			             Matching items:
+			             [2, 4]
+
+			             Collection:
+			             [1, 2, 4]
+			             """);
+	}
+
+	[Test]
+	public async Task NegatedName_WhenNegated_ShouldFailWhenNoItemMatches()
+	{
+		int[] subject = [1, 3,];
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(they => they.AreNotEven());
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             at least one is even,
+			             but none of 2 were
+
+			             Collection:
+			             [1, 3]
+			             """);
+	}
+
+	[Test]
+	public async Task NegatedName_WhenNoItemMatches_ShouldSucceed()
+	{
+		int[] subject = [1, 3,];
+
+		async Task Act()
+			=> await That(subject).AreNotEven();
+
+		await That(Act).DoesNotThrow();
+	}
 
 	[Test]
 	public async Task Nested_ShouldUseThePluralText()
@@ -401,6 +518,120 @@ public sealed class GenerateCollectionExpectationAttributeTests
 			               Alice,
 			               <null>
 			             ]
+			             """);
+	}
+
+#if NET8_0_OR_GREATER
+	[Test]
+	public async Task OnCollection_AsyncEnumerable_ShouldReadAllItems()
+	{
+		IAsyncEnumerable<int> subject = ToAsyncEnumerable(2, 1, 3);
+
+		async Task Act()
+			=> await That(subject).AreEven();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             all are even,
+			             but only 1 of 3 were
+
+			             Not matching items:
+			             [1, 3]
+
+			             Collection:
+			             [2, 1, 3]
+			             """);
+	}
+#endif
+
+	[Test]
+	public async Task OnCollection_LazyEnumerable_ShouldReadAllItems()
+	{
+		IEnumerable<int> subject = ToEnumerable(2, 1, 3);
+
+		async Task Act()
+			=> await That(subject).AreEven();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             all are even,
+			             but only 1 of 3 were
+
+			             Not matching items:
+			             [1, 3]
+
+			             Collection:
+			             [2, 1, 3]
+			             """);
+	}
+
+	[Test]
+	public async Task OnCollection_NullableOverload_WhenItemIsNull_ShouldNotMatch()
+	{
+		int?[] subject = [2, null,];
+
+		async Task Act()
+			=> await That(subject).AreEven();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             all are even,
+			             but only 1 of 2 were
+
+			             Not matching items:
+			             [<null>]
+
+			             Collection:
+			             [2, <null>]
+			             """);
+	}
+
+	[Test]
+	public async Task OnCollection_WhenAllItemsMatch_ShouldSucceed()
+	{
+		int[] subject = [2, 4,];
+
+		async Task Act()
+			=> await That(subject).AreEven();
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Test]
+	public async Task OnCollection_WhenNegated_ShouldFailWhenAllItemsMatch()
+	{
+		int[] subject = [2, 4,];
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(they => they.AreEven());
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             not all are even,
+			             but all 2 were
+
+			             Collection:
+			             [2, 4]
+			             """);
+	}
+
+	[Test]
+	public async Task OnCollection_WhenNull_ShouldFail()
+	{
+		IEnumerable<int>? subject = null;
+
+		async Task Act()
+			=> await That(subject).AreEven();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             all are even,
+			             but it was <null>
 			             """);
 	}
 
@@ -640,6 +871,14 @@ public sealed class GenerateCollectionExpectationAttributeTests
 	private static IEnumerable<int> Endless(int value)
 	{
 		while (true)
+		{
+			yield return value;
+		}
+	}
+
+	private static IEnumerable<int> ToEnumerable(params int[] values)
+	{
+		foreach (int value in values)
 		{
 			yield return value;
 		}

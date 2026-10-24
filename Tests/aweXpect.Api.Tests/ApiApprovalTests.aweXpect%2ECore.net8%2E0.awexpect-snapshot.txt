@@ -755,8 +755,11 @@ namespace aweXpect.Core.Extending
         public GenerateCollectionExpectationAttribute(string name, string expectationText, string pluralExpectationText) { }
         public GenerateCollectionExpectationAttribute(string name, string pluralExpectationText) { }
         public string? ExpectationText { get; }
+        public string? FormattedItem { get; set; }
         public string Name { get; }
+        public string? NegatedName { get; set; }
         public bool NullableOverload { get; set; }
+        public bool OnCollection { get; set; }
         public string PluralExpectationText { get; }
         public string? Remarks { get; set; }
         public string? Summary { get; set; }
@@ -779,15 +782,23 @@ namespace aweXpect.Core.Extending
     public abstract class GeneratedAsyncCollectionConstraint<TItem> : aweXpect.Core.Extending.QuantifiedCollectionConstraintBase<System.Collections.Generic.IAsyncEnumerable<TItem>?, TItem>, aweXpect.Core.Constraints.IAsyncContextConstraint<System.Collections.Generic.IAsyncEnumerable<TItem>?>, aweXpect.Core.Constraints.IConstraint
     {
         protected GeneratedAsyncCollectionConstraint(string it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier quantifier) { }
+        protected GeneratedAsyncCollectionConstraint(string it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier quantifier, bool isOnCollection) { }
+        protected bool IsOnCollection { get; }
         public override void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
+        protected override void AppendNegatedExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+        protected override void AppendNormalExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
         protected abstract System.Threading.Tasks.ValueTask<aweXpect.Core.Extending.PredicateResult> IsMatch(TItem item, System.Threading.CancellationToken cancellationToken);
         public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy(System.Collections.Generic.IAsyncEnumerable<TItem>? actual, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
     }
     public abstract class GeneratedCollectionConstraint<TCollection, TItem> : aweXpect.Core.Extending.QuantifiedCollectionConstraintBase<TCollection, TItem>, aweXpect.Core.Constraints.IAsyncContextConstraint<TCollection>, aweXpect.Core.Constraints.IConstraint where TCollection : System.Collections.Generic.IEnumerable<TItem>?
     {
         protected GeneratedCollectionConstraint(string it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier quantifier) { }
+        protected GeneratedCollectionConstraint(string it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier quantifier, bool isOnCollection) { }
+        protected bool IsOnCollection { get; }
         public override void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
+        protected override void AppendNegatedExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
         protected override void AppendNegatedResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+        protected override void AppendNormalExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
         protected override void AppendNormalResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
         protected abstract System.Threading.Tasks.ValueTask<aweXpect.Core.Extending.PredicateResult> IsMatch(TItem item, System.Threading.CancellationToken cancellationToken);
         public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy(TCollection actual, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
@@ -820,6 +831,7 @@ namespace aweXpect.Core.Extending
         protected override void AppendNormalResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
         protected void Complete() { }
         protected void CompleteEarly() { }
+        protected virtual string FormatItems(System.Collections.Generic.IEnumerable<TItem> items, aweXpect.Formatting.FormattingOptions options) { }
         protected void Record(TItem item, aweXpect.Core.Constraints.ConstraintResult itemResult) { }
         protected void Record(TItem item, bool isMatch) { }
         protected void StartEvaluation() { }
