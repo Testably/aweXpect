@@ -23,9 +23,9 @@ Two NuGet packages are built from `Source/`; the analyzer and generator projects
 | Project | Package | Role |
 | --- | --- | --- |
 | `aweXpect.Core` | `aweXpect.Core` | Engine and extension API: `Expect.That`, `IThat<T>`, `ExpectationBuilder`, constraints, results, formatting, options, customization, equivalency, recording and signaling primitives |
-| `aweXpect.Core.Generators` | in `aweXpect.Core` | Generates expectations from methods marked with `[GenerateExpectation]` (`ExpectationGenerator`) |
+| `aweXpect.Core.Generators` | in `aweXpect.Core` | Generates expectations from methods marked with `[GenerateExpectation]` (`ExpectationGenerator`); runs in the consumer for the type metadata registrations for trimming and AOT (`TypeMetadataGenerator`), unless an older `aweXpect` without the `aweXpect.TypeMetadataGenerator` assembly metadata ships its own copy |
 | `aweXpect` | `aweXpect` | The expectations for users, as extension methods on `IThat<T>` |
-| `aweXpect.Generators` | in `aweXpect` | Runs in the consumer: test framework adapters (`FrameworkGenerator`) and the type metadata registrations for trimming and AOT (`TypeMetadataGenerator`) |
+| `aweXpect.Generators` | in `aweXpect` | Runs in the consumer: test framework adapters (`FrameworkGenerator`) |
 | `aweXpect.SourceGenerators` | none | Runs only while building `aweXpect`: generates the overloads of collection expectations (`CollectionExpectationGenerator`) |
 | `aweXpect.Analyzers` | in `aweXpect` | Analyzers (e.g. missing `await`, unordered collections) and `IsNotNullSuppressor`, which reads `[GuaranteesNotNull]` |
 | `aweXpect.Analyzers.CodeFixers` | in `aweXpect` | Code fixes for the analyzers |

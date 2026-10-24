@@ -2616,9 +2616,10 @@ namespace aweXpect.Reflection
         public class ConstructorsWithNamedParameter<T> : aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
         {
         }
-        public class ConstructorsWithParameter<T> : aweXpect.Reflection.Collections.Filtered.Constructors, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions>
+        public class ConstructorsWithParameter<T> : aweXpect.Reflection.Collections.Filtered.Constructors, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions>
         {
-            public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameterAtIndex<T> AtIndex(int index) { }
+            public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> AtIndex(int index) { }
+            public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> AtIndexFromEnd(int index) { }
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> Matching(System.Func<System.Reflection.ParameterInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> WithDefaultValue() { }
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> WithDefaultValue<TValue>(TValue expected) where TValue : T { }
@@ -2628,10 +2629,6 @@ namespace aweXpect.Reflection
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> WithParamsModifier() { }
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> WithRefModifier() { }
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> WithoutDefaultValue() { }
-        }
-        public class ConstructorsWithParameterAtIndex<T> : aweXpect.Reflection.Collections.Filtered.Constructors, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
-        {
-            public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameterAtIndex<T> FromEnd() { }
         }
     }
     public static class EventFilters
@@ -2900,13 +2897,10 @@ namespace aweXpect.Reflection
             public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument WithArgument<T>(string expected) { }
             public aweXpect.Reflection.MethodFilters.GenericMethods WithArgumentCount(int expected) { }
         }
-        public class GenericMethodsWithArgument : aweXpect.Reflection.MethodFilters.GenericMethods, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
+        public class GenericMethodsWithArgument : aweXpect.Reflection.MethodFilters.GenericMethods
         {
-            public aweXpect.Reflection.MethodFilters.GenericMethodsWithArgumentAtIndex AtIndex(int index) { }
-        }
-        public class GenericMethodsWithArgumentAtIndex : aweXpect.Reflection.MethodFilters.GenericMethods, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
-        {
-            public aweXpect.Reflection.MethodFilters.GenericMethods FromEnd() { }
+            public aweXpect.Reflection.MethodFilters.GenericMethodsWithArgument AtIndex(int index) { }
+            public aweXpect.Reflection.MethodFilters.GenericMethodsWithArgument AtIndexFromEnd(int index) { }
         }
         public class GenericMethodsWithNamedArgument : aweXpect.Reflection.MethodFilters.GenericMethodsWithArgument, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
         {
@@ -2926,9 +2920,10 @@ namespace aweXpect.Reflection
         public class MethodsWithNamedParameter<T> : aweXpect.Reflection.MethodFilters.MethodsWithParameter<T>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
         {
         }
-        public class MethodsWithParameter<T> : aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions>
+        public class MethodsWithParameter<T> : aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions>
         {
-            public aweXpect.Reflection.MethodFilters.MethodsWithParameterAtIndex<T> AtIndex(int index) { }
+            public aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> AtIndex(int index) { }
+            public aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> AtIndexFromEnd(int index) { }
             public aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> Matching(System.Func<System.Reflection.ParameterInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
             public aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> WithDefaultValue() { }
             public aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> WithDefaultValue<TValue>(TValue expected) where TValue : T { }
@@ -2938,10 +2933,6 @@ namespace aweXpect.Reflection
             public aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> WithParamsModifier() { }
             public aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> WithRefModifier() { }
             public aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> WithoutDefaultValue() { }
-        }
-        public class MethodsWithParameterAtIndex<T> : aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
-        {
-            public aweXpect.Reflection.MethodFilters.MethodsWithParameterAtIndex<T> FromEnd() { }
         }
     }
     public enum Operator
@@ -3186,13 +3177,10 @@ namespace aweXpect.Reflection
             public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument WithArgument(string expected) { }
             public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument WithArgument<T>(string expected) { }
             public aweXpect.Reflection.TypeFilters.GenericTypes WithArgumentCount(int expected) { }
-            public class GenericTypesWithArgument : aweXpect.Reflection.TypeFilters.GenericTypes, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
+            public class GenericTypesWithArgument : aweXpect.Reflection.TypeFilters.GenericTypes
             {
-                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgumentAtIndex AtIndex(int index) { }
-            }
-            public class GenericTypesWithArgumentAtIndex : aweXpect.Reflection.TypeFilters.GenericTypes, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
-            {
-                public aweXpect.Reflection.TypeFilters.GenericTypes FromEnd() { }
+                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument AtIndex(int index) { }
+                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument AtIndexFromEnd(int index) { }
             }
             public class GenericTypesWithNamedArgument : aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
@@ -3547,16 +3535,11 @@ namespace aweXpect.Reflection.Results
         public aweXpect.Reflection.Results.GenericArgumentCollectionWithNamedArgumentResult<TType, TThat> WithArgument<T>(string expected) { }
         public TSelf WithArgumentCount(int expected) { }
     }
-    public class GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat> : aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TThat, aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
-    {
-        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat> FromEnd() { }
-    }
     public class GenericArgumentCollectionWithArgumentResult<TType, TThat> : aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat, aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat>>
     {
     }
     public class GenericArgumentCollectionWithArgumentResult<TType, TThat, TSelf> : aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TThat, TSelf>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions> where TSelf : aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat, TSelf>
     {
-        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat> AtIndex(int index) { }
     }
     public class GenericArgumentCollectionWithNamedArgumentResult<TType, TThat> : aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat, aweXpect.Reflection.Results.GenericArgumentCollectionWithNamedArgumentResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
     {
@@ -3604,16 +3587,11 @@ namespace aweXpect.Reflection.Results
         public aweXpect.Reflection.Results.NamespaceDependencyResult<TType, TThat> OrOn(System.Collections.Generic.IEnumerable<string> namespaces) { }
         public aweXpect.Reflection.Results.NamespaceDependencyResult<TType, TThat> OrOn(params string[] namespaces) { }
     }
-    public class ParameterCollectionAtIndexResult<TType, TThat, TParameter> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>, aweXpect.Reflection.Results.ParameterCollectionAtIndexResult<TType, TThat, TParameter>>
-    {
-        public aweXpect.Reflection.Results.ParameterCollectionAtIndexResult<TType, TThat, TParameter> FromEnd() { }
-    }
     public class ParameterCollectionResult<TType, TThat, TParameter> : aweXpect.Reflection.Results.ParameterCollectionResult<TType, TThat, TParameter, aweXpect.Reflection.Results.ParameterCollectionResult<TType, TThat, TParameter>>
     {
     }
     public class ParameterCollectionResult<TType, TThat, TParameter, TSelf> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>, TSelf>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions> where TSelf : aweXpect.Reflection.Results.ParameterCollectionResult<TType, TThat, TParameter, TSelf>
     {
-        public aweXpect.Reflection.Results.ParameterCollectionAtIndexResult<TType, TThat, TParameter> AtIndex(int index) { }
         public TSelf Matching(System.Func<System.Reflection.ParameterInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public TSelf WithDefaultValue() { }
         public TSelf WithDefaultValue<TValue>(TValue expected) where TValue : TParameter { }

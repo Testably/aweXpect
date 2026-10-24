@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using aweXpect.Core;
 
 namespace aweXpect.Reflection.Helpers;
@@ -42,26 +40,12 @@ internal static class DependencyViolationRenderer
 		IReadOnlyDictionary<TItem, TViolations> violations)
 		where TItem : class
 		where TViolations : IEnumerable<string?>
-	{
-		StringBuilder stringBuilder = new();
-		stringBuilder.Append('[');
-		for (int index = 0; index < items.Count; index++)
+		=> ItemListRenderer.Format(items, (stringBuilder, item) =>
 		{
-			TItem? item = items[index];
-			stringBuilder.Append(Environment.NewLine).Append("  ")
-				.Append(Formatter.Format(item));
-
+			stringBuilder.Append(Formatter.Format(item));
 			if (item is not null && violations.TryGetValue(item, out TViolations? value))
 			{
 				stringBuilder.Append(" depends on ").Append(Formatter.Format(value));
 			}
-
-			if (index < items.Count - 1)
-			{
-				stringBuilder.Append(',');
-			}
-		}
-
-		return stringBuilder.Append(Environment.NewLine).Append(']').ToString();
-	}
+		});
 }

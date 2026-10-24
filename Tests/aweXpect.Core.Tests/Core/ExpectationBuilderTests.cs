@@ -9,6 +9,7 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Equivalency;
 using aweXpect.Results;
 
 namespace aweXpect.Core.Tests.Core;
@@ -169,6 +170,182 @@ public class ExpectationBuilderTests
 		await That(receivedBuilder).IsSameAs(sut);
 		await That(result.Outcome).IsEqualTo(Outcome.Success)
 			.Because("the constraint compares with the state");
+	}
+
+	[Test]
+	public async Task AddFormatter_InACombination_ShouldFormatTheValuesOfAllItsExpectations()
+	{
+		Album[] subject = [new("Help!"),];
+
+		async Task Act()
+			=> await ThatAll(
+				That(subject).WithFormatter(AlbumFormatter.Instance).HasCount(2),
+				That(subject).HasCount(2));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that subject has exactly 2 items
+			              [02] Expected that subject has exactly 2 items
+			             but
+			              [01] it had only 1 item
+			              [02] it had only 1 item
+
+			             [01] Collection:
+			             [
+			               album "Help!"
+			             ]
+
+			             [02] Collection:
+			             [
+			               album "Help!"
+			             ]
+			             """)
+			.Because("a combination formats its failure message with the formatters of all its expectations");
+	}
+
+	[Test]
+	public async Task AddFormatter_InAMemberExpectedByEquivalency_ShouldFormatTheValuesOfThatMember()
+	{
+		Playlist subject = new(new Album("Help!"));
+
+		async Task Act()
+			=> await That(subject).IsEquivalentTo(new
+			{
+				Album = It.Is<Album>().That.WithFormatter(AlbumFormatter.Instance).IsEqualTo(new Album("Abbey Road")),
+			});
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equivalent to new
+			             {
+			             	Album = It.Is<Album>().That.WithFormatter(AlbumFormatter.Instance).IsEqualTo(new Album("Abbey Road")),
+			             },
+			             but it was not:
+			               Property Album differed:
+			                   Actual: ExpectationBuilderTests.Album { Title = "Help!" }
+			                 Expected: is ExpectationBuilderTests.Album that is equal to album "Abbey Road"
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """)
+			.Because("the comparison describes the actual value while it evaluates, outside of the expected member");
+	}
+
+	[Test]
+	public async Task AddFormatter_InANestedExpectation_ShouldFormatTheValuesOfTheWholeExpectation()
+	{
+		Album[] subject = [new("Help!"),];
+
+		async Task Act()
+			=> await That(subject).All().ComplyWith(album
+				=> album.WithFormatter(AlbumFormatter.Instance).Satisfies(_ => false));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             satisfies _ => false for all items,
+			             but none of 1 did
+
+			             Not matching items:
+			             [
+			               album "Help!"
+			             ]
+
+			             Collection:
+			             [
+			               album "Help!"
+			             ]
+			             """)
+			.Because("the failure message of the outer expectation renders the nested one");
+	}
+
+	[Test]
+	public async Task AddFormatter_ShouldFormatTheValuesInTheFailureMessage()
+	{
+		Album[] subject = [new("Help!"),];
+
+		async Task Act()
+			=> await That(subject).WithFormatter(AlbumFormatter.Instance).HasCount(2);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             has exactly 2 items,
+			             but it had only 1 item
+
+			             Collection:
+			             [
+			               album "Help!"
+			             ]
+			             """);
+	}
+
+	[Test]
+	public async Task AddFormatter_ShouldNotChangeTheFormattingOutsideOfTheExpectation()
+	{
+		Album subject = new("Help!");
+		string defaultFormat = Formatter.Format(subject);
+
+		await That(subject).WithFormatter(AlbumFormatter.Instance).IsNotNull();
+		string formatAfterwards = Formatter.Format(subject);
+
+		await That(formatAfterwards).IsEqualTo(defaultFormat)
+			.Because("the formatter only applies within its expectation");
+	}
+
+	[Test]
+	public async Task AddFormatter_ShouldTakePrecedenceOverRegisteredFormatters()
+	{
+		Compilation[] subject = [new("Help!"),];
+		using IDisposable registration = ValueFormatter.Register(new CompilationFormatter());
+
+		async Task Act()
+			=> await That(subject).WithFormatter(AlbumFormatter.Instance).HasCount(2);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             has exactly 2 items,
+			             but it had only 1 item
+
+			             Collection:
+			             [
+			               album "Help!"
+			             ]
+			             """);
+	}
+
+	[Test]
+	public async Task AddFormatter_WhenNull_ShouldThrowArgumentNullException()
+	{
+		ManualExpectationBuilder<int> sut = new();
+
+		void Act()
+			=> sut.AddFormatter(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("formatter").And
+			.WithMessage("The 'formatter' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task AddFormatter_WhenTheEvaluationFormatsAfterAnAwait_ShouldUseTheFormatter()
+	{
+		Album subject = new("Help!");
+
+		async Task Act()
+			=> await new ExpectationResult(That(subject).WithFormatter(AlbumFormatter.Instance).Get().ExpectationBuilder
+				.AddConstraint((_, _) => new FormatsAfterAnAwaitConstraint()));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             formats after an await,
+			             but it was album "Help!"
+			             """)
+			.Because("the formatter flows into the continuations of the evaluation");
 	}
 
 	[Test]
@@ -1446,6 +1623,59 @@ public class ExpectationBuilderTests
 			=> stringBuilder.Append("awaits");
 	}
 
+	private record Album(string Title);
+
+	private sealed class AlbumFormatter : IValueFormatter
+	{
+		public static readonly AlbumFormatter Instance = new();
+
+		public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+		{
+			if (value is not Album album)
+			{
+				return false;
+			}
+
+			stringBuilder.Append("album \"").Append(album.Title).Append('"');
+			return true;
+		}
+	}
+
+	/// <remarks>
+	///     Only one test uses this type, as the registration of its formatter is process-wide.
+	/// </remarks>
+	private sealed record Compilation(string Title) : Album(Title);
+
+	private sealed class CompilationFormatter : IValueFormatter
+	{
+		public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+		{
+			if (value is not Compilation)
+			{
+				return false;
+			}
+
+			stringBuilder.Append("registered");
+			return true;
+		}
+	}
+
+	/// <remarks>
+	///     It formats the value only after it awaited, so that the formatting runs in a continuation.
+	/// </remarks>
+	private sealed class FormatsAfterAnAwaitConstraint : IAsyncConstraint<Album>
+	{
+		public async ValueTask<ConstraintResult> IsMetBy(Album actual, CancellationToken cancellationToken)
+		{
+			await Task.Yield();
+			return new DummyConstraintResult(Outcome.Failure, "formats after an await",
+				$"it was {Formatter.Format(actual)}");
+		}
+
+		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("formats after an await");
+	}
+
 	private sealed class MyDescribableSubject(string subject) : IDescribableSubject
 	{
 		public string GetDescription()
@@ -1453,6 +1683,8 @@ public class ExpectationBuilderTests
 	}
 
 	private sealed record Pair(int First, int Second);
+
+	private sealed record Playlist(Album Album);
 
 	private sealed record Track(string? Title);
 
@@ -1532,6 +1764,16 @@ public class ExpectationBuilderTests
 
 internal static class SubjectContextTestExtensions
 {
+	/// <summary>
+	///     Formats the values of the expectation on the <paramref name="subject" /> with the
+	///     <paramref name="formatter" />.
+	/// </summary>
+	public static IThat<T> WithFormatter<T>(this IThat<T> subject, IValueFormatter formatter)
+	{
+		subject.Get().ExpectationBuilder.AddFormatter(formatter);
+		return subject;
+	}
+
 	/// <summary>
 	///     Adds the subject as context with the title <c>Subject</c> to the failure of any expectation on it.
 	/// </summary>

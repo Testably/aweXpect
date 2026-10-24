@@ -49,7 +49,7 @@ public sealed partial class MethodFilters
 			public async Task UsingType_WithParameterAtIndexFromEnd_ShouldFilterForMethodsWithParameterAtSpecificIndex()
 			{
 				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
-					.Methods().WithParameter(typeof(int)).AtIndex(0).FromEnd();
+					.Methods().WithParameter(typeof(int)).AtIndexFromEnd(0);
 
 				await That(methods).IsEqualTo([
 					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method3),
@@ -297,6 +297,24 @@ public sealed partial class MethodFilters
 			}
 
 			[Test]
+			public async Task WithParameterAtIndex_WhenIndexIsAlreadySpecified_ShouldThrowInvalidOperationException()
+			{
+				Reflection.MethodFilters.MethodsWithParameter<int> atIndex0 = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter<int>().AtIndex(0);
+
+				void Act()
+				{
+					atIndex0.AtIndex(1);
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AtIndex cannot be specified more than once.");
+				await That(atIndex0.GetDescription())
+					.IsEqualTo("methods with parameter of type int at index 0 in").AsPrefix()
+					.Because("the rejected index must not change the filter it was called on");
+			}
+
+			[Test]
 			public async Task WithParameterAtIndex_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				void Act()
@@ -307,14 +325,14 @@ public sealed partial class MethodFilters
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("index").And
-					.WithMessage("The index must be greater than or equal to 0.").AsPrefix();
+					.WithMessage("The index must not be negative.").AsPrefix();
 			}
 
 			[Test]
 			public async Task WithParameterAtIndexFromEnd_ShouldFilterForMethodsWithParameterAtSpecificIndex()
 			{
 				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
-					.Methods().WithParameter<int>().AtIndex(0).FromEnd();
+					.Methods().WithParameter<int>().AtIndexFromEnd(0);
 
 				await That(methods).IsEqualTo([
 					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method3),
@@ -329,26 +347,58 @@ public sealed partial class MethodFilters
 			[Test]
 			public async Task WithParameterAtIndexFromEnd_ShouldNotChangeTheFilterItWasCalledOn()
 			{
-				Reflection.MethodFilters.MethodsWithParameterAtIndex<int> atIndex0 =
-					In.Type<TestClassWithMethodParameters>().Methods().WithParameter<int>().AtIndex(0);
+				Reflection.MethodFilters.MethodsWithParameter<int> withInt = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter<int>();
 
-				Filtered.Methods fromEnd = atIndex0.FromEnd();
+				Filtered.Methods fromEnd = withInt.AtIndexFromEnd(0);
 
-				await That(atIndex0).IsEqualTo([
+				await That(withInt).IsEqualTo([
 						typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
 							[typeof(int), typeof(string),])!,
 						typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method3),
 							[typeof(int),])!,
+						typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method4),
+							[typeof(string), typeof(int),])!,
 					]).InAnyOrder()
-					.Because("FromEnd must return a new filter instead of changing the one it was called on");
-				await That(atIndex0.GetDescription())
-					.IsEqualTo("methods with parameter of type int at index 0 in").AsPrefix();
+					.Because("AtIndexFromEnd must return a new filter instead of changing the one it was called on");
+				await That(withInt.GetDescription())
+					.IsEqualTo("methods with parameter of type int in").AsPrefix();
 				await That(fromEnd).IsEqualTo([
 					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method3),
 						[typeof(int),])!,
 					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method4),
 						[typeof(string), typeof(int),])!,
 				]).InAnyOrder();
+			}
+
+			[Test]
+			public async Task WithParameterAtIndexFromEnd_WhenIndexIsAlreadySpecified_ShouldThrowInvalidOperationException()
+			{
+				Reflection.MethodFilters.MethodsWithParameter<int> atIndex0 = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter<int>().AtIndex(0).WithoutDefaultValue();
+
+				void Act()
+				{
+					atIndex0.AtIndexFromEnd(1);
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AtIndexFromEnd cannot be combined with AtIndex.")
+					.Because("the index must be remembered across other parameter options");
+			}
+
+			[Test]
+			public async Task WithParameterAtIndexFromEnd_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+			{
+				void Act()
+				{
+					In.Type<TestClassWithMethodParameters>()
+						.Methods().WithParameter<int>().AtIndexFromEnd(-1);
+				}
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("index").And
+					.WithMessage("The index must not be negative.").AsPrefix();
 			}
 
 			[Test]

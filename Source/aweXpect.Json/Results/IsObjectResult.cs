@@ -42,7 +42,7 @@ public class IsObjectResult<TType, TThat> : AndOrResult<TType, TThat>
 	{
 		get
 		{
-			JsonFormatting.RegisterValueFormatter();
+			JsonFormatting.AddValueFormatters(ExpectationBuilder);
 			return new ThatSubject<IEnumerable<JsonProperty>>(ExpectationBuilder.ForWhich<TType, IEnumerable<JsonProperty>>(
 				subject => _objectAccessor(subject).EnumerateObject().ToArray(),
 				" whose properties ",

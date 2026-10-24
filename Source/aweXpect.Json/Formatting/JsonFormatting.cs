@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
+using aweXpect.Core;
 using aweXpect.Customization;
 
 namespace aweXpect.Json;
@@ -12,7 +12,8 @@ namespace aweXpect.Json;
 /// </summary>
 public static class JsonFormatting
 {
-	private static int _isValueFormatterRegistered;
+	private static readonly IValueFormatter ElementValueFormatter = new JsonElementValueFormatter();
+	private static readonly IValueFormatter PropertyValueFormatter = new JsonPropertyValueFormatter();
 
 	/// <summary>
 	///     Returns the according to the <paramref name="options" /> formatted <paramref name="value" />.
@@ -51,25 +52,23 @@ public static class JsonFormatting
 	}
 
 	/// <summary>
-	///     Registers the formatting of <see cref="JsonElement" /> and <see cref="JsonProperty" /> for values that
-	///     aweXpect formats as <see langword="object" />, e.g. the items of a collection, once per process.
+	///     Formats <see cref="JsonElement" /> and <see cref="JsonProperty" /> values that aweXpect formats as
+	///     <see langword="object" />, e.g. the items of a collection, within the expectation of the
+	///     <paramref name="expectationBuilder" />.
 	/// </summary>
 	/// <remarks>
 	///     Without it, aweXpect formats a <see cref="JsonElement" /> with its <see cref="JsonElement.ToString()" />,
 	///     which omits the quotes of strings and writes <see langword="null" /> as an empty string, and a
-	///     <see cref="JsonProperty" /> with its raw text, which keeps the line breaks of the document.
+	///     <see cref="JsonProperty" /> with its raw text, which keeps the line breaks of the document. Formatting outside
+	///     of the expectation stays unchanged.
 	///     <para />
 	///     The element is written in a single line, like the raw text of an array or object that
 	///     <see cref="JsonElement.ToString()" /> returns, and the property as it is written within such an object.
 	/// </remarks>
-	internal static void RegisterValueFormatter()
-	{
-		if (Interlocked.Exchange(ref _isValueFormatterRegistered, 1) == 0)
-		{
-			ValueFormatter.Register(new JsonElementValueFormatter());
-			ValueFormatter.Register(new JsonPropertyValueFormatter());
-		}
-	}
+	internal static void AddValueFormatters(ExpectationBuilder expectationBuilder)
+		=> expectationBuilder
+			.AddFormatter(ElementValueFormatter)
+			.AddFormatter(PropertyValueFormatter);
 
 	private static string Write(JsonElement value, FormattingOptions? options)
 		=> Write(value.WriteTo, options);

@@ -242,7 +242,7 @@ Album {
   invariant culture and an object member-wise. The member and value rules do not apply to the values nested in it, but
   the text rules do. A converted `null` is written as `<null>`.
 - A `null` value, or one that is no `T`, is not converted, and an exception of the converter is thrown.
-- Under Native AOT, the source generator of aweXpect registers the members of the result type, so that e.g. an
+- Under Native AOT, the source generator of aweXpect.Core registers the members of the result type, so that e.g. an
   anonymous type is also written member-wise.
 
 ## Lines of a string

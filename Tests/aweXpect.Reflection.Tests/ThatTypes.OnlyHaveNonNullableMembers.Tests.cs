@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Customization;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
@@ -55,6 +56,36 @@ public sealed partial class ThatTypes
 					               <null>
 					             ]
 					             """);
+			}
+
+			[Test]
+			public async Task WhenMoreTypesHaveNullableMembersThanTheMaximumNumberOfCollectionItems_ShouldLimitTheList()
+			{
+				using IDisposable _ = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(1);
+				IEnumerable<Type?> subject =
+				[
+					typeof(ClassWithSingleNullableProperty),
+					null,
+				];
+
+				async Task Act()
+				{
+					await That(subject).OnlyHaveNonNullableMembers();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             only have non-nullable members,
+					             but it contained types with nullable members
+
+					             Not matching items:
+					             [
+					               ClassWithSingleNullableProperty with nullable members [public string ClassWithSingleNullableProperty.NullableProperty { get; set; }],
+					               (… and 1 more)
+					             ]
+					             """)
+					.Because("the not matching types are limited like any other collection in a failure message");
 			}
 
 			[Test]

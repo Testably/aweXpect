@@ -12,6 +12,35 @@ public sealed partial class TypeFilters
 			public sealed class GenericTests
 			{
 				[Test]
+				public async Task WhenIndexIsAlreadySpecified_ShouldThrowInvalidOperationException()
+				{
+					void Act()
+					{
+						In.AssemblyContaining<WhichAreGeneric>().Types()
+							.WhichAreGeneric()
+							.WithArgument<ThatMethod.BaseClass>().AtIndex(0).AtIndexFromEnd(0);
+					}
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("AtIndexFromEnd cannot be combined with AtIndex.");
+				}
+
+				[Test]
+				public async Task WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+				{
+					void Act()
+					{
+						In.AssemblyContaining<WhichAreGeneric>().Types()
+							.WhichAreGeneric()
+							.WithArgument<ThatMethod.BaseClass>().AtIndexFromEnd(-1);
+					}
+
+					await That(Act).Throws<ArgumentOutOfRangeException>()
+						.WithParamName("index").And
+						.WithMessage("The index must not be negative.").AsPrefix();
+				}
+
+				[Test]
 				public async Task WhenNoTypeMatchesTheType_ShouldBeEmpty()
 				{
 					Filtered.Types subject = In
@@ -99,7 +128,7 @@ public sealed partial class TypeFilters
 						.AssemblyContaining<WhichAreGeneric>()
 						.Types().WithName("MyGenericTestClass").AsPrefix()
 						.WhichAreGeneric()
-						.WithArgument<ThatMethod.BaseClass>().AtIndex(index).FromEnd();
+						.WithArgument<ThatMethod.BaseClass>().AtIndexFromEnd(index);
 
 					await That(subject).HasCount(expectedCount);
 					await That(subject.GetDescription())
@@ -109,18 +138,18 @@ public sealed partial class TypeFilters
 				[Test]
 				public async Task WhenTypeMatchesTheTypeExactlyAtTheGivenIndexFromEnd_ShouldNotChangeTheFilterItWasCalledOn()
 				{
-					Reflection.TypeFilters.GenericTypes.GenericTypesWithArgumentAtIndex atIndex1 = In
+					Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument withArgument = In
 						.AssemblyContaining<WhichAreGeneric>()
 						.Types().WithName("MyGenericTestClass").AsPrefix()
 						.WhichAreGeneric()
-						.WithArgument<ThatMethod.BaseClass>().AtIndex(1);
+						.WithArgument<ThatMethod.BaseClass>();
 
-					Filtered.Types fromEnd = atIndex1.FromEnd();
+					Filtered.Types fromEnd = withArgument.AtIndexFromEnd(1);
 
-					await That(atIndex1).HasCount(1)
-						.Because("FromEnd must return a new filter instead of changing the one it was called on");
-					await That(atIndex1.GetDescription())
-						.Contains("with argument of type ThatMethod.BaseClass at index 1 in");
+					await That(withArgument).HasCount(1)
+						.Because("AtIndexFromEnd must return a new filter instead of changing the one it was called on");
+					await That(withArgument.GetDescription())
+						.Contains("with argument of type ThatMethod.BaseClass in");
 					await That(fromEnd).IsEmpty();
 				}
 			}
@@ -287,7 +316,7 @@ public sealed partial class TypeFilters
 						.AssemblyContaining<WhichAreGeneric>()
 						.Types().WithName("MyGenericTestClass").AsPrefix()
 						.WhichAreGeneric()
-						.WithArgument<ThatMethod.BaseClass>("T2").AtIndex(index).FromEnd();
+						.WithArgument<ThatMethod.BaseClass>("T2").AtIndexFromEnd(index);
 
 					await That(subject).HasCount(expectedCount);
 					await That(subject.GetDescription())
@@ -456,7 +485,7 @@ public sealed partial class TypeFilters
 						.AssemblyContaining<WhichAreGeneric>()
 						.Types().WithName("MyGenericTestClass").AsPrefix()
 						.WhichAreGeneric()
-						.WithArgument("T2").AtIndex(index).FromEnd();
+						.WithArgument("T2").AtIndexFromEnd(index);
 
 					await That(subject).HasCount(expectedCount);
 					await That(subject.GetDescription())

@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Text.RegularExpressions;
+using aweXpect.Core.Generators;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -8,6 +9,18 @@ namespace aweXpect.Generators.Tests;
 public sealed partial class TypeMetadataGeneratorTests
 {
 	private const string Library = "namespace Lib { public class Foo { public int Id { get; set; } } }";
+
+	private const string MarkedCall = """
+	                                  public class Tests
+	                                  {
+	                                  	public static void Check<[aweXpect.Core.Metadata.RequiresMemberMetadata] T>(T expected) { }
+
+	                                  	public void Test() => Check(new Models.Other());
+	                                  }
+	                                  """;
+
+	private static readonly MetadataReference CoreReference =
+		MetadataReference.CreateFromFile(typeof(aweXpect.Core.Metadata.TypeMetadataRegistry).Assembly.Location);
 
 	private const string Models = """
 	                              namespace Models;
@@ -269,6 +282,39 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated).DoesNotContain("Lib.Foo")
 			.Because("a type that is only reachable through an extern alias cannot be named with global::");
+	}
+
+	[Test]
+	public async Task WhenAweXpectHasNoMarker_ShouldNotEmit()
+	{
+		MetadataReference olderAweXpect = GeneratorRunner.CompileToReference("aweXpect",
+			"namespace aweXpect { public static class Expect { } }");
+
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+			[Models, MarkedCall,], false,
+			additionalReferences: [CoreReference, olderAweXpect,]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).IsEmpty()
+			.Because("an older aweXpect ships its own copy of the generator, which emits the same type");
+	}
+
+	[Test]
+	public async Task WhenAweXpectHasTheMarker_ShouldRegister()
+	{
+		MetadataReference markedAweXpect = GeneratorRunner.CompileToReference("aweXpect",
+			"""
+			[assembly: System.Reflection.AssemblyMetadata("aweXpect.TypeMetadataGenerator", "aweXpect.Core")]
+			namespace aweXpect { public static class Expect { } }
+			""");
+
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+			[Models, MarkedCall,], false,
+			additionalReferences: [CoreReference, markedAweXpect,]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
+			.Because("aweXpect leaves the generator to aweXpect.Core from the version that carries the marker");
 	}
 
 	[Test]

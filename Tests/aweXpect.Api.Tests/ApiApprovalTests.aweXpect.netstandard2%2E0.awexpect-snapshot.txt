@@ -1,4 +1,5 @@
 [assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/Testably/aweXpect.git")]
+[assembly: System.Reflection.AssemblyMetadata("aweXpect.TypeMetadataGenerator", "aweXpect.Core")]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("aweXpect.Internal.Tests, PublicKey=002400000480000094000000060200000024000052534131000400000100010091e3b299f2a31c904fbc5c2150944568b101ba409f5ee4cd95561c0c8cf50c1960d74f682c7f462f792ab37fe315ece00775c5bdda68c06d3abb67c1d531bf8c40d85d3d36ecf19fb05cc890ca7a5f39904e04ff754a55463236c5884f41083fae1ea626eb1f9b8c5c33f7bada7e650bed6ced9f0a75413d7e919f94f804efc9")]
 [assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName = ".NET Standard 2.0")]
 namespace aweXpect
@@ -6559,15 +6560,6 @@ namespace aweXpect.Results
             public WithinResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance> options) { }
         }
     }
-    public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityOptions<TElement>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance>>, aweXpect.Results.IObjectEqualityResult<aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TElement>, aweXpect.Results.IObjectEqualityWithToleranceResult<aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TElement, TTolerance>
-    {
-        public ObjectEqualityWithToleranceResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance> options) { }
-        public aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>.WithinResult Within(TTolerance tolerance) { }
-        public sealed class WithinResult : aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<TTolerance>>, aweXpect.Results.IWithinToleranceResult<aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>
-        {
-            public WithinResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance> options) { }
-        }
-    }
     public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance> : aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection?>, aweXpect.Results.ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityOptions<TItem>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance>>, aweXpect.Results.IObjectEqualityResult<aweXpect.Results.ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>, TItem>, aweXpect.Results.IObjectEqualityWithToleranceResult<aweXpect.Results.ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>, TItem, TTolerance>
     {
         public ObjectHasItemWithToleranceResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TCollection?> collection, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance> options) { }
@@ -6624,10 +6616,6 @@ namespace aweXpect.Results
     public class SingleMatchingItemResult<TCollection, TItem> : aweXpect.Results.ExpectationResult<TItem, aweXpect.Results.SingleMatchingItemResult<TCollection, TItem>>
     {
         public aweXpect.Core.IThat<TItem> Which { get; }
-    }
-    public class StringCollectionMatchResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.StringCollectionMatchResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
-    {
-        public StringCollectionMatchResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions options, aweXpect.Options.CollectionMatchOptions collectionMatchOptions) { }
     }
     public class StringProperCollectionMatchResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.StringProperCollectionMatchResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.ICollectionContainmentOptions, aweXpect.Results.IProperContainmentOptions, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
     {

@@ -27,7 +27,10 @@ public sealed class ManualExpectationBuilder<TValue>(
 	///     <see cref="AppendReasons" />.
 	/// </remarks>
 	public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> GetRootNode().AppendExpectation(stringBuilder, indentation);
+	{
+		using ValueFormatter.FormatterScope _ = ValueFormatter.UseScopedFormatters(Formatters);
+		GetRootNode().AppendExpectation(stringBuilder, indentation);
+	}
 
 	/// <summary>
 	///     Appends the reasons of the expectations to the <paramref name="stringBuilder" />.
@@ -57,6 +60,7 @@ public sealed class ManualExpectationBuilder<TValue>(
 	/// </remarks>
 	public async Task PrepareExpectation(IEvaluationContext context, CancellationToken cancellationToken)
 	{
+		using ValueFormatter.FormatterScope _ = UseFormattersIn(context);
 		IEvaluationContext textContext = ExpectationTextEvaluationContext.For(context);
 		await GetRootNode().IsMetBy<TValue>(default, textContext, cancellationToken);
 		if (textContext is ExpectationTextEvaluationContext { Evaluation: { } evaluation, })
@@ -111,6 +115,7 @@ public sealed class ManualExpectationBuilder<TValue>(
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
+		using ValueFormatter.FormatterScope _ = UseFormattersIn(context);
 		ConstraintResult result;
 		using (EvaluationContext.EvaluationContext.StartNestedEvaluation(context))
 		{
@@ -172,6 +177,21 @@ public sealed class ManualExpectationBuilder<TValue>(
 		{
 			await context.ReleaseMaterializations();
 		}
+	}
+
+	/// <summary>
+	///     Formats the values with the formatters of these expectations until the returned scope is disposed, and adds
+	///     them to the evaluation in the <paramref name="context" />, whose failure message renders these expectations.
+	/// </summary>
+	private ValueFormatter.FormatterScope UseFormattersIn(IEvaluationContext context)
+	{
+		if (Formatters is not { } formatters)
+		{
+			return default;
+		}
+
+		EvaluationContext.EvaluationContext.AddFormatters(context, formatters);
+		return ValueFormatter.UseScopedFormatters(formatters);
 	}
 
 	/// <inheritdoc />

@@ -190,7 +190,7 @@ public static partial class ThatTypes
 			if (Outcome == Outcome.Failure && !IsNegated && _cycles.Count > 0)
 			{
 				contexts.Add(new ResultContext.SyncCallback("Dependency cycles",
-					() => string.Join(Environment.NewLine, _cycles), int.MaxValue));
+					() => ItemListRenderer.FormatLines(_cycles), int.MaxValue));
 			}
 		}
 

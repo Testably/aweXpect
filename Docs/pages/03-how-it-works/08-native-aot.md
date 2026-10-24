@@ -1,8 +1,8 @@
 # Native AOT and trimming
 
 Publishing with trimming or Native AOT removes code and metadata that is only reached through reflection. aweXpect
-needs reflection for equivalency and for recording events, so a source generator that ships with the `aweXpect`
-package generates the registrations they need when your project is compiled.
+needs reflection for equivalency and for recording events, so a source generator that ships with the
+`aweXpect.Core` package generates the registrations they need when your project is compiled.
 
 ## Equivalency
 
@@ -10,8 +10,8 @@ Equivalency has to know the members of the compared types. Reflection provides t
 with trimming or Native AOT enabled removes members that are only reached reflectively, so a comparison would
 silently verify less than it claims to.
 
-A source generator that ships with the `aweXpect` package closes this gap: for every call site that passes a value to
-`IsEquivalentTo`, `IsNotEquivalentTo`, `AreEquivalentTo` or switches to `Equivalent()`, it registers the public
+A source generator that ships with the `aweXpect.Core` package closes this gap: for every call site that passes a
+value to `IsEquivalentTo`, `IsNotEquivalentTo`, `AreEquivalentTo` or switches to `Equivalent()`, it registers the public
 fields and properties of the argument's type, of the subject's type and of every type reachable through their
 members. The registration runs when your assembly is loaded and needs no configuration. A type without any
 comparable member fails loudly instead of passing without verifying anything.
@@ -93,7 +93,7 @@ A recording has to know the events of its subject and attach a handler to each o
 under the JIT, but publishing with trimming or Native AOT enabled removes events that are only reached reflectively,
 and the handler for an event with value-type parameters cannot be bound without runtime code generation.
 
-The source generator that ships with the `aweXpect` package closes this gap: for every call site of `Record()`, it
+The source generator that ships with the `aweXpect.Core` package closes this gap: for every call site of `Record()`, it
 registers the public events of the subject's static type together with a handler factory, so the recording neither
 looks the events up nor binds a handler reflectively. The registration runs when your assembly is loaded and needs no
 configuration. A subject whose runtime type has a registration is recorded through it, every other subject is

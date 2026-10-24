@@ -155,7 +155,7 @@ public static class JsonOptionsExtensions
 
 		return new JsonOptions(@this)
 		{
-			MembersToIgnore = [..@this.MembersToIgnore, new NamedMemberToIgnore(memberToIgnore),],
+			MembersToIgnore = [..@this.MembersToIgnore, new MemberToIgnore.ByName(memberToIgnore),],
 		};
 	}
 

@@ -50,8 +50,7 @@ public sealed partial class ThatTypes
 
 					async Task Act()
 					{
-						await That(subject).AreGeneric().WithArgument<BaseClass>().AtIndex(index)
-							.FromEnd();
+						await That(subject).AreGeneric().WithArgument<BaseClass>().AtIndexFromEnd(index);
 					}
 
 					await That(Act).Throws()
@@ -169,8 +168,7 @@ public sealed partial class ThatTypes
 
 					async Task Act()
 					{
-						await That(subject).AreGeneric().WithArgument<BaseClass>("TBar").AtIndex(index)
-							.FromEnd();
+						await That(subject).AreGeneric().WithArgument<BaseClass>("TBar").AtIndexFromEnd(index);
 					}
 
 					await That(Act).Throws()
@@ -457,7 +455,7 @@ public sealed partial class ThatTypes
 
 					async Task Act()
 					{
-						await That(subject).AreGeneric().WithArgument("TBar").AtIndex(index).FromEnd();
+						await That(subject).AreGeneric().WithArgument("TBar").AtIndexFromEnd(index);
 					}
 
 					await That(Act).Throws()

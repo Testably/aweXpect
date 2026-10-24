@@ -192,7 +192,6 @@ public static partial class MethodFilters
 	/// </summary>
 	public class MethodsWithParameter<T>
 		: Filtered.Methods,
-			IOptionsProvider<CollectionIndexOptions>,
 			IOptionsProvider<ParameterFilterOptions>
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
@@ -213,22 +212,24 @@ public static partial class MethodFilters
 			_parameterFilterOptions = parameterFiltersOptions;
 		}
 
-		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
-
 		/// <inheritdoc cref="IOptionsProvider{ParameterFilterOptions}.Options" />
 		ParameterFilterOptions IOptionsProvider<ParameterFilterOptions>.Options => _parameterFilterOptions;
 
 		/// <summary>
-		///     …at the given <paramref name="index" />.
+		///     …at the given zero-based <paramref name="index" />.
 		/// </summary>
-		public MethodsWithParameterAtIndex<T> AtIndex(int index)
-		{
-			CollectionIndexOptions collectionIndexOptions = new();
-			collectionIndexOptions.SetMatch(new AtIndexMatch(index));
-			return new MethodsWithParameterAtIndex<T>(_source, _createFilter, collectionIndexOptions,
-				_parameterFilterOptions);
-		}
+		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
+		/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+		public MethodsWithParameter<T> AtIndex(int index)
+			=> WithIndex(o => o.AtIndex(index));
+
+		/// <summary>
+		///     …at the given zero-based <paramref name="index" />, counted from the end of the parameters.
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
+		/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+		public MethodsWithParameter<T> AtIndexFromEnd(int index)
+			=> WithIndex(o => o.AtIndexFromEnd(index));
 
 		/// <summary>
 		///     …without a default value.
@@ -292,51 +293,10 @@ public static partial class MethodFilters
 		private MethodsWithParameter<T> WithPredicate(Func<ParameterInfo, bool> predicate, Func<string> description)
 			=> new(_source, _createFilter, _collectionIndexOptions,
 				_parameterFilterOptions.WithPredicate(predicate, description));
-	}
 
-	/// <summary>
-	///     Additional filters on methods with a parameter at a specific index.
-	/// </summary>
-	public class MethodsWithParameterAtIndex<T>
-		: Filtered.Methods,
-			IOptionsProvider<CollectionIndexOptions>
-	{
-		private readonly CollectionIndexOptions _collectionIndexOptions;
-		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> _createFilter;
-		private readonly ParameterFilterOptions _parameterFilterOptions;
-		private readonly Filtered.Methods _source;
-
-		internal MethodsWithParameterAtIndex(
-			Filtered.Methods source,
-			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> createFilter,
-			CollectionIndexOptions collectionIndexOptions,
-			ParameterFilterOptions parameterFilterOptions)
-			: base(source.Which(createFilter(collectionIndexOptions, parameterFilterOptions)))
-		{
-			_source = source;
-			_createFilter = createFilter;
-			_collectionIndexOptions = collectionIndexOptions;
-			_parameterFilterOptions = parameterFilterOptions;
-		}
-
-		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
-
-		/// <summary>
-		///     …from end.
-		/// </summary>
-		public MethodsWithParameterAtIndex<T> FromEnd()
-		{
-			if (_collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
-			{
-				CollectionIndexOptions collectionIndexOptions = new();
-				collectionIndexOptions.SetMatch(match.FromEnd());
-				return new MethodsWithParameterAtIndex<T>(_source, _createFilter, collectionIndexOptions,
-					_parameterFilterOptions);
-			}
-
-			return this;
-		}
+		private MethodsWithParameter<T> WithIndex(Action<CollectionIndexOptions> setIndex)
+			=> new(_source, _createFilter, FilterIndexOptions.With(_collectionIndexOptions, setIndex),
+				_parameterFilterOptions);
 	}
 
 	/// <summary>
