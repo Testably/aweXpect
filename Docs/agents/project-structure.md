@@ -37,6 +37,12 @@ The extension packages are built from `Source/` as well and reference `aweXpect.
 description, project URL and README (`PackageReadmeSourceFile`, the index page of its docs) in its project file; the
 logo is the one of aweXpect.
 
+Like `aweXpect`, every extension package references `aweXpect.Core` (or `aweXpect.Snapshots`) with
+`PrivateAssets="contentfiles;build"`, so that the analyzers of `aweXpect.Core`, and with them the type metadata
+generator, reach a consumer that references only an extension. NuGet restores `aweXpect.Core` once, so the generator
+runs once however many of the packages a project references. A project reference does not pass analyzers on, so
+projects in this repository that need the generator reference `aweXpect.Core.Generators` as an analyzer themselves.
+
 | Project | Package | Role |
 | --- | --- | --- |
 | `aweXpect.Json` | `aweXpect.Json` | Expectations for JSON strings and `System.Text.Json` |

@@ -10,7 +10,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\aweXpect.Snapshots\aweXpect.Snapshots.csproj"/>
+		<ProjectReference Include="..\aweXpect.Snapshots\aweXpect.Snapshots.csproj" PrivateAssets="contentfiles;build"/>
 	</ItemGroup>
 
 	<ItemGroup>
