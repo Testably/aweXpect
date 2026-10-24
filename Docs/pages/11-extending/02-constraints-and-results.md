@@ -162,8 +162,9 @@ private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars gr
 }
 ```
 
-`Negate()` is called whenever the expectation is negated, e.g. by `DoesNotComplyWith(x => x.IsRadioFriendly())`, and
-the caller relies on the returned result being negated. Returning `this` unchanged would silently check the
+`Negate()` is called whenever the expectation is negated, e.g. by `DoesNotComplyWith(x => x.IsRadioFriendly())`. It
+negates the result in place and returns the same instance: `.Invert()` ignores the returned value and relies on the
+negation in place, so do not return a new result. Returning `this` without negating it would silently check the
 non-negated expectation instead, so a constraint that cannot be negated throws, like the built-in `ExecutesIn()`.
 
 To combine the result texts with `.And` like the helper classes, override `LeadingSubject` and `TrailingSubject` with

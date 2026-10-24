@@ -79,7 +79,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			context.Cancellation = missingSubjectCancellation;
 			ConstraintResult missingSubject = await rootNode.IsMetBy(default(TValue),
 				ExpectationTextEvaluationContext.For(context), missingSubjectCancellation.Token);
-			return missingSubject.Fail("it was <null>", default(TValue));
+			return missingSubject.FailureBothWays("it was <null>", default(TValue));
 		}
 
 		TimeSpan retryTimeout = GetRetryTimeout();
@@ -305,7 +305,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 		{
 			ConstraintResult expectation = await rootNode.IsMetBy(data,
 				ExpectationTextEvaluationContext.For(context), System.Threading.CancellationToken.None);
-			return (expectation.Fail("it returned <null> instead of a task", data), null, null);
+			return (expectation.FailureBothWays("it returned <null> instead of a task", data), null, null);
 		}
 
 		EvaluationCancellation cancellation = context.Cancellation;

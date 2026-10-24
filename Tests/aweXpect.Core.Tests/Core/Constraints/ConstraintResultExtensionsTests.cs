@@ -5,13 +5,13 @@ namespace aweXpect.Core.Tests.Core.Constraints;
 
 public sealed class ConstraintResultExtensionsTests
 {
-	public sealed class FailTests
+	public sealed class FailureBothWaysTests
 	{
 		[Test]
 		public async Task Failure_TryGetStoredValue_WithNullValue_ShouldReturnTrue()
 		{
 			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Success, "value", "foo");
-			sut = sut.Fail<string?>("bar", null);
+			sut = sut.FailureBothWays<string?>("bar", null);
 
 			bool result = sut.TryGetStoredValue(out string? value);
 
@@ -24,7 +24,7 @@ public sealed class ConstraintResultExtensionsTests
 		public async Task Failure_TryGetValue_WhenTypeDoesNotMatch_ShouldReturnFalse()
 		{
 			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Success, "value", "foo");
-			sut = sut.Fail("bar", 1);
+			sut = sut.FailureBothWays("bar", 1);
 
 			bool result = sut.TryGetValue(out string? value);
 
@@ -37,7 +37,7 @@ public sealed class ConstraintResultExtensionsTests
 		public async Task Failure_TryGetValue_WhenTypeMatches_ShouldReturnTrue()
 		{
 			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Success, "value", "foo");
-			sut = sut.Fail("bar", 1);
+			sut = sut.FailureBothWays("bar", 1);
 
 			bool result = sut.TryGetValue(out int value);
 
@@ -50,7 +50,7 @@ public sealed class ConstraintResultExtensionsTests
 		public async Task Failure_TryGetValue_WithNullValue_ShouldReturnFalse()
 		{
 			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Success, "value", "foo");
-			sut = sut.Fail<string?>("bar", null);
+			sut = sut.FailureBothWays<string?>("bar", null);
 
 			bool result = sut.TryGetValue(out string? value);
 
@@ -65,7 +65,7 @@ public sealed class ConstraintResultExtensionsTests
 			Exception exception = new("foo");
 			ConstraintResult inner = new ConstraintResult.FromException(
 				new DummyConstraintResult(Outcome.Failure, "foo"), exception, "it");
-			ConstraintResult sut = inner.Fail("bar", 1);
+			ConstraintResult sut = inner.FailureBothWays("bar", 1);
 
 			await That(sut.FailureCause).IsSameAs(exception);
 		}
@@ -74,7 +74,7 @@ public sealed class ConstraintResultExtensionsTests
 		public async Task FailureCause_WhenInnerHasNoFailureCause_ShouldBeNull()
 		{
 			ConstraintResult inner = new DummyConstraintResult(Outcome.Failure, "foo");
-			ConstraintResult sut = inner.Fail("bar", 1);
+			ConstraintResult sut = inner.FailureBothWays("bar", 1);
 
 			await That(sut.FailureCause).IsNull();
 		}
@@ -86,7 +86,7 @@ public sealed class ConstraintResultExtensionsTests
 		public async Task Negate_ShouldForwardToInnerResult(Outcome innerOutcome, Outcome expectedAfterNegation)
 		{
 			ConstraintResult inner = new DummyConstraintResult<string>(innerOutcome, "value", "foo");
-			ConstraintResult sut = inner.Fail("bar", 1);
+			ConstraintResult sut = inner.FailureBothWays("bar", 1);
 
 			sut.Negate();
 
@@ -104,7 +104,7 @@ public sealed class ConstraintResultExtensionsTests
 		public async Task Negate_ShouldReturnTheFailure(Outcome innerOutcome, bool invert)
 		{
 			ConstraintResult inner = new DummyConstraintResult<string>(innerOutcome, "value", "foo", "baz");
-			ConstraintResult sut = inner.Fail("bar", 1);
+			ConstraintResult sut = inner.FailureBothWays("bar", 1);
 
 			ConstraintResult negated = invert ? sut.Invert() : sut.Negate();
 
