@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "3804f6c8e1b40cc5441e10d5db26947ee1755bde",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
-        "message": "feat!: let string match types add the contexts of their own failure (#1938)"
-      },
-      {
         "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
-      "3804f6c8",
       "8dcdaffe",
       "1c027d4b",
       "8f08376f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1562.7571428843908,
           2055.9568402216983,
           2138.348193105062,
           2119.6740224020823,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1633.2585581370763,
           1222.5893129621234,
           1734.4624180112567,
-          2125.523791503906
+          2125.523791503906,
+          2104.94412449428
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10323.991859436035,
           15105.585248674664,
           15635.732144869291,
           15552.851615397136,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           10394.312529500325,
           7636.493247440883,
           12679.608971228967,
-          16647.831636868992
+          16647.831636868992,
+          15278.137708391461
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "3804f6c8e1b40cc5441e10d5db26947ee1755bde",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
-        "message": "feat!: let string match types add the contexts of their own failure (#1938)"
-      },
-      {
         "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
-      "3804f6c8",
       "8dcdaffe",
       "1c027d4b",
       "8f08376f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1088.8364507130213,
           1521.4473068530742,
           1519.7365531921387,
           1583.4144919259209,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1291.1996859232584,
           996.8183837890625,
           1359.705027444022,
-          1732.2526360920497
+          1732.2526360920497,
+          1708.180580774943
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1065,7 +1065,7 @@ window.BENCHMARK_DATA = {
           1200,
           1200,
           1200,
-          1200,
+          1240,
           1240,
           1240,
           1240,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9473.274732317243,
           13820.462447102864,
           14139.950078691754,
           14393.294654337566,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           9863.261068071637,
           7693.901894705637,
           11765.828029378255,
-          15365.802527872722
+          15365.802527872722,
+          14064.03657658895
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "3804f6c8e1b40cc5441e10d5db26947ee1755bde",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
-        "message": "feat!: let string match types add the contexts of their own failure (#1938)"
-      },
-      {
         "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
-      "3804f6c8",
       "8dcdaffe",
       "1c027d4b",
       "8f08376f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3449.407126835414,
           4643.40678914388,
           4382.063835144043,
           4916.00042288644,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           3831.7965456644692,
           3029.876132420131,
           4015.734772745768,
-          5301.408675560584
+          5301.408675560584,
+          5313.1106562296545
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1668,12 +1668,12 @@ window.BENCHMARK_DATA = {
           3472,
           3472,
           3472,
-          3472,
           3688,
           3688,
           3688,
           3688,
           3688,
+          3736,
           3736,
           3736,
           3736,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28675.54129464286,
           45484.21886393229,
           43396.591759314906,
           46255.88087565104,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           29660.37185872396,
           21197.665112304687,
           35876.38364664713,
-          48654.33093261719
+          48654.33093261719,
+          48796.79801025391
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1762,7 +1762,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           61926,
-          61926,
           61932,
           61926,
           61926,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61925,
           61925,
           61925,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "3804f6c8e1b40cc5441e10d5db26947ee1755bde",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
-        "message": "feat!: let string match types add the contexts of their own failure (#1938)"
-      },
       {
         "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
-      "3804f6c8",
       "8dcdaffe",
       "1c027d4b",
       "8f08376f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7328.850267682757,
           9271.049850463867,
           9754.170414851262,
           9354.149719238281,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7407.676108805338,
           5392.196280797322,
           8311.757658894856,
-          9556.204983302525
+          9556.204983302525,
+          9597.681881244365
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2281,7 +2281,7 @@ window.BENCHMARK_DATA = {
           7024,
           7024,
           7024,
-          7024,
+          7064,
           7064,
           7064,
           7064,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          201982.6768717448,
           303817.96064453124,
           271626.79561941966,
           294633.78079659597,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           211294.42856445312,
           149480.61223144532,
           256499.33935546875,
-          305174.6518066406
+          305174.6518066406,
+          302682.569921875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521572,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521541,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "3804f6c8e1b40cc5441e10d5db26947ee1755bde",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
-        "message": "feat!: let string match types add the contexts of their own failure (#1938)"
-      },
       {
         "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
-      "3804f6c8",
       "8dcdaffe",
       "1c027d4b",
       "8f08376f",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2145.1845136006673,
           2850.904726409912,
           3040.561870302473,
           2883.736641747611,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2242.3307056427,
           1703.351029586792,
           2567.362981062669,
-          2878.469115193685
+          2878.469115193685,
+          2869.152951558431
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1491.8458365122476,
           1899.2328483581543,
           2070.6131882300742,
           1909.8908480130708,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1500.364474360148,
           1185.738100941976,
           1881.4299924033028,
-          2063.703771718343
+          2063.703771718343,
+          1993.8594797770181
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "3804f6c8e1b40cc5441e10d5db26947ee1755bde",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
-        "message": "feat!: let string match types add the contexts of their own failure (#1938)"
-      },
-      {
         "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
-      "3804f6c8",
       "8dcdaffe",
       "1c027d4b",
       "8f08376f",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1576.7940216064453,
           1995.230549948556,
           2134.953483581543,
           2018.0769707815987,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1602.1157148801362,
           1257.3030274254936,
           1789.9506123406547,
-          2071.735781097412
+          2071.735781097412,
+          2055.3470516204834
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3470,7 +3470,6 @@ window.BENCHMARK_DATA = {
           2848,
           2848,
           2848,
-          2848,
           2856,
           2856,
           2856,
@@ -3498,6 +3497,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2864,
           2864,
           2864,
           2864,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1397.4660514831544,
           1722.0373856862386,
           1959.4329750061036,
           1763.2762260437012,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1345.447067941938,
           936.3673584620158,
           2012.2194717407226,
-          1793.6431161244711
+          1793.6431161244711,
+          1809.6696849822997
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
