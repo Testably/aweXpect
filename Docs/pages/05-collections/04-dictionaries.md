@@ -24,7 +24,9 @@ You can verify that a dictionary is equal to another one. The entries are compar
 two dictionaries enumerate them does not matter:
 
 ```csharp
-await Expect.That(playCounts).IsEqualTo(new Dictionary<string, int> { { "Yesterday", 7 }, { "Let It Be", 42 } });
+Dictionary<string, int> reordered = new() { { "Yesterday", 7 }, { "Let It Be", 42 } };
+
+await Expect.That(playCounts).IsEqualTo(reordered);
 await Expect.That(playCounts).IsNotEqualTo(new Dictionary<string, int> { { "Let It Be", 41 } });
 ```
 
@@ -52,9 +54,9 @@ To compare the entries in their enumeration order instead, compare them as a col
 
 ```csharp
 SortedDictionary<string, int> sorted = new() { { "Let It Be", 42 }, { "Yesterday", 7 } };
+KeyValuePair<string, int>[] expected = [new("Let It Be", 42), new("Yesterday", 7)];
 
-await Expect.That(sorted.AsEnumerable())
-    .IsEqualTo([new KeyValuePair<string, int>("Let It Be", 42), new KeyValuePair<string, int>("Yesterday", 7)]);
+await Expect.That(sorted.AsEnumerable()).IsEqualTo(expected);
 ```
 
 ## Entry
@@ -84,7 +86,8 @@ for the expected keys, so all collection expectations are available:
 ```csharp
 await Expect.That(playCounts).ContainsKey("Let It Be").WhoseValue.IsEqualTo(42);
 await Expect.That(playCounts).ContainsKeys("Let It Be", "Yesterday").WhoseValues.IsEqualTo([42, 7]);
-await Expect.That(playCounts).ContainsKeys("Let It Be", "Yesterday").WhoseValues.All().ComplyWith(v => v.IsPositive());
+await Expect.That(playCounts).ContainsKeys("Let It Be", "Yesterday")
+  .WhoseValues.All().ComplyWith(v => v.IsPositive());
 ```
 
 ## Values
@@ -121,7 +124,7 @@ inverse ("not all") and only fails when the dictionary contains all of them:
 await Expect.That(playCounts).DoesNotComplyWith(d => d.ContainsKeys("Let It Be", "Help!"))
   .Because("the key \"Help!\" is missing, although \"Let It Be\" is contained");
 await Expect.That(playCounts).DoesNotContainKeys("Help!", "Something")
-  .Because("none of the keys is contained, whereas `DoesNotContainKeys(\"Let It Be\", \"Help!\")` would fail");
+  .Because("none of the keys is contained, while adding \"Let It Be\" would fail");
 ```
 
 ## Keys and values

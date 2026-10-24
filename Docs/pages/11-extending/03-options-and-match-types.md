@@ -182,7 +182,11 @@ private sealed class ByTitleMatchType : IObjectMatchType
         => new(new ByTitleResult(HaveSameTitle(actual, expected)));
 
     public string GetExpectation(string expected, ExpectationGrammars grammars)
-        => $"{(grammars.IsPlural() ? "are" : "is")} {(grammars.IsNegated() ? "not " : "")}titled like {expected}";
+    {
+        string verb = grammars.IsPlural() ? "are" : "is";
+        string negation = grammars.IsNegated() ? " not" : "";
+        return $"{verb}{negation} titled like {expected}";
+    }
 
     public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
         => $"{(itemNoun is null ? "" : itemNoun + " ")}titled like {expected}";
@@ -198,9 +202,12 @@ private sealed class ByTitleMatchType : IObjectMatchType
     {
         public bool IsMatch => isMatch;
 
-        public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected,
-            string? indentation = null)
-            => $"{it}{(grammars.IsPlural() && it != "it" ? " were" : " was")} titled {Formatter.Format((actual as Track)?.Title)}";
+        public string GetExtendedFailure(string it, ExpectationGrammars grammars,
+            object? actual, object? expected, string? indentation = null)
+        {
+            string verb = grammars.IsPlural() && it != "it" ? " were" : " was";
+            return $"{it}{verb} titled {Formatter.Format((actual as Track)?.Title)}";
+        }
     }
 }
 ```

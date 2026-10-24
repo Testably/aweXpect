@@ -37,10 +37,12 @@ await Expect.That(releaseDate).IsNotEqualTo(new DateTime(1970, 5, 8));
 <TabItem value="DateTimeOffset" label="DateTimeOffset">
 
 ```csharp
-DateTimeOffset releaseDate = new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1));
+using aweXpect.Chronology; // from the aweXpect.Chronology package
 
-await Expect.That(releaseDate).IsEqualTo(new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1)));
-await Expect.That(releaseDate).IsNotEqualTo(new DateTimeOffset(1970, 5, 8, 10, 0, 0, TimeSpan.FromHours(1)));
+DateTimeOffset releaseDate = new DateTimeOffset(1969, 9, 26, 10, 0, 0, 1.Hours());
+
+await Expect.That(releaseDate).IsEqualTo(new DateTimeOffset(1969, 9, 26, 10, 0, 0, 1.Hours()));
+await Expect.That(releaseDate).IsNotEqualTo(new DateTimeOffset(1970, 5, 8, 10, 0, 0, 1.Hours()));
 ```
 
 </TabItem>
@@ -64,14 +66,16 @@ await Expect.That(releaseDate).IsNotOneOf([new DateTime(1965, 8, 6), new DateTim
 <TabItem value="DateTimeOffset" label="DateTimeOffset">
 
 ```csharp
-DateTimeOffset releaseDate = new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1));
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
+DateTimeOffset releaseDate = new DateTimeOffset(1969, 9, 26, 10, 0, 0, 1.Hours());
 
 await Expect.That(releaseDate).IsOneOf([
-  new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1)),
-  new DateTimeOffset(1970, 5, 8, 10, 0, 0, TimeSpan.FromHours(1))]);
+  new DateTimeOffset(1969, 9, 26, 10, 0, 0, 1.Hours()),
+  new DateTimeOffset(1970, 5, 8, 10, 0, 0, 1.Hours())]);
 await Expect.That(releaseDate).IsNotOneOf([
-  new DateTimeOffset(1965, 8, 6, 10, 0, 0, TimeSpan.FromHours(1)),
-  new DateTimeOffset(1966, 8, 5, 10, 0, 0, TimeSpan.FromHours(1))]);
+  new DateTimeOffset(1965, 8, 6, 10, 0, 0, 1.Hours()),
+  new DateTimeOffset(1966, 8, 5, 10, 0, 0, 1.Hours())]);
 ```
 
 </TabItem>
@@ -98,13 +102,15 @@ await Expect.That(releaseDate).IsNotAfter(new DateTime(1970, 5, 8));
 <TabItem value="DateTimeOffset" label="DateTimeOffset">
 
 ```csharp
-DateTimeOffset releaseDate = new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1));
+using aweXpect.Chronology; // from the aweXpect.Chronology package
 
-await Expect.That(releaseDate).IsAfter(new DateTimeOffset(1968, 11, 22, 10, 0, 0, TimeSpan.FromHours(1)));
-await Expect.That(releaseDate).IsOnOrAfter(new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1)));
-await Expect.That(releaseDate).IsBefore(new DateTimeOffset(1970, 5, 8, 10, 0, 0, TimeSpan.FromHours(1)));
-await Expect.That(releaseDate).IsOnOrBefore(new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1)));
-await Expect.That(releaseDate).IsNotAfter(new DateTimeOffset(1970, 5, 8, 10, 0, 0, TimeSpan.FromHours(1)));
+DateTimeOffset releaseDate = new DateTimeOffset(1969, 9, 26, 10, 0, 0, 1.Hours());
+
+await Expect.That(releaseDate).IsAfter(new DateTimeOffset(1968, 11, 22, 10, 0, 0, 1.Hours()));
+await Expect.That(releaseDate).IsOnOrAfter(new DateTimeOffset(1969, 9, 26, 10, 0, 0, 1.Hours()));
+await Expect.That(releaseDate).IsBefore(new DateTimeOffset(1970, 5, 8, 10, 0, 0, 1.Hours()));
+await Expect.That(releaseDate).IsOnOrBefore(new DateTimeOffset(1969, 9, 26, 10, 0, 0, 1.Hours()));
+await Expect.That(releaseDate).IsNotAfter(new DateTimeOffset(1970, 5, 8, 10, 0, 0, 1.Hours()));
 ```
 
 </TabItem>
@@ -128,14 +134,16 @@ await Expect.That(releaseDate).IsNotBetween(new DateTime(1970, 1, 1)).And(new Da
 <TabItem value="DateTimeOffset" label="DateTimeOffset">
 
 ```csharp
-DateTimeOffset releaseDate = new DateTimeOffset(1969, 9, 26, 10, 0, 0, TimeSpan.FromHours(1));
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
+DateTimeOffset releaseDate = new DateTimeOffset(1969, 9, 26, 10, 0, 0, 1.Hours());
 
 await Expect.That(releaseDate)
-  .IsBetween(new DateTimeOffset(1969, 1, 1, 0, 0, 0, TimeSpan.FromHours(1)))
-  .And(new DateTimeOffset(1969, 12, 31, 23, 59, 59, TimeSpan.FromHours(1)));
+  .IsBetween(new DateTimeOffset(1969, 1, 1, 0, 0, 0, 1.Hours()))
+  .And(new DateTimeOffset(1969, 12, 31, 23, 59, 59, 1.Hours()));
 await Expect.That(releaseDate)
-  .IsNotBetween(new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.FromHours(1)))
-  .And(new DateTimeOffset(1970, 12, 31, 23, 59, 59, TimeSpan.FromHours(1)));
+  .IsNotBetween(new DateTimeOffset(1970, 1, 1, 0, 0, 0, 1.Hours()))
+  .And(new DateTimeOffset(1970, 12, 31, 23, 59, 59, 1.Hours()));
 ```
 
 </TabItem>
@@ -241,7 +249,7 @@ You can verify the properties of `DateTime` or `DateTimeOffset`:
 
 ```csharp
 DateTime importedAt = new DateTime(2024, 12, 31, 15, 16, 17, 189, DateTimeKind.Utc);
-// or: DateTimeOffset importedAt = new DateTimeOffset(2024, 12, 31, 15, 16, 17, 189, TimeSpan.FromMinutes(90));
+// or: DateTimeOffset importedAt = new(2024, 12, 31, 15, 16, 17, 189, TimeSpan.FromMinutes(90));
 
 await Expect.That(importedAt).HasYear(2024);
 await Expect.That(importedAt).HasMonth(12);

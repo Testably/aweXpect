@@ -77,7 +77,8 @@ To write `IsRadioFriendly` yourself, you specify the following method signature:
 
 ```csharp no-compile
 /// <summary>
-///     Verifies that the <paramref name="subject"/> is radio friendly, i.e. that it lasts at most three minutes.
+///     Verifies that the <paramref name="subject"/> is radio friendly,
+///     i.e. that it lasts at most three minutes.
 /// </summary>
 public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track?> subject)
 {

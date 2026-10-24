@@ -153,9 +153,19 @@ is not needed.
 By default, the order of the child elements and texts is significant. You can ignore it for all compared elements:
 
 ```csharp
-XElement album = XElement.Parse("""<album><track title="Something" /><track title="Come Together" /></album>""");
+XElement album = XElement.Parse("""
+                                <album>
+                                  <track title="Something" />
+                                  <track title="Come Together" />
+                                </album>
+                                """);
 
-await Expect.That(album).MatchesExactly("""<album><track title="Come Together" /><track title="Something" /></album>""",
+await Expect.That(album).MatchesExactly("""
+                                        <album>
+                                          <track title="Come Together" />
+                                          <track title="Something" />
+                                        </album>
+                                        """,
     o => o.IgnoringElementOrder());
 ```
 

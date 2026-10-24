@@ -177,7 +177,7 @@ The failure message lists the predicates or expectations as the expected items:
 using System.Linq.Expressions;
 
 IEnumerable<string> subject = ["a", "b", "c"];
-IEnumerable<Expression<Func<string, bool>>> expected = [x => x == "a", x => x == "b", x => x == "c", x => x == "d"];
+Expression<Func<string, bool>>[] expected = [x => x == "a", x => x == "b", x => x == "c", x => x == "d"];
 
 await Expect.That(subject).IsEqualTo(expected);
 ```

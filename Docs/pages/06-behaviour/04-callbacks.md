@@ -113,7 +113,8 @@ player.Play("Let It Be", title => signaler.Signal(title));
 
 SignalerResult<string> result = await signaler.WaitAsync(timeout: TimeSpan.FromSeconds(5));
 
-Fail.Unless(result.IsSuccess, $"only {result.Count} tracks completed: {string.Join(", ", result.Parameters)}");
+string completed = string.Join(", ", result.Parameters);
+Fail.Unless(result.IsSuccess, $"only {result.Count} tracks completed: {completed}");
 ```
 
 `Wait` takes the same parameters, but blocks the calling thread while it waits, and `IsSignaled` returns immediately:

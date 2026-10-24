@@ -194,7 +194,8 @@ unexpected:
 JsonElement track = JsonDocument.Parse(
     """{"id": 42, "title": "Let It Be", "meta": {"createdAt": "2026-10-16", "etag": "abc"}}""").RootElement;
 
-await Expect.That(track).MatchesExactly(new { id = 1, title = "Let It Be", meta = new { createdAt = "2026-01-01" } },
+await Expect.That(track).MatchesExactly(
+    new { id = 1, title = "Let It Be", meta = new { createdAt = "2026-01-01" } },
     o => o.IgnoringMember("id").IgnoringMember("createdAt").Ignoring(path => path.EndsWith(".etag")));
 ```
 
@@ -231,7 +232,8 @@ when it differs from the expected number by at most the tolerance, and with `Com
 by at most the percentage of the expected number. The option can be combined with the other options:
 
 ```csharp
-JsonElement album = JsonDocument.Parse("""{"durationMinutes": 47.050000000000004, "rating": 4.6005}""").RootElement;
+JsonElement album = JsonDocument.Parse(
+    """{"durationMinutes": 47.050000000000004, "rating": 4.6005}""").RootElement;
 
 await Expect.That(album).MatchesExactly(new { durationMinutes = 47.05, rating = 4.6m },
     o => o.ComparingNumbersWithin(0.001));

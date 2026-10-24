@@ -70,7 +70,8 @@ The result after "but" shows the formatted subject. To describe it differently, 
 text after the subject in `Result`. It takes the subject, optionally followed by the other parameters:
 
 ```csharp no-compile
-[GenerateExpectation("Is{Not}LongerThan", "is {not} longer than {minimum}", Result = nameof(DescribeDuration))]
+[GenerateExpectation("Is{Not}LongerThan", "is {not} longer than {minimum}",
+    Result = nameof(DescribeDuration))]
 private static bool IsLongerThan(Track track, TimeSpan minimum)
     => track.Duration > minimum;
 

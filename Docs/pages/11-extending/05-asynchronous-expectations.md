@@ -120,7 +120,8 @@ private sealed class IsPlayingConstraint(
 Player player = new();
 _ = Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(_ => player.Play("Let It Be"));
 
-await Expect.That(player).IsPlaying().Within(TimeSpan.FromSeconds(5)).CheckEvery(TimeSpan.FromMilliseconds(100));
+await Expect.That(player).IsPlaying()
+    .Within(TimeSpan.FromSeconds(5)).CheckEvery(TimeSpan.FromMilliseconds(100));
 ```
 
 - `CheckRepeatedly` makes the first check immediately. When `IsRepeated` is `true`, because `Within` set a positive

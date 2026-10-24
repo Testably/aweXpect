@@ -145,8 +145,8 @@ the source-generated `JsonTypeInfo<T>` of the subject together with the expected
 [JsonSerializable(typeof(Track))]
 internal partial class TrackContext : JsonSerializerContext;
 
-await Expect.That(track).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2}""", TrackContext.Default.Track,
-    o => o.TreatingNullAsAbsent());
+await Expect.That(track).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2}""",
+    TrackContext.Default.Track, o => o.TreatingNullAsAbsent());
 ```
 
 Expected values in any expectation, e.g. in `Matches` or `With("a").Matching(...)`, are serialized by reflection as

@@ -158,7 +158,8 @@ The categories are `Success()` (2xx), `Redirection()` (3xx), `ClientError()` (4x
 `Error()` (4xx or 5xx). Combine them with `.Or` to allow several:
 
 ```csharp
-HttpResponseMessage response = await httpClient.PostAsync("https://music.example.com/tracks", new StringContent(""));
+StringContent track = new("""{"title": "Let It Be"}""");
+HttpResponseMessage response = await httpClient.PostAsync("https://music.example.com/tracks", track);
 
 await Expect.That(response).HasStatusCode().ClientError().Or.HasStatusCode().ServerError();
 ```
