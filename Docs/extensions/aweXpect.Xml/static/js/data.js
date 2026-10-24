@@ -588,6 +588,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:55:06 2026 \u002B0200",
         "message": "refactor!: make the changeable filter interfaces of aweXpect.Reflection internal (#1999)"
+      },
+      {
+        "sha": "7d17a8abdbcaa680175e172b976b34310d26575c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:56:21 2026 \u002B0200",
+        "message": "refactor!: use IReadOnlyList for the collection-valued customization settings (#2000)"
       }
     ],
     "labels": [
@@ -688,7 +694,8 @@ window.BENCHMARK_DATA = {
       "22b71d85",
       "487b869a",
       "f19d2281",
-      "5703bc6b"
+      "5703bc6b",
+      "7d17a8ab"
     ],
     "datasets": [
       {
@@ -792,7 +799,8 @@ window.BENCHMARK_DATA = {
           592.1281709035237,
           693.4531310888437,
           598.2876155035837,
-          577.4287549972535
+          577.4287549972535,
+          731.1444601694743
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -832,6 +840,7 @@ window.BENCHMARK_DATA = {
           1160,
           1160,
           1160,
+          1120,
           1120,
           1120,
           1120,
@@ -1013,7 +1022,8 @@ window.BENCHMARK_DATA = {
           535.6765387398856,
           686.1571727752686,
           537.1013041223798,
-          582.0957602720994
+          582.0957602720994,
+          665.6004954655965
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1025,6 +1035,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -1724,6 +1735,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:55:06 2026 \u002B0200",
         "message": "refactor!: make the changeable filter interfaces of aweXpect.Reflection internal (#1999)"
+      },
+      {
+        "sha": "7d17a8abdbcaa680175e172b976b34310d26575c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:56:21 2026 \u002B0200",
+        "message": "refactor!: use IReadOnlyList for the collection-valued customization settings (#2000)"
       }
     ],
     "labels": [
@@ -1824,7 +1841,8 @@ window.BENCHMARK_DATA = {
       "22b71d85",
       "487b869a",
       "f19d2281",
-      "5703bc6b"
+      "5703bc6b",
+      "7d17a8ab"
     ],
     "datasets": [
       {
@@ -1928,7 +1946,8 @@ window.BENCHMARK_DATA = {
           3420.4489669799805,
           4332.873940981352,
           3402.854925028483,
-          3407.581383005778
+          3407.581383005778,
+          4914.409259251186
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2000,6 +2019,7 @@ window.BENCHMARK_DATA = {
           24047,
           24114,
           24047,
+          24119,
           24119,
           24119,
           24119,
@@ -2149,7 +2169,8 @@ window.BENCHMARK_DATA = {
           3948.8288567860923,
           4877.977931722005,
           4010.7538141523087,
-          3937.554227701823
+          3937.554227701823,
+          5255.378022875105
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2161,6 +2182,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -2800,6 +2822,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:55:06 2026 \u002B0200",
         "message": "refactor!: make the changeable filter interfaces of aweXpect.Reflection internal (#1999)"
+      },
+      {
+        "sha": "7d17a8abdbcaa680175e172b976b34310d26575c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:56:21 2026 \u002B0200",
+        "message": "refactor!: use IReadOnlyList for the collection-valued customization settings (#2000)"
       }
     ],
     "labels": [
@@ -2890,7 +2918,8 @@ window.BENCHMARK_DATA = {
       "22b71d85",
       "487b869a",
       "f19d2281",
-      "5703bc6b"
+      "5703bc6b",
+      "7d17a8ab"
     ],
     "datasets": [
       {
@@ -2984,7 +3013,8 @@ window.BENCHMARK_DATA = {
           1945.5363647460938,
           2655.1142957051593,
           1918.3817746480306,
-          1970.0578821818033
+          1970.0578821818033,
+          2739.316676548549
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3083,6 +3113,7 @@ window.BENCHMARK_DATA = {
           12780,
           12856,
           12856,
+          12780,
           12780
         ],
         "borderColor": "#63A2AC",
@@ -3185,7 +3216,8 @@ window.BENCHMARK_DATA = {
           2751.7069584773135,
           3476.176357269287,
           2668.573959859212,
-          2600.3517461504257
+          2600.3517461504257,
+          3681.3226977030436
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3197,6 +3229,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -3826,6 +3859,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:55:06 2026 \u002B0200",
         "message": "refactor!: make the changeable filter interfaces of aweXpect.Reflection internal (#1999)"
+      },
+      {
+        "sha": "7d17a8abdbcaa680175e172b976b34310d26575c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:56:21 2026 \u002B0200",
+        "message": "refactor!: use IReadOnlyList for the collection-valued customization settings (#2000)"
       }
     ],
     "labels": [
@@ -3916,7 +3955,8 @@ window.BENCHMARK_DATA = {
       "22b71d85",
       "487b869a",
       "f19d2281",
-      "5703bc6b"
+      "5703bc6b",
+      "7d17a8ab"
     ],
     "datasets": [
       {
@@ -4010,7 +4050,8 @@ window.BENCHMARK_DATA = {
           10039.635759626117,
           13874.288659159343,
           10255.832714625767,
-          10195.51733194987
+          10195.51733194987,
+          14849.714197012094
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4109,6 +4150,7 @@ window.BENCHMARK_DATA = {
           25494,
           25568,
           25568,
+          25494,
           25494
         ],
         "borderColor": "#63A2AC",
@@ -4211,7 +4253,8 @@ window.BENCHMARK_DATA = {
           244790.0293719952,
           355157.88362630206,
           242925.14470563616,
-          244104.25506184896
+          244104.25506184896,
+          351870.68094308034
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4309,6 +4352,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544329,
+          544335,
           544335,
           544335
         ],
