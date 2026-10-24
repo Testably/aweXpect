@@ -876,6 +876,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
@@ -1024,7 +1030,8 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
@@ -1176,7 +1183,8 @@ window.BENCHMARK_DATA = {
           5138.976625442505,
           10927.52736790975,
           10934.580082820012,
-          10625.064782949594
+          10625.064782949594,
+          10329.03125326974
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1272,6 +1280,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -1493,7 +1502,8 @@ window.BENCHMARK_DATA = {
           160992.68551199776,
           377486.63190104166,
           365699.7063802083,
-          372349.51276041666
+          372349.51276041666,
+          386089.7252604167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1650,6 +1660,7 @@ window.BENCHMARK_DATA = {
           590287,
           590292,
           590290,
+          590292,
           590292
         ],
         "borderColor": "#FF671B",
@@ -1810,7 +1821,8 @@ window.BENCHMARK_DATA = {
           9524.840710231236,
           19641.993630981444,
           19657.402290852864,
-          19058.726595197404
+          19058.726595197404,
+          19323.24727376302
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1822,6 +1834,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -2815,6 +2828,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
@@ -2956,7 +2975,8 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
@@ -3101,7 +3121,8 @@ window.BENCHMARK_DATA = {
           125.7688092163631,
           354.83541577657064,
           270.478179359436,
-          294.52274356569563
+          294.52274356569563,
+          353.0919131596883
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3190,6 +3211,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -3404,7 +3426,8 @@ window.BENCHMARK_DATA = {
           230.83236303696265,
           488.1098541895548,
           533.0979579289755,
-          503.14729477809027
+          503.14729477809027,
+          510.6379600252424
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3416,6 +3439,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -3707,7 +3731,8 @@ window.BENCHMARK_DATA = {
           194.65890187483566,
           393.5741816248213,
           391.69833517074585,
-          383.81931997934976
+          383.81931997934976,
+          396.70748008092244
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3719,6 +3744,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -9325,6 +9351,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
@@ -10236,7 +10268,8 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
@@ -11151,7 +11184,8 @@ window.BENCHMARK_DATA = {
           70.46661165356636,
           145.3027798618589,
           149.59767820040386,
-          145.6725654443105
+          145.6725654443105,
+          151.9854691028595
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12010,6 +12044,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -12994,7 +13029,8 @@ window.BENCHMARK_DATA = {
           124.85725712776184,
           245.87467125483923,
           266.87253134591236,
-          274.5951492627462
+          274.5951492627462,
+          241.90239132367648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13187,6 +13223,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -14118,7 +14155,8 @@ window.BENCHMARK_DATA = {
           118.11973311901093,
           236.4103583438056,
           241.02702174867903,
-          265.51502685546876
+          265.51502685546876,
+          242.0972489674886
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -14130,6 +14168,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -15209,6 +15248,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
@@ -15357,7 +15402,8 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
@@ -15509,7 +15555,8 @@ window.BENCHMARK_DATA = {
           127.3903511842092,
           268.6450390448937,
           262.5879327774048,
-          271.019814046224
+          271.019814046224,
+          269.4000270843506
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15605,6 +15652,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -15826,7 +15874,8 @@ window.BENCHMARK_DATA = {
           255.66964111328124,
           524.4197180821345,
           515.6964517593384,
-          543.024337548476
+          543.024337548476,
+          531.8514456431071
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15838,6 +15887,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -16143,7 +16193,8 @@ window.BENCHMARK_DATA = {
           164.19173996265118,
           341.9401974360148,
           320.72028623308455,
-          339.8304950714111
+          339.8304950714111,
+          343.9935943739755
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -16155,6 +16206,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -21768,6 +21820,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
@@ -22679,7 +22737,8 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
@@ -23594,7 +23653,8 @@ window.BENCHMARK_DATA = {
           329.44736552238464,
           689.2244403362274,
           629.9355028016226,
-          690.1582059224446
+          690.1582059224446,
+          641.6836604436238
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24453,6 +24513,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -25437,7 +25498,8 @@ window.BENCHMARK_DATA = {
           656.2123964627584,
           1366.1297442572456,
           1351.9396536900447,
-          1479.0615255991618
+          1479.0615255991618,
+          1361.0959836324057
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25630,6 +25692,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -26561,7 +26624,8 @@ window.BENCHMARK_DATA = {
           321.87240428190967,
           643.7252431869507,
           659.7661266326904,
-          652.4607740402222
+          652.4607740402222,
+          669.6592134748187
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -26573,6 +26637,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -32230,6 +32295,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
@@ -33141,7 +33212,8 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
@@ -34056,7 +34128,8 @@ window.BENCHMARK_DATA = {
           320.2746046611241,
           658.779904978616,
           602.0006704330444,
-          661.2998420079549
+          661.2998420079549,
+          716.4332492010934
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34915,6 +34988,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -35899,7 +35973,8 @@ window.BENCHMARK_DATA = {
           10851.304249064127,
           27581.238907877603,
           27594.829791259766,
-          28037.395547049386
+          28037.395547049386,
+          27769.580187988282
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36819,6 +36894,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -37023,7 +37099,8 @@ window.BENCHMARK_DATA = {
           390.6332723753793,
           788.4490484237671,
           775.5856283823649,
-          806.8981889316013
+          806.8981889316013,
+          804.0494431813557
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -37035,6 +37112,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -38462,6 +38540,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
@@ -38668,7 +38752,8 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
@@ -38878,7 +38963,8 @@ window.BENCHMARK_DATA = {
           336.48655770375177,
           704.6499107996623,
           676.7678209032331,
-          694.1144290765127
+          694.1144290765127,
+          717.365577952067
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39080,6 +39166,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
+          1688,
           1688,
           1688,
           1688,
@@ -39311,7 +39398,8 @@ window.BENCHMARK_DATA = {
           27130.838614908855,
           84535.62928263347,
           84185.43197835286,
-          83814.92526855468
+          83814.92526855468,
+          83983.73487141928
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39524,6 +39612,7 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
+          5252,
           5252,
           5252,
           5252
@@ -40764,6 +40853,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
@@ -40970,7 +41065,8 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
@@ -41180,7 +41276,8 @@ window.BENCHMARK_DATA = {
           86.42247979130063,
           184.38410047122412,
           185.4899571963719,
-          180.89989035924276
+          180.89989035924276,
+          186.61303339004516
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41334,6 +41431,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -41613,7 +41711,8 @@ window.BENCHMARK_DATA = {
           8907.560680682842,
           32663.567504882812,
           31940.021842447917,
-          32891.47668457031
+          32891.47668457031,
+          32848.710941569014
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41828,6 +41927,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -42032,7 +42132,8 @@ window.BENCHMARK_DATA = {
           115.16590298073632,
           244.48581635157268,
           244.43889958517892,
-          256.258244005839
+          256.258244005839,
+          254.10036334991455
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -42044,6 +42145,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -43123,6 +43225,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
@@ -43271,7 +43379,8 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
@@ -43423,7 +43532,8 @@ window.BENCHMARK_DATA = {
           161.67912128993444,
           359.7383336339678,
           347.09953096934726,
-          352.7390212059021
+          352.7390212059021,
+          358.79353284835815
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43519,6 +43629,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -43740,7 +43851,8 @@ window.BENCHMARK_DATA = {
           185.63858553568522,
           377.17135320390975,
           387.25615380605063,
-          370.2707068443298
+          370.2707068443298,
+          391.4990017073495
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43752,6 +43864,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -44057,7 +44170,8 @@ window.BENCHMARK_DATA = {
           195.6275898860051,
           405.41184839835535,
           400.82645537303046,
-          402.3194078377315
+          402.3194078377315,
+          406.5111618041992
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -44069,6 +44183,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -45104,6 +45219,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
@@ -45252,7 +45373,8 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
@@ -45404,7 +45526,8 @@ window.BENCHMARK_DATA = {
           334.13899183273315,
           724.727005141122,
           684.7687705113337,
-          747.1188324610392
+          747.1188324610392,
+          713.2146397908529
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45524,6 +45647,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
+          1384,
           1384,
           1384,
           1384,
@@ -45721,7 +45845,8 @@ window.BENCHMARK_DATA = {
           1002.7757556915283,
           2074.059708150228,
           1958.0201350620814,
-          1971.7185803731284
+          1971.7185803731284,
+          1925.730026790074
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45733,6 +45858,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -46038,7 +46164,8 @@ window.BENCHMARK_DATA = {
           464.8748167991638,
           956.786252784729,
           928.5776203155517,
-          967.0803143819173
+          967.0803143819173,
+          949.5517459596906
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -46050,6 +46177,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -47085,6 +47213,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
@@ -47233,7 +47367,8 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
@@ -47385,7 +47520,8 @@ window.BENCHMARK_DATA = {
           5478.403459402231,
           11218.427151271275,
           11357.175270667443,
-          11331.774263822115
+          11331.774263822115,
+          11319.355696541923
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47481,6 +47617,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -47702,7 +47839,8 @@ window.BENCHMARK_DATA = {
           17787.92162867955,
           40766.7369150015,
           40398.31779785156,
-          40443.70773784931
+          40443.70773784931,
+          40293.68354492188
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47837,6 +47975,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -48019,7 +48158,8 @@ window.BENCHMARK_DATA = {
           5380.410812922886,
           10519.155495779854,
           10544.52723459097,
-          10569.151204790387
+          10569.151204790387,
+          10477.05791346232
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -48031,6 +48171,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -49066,6 +49207,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
         "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
+      },
+      {
+        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
       }
     ],
     "labels": [
@@ -49214,7 +49361,8 @@ window.BENCHMARK_DATA = {
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
-      "d2a64ca4"
+      "d2a64ca4",
+      "67eb3ff5"
     ],
     "datasets": [
       {
@@ -49366,7 +49514,8 @@ window.BENCHMARK_DATA = {
           5213.175956726074,
           10856.006446251502,
           10933.370629446847,
-          10762.291939368615
+          10762.291939368615,
+          10998.718800136021
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49462,6 +49611,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -49683,7 +49833,8 @@ window.BENCHMARK_DATA = {
           25595.61394042969,
           58681.763157435824,
           58048.0772857666,
-          59224.431052071704
+          59224.431052071704,
+          59703.757832845055
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49808,6 +49959,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -50000,7 +50152,8 @@ window.BENCHMARK_DATA = {
           11302.479058837891,
           20932.46697998047,
           20892.836672269383,
-          20849.49552800105
+          20849.49552800105,
+          20976.043438720702
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -50012,6 +50165,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
