@@ -3371,14 +3371,6 @@ namespace aweXpect.Reflection.Collections
         public System.Collections.Generic.IAsyncEnumerator<T> GetAsyncEnumerator(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
         public TFiltered Which(aweXpect.Reflection.Collections.IFilter<T> filter) { }
     }
-    public interface IAsyncChangeableFilter<TEntity> : aweXpect.Reflection.Collections.IFilter<TEntity>
-    {
-        void UpdateFilter(System.Func<bool, TEntity, System.Threading.Tasks.ValueTask<bool>> predicate, System.Func<string, string> description);
-    }
-    public interface IChangeableFilter<TEntity> : aweXpect.Reflection.Collections.IFilter<TEntity>
-    {
-        void UpdateFilter(System.Func<bool, TEntity, bool> predicate, System.Func<string, string> description);
-    }
     public interface IFilter<in TEntity>
     {
         System.Threading.Tasks.ValueTask<bool> Applies(TEntity value);
