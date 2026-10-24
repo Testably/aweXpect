@@ -120,16 +120,6 @@ public class ManualExpectationBuilderTests
 	}
 
 	[Test]
-	public async Task Equals_BothNull_ShouldBeTrue()
-	{
-		ManualExpectationBuilder<int> sut = new();
-
-		bool result = sut.Equals(null, null);
-
-		await That(result).IsTrue();
-	}
-
-	[Test]
 	[Arguments("is 1", "is 1", true)]
 	[Arguments("is 1", "is 2", false)]
 	public async Task Equals_ExpectationsOnTheSameMember_ShouldCompareTheExpectations(
@@ -147,11 +137,11 @@ public class ManualExpectationBuilderTests
 	}
 
 	[Test]
-	public async Task Equals_FirstNull_ShouldBeFalse()
+	public async Task Equals_Null_ShouldBeFalse()
 	{
 		ManualExpectationBuilder<int> sut = new();
 
-		bool result = sut.Equals(null, sut);
+		bool result = sut.Equals((ManualExpectationBuilder<int>?)null);
 
 		await That(result).IsFalse();
 	}
@@ -161,19 +151,54 @@ public class ManualExpectationBuilderTests
 	{
 		ManualExpectationBuilder<int> sut = new();
 
-		bool result = sut.Equals(null);
+		bool result = sut.Equals((object?)null);
 
 		await That(result).IsFalse();
 	}
 
 	[Test]
-	public async Task Equals_SecondNull_ShouldBeFalse()
+	public async Task Equals_ObjectOfAnotherType_ShouldBeFalse()
 	{
 		ManualExpectationBuilder<int> sut = new();
 
-		bool result = sut.Equals(sut, null);
+		bool result = sut.Equals(new ManualExpectationBuilder<string>());
 
-		await That(result).IsFalse();
+		await That(result).IsFalse()
+			.Because("builders for different value types are never equal, even without any expectation");
+	}
+
+	[Test]
+	[Arguments("is 1", "is 1", true)]
+	[Arguments("is 1", "is 2", false)]
+	public async Task Equals_ObjectWithExpectations_ShouldCompareTheExpectations(
+		string expectation1, string expectation2, bool expectedResult)
+	{
+		ManualExpectationBuilder<string> sut1 = new();
+		sut1.ForMember(MemberAccessor<string, int>.FromFunc(s => s.Length, "length "))
+			.AddExpectations(e => e.AddConstraint((_, _, _) => new DummyConstraint(expectation1)));
+		ManualExpectationBuilder<string> sut2 = new();
+		sut2.ForMember(MemberAccessor<string, int>.FromFunc(s => s.Length, "length "))
+			.AddExpectations(e => e.AddConstraint((_, _, _) => new DummyConstraint(expectation2)));
+
+		bool result = sut1.Equals((object)sut2);
+
+		await That(result).IsEqualTo(expectedResult);
+	}
+
+	[Test]
+	public async Task Equals_ViaDefaultEqualityComparer_ShouldUseTheExpectations()
+	{
+		ManualExpectationBuilder<string> sut1 = new();
+		sut1.ForMember(MemberAccessor<string, int>.FromFunc(s => s.Length, "length "))
+			.AddExpectations(e => e.AddConstraint((_, _, _) => new DummyConstraint("is 1")));
+		ManualExpectationBuilder<string> sut2 = new();
+		sut2.ForMember(MemberAccessor<string, int>.FromFunc(s => s.Length, "length "))
+			.AddExpectations(e => e.AddConstraint((_, _, _) => new DummyConstraint("is 1")));
+
+		bool result = EqualityComparer<ManualExpectationBuilder<string>>.Default.Equals(sut1, sut2);
+
+		await That(result).IsTrue()
+			.Because("the default comparer uses the IEquatable<T> implementation");
 	}
 
 	[Test]
@@ -181,7 +206,7 @@ public class ManualExpectationBuilderTests
 	{
 		ManualExpectationBuilder<int> sut = new();
 
-		bool result = sut.Equals(sut, sut);
+		bool result = sut.Equals(sut);
 
 		await That(result).IsTrue();
 	}
@@ -207,18 +232,6 @@ public class ManualExpectationBuilderTests
 		sut2.AddConstraint((_, _, _) => new DummyConstraint("foo"));
 
 		await That(sut1.GetHashCode()).IsEqualTo(sut2.GetHashCode());
-	}
-
-	[Test]
-	public async Task GetHashCode_WithParameter_ShouldUseHashCodeFromParameter()
-	{
-		ManualExpectationBuilder<int> sut1 = new();
-		sut1.AddConstraint((_, _, _) => new DummyConstraint("foo"));
-		ManualExpectationBuilder<int> sut2 = new();
-		sut2.ForWhich<int, int>(x => x)
-			.AddConstraint((_, _, _) => new DummyConstraint("foo"));
-
-		await That(sut1.GetHashCode()).IsEqualTo(sut2.GetHashCode(sut1));
 	}
 
 	[Test]

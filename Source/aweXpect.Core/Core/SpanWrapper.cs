@@ -26,9 +26,9 @@ public class SpanWrapper<T> : ICollection<T>
 	}
 
 	/// <summary>
-	///     Creates a new span over the wrapped array.
+	///     Returns a read-only span over the copy of the data that was taken when the expectation was created.
 	/// </summary>
-	public Span<T> AsSpan() => _value.AsSpan();
+	public ReadOnlySpan<T> AsSpan() => _value.AsSpan();
 
 	/// <inheritdoc cref="IEnumerable{T}.GetEnumerator()" />
 	public IEnumerator<T> GetEnumerator()
@@ -39,11 +39,11 @@ public class SpanWrapper<T> : ICollection<T>
 		=> GetEnumerator();
 
 	/// <inheritdoc cref="ICollection{T}.Add(T)" />
-	public void Add(T item)
+	void ICollection<T>.Add(T item)
 		=> throw Tracing.WriteException(new NotSupportedException("You may not change a SpanWrapper."));
 
 	/// <inheritdoc cref="ICollection{T}.Clear()" />
-	public void Clear()
+	void ICollection<T>.Clear()
 		=> throw Tracing.WriteException(new NotSupportedException("You may not change a SpanWrapper."));
 
 	/// <inheritdoc cref="ICollection{T}.Contains(T)" />
@@ -55,7 +55,7 @@ public class SpanWrapper<T> : ICollection<T>
 		=> _value.CopyTo(array, arrayIndex);
 
 	/// <inheritdoc cref="ICollection{T}.Remove(T)" />
-	public bool Remove(T item)
+	bool ICollection<T>.Remove(T item)
 		=> throw Tracing.WriteException(new NotSupportedException("You may not change a SpanWrapper."));
 
 	/// <inheritdoc cref="ICollection{T}.Count" />

@@ -413,14 +413,13 @@ namespace aweXpect.Core
     {
         public static System.Collections.Generic.ISet<TKey> CreateKeySet<TKey, TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> dictionary) { }
     }
-    public sealed class ManualExpectationBuilder<TValue> : aweXpect.Core.ExpectationBuilder, System.Collections.Generic.IEqualityComparer<aweXpect.Core.ManualExpectationBuilder<TValue>>
+    public sealed class ManualExpectationBuilder<TValue> : aweXpect.Core.ExpectationBuilder, System.IEquatable<aweXpect.Core.ManualExpectationBuilder<TValue>>
     {
         public ManualExpectationBuilder(aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
         public void AppendExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
         public void AppendReasons(System.Text.StringBuilder stringBuilder) { }
-        public bool Equals(aweXpect.Core.ManualExpectationBuilder<TValue>? x, aweXpect.Core.ManualExpectationBuilder<TValue>? y) { }
+        public bool Equals(aweXpect.Core.ManualExpectationBuilder<TValue>? other) { }
         public override bool Equals(object? obj) { }
-        public int GetHashCode(aweXpect.Core.ManualExpectationBuilder<TValue> obj) { }
         public override int GetHashCode() { }
         public string GetResultVerb() { }
         public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy(TValue value, System.Threading.CancellationToken cancellationToken) { }
@@ -496,13 +495,10 @@ namespace aweXpect.Core
         public SpanWrapper(System.Span<T> span) { }
         public int Count { get; }
         public bool IsReadOnly { get; }
-        public void Add(T item) { }
-        public System.Span<T> AsSpan() { }
-        public void Clear() { }
+        public System.ReadOnlySpan<T> AsSpan() { }
         public bool Contains(T item) { }
         public void CopyTo(T[] array, int arrayIndex) { }
         public System.Collections.Generic.IEnumerator<T> GetEnumerator() { }
-        public bool Remove(T item) { }
     }
     public sealed class StringDifference
     {
@@ -853,8 +849,10 @@ namespace aweXpect.Core.Internal
         System.TimeSpan GetElapsedTime(long startTimestamp);
         long GetTimestamp();
     }
+    [System.Diagnostics.CodeAnalysis.Experimental("aweXpect5001")]
     public static class TimeSystemExtensions
     {
+        [System.Diagnostics.CodeAnalysis.Experimental("aweXpect5001")]
         public static TExpectation WithTimeSystem<TExpectation>(this TExpectation expectation, aweXpect.Core.Internal.ITimeSystem timeSystem) where TExpectation : aweXpect.Core.Expectation { }
     }
 }
@@ -1006,12 +1004,6 @@ namespace aweXpect.Delegates
         public aweXpect.Delegates.ThatDelegateThrows<System.Exception> ThrowsExactly(System.Type type) { }
         [aweXpect.Core.GuaranteesNotNull]
         public aweXpect.Delegates.ThatDelegateThrows<TException> ThrowsExactly<TException>() where TException : System.Exception { }
-        public class ThrowsOption
-        {
-            public ThrowsOption() { }
-            public bool DoCheckThrow { get; set; }
-            public aweXpect.Options.ExecutionTimeOptions? ExecutionTimeOptions { get; set; }
-        }
         public sealed class WithValue<T> : aweXpect.Delegates.ThatDelegate, aweXpect.Core.IExpectThat<aweXpect.Delegates.ThatDelegate.WithValue<T>>, aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithValue<T>>
         {
             public WithValue(aweXpect.Core.ExpectationBuilder expectationBuilder, System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<T>> subject) { }
@@ -1056,7 +1048,6 @@ namespace aweXpect.Delegates
     }
     public class ThatDelegateThrows<TException> : aweXpect.Results.ExpectationResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>>, aweXpect.Core.IExpectThat<TException>, aweXpect.Core.IThat<TException>, aweXpect.Core.IThatDelegateThrows<TException> where TException : System.Exception?
     {
-        public ThatDelegateThrows(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Delegates.ThatDelegate.ThrowsOption throwOptions) { }
         public aweXpect.Core.IThatSubject<TException> Which { get; }
         public aweXpect.Delegates.ThatDelegateThrows<TException?> OnlyIf(bool condition) { }
         [System.Runtime.CompilerServices.OverloadResolutionPriority(2)]
@@ -1236,7 +1227,6 @@ namespace aweXpect.Formatting
     public class FormattingContext
     {
         public FormattingContext() { }
-        public System.Collections.Generic.HashSet<object> FormattedObjects { get; }
     }
     public record FormattingOptions : System.IEquatable<aweXpect.Formatting.FormattingOptions>
     {
@@ -1524,8 +1514,8 @@ namespace aweXpect.Options
     }
     public class ObjectEqualityOptions<TSubject> : aweXpect.Core.IOptionsEquality<TSubject>
     {
-        protected aweXpect.Core.IObjectMatchType MatchType;
         public ObjectEqualityOptions() { }
+        protected aweXpect.Core.IObjectMatchType MatchType { get; private protected set; }
         public void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
         public System.Threading.Tasks.ValueTask<bool> AreConsideredEqual<TExpected>(TSubject actual, TExpected expected) { }
         public System.Threading.Tasks.ValueTask<aweXpect.Core.IObjectMatchResult> AreConsideredEqualWithExplanation<TExpected>(TSubject actual, TExpected expected) { }

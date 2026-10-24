@@ -263,7 +263,11 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	/// <summary>
 	///     The match type.
 	/// </summary>
-	protected IObjectMatchType MatchType = ObjectEqualityOptions.EqualsMatch;
+	/// <remarks>
+	///     Only aweXpect.Core sets the match type, so that every option sets it through
+	///     <see cref="SetMatchType(IObjectMatchType, string)" /> and is checked to be specified only once.
+	/// </remarks>
+	protected IObjectMatchType MatchType { get; private protected set; } = ObjectEqualityOptions.EqualsMatch;
 
 	/// <summary>
 	///     Whether the options compare by <see cref="object.Equals(object)" />.
@@ -322,7 +326,7 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	///     Creates the options for an evaluation that compare with the <paramref name="matchType" />.
 	/// </summary>
 	/// <remarks>
-	///     A subclass cannot set the protected <see cref="MatchType" /> on a new instance of this class itself.
+	///     A subclass cannot set the <see cref="MatchType" /> on a new instance of this class itself.
 	/// </remarks>
 	private protected static ObjectEqualityOptions<TSubject> ForEvaluation(IObjectMatchType matchType)
 		=> new()

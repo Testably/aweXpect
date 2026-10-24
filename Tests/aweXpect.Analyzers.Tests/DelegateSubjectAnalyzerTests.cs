@@ -176,16 +176,26 @@ public class DelegateSubjectAnalyzerTests
 			using aweXpect.Core;
 			using aweXpect.Delegates;
 
+			namespace aweXpect.Delegates
+			{
+			    public abstract class ThatDelegate
+			    {
+			        public class Options
+			        {
+			        }
+			    }
+			}
+
 			public static class MyExtensions
 			{
-			    public static void Inspect(this IThat<ThatDelegate.ThrowsOption> subject)
+			    public static void Inspect(this IThat<ThatDelegate.Options> subject)
 			    {
 			    }
 			}
 
 			public class MyClass
 			{
-			    public void MyTest(IThat<ThatDelegate.ThrowsOption> subject)
+			    public void MyTest(IThat<ThatDelegate.Options> subject)
 			    {
 			        subject.Inspect();
 			    }

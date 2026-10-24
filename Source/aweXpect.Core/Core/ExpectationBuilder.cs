@@ -1353,7 +1353,7 @@ public abstract class ExpectationBuilder
 	internal void UseTimeSystem(ITimeSystem timeSystem)
 	{
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_rareSettings?.TimeSystem is not null,
-			nameof(TimeSystemExtensions.WithTimeSystem));
+			"WithTimeSystem");
 		GetRareSettings().TimeSystem = timeSystem;
 	}
 

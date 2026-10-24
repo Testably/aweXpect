@@ -31,7 +31,8 @@ Two NuGet packages are built from `Source/`; the analyzer and generator projects
 | `aweXpect.Analyzers.CodeFixers` | in `aweXpect` | Code fixes for the analyzers |
 
 `aweXpect` depends on `aweXpect.Core`. Extension packages reference only `aweXpect.Core`, so Core aims to stay more
-stable than `aweXpect`; the namespace `aweXpect.Core.Internal` may change in any version.
+stable than `aweXpect`; the namespace `aweXpect.Core.Internal` may change in any version, so `WithTimeSystem` is
+`[Experimental("aweXpect5001")]` and the compiler reports an error when another assembly calls it.
 
 The extension packages are built from `Source/` as well and reference `aweXpect.Core` as a project. Each sets its own
 description, project URL and README (`PackageReadmeSourceFile`, the index page of its docs) in its project file; the
