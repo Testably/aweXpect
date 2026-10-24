@@ -5,7 +5,7 @@ namespace aweXpect.Reflection.Collections;
 /// <summary>
 ///     A filter for <typeparamref name="TEntity" /> that can be replaced.
 /// </summary>
-public interface IChangeableFilter<TEntity> : IFilter<TEntity>
+internal interface IChangeableFilter<TEntity> : IFilter<TEntity>
 {
 	/// <summary>
 	///     Updates the original filter by applying the <paramref name="predicate" /> on the original result
