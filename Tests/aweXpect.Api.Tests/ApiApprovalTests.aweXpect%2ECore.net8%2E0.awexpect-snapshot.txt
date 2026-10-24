@@ -16,10 +16,10 @@ namespace aweXpect
         public static TResult InAnyOrder<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions> { }
         public static TResult Properly<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions>, aweXpect.Results.IProperContainmentOptions { }
     }
-    public static class DateTimeKindPropertyResultExtensions
+    public static class EnumPropertyResultExtensions
     {
-        public static TResult EqualTo<TResult>(this aweXpect.Results.IDateTimeKindPropertyResult<TResult> result, System.DateTimeKind? expected) { }
-        public static TResult NotEqualTo<TResult>(this aweXpect.Results.IDateTimeKindPropertyResult<TResult> result, System.DateTimeKind? unexpected) { }
+        public static TResult EqualTo<TEnum, TResult>(this aweXpect.Results.IEnumPropertyResult<TEnum, TResult> result, TEnum? expected) where TEnum : struct, System.Enum { }
+        public static TResult NotEqualTo<TEnum, TResult>(this aweXpect.Results.IEnumPropertyResult<TEnum, TResult> result, TEnum? unexpected) where TEnum : struct, System.Enum { }
     }
     public static class Expect
     {
@@ -1870,9 +1870,9 @@ namespace aweXpect.Results
     public interface ICollectionContainmentOptions
     {
     }
-    public interface IDateTimeKindPropertyResult<out TResult>
+    public interface IEnumPropertyResult<TEnum, out TResult> where TEnum : struct, System.Enum
     {
-        TResult Compare(aweXpect.Results.PropertyComparison<System.DateTimeKind> comparison);
+        TResult Compare(aweXpect.Results.PropertyComparison<TEnum> comparison);
     }
     public interface IIntPropertyResult<out TResult>
     {
@@ -1961,13 +1961,13 @@ namespace aweXpect.Results
     }
     public static class PropertyResult
     {
-        public class DateTimeKind<TItem> : aweXpect.Results.PropertyResult.DateTimeKind<TItem, TItem, aweXpect.Core.IThat<TItem>>
+        public class Enum<TItem, TEnum> : aweXpect.Results.PropertyResult.Enum<TItem, TItem, aweXpect.Core.IThat<TItem>, TEnum> where TEnum : struct, System.Enum
         {
-            public DateTimeKind(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, System.DateTimeKind?> mapper, string propertyExpression) { }
+            public Enum(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, TEnum?> mapper, string propertyExpression) { }
         }
-        public class DateTimeKind<TValue, TType, TThat> : aweXpect.Results.IDateTimeKindPropertyResult<aweXpect.Results.AndOrResult<TType, TThat>> where TThat : aweXpect.Core.IThat<TValue>
+        public class Enum<TValue, TType, TThat, TEnum> : aweXpect.Results.IEnumPropertyResult<TEnum, aweXpect.Results.AndOrResult<TType, TThat>> where TThat : aweXpect.Core.IThat<TValue> where TEnum : struct, System.Enum
         {
-            public DateTimeKind(TThat subject, System.Func<TValue, System.DateTimeKind?> mapper, string propertyExpression, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
+            public Enum(TThat subject, System.Func<TValue, TEnum?> mapper, string propertyExpression, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
         }
         public class Int<TItem> : aweXpect.Results.PropertyResult.Int<TItem, TItem, aweXpect.Core.IThat<TItem>>
         {

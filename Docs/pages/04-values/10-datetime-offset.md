@@ -16,6 +16,7 @@ Describes the possible expectations for `DateTime` and `DateTimeOffset`.
 | [`IsOnOrBefore`](#after--before) | `IsNotOnOrBefore`  | not later than the expected value             |
 | [`IsBetween`](#between)          | `IsNotBetween`     | between two values, both bounds included      |
 | [`HasYear`](#properties), …      | negated comparison | has the expected year, month, day, hour, …    |
+| [`HasDayOfWeek`](#properties)    | negated comparison | falls on the expected day of the week         |
 | [`HasKind`](#properties)         | negated comparison | a `DateTime` with the expected `Kind`         |
 | [`HasOffset`](#properties)       | negated comparison | a `DateTimeOffset` with the expected `Offset` |
 
@@ -258,6 +259,8 @@ await Expect.That(importedAt).HasHour().GreaterThan(12);
 await Expect.That(importedAt).HasMinute(16);
 await Expect.That(importedAt).HasSecond(17);
 await Expect.That(importedAt).HasMillisecond().LessThan(500);
+await Expect.That(importedAt).HasDayOfWeek(DayOfWeek.Tuesday);
+await Expect.That(importedAt).HasDayOfWeek().NotEqualTo(DayOfWeek.Sunday);
 ```
 
 For `DateTime` you can also verify the `Kind` property, and for `DateTimeOffset` the `Offset` property:
@@ -287,4 +290,4 @@ await Expect.That(importedAt).HasOffset().GreaterThan(TimeSpan.Zero);
 
 <PropertyComparisons example="HasYear(2024)" />
 
-`HasKind()` only supports `EqualTo` and `NotEqualTo`.
+`HasDayOfWeek()` and `HasKind()` only support `EqualTo` and `NotEqualTo`.

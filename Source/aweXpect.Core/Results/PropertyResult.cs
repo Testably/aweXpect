@@ -92,36 +92,37 @@ public static class PropertyResult
 	}
 
 	/// <summary>
-	///     Result for a <see cref="DateTimeKind" /> property that continues on the <see cref="IThat{TItem}" /> subject.
+	///     Result for a <typeparamref name="TEnum" /> property that continues on the <see cref="IThat{TItem}" /> subject.
 	/// </summary>
-	public class DateTimeKind<TItem>(
+	public class Enum<TItem, TEnum>(
 		IThat<TItem> subject,
-		Func<TItem, DateTimeKind?> mapper,
+		Func<TItem, TEnum?> mapper,
 		string propertyExpression)
-		: DateTimeKind<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression);
+		: Enum<TItem, TItem, IThat<TItem>, TEnum>(subject, mapper, propertyExpression)
+		where TEnum : struct, Enum;
 
 	/// <summary>
-	///     Result for a <see cref="DateTimeKind" /> property of a <typeparamref name="TValue" /> which continues on
+	///     Result for a <typeparamref name="TEnum" /> property of a <typeparamref name="TValue" /> which continues on
 	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
 	/// </summary>
 	/// <remarks>
-	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in
-	///     <see cref="DateTimeKindPropertyResultExtensions" />.
+	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in <see cref="EnumPropertyResultExtensions" />.
 	///     <para />
 	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
 	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
 	/// </remarks>
-	public class DateTimeKind<TValue, TType, TThat>(
+	public class Enum<TValue, TType, TThat, TEnum>(
 		TThat subject,
-		Func<TValue, DateTimeKind?> mapper,
+		Func<TValue, TEnum?> mapper,
 		string propertyExpression,
 		ExpectationGrammars grammars = ExpectationGrammars.None)
-		: IDateTimeKindPropertyResult<AndOrResult<TType, TThat>>
+		: IEnumPropertyResult<TEnum, AndOrResult<TType, TThat>>
 		where TThat : IThat<TValue>
+		where TEnum : struct, Enum
 	{
-		/// <inheritdoc cref="IDateTimeKindPropertyResult{TResult}.Compare(PropertyComparison{DateTimeKind})" />
-		AndOrResult<TType, TThat> IDateTimeKindPropertyResult<AndOrResult<TType, TThat>>.Compare(
-			PropertyComparison<DateTimeKind> comparison)
+		/// <inheritdoc cref="IEnumPropertyResult{TEnum, TResult}.Compare(PropertyComparison{TEnum})" />
+		AndOrResult<TType, TThat> IEnumPropertyResult<TEnum, AndOrResult<TType, TThat>>.Compare(
+			PropertyComparison<TEnum> comparison)
 			=> new(AddStructConstraint(subject, grammars, mapper, propertyExpression, comparison), subject);
 	}
 
