@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Helpers;
 using aweXpect.Equivalency;
 
 namespace aweXpect.Core.Extending;
@@ -24,9 +25,9 @@ public static class EquivalencyExpectations
 	public static bool TryGetBuilder(object? value,
 		[NotNullWhen(true)] out EquivalencyExpectationBuilder? expectationBuilder)
 	{
-		if (value is Expectation and IOptionsProvider<ExpectationBuilder>
+		if (value is IExpectationBuilderProvider
 		    {
-			    Options: EquivalencyExpectationBuilder builder,
+			    ExpectationBuilder: EquivalencyExpectationBuilder builder,
 		    })
 		{
 			expectationBuilder = builder;

@@ -20,6 +20,18 @@ public sealed class EquivalencyExpectationsTests
 		}
 
 		[Test]
+		public async Task WhenValueIsAnotherExpectation_ShouldReturnFalse()
+		{
+			object value = That(true).IsTrue();
+
+			bool result = EquivalencyExpectations.TryGetBuilder(value, out EquivalencyExpectationBuilder? builder);
+
+			await That(result).IsFalse()
+				.Because("only the builder of an It.Is expectation is an equivalency expectation builder");
+			await That(builder).IsNull();
+		}
+
+		[Test]
 		public async Task WhenValueIsItIs_ShouldReturnItsBuilder()
 		{
 			object value = It.Is<int>();

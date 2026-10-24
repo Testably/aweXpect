@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Internal;
 
 namespace aweXpect.Results;
@@ -16,15 +17,14 @@ namespace aweXpect.Results;
 /// </summary>
 [StackTraceHidden]
 public class ExpectationResult(ExpectationBuilder expectationBuilder)
-	: Expectation, IOptionsProvider<ExpectationBuilder>
+	: Expectation, IExpectationBuilderProvider
 {
 	/// <summary>
 	///     The <see cref="Core.ExpectationBuilder" /> of the expectation.
 	/// </summary>
 	protected ExpectationBuilder ExpectationBuilder { get; } = expectationBuilder;
 
-	/// <inheritdoc cref="IOptionsProvider{ExpectationBuilder}.Options" />
-	ExpectationBuilder IOptionsProvider<ExpectationBuilder>.Options => ExpectationBuilder;
+	ExpectationBuilder IExpectationBuilderProvider.ExpectationBuilder => ExpectationBuilder;
 
 	/// <inheritdoc cref="object.ToString()" />
 	public override string? ToString()
@@ -222,7 +222,7 @@ public class ExpectationResult<TType>(ExpectationBuilder expectationBuilder)
 [StackTraceHidden]
 public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuilder)
 	: Expectation,
-		IOptionsProvider<ExpectationBuilder>
+		IExpectationBuilderProvider
 	where TSelf : ExpectationResult<TType, TSelf>
 {
 	/// <summary>
@@ -230,8 +230,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// </summary>
 	protected ExpectationBuilder ExpectationBuilder { get; } = expectationBuilder;
 
-	/// <inheritdoc cref="IOptionsProvider{ExpectationBuilder}.Options" />
-	ExpectationBuilder IOptionsProvider<ExpectationBuilder>.Options => ExpectationBuilder;
+	ExpectationBuilder IExpectationBuilderProvider.ExpectationBuilder => ExpectationBuilder;
 
 	/// <inheritdoc cref="object.ToString()" />
 	public override string? ToString()
