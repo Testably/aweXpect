@@ -21,7 +21,7 @@ public class JsonOptions
 	/// <summary>
 	///     Creates options without any active option.
 	/// </summary>
-	public JsonOptions()
+	internal JsonOptions()
 	{
 	}
 

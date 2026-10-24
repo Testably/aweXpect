@@ -5,127 +5,23 @@ namespace aweXpect.Json.Tests;
 public class JsonOptionsTests
 {
 	[Test]
-	public async Task DocumentOptions_ShouldDefaultToAllowTrailingCommas()
-	{
-		string subject = "[1, 2,]";
-		JsonOptions sut = new();
-
-		async Task Act()
-			=> await That(subject).IsValidJsonMatchingExactly([1, 2,], _ => sut);
-
-		await That(Act).DoesNotThrow();
-	}
-
-	[Test]
-	public async Task IgnoringMember_WhenMemberIsNull_ShouldThrowArgumentNullException()
-	{
-		JsonOptions sut = new();
-
-		void Act()
-			=> sut.IgnoringMember(null!);
-
-		await That(Act).Throws<ArgumentNullException>()
-			.WithParamName("memberToIgnore").And
-			.WithMessage("The 'memberToIgnore' cannot be null.").AsPrefix();
-	}
-
-	[Test]
-	public async Task IgnoringMember_WhenMemberIsEmpty_ShouldThrowArgumentException()
-	{
-		JsonOptions sut = new();
-
-		void Act()
-			=> sut.IgnoringMember("");
-
-		await That(Act).Throws<ArgumentException>()
-			.WithParamName("memberToIgnore").And
-			.WithMessage("The 'memberToIgnore' cannot be empty.").AsPrefix();
-	}
-
-	[Test]
-	public async Task Ignoring_WhenPredicateIsNull_ShouldThrowArgumentNullException()
-	{
-		JsonOptions sut = new();
-
-		void Act()
-			=> sut.Ignoring(null!);
-
-		await That(Act).Throws<ArgumentNullException>()
-			.WithParamName("predicate").And
-			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
-	}
-
-	[Test]
-	public async Task IgnoringMember_ShouldAccumulateTheMembersWithoutChangingTheOriginalOptions()
-	{
-		JsonElement subject = JsonDocument.Parse("{\"id\": 1, \"etag\": \"a\", \"name\": \"x\"}").RootElement;
-		object expected = new
-		{
-			id = 2,
-			etag = "b",
-			name = "x",
-		};
-		JsonOptions sut = new();
-
-		JsonOptions result = sut.IgnoringMember("id").Ignoring(path => path.EndsWith(".etag"));
-
-		async Task ActWithResult()
-			=> await That(subject).MatchesExactly(expected, _ => result);
-
-		async Task ActWithOriginal()
-			=> await That(subject).MatchesExactly(expected, _ => sut);
-
-		await That(ActWithResult).DoesNotThrow()
-			.Because("both members to ignore are kept");
-		await That(ActWithOriginal).Throws<FailException>()
-			.WithMessage("""
-			             Expected that subject
-			             matches expected exactly,
-			             but it differed as
-			               $.id was 1 instead of 2 and
-			               $.etag was "a" instead of "b"
-			             """)
-			.Because("IgnoringMember and Ignoring return new options instead of changing the original ones");
-	}
-
-	[Test]
-	public async Task ComparingNumbersWithin_WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
-	{
-		JsonOptions sut = new();
-
-		void Act()
-			=> sut.ComparingNumbersWithin(-0.1);
-
-		await That(Act).Throws<ArgumentOutOfRangeException>()
-			.WithParamName("tolerance").And
-			.WithMessage("The tolerance must not be negative.").AsPrefix();
-	}
-
-	[Test]
-	public async Task ComparingNumbersWithin_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
-	{
-		JsonOptions sut = new();
-
-		void Act()
-			=> sut.ComparingNumbersWithin(double.NaN);
-
-		await That(Act).Throws<ArgumentOutOfRangeException>()
-			.WithParamName("tolerance").And
-			.WithMessage("The tolerance must not be NaN.").AsPrefix();
-	}
-
-	[Test]
 	public async Task ComparingNumbersWithin_ShouldNotChangeTheOriginalOptions()
 	{
 		JsonElement subject = JsonDocument.Parse("1.5").RootElement;
-		JsonOptions sut = new();
-
-		_ = sut.ComparingNumbersWithin(1);
 
 		async Task Act()
-			=> await That(subject).MatchesExactly(1, _ => sut);
+			=> await That(subject).MatchesExactly(1, o =>
+			{
+				_ = o.ComparingNumbersWithin(1);
+				return o;
+			});
 
 		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             matches 1 exactly,
+			             but it differed as $ was 1.5 instead of 1
+			             """)
 			.Because("ComparingNumbersWithin returns new options instead of changing the original ones");
 	}
 
@@ -150,56 +46,53 @@ public class JsonOptionsTests
 	}
 
 	[Test]
-	public async Task Percent_ShouldNotAffectCopiesMadeBefore()
+	public async Task ComparingNumbersWithin_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
 	{
-		JsonElement subject = JsonDocument.Parse("0.3").RootElement;
-		JsonNumbersWithinOptions withinOptions = new JsonOptions().ComparingNumbersWithin(5);
-		JsonOptions copyBeforePercent = withinOptions.IgnoringArrayOrder();
+		JsonElement subject = JsonDocument.Parse("1").RootElement;
 
-		JsonOptions percentOptions = withinOptions.Percent();
+		async Task Act()
+			=> await That(subject).MatchesExactly(1, o => o.ComparingNumbersWithin(double.NaN));
 
-		async Task ActWithCopyBeforePercent()
-			=> await That(subject).MatchesExactly(0.1, _ => copyBeforePercent);
-
-		async Task ActWithPercent()
-			=> await That(subject).MatchesExactly(0.1, _ => percentOptions);
-
-		await That(ActWithCopyBeforePercent).DoesNotThrow()
-			.Because("the copy keeps the absolute tolerance, as Percent() replaces the tolerance instead of changing it");
-		await That(ActWithPercent).Throws<FailException>()
-			.Because("5% of 0.1 is less than the difference of 0.2");
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("tolerance").And
+			.WithMessage("The tolerance must not be NaN.").AsPrefix();
 	}
 
 	[Test]
-	public async Task Percent_ShouldNotAffectOtherOptionsFromTheSameOrigin()
+	public async Task ComparingNumbersWithin_WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
-		JsonElement subject = JsonDocument.Parse("0.3").RootElement;
-		JsonOptions sut = new();
-		JsonOptions absoluteOptions = sut.ComparingNumbersWithin(5);
-
-		_ = sut.ComparingNumbersWithin(5).Percent();
+		JsonElement subject = JsonDocument.Parse("1").RootElement;
 
 		async Task Act()
-			=> await That(subject).MatchesExactly(0.1, _ => absoluteOptions);
+			=> await That(subject).MatchesExactly(1, o => o.ComparingNumbersWithin(-0.1));
 
-		await That(Act).DoesNotThrow()
-			.Because("each call of ComparingNumbersWithin creates its own tolerance");
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("tolerance").And
+			.WithMessage("The tolerance must not be negative.").AsPrefix();
+	}
+
+	[Test]
+	public async Task DocumentOptions_ShouldDefaultToAllowTrailingCommas()
+	{
+		string subject = "[1, 2,]";
+
+		async Task Act()
+			=> await That(subject).IsValidJsonMatchingExactly([1, 2,]);
+
+		await That(Act).DoesNotThrow();
 	}
 
 	[Test]
 	public async Task Ignoring_ShouldDescribeThePredicateWithoutCommonWhiteSpace()
 	{
 		JsonElement subject = JsonDocument.Parse("{\"name\": \"x\"}").RootElement;
-		JsonOptions sut = new();
-
-		JsonOptions result = sut.Ignoring(path
-			=> path.EndsWith(".etag"));
 
 		async Task Act()
 			=> await That(subject).MatchesExactly(new
 			{
 				name = "y",
-			}, _ => result);
+			}, o => o.Ignoring(path
+				=> path.EndsWith(".etag")));
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -217,18 +110,142 @@ public class JsonOptionsTests
 	}
 
 	[Test]
+	public async Task Ignoring_WhenPredicateIsNull_ShouldThrowArgumentNullException()
+	{
+		JsonElement subject = JsonDocument.Parse("1").RootElement;
+
+		async Task Act()
+			=> await That(subject).MatchesExactly(1, o => o.Ignoring(null!));
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("predicate").And
+			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task IgnoringMember_ShouldAccumulateTheMembersWithoutChangingTheOriginalOptions()
+	{
+		JsonElement subject = JsonDocument.Parse("{\"id\": 1, \"etag\": \"a\", \"name\": \"x\"}").RootElement;
+		object expected = new
+		{
+			id = 2,
+			etag = "b",
+			name = "x",
+		};
+
+		async Task ActWithResult()
+			=> await That(subject).MatchesExactly(expected,
+				o => o.IgnoringMember("id").Ignoring(path => path.EndsWith(".etag")));
+
+		async Task ActWithOriginal()
+			=> await That(subject).MatchesExactly(expected, o =>
+			{
+				_ = o.IgnoringMember("id").Ignoring(path => path.EndsWith(".etag"));
+				return o;
+			});
+
+		await That(ActWithResult).DoesNotThrow()
+			.Because("both members to ignore are kept");
+		await That(ActWithOriginal).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             matches expected exactly,
+			             but it differed as
+			               $.id was 1 instead of 2 and
+			               $.etag was "a" instead of "b"
+			             """)
+			.Because("IgnoringMember and Ignoring return new options instead of changing the original ones");
+	}
+
+	[Test]
+	public async Task IgnoringMember_WhenMemberIsEmpty_ShouldThrowArgumentException()
+	{
+		JsonElement subject = JsonDocument.Parse("1").RootElement;
+
+		async Task Act()
+			=> await That(subject).MatchesExactly(1, o => o.IgnoringMember(""));
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("memberToIgnore").And
+			.WithMessage("The 'memberToIgnore' cannot be empty.").AsPrefix();
+	}
+
+	[Test]
+	public async Task IgnoringMember_WhenMemberIsNull_ShouldThrowArgumentNullException()
+	{
+		JsonElement subject = JsonDocument.Parse("1").RootElement;
+
+		async Task Act()
+			=> await That(subject).MatchesExactly(1, o => o.IgnoringMember(null!));
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("memberToIgnore").And
+			.WithMessage("The 'memberToIgnore' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task Percent_ShouldNotAffectCopiesMadeBefore()
+	{
+		JsonElement subject = JsonDocument.Parse("3").RootElement;
+
+		async Task ActWithCopyBeforePercent()
+			=> await That(subject).MatchesExactly(1, o =>
+			{
+				JsonNumbersWithinOptions withinOptions = o.ComparingNumbersWithin(5);
+				JsonOptions copyBeforePercent = withinOptions.IgnoringArrayOrder();
+				_ = withinOptions.Percent();
+				return copyBeforePercent;
+			});
+
+		async Task ActWithPercent()
+			=> await That(subject).MatchesExactly(1, o =>
+			{
+				JsonNumbersWithinOptions withinOptions = o.ComparingNumbersWithin(5);
+				_ = withinOptions.IgnoringArrayOrder();
+				return withinOptions.Percent();
+			});
+
+		await That(ActWithCopyBeforePercent).DoesNotThrow()
+			.Because("the copy keeps the absolute tolerance, as Percent() replaces the tolerance instead of changing it");
+		await That(ActWithPercent).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             matches 1 exactly,
+			             but it differed as $ was 3 instead of 1 ± 5%
+
+			             JSON options:
+			              - compare numbers within ± 5%
+			             """)
+			.Because("5% of 1 is less than the difference of 2");
+	}
+
+	[Test]
+	public async Task Percent_ShouldNotAffectOtherOptionsFromTheSameOrigin()
+	{
+		JsonElement subject = JsonDocument.Parse("0.3").RootElement;
+
+		async Task Act()
+			=> await That(subject).MatchesExactly(0.1, o =>
+			{
+				JsonOptions absoluteOptions = o.ComparingNumbersWithin(5);
+				_ = o.ComparingNumbersWithin(5).Percent();
+				return absoluteOptions;
+			});
+
+		await That(Act).DoesNotThrow()
+			.Because("each call of ComparingNumbersWithin creates its own tolerance");
+	}
+
+	[Test]
 	public async Task WithDocumentOptions_ShouldSetDocumentOptions()
 	{
 		string subject = "[1, /* two */ 2]";
-		JsonOptions sut = new();
-
-		JsonOptions result = sut.WithDocumentOptions(o => o with
-		{
-			CommentHandling = JsonCommentHandling.Skip,
-		});
 
 		async Task Act()
-			=> await That(subject).IsValidJsonMatchingExactly([1, 2,], _ => result);
+			=> await That(subject).IsValidJsonMatchingExactly([1, 2,], o => o.WithDocumentOptions(d => d with
+			{
+				CommentHandling = JsonCommentHandling.Skip,
+			}));
 
 		await That(Act).DoesNotThrow();
 	}
@@ -237,16 +254,13 @@ public class JsonOptionsTests
 	public async Task WithDocumentOptions_ShouldSupportProvidingFixedOptions()
 	{
 		string subject = "[1, /* two */ 2]";
-		JsonOptions sut = new();
 		JsonDocumentOptions documentOptions = new()
 		{
 			CommentHandling = JsonCommentHandling.Skip,
 		};
 
-		JsonOptions result = sut.WithDocumentOptions(_ => documentOptions);
-
 		async Task Act()
-			=> await That(subject).IsValidJsonMatchingExactly([1, 2,], _ => result);
+			=> await That(subject).IsValidJsonMatchingExactly([1, 2,], o => o.WithDocumentOptions(_ => documentOptions));
 
 		await That(Act).DoesNotThrow();
 	}
@@ -254,10 +268,10 @@ public class JsonOptionsTests
 	[Test]
 	public async Task WithDocumentOptions_WhenCallbackIsNull_ShouldThrowArgumentNullException()
 	{
-		JsonOptions sut = new();
+		string subject = "[1, 2]";
 
-		void Act()
-			=> sut.WithDocumentOptions(null!);
+		async Task Act()
+			=> await That(subject).IsValidJsonMatchingExactly([1, 2,], o => o.WithDocumentOptions(null!));
 
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("documentOptions").And
