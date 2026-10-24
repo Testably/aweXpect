@@ -24,7 +24,7 @@ internal abstract class PredicateCollectionConstraint<TValue, TItem>(
 	EnumerableQuantifier quantifier,
 	ElementCondition<TItem> condition,
 	string verb)
-	: QuantifiedCollectionConstraintBase<TValue, TItem>(it, grammars, quantifier)
+	: Core.Extending.QuantifiedCollectionConstraintBase<TValue, TItem>(it, grammars, quantifier)
 {
 	private readonly SynchronousElementCondition<TItem>? _synchronousCondition =
 		condition as SynchronousElementCondition<TItem>;

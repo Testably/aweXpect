@@ -20,7 +20,7 @@ public sealed class ExtensibilityTests
 
 	[Test]
 	[Arguments("aweXpect.Options.EnumerableQuantifier")]
-	[Arguments("aweXpect.QuantifiedCollectionConstraint`2")]
+	[Arguments("aweXpect.Core.Extending.QuantifiedCollectionConstraint`2")]
 	[Arguments("aweXpect.Options.RepeatedCheckOptions")]
 	[Arguments("aweXpect.Results.RepeatedCheckResult`2")]
 	[Arguments("aweXpect.Results.ObjectCountResult`3")]

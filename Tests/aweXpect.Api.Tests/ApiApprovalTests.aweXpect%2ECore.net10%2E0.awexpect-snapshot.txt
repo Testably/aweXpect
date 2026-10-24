@@ -117,31 +117,6 @@ namespace aweXpect
         public static TSelf Within<TSelf, TElement>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, ulong> result, ulong tolerance) where TSelf : aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, ulong> { }
         public static TSelf Within<TSelf, TElement>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, ushort> result, ushort tolerance) where TSelf : aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, ushort> { }
     }
-    public abstract class QuantifiedCollectionConstraint<TValue, TItem> : aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>
-    {
-        protected QuantifiedCollectionConstraint(string it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier quantifier, System.Func<aweXpect.Core.ExpectationGrammars, string> expectationText, string verb) { }
-        protected override sealed string Verb { get; }
-        protected override sealed void AppendItemExpectation(System.Text.StringBuilder stringBuilder, aweXpect.Core.ExpectationGrammars grammars, string? indentation) { }
-    }
-    public abstract class QuantifiedCollectionConstraintBase<TValue, TItem> : aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<TValue>
-    {
-        protected QuantifiedCollectionConstraintBase(string it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier quantifier) { }
-        protected bool IsDetermined { get; }
-        protected virtual System.Type ItemType { get; }
-        protected aweXpect.Options.EnumerableQuantifier Quantifier { get; }
-        protected abstract string Verb { get; }
-        public override void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
-        protected abstract void AppendItemExpectation(System.Text.StringBuilder stringBuilder, aweXpect.Core.ExpectationGrammars grammars, string? indentation);
-        protected override void AppendNegatedExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
-        protected override void AppendNegatedResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
-        protected override void AppendNormalExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
-        protected override void AppendNormalResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
-        protected void Complete() { }
-        protected void CompleteEarly() { }
-        protected void Record(TItem item, aweXpect.Core.Constraints.ConstraintResult itemResult) { }
-        protected void Record(TItem item, bool isMatch) { }
-        protected void StartEvaluation() { }
-    }
     public static class QuantifierExtensions
     {
         public static TResult AtLeast<TResult>(this TResult result, aweXpect.Core.Times minimum) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
@@ -802,14 +777,14 @@ namespace aweXpect.Core.Extending
         public string? Result { get; set; }
         public string? Summary { get; set; }
     }
-    public abstract class GeneratedAsyncCollectionConstraint<TItem> : aweXpect.QuantifiedCollectionConstraintBase<System.Collections.Generic.IAsyncEnumerable<TItem>?, TItem>, aweXpect.Core.Constraints.IAsyncContextConstraint<System.Collections.Generic.IAsyncEnumerable<TItem>?>, aweXpect.Core.Constraints.IConstraint
+    public abstract class GeneratedAsyncCollectionConstraint<TItem> : aweXpect.Core.Extending.QuantifiedCollectionConstraintBase<System.Collections.Generic.IAsyncEnumerable<TItem>?, TItem>, aweXpect.Core.Constraints.IAsyncContextConstraint<System.Collections.Generic.IAsyncEnumerable<TItem>?>, aweXpect.Core.Constraints.IConstraint
     {
         protected GeneratedAsyncCollectionConstraint(string it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier quantifier) { }
         public override void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
         protected abstract System.Threading.Tasks.ValueTask<aweXpect.Core.Extending.PredicateResult> IsMatch(TItem item, System.Threading.CancellationToken cancellationToken);
         public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy(System.Collections.Generic.IAsyncEnumerable<TItem>? actual, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
     }
-    public abstract class GeneratedCollectionConstraint<TCollection, TItem> : aweXpect.QuantifiedCollectionConstraintBase<TCollection, TItem>, aweXpect.Core.Constraints.IAsyncContextConstraint<TCollection>, aweXpect.Core.Constraints.IConstraint where TCollection : System.Collections.Generic.IEnumerable<TItem>?
+    public abstract class GeneratedCollectionConstraint<TCollection, TItem> : aweXpect.Core.Extending.QuantifiedCollectionConstraintBase<TCollection, TItem>, aweXpect.Core.Constraints.IAsyncContextConstraint<TCollection>, aweXpect.Core.Constraints.IConstraint where TCollection : System.Collections.Generic.IEnumerable<TItem>?
     {
         protected GeneratedCollectionConstraint(string it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier quantifier) { }
         public override void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
@@ -824,6 +799,31 @@ namespace aweXpect.Core.Extending
         public string? Reason { get; }
         public static aweXpect.Core.Extending.PredicateResult FailureBothWays(string reason) { }
         public static implicit operator aweXpect.Core.Extending.PredicateResult(bool isMet) { }
+    }
+    public abstract class QuantifiedCollectionConstraint<TValue, TItem> : aweXpect.Core.Extending.QuantifiedCollectionConstraintBase<TValue, TItem>
+    {
+        protected QuantifiedCollectionConstraint(string it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier quantifier, System.Func<aweXpect.Core.ExpectationGrammars, string> expectationText, string verb) { }
+        protected override sealed string Verb { get; }
+        protected override sealed void AppendItemExpectation(System.Text.StringBuilder stringBuilder, aweXpect.Core.ExpectationGrammars grammars, string? indentation) { }
+    }
+    public abstract class QuantifiedCollectionConstraintBase<TValue, TItem> : aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<TValue>
+    {
+        protected QuantifiedCollectionConstraintBase(string it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier quantifier) { }
+        protected bool IsDetermined { get; }
+        protected virtual System.Type ItemType { get; }
+        protected aweXpect.Options.EnumerableQuantifier Quantifier { get; }
+        protected abstract string Verb { get; }
+        public override void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
+        protected abstract void AppendItemExpectation(System.Text.StringBuilder stringBuilder, aweXpect.Core.ExpectationGrammars grammars, string? indentation);
+        protected override void AppendNegatedExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+        protected override void AppendNegatedResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+        protected override void AppendNormalExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+        protected override void AppendNormalResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+        protected void Complete() { }
+        protected void CompleteEarly() { }
+        protected void Record(TItem item, aweXpect.Core.Constraints.ConstraintResult itemResult) { }
+        protected void Record(TItem item, bool isMatch) { }
+        protected void StartEvaluation() { }
     }
     public static class StringExtensions
     {
