@@ -288,13 +288,14 @@ private sealed class IsArchivedConstraint(string it, ExpectationGrammars grammar
     {
         Actual = actual;
         Outcome = actual is not null && archive.Contains(actual) ? Outcome.Success : Outcome.Failure;
-        context.OnCompleted(OnCompletedAsync);
+        context.OnCompleted(ArchiveAsync);
         return this;
     }
 
-    private async ValueTask OnCompletedAsync(CompletedEvaluation evaluation, CancellationToken cancellationToken)
+    private async ValueTask ArchiveAsync(CompletedEvaluation evaluation, CancellationToken cancellationToken)
     {
-        if (evaluation.Outcome == Outcome.Failure && Outcome == Outcome.Failure && !IsNegated && Actual is not null)
+        if (evaluation.Outcome == Outcome.Failure && Outcome == Outcome.Failure
+            && !IsNegated && Actual is not null)
         {
             await archive.AddAsync(Actual, cancellationToken);
         }
@@ -378,7 +379,8 @@ internal static void ThrowIfNull(object? value, string paramName)
 {
     if (value is null)
     {
-        throw Tracing.WriteException(new ArgumentNullException(paramName, $"The '{paramName}' cannot be null."));
+        string message = $"The '{paramName}' cannot be null.";
+        throw Tracing.WriteException(new ArgumentNullException(paramName, message));
     }
 }
 ```

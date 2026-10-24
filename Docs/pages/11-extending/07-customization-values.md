@@ -21,7 +21,8 @@ You can add a simple customizable value (e.g. an `int`):
 ```csharp
 public static class MyCustomizationExtensions
 {
-    public static ICustomizationValueSetter<int> MyCustomization(this AwexpectCustomization awexpectCustomization)
+    public static ICustomizationValueSetter<int> MyCustomization(
+        this AwexpectCustomization awexpectCustomization)
         => new CustomizationValue<int>(awexpectCustomization, "MyExtension.MyCustomization", 42);
 }
 ```
@@ -68,10 +69,14 @@ public static class JsonCustomizationExtensions
     {
         internal JsonCustomization(IAwexpectCustomization awexpectCustomization)
         {
-            DefaultJsonDocumentOptions = new CustomizationValue<JsonDocumentOptions>(awexpectCustomization,
-                "MyExtension.Json.DefaultJsonDocumentOptions", new JsonDocumentOptions { AllowTrailingCommas = true });
-            DefaultJsonSerializerOptions = new CustomizationValue<JsonSerializerOptions>(awexpectCustomization,
-                "MyExtension.Json.DefaultJsonSerializerOptions", new JsonSerializerOptions { AllowTrailingCommas = true },
+            DefaultJsonDocumentOptions = new CustomizationValue<JsonDocumentOptions>(
+                awexpectCustomization,
+                "MyExtension.Json.DefaultJsonDocumentOptions",
+                new JsonDocumentOptions { AllowTrailingCommas = true });
+            DefaultJsonSerializerOptions = new CustomizationValue<JsonSerializerOptions>(
+                awexpectCustomization,
+                "MyExtension.Json.DefaultJsonSerializerOptions",
+                new JsonSerializerOptions { AllowTrailingCommas = true },
                 value =>
                 {
                     if (value is null)

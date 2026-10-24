@@ -37,7 +37,10 @@ leading and trailing whitespace:
 ```csharp
 string title = " Abbey Road ";
 
-await Expect.That(title).IsEqualTo("abbey road").IgnoringCase().IgnoringLeadingWhiteSpace().IgnoringTrailingWhiteSpace();
+await Expect.That(title).IsEqualTo("abbey road")
+  .IgnoringCase()
+  .IgnoringLeadingWhiteSpace()
+  .IgnoringTrailingWhiteSpace();
 await Expect.That(["Let It Be", "Help!"]).Contains("LET IT BE").IgnoringCase();
 ```
 

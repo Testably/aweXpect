@@ -15,7 +15,7 @@ await Expect.That(description).MatchesSnapshot();
 // compare an object, written completely and indented by the aweXpect formatter
 await Expect.That(album).MatchesSnapshot();
 
-// compare an exception member-wise, without the members that differ between builds and machines, like the stack trace
+// compare an exception member-wise, without members that vary per build or machine, like the stack trace
 await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>().Which.MatchesSnapshot();
 
 // replace values that change from run to run before comparing
@@ -28,13 +28,15 @@ await Expect.That(playlist).MatchesSnapshot().For.Guids().Mask().For.Dates().Mas
 await Expect.That(album).MatchesSnapshot()
     .For.Members().WithName("PlayCount").Ignore()
     .For.Members().WithName("Id").Mask()
-    .For.Members().DeclaredIn<Album>().WithName("Released").OfType<DateTime>().Convert(released => released.Year);
+    .For.Members().DeclaredIn<Album>().WithName("Released").OfType<DateTime>().Convert(date => date.Year);
 
-// store a JSON string as AlbumTests.Describes.awexpect-snapshot.json, so that editors and diff tools highlight it
+// store a JSON string as AlbumTests.Describes.awexpect-snapshot.json for syntax highlighting
 await Expect.That(json).MatchesSnapshot().WithExtension("json");
 
-// keep a snapshot per target framework and operating system (AlbumTests.Describes@net8.0@windows.awexpect-snapshot.txt)
-await Expect.That(exception.Message).MatchesSnapshot().UniqueFor.TargetFramework().UniqueFor.OperatingSystem();
+// keep a snapshot per target framework and operating system
+// (AlbumTests.Describes@net8.0@windows.awexpect-snapshot.txt)
+await Expect.That(exception.Message).MatchesSnapshot()
+    .UniqueFor.TargetFramework().UniqueFor.OperatingSystem();
 
 // verify the public API of an assembly, written as C# declarations
 // (package aweXpect.Snapshots.PublicApi)

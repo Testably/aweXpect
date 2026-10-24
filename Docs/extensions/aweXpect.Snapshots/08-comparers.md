@@ -66,7 +66,8 @@ SnapshotComparisonContext context = new(new SnapshotId("AlbumTests.cs", "Cover")
     SnapshotContent.FromBytes(File.ReadAllBytes("abbey-road.png")),
     SnapshotContent.FromBytes(RenderCover("Abbey Road")));
 
-SnapshotComparison comparison = await new CoverArtComparer(0.99).CompareAsync(context, CancellationToken.None);
+CoverArtComparer comparer = new(0.99);
+SnapshotComparison comparison = await comparer.CompareAsync(context, CancellationToken.None);
 
 await Expect.That(comparison.IsEqual).IsTrue();
 ```

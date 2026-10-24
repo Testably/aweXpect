@@ -66,7 +66,13 @@ To verify all child elements with a name, select them with
 
 ```csharp
 XElement album = XElement.Parse(
-    """<album title="Abbey Road"><track title="Come Together" /><track title="Something" /><artist name="The Beatles" /></album>""");
+    """
+    <album title="Abbey Road">
+      <track title="Come Together" />
+      <track title="Something" />
+      <artist name="The Beatles" />
+    </album>
+    """);
 
 await Expect.That(album).Whose(a => a.Elements("track"), tracks => tracks.HasCount(2));
 await Expect.That(album).Whose(a => a.Elements("track"), tracks => tracks

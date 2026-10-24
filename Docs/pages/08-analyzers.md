@@ -132,7 +132,7 @@ never awaited. A code fix is available.
 ```csharp
 async ValueTask Act() => await Task.Yield();
 
-await Expect.That(() => Act()).DoesNotThrow();            // reported on .NET Framework, .NET Standard 2.0, .NET 6 and .NET 7
+await Expect.That(() => Act()).DoesNotThrow();            // reported on targets before .NET 8
 await Expect.That(() => Act().AsTask()).DoesNotThrow();   // fixed
 ```
 
@@ -152,7 +152,7 @@ so the value can be the `default`.
 ```csharp
 object subject = "Yesterday";
 
-int count = await Expect.That(subject).Is<string>().Or.Is<int>();   // reported: 0 when the subject is a string
+int count = await Expect.That(subject).Is<string>().Or.Is<int>();   // reported: 0 for a string subject
 await Expect.That(subject).Is<string>().Or.Is<int>();               // fixed: the value is not used
 ```
 

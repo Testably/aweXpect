@@ -172,7 +172,8 @@ ArgumentOutOfRangeException {
   [`.UniqueFor`](03-naming-snapshots.md#snapshots-per-environment):
 
   ```csharp
-  await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>().Which.MatchesSnapshot()
+  await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>()
+      .Which.MatchesSnapshot()
       .For.Members().WithName("Message").Ignore()
       .For.Members().WithName("ActualValue").Mask();
   ```

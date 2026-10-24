@@ -194,8 +194,8 @@ private sealed class MatchesTrackConstraint(string it, ExpectationGrammars gramm
         if (actual is not null)
         {
             _differences.Clear();
-            bool isEquivalent = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(),
-                _differences, context, cancellationToken);
+            bool isEquivalent = await EquivalencyComparison.Compare(actual, expected,
+                new EquivalencyOptions(), _differences, context, cancellationToken);
             Outcome = isEquivalent ? Outcome.Success : Outcome.Failure;
         }
 
