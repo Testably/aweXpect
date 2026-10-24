@@ -34,7 +34,7 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of the given <paramref name="fields" />.
 		/// </summary>
-		internal Fields(IEnumerable<FieldInfo> fields, string description)
+		internal Fields(IEnumerable<FieldInfo?> fields, string description)
 			: base(fields.WhereNotNull())
 		{
 			_description = description;
@@ -43,11 +43,11 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="FieldInfo" />.
 		/// </summary>
-		protected Fields(Fields inner) : this(inner, inner.Filters)
+		private protected Fields(Fields inner) : this(inner, inner.Filters)
 		{
 		}
 
-		private Fields(Fields inner, List<IFilter<FieldInfo>> filters) : base(inner, filters)
+		private Fields(Fields inner, IReadOnlyList<IFilter<FieldInfo>> filters) : base(inner, filters)
 		{
 			_description = inner._description;
 			_types = inner._types;
@@ -71,7 +71,7 @@ public static partial class Filtered
 		}
 
 		/// <inheritdoc />
-		private protected override Fields CloneWith(List<IFilter<FieldInfo>> filters)
+		private protected override Fields CloneWith(IReadOnlyList<IFilter<FieldInfo>> filters)
 			=> new(this, filters);
 
 		/// <summary>

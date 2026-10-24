@@ -43,7 +43,7 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of the given <paramref name="methods" />.
 		/// </summary>
-		internal Methods(IEnumerable<MethodInfo> methods, string description)
+		internal Methods(IEnumerable<MethodInfo?> methods, string description)
 			: base(methods.WhereNotNull())
 		{
 			_description = description;
@@ -52,11 +52,11 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="MethodInfo" />.
 		/// </summary>
-		protected Methods(Methods inner) : this(inner, inner.Filters)
+		private protected Methods(Methods inner) : this(inner, inner.Filters)
 		{
 		}
 
-		private Methods(Methods inner, List<IFilter<MethodInfo>> filters) : base(inner, filters)
+		private Methods(Methods inner, IReadOnlyList<IFilter<MethodInfo>> filters) : base(inner, filters)
 		{
 			_description = inner._description;
 			_types = inner._types;
@@ -82,7 +82,7 @@ public static partial class Filtered
 		}
 
 		/// <inheritdoc />
-		private protected override Methods CloneWith(List<IFilter<MethodInfo>> filters)
+		private protected override Methods CloneWith(IReadOnlyList<IFilter<MethodInfo>> filters)
 			=> new(this, filters);
 
 		/// <summary>

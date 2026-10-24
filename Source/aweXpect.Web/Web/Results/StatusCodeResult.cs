@@ -13,18 +13,27 @@ namespace aweXpect.Web.Results;
 /// <summary>
 ///     Result for an <see langword="HttpStatusCode" /> property.
 /// </summary>
-public class StatusCodeResult(
-	IThat<HttpResponseMessage?> source,
-	Func<HttpResponseMessage, HttpStatusCode> mapper)
+public class StatusCodeResult
 {
+	private readonly Func<HttpResponseMessage, HttpStatusCode> _mapper;
+	private readonly IThat<HttpResponseMessage?> _source;
+
+	internal StatusCodeResult(
+		IThat<HttpResponseMessage?> source,
+		Func<HttpResponseMessage, HttpStatusCode> mapper)
+	{
+		_source = source;
+		_mapper = mapper;
+	}
+
 	/// <summary>
 	///     …is equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> EqualTo(
 		HttpStatusCode? expected)
-		=> new(source.Get().ExpectationBuilder
+		=> new(_source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
-				.AddConstraint((expected, mapper), static (state, it, grammars) =>
+				.AddConstraint((expected, mapper: _mapper), static (state, it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						state.expected,
@@ -32,16 +41,16 @@ public class StatusCodeResult(
 						(a, e) => a == e,
 						"status code ",
 						true)),
-			source);
+			_source);
 
 	/// <summary>
 	///     …is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
 	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> NotEqualTo(
 		HttpStatusCode? unexpected)
-		=> new(source.Get().ExpectationBuilder
+		=> new(_source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
-				.AddConstraint((unexpected, mapper), static (state, it, grammars) =>
+				.AddConstraint((unexpected, mapper: _mapper), static (state, it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						state.unexpected,
@@ -50,82 +59,82 @@ public class StatusCodeResult(
 						"status code ",
 						true,
 						true)),
-			source);
+			_source);
 
 	/// <summary>
 	///     …is a success status code (2xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> Success()
-		=> new(source.Get().ExpectationBuilder
+		=> new(_source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
-				.AddConstraint(mapper, static (mapper, it, grammars) =>
+				.AddConstraint(_mapper, static (mapper, it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 200 and < 300,
 						"a success status code (2xx)")),
-			source);
+			_source);
 
 	/// <summary>
 	///     …is a redirection status code (3xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> Redirection()
-		=> new(source.Get().ExpectationBuilder
+		=> new(_source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
-				.AddConstraint(mapper, static (mapper, it, grammars) =>
+				.AddConstraint(_mapper, static (mapper, it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 300 and < 400,
 						"a redirection status code (3xx)")),
-			source);
+			_source);
 
 	/// <summary>
 	///     …is a client error status code (4xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> ClientError()
-		=> new(source.Get().ExpectationBuilder
+		=> new(_source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
-				.AddConstraint(mapper, static (mapper, it, grammars) =>
+				.AddConstraint(_mapper, static (mapper, it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 400 and < 500,
 						"a client error status code (4xx)")),
-			source);
+			_source);
 
 	/// <summary>
 	///     …is a server error status code (5xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> ServerError()
-		=> new(source.Get().ExpectationBuilder
+		=> new(_source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
-				.AddConstraint(mapper, static (mapper, it, grammars) =>
+				.AddConstraint(_mapper, static (mapper, it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 500 and < 600,
 						"a server error status code (5xx)")),
-			source);
+			_source);
 
 	/// <summary>
 	///     …is a client or server error status code (4xx or 5xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> Error()
-		=> new(source.Get().ExpectationBuilder
+		=> new(_source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
-				.AddConstraint(mapper, static (mapper, it, grammars) =>
+				.AddConstraint(_mapper, static (mapper, it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 400 and < 600,
 						"an error status code (4xx or 5xx)")),
-			source);
+			_source);
 
 	internal sealed class PropertyConstraint(
 		string it,

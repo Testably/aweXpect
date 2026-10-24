@@ -50,9 +50,9 @@ public abstract class Filtered<T, TFiltered>
 	///     Base class for filtered collections of <typeparamref name="T" />.
 	/// </summary>
 #if NET8_0_OR_GREATER
-	protected Filtered(IAsyncEnumerable<T> source, List<IFilter<T>>? filters = null)
+	private protected Filtered(IAsyncEnumerable<T> source, IReadOnlyList<IFilter<T>>? filters = null)
 #else
-	protected Filtered(IEnumerable<T> source, List<IFilter<T>>? filters = null)
+	private protected Filtered(IEnumerable<T> source, IReadOnlyList<IFilter<T>>? filters = null)
 #endif
 	{
 		_source = source;
@@ -62,11 +62,7 @@ public abstract class Filtered<T, TFiltered>
 	/// <summary>
 	///     The filters on the source.
 	/// </summary>
-	/// <remarks>
-	///     Treated as immutable: it is never modified after construction. The concrete type stays <see cref="List{T}" />
-	///     to preserve the public API surface.
-	/// </remarks>
-	protected List<IFilter<T>> Filters { get; }
+	private protected IReadOnlyList<IFilter<T>> Filters { get; }
 
 #if NET8_0_OR_GREATER
 	/// <inheritdoc />
@@ -114,7 +110,7 @@ public abstract class Filtered<T, TFiltered>
 	///     Declared after the iterator methods on purpose: it must stay out of the way of the compiler-generated async
 	///     iterator state-machine ordinal so the public API surface (which captures that generated name) is preserved.
 	/// </remarks>
-	private protected Filtered(Filtered<T, TFiltered> original, List<IFilter<T>> filters)
+	private protected Filtered(Filtered<T, TFiltered> original, IReadOnlyList<IFilter<T>> filters)
 		: this(original._source, filters)
 	{
 	}
@@ -123,5 +119,5 @@ public abstract class Filtered<T, TFiltered>
 	///     Creates a new instance of <typeparamref name="TFiltered" /> that shares this collection's original source and
 	///     metadata, but uses the given <paramref name="filters" />.
 	/// </summary>
-	private protected abstract TFiltered CloneWith(List<IFilter<T>> filters);
+	private protected abstract TFiltered CloneWith(IReadOnlyList<IFilter<T>> filters);
 }

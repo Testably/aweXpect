@@ -26,15 +26,8 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="Assembly" />.
 		/// </summary>
-		public Assemblies(IEnumerable<Assembly?> source, string description)
+		internal Assemblies(IEnumerable<Assembly?> source, string description)
 			: this(source, () => description)
-		{
-		}
-
-		/// <summary>
-		///     Container for a filterable collection of <see cref="Assembly" />.
-		/// </summary>
-		public Assemblies(Assembly? source, string description) : this([source,], description)
 		{
 		}
 
@@ -65,11 +58,11 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="Assembly" />.
 		/// </summary>
-		protected Assemblies(Assemblies inner) : this(inner, inner.Filters)
+		private protected Assemblies(Assemblies inner) : this(inner, inner.Filters)
 		{
 		}
 
-		private Assemblies(Assemblies inner, List<IFilter<Assembly>> filters) : base(inner, filters)
+		private Assemblies(Assemblies inner, IReadOnlyList<IFilter<Assembly>> filters) : base(inner, filters)
 		{
 			_description = inner._description;
 			_unfilteredSource = inner._unfilteredSource;
@@ -187,7 +180,7 @@ public static partial class Filtered
 		public Properties Properties() => NewBuilder(MemberFilterState.Empty).Properties();
 
 		/// <inheritdoc />
-		private protected override Assemblies CloneWith(List<IFilter<Assembly>> filters)
+		private protected override Assemblies CloneWith(IReadOnlyList<IFilter<Assembly>> filters)
 			=> new(this, filters);
 
 		private AssembliesTypeBuilder NewBuilder(MemberFilterState memberState)

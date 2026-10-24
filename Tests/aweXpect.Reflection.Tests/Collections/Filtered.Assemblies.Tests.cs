@@ -13,12 +13,12 @@ public sealed partial class Filtered
 			{
 				Assembly assembly = typeof(Tests).Assembly;
 
-				Reflection.Collections.Filtered.Assemblies assemblies =
-					new Reflection.Collections.Filtered.Assemblies(assembly, "in my assembly").Types().Assemblies();
+				Reflection.Collections.Filtered.Assemblies assemblies = In.Assemblies(assembly).Types().Assemblies();
 				string description = assemblies.GetDescription();
 
 				await That(assemblies).IsNotEmpty();
-				await That(description).IsEqualTo("assemblies containing types in my assembly");
+				await That(description)
+					.IsEqualTo("assemblies containing types in the assemblies [aweXpect.Reflection.Tests*]").AsWildcard();
 			}
 
 			[Test]
@@ -531,11 +531,11 @@ public sealed partial class Filtered
 			{
 				Assembly? assembly = null;
 
-				Reflection.Collections.Filtered.Assemblies assemblies = new(assembly, "in my assembly");
+				Reflection.Collections.Filtered.Assemblies assemblies = In.Assemblies(assembly);
 				string description = assemblies.GetDescription();
 
 				await That(assemblies).IsEmpty();
-				await That(description).IsEqualTo("in my assembly");
+				await That(description).IsEqualTo("in the assemblies [<null>]");
 			}
 
 			[Test]
@@ -543,8 +543,7 @@ public sealed partial class Filtered
 			{
 				Assembly assembly = typeof(Tests).Assembly;
 				Assembly otherAssembly = typeof(In).Assembly;
-				Reflection.Collections.Filtered.Assemblies assemblies =
-					new([null, assembly, otherAssembly,], "in my assemblies");
+				Reflection.Collections.Filtered.Assemblies assemblies = In.Assemblies(null, assembly, otherAssembly);
 
 				Reflection.Collections.Filtered.Types allTypes = assemblies.Types();
 				Reflection.Collections.Filtered.Types filteredTypes = assemblies.Which(a => a == assembly).Types();

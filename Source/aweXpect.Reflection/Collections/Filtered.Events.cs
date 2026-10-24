@@ -34,7 +34,7 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of the given <paramref name="events" />.
 		/// </summary>
-		internal Events(IEnumerable<EventInfo> events, string description)
+		internal Events(IEnumerable<EventInfo?> events, string description)
 			: base(events.WhereNotNull())
 		{
 			_description = description;
@@ -43,11 +43,11 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="EventInfo" />.
 		/// </summary>
-		protected Events(Events inner) : this(inner, inner.Filters)
+		private protected Events(Events inner) : this(inner, inner.Filters)
 		{
 		}
 
-		private Events(Events inner, List<IFilter<EventInfo>> filters) : base(inner, filters)
+		private Events(Events inner, IReadOnlyList<IFilter<EventInfo>> filters) : base(inner, filters)
 		{
 			_description = inner._description;
 			_types = inner._types;
@@ -71,7 +71,7 @@ public static partial class Filtered
 		}
 
 		/// <inheritdoc />
-		private protected override Events CloneWith(List<IFilter<EventInfo>> filters)
+		private protected override Events CloneWith(IReadOnlyList<IFilter<EventInfo>> filters)
 			=> new(this, filters);
 
 		/// <summary>

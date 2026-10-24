@@ -2753,20 +2753,20 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies(params System.Reflection.Assembly?[] assemblies) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining(System.Type type) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining<TType>() { }
-        public static aweXpect.Reflection.Collections.Filtered.Constructors Constructors(System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo> constructors) { }
-        public static aweXpect.Reflection.Collections.Filtered.Constructors Constructors(params System.Reflection.ConstructorInfo[] constructors) { }
-        public static aweXpect.Reflection.Collections.Filtered.Events Events(System.Collections.Generic.IEnumerable<System.Reflection.EventInfo> events) { }
-        public static aweXpect.Reflection.Collections.Filtered.Events Events(params System.Reflection.EventInfo[] events) { }
-        public static aweXpect.Reflection.Collections.Filtered.Fields Fields(System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo> fields) { }
-        public static aweXpect.Reflection.Collections.Filtered.Fields Fields(params System.Reflection.FieldInfo[] fields) { }
-        public static aweXpect.Reflection.Collections.Filtered.Methods Methods(System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo> methods) { }
-        public static aweXpect.Reflection.Collections.Filtered.Methods Methods(params System.Reflection.MethodInfo[] methods) { }
-        public static aweXpect.Reflection.Collections.Filtered.Properties Properties(System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo> properties) { }
-        public static aweXpect.Reflection.Collections.Filtered.Properties Properties(params System.Reflection.PropertyInfo[] properties) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors Constructors(System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?> constructors) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors Constructors(params System.Reflection.ConstructorInfo?[] constructors) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events Events(System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?> events) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events Events(params System.Reflection.EventInfo?[] events) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields Fields(System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?> fields) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields Fields(params System.Reflection.FieldInfo?[] fields) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods Methods(System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?> methods) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods Methods(params System.Reflection.MethodInfo?[] methods) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties Properties(System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?> properties) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties Properties(params System.Reflection.PropertyInfo?[] properties) { }
         public static aweXpect.Reflection.Collections.Filtered.Types Type(System.Type type) { }
         public static aweXpect.Reflection.Collections.Filtered.Types Type<TType>() { }
-        public static aweXpect.Reflection.Collections.Filtered.Types Types(System.Collections.Generic.IEnumerable<System.Type> types) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types Types(params System.Type[] types) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types Types(System.Collections.Generic.IEnumerable<System.Type?> types) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types Types(params System.Type?[] types) { }
         public static aweXpect.Reflection.Collections.Filtered.Types Types<TType1, TType2, TType3>() { }
         public static aweXpect.Reflection.Collections.Filtered.Types Types<TType1, TType2>() { }
     }
@@ -3240,9 +3240,6 @@ namespace aweXpect.Reflection.Collections
     {
         public class Assemblies : aweXpect.Reflection.Collections.Filtered<System.Reflection.Assembly, aweXpect.Reflection.Collections.Filtered.Assemblies>, aweXpect.Core.IDescribableSubject, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies, aweXpect.Reflection.Collections.ITypeAssemblies.IPrivate, aweXpect.Reflection.Collections.ITypeAssemblies.IProtected
         {
-            protected Assemblies(aweXpect.Reflection.Collections.Filtered.Assemblies inner) { }
-            public Assemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly?> source, string description) { }
-            public Assemblies(System.Reflection.Assembly? source, string description) { }
             public aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies> Abstract { get; }
             public aweXpect.Reflection.Collections.ITypeAssemblies Generic { get; }
             public aweXpect.Reflection.Collections.ITypeAssemblies Internal { get; }
@@ -3271,13 +3268,11 @@ namespace aweXpect.Reflection.Collections
         }
         public class Constructors : aweXpect.Reflection.Collections.Filtered<System.Reflection.ConstructorInfo, aweXpect.Reflection.Collections.Filtered.Constructors>, aweXpect.Core.IDescribableSubject
         {
-            protected Constructors(aweXpect.Reflection.Collections.Filtered.Constructors inner) { }
             public aweXpect.Reflection.Collections.Filtered.Types DeclaringTypes() { }
             public string GetDescription() { }
         }
         public class Events : aweXpect.Reflection.Collections.Filtered<System.Reflection.EventInfo, aweXpect.Reflection.Collections.Filtered.Events>, aweXpect.Core.IDescribableSubject
         {
-            protected Events(aweXpect.Reflection.Collections.Filtered.Events inner) { }
             public aweXpect.Reflection.Collections.Filtered.Types DeclaringTypes() { }
             public string GetDescription() { }
             public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Events, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
@@ -3286,7 +3281,6 @@ namespace aweXpect.Reflection.Collections
         }
         public class Fields : aweXpect.Reflection.Collections.Filtered<System.Reflection.FieldInfo, aweXpect.Reflection.Collections.Filtered.Fields>, aweXpect.Core.IDescribableSubject
         {
-            protected Fields(aweXpect.Reflection.Collections.Filtered.Fields inner) { }
             public aweXpect.Reflection.Collections.Filtered.Types DeclaringTypes() { }
             public string GetDescription() { }
             public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Fields, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
@@ -3295,7 +3289,6 @@ namespace aweXpect.Reflection.Collections
         }
         public class Methods : aweXpect.Reflection.Collections.Filtered<System.Reflection.MethodInfo, aweXpect.Reflection.Collections.Filtered.Methods>, aweXpect.Core.IDescribableSubject
         {
-            protected Methods(aweXpect.Reflection.Collections.Filtered.Methods inner) { }
             public aweXpect.Reflection.Collections.Filtered.Types DeclaringTypes() { }
             public string GetDescription() { }
             public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
@@ -3304,7 +3297,6 @@ namespace aweXpect.Reflection.Collections
         }
         public class Properties : aweXpect.Reflection.Collections.Filtered<System.Reflection.PropertyInfo, aweXpect.Reflection.Collections.Filtered.Properties>, aweXpect.Core.IDescribableSubject
         {
-            protected Properties(aweXpect.Reflection.Collections.Filtered.Properties inner) { }
             public aweXpect.Reflection.Collections.Filtered.Types DeclaringTypes() { }
             public string GetDescription() { }
             public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
@@ -3313,8 +3305,6 @@ namespace aweXpect.Reflection.Collections
         }
         public class Types : aweXpect.Reflection.Collections.Filtered<System.Type, aweXpect.Reflection.Collections.Filtered.Types>, aweXpect.Core.IDescribableSubject, aweXpect.Reflection.Collections.ILimitedAbstractSealedMembers, aweXpect.Reflection.Collections.IMemberSelectors, aweXpect.Reflection.Collections.IMembers, aweXpect.Reflection.Collections.IMembers.IPrivate, aweXpect.Reflection.Collections.IMembers.IProtected
         {
-            protected Types(aweXpect.Reflection.Collections.Filtered.Types inner) { }
-            public Types(System.Collections.Generic.IEnumerable<System.Type?> source, string description) { }
             public aweXpect.Reflection.Collections.ILimitedAbstractSealedMembers Abstract { get; }
             public aweXpect.Reflection.Collections.IMembers Internal { get; }
             public aweXpect.Reflection.Collections.IMembers.IPrivate Private { get; }
@@ -3378,8 +3368,6 @@ namespace aweXpect.Reflection.Collections
     }
     public abstract class Filtered<T, TFiltered> : System.Collections.Generic.IAsyncEnumerable<T> where TFiltered : aweXpect.Reflection.Collections.Filtered<T, TFiltered>
     {
-        protected Filtered(System.Collections.Generic.IAsyncEnumerable<T> source, System.Collections.Generic.List<aweXpect.Reflection.Collections.IFilter<T>>? filters = null) { }
-        protected System.Collections.Generic.List<aweXpect.Reflection.Collections.IFilter<T>> Filters { get; }
         public System.Collections.Generic.IAsyncEnumerator<T> GetAsyncEnumerator(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
         public TFiltered Which(aweXpect.Reflection.Collections.IFilter<T> filter) { }
     }

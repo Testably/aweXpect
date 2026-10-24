@@ -34,7 +34,7 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of the given <paramref name="properties" />.
 		/// </summary>
-		internal Properties(IEnumerable<PropertyInfo> properties, string description)
+		internal Properties(IEnumerable<PropertyInfo?> properties, string description)
 			: base(properties.WhereNotNull())
 		{
 			_description = description;
@@ -43,11 +43,11 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="PropertyInfo" />.
 		/// </summary>
-		protected Properties(Properties inner) : this(inner, inner.Filters)
+		private protected Properties(Properties inner) : this(inner, inner.Filters)
 		{
 		}
 
-		private Properties(Properties inner, List<IFilter<PropertyInfo>> filters) : base(inner, filters)
+		private Properties(Properties inner, IReadOnlyList<IFilter<PropertyInfo>> filters) : base(inner, filters)
 		{
 			_description = inner._description;
 			_types = inner._types;
@@ -71,7 +71,7 @@ public static partial class Filtered
 		}
 
 		/// <inheritdoc />
-		private protected override Properties CloneWith(List<IFilter<PropertyInfo>> filters)
+		private protected override Properties CloneWith(IReadOnlyList<IFilter<PropertyInfo>> filters)
 			=> new(this, filters);
 
 		/// <summary>
