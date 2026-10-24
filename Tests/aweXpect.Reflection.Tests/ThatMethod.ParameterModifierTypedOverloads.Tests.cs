@@ -104,7 +104,12 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameter<int>();
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int with ref modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -117,7 +122,12 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameter<string>();
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string with ref modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]

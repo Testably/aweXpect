@@ -77,14 +77,8 @@ namespace aweXpect
             public aweXpect.ThatAssemblies.VersionComponentResult<TCollection> WithMinor { get; }
             public aweXpect.ThatAssemblies.VersionComponentResult<TCollection> WithRevision { get; }
         }
-        public class VersionComponentResult<TCollection>
+        public class VersionComponentResult<TCollection> : aweXpect.Results.IIntPropertyResult<aweXpect.ThatAssemblies.HaveVersionResult<TCollection>>
         {
-            public aweXpect.ThatAssemblies.HaveVersionResult<TCollection> EqualTo(int expected) { }
-            public aweXpect.ThatAssemblies.HaveVersionResult<TCollection> GreaterThan(int expected) { }
-            public aweXpect.ThatAssemblies.HaveVersionResult<TCollection> GreaterThanOrEqualTo(int expected) { }
-            public aweXpect.ThatAssemblies.HaveVersionResult<TCollection> LessThan(int expected) { }
-            public aweXpect.ThatAssemblies.HaveVersionResult<TCollection> LessThanOrEqualTo(int expected) { }
-            public aweXpect.ThatAssemblies.HaveVersionResult<TCollection> NotEqualTo(int expected) { }
         }
     }
     public static class ThatAssembly
@@ -124,14 +118,8 @@ namespace aweXpect
             public aweXpect.ThatAssembly.VersionComponent WithMinor { get; }
             public aweXpect.ThatAssembly.VersionComponent WithRevision { get; }
         }
-        public class VersionComponent
+        public class VersionComponent : aweXpect.Results.IIntPropertyResult<aweXpect.ThatAssembly.HasVersionResult>
         {
-            public aweXpect.ThatAssembly.HasVersionResult EqualTo(int expected) { }
-            public aweXpect.ThatAssembly.HasVersionResult GreaterThan(int expected) { }
-            public aweXpect.ThatAssembly.HasVersionResult GreaterThanOrEqualTo(int expected) { }
-            public aweXpect.ThatAssembly.HasVersionResult LessThan(int expected) { }
-            public aweXpect.ThatAssembly.HasVersionResult LessThanOrEqualTo(int expected) { }
-            public aweXpect.ThatAssembly.HasVersionResult NotEqualTo(int expected) { }
         }
     }
     public static class ThatConstructor
@@ -2688,14 +2676,8 @@ namespace aweXpect.Reflection
             public aweXpect.Reflection.AssemblyFilters.VersionComponent WithMinor { get; }
             public aweXpect.Reflection.AssemblyFilters.VersionComponent WithRevision { get; }
         }
-        public class VersionComponent
+        public class VersionComponent : aweXpect.Results.IIntPropertyResult<aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion>
         {
-            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion EqualTo(int expected) { }
-            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion GreaterThan(int expected) { }
-            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion GreaterThanOrEqualTo(int expected) { }
-            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion LessThan(int expected) { }
-            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion LessThanOrEqualTo(int expected) { }
-            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion NotEqualTo(int expected) { }
         }
     }
     [System.Flags]

@@ -100,7 +100,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasRefParameter<int>();
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of type int with ref modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -113,7 +118,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasRefParameter<string>();
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of type string with ref modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -152,7 +162,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasRefParameter(typeof(int));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of type int with ref modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -165,7 +180,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasRefParameter(typeof(string));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of type string with ref modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]

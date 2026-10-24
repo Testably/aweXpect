@@ -447,7 +447,17 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOptionalParameter(typeof(int));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with optional modifier,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveOptionalParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 #endif
 		}

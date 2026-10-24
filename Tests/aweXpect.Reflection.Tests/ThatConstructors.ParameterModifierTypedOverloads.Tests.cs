@@ -58,7 +58,17 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveRefParameter<int>();
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with ref modifier,
+					             but it contained constructors without a matching parameter
+
+					             Not matching items:
+					             [
+					               ThatConstructors.ParameterModifierTypedOverloads.PlainIntCtor(int value)
+					             ]
+					             """);
 			}
 
 			[Test]

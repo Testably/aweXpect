@@ -241,6 +241,25 @@ public sealed partial class ThatAssembly
 			}
 
 			[Test]
+			public async Task WhenBetweenIsNotSatisfied_ShouldFail()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				async Task Act()
+				{
+					await That(assembly).HasVersion().WithMajor.Between(major + 1).And(major + 2);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that assembly
+					              has major version between {major + 1} and {major + 2},
+					              but it had major version {major}
+					              """);
+			}
+
+			[Test]
 			[Arguments("GreaterThan", 0, "greater than")]
 			[Arguments("GreaterThanOrEqualTo", 1, "greater than or equal to")]
 			[Arguments("LessThan", 0, "less than")]
@@ -276,19 +295,20 @@ public sealed partial class ThatAssembly
 			}
 
 			[Test]
-			[Arguments("GreaterThan", 0)]
-			[Arguments("GreaterThanOrEqualTo", 1)]
-			[Arguments("LessThan", 0)]
-			[Arguments("LessThanOrEqualTo", -1)]
-			[Arguments("EqualTo", 1)]
-			[Arguments("NotEqualTo", 0)]
-			public async Task WhenComparisonIsNotSatisfied_ShouldFail(string comparison, int offset)
+			[Arguments("GreaterThan", 0, "greater than")]
+			[Arguments("GreaterThanOrEqualTo", 1, "greater than or equal to")]
+			[Arguments("LessThan", 0, "less than")]
+			[Arguments("LessThanOrEqualTo", -1, "less than or equal to")]
+			[Arguments("EqualTo", 1, "equal to")]
+			[Arguments("NotEqualTo", 0, "not equal to")]
+			public async Task WhenComparisonIsNotSatisfied_ShouldFail(string comparison, int offset, string wording)
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+				int expected = major + offset;
 
 				async Task Act()
 				{
-					int expected = assembly.GetName().Version!.Major + offset;
 					await (comparison switch
 					{
 						"GreaterThan" => That(assembly).HasVersion().WithMajor.GreaterThan(expected),
@@ -300,7 +320,12 @@ public sealed partial class ThatAssembly
 					});
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that assembly
+					              has major version {wording} {expected},
+					              but it had major version {major}
+					              """);
 			}
 
 			[Test]
@@ -400,6 +425,21 @@ public sealed partial class ThatAssembly
 			}
 
 			[Test]
+			public async Task WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+
+				async Task Act()
+				{
+					await That(assembly).HasVersion().WithMajor.NotBetween(2).And(1);
+				}
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("maximum").And
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
+			}
+
+			[Test]
 			public async Task WhenMultipleComponentsAreCombined_ShouldReportFailingComponent()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -417,6 +457,25 @@ public sealed partial class ThatAssembly
 					              Expected that assembly
 					              has major version equal to {version.Major} and minor version greater than {version.Minor},
 					              but it had minor version {version.Minor}
+					              """);
+			}
+
+			[Test]
+			public async Task WhenNotGreaterThanIsNotSatisfied_ShouldFail()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				async Task Act()
+				{
+					await That(assembly).HasVersion().WithMajor.NotGreaterThan(major - 1);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that assembly
+					              has major version not greater than {major - 1},
+					              but it had major version {major}
 					              """);
 			}
 
@@ -466,6 +525,26 @@ public sealed partial class ThatAssembly
 					              does not have major version greater than or equal to 0,
 					              but it had version {version}
 					              """);
+			}
+
+			[Test]
+			public async Task WhenOrderedAgainstNull_ShouldFail()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				async Task Act()
+				{
+					await That(assembly).DoesNotComplyWith(it => it.HasVersion().WithMajor.GreaterThan(null));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that assembly
+					              does not have major version greater than <null>,
+					              but it had major version {major}
+					              """)
+					.Because("an ordering against null answers neither the expectation nor its negation");
 			}
 
 			[Test]

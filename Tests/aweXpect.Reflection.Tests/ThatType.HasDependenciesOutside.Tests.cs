@@ -409,7 +409,12 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Types.InNamespace("Non.Existent.Namespace"));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has dependencies outside types within namespace "Non.Existent.Namespace" in all loaded assemblies,
+					             but it only depended on the allowed types
+					             """);
 			}
 
 			[Test]
@@ -422,7 +427,12 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Types.InNamespace("Non.Existent.Namespace"));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has dependencies outside types within namespace "Non.Existent.Namespace" in all loaded assemblies,
+					             but it only depended on the allowed types
+					             """);
 			}
 
 			[Test]

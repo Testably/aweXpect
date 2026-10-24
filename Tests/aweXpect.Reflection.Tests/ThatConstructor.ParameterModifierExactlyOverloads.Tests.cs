@@ -36,7 +36,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasInParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type Stream with in modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -75,7 +80,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasInParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int with name "other" with in modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -88,7 +98,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasInParameterExactly(typeof(Stream));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type Stream with in modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -127,7 +142,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasInParameterExactly(typeof(int), "other");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int with name "other" with in modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -179,7 +199,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int with name "other" with optional modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -218,7 +243,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameterExactly(typeof(int), "other");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int with name "other" with optional modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -244,7 +274,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOutParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type Stream with out modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -283,7 +318,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOutParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int with name "other" with out modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -296,7 +336,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOutParameterExactly(typeof(Stream));
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type Stream with out modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -335,7 +380,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOutParameterExactly(typeof(int), "other");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int with name "other" with out modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -387,7 +437,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameterExactly<int[]>("other");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int[] with name "other" with params modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -426,7 +481,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameterExactly(typeof(int[]), "other");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int[] with name "other" with params modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -509,7 +569,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasRefParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int with name "other" with ref modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]
@@ -579,7 +644,12 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasRefParameterExactly(typeof(int), "other");
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int with name "other" with ref modifier,
+					             but it did not
+					             """);
 			}
 
 			[Test]

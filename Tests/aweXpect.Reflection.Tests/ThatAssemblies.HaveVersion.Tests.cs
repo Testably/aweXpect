@@ -186,6 +186,30 @@ public sealed partial class ThatAssemblies
 			}
 
 			[Test]
+			public async Task WhenBetweenIsNotSatisfied_ShouldFail()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+				int major = typeof(PublicAbstractClass).Assembly.GetName().Version!.Major;
+
+				async Task Act()
+				{
+					await That(subject).HaveVersion().WithMajor.Between(major + 1).And(major + 2);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that in assembly containing type PublicAbstractClass
+					              all have major version between {major + 1} and {major + 2},
+					              but it contained assemblies with a non-matching version
+
+					              Not matching items:
+					              [
+					                aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					              ]
+					              """).AsWildcard();
+			}
+
+			[Test]
 			[Arguments("GreaterThan", 0, "greater than")]
 			[Arguments("GreaterThanOrEqualTo", 1, "greater than or equal to")]
 			[Arguments("LessThan", 0, "less than")]
@@ -221,19 +245,20 @@ public sealed partial class ThatAssemblies
 			}
 
 			[Test]
-			[Arguments("GreaterThan", 0)]
-			[Arguments("GreaterThanOrEqualTo", 1)]
-			[Arguments("LessThan", 0)]
-			[Arguments("LessThanOrEqualTo", -1)]
-			[Arguments("EqualTo", 1)]
-			[Arguments("NotEqualTo", 0)]
-			public async Task WhenComparisonIsNotSatisfied_ShouldFail(string comparison, int offset)
+			[Arguments("GreaterThan", 0, "greater than")]
+			[Arguments("GreaterThanOrEqualTo", 1, "greater than or equal to")]
+			[Arguments("LessThan", 0, "less than")]
+			[Arguments("LessThanOrEqualTo", -1, "less than or equal to")]
+			[Arguments("EqualTo", 1, "equal to")]
+			[Arguments("NotEqualTo", 0, "not equal to")]
+			public async Task WhenComparisonIsNotSatisfied_ShouldFail(string comparison, int offset, string wording)
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int expected = assembly.GetName().Version!.Major + offset;
 
 				async Task Act()
 				{
-					int expected = typeof(PublicAbstractClass).Assembly.GetName().Version!.Major + offset;
 					await (comparison switch
 					{
 						"GreaterThan" => That(subject).HaveVersion().WithMajor.GreaterThan(expected),
@@ -245,7 +270,17 @@ public sealed partial class ThatAssemblies
 					});
 				}
 
-				await That(Act).Throws<FailException>();
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that in assembly containing type PublicAbstractClass
+					              all have major version {wording} {expected},
+					              but it contained assemblies with a non-matching version
+
+					              Not matching items:
+					              [
+					                {assembly.FullName}
+					              ]
+					              """);
 			}
 
 			[Test]
@@ -410,6 +445,49 @@ public sealed partial class ThatAssemblies
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenNegatedAndOrderedAgainstNull_ShouldFail()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveVersion().WithMajor.GreaterThan(null));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that in assembly containing type PublicAbstractClass
+					             not all have major version greater than <null>,
+					             but it contained assemblies with a non-matching version
+					             """)
+					.Because("an ordering against null answers neither the expectation nor its negation");
+			}
+
+			[Test]
+			public async Task WhenNotGreaterThanIsNotSatisfied_ShouldFail()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+				int major = typeof(PublicAbstractClass).Assembly.GetName().Version!.Major;
+
+				async Task Act()
+				{
+					await That(subject).HaveVersion().WithMajor.NotGreaterThan(major - 1);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that in assembly containing type PublicAbstractClass
+					              all have major version not greater than {major - 1},
+					              but it contained assemblies with a non-matching version
+
+					              Not matching items:
+					              [
+					                aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					              ]
+					              """).AsWildcard();
 			}
 
 			[Test]
