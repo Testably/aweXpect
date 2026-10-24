@@ -238,12 +238,12 @@ public static partial class ThatEnumerable
 	internal static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsContainedInFromExpectationsCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
-			IEnumerable<Action<IThatSubject<TItem?>>> expected,
+			IEnumerable<Action<IThatSubject<TItem>>> expected,
 			string expectedExpression,
 			bool negated)
 	{
 		expected.ThrowIfNull(negated);
-		IEnumerable<Action<IThatSubject<TItem?>>> expectedValues = expected.WithoutNullElements(negated);
+		IEnumerable<Action<IThatSubject<TItem>>> expectedValues = expected.WithoutNullElements(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
@@ -396,13 +396,13 @@ public static partial class ThatEnumerable
 	internal static ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>
 		IsContainedInFromExpectationsForCollectionCore<TCollection, TItem>(
 			IThat<TCollection> subject,
-			IEnumerable<Action<IThatSubject<TItem?>>> expected,
+			IEnumerable<Action<IThatSubject<TItem>>> expected,
 			string expectedExpression,
 			bool negated)
 		where TCollection : IEnumerable<TItem>
 	{
 		expected.ThrowIfNull(negated);
-		IEnumerable<Action<IThatSubject<TItem?>>> expectedValues = expected.WithoutNullElements(negated);
+		IEnumerable<Action<IThatSubject<TItem>>> expectedValues = expected.WithoutNullElements(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
