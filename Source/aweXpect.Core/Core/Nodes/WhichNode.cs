@@ -233,9 +233,13 @@ internal class WhichNode<TSource, TMember> : Node
 		}
 
 		ValueTask<TMember?> valueTask = ((Func<TSource, ValueTask<TMember?>>)_asyncMemberAccessor!).Invoke(source);
-		return valueTask.IsCompletedSuccessfully
-			? (valueTask.Result, NullSubjectKind.None)
-			: (await valueTask.AsTask().AbandonOnCancellation(cancellationToken), NullSubjectKind.None);
+		if (valueTask.IsCompletedSuccessfully)
+		{
+			return (valueTask.Result, NullSubjectKind.None);
+		}
+
+		Task<TMember?> memberTask = valueTask.AsTask();
+		return (await memberTask.AbandonOnCancellation(cancellationToken), NullSubjectKind.None);
 	}
 
 	/// <inheritdoc cref="object.Equals(object?)" />

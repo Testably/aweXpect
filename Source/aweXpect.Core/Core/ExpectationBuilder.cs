@@ -1546,12 +1546,20 @@ public abstract class ExpectationBuilder
 		///     Creates the mapping node whose expectations are typed at <typeparamref name="TNarrowed" />.
 		/// </summary>
 		private MappingNode<TSource, TMember, TNarrowed> CreateMappingNode<TNarrowed>()
-			=> _memberAccessor is not null
-				? new MappingNode<TSource, TMember, TNarrowed>(_memberAccessor, _expectationTextGenerator)
-				: _asyncMemberAccessor is MemberAccessor<TSource, Task<TMember>> taskMemberAccessor
-					? new MappingNode<TSource, TMember, TNarrowed>(taskMemberAccessor, _expectationTextGenerator)
-					: new MappingNode<TSource, TMember, TNarrowed>(
-						(MemberAccessor<TSource, ValueTask<TMember>>)_asyncMemberAccessor!, _expectationTextGenerator);
+		{
+			if (_memberAccessor is not null)
+			{
+				return new MappingNode<TSource, TMember, TNarrowed>(_memberAccessor, _expectationTextGenerator);
+			}
+
+			if (_asyncMemberAccessor is MemberAccessor<TSource, Task<TMember>> taskMemberAccessor)
+			{
+				return new MappingNode<TSource, TMember, TNarrowed>(taskMemberAccessor, _expectationTextGenerator);
+			}
+
+			return new MappingNode<TSource, TMember, TNarrowed>(
+				(MemberAccessor<TSource, ValueTask<TMember>>)_asyncMemberAccessor!, _expectationTextGenerator);
+		}
 	}
 }
 
