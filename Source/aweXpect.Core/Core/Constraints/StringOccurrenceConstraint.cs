@@ -12,18 +12,10 @@ namespace aweXpect.Core.Constraints;
 ///     <see langword="string" /> subject, e.g. <c>contains "a" at least twice</c>.
 /// </summary>
 /// <remarks>
-///     Return it together with a <see cref="Results.StringOccurrenceCountResult{TType,TThat}" /> that shares the
-///     <paramref name="quantifier" /> and the <paramref name="options" />, and invert it for the negated expectation,
-///     e.g. <c>does not contain "a"</c>.
-///     <para />
-///     A <see langword="null" /> subject fails the expectation and its negation.
+///     Registered via <see cref="Extending.ExpectationBuilderExtensions" />. A <see langword="null" /> subject fails the
+///     expectation and its negation.
 /// </remarks>
-/// <param name="it">The name of the subject.</param>
-/// <param name="grammars">The grammars of the expectation.</param>
-/// <param name="expected">The <see langword="string" /> whose occurrences are counted.</param>
-/// <param name="quantifier">How often the <paramref name="expected" /> value has to occur.</param>
-/// <param name="options">How the <paramref name="expected" /> value is matched, e.g. as a wildcard pattern.</param>
-public sealed class StringOccurrenceConstraint(
+internal sealed class StringOccurrenceConstraint(
 	string it,
 	ExpectationGrammars grammars,
 	string expected,

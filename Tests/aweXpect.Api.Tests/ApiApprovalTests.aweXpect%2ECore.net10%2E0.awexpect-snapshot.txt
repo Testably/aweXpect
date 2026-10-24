@@ -803,16 +803,6 @@ namespace aweXpect.Core.Constraints
         Undecided = 2,
         FailureBothWays = 3,
     }
-    public sealed class StringOccurrenceConstraint : aweXpect.Core.Constraints.ConstraintResult, aweXpect.Core.Constraints.IAsyncContextConstraint<string?>, aweXpect.Core.Constraints.IConstraint
-    {
-        public StringOccurrenceConstraint(string it, aweXpect.Core.ExpectationGrammars grammars, string expected, aweXpect.Options.Quantifier quantifier, aweXpect.Options.StringEqualityOptions options) { }
-        public override void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
-        public override void AppendExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
-        public override void AppendResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
-        public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy(string? actual, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
-        public override aweXpect.Core.Constraints.ConstraintResult Negate() { }
-        public override bool TryGetStoredValue<TValue>(out TValue? value) { }
-    }
 }
 namespace aweXpect.Core.EvaluationContext
 {
@@ -886,6 +876,10 @@ namespace aweXpect.Core.Extending
     public sealed class EvaluationCancellationTokenAttribute : System.Attribute
     {
         public EvaluationCancellationTokenAttribute() { }
+    }
+    public static class ExpectationBuilderExtensions
+    {
+        public static aweXpect.Core.ExpectationBuilder AddStringOccurrenceConstraint(this aweXpect.Core.ExpectationBuilder expectationBuilder, string expected, aweXpect.Options.Quantifier quantifier, aweXpect.Options.StringEqualityOptions options, bool isNegated = false) { }
     }
     [System.AttributeUsage(System.AttributeTargets.Method)]
     public sealed class GenerateCollectionExpectationAttribute : System.Attribute

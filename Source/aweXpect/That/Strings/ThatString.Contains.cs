@@ -1,6 +1,5 @@
 ﻿using System;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -27,10 +26,8 @@ public static partial class ThatString
 		Quantifier quantifier = new();
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringOccurrenceCountResult<string, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint(
-				(Expected: expected, Quantifier: quantifier, Options: options),
-				static (state, it, grammars) =>
-					new StringOccurrenceConstraint(it, grammars, state.Expected, state.Quantifier, state.Options)),
+			Core.Extending.ExpectationBuilderExtensions.AddStringOccurrenceConstraint(
+				subject.Get().ExpectationBuilder, expected, quantifier, options),
 			subject,
 			quantifier,
 			options);
@@ -54,11 +51,8 @@ public static partial class ThatString
 		Quantifier quantifier = new();
 		StringEqualityOptions options = new(nameof(unexpected));
 		return new StringOccurrenceCountResult<string, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint(
-				(Unexpected: unexpected, Quantifier: quantifier, Options: options),
-				static (state, it, grammars) =>
-					new StringOccurrenceConstraint(it, grammars, state.Unexpected, state.Quantifier, state.Options)
-						.Invert()),
+			Core.Extending.ExpectationBuilderExtensions.AddStringOccurrenceConstraint(
+				subject.Get().ExpectationBuilder, unexpected, quantifier, options, isNegated: true),
 			subject,
 			quantifier,
 			options);
