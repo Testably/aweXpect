@@ -482,9 +482,7 @@ public sealed class GuaranteesNotNullTests
 		{
 			try
 			{
-				current = continuation.Invoke(current,
-					continuation.GetParameters().Select(parameter => CreateContinuationArgument(parameter, nullValues))
-						.ToArray())!;
+				current = InvokeContinuation(continuation, current, nullValues)!;
 			}
 			catch (TargetInvocationException exception) when (exception.InnerException is not null)
 			{
@@ -1126,8 +1124,7 @@ public sealed class GuaranteesNotNullTests
 				object? result;
 				try
 				{
-					result = continuation.Invoke(expectation,
-						continuation.GetParameters().Select(parameter => CreateContinuationArgument(parameter, false)).ToArray());
+					result = InvokeContinuation(continuation, expectation, false);
 				}
 				catch (Exception)
 				{
@@ -1150,7 +1147,47 @@ public sealed class GuaranteesNotNullTests
 			.GetMethods(BindingFlags.Public | BindingFlags.Instance)
 			.Where(method => method.DeclaringType != typeof(object) && !method.IsSpecialName &&
 			                 !method.IsGenericMethodDefinition && method.ReturnType != typeof(void))
+			.Concat(GetExtensionContinuations(expectation.GetType()))
 			.OrderBy(method => method.Name, StringComparer.Ordinal);
+
+	/// <summary>
+	///     Returns the extension methods of aweXpect.Core that continue a result through a generic interface it
+	///     implements, closed for that result.
+	/// </summary>
+	/// <remarks>
+	///     The operators of the property results, e.g. <c>EqualTo</c> after <c>HasLength()</c>, are extension methods on
+	///     an interface that the result implements explicitly, so they are no instance methods of the result.
+	/// </remarks>
+	private static IEnumerable<MethodInfo> GetExtensionContinuations(Type resultType)
+	{
+		Dictionary<Type, Type> interfaces = resultType.GetInterfaces()
+			.Where(type => type.IsGenericType && type.GetGenericArguments().Length == 1)
+			.GroupBy(type => type.GetGenericTypeDefinition())
+			.ToDictionary(group => group.Key, group => group.First());
+		return typeof(IIntPropertyResult<>).Assembly.GetExportedTypes()
+			.Where(type => type is { IsAbstract: true, IsSealed: true, } &&
+			               type.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute)))
+			.SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.Static))
+			.Where(method => method.IsGenericMethodDefinition && method.GetGenericArguments().Length == 1 &&
+			                 method.ReturnType != typeof(void))
+			.Select(method => (Method: method, Receiver: method.GetParameters().FirstOrDefault()?.ParameterType))
+			.Where(candidate => candidate.Receiver is { IsGenericType: true, IsInterface: true, } receiver &&
+			                    receiver.GetGenericArguments()[0] == candidate.Method.GetGenericArguments()[0] &&
+			                    interfaces.ContainsKey(receiver.GetGenericTypeDefinition()))
+			.Select(candidate => candidate.Method.MakeGenericMethod(
+				interfaces[candidate.Receiver!.GetGenericTypeDefinition()].GetGenericArguments()[0]));
+	}
+
+	private static object? InvokeContinuation(MethodInfo continuation, object expectation, bool nullValues)
+		=> continuation.IsStatic
+			? continuation.Invoke(null, continuation.GetParameters()
+				.Select((parameter, index) => index == 0
+					? expectation
+					: CreateContinuationArgument(parameter, nullValues))
+				.ToArray())
+			: continuation.Invoke(expectation, continuation.GetParameters()
+				.Select(parameter => CreateContinuationArgument(parameter, nullValues))
+				.ToArray());
 
 	private static object? CreateContinuationArgument(ParameterInfo parameter, bool nullValues)
 		=> parameter.ParameterType == typeof(TimeSpan)
