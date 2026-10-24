@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
-        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
-      },
-      {
         "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
         "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
+      },
+      {
+        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
+        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
       }
     ],
     "labels": [
-      "97f51880",
       "f79b883b",
       "a1c8667e",
       "3f14b764",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "198a7440",
       "12a2b76f",
       "67432f46",
-      "91cfa9f0"
+      "91cfa9f0",
+      "4eec7318"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10516.810688563755,
           5565.60806110927,
           10032.839408287635,
           7998.385415884165,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           7822.334305899484,
           7674.64283316476,
           5438.740982055664,
-          10763.331905658428
+          10763.331905658428,
+          11361.214368547711
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          382014.3905552455,
           193524.22182992788,
           327843.73541666666,
           305672.903515625,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           253496.61342075892,
           243978.09936523438,
           171168.4903564453,
-          368104.6346261161
+          368104.6346261161,
+          381906.66744791664
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590287,
           590288,
           590290,
           590225,
@@ -594,6 +593,7 @@ window.BENCHMARK_DATA = {
           590289,
           590288,
           590287,
+          590292,
           590292
         ],
         "borderColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          20383.85305582682,
           10966.696462777945,
           18188.214909144812,
           19103.406650797526,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           14615.994557698568,
           14318.853892008463,
           10280.287642342704,
-          19452.899841308594
+          19452.899841308594,
+          19653.805741373697
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
-        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
-      },
-      {
         "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
         "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
+      },
+      {
+        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
+        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
       }
     ],
     "labels": [
-      "97f51880",
       "f79b883b",
       "a1c8667e",
       "3f14b764",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "198a7440",
       "12a2b76f",
       "67432f46",
-      "91cfa9f0"
+      "91cfa9f0",
+      "4eec7318"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          270.479339156832,
           134.29815770785015,
           242.85649299621582,
           294.68755640302385,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           205.65544237409318,
           193.84326260884603,
           131.96356910925644,
-          307.8254539489746
+          307.8254539489746,
+          305.7269687016805
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          502.7086584726969,
           280.3892458120982,
           538.0535874048869,
           617.9251672744751,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           454.4919906616211,
           408.8997362136841,
           263.95452427864075,
-          522.02847637449
+          522.02847637449,
+          536.2102851867676
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          386.9814012209574,
           223.3083086013794,
           394.9460385322571,
           431.14446315765383,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           310.2939220428467,
           293.45769952138266,
           208.53382562001545,
-          413.87239166895546
+          413.87239166895546,
+          428.2126350402832
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
-        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
-      },
-      {
         "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
         "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
+      },
+      {
+        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
+        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
       }
     ],
     "labels": [
-      "97f51880",
       "f79b883b",
       "a1c8667e",
       "3f14b764",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "198a7440",
       "12a2b76f",
       "67432f46",
-      "91cfa9f0"
+      "91cfa9f0",
+      "4eec7318"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          130.71092019081115,
           69.70118754704794,
           131.46318513552347,
           159.2056476434072,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           111.65735150178274,
           112.97628557682037,
           73.56691530772618,
-          148.81204695701598
+          148.81204695701598,
+          155.232170019831
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          251.06090536117554,
           131.66076879501344,
           262.4545056819916,
           339.6135336802556,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           213.2433645884196,
           207.0913911966177,
           134.71666740576427,
-          266.2779497782389
+          266.2779497782389,
+          268.1421449979146
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          235.86409366925557,
           131.8313106218974,
           241.21304072652543,
           246.65541149775189,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           192.27366811888558,
           186.34868797234125,
           125.0022577898843,
-          253.5050666515644
+          253.5050666515644,
+          253.734072971344
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
-        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
-      },
-      {
         "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
         "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
+      },
+      {
+        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
+        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
       }
     ],
     "labels": [
-      "97f51880",
       "f79b883b",
       "a1c8667e",
       "3f14b764",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "198a7440",
       "12a2b76f",
       "67432f46",
-      "91cfa9f0"
+      "91cfa9f0",
+      "4eec7318"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          250.2786771138509,
           134.7234858104161,
           238.57285486857097,
           254.17224890845162,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           201.55737851460773,
           199.81796620442316,
           139.46009581429618,
-          267.86706886291506
+          267.86706886291506,
+          273.2257217725118
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          503.6238045374552,
           294.3372019131978,
           530.3193781534831,
           682.5105393091837,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           426.06097049713134,
           422.7588239987691,
           266.4523186683655,
-          529.1981568018596
+          529.1981568018596,
+          551.7504915237427
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          324.0084431171417,
           198.53151828447977,
           336.73750281333923,
           358.38173716408863,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           255.58313453992207,
           256.9804555892944,
           181.3638050556183,
-          346.1922581036886
+          346.1922581036886,
+          343.26693221500943
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
-        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
-      },
-      {
         "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
         "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
+      },
+      {
+        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
+        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
       }
     ],
     "labels": [
-      "97f51880",
       "f79b883b",
       "a1c8667e",
       "3f14b764",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "198a7440",
       "12a2b76f",
       "67432f46",
-      "91cfa9f0"
+      "91cfa9f0",
+      "4eec7318"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          638.7472033500671,
           336.51094420750934,
           610.549770281865,
           592.595131942204,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           492.58369140625,
           510.66708011627196,
           352.70454772313434,
-          689.2711715017047
+          689.2711715017047,
+          661.6303016662598
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1306.8218197141375,
           771.0488004048665,
           1473.319426981608,
           1565.3053265980311,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1129.9494004567464,
           1081.0514310201008,
           775.774098777771,
-          1372.5945108958654
+          1372.5945108958654,
+          1362.1996014458794
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          645.032735824585,
           383.0595750808716,
           666.8937075932821,
           665.7546242986407,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           530.8613119125366,
           509.4476782480876,
           356.4490525325139,
-          665.2836076100667
+          665.2836076100667,
+          695.2886538823445
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
-        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
-      },
-      {
         "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
         "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
+      },
+      {
+        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
+        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
       }
     ],
     "labels": [
-      "97f51880",
       "f79b883b",
       "a1c8667e",
       "3f14b764",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "198a7440",
       "12a2b76f",
       "67432f46",
-      "91cfa9f0"
+      "91cfa9f0",
+      "4eec7318"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          621.4816630681356,
           318.46661682128905,
           619.1422570546468,
           595.3261630875724,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           534.1135330200195,
           489.50927035013837,
           358.2784534601065,
-          658.7635319573538
+          658.7635319573538,
+          627.8945004781087
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28324.214085170202,
           11110.653725760323,
           20550.406850179035,
           18596.247584751673,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           17186.323482259115,
           16172.026527913411,
           10866.246428353446,
-          28518.05124104818
+          28518.05124104818,
+          27961.20649617513
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33465,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          805.3896629333497,
           437.79312161604565,
           784.8698439280192,
           772.2460144587925,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           620.2818890889486,
           583.8545824050904,
           447.77828108469646,
-          825.5862543741862
+          825.5862543741862,
+          834.5153518040975
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
-        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
-      },
-      {
         "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
         "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
+      },
+      {
+        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
+        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
       }
     ],
     "labels": [
-      "97f51880",
       "f79b883b",
       "a1c8667e",
       "3f14b764",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "198a7440",
       "12a2b76f",
       "67432f46",
-      "91cfa9f0"
+      "91cfa9f0",
+      "4eec7318"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          654.0513550213406,
           374.3703487941197,
           650.9256905237834,
           713.1207670211792,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           548.080187865666,
           526.0074049631754,
           346.3725249608358,
-          761.1003993579319
+          761.1003993579319,
+          752.9240113576253
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4864,7 +4864,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
-          1680,
+          1688,
           1688,
           1688,
           1688
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          84169.06353759766,
           30317.08906656901,
           62032.67530168806,
           34334.53500976563,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           53812.21346028646,
           53011.61732991537,
           28738.300939941408,
-          81938.48835100446
+          81938.48835100446,
+          83764.99350585937
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5256,
           5252,
           5256,
@@ -4992,6 +4991,7 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
-        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
-      },
       {
         "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
         "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
+      },
+      {
+        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
+        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
       }
     ],
     "labels": [
-      "97f51880",
       "f79b883b",
       "a1c8667e",
       "3f14b764",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "198a7440",
       "12a2b76f",
       "67432f46",
-      "91cfa9f0"
+      "91cfa9f0",
+      "4eec7318"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          158.92731838959915,
           91.01379098211017,
           169.73957769076029,
           204.64493896280015,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           127.07751408645085,
           140.83969394365946,
           93.76304816282712,
-          183.7586667060852
+          183.7586667060852,
+          186.6474791254316
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          32033.89337158203,
           10491.69473702567,
           18978.51334431966,
           17825.74970296224,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           15506.104487101236,
           14674.948780940129,
           10180.244286170373,
-          33364.99719238281
+          33364.99719238281,
+          32421.829459635417
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5551,7 +5551,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5614,
           5615,
           5614,
           5614,
@@ -5600,6 +5599,7 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          240.73449042638143,
           133.82153594493866,
           241.12588799794514,
           253.87563813527424,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           183.42867705027263,
           187.80983516375224,
           124.98722064495087,
-          250.2806865618779
+          250.2806865618779,
+          255.38575887680054
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
-        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
-      },
-      {
         "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
         "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
+      },
+      {
+        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
+        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
       }
     ],
     "labels": [
-      "97f51880",
       "f79b883b",
       "a1c8667e",
       "3f14b764",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "198a7440",
       "12a2b76f",
       "67432f46",
-      "91cfa9f0"
+      "91cfa9f0",
+      "4eec7318"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          346.09351307551066,
           178.4351622717721,
           322.7528621037801,
           347.9046195575169,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           283.74410346349083,
           264.24854806264244,
           191.41836733477456,
-          353.37041641871133
+          353.37041641871133,
+          355.27661596934
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          370.74706166131153,
           228.26306172779627,
           419.54236466089884,
           493.0133429209391,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           325.79122712061957,
           311.7337171481206,
           207.38212335904439,
-          401.18589331309
+          401.18589331309,
+          409.6259557723999
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          398.76665977636975,
           233.39736609799522,
           439.96566715240476,
           410.8257861455282,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           347.3669530550639,
           334.90938445499967,
           211.25591054329504,
-          405.34118874867755
+          405.34118874867755,
+          419.0639672915141
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
-        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
-      },
-      {
         "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
         "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
+      },
+      {
+        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
+        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
       }
     ],
     "labels": [
-      "97f51880",
       "f79b883b",
       "a1c8667e",
       "3f14b764",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "198a7440",
       "12a2b76f",
       "67432f46",
-      "91cfa9f0"
+      "91cfa9f0",
+      "4eec7318"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          615.635834757487,
           348.6488876978556,
           608.6549126942953,
           650.0405130386353,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           535.659684254573,
           532.4402893702189,
           365.53554512659707,
-          689.5380158057579
+          689.5380158057579,
+          740.1644013722738
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6914,7 +6914,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
-          1376,
+          1384,
           1384,
           1384,
           1384,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2048.7143463134767,
           1099.1247670309883,
           1958.177791595459,
           2289.6676272074383,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1671.4951089223225,
           1580.8377159118652,
           1019.6383450371878,
-          1949.5197568620954
+          1949.5197568620954,
+          2135.9847106933594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          919.4237275804792,
           518.8190714518229,
           946.2125942866007,
           955.6744725363595,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           787.5017206192017,
           732.459457842509,
           479.40765967735877,
-          951.285573550633
+          951.285573550633,
+          997.085179011027
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
-        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
-      },
-      {
         "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
         "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
+      },
+      {
+        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
+        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
       }
     ],
     "labels": [
-      "97f51880",
       "f79b883b",
       "a1c8667e",
       "3f14b764",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "198a7440",
       "12a2b76f",
       "67432f46",
-      "91cfa9f0"
+      "91cfa9f0",
+      "4eec7318"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11481.407565777119,
           5834.7691895621165,
           10486.539161682129,
           9414.28011372884,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           8152.490203857422,
           8117.148913792202,
           5803.115167890276,
-          11320.518356323242
+          11320.518356323242,
+          11523.987080891928
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          40645.24767659505,
           18604.067947387695,
           34197.107291085376,
           31628.6806640625,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           27208.274605887276,
           26717.617213948568,
           18841.228112357003,
-          40509.79100254604
+          40509.79100254604,
+          41710.570181039664
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7752,7 +7752,6 @@ window.BENCHMARK_DATA = {
         "data": [
           18609,
           18609,
-          18609,
           18393,
           18609,
           18394,
@@ -7788,6 +7787,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10611.692029680524,
           5673.658806434045,
           10063.809443882534,
           9614.946305411202,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           7969.653987339565,
           7766.589430588942,
           5755.20072072347,
-          10481.123935406025
+          10481.123935406025,
+          10653.409844534737
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
-        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
-      },
-      {
         "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
         "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
+      },
+      {
+        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
+        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
       }
     ],
     "labels": [
-      "97f51880",
       "f79b883b",
       "a1c8667e",
       "3f14b764",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "198a7440",
       "12a2b76f",
       "67432f46",
-      "91cfa9f0"
+      "91cfa9f0",
+      "4eec7318"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11045.634909057617,
           5530.587349524865,
           9802.961926051548,
           8899.073635864257,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           7692.775153526893,
           7745.5442622258115,
           5642.8367039998375,
-          11112.797286987305
+          11112.797286987305,
+          11197.149699910482
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          58736.55983323317,
           27581.644738333565,
           49131.589040902945,
           47054.94351632254,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           38888.241878255205,
           38277.96702067057,
           28154.758806501115,
-          58533.55694173177
+          58533.55694173177,
+          59701.42525809152
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8483,7 +8483,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          23553,
           23553,
           23553,
           23553,
@@ -8532,6 +8531,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
+          23553,
           23553
         ],
         "borderColor": "#FF671B",
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          20907.663456508093,
           11391.779818943569,
           19770.943290201823,
           18356.89740193685,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           15523.372462972005,
           15394.716619873047,
           11718.632803344726,
-          20758.081342424666
+          20758.081342424666,
+          21251.199247087752
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
