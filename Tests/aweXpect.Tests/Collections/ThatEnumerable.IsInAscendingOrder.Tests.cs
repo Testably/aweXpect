@@ -29,7 +29,7 @@ public sealed partial class ThatEnumerable
 			public async Task WhenComparerIsSpecifiedTwice_ShouldThrowInvalidOperationException()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
-				CollectionOrderResult<int, IEnumerable<int>, IThat<IEnumerable<int>?>> sut =
+				CollectionOrderResult<IEnumerable<int>, IThat<IEnumerable<int>?>, int> sut =
 					That(subject).IsInAscendingOrder();
 				_ = sut.Using(Comparer<int>.Default);
 

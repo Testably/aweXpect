@@ -682,7 +682,7 @@ public sealed class GuaranteesNotNullTests
 		Type[] declaredArguments = declared.GetGenericArguments();
 		for (int index = 0; index < arguments.Length; index++)
 		{
-			if (!IsInputValue(type, parameters[index]) &&
+			if (!IsInputValue(parameters[index]) &&
 			    Names(arguments[index], declaredArguments[index], flags, next, subjectType, asNullable, visited))
 			{
 				return true;
@@ -696,11 +696,10 @@ public sealed class GuaranteesNotNullTests
 
 	/// <summary>
 	///     A type argument that stands for a value the result reads rather than hands out: the <c>TValue</c> a property
-	///     builder maps from and the bounds of a <see cref="Results.BetweenResult{TTarget, TType}" />.
+	///     builder maps from and the bounds of a <see cref="Results.BetweenResult{TResult, TValue}" />.
 	/// </summary>
-	private static bool IsInputValue(Type type, Type parameter)
-		=> parameter.Name == "TValue" ||
-		   (type.GetGenericTypeDefinition() == typeof(BetweenResult<,>) && parameter.GenericParameterPosition == 1);
+	private static bool IsInputValue(Type parameter)
+		=> parameter.Name == "TValue";
 
 	private static bool TakesASlot(Type type)
 		=> type.IsGenericParameter

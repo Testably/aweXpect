@@ -5,7 +5,7 @@ namespace aweXpect.Core;
 /// <summary>
 ///     The matcher for collections.
 /// </summary>
-public interface ICollectionMatcher<in T, out T2> where T : T2
+public interface ICollectionMatcher<in TItem, out TMatch> where TItem : TMatch
 {
 	/// <summary>
 	///     Indicates that the values verified so far determine the result, so that the remaining values of the subject
@@ -26,7 +26,7 @@ public interface ICollectionMatcher<in T, out T2> where T : T2
 	/// </remarks>
 	/// <returns><see langword="true" /> when it results in a failure, otherwise <see langword="false" />.</returns>
 	ValueTask<(bool IsFailure, string? Failure)>
-		Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber);
+		Verify(string it, TItem value, IOptionsEquality<TMatch> options, int maximumNumber);
 
 	/// <summary>
 	///     Verifies if it results in a failure when the enumeration is complete.
@@ -37,5 +37,5 @@ public interface ICollectionMatcher<in T, out T2> where T : T2
 	/// </remarks>
 	/// <returns><see langword="true" /> when it results in a failure, otherwise <see langword="false" />.</returns>
 	ValueTask<(bool IsFailure, string? Failure)>
-		VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber);
+		VerifyComplete(string it, IOptionsEquality<TMatch> options, int maximumNumber);
 }

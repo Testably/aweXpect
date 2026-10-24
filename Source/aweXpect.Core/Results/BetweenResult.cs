@@ -1,30 +1,16 @@
 ﻿using System;
-using aweXpect.Core;
 
 namespace aweXpect.Results;
 
 /// <summary>
 ///     An intermediate type to collect the maximum of the range.
 /// </summary>
-public class BetweenResult<TTarget>(
-	Func<int, TTarget> callback)
-{
-	/// <summary>
-	///     …and <paramref name="maximum" /> items…
-	/// </summary>
-	public TTarget And(Times maximum)
-		=> callback(maximum.Value);
-}
-
-/// <summary>
-///     An intermediate type to collect the maximum of the range.
-/// </summary>
-public class BetweenResult<TTarget, TType>(
-	Func<TType, TTarget> callback)
+public class BetweenResult<TResult, TValue>(
+	Func<TValue, TResult> callback)
 {
 	/// <summary>
 	///     …and the <paramref name="maximum" /> value.
 	/// </summary>
-	public TTarget And(TType maximum)
+	public TResult And(TValue maximum)
 		=> callback(maximum);
 }

@@ -10,7 +10,7 @@ namespace aweXpect.Results;
 ///     In addition to the combinations from <see cref="AndOrResult{TType,TThat}" />, allows specifying
 ///     the <see cref="IComparer{TMember}" /> used to verify the order of items.
 /// </summary>
-public class CollectionOrderResult<TMember, TType, TThat>(
+public class CollectionOrderResult<TType, TThat, TMember>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
 	CollectionOrderOptions<TMember> options)

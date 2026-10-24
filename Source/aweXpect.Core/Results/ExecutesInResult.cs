@@ -52,23 +52,9 @@ public class ExecutesInResult<TResult>(
 	/// <summary>
 	///     …between <paramref name="minimum" />…
 	/// </summary>
-	public BetweenResult Between(TimeSpan minimum) => new(maximum =>
+	public BetweenResult<TResult, TimeSpan> Between(TimeSpan minimum) => new(maximum =>
 	{
 		options.Between(minimum, maximum);
 		return returnValue;
 	});
-
-	/// <summary>
-	///     An intermediate type to collect the maximum of the time range.
-	/// </summary>
-	public class BetweenResult(
-		Func<TimeSpan, TResult> callback)
-	{
-		/// <summary>
-		///     …and <paramref name="maximum" /> time.
-		/// </summary>
-		/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
-		public TResult And(TimeSpan maximum)
-			=> callback(maximum);
-	}
 }

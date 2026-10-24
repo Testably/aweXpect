@@ -2421,7 +2421,7 @@ namespace aweXpect.Reflection
             public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Collections.Filtered.Types> AtLeast() { }
             public aweXpect.Reflection.Collections.Filtered.Types AtMost(aweXpect.Core.Times maximum) { }
             public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Collections.Filtered.Types> AtMost() { }
-            public aweXpect.Results.BetweenResult<aweXpect.Reflection.Collections.Filtered.Types> Between(int minimum) { }
+            public aweXpect.Results.BetweenResult<aweXpect.Reflection.Collections.Filtered.Types, aweXpect.Core.Times> Between(int minimum) { }
             public aweXpect.Reflection.Collections.Filtered.Types Exactly(aweXpect.Core.Times expected) { }
             public aweXpect.Reflection.Collections.Filtered.Types LessThan(aweXpect.Core.Times maximum) { }
             public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Collections.Filtered.Types> LessThan() { }

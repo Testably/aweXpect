@@ -79,7 +79,7 @@ public static partial class TypeFilters
 		/// <summary>
 		///     Verifies, that the matching members occur between <paramref name="minimum" />…
 		/// </summary>
-		public BetweenResult<Filtered.Types> Between(int minimum)
+		public BetweenResult<Filtered.Types, Times> Between(int minimum)
 			=> new(maximum => Quantify(quantifier => quantifier.Between(minimum, maximum)));
 
 		/// <summary>

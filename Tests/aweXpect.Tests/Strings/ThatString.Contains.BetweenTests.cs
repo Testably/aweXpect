@@ -1,4 +1,7 @@
-﻿namespace aweXpect.Tests;
+﻿using aweXpect.Core;
+using aweXpect.Results;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatString
 {
@@ -68,6 +71,27 @@ public sealed partial class ThatString
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
 					.WithMessage("The maximum must not be negative.").AsPrefix().And
 					.WithParamName("maximum");
+			}
+
+			[Test]
+			public async Task WhenMaximumIsSpecifiedOnTheBetweenResult_ShouldVerifyTheRange()
+			{
+				string subject =
+					"In this text in between the word an investigator should find the word 'IN' multiple times.";
+				string expected = "in";
+				BetweenResult<StringOccurrenceCountResult<string, IThat<string?>>, Times> sut =
+					That(subject).Contains(expected).Between(1);
+
+				async Task Act()
+					=> await sut.And(2);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "in" between 1 and 2 times,
+					             but it contained "in" at least 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
+					             """)
+					.Because("the quantifier collects the maximum on the same between result as every other range");
 			}
 
 			[Test]

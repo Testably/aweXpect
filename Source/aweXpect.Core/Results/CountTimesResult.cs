@@ -5,18 +5,18 @@ namespace aweXpect.Results;
 /// <summary>
 ///     An intermediate type to collect the number of times.
 /// </summary>
-public class CountTimesResult<TTarget>(
-	Func<int, TTarget> callback)
+public class CountTimesResult<TResult>(
+	Func<int, TResult> callback)
 {
 	/// <summary>
 	///     …once.
 	/// </summary>
-	public TTarget Once()
+	public TResult Once()
 		=> callback(1);
 
 	/// <summary>
 	///     …twice.
 	/// </summary>
-	public TTarget Twice()
+	public TResult Twice()
 		=> callback(2);
 }

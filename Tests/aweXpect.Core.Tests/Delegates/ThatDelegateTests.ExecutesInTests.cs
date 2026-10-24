@@ -92,7 +92,7 @@ public sealed partial class ThatDelegateTests
 		public async Task Between_WhenAndIsSpecifiedTwice_ShouldThrowInvalidOperationException()
 		{
 			Action @delegate = () => { };
-			ExecutesInResult<AndResult<ThatDelegate.WithoutValue>>.BetweenResult sut =
+			BetweenResult<AndResult<ThatDelegate.WithoutValue>, TimeSpan> sut =
 				That(@delegate).ExecutesIn().Between(1.Seconds());
 			_ = sut.And(2.Seconds());
 

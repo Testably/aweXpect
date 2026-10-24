@@ -16,84 +16,84 @@ namespace aweXpect.Results;
 ///     for order, e.g. with <see cref="GreaterThan(int?)" />, it fails also when negated, because nothing can be
 ///     ordered against <see langword="null" />.
 /// </remarks>
-public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TReturn> factory)
+public class CollectionCountResult<TResult>(Func<EnumerableQuantifier, bool, TResult> factory)
 {
 	/// <summary>
 	///     Verifies that the collection has exactly <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn EqualTo(int? expected)
+	public TResult EqualTo(int? expected)
 		=> factory(EnumerableQuantifier.Exactly(expected), false);
 
 	/// <summary>
 	///     Verifies that the collection does not have exactly <paramref name="unexpected" /> items.
 	/// </summary>
-	public TReturn NotEqualTo(int? unexpected)
+	public TResult NotEqualTo(int? unexpected)
 		=> factory(EnumerableQuantifier.Exactly(unexpected), true);
 
 	/// <summary>
 	///     Verifies that the collection has more than <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn GreaterThan(int? expected)
+	public TResult GreaterThan(int? expected)
 		=> factory(Ordered(expected, EnumerableQuantifier.MoreThan, "more than"), false);
 
 	/// <summary>
 	///     Verifies that the collection does not have more than <paramref name="unexpected" /> items.
 	/// </summary>
-	public TReturn NotGreaterThan(int? unexpected)
+	public TResult NotGreaterThan(int? unexpected)
 		=> factory(Ordered(unexpected, EnumerableQuantifier.MoreThan, "more than"), true);
 
 	/// <summary>
 	///     Verifies that the collection has at least <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn GreaterThanOrEqualTo(int? expected)
+	public TResult GreaterThanOrEqualTo(int? expected)
 		=> factory(Ordered(expected, EnumerableQuantifier.AtLeast, "at least"), false);
 
 	/// <summary>
 	///     Verifies that the collection does not have at least <paramref name="unexpected" /> items.
 	/// </summary>
-	public TReturn NotGreaterThanOrEqualTo(int? unexpected)
+	public TResult NotGreaterThanOrEqualTo(int? unexpected)
 		=> factory(Ordered(unexpected, EnumerableQuantifier.AtLeast, "at least"), true);
 
 	/// <summary>
 	///     Verifies that the collection has fewer than <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn LessThan(int? expected)
+	public TResult LessThan(int? expected)
 		=> factory(Ordered(expected, EnumerableQuantifier.LessThan, "fewer than"), false);
 
 	/// <summary>
 	///     Verifies that the collection does not have fewer than <paramref name="unexpected" /> items.
 	/// </summary>
-	public TReturn NotLessThan(int? unexpected)
+	public TResult NotLessThan(int? unexpected)
 		=> factory(Ordered(unexpected, EnumerableQuantifier.LessThan, "fewer than"), true);
 
 	/// <summary>
 	///     Verifies that the collection has at most <paramref name="expected" /> items.
 	/// </summary>
-	public TReturn LessThanOrEqualTo(int? expected)
+	public TResult LessThanOrEqualTo(int? expected)
 		=> factory(Ordered(expected, EnumerableQuantifier.AtMost, "at most"), false);
 
 	/// <summary>
 	///     Verifies that the collection does not have at most <paramref name="unexpected" /> items.
 	/// </summary>
-	public TReturn NotLessThanOrEqualTo(int? unexpected)
+	public TResult NotLessThanOrEqualTo(int? unexpected)
 		=> factory(Ordered(unexpected, EnumerableQuantifier.AtMost, "at most"), true);
 
 	/// <summary>
 	///     Verifies that the collection has between <paramref name="minimum" />…
 	/// </summary>
-	public BetweenResult<TReturn, int?> Between(int? minimum)
+	public BetweenResult<TResult, int?> Between(int? minimum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(minimum);
-		return new BetweenResult<TReturn, int?>(maximum => factory(Range(minimum, maximum), false));
+		return new BetweenResult<TResult, int?>(maximum => factory(Range(minimum, maximum), false));
 	}
 
 	/// <summary>
 	///     Verifies that the collection does not have between <paramref name="minimum" />…
 	/// </summary>
-	public BetweenResult<TReturn, int?> NotBetween(int? minimum)
+	public BetweenResult<TResult, int?> NotBetween(int? minimum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(minimum);
-		return new BetweenResult<TReturn, int?>(maximum => factory(Range(minimum, maximum), true));
+		return new BetweenResult<TResult, int?>(maximum => factory(Range(minimum, maximum), true));
 	}
 
 	private static EnumerableQuantifier Ordered(int? expected, Func<int, EnumerableQuantifier> quantifier,
