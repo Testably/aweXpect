@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Customization;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
 
 namespace aweXpect.Reflection.Tests;
@@ -48,6 +49,36 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenAsManyTypesHaveDisallowedDependenciesAsTheMaximumNumberOfCollectionItems_ShouldListAll()
+			{
+				using IDisposable _ = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2);
+				IEnumerable<Type?> subject =
+				[
+					typeof(Layer1AndLayer2),
+					null,
+				];
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn(Layer1Namespace);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              all depend only on namespace "{Layer1Namespace}",
+					              but it contained types with disallowed dependencies
+
+					              Not matching items:
+					              [
+					                Layer1AndLayer2 depends on ["{Layer2Namespace}"],
+					                <null>
+					              ]
+					              """)
+					.Because("the list is only limited when it has more items than the maximum");
+			}
+
+			[Test]
 			public async Task WhenCollectionContainsNull_ShouldListNullWithoutViolations()
 			{
 				IEnumerable<Type?> subject =
@@ -72,6 +103,36 @@ public sealed partial class ThatTypes
 					                <null>
 					              ]
 					              """);
+			}
+
+			[Test]
+			public async Task WhenMoreTypesHaveDisallowedDependenciesThanTheMaximumNumberOfCollectionItems_ShouldLimitTheList()
+			{
+				using IDisposable _ = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(1);
+				IEnumerable<Type?> subject =
+				[
+					typeof(Layer1AndLayer2),
+					null,
+				];
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn(Layer1Namespace);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              all depend only on namespace "{Layer1Namespace}",
+					              but it contained types with disallowed dependencies
+
+					              Not matching items:
+					              [
+					                Layer1AndLayer2 depends on ["{Layer2Namespace}"],
+					                (… and 1 more)
+					              ]
+					              """)
+					.Because("the not matching types are limited like any other collection in a failure message");
 			}
 
 			[Test]

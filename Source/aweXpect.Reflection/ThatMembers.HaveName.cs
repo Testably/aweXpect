@@ -204,25 +204,9 @@ public static partial class ThatMembers
 			=> IsNegated ? base.FormatItems(items) : () => FormatMismatches(items);
 
 		private string FormatMismatches(TMember[] items)
-		{
-			StringBuilder stringBuilder = new();
-			stringBuilder.Append('[');
-			bool isFirst = true;
-			foreach (TMember memberInfo in items)
-			{
-				if (!isFirst)
-				{
-					stringBuilder.Append(',');
-				}
-
-				isFirst = false;
-				stringBuilder.AppendLine().Append("  ")
-					.Append(Formatter.Format(FormattableMember.From(memberInfo)))
-					.Append(" with name ").Append(Formatter.Format(memberInfo?.Name))
-					.Append(" instead of ").Append(Formatter.Format(UserCode.Invoke(expectedNameSelector, memberInfo, "the name selector")));
-			}
-
-			return stringBuilder.AppendLine().Append(']').ToString();
-		}
+			=> ItemListRenderer.Format(items, (stringBuilder, memberInfo) => stringBuilder
+				.Append(Formatter.Format(FormattableMember.From(memberInfo)))
+				.Append(" with name ").Append(Formatter.Format(memberInfo?.Name))
+				.Append(" instead of ").Append(Formatter.Format(UserCode.Invoke(expectedNameSelector, memberInfo, "the name selector"))));
 	}
 }
