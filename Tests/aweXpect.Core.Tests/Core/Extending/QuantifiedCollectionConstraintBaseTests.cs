@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Formatting;
 using aweXpect.Options;
 using aweXpect.Results;
 
-namespace aweXpect.Core.Tests.Collections;
+namespace aweXpect.Core.Tests.Core.Extending;
 
 public sealed class QuantifiedCollectionConstraintBaseTests
 {

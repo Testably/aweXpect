@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Helpers;
 using aweXpect.Options;
 
-namespace aweXpect;
+namespace aweXpect.Core.Extending;
 
 /// <summary>
 ///     Base class for constraints that classify every item of a collection as matching or not matching and report

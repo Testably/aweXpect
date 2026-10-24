@@ -8,6 +8,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Equivalency;
 using aweXpect.Options;
 using aweXpect.Results;

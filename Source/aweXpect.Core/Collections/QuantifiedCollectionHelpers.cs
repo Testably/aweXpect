@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
+using aweXpect.Core.Extending;
 using aweXpect.Customization;
 using aweXpect.Options;
 

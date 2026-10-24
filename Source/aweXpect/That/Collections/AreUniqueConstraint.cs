@@ -29,7 +29,7 @@ internal abstract class AreUniqueConstraintBase<TValue, TItem, TMember>(
 	IOptionsEquality<TMember> options,
 	object displayedOptions,
 	bool expectUnique)
-	: QuantifiedCollectionConstraintBase<TValue, TItem>(it, grammars, quantifier)
+	: Core.Extending.QuantifiedCollectionConstraintBase<TValue, TItem>(it, grammars, quantifier)
 {
 	private IOptionsEquality<TMember>? _evaluationOptions;
 
