@@ -96,8 +96,9 @@ await Expect.That(typeof(LegacyImportService))
 ```
 
 `DependsOn` and `DoesNotDependOn` also accept a **specific type** via `<T>()` or `(Type)`, with
-`.OrOn<T>()` / `.OrOn(Type)` to widen. For collections of types, `DependOn<T>()` and `DoNotDependOn<T>()`
-verify that every type, or none of them, depends on the specific type:
+`.OrOn<T>()` / `.OrOn(Type)` to widen. For collections of types, `DependOn` and `DoNotDependOn` accept the
+same forms and verify that every type, or none of them, depends on the specific type. The `WhichDependOn` /
+`WhichDoNotDependOn` filters take a single type as a type selection, `In.Type<T>()` or `In.Type(type)`:
 
 ```csharp
 await Expect.That(typeof(Album)).DoesNotDependOn<DbContext>().OrOn<SqlConnection>();
@@ -105,6 +106,14 @@ await Expect.That(typeof(Album)).DoesNotDependOn<DbContext>().OrOn<SqlConnection
 // No controller may reference the DbContext directly
 await Expect.That(Types.InNamespace("MusicStore.Api.Controllers"))
     .DoNotDependOn<DbContext>();
+
+// The same with a type only known at runtime
+Type dbContextType = typeof(DbContext);
+await Expect.That(Types.InNamespace("MusicStore.Api.Controllers"))
+    .DoNotDependOn(dbContextType);
+
+// Filter for the types that reference the DbContext
+In.AllLoadedAssemblies().Types().WhichDependOn(In.Type(dbContextType))
 ```
 
 All dependency families additionally accept a reusable `Filtered.Types` selection as target; see

@@ -1607,6 +1607,8 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Reflection.Results.NamespaceDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?> DependOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject, params string[] namespaces) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Reflection.Results.TypeDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?> DependOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject, System.Type type) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Reflection.Results.TypeDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?> DependOn<T>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Reflection.Results.TypeSetDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?> DependOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject, aweXpect.Reflection.Collections.Filtered.Types target, params aweXpect.Reflection.Collections.Filtered.Types[] additional) { }
@@ -1620,6 +1622,8 @@ namespace aweXpect
         public static aweXpect.Reflection.Results.NamespaceDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?> DoNotDependOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject, System.Collections.Generic.IEnumerable<string> namespaces) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Reflection.Results.NamespaceDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?> DoNotDependOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject, params string[] namespaces) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Reflection.Results.TypeDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?> DoNotDependOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject, System.Type type) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Reflection.Results.TypeDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?> DoNotDependOn<T>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]

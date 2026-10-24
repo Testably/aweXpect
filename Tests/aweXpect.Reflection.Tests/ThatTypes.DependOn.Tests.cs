@@ -163,6 +163,25 @@ public sealed partial class ThatTypes
 		public sealed class SpecificTypeTests
 		{
 			[Test]
+			public async Task WhenAllTypesDependOnRuntimeType_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ViaField),
+					typeof(ViaProperty),
+					typeof(Layer1AndLayer2),
+				];
+				Type type = typeof(TargetA);
+
+				async Task Act()
+				{
+					await That(subject).DependOn(type);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task WhenAllTypesDependOnType_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -205,6 +224,54 @@ public sealed partial class ThatTypes
 					               OnlyLayer2
 					             ]
 					             """);
+			}
+#endif
+
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task WhenAsyncEnumerableContainsTypeWithoutTheRuntimeTypeDependency_ShouldFail()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(ViaField), typeof(OnlyLayer2),
+				}.ToTestAsyncEnumerable<Type?>();
+				Type type = typeof(TargetA);
+
+				async Task Act()
+				{
+					await That(subject).DependOn(type);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all depend on type TargetA,
+					             but it contained types without the dependency
+
+					             Not matching items:
+					             [
+					               OnlyLayer2
+					             ]
+					             """);
+			}
+#endif
+
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task WhenAsyncEnumerableTypesDependOnRuntimeType_ShouldSucceed()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(ViaField), typeof(Layer1AndLayer2),
+				}.ToTestAsyncEnumerable<Type?>();
+				Type type = typeof(TargetA);
+
+				async Task Act()
+				{
+					await That(subject).DependOn(type);
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 #endif
 
@@ -267,6 +334,63 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenCollectionWithNullDependsOnRuntimeType_ShouldFail()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ViaField),
+					null,
+				];
+				Type type = typeof(TargetA);
+
+				async Task Act()
+				{
+					await That(subject).DependOn(type);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all depend on type TargetA,
+					             but it contained types without the dependency
+
+					             Not matching items:
+					             [
+					               <null>
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNegatedAndAllTypesDependOnRuntimeType_ShouldFail()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ViaField),
+					typeof(Layer1AndLayer2),
+				];
+				Type type = typeof(TargetA);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.DependOn(type));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all depend on type TargetA,
+					             but it only contained types with the dependency
+
+					             Collection:
+					             [
+					               ViaField,
+					               Layer1AndLayer2
+					             ]
+					             """);
+			}
+
+			[Test]
 			public async Task WhenNegatedAndAllTypesDependOnType_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -290,6 +414,106 @@ public sealed partial class ThatTypes
 					             [
 					               ViaField,
 					               Layer1AndLayer2
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNullSubjectDependsOnRuntimeType_ShouldFail()
+			{
+				IEnumerable<Type?>? subject = null;
+				Type type = typeof(TargetA);
+
+				async Task Act()
+				{
+					await That(subject).DependOn(type);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all depend on type TargetA,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenRuntimeTypeIsGenericTypeDefinition_ShouldMatchAnyConstruction()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ViaGenericArgument),
+				];
+
+				async Task Act()
+				{
+					await That(subject).DependOn(typeof(List<>));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("ViaGenericArgument references List<TargetA>, a construction of List<>");
+			}
+
+			[Test]
+			public async Task WhenRuntimeTypeIsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable<Type?> subject = [typeof(ViaField),];
+
+				async Task Act()
+				{
+					await That(subject).DependOn((Type)null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("type").And
+					.WithMessage("The 'type' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenRuntimeTypeIsWidenedWithOrOn_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+					typeof(OnlyLayer2),
+				];
+				Type type = typeof(TargetA);
+				Type additionalType = typeof(TargetB);
+
+				async Task Act()
+				{
+					await That(subject).DependOn(type).OrOn(additionalType);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenSomeTypesDoNotDependOnRuntimeType_ShouldFail()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ViaField),
+					typeof(OnlyLayer2),
+					typeof(FrameworkConsumer),
+				];
+				Type type = typeof(TargetA);
+
+				async Task Act()
+				{
+					await That(subject).DependOn(type);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all depend on type TargetA,
+					             but it contained types without the dependency
+
+					             Not matching items:
+					             [
+					               OnlyLayer2,
+					               FrameworkConsumer
 					             ]
 					             """);
 			}

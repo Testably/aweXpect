@@ -215,6 +215,54 @@ public sealed partial class ThatTypes
 
 #if NET8_0_OR_GREATER
 			[Test]
+			public async Task WhenAsyncEnumerableContainsTypeWithTheRuntimeTypeDependency_ShouldFail()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(OnlyLayer1), typeof(Layer1AndLayer2),
+				}.ToTestAsyncEnumerable<Type?>();
+				Type type = typeof(TargetB);
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn(type);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all do not depend on type TargetB,
+					             but it contained types with the dependency
+
+					             Not matching items:
+					             [
+					               Layer1AndLayer2
+					             ]
+					             """);
+			}
+#endif
+
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task WhenAsyncEnumerableTypesDoNotDependOnRuntimeType_ShouldSucceed()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(ViaField), typeof(OnlyLayer1),
+				}.ToTestAsyncEnumerable<Type?>();
+				Type type = typeof(TargetB);
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn(type);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+#endif
+
+#if NET8_0_OR_GREATER
+			[Test]
 			public async Task WhenAsyncEnumerableTypesDoNotDependOnType_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -273,6 +321,83 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenCollectionWithNullDoesNotDependOnRuntimeType_ShouldFail()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+					null,
+				];
+				Type type = typeof(TargetB);
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn(type);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all do not depend on type TargetB,
+					             but it contained types with the dependency
+
+					             Not matching items:
+					             [
+					               <null>
+					             ]
+					             """)
+					.Because("a null item's dependencies cannot be verified, so it must not slip through as \"does not depend\"");
+			}
+
+			[Test]
+			public async Task WhenNegatedAndNoTypeDependsOnRuntimeType_ShouldFail()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ViaField),
+					typeof(OnlyLayer1),
+				];
+				Type type = typeof(TargetB);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.DoNotDependOn(type));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all do not depend on type TargetB,
+					             but it only contained types without the dependency
+
+					             Collection:
+					             [
+					               ViaField,
+					               OnlyLayer1
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNoTypeDependsOnRuntimeType_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ViaField),
+					typeof(OnlyLayer1),
+					typeof(FrameworkConsumer),
+				];
+				Type type = typeof(TargetB);
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn(type);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task WhenNoTypeDependsOnType_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -288,6 +413,55 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNullSubjectDoesNotDependOnRuntimeType_ShouldFail()
+			{
+				IEnumerable<Type?>? subject = null;
+				Type type = typeof(TargetB);
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn(type);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all do not depend on type TargetB,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenOnlySomeTypesDependOnRuntimeType_ShouldFail()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+					typeof(OnlyLayer2),
+					typeof(Layer1AndLayer2),
+				];
+				Type type = typeof(TargetB);
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn(type);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all do not depend on type TargetB,
+					             but it contained types with the dependency
+
+					             Not matching items:
+					             [
+					               OnlyLayer2,
+					               Layer1AndLayer2
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -318,6 +492,49 @@ public sealed partial class ThatTypes
 					             ]
 					             """)
 					.Because("a plural negation means that none of the types depends on the type, not that not all do");
+			}
+
+			[Test]
+			public async Task WhenRuntimeTypeIsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable<Type?> subject = [typeof(OnlyLayer1),];
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn((Type)null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("type").And
+					.WithMessage("The 'type' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenRuntimeTypeIsWidenedWithOrOn_ShouldFailIfAnyMatches()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+				];
+				Type type = typeof(TargetB);
+				Type additionalType = typeof(TargetA);
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn(type).OrOn(additionalType);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all do not depend on type TargetB or TargetA,
+					             but it contained types with the dependency
+
+					             Not matching items:
+					             [
+					               OnlyLayer1
+					             ]
+					             """);
 			}
 
 			[Test]

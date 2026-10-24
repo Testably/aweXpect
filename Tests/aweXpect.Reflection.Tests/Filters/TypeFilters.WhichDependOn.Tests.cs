@@ -1,5 +1,6 @@
 ﻿using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -90,6 +91,19 @@ public sealed partial class TypeFilters
 				await That(types).Contains(typeof(ViaField));
 				await That(types).Contains(typeof(ViaSubNamespace));
 				await That(types).DoesNotContain(typeof(FrameworkConsumer));
+			}
+
+			[Test]
+			public async Task WhenTargetIsSingleRuntimeType_ShouldFilterForTypesDependingOnIt()
+			{
+				Type target = typeof(TargetA);
+
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
+					.WhichDependOn(In.Type(target));
+
+				await That(types).Contains(typeof(ViaField));
+				await That(types).DoesNotContain(typeof(OnlyLayer2))
+					.Because("OnlyLayer2 depends on TargetB, not on TargetA");
 			}
 
 			[Test]
