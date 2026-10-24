@@ -54,7 +54,7 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that new { Items = items, }
-					             whose Items are booleans for all items,
+					             whose Items are a boolean for all items,
 					             but only 2 of 3 were
 					             *
 					             """).AsWildcard()
@@ -75,11 +75,11 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).DoesNotComplyWith(it => it.IsBoolean());
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not a boolean,
-					             but it was
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not a boolean,
+					              but it was {json}
+					              """);
 			}
 
 			[Test]

@@ -17,7 +17,7 @@ public sealed partial class ThatUri
 							.ComplyWith(item => item.IsFile()));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*whose Uris are file URIs for all items,*""").AsWildcard()
+					.WithMessage("""*whose Uris are a file URI for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 

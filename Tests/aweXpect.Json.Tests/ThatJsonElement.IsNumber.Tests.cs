@@ -56,7 +56,7 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that new { Items = items, }
-					             whose Items are numbers for all items,
+					             whose Items are a number for all items,
 					             but only 1 of 2 were
 					             *
 					             """).AsWildcard()
@@ -78,7 +78,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage("""
 					             Expected that subject
 					             is not a number,
-					             but it was
+					             but it was a number
 					             """);
 			}
 

@@ -5,7 +5,7 @@ public sealed partial class ThatUri
 	public sealed class CombinedTests
 	{
 		[Test]
-		public async Task WhenAbsoluteCheckPrecedesACheckOnARelativeSubject_ShouldNameTheSubjectInBothResults()
+		public async Task WhenAbsoluteCheckPrecedesACheckOnARelativeSubject_ShouldReportBothResults()
 		{
 			Uri subject = new("tracks/1", UriKind.Relative);
 
@@ -16,7 +16,7 @@ public sealed partial class ThatUri
 				.WithMessage("""
 				             Expected that subject
 				             is an absolute URI and is a file URI,
-				             but it was tracks/1 and it was relative
+				             but it was tracks/1 and was relative
 				             """)
 				.Because("the relative URI fails both expectations, each with a result of its own");
 		}
@@ -55,7 +55,7 @@ public sealed partial class ThatUri
 		}
 
 		[Test]
-		public async Task WhenRelativeSubjectFailsTheFirstOfCombinedExpectations_ShouldNotEvaluateTheOtherOne()
+		public async Task WhenRelativeSubjectFailsTheFirstOfCombinedExpectations_ShouldReportBothResults()
 		{
 			Uri subject = new("tracks/1", UriKind.Relative);
 
@@ -66,8 +66,9 @@ public sealed partial class ThatUri
 				.WithMessage("""
 				             Expected that subject
 				             is a file URI and is an absolute URI,
-				             but it was relative
-				             """);
+				             but it was relative and was tracks/1
+				             """)
+				.Because("both expectations fail for the relative URI, the first one because it cannot be answered");
 		}
 	}
 }

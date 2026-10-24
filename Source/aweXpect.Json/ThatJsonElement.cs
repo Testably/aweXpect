@@ -15,6 +15,9 @@ namespace aweXpect;
 /// </summary>
 public static partial class ThatJsonElement
 {
+	internal static string DescribeValueKind(JsonElement element, string it, ExpectationGrammars grammars)
+		=> it + grammars.SubjectVerb(it, " was ", " were ") + JsonValidation.Format(element.ValueKind);
+
 	internal sealed class MatchesConstraint(
 		string it,
 		ExpectationGrammars grammars,
@@ -118,6 +121,11 @@ public static partial class ThatJsonElement
 	}
 
 
+	/// <summary>
+	///     Verifies the kind of a <see cref="JsonElement" /> for the expectations that cannot be generated, e.g. on a
+	///     <see cref="System.Text.Json.Nodes.JsonNode" />, with the same messages as the generated ones, e.g.
+	///     <see cref="IsBoolean" />.
+	/// </summary>
 	internal sealed class IsValueKindConstraint(string it, ExpectationGrammars grammars, JsonValueKind expected)
 		: ConstraintResult.WithNotNullValue<JsonElement?>(it, grammars),
 			IValueConstraint<JsonElement>,
@@ -137,17 +145,16 @@ public static partial class ThatJsonElement
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("is ", "are "))
-				.Append(JsonValidation.FormatExpected(expected, Grammars));
+				.Append(JsonValidation.FormatExpected(expected, Grammars & ~ExpectationGrammars.Plural));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "))
-				.Append(JsonValidation.Format(Actual!.Value.ValueKind));
+			=> stringBuilder.Append(DescribeValueKind(Actual!.Value, It, Grammars));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("is ", "are "))
-				.Append(JsonValidation.FormatExpected(expected, Grammars));
+				.Append(JsonValidation.FormatExpected(expected, Grammars & ~ExpectationGrammars.Plural));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

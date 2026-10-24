@@ -53,7 +53,7 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that new { Items = items, }
-					             whose Items are arrays for all items,
+					             whose Items are an array for all items,
 					             but only 1 of 2 were
 
 					             Not matching items (Items):
@@ -137,7 +137,7 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that new { Items = items, }
-					             whose Items are not arrays for all items,
+					             whose Items are not an array for all items,
 					             but only 1 of 2 were
 
 					             Not matching items (Items):
@@ -244,7 +244,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage("""
 					             Expected that subject
 					             is not an array,
-					             but it was
+					             but it was an array
 					             """);
 			}
 
@@ -882,7 +882,7 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             is an array whose elements are numbers for at most one item,
+					             is an array whose elements are a number for at most one item,
 					             but 2 of 3 were
 
 					             Matching items (elements):
@@ -922,7 +922,7 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             is an array whose elements are numbers for between 1 and 2 items,
+					             is an array whose elements are a number for between 1 and 2 items,
 					             but 3 of 3 were
 
 					             Collection (elements):
@@ -1166,7 +1166,7 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             is an array whose elements have exactly 3 items and are strings for all items,
+					             is an array whose elements have exactly 3 items and are a string for all items,
 					             but none of 3 were
 
 					             Not matching items (elements):
@@ -1235,7 +1235,7 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is an array whose elements are numbers for all items,
+					              is an array whose elements are a number for all items,
 					              but it was {kindString}
 					              """)
 					.Because("the elements are only accessed when the subject is an array");
@@ -1339,8 +1339,8 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not an array whose elements are numbers for all items,
-					             but it was
+					             is not an array whose elements are a number for all items,
+					             but it was an array
 					             """);
 			}
 

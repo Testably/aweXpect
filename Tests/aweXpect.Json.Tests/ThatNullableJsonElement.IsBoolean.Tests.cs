@@ -72,11 +72,11 @@ public sealed partial class ThatNullableJsonElement
 					=> await That(subject).DoesNotComplyWith(it => it.IsBoolean());
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not a boolean,
-					             but it was
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not a boolean,
+					              but it was {json}
+					              """);
 			}
 
 			[Test]

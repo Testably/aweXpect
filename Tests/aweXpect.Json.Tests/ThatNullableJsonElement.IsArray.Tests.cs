@@ -79,7 +79,7 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that new { Items = items, }
-					             whose Items are arrays for all items,
+					             whose Items are an array for all items,
 					             but only 1 of 2 were
 
 					             Not matching items (Items):
@@ -141,7 +141,7 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage("""
 					             Expected that subject
 					             is not an array,
-					             but it was
+					             but it was an array
 					             """);
 			}
 
@@ -370,7 +370,7 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             is an array whose elements are objects for at least 2 items,
+					             is an array whose elements are an object for at least 2 items,
 					             but only 1 of 2 were
 
 					             Not matching items (elements):
@@ -481,7 +481,7 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage("""
 					             Expected that subject
 					             is not an array whose elements have exactly 2 items,
-					             but it was
+					             but it was an array
 					             """);
 			}
 

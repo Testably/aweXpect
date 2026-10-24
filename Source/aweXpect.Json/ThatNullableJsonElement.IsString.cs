@@ -1,20 +1,14 @@
-﻿using System.Text.Json;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using aweXpect.Core.Extending;
-using aweXpect.Results;
 
 namespace aweXpect;
 
 public static partial class ThatNullableJsonElement
 {
-	/// <summary>
-	///     Verifies that the subject <see cref="JsonElement" /> is a <see cref="JsonValueKind.String" />.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<JsonElement, IThat<JsonElement?>> IsString(this IThat<JsonElement?> subject)
-		=> new(
-			subject.Get().ExpectationBuilder.AddConstraint(static IValueConstraint<JsonElement?> (it, grammar) =>
-				new ThatJsonElement.IsValueKindConstraint(it, grammar, JsonValueKind.String)),
-			subject);
+	[GenerateExpectation("IsString", "is {not} a string",
+		Result = nameof(DescribeValueKind),
+		Summary = "Verifies that the subject <see cref=\"JsonElement\" /> is a <see cref=\"JsonValueKind.String\" />.")]
+	private static bool IsStringKind([DisallowNull] JsonElement? element)
+		=> element.Value.ValueKind == JsonValueKind.String;
 }

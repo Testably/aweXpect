@@ -19,7 +19,7 @@ public sealed partial class ThatIPAddress
 							.ComplyWith(item => item.IsNotIPv6()));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*whose Addresses are not IPv6 addresses for all items,*""").AsWildcard()
+					.WithMessage("""*whose Addresses are not an IPv6 address for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 

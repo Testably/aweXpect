@@ -17,7 +17,7 @@ public sealed partial class ThatUri
 							.ComplyWith(item => item.IsNotAbsolute()));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*whose Uris are not absolute URIs for all items,*""").AsWildcard()
+					.WithMessage("""*whose Uris are not an absolute URI for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 

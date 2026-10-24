@@ -72,7 +72,7 @@ public sealed partial class ThatJsonNode
 					.WithMessage("""
 					             Expected that subject
 					             is not a string,
-					             but it was
+					             but it was a string
 					             """);
 			}
 

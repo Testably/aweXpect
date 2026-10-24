@@ -19,7 +19,7 @@ public sealed partial class ThatIPAddress
 							.ComplyWith(item => item.IsLoopback()));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*whose Addresses are loopback addresses for all items,*""").AsWildcard()
+					.WithMessage("""*whose Addresses are a loopback address for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
