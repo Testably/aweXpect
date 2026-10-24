@@ -9,11 +9,15 @@ namespace aweXpect.Reflection.Options;
 /// <summary>
 ///     Options for adding additional predicates to filter the parameter list.
 /// </summary>
+/// <remarks>
+///     Inherited attributes are considered, unless the result restricts the check to the attributes declared directly
+///     on the member.
+/// </remarks>
 public class AttributeFilterOptions<TMember>
 {
 	private readonly List<Action<StringBuilder>> _descriptions = [];
 	private readonly Func<TMember, Type, Func<Attribute, bool>, bool, bool> _memberHasAttribute;
-	private readonly List<(Type, Func<Attribute, bool>, bool)> _predicates = [];
+	private readonly List<(Type, Func<Attribute, bool>)> _predicates = [];
 
 	internal AttributeFilterOptions(Func<TMember, Type, Func<Attribute, bool>, bool, bool> memberHasAttribute)
 	{
@@ -21,13 +25,19 @@ public class AttributeFilterOptions<TMember>
 	}
 
 	/// <summary>
+	///     The inheritance scope of the attributes.
+	/// </summary>
+	internal ScopeOptions Scope { get; } = new();
+
+	/// <summary>
 	///     Verifies that the <paramref name="member" /> matches any registered attribute.
 	/// </summary>
 	public bool Matches(TMember member)
 	{
-		foreach ((Type? attributeType, Func<Attribute, bool>? predicate, bool inherits) in _predicates)
+		bool inherit = !Scope.IsDirect;
+		foreach ((Type? attributeType, Func<Attribute, bool>? predicate) in _predicates)
 		{
-			if (_memberHasAttribute(member, attributeType, predicate, inherits))
+			if (_memberHasAttribute(member, attributeType, predicate, inherit))
 			{
 				return true;
 			}
@@ -56,6 +66,11 @@ public class AttributeFilterOptions<TMember>
 				stringBuilder.Append(" or ");
 			}
 
+			if (Scope.IsDirect)
+			{
+				stringBuilder.Append("direct ");
+			}
+
 			description(stringBuilder);
 		}
 	}
@@ -63,60 +78,35 @@ public class AttributeFilterOptions<TMember>
 	/// <summary>
 	///     Registers an <typeparamref name="TAttribute" />
 	/// </summary>
-	/// <param name="inherit">
-	///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-	///     <see langword="false" />.<br />
-	///     Defaults to <see langword="true" />
-	/// </param>
-	public void RegisterAttribute<TAttribute>(bool inherit)
+	public void RegisterAttribute<TAttribute>()
 		where TAttribute : Attribute
 	{
-		_descriptions.Add(sb =>
-		{
-			if (!inherit)
-			{
-				sb.Append("direct ");
-			}
-
-			Formatter.Format(sb, typeof(TAttribute));
-		});
-
-		_predicates.Add((typeof(TAttribute), AttributePredicates.IsOfType<TAttribute>(), inherit));
+		_descriptions.Add(sb => Formatter.Format(sb, typeof(TAttribute)));
+		_predicates.Add((typeof(TAttribute), AttributePredicates.IsOfType<TAttribute>()));
 	}
 
 	/// <summary>
 	///     Registers an <typeparamref name="TAttribute" />
 	/// </summary>
-	/// <param name="inherit">
-	///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-	///     <see langword="false" />.<br />
-	///     Defaults to <see langword="true" />
-	/// </param>
 	/// <param name="predicate">
 	///     (optional) A predicate to check the attribute values.
 	///     <para />
 	///     If not set (<see langword="null" />), will only check if the attribute is present.
 	/// </param>
 	/// <param name="predicateExpression">The expression of the predicate to use in the description message.</param>
-	public void RegisterAttribute<TAttribute>(bool inherit,
+	public void RegisterAttribute<TAttribute>(
 		Func<TAttribute, bool> predicate,
 		string predicateExpression)
 		where TAttribute : Attribute
 	{
 		_descriptions.Add(sb =>
 		{
-			if (!inherit)
-			{
-				sb.Append("direct ");
-			}
-
 			Formatter.Format(sb, typeof(TAttribute));
 			sb.Append(" matching ");
 			sb.Append(predicateExpression);
 		});
 
 		_predicates.Add((typeof(TAttribute),
-			a => a is TAttribute value && (predicate is null || UserCode.Invoke(predicate, value, "the predicate")),
-			inherit));
+			a => a is TAttribute value && (predicate is null || UserCode.Invoke(predicate, value, "the predicate"))));
 	}
 }

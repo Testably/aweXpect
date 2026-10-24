@@ -18,6 +18,15 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
+			public async Task ShouldIncludeTypesWithInheritedMatchingField()
+			{
+				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedField>()
+					.WhichContainFields(fields => fields.With<MarkerAttribute>());
+
+				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedField),]).InAnyOrder();
+			}
+
+			[Test]
 			public async Task ShouldUseTheInnerFilterDescription()
 			{
 				Filtered.Types types = In.AssemblyContaining<MarkerAttribute>().Types()
@@ -30,22 +39,12 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
-			public async Task WithDeclaredOnly_ShouldNotIncludeTypesWithOnlyInheritedMatchingField()
+			public async Task WhenDirectly_ShouldNotIncludeTypesWithOnlyInheritedMatchingField()
 			{
 				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedField>()
-					.WhichContainFields(fields => fields.With<MarkerAttribute>());
+					.WhichContainFields(fields => fields.With<MarkerAttribute>()).Directly();
 
 				await That(types).IsEmpty();
-			}
-
-			[Test]
-			public async Task WithIncludingInherited_ShouldIncludeTypesWithInheritedMatchingField()
-			{
-				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedField>()
-					.WhichContainFields(fields => fields.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
-
-				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedField),]).InAnyOrder();
 			}
 		}
 

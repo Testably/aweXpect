@@ -7,22 +7,35 @@ namespace aweXpect.Reflection;
 public static partial class TypeFilters
 {
 	/// <summary>
-	///     Filters for types whose fields, properties and events are all nullable, including inherited members or only
-	///     those declared directly on the type according to the <paramref name="memberScope" />.
+	///     Filters for types whose fields, properties and events are all nullable.
 	/// </summary>
-	public static Filtered.Types WhichOnlyHaveNullableMembers(this Filtered.Types @this,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
-		=> @this.Which(Filter.Suffix<Type>(
+	/// <remarks>
+	///     The inherited members are considered, but neither those declared on <see cref="object" />,
+	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
+	///     <see cref="InheritanceScopeResult.Directly" /> or add the members of these roots with
+	///     <see cref="MemberScopeResult.IncludingObjectMembers" />.
+	/// </remarks>
+	public static MemberScopeResult WhichOnlyHaveNullableMembers(this Filtered.Types @this)
+		=> new(@this, memberScope => Filter.Suffix<Type>(
 			type => type.GetNotNullableMembers(memberScope).Length == 0,
-			"which only have nullable members "));
+			DescribeOnlyHaving(memberScope, "nullable")));
 
 	/// <summary>
-	///     Filters for types whose fields, properties and events are all non-nullable, including inherited members or
-	///     only those declared directly on the type according to the <paramref name="memberScope" />.
+	///     Filters for types whose fields, properties and events are all non-nullable.
 	/// </summary>
-	public static Filtered.Types WhichOnlyHaveNonNullableMembers(this Filtered.Types @this,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
-		=> @this.Which(Filter.Suffix<Type>(
+	/// <remarks>
+	///     The inherited members are considered, but neither those declared on <see cref="object" />,
+	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
+	///     <see cref="InheritanceScopeResult.Directly" /> or add the members of these roots with
+	///     <see cref="MemberScopeResult.IncludingObjectMembers" />.
+	/// </remarks>
+	public static MemberScopeResult WhichOnlyHaveNonNullableMembers(this Filtered.Types @this)
+		=> new(@this, memberScope => Filter.Suffix<Type>(
 			type => type.GetNullableMembers(memberScope).Length == 0,
-			"which only have non-nullable members "));
+			DescribeOnlyHaving(memberScope, "non-nullable")));
+
+	private static string DescribeOnlyHaving(MemberScope memberScope, string nullability)
+		=> memberScope.IsDirect()
+			? $"which only declare {nullability} members "
+			: $"which only have {nullability} members {memberScope.ObjectMembersText()}";
 }

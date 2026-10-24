@@ -2,7 +2,7 @@
 
 public sealed partial class ThatType
 {
-	public sealed class Implements
+	public sealed partial class Implements
 	{
 		public sealed class GenericTests
 		{

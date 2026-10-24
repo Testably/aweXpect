@@ -91,6 +91,23 @@ public sealed partial class ThatEvents
 			}
 
 			[Test]
+			public async Task WhenEventInheritsAttributeFromOverriddenEvent_Directly_ShouldSucceed()
+			{
+				IEnumerable<EventInfo?> subject = new[]
+				{
+					typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>().Directly();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with Directly only the attributes declared on the overriding event count");
+			}
+
+			[Test]
 			public async Task WhenEventInheritsAttributeFromOverriddenEvent_ShouldFail()
 			{
 				IEnumerable<EventInfo?> subject = new[]
@@ -131,23 +148,6 @@ public sealed partial class ThatEvents
 				}
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task WithInheritFalse_WhenEventInheritsAttributeFromOverriddenEvent_ShouldSucceed()
-			{
-				IEnumerable<EventInfo?> subject = new[]
-				{
-					typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent)),
-				};
-
-				async Task Act()
-				{
-					await That(subject).DoNotHave<FooAttribute>(false);
-				}
-
-				await That(Act).DoesNotThrow()
-					.Because("with inherit: false only the attributes declared on the overriding event count");
 			}
 
 			[AttributeUsage(AttributeTargets.Event)]

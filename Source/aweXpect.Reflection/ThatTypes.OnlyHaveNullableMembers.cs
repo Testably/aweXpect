@@ -8,7 +8,7 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
+using aweXpect.Reflection.Results;
 #if NET8_0_OR_GREATER
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,44 +22,58 @@ public static partial class ThatTypes
 {
 	/// <summary>
 	///     Verifies that all fields, properties and events of all items in the filtered collection of <see cref="Type" />
-	///     are nullable, including inherited members or only those declared directly on the type according to
-	///     the <paramref name="memberScope" />.
+	///     are nullable.
 	/// </summary>
 	/// <remarks>
 	///     A member is considered nullable if its type is a <see cref="Nullable{T}" /> value type or a
-	///     reference type annotated as nullable (according to the nullable reference type metadata).
+	///     reference type annotated as nullable (according to the nullable reference type metadata).<br />
+	///     The inherited members are considered, but neither those declared on <see cref="object" />,
+	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
+	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" /> or add the members of these roots with
+	///     <see cref="MemberScopeResult{TType, TThat}.IncludingObjectMembers" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> OnlyHaveNullableMembers(
-		this IThat<IEnumerable<Type?>?> subject, MemberScope memberScope = MemberScope.DeclaredOnly)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<MemberScope, IEnumerable<Type?>>(memberScope,
-				static (memberScope, it, grammars)
-				=> new OnlyHaveNullableMembersConstraint(it, grammars, memberScope)),
-			subject);
+	public static MemberScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> OnlyHaveNullableMembers(
+		this IThat<IEnumerable<Type?>?> subject)
+	{
+		ScopeOptions scope = new();
+		return new MemberScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<ScopeOptions, IEnumerable<Type?>>(scope,
+				static (scope, it, grammars)
+				=> new OnlyHaveNullableMembersConstraint(it, grammars, scope)),
+			subject,
+			scope);
+	}
 
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all fields, properties and events of all items in the filtered collection of <see cref="Type" />
-	///     are nullable, including inherited members or only those declared directly on the type according to
-	///     the <paramref name="memberScope" />.
+	///     are nullable.
 	/// </summary>
 	/// <remarks>
 	///     A member is considered nullable if its type is a <see cref="Nullable{T}" /> value type or a
-	///     reference type annotated as nullable (according to the nullable reference type metadata).
+	///     reference type annotated as nullable (according to the nullable reference type metadata).<br />
+	///     The inherited members are considered, but neither those declared on <see cref="object" />,
+	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
+	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" /> or add the members of these roots with
+	///     <see cref="MemberScopeResult{TType, TThat}.IncludingObjectMembers" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> OnlyHaveNullableMembers(
-		this IThat<IAsyncEnumerable<Type?>?> subject, MemberScope memberScope = MemberScope.DeclaredOnly)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<MemberScope, IAsyncEnumerable<Type?>>(memberScope,
-				static (memberScope, it, grammars)
-				=> new OnlyHaveNullableMembersConstraint(it, grammars, memberScope)),
-			subject);
+	public static MemberScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> OnlyHaveNullableMembers(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
+	{
+		ScopeOptions scope = new();
+		return new MemberScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<ScopeOptions, IAsyncEnumerable<Type?>>(scope,
+				static (scope, it, grammars)
+				=> new OnlyHaveNullableMembersConstraint(it, grammars, scope)),
+			subject,
+			scope);
+	}
 #endif
 
 	private sealed class OnlyHaveNullableMembersConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		MemberScope memberScope)
+		ScopeOptions scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -75,7 +89,7 @@ public static partial class ThatTypes
 				return false;
 			}
 
-			MemberInfo[] notNullableMembers = type.GetNotNullableMembers(memberScope);
+			MemberInfo[] notNullableMembers = type.GetNotNullableMembers(scope.MemberScope);
 			if (notNullableMembers.Length > 0)
 			{
 				_notNullableMembers[type] = notNullableMembers;
@@ -94,7 +108,7 @@ public static partial class ThatTypes
 			=> SetValue(actual, context, OnlyHasNullableMembers);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("only have nullable members");
+			=> AppendScope(stringBuilder.Append(scope.IsDirect ? "only declare nullable members" : "only have nullable members"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained types with non-nullable members");
@@ -104,9 +118,19 @@ public static partial class ThatTypes
 				" with non-nullable members ");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all only have nullable members");
+			=> AppendScope(stringBuilder.Append(scope.IsDirect
+				? "not all only declare nullable members"
+				: "not all only have nullable members"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained types with only nullable members");
+
+		private void AppendScope(StringBuilder stringBuilder)
+		{
+			if (scope.MemberScope.IncludesObjectMembers())
+			{
+				stringBuilder.Append(" including object members");
+			}
+		}
 	}
 }

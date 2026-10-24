@@ -4,7 +4,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
-using aweXpect.Results;
+using aweXpect.Reflection.Results;
 
 namespace aweXpect;
 
@@ -14,19 +14,20 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> does not have attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
-	///     the attribute can be inherited from a base type.
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
+	///     to the attributes declared directly on the member with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Type, IThat<Type?>> DoesNotHave<TAttribute>(this IThat<Type?> subject, bool inherit = true)
+	public static InheritanceScopeResult<Type, Type?> DoesNotHave<TAttribute>(this IThat<Type?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<Type?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
+		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		return new InheritanceScopeResult<Type, Type?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
-			subject);
+			subject,
+			attributeFilterOptions.Scope);
 	}
 }

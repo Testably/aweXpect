@@ -88,6 +88,19 @@ public sealed partial class ThatAssembly
 					             """);
 			}
 
+			[Test]
+			public async Task WhenCheckingTheResult_ShouldNotOfferDirectly()
+			{
+				async Task Act()
+				{
+					await That(typeof(Reflection.Results.HasAttributeWithoutInheritResult<,>))
+						.ContainsMethods(methods => methods.WithName("Directly")).Never();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the attributes of assemblies, constructors and fields cannot be inherited");
+			}
+
 			[AttributeUsage(AttributeTargets.Assembly)]
 			private class MarkerAttribute : Attribute;
 		}

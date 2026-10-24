@@ -18,16 +18,16 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> has attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
-	///     the attribute can be inherited from a base type.
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
+	///     to the attributes declared directly on the member with <see cref="HasAttributeResult{TType, TMember}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HasAttributeResult<MethodInfo, MethodInfo?> Has<TAttribute>(this IThat<MethodInfo?> subject, bool inherit = true)
+	public static HasAttributeResult<MethodInfo, MethodInfo?> Has<TAttribute>(this IThat<MethodInfo?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
+		attributeFilterOptions.RegisterAttribute<TAttribute>();
 		return new HasAttributeResult<MethodInfo, MethodInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
@@ -40,21 +40,20 @@ public static partial class ThatMethod
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
 	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
-	///     the attribute can be inherited from a base type.
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
+	///     to the attributes declared directly on the member with <see cref="HasAttributeResult{TType, TMember}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static HasAttributeResult<MethodInfo, MethodInfo?> Has<TAttribute>(
 		this IThat<MethodInfo?> subject,
 		Func<TAttribute, bool> predicate,
-		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimExpression());
+		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
 		return new HasAttributeResult<MethodInfo, MethodInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),

@@ -187,33 +187,41 @@ public static partial class Filtered
 		/// </summary>
 		public Constructors Constructors() => new TypesMemberBuilder(this, MemberFilterState.Empty).Constructors();
 
-		/// <summary>
-		///     Get all events in the filtered types, including inherited members or only those declared directly
-		///     on the type according to the <paramref name="memberScope" />.
-		/// </summary>
-		public Events Events(MemberScope memberScope = MemberScope.DeclaredOnly)
-			=> new TypesMemberBuilder(this, MemberFilterState.Empty).Events(memberScope);
+		/// <inheritdoc cref="IMemberSelectors.Events()" />
+		public Events.MemberScopeResult Events()
+			=> new TypesMemberBuilder(this, MemberFilterState.Empty).Events();
+
+		/// <inheritdoc cref="IMemberSelectors.Fields()" />
+		public Fields.MemberScopeResult Fields()
+			=> new TypesMemberBuilder(this, MemberFilterState.Empty).Fields();
+
+		/// <inheritdoc cref="IMemberSelectors.Methods()" />
+		public Methods.MemberScopeResult Methods()
+			=> new TypesMemberBuilder(this, MemberFilterState.Empty).Methods();
+
+		/// <inheritdoc cref="IMemberSelectors.Properties()" />
+		public Properties.MemberScopeResult Properties()
+			=> new TypesMemberBuilder(this, MemberFilterState.Empty).Properties();
 
 		/// <summary>
-		///     Get all fields in the filtered types, including inherited members or only those declared directly
-		///     on the type according to the <paramref name="memberScope" />.
+		///     Get all events in the filtered types in the <paramref name="memberScope" />.
 		/// </summary>
-		public Fields Fields(MemberScope memberScope = MemberScope.DeclaredOnly)
-			=> new TypesMemberBuilder(this, MemberFilterState.Empty).Fields(memberScope);
+		internal Events Events(MemberScope memberScope) => new(this, "events ", memberScope);
 
 		/// <summary>
-		///     Get all methods in the filtered types, including inherited members or only those declared directly
-		///     on the type according to the <paramref name="memberScope" />.
+		///     Get all fields in the filtered types in the <paramref name="memberScope" />.
 		/// </summary>
-		public Methods Methods(MemberScope memberScope = MemberScope.DeclaredOnly)
-			=> new TypesMemberBuilder(this, MemberFilterState.Empty).Methods(memberScope);
+		internal Fields Fields(MemberScope memberScope) => new(this, "fields ", memberScope);
 
 		/// <summary>
-		///     Get all properties in the filtered types, including inherited members or only those declared directly
-		///     on the type according to the <paramref name="memberScope" />.
+		///     Get all methods in the filtered types in the <paramref name="memberScope" />.
 		/// </summary>
-		public Properties Properties(MemberScope memberScope = MemberScope.DeclaredOnly)
-			=> new TypesMemberBuilder(this, MemberFilterState.Empty).Properties(memberScope);
+		internal Methods Methods(MemberScope memberScope) => new(this, "methods ", memberScope);
+
+		/// <summary>
+		///     Get all properties in the filtered types in the <paramref name="memberScope" />.
+		/// </summary>
+		internal Properties Properties(MemberScope memberScope) => new(this, "properties ", memberScope);
 
 		/// <inheritdoc cref="IMembers.IProtected.Internal" />
 		IMembers IMembers.IProtected.Internal

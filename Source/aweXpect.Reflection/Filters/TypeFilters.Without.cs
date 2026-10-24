@@ -10,12 +10,16 @@ public static partial class TypeFilters
 	///     Filter for types without attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-	///     the attribute can be inherited from a base type.
+	///     Attributes inherited from a base type are considered as well; restrict the filter to the
+	///     attributes declared directly on the type with <see cref="InheritanceScopeResult.Directly" />.
 	/// </remarks>
-	public static Filtered.Types Without<TAttribute>(this Filtered.Types @this, bool inherit = true)
+	public static InheritanceScopeResult Without<TAttribute>(this Filtered.Types @this)
 		where TAttribute : Attribute
-		=> @this.Which(Filter.Suffix<Type>(
-			type => !type.HasAttribute<TAttribute>(inherit: inherit),
-			() => $"without {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} "));
+		=> new(@this, memberScope =>
+		{
+			bool directly = memberScope.IsDirect();
+			return Filter.Suffix<Type>(
+				type => !type.HasAttribute<TAttribute>(inherit: !directly),
+				() => $"without {(directly ? DirectText : "")}{Formatter.Format(typeof(TAttribute))} ");
+		});
 }

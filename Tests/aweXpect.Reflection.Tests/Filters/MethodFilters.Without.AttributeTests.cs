@@ -23,10 +23,10 @@ public sealed partial class MethodFilters
 			}
 
 			[Test]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForMethodsWithoutAttributeDirectlySet()
+			public async Task WhenDirectly_ShouldFilterForMethodsWithoutAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().Without<BarAttribute>(false);
+					.Methods().Without<BarAttribute>().Directly();
 
 				await That(methods)
 					.Contains(typeof(DummyChild).GetMethod(nameof(DummyChild.MyBarMethod)))

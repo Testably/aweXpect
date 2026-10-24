@@ -22,32 +22,31 @@ public sealed partial class ThatType
 			}
 
 			[Test]
-			public async Task WhenInheritedFieldMatches_WithDeclaredOnly_ShouldFail()
+			public async Task WhenInheritedFieldMatches_Directly_ShouldFail()
+			{
+				Type subject = typeof(DerivedClassWithInheritedMarkedField);
+
+				async Task Act()
+				{
+					await That(subject).ContainsFields(fields => fields.With<MarkerAttribute>()).Directly();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             declares fields with ThatType.ContainsFields.MarkerAttribute at least once,
+					             but it contained 0 matching members in ThatType.ContainsFields.DerivedClassWithInheritedMarkedField
+					             """);
+			}
+
+			[Test]
+			public async Task WhenInheritedFieldMatches_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClassWithInheritedMarkedField);
 
 				async Task Act()
 				{
 					await That(subject).ContainsFields(fields => fields.With<MarkerAttribute>());
-				}
-
-				await That(Act).Throws()
-					.WithMessage("""
-					             Expected that subject
-					             contains fields with ThatType.ContainsFields.MarkerAttribute at least once,
-					             but it contained 0 matching members in ThatType.ContainsFields.DerivedClassWithInheritedMarkedField
-					             """);
-			}
-
-			[Test]
-			public async Task WhenInheritedFieldMatches_WithIncludingInherited_ShouldSucceed()
-			{
-				Type subject = typeof(DerivedClassWithInheritedMarkedField);
-
-				async Task Act()
-				{
-					await That(subject).ContainsFields(fields => fields.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
 				}
 
 				await That(Act).DoesNotThrow();

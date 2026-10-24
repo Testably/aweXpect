@@ -26,10 +26,10 @@ public sealed partial class PropertyFilters
 			}
 
 			[Test]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForPropertiesWithAttributeDirectlySet()
+			public async Task WhenDirectly_ShouldFilterForPropertiesWithAttributeDirectlySet()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
-					.Properties().With<BarAttribute>(false);
+					.Properties().With<BarAttribute>().Directly();
 
 				await That(properties).HasSingle().Which
 					.IsEqualTo(typeof(Dummy).GetProperty(nameof(Dummy.MyBarProperty)));
@@ -54,10 +54,10 @@ public sealed partial class PropertyFilters
 			}
 
 			[Test]
-			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForPropertiesWithAttributeDirectlySet()
+			public async Task WithPredicate_WhenDirectly_ShouldFilterForPropertiesWithAttributeDirectlySet()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
-					.Properties().With<FooAttribute>(foo => foo.Value == 2, false);
+					.Properties().With<FooAttribute>(foo => foo.Value == 2).Directly();
 
 				await That(properties).HasSingle().Which
 					.IsEqualTo(typeof(Dummy).GetProperty(nameof(Dummy.MyFooProperty2)));
@@ -123,20 +123,19 @@ public sealed partial class PropertyFilters
 			}
 
 			[Test]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForPropertiesWithAttributeDirectlySet()
+			public async Task WhenDirectly_ShouldApplyToAllAttributes()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
-					.Properties().With<BarAttribute>().OrWith<FooAttribute>(false);
+					.Properties().With<BarAttribute>().OrWith<FooAttribute>().Directly();
 
 				await That(properties).IsEqualTo([
 					typeof(Dummy).GetProperty(nameof(Dummy.MyBarProperty))!,
 					typeof(Dummy).GetProperty(nameof(Dummy.MyFooProperty2))!,
 					typeof(Dummy).GetProperty(nameof(Dummy.MyFooProperty3))!,
-					typeof(DummyChild).GetProperty(nameof(DummyChild.MyBarProperty))!,
 				]).InAnyOrder();
 				await That(properties.GetDescription())
 					.IsEqualTo(
-						"properties with PropertyFilters.With.BarAttribute or with direct PropertyFilters.With.FooAttribute")
+						"properties with direct PropertyFilters.With.BarAttribute or with direct PropertyFilters.With.FooAttribute")
 					.AsPrefix();
 			}
 
@@ -146,27 +145,27 @@ public sealed partial class PropertyFilters
 				PropertyInfo?[] expectedProperties)
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
-					.Properties().With<BarAttribute>(false).OrWith<FooAttribute>(foo => foo.Value == value);
+					.Properties().With<BarAttribute>().OrWith<FooAttribute>(foo => foo.Value == value);
 
 				await That(properties).IsEqualTo(expectedProperties).InAnyOrder();
 				await That(properties.GetDescription())
 					.IsEqualTo(
-						"properties with direct PropertyFilters.With.BarAttribute or with PropertyFilters.With.FooAttribute matching foo => foo.Value == value")
+						"properties with PropertyFilters.With.BarAttribute or with PropertyFilters.With.FooAttribute matching foo => foo.Value == value")
 					.AsPrefix();
 			}
 
 			[Test]
-			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForPropertiesWithAttributeDirectlySet()
+			public async Task WithPredicate_WhenDirectly_ShouldApplyToAllAttributes()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
 					.Properties().With<BarAttribute>(_ => false)
-					.OrWith<FooAttribute>(foo => foo.Value == 2, false);
+					.OrWith<FooAttribute>(foo => foo.Value == 2).Directly();
 
 				await That(properties).HasSingle().Which
 					.IsEqualTo(typeof(Dummy).GetProperty(nameof(Dummy.MyFooProperty2)));
 				await That(properties.GetDescription())
 					.IsEqualTo(
-						"properties with PropertyFilters.With.BarAttribute matching _ => false or with direct PropertyFilters.With.FooAttribute matching foo => foo.Value == 2")
+						"properties with direct PropertyFilters.With.BarAttribute matching _ => false or with direct PropertyFilters.With.FooAttribute matching foo => foo.Value == 2")
 					.AsPrefix();
 			}
 
@@ -176,6 +175,7 @@ public sealed partial class PropertyFilters
 					() => (
 						2, [
 							typeof(Dummy).GetProperty(nameof(Dummy.MyBarProperty)),
+							typeof(DummyChild).GetProperty(nameof(DummyChild.MyBarProperty)),
 							typeof(Dummy).GetProperty(nameof(Dummy.MyFooProperty2)),
 							typeof(DummyChild).GetProperty(nameof(DummyChild.MyFooProperty2)),
 						]
@@ -183,6 +183,7 @@ public sealed partial class PropertyFilters
 					() => (
 						3, [
 							typeof(Dummy).GetProperty(nameof(Dummy.MyBarProperty)),
+							typeof(DummyChild).GetProperty(nameof(DummyChild.MyBarProperty)),
 							typeof(Dummy).GetProperty(nameof(Dummy.MyFooProperty3)),
 						]
 					),

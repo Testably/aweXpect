@@ -21,10 +21,10 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
+			public async Task WhenDirectly_ShouldFilterForTypesWithAttributeDirectlySet()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
-					.Types().With<BarAttribute>(false);
+					.Types().With<BarAttribute>().Directly();
 
 				await That(types).HasSingle().Which.IsEqualTo(typeof(BarClass));
 				await That(types.GetDescription())
@@ -47,10 +47,10 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
-			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
+			public async Task WithPredicate_WhenDirectly_ShouldFilterForTypesWithAttributeDirectlySet()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
-					.Types().With<FooAttribute>(foo => foo.Value == 2, false);
+					.Types().With<FooAttribute>(foo => foo.Value == 2).Directly();
 
 				await That(types).HasSingle().Which.IsEqualTo(typeof(FooClass2));
 				await That(types.GetDescription())
@@ -125,17 +125,32 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
+			public async Task WhenDirectly_ShouldApplyAlsoToLaterAlternatives()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
-					.Types().With<BarAttribute>().OrWith<FooAttribute>(false);
+					.Types().With<BarAttribute>().Directly().OrWith<FooAttribute>();
 
 				await That(types).IsEqualTo([
-					typeof(BarClass), typeof(BarChildClass), typeof(FooClass2), typeof(FooClass3),
+					typeof(BarClass), typeof(FooClass2), typeof(FooClass3),
+				]).InAnyOrder().Because("the scope applies to all attributes, wherever it is set in the chain");
+				await That(types.GetDescription())
+					.IsEqualTo(
+						"types with direct TypeFilters.With.BarAttribute or with direct TypeFilters.With.FooAttribute")
+					.AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenDirectly_ShouldApplyToAllAttributes()
+			{
+				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
+					.Types().With<BarAttribute>().OrWith<FooAttribute>().Directly();
+
+				await That(types).IsEqualTo([
+					typeof(BarClass), typeof(FooClass2), typeof(FooClass3),
 				]).InAnyOrder();
 				await That(types.GetDescription())
 					.IsEqualTo(
-						"types with TypeFilters.With.BarAttribute or with direct TypeFilters.With.FooAttribute")
+						"types with direct TypeFilters.With.BarAttribute or with direct TypeFilters.With.FooAttribute")
 					.AsPrefix();
 			}
 
@@ -145,25 +160,25 @@ public sealed partial class TypeFilters
 				Type[] expectedTypes)
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
-					.Types().With<BarAttribute>(false).OrWith<FooAttribute>(foo => foo.Value == value);
+					.Types().With<BarAttribute>().OrWith<FooAttribute>(foo => foo.Value == value);
 
-				await That(types).IsEqualTo([typeof(BarClass), ..expectedTypes,]).InAnyOrder();
+				await That(types).IsEqualTo([typeof(BarClass), typeof(BarChildClass), ..expectedTypes,]).InAnyOrder();
 				await That(types.GetDescription())
 					.IsEqualTo(
-						"types with direct TypeFilters.With.BarAttribute or with TypeFilters.With.FooAttribute matching foo => foo.Value == value")
+						"types with TypeFilters.With.BarAttribute or with TypeFilters.With.FooAttribute matching foo => foo.Value == value")
 					.AsPrefix();
 			}
 
 			[Test]
-			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
+			public async Task WithPredicate_WhenDirectly_ShouldApplyToAllAttributes()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
-					.Types().With<BarAttribute>(_ => false).OrWith<FooAttribute>(foo => foo.Value == 2, false);
+					.Types().With<BarAttribute>(_ => false).OrWith<FooAttribute>(foo => foo.Value == 2).Directly();
 
 				await That(types).HasSingle().Which.IsEqualTo(typeof(FooClass2));
 				await That(types.GetDescription())
 					.IsEqualTo(
-						"types with TypeFilters.With.BarAttribute matching _ => false or with direct TypeFilters.With.FooAttribute matching foo => foo.Value == 2")
+						"types with direct TypeFilters.With.BarAttribute matching _ => false or with direct TypeFilters.With.FooAttribute matching foo => foo.Value == 2")
 					.AsPrefix();
 			}
 

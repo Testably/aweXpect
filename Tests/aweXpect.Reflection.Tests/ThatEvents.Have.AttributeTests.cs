@@ -45,6 +45,33 @@ public sealed partial class ThatEvents
 			}
 
 			[Test]
+			public async Task WhenAllEventsInheritAttributeFromOverriddenEvents_Directly_ShouldFail()
+			{
+				IEnumerable<EventInfo> subject = new[]
+				{
+					typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!,
+				};
+
+				async Task Act()
+				{
+					await That(subject).Have<MarkerAttribute>().Directly();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have direct ThatEvents.Have.AttributeTests.MarkerAttribute,
+					             but it contained not matching events
+
+					             Not matching items:
+					             [
+					               event Action ThatEvents.Have.AttributeTests.DerivedClass.InheritedEvent
+					             ]
+					             """)
+					.Because("with Directly only the attributes declared on the overriding event count");
+			}
+
+			[Test]
 			public async Task WhenAllEventsInheritAttributeFromOverriddenEvents_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject = new[]
@@ -125,33 +152,6 @@ public sealed partial class ThatEvents
 					               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent2
 					             ]
 					             """);
-			}
-
-			[Test]
-			public async Task WithInheritFalse_WhenAllEventsInheritAttributeFromOverriddenEvents_ShouldFail()
-			{
-				IEnumerable<EventInfo> subject = new[]
-				{
-					typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!,
-				};
-
-				async Task Act()
-				{
-					await That(subject).Have<MarkerAttribute>(false);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             all have direct ThatEvents.Have.AttributeTests.MarkerAttribute,
-					             but it contained not matching events
-
-					             Not matching items:
-					             [
-					               event Action ThatEvents.Have.AttributeTests.DerivedClass.InheritedEvent
-					             ]
-					             """)
-					.Because("with inherit: false only the attributes declared on the overriding event count");
 			}
 
 #if NET8_0_OR_GREATER

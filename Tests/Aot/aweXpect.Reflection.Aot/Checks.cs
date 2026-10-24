@@ -37,6 +37,9 @@ internal static class Checks
 		new("a type without the interface fails",
 			() => ShouldFailOrFailLoudly(async ()
 				=> await That(typeof(Customer)).Implements(typeof(IEntity)), "implements")),
+		new("a type implements its interface directly",
+			() => ShouldPassOrFailLoudly(async ()
+				=> await That(typeof(Order)).Implements(typeof(IEntity)).Directly())),
 		new("a class is no record",
 			() => ShouldPassOrFailLoudly(async () => await That(typeof(Order)).IsAClass())),
 		new("a type contains its method",
@@ -67,6 +70,9 @@ internal static class Checks
 				"none are sealed", "Order")),
 		new("the methods of a type are not abstract",
 			() => ShouldPassOrFailLoudly(async () => await That(In.Type<Order>().Methods()).AreNotAbstract())),
+		new("the declared and inherited methods of a type including the object members are not abstract",
+			() => ShouldPassOrFailLoudly(async ()
+				=> await That(In.Type<Order>().Methods().IncludingObjectMembers()).AreNotAbstract())),
 		new("the methods of a type fail to be static and are listed",
 			() => ShouldFailOrFailLoudly(async ()
 				=> await That(In.Type<Order>().Methods()).AreStatic(), "decimal Order.Total()")),

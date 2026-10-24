@@ -25,8 +25,7 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="MethodInfo" />.
 		/// </summary>
-		internal Methods(Types types, string description,
-			MemberScope memberScope = MemberScope.DeclaredOnly)
+		internal Methods(Types types, string description, MemberScope memberScope)
 			: this(types, description, memberScope, false)
 		{
 		}
@@ -126,6 +125,60 @@ public static partial class Filtered
 
 			/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 			StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
+		}
+
+		/// <summary>
+		///     A container for the methods declared on types, that allows adding the inherited methods via
+		///     <see cref="IncludingInherited" /> and also those declared on <see cref="object" />,
+		///     <see cref="System.ValueType" /> and <see cref="System.Enum" /> via <see cref="IncludingObjectMembers" />.
+		/// </summary>
+		/// <remarks>
+		///     Set these options directly after selecting the methods, as a filter returns a plain
+		///     <see cref="Filtered.Methods" />.
+		/// </remarks>
+		public sealed class MemberScopeResult : Methods
+		{
+			private readonly IFilter<MethodInfo>? _memberFilter;
+			private readonly MemberScope _scope;
+			private readonly string _sourceDescription;
+			private readonly Types _sourceTypes;
+
+			internal MemberScopeResult(Types types, string description, IFilter<MethodInfo>? filter,
+				MemberScope memberScope)
+				: base(Create(types, description, filter, memberScope))
+			{
+				_sourceTypes = types;
+				_sourceDescription = description;
+				_memberFilter = filter;
+				_scope = memberScope;
+			}
+
+			/// <summary>
+			///     Also includes the inherited methods, but neither those declared on <see cref="object" />,
+			///     <see cref="System.ValueType" /> or <see cref="System.Enum" /> nor those a derived type cannot access.
+			/// </summary>
+			/// <remarks>
+			///     A method inherited from a base type is included once for each type that inherits it.
+			/// </remarks>
+			public MemberScopeResult IncludingInherited()
+				=> new(_sourceTypes, _sourceDescription, _memberFilter, _scope & ~MemberScope.DeclaredOnly);
+
+			/// <summary>
+			///     Also includes the inherited methods, including those declared on <see cref="object" />,
+			///     <see cref="System.ValueType" /> and <see cref="System.Enum" />.
+			/// </summary>
+			/// <remarks>
+			///     A method inherited from a base type is included once for each type that inherits it.
+			/// </remarks>
+			public MemberScopeResult IncludingObjectMembers()
+				=> new(_sourceTypes, _sourceDescription, _memberFilter, MemberScope.IncludingObjectMembers);
+
+			private static Methods Create(Types types, string description, IFilter<MethodInfo>? filter,
+				MemberScope memberScope)
+			{
+				Methods methods = new(types, memberScope.DescribeListing(description), memberScope);
+				return filter is null ? methods : methods.Which(filter);
+			}
 		}
 	}
 }

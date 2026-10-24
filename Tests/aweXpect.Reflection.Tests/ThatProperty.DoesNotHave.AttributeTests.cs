@@ -40,6 +40,20 @@ public sealed partial class ThatProperty
 			}
 
 			[Test]
+			public async Task WhenPropertyInheritsAttributeFromOverriddenProperty_Directly_ShouldSucceed()
+			{
+				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>().Directly();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with Directly only the attributes declared on the overriding property count");
+			}
+
+			[Test]
 			public async Task WhenPropertyInheritsAttributeFromOverriddenProperty_ShouldFail()
 			{
 				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!;
@@ -56,20 +70,6 @@ public sealed partial class ThatProperty
 					             but it did in public string ThatProperty.DoesNotHave.AttributeTests.DerivedClass.InheritedProperty { get; set; }
 					             """)
 					.Because("the attribute on the overridden base property is inherited, as in the Properties().With<TAttribute>() filter");
-			}
-
-			[Test]
-			public async Task WithInheritFalse_WhenPropertyInheritsAttributeFromOverriddenProperty_ShouldSucceed()
-			{
-				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!;
-
-				async Task Act()
-				{
-					await That(subject).DoesNotHave<FooAttribute>(false);
-				}
-
-				await That(Act).DoesNotThrow()
-					.Because("with inherit: false only the attributes declared on the overriding property count");
 			}
 
 			[AttributeUsage(AttributeTargets.Property)]

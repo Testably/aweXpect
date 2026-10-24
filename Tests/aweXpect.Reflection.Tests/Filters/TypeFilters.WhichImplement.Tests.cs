@@ -5,7 +5,7 @@
 
 public sealed partial class TypeFilters
 {
-	public sealed class WhichImplement
+	public sealed partial class WhichImplement
 	{
 		public sealed class Tests
 		{
@@ -71,7 +71,7 @@ public sealed partial class TypeFilters
 		}
 	}
 
-	public sealed class WhichDoNotImplement
+	public sealed partial class WhichDoNotImplement
 	{
 		public sealed class Tests
 		{

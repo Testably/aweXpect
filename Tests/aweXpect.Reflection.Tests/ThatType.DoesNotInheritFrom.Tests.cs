@@ -2,7 +2,7 @@
 
 public sealed partial class ThatType
 {
-	public sealed class DoesNotInheritFrom
+	public sealed partial class DoesNotInheritFrom
 	{
 		public sealed class GenericTests
 		{

@@ -6,7 +6,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
+using aweXpect.Reflection.Results;
 #if NET8_0_OR_GREATER
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,14 +27,14 @@ public static partial class ThatTypes
 	///     To check for base-class inheritance use <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}})" />,
 	///     or use <see cref="AreAssignableTo{TType}(IThat{IEnumerable{Type}})" /> to cover base classes and interfaces.<br />
 	///     To require <typeparamref name="TInterface" /> to be implemented directly use
-	///     <see cref="ImplementDirectly{TInterface}(IThat{IEnumerable{Type}})" />.
+	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> Implement<TInterface>(
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> Implement<TInterface>(
 		this IThat<IEnumerable<Type?>?> subject)
-		=> ExpectImplement(subject, typeof(TInterface), false);
+		=> ExpectImplement(subject, typeof(TInterface));
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> implement the interface
@@ -45,16 +45,16 @@ public static partial class ThatTypes
 	///     To check for base-class inheritance use <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type)" />,
 	///     or use <see cref="AreAssignableTo(IThat{IEnumerable{Type}}, Type)" /> to cover base classes and interfaces.<br />
 	///     To require <paramref name="interfaceType" /> to be implemented directly use
-	///     <see cref="ImplementDirectly(IThat{IEnumerable{Type}}, Type)" />.
+	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="interfaceType">The interface to check implementation of.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> Implement(
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> Implement(
 		this IThat<IEnumerable<Type?>?> subject,
 		Type interfaceType)
-		=> ExpectImplement(subject, interfaceType, false);
+		=> ExpectImplement(subject, interfaceType);
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -66,14 +66,14 @@ public static partial class ThatTypes
 	///     To check for base-class inheritance use <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}})" />,
 	///     or use <see cref="AreAssignableTo{TType}(IThat{IEnumerable{Type}})" /> to cover base classes and interfaces.<br />
 	///     To require <typeparamref name="TInterface" /> to be implemented directly use
-	///     <see cref="ImplementDirectly{TInterface}(IThat{IAsyncEnumerable{Type}})" />.
+	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> Implement<TInterface>(
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> Implement<TInterface>(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
-		=> ExpectImplement(subject, typeof(TInterface), false);
+		=> ExpectImplement(subject, typeof(TInterface));
 #endif
 
 #if NET8_0_OR_GREATER
@@ -86,96 +86,16 @@ public static partial class ThatTypes
 	///     To check for base-class inheritance use <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type)" />,
 	///     or use <see cref="AreAssignableTo(IThat{IEnumerable{Type}}, Type)" /> to cover base classes and interfaces.<br />
 	///     To require <paramref name="interfaceType" /> to be implemented directly use
-	///     <see cref="ImplementDirectly(IThat{IAsyncEnumerable{Type}}, Type)" />.
+	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="interfaceType">The interface to check implementation of.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> Implement(
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> Implement(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Type interfaceType)
-		=> ExpectImplement(subject, interfaceType, false);
-#endif
-
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> implement the interface
-	///     <typeparamref name="TInterface" /> directly.
-	/// </summary>
-	/// <remarks>
-	///     An interface that a type only receives through a base class or through another implemented interface is
-	///     not implemented directly. As the compiler emits all inherited interfaces into the metadata, an interface that
-	///     is declared on the type and also inherited cannot be told apart and counts as not direct.<br />
-	///     To also accept an indirectly implemented <typeparamref name="TInterface" /> use
-	///     <see cref="Implement{TInterface}(IThat{IEnumerable{Type}})" />.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> ImplementDirectly<TInterface>(
-		this IThat<IEnumerable<Type?>?> subject)
-		=> ExpectImplement(subject, typeof(TInterface), true);
-
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> implement the interface
-	///     <paramref name="interfaceType" /> directly.
-	/// </summary>
-	/// <remarks>
-	///     An interface that a type only receives through a base class or through another implemented interface is
-	///     not implemented directly. As the compiler emits all inherited interfaces into the metadata, an interface that
-	///     is declared on the type and also inherited cannot be told apart and counts as not direct.<br />
-	///     To also accept an indirectly implemented <paramref name="interfaceType" /> use
-	///     <see cref="Implement(IThat{IEnumerable{Type}}, Type)" />.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <param name="interfaceType">The interface to check direct implementation of.</param>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> ImplementDirectly(
-		this IThat<IEnumerable<Type?>?> subject,
-		Type interfaceType)
-		=> ExpectImplement(subject, interfaceType, true);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> implement the interface
-	///     <typeparamref name="TInterface" /> directly.
-	/// </summary>
-	/// <remarks>
-	///     An interface that a type only receives through a base class or through another implemented interface is
-	///     not implemented directly. As the compiler emits all inherited interfaces into the metadata, an interface that
-	///     is declared on the type and also inherited cannot be told apart and counts as not direct.<br />
-	///     To also accept an indirectly implemented <typeparamref name="TInterface" /> use
-	///     <see cref="Implement{TInterface}(IThat{IAsyncEnumerable{Type}})" />.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> ImplementDirectly<TInterface>(
-		this IThat<IAsyncEnumerable<Type?>?> subject)
-		=> ExpectImplement(subject, typeof(TInterface), true);
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> implement the interface
-	///     <paramref name="interfaceType" /> directly.
-	/// </summary>
-	/// <remarks>
-	///     An interface that a type only receives through a base class or through another implemented interface is
-	///     not implemented directly. As the compiler emits all inherited interfaces into the metadata, an interface that
-	///     is declared on the type and also inherited cannot be told apart and counts as not direct.<br />
-	///     To also accept an indirectly implemented <paramref name="interfaceType" /> use
-	///     <see cref="Implement(IThat{IAsyncEnumerable{Type}}, Type)" />.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <param name="interfaceType">The interface to check direct implementation of.</param>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> ImplementDirectly(
-		this IThat<IAsyncEnumerable<Type?>?> subject,
-		Type interfaceType)
-		=> ExpectImplement(subject, interfaceType, true);
+		=> ExpectImplement(subject, interfaceType);
 #endif
 
 	/// <summary>
@@ -190,9 +110,9 @@ public static partial class ThatTypes
 	/// <param name="subject">The type collection subject.</param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotImplement<TInterface>(
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotImplement<TInterface>(
 		this IThat<IEnumerable<Type?>?> subject)
-		=> ExpectDoNotImplement(subject, typeof(TInterface), false);
+		=> ExpectDoNotImplement(subject, typeof(TInterface));
 
 	/// <summary>
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> implement the interface
@@ -207,10 +127,10 @@ public static partial class ThatTypes
 	/// <param name="interfaceType">The interface to check implementation of.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotImplement(
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotImplement(
 		this IThat<IEnumerable<Type?>?> subject,
 		Type interfaceType)
-		=> ExpectDoNotImplement(subject, interfaceType, false);
+		=> ExpectDoNotImplement(subject, interfaceType);
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -225,9 +145,9 @@ public static partial class ThatTypes
 	/// <param name="subject">The type collection subject.</param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotImplement<TInterface>(
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotImplement<TInterface>(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
-		=> ExpectDoNotImplement(subject, typeof(TInterface), false);
+		=> ExpectDoNotImplement(subject, typeof(TInterface));
 #endif
 
 #if NET8_0_OR_GREATER
@@ -244,129 +164,65 @@ public static partial class ThatTypes
 	/// <param name="interfaceType">The interface to check implementation of.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotImplement(
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotImplement(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Type interfaceType)
-		=> ExpectDoNotImplement(subject, interfaceType, false);
+		=> ExpectDoNotImplement(subject, interfaceType);
 #endif
 
-	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> implement the interface
-	///     <typeparamref name="TInterface" /> directly.
-	/// </summary>
-	/// <remarks>
-	///     Types that implement <typeparamref name="TInterface" /> only through a base class or through another
-	///     implemented interface satisfy this expectation.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotImplementDirectly<TInterface>(
-		this IThat<IEnumerable<Type?>?> subject)
-		=> ExpectDoNotImplement(subject, typeof(TInterface), true);
-
-	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> implement the interface
-	///     <paramref name="interfaceType" /> directly.
-	/// </summary>
-	/// <remarks>
-	///     Types that implement <paramref name="interfaceType" /> only through a base class or through another
-	///     implemented interface satisfy this expectation.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <param name="interfaceType">The interface to check direct implementation of.</param>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotImplementDirectly(
-		this IThat<IEnumerable<Type?>?> subject,
-		Type interfaceType)
-		=> ExpectDoNotImplement(subject, interfaceType, true);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> implement the interface
-	///     <typeparamref name="TInterface" /> directly.
-	/// </summary>
-	/// <remarks>
-	///     Types that implement <typeparamref name="TInterface" /> only through a base class or through another
-	///     implemented interface satisfy this expectation.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotImplementDirectly<TInterface>(
-		this IThat<IAsyncEnumerable<Type?>?> subject)
-		=> ExpectDoNotImplement(subject, typeof(TInterface), true);
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> implement the interface
-	///     <paramref name="interfaceType" /> directly.
-	/// </summary>
-	/// <remarks>
-	///     Types that implement <paramref name="interfaceType" /> only through a base class or through another
-	///     implemented interface satisfy this expectation.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <param name="interfaceType">The interface to check direct implementation of.</param>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotImplementDirectly(
-		this IThat<IAsyncEnumerable<Type?>?> subject,
-		Type interfaceType)
-		=> ExpectDoNotImplement(subject, interfaceType, true);
-#endif
-
-	private static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> ExpectImplement(
+	private static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> ExpectImplement(
 		IThat<IEnumerable<Type?>?> subject,
-		Type interfaceType,
-		bool directly)
+		Type interfaceType)
 	{
 		interfaceType.EnsureIsInterface();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, bool Directly), IEnumerable<Type?>>((interfaceType, directly),
+		ScopeOptions scope = new();
+		return new InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, ScopeOptions Scope), IEnumerable<Type?>>((interfaceType, scope),
 				static (s, it, grammars)
-				=> new ImplementConstraint(it, grammars | ExpectationGrammars.Plural, s.InterfaceType, s.Directly)),
-			subject);
+				=> new ImplementConstraint(it, grammars | ExpectationGrammars.Plural, s.InterfaceType, s.Scope)),
+			subject,
+			scope);
 	}
 
 #if NET8_0_OR_GREATER
-	private static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> ExpectImplement(
+	private static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> ExpectImplement(
 		IThat<IAsyncEnumerable<Type?>?> subject,
-		Type interfaceType,
-		bool directly)
+		Type interfaceType)
 	{
 		interfaceType.EnsureIsInterface();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, bool Directly), IAsyncEnumerable<Type?>>((interfaceType, directly),
+		ScopeOptions scope = new();
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, ScopeOptions Scope), IAsyncEnumerable<Type?>>((interfaceType, scope),
 				static (s, it, grammars)
-				=> new ImplementConstraint(it, grammars | ExpectationGrammars.Plural, s.InterfaceType, s.Directly)),
-			subject);
+				=> new ImplementConstraint(it, grammars | ExpectationGrammars.Plural, s.InterfaceType, s.Scope)),
+			subject,
+			scope);
 	}
 #endif
 
-	private static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> ExpectDoNotImplement(
+	private static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> ExpectDoNotImplement(
 		IThat<IEnumerable<Type?>?> subject,
-		Type interfaceType,
-		bool directly)
+		Type interfaceType)
 	{
 		interfaceType.EnsureIsInterface();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, bool Directly), IEnumerable<Type?>>((interfaceType, directly),
+		ScopeOptions scope = new();
+		return new InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, ScopeOptions Scope), IEnumerable<Type?>>((interfaceType, scope),
 				static (s, it, grammars)
-				=> new DoNotImplementConstraint(it, grammars | ExpectationGrammars.Plural, s.InterfaceType, s.Directly)),
-			subject);
+				=> new DoNotImplementConstraint(it, grammars | ExpectationGrammars.Plural, s.InterfaceType, s.Scope)),
+			subject,
+			scope);
 	}
 
 #if NET8_0_OR_GREATER
-	private static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> ExpectDoNotImplement(
+	private static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> ExpectDoNotImplement(
 		IThat<IAsyncEnumerable<Type?>?> subject,
-		Type interfaceType,
-		bool directly)
+		Type interfaceType)
 	{
 		interfaceType.EnsureIsInterface();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, bool Directly), IAsyncEnumerable<Type?>>((interfaceType, directly),
+		ScopeOptions scope = new();
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, ScopeOptions Scope), IAsyncEnumerable<Type?>>((interfaceType, scope),
 				static (s, it, grammars)
-				=> new DoNotImplementConstraint(it, grammars | ExpectationGrammars.Plural, s.InterfaceType, s.Directly)),
-			subject);
+				=> new DoNotImplementConstraint(it, grammars | ExpectationGrammars.Plural, s.InterfaceType, s.Scope)),
+			subject,
+			scope);
 	}
 #endif
 
@@ -374,7 +230,7 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		Type interfaceType,
-		bool directly)
+		ScopeOptions scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -385,21 +241,21 @@ public static partial class ThatTypes
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				type => type?.Implements(interfaceType, directly) == true, cancellationToken);
+				type => type?.Implements(interfaceType, scope.IsDirect) == true, cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => type?.Implements(interfaceType, directly) == true);
+			=> SetValue(actual, context, type => type?.Implements(interfaceType, scope.IsDirect) == true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(directly ? "all directly implement " : "all implement ");
+			stringBuilder.Append(scope.IsDirect ? "all directly implement " : "all implement ");
 			Formatter.Format(stringBuilder, interfaceType);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(directly
+			stringBuilder.Append(It).Append(scope.IsDirect
 				? " contained types that do not directly implement "
 				: " contained types that do not implement ");
 			Formatter.Format(stringBuilder, interfaceType);
@@ -407,13 +263,13 @@ public static partial class ThatTypes
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(directly ? "not all directly implement " : "not all implement ");
+			stringBuilder.Append(scope.IsDirect ? "not all directly implement " : "not all implement ");
 			Formatter.Format(stringBuilder, interfaceType);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(directly
+			stringBuilder.Append(It).Append(scope.IsDirect
 				? " only contained types that directly implement "
 				: " only contained types that implement ");
 			Formatter.Format(stringBuilder, interfaceType);
@@ -424,7 +280,7 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		Type interfaceType,
-		bool directly)
+		ScopeOptions scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -435,21 +291,21 @@ public static partial class ThatTypes
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				type => type?.Implements(interfaceType, directly) != true, cancellationToken);
+				type => type?.Implements(interfaceType, scope.IsDirect) != true, cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => type?.Implements(interfaceType, directly) != true);
+			=> SetValue(actual, context, type => type?.Implements(interfaceType, scope.IsDirect) != true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(directly ? "all do not directly implement " : "all do not implement ");
+			stringBuilder.Append(scope.IsDirect ? "all do not directly implement " : "all do not implement ");
 			Formatter.Format(stringBuilder, interfaceType);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(directly
+			stringBuilder.Append(It).Append(scope.IsDirect
 				? " contained types that directly implement "
 				: " contained types that implement ");
 			Formatter.Format(stringBuilder, interfaceType);
@@ -457,13 +313,13 @@ public static partial class ThatTypes
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(directly ? "at least one directly implements " : "at least one implements ");
+			stringBuilder.Append(scope.IsDirect ? "at least one directly implements " : "at least one implements ");
 			Formatter.Format(stringBuilder, interfaceType);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(directly
+			stringBuilder.Append(It).Append(scope.IsDirect
 				? " only contained types that do not directly implement "
 				: " only contained types that do not implement ");
 			Formatter.Format(stringBuilder, interfaceType);

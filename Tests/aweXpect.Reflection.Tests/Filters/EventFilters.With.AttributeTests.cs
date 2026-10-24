@@ -25,10 +25,10 @@ public sealed partial class EventFilters
 			}
 
 			[Test]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForEventsWithAttributeDirectlySet()
+			public async Task WhenDirectly_ShouldFilterForEventsWithAttributeDirectlySet()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
-					.Events().With<BarAttribute>(false);
+					.Events().With<BarAttribute>().Directly();
 
 				await That(events).HasSingle().Which.IsEqualTo(typeof(Dummy).GetEvent(nameof(Dummy.MyBarEvent)));
 				await That(events.GetDescription())
@@ -52,10 +52,10 @@ public sealed partial class EventFilters
 			}
 
 			[Test]
-			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForEventsWithAttributeDirectlySet()
+			public async Task WithPredicate_WhenDirectly_ShouldFilterForEventsWithAttributeDirectlySet()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
-					.Events().With<FooAttribute>(foo => foo.Value == 2, false);
+					.Events().With<FooAttribute>(foo => foo.Value == 2).Directly();
 
 				await That(events).HasSingle().Which
 					.IsEqualTo(typeof(Dummy).GetEvent(nameof(Dummy.MyFooEvent2)));
@@ -118,10 +118,10 @@ public sealed partial class EventFilters
 			}
 
 			[Test]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForEventsWithAttributeDirectlySet()
+			public async Task WhenDirectly_ShouldApplyToAllAttributes()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
-					.Events().With<BarAttribute>().OrWith<FooAttribute>(false);
+					.Events().With<BarAttribute>().OrWith<FooAttribute>().Directly();
 
 				await That(events).IsEqualTo([
 					typeof(Dummy).GetEvent(nameof(Dummy.MyBarEvent))!,
@@ -130,7 +130,7 @@ public sealed partial class EventFilters
 				]).InAnyOrder();
 				await That(events.GetDescription())
 					.IsEqualTo(
-						"events with EventFilters.With.BarAttribute or with direct EventFilters.With.FooAttribute")
+						"events with direct EventFilters.With.BarAttribute or with direct EventFilters.With.FooAttribute")
 					.AsPrefix();
 			}
 
@@ -140,27 +140,27 @@ public sealed partial class EventFilters
 				EventInfo?[] expectedEvents)
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
-					.Events().With<BarAttribute>(false).OrWith<FooAttribute>(foo => foo.Value == value);
+					.Events().With<BarAttribute>().OrWith<FooAttribute>(foo => foo.Value == value);
 
 				await That(events).IsEqualTo(expectedEvents).InAnyOrder();
 				await That(events.GetDescription())
 					.IsEqualTo(
-						"events with direct EventFilters.With.BarAttribute or with EventFilters.With.FooAttribute matching foo => foo.Value == value")
+						"events with EventFilters.With.BarAttribute or with EventFilters.With.FooAttribute matching foo => foo.Value == value")
 					.AsPrefix();
 			}
 
 			[Test]
-			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForEventsWithAttributeDirectlySet()
+			public async Task WithPredicate_WhenDirectly_ShouldApplyToAllAttributes()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
 					.Events().With<BarAttribute>(_ => false)
-					.OrWith<FooAttribute>(foo => foo.Value == 2, false);
+					.OrWith<FooAttribute>(foo => foo.Value == 2).Directly();
 
 				await That(events).HasSingle().Which
 					.IsEqualTo(typeof(Dummy).GetEvent(nameof(Dummy.MyFooEvent2)));
 				await That(events.GetDescription())
 					.IsEqualTo(
-						"events with EventFilters.With.BarAttribute matching _ => false or with direct EventFilters.With.FooAttribute matching foo => foo.Value == 2")
+						"events with direct EventFilters.With.BarAttribute matching _ => false or with direct EventFilters.With.FooAttribute matching foo => foo.Value == 2")
 					.AsPrefix();
 			}
 

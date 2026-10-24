@@ -22,32 +22,31 @@ public sealed partial class ThatType
 			}
 
 			[Test]
-			public async Task WhenInheritedEventMatches_WithDeclaredOnly_ShouldFail()
+			public async Task WhenInheritedEventMatches_Directly_ShouldFail()
+			{
+				Type subject = typeof(DerivedClassWithInheritedMarkedEvent);
+
+				async Task Act()
+				{
+					await That(subject).ContainsEvents(events => events.With<MarkerAttribute>()).Directly();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             declares events with ThatType.ContainsEvents.MarkerAttribute at least once,
+					             but it contained 0 matching members in ThatType.ContainsEvents.DerivedClassWithInheritedMarkedEvent
+					             """);
+			}
+
+			[Test]
+			public async Task WhenInheritedEventMatches_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClassWithInheritedMarkedEvent);
 
 				async Task Act()
 				{
 					await That(subject).ContainsEvents(events => events.With<MarkerAttribute>());
-				}
-
-				await That(Act).Throws()
-					.WithMessage("""
-					             Expected that subject
-					             contains events with ThatType.ContainsEvents.MarkerAttribute at least once,
-					             but it contained 0 matching members in ThatType.ContainsEvents.DerivedClassWithInheritedMarkedEvent
-					             """);
-			}
-
-			[Test]
-			public async Task WhenInheritedEventMatches_WithIncludingInherited_ShouldSucceed()
-			{
-				Type subject = typeof(DerivedClassWithInheritedMarkedEvent);
-
-				async Task Act()
-				{
-					await That(subject).ContainsEvents(events => events.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
 				}
 
 				await That(Act).DoesNotThrow();

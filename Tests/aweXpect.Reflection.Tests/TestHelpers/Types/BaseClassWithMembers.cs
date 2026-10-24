@@ -57,3 +57,62 @@ public class DerivedClassWithMembers : BaseClassWithMembers
 	public void DerivedMethod() { }
 #pragma warning restore CA1822
 }
+
+public class ClassOverridingObjectMembers
+{
+	public override string ToString() => nameof(ClassOverridingObjectMembers);
+}
+
+public enum EnumWithMembers
+{
+	First,
+	Second,
+}
+
+public struct StructWithMembers
+{
+	// ReSharper disable once UnusedMember.Global
+	public int StructProperty { get; set; }
+}
+
+public class BaseClassWithInternalMembers
+{
+#pragma warning disable CS0649 // Field is never assigned to
+	// ReSharper disable once UnusedMember.Global
+	internal int BaseInternalField;
+#pragma warning restore CS0649
+	// ReSharper disable once UnusedMember.Global
+	internal int BaseInternalProperty { get; set; }
+
+#pragma warning disable CS0067 // Event is never used
+	// ReSharper disable once UnusedMember.Global
+	internal event EventHandler? BaseInternalEvent;
+#pragma warning restore CS0067
+
+#pragma warning disable CA1822 // Mark members as static
+	// ReSharper disable once UnusedMember.Global
+	internal void BaseInternalMethod() { }
+#pragma warning restore CA1822
+}
+
+public class DerivedClassWithInternalMembers : BaseClassWithInternalMembers;
+
+public class ExceptionWithoutMembers : Exception;
+
+public interface IBaseInterfaceWithMembers
+{
+	// ReSharper disable once UnusedMember.Global
+	int BaseInterfaceProperty { get; }
+
+	// ReSharper disable once EventNeverSubscribedTo.Global
+	event EventHandler? BaseInterfaceEvent;
+
+	// ReSharper disable once UnusedMember.Global
+	void BaseInterfaceMethod();
+}
+
+public interface IDerivedInterfaceWithMembers : IBaseInterfaceWithMembers
+{
+	// ReSharper disable once UnusedMember.Global
+	void DerivedInterfaceMethod();
+}

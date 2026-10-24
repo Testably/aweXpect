@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 using TUnit.Core.Exceptions;
 
 namespace aweXpect.Reflection.Tests;
@@ -97,6 +98,20 @@ public sealed partial class ThatType
 			}
 
 			[Test]
+			public async Task WhenDirectlyIsSetAfterTheQuantifier_ShouldApplyIt()
+			{
+				Type subject = typeof(DerivedClassWithInheritedMarkedMethod);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>()).Never().Directly();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the options chain in any order");
+			}
+
+			[Test]
 			public async Task WhenFilterIsNull_ShouldThrowArgumentNullException()
 			{
 				Type subject = typeof(ClassWithMarkedMethod);
@@ -134,7 +149,25 @@ public sealed partial class ThatType
 			}
 
 			[Test]
-			public async Task WhenInheritedMethodMatches_WithDeclaredOnly_ShouldFail()
+			public async Task WhenInheritedMethodMatches_Directly_ShouldFail()
+			{
+				Type subject = typeof(DerivedClassWithInheritedMarkedMethod);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>()).Directly();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             declares methods with ThatType.ContainsMethods.MarkerAttribute at least once,
+					             but it contained 0 matching members in ThatType.ContainsMethods.DerivedClassWithInheritedMarkedMethod
+					             """);
+			}
+
+			[Test]
+			public async Task WhenInheritedMethodMatches_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClassWithInheritedMarkedMethod);
 
@@ -143,26 +176,74 @@ public sealed partial class ThatType
 					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>());
 				}
 
-				await That(Act).Throws()
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenInterfaceInheritsMatchingMethod_ShouldSucceed()
+			{
+				Type subject = typeof(IDerivedInterfaceWithMembers);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods
+						=> methods.WithName(nameof(IBaseInterfaceWithMembers.BaseInterfaceMethod)));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("an interface inherits the members of its base interfaces");
+			}
+
+			[Test]
+			public async Task WhenObjectMethodDoesNotMatch_IncludingObjectMembers_ShouldFail()
+			{
+				Type subject = typeof(StructWithMembers);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.WithName("Missing"))
+						.IncludingObjectMembers();
+				}
+
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains methods with ThatType.ContainsMethods.MarkerAttribute at least once,
-					             but it contained 0 matching members in ThatType.ContainsMethods.DerivedClassWithInheritedMarkedMethod
+					             contains methods with name equal to "Missing" including object members at least once,
+					             but it contained 0 matching members in StructWithMembers
 					             """);
 			}
 
 			[Test]
-			public async Task WhenInheritedMethodMatches_WithIncludingInherited_ShouldSucceed()
+			public async Task WhenObjectMethodMatches_IncludingObjectMembers_ShouldSucceed()
 			{
-				Type subject = typeof(DerivedClassWithInheritedMarkedMethod);
+				Type subject = typeof(StructWithMembers);
 
 				async Task Act()
 				{
-					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
+					await That(subject).ContainsMethods(methods => methods.WithName(nameof(Equals)))
+						.IncludingObjectMembers();
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenObjectMethodMatches_ShouldFail()
+			{
+				Type subject = typeof(StructWithMembers);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.WithName(nameof(Equals)));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains methods with name equal to "Equals" at least once,
+					             but it contained 0 matching members in StructWithMembers
+					             """)
+					.Because("the members declared on System.Object and System.ValueType are excluded by default");
 			}
 
 			[Test]
@@ -628,6 +709,25 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenTypeDeclaresMatchingMethod_Directly_ShouldFail()
+			{
+				Type subject = typeof(ClassWithMarkedMethod);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it
+						=> it.ContainsMethods(methods => methods.With<MarkerAttribute>()).Directly());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not declare methods with ThatType.ContainsMethods.MarkerAttribute at least once,
+					             but it contained 1 matching member in ThatType.ContainsMethods.ClassWithMarkedMethod
+					             """);
 			}
 		}
 

@@ -20,7 +20,7 @@ public static partial class ThatField
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
+		attributeFilterOptions.RegisterAttribute<TAttribute>();
 		return new AndOrResult<FieldInfo, IThat<FieldInfo?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),

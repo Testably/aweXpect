@@ -38,6 +38,19 @@ public sealed partial class ThatType
 			}
 
 			[Test]
+			public async Task WhenTypeHasAttributeIndirectly_Directly_ShouldSucceed()
+			{
+				Type subject = typeof(FooChildClass2);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>().Directly();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task WhenTypeHasAttributeIndirectly_ShouldFail()
 			{
 				Type subject = typeof(FooChildClass2);
@@ -53,19 +66,6 @@ public sealed partial class ThatType
 					             has no ThatType.DoesNotHave.AttributeTests.FooAttribute,
 					             but it did in ThatType.DoesNotHave.AttributeTests.FooChildClass2
 					             """);
-			}
-
-			[Test]
-			public async Task WhenTypeHasAttributeIndirectly_WhenInheritIsFalse_ShouldSucceed()
-			{
-				Type subject = typeof(FooChildClass2);
-
-				async Task Act()
-				{
-					await That(subject).DoesNotHave<FooAttribute>(false);
-				}
-
-				await That(Act).DoesNotThrow();
 			}
 
 			[AttributeUsage(AttributeTargets.Class)]

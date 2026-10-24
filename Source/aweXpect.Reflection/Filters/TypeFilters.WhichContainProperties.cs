@@ -13,10 +13,12 @@ public static partial class TypeFilters
 	/// <remarks>
 	///     By default a type passes when it contains at least one matching property. Append a quantifier
 	///     (e.g. <see cref="TypesContainingMembers.Exactly(Times)" />) to require a specific count.<br />
-	///     The <paramref name="memberScope" /> controls whether inherited properties are considered.
+	///     The inherited properties are considered, but neither those declared on <see cref="object" />,
+	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access.
+	///     Restrict them with <see cref="TypesContainingMembers.MemberScopeResult.Directly" /> or add the members of these
+	///     roots with <see cref="TypesContainingMembers.MemberScopeResult.IncludingObjectMembers" />.
 	/// </remarks>
-	public static TypesContainingMembers WhichContainProperties(this Filtered.Types @this,
-		Func<Filtered.Properties, Filtered.Properties> filter,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
-		=> Containing<PropertyInfo, Filtered.Properties>(@this, types => types.Properties(memberScope), filter);
+	public static TypesContainingMembers.MemberScopeResult WhichContainProperties(this Filtered.Types @this,
+		Func<Filtered.Properties, Filtered.Properties> filter)
+		=> ContainingMembers<PropertyInfo, Filtered.Properties>(@this, (types, memberScope) => types.Properties(memberScope), filter);
 }

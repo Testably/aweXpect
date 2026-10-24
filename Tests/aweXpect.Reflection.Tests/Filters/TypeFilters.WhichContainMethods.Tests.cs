@@ -1,5 +1,7 @@
 ﻿using aweXpect.Reflection.Collections;
 
+using aweXpect.Reflection.Tests.TestHelpers.Types;
+
 namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class TypeFilters
@@ -173,6 +175,15 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
+			public async Task ShouldIncludeTypesWithInheritedMatchingMethod()
+			{
+				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedMethod>()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>());
+
+				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedMethod),]).InAnyOrder();
+			}
+
+			[Test]
 			public async Task ShouldReadNaturallyInAFailingExpectation()
 			{
 				async Task Act()
@@ -242,22 +253,58 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
-			public async Task WithDeclaredOnly_ShouldNotIncludeTypesWithOnlyInheritedMatchingMethod()
+			public async Task WhenDirectly_ShouldApplyToTheQuantifier()
 			{
 				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedMethod>()
-					.WhichContainMethods(methods => methods.With<MarkerAttribute>());
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).Directly().Never();
+
+				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedMethod),]);
+			}
+
+			[Test]
+			public async Task WhenDirectly_ShouldDescribeTheScope()
+			{
+				Filtered.Types types = In.AssemblyContaining<MarkerAttribute>().Types()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).Directly();
+
+				await That(types.GetDescription())
+					.IsEqualTo(
+						"types which declare methods with TypeFilters.WhichContainMethods.MarkerAttribute at least once ")
+					.AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenDirectly_ShouldNotIncludeTypesWithOnlyInheritedMatchingMethod()
+			{
+				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedMethod>()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).Directly();
 
 				await That(types).IsEmpty();
 			}
 
 			[Test]
-			public async Task WithIncludingInherited_ShouldIncludeTypesWithInheritedMatchingMethod()
+			public async Task WhenIncludingObjectMembers_ShouldDescribeTheScope()
 			{
-				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedMethod>()
-					.WhichContainMethods(methods => methods.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
+				Filtered.Types types = In.AssemblyContaining<MarkerAttribute>().Types()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).IncludingObjectMembers();
 
-				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedMethod),]).InAnyOrder();
+				await That(types.GetDescription())
+					.IsEqualTo(
+						"types which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute including object members at least once ")
+					.AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenIncludingObjectMembers_ShouldIncludeTypesWithMatchingObjectMethod()
+			{
+				Filtered.Types withoutObjectMembers = In.Type<StructWithMembers>()
+					.WhichContainMethods(methods => methods.WithName(nameof(Equals)));
+				Filtered.Types withObjectMembers = In.Type<StructWithMembers>()
+					.WhichContainMethods(methods => methods.WithName(nameof(Equals))).IncludingObjectMembers();
+
+				await That(withoutObjectMembers).IsEmpty()
+					.Because("the members declared on System.Object and System.ValueType are excluded by default");
+				await That(withObjectMembers).IsEqualTo([typeof(StructWithMembers),]);
 			}
 		}
 

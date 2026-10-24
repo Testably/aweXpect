@@ -23,9 +23,8 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="PropertyInfo" />.
 		/// </summary>
-		internal Properties(Types types, string description,
-			MemberScope memberScope = MemberScope.DeclaredOnly) : base(types.SelectMany(type =>
-			type.GetDeclaredProperties(memberScope)))
+		internal Properties(Types types, string description, MemberScope memberScope)
+			: base(types.SelectMany(type => type.GetDeclaredProperties(memberScope)))
 		{
 			_types = types;
 			_description = description;
@@ -94,6 +93,60 @@ public static partial class Filtered
 
 			/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 			StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
+		}
+
+		/// <summary>
+		///     A container for the properties declared on types, that allows adding the inherited properties via
+		///     <see cref="IncludingInherited" /> and also those declared on <see cref="object" />,
+		///     <see cref="System.ValueType" /> and <see cref="System.Enum" /> via <see cref="IncludingObjectMembers" />.
+		/// </summary>
+		/// <remarks>
+		///     Set these options directly after selecting the properties, as a filter returns a plain
+		///     <see cref="Filtered.Properties" />.
+		/// </remarks>
+		public sealed class MemberScopeResult : Properties
+		{
+			private readonly IFilter<PropertyInfo>? _memberFilter;
+			private readonly MemberScope _scope;
+			private readonly string _sourceDescription;
+			private readonly Types _sourceTypes;
+
+			internal MemberScopeResult(Types types, string description, IFilter<PropertyInfo>? filter,
+				MemberScope memberScope)
+				: base(Create(types, description, filter, memberScope))
+			{
+				_sourceTypes = types;
+				_sourceDescription = description;
+				_memberFilter = filter;
+				_scope = memberScope;
+			}
+
+			/// <summary>
+			///     Also includes the inherited properties, but neither those declared on <see cref="object" />,
+			///     <see cref="System.ValueType" /> or <see cref="System.Enum" /> nor those a derived type cannot access.
+			/// </summary>
+			/// <remarks>
+			///     A property inherited from a base type is included once for each type that inherits it.
+			/// </remarks>
+			public MemberScopeResult IncludingInherited()
+				=> new(_sourceTypes, _sourceDescription, _memberFilter, _scope & ~MemberScope.DeclaredOnly);
+
+			/// <summary>
+			///     Also includes the inherited properties, including those declared on <see cref="object" />,
+			///     <see cref="System.ValueType" /> and <see cref="System.Enum" />.
+			/// </summary>
+			/// <remarks>
+			///     A property inherited from a base type is included once for each type that inherits it.
+			/// </remarks>
+			public MemberScopeResult IncludingObjectMembers()
+				=> new(_sourceTypes, _sourceDescription, _memberFilter, MemberScope.IncludingObjectMembers);
+
+			private static Properties Create(Types types, string description, IFilter<PropertyInfo>? filter,
+				MemberScope memberScope)
+			{
+				Properties properties = new(types, memberScope.DescribeListing(description), memberScope);
+				return filter is null ? properties : properties.Which(filter);
+			}
 		}
 	}
 }

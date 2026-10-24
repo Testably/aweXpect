@@ -32,33 +32,17 @@ internal sealed class TypesMemberBuilder :
 		return filter is null ? constructors : constructors.Which(filter);
 	}
 
-	public Filtered.Events Events(MemberScope memberScope = MemberScope.DeclaredOnly)
-	{
-		Filtered.Events events = new(_source, "events ", memberScope);
-		IFilter<EventInfo>? filter = _state.BuildEventFilter();
-		return filter is null ? events : events.Which(filter);
-	}
+	public Filtered.Events.MemberScopeResult Events()
+		=> new(_source, "events ", _state.BuildEventFilter(), MemberScope.DeclaredOnly);
 
-	public Filtered.Fields Fields(MemberScope memberScope = MemberScope.DeclaredOnly)
-	{
-		Filtered.Fields fields = new(_source, "fields ", memberScope);
-		IFilter<FieldInfo>? filter = _state.BuildFieldFilter();
-		return filter is null ? fields : fields.Which(filter);
-	}
+	public Filtered.Fields.MemberScopeResult Fields()
+		=> new(_source, "fields ", _state.BuildFieldFilter(), MemberScope.DeclaredOnly);
 
-	public Filtered.Methods Methods(MemberScope memberScope = MemberScope.DeclaredOnly)
-	{
-		Filtered.Methods methods = new(_source, "methods ", memberScope);
-		IFilter<MethodInfo>? filter = _state.BuildMethodFilter();
-		return filter is null ? methods : methods.Which(filter);
-	}
+	public Filtered.Methods.MemberScopeResult Methods()
+		=> new(_source, "methods ", _state.BuildMethodFilter(), MemberScope.DeclaredOnly);
 
-	public Filtered.Properties Properties(MemberScope memberScope = MemberScope.DeclaredOnly)
-	{
-		Filtered.Properties properties = new(_source, "properties ", memberScope);
-		IFilter<PropertyInfo>? filter = _state.BuildPropertyFilter();
-		return filter is null ? properties : properties.Which(filter);
-	}
+	public Filtered.Properties.MemberScopeResult Properties()
+		=> new(_source, "properties ", _state.BuildPropertyFilter(), MemberScope.DeclaredOnly);
 
 	IMembers IMembers.IProtected.Internal
 		=> new TypesMemberBuilder(_source, _state.WithAccess(AccessModifiers.ProtectedInternal));

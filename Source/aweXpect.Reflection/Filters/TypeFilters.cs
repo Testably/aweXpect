@@ -19,8 +19,23 @@ public static partial class TypeFilters
 		Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
-		ContainedMembersFilter<TMember, TFiltered> containedMembersFilter = new(navigate, filter, new Quantifier());
+		ContainedMembersFilter<TMember, TFiltered> containedMembersFilter =
+			new(navigate, filter, new Quantifier(), MemberScope.Inherited);
 		return new TypesContainingMembers(@this, containedMembersFilter, containedMembersFilter.WithQuantifier);
+	}
+
+	private static TypesContainingMembers.MemberScopeResult ContainingMembers<TMember, TFiltered>(
+		Filtered.Types @this,
+		Func<Filtered.Types, MemberScope, TFiltered> navigate,
+		Func<TFiltered, TFiltered> filter)
+		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
+	{
+		return new TypesContainingMembers.MemberScopeResult(@this, memberScope =>
+		{
+			ContainedMembersFilter<TMember, TFiltered> containedMembersFilter =
+				new(types => navigate(types, memberScope), filter, new Quantifier(), memberScope);
+			return (containedMembersFilter, containedMembersFilter.WithQuantifier);
+		}, MemberScope.Inherited);
 	}
 
 	/// <summary>
@@ -33,7 +48,7 @@ public static partial class TypeFilters
 		Func<TFiltered, TFiltered> filter,
 		Quantifier quantifier)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
-		=> new ContainedMembersFilter<TMember, TFiltered>(navigate, filter, quantifier);
+		=> new ContainedMembersFilter<TMember, TFiltered>(navigate, filter, quantifier, MemberScope.Inherited);
 
 	/// <summary>
 	///     A filterable collection of <see cref="Type" /> that contain matching members, allowing to specify a quantifier
@@ -136,23 +151,73 @@ public static partial class TypeFilters
 			specify(quantifier);
 			return _source.Which(_withQuantifier(quantifier));
 		}
+
+		/// <summary>
+		///     A filterable collection of <see cref="Type" /> that contain matching members, allowing to restrict them to
+		///     the declared members via <see cref="Directly" /> or to add the members declared on <see cref="object" />,
+		///     <see cref="ValueType" /> and <see cref="Enum" /> via <see cref="IncludingObjectMembers" />.
+		/// </summary>
+		/// <remarks>
+		///     By default the inherited members are included, but neither those declared on <see cref="object" />,
+		///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. The two options exclude each
+		///     other and are set before the quantifier, which ends the filter.
+		/// </remarks>
+		public sealed class MemberScopeResult : TypesContainingMembers
+		{
+			private readonly
+				Func<MemberScope, (IFilter<Type> Filter, Func<Quantifier, IFilter<Type>> WithQuantifier)> _create;
+
+			private readonly Filtered.Types _scopeSource;
+
+			internal MemberScopeResult(Filtered.Types source,
+				Func<MemberScope, (IFilter<Type> Filter, Func<Quantifier, IFilter<Type>> WithQuantifier)> create,
+				MemberScope memberScope)
+				: this(source, create, create(memberScope))
+			{
+			}
+
+			private MemberScopeResult(Filtered.Types source,
+				Func<MemberScope, (IFilter<Type> Filter, Func<Quantifier, IFilter<Type>> WithQuantifier)> create,
+				(IFilter<Type> Filter, Func<Quantifier, IFilter<Type>> WithQuantifier) filters)
+				: base(source, filters.Filter, filters.WithQuantifier)
+			{
+				_scopeSource = source;
+				_create = create;
+			}
+
+			/// <summary>
+			///     Only considers the members declared directly on the types.
+			/// </summary>
+			public TypesContainingMembers Directly()
+				=> new MemberScopeResult(_scopeSource, _create, MemberScope.DeclaredOnly);
+
+			/// <summary>
+			///     Also considers the inherited members declared on <see cref="object" />, <see cref="ValueType" /> and
+			///     <see cref="Enum" />.
+			/// </summary>
+			public TypesContainingMembers IncludingObjectMembers()
+				=> new MemberScopeResult(_scopeSource, _create, MemberScope.IncludingObjectMembers);
+		}
 	}
 
 	private sealed class ContainedMembersFilter<TMember, TFiltered> : IContainedMembersFilter
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		private readonly Func<TFiltered, TFiltered> _filter;
+		private readonly MemberScope _memberScope;
 		private readonly Func<Filtered.Types, TFiltered> _navigate;
 		private readonly Quantifier _quantifier;
 
 		public ContainedMembersFilter(Func<Filtered.Types, TFiltered> navigate,
 			Func<TFiltered, TFiltered> filter,
-			Quantifier quantifier)
+			Quantifier quantifier,
+			MemberScope memberScope)
 		{
 			ThrowHelper.ThrowIfNull(filter, nameof(filter));
 			_navigate = navigate;
 			_filter = filter;
 			_quantifier = quantifier;
+			_memberScope = memberScope;
 
 			// Derive the inner description from an empty probe, e.g. "methods with FactAttribute or with TheoryAttribute ".
 			string inner = _filter(_navigate(new Filtered.Types([], ""))).GetDescription();
@@ -169,6 +234,7 @@ public static partial class TypeFilters
 			_navigate = original._navigate;
 			_filter = original._filter;
 			_quantifier = quantifier;
+			_memberScope = original._memberScope;
 			MembersDescription = original.MembersDescription;
 		}
 
@@ -216,6 +282,6 @@ public static partial class TypeFilters
 			=> UserCode.Invoke(_filter, _navigate(new Filtered.Types([value,], "")), "the filter");
 
 		public string Describes(string text)
-			=> $"{text.TrimEnd()} which contain {MembersDescription}{_quantifier} ";
+			=> $"{text.TrimEnd()} which {(_memberScope.IsDirect() ? "declare" : "contain")} {MembersDescription}{_memberScope.ObjectMembersText()}{_quantifier} ";
 	}
 }
