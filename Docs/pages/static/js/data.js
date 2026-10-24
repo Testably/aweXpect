@@ -852,6 +852,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -996,7 +1002,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -1144,7 +1151,8 @@ window.BENCHMARK_DATA = {
           10933.24072592599,
           9900.051738194057,
           10870.915044148764,
-          10832.311373197115
+          10832.311373197115,
+          5138.976625442505
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1240,6 +1248,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -1453,7 +1462,8 @@ window.BENCHMARK_DATA = {
           353625.9864583333,
           307824.81096540176,
           386705.76848958334,
-          371048.873828125
+          371048.873828125,
+          160992.68551199776
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1606,7 +1616,8 @@ window.BENCHMARK_DATA = {
           590292,
           590291,
           590292,
-          590290
+          590290,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1762,7 +1773,8 @@ window.BENCHMARK_DATA = {
           19288.080270620492,
           18147.87191772461,
           19971.390464782715,
-          19921.152348109656
+          19921.152348109656,
+          9524.840710231236
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1774,6 +1786,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -2739,6 +2752,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -2876,7 +2895,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -3017,7 +3037,8 @@ window.BENCHMARK_DATA = {
           274.0318586667379,
           255.92106409072875,
           288.8466412226359,
-          335.15895795822144
+          335.15895795822144,
+          125.7688092163631
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3106,6 +3127,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -3312,7 +3334,8 @@ window.BENCHMARK_DATA = {
           492.2113595690046,
           500.66824047906056,
           550.6628290812174,
-          490.70683758599415
+          490.70683758599415,
+          230.83236303696265
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3324,6 +3347,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -3607,7 +3631,8 @@ window.BENCHMARK_DATA = {
           385.11965996424357,
           362.1571411132812,
           411.00827697345187,
-          387.37396478652954
+          387.37396478652954,
+          194.65890187483566
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3619,6 +3644,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -9197,6 +9223,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -10104,7 +10136,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -11015,7 +11048,8 @@ window.BENCHMARK_DATA = {
           147.30706893603008,
           144.03939834662847,
           163.13414532343546,
-          151.13110345204672
+          151.13110345204672,
+          70.46661165356636
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11874,6 +11908,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -12850,7 +12885,8 @@ window.BENCHMARK_DATA = {
           234.33284458747278,
           254.58254766464233,
           274.72456899056067,
-          251.36154244740803
+          251.36154244740803,
+          124.85725712776184
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13043,6 +13079,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -13966,7 +14003,8 @@ window.BENCHMARK_DATA = {
           227.622831259455,
           223.251633644104,
           260.9330695470174,
-          246.57321246465048
+          246.57321246465048,
+          118.11973311901093
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -13978,6 +14016,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -15029,6 +15068,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -15173,7 +15218,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -15321,7 +15367,8 @@ window.BENCHMARK_DATA = {
           269.1535796483358,
           247.38883461271013,
           282.36354075159346,
-          257.3949202219645
+          257.3949202219645,
+          127.3903511842092
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15417,6 +15464,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -15630,7 +15678,8 @@ window.BENCHMARK_DATA = {
           524.8281442642212,
           519.4290476799011,
           561.7477843602499,
-          497.3336700598399
+          497.3336700598399,
+          255.66964111328124
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15642,6 +15691,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -15939,7 +15989,8 @@ window.BENCHMARK_DATA = {
           332.54285968144734,
           326.54257723263333,
           363.1258801619212,
-          343.05807479222614
+          343.05807479222614,
+          164.19173996265118
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15951,6 +16002,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -21536,6 +21588,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -22443,7 +22501,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -23354,7 +23413,8 @@ window.BENCHMARK_DATA = {
           644.5281498432159,
           629.2215803010123,
           699.8700706618173,
-          629.5781616483416
+          629.5781616483416,
+          329.44736552238464
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24213,6 +24273,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -25189,7 +25250,8 @@ window.BENCHMARK_DATA = {
           1391.0748462677002,
           1348.5155803973857,
           1459.4424999782018,
-          1375.784213747297
+          1375.784213747297,
+          656.2123964627584
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25382,6 +25444,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -26305,7 +26368,8 @@ window.BENCHMARK_DATA = {
           647.6594259555524,
           649.5477940695627,
           683.5578035354614,
-          698.8061735788981
+          698.8061735788981,
+          321.87240428190967
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -26317,6 +26381,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -31946,6 +32011,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -32853,7 +32924,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -33764,7 +33836,8 @@ window.BENCHMARK_DATA = {
           630.6185597011021,
           622.6646172659738,
           666.9187263488769,
-          611.2960834503174
+          611.2960834503174,
+          320.2746046611241
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34623,6 +34696,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -35599,7 +35673,8 @@ window.BENCHMARK_DATA = {
           28108.841302490233,
           19988.218900408065,
           28546.07060139974,
-          28074.099779401506
+          28074.099779401506,
+          10851.304249064127
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36515,6 +36590,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -36715,7 +36791,8 @@ window.BENCHMARK_DATA = {
           798.4996932983398,
           742.53206837972,
           808.0674879074097,
-          849.7840337117512
+          849.7840337117512,
+          390.6332723753793
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -36727,6 +36804,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -38126,6 +38204,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -38328,7 +38412,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -38534,7 +38619,8 @@ window.BENCHMARK_DATA = {
           727.4627500942776,
           695.563232866923,
           763.981609471639,
-          724.4463818232218
+          724.4463818232218,
+          336.48655770375177
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38736,6 +38822,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
+          1688,
           1688,
           1688,
           1688,
@@ -38959,7 +39046,8 @@ window.BENCHMARK_DATA = {
           82584.03497314453,
           59704.00927734375,
           85521.0860921224,
-          84115.55133463541
+          84115.55133463541,
+          27130.838614908855
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39170,7 +39258,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40384,6 +40473,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -40586,7 +40681,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -40792,7 +40888,8 @@ window.BENCHMARK_DATA = {
           190.6457013607025,
           169.32747317949932,
           190.5678290469306,
-          202.61823102633159
+          202.61823102633159,
+          86.42247979130063
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40946,6 +41043,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -41217,7 +41315,8 @@ window.BENCHMARK_DATA = {
           32311.253295898438,
           17534.30565752302,
           33259.39869588216,
-          33027.11542765299
+          33027.11542765299,
+          8907.560680682842
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41428,7 +41527,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41628,7 +41728,8 @@ window.BENCHMARK_DATA = {
           237.59201208750406,
           226.52730754443579,
           260.7919875894274,
-          244.8237632751465
+          244.8237632751465,
+          115.16590298073632
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -41640,6 +41741,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -42691,6 +42793,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -42835,7 +42943,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -42983,7 +43092,8 @@ window.BENCHMARK_DATA = {
           370.9582050868443,
           337.4225765977587,
           361.3528435230255,
-          348.0887165387472
+          348.0887165387472,
+          161.67912128993444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43079,6 +43189,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -43292,7 +43403,8 @@ window.BENCHMARK_DATA = {
           374.78709376653035,
           397.5660521189372,
           390.6793306555067,
-          366.91732358932495
+          366.91732358932495,
+          185.63858553568522
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43304,6 +43416,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -43601,7 +43714,8 @@ window.BENCHMARK_DATA = {
           403.0150963147481,
           426.97392096886267,
           477.97781726292203,
-          412.1185622851054
+          412.1185622851054,
+          195.6275898860051
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -43613,6 +43727,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -44620,6 +44735,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -44764,7 +44885,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -44912,7 +45034,8 @@ window.BENCHMARK_DATA = {
           689.61351146698,
           662.281340789795,
           746.0307025909424,
-          690.4038049697876
+          690.4038049697876,
+          334.13899183273315
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45032,6 +45155,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
+          1384,
           1384,
           1384,
           1384,
@@ -45221,7 +45345,8 @@ window.BENCHMARK_DATA = {
           1967.8240077972412,
           1886.8460487365724,
           2023.164930343628,
-          1952.0433807373047
+          1952.0433807373047,
+          1002.7757556915283
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45233,6 +45358,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -45530,7 +45656,8 @@ window.BENCHMARK_DATA = {
           937.8556420644125,
           936.712846824101,
           1015.1897013346354,
-          957.6677699770246
+          957.6677699770246,
+          464.8748167991638
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -45542,6 +45669,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -46549,6 +46677,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -46693,7 +46827,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -46841,7 +46976,8 @@ window.BENCHMARK_DATA = {
           11328.430355616978,
           10455.180888584682,
           11375.462392534528,
-          11550.72001538958
+          11550.72001538958,
+          5478.403459402231
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46937,6 +47073,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -47150,7 +47287,8 @@ window.BENCHMARK_DATA = {
           40240.80591430664,
           33767.36208234514,
           41971.7538655599,
-          41918.698704310824
+          41918.698704310824,
+          17787.92162867955
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47285,6 +47423,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -47459,7 +47598,8 @@ window.BENCHMARK_DATA = {
           10592.714027913411,
           10135.210980006626,
           10664.439044952393,
-          10706.022544273963
+          10706.022544273963,
+          5380.410812922886
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47471,6 +47611,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -48478,6 +48619,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
         "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
+      },
+      {
+        "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
+        "message": "refactor!: keep the result type after \u0060Because\u0060, \u0060WithTimeout\u0060 and \u0060WithCancellation\u0060 on delegate results (#1993)"
       }
     ],
     "labels": [
@@ -48622,7 +48769,8 @@ window.BENCHMARK_DATA = {
       "5bc15a41",
       "1945e0a4",
       "c6264268",
-      "c61c4c1b"
+      "c61c4c1b",
+      "d7ba0a7a"
     ],
     "datasets": [
       {
@@ -48770,7 +48918,8 @@ window.BENCHMARK_DATA = {
           11195.707397460938,
           9848.062934875488,
           10956.196783883232,
-          11041.578094482422
+          11041.578094482422,
+          5213.175956726074
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48866,6 +49015,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -49079,7 +49229,8 @@ window.BENCHMARK_DATA = {
           58738.80475725447,
           48103.74697641226,
           59760.42678128756,
-          58727.364103190106
+          58727.364103190106,
+          25595.61394042969
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49204,6 +49355,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -49388,7 +49540,8 @@ window.BENCHMARK_DATA = {
           20866.56011526925,
           19644.558395385742,
           21044.809646606445,
-          20946.3355082194
+          20946.3355082194,
+          11302.479058837891
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -49400,6 +49553,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
