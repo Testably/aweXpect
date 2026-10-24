@@ -894,6 +894,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
@@ -1045,7 +1051,8 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
@@ -1200,7 +1207,8 @@ window.BENCHMARK_DATA = {
           10625.064782949594,
           10329.03125326974,
           8007.7113691057475,
-          11336.477849687848
+          11336.477849687848,
+          11395.802784846379
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1296,6 +1304,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -1523,7 +1532,8 @@ window.BENCHMARK_DATA = {
           372349.51276041666,
           386089.7252604167,
           303028.1034458705,
-          366426.31927083334
+          366426.31927083334,
+          373018.89752604166
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1683,7 +1693,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590225,
-          590291
+          590291,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1846,7 +1857,8 @@ window.BENCHMARK_DATA = {
           19058.726595197404,
           19323.24727376302,
           18404.380063738143,
-          18983.021453857422
+          18983.021453857422,
+          21541.66244099935
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1858,6 +1870,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -2872,6 +2885,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
@@ -3016,7 +3035,8 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
@@ -3164,7 +3184,8 @@ window.BENCHMARK_DATA = {
           294.52274356569563,
           353.0919131596883,
           278.9642549196879,
-          339.06615053812664
+          339.06615053812664,
+          277.1475984891256
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3253,6 +3274,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -3473,7 +3495,8 @@ window.BENCHMARK_DATA = {
           503.14729477809027,
           510.6379600252424,
           584.1516790390015,
-          500.59982115881786
+          500.59982115881786,
+          540.4162743432181
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3485,6 +3508,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -3782,7 +3806,8 @@ window.BENCHMARK_DATA = {
           383.81931997934976,
           396.70748008092244,
           417.77530495325726,
-          384.5791349411011
+          384.5791349411011,
+          412.2259154955546
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3794,6 +3819,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -9421,6 +9447,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
@@ -10335,7 +10367,8 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
@@ -11253,7 +11286,8 @@ window.BENCHMARK_DATA = {
           145.6725654443105,
           151.9854691028595,
           157.04565700462885,
-          149.66489672660828
+          149.66489672660828,
+          149.9047156016032
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12112,6 +12146,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -13102,7 +13137,8 @@ window.BENCHMARK_DATA = {
           274.5951492627462,
           241.90239132367648,
           290.50016085306805,
-          245.30206060409546
+          245.30206060409546,
+          267.93976482978235
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13295,6 +13331,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -14232,7 +14269,8 @@ window.BENCHMARK_DATA = {
           265.51502685546876,
           242.0972489674886,
           229.33894948959352,
-          246.99125872339522
+          246.99125872339522,
+          246.72875105539958
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -14244,6 +14282,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -15344,6 +15383,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
@@ -15495,7 +15540,8 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
@@ -15650,7 +15696,8 @@ window.BENCHMARK_DATA = {
           271.019814046224,
           269.4000270843506,
           255.49513295491536,
-          265.2164976119995
+          265.2164976119995,
+          276.9224334716797
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15746,6 +15793,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -15973,7 +16021,8 @@ window.BENCHMARK_DATA = {
           543.024337548476,
           531.8514456431071,
           647.1553742726644,
-          501.7712921778361
+          501.7712921778361,
+          573.4885652405875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15985,6 +16034,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -16296,7 +16346,8 @@ window.BENCHMARK_DATA = {
           339.8304950714111,
           343.9935943739755,
           358.8853215535482,
-          337.1840680440267
+          337.1840680440267,
+          361.1542561531067
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -16308,6 +16359,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -21942,6 +21994,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
@@ -22856,7 +22914,8 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
@@ -23774,7 +23833,8 @@ window.BENCHMARK_DATA = {
           690.1582059224446,
           641.6836604436238,
           583.1002808350784,
-          699.6938508987427
+          699.6938508987427,
+          663.2849822411171
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24633,6 +24693,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -25623,7 +25684,8 @@ window.BENCHMARK_DATA = {
           1479.0615255991618,
           1361.0959836324057,
           1555.6935244968959,
-          1339.0758642469134
+          1339.0758642469134,
+          1482.377771650042
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25816,6 +25878,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -26753,7 +26816,8 @@ window.BENCHMARK_DATA = {
           652.4607740402222,
           669.6592134748187,
           655.3324448040554,
-          638.3984323910305
+          638.3984323910305,
+          693.4532709121704
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -26765,6 +26829,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -32443,6 +32508,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
@@ -33357,7 +33428,8 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
@@ -34275,7 +34347,8 @@ window.BENCHMARK_DATA = {
           661.2998420079549,
           716.4332492010934,
           591.3073752085368,
-          701.2724409103394
+          701.2724409103394,
+          674.1200460706439
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35134,6 +35207,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -36124,7 +36198,8 @@ window.BENCHMARK_DATA = {
           28037.395547049386,
           27769.580187988282,
           18225.39130812425,
-          27532.356663004557
+          27532.356663004557,
+          29025.36367579869
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37047,6 +37122,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -37254,7 +37330,8 @@ window.BENCHMARK_DATA = {
           806.8981889316013,
           804.0494431813557,
           790.0238570531209,
-          787.518795522054
+          787.518795522054,
+          834.3047547340393
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -37266,6 +37343,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -38714,6 +38792,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
@@ -38923,7 +39007,8 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
@@ -39136,7 +39221,8 @@ window.BENCHMARK_DATA = {
           694.1144290765127,
           717.365577952067,
           725.0643483570644,
-          720.8437297684806
+          720.8437297684806,
+          723.371571413676
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39338,6 +39424,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
+          1688,
           1688,
           1688,
           1688,
@@ -39575,7 +39662,8 @@ window.BENCHMARK_DATA = {
           83814.92526855468,
           83983.73487141928,
           33434.16336294321,
-          83968.32868652344
+          83968.32868652344,
+          84747.58401053293
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39793,6 +39881,7 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -41049,6 +41138,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
@@ -41258,7 +41353,8 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
@@ -41471,7 +41567,8 @@ window.BENCHMARK_DATA = {
           180.89989035924276,
           186.61303339004516,
           203.73802474339803,
-          181.90043394382184
+          181.90043394382184,
+          182.33299022454483
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41625,6 +41722,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -41910,7 +42008,8 @@ window.BENCHMARK_DATA = {
           32891.47668457031,
           32848.710941569014,
           16635.963235708383,
-          32531.27817946214
+          32531.27817946214,
+          32593.614685058594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42128,6 +42227,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -42335,7 +42435,8 @@ window.BENCHMARK_DATA = {
           256.258244005839,
           254.10036334991455,
           242.28308375676474,
-          276.52117541631065
+          276.52117541631065,
+          258.54222525869096
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -42347,6 +42448,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -43447,6 +43549,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
@@ -43598,7 +43706,8 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
@@ -43753,7 +43862,8 @@ window.BENCHMARK_DATA = {
           352.7390212059021,
           358.79353284835815,
           349.1654735565186,
-          366.6423488685063
+          366.6423488685063,
+          355.6039056777954
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43849,6 +43959,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -44076,7 +44187,8 @@ window.BENCHMARK_DATA = {
           370.2707068443298,
           391.4990017073495,
           465.2568546022688,
-          367.0265413284302
+          367.0265413284302,
+          384.2086161613464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44088,6 +44200,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -44399,7 +44512,8 @@ window.BENCHMARK_DATA = {
           402.3194078377315,
           406.5111618041992,
           410.4026621409825,
-          404.4071646077292
+          404.4071646077292,
+          407.95674773624967
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -44411,6 +44525,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -45467,6 +45582,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
@@ -45618,7 +45739,8 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
@@ -45773,7 +45895,8 @@ window.BENCHMARK_DATA = {
           747.1188324610392,
           713.2146397908529,
           692.9807919722336,
-          698.0126701082502
+          698.0126701082502,
+          737.63518510546
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45893,6 +46016,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
+          1384,
           1384,
           1384,
           1384,
@@ -46096,7 +46220,8 @@ window.BENCHMARK_DATA = {
           1971.7185803731284,
           1925.730026790074,
           2234.1309514363606,
-          1835.2847777048746
+          1835.2847777048746,
+          2039.8655288696289
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46108,6 +46233,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -46419,7 +46545,8 @@ window.BENCHMARK_DATA = {
           967.0803143819173,
           949.5517459596906,
           928.4481019337971,
-          896.0568555196127
+          896.0568555196127,
+          960.4152881622315
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -46431,6 +46558,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -47487,6 +47615,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
@@ -47638,7 +47772,8 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
@@ -47793,7 +47928,8 @@ window.BENCHMARK_DATA = {
           11331.774263822115,
           11319.355696541923,
           9292.730904212365,
-          11318.549934387207
+          11318.549934387207,
+          11490.656721932548
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47889,6 +48025,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -48116,7 +48253,8 @@ window.BENCHMARK_DATA = {
           40443.70773784931,
           40293.68354492188,
           31888.85623403696,
-          40597.48044527494
+          40597.48044527494,
+          41583.99515206473
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48251,6 +48389,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -48439,7 +48578,8 @@ window.BENCHMARK_DATA = {
           10569.151204790387,
           10477.05791346232,
           9011.765098063152,
-          10623.953646850587
+          10623.953646850587,
+          10612.534378051758
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -48451,6 +48591,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -49507,6 +49648,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
         "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
+      },
+      {
+        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
+        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
       }
     ],
     "labels": [
@@ -49658,7 +49805,8 @@ window.BENCHMARK_DATA = {
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
-      "411dfe77"
+      "411dfe77",
+      "053d3134"
     ],
     "datasets": [
       {
@@ -49813,7 +49961,8 @@ window.BENCHMARK_DATA = {
           10762.291939368615,
           10998.718800136021,
           8746.067607625326,
-          10839.987969534737
+          10839.987969534737,
+          11042.193294818584
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49909,6 +50058,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -50136,7 +50286,8 @@ window.BENCHMARK_DATA = {
           59224.431052071704,
           59703.757832845055,
           45874.640725272046,
-          59043.16948445638
+          59043.16948445638,
+          59088.44705810547
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50261,6 +50412,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -50459,7 +50611,8 @@ window.BENCHMARK_DATA = {
           20849.49552800105,
           20976.043438720702,
           17870.66043526786,
-          20892.055485316687
+          20892.055485316687,
+          21011.66107940674
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -50471,6 +50624,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
