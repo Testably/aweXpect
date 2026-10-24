@@ -25,7 +25,7 @@ public static partial class ThatEvents
 	///     subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventsOfTypeResult<IEnumerable<EventInfo?>?, IThat<IEnumerable<EventInfo?>?>>
+	public static EventsOfTypeResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>?>>
 		AreOfType<THandler>(
 			this IThat<IEnumerable<EventInfo?>?> subject)
 		=> AreOfType(subject, typeof(THandler));
@@ -35,12 +35,12 @@ public static partial class ThatEvents
 	///     subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventsOfTypeResult<IEnumerable<EventInfo?>?, IThat<IEnumerable<EventInfo?>?>> AreOfType(
+	public static EventsOfTypeResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>?>> AreOfType(
 		this IThat<IEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(handlerType, false);
-		return new EventsOfTypeResult<IEnumerable<EventInfo?>?, IThat<IEnumerable<EventInfo?>?>>(
+		return new EventsOfTypeResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
@@ -54,7 +54,7 @@ public static partial class ThatEvents
 	///     subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventsOfTypeResult<IAsyncEnumerable<EventInfo?>?, IThat<IAsyncEnumerable<EventInfo?>?>>
+	public static EventsOfTypeResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>?>>
 		AreOfType<THandler>(
 			this IThat<IAsyncEnumerable<EventInfo?>?> subject)
 		=> AreOfType(subject, typeof(THandler));
@@ -64,13 +64,13 @@ public static partial class ThatEvents
 	///     subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventsOfTypeResult<IAsyncEnumerable<EventInfo?>?, IThat<IAsyncEnumerable<EventInfo?>?>>
+	public static EventsOfTypeResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>?>>
 		AreOfType(
 			this IThat<IAsyncEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(handlerType, false);
-		return new EventsOfTypeResult<IAsyncEnumerable<EventInfo?>?, IThat<IAsyncEnumerable<EventInfo?>?>>(
+		return new EventsOfTypeResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
@@ -140,7 +140,7 @@ public static partial class ThatEvents
 	public sealed partial class EventsOfTypeResult<TValue, TResult>
 		: AndOrResult<TValue, TResult>,
 			IOptionsProvider<TypeFilterOptions>
-		where TResult : IThat<TValue>
+		where TResult : IThat<TValue?>
 	{
 		private readonly TypeFilterOptions _typeFilterOptions;
 

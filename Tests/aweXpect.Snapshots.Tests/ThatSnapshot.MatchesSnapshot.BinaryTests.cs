@@ -37,6 +37,20 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task ByteArray_WhenSnapshotMatches_ShouldReturnTheSubject()
+			{
+				InMemorySnapshotStore store = new();
+				store.SnapshotBytes[PngId] = [.. CoverArt,];
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				byte[] subject = [.. CoverArt,];
+
+				byte[] result = await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png");
+
+				await That(result).IsSameAs(subject)
+					.Because("the awaited result is the verified subject, which cannot be null");
+			}
+
+			[Test]
 			public async Task ByteArray_WhenSnapshotIsMissing_ShouldFailAndRecordTheBytesUnchanged()
 			{
 				InMemorySnapshotStore store = new();
@@ -451,6 +465,20 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task Stream_WhenSnapshotMatches_ShouldReturnTheSubject()
+			{
+				InMemorySnapshotStore store = new();
+				store.SnapshotBytes[PngId] = [.. CoverArt,];
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				using Stream subject = new MemoryStream(CoverArt);
+
+				Stream result = await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png");
+
+				await That(result).IsSameAs(subject)
+					.Because("the awaited result is the verified subject, which cannot be null");
+			}
+
+			[Test]
 			public async Task Stream_WhenNotSeekable_ShouldReadIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -552,6 +580,23 @@ public sealed partial class ThatSnapshot
 
 				await That(Act).DoesNotThrow();
 				await That(store.Matches).IsEqualTo(new[] { Id with { Extension = "pdf", }, });
+			}
+
+			[Test]
+			public async Task FileInfo_WhenSnapshotMatches_ShouldReturnTheSubject()
+			{
+				using SnapshotDirectory directory = new();
+				string path = Path.Combine(directory.Path, "liner-notes.pdf");
+				File.WriteAllBytes(path, CoverArt);
+				InMemorySnapshotStore store = new();
+				store.SnapshotBytes[Id with { Extension = "pdf", }] = [.. CoverArt,];
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				FileInfo subject = new(path);
+
+				FileInfo result = await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				await That(result).IsSameAs(subject)
+					.Because("the awaited result is the verified subject, which cannot be null");
 			}
 
 			[Test]

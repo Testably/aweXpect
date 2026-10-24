@@ -16,12 +16,12 @@ namespace aweXpect.Xml;
 /// </summary>
 internal static class HasNodeConstraint
 {
-	public static AndOrResult<TSubject?, IThat<TSubject?>> HasAttribute<TSubject>(IThat<TSubject?> source,
+	public static AndOrResult<TSubject, IThat<TSubject?>> HasAttribute<TSubject>(IThat<TSubject?> source,
 		XName name, bool negated, Func<TSubject, XElement?> getElement)
 		where TSubject : XNode
 	{
 		ThrowHelper.ThrowIfNull(name, nameof(name));
-		return new AndOrResult<TSubject?, IThat<TSubject?>>(source.Get().ExpectationBuilder.AddConstraint(
+		return new AndOrResult<TSubject, IThat<TSubject?>>(source.Get().ExpectationBuilder.AddConstraint(
 				(Name: name, Negated: negated, GetElement: getElement),
 				static (state, it, grammars) =>
 				{
@@ -32,7 +32,7 @@ internal static class HasNodeConstraint
 			source);
 	}
 
-	public static AndOrResult<TSubject?, IThat<TSubject?>> HasAttribute<TSubject>(IThat<TSubject?> source,
+	public static AndOrResult<TSubject, IThat<TSubject?>> HasAttribute<TSubject>(IThat<TSubject?> source,
 		XName name, Action<IThatSubject<string?>> expectations, Func<TSubject, XElement?> getElement)
 		where TSubject : XNode
 	{
@@ -46,15 +46,15 @@ internal static class HasNodeConstraint
 					$"value of attribute {Formatter.Format(name.ToString())}"),
 				(_, stringBuilder) => stringBuilder.Append(" whose value "))
 			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?>(e)));
-		return new AndOrResult<TSubject?, IThat<TSubject?>>(expectationBuilder, source);
+		return new AndOrResult<TSubject, IThat<TSubject?>>(expectationBuilder, source);
 	}
 
-	public static AndOrResult<TSubject?, IThat<TSubject?>> HasElement<TSubject>(IThat<TSubject?> source,
+	public static AndOrResult<TSubject, IThat<TSubject?>> HasElement<TSubject>(IThat<TSubject?> source,
 		XName name, bool negated, Func<TSubject, XElement?> getElement)
 		where TSubject : XNode
 	{
 		ThrowHelper.ThrowIfNull(name, nameof(name));
-		return new AndOrResult<TSubject?, IThat<TSubject?>>(source.Get().ExpectationBuilder.AddConstraint(
+		return new AndOrResult<TSubject, IThat<TSubject?>>(source.Get().ExpectationBuilder.AddConstraint(
 				(Name: name, Negated: negated, GetElement: getElement),
 				static (state, it, grammars) =>
 				{
@@ -65,7 +65,7 @@ internal static class HasNodeConstraint
 			source);
 	}
 
-	public static AndOrResult<TSubject?, IThat<TSubject?>> HasElement<TSubject>(IThat<TSubject?> source,
+	public static AndOrResult<TSubject, IThat<TSubject?>> HasElement<TSubject>(IThat<TSubject?> source,
 		XName name, Action<IThatSubject<XElement?>> expectations, Func<TSubject, XElement?> getElement)
 		where TSubject : XNode
 	{
@@ -79,7 +79,7 @@ internal static class HasNodeConstraint
 					$"element {Formatter.Format(name.ToString())}"),
 				(_, stringBuilder) => stringBuilder.Append(" which "))
 			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<XElement?>(e)));
-		return new AndOrResult<TSubject?, IThat<TSubject?>>(expectationBuilder, source);
+		return new AndOrResult<TSubject, IThat<TSubject?>>(expectationBuilder, source);
 	}
 
 	private static HasNodeConstraint<TSubject, XAttribute> CreateAttribute<TSubject>(string it,

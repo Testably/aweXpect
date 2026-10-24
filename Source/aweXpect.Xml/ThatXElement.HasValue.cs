@@ -17,7 +17,7 @@ public static partial class ThatXElement
 	///     for an element without text it is empty.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XElement?, IThat<XElement?>> HasValue(
+	public static AndOrResult<XElement, IThat<XElement?>> HasValue(
 		this IThat<XElement?> subject,
 		Action<IThatSubject<string?>> expectations)
 		=> HasValueConstraint.HasValue(subject, expectations, static element => element, "value of the element");

@@ -12,14 +12,14 @@ namespace aweXpect.Reflection.Results;
 ///     (fields and constructors).
 /// </summary>
 public sealed class HaveAttributeWithoutInheritResult<TMember, TResult>
-	: AndOrResult<TResult, IThat<TResult>, HaveAttributeWithoutInheritResult<TMember, TResult>>,
+	: AndOrResult<TResult, IThat<TResult?>, HaveAttributeWithoutInheritResult<TMember, TResult>>,
 		IOptionsProvider<AttributeFilterOptions<TMember>>
 {
 	private readonly AttributeFilterOptions<TMember> _attributeFilterOptions;
 
 	internal HaveAttributeWithoutInheritResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TResult> subject,
+		IThat<TResult?> subject,
 		AttributeFilterOptions<TMember> attributeFilterOptions)
 		: base(expectationBuilder, subject)
 	{

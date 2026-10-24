@@ -15,7 +15,7 @@ public static partial class ThatXmlString
 	///     This is a shortcut for <c>IsValidXml(root => root.MatchesExactly(expected, options))</c>.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<string?, IThat<string?>> IsValidXmlMatchingExactly(
+	public static AndOrResult<string, IThat<string?>> IsValidXmlMatchingExactly(
 		this IThat<string?> subject,
 		string expected,
 		Func<XmlOptions, XmlOptions>? options = null)

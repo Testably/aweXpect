@@ -45,7 +45,7 @@ internal sealed class MatchesXmlConstraint<TNode>(
 	/// </remarks>
 	/// <exception cref="ArgumentNullException">The <paramref name="expected" /> value is <see langword="null" />.</exception>
 	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid XML.</exception>
-	public static AndOrResult<TNode?, IThat<TNode?>> Add(IThat<TNode?> source, string expected,
+	public static AndOrResult<TNode, IThat<TNode?>> Add(IThat<TNode?> source, string expected,
 		bool ignoreAdditionalNodes, Func<TNode, XElement?> getElement, Func<XmlOptions, XmlOptions>? options)
 	{
 		XElement expectedElement = SecureXml.LoadExpected(expected).Root!;
@@ -58,7 +58,7 @@ internal sealed class MatchesXmlConstraint<TNode>(
 			xmlOptions = options(xmlOptions);
 		}
 
-		return new AndOrResult<TNode?, IThat<TNode?>>(source.Get().ExpectationBuilder.AddConstraint(
+		return new AndOrResult<TNode, IThat<TNode?>>(source.Get().ExpectationBuilder.AddConstraint(
 				(Expected: expected, ExpectedElement: expectedElement, GetElement: getElement, Options: xmlOptions),
 				static (state, it, grammars) => new MatchesXmlConstraint<TNode>(it, grammars, state.Expected,
 					state.ExpectedElement, state.GetElement, state.Options)),

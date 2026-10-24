@@ -11,7 +11,7 @@ public static partial class ThatMethods
 	///     Verifies that all methods in the filtered collection return <see langword="void" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodsReturnResult<IEnumerable<MethodInfo?>?, IThat<IEnumerable<MethodInfo?>?>> ReturnVoid(
+	public static MethodsReturnResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> ReturnVoid(
 		this IThat<IEnumerable<MethodInfo?>?> subject)
 		=> Return(subject, typeof(void));
 
@@ -20,7 +20,7 @@ public static partial class ThatMethods
 	///     Verifies that all methods in the filtered collection return <see langword="void" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodsReturnResult<IAsyncEnumerable<MethodInfo?>?, IThat<IAsyncEnumerable<MethodInfo?>?>> ReturnVoid(
+	public static MethodsReturnResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> ReturnVoid(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
 		=> Return(subject, typeof(void));
 #endif

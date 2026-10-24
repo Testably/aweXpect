@@ -30,14 +30,14 @@ public static partial class ThatEvents
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<EventInfo?, IEnumerable<EventInfo?>?> Have<TAttribute>(
+	public static HaveAttributeResult<EventInfo?, IEnumerable<EventInfo?>> Have<TAttribute>(
 		this IThat<IEnumerable<EventInfo?>?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HaveAttributeResult<EventInfo?, IEnumerable<EventInfo?>?>(
+		return new HaveAttributeResult<EventInfo?, IEnumerable<EventInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<EventInfo?>, IEnumerable<EventInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -54,7 +54,7 @@ public static partial class ThatEvents
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<EventInfo?, IEnumerable<EventInfo?>?> Have<TAttribute>(
+	public static HaveAttributeResult<EventInfo?, IEnumerable<EventInfo?>> Have<TAttribute>(
 		this IThat<IEnumerable<EventInfo?>?> subject,
 		Func<TAttribute, bool> predicate,
 		bool inherit = true,
@@ -65,7 +65,7 @@ public static partial class ThatEvents
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimExpression());
-		return new HaveAttributeResult<EventInfo?, IEnumerable<EventInfo?>?>(
+		return new HaveAttributeResult<EventInfo?, IEnumerable<EventInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<EventInfo?>, IEnumerable<EventInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -83,14 +83,14 @@ public static partial class ThatEvents
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<EventInfo?, IAsyncEnumerable<EventInfo?>?> Have<TAttribute>(
+	public static HaveAttributeResult<EventInfo?, IAsyncEnumerable<EventInfo?>> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<EventInfo?>?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HaveAttributeResult<EventInfo?, IAsyncEnumerable<EventInfo?>?>(
+		return new HaveAttributeResult<EventInfo?, IAsyncEnumerable<EventInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<EventInfo?>, IAsyncEnumerable<EventInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -109,7 +109,7 @@ public static partial class ThatEvents
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<EventInfo?, IAsyncEnumerable<EventInfo?>?> Have<TAttribute>(
+	public static HaveAttributeResult<EventInfo?, IAsyncEnumerable<EventInfo?>> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<EventInfo?>?> subject,
 		Func<TAttribute, bool> predicate,
 		bool inherit = true,
@@ -120,7 +120,7 @@ public static partial class ThatEvents
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimExpression());
-		return new HaveAttributeResult<EventInfo?, IAsyncEnumerable<EventInfo?>?>(
+		return new HaveAttributeResult<EventInfo?, IAsyncEnumerable<EventInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<EventInfo?>, IAsyncEnumerable<EventInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),

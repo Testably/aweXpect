@@ -12,7 +12,7 @@ public static partial class ThatJsonNode
 	///     Verifies that the subject <see cref="JsonNode" /> is a <see cref="JsonValueKind.String" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNode?, IThat<TNode?>> IsString<TNode>(this IThat<TNode?> subject)
+	public static AndOrResult<TNode, IThat<TNode?>> IsString<TNode>(this IThat<TNode?> subject)
 		where TNode : JsonNode
 		=> new(
 			subject.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>

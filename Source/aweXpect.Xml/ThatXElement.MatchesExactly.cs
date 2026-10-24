@@ -16,7 +16,7 @@ public static partial class ThatXElement
 	///     additional attributes and child nodes of the subject fail the expectation.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XElement?, IThat<XElement?>> MatchesExactly(
+	public static AndOrResult<XElement, IThat<XElement?>> MatchesExactly(
 		this IThat<XElement?> subject,
 		string expected,
 		Func<XmlOptions, XmlOptions>? options = null)

@@ -16,7 +16,7 @@ public static partial class ThatXElement
 	///     specified, e.g. <c>XNamespace.Xml + "lang"</c>, but not its prefix.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XElement?, IThat<XElement?>> HasAttribute(
+	public static AndOrResult<XElement, IThat<XElement?>> HasAttribute(
 		this IThat<XElement?> subject,
 		XName name)
 		=> HasNodeConstraint.HasAttribute(subject, name, false, static element => element);
@@ -31,7 +31,7 @@ public static partial class ThatXElement
 	///     verified, when the attribute exists.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XElement?, IThat<XElement?>> HasAttribute(
+	public static AndOrResult<XElement, IThat<XElement?>> HasAttribute(
 		this IThat<XElement?> subject,
 		XName name,
 		Action<IThatSubject<string?>> expectations)
@@ -44,7 +44,7 @@ public static partial class ThatXElement
 	///     The attribute is looked up like by <see cref="XElement.Attribute(XName)" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XElement?, IThat<XElement?>> DoesNotHaveAttribute(
+	public static AndOrResult<XElement, IThat<XElement?>> DoesNotHaveAttribute(
 		this IThat<XElement?> subject,
 		XName name)
 		=> HasNodeConstraint.HasAttribute(subject, name, true, static element => element);

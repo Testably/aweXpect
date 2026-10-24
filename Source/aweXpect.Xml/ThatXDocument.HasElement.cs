@@ -18,7 +18,7 @@ public static partial class ThatXDocument
 	///     expectation, also when it is negated.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XDocument?, IThat<XDocument?>> HasElement(
+	public static AndOrResult<XDocument, IThat<XDocument?>> HasElement(
 		this IThat<XDocument?> subject,
 		XName name)
 		=> HasNodeConstraint.HasElement(subject, name, false, static document => document.Root);
@@ -34,7 +34,7 @@ public static partial class ThatXDocument
 	///     root element fails the expectation, also when it is negated.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XDocument?, IThat<XDocument?>> HasElement(
+	public static AndOrResult<XDocument, IThat<XDocument?>> HasElement(
 		this IThat<XDocument?> subject,
 		XName name,
 		Action<IThatSubject<XElement?>> expectations)
@@ -49,7 +49,7 @@ public static partial class ThatXDocument
 	///     considered. A document without a root element fails the expectation.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XDocument?, IThat<XDocument?>> DoesNotHaveElement(
+	public static AndOrResult<XDocument, IThat<XDocument?>> DoesNotHaveElement(
 		this IThat<XDocument?> subject,
 		XName name)
 		=> HasNodeConstraint.HasElement(subject, name, true, static document => document.Root);

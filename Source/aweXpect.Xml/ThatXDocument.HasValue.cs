@@ -17,7 +17,7 @@ public static partial class ThatXDocument
 	///     its descendant text nodes. A document without a root element fails the expectation, also when it is negated.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XDocument?, IThat<XDocument?>> HasValue(
+	public static AndOrResult<XDocument, IThat<XDocument?>> HasValue(
 		this IThat<XDocument?> subject,
 		Action<IThatSubject<string?>> expectations)
 		=> HasValueConstraint.HasValue(subject, expectations, static document => document.Root,

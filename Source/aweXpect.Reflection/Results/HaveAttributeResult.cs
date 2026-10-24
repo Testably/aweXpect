@@ -11,14 +11,14 @@ namespace aweXpect.Reflection.Results;
 ///     Allows chaining of multiple attributes.
 /// </summary>
 public sealed class HaveAttributeResult<TMember, TResult>
-	: AndOrResult<TResult, IThat<TResult>, HaveAttributeResult<TMember, TResult>>,
+	: AndOrResult<TResult, IThat<TResult?>, HaveAttributeResult<TMember, TResult>>,
 		IOptionsProvider<AttributeFilterOptions<TMember>>
 {
 	private readonly AttributeFilterOptions<TMember> _attributeFilterOptions;
 
 	internal HaveAttributeResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TResult> subject,
+		IThat<TResult?> subject,
 		AttributeFilterOptions<TMember> attributeFilterOptions)
 		: base(expectationBuilder, subject)
 	{

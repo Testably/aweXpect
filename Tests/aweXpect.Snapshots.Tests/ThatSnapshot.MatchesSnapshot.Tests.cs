@@ -492,6 +492,20 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task WhenSnapshotMatches_ShouldReturnTheSubject()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "foo";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "foo";
+
+				string result = await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				await That(result).IsSameAs(subject)
+					.Because("the awaited result is the verified subject, which cannot be null");
+			}
+
+			[Test]
 			public async Task WhenSnapshotIsUsedAgainForTheSameValue_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();

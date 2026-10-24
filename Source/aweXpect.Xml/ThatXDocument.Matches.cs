@@ -20,7 +20,7 @@ public static partial class ThatXDocument
 	///     fails the expectation, also when it is negated.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XDocument?, IThat<XDocument?>> Matches(
+	public static AndOrResult<XDocument, IThat<XDocument?>> Matches(
 		this IThat<XDocument?> subject,
 		string expected,
 		Func<XmlOptions, XmlOptions>? options = null)

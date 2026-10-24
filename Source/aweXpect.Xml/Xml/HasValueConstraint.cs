@@ -14,7 +14,7 @@ namespace aweXpect.Xml;
 /// </summary>
 internal static class HasValueConstraint
 {
-	public static AndOrResult<TSubject?, IThat<TSubject?>> HasValue<TSubject>(IThat<TSubject?> source,
+	public static AndOrResult<TSubject, IThat<TSubject?>> HasValue<TSubject>(IThat<TSubject?> source,
 		Action<IThatSubject<string?>> expectations, Func<TSubject, XElement?> getElement, string memberName)
 		where TSubject : XNode
 	{
@@ -26,7 +26,7 @@ internal static class HasValueConstraint
 			.ForMember(MemberAccessor<FoundNode<XElement>, string?>.FromFunc(found => found.Node.Value, memberName),
 				(_, stringBuilder) => stringBuilder.Append(" which "))
 			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?>(e)));
-		return new AndOrResult<TSubject?, IThat<TSubject?>>(expectationBuilder, source);
+		return new AndOrResult<TSubject, IThat<TSubject?>>(expectationBuilder, source);
 	}
 }
 

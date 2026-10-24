@@ -14,7 +14,7 @@ public static partial class ThatProperties
 	///     Verifies that all properties in the filtered collection are of exactly type <typeparamref name="TProperty" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertiesOfTypeResult<IEnumerable<PropertyInfo?>?, IThat<IEnumerable<PropertyInfo?>?>>
+	public static PropertiesOfTypeResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>>
 		AreOfExactType<TProperty>(
 			this IThat<IEnumerable<PropertyInfo?>?> subject)
 		=> AreOfExactType(subject, typeof(TProperty));
@@ -23,12 +23,12 @@ public static partial class ThatProperties
 	///     Verifies that all properties in the filtered collection are of exactly type <paramref name="propertyType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertiesOfTypeResult<IEnumerable<PropertyInfo?>?, IThat<IEnumerable<PropertyInfo?>?>> AreOfExactType(
+	public static PropertiesOfTypeResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> AreOfExactType(
 		this IThat<IEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(propertyType, true);
-		return new PropertiesOfTypeResult<IEnumerable<PropertyInfo?>?, IThat<IEnumerable<PropertyInfo?>?>>(
+		return new PropertiesOfTypeResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
@@ -41,7 +41,7 @@ public static partial class ThatProperties
 	///     Verifies that all properties in the filtered collection are of exactly type <typeparamref name="TProperty" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>?, IThat<IAsyncEnumerable<PropertyInfo?>?>>
+	public static PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>>
 		AreOfExactType<TProperty>(
 			this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
 		=> AreOfExactType(subject, typeof(TProperty));
@@ -50,13 +50,13 @@ public static partial class ThatProperties
 	///     Verifies that all properties in the filtered collection are of exactly type <paramref name="propertyType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>?, IThat<IAsyncEnumerable<PropertyInfo?>?>>
+	public static PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>>
 		AreOfExactType(
 			this IThat<IAsyncEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(propertyType, true);
-		return new PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>?, IThat<IAsyncEnumerable<PropertyInfo?>?>>(
+		return new PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),

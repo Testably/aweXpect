@@ -17,7 +17,7 @@ public static partial class ThatXDocument
 	///     expectation, also when it is negated.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XDocument?, IThat<XDocument?>> HasAttribute(
+	public static AndOrResult<XDocument, IThat<XDocument?>> HasAttribute(
 		this IThat<XDocument?> subject,
 		XName name)
 		=> HasNodeConstraint.HasAttribute(subject, name, false, static document => document.Root);
@@ -32,7 +32,7 @@ public static partial class ThatXDocument
 	///     element fails the expectation, also when it is negated.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XDocument?, IThat<XDocument?>> HasAttribute(
+	public static AndOrResult<XDocument, IThat<XDocument?>> HasAttribute(
 		this IThat<XDocument?> subject,
 		XName name,
 		Action<IThatSubject<string?>> expectations)
@@ -47,7 +47,7 @@ public static partial class ThatXDocument
 	///     fails the expectation.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XDocument?, IThat<XDocument?>> DoesNotHaveAttribute(
+	public static AndOrResult<XDocument, IThat<XDocument?>> DoesNotHaveAttribute(
 		this IThat<XDocument?> subject,
 		XName name)
 		=> HasNodeConstraint.HasAttribute(subject, name, true, static document => document.Root);
