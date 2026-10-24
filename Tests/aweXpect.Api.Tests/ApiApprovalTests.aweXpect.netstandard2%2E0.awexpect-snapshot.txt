@@ -3497,7 +3497,7 @@ namespace aweXpect
         [System.Runtime.CompilerServices.OverloadResolutionPriority(-1)]
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> Any(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject) { }
-        public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>?, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> AreEqualTo<TItem>(this aweXpect.ThatEnumerable.Elements<TItem> elements, TItem expected) { }
+        public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> AreEqualTo<TItem>(this aweXpect.ThatEnumerable.Elements<TItem> elements, TItem expected) { }
         [System.Runtime.CompilerServices.OverloadResolutionPriority(-1)]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, object?> AreEqualTo(this aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> elements, object? expected) { }
         public static aweXpect.Results.ObjectEqualityResult<TEnumerable, aweXpect.Core.IThat<TEnumerable>, TItem> AreEqualTo<TEnumerable, TItem>(this aweXpect.ThatEnumerable.ElementsForStructEnumerable<TEnumerable, TItem> elements, TItem expected) where TEnumerable : struct, System.Collections.Generic.IEnumerable<TItem> { }
