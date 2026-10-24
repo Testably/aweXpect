@@ -18,7 +18,7 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> DoesNotHaveRequestUri(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, string unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, System.Action<aweXpect.Core.IThat<string?>> expectations) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, System.Action<aweXpect.Core.IThatSubject<string?>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -39,7 +39,7 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> DoesNotHaveHeader(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, string name) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, System.Action<aweXpect.Core.IThat<string?>> expectations) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, System.Action<aweXpect.Core.IThatSubject<string?>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -49,7 +49,7 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Web.Results.ProblemDetailsResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>>.String HasProblemDetailsContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, string? type = null) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasRequestMessage(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, System.Action<aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage>> expectations) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasRequestMessage(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, System.Action<aweXpect.Core.IThatSubject<System.Net.Http.HttpRequestMessage?>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, System.Net.HttpStatusCode? expected) { }
         public static aweXpect.Web.Results.StatusCodeResult HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject) { }
@@ -161,16 +161,16 @@ namespace aweXpect.Web.Results
 {
     public class HasHeaderValueResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat> where TType : class
     {
-        public aweXpect.Results.AndOrResult<TType, TThat> WhoseValue(System.Action<aweXpect.Core.IThat<string?>> expectations) { }
-        public aweXpect.Results.AndOrResult<TType, TThat> WhoseValues(System.Action<aweXpect.Core.IThat<string?[]?>> expectations) { }
+        public aweXpect.Results.AndOrResult<TType, TThat> WhoseValue(System.Action<aweXpect.Core.IThatSubject<string?>> expectations) { }
+        public aweXpect.Results.AndOrResult<TType, TThat> WhoseValues(System.Action<aweXpect.Core.IThatSubject<string?[]?>> expectations) { }
         public aweXpect.Results.StringEqualityResult<TType, TThat> WithValue(string? expected) { }
         public aweXpect.Results.StringCollectionMatchResult<TType, TThat> WithValues(System.Collections.Generic.IEnumerable<string> expected) { }
         public aweXpect.Results.StringCollectionMatchResult<TType, TThat> WithValues(params string[] expected) { }
     }
     public class HasQueryParameterValueResult : aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>>
     {
-        public aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WhoseValue(System.Action<aweXpect.Core.IThat<string?>> expectations) { }
-        public aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WhoseValues(System.Action<aweXpect.Core.IThat<string?[]?>> expectations) { }
+        public aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WhoseValue(System.Action<aweXpect.Core.IThatSubject<string?>> expectations) { }
+        public aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WhoseValues(System.Action<aweXpect.Core.IThatSubject<string?[]?>> expectations) { }
         public aweXpect.Results.StringEqualityResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WithValue(string? expected) { }
         public aweXpect.Results.StringCollectionMatchResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WithValues(System.Collections.Generic.IEnumerable<string> expected) { }
         public aweXpect.Results.StringCollectionMatchResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WithValues(params string[] expected) { }

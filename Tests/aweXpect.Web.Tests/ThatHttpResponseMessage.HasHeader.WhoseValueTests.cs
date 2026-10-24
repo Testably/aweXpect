@@ -65,6 +65,22 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenHeaderExistsAndValueIsOfType_ShouldSucceed()
+			{
+				string name = "x-my-header";
+				string value = "some header";
+				HttpResponseMessage subject = ResponseBuilder
+					.WithHeader(name, value);
+
+				async Task Act()
+					=> await That(subject).HasHeader(name)
+						.WhoseValue(v => v.Is<string>().Whose(s => s.Length, l => l.IsEqualTo(11)));
+
+				await That(Act).DoesNotThrow()
+					.Because("the nested expectations offer the type checks of every subject");
+			}
+
+			[Test]
 			public async Task WhenHeaderExistsAndValueSatisfiesTheExpectations_ShouldSucceed()
 			{
 				string name = "x-my-header";

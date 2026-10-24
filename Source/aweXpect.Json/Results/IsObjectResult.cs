@@ -38,7 +38,7 @@ public class IsObjectResult<TType, TThat> : AndOrResult<TType, TThat>
 	///     <c>Satisfy(p => p.Name.StartsWith("x-"))</c> or with expectations like
 	///     <c>ComplyWith(p => p.Whose(x => x.Value, v => v.IsString()))</c>.
 	/// </remarks>
-	public IThat<IEnumerable<JsonProperty>> WhoseProperties
+	public IThatSubject<IEnumerable<JsonProperty>> WhoseProperties
 	{
 		get
 		{

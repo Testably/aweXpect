@@ -17,7 +17,7 @@ public class IsSpanParsableResult<TType>(
 	/// <summary>
 	///     Gives access to the parsed value.
 	/// </summary>
-	public IThat<TType> Which
+	public IThatSubject<TType> Which
 		=> new ThatSubject<TType>(ExpectationBuilder
 			.ForWhich<SpanWrapper<char>, TType?>(d =>
 			{

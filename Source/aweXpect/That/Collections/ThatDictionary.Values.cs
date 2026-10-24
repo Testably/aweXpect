@@ -12,7 +12,7 @@ public static partial class ThatDictionary
 		/// <summary>
 		///     Expectations on the values of the dictionary.
 		/// </summary>
-		public IThat<IEnumerable<TValue>?> Values
+		public IThatSubject<IEnumerable<TValue>?> Values
 			=> subject.ForCollectionMember(dictionary => dictionary?.Values, "values");
 	}
 
@@ -22,7 +22,7 @@ public static partial class ThatDictionary
 		/// <summary>
 		///     Expectations on the values of the dictionary.
 		/// </summary>
-		public IThat<IEnumerable<TValue>?> Values
+		public IThatSubject<IEnumerable<TValue>?> Values
 			=> subject.ForCollectionMember(dictionary => dictionary?.Values, "values");
 	}
 
@@ -36,7 +36,7 @@ public static partial class ThatDictionary
 		///     priority to decide between them.
 		/// </remarks>
 		[OverloadResolutionPriority(-1)]
-		public IThat<IEnumerable<TValue>?> Values
+		public IThatSubject<IEnumerable<TValue>?> Values
 			=> subject.ForCollectionMember(dictionary => dictionary?.Values, "values");
 	}
 
@@ -46,7 +46,7 @@ public static partial class ThatDictionary
 		/// <summary>
 		///     Expectations on the values of the dictionary.
 		/// </summary>
-		public IThat<IEnumerable<TValue>?> Values
+		public IThatSubject<IEnumerable<TValue>?> Values
 			=> subject.ForCollectionMember(dictionary => dictionary?.Values, "values");
 	}
 }

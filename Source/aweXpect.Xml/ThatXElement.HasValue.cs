@@ -19,6 +19,6 @@ public static partial class ThatXElement
 	[GuaranteesNotNull]
 	public static AndOrResult<XElement?, IThat<XElement?>> HasValue(
 		this IThat<XElement?> subject,
-		Action<IThat<string?>> expectations)
+		Action<IThatSubject<string?>> expectations)
 		=> HasValueConstraint.HasValue(subject, expectations, static element => element, "value of the element");
 }

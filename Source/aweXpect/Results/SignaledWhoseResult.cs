@@ -30,7 +30,7 @@ public class SignaledWhoseResult<TParameter>(
 	/// <remarks>
 	///     The parameters are the ones that were counted, i.e. that match the predicates from <c>With</c>.
 	/// </remarks>
-	public IThat<IEnumerable<TParameter>> WhoseParameters
+	public IThatSubject<IEnumerable<TParameter>> WhoseParameters
 		=> new ThatSubject<IEnumerable<TParameter>>(
 			ExpectationBuilder.ForWhich<SignalerResult<TParameter>, IEnumerable<TParameter>>(
 				x => x.Parameters.Where(options.Matches).ToArray(),

@@ -52,7 +52,7 @@ internal static class CollectionHelpers
 	///     Continues the expectation on the collection that the <paramref name="memberAccessor" /> selects from the
 	///     subject, rendered as <c>has {memberName} that …</c>.
 	/// </summary>
-	internal static IThat<IEnumerable<TItem>?> ForCollectionMember<TSource, TItem>(
+	internal static IThatSubject<IEnumerable<TItem>?> ForCollectionMember<TSource, TItem>(
 		this IThat<TSource> subject,
 		Func<TSource, IEnumerable<TItem>?> memberAccessor,
 		string memberName)

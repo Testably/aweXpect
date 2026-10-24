@@ -17,7 +17,7 @@ public class IsUtf8SpanParsableResult<TType>(
 	/// <summary>
 	///     Gives access to the parsed value.
 	/// </summary>
-	public IThat<TType> Which
+	public IThatSubject<TType> Which
 		=> new ThatSubject<TType>(ExpectationBuilder
 			.ForWhich<SpanWrapper<byte>, TType?>(d =>
 			{

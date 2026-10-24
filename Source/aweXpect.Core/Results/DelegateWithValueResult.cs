@@ -21,17 +21,17 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 	///     The result only exists when the delegate did not throw, so a negation only applies to the expectations on the
 	///     result: "throws an exception or its result is not …".
 	/// </remarks>
-	public IThat<T> WhoseResult => ContinueWithResult(ExpectationBuilder);
+	public IThatSubject<T> WhoseResult => ContinueWithResult(ExpectationBuilder);
 
 	/// <summary>
 	///     Continues the <paramref name="expectationBuilder" /> with the result returned from the delegate.
 	/// </summary>
-	internal static IThat<T> ContinueWithResult(ExpectationBuilder expectationBuilder)
+	internal static IThatSubject<T> ContinueWithResult(ExpectationBuilder expectationBuilder)
 	{
 		expectationBuilder.And(" and its result ")
 			.AddConstraint((it, grammars) => new DoesNotThrowAnyExceptionConstraint(it, grammars))
 			.ForWhich<DelegateValue<T>, T?>(d => d.Value, "", "it", negateMemberOnly: true);
-		return new ThatSubject<T?>(expectationBuilder);
+		return new ThatSubject<T>(expectationBuilder);
 	}
 
 	private sealed class DoesNotThrowAnyExceptionConstraint(

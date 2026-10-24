@@ -32,7 +32,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     Further expectations on the single item.
 	/// </summary>
-	public IThat<TItem> Which
+	public IThatSubject<TItem> Which
 		=> new ThatSubject<TItem>(ExpectationBuilder.ForWhich<TCollection, TItem>(_source.GetAsync, " that "));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />

@@ -14,5 +14,5 @@ public class DelegateWithOptionalValueResult<T>(ExpectationBuilder expectationBu
 	: ExpectationResultWithoutValue<DelegateWithOptionalValueResult<T>>(expectationBuilder)
 {
 	/// <inheritdoc cref="DelegateWithValueResult{T}.WhoseResult" />
-	public IThat<T> WhoseResult => DelegateWithValueResult<T>.ContinueWithResult(ExpectationBuilder);
+	public IThatSubject<T> WhoseResult => DelegateWithValueResult<T>.ContinueWithResult(ExpectationBuilder);
 }

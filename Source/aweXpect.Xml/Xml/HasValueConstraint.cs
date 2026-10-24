@@ -15,7 +15,7 @@ namespace aweXpect.Xml;
 internal static class HasValueConstraint
 {
 	public static AndOrResult<TSubject?, IThat<TSubject?>> HasValue<TSubject>(IThat<TSubject?> source,
-		Action<IThat<string?>> expectations, Func<TSubject, XElement?> getElement, string memberName)
+		Action<IThatSubject<string?>> expectations, Func<TSubject, XElement?> getElement, string memberName)
 		where TSubject : XNode
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));

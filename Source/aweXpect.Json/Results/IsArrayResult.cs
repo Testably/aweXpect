@@ -34,7 +34,7 @@ public class IsArrayResult<TType, TThat> : AndOrResult<TType, TThat>
 	///     A <see cref="JsonElement" /> has no value equality, so verify the elements with expectations like
 	///     <c>ComplyWith(e => e.Matches(…))</c> or with predicates instead of comparing them to other elements.
 	/// </remarks>
-	public IThat<IEnumerable<JsonElement>> WhoseElements
+	public IThatSubject<IEnumerable<JsonElement>> WhoseElements
 	{
 		get
 		{

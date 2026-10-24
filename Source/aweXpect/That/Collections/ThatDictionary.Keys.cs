@@ -16,7 +16,7 @@ public static partial class ThatDictionary
 		/// <remarks>
 		///     The keys keep the key comparer of the dictionary, so that expectations on them use it as well.
 		/// </remarks>
-		public IThat<IEnumerable<TKey>?> Keys
+		public IThatSubject<IEnumerable<TKey>?> Keys
 			=> subject.ForCollectionMember(
 				dictionary => CollectionComparerHelpers.GetKeys(dictionary, dictionary?.Keys), "keys");
 	}
@@ -30,7 +30,7 @@ public static partial class ThatDictionary
 		/// <remarks>
 		///     The keys keep the key comparer of the dictionary, so that expectations on them use it as well.
 		/// </remarks>
-		public IThat<IEnumerable<TKey>?> Keys
+		public IThatSubject<IEnumerable<TKey>?> Keys
 			=> subject.ForCollectionMember(
 				dictionary => CollectionComparerHelpers.GetKeys(dictionary, dictionary?.Keys), "keys");
 	}
@@ -47,7 +47,7 @@ public static partial class ThatDictionary
 		///     priority to decide between them.
 		/// </remarks>
 		[OverloadResolutionPriority(-1)]
-		public IThat<IEnumerable<TKey>?> Keys
+		public IThatSubject<IEnumerable<TKey>?> Keys
 			=> subject.ForCollectionMember(
 				dictionary => CollectionComparerHelpers.GetKeys(dictionary, dictionary?.Keys), "keys");
 	}
@@ -61,7 +61,7 @@ public static partial class ThatDictionary
 		/// <remarks>
 		///     The keys keep the key comparer of the wrapped dictionary, so that expectations on them use it as well.
 		/// </remarks>
-		public IThat<IEnumerable<TKey>?> Keys
+		public IThatSubject<IEnumerable<TKey>?> Keys
 			=> subject.ForCollectionMember(
 				dictionary => CollectionComparerHelpers.GetKeys(dictionary, dictionary?.Keys), "keys");
 	}

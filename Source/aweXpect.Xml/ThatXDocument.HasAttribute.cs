@@ -28,14 +28,14 @@ public static partial class ThatXDocument
 	/// </summary>
 	/// <remarks>
 	///     The attribute is looked up on the root element like by
-	///     <see cref="ThatXElement.HasAttribute(IThat{XElement}, XName, Action{IThat{string}})" />. A document without a root
+	///     <see cref="ThatXElement.HasAttribute(IThat{XElement}, XName, Action{IThatSubject{string}})" />. A document without a root
 	///     element fails the expectation, also when it is negated.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<XDocument?, IThat<XDocument?>> HasAttribute(
 		this IThat<XDocument?> subject,
 		XName name,
-		Action<IThat<string?>> expectations)
+		Action<IThatSubject<string?>> expectations)
 		=> HasNodeConstraint.HasAttribute(subject, name, expectations, static document => document.Root);
 
 	/// <summary>

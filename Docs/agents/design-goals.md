@@ -58,7 +58,7 @@ Verify every review finding against the code before changing anything. If you di
 1. **Readable both ways.** A negatable expectation has its natural negation next to it (same file, same constraint), and a negated expectation never passes on a null subject or an undecided outcome.
 2. **One meaning per option word.** `Ignoring…` relaxes a check, `As…` changes the match type, `Using` supplies a comparer, `Within` sets a tolerance or a timeout; options chain in any order.
 3. **Messages follow the message conventions.** The expectation reads in the present tense, the result starts with "it" in the past tense, values go through the formatter, and tests pin the complete message.
-4. **Subjects keep their type.** Reference subjects are nullable, value types get a nullable twin, methods on base types are generic over the subject so chaining keeps the concrete type; property checks offer a direct overload and a property result, collection quantifiers read as plural sentences.
+4. **Subjects keep their type.** Reference subjects are nullable, value types get a nullable twin, methods on base types are generic over the subject so chaining keeps the concrete type; property checks offer a direct overload and a property result, collection quantifiers read as plural sentences; every parameter or property that hands out a subject for further expectations (nested `Action<…>` expectations, `Which`, `Whose…`) uses `IThatSubject<T>`, so that `Is<TType>()` and the other type checks are available everywhere.
 5. **Uniform argument handling.** Arguments are validated eagerly, expectations are marked `[GuaranteesNotNull]`, and caller expressions are captured where they make the message readable.
 6. **Trimming-safe by construction.** Reflection only through the type metadata registry, and member metadata annotations wherever a value reaches equivalency.
 7. **Predictable layout.** One method family per file in its `That<Type>` partial class, results and options in their own namespaces, generated families never written by hand.
@@ -68,7 +68,7 @@ Verify every review finding against the code before changing anything. If you di
 These goals hold for every extension package:
 
 1. **Feels like core aweXpect.** Naming, negation, result types, argument checks and messages follow the goals above, and the layout mirrors `aweXpect`.
-   - Nested expectations are an `Action<…> expectations` overload of the plain verb, never a `Func` whose return value is ignored; a suffix like `HasItemThat` only disambiguates from existing lambda overloads.
+   - Nested expectations are an `Action<IThatSubject<…>> expectations` overload of the plain verb, never a `Func` whose return value is ignored; a suffix like `HasItemThat` only disambiguates from existing lambda overloads.
    - When `null` fails, the expectation is marked `[GuaranteesNotNull]` and its result has the non-null subject type, also for a nullable value-type subject (like `IsTrue` on `bool?`), and keeps the `IThat<…>` of the subject for chaining.
    - Variable arguments are a `params T[]`, never a params collection like `params IEnumerable<T>`, as consumers on older language versions (C# 7.3 on net48, C# 12 on net8.0) cannot pass single values to it; an overload for existing collections takes `IEnumerable<T>` without `params`.
    - A string name that is looked up in a document or message (a header, query parameter, XML element or attribute, JSON property) is a parameter `name`; compared values and typed keys of a collection are `expected` or `unexpected`.

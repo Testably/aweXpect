@@ -34,7 +34,7 @@ public static partial class ThatXElement
 	public static AndOrResult<XElement?, IThat<XElement?>> HasElement(
 		this IThat<XElement?> subject,
 		XName name,
-		Action<IThat<XElement?>> expectations)
+		Action<IThatSubject<XElement?>> expectations)
 		=> HasNodeConstraint.HasElement(subject, name, expectations, static element => element);
 
 	/// <summary>

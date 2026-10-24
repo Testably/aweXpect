@@ -29,7 +29,7 @@ public static partial class ThatXDocument
 	/// </summary>
 	/// <remarks>
 	///     The child element is looked up in the root element like by
-	///     <see cref="ThatXElement.HasElement(IThat{XElement}, XName, Action{IThat{XElement}})" />, so that the root element
+	///     <see cref="ThatXElement.HasElement(IThat{XElement}, XName, Action{IThatSubject{XElement}})" />, so that the root element
 	///     itself never matches, unlike by <see cref="XContainer.Element(XName)" /> on the document. A document without a
 	///     root element fails the expectation, also when it is negated.
 	/// </remarks>
@@ -37,7 +37,7 @@ public static partial class ThatXDocument
 	public static AndOrResult<XDocument?, IThat<XDocument?>> HasElement(
 		this IThat<XDocument?> subject,
 		XName name,
-		Action<IThat<XElement?>> expectations)
+		Action<IThatSubject<XElement?>> expectations)
 		=> HasNodeConstraint.HasElement(subject, name, expectations, static document => document.Root);
 
 	/// <summary>

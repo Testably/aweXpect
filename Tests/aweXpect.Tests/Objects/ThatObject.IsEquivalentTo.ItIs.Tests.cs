@@ -294,6 +294,58 @@ public sealed partial class ThatObject
 						.Because("a reason that must be awaited is shown like a string reason, although its member is met");
 				}
 
+				[Test]
+				public async Task WhenTypeCheckOnThatFails_ShouldFail()
+				{
+					DummyClass subject = new()
+					{
+						StringValue = "foo",
+					};
+					var expected = new
+					{
+						StringValue = It.Is<object>().That.IsNot<string>(),
+					};
+
+					async Task Act()
+						=> await That(subject).IsEquivalentTo(expected);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equivalent to expected,
+						             but it was not:
+						               Property StringValue differed:
+						                   Actual: "foo"
+						                 Expected: is object that is not of type string
+
+						             Equivalency options:
+						              - include public fields and properties
+						             """);
+				}
+
+				[Test]
+				public async Task WhenTypeChecksOnThatAreMet_ShouldSucceed()
+				{
+					DummyClass subject = new()
+					{
+						StringValue = "foo",
+						IntValue = 42,
+						BoolValue = true,
+					};
+					var expected = new
+					{
+						StringValue = It.Is<object>().That.IsExactly<string>(),
+						IntValue = It.Is<object>().That.Is<int>(),
+						BoolValue = It.Is<object>().That.IsNotExactly<string>(),
+					};
+
+					async Task Act()
+						=> await That(subject).IsEquivalentTo(expected);
+
+					await That(Act).DoesNotThrow()
+						.Because("the subject after That offers the type checks of every subject");
+				}
+
 				// ReSharper disable UnusedAutoPropertyAccessor.Local
 				private sealed class DummyClass
 				{

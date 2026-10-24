@@ -1334,6 +1334,25 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			public async Task WhenSingleItemIsNotOfType_ShouldFail()
+			{
+				IEnumerable<object> subject = ToEnumerable<object>(["foo",]);
+
+				async Task Act()
+					=> await That(subject).HasSingle().Which.Is<int>();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item that is of type int,
+					             but it was string
+
+					             Actual:
+					             "foo"
+					             """);
+			}
+
+			[Test]
 			public async Task WhenSingleItemSatisfiesExpectation_ShouldSucceed()
 			{
 				IEnumerable<int> subject = ToEnumerable([3,]);
