@@ -8,6 +8,9 @@ namespace aweXpect;
 /// </summary>
 public static partial class ThatType
 {
+	private static string DescribeTypeKind(Type type)
+		=> ResultTexts.Describe($"was {GetTypeNameOfType(type)}", type);
+
 	private static string? GetTypeNameOfType(Type? type)
 	{
 		if (type == null)

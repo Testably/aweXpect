@@ -1,62 +1,17 @@
 ﻿using System.Reflection;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
-using aweXpect.Reflection.Formatting;
-using aweXpect.Results;
+using aweXpect.Reflection.Helpers;
 
 namespace aweXpect;
 
 public static partial class ThatField
 {
-	/// <summary>
-	///     Verifies that the <see cref="FieldInfo" /> is read-only.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsReadOnly(
-		this IThat<FieldInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsReadOnlyConstraint(it, grammars)),
-			subject);
+	[GenerateExpectation("Is{Not}ReadOnly", "is {not} read-only",
+		Result = nameof(DescribeReadOnlyField),
+		Summary = "Verifies that the <see cref=\"FieldInfo\" /> is read-only.",
+		NegatedSummary = "Verifies that the <see cref=\"FieldInfo\" /> is not read-only.")]
+	private static bool IsReadOnlyField(FieldInfo field) => field.IsInitOnly;
 
-	/// <summary>
-	///     Verifies that the <see cref="FieldInfo" /> is not read-only.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsNotReadOnly(
-		this IThat<FieldInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsReadOnlyConstraint(it, grammars).Invert()),
-			subject);
-
-	private sealed class IsReadOnlyConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<FieldInfo?>(it, grammars),
-			IValueConstraint<FieldInfo?>
-	{
-		public ConstraintResult IsMetBy(FieldInfo? actual)
-		{
-			Actual = actual;
-			Outcome = actual?.IsInitOnly == true ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is read-only");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was non-read-only ");
-			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not read-only");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was read-only ");
-			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
-		}
-	}
+	private static string DescribeReadOnlyField(FieldInfo field)
+		=> ResultTexts.Describe(field.IsInitOnly, "was read-only", "was non-read-only", field);
 }

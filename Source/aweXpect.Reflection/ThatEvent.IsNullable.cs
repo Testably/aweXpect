@@ -1,72 +1,26 @@
 ﻿using System.Reflection;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
-using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
 
 namespace aweXpect;
 
 public static partial class ThatEvent
 {
-	/// <summary>
-	///     Verifies that the <see cref="EventInfo" /> is nullable.
-	/// </summary>
-	/// <remarks>
-	///     An event is considered nullable if its handler type is annotated as nullable
-	///     (according to the nullable reference type metadata).
-	/// </remarks>
-	[GuaranteesNotNull]
-	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsNullable(
-		this IThat<EventInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsNullableConstraint(it, grammars)),
-			subject);
+	[GenerateExpectation("Is{Not}Nullable", "is {not} nullable",
+		Result = nameof(DescribeNullableEvent),
+		Summary = "Verifies that the <see cref=\"EventInfo\" /> is nullable.",
+		NegatedSummary = "Verifies that the <see cref=\"EventInfo\" /> is not nullable.",
+		Remarks = """
+		          An event is considered nullable if its handler type is annotated as nullable
+		          (according to the nullable reference type metadata).
+		          """,
+		NegatedRemarks = """
+		                 An event is considered nullable if its handler type is annotated as nullable
+		                 (according to the nullable reference type metadata).
+		                 Events without nullability annotations (oblivious code) count as non-nullable.
+		                 """)]
+	private static bool IsNullableEvent(EventInfo @event) => @event.IsNullable();
 
-	/// <summary>
-	///     Verifies that the <see cref="EventInfo" /> is not nullable.
-	/// </summary>
-	/// <remarks>
-	///     An event is considered nullable if its handler type is annotated as nullable
-	///     (according to the nullable reference type metadata).
-	///     Events without nullability annotations (oblivious code) count as non-nullable.
-	/// </remarks>
-	[GuaranteesNotNull]
-	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsNotNullable(
-		this IThat<EventInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsNullableConstraint(it, grammars).Invert()),
-			subject);
-
-	private sealed class IsNullableConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<EventInfo?>(it, grammars),
-			IValueConstraint<EventInfo?>
-	{
-		public ConstraintResult IsMetBy(EventInfo? actual)
-		{
-			Actual = actual;
-			Outcome = actual.IsNullable() ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is nullable");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was non-nullable ");
-			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not nullable");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was nullable ");
-			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
-		}
-	}
+	private static string DescribeNullableEvent(EventInfo @event)
+		=> ResultTexts.Describe(@event.IsNullable(), "was nullable", "was non-nullable", @event);
 }

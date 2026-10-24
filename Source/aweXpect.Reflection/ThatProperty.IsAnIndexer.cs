@@ -1,63 +1,17 @@
 ﻿using System.Reflection;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
-using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
 
 namespace aweXpect;
 
 public static partial class ThatProperty
 {
-	/// <summary>
-	///     Verifies that the <see cref="PropertyInfo" /> is an indexer (has index parameters).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsAnIndexer(
-		this IThat<PropertyInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsAnIndexerConstraint(it, grammars)),
-			subject);
+	[GenerateExpectation("Is{Not}AnIndexer", "is {not} an indexer",
+		Result = nameof(DescribeIndexer),
+		Summary = "Verifies that the <see cref=\"PropertyInfo\" /> is an indexer (has index parameters).",
+		NegatedSummary = "Verifies that the <see cref=\"PropertyInfo\" /> is not an indexer (has no index parameters).")]
+	private static bool IsAnIndexerProperty(PropertyInfo property) => property.IsIndexer();
 
-	/// <summary>
-	///     Verifies that the <see cref="PropertyInfo" /> is not an indexer (has no index parameters).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsNotAnIndexer(
-		this IThat<PropertyInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsAnIndexerConstraint(it, grammars).Invert()),
-			subject);
-
-	private sealed class IsAnIndexerConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<PropertyInfo?>(it, grammars),
-			IValueConstraint<PropertyInfo?>
-	{
-		public ConstraintResult IsMetBy(PropertyInfo? actual)
-		{
-			Actual = actual;
-			Outcome = actual.IsIndexer() ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is an indexer");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was not an indexer ");
-			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not an indexer");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was an indexer ");
-			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
-		}
-	}
+	private static string DescribeIndexer(PropertyInfo property)
+		=> ResultTexts.Describe(property.IsIndexer(), "was an indexer", "was not an indexer", property);
 }

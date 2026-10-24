@@ -1,63 +1,20 @@
 ﻿using System.Reflection;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
-using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
 
 namespace aweXpect;
 
 public static partial class ThatMethod
 {
-	/// <summary>
-	///     Verifies that the <see cref="MethodInfo" /> overrides a base class method.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> Overrides(
-		this IThat<MethodInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new OverridesConstraint(it, grammars)),
-			subject);
+	[GenerateExpectation("Overrides", "overrides a base method",
+		NegatedName = "DoesNotOverride",
+		NegatedExpectationText = "does not override a base method",
+		Result = nameof(DescribeOverridingMethod),
+		Summary = "Verifies that the <see cref=\"MethodInfo\" /> overrides a base class method.",
+		NegatedSummary = "Verifies that the <see cref=\"MethodInfo\" /> does not override a base class method.")]
+	private static bool OverridesMethod(MethodInfo method) => method.IsOverride();
 
-	/// <summary>
-	///     Verifies that the <see cref="MethodInfo" /> does not override a base class method.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> DoesNotOverride(
-		this IThat<MethodInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new OverridesConstraint(it, grammars).Invert()),
-			subject);
-
-	private sealed class OverridesConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<MethodInfo?>(it, grammars),
-			IValueConstraint<MethodInfo?>
-	{
-		public ConstraintResult IsMetBy(MethodInfo? actual)
-		{
-			Actual = actual;
-			Outcome = actual?.IsOverride() == true ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("overrides a base method");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" did not override a base method ");
-			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not override a base method");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" did override a base method ");
-			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
-		}
-	}
+	private static string DescribeOverridingMethod(MethodInfo method)
+		=> ResultTexts.Describe(method.IsOverride(),
+			"did override a base method", "did not override a base method", method);
 }

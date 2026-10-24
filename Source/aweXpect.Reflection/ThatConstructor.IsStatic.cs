@@ -1,62 +1,17 @@
 ﻿using System.Reflection;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
-using aweXpect.Reflection.Formatting;
-using aweXpect.Results;
+using aweXpect.Reflection.Helpers;
 
 namespace aweXpect;
 
 public static partial class ThatConstructor
 {
-	/// <summary>
-	///     Verifies that the <see cref="ConstructorInfo" /> is static.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>> IsStatic(
-		this IThat<ConstructorInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsStaticConstraint(it, grammars)),
-			subject);
+	[GenerateExpectation("Is{Not}Static", "is {not} static",
+		Result = nameof(DescribeStaticConstructor),
+		Summary = "Verifies that the <see cref=\"ConstructorInfo\" /> is static.",
+		NegatedSummary = "Verifies that the <see cref=\"ConstructorInfo\" /> is not static.")]
+	private static bool IsStaticConstructor(ConstructorInfo constructor) => constructor.IsStatic;
 
-	/// <summary>
-	///     Verifies that the <see cref="ConstructorInfo" /> is not static.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>> IsNotStatic(
-		this IThat<ConstructorInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new IsStaticConstraint(it, grammars).Invert()),
-			subject);
-
-	private sealed class IsStaticConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<ConstructorInfo?>(it, grammars),
-			IValueConstraint<ConstructorInfo?>
-	{
-		public ConstraintResult IsMetBy(ConstructorInfo? actual)
-		{
-			Actual = actual;
-			Outcome = actual?.IsStatic == true ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is static");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was non-static ");
-			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not static");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was static ");
-			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
-		}
-	}
+	private static string DescribeStaticConstructor(ConstructorInfo constructor)
+		=> ResultTexts.Describe(constructor.IsStatic, "was static", "was non-static", constructor);
 }
