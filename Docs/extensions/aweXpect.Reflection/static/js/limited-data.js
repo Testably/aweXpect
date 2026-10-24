@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
-        "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
-      },
-      {
         "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
         "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
+      },
+      {
+        "sha": "22b71d85b1ed298b1fda3b24979a24e8f7d97cb2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
+        "message": "refactor!: return the non-null subject type from expectations that guarantee it (#1992)"
       }
     ],
     "labels": [
-      "8dcdaffe",
       "1c027d4b",
       "8f08376f",
       "257e5c03",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "67eb3ff5",
       "46bf8489",
       "411dfe77",
-      "053d3134"
+      "053d3134",
+      "22b71d85"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          700.9351417834943,
           701.9421815872192,
           715.9418851852417,
           535.0076903661092,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           750.6744119780404,
           828.2216255823771,
           749.2761193055373,
-          425.31231810496405
+          425.31231810496405,
+          726.8025828679403
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          885.8778696695964,
           888.2919058799744,
           915.302159513746,
           687.3577011744181,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           930.7932638804118,
           1000.652376683553,
           932.9730427815364,
-          508.68624890645344
+          508.68624890645344,
+          883.4874388149807
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
-        "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
-      },
-      {
         "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
         "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
+      },
+      {
+        "sha": "22b71d85b1ed298b1fda3b24979a24e8f7d97cb2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
+        "message": "refactor!: return the non-null subject type from expectations that guarantee it (#1992)"
       }
     ],
     "labels": [
-      "8dcdaffe",
       "1c027d4b",
       "8f08376f",
       "257e5c03",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "67eb3ff5",
       "46bf8489",
       "411dfe77",
-      "053d3134"
+      "053d3134",
+      "22b71d85"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          118.61724276542664,
           134.43418616907937,
           129.13144872869765,
           93.93753085136413,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           145.15047478675842,
           152.42138187090555,
           155.72861753191268,
-          70.83842553411212
+          70.83842553411212,
+          142.92735702650887
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          206.80955353804998,
           198.11067385673522,
           218.59605761936731,
           185.95242338180543,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           216.16398320198059,
           260.91552282969155,
           238.63771850722176,
-          129.16618806521097
+          129.16618806521097,
+          201.9518550078074
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
-        "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
-      },
-      {
         "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
         "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
+      },
+      {
+        "sha": "22b71d85b1ed298b1fda3b24979a24e8f7d97cb2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
+        "message": "refactor!: return the non-null subject type from expectations that guarantee it (#1992)"
       }
     ],
     "labels": [
-      "8dcdaffe",
       "1c027d4b",
       "8f08376f",
       "257e5c03",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "67eb3ff5",
       "46bf8489",
       "411dfe77",
-      "053d3134"
+      "053d3134",
+      "22b71d85"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1891.9799923529993,
           1870.5410897391182,
           1902.7744570414225,
           1470.7148427963257,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1948.302420752389,
           2265.132890319824,
           2047.0730746132988,
-          1069.8902866656963
+          1069.8902866656963,
+          2055.6503170558385
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1681,7 +1681,7 @@ window.BENCHMARK_DATA = {
           2080,
           2080,
           2080,
-          2080,
+          2008,
           2008,
           2008,
           2008,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1532.6002473195394,
           1481.536464691162,
           1555.3809562410627,
           1115.072860445295,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1919.1028493245442,
           1796.0417376200357,
           1505.7171404702324,
-          872.5869185583932
+          872.5869185583932,
+          1456.1909824371337
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1764,7 +1764,6 @@ window.BENCHMARK_DATA = {
           1897,
           1897,
           1897,
-          1897,
           1896,
           1897,
           1897,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1864,
+          1953,
           1953
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
-        "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
-      },
       {
         "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
         "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
+      },
+      {
+        "sha": "22b71d85b1ed298b1fda3b24979a24e8f7d97cb2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
+        "message": "refactor!: return the non-null subject type from expectations that guarantee it (#1992)"
       }
     ],
     "labels": [
-      "8dcdaffe",
       "1c027d4b",
       "8f08376f",
       "257e5c03",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "67eb3ff5",
       "46bf8489",
       "411dfe77",
-      "053d3134"
+      "053d3134",
+      "22b71d85"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2711.4835270472936,
           2711.6330830710276,
           2751.310117848714,
           2274.7762438456216,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2819.9075679779053,
           3246.1514302571613,
           2773.519156864711,
-          1399.525321667011
+          1399.525321667011,
+          2787.1265342712404
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2984,
           3040,
           3040,
           3040,
@@ -2293,6 +2292,7 @@ window.BENCHMARK_DATA = {
           2936,
           2936,
           2880,
+          2880,
           2880
         ],
         "borderColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3835.140052286784,
           3820.568997519357,
           3845.596528860239,
           3030.5637751988,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           4408.032223837717,
           4610.656294686453,
           3969.400400797526,
-          2316.0214854649134
+          2316.0214854649134,
+          3882.7427925109864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2371,7 +2371,6 @@ window.BENCHMARK_DATA = {
         "data": [
           4012,
           4012,
-          4012,
           4011,
           4009,
           4011,
@@ -2417,6 +2416,7 @@ window.BENCHMARK_DATA = {
           3981,
           3981,
           3981,
+          3980,
           3980,
           3980
         ],
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
-        "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
-      },
       {
         "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
         "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
+      },
+      {
+        "sha": "22b71d85b1ed298b1fda3b24979a24e8f7d97cb2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
+        "message": "refactor!: return the non-null subject type from expectations that guarantee it (#1992)"
       }
     ],
     "labels": [
-      "8dcdaffe",
       "1c027d4b",
       "8f08376f",
       "257e5c03",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "67eb3ff5",
       "46bf8489",
       "411dfe77",
-      "053d3134"
+      "053d3134",
+      "22b71d85"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          375.99946517944335,
           390.96656297047934,
           381.2289005007063,
           271.46518449783326,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           385.48768854141235,
           423.73469829559326,
           400.68615396206195,
-          181.66628491083782
+          181.66628491083782,
+          375.9836460627042
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2244.9664247952974,
           2182.5031095232284,
           2311.1994097573415,
           1713.2036180496216,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2361.66218363444,
           2542.0603912353517,
           2398.626402446202,
-          1393.3115966503437
+          1393.3115966503437,
+          2240.1842733110702
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
-        "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
-      },
-      {
         "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
         "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
+      },
+      {
+        "sha": "22b71d85b1ed298b1fda3b24979a24e8f7d97cb2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
+        "message": "refactor!: return the non-null subject type from expectations that guarantee it (#1992)"
       }
     ],
     "labels": [
-      "8dcdaffe",
       "1c027d4b",
       "8f08376f",
       "257e5c03",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "67eb3ff5",
       "46bf8489",
       "411dfe77",
-      "053d3134"
+      "053d3134",
+      "22b71d85"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3458.86931010655,
           3394.444876744197,
           3610.800972747803,
           2687.2751810709638,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           3392.8279530843097,
           3903.961083730062,
           3506.04370198931,
-          1858.380207334246
+          1858.380207334246,
+          3404.654327392578
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3463,7 +3463,6 @@ window.BENCHMARK_DATA = {
           3673,
           3673,
           3673,
-          3673,
           3672,
           3673,
           3673,
@@ -3506,6 +3505,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3032,
           3032,
           3032,
           3032,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          279018.9016113281,
           275831.9987792969,
           284052.9305338542,
           239689.16235351562,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           282806.5103841146,
           309410.88004557294,
           282585.4908203125,
-          170873.35857747396
+          170873.35857747396,
+          281964.36495535716
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17609,
           17609,
           17913,
           17608,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17577,
-          17576
+          17576,
+          17577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
