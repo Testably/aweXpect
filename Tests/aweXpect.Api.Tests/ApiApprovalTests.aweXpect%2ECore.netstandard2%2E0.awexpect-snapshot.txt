@@ -592,7 +592,7 @@ namespace aweXpect.Core.Constraints
     public static class ConstraintResultExtensions
     {
         public static aweXpect.Core.Constraints.ConstraintResult AppendExpectationText(this aweXpect.Core.Constraints.ConstraintResult inner, System.Action<System.Text.StringBuilder>? suffix) { }
-        public static aweXpect.Core.Constraints.ConstraintResult Fail<T>(this aweXpect.Core.Constraints.ConstraintResult inner, string failure, T value) { }
+        public static aweXpect.Core.Constraints.ConstraintResult FailureBothWays<T>(this aweXpect.Core.Constraints.ConstraintResult inner, string failure, T value) { }
         public static bool HasSameResultTextAs(this aweXpect.Core.Constraints.ConstraintResult left, aweXpect.Core.Constraints.ConstraintResult right) { }
         public static T Invert<T>(this T constraintResult) where T : aweXpect.Core.Constraints.ConstraintResult { }
         public static aweXpect.Core.Constraints.ConstraintResult PrependExpectationText(this aweXpect.Core.Constraints.ConstraintResult inner, System.Action<System.Text.StringBuilder>? prefix) { }

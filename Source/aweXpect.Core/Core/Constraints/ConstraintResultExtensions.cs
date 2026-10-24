@@ -57,7 +57,7 @@ public static class ConstraintResultExtensions
 	/// <remarks>
 	///     The <paramref name="failure" /> fails the expectation and its negation alike.
 	/// </remarks>
-	public static ConstraintResult Fail<T>(this ConstraintResult inner, string failure, T value)
+	public static ConstraintResult FailureBothWays<T>(this ConstraintResult inner, string failure, T value)
 		=> new ConstraintResultFailure<T>(inner, failure, value);
 
 	/// <summary>
