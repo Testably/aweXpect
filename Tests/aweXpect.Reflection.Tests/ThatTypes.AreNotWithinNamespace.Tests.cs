@@ -68,6 +68,21 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
+			[Test]
+			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable<Type?> subject = [typeof(ClassInSiblingNamespaceScope),];
+
+				async Task Act()
+				{
+					await That(subject).AreNotWithinNamespace(null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' cannot be null.").AsPrefix();
+			}
+
 #if NET8_0_OR_GREATER
 			[Test]
 			public async Task WhenAsyncEnumerableTypesAreNotWithinNamespace_ShouldSucceed()
@@ -104,6 +119,24 @@ public sealed partial class ThatTypes
 					.WithMessage(
 						"*none are within namespace*but * of * were*ClassInNestedNamespaceScope*")
 					.AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenUnexpectedIsNullForAsyncEnumerable_ShouldThrowArgumentNullException()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(ClassInSiblingNamespaceScope),
+				}.ToTestAsyncEnumerable();
+
+				async Task Act()
+				{
+					await That(subject).AreNotWithinNamespace(null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' cannot be null.").AsPrefix();
 			}
 #endif
 		}

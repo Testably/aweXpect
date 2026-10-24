@@ -25,7 +25,7 @@ public static partial class AssemblyFilters
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
 	public static AssembliesWith With<TAttribute>(this Filtered.Assemblies @this,
-		Func<TAttribute, bool>? predicate,
+		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
@@ -65,7 +65,7 @@ public static partial class AssemblyFilters
 		///     matches the <paramref name="predicate" />.
 		/// </summary>
 		public AssembliesWith OrWith<TAttribute>(
-			Func<TAttribute, bool>? predicate,
+			Func<TAttribute, bool> predicate,
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute

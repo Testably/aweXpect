@@ -32,7 +32,7 @@ public static partial class PropertyFilters
 	///     attributes declared directly on the property with <see cref="PropertiesWith.Directly" />.
 	/// </remarks>
 	public static PropertiesWith With<TAttribute>(this Filtered.Properties @this,
-		Func<TAttribute, bool>? predicate,
+		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
@@ -69,7 +69,7 @@ public static partial class PropertyFilters
 		///     matches the <paramref name="predicate" />.
 		/// </summary>
 		public PropertiesWith OrWith<TAttribute>(
-			Func<TAttribute, bool>? predicate,
+			Func<TAttribute, bool> predicate,
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute

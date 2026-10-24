@@ -32,7 +32,7 @@ public static partial class EventFilters
 	///     attributes declared directly on the event with <see cref="EventsWith.Directly" />.
 	/// </remarks>
 	public static EventsWith With<TAttribute>(this Filtered.Events @this,
-		Func<TAttribute, bool>? predicate,
+		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
@@ -69,7 +69,7 @@ public static partial class EventFilters
 		///     matches the <paramref name="predicate" />.
 		/// </summary>
 		public EventsWith OrWith<TAttribute>(
-			Func<TAttribute, bool>? predicate,
+			Func<TAttribute, bool> predicate,
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute

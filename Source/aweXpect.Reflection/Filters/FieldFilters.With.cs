@@ -25,7 +25,7 @@ public static partial class FieldFilters
 	///     match the <paramref name="predicate" />.
 	/// </summary>
 	public static FieldsWith With<TAttribute>(this Filtered.Fields @this,
-		Func<TAttribute, bool>? predicate,
+		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
@@ -65,7 +65,7 @@ public static partial class FieldFilters
 		///     matches the <paramref name="predicate" />.
 		/// </summary>
 		public FieldsWith OrWith<TAttribute>(
-			Func<TAttribute, bool>? predicate,
+			Func<TAttribute, bool> predicate,
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute

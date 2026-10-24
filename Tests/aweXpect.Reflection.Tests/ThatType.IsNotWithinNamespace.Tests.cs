@@ -92,6 +92,21 @@ public sealed partial class ThatType
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Test]
+			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				Type subject = typeof(ClassInSiblingNamespaceScope);
+
+				async Task Act()
+				{
+					await That(subject).IsNotWithinNamespace(null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' cannot be null.").AsPrefix();
+			}
 		}
 	}
 }
