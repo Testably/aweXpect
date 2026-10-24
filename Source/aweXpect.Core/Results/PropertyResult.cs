@@ -962,7 +962,7 @@ public static class PropertyResult
 				return;
 			}
 
-			if (Grammars.HasFlag(ExpectationGrammars.Nested) && !Grammars.HasFlag(ExpectationGrammars.Active))
+			if (Grammars.IsNested() && !Grammars.IsActive())
 			{
 				// The "whose" clause made the property the subject.
 				stringBuilder.Append(propertyExpression).Append(" was ");
@@ -984,7 +984,7 @@ public static class PropertyResult
 		private void Append(StringBuilder stringBuilder, bool isNegated)
 		{
 			string negation = isNegated ? "not " : "";
-			if (Grammars.HasFlag(ExpectationGrammars.Active))
+			if (Grammars.IsActive())
 			{
 				stringBuilder.Append("with ").Append(propertyExpression).Append(' ').Append(negation);
 			}
@@ -1064,7 +1064,7 @@ public static class PropertyResult
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			ExpectationGrammars equalityGrammars = Grammars;
-			if (Grammars.HasFlag(ExpectationGrammars.Active))
+			if (Grammars.IsActive())
 			{
 				stringBuilder.Append("with ").Append(propertyExpression).Append(' ');
 				equalityGrammars &= ~ExpectationGrammars.Active;
@@ -1100,8 +1100,8 @@ public static class PropertyResult
 				return;
 			}
 
-			stringBuilder.Append((Grammars.HasFlag(ExpectationGrammars.Nested) &&
-			                      !Grammars.HasFlag(ExpectationGrammars.Active)
+			stringBuilder.Append((Grammars.IsNested() &&
+			                      !Grammars.IsActive()
 					? options.GetExtendedFailure(propertyExpression, Grammars, _value, expected)
 					: options.GetExtendedMemberFailure(It, propertyExpression, Grammars, _value, expected))
 				.Indent(indentation, false));

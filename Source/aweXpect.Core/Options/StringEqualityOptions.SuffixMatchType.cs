@@ -121,7 +121,7 @@ public partial class StringEqualityOptions
 
 		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />
 		public string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> (grammars.HasFlag(ExpectationGrammars.Active), grammars.HasFlag(ExpectationGrammars.Negated)) switch
+			=> (grammars.IsActive(), grammars.IsNegated()) switch
 			{
 				(true, false) =>
 					$"{grammars.Verb("ends", "end")} with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",

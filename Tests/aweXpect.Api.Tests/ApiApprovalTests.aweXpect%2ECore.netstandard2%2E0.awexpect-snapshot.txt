@@ -281,7 +281,8 @@ namespace aweXpect.Core
     }
     public static class ExpectationGrammarsExtensions
     {
-        public static bool HasAnyFlag(this aweXpect.Core.ExpectationGrammars grammars, params aweXpect.Core.ExpectationGrammars[] flags) { }
+        public static bool IsActive(this aweXpect.Core.ExpectationGrammars grammars) { }
+        public static bool IsIntroduced(this aweXpect.Core.ExpectationGrammars grammars) { }
         public static bool IsNegated(this aweXpect.Core.ExpectationGrammars grammars) { }
         public static bool IsNested(this aweXpect.Core.ExpectationGrammars grammars) { }
         public static bool IsPlural(this aweXpect.Core.ExpectationGrammars grammars) { }

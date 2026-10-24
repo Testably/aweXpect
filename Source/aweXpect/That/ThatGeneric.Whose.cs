@@ -105,7 +105,7 @@ public static partial class ThatGeneric
 	/// </remarks>
 	private static void AppendMember(StringBuilder stringBuilder, ExpectationGrammars grammars, MemberAccessor member)
 	{
-		if (grammars.HasFlag(ExpectationGrammars.Introduced))
+		if (grammars.IsIntroduced())
 		{
 			stringBuilder.Append(grammars.Verb("has ", "have ")).Append(member).Append("that ");
 		}
@@ -132,7 +132,7 @@ public static partial class ThatGeneric
 		memberGrammars = IsCollection(typeof(TMember))
 			? memberGrammars | ExpectationGrammars.Plural
 			: memberGrammars & ~ExpectationGrammars.Plural;
-		return enclosingGrammars.HasFlag(ExpectationGrammars.Introduced)
+		return enclosingGrammars.IsIntroduced()
 			? memberGrammars
 			: memberGrammars | ExpectationGrammars.Introduced;
 	}

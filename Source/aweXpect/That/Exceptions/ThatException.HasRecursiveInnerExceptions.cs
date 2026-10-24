@@ -73,7 +73,7 @@ public static partial class ThatException
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Grammars.HasFlag(ExpectationGrammars.Active))
+			if (Grammars.IsActive())
 			{
 				stringBuilder.Append("with recursive inner exceptions");
 			}
@@ -92,7 +92,7 @@ public static partial class ThatException
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Grammars.HasFlag(ExpectationGrammars.Active))
+			if (Grammars.IsActive())
 			{
 				stringBuilder.Append("without recursive inner exceptions");
 			}

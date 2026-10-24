@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace aweXpect.Core;
 
@@ -18,6 +17,20 @@ public static class ExpectationGrammarsExtensions
 	/// </summary>
 	public static ExpectationGrammars Negate(this ExpectationGrammars grammars)
 		=> grammars ^ ExpectationGrammars.Negated;
+
+	/// <summary>
+	///     Checks if the <paramref name="grammars" /> has the <see cref="ExpectationGrammars.Active" /> flag.
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static bool IsActive(this ExpectationGrammars grammars)
+		=> (grammars & ExpectationGrammars.Active) != 0;
+
+	/// <summary>
+	///     Checks if the <paramref name="grammars" /> has the <see cref="ExpectationGrammars.Introduced" /> flag.
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static bool IsIntroduced(this ExpectationGrammars grammars)
+		=> (grammars & ExpectationGrammars.Introduced) != 0;
 
 	/// <summary>
 	///     Checks if the <paramref name="grammars" /> has the <see cref="ExpectationGrammars.Negated" /> flag.
@@ -39,13 +52,6 @@ public static class ExpectationGrammarsExtensions
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool IsPlural(this ExpectationGrammars grammars)
 		=> (grammars & ExpectationGrammars.Plural) != 0;
-
-	/// <summary>
-	///     Checks if the <paramref name="grammars" /> has any of the given <paramref name="flags" />.
-	/// </summary>
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool HasAnyFlag(this ExpectationGrammars grammars, params ExpectationGrammars[] flags)
-		=> flags.Any(flag => (grammars & flag) == flag);
 
 	/// <summary>
 	///     Returns the <paramref name="plural" /> form if the <paramref name="grammars" /> have the
