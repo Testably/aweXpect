@@ -37,7 +37,7 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateExpectationFamily("AreEqualTo", Summary = ElementsAreEqualTo, Remarks = SetItemComparerRemarks)]
-	internal static ObjectEqualityResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>, TItem>
+	internal static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		AreEqualToCore<TItem>(
 			Elements<TItem> elements,
 			TItem expected)
@@ -45,7 +45,7 @@ public static partial class ThatEnumerable
 		IEnumerableElements<TItem> iElements = elements;
 		ItemEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>, TItem>(
+		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((Options: options, Expected: expected, iElements.Quantifier),
 				static (state, it, grammars) =>
 				{
