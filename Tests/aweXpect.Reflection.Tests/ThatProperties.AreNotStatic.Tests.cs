@@ -42,10 +42,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not static,
-					             but it contained static properties
+					             none are static,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -69,8 +74,8 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a static property,
-					             but it only contained non-static properties
+					             at least one is static,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -129,10 +134,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not static,
-					             but it contained static properties
+					             none are static,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

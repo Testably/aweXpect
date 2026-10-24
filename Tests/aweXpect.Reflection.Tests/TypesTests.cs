@@ -154,10 +154,15 @@ public sealed class TypesTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that types within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope" in all loaded assemblies
-			             are all within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScopeSibling",
-			             but it contained not matching types
+			             all are within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScopeSibling",
+			             but none of 2 were
 
 			             Not matching items:
+			             [
+			               *
+			             ]
+
+			             Collection:
 			             [
 			               *
 			             ]
@@ -178,8 +183,8 @@ public sealed class TypesTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that types within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope" in all loaded assemblies
-			             are not all within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope",
-			             but it only contained matching types
+			             not all are within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope",
+			             but all 2 were
 
 			             Collection:
 			             [

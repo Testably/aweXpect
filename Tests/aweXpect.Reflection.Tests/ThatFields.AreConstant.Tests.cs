@@ -30,10 +30,15 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all constant,
-					             but it contained non-constant fields
+					             all are constant,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -92,8 +97,8 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all constant,
-					             but it only contained constant fields
+					             not all are constant,
+					             but all * were
 
 					             Collection:
 					             [
@@ -122,10 +127,15 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all constant,
-					             but it contained non-constant fields
+					             all are constant,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -148,8 +158,8 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all constant,
-					             but it only contained constant fields
+					             not all are constant,
+					             but all * were
 
 					             Collection:
 					             [

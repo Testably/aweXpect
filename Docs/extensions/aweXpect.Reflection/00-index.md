@@ -122,10 +122,10 @@ A failing rule reports all violations, numbered per expectation:
 ```text title="Failure message"
 Expected all of the following to succeed:
  [01] Expected that types within namespace "MusicStore.Domain" in all loaded assemblies all do not depend on types within namespace "MusicStore.Infrastructure" in all loaded assemblies
- [02] Expected that types within namespace "MusicStore.Domain" in all loaded assemblies are all sealed
+ [02] Expected that types within namespace "MusicStore.Domain" in all loaded assemblies all are sealed
 but
  [01] it contained types with the dependency
- [02] it contained non-sealed types
+ [02] only 1 of 3 were
 
 [01] Not matching items:
 [
@@ -135,6 +135,13 @@ but
 [02] Not matching items:
 [
   Album,
+  Track
+]
+
+[02] Collection:
+[
+  Album,
+  PlaylistService,
   Track
 ]
 ```

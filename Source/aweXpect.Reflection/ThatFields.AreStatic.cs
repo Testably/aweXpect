@@ -1,122 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
+﻿using System.Reflection;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
 public static partial class ThatFields
 {
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are static.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreStatic(
-		this IThat<IEnumerable<FieldInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>(static (it, grammars)
-				=> new AreStaticConstraint(it, grammars)),
-			subject);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are static.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> AreStatic(
-		this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>(static (it, grammars)
-				=> new AreStaticConstraint(it, grammars)),
-			subject);
-#endif
-
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are not static.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreNotStatic(
-		this IThat<IEnumerable<FieldInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>(static (it, grammars)
-				=> new AreNotStaticConstraint(it, grammars)),
-			subject);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are not static.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> AreNotStatic(
-		this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>(static (it, grammars)
-				=> new AreNotStaticConstraint(it, grammars)),
-			subject);
-#endif
-
-	private sealed class AreStaticConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<FieldInfo?>(it, grammars),
-			IContextConstraint<IEnumerable<FieldInfo?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<FieldInfo?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<FieldInfo?> actual,
-			IEvaluationContext context, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, field => field?.IsStatic == true, cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, field => field?.IsStatic == true);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are all static");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained non-static fields");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are not all static");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained static fields");
-	}
-
-	private sealed class AreNotStaticConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<FieldInfo?>(it, grammars),
-			IContextConstraint<IEnumerable<FieldInfo?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<FieldInfo?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<FieldInfo?> actual,
-			IEvaluationContext context, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, field => field?.IsStatic == false, cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, field => field?.IsStatic == false);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are all not static");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained static fields");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("also contain a static field");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained non-static fields");
-	}
+	[GenerateCollectionExpectation("AreStatic", "is static", "are static",
+		CollectionOverload = true, NegatedName = "AreNotStatic", FormattedItem = nameof(Formattable))]
+	private static PredicateResult IsStaticField(FieldInfo? field)
+		=> field is null ? ItemResults.Null : field.IsStatic;
 }

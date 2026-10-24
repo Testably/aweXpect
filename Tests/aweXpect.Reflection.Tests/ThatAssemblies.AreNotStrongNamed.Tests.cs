@@ -45,10 +45,15 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not strong named,
-					             but it contained strong named assemblies
+					             none are strong named,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -74,8 +79,8 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a strong named assembly,
-					             but it only contained not strong named assemblies
+					             at least one is strong named,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -136,10 +141,15 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not strong named,
-					             but it contained strong named assemblies
+					             none are strong named,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

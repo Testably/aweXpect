@@ -21,6 +21,10 @@ namespace aweXpect.Core.Extending;
 ///     kind of collection that can hold the item. A <see langword="null" /> item does not match, unless the item
 ///     parameter is nullable: then the method decides, and <c>[DisallowNull]</c> on the parameter restores that a
 ///     <see langword="null" /> item does not match.
+///     <para />
+///     Unlike for <see cref="GenerateExpectationAttribute" />, the type of the item can be the only type parameter of
+///     the method, when a constraint restricts it to reference types and no other parameter uses it. The expectations
+///     are then generic over the type of the items.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class GenerateCollectionExpectationAttribute : Attribute
@@ -79,9 +83,50 @@ public sealed class GenerateCollectionExpectationAttribute : Attribute
 	public bool NullableOverload { get; set; } = true;
 
 	/// <summary>
+	///     Whether the expectation is also generated as an overload directly on the collection, where all items have to
+	///     meet it, e.g. <c>That(tracks).AreRadioFriendly()</c>, in addition to the quantified forms such as
+	///     <c>All()</c>.
+	/// </summary>
+	/// <remarks>
+	///     It extends an <see cref="System.Collections.Generic.IEnumerable{T}" /> and, on .NET 8 or later, an
+	///     <c>IAsyncEnumerable&lt;T&gt;</c> of the item, reads the collection to its end, so that the failure message
+	///     lists every item that does not meet it, and fails for a <see langword="null" /> collection.
+	///     <para />
+	///     This overload is only the positive one: the negated overload on the collection, where no item may meet the
+	///     expectation, is only generated when <see cref="NegatedName" /> is set. The quantified negation
+	///     <c>None()</c> is always available.
+	/// </remarks>
+	public bool CollectionOverload { get; set; }
+
+	/// <summary>
+	///     The name of an expectation directly on the collection that no item may meet, e.g.
+	///     <c>AreNotRadioFriendly</c> for <c>That(tracks).AreNotRadioFriendly()</c>.
+	/// </summary>
+	/// <remarks>
+	///     It extends the same collections as <see cref="CollectionOverload" /> and lists every item that meets the
+	///     expectation in the failure message. It is generated independently of <see cref="CollectionOverload" />, so
+	///     setting only the <see cref="NegatedName" /> generates only the negated overload.
+	/// </remarks>
+	public string? NegatedName { get; set; }
+
+	/// <summary>
+	///     The name of a <see langword="static" /> method in the same class that returns the value which stands for an
+	///     item in the failure message, e.g. a wrapper that a formatter of your own formats.
+	/// </summary>
+	/// <remarks>
+	///     The method takes the item, which can be <see langword="null" /> for a reference type, and its result is
+	///     formatted instead of the item in the listed items and in the collection.
+	/// </remarks>
+	public string? FormattedItem { get; set; }
+
+	/// <summary>
 	///     The XML documentation of the summary of the expectation, instead of one that is derived from the
 	///     <see cref="PluralExpectationText" />.
 	/// </summary>
+	/// <remarks>
+	///     It documents the expectation on the elements that a quantifier selected; the summaries of the expectations
+	///     directly on the collection are derived from the <see cref="PluralExpectationText" />.
+	/// </remarks>
 	public string? Summary { get; set; }
 
 	/// <summary>

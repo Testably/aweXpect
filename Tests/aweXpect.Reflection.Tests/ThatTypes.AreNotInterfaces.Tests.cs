@@ -26,10 +26,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not interfaces,
-					             but it contained interfaces
+					             none are interfaces,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -82,10 +87,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types matching type => type.IsInterface in assembly containing type ThatTypes.AreNotInterfaces
-					             are all not interfaces,
-					             but it contained interfaces
+					             none are interfaces,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -108,8 +118,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that enums in assembly containing type ThatTypes.AreNotInterfaces
-					             also contain an interface,
-					             but it only contained not interfaces
+					             at least one is an interface,
+					             but none of * were
 
 					             Collection:
 					             [

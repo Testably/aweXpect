@@ -26,10 +26,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not nested,
-					             but it contained nested types
+					             none are nested,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -83,10 +88,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types matching type => type.IsNested in assembly containing type ThatTypes.AreNotNested
-					             are all not nested,
-					             but it contained nested types
+					             none are nested,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -110,8 +120,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => !type.IsNested in assembly containing type ThatTypes.AreNotNested
-					             also contain a nested type,
-					             but it only contained non-nested types
+					             at least one is nested,
+					             but none of * were
 
 					             Collection:
 					             [

@@ -22,10 +22,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreStructs
-					             are all structs,
-					             but it contained other types
+					             all are structs,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -76,8 +81,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => type.IsValueType && !type.IsRecordStruct() && !type.IsEnum in assembly containing type ThatTypes.AreStructs
-					             are not all structs,
-					             but it only contained structs
+					             not all are structs,
+					             but all * were
 
 					             Collection:
 					             [

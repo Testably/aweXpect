@@ -41,10 +41,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all async,
-					             but it contained non-async methods
+					             all are async,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -69,8 +74,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all async,
-					             but it only contained async methods
+					             not all are async,
+					             but all * were
 
 					             Collection:
 					             [
@@ -113,8 +118,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all async,
-					             but it only contained async methods
+					             not all are async,
+					             but all * were
 
 					             Collection:
 					             [
@@ -154,10 +159,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all async,
-					             but it contained non-async methods
+					             all are async,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

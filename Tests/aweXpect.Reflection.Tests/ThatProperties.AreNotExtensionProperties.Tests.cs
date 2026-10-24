@@ -25,8 +25,8 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain an extension property,
-					             but it only contained non-extension properties
+					             at least one is an extension property,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -90,10 +90,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not extension properties,
-					             but it contained extension properties
+					             none are extension properties,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

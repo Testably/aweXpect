@@ -43,10 +43,15 @@ public sealed partial class Filtered
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that record structs in all loaded assemblies
-						             are all abstract,
-						             but it contained non-abstract types
+						             all are abstract,
+						             but none of * were
 
 						             Not matching items:
+						             [
+						               *
+						             ]
+
+						             Collection:
 						             [
 						               *
 						             ]

@@ -35,7 +35,7 @@ public sealed partial class TypeFilters
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
-					             are all not abstract,
+					             none are abstract,
 					             but the predicate did throw an InvalidOperationException:
 					               boom
 					             """)
@@ -56,7 +56,7 @@ public sealed partial class TypeFilters
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
-					             also contain an abstract type,
+					             at least one is abstract,
 					             but the predicate did throw an InvalidOperationException:
 					               boom
 					             """)

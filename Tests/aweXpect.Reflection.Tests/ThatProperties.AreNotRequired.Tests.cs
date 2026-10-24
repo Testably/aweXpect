@@ -41,10 +41,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not required,
-					             but it contained required properties
+					             none are required,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -68,8 +73,8 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a required property,
-					             but it only contained non-required properties
+					             at least one is required,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -126,10 +131,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not required,
-					             but it contained required properties
+					             none are required,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

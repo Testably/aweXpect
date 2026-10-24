@@ -59,10 +59,16 @@ public sealed class CollectionConstraintTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             are all abstract and are all interfaces,
-			             but it contained non-abstract types and contained other types
+			             all are abstract and all are interfaces,
+			             but none of 2 were
 
 			             Not matching items:
+			             [
+			               string,
+			               int
+			             ]
+
+			             Collection:
 			             [
 			               string,
 			               int
@@ -83,15 +89,62 @@ public sealed class CollectionConstraintTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             are all abstract or are all interfaces,
-			             but it contained non-abstract types and contained other types
+			             all are abstract or all are interfaces,
+			             but none of 2 were
 
 			             Not matching items:
 			             [
 			               string,
 			               int
 			             ]
+
+			             Collection:
+			             [
+			               string,
+			               int
+			             ]
 			             """);
+	}
+
+	[Test]
+	public async Task WhenItemIsNull_ShouldFailBothWays()
+	{
+		IEnumerable<Type?> subject = [null, typeof(string),];
+
+		async Task Act()
+		{
+			await That(subject).AreSealed();
+		}
+
+		async Task ActNegated()
+		{
+			await That(subject).DoesNotComplyWith(they => they.AreSealed());
+		}
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             all are sealed,
+			             but for the item at index 0, it was <null>
+
+			             Collection:
+			             [
+			               <null>,
+			               string
+			             ]
+			             """);
+		await That(ActNegated).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             not all are sealed,
+			             but for the item at index 0, it was <null>
+
+			             Collection:
+			             [
+			               <null>,
+			               string
+			             ]
+			             """).Because("a null item cannot be inspected, like a null subject");
 	}
 
 	[Test]
@@ -107,8 +160,8 @@ public sealed class CollectionConstraintTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             are not all public or also contain a private item,
-			             but it only contained public items and contained no private items
+			             not all are public or at least one is private,
+			             but all 1 were and none of 1 were
 
 			             Collection:
 			             [
@@ -130,8 +183,8 @@ public sealed class CollectionConstraintTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             are not all public and also contain a private item,
-			             but it only contained public items
+			             not all are public and at least one is private,
+			             but all 1 were
 
 			             Collection:
 			             [
@@ -153,7 +206,7 @@ public sealed class CollectionConstraintTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             are all sealed,
+			             all are sealed,
 			             but it was <null>
 			             """);
 	}
@@ -171,7 +224,7 @@ public sealed class CollectionConstraintTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             whose Types are all sealed,
+			             whose Types all are sealed,
 			             but Types were <null>
 			             """);
 	}
@@ -207,8 +260,72 @@ public sealed class CollectionConstraintTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             are not all sealed,
+			             not all are sealed,
 			             but it was <null>
+			             """);
+	}
+
+	[Test]
+	public async Task WhenUsingAQuantifier_ShouldOnlyRequireTheSelectedItems()
+	{
+		IEnumerable<Type?> subject = [typeof(string), typeof(object), typeof(int),];
+
+		async Task Act()
+		{
+			await That(subject).AtLeast(3).AreSealed();
+		}
+
+		await That(subject).AtLeast(2).AreSealed();
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is sealed for at least 3 items,
+			             but only 2 of 3 were
+
+			             Not matching items:
+			             [
+			               object
+			             ]
+
+			             Collection:
+			             [
+			               string,
+			               object,
+			               int
+			             ]
+			             """);
+	}
+
+	[Test]
+	public async Task WhenUsingAQuantifierOnMembers_ShouldFormatTheMembers()
+	{
+		IEnumerable<MethodInfo> subject =
+		[
+			typeof(string).GetMethod(nameof(string.Clone))!,
+			typeof(string).GetMethod(nameof(string.IsNullOrEmpty))!,
+		];
+
+		async Task Act()
+		{
+			await That(subject).All().AreStatic();
+		}
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is static for all items,
+			             but only 1 of 2 were
+
+			             Not matching items:
+			             [
+			               object string.Clone()
+			             ]
+
+			             Collection:
+			             [
+			               object string.Clone(),
+			               bool string.IsNullOrEmpty(string value)
+			             ]
 			             """);
 	}
 
@@ -228,7 +345,7 @@ public sealed class CollectionConstraintTests
 		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that subject
-			             are all sealed,
+			             all are sealed,
 			             but it could not be verified, because the evaluation was already canceled
 			             """);
 	}
@@ -266,7 +383,7 @@ public sealed class CollectionConstraintTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             are not all sealed,
+			             not all are sealed,
 			             but it was <null>
 			             """);
 	}

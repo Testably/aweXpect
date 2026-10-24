@@ -1,124 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
+﻿using System.Reflection;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
 public static partial class ThatMethods
 {
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> override a base class method.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> Override(
-		this IThat<IEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>(static (it, grammars)
-				=> new OverrideConstraint(it, grammars)),
-			subject);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> override a base class method.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> Override(
-		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>(static (it, grammars)
-				=> new OverrideConstraint(it, grammars)),
-			subject);
-#endif
-
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> do not override a base class
-	///     method.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> DoNotOverride(
-		this IThat<IEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>(static (it, grammars)
-				=> new DoNotOverrideConstraint(it, grammars)),
-			subject);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> do not override a base class
-	///     method.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> DoNotOverride(
-		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>(static (it, grammars)
-				=> new DoNotOverrideConstraint(it, grammars)),
-			subject);
-#endif
-
-	private sealed class OverrideConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<MethodInfo?>(it, grammars),
-			IContextConstraint<IEnumerable<MethodInfo?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<MethodInfo?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
-			IEvaluationContext context, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, method => method.IsOverride(), cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, method => method.IsOverride());
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all override a base method");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained methods which do not override a base method");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("do not all override a base method");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained methods which override a base method");
-	}
-
-	private sealed class DoNotOverrideConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<MethodInfo?>(it, grammars),
-			IContextConstraint<IEnumerable<MethodInfo?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<MethodInfo?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
-			IEvaluationContext context, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, method => !method.IsOverride(), cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, method => !method.IsOverride());
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all do not override a base method");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained methods which override a base method");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("also contain a method which overrides a base method");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained methods which do not override a base method");
-	}
+	[GenerateCollectionExpectation("Override", "overrides a base method", "override a base method",
+		CollectionOverload = true, NegatedName = "DoNotOverride", FormattedItem = nameof(Formattable))]
+	private static PredicateResult OverridesMethod(MethodInfo? method)
+		=> method is null ? ItemResults.Null : method.IsOverride();
 }

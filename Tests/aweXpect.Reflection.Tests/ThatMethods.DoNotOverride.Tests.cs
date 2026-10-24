@@ -41,10 +41,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             all do not override a base method,
-					             but it contained methods which override a base method
+					             none override a base method,
+					             but * of * did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -68,8 +73,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a method which overrides a base method,
-					             but it only contained methods which do not override a base method
+					             at least one overrides a base method,
+					             but none of * did
 
 					             Collection:
 					             [
@@ -126,10 +131,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             all do not override a base method,
-					             but it contained methods which override a base method
+					             none override a base method,
+					             but * of * did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

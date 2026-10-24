@@ -40,10 +40,10 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not nullable,
-					             but it contained nullable fields
+					             none are nullable,
+					             but for the item at index 0, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
 					               <null>
 					             ]
@@ -64,10 +64,15 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not nullable,
-					             but it contained nullable fields
+					             none are nullable,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -91,8 +96,8 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a nullable field,
-					             but it only contained non-nullable fields
+					             at least one is nullable,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -149,10 +154,15 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not nullable,
-					             but it contained nullable fields
+					             none are nullable,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

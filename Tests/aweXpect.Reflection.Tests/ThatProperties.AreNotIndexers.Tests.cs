@@ -27,10 +27,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not indexers,
-					             but it contained indexer properties
+					             none are indexers,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -82,8 +87,8 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain an indexer property,
-					             but it only contained non-indexer properties
+					             at least one is an indexer,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -111,10 +116,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not indexers,
-					             but it contained indexer properties
+					             none are indexers,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

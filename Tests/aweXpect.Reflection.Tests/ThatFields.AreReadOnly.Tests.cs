@@ -30,10 +30,15 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all read-only,
-					             but it contained non-read-only fields
+					             all are read-only,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -96,8 +101,8 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all read-only,
-					             but it only contained read-only fields
+					             not all are read-only,
+					             but all * were
 
 					             Collection:
 					             [
@@ -126,10 +131,15 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all read-only,
-					             but it contained non-read-only fields
+					             all are read-only,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -153,8 +163,8 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all read-only,
-					             but it only contained read-only fields
+					             not all are read-only,
+					             but all * were
 
 					             Collection:
 					             [

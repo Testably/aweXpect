@@ -23,10 +23,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreDelegates
-					             are all delegates,
-					             but it contained other types
+					             all are delegates,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -66,10 +71,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all delegates,
-					             but it contained other types
+					             all are delegates,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -122,8 +132,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types which are delegates in assembly containing type ThatTypes.AreDelegates
-					             are not all delegates,
-					             but it only contained delegates
+					             not all are delegates,
+					             but all * were
 
 					             Collection:
 					             [

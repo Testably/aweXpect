@@ -28,10 +28,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have a default constructor,
-					             but it contained types with a default constructor
+					             none have a default constructor,
+					             but * of * did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -89,8 +94,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a type with a default constructor,
-					             but it only contained types without a default constructor
+					             at least one has a default constructor,
+					             but none of * did
 
 					             Collection:
 					             [
@@ -119,10 +124,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have a default constructor,
-					             but it contained types with a default constructor
+					             none have a default constructor,
+					             but * of * did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -145,8 +155,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a type with a default constructor,
-					             but it only contained types without a default constructor
+					             at least one has a default constructor,
+					             but none of * did
 
 					             Collection:
 					             [

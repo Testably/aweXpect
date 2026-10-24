@@ -28,10 +28,15 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all static,
-					             but it contained non-static constructors
+					             all are static,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -84,8 +89,8 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all static,
-					             but it only contained static constructors
+					             not all are static,
+					             but all * were
 
 					             Collection:
 					             [
@@ -114,10 +119,15 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all static,
-					             but it contained non-static constructors
+					             all are static,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -139,8 +149,8 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all static,
-					             but it only contained static constructors
+					             not all are static,
+					             but all * were
 
 					             Collection:
 					             [

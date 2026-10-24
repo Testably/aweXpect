@@ -44,10 +44,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all instantiable,
-					             but it contained non-instantiable types
+					             all are instantiable,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -73,8 +78,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all instantiable,
-					             but it only contained instantiable types
+					             not all are instantiable,
+					             but all * were
 
 					             Collection:
 					             [
@@ -119,8 +124,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all instantiable,
-					             but it only contained instantiable types
+					             not all are instantiable,
+					             but all * were
 
 					             Collection:
 					             [
@@ -161,10 +166,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all instantiable,
-					             but it contained non-instantiable types
+					             all are instantiable,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

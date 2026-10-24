@@ -37,10 +37,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             are all internal,
-					             but it contained not matching items
+					             all are internal,
+					             but none of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -63,8 +68,8 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             are not all internal,
-					             but it only contained internal items
+					             not all are internal,
+					             but all * were
 
 					             Collection:
 					             [

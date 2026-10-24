@@ -31,7 +31,7 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("*are all within namespace*but it contained not matching types*ClassInSiblingNamespaceScope*")
+					.WithMessage("*all are within namespace*but only * of * were*ClassInSiblingNamespaceScope*")
 					.AsWildcard();
 			}
 
@@ -51,6 +51,21 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable<Type?> subject = [typeof(ClassInNamespaceScope),];
+
+				async Task Act()
+				{
+					await That(subject).AreWithinNamespace(null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' cannot be null.").AsPrefix();
 			}
 
 			[Test]
@@ -84,12 +99,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with namespace starting with "aweXpect.Reflection.Tests.Test…" in assembly containing type ThatTypes.AreWithinNamespace.Tests
-					             are all within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope",
-					             but it contained not matching types
+					             all are within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope",
+					             but only 2 of 3 were
 
 					             Not matching items:
 					             [
 					               *ClassInSiblingNamespaceScope*
+					             ]
+
+					             Collection:
+					             [
+					               *
 					             ]
 					             """).AsWildcard();
 			}
@@ -127,7 +147,7 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("*are all within namespace*but it contained not matching types*ClassInSiblingNamespaceScope*")
+					.WithMessage("*all are within namespace*but only * of * were*ClassInSiblingNamespaceScope*")
 					.AsWildcard();
 			}
 #endif
@@ -148,7 +168,7 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("*are not all within namespace*NamespaceScope*").AsWildcard();
+					.WithMessage("*not all are within namespace*NamespaceScope*").AsWildcard();
 			}
 		}
 	}

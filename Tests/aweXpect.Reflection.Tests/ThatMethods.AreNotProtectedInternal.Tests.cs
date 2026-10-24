@@ -44,10 +44,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not protected internal,
-					             but it contained protected internal items
+					             none are protected internal,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -86,10 +91,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             are all not protected internal,
-					             but it contained protected internal items
+					             none are protected internal,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -115,8 +125,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             also contain a protected internal item,
-					             but it contained no protected internal items
+					             at least one is protected internal,
+					             but none of * were
 
 					             Collection:
 					             *

@@ -40,10 +40,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all abstract,
-					             but it contained non-abstract properties
+					             all are abstract,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -68,8 +73,8 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all abstract,
-					             but it only contained abstract properties
+					             not all are abstract,
+					             but all * were
 
 					             Collection:
 					             [

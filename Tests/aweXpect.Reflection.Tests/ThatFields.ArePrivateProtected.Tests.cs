@@ -24,10 +24,15 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             are all private protected,
-					             but it contained not matching items
+					             all are private protected,
+					             but none of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -79,8 +84,8 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             are not all private protected,
-					             but it only contained private protected items
+					             not all are private protected,
+					             but all * were
 
 					             Collection:
 					             [

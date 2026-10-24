@@ -47,10 +47,15 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all obsolete,
-					             but it contained non-obsolete items
+					             all are obsolete,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -76,8 +81,8 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all obsolete,
-					             but it only contained obsolete items
+					             not all are obsolete,
+					             but all * were
 
 					             Collection:
 					             [
@@ -127,8 +132,8 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all obsolete,
-					             but it only contained obsolete items
+					             not all are obsolete,
+					             but all * were
 
 					             Collection:
 					             [
@@ -174,10 +179,15 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all obsolete,
-					             but it contained non-obsolete items
+					             all are obsolete,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

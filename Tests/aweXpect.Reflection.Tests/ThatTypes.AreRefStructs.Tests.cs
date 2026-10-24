@@ -44,11 +44,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all ref structs,
-					             but it contained other types
+					             all are ref structs,
+					             but only 1 of 2 were
 
 					             Not matching items:
 					             [
+					               PublicStruct
+					             ]
+
+					             Collection:
+					             [
+					               PublicRefStruct,
 					               PublicStruct
 					             ]
 					             """);
@@ -87,11 +93,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all ref structs,
-					             but it contained other types
+					             all are ref structs,
+					             but only 1 of 2 were
 
 					             Not matching items:
 					             [
+					               PublicStruct
+					             ]
+
+					             Collection:
+					             [
+					               PublicRefStruct,
 					               PublicStruct
 					             ]
 					             """);
@@ -117,8 +129,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are not all ref structs,
-					             but it only contained ref structs
+					             not all are ref structs,
+					             but all 1 were
 
 					             Collection:
 					             [

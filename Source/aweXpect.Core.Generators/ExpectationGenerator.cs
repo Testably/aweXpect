@@ -47,6 +47,15 @@ public class ExpectationGenerator : IIncrementalGenerator
 		true,
 		helpLinkUri: HelpLink);
 
+	private static readonly DiagnosticDescriptor InvalidFormattedItem = new(
+		"aweXpect4004",
+		"The formatted item method is not suitable",
+		"'{0}' names no static method that returns a value and takes the item of '{1}', which can be null for a reference type",
+		"aweXpect.Core.Generators",
+		DiagnosticSeverity.Error,
+		true,
+		helpLinkUri: HelpLink);
+
 	private static readonly SymbolDisplayFormat TypeFormat = SymbolDisplayFormat.FullyQualifiedFormat
 		.AddMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
 
@@ -105,7 +114,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 
 	private static ExpectationResult GetExpectation(GeneratorAttributeSyntaxContext context)
 	{
-		if (GetSignatureProblem(context, out Signature signature) is { } signatureProblem)
+		if (GetSignatureProblem(context, false, out Signature signature) is { } signatureProblem)
 		{
 			return new ExpectationResult(null, signatureProblem);
 		}
@@ -170,7 +179,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 
 	private static CollectionExpectationResult GetCollectionExpectation(GeneratorAttributeSyntaxContext context)
 	{
-		if (GetSignatureProblem(context, out Signature signature) is { } signatureProblem)
+		if (GetSignatureProblem(context, true, out Signature signature) is { } signatureProblem)
 		{
 			return new CollectionExpectationResult(null, signatureProblem);
 		}
@@ -196,21 +205,29 @@ public class ExpectationGenerator : IIncrementalGenerator
 			return signature.FailCollection($"the name '{name}' is not a valid method name");
 		}
 
-		if (expectationText.Contains("{not}") || pluralExpectationText.Contains("{not}"))
+		if (GetCollectionTextProblem(expectationText, pluralExpectationText, signature.GetParameterNames(),
+			    out EquatableArray<TextPart> text, out EquatableArray<TextPart> pluralText) is { } textProblem)
 		{
-			return signature.FailCollection(
-				"the expectation text contains '{not}', but the quantifier carries the negation");
+			return signature.FailCollection(textProblem);
 		}
 
-		if (!TryParseText(expectationText.Trim(), signature.GetParameterNames(),
-			    out EquatableArray<TextPart> text, out string? unknownPlaceholder) ||
-		    !TryParseText(pluralExpectationText.Trim(), signature.GetParameterNames(),
-			    out EquatableArray<TextPart> pluralText, out unknownPlaceholder))
+		string? negatedName = GetNamedArgument<string>(attribute, "NegatedName");
+		if (GetCollectionNegatedNameProblem(name, negatedName) is { } negatedNameProblem)
 		{
-			return signature.FailCollection(
-				$"the placeholder '{{{unknownPlaceholder}}}' names no parameter of the expectation");
+			return signature.FailCollection(negatedNameProblem);
 		}
 
+		string? formattedItem = GetNamedArgument<string>(attribute, "FormattedItem");
+		string? formattedItemMethod = null;
+		if (formattedItem is not null &&
+		    !TryFindFormattedItemMethod(context.SemanticModel.Compilation, signature.Class, formattedItem,
+			    signature.Subject, out formattedItemMethod))
+		{
+			return new CollectionExpectationResult(null,
+				new Problem(InvalidFormattedItem, signature.Location, formattedItem, signature.MethodName));
+		}
+
+		ITypeParameterSymbol? itemTypeParameter = GetItemTypeParameter(signature.Method);
 		return new CollectionExpectationResult(new CollectionExpectationModel(
 			signature.ToClassModel(context, ".Elements"),
 			name,
@@ -224,7 +241,37 @@ public class ExpectationGenerator : IIncrementalGenerator
 			signature.ReturnsPredicateResult,
 			GetItems(signature.Subject, signature.ConstraintPrefix,
 				GetNamedArgument<bool?>(attribute, "NullableOverload") ?? true),
+			GetNamedArgument<bool?>(attribute, "CollectionOverload") ?? false,
+			negatedName,
+			formattedItemMethod,
+			itemTypeParameter is null ? null : Escape(itemTypeParameter.Name),
+			itemTypeParameter is null ? null : GetConstraints(itemTypeParameter),
 			false), null);
+	}
+
+	/// <summary>
+	///     Finds the method that returns the value which stands for an item in the failure message: it takes the item,
+	///     which can be <see langword="null" /> for a reference type, and returns a value.
+	/// </summary>
+	private static bool TryFindFormattedItemMethod(Compilation compilation, INamedTypeSymbol classSymbol, string name,
+		IParameterSymbol subject, out string? method)
+	{
+		ITypeSymbol subjectType = subject.Type;
+		foreach (IMethodSymbol candidate in classSymbol.GetMembers(name).OfType<IMethodSymbol>())
+		{
+			if (candidate is { IsStatic: true, IsGenericMethod: false, ReturnsVoid: false, Parameters.Length: 1, } &&
+			    candidate.Parameters[0].RefKind == RefKind.None &&
+			    compilation.ClassifyConversion(subjectType, candidate.Parameters[0].Type).IsImplicit &&
+			    (subjectType.IsValueType ||
+			     candidate.Parameters[0].NullableAnnotation != NullableAnnotation.NotAnnotated))
+			{
+				method = Escape(name);
+				return true;
+			}
+		}
+
+		method = null;
+		return false;
 	}
 
 	/// <summary>
@@ -267,7 +314,11 @@ public class ExpectationGenerator : IIncrementalGenerator
 	/// <summary>
 	///     Checks the class, the method and its parameters, which both attributes require alike.
 	/// </summary>
-	private static Problem? GetSignatureProblem(GeneratorAttributeSyntaxContext context, out Signature signature)
+	/// <param name="context">The context of the marked method.</param>
+	/// <param name="allowsItemTypeParameter">Whether the type of the subject can be a type parameter of the method.</param>
+	/// <param name="signature">The signature of the marked method.</param>
+	private static Problem? GetSignatureProblem(GeneratorAttributeSyntaxContext context, bool allowsItemTypeParameter,
+		out Signature signature)
 	{
 		IMethodSymbol method = (IMethodSymbol)context.TargetSymbol;
 		Location location = ((MethodDeclarationSyntax)context.TargetNode).Identifier.GetLocation();
@@ -279,7 +330,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 			return new Problem(InvalidClass, location, classSymbol.ToDisplayString());
 		}
 
-		if (GetMethodProblem(method) is { } methodProblem)
+		if (GetMethodProblem(method, allowsItemTypeParameter) is { } methodProblem)
 		{
 			return new Problem(InvalidMethod, location, methodName, methodProblem);
 		}
@@ -347,6 +398,35 @@ public class ExpectationGenerator : IIncrementalGenerator
 		return null;
 	}
 
+	private static string? GetCollectionTextProblem(string expectationText, string pluralExpectationText,
+		List<string> parameterNames, out EquatableArray<TextPart> text, out EquatableArray<TextPart> pluralText)
+	{
+		text = default;
+		pluralText = default;
+		if (expectationText.Contains("{not}") || pluralExpectationText.Contains("{not}"))
+		{
+			return "the expectation text contains '{not}', but the quantifier carries the negation";
+		}
+
+		if (!TryParseText(expectationText.Trim(), parameterNames, out text, out string? unknownPlaceholder) ||
+		    !TryParseText(pluralExpectationText.Trim(), parameterNames, out pluralText, out unknownPlaceholder))
+		{
+			return $"the placeholder '{{{unknownPlaceholder}}}' names no parameter of the expectation";
+		}
+
+		return null;
+	}
+
+	private static string? GetCollectionNegatedNameProblem(string name, string? negatedName)
+	{
+		if (negatedName is not null && (!SyntaxFacts.IsValidIdentifier(negatedName) || negatedName == name))
+		{
+			return $"the negated name '{negatedName}' is not a valid method name that differs from the name";
+		}
+
+		return null;
+	}
+
 	/// <summary>
 	///     The verb in the past tense that stands in for the expectation in the result, e.g. "were" in "but only 1 of 3
 	///     were", which is "were" for a form of "be" and "did" for any other verb, as English requires do-support for it.
@@ -384,16 +464,18 @@ public class ExpectationGenerator : IIncrementalGenerator
 		   method.Parent is ClassDeclarationSyntax declaration &&
 		   declaration.Modifiers.Any(SyntaxKind.PartialKeyword);
 
-	private static string? GetMethodProblem(IMethodSymbol method)
+	private static string? GetMethodProblem(IMethodSymbol method, bool allowsItemTypeParameter)
 	{
 		if (!method.IsStatic)
 		{
 			return "it is not static";
 		}
 
-		if (method.IsGenericMethod)
+		if (method.IsGenericMethod && !(allowsItemTypeParameter && GetItemTypeParameter(method) is not null))
 		{
-			return "it is generic";
+			return allowsItemTypeParameter
+				? "it is generic, but not only in the type of the item, which a reference type constraint restricts"
+				: "it is generic";
 		}
 
 		if (GetResultType(method.ReturnType) is null)
@@ -428,12 +510,73 @@ public class ExpectationGenerator : IIncrementalGenerator
 	}
 
 	/// <summary>
+	///     The only type parameter of the <paramref name="method" />, when it is the type of the item and restricted to
+	///     reference types, so that the generated code can name its nullable form, or <see langword="null" /> otherwise.
+	/// </summary>
+	private static ITypeParameterSymbol? GetItemTypeParameter(IMethodSymbol method)
+	{
+		if (method.TypeParameters.Length != 1 || method.Parameters.Length == 0 ||
+		    method.Parameters[0].Type is not ITypeParameterSymbol itemType ||
+		    !SymbolEqualityComparer.Default.Equals(itemType, method.TypeParameters[0]) ||
+		    !itemType.IsReferenceType ||
+		    itemType.Name is "TCollection" or "TEnumerable")
+		{
+			return null;
+		}
+
+		return method.Parameters.Skip(1).Any(p => ContainsTypeParameter(p.Type, itemType)) ||
+		       itemType.ConstraintTypes.Any(t => ContainsTypeParameter(t, itemType)) ||
+		       ContainsTypeParameter(method.ReturnType, itemType)
+			? null
+			: itemType;
+	}
+
+	private static bool ContainsTypeParameter(ITypeSymbol type, ITypeParameterSymbol typeParameter)
+		=> type switch
+		{
+			ITypeParameterSymbol parameter => SymbolEqualityComparer.Default.Equals(parameter, typeParameter),
+			IArrayTypeSymbol array => ContainsTypeParameter(array.ElementType, typeParameter),
+			INamedTypeSymbol named => named.TypeArguments.Any(t => ContainsTypeParameter(t, typeParameter)),
+			_ => false,
+		};
+
+	/// <summary>
+	///     The constraints of the <paramref name="typeParameter" /> in a <c>where</c> clause, e.g.
+	///     <c>global::System.Reflection.MemberInfo</c>.
+	/// </summary>
+	private static string GetConstraints(ITypeParameterSymbol typeParameter)
+	{
+		List<string> constraints = [];
+		if (typeParameter.HasReferenceTypeConstraint)
+		{
+			constraints.Add("class");
+		}
+
+		if (typeParameter.HasNotNullConstraint)
+		{
+			constraints.Add("notnull");
+		}
+
+		constraints.AddRange(typeParameter.ConstraintTypes.Select(t
+			=> t.WithNullableAnnotation(NullableAnnotation.NotAnnotated).ToDisplayString(TypeFormat)));
+		if (typeParameter.HasConstructorConstraint)
+		{
+			constraints.Add("new()");
+		}
+
+		return string.Join(", ", constraints);
+	}
+
+	/// <summary>
 	///     The accessibility of the <paramref name="type" />, limited by its containing types and its type arguments.
 	/// </summary>
 	private static Accessibility GetAccessibility(ITypeSymbol type)
 		=> type switch
 		{
 			IArrayTypeSymbol array => GetAccessibility(array.ElementType),
+			ITypeParameterSymbol typeParameter => typeParameter.ConstraintTypes.Select(GetAccessibility)
+				.Append(Accessibility.Public)
+				.Min(),
 			INamedTypeSymbol { TypeKind: not TypeKind.Error, } named => named.TypeArguments.Select(GetAccessibility)
 				.Append(named.DeclaredAccessibility)
 				.Append(named.ContainingType is { } containingType

@@ -40,10 +40,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all abstract,
-					             but it contained non-abstract methods
+					             all are abstract,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -68,8 +73,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all abstract,
-					             but it only contained abstract methods
+					             not all are abstract,
+					             but all * were
 
 					             Collection:
 					             [

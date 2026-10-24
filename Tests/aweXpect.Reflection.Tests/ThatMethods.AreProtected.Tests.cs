@@ -24,10 +24,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             are all protected,
-					             but it contained not matching items
+					             all are protected,
+					             but none of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -79,8 +84,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             are not all protected,
-					             but it only contained protected items
+					             not all are protected,
+					             but all * were
 
 					             Collection:
 					             [

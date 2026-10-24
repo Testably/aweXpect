@@ -42,10 +42,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not static,
-					             but it contained static types
+					             none are static,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -82,10 +87,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types matching type => type is { IsAbstract: true, IsSealed: true, IsInterface: false, } in assembly containing type ThatTypes.AreNotStatic
-					             are all not static,
-					             but it contained static types
+					             none are static,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -108,8 +118,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that abstract types in assembly containing type ThatTypes.AreNotStatic
-					             also contain a static type,
-					             but it only contained non-static types
+					             at least one is static,
+					             but none of * were
 
 					             Collection:
 					             [

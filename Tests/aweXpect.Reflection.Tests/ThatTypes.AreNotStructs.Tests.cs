@@ -43,10 +43,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not structs,
-					             but it contained structs
+					             none are structs,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -83,10 +88,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types matching type => type.IsValueType && !type.IsRecordStruct() && !type.IsEnum in assembly containing type ThatTypes.AreNotStructs
-					             are all not structs,
-					             but it contained structs
+					             none are structs,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -109,8 +119,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that interfaces in assembly containing type ThatTypes.AreNotStructs
-					             also contain a struct,
-					             but it only contained not structs
+					             at least one is a struct,
+					             but none of * were
 
 					             Collection:
 					             [

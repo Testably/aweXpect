@@ -15,6 +15,26 @@ internal sealed class Account(string name, int level)
 	public override string ToString() => Name;
 }
 
+internal sealed class Badge(Account account)
+{
+	public override string ToString() => $"{account.Name} (level {account.Level})";
+}
+
+internal class Member(string name)
+{
+	public string Name { get; } = name;
+
+	public override string ToString() => Name;
+}
+
+internal sealed class Moderator(string name) : Member(name);
+
+internal static partial class ThatMember
+{
+	[GenerateCollectionExpectation("HaveShortNames", "has a short name", "have short names", CollectionOverload = true)]
+	private static bool HasShortName<TMember>(TMember member) where TMember : Member => member.Name.Length <= 3;
+}
+
 internal static partial class ThatAccount
 {
 	[GenerateCollectionExpectation("HaveOwner", "have owner {owner}")]
@@ -29,6 +49,10 @@ internal static partial class ThatAccount
 		account.ReceivedToken = cancellationToken;
 		return account.Level > 0;
 	}
+
+	[GenerateCollectionExpectation("AreAdmins", "is an admin", "are admins",
+		CollectionOverload = true, NegatedName = "AreNoAdmins", FormattedItem = nameof(ToBadge))]
+	private static bool IsAdmin(Account account) => account.Level > 8;
 
 	[GenerateExpectation("Is{Not}AtLevel", "is {not} at level {level}", Result = nameof(DescribeLevel))]
 	private static bool IsAtLevel(Account account, int level) => account.Level == level;
@@ -87,6 +111,8 @@ internal static partial class ThatAccount
 		Result = nameof(DescribeMinimumLevel))]
 	private static bool IsAtLeastLevel(Account account, int minimum) => account.Level >= minimum;
 
+	private static Badge? ToBadge(Account? account) => account is null ? null : new Badge(account);
+
 	private static string DescribeLevel(Account account) => $"was at level {account.Level}";
 
 	private static string DescribeMinimumLevel(Account account, int minimum, string it, ExpectationGrammars grammars)
@@ -107,6 +133,9 @@ internal static partial class ThatLuckyNumber
 		NullableOverload = false)]
 	[GenerateExpectation("Is{Not}Between", "is {not} between {minimum} and {maximum}", NullableOverload = false)]
 	private static bool IsBetween(int value, int minimum, int maximum) => value >= minimum && value <= maximum;
+
+	[GenerateCollectionExpectation("AreEven", "is even", "are even", CollectionOverload = true, NegatedName = "AreNotEven")]
+	private static bool IsEven(int value) => value % 2 == 0;
 
 	[GenerateCollectionExpectation("AreLucky", "are lucky")]
 	[GenerateExpectation("Is{Not}Lucky", "is {not} lucky")]

@@ -30,10 +30,15 @@ public sealed partial class TypeFilters
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types which inherit from TypeFilters.WhichInheritFrom.Tests.FooBase in assembly containing type TypeFilters.WhichInheritFrom
-					             are all abstract,
-					             but it contained non-abstract types
+					             all are abstract,
+					             but none of 1 were
 
 					             Not matching items:
+					             [
+					               TypeFilters.WhichInheritFrom.Tests.FooDerived
+					             ]
+
+					             Collection:
 					             [
 					               TypeFilters.WhichInheritFrom.Tests.FooDerived
 					             ]
@@ -91,10 +96,15 @@ public sealed partial class TypeFilters
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types which do not inherit from TypeFilters.WhichDoNotInheritFrom.Tests.FooBase in assembly containing type TypeFilters.WhichDoNotInheritFrom
-					             are all abstract,
-					             but it contained non-abstract types
+					             all are abstract,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

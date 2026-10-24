@@ -39,10 +39,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all writable,
-					             but it contained not writable properties
+					             all are writable,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -66,8 +71,8 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all writable,
-					             but it only contained writable properties
+					             not all are writable,
+					             but all * were
 
 					             Collection:
 					             [

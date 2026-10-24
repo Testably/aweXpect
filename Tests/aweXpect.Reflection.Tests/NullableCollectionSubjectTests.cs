@@ -18,11 +18,17 @@ public sealed class NullableCollectionSubjectTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             satisfies type => type is not null for all items and are all sealed,
-			             but it contained non-sealed types
+			             satisfies type => type is not null for all items and all are sealed,
+			             but only 1 of 2 were
 
 			             Not matching items:
 			             [
+			               object
+			             ]
+
+			             Collection:
+			             [
+			               string,
 			               object
 			             ]
 			             """);
@@ -41,7 +47,7 @@ public sealed class NullableCollectionSubjectTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             are all static and all return int,
+			             all are static and all return int,
 			             but it contained not matching methods
 
 			             Not matching items:
@@ -87,8 +93,8 @@ public sealed class NullableCollectionSubjectTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             are all sealed for all items,
-			             but only 1 of 2 were
+			             all are sealed for all items,
+			             but only 1 of 2 did
 
 			             Not matching items:
 			             [
@@ -111,6 +117,11 @@ public sealed class NullableCollectionSubjectTests
 			             [
 			               object
 			             ]
+
+			             Collection (item [1]):
+			             [
+			               object
+			             ]
 			             """);
 	}
 
@@ -127,10 +138,15 @@ public sealed class NullableCollectionSubjectTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             whose Array are all sealed,
-			             but Array contained non-sealed types
+			             whose Array all are sealed,
+			             but none of 1 were
 
 			             Not matching items (Array):
+			             [
+			               object
+			             ]
+
+			             Collection (Array):
 			             [
 			               object
 			             ]
@@ -151,10 +167,15 @@ public sealed class NullableCollectionSubjectTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             whose AsyncEnumerable are all sealed,
-			             but AsyncEnumerable contained non-sealed types
+			             whose AsyncEnumerable all are sealed,
+			             but none of 1 were
 
 			             Not matching items (AsyncEnumerable):
+			             [
+			               object
+			             ]
+
+			             Collection (AsyncEnumerable):
 			             [
 			               object
 			             ]
@@ -175,10 +196,15 @@ public sealed class NullableCollectionSubjectTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             whose Enumerable are all sealed,
-			             but Enumerable contained non-sealed types
+			             whose Enumerable all are sealed,
+			             but none of 1 were
 
 			             Not matching items (Enumerable):
+			             [
+			               object
+			             ]
+
+			             Collection (Enumerable):
 			             [
 			               object
 			             ]

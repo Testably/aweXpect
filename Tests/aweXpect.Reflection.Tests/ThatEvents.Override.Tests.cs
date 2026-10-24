@@ -28,9 +28,14 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all override a base event,
-					             but it contained events which do not override a base event
+					             but none of * did
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -82,8 +87,8 @@ public sealed partial class ThatEvents
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             do not all override a base event,
-					             but it only contained events which override a base event
+					             not all override a base event,
+					             but all * did
 
 					             Collection:
 					             [
@@ -112,9 +117,14 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all override a base event,
-					             but it contained events which do not override a base event
+					             but none of * did
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

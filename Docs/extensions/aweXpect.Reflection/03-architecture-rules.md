@@ -239,10 +239,10 @@ infrastructure layer, and `Album` and `Track` are not sealed:
 Expected all of the following to succeed:
  [01] Expected that types within namespace "MusicStore.Domain" in all loaded assemblies all do not depend on types within namespace "MusicStore.Infrastructure" in all loaded assemblies
  [02] Expected that types within namespace "MusicStore.Domain" in all loaded assemblies all depend only on types within namespace "MusicStore.Data" with name ending with "Repository" in all loaded assemblies or types within namespace "MusicStore.Infrastructure" in all loaded assemblies
- [03] Expected that types within namespace "MusicStore.Domain" in all loaded assemblies are all sealed
+ [03] Expected that types within namespace "MusicStore.Domain" in all loaded assemblies all are sealed
 but
  [01] it contained types with the dependency
- [03] it contained non-sealed types
+ [03] only 1 of 3 were
 
 [01] Not matching items:
 [
@@ -252,6 +252,13 @@ but
 [03] Not matching items:
 [
   Album,
+  Track
+]
+
+[03] Collection:
+[
+  Album,
+  PlaylistService,
   Track
 ]
 ```

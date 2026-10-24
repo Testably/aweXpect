@@ -27,10 +27,15 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all required,
-					             but it contained non-required fields
+					             all are required,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -82,8 +87,8 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all required,
-					             but it only contained required fields
+					             not all are required,
+					             but all * were
 
 					             Collection:
 					             [
@@ -111,10 +116,15 @@ public sealed partial class ThatFields
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all required,
-					             but it contained non-required fields
+					             all are required,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

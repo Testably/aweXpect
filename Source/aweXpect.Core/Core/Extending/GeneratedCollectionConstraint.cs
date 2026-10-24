@@ -18,8 +18,9 @@ namespace aweXpect.Core.Extending;
 /// <remarks>
 ///     An item that the predicate cannot answer stops the evaluation, and the expectation and its negation fail with
 ///     the reason, unless the items before already determine the outcome.<br />
-///     A collection whose number of items is known is read to its end, so that the result counts all items, e.g. "but
-///     only 2 of 5 were". Any other collection is only read until the outcome is determined.
+///     A collection whose number of items is known, or that the expectation is directly on, is read to its end, so
+///     that the result counts all items, e.g. "but only 2 of 5 were". Any other collection is only read until the
+///     outcome is determined.
 /// </remarks>
 /// <typeparam name="TCollection">The type of the collection.</typeparam>
 /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
@@ -41,6 +42,31 @@ public abstract class GeneratedCollectionConstraint<TCollection, TItem>(
 
 	private IEnumerable<TItem>? _collection;
 	private bool _isDefaultImmutableArray;
+
+	/// <summary>
+	///     Initializes the constraint of an expectation directly on the collection, e.g.
+	///     <c>That(tracks).AreRadioFriendly()</c>, when <paramref name="isOnCollection" /> is <see langword="true" />.
+	/// </summary>
+	/// <param name="it">The name of the subject.</param>
+	/// <param name="grammars">The grammars of the expectation.</param>
+	/// <param name="quantifier">The quantifier for the items, e.g. all items.</param>
+	/// <param name="isOnCollection">Whether the expectation is directly on the collection.</param>
+	protected GeneratedCollectionConstraint(string it, ExpectationGrammars grammars, EnumerableQuantifier quantifier,
+		bool isOnCollection)
+		: this(it, grammars, quantifier)
+	{
+		IsOnCollection = isOnCollection;
+	}
+
+	/// <summary>
+	///     Whether the expectation is directly on the collection, e.g. <c>That(tracks).AreRadioFriendly()</c>, instead
+	///     of on the elements that a quantifier selected.
+	/// </summary>
+	/// <remarks>
+	///     Such an expectation reads the collection to its end, so that the failure message lists all items of a kind,
+	///     and its text names the quantifier first, e.g. "all are radio friendly".
+	/// </remarks>
+	protected bool IsOnCollection { get; }
 
 	/// <inheritdoc cref="IAsyncContextConstraint{TValue}.IsMetBy(TValue, IEvaluationContext, CancellationToken)" />
 	/// <remarks>
@@ -68,7 +94,7 @@ public abstract class GeneratedCollectionConstraint<TCollection, TItem>(
 
 		IEnumerable<TItem> items = context.UseMaterializedEnumerable<TItem>(actual);
 		_collection = items;
-		bool readsAllItems = actual is ICollection<TItem> or IReadOnlyCollection<TItem>;
+		bool readsAllItems = IsOnCollection || actual is ICollection<TItem> or IReadOnlyCollection<TItem>;
 		bool hasItems = false;
 		foreach (TItem item in items)
 		{
@@ -90,23 +116,38 @@ public abstract class GeneratedCollectionConstraint<TCollection, TItem>(
 			}
 
 			hasItems = true;
-			if (result.Reason is { } reason)
+			if (RecordAndTryCompleteEarly(item, result, readsAllItems))
 			{
-				Record(item, new PredicateResult.UnansweredItem(item, reason));
-				CompleteEarly();
-				return this;
-			}
-
-			Record(item, result.Outcome == Outcome.Success);
-			if (!readsAllItems && IsDetermined)
-			{
-				CompleteEarly();
 				return this;
 			}
 		}
 
 		Complete();
 		return this;
+	}
+
+	/// <summary>
+	///     Records the <paramref name="result" /> for the <paramref name="item" /> and completes the evaluation early,
+	///     when the item is unanswered or, unless <paramref name="readsAllItems" />, the outcome is determined.
+	/// </summary>
+	/// <returns><see langword="true" />, when the evaluation is complete.</returns>
+	private bool RecordAndTryCompleteEarly(TItem item, PredicateResult result, bool readsAllItems)
+	{
+		if (result.Reason is { } reason)
+		{
+			Record(item, new PredicateResult.UnansweredItem(item, reason));
+			CompleteEarly();
+			return true;
+		}
+
+		Record(item, result.Outcome == Outcome.Success);
+		if (!readsAllItems && IsDetermined)
+		{
+			CompleteEarly();
+			return true;
+		}
+
+		return false;
 	}
 
 	/// <summary>
@@ -117,9 +158,17 @@ public abstract class GeneratedCollectionConstraint<TCollection, TItem>(
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
 	{
-		contexts.AddCollectionContext(_collection);
+		contexts.AddCollectionContext(_collection, FormatItems);
 		base.AppendContexts(contexts);
 	}
+
+	/// <inheritdoc />
+	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+		=> AppendQuantifiedExpectation(stringBuilder, indentation);
+
+	/// <inheritdoc />
+	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+		=> AppendQuantifiedExpectation(stringBuilder, indentation);
 
 	/// <inheritdoc />
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -137,6 +186,15 @@ public abstract class GeneratedCollectionConstraint<TCollection, TItem>(
 	/// <inheritdoc />
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		=> AppendNormalResult(stringBuilder, indentation);
+
+	/// <remarks>
+	///     On the collection, the quantifier is the subject of the item expectation, as in a nested expectation, e.g.
+	///     "all are radio friendly".
+	/// </remarks>
+	private void AppendQuantifiedExpectation(StringBuilder stringBuilder, string? indentation)
+		=> Quantifier.AppendExpectation(stringBuilder,
+			IsOnCollection ? Grammars | ExpectationGrammars.Nested : Grammars,
+			(itemExpectation, grammars) => AppendItemExpectation(itemExpectation, grammars, indentation));
 
 	/// <summary>
 	///     A default <c>ImmutableArray&lt;T&gt;</c> is the struct's version of a <see langword="null" /> collection, and

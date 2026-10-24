@@ -41,10 +41,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             all do not override a base property,
-					             but it contained properties which override a base property
+					             none override a base property,
+					             but * of * did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -68,8 +73,8 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a property which overrides a base property,
-					             but it only contained properties which do not override a base property
+					             at least one overrides a base property,
+					             but none of * did
 
 					             Collection:
 					             [
@@ -126,10 +131,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             all do not override a base property,
-					             but it contained properties which override a base property
+					             none override a base property,
+					             but * of * did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

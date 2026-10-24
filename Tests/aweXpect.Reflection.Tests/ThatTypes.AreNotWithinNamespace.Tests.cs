@@ -32,7 +32,7 @@ public sealed partial class ThatTypes
 
 				await That(Act).Throws<FailException>()
 					.WithMessage(
-						"*are all not within namespace*but it contained not matching types*ClassInNestedNamespaceScope*")
+						"*none are within namespace*but * of * were*ClassInNestedNamespaceScope*")
 					.AsWildcard();
 			}
 
@@ -102,7 +102,7 @@ public sealed partial class ThatTypes
 
 				await That(Act).Throws<FailException>()
 					.WithMessage(
-						"*are all not within namespace*but it contained not matching types*ClassInNestedNamespaceScope*")
+						"*none are within namespace*but * of * were*ClassInNestedNamespaceScope*")
 					.AsWildcard();
 			}
 #endif
@@ -141,7 +141,7 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("*also contain a type within namespace*NamespaceScope*").AsWildcard();
+					.WithMessage("*at least one is within namespace*NamespaceScope*").AsWildcard();
 			}
 		}
 	}

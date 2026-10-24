@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using aweXpect.Reflection.Formatting;
 
 namespace aweXpect;
 
@@ -7,4 +8,8 @@ namespace aweXpect;
 /// </summary>
 public static partial class ThatProperties
 {
+	/// <summary>
+	///     Lets the formatter of this package format the <paramref name="property" /> in a failure message.
+	/// </summary>
+	private static object? Formattable(PropertyInfo? property) => FormattableMember.From(property);
 }

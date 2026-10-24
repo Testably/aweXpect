@@ -39,10 +39,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all extension properties,
-					             but it contained non-extension properties
+					             all are extension properties,
+					             but none of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -68,10 +73,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all extension properties,
-					             but it contained non-extension properties
+					             all are extension properties,
+					             but none of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -118,8 +128,8 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all extension properties,
-					             but it only contained extension properties
+					             not all are extension properties,
+					             but all * were
 
 					             Collection:
 					             [
@@ -146,10 +156,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all extension properties,
-					             but it contained non-extension properties
+					             all are extension properties,
+					             but only 1 of 2 were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

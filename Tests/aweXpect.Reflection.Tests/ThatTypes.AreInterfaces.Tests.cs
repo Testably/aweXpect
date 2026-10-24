@@ -26,10 +26,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all interfaces,
-					             but it contained other types
+					             all are interfaces,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -68,10 +73,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreInterfaces
-					             are all interfaces,
-					             but it contained other types
+					             all are interfaces,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -122,8 +132,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => type.IsInterface in assembly containing type ThatTypes.AreInterfaces
-					             are not all interfaces,
-					             but it only contained interfaces
+					             not all are interfaces,
+					             but all * were
 
 					             Collection:
 					             [

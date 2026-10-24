@@ -44,10 +44,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not extension methods,
-					             but it contained extension methods
+					             none are extension methods,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -72,8 +77,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain an extension method,
-					             but it only contained non-extension methods
+					             at least one is an extension method,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -116,8 +121,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain an extension method,
-					             but it only contained non-extension methods
+					             at least one is an extension method,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -157,10 +162,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not extension methods,
-					             but it contained extension methods
+					             none are extension methods,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -210,10 +220,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not extension methods,
-					             but it contained extension methods
+					             none are extension methods,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

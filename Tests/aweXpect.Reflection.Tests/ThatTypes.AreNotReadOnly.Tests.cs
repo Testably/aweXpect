@@ -44,11 +44,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not read-only,
-					             but it contained read-only types
+					             none are read-only,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               PublicReadOnlyStruct
+					             ]
+
+					             Collection:
+					             [
+					               PublicStruct,
 					               PublicReadOnlyStruct
 					             ]
 					             """);
@@ -71,11 +77,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not read-only,
-					             but it contained read-only types
+					             none are read-only,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               PublicReadOnlyStruct
+					             ]
+
+					             Collection:
+					             [
+					               PublicStruct,
 					               PublicReadOnlyStruct
 					             ]
 					             """);
@@ -117,8 +129,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a read-only type,
-					             but it only contained not read-only types
+					             at least one is read-only,
+					             but none of 1 were
 
 					             Collection:
 					             [

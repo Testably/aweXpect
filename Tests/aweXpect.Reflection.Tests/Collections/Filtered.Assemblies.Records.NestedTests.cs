@@ -40,10 +40,15 @@ public sealed partial class Filtered
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that nested records in all loaded assemblies
-						             are all internal,
-						             but it contained not matching items
+						             all are internal,
+						             but none of * were
 
 						             Not matching items:
+						             [
+						               *
+						             ]
+
+						             Collection:
 						             [
 						               *
 						             ]

@@ -23,10 +23,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreEnums
-					             are all enums,
-					             but it contained other types
+					             all are enums,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -66,10 +71,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all enums,
-					             but it contained other types
+					             all are enums,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -122,8 +132,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => type.IsEnum in assembly containing type ThatTypes.AreEnums
-					             are not all enums,
-					             but it only contained enums
+					             not all are enums,
+					             but all * were
 
 					             Collection:
 					             [

@@ -23,10 +23,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreExceptions
-					             are all exceptions,
-					             but it contained other types
+					             all are exceptions,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -66,10 +71,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all exceptions,
-					             but it contained other types
+					             all are exceptions,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -122,8 +132,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types which are exceptions in assembly containing type ThatTypes.AreExceptions
-					             are not all exceptions,
-					             but it only contained exceptions
+					             not all are exceptions,
+					             but all * were
 
 					             Collection:
 					             [
