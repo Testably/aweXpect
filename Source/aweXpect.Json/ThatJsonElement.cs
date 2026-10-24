@@ -21,27 +21,38 @@ public static partial class ThatJsonElement
 		object? expected,
 		string expectedExpression,
 		JsonOptions options)
-		: ConstraintResult.WithValue<JsonElement>(it, grammars),
-			IAsyncContextConstraint<JsonElement>
+		: ConstraintResult.WithNotNullValue<JsonElement?>(it, grammars),
+			IAsyncContextConstraint<JsonElement>,
+			IAsyncContextConstraint<JsonElement?>
 	{
 		private JsonElementValidator.JsonComparisonResult? _comparisonResult;
 
-		public async ValueTask<ConstraintResult> IsMetBy(JsonElement actual, IEvaluationContext context,
+		public ValueTask<ConstraintResult> IsMetBy(JsonElement actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> IsMetBy((JsonElement?)actual, context, cancellationToken);
+
+		public async ValueTask<ConstraintResult> IsMetBy(JsonElement? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			_comparisonResult = null;
+			if (actual == null)
+			{
+				Outcome = Outcome.Failure;
+				return this;
+			}
+
 			ExpectationJsonConverter converter = new(context, cancellationToken);
 			using JsonDocument expectedDocument = converter.ParseExpected(expected, options.DocumentOptions,
 				options.ExpectedSerializerOptions);
-			if (actual.ValueKind == JsonValueKind.Undefined)
+			if (actual.Value.ValueKind == JsonValueKind.Undefined)
 			{
 				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
 			_comparisonResult = await JsonElementValidator.Compare(
-				actual,
+				actual.Value,
 				expectedDocument.RootElement,
 				options,
 				converter);
@@ -52,9 +63,8 @@ public static partial class ThatJsonElement
 
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			if (Grammars.IsNegated() && Outcome == Outcome.Failure)
+			if (Grammars.IsNegated() && Outcome == Outcome.Failure && Actual is { } actual)
 			{
-				JsonElement actual = Actual;
 				contexts.Add(new ResultContext.SyncCallback("Actual",
 					() => Formatter.Format(actual, FormattingOptions.MultipleLines)));
 			}
@@ -73,7 +83,7 @@ public static partial class ThatJsonElement
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual.ValueKind == JsonValueKind.Undefined)
+			if (Actual?.ValueKind == JsonValueKind.Undefined)
 			{
 				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were")).Append(" undefined");
 			}
@@ -96,7 +106,7 @@ public static partial class ThatJsonElement
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual.ValueKind == JsonValueKind.Undefined)
+			if (Actual?.ValueKind == JsonValueKind.Undefined)
 			{
 				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were")).Append(" undefined");
 			}
@@ -109,13 +119,19 @@ public static partial class ThatJsonElement
 
 
 	internal sealed class IsValueKindConstraint(string it, ExpectationGrammars grammars, JsonValueKind expected)
-		: ConstraintResult.WithValue<JsonElement>(it, grammars),
-			IValueConstraint<JsonElement>
+		: ConstraintResult.WithNotNullValue<JsonElement?>(it, grammars),
+			IValueConstraint<JsonElement>,
+			IValueConstraint<JsonElement?>
 	{
 		public ConstraintResult IsMetBy(JsonElement actual)
+			=> IsMetBy((JsonElement?)actual);
+
+		public ConstraintResult IsMetBy(JsonElement? actual)
 		{
 			Actual = actual;
-			Outcome = JsonValidation.IsKind(actual.ValueKind, expected) ? Outcome.Success : Outcome.Failure;
+			Outcome = actual is not null && JsonValidation.IsKind(actual.Value.ValueKind, expected)
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 
@@ -125,7 +141,7 @@ public static partial class ThatJsonElement
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "))
-				.Append(JsonValidation.Format(Actual.ValueKind));
+				.Append(JsonValidation.Format(Actual!.Value.ValueKind));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("is ", "are "))

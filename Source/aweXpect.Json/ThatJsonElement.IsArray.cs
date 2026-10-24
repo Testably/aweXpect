@@ -21,7 +21,7 @@ public static partial class ThatJsonElement
 	/// </summary>
 	public static IsArrayResult<JsonElement, IThat<JsonElement>> IsArray(this IThat<JsonElement> subject)
 		=> new(
-			subject.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
+			subject.Get().ExpectationBuilder.AddConstraint(static IValueConstraint<JsonElement> (it, grammar) =>
 				new IsValueKindConstraint(it, grammar, JsonValueKind.Array)),
 			subject,
 			static element => element);
@@ -46,7 +46,8 @@ public static partial class ThatJsonElement
 
 		return new IsArrayResult<JsonElement, IThat<JsonElement>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expectations: expectations, Options: jsonOptions),
-				static (s, it, grammar) => new IsArrayConstraint(it, grammar, s.Expectations, s.Options)),
+				static IAsyncContextConstraint<JsonElement> (s, it, grammar) =>
+					new IsArrayConstraint(it, grammar, s.Expectations, s.Options)),
 			subject,
 			static element => element);
 	}
@@ -56,12 +57,17 @@ public static partial class ThatJsonElement
 		ExpectationGrammars grammars,
 		Action<IJsonArrayResult> expectations,
 		JsonOptions options)
-		: ConstraintResult.WithValue<JsonElement>(it, grammars),
-			IAsyncContextConstraint<JsonElement>
+		: ConstraintResult.WithNotNullValue<JsonElement?>(it, grammars),
+			IAsyncContextConstraint<JsonElement>,
+			IAsyncContextConstraint<JsonElement?>
 	{
 		private JsonValidation? _jsonValidation;
 
-		public async ValueTask<ConstraintResult> IsMetBy(JsonElement actual, IEvaluationContext context,
+		public ValueTask<ConstraintResult> IsMetBy(JsonElement actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> IsMetBy((JsonElement?)actual, context, cancellationToken);
+
+		public async ValueTask<ConstraintResult> IsMetBy(JsonElement? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
@@ -75,9 +81,8 @@ public static partial class ThatJsonElement
 
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			if (Grammars.IsNegated() && Outcome == Outcome.Failure)
+			if (Grammars.IsNegated() && Outcome == Outcome.Failure && Actual is { } actual)
 			{
-				JsonElement actual = Actual;
 				contexts.Add(new ResultContext.SyncCallback("Actual",
 					() => Formatter.Format(actual, FormattingOptions.MultipleLines)));
 			}
