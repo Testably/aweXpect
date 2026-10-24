@@ -2,6 +2,9 @@
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -105,6 +108,59 @@ public sealed partial class ThatAssemblies
 			}
 
 			[Test]
+			public async Task WhenEnumerableContainsAllDependencies_ShouldSucceed()
+			{
+				Filtered.Assemblies subject = In.Assemblies(typeof(In).Assembly);
+				List<string> expected = ["aweXpect.Core",];
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn(expected);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenEnumerableDoesNotContainADependency_ShouldFail()
+			{
+				IEnumerable<Assembly?> subject = [typeof(In).Assembly,];
+				List<string> expected = ["First", "Second",];
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn(expected);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have dependencies only on assemblies equal to "First" or equal to "Second",
+					             but it contained assemblies with disallowed dependencies
+
+					             Not matching items:
+					             [
+					               aweXpect.Reflection, Version=* depends on ["aweXpect.Core"]
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenEnumerableIsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable<Assembly?> subject = [typeof(In).Assembly,];
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn((IEnumerable<string>)null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' cannot be null.").AsPrefix();
+			}
+
+			[Test]
 			public async Task WhenMultipleAssembliesHaveDisallowedDependencies_ShouldSeparateWithComma()
 			{
 				Filtered.Assemblies subject = In.Assemblies(typeof(In).Assembly, typeof(ThatAssemblies).Assembly);
@@ -185,5 +241,72 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+#if NET8_0_OR_GREATER
+		public sealed class AsyncEnumerableTests
+		{
+			[Test]
+			public async Task WhenEnumerableContainsAllDependencies_ShouldSucceed()
+			{
+				IAsyncEnumerable<Assembly?> subject = new[]
+				{
+					typeof(In).Assembly,
+				}.ToTestAsyncEnumerable<Assembly?>();
+				List<string> expected = ["aweXpect.Core",];
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn(expected);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenEnumerableDoesNotContainADependency_ShouldFail()
+			{
+				IAsyncEnumerable<Assembly?> subject = new[]
+				{
+					typeof(In).Assembly,
+				}.ToTestAsyncEnumerable<Assembly?>();
+				List<string> expected = ["First", "Second",];
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn(expected);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have dependencies only on assemblies equal to "First" or equal to "Second",
+					             but it contained assemblies with disallowed dependencies
+
+					             Not matching items:
+					             [
+					               aweXpect.Reflection, Version=* depends on ["aweXpect.Core"]
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenEnumerableIsNull_ShouldThrowArgumentNullException()
+			{
+				IAsyncEnumerable<Assembly?> subject = new[]
+				{
+					typeof(In).Assembly,
+				}.ToTestAsyncEnumerable<Assembly?>();
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn((IEnumerable<string>)null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' cannot be null.").AsPrefix();
+			}
+		}
+#endif
 	}
 }

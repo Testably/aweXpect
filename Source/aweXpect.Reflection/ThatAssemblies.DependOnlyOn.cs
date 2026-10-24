@@ -22,7 +22,7 @@ public static partial class ThatAssemblies
 {
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have dependencies only on
-	///     the <paramref name="allowed" /> assemblies.
+	///     the <paramref name="expected" /> assemblies.
 	/// </summary>
 	/// <remarks>
 	///     References to assemblies whose name matches one of the
@@ -33,11 +33,18 @@ public static partial class ThatAssemblies
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> DependOnlyOn(
-		this IThat<IEnumerable<Assembly?>?> subject, params string[] allowed)
+		this IThat<IEnumerable<Assembly?>?> subject, params string[] expected)
+		=> subject.DependOnlyOn(expected.AsEnumerable());
+
+	/// <inheritdoc cref="DependOnlyOn(IThat{IEnumerable{Assembly?}}, string[])" />
+	[GuaranteesNotNull]
+	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> DependOnlyOn(
+		this IThat<IEnumerable<Assembly?>?> subject, IEnumerable<string> expected)
 	{
-		StringEqualityOptions options = new(nameof(allowed));
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string[] Allowed, StringEqualityOptions Options), IEnumerable<Assembly?>>((allowed, options),
+				.ExpectationBuilder.AddConstraint<(string[] Allowed, StringEqualityOptions Options), IEnumerable<Assembly?>>((expected.ToArray(), options),
 					static (s, it, grammars)
 					=> new DependOnlyOnConstraint(it, grammars, s.Allowed, s.Options)),
 			subject,
@@ -47,7 +54,7 @@ public static partial class ThatAssemblies
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have dependencies only on
-	///     the <paramref name="allowed" /> assemblies.
+	///     the <paramref name="expected" /> assemblies.
 	/// </summary>
 	/// <remarks>
 	///     References to assemblies whose name matches one of the
@@ -59,12 +66,20 @@ public static partial class ThatAssemblies
 	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>
 		DependOnlyOn(
-			this IThat<IAsyncEnumerable<Assembly?>?> subject, params string[] allowed)
+			this IThat<IAsyncEnumerable<Assembly?>?> subject, params string[] expected)
+		=> subject.DependOnlyOn(expected.AsEnumerable());
+
+	/// <inheritdoc cref="DependOnlyOn(IThat{IAsyncEnumerable{Assembly?}}, string[])" />
+	[GuaranteesNotNull]
+	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>
+		DependOnlyOn(
+			this IThat<IAsyncEnumerable<Assembly?>?> subject, IEnumerable<string> expected)
 	{
-		StringEqualityOptions options = new(nameof(allowed));
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
-				.ExpectationBuilder.AddConstraint<(string[] Allowed, StringEqualityOptions Options), IAsyncEnumerable<Assembly?>>((allowed, options),
+				.ExpectationBuilder.AddConstraint<(string[] Allowed, StringEqualityOptions Options), IAsyncEnumerable<Assembly?>>((expected.ToArray(), options),
 					static (s, it, grammars)
 					=> new DependOnlyOnConstraint(it, grammars, s.Allowed, s.Options)),
 			subject,

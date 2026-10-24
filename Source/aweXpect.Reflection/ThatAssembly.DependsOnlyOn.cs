@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -19,7 +20,7 @@ namespace aweXpect;
 public static partial class ThatAssembly
 {
 	/// <summary>
-	///     Verifies that the <see cref="Assembly" /> has dependencies only on the <paramref name="allowed" /> assemblies.
+	///     Verifies that the <see cref="Assembly" /> has dependencies only on the <paramref name="expected" /> assemblies.
 	/// </summary>
 	/// <remarks>
 	///     References to assemblies whose name matches one of the
@@ -30,11 +31,18 @@ public static partial class ThatAssembly
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> DependsOnlyOn(
-		this IThat<Assembly?> subject, params string[] allowed)
+		this IThat<Assembly?> subject, params string[] expected)
+		=> subject.DependsOnlyOn(expected.AsEnumerable());
+
+	/// <inheritdoc cref="DependsOnlyOn(IThat{Assembly}, string[])" />
+	[GuaranteesNotNull]
+	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> DependsOnlyOn(
+		this IThat<Assembly?> subject, IEnumerable<string> expected)
 	{
-		StringEqualityOptions options = new(nameof(allowed));
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder
-				.AddConstraint((Allowed: allowed, Options: options),
+				.AddConstraint((Allowed: expected.ToArray(), Options: options),
 					static (s, it, grammars)
 					=> new DependsOnlyOnConstraint(it, grammars, s.Allowed, s.Options)),
 			subject,

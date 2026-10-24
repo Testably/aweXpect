@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using aweXpect.Core;
 using aweXpect.Customization;
@@ -11,7 +12,7 @@ namespace aweXpect.Reflection;
 public static partial class AssemblyFilters
 {
 	/// <summary>
-	///     Filter for assemblies which have dependencies only on the <paramref name="allowed" /> assemblies.
+	///     Filter for assemblies which have dependencies only on the <paramref name="expected" /> assemblies.
 	/// </summary>
 	/// <remarks>
 	///     References to assemblies whose name matches one of the
@@ -21,9 +22,16 @@ public static partial class AssemblyFilters
 	///     so that framework assemblies do not have to be listed explicitly.
 	/// </remarks>
 	public static Filtered.Assemblies.StringEqualityResult WhichDependOnlyOn(
-		this Filtered.Assemblies @this, params string[] allowed)
+		this Filtered.Assemblies @this, params string[] expected)
+		=> @this.WhichDependOnlyOn(expected.AsEnumerable());
+
+	/// <inheritdoc cref="WhichDependOnlyOn(Filtered.Assemblies, string[])" />
+	public static Filtered.Assemblies.StringEqualityResult WhichDependOnlyOn(
+		this Filtered.Assemblies @this, IEnumerable<string> expected)
 	{
-		StringEqualityOptions options = new(nameof(allowed));
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+		string[] allowed = expected.ToArray();
+		StringEqualityOptions options = new(nameof(expected));
 		return new Filtered.Assemblies.StringEqualityResult(@this.Which(Filter.Suffix<Assembly>(
 				async assembly
 					=> (await assembly.GetDisallowedAssemblyDependencies(allowed, options)).Length == 0,
