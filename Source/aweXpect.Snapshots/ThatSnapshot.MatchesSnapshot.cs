@@ -813,6 +813,7 @@ public static partial class ThatSnapshot
 	{
 		private readonly StringEqualityOptions _options = new StringEqualityOptions("snapshot").IgnoringNewlineStyle();
 		private InsufficientExecutionStackException? _formatError;
+		private MatchResult _matchResult;
 		private RegexMatchTimeoutException? _ruleTimeout;
 		private string? _timedOutRule;
 		private string? _value;
@@ -867,7 +868,10 @@ public static partial class ThatSnapshot
 		}
 
 		protected override async ValueTask<bool> MatchesByDefaultAsync(byte[] snapshot)
-			=> await _options.AreConsideredEqual(_value, SnapshotText);
+		{
+			_matchResult = await _options.MatchWithExplanation(_value, SnapshotText);
+			return _matchResult.IsMatch;
+		}
 
 		protected override string ToText(byte[] snapshot) => SnapshotTextEncoding.Decode(snapshot);
 
@@ -893,7 +897,7 @@ public static partial class ThatSnapshot
 		}
 
 		protected override void AppendDifference(StringBuilder stringBuilder, string? indentation)
-			=> stringBuilder.Append(_options.GetExtendedFailure(It, Grammars, _value, SnapshotText)
+			=> stringBuilder.Append(_options.GetExtendedFailure(It, Grammars, _value, SnapshotText, _matchResult)
 				.Indent(indentation, false));
 	}
 }

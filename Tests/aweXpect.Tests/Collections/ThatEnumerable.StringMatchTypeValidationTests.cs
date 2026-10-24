@@ -67,7 +67,7 @@ public sealed partial class ThatEnumerable
 				=> await That(subject).Contains("1").AsNumber().Using(StringComparer.OrdinalIgnoreCase);
 
 			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("A custom comparer is not supported for AsNumber.");
+				.WithMessage("Using cannot be combined with AsNumber.");
 		}
 
 		[Test]
@@ -79,7 +79,7 @@ public sealed partial class ThatEnumerable
 				=> await That(subject).Contains("1").Using(StringComparer.OrdinalIgnoreCase).AsNumber();
 
 			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("A custom comparer is not supported for AsNumber.");
+				.WithMessage("Using cannot be combined with AsNumber.");
 		}
 
 		[Test]

@@ -18,9 +18,9 @@ public sealed partial class EquivalencyMatchTypeTests
 			{
 				MyValue = "foo",
 			};
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await AreConsideredEqual(sut, actual, expected);
 
 			await That(result).IsTrue();
 		}
@@ -30,9 +30,9 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			MyClassWithFields actual = new(1, 2, 3);
 			MyClassWithFields expected = new(1, 3, 4);
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await AreConsideredEqual(sut, actual, expected);
 
 			await That(result).IsTrue();
 		}
@@ -51,9 +51,9 @@ public sealed partial class EquivalencyMatchTypeTests
 			{
 				MyValue = expectedValue,
 			};
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
@@ -77,9 +77,9 @@ public sealed partial class EquivalencyMatchTypeTests
 			{
 				MyValue = "bar",
 			};
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
@@ -97,12 +97,12 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			MyClassWithProtectedFields actual = new(1, 3);
 			MyClassWithProtectedFields expected = new(2, 3);
-			EquivalencyMatchType sut = new(new EquivalencyOptions
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions
 			{
 				Fields = IncludeMembers.Internal,
 			});
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 
 			await That(result).IsFalse()
@@ -124,12 +124,12 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			MyClassWithFields actual = new(1, actualInternalValue, 3);
 			MyClassWithFields expected = new(2, expectedInternalValue, 4);
-			EquivalencyMatchType sut = new(new EquivalencyOptions
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions
 			{
 				Fields = IncludeMembers.Internal,
 			});
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 
 			await That(result).IsEqualTo(expectedResult);
@@ -150,12 +150,12 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			MyClassWithProtectedFields actual = new(1, 3);
 			MyClassWithProtectedFields expected = new(1, 4);
-			EquivalencyMatchType sut = new(new EquivalencyOptions
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions
 			{
 				Fields = IncludeMembers.Internal,
 			});
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await AreConsideredEqual(sut, actual, expected);
 
 			await That(result).IsTrue()
 				.Because("a private protected field is only visible to derived types within the assembly");
@@ -171,12 +171,12 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			MyClassWithFields actual = new(actualPublicValue, actualInternalValue, 3);
 			MyClassWithFields expected = new(expectedPublicValue, expectedInternalValue, 4);
-			EquivalencyMatchType sut = new(new EquivalencyOptions
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions
 			{
 				Fields = IncludeMembers.Public | IncludeMembers.Internal,
 			});
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await AreConsideredEqual(sut, actual, expected);
 
 			await That(result).IsEqualTo(expectedResult)
 				.Because("a field has to satisfy one of the requested visibilities, not all of them at once");
@@ -190,12 +190,12 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			MyClassWithFields actual = new(actualPublicValue, 1, 3);
 			MyClassWithFields expected = new(expectedPublicValue, 2, 4);
-			EquivalencyMatchType sut = new(new EquivalencyOptions
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions
 			{
 				Fields = IncludeMembers.Public,
 			});
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 
 			await That(result).IsEqualTo(expectedResult);

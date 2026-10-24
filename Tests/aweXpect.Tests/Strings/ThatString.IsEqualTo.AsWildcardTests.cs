@@ -156,7 +156,7 @@ public sealed partial class ThatString
 					=> await That(subject).IsEqualTo("*").AsWildcard().Using(StringComparer.Ordinal);
 
 				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("A custom comparer is not supported for regex or wildcard matching.")
+					.WithMessage("Using cannot be combined with AsWildcard.")
 					.Because("the wildcard is translated into a regex, which cannot consult a comparer");
 			}
 

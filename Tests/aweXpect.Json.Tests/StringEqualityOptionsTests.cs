@@ -15,10 +15,11 @@ public sealed class StringEqualityOptionsTests
 		IOptionsProvider<StringEqualityOptions> optionsProvider = That(actual).IsEqualTo(expected).AsJson();
 #pragma warning restore aweXpect0001
 
-		bool result = await optionsProvider.Options.AreConsideredEqual(actual, expected);
-		string failure = optionsProvider.Options.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+		MatchResult result = await optionsProvider.Options.MatchWithExplanation(actual, expected);
+		string failure =
+			optionsProvider.Options.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected, result);
 
-		await That(result).IsTrue();
+		await That(result.IsMatch).IsTrue();
 		await That(failure).IsEmpty();
 	}
 
@@ -30,10 +31,10 @@ public sealed class StringEqualityOptionsTests
 		IOptionsProvider<StringEqualityOptions> optionsProvider = That("").IsEqualTo(expected).AsJson();
 #pragma warning restore aweXpect0001
 
-		await optionsProvider.Options.AreConsideredEqual("{\"foo\":1}", expected);
-		await optionsProvider.Options.AreConsideredEqual("{\"bar\":1}", expected);
+		await optionsProvider.Options.MatchWithExplanation("{\"foo\":1}", expected);
+		MatchResult result = await optionsProvider.Options.MatchWithExplanation("{\"bar\":1}", expected);
 		string failure =
-			optionsProvider.Options.GetExtendedFailure("it", ExpectationGrammars.None, "{\"bar\":1}", expected);
+			optionsProvider.Options.GetExtendedFailure("it", ExpectationGrammars.None, "{\"bar\":1}", expected, result);
 
 		await That(failure).IsEqualTo("it differed as $.bar had unexpected 1")
 			.Because("the differences of the previous subject must not be reported for the next one");
@@ -48,7 +49,8 @@ public sealed class StringEqualityOptionsTests
 		IOptionsProvider<StringEqualityOptions> optionsProvider = That(actual).IsEqualTo(expected).AsJson();
 #pragma warning restore aweXpect0001
 
-		string failure = optionsProvider.Options.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+		string failure =
+			optionsProvider.Options.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected, default);
 
 		await That(failure).IsEmpty();
 	}

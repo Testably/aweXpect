@@ -11,6 +11,12 @@ public interface IOptionsEquality<in TSubject>
 	///     Returns <see langword="true" /> if the two objects <paramref name="actual" /> and <paramref name="expected" /> are
 	///     considered equal; otherwise <see langword="false" />.
 	/// </summary>
+	/// <remarks>
+	///     Only decides, as the items of a collection are never explained one by one. A constraint that explains a
+	///     single comparison keeps the <see cref="MatchResult" /> of <c>MatchWithExplanation</c> on the
+	///     <see cref="aweXpect.Options.StringEqualityOptions" /> or the
+	///     <see cref="aweXpect.Options.ObjectEqualityOptions{TSubject}" /> instead.
+	/// </remarks>
 	ValueTask<bool>
 		AreConsideredEqual<TExpected>(TSubject actual, TExpected expected);
 

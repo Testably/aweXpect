@@ -49,10 +49,10 @@ public sealed partial class StringEqualityOptionsTests
 				? async () =>
 				{
 					await Task.Yield();
-					return StringMatchResult.FailureBothWays("is not comparable", cause);
+					return MatchResult.NotComparable("is not comparable", cause);
 				}
-				: () => new ValueTask<StringMatchResult>(
-					StringMatchResult.FailureBothWays("is not comparable", cause))), "AsCustom");
+				: () => new ValueTask<MatchResult>(
+					MatchResult.NotComparable("is not comparable", cause))), "AsCustom");
 
 			async Task Act() => await sut.AreConsideredEqual("foo", expected);
 
@@ -72,7 +72,7 @@ public sealed partial class StringEqualityOptionsTests
 			sut.SetMatchType(new DelegatingMatchType(async () =>
 			{
 				await Task.Yield();
-				return true;
+				return MatchResult.Match;
 			}), "AsCustom");
 
 			bool result = await sut.AreConsideredEqual("foo", "bar");
@@ -114,7 +114,7 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage(
-					"""The wildcard pattern "bar" did not complete within 0:03. Simplify the pattern to avoid catastrophic backtracking.""")
+					"""The pattern "bar" did not complete within 0:03. Simplify the pattern to avoid catastrophic backtracking.""")
 				.AsPrefix()
 				.Because("the failure must name the timeout that applied instead of the configured default");
 		}
@@ -138,7 +138,7 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage(
-					"""The wildcard pattern "bar" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+					"""The pattern "bar" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
 				.AsPrefix().And
 				.WithParamName("expected").And
 				.WithInner<RegexMatchTimeoutException>(inner => inner.IsSameAs(exception))
@@ -343,7 +343,7 @@ public sealed partial class StringEqualityOptionsTests
 			void Act() => sut.AsBlock();
 
 			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage($"AsBlock cannot be combined with {option}.")
+				.WithMessage($"{option} cannot be combined with AsBlock.")
 				.Because("a block compares the lines on its own, and any explicit call counts as specified");
 		}
 
@@ -368,7 +368,7 @@ public sealed partial class StringEqualityOptionsTests
 			void Act() => sut.AsRegex();
 
 			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("A custom comparer is not supported for regex or wildcard matching.");
+				.WithMessage("Using cannot be combined with AsRegex.");
 		}
 
 		[Test]
@@ -380,7 +380,7 @@ public sealed partial class StringEqualityOptionsTests
 			void Act() => sut.AsRegex(RegexOptions.Multiline);
 
 			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("A custom comparer is not supported for regex or wildcard matching.");
+				.WithMessage("Using cannot be combined with AsRegex.");
 		}
 
 		[Test]
@@ -392,7 +392,7 @@ public sealed partial class StringEqualityOptionsTests
 			void Act() => sut.AsWildcard();
 
 			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("A custom comparer is not supported for regex or wildcard matching.");
+				.WithMessage("Using cannot be combined with AsWildcard.");
 		}
 
 		[Test]
@@ -456,8 +456,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_WhenACustomMatchTypeCannotCompareAWindow_ShouldThrowUserCodeException()
 		{
 			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(new DelegatingMatchType(() => new ValueTask<StringMatchResult>(
-				StringMatchResult.FailureBothWays("is not comparable"))), "AsCustom");
+			sut.SetMatchType(new DelegatingMatchType(() => new ValueTask<MatchResult>(
+				MatchResult.NotComparable("is not comparable"))), "AsCustom");
 
 			async Task Act() => await sut.CountOccurrences("foo", "f");
 
@@ -805,7 +805,7 @@ public sealed partial class StringEqualityOptionsTests
 			sut.IgnoringTrailingWhiteSpace();
 			sut.IgnoringNewlineStyle();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, null, "foo");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, null, "foo", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("it was <null>");
 		}
@@ -817,7 +817,7 @@ public sealed partial class StringEqualityOptionsTests
 			sut.IgnoringLeadingWhiteSpace();
 			sut.IgnoringTrailingWhiteSpace();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, " foo ", null);
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, " foo ", null, MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("it was \"foo\"");
 		}
@@ -829,10 +829,44 @@ public sealed partial class StringEqualityOptionsTests
 			sut.SetMatchType(new CustomMatchType(), "AsCustom");
 
 			void Act()
-				=> sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo", "bar");
+				=> sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo", "bar", MatchResult.NoMatch);
 
 			await That(Act).Throws<NotSupportedException>()
 				.Because("without a comparer no code of the caller is called while the failure is explained");
+		}
+
+		[Test]
+		public async Task GetExtendedFailure_WhenAPluralSubjectIsIt_ShouldKeepTheSingularVerb()
+		{
+			StringEqualityOptions sut = new("expected");
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.Plural, "foo", "bar", MatchResult.NoMatch);
+
+			await That(result).StartsWith("it was \"foo\"")
+				.Because("the generic pronoun always takes the singular verb");
+		}
+
+		[Test]
+		[Arguments("AsBlock")]
+		[Arguments("AsCustom")]
+		[Arguments("AsPrefix")]
+		[Arguments("AsSuffix")]
+		[Arguments("Containing")]
+		[Arguments("Exact")]
+		public async Task GetExtendedFailure_WhenAPluralSubjectIsNamed_ShouldUseThePluralVerb(string matchType)
+		{
+			StringEqualityOptions sut = matchType == "AsCustom"
+				? new StringEqualityOptions("expected").SetMatchType(new DefaultFailureMatchType(), "AsCustom")
+				: WithMatchType(matchType);
+
+			string result = sut.GetExtendedFailure("the titles", ExpectationGrammars.Plural, "foo", "bar",
+				MatchResult.NoMatch);
+			string negatedResult = sut.GetExtendedFailure("the titles",
+				ExpectationGrammars.Plural | ExpectationGrammars.Negated, "foo", "bar", MatchResult.NoMatch);
+
+			await That(result).StartsWith("the titles were \"foo\"")
+				.Because("a custom match type uses the same verb as the built-in ones");
+			await That(negatedResult).IsEqualTo("the titles were \"foo\"");
 		}
 
 		[Test]
@@ -846,7 +880,7 @@ public sealed partial class StringEqualityOptionsTests
 			sut.Using(new VersionStringComparer());
 
 			bool isEqual = await sut.AreConsideredEqual(actual, expected);
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected, MatchResult.NoMatch);
 
 			await That(isEqual).IsFalse();
 			await That(result).IsEqualTo($"it was \"{actual}\"")
@@ -859,7 +893,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.Using(new ThrowingForComparer("1.2.3"));
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, " 1.2.3", "1.2.4");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, " 1.2.3", "1.2.4", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("it was \" 1.2.3\"");
 		}
@@ -870,7 +904,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.IgnoringIndentation().IgnoringLeadingWhiteSpace();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "\n  foo", "bar");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "\n  foo", "bar", MatchResult.NoMatch);
 
 			await That(result).Contains("differs on line 2 and column 3:");
 		}
@@ -881,7 +915,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.IgnoringIndentation();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo\n    baz", "foo\nbar");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo\n    baz", "foo\nbar", MatchResult.NoMatch);
 
 			await That(result).Contains("differs on line 2 and column 7:");
 		}
@@ -892,7 +926,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsPrefix().IgnoringIndentation();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  foobar", "baz");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  foobar", "baz", MatchResult.NoMatch);
 
 			await That(result).Contains("differs at index 2:");
 		}
@@ -903,7 +937,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsSuffix().IgnoringIndentation();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  foobar", "baz");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  foobar", "baz", MatchResult.NoMatch);
 
 			await That(result).Contains("differs at index 7:");
 		}
@@ -914,7 +948,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.IgnoringIndentation();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  foo", "bar");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  foo", "bar", MatchResult.NoMatch);
 
 			await That(result).Contains("differs at index 2:");
 		}
@@ -925,7 +959,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.IgnoringLeadingWhiteSpace();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  a\nbcd", "a\nbXd");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  a\nbcd", "a\nbXd", MatchResult.NoMatch);
 
 			await That(result).Contains("differs on line 2 and column 2:");
 		}
@@ -945,7 +979,7 @@ public sealed partial class StringEqualityOptionsTests
 
 			sut.NormalizingWhiteSpace();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "\n  a  b\n  c", "a b  d");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "\n  a  b\n  c", "a b  d", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("""
 			                             it was "a b c", which differs at index 4:
@@ -963,7 +997,7 @@ public sealed partial class StringEqualityOptionsTests
 		{
 			StringEqualityOptions sut = new("expected");
 
-			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.Negated, "foo", "foo");
+			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.Negated, "foo", "foo", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("it had message \"foo\"");
 		}
@@ -973,7 +1007,7 @@ public sealed partial class StringEqualityOptionsTests
 		{
 			StringEqualityOptions sut = new("expected");
 
-			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.None, null, "foo");
+			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.None, null, "foo", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("it had message <null>");
 		}
@@ -982,12 +1016,24 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetExtendedMemberFailure_WhenACustomMatchTypeFails_ShouldKeepItsFailure()
 		{
 			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(new DelegatingMatchType(() => new ValueTask<StringMatchResult>(false), "my custom failure"), "AsCustom");
+			sut.SetMatchType(new DelegatingMatchType(() => new ValueTask<MatchResult>(MatchResult.NoMatch), "my custom failure"), "AsCustom");
 
-			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.None, "foo", "bar");
+			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.None, "foo", "bar", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("my custom failure")
 				.Because("only the failures of the built-in match types can be rephrased");
+		}
+
+		[Test]
+		public async Task GetExtendedMemberFailure_WhenThePluralSubjectIsNamed_ShouldKeepTheMemberSingular()
+		{
+			StringEqualityOptions sut = new("expected");
+
+			string result = sut.GetExtendedMemberFailure("the requests", "header value", ExpectationGrammars.Plural,
+				"foo", "bar", MatchResult.NoMatch);
+
+			await That(result).StartsWith("the requests had header value \"foo\", which differs at index 0:")
+				.Because("the member holds a single value, also for a plural subject");
 		}
 
 		[Test]
@@ -1041,47 +1087,45 @@ public sealed partial class StringEqualityOptionsTests
 		{
 			StringEqualityOptions sut = WithMatchType(matchType);
 
-			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.None, "foo", expected);
+			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.None, "foo", expected, MatchResult.NoMatch);
 
 			await That(result).IsEqualTo(expectedFailure).IgnoringNewlineStyle();
 		}
 
 		[Test]
-		[Arguments(false)]
-		[Arguments(true)]
-		public async Task IgnoringCase_WhenACustomMatchTypeIsSpecified_ShouldLetItValidateTheNewCasing(bool ignoreCase)
+		public async Task IgnoringCase_WhenACustomMatchTypeDoesNotSupportIt_ShouldThrowAndKeepTheOptions()
 		{
-			ValidatingMatchType matchType = new();
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(matchType, "AsCustom");
-
-			sut.IgnoringCase(ignoreCase);
-
-			await That(matchType.ValidatedOptions).IsEqualTo([(false, null), (ignoreCase, null),]);
-			await That(sut.ToString()).IsEqualTo(ignoreCase ? " as custom ignoring case" : " as custom");
-		}
-
-		[Test]
-		public async Task IgnoringCase_WhenACustomMatchTypeRejectsIt_ShouldThrowItsExceptionAndKeepTheOptions()
-		{
-			InvalidOperationException exception = new("my rejection");
-			ValidatingMatchType matchType = new((ignoreCase, _) => ignoreCase ? exception : null);
+			ValidatingMatchType matchType = new(StringMatchSettingKinds.None);
 			StringEqualityOptions sut = new("expected");
 			sut.SetMatchType(matchType, "AsCustom");
 
 			void Act() => sut.IgnoringCase();
 
-			InvalidOperationException thrownException = await That(Act).Throws<InvalidOperationException>();
-			await That(thrownException).IsSameAs(exception);
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("IgnoringCase cannot be combined with AsCustom.");
 			await That(sut.ToString()).IsEqualTo(" as custom");
 			await That(() => sut.IgnoringCase(false)).DoesNotThrow()
-				.Because("the rejected call must not count as specified");
+				.Because("the rejected call must not count as specified, and a casing that is not ignored is supported");
 		}
 
 		[Test]
-		public async Task IgnoringCase_WhenAComparerIsUsed_ShouldNotAskACustomMatchType()
+		[Arguments(false)]
+		[Arguments(true)]
+		public async Task IgnoringCase_WhenACustomMatchTypeIsSpecified_ShouldApplyASupportedCasing(bool ignoreCase)
 		{
-			ValidatingMatchType matchType = new((ignoreCase, _) => ignoreCase ? new NotSupportedException() : null);
+			ValidatingMatchType matchType = new(StringMatchSettingKinds.IgnoreCase);
+			StringEqualityOptions sut = new("expected");
+			sut.SetMatchType(matchType, "AsCustom");
+
+			sut.IgnoringCase(ignoreCase);
+
+			await That(sut.ToString()).IsEqualTo(ignoreCase ? " as custom ignoring case" : " as custom");
+		}
+
+		[Test]
+		public async Task IgnoringCase_WhenAComparerIsUsed_ShouldReportTheComparerBeforeTheMatchType()
+		{
+			ValidatingMatchType matchType = new(StringMatchSettingKinds.Comparer);
 			StringEqualityOptions sut = new("expected");
 			sut.SetMatchType(matchType, "AsCustom");
 			sut.Using(StringComparer.Ordinal);
@@ -1091,8 +1135,7 @@ public sealed partial class StringEqualityOptionsTests
 			await That(Act).Throws<InvalidOperationException>()
 				.WithMessage(
 					"IgnoringCase cannot be combined with a custom comparer; use a case-insensitive comparer instead.")
-				.Because("a match type is only asked for a combination that the options accept on their own");
-			await That(matchType.ValidatedOptions).IsEqualTo([(false, null), (false, StringComparer.Ordinal),]);
+				.Because("the options reject a combination that they cannot honour on their own first");
 		}
 
 		[Test]
@@ -1228,61 +1271,61 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(nameof(StringEqualityOptions.AsSuffix))]
 		[Arguments(nameof(StringEqualityOptions.AsWildcard))]
 		[Arguments(nameof(StringEqualityOptions.Containing))]
-		public async Task SetMatchType_WhenAMatchTypeIsSpecified_ShouldNotAskTheNewMatchType(string option)
+		public async Task SetMatchType_WhenAMatchTypeIsSpecified_ShouldNotCheckTheSettings(string option)
 		{
-			ValidatingMatchType matchType = new((_, _) => new NotSupportedException());
+			ValidatingMatchType matchType = new(StringMatchSettingKinds.None);
 			StringEqualityOptions sut = new("expected");
 			Change(sut, option, true);
+			sut.IgnoringCase();
 
 			void Act() => sut.SetMatchType(matchType, "AsCustom");
 
 			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage($"AsCustom cannot be combined with {option}.");
-			await That(matchType.ValidatedOptions).IsEmpty();
+				.WithMessage($"AsCustom cannot be combined with {option}.")
+				.Because("the second match type is rejected before the settings that it does not support");
 		}
 
 		[Test]
-		public async Task SetMatchType_WhenCaseIsIgnored_ShouldLetTheMatchTypeValidateIt()
+		public async Task SetMatchType_WhenCaseIsIgnored_ShouldAcceptASupportedCasing()
 		{
-			ValidatingMatchType matchType = new();
+			ValidatingMatchType matchType = new(StringMatchSettingKinds.IgnoreCase);
 			StringEqualityOptions sut = new("expected");
 			sut.IgnoringCase();
 
 			sut.SetMatchType(matchType, "AsCustom");
 
-			await That(matchType.ValidatedOptions).IsEqualTo([(true, null),]);
 			await That(sut.ToString()).IsEqualTo(" as custom ignoring case");
 		}
 
 		[Test]
-		public async Task SetMatchType_WhenAComparerIsUsed_ShouldLetTheMatchTypeValidateIt()
+		public async Task SetMatchType_WhenAComparerIsUsed_ShouldAcceptASupportedComparer()
 		{
-			ValidatingMatchType matchType = new();
+			ValidatingMatchType matchType = new(StringMatchSettingKinds.Comparer);
 			StringEqualityOptions sut = new("expected");
 			sut.Using(StringComparer.Ordinal);
 
 			sut.SetMatchType(matchType, "AsCustom");
 
-			await That(matchType.ValidatedOptions).IsEqualTo([(false, StringComparer.Ordinal),]);
-			await That(sut.ToString()).IsEqualTo(" as custom using a comparer");
+			await That(sut.ToString()).IsEqualTo($" as custom using {Formatter.Format(StringComparer.Ordinal.GetType())}");
 		}
 
 		[Test]
 		[Arguments(nameof(StringEqualityOptions.IgnoringCase))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringIndentation))]
+		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
 		[Arguments(nameof(StringEqualityOptions.Using))]
-		public async Task SetMatchType_WhenTheMatchTypeRejectsTheSpecifiedOptions_ShouldThrowItsExceptionAndKeepTheOptions(
+		public async Task SetMatchType_WhenTheMatchTypeDoesNotSupportTheSpecifiedOption_ShouldThrowAndKeepTheOptions(
 			string option)
 		{
-			InvalidOperationException exception = new("my rejection");
-			ValidatingMatchType matchType = new((_, _) => exception);
+			ValidatingMatchType matchType = new(StringMatchSettingKinds.None);
 			StringEqualityOptions sut = new("expected");
 			Change(sut, option, true);
 			string optionString = sut.ToString();
 
 			void Act() => sut.SetMatchType(matchType, "AsCustom");
 
-			InvalidOperationException thrownException = await That(Act).Throws<InvalidOperationException>();
-			await That(thrownException).IsSameAs(exception);
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage($"{option} cannot be combined with AsCustom.");
 			await That(sut.ToString()).IsEqualTo(optionString);
 			await That(() => sut.SetMatchType(new ValidatingMatchType(), "AsOther")).DoesNotThrow()
 				.Because("the rejected match type must not count as specified");
@@ -1405,42 +1448,39 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
-		public async Task Using_WhenACustomMatchTypeIsSpecified_ShouldLetItValidateTheNewComparer()
+		public async Task Using_WhenACustomMatchTypeDoesNotSupportIt_ShouldThrowAndKeepTheOptions()
 		{
-			ValidatingMatchType matchType = new();
+			ValidatingMatchType matchType = new(StringMatchSettingKinds.None);
+			StringEqualityOptions sut = new("expected");
+			sut.SetMatchType(matchType, "AsCustom");
+
+			void Act() => sut.Using(StringComparer.Ordinal);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("Using cannot be combined with AsCustom.");
+			await That(sut.ToString()).IsEqualTo(" as custom");
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("Using cannot be combined with AsCustom.")
+				.Because("the rejected comparer must not count as specified");
+		}
+
+		[Test]
+		public async Task Using_WhenACustomMatchTypeIsSpecified_ShouldApplyASupportedComparer()
+		{
+			ValidatingMatchType matchType = new(StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.Comparer);
 			StringEqualityOptions sut = new("expected");
 			sut.SetMatchType(matchType, "AsCustom");
 			sut.IgnoringCase(false);
 
 			sut.Using(StringComparer.Ordinal);
 
-			await That(matchType.ValidatedOptions)
-				.IsEqualTo([(false, null), (false, null), (false, StringComparer.Ordinal),]);
-			await That(sut.ToString()).IsEqualTo(" as custom using a comparer");
+			await That(sut.ToString()).IsEqualTo($" as custom using {Formatter.Format(StringComparer.Ordinal.GetType())}");
 		}
 
 		[Test]
-		public async Task Using_WhenACustomMatchTypeRejectsIt_ShouldThrowItsExceptionAndKeepTheOptions()
+		public async Task Using_WhenCaseIsIgnored_ShouldReportTheCasingBeforeTheMatchType()
 		{
-			InvalidOperationException exception = new("my rejection");
-			ValidatingMatchType matchType = new((_, comparer)
-				=> ReferenceEquals(comparer, StringComparer.Ordinal) ? exception : null);
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(matchType, "AsCustom");
-
-			void Act() => sut.Using(StringComparer.Ordinal);
-
-			InvalidOperationException thrownException = await That(Act).Throws<InvalidOperationException>();
-			await That(thrownException).IsSameAs(exception);
-			await That(sut.ToString()).IsEqualTo(" as custom");
-			await That(() => sut.Using(StringComparer.OrdinalIgnoreCase)).DoesNotThrow()
-				.Because("the rejected comparer must not count as specified");
-		}
-
-		[Test]
-		public async Task Using_WhenCaseIsIgnored_ShouldNotAskACustomMatchType()
-		{
-			ValidatingMatchType matchType = new((_, comparer) => comparer is null ? null : new NotSupportedException());
+			ValidatingMatchType matchType = new(StringMatchSettingKinds.IgnoreCase);
 			StringEqualityOptions sut = new("expected");
 			sut.SetMatchType(matchType, "AsCustom");
 			sut.IgnoringCase();
@@ -1450,8 +1490,7 @@ public sealed partial class StringEqualityOptionsTests
 			await That(Act).Throws<InvalidOperationException>()
 				.WithMessage(
 					"IgnoringCase cannot be combined with a custom comparer; use a case-insensitive comparer instead.")
-				.Because("a match type is only asked for a combination that the options accept on their own");
-			await That(matchType.ValidatedOptions).IsEqualTo([(false, null), (true, null),]);
+				.Because("the options reject a combination that they cannot honour on their own first");
 		}
 
 		[Test]
@@ -1501,7 +1540,7 @@ public sealed partial class StringEqualityOptionsTests
 			void Act() => sut.Using(StringComparer.Ordinal);
 
 			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("A custom comparer is not supported for regex or wildcard matching.");
+				.WithMessage("Using cannot be combined with AsRegex.");
 		}
 
 		[Test]
@@ -1513,7 +1552,7 @@ public sealed partial class StringEqualityOptionsTests
 			void Act() => sut.Using(StringComparer.Ordinal);
 
 			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("A custom comparer is not supported for regex or wildcard matching.");
+				.WithMessage("Using cannot be combined with AsWildcard.");
 		}
 
 		[Test]
@@ -1741,130 +1780,108 @@ public sealed partial class StringEqualityOptionsTests
 			return options;
 		}
 
-		private sealed class CustomMatchType : IStringMatchType
+		private sealed class CustomMatchType : StringMatchType
 		{
-			public bool InspectsSubject => false;
+			public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+				=> new Matcher();
 
-			public ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
-				IEqualityComparer<string>? comparer)
-				=> throw new NotSupportedException();
+			public override MatchPhrase Phrase => MatchPhrase.EqualTo;
 
-			public void AppendContexts(ResultContextCollector contexts)
-				=> throw new NotSupportedException();
-
-			public string GetExpectation(string? expected, ExpectationGrammars grammars)
-				=> throw new NotSupportedException();
-
-			public string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase,
-				IEqualityComparer<string> comparer, StringDifferenceSettings? settings)
-				=> throw new NotSupportedException();
-
-			public string GetTypeString() => throw new NotSupportedException();
-
-			public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-				=> throw new NotSupportedException();
-
-			public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
+			private sealed class Matcher : StringMatcher
 			{
-				// Every option is accepted.
-			}
+				public override ValueTask<MatchResult> Match(string? actual, string? expected)
+					=> throw new NotSupportedException();
 
-			public void ValidateExpected(string? expected)
-			{
-				// Every expected value is accepted.
+				public override string GetFailure(string it, ExpectationGrammars grammars, string? actual,
+					string? expected, MatchResult result, StringDifferenceSettings? differenceSettings)
+					=> throw new NotSupportedException();
+
+				public override void AppendContexts(ResultContextCollector contexts)
+					=> throw new NotSupportedException();
 			}
 		}
 
-		private sealed class DelegatingMatchType(Func<ValueTask<StringMatchResult>> areConsideredEqual, string failure = "")
-			: IStringMatchType
+		private sealed class DefaultFailureMatchType : StringMatchType
 		{
-			public bool InspectsSubject => false;
+			public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+				=> new Matcher();
 
-			public ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
-				IEqualityComparer<string>? comparer)
-				=> areConsideredEqual();
+			public override MatchPhrase Phrase => MatchPhrase.EqualTo;
 
-			public void AppendContexts(ResultContextCollector contexts)
-				=> throw new NotSupportedException();
-
-			public string GetExpectation(string? expected, ExpectationGrammars grammars)
-				=> throw new NotSupportedException();
-
-			public string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase,
-				IEqualityComparer<string> comparer, StringDifferenceSettings? settings)
-				=> failure;
-
-			public string GetTypeString() => throw new NotSupportedException();
-
-			public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-				=> throw new NotSupportedException();
-
-			public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
+			private sealed class Matcher : StringMatcher
 			{
-				// Every option is accepted.
+				public override ValueTask<MatchResult> Match(string? actual, string? expected)
+					=> new(MatchResult.From(actual == expected));
 			}
+		}
 
-			public void ValidateExpected(string? expected)
+		private sealed class DelegatingMatchType(Func<ValueTask<MatchResult>> match, string failure = "")
+			: StringMatchType
+		{
+			public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+				=> new Matcher(match, failure);
+
+			public override MatchPhrase Phrase => MatchPhrase.EqualTo;
+
+			private sealed class Matcher(Func<ValueTask<MatchResult>> match, string failure) : StringMatcher
 			{
-				// Every expected value is accepted.
+				public override ValueTask<MatchResult> Match(string? actual, string? expected)
+					=> match();
+
+				public override string GetFailure(string it, ExpectationGrammars grammars, string? actual,
+					string? expected, MatchResult result, StringDifferenceSettings? differenceSettings)
+					=> failure;
+
+				public override void AppendContexts(ResultContextCollector contexts)
+					=> throw new NotSupportedException();
 			}
 		}
 
 		/// <remarks>
-		///     Records what it is asked to validate and to compare, and rejects what the delegates return an exception
-		///     for.
+		///     Supports the <paramref name="supportedSettings" />, records what it is asked to validate and to compare, and
+		///     rejects what the delegate returns an exception for.
 		/// </remarks>
 		private sealed class ValidatingMatchType(
-			Func<bool, IEqualityComparer<string>?, Exception?>? rejectOptions = null,
+			StringMatchSettingKinds supportedSettings = StringMatchSettingKinds.IgnoreCase |
+			                                            StringMatchSettingKinds.Comparer |
+			                                            StringMatchSettingKinds.WhiteSpace,
 			Func<string?, Exception?>? rejectExpected = null)
-			: IStringMatchType
+			: StringMatchType
 		{
-			public List<(bool IgnoreCase, IEqualityComparer<string>? Comparer)> ValidatedOptions { get; } = [];
-
 			public List<string?> ValidatedExpected { get; } = [];
 
 			public List<string?> ComparedExpected { get; } = [];
 
-			public bool InspectsSubject => false;
+			public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+				=> new Matcher(ComparedExpected);
 
-			public ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
-				IEqualityComparer<string>? comparer)
-			{
-				ComparedExpected.Add(expected);
-				return new ValueTask<StringMatchResult>(true);
-			}
+			public override MatchPhrase Phrase { get; } = MatchPhrase.EqualTo.WithName(" as custom");
 
-			public void AppendContexts(ResultContextCollector contexts)
-				=> throw new NotSupportedException();
+			public override StringMatchSettingKinds SupportedSettings => supportedSettings;
 
-			public string GetExpectation(string? expected, ExpectationGrammars grammars)
-				=> throw new NotSupportedException();
-
-			public string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase,
-				IEqualityComparer<string> comparer, StringDifferenceSettings? settings)
-				=> throw new NotSupportedException();
-
-			public string GetTypeString() => " as custom";
-
-			public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-				=> (ignoreCase ? " ignoring case" : "") + (comparer is null ? "" : " using a comparer");
-
-			public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
-			{
-				ValidatedOptions.Add((ignoreCase, comparer));
-				if (rejectOptions?.Invoke(ignoreCase, comparer) is { } exception)
-				{
-					throw exception;
-				}
-			}
-
-			public void ValidateExpected(string? expected)
+			public override void ValidateExpected(string? expected, string parameterName)
 			{
 				ValidatedExpected.Add(expected);
 				if (rejectExpected?.Invoke(expected) is { } exception)
 				{
 					throw exception;
 				}
+			}
+
+			private sealed class Matcher(List<string?> comparedExpected) : StringMatcher
+			{
+				public override ValueTask<MatchResult> Match(string? actual, string? expected)
+				{
+					comparedExpected.Add(expected);
+					return new ValueTask<MatchResult>(MatchResult.Match);
+				}
+
+				public override string GetFailure(string it, ExpectationGrammars grammars, string? actual,
+					string? expected, MatchResult result, StringDifferenceSettings? differenceSettings)
+					=> throw new NotSupportedException();
+
+				public override void AppendContexts(ResultContextCollector contexts)
+					=> throw new NotSupportedException();
 			}
 		}
 

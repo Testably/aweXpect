@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
 
@@ -8,7 +7,7 @@ namespace aweXpect.Options;
 
 public partial class StringEqualityOptions
 {
-	private static readonly IStringMatchType ContainingMatch = new ContainingMatchType();
+	private static readonly StringMatchType ContainingMatch = new ContainingMatchType();
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a substring that must be contained in the actual string.
@@ -20,8 +19,12 @@ public partial class StringEqualityOptions
 		return this;
 	}
 
-	private sealed class ContainingMatchType : IStringMatchType
+	private sealed class ContainingMatchType : BuiltInMatchType
 	{
+		private static readonly MatchPhrase SharedPhrase =
+			MatchPhrase.Verb("contains", "contain", "containing")
+				.WithName(" containing");
+
 		private static bool Contains(string actual, string expected, IEqualityComparer<string> comparer)
 		{
 			if (actual.Length < expected.Length)
@@ -43,23 +46,34 @@ public partial class StringEqualityOptions
 
 		#region IMatchType Members
 
-		/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
-		public bool InspectsSubject => true;
+		/// <inheritdoc />
+		public override MatchPhrase Phrase => SharedPhrase;
 
-		/// <inheritdoc
-		///     cref="IStringMatchType.GetExtendedFailure(string, string?, string?, bool, IEqualityComparer{string}, StringDifferenceSettings?)" />
-		public string GetExtendedFailure(string it, string? actual, string? expected,
+		/// <inheritdoc />
+		public override bool InspectsSubject => true;
+
+		/// <inheritdoc />
+		public override StringMatchAnchors Anchors => StringMatchAnchors.None;
+
+		/// <inheritdoc />
+		public override StringMatchSettingKinds SupportedSettings
+			=> StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.Comparer |
+			   StringMatchSettingKinds.WhiteSpace;
+
+		/// <inheritdoc />
+		public override string GetExtendedFailure(string it, ExpectationGrammars grammars, string? actual,
+			string? expected,
 			bool ignoreCase,
 			IEqualityComparer<string> comparer,
 			StringDifferenceSettings? settings)
 		{
 			if (string.IsNullOrEmpty(actual) || expected == null)
 			{
-				return $"{it} was {Formatter.Format(actual)}";
+				return $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual)}";
 			}
 
 			string contains =
-				$"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
+				$"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
 			if (actual.Length < expected.Length)
 			{
 				contains +=
@@ -69,79 +83,27 @@ public partial class StringEqualityOptions
 			return contains;
 		}
 
-		/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-		public ValueTask<StringMatchResult>
-			AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+		/// <inheritdoc />
+		public override MatchResult
+			Compare(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 		{
 			if (actual is null && expected is null)
 			{
-				return new ValueTask<StringMatchResult>(true);
+				return MatchResult.From(true);
 			}
 
 			if (actual is null || expected is null)
 			{
-				return new ValueTask<StringMatchResult>(false);
+				return MatchResult.From(false);
 			}
 
 			if (comparer is not null)
 			{
-				return new ValueTask<StringMatchResult>(Contains(actual, expected, comparer));
+				return MatchResult.From(Contains(actual, expected, comparer));
 			}
 
-			return new ValueTask<StringMatchResult>(actual.Contains(expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
-		}
-
-		/// <inheritdoc cref="IStringMatchType.AppendContexts(ResultContextCollector)" />
-		public void AppendContexts(ResultContextCollector contexts)
-		{
-			// The options are already part of the expectation.
-		}
-
-		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />
-		public string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> (grammars.IsActive(), grammars.IsNegated()) switch
-			{
-				(true, false) =>
-					$"{grammars.Verb("contains", "contain")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, false) =>
-					$"containing {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(true, true) =>
-					$"{grammars.Verb("does not contain", "do not contain")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, true) =>
-					$"not containing {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-			};
-
-		/// <inheritdoc cref="IStringMatchType.GetTypeString()" />
-		public string GetTypeString()
-			=> " containing";
-
-		/// <inheritdoc cref="IStringMatchType.GetOptionString(bool, IEqualityComparer{string})" />
-		public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			if (comparer != null)
-			{
-				return $" using {Formatter.Format(comparer.GetType())}";
-			}
-
-			if (ignoreCase)
-			{
-				return " ignoring case";
-			}
-
-			return "";
-		}
-
-		/// <inheritdoc cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />
-		public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			// StringEqualityOptions rejects the options that a built-in match type cannot honour.
-		}
-
-		/// <inheritdoc cref="IStringMatchType.ValidateExpected(string?)" />
-		public void ValidateExpected(string? expected)
-		{
-			// StringEqualityOptions validates the expected value of a built-in match type.
+			return MatchResult.From(actual.Contains(expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 		}
 
 		#endregion

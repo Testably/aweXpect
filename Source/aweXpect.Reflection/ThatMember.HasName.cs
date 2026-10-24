@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -37,25 +38,32 @@ public static partial class ThatMember
 		string expected,
 		StringEqualityOptions options)
 		: ConstraintResult.WithNotNullValue<TMember>(it, grammars),
-			IAsyncConstraint<TMember>
+			IAsyncContextConstraint<TMember>
 		where TMember : MemberInfo?
 	{
-		public async ValueTask<ConstraintResult> IsMetBy(TMember actual, CancellationToken cancellationToken)
+		private StringEqualityOptions? _evaluationOptions;
+		private MatchResult _matchResult;
+
+		public async ValueTask<ConstraintResult> IsMetBy(TMember actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome = await options.AreConsideredEqual(actual?.Name, expected) ? Outcome.Success : Outcome.Failure;
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.Name, expected);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AppendContexts(contexts);
+			=> (_evaluationOptions ?? options).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("has name ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedMemberFailure(It, "name", Grammars, Actual?.Name, expected));
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It, "name", Grammars,
+				Actual?.Name, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalExpectation(stringBuilder, indentation);

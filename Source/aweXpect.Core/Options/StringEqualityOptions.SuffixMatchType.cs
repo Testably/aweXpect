@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
 using aweXpect.Customization;
@@ -9,7 +8,7 @@ namespace aweXpect.Options;
 
 public partial class StringEqualityOptions
 {
-	private static readonly IStringMatchType SuffixMatch = new SuffixMatchType();
+	private static readonly StringMatchType SuffixMatch = new SuffixMatchType();
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> to be a suffix for the actual string.
@@ -21,8 +20,13 @@ public partial class StringEqualityOptions
 		return this;
 	}
 
-	private sealed class SuffixMatchType : IStringMatchType
+	private sealed class SuffixMatchType : BuiltInMatchType
 	{
+		private static readonly MatchPhrase SharedPhrase =
+			MatchPhrase.Verb("ends with", "end with", "ending with")
+				.WithName(" as suffix")
+				.WithPattern("suffix", "suffix");
+
 		private static int GetIndexOfFirstMatch(string stringWithLeadingWhitespace, string value,
 			IEqualityComparer<string> comparer)
 		{
@@ -42,23 +46,49 @@ public partial class StringEqualityOptions
 
 		#region IMatchType Members
 
-		/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
-		public bool InspectsSubject => true;
+		/// <inheritdoc />
+		public override MatchPhrase Phrase => SharedPhrase;
 
-		/// <inheritdoc
-		///     cref="IStringMatchType.GetExtendedFailure(string, string?, string?, bool, IEqualityComparer{string}, StringDifferenceSettings?)" />
-		public string GetExtendedFailure(string it, string? actual, string? expected,
+		/// <inheritdoc />
+		public override bool InspectsSubject => true;
+
+		/// <inheritdoc />
+		public override StringMatchAnchors Anchors => StringMatchAnchors.End;
+
+		/// <inheritdoc />
+		public override StringMatchSettingKinds SupportedSettings
+			=> StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.Comparer |
+			   StringMatchSettingKinds.WhiteSpace;
+
+		/// <inheritdoc />
+		public override bool SuggestsIgnoringNewlineStyle => true;
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     An empty suffix matches every value, so that the expectation would say nothing about the subject.
+		/// </remarks>
+		public override void ValidateExpected(string? expected, string parameterName)
+		{
+			if (expected?.Length == 0)
+			{
+				throw CreateEmptyPatternException(parameterName, "suffix");
+			}
+		}
+
+		/// <inheritdoc />
+		public override string GetExtendedFailure(string it, ExpectationGrammars grammars, string? actual,
+			string? expected,
 			bool ignoreCase,
 			IEqualityComparer<string> comparer,
 			StringDifferenceSettings? settings)
 		{
 			if (string.IsNullOrEmpty(actual) || expected == null)
 			{
-				return $"{it} was {Formatter.Format(actual)}";
+				return $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual)}";
 			}
 
 			string prefix =
-				$"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
+				$"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
 			StringDifference stringDifference = new(actual, expected, comparer,
 				settings.WithMatchType(StringDifference.MatchType.Suffix));
 			int indexOfFirstMismatch = stringDifference.IndexOfFirstMismatch(StringDifference.MatchType.Suffix);
@@ -94,75 +124,23 @@ public partial class StringEqualityOptions
 			return $"{prefix}, which {stringDifference}";
 		}
 
-		/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-		public ValueTask<StringMatchResult>
-			AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+		/// <inheritdoc />
+		public override MatchResult
+			Compare(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 		{
 			if (actual is null || expected is null)
 			{
-				return new ValueTask<StringMatchResult>(false);
+				return MatchResult.From(false);
 			}
 
 			if (comparer is not null)
 			{
-				return new ValueTask<StringMatchResult>(actual.Length >= expected.Length &&
+				return MatchResult.From(actual.Length >= expected.Length &&
 				                                        AreEqualByComparer(comparer, actual[^expected.Length..], expected));
 			}
 
-			return new ValueTask<StringMatchResult>(actual.EndsWith(expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
-		}
-
-		/// <inheritdoc cref="IStringMatchType.AppendContexts(ResultContextCollector)" />
-		public void AppendContexts(ResultContextCollector contexts)
-		{
-			// The options are already part of the expectation.
-		}
-
-		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />
-		public string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> (grammars.IsActive(), grammars.IsNegated()) switch
-			{
-				(true, false) =>
-					$"{grammars.Verb("ends", "end")} with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, false) =>
-					$"ending with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(true, true) =>
-					$"{grammars.Verb("does not end", "do not end")} with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, true) =>
-					$"not ending with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-			};
-
-		/// <inheritdoc cref="IStringMatchType.GetTypeString()" />
-		public string GetTypeString()
-			=> " as suffix";
-
-		/// <inheritdoc cref="IStringMatchType.GetOptionString(bool, IEqualityComparer{string})" />
-		public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			if (comparer != null)
-			{
-				return $" using {Formatter.Format(comparer.GetType())}";
-			}
-
-			if (ignoreCase)
-			{
-				return " ignoring case";
-			}
-
-			return "";
-		}
-
-		/// <inheritdoc cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />
-		public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			// StringEqualityOptions rejects the options that a built-in match type cannot honour.
-		}
-
-		/// <inheritdoc cref="IStringMatchType.ValidateExpected(string?)" />
-		public void ValidateExpected(string? expected)
-		{
-			// StringEqualityOptions validates the expected value of a built-in match type.
+			return MatchResult.From(actual.EndsWith(expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 		}
 
 		#endregion

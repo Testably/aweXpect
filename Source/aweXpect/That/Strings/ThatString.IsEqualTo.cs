@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -48,16 +49,22 @@ public static partial class ThatString
 		string? expected,
 		StringEqualityOptions options)
 		: ConstraintResult.WithEqualToValue<string?>(it, grammars, expected is null),
-			IAsyncConstraint<string?>
+			IAsyncContextConstraint<string?>
 	{
+		private StringEqualityOptions? _evaluationOptions;
+		private MatchResult _matchResult;
+
 		/// <remarks>
 		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, cannot answer for a
 		///     <see langword="null" /> subject, because it has no content.
 		/// </remarks>
-		public async ValueTask<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(string? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome = await options.AreConsideredEqual(actual, expected) ? Outcome.Success : Outcome.Failure;
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			if (actual is null && options.InspectsSubject)
 			{
 				Outcome = Outcome.FailureBothWays;
@@ -71,26 +78,26 @@ public static partial class ThatString
 		{
 			if (!string.IsNullOrEmpty(Actual))
 			{
-				contexts.AddStringDifferencesContext(Actual, expected, options, Grammars);
+				contexts.AddStringDifferencesContext(Actual, expected, _evaluationOptions ?? options, Grammars);
 				contexts.AddStringContext("Actual", Actual, this);
 				contexts.AddStringContext("Expected", expected, this);
 			}
 
-			options.AppendContexts(contexts);
+			(_evaluationOptions ?? options).AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected)
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult)
 				.Indent(indentation, false));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected)
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult)
 				.Indent(indentation, false));
 	}
 }

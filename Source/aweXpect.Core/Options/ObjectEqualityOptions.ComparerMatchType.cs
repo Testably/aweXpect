@@ -37,97 +37,62 @@ public partial class ObjectEqualityOptions<TSubject>
 		return this;
 	}
 
-	private sealed class TypedComparerMatchType(IEqualityComparer<TSubject> comparer) : IObjectMatchType
+	private sealed class TypedComparerMatchType : ObjectMatchType<TSubject>
 	{
-		#region IEquality Members
+		private readonly ObjectMatcher<TSubject> _matcher;
 
-		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TSubject, TExpected}(TSubject, TExpected)" />
-		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-			=> new(IsEqual(actual, expected));
-
-		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqualWithExplanation{TActual, TExpected}(TActual, TExpected)" />
-		public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
-			TExpected expected)
-			=> ObjectEqualityOptions.ExplainWithActualValue(IsEqual(actual, expected));
-
-		/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
-		public string GetExpectation(string expected, ExpectationGrammars grammars)
-			=> $"{grammars.Verb("is", "are")} {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equal to {expected}" + ToString();
-
-		/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
-		public void AppendContexts(ResultContextCollector contexts)
+		public TypedComparerMatchType(IEqualityComparer<TSubject> comparer)
 		{
-			// A comparison with a comparer has no options to explain.
+			_matcher = new Matcher(comparer);
+			string name = $" using {Formatter.Format(comparer.GetType())}";
+			Phrase = MatchPhrase.EqualTo.WithSuffix(name).WithName(name);
 		}
 
-		/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
-		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
-			=> ObjectEqualityOptions.GetItemExpectation(expected, itemNoun, comparison) + ToString();
+		/// <inheritdoc />
+		public override MatchPhrase Phrase { get; }
 
-		/// <inheritdoc cref="object.ToString()" />
-		public override string ToString()
-			=> $" using {Formatter.Format(comparer.GetType())}";
-
-		private bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
-			=> TryCast(actual, out TSubject typedActual) &&
-			   TryCast(expected, out TSubject typedExpected) &&
-			   UserCode.Invoke(static values => values.Comparer.Equals(values.Actual, values.Expected),
-				   (Comparer: comparer, Actual: typedActual, Expected: typedExpected), "the comparer");
+		/// <inheritdoc />
+		public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
+			=> _matcher;
 
 		/// <remarks>
-		///     A <see langword="null" /> value is not matched by a type pattern, but is a valid value whenever
-		///     <typeparamref name="TSubject" /> admits it.
+		///     A value that is not a <typeparamref name="TSubject" /> never matches.
 		/// </remarks>
-		private static bool TryCast<TValue>(TValue value, out TSubject typedValue)
+		private sealed class Matcher(IEqualityComparer<TSubject> comparer) : ObjectMatcher<TSubject, TSubject>
 		{
-			if (value is TSubject typed)
-			{
-				typedValue = typed;
-				return true;
-			}
-
-			typedValue = default!;
-			return value is null && default(TSubject) is null;
+			/// <inheritdoc />
+			public override ValueTask<MatchResult> Match(TSubject actual, TSubject expected)
+				=> new(MatchResult.From(UserCode.Invoke(
+					static values => values.Comparer.Equals(values.Actual, values.Expected),
+					(Comparer: comparer, Actual: actual, Expected: expected), "the comparer")));
 		}
-
-		#endregion
 	}
 
-	private sealed class ComparerMatchType(IEqualityComparer<object> comparer) : IObjectMatchType
+	private sealed class ComparerMatchType : ObjectMatchType<TSubject>
 	{
-		#region IEquality Members
+		private readonly ObjectMatcher<TSubject> _matcher;
 
-		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TSubject, TExpected}(TSubject, TExpected)" />
-		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-			=> new(IsEqual(actual, expected));
-
-		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqualWithExplanation{TActual, TExpected}(TActual, TExpected)" />
-		public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
-			TExpected expected)
-			=> ObjectEqualityOptions.ExplainWithActualValue(IsEqual(actual, expected));
-
-		/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
-		public string GetExpectation(string expected, ExpectationGrammars grammars)
-			=> $"{grammars.Verb("is", "are")} {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equal to {expected}" + ToString();
-
-		/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
-		public void AppendContexts(ResultContextCollector contexts)
+		public ComparerMatchType(IEqualityComparer<object> comparer)
 		{
-			// A comparison with a comparer has no options to explain.
+			_matcher = new Matcher(comparer);
+			string name = $" using {Formatter.Format(comparer.GetType())}";
+			Phrase = MatchPhrase.EqualTo.WithSuffix(name).WithName(name);
 		}
 
-		/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
-		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
-			=> ObjectEqualityOptions.GetItemExpectation(expected, itemNoun, comparison) + ToString();
+		/// <inheritdoc />
+		public override MatchPhrase Phrase { get; }
 
-		/// <inheritdoc cref="object.ToString()" />
-		public override string ToString()
-			=> $" using {Formatter.Format(comparer.GetType())}";
+		/// <inheritdoc />
+		public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
+			=> _matcher;
 
-		private bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
-			=> UserCode.Invoke(static values => values.Comparer.Equals(values.Actual, values.Expected),
-				(Comparer: comparer, Actual: (object?)actual, Expected: (object?)expected), "the comparer");
-
-		#endregion
+		private sealed class Matcher(IEqualityComparer<object> comparer) : ObjectMatcher<TSubject>
+		{
+			/// <inheritdoc />
+			public override ValueTask<MatchResult> Match<TExpected>(TSubject actual, TExpected expected)
+				=> new(MatchResult.From(UserCode.Invoke(
+					static values => values.Comparer.Equals(values.Actual, values.Expected),
+					(Comparer: comparer, Actual: (object?)actual, Expected: (object?)expected), "the comparer")));
+		}
 	}
 }

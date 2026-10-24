@@ -104,7 +104,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.Containing();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected, MatchResult.NoMatch);
 
 			await That(result).IsEqualTo(expectedFailure);
 		}

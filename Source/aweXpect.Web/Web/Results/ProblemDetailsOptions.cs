@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 
@@ -116,45 +118,76 @@ internal class ProblemDetailsOptions
 	}
 
 	/// <summary>
-	///     Checks if the <paramref name="title" /> matches the expected <see cref="Title" />.
+	///     Returns the options to use for the comparisons of the evaluation in the <paramref name="context" />.
+	/// </summary>
+	public ProblemDetailsOptions ForEvaluation(IEvaluationContext context, CancellationToken cancellationToken)
+	{
+		StringEqualityOptions? titleOptions = _titleOptions?.ForEvaluation(context, cancellationToken);
+		StringEqualityOptions? detailOptions = _detailOptions?.ForEvaluation(context, cancellationToken);
+		StringEqualityOptions? instanceOptions = _instanceOptions?.ForEvaluation(context, cancellationToken);
+		if (ReferenceEquals(titleOptions, _titleOptions) && ReferenceEquals(detailOptions, _detailOptions) &&
+		    ReferenceEquals(instanceOptions, _instanceOptions))
+		{
+			return this;
+		}
+
+		ProblemDetailsOptions evaluationOptions = new()
+		{
+			Title = Title,
+			Status = Status,
+			Detail = Detail,
+			Instance = Instance,
+			_titleOptions = titleOptions,
+			_detailOptions = detailOptions,
+			_instanceOptions = instanceOptions,
+		};
+		evaluationOptions._parts.AddRange(_parts);
+		return evaluationOptions;
+	}
+
+	/// <summary>
+	///     Describes how the <paramref name="title" /> differs from the expected <see cref="Title" />, or returns
+	///     <see langword="null" /> when it matches.
 	/// </summary>
 	/// <remarks>
 	///     Any <paramref name="title" /> matches when no <see cref="Title" /> is expected.
 	/// </remarks>
-	public ValueTask<bool>
-		IsTitleConsideredEqualTo(string? title)
-		=> _titleOptions is null ? new ValueTask<bool>(true) : _titleOptions.AreConsideredEqual(title, Title);
+	public ValueTask<string?> GetTitleFailure(string it, ExpectationGrammars grammars, string? title)
+		=> GetFailure(_titleOptions, it, "title", grammars, title, Title);
 
 	/// <summary>
-	///     Checks if the <paramref name="detail" /> matches the expected <see cref="Detail" />.
+	///     Describes how the <paramref name="detail" /> differs from the expected <see cref="Detail" />, or returns
+	///     <see langword="null" /> when it matches.
 	/// </summary>
 	/// <remarks>
 	///     Any <paramref name="detail" /> matches when no <see cref="Detail" /> is expected.
 	/// </remarks>
-	public ValueTask<bool>
-		IsDetailConsideredEqualTo(string? detail)
-		=> _detailOptions is null ? new ValueTask<bool>(true) : _detailOptions.AreConsideredEqual(detail, Detail);
+	public ValueTask<string?> GetDetailFailure(string it, ExpectationGrammars grammars, string? detail)
+		=> GetFailure(_detailOptions, it, "detail", grammars, detail, Detail);
 
 	/// <summary>
-	///     Checks if the <paramref name="instance" /> matches the expected <see cref="Instance" />.
+	///     Describes how the <paramref name="instance" /> differs from the expected <see cref="Instance" />, or returns
+	///     <see langword="null" /> when it matches.
 	/// </summary>
 	/// <remarks>
 	///     Any <paramref name="instance" /> matches when no <see cref="Instance" /> is expected.
 	/// </remarks>
-	public ValueTask<bool>
-		IsInstanceConsideredEqualTo(string? instance)
-		=> _instanceOptions is null
-			? new ValueTask<bool>(true)
-			: _instanceOptions.AreConsideredEqual(instance, Instance);
+	public ValueTask<string?> GetInstanceFailure(string it, ExpectationGrammars grammars, string? instance)
+		=> GetFailure(_instanceOptions, it, "instance", grammars, instance, Instance);
 
-	internal string GetTitleFailure(string it, ExpectationGrammars grammars, string? title)
-		=> _titleOptions!.GetExtendedMemberFailure(it, "title", grammars, title, Title);
+	private static async ValueTask<string?> GetFailure(StringEqualityOptions? options, string it, string member,
+		ExpectationGrammars grammars, string? actual, string? expected)
+	{
+		if (options is null)
+		{
+			return null;
+		}
 
-	internal string GetDetailFailure(string it, ExpectationGrammars grammars, string? detail)
-		=> _detailOptions!.GetExtendedMemberFailure(it, "detail", grammars, detail, Detail);
-
-	internal string GetInstanceFailure(string it, ExpectationGrammars grammars, string? instance)
-		=> _instanceOptions!.GetExtendedMemberFailure(it, "instance", grammars, instance, Instance);
+		MatchResult result = await options.MatchWithExplanation(actual, expected);
+		return result.IsMatch
+			? null
+			: options.GetExtendedMemberFailure(it, member, grammars, actual, expected, result);
+	}
 
 	internal void AppendContexts(ResultContextCollector contexts)
 	{
