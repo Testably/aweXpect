@@ -34,19 +34,19 @@ but it could not be parsed: Unexpected end of file has occurred. The following e
 
 ## Overview
 
-| Expectation                                                        | Subject                 | Summary                                                      |
-|--------------------------------------------------------------------|-------------------------|--------------------------------------------------------------|
-| [`IsEqualTo(…).AsXml()`](./01-strings.md#string-comparison-as-xml) | `string`                | equal to the expected XML, compared by content               |
-| [`IsValidXml`](./01-strings.md#validation)                         | `string`                | can be parsed as a well-formed XML document                  |
-| [`IsValidXmlMatching`](./01-strings.md#validation)                 | `string`                | valid XML that matches the expected XML                      |
-| [`IsValidXmlMatchingExactly`](./01-strings.md#validation)          | `string`                | valid XML that matches the expected XML exactly              |
-| [`Matches`](./02-matching.md#elements-and-documents)               | `XElement`, `XDocument` | matches the expected XML, additional nodes allowed           |
-| [`MatchesExactly`](./02-matching.md#elements-and-documents)        | `XElement`, `XDocument` | matches the expected XML exactly                             |
-| [`HasAttribute`](./03-navigation.md#attributes)                    | `XElement`, `XDocument` | has the attribute, optionally with expectations on its value |
-| [`DoesNotHaveAttribute`](./03-navigation.md#attributes)            | `XElement`, `XDocument` | does not have the attribute                                  |
-| [`HasElement`](./03-navigation.md#child-elements)                  | `XElement`, `XDocument` | has the child element, optionally with expectations on it    |
-| [`DoesNotHaveElement`](./03-navigation.md#child-elements)          | `XElement`, `XDocument` | does not have the child element                              |
-| [`HasValue`](./03-navigation.md#values)                            | `XElement`, `XDocument` | the value satisfies the expectations                         |
+| Expectation                                                        | Subject                 | Summary                                                              |
+|--------------------------------------------------------------------|-------------------------|----------------------------------------------------------------------|
+| [`IsEqualTo(…).AsXml()`](./01-strings.md#string-comparison-as-xml) | `string`                | equal to the expected XML, compared by content                       |
+| [`IsValidXml`](./01-strings.md#validation)                         | `string`                | a well-formed XML document, optionally with expectations on its root |
+| [`IsValidXmlMatching`](./01-strings.md#validation)                 | `string`                | valid XML that matches the expected XML                              |
+| [`IsValidXmlMatchingExactly`](./01-strings.md#validation)          | `string`                | valid XML that matches the expected XML exactly                      |
+| [`Matches`](./02-matching.md#elements-and-documents)               | `XElement`, `XDocument` | matches the expected XML, additional nodes allowed                   |
+| [`MatchesExactly`](./02-matching.md#elements-and-documents)        | `XElement`, `XDocument` | matches the expected XML exactly                                     |
+| [`HasAttribute`](./03-navigation.md#attributes)                    | `XElement`, `XDocument` | has the attribute, optionally with expectations on its value         |
+| [`DoesNotHaveAttribute`](./03-navigation.md#attributes)            | `XElement`, `XDocument` | does not have the attribute                                          |
+| [`HasElement`](./03-navigation.md#child-elements)                  | `XElement`, `XDocument` | has the child element, optionally with expectations on it            |
+| [`DoesNotHaveElement`](./03-navigation.md#child-elements)          | `XElement`, `XDocument` | does not have the child element                                      |
+| [`HasValue`](./03-navigation.md#values)                            | `XElement`, `XDocument` | the value satisfies the expectations                                 |
 
 The comparisons can be relaxed with the options `IgnoringAdditionalNodes()`, `IgnoringElementOrder()` and
 `IgnoringMember(path)` or `Ignoring(path => …)`, see [Matching XML](./02-matching.md#options).

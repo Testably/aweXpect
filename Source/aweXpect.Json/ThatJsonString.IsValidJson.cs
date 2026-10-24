@@ -5,8 +5,8 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Customization;
+using aweXpect.Helpers;
 using aweXpect.Json;
-using aweXpect.Json.Results;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -20,9 +20,36 @@ public static partial class ThatJsonString
 	///     Verifies that the subject is a valid JSON string.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static JsonWhichResult IsValidJson(
+	public static AndOrResult<string, IThat<string?>> IsValidJson(
 		this IThat<string?> subject,
 		Func<JsonDocumentOptions, JsonDocumentOptions>? options = null)
+		=> new(AddIsValidJsonConstraint(subject, GetDocumentOptions(options)), subject);
+
+	/// <summary>
+	///     Verifies that the subject is a valid JSON string whose root <see cref="JsonElement" /> satisfies the
+	///     <paramref name="expectations" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<string, IThat<string?>> IsValidJson(
+		this IThat<string?> subject,
+		Action<IThatSubject<JsonElement>> expectations,
+		Func<JsonDocumentOptions, JsonDocumentOptions>? options = null)
+	{
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
+		JsonDocumentOptions documentOptions = GetDocumentOptions(options);
+		return new AndOrResult<string, IThat<string?>>(AddIsValidJsonConstraint(subject, documentOptions)
+				.ForMember(MemberAccessor<string, JsonElement>.FromFunc(jsonString =>
+					{
+						using JsonDocument jsonDocument = JsonDocument.Parse(jsonString, documentOptions);
+						return jsonDocument.RootElement.Clone();
+					}, "it"),
+					(_, stringBuilder) => stringBuilder.Append(" which "))
+				.AddExpectations(expectations,
+					static (expectations, e) => expectations(new ThatSubject<JsonElement>(e))),
+			subject);
+	}
+
+	private static JsonDocumentOptions GetDocumentOptions(Func<JsonDocumentOptions, JsonDocumentOptions>? options)
 	{
 		JsonDocumentOptions defaultOptions = Customize.aweXpect.Json().DefaultJsonDocumentOptions.Get();
 		if (options != null)
@@ -30,10 +57,12 @@ public static partial class ThatJsonString
 			defaultOptions = options(defaultOptions);
 		}
 
-		return new JsonWhichResult(subject.Get().ExpectationBuilder.AddConstraint(defaultOptions,
-				static (o, it, grammar) => new IsValidJsonConstraint(it, grammar, o)),
-			subject, defaultOptions);
+		return defaultOptions;
 	}
+
+	private static ExpectationBuilder AddIsValidJsonConstraint(IThat<string?> subject, JsonDocumentOptions options)
+		=> subject.Get().ExpectationBuilder.AddConstraint(options,
+			static (o, it, grammar) => new IsValidJsonConstraint(it, grammar, o));
 
 	private sealed class IsValidJsonConstraint(string it, ExpectationGrammars grammars, JsonDocumentOptions options)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),

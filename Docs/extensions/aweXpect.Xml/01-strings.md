@@ -2,12 +2,12 @@
 
 Describes the possible expectations for strings that contain XML.
 
-| Expectation                                         | Negated                   | Summary                                         |
-|-----------------------------------------------------|---------------------------|-------------------------------------------------|
-| [`IsEqualTo(…).AsXml()`](#string-comparison-as-xml) | `IsNotEqualTo(…).AsXml()` | equal to the expected XML, compared by content  |
-| [`IsValidXml`](#validation)                         |                           | can be parsed as a well-formed XML document     |
-| [`IsValidXmlMatching`](#validation)                 |                           | valid XML that matches the expected XML         |
-| [`IsValidXmlMatchingExactly`](#validation)          |                           | valid XML that matches the expected XML exactly |
+| Expectation                                         | Negated                   | Summary                                                              |
+|-----------------------------------------------------|---------------------------|----------------------------------------------------------------------|
+| [`IsEqualTo(…).AsXml()`](#string-comparison-as-xml) | `IsNotEqualTo(…).AsXml()` | equal to the expected XML, compared by content                       |
+| [`IsValidXml`](#validation)                         |                           | a well-formed XML document, optionally with expectations on its root |
+| [`IsValidXmlMatching`](#validation)                 |                           | valid XML that matches the expected XML                              |
+| [`IsValidXmlMatchingExactly`](#validation)          |                           | valid XML that matches the expected XML exactly                      |
 
 ## String comparison as XML
 
@@ -137,7 +137,7 @@ You can add further expectations on the root
 ```csharp
 string track = """<track title="Let It Be" artist="The Beatles" />""";
 
-await Expect.That(track).IsValidXml().Which(root => root.Matches("""<track title="Let It Be" />"""));
+await Expect.That(track).IsValidXml(root => root.Matches("""<track title="Let It Be" />"""));
 ```
 
 The expectations are only verified when the string is valid XML. Like with

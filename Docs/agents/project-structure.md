@@ -109,9 +109,9 @@ table of `00-index.md`.
 
 ### aweXpect.Xml
 
-- `ThatXmlString.*` (`IsValidXml` with `.Which(...)`, `IsValidXmlMatching*`), `ThatXElement.*` and `ThatXDocument.*`
-  (`Matches`, `MatchesExactly`, `HasAttribute`, `HasElement` and their negations; a document delegates to its root
-  element). `XmlExtensions.AsXml()` is an `IStringMatchType` for `IsEqualTo(...)`.
+- `ThatXmlString.*` (`IsValidXml`, optionally with expectations on the root, `IsValidXmlMatching*`),
+  `ThatXElement.*` and `ThatXDocument.*` (`Matches`, `MatchesExactly`, `HasAttribute`, `HasElement` and their
+  negations; a document delegates to its root element). `XmlExtensions.AsXml()` is an `IStringMatchType` for `IsEqualTo(...)`.
 - `Xml/XmlComparer` compares by content: names by namespace and local name, attributes in any order, comments and
   processing instructions ignored, text and CDATA as one text. Differences are reported by path, e.g.
   `/order/item[2]/@price`. `MatchesXmlConstraint<TNode>` parses the expected XML once when the expectation is written;

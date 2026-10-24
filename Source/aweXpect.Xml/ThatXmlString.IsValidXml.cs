@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -7,7 +8,6 @@ using aweXpect.Core.Extending;
 using aweXpect.Formatting;
 using aweXpect.Helpers;
 using aweXpect.Results;
-using aweXpect.Xml.Results;
 using static aweXpect.Formatting.Format;
 
 namespace aweXpect;
@@ -26,11 +26,42 @@ public static partial class ThatXmlString
 	///     (XXE) or entity expansion attacks.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static XmlWhichResult IsValidXml(
+	public static AndOrResult<string, IThat<string?>> IsValidXml(
 		this IThat<string?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsValidXmlConstraint(it, grammars)),
-			subject);
+		=> new(AddIsValidXmlConstraint(subject), subject);
+
+	/// <summary>
+	///     Verifies that the subject is a well-formed XML document whose root <see cref="XElement" /> satisfies the
+	///     <paramref name="expectations" />.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="expectations" /> are only verified, when the <see langword="string" /> is valid XML.
+	///     Insignificant whitespace is dropped, like by <see cref="XDocument.Parse(string)" />.
+	///     <para />
+	///     A document with a document type definition (<c>&lt;!DOCTYPE ...&gt;</c>) is not valid, as DTD processing is
+	///     prohibited and external resources are never resolved, so that parsing is not exposed to XML external entity
+	///     (XXE) or entity expansion attacks.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static AndOrResult<string, IThat<string?>> IsValidXml(
+		this IThat<string?> subject,
+		Action<IThatSubject<XElement>> expectations)
+	{
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
+		return new AndOrResult<string, IThat<string?>>(AddIsValidXmlConstraint(subject, expectations), subject);
+	}
+
+	private static ExpectationBuilder AddIsValidXmlConstraint(IThat<string?> subject)
+		=> subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			=> new IsValidXmlConstraint(it, grammars));
+
+	private static ExpectationBuilder AddIsValidXmlConstraint(IThat<string?> subject,
+		Action<IThatSubject<XElement>> expectations)
+		=> AddIsValidXmlConstraint(subject)
+			.ForMember(MemberAccessor<XDocument, XElement>.FromFunc(document => document.Root!, "it"),
+				(_, stringBuilder) => stringBuilder.Append(" which "))
+			.AddExpectations(expectations,
+				static (expectations, e) => expectations(new ThatSubject<XElement>(e)));
 
 	private sealed class IsValidXmlConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
@@ -66,8 +97,8 @@ public static partial class ThatXmlString
 		}
 
 		/// <remarks>
-		///     Stores the parsed document, so that <see cref="XmlWhichResult.Which" /> does not parse the subject again and
-		///     is not applied to a subject that could not be parsed.
+		///     Stores the parsed document, so that the expectations on the root element do not parse the subject again and
+		///     are not applied to a subject that could not be parsed.
 		/// </remarks>
 		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 		{

@@ -47,7 +47,9 @@ namespace aweXpect
     public static class ThatXmlString
     {
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Xml.Results.XmlWhichResult IsValidXml(this aweXpect.Core.IThat<string?> subject) { }
+        public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsValidXml(this aweXpect.Core.IThat<string?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsValidXml(this aweXpect.Core.IThat<string?> subject, System.Action<aweXpect.Core.IThatSubject<System.Xml.Linq.XElement>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> IsValidXmlMatching(this aweXpect.Core.IThat<string?> subject, string expected, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -70,13 +72,6 @@ namespace aweXpect.Xml
         public static aweXpect.Xml.XmlOptions IgnoringAdditionalNodes(this aweXpect.Xml.XmlOptions @this, bool ignoreAdditionalNodes = true) { }
         public static aweXpect.Xml.XmlOptions IgnoringElementOrder(this aweXpect.Xml.XmlOptions @this, bool ignoreElementOrder = true) { }
         public static aweXpect.Xml.XmlOptions IgnoringMember(this aweXpect.Xml.XmlOptions @this, string memberToIgnore) { }
-    }
-}
-namespace aweXpect.Xml.Results
-{
-    public sealed class XmlWhichResult : aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>>
-    {
-        public aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> Which(System.Action<aweXpect.Core.IThat<System.Xml.Linq.XElement?>> expectations) { }
     }
 }
 

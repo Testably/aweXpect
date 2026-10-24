@@ -12,12 +12,12 @@ public static partial class ThatXmlString
 	///     <paramref name="expected" /> XML, ignoring additional attributes and child nodes of the subject.
 	/// </summary>
 	/// <remarks>
-	///     This is a shortcut for <c>IsValidXml().Which(root => root.Matches(expected, options))</c>.
+	///     This is a shortcut for <c>IsValidXml(root => root.Matches(expected, options))</c>.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<string?, IThat<string?>> IsValidXmlMatching(
 		this IThat<string?> subject,
 		string expected,
 		Func<XmlOptions, XmlOptions>? options = null)
-		=> subject.IsValidXml().Which(root => root.Matches(expected, options));
+		=> new(AddIsValidXmlConstraint(subject, root => root.Matches(expected, options)), subject);
 }

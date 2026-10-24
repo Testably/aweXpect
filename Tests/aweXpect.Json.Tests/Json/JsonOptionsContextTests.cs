@@ -909,7 +909,7 @@ public sealed class JsonOptionsContextTests
 			string subject = "[1, 3]";
 
 			async Task Act()
-				=> await That(subject).IsValidJson().Which(j => j.Matches([1, 2,]));
+				=> await That(subject).IsValidJson(j => j.Matches([1, 2,]));
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
