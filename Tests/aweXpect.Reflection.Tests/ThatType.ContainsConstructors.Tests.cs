@@ -21,6 +21,20 @@ public sealed partial class ThatType
 			}
 
 			[Test]
+			public async Task WhenCheckingTheResult_ShouldNotOfferDirectly()
+			{
+				async Task Act()
+				{
+					await That(typeof(Reflection.Results.TypeContainingMembersResult<,>))
+						.ContainsMethods(methods => methods.WithName("Directly")).Never().And
+						.ContainsMethods(methods => methods.WithName("IncludingObjectMembers")).Never();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("constructors are never inherited");
+			}
+
+			[Test]
 			public async Task WhenTypeContainsMatchingConstructor_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithMarkedConstructor);

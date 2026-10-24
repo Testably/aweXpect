@@ -23,28 +23,14 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
-			public async Task WhenTypesHaveAttributeIndirectly_ShouldSucceed()
+			public async Task WhenTypesHaveAttributeIndirectly_Directly_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types()
 					.Which(type => type == typeof(FooChildClass2));
 
 				async Task Act()
 				{
-					await That(subject).Have<FooAttribute>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task WhenTypesHaveAttributeIndirectly_WhenInheritIsFalse_ShouldFail()
-			{
-				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types()
-					.Which(type => type == typeof(FooChildClass2));
-
-				async Task Act()
-				{
-					await That(subject).Have<FooAttribute>(false);
+					await That(subject).Have<FooAttribute>().Directly();
 				}
 
 				await That(Act).Throws<FailException>()
@@ -58,6 +44,20 @@ public sealed partial class ThatTypes
 					               ThatTypes.Have.AttributeTests.FooChildClass2
 					             ]
 					             """);
+			}
+
+			[Test]
+			public async Task WhenTypesHaveAttributeIndirectly_ShouldSucceed()
+			{
+				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types()
+					.Which(type => type == typeof(FooChildClass2));
+
+				async Task Act()
+				{
+					await That(subject).Have<FooAttribute>();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Test]
@@ -75,28 +75,14 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
-			public async Task WhenTypesHaveMatchingAttributeIndirectly_ShouldSucceed()
+			public async Task WhenTypesHaveMatchingAttributeIndirectly_Directly_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types()
 					.Which(type => type == typeof(FooChildClass2));
 
 				async Task Act()
 				{
-					await That(subject).Have<FooAttribute>(foo => foo.Value == 2);
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task WhenTypesHaveMatchingAttributeIndirectly_WhenInheritIsFalse_ShouldFail()
-			{
-				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types()
-					.Which(type => type == typeof(FooChildClass2));
-
-				async Task Act()
-				{
-					await That(subject).Have<FooAttribute>(foo => foo.Value == 2, false);
+					await That(subject).Have<FooAttribute>(foo => foo.Value == 2).Directly();
 				}
 
 				await That(Act).Throws<FailException>()
@@ -110,6 +96,20 @@ public sealed partial class ThatTypes
 					               ThatTypes.Have.AttributeTests.FooChildClass2
 					             ]
 					             """);
+			}
+
+			[Test]
+			public async Task WhenTypesHaveMatchingAttributeIndirectly_ShouldSucceed()
+			{
+				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types()
+					.Which(type => type == typeof(FooChildClass2));
+
+				async Task Act()
+				{
+					await That(subject).Have<FooAttribute>(foo => foo.Value == 2);
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Test]
@@ -159,7 +159,6 @@ public sealed partial class ThatTypes
 					             ]
 					             """);
 			}
-
 			[AttributeUsage(AttributeTargets.Class)]
 			private class FooAttribute : Attribute
 			{
@@ -270,26 +269,13 @@ public sealed partial class ThatTypes
 				}
 
 				[Test]
-				public async Task WithInheritance_ShouldWorkCorrectly()
+				public async Task WithDirectly_ShouldWorkCorrectly()
 				{
 					List<Type> types = [typeof(FooChildClass),];
 
 					async Task Act()
 					{
-						await That(types).Have<FooAttribute>().OrHave<BarAttribute>();
-					}
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Test]
-				public async Task WithInheritanceFalse_ShouldWorkCorrectly()
-				{
-					List<Type> types = [typeof(FooChildClass),];
-
-					async Task Act()
-					{
-						await That(types).Have<FooAttribute>(false).OrHave<BarAttribute>(false);
+						await That(types).Have<FooAttribute>().OrHave<BarAttribute>().Directly();
 					}
 
 					await That(Act).Throws<FailException>()
@@ -303,6 +289,19 @@ public sealed partial class ThatTypes
 						               ThatTypes.Have.FooChildClass
 						             ]
 						             """);
+				}
+
+				[Test]
+				public async Task WithInheritance_ShouldWorkCorrectly()
+				{
+					List<Type> types = [typeof(FooChildClass),];
+
+					async Task Act()
+					{
+						await That(types).Have<FooAttribute>().OrHave<BarAttribute>();
+					}
+
+					await That(Act).DoesNotThrow();
 				}
 
 				[Test]
@@ -327,8 +326,7 @@ public sealed partial class ThatTypes
 						               ThatTypes.Have.FooClass2
 						             ]
 						             """);
-				}
-			}
+				}			}
 		}
 
 		public sealed class NegatedTests

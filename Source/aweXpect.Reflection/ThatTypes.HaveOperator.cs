@@ -7,7 +7,7 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
+using aweXpect.Reflection.Results;
 #if NET8_0_OR_GREATER
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,167 +20,235 @@ namespace aweXpect;
 public static partial class ThatTypes
 {
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare the
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> have the
 	///     <paramref name="operator" /> (e.g. <see cref="Operator.Addition" /> matches <c>op_Addition</c>).
 	/// </summary>
+	/// <remarks>
+	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
+	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> HaveOperator(
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> HaveOperator(
 		this IThat<IEnumerable<Type?>?> subject,
-		Operator @operator,
-		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, bool Inherit), IEnumerable<Type?>>((@operator, inherit),
+		Operator @operator)
+	{
+		ScopeOptions scope = new();
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, ScopeOptions Scope), IEnumerable<Type?>>((@operator, scope),
 				static (s, it, grammars)
-				=> new HaveOperatorConstraint(it, grammars, s.Operator, null, s.Inherit)),
-			subject);
+				=> new HaveOperatorConstraint(it, grammars, s.Operator, null, s.Scope)),
+			subject,
+			scope);
+	}
 
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare the
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> have the
 	///     <paramref name="operator" /> with an overload that takes the <paramref name="operand" />.
 	/// </summary>
+	/// <remarks>
+	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
+	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> HaveOperator(
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> HaveOperator(
 		this IThat<IEnumerable<Type?>?> subject,
 		Operator @operator,
-		Type operand,
-		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, bool Inherit), IEnumerable<Type?>>((@operator, operand, inherit),
+		Type operand)
+	{
+		ScopeOptions scope = new();
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, ScopeOptions Scope), IEnumerable<Type?>>((@operator, operand, scope),
 				static (s, it, grammars)
-				=> new HaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Inherit)),
-			subject);
+				=> new HaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Scope)),
+			subject,
+			scope);
+	}
 
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare the
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> have the
 	///     <paramref name="operator" /> with an overload that takes the operand <typeparamref name="TOperand" />.
 	/// </summary>
+	/// <remarks>
+	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
+	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> HaveOperator<TOperand>(
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> HaveOperator<TOperand>(
 		this IThat<IEnumerable<Type?>?> subject,
-		Operator @operator,
-		bool inherit = false)
-		=> subject.HaveOperator(@operator, typeof(TOperand), inherit);
+		Operator @operator)
+		=> subject.HaveOperator(@operator, typeof(TOperand));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare the
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> have the
 	///     <paramref name="operator" /> (e.g. <see cref="Operator.Addition" /> matches <c>op_Addition</c>).
 	/// </summary>
+	/// <remarks>
+	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
+	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> HaveOperator(
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> HaveOperator(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
-		Operator @operator,
-		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, bool Inherit), IAsyncEnumerable<Type?>>((@operator, inherit),
+		Operator @operator)
+	{
+		ScopeOptions scope = new();
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, ScopeOptions Scope), IAsyncEnumerable<Type?>>((@operator, scope),
 				static (s, it, grammars)
-				=> new HaveOperatorConstraint(it, grammars, s.Operator, null, s.Inherit)),
-			subject);
+				=> new HaveOperatorConstraint(it, grammars, s.Operator, null, s.Scope)),
+			subject,
+			scope);
+	}
 
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare the
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> have the
 	///     <paramref name="operator" /> with an overload that takes the <paramref name="operand" />.
 	/// </summary>
+	/// <remarks>
+	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
+	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> HaveOperator(
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> HaveOperator(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Operator @operator,
-		Type operand,
-		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, bool Inherit), IAsyncEnumerable<Type?>>((@operator, operand, inherit),
+		Type operand)
+	{
+		ScopeOptions scope = new();
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, ScopeOptions Scope), IAsyncEnumerable<Type?>>((@operator, operand, scope),
 				static (s, it, grammars)
-				=> new HaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Inherit)),
-			subject);
+				=> new HaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Scope)),
+			subject,
+			scope);
+	}
 
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare the
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> have the
 	///     <paramref name="operator" /> with an overload that takes the operand <typeparamref name="TOperand" />.
 	/// </summary>
+	/// <remarks>
+	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
+	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> HaveOperator<TOperand>(
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> HaveOperator<TOperand>(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
-		Operator @operator,
-		bool inherit = false)
-		=> subject.HaveOperator(@operator, typeof(TOperand), inherit);
+		Operator @operator)
+		=> subject.HaveOperator(@operator, typeof(TOperand));
 #endif
 
 	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare the
+	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> have the
 	///     <paramref name="operator" /> (e.g. <see cref="Operator.Addition" /> matches <c>op_Addition</c>).
 	/// </summary>
+	/// <remarks>
+	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
+	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotHaveOperator(
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotHaveOperator(
 		this IThat<IEnumerable<Type?>?> subject,
-		Operator @operator,
-		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, bool Inherit), IEnumerable<Type?>>((@operator, inherit),
+		Operator @operator)
+	{
+		ScopeOptions scope = new();
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, ScopeOptions Scope), IEnumerable<Type?>>((@operator, scope),
 				static (s, it, grammars)
-				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, null, s.Inherit)),
-			subject);
+				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, null, s.Scope)),
+			subject,
+			scope);
+	}
 
 	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare the
+	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> have the
 	///     <paramref name="operator" /> with an overload that takes the <paramref name="operand" />.
 	/// </summary>
+	/// <remarks>
+	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
+	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotHaveOperator(
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotHaveOperator(
 		this IThat<IEnumerable<Type?>?> subject,
 		Operator @operator,
-		Type operand,
-		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, bool Inherit), IEnumerable<Type?>>((@operator, operand, inherit),
+		Type operand)
+	{
+		ScopeOptions scope = new();
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, ScopeOptions Scope), IEnumerable<Type?>>((@operator, operand, scope),
 				static (s, it, grammars)
-				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Inherit)),
-			subject);
+				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Scope)),
+			subject,
+			scope);
+	}
 
 	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare the
+	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> have the
 	///     <paramref name="operator" /> with an overload that takes the operand <typeparamref name="TOperand" />.
 	/// </summary>
+	/// <remarks>
+	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
+	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotHaveOperator<TOperand>(
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotHaveOperator<TOperand>(
 		this IThat<IEnumerable<Type?>?> subject,
-		Operator @operator,
-		bool inherit = false)
-		=> subject.DoNotHaveOperator(@operator, typeof(TOperand), inherit);
+		Operator @operator)
+		=> subject.DoNotHaveOperator(@operator, typeof(TOperand));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare the
+	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> have the
 	///     <paramref name="operator" /> (e.g. <see cref="Operator.Addition" /> matches <c>op_Addition</c>).
 	/// </summary>
+	/// <remarks>
+	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
+	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotHaveOperator(
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotHaveOperator(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
-		Operator @operator,
-		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, bool Inherit), IAsyncEnumerable<Type?>>((@operator, inherit),
+		Operator @operator)
+	{
+		ScopeOptions scope = new();
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, ScopeOptions Scope), IAsyncEnumerable<Type?>>((@operator, scope),
 				static (s, it, grammars)
-				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, null, s.Inherit)),
-			subject);
+				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, null, s.Scope)),
+			subject,
+			scope);
+	}
 
 	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare the
+	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> have the
 	///     <paramref name="operator" /> with an overload that takes the <paramref name="operand" />.
 	/// </summary>
+	/// <remarks>
+	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
+	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotHaveOperator(
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotHaveOperator(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Operator @operator,
-		Type operand,
-		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, bool Inherit), IAsyncEnumerable<Type?>>((@operator, operand, inherit),
+		Type operand)
+	{
+		ScopeOptions scope = new();
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, ScopeOptions Scope), IAsyncEnumerable<Type?>>((@operator, operand, scope),
 				static (s, it, grammars)
-				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Inherit)),
-			subject);
+				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Scope)),
+			subject,
+			scope);
+	}
 
 	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare the
+	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> have the
 	///     <paramref name="operator" /> with an overload that takes the operand <typeparamref name="TOperand" />.
 	/// </summary>
+	/// <remarks>
+	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
+	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotHaveOperator<TOperand>(
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotHaveOperator<TOperand>(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
-		Operator @operator,
-		bool inherit = false)
-		=> subject.DoNotHaveOperator(@operator, typeof(TOperand), inherit);
+		Operator @operator)
+		=> subject.DoNotHaveOperator(@operator, typeof(TOperand));
 #endif
 
 	private sealed class HaveOperatorConstraint(
@@ -188,7 +256,7 @@ public static partial class ThatTypes
 		ExpectationGrammars grammars,
 		Operator @operator,
 		Type? operand,
-		bool inherit)
+		ScopeOptions scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -208,26 +276,30 @@ public static partial class ThatTypes
 
 		private bool Matches(Type? type)
 			=> operand is null
-				? type.HasOperator(@operator, inherit)
-				: type.HasOperator(@operator, operand, inherit);
+				? type.HasOperator(@operator, !scope.IsDirect)
+				: type.HasOperator(@operator, operand, !scope.IsDirect);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all have the operator ").Append(_operatorText);
+			=> stringBuilder.Append(scope.IsDirect ? "all declare the operator " : "all have the operator ")
+				.Append(_operatorText);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" contained types without the operator ").Append(_operatorText)
-				;
-		}
+			=> stringBuilder.Append(It)
+				.Append(scope.IsDirect
+					? " contained types not declaring the operator "
+					: " contained types without the operator ")
+				.Append(_operatorText);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all have the operator ").Append(_operatorText);
+			=> stringBuilder.Append(scope.IsDirect ? "not all declare the operator " : "not all have the operator ")
+				.Append(_operatorText);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" only contained types with the operator ").Append(_operatorText)
-				;
-		}
+			=> stringBuilder.Append(It)
+				.Append(scope.IsDirect
+					? " only contained types declaring the operator "
+					: " only contained types with the operator ")
+				.Append(_operatorText);
 	}
 
 	private sealed class DoNotHaveOperatorConstraint(
@@ -235,7 +307,7 @@ public static partial class ThatTypes
 		ExpectationGrammars grammars,
 		Operator @operator,
 		Type? operand,
-		bool inherit)
+		ScopeOptions scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -255,25 +327,32 @@ public static partial class ThatTypes
 
 		private bool Matches(Type? type)
 			=> operand is null
-				? type.HasOperator(@operator, inherit)
-				: type.HasOperator(@operator, operand, inherit);
+				? type.HasOperator(@operator, !scope.IsDirect)
+				: type.HasOperator(@operator, operand, !scope.IsDirect);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all do not have the operator ").Append(_operatorText);
+			=> stringBuilder.Append(scope.IsDirect ? "all do not declare the operator " : "all do not have the operator ")
+				.Append(_operatorText);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" contained types with the operator ").Append(_operatorText);
-		}
+			=> stringBuilder.Append(It)
+				.Append(scope.IsDirect
+					? " contained types declaring the operator "
+					: " contained types with the operator ")
+				.Append(_operatorText);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("also contain a type with the operator ").Append(_operatorText);
+			=> stringBuilder.Append(scope.IsDirect
+					? "also contain a type declaring the operator "
+					: "also contain a type with the operator ")
+				.Append(_operatorText);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" only contained types without the operator ").Append(_operatorText)
-				;
-		}
+			=> stringBuilder.Append(It)
+				.Append(scope.IsDirect
+					? " only contained types not declaring the operator "
+					: " only contained types without the operator ")
+				.Append(_operatorText);
 	}
 
 	private static string OperatorText(Operator @operator, Type? operand)

@@ -47,6 +47,23 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenConversionIsOnlyInherited_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(OperatorBaseClass), typeof(OperatorDerivedClass),
+				};
+
+				async Task Act()
+				{
+					await That(subject).HaveImplicitConversionOperator<OperatorBaseClass, int>();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("conversion operators inherited from base types are considered by default");
+			}
+
+			[Test]
 			public async Task WhenSomeTypeDoesNotHaveTheExplicitConversion_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -201,6 +218,23 @@ public sealed partial class ThatTypes
 					                *
 					              ]
 					              """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenTypeOnlyInheritsTheConversion_Directly_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(OperatorDerivedClass),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHaveImplicitConversionOperator<OperatorBaseClass, int>().Directly();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with Directly only the conversion operators declared on the types count");
 			}
 		}
 

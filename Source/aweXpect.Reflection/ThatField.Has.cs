@@ -23,7 +23,7 @@ public static partial class ThatField
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
+		attributeFilterOptions.RegisterAttribute<TAttribute>();
 		return new HasAttributeWithoutInheritResult<FieldInfo, FieldInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
@@ -45,7 +45,7 @@ public static partial class ThatField
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue.TrimExpression());
+		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
 		return new HasAttributeWithoutInheritResult<FieldInfo, FieldInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),

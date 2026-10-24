@@ -16,15 +16,17 @@ public static partial class ThatTypes
 	/// <remarks>
 	///     By default each type must contain at least one matching property. Append a quantifier
 	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.<br />
-	///     The <paramref name="memberScope" /> controls whether inherited properties are considered.
+	///     The inherited properties are considered, but neither those declared on <see cref="object" />,
+	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
+	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.Directly" /> or add the members of these roots with
+	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.IncludingObjectMembers" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IEnumerable<Type?>, IEnumerable<Type?>?> ContainProperties(
+	public static TypeContainingMembersScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> ContainProperties(
 		this IThat<IEnumerable<Type?>?> subject,
-		Func<Filtered.Properties, Filtered.Properties> filter,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
-		=> Contain<PropertyInfo, Filtered.Properties>(subject, types => types.Properties(memberScope), filter);
-
+		Func<Filtered.Properties, Filtered.Properties> filter)
+		=> ContainMembers<PropertyInfo, Filtered.Properties>(subject,
+			(types, memberScope) => types.Properties(memberScope), filter);
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> contain properties matching the
@@ -33,13 +35,16 @@ public static partial class ThatTypes
 	/// <remarks>
 	///     By default each type must contain at least one matching property. Append a quantifier
 	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.<br />
-	///     The <paramref name="memberScope" /> controls whether inherited properties are considered.
+	///     The inherited properties are considered, but neither those declared on <see cref="object" />,
+	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
+	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.Directly" /> or add the members of these roots with
+	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.IncludingObjectMembers" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> ContainProperties(
+	public static TypeContainingMembersScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> ContainProperties(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
-		Func<Filtered.Properties, Filtered.Properties> filter,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
-		=> Contain<PropertyInfo, Filtered.Properties>(subject, types => types.Properties(memberScope), filter);
+		Func<Filtered.Properties, Filtered.Properties> filter)
+		=> ContainMembers<PropertyInfo, Filtered.Properties>(subject,
+			(types, memberScope) => types.Properties(memberScope), filter);
 #endif
 }

@@ -27,7 +27,7 @@ public sealed partial class ThatTypes
 
 #if NET8_0_OR_GREATER
 			[Test]
-			public async Task WhenAsyncEnumerableTypesOnlyContainInheritedProperty_WithIncludingInherited_ShouldSucceed()
+			public async Task WhenAsyncEnumerableTypesOnlyContainInheritedProperty_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
 				{
@@ -36,8 +36,7 @@ public sealed partial class ThatTypes
 
 				async Task Act()
 				{
-					await That(subject).ContainProperties(properties => properties.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
+					await That(subject).ContainProperties(properties => properties.With<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();
@@ -68,20 +67,20 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
-			public async Task WhenTypeOnlyContainsInheritedProperty_WithDeclaredOnly_ShouldFail()
+			public async Task WhenTypeOnlyContainsInheritedProperty_Directly_ShouldFail()
 			{
 				Filtered.Types subject =
 					In.Types<DerivedClassWithInheritedMarkedProperty, BaseClassWithMarkedProperty>();
 
 				async Task Act()
 				{
-					await That(subject).ContainProperties(properties => properties.With<MarkerAttribute>());
+					await That(subject).ContainProperties(properties => properties.With<MarkerAttribute>()).Directly();
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainProperties.DerivedClassWithInheritedMarkedProperty and ThatTypes.ContainProperties.BaseClassWithMarkedProperty
-					             all contain properties with ThatTypes.ContainProperties.MarkerAttribute at least once,
+					             all declare properties with ThatTypes.ContainProperties.MarkerAttribute at least once,
 					             but it contained not matching types
 
 					             Not matching items:
@@ -92,15 +91,14 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
-			public async Task WhenTypesOnlyContainInheritedProperty_WithIncludingInherited_ShouldSucceed()
+			public async Task WhenTypesOnlyContainInheritedProperty_ShouldSucceed()
 			{
 				Filtered.Types subject =
 					In.Types<DerivedClassWithInheritedMarkedProperty, BaseClassWithMarkedProperty>();
 
 				async Task Act()
 				{
-					await That(subject).ContainProperties(properties => properties.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
+					await That(subject).ContainProperties(properties => properties.With<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();

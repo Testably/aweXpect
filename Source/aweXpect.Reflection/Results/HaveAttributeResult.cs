@@ -32,14 +32,10 @@ public sealed class HaveAttributeResult<TMember, TResult>
 	/// <summary>
 	///     Allows an alternative attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
-	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
-	///     the attribute can be inherited from a base type.
-	/// </remarks>
-	public HaveAttributeResult<TMember, TResult> OrHave<TAttribute>(bool inherit = true)
+	public HaveAttributeResult<TMember, TResult> OrHave<TAttribute>()
 		where TAttribute : Attribute
 	{
-		_attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
+		_attributeFilterOptions.RegisterAttribute<TAttribute>();
 		return this;
 	}
 
@@ -47,18 +43,26 @@ public sealed class HaveAttributeResult<TMember, TResult>
 	///     Allows an alternative attribute of type <typeparamref name="TAttribute" /> that
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
-	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
-	///     the attribute can be inherited from a base type.
-	/// </remarks>
 	public HaveAttributeResult<TMember, TResult> OrHave<TAttribute>(
 		Func<TAttribute, bool> predicate,
-		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		_attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimExpression());
+		_attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
+		return this;
+	}
+
+	/// <summary>
+	///     Only considers the attributes declared directly on the member, not those inherited from a base type or an
+	///     overridden member.
+	/// </summary>
+	/// <remarks>
+	///     Applies to all attributes of the expectation, also to those added via <see cref="OrHave{TAttribute}()" />.
+	/// </remarks>
+	public HaveAttributeResult<TMember, TResult> Directly()
+	{
+		_attributeFilterOptions.Scope.Directly();
 		return this;
 	}
 }

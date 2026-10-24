@@ -16,15 +16,17 @@ public static partial class ThatTypes
 	/// <remarks>
 	///     By default each type must contain at least one matching field. Append a quantifier
 	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.<br />
-	///     The <paramref name="memberScope" /> controls whether inherited fields are considered.
+	///     The inherited fields are considered, but neither those declared on <see cref="object" />,
+	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
+	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.Directly" /> or add the members of these roots with
+	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.IncludingObjectMembers" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IEnumerable<Type?>, IEnumerable<Type?>?> ContainFields(
+	public static TypeContainingMembersScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> ContainFields(
 		this IThat<IEnumerable<Type?>?> subject,
-		Func<Filtered.Fields, Filtered.Fields> filter,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
-		=> Contain<FieldInfo, Filtered.Fields>(subject, types => types.Fields(memberScope), filter);
-
+		Func<Filtered.Fields, Filtered.Fields> filter)
+		=> ContainMembers<FieldInfo, Filtered.Fields>(subject,
+			(types, memberScope) => types.Fields(memberScope), filter);
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> contain fields matching the
@@ -33,13 +35,16 @@ public static partial class ThatTypes
 	/// <remarks>
 	///     By default each type must contain at least one matching field. Append a quantifier
 	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.<br />
-	///     The <paramref name="memberScope" /> controls whether inherited fields are considered.
+	///     The inherited fields are considered, but neither those declared on <see cref="object" />,
+	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
+	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.Directly" /> or add the members of these roots with
+	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.IncludingObjectMembers" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> ContainFields(
+	public static TypeContainingMembersScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> ContainFields(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
-		Func<Filtered.Fields, Filtered.Fields> filter,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
-		=> Contain<FieldInfo, Filtered.Fields>(subject, types => types.Fields(memberScope), filter);
+		Func<Filtered.Fields, Filtered.Fields> filter)
+		=> ContainMembers<FieldInfo, Filtered.Fields>(subject,
+			(types, memberScope) => types.Fields(memberScope), filter);
 #endif
 }

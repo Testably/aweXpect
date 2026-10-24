@@ -40,6 +40,20 @@ public sealed partial class ThatEvent
 			}
 
 			[Test]
+			public async Task WhenEventInheritsAttributeFromOverriddenEvent_Directly_ShouldSucceed()
+			{
+				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>().Directly();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with Directly only the attributes declared on the overriding event count");
+			}
+
+			[Test]
 			public async Task WhenEventInheritsAttributeFromOverriddenEvent_ShouldFail()
 			{
 				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
@@ -56,20 +70,6 @@ public sealed partial class ThatEvent
 					             but it did in event Action ThatEvent.DoesNotHave.AttributeTests.DerivedClass.InheritedEvent
 					             """)
 					.Because("the attribute on the overridden base event is inherited, as in the Events().With<TAttribute>() filter");
-			}
-
-			[Test]
-			public async Task WithInheritFalse_WhenEventInheritsAttributeFromOverriddenEvent_ShouldSucceed()
-			{
-				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
-
-				async Task Act()
-				{
-					await That(subject).DoesNotHave<FooAttribute>(false);
-				}
-
-				await That(Act).DoesNotThrow()
-					.Because("with inherit: false only the attributes declared on the overriding event count");
 			}
 
 			[AttributeUsage(AttributeTargets.Event)]

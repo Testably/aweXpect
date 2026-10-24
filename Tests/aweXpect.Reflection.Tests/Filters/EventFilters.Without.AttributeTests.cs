@@ -23,10 +23,10 @@ public sealed partial class EventFilters
 			}
 
 			[Test]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForEventsWithoutAttributeDirectlySet()
+			public async Task WhenDirectly_ShouldFilterForEventsWithoutAttributeDirectlySet()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
-					.Events().Without<BarAttribute>(false);
+					.Events().Without<BarAttribute>().Directly();
 
 				await That(events)
 					.Contains(typeof(DummyChild).GetEvent(nameof(DummyChild.MyBarEvent)))

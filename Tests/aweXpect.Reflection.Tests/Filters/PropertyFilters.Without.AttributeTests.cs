@@ -23,10 +23,10 @@ public sealed partial class PropertyFilters
 			}
 
 			[Test]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForPropertiesWithoutAttributeDirectlySet()
+			public async Task WhenDirectly_ShouldFilterForPropertiesWithoutAttributeDirectlySet()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
-					.Properties().Without<BarAttribute>(false);
+					.Properties().Without<BarAttribute>().Directly();
 
 				await That(properties)
 					.Contains(typeof(DummyChild).GetProperty(nameof(DummyChild.MyBarProperty)))

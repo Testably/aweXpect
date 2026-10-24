@@ -52,7 +52,7 @@ public readonly struct Money
 }
 
 /// <summary>
-///     A base type that declares an operator, used to test the <c>inherit</c> flag of the operator assertions.
+///     A base type that declares operators, used to test the inheritance scope of the operator assertions.
 /// </summary>
 public class OperatorBaseClass
 {
@@ -67,6 +67,8 @@ public class OperatorBaseClass
 	{
 		return new OperatorBaseClass(left.Value - right.Value);
 	}
+
+	public static implicit operator int(OperatorBaseClass value) => value.Value;
 }
 
 /// <summary>

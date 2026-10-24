@@ -18,6 +18,15 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
+			public async Task ShouldIncludeTypesWithInheritedMatchingProperty()
+			{
+				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedProperty>()
+					.WhichContainProperties(properties => properties.With<MarkerAttribute>());
+
+				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedProperty),]).InAnyOrder();
+			}
+
+			[Test]
 			public async Task ShouldSupportQuantifiers()
 			{
 				Filtered.Types types = In.Types<ClassWithMarkedProperty, UntaggedClass>()
@@ -39,22 +48,12 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
-			public async Task WithDeclaredOnly_ShouldNotIncludeTypesWithOnlyInheritedMatchingProperty()
+			public async Task WhenDirectly_ShouldNotIncludeTypesWithOnlyInheritedMatchingProperty()
 			{
 				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedProperty>()
-					.WhichContainProperties(properties => properties.With<MarkerAttribute>());
+					.WhichContainProperties(properties => properties.With<MarkerAttribute>()).Directly();
 
 				await That(types).IsEmpty();
-			}
-
-			[Test]
-			public async Task WithIncludingInherited_ShouldIncludeTypesWithInheritedMatchingProperty()
-			{
-				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedProperty>()
-					.WhichContainProperties(properties => properties.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
-
-				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedProperty),]).InAnyOrder();
 			}
 		}
 

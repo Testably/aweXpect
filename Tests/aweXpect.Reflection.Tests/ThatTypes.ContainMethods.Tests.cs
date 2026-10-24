@@ -4,6 +4,8 @@ using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
 
+using aweXpect.Reflection.Tests.TestHelpers.Types;
+
 namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
@@ -122,9 +124,42 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
+			[Test]
+			public async Task WhenOnlyObjectMethodsMatch_IncludingObjectMembers_ShouldSucceed()
+			{
+				Filtered.Types subject = In.Types<StructWithMembers, ClassWithMarkedMethod>();
+
+				async Task Act()
+				{
+					await That(subject).ContainMethods(methods => methods.WithName(nameof(Equals)))
+						.IncludingObjectMembers();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenOnlyObjectMethodsMatch_ShouldFail()
+			{
+				Filtered.Types subject = In.Types<StructWithMembers, ClassWithMarkedMethod>();
+
+				async Task Act()
+				{
+					await That(subject).ContainMethods(methods => methods.WithName(nameof(Equals)));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that in types StructWithMembers and ThatTypes.ContainMethods.ClassWithMarkedMethod
+					             all contain methods with name equal to "Equals" at least once,
+					             but it contained not matching types*
+					             """).AsWildcard()
+					.Because("the members declared on System.Object and System.ValueType are excluded by default");
+			}
+
 #if NET8_0_OR_GREATER
 			[Test]
-			public async Task WhenAsyncEnumerableTypesOnlyContainInheritedMethod_WithIncludingInherited_ShouldSucceed()
+			public async Task WhenAsyncEnumerableTypesOnlyContainInheritedMethod_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
 				{
@@ -133,8 +168,7 @@ public sealed partial class ThatTypes
 
 				async Task Act()
 				{
-					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
+					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();
@@ -165,20 +199,20 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
-			public async Task WhenTypeOnlyContainsInheritedMethod_WithDeclaredOnly_ShouldFail()
+			public async Task WhenTypeOnlyContainsInheritedMethod_Directly_ShouldFail()
 			{
 				Filtered.Types subject =
 					In.Types<DerivedClassWithInheritedMarkedMethod, BaseClassWithMarkedMethod>();
 
 				async Task Act()
 				{
-					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>()).Directly();
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainMethods.DerivedClassWithInheritedMarkedMethod and ThatTypes.ContainMethods.BaseClassWithMarkedMethod
-					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
+					             all declare methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
 					             but it contained not matching types
 
 					             Not matching items:
@@ -189,15 +223,14 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
-			public async Task WhenTypesOnlyContainInheritedMethod_WithIncludingInherited_ShouldSucceed()
+			public async Task WhenTypesOnlyContainInheritedMethod_ShouldSucceed()
 			{
 				Filtered.Types subject =
 					In.Types<DerivedClassWithInheritedMarkedMethod, BaseClassWithMarkedMethod>();
 
 				async Task Act()
 				{
-					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
+					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();

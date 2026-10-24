@@ -6,7 +6,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
+using aweXpect.Reflection.Results;
 #if NET8_0_OR_GREATER
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,14 +27,14 @@ public static partial class ThatTypes
 	///     To check for an implemented interface use <see cref="Implement{TInterface}(IThat{IEnumerable{Type}})" />,
 	///     or use <see cref="AreAssignableTo{TType}(IThat{IEnumerable{Type}})" /> to cover base classes and interfaces.<br />
 	///     To require <typeparamref name="TBaseType" /> to be the direct parent use
-	///     <see cref="InheritDirectlyFrom{TBaseType}(IThat{IEnumerable{Type}})" />.
+	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> InheritFrom<TBaseType>(
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> InheritFrom<TBaseType>(
 		this IThat<IEnumerable<Type?>?> subject)
-		=> ExpectInheritFrom(subject, typeof(TBaseType), false);
+		=> ExpectInheritFrom(subject, typeof(TBaseType));
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> inherit from the base class
@@ -45,16 +45,16 @@ public static partial class ThatTypes
 	///     To check for an implemented interface use <see cref="Implement(IThat{IEnumerable{Type}}, Type)" />,
 	///     or use <see cref="AreAssignableTo(IThat{IEnumerable{Type}}, Type)" /> to cover base classes and interfaces.<br />
 	///     To require <paramref name="baseType" /> to be the direct parent use
-	///     <see cref="InheritDirectlyFrom(IThat{IEnumerable{Type}}, Type)" />.
+	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="baseType">The base type to check inheritance from.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> InheritFrom(
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> InheritFrom(
 		this IThat<IEnumerable<Type?>?> subject,
 		Type baseType)
-		=> ExpectInheritFrom(subject, baseType, false);
+		=> ExpectInheritFrom(subject, baseType);
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -66,14 +66,14 @@ public static partial class ThatTypes
 	///     To check for an implemented interface use <see cref="Implement{TInterface}(IThat{IEnumerable{Type}})" />,
 	///     or use <see cref="AreAssignableTo{TType}(IThat{IEnumerable{Type}})" /> to cover base classes and interfaces.<br />
 	///     To require <typeparamref name="TBaseType" /> to be the direct parent use
-	///     <see cref="InheritDirectlyFrom{TBaseType}(IThat{IAsyncEnumerable{Type}})" />.
+	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> InheritFrom<TBaseType>(
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> InheritFrom<TBaseType>(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
-		=> ExpectInheritFrom(subject, typeof(TBaseType), false);
+		=> ExpectInheritFrom(subject, typeof(TBaseType));
 #endif
 
 #if NET8_0_OR_GREATER
@@ -86,84 +86,16 @@ public static partial class ThatTypes
 	///     To check for an implemented interface use <see cref="Implement(IThat{IEnumerable{Type}}, Type)" />,
 	///     or use <see cref="AreAssignableTo(IThat{IEnumerable{Type}}, Type)" /> to cover base classes and interfaces.<br />
 	///     To require <paramref name="baseType" /> to be the direct parent use
-	///     <see cref="InheritDirectlyFrom(IThat{IAsyncEnumerable{Type}}, Type)" />.
+	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="baseType">The base type to check inheritance from.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> InheritFrom(
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> InheritFrom(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Type baseType)
-		=> ExpectInheritFrom(subject, baseType, false);
-#endif
-
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> inherit directly from the base
-	///     class <typeparamref name="TBaseType" />, i.e. that <typeparamref name="TBaseType" /> is their direct parent.
-	/// </summary>
-	/// <remarks>
-	///     To also accept <typeparamref name="TBaseType" /> anywhere in the base-class chain use
-	///     <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}})" />.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> InheritDirectlyFrom<TBaseType>(
-		this IThat<IEnumerable<Type?>?> subject)
-		=> ExpectInheritFrom(subject, typeof(TBaseType), true);
-
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> inherit directly from the base
-	///     class <paramref name="baseType" />, i.e. that <paramref name="baseType" /> is their direct parent.
-	/// </summary>
-	/// <remarks>
-	///     To also accept <paramref name="baseType" /> anywhere in the base-class chain use
-	///     <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type)" />.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <param name="baseType">The base type to check direct inheritance from.</param>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> InheritDirectlyFrom(
-		this IThat<IEnumerable<Type?>?> subject,
-		Type baseType)
-		=> ExpectInheritFrom(subject, baseType, true);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> inherit directly from the base
-	///     class <typeparamref name="TBaseType" />, i.e. that <typeparamref name="TBaseType" /> is their direct parent.
-	/// </summary>
-	/// <remarks>
-	///     To also accept <typeparamref name="TBaseType" /> anywhere in the base-class chain use
-	///     <see cref="InheritFrom{TBaseType}(IThat{IAsyncEnumerable{Type}})" />.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> InheritDirectlyFrom<TBaseType>(
-		this IThat<IAsyncEnumerable<Type?>?> subject)
-		=> ExpectInheritFrom(subject, typeof(TBaseType), true);
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> inherit directly from the base
-	///     class <paramref name="baseType" />, i.e. that <paramref name="baseType" /> is their direct parent.
-	/// </summary>
-	/// <remarks>
-	///     To also accept <paramref name="baseType" /> anywhere in the base-class chain use
-	///     <see cref="InheritFrom(IThat{IAsyncEnumerable{Type}}, Type)" />.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <param name="baseType">The base type to check direct inheritance from.</param>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> InheritDirectlyFrom(
-		this IThat<IAsyncEnumerable<Type?>?> subject,
-		Type baseType)
-		=> ExpectInheritFrom(subject, baseType, true);
+		=> ExpectInheritFrom(subject, baseType);
 #endif
 
 	/// <summary>
@@ -178,9 +110,9 @@ public static partial class ThatTypes
 	/// <param name="subject">The type collection subject.</param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotInheritFrom<TBaseType>(
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotInheritFrom<TBaseType>(
 		this IThat<IEnumerable<Type?>?> subject)
-		=> ExpectDoNotInheritFrom(subject, typeof(TBaseType), false);
+		=> ExpectDoNotInheritFrom(subject, typeof(TBaseType));
 
 	/// <summary>
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> inherit from the base
@@ -195,10 +127,10 @@ public static partial class ThatTypes
 	/// <param name="baseType">The base type to check inheritance from.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotInheritFrom(
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotInheritFrom(
 		this IThat<IEnumerable<Type?>?> subject,
 		Type baseType)
-		=> ExpectDoNotInheritFrom(subject, baseType, false);
+		=> ExpectDoNotInheritFrom(subject, baseType);
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -213,9 +145,9 @@ public static partial class ThatTypes
 	/// <param name="subject">The type collection subject.</param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotInheritFrom<TBaseType>(
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotInheritFrom<TBaseType>(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
-		=> ExpectDoNotInheritFrom(subject, typeof(TBaseType), false);
+		=> ExpectDoNotInheritFrom(subject, typeof(TBaseType));
 #endif
 
 #if NET8_0_OR_GREATER
@@ -232,127 +164,65 @@ public static partial class ThatTypes
 	/// <param name="baseType">The base type to check inheritance from.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotInheritFrom(
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotInheritFrom(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Type baseType)
-		=> ExpectDoNotInheritFrom(subject, baseType, false);
+		=> ExpectDoNotInheritFrom(subject, baseType);
 #endif
 
-	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> inherit directly from the
-	///     base class <typeparamref name="TBaseType" />, i.e. that <typeparamref name="TBaseType" /> is not their direct
-	///     parent.
-	/// </summary>
-	/// <remarks>
-	///     Types that inherit from <typeparamref name="TBaseType" /> only indirectly satisfy this expectation.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotInheritDirectlyFrom<TBaseType>(
-		this IThat<IEnumerable<Type?>?> subject)
-		=> ExpectDoNotInheritFrom(subject, typeof(TBaseType), true);
-
-	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> inherit directly from the
-	///     base class <paramref name="baseType" />, i.e. that <paramref name="baseType" /> is not their direct parent.
-	/// </summary>
-	/// <remarks>
-	///     Types that inherit from <paramref name="baseType" /> only indirectly satisfy this expectation.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <param name="baseType">The base type to check direct inheritance from.</param>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotInheritDirectlyFrom(
-		this IThat<IEnumerable<Type?>?> subject,
-		Type baseType)
-		=> ExpectDoNotInheritFrom(subject, baseType, true);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> inherit directly from the
-	///     base class <typeparamref name="TBaseType" />, i.e. that <typeparamref name="TBaseType" /> is not their direct
-	///     parent.
-	/// </summary>
-	/// <remarks>
-	///     Types that inherit from <typeparamref name="TBaseType" /> only indirectly satisfy this expectation.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotInheritDirectlyFrom<TBaseType>(
-		this IThat<IAsyncEnumerable<Type?>?> subject)
-		=> ExpectDoNotInheritFrom(subject, typeof(TBaseType), true);
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> inherit directly from the
-	///     base class <paramref name="baseType" />, i.e. that <paramref name="baseType" /> is not their direct parent.
-	/// </summary>
-	/// <remarks>
-	///     Types that inherit from <paramref name="baseType" /> only indirectly satisfy this expectation.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <param name="baseType">The base type to check direct inheritance from.</param>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotInheritDirectlyFrom(
-		this IThat<IAsyncEnumerable<Type?>?> subject,
-		Type baseType)
-		=> ExpectDoNotInheritFrom(subject, baseType, true);
-#endif
-
-	private static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> ExpectInheritFrom(
+	private static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> ExpectInheritFrom(
 		IThat<IEnumerable<Type?>?> subject,
-		Type baseType,
-		bool directly)
+		Type baseType)
 	{
 		baseType.EnsureIsClass();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, bool Directly), IEnumerable<Type?>>((baseType, directly),
+		ScopeOptions scope = new();
+		return new InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, ScopeOptions Scope), IEnumerable<Type?>>((baseType, scope),
 				static (s, it, grammars)
-				=> new InheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.Directly)),
-			subject);
+				=> new InheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.Scope)),
+			subject,
+			scope);
 	}
 
 #if NET8_0_OR_GREATER
-	private static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> ExpectInheritFrom(
+	private static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> ExpectInheritFrom(
 		IThat<IAsyncEnumerable<Type?>?> subject,
-		Type baseType,
-		bool directly)
+		Type baseType)
 	{
 		baseType.EnsureIsClass();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, bool Directly), IAsyncEnumerable<Type?>>((baseType, directly),
+		ScopeOptions scope = new();
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, ScopeOptions Scope), IAsyncEnumerable<Type?>>((baseType, scope),
 				static (s, it, grammars)
-				=> new InheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.Directly)),
-			subject);
+				=> new InheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.Scope)),
+			subject,
+			scope);
 	}
 #endif
 
-	private static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> ExpectDoNotInheritFrom(
+	private static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> ExpectDoNotInheritFrom(
 		IThat<IEnumerable<Type?>?> subject,
-		Type baseType,
-		bool directly)
+		Type baseType)
 	{
 		baseType.EnsureIsClass();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, bool Directly), IEnumerable<Type?>>((baseType, directly),
+		ScopeOptions scope = new();
+		return new InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, ScopeOptions Scope), IEnumerable<Type?>>((baseType, scope),
 				static (s, it, grammars)
-				=> new DoNotInheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.Directly)),
-			subject);
+				=> new DoNotInheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.Scope)),
+			subject,
+			scope);
 	}
 
 #if NET8_0_OR_GREATER
-	private static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> ExpectDoNotInheritFrom(
+	private static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> ExpectDoNotInheritFrom(
 		IThat<IAsyncEnumerable<Type?>?> subject,
-		Type baseType,
-		bool directly)
+		Type baseType)
 	{
 		baseType.EnsureIsClass();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, bool Directly), IAsyncEnumerable<Type?>>((baseType, directly),
+		ScopeOptions scope = new();
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, ScopeOptions Scope), IAsyncEnumerable<Type?>>((baseType, scope),
 				static (s, it, grammars)
-				=> new DoNotInheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.Directly)),
-			subject);
+				=> new DoNotInheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.Scope)),
+			subject,
+			scope);
 	}
 #endif
 
@@ -360,7 +230,7 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		Type baseType,
-		bool directly)
+		ScopeOptions scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -371,23 +241,23 @@ public static partial class ThatTypes
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				type => type?.InheritsFromClass(baseType, directly) == true, cancellationToken);
+				type => type?.InheritsFromClass(baseType, scope.IsDirect) == true, cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => type?.InheritsFromClass(baseType, directly) == true);
+			=> SetValue(actual, context, type => type?.InheritsFromClass(baseType, scope.IsDirect) == true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all inherit ");
-			AppendDirectlyFrom(stringBuilder, directly);
+			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
 			Formatter.Format(stringBuilder, baseType);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" contained types that do not inherit ");
-			AppendDirectlyFrom(stringBuilder, directly);
+			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
 			Formatter.Format(stringBuilder, baseType);
 
 		}
@@ -395,14 +265,14 @@ public static partial class ThatTypes
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("not all inherit ");
-			AppendDirectlyFrom(stringBuilder, directly);
+			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
 			Formatter.Format(stringBuilder, baseType);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" only contained types that inherit ");
-			AppendDirectlyFrom(stringBuilder, directly);
+			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
 			Formatter.Format(stringBuilder, baseType);
 		}
 
@@ -421,7 +291,7 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		Type baseType,
-		bool directly)
+		ScopeOptions scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -432,23 +302,23 @@ public static partial class ThatTypes
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				type => type?.InheritsFromClass(baseType, directly) != true, cancellationToken);
+				type => type?.InheritsFromClass(baseType, scope.IsDirect) != true, cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => type?.InheritsFromClass(baseType, directly) != true);
+			=> SetValue(actual, context, type => type?.InheritsFromClass(baseType, scope.IsDirect) != true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all do not inherit ");
-			AppendDirectlyFrom(stringBuilder, directly);
+			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
 			Formatter.Format(stringBuilder, baseType);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" contained types that inherit ");
-			AppendDirectlyFrom(stringBuilder, directly);
+			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
 			Formatter.Format(stringBuilder, baseType);
 
 		}
@@ -456,14 +326,14 @@ public static partial class ThatTypes
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("at least one inherits ");
-			AppendDirectlyFrom(stringBuilder, directly);
+			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
 			Formatter.Format(stringBuilder, baseType);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" only contained types that do not inherit ");
-			AppendDirectlyFrom(stringBuilder, directly);
+			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
 			Formatter.Format(stringBuilder, baseType);
 
 		}

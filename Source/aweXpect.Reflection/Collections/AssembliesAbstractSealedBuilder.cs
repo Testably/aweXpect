@@ -46,21 +46,21 @@ internal sealed class AssembliesAbstractSealedBuilder
 	// methods on sealed types. This matches pre-refactor behavior; tracked as a separate concern.
 	public Filtered.Events Events()
 	{
-		Filtered.Events events = new(new Filtered.Types(_source, ""), "events ");
+		Filtered.Events events = new(new Filtered.Types(_source, ""), "events ", MemberScopes.DeclaredOnly);
 		IFilter<EventInfo>? filter = _memberState.BuildEventFilter();
 		return filter is null ? events : events.Which(filter);
 	}
 
 	public Filtered.Methods Methods()
 	{
-		Filtered.Methods methods = new(new Filtered.Types(_source, ""), "methods ");
+		Filtered.Methods methods = new(new Filtered.Types(_source, ""), "methods ", MemberScopes.DeclaredOnly);
 		IFilter<MethodInfo>? filter = _memberState.BuildMethodFilter();
 		return filter is null ? methods : methods.Which(filter);
 	}
 
 	public Filtered.Properties Properties()
 	{
-		Filtered.Properties properties = new(new Filtered.Types(_source, ""), "properties ");
+		Filtered.Properties properties = new(new Filtered.Types(_source, ""), "properties ", MemberScopes.DeclaredOnly);
 		IFilter<PropertyInfo>? filter = _memberState.BuildPropertyFilter();
 		return filter is null ? properties : properties.Which(filter);
 	}

@@ -11,20 +11,57 @@ public sealed partial class ThatType
 		public sealed class Tests
 		{
 			[Test]
-			public async Task WhenOperatorIsOnlyInherited_WithInherit_ShouldSucceed()
+			public async Task WhenOperatorIsOnlyInherited_Directly_ShouldFail()
 			{
 				Type subject = typeof(OperatorDerivedClass);
 
 				async Task Act()
 				{
-					await That(subject).HasOperator(Operator.Subtraction, true);
+					await That(subject).HasOperator(Operator.Subtraction).Directly();
 				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws()
+					.WithMessage($"""
+					              Expected that subject
+					              declares the operator Subtraction,
+					              but it did not declare the operator Subtraction {Formatter.Format(subject)}
+					              """);
 			}
 
 			[Test]
-			public async Task WhenOperatorIsOnlyInherited_WithoutInherit_ShouldFail()
+			public async Task WhenOperatorIsOnlyInherited_DoesNotHave_Directly_ShouldSucceed()
+			{
+				Type subject = typeof(OperatorDerivedClass);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHaveOperator(Operator.Subtraction).Directly();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with Directly only the operators declared on the type count");
+			}
+
+			[Test]
+			public async Task WhenOperatorIsOnlyInherited_DoesNotHave_ShouldFail()
+			{
+				Type subject = typeof(OperatorDerivedClass);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHaveOperator(Operator.Subtraction);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not have the operator Subtraction,
+					              but it had the operator Subtraction {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Test]
+			public async Task WhenOperatorIsOnlyInherited_ShouldSucceed()
 			{
 				Type subject = typeof(OperatorDerivedClass);
 
@@ -33,12 +70,8 @@ public sealed partial class ThatType
 					await That(subject).HasOperator(Operator.Subtraction);
 				}
 
-				await That(Act).Throws()
-					.WithMessage($"""
-					              Expected that subject
-					              has the operator Subtraction,
-					              but it did not have the operator Subtraction {Formatter.Format(subject)}
-					              """);
+				await That(Act).DoesNotThrow()
+					.Because("operators inherited from base types are considered by default");
 			}
 
 			[Test]

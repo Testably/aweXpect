@@ -27,7 +27,7 @@ public sealed partial class ThatTypes
 
 #if NET8_0_OR_GREATER
 			[Test]
-			public async Task WhenAsyncEnumerableTypesOnlyContainInheritedField_WithIncludingInherited_ShouldSucceed()
+			public async Task WhenAsyncEnumerableTypesOnlyContainInheritedField_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
 				{
@@ -36,8 +36,7 @@ public sealed partial class ThatTypes
 
 				async Task Act()
 				{
-					await That(subject).ContainFields(fields => fields.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
+					await That(subject).ContainFields(fields => fields.With<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();
@@ -68,20 +67,20 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
-			public async Task WhenTypeOnlyContainsInheritedField_WithDeclaredOnly_ShouldFail()
+			public async Task WhenTypeOnlyContainsInheritedField_Directly_ShouldFail()
 			{
 				Filtered.Types subject =
 					In.Types<DerivedClassWithInheritedMarkedField, BaseClassWithMarkedField>();
 
 				async Task Act()
 				{
-					await That(subject).ContainFields(fields => fields.With<MarkerAttribute>());
+					await That(subject).ContainFields(fields => fields.With<MarkerAttribute>()).Directly();
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainFields.DerivedClassWithInheritedMarkedField and ThatTypes.ContainFields.BaseClassWithMarkedField
-					             all contain fields with ThatTypes.ContainFields.MarkerAttribute at least once,
+					             all declare fields with ThatTypes.ContainFields.MarkerAttribute at least once,
 					             but it contained not matching types
 
 					             Not matching items:
@@ -92,15 +91,14 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
-			public async Task WhenTypesOnlyContainInheritedField_WithIncludingInherited_ShouldSucceed()
+			public async Task WhenTypesOnlyContainInheritedField_ShouldSucceed()
 			{
 				Filtered.Types subject =
 					In.Types<DerivedClassWithInheritedMarkedField, BaseClassWithMarkedField>();
 
 				async Task Act()
 				{
-					await That(subject).ContainFields(fields => fields.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
+					await That(subject).ContainFields(fields => fields.With<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();

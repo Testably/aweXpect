@@ -18,16 +18,16 @@ public static partial class ThatEvent
 	///     Verifies that the <see cref="EventInfo" /> has attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
-	///     the attribute can be inherited from a base type.
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
+	///     to the attributes declared directly on the member with <see cref="HasAttributeResult{TType, TMember}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HasAttributeResult<EventInfo, EventInfo?> Has<TAttribute>(this IThat<EventInfo?> subject, bool inherit = true)
+	public static HasAttributeResult<EventInfo, EventInfo?> Has<TAttribute>(this IThat<EventInfo?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
+		attributeFilterOptions.RegisterAttribute<TAttribute>();
 		return new HasAttributeResult<EventInfo, EventInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
@@ -40,21 +40,20 @@ public static partial class ThatEvent
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
 	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
-	///     the attribute can be inherited from a base type.
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
+	///     to the attributes declared directly on the member with <see cref="HasAttributeResult{TType, TMember}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static HasAttributeResult<EventInfo, EventInfo?> Has<TAttribute>(
 		this IThat<EventInfo?> subject,
 		Func<TAttribute, bool> predicate,
-		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimExpression());
+		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
 		return new HasAttributeResult<EventInfo, EventInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),

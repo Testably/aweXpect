@@ -95,7 +95,7 @@ internal static class NullabilityHelpers
 	///     members or only those declared directly on the type according to the <paramref name="memberScope" />.
 	/// </summary>
 	public static MemberInfo[] GetNullableMembers(this Type type,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
+		MemberScopes memberScope = MemberScopes.DeclaredOnly)
 		=> type.GetMembersByNullability(memberScope).Nullable;
 
 	/// <summary>
@@ -103,7 +103,7 @@ internal static class NullabilityHelpers
 	///     members or only those declared directly on the type according to the <paramref name="memberScope" />.
 	/// </summary>
 	public static MemberInfo[] GetNotNullableMembers(this Type type,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
+		MemberScopes memberScope = MemberScopes.DeclaredOnly)
 		=> type.GetMembersByNullability(memberScope).NotNullable;
 
 	/// <summary>
@@ -112,7 +112,7 @@ internal static class NullabilityHelpers
 	///     directly on the type according to the <paramref name="memberScope" />.
 	/// </summary>
 	public static (MemberInfo[] Nullable, MemberInfo[] NotNullable) GetMembersByNullability(this Type type,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
+		MemberScopes memberScope = MemberScopes.DeclaredOnly)
 	{
 		List<MemberInfo> nullable = [];
 		List<MemberInfo> notNullable = [];

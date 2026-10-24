@@ -6,6 +6,7 @@ each other: a filter has an `Is…`/`Are…` expectation counterpart for the sam
 
 | Section                                                     | Applies to                    | Filters / expectations                                                                                               |
 |-------------------------------------------------------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| [Inheritance](#inheritance)                                 | types and members             | `Directly`, `IncludingInherited`, `IncludingObjectMembers`                                                           |
 | [Access modifiers](#access-modifiers)                       | types and members             | `WhichArePublic` / `IsPublic`, `WhichAreInternal` / `IsInternal`, …                                                  |
 | [Attributes](#attributes)                                   | types, members and assemblies | `With<TAttribute>` / `Has<TAttribute>`, `Without<TAttribute>` / `DoesNotHave<TAttribute>`                            |
 | [Obsolete](#obsolete)                                       | types and members             | `WhichAreObsolete` / `IsObsolete`, `WhichAreNotObsolete` / `IsNotObsolete`                                           |
@@ -33,6 +34,52 @@ The custom `.Except(…)` filter is the inverse of `.Which(…)`: it **removes**
 predicate. This is handy for defining exemptions to a rule (e.g. *all async methods except this one*). Like
 `.Which(…)` it is available on **every** collection (assemblies, types and members). For types there is also a
 typed `.Except<T>()` overload that excludes exactly the type `T`.
+
+## Inheritance
+
+A check on a type considers what the type inherits: inherited attributes, operators, members and relations count by
+default, and `.Directly()` restricts the check to what is declared on the item itself, or to a direct relation.
+Listing the members of types (`Types().Methods()`, …) only includes the members declared on each type, as an
+inherited member would otherwise be listed once for each type that inherits it; `.IncludingInherited()` adds the
+inherited members.
+
+Inherited members never include those a derived type cannot access: the `private` members of base types and the
+`internal` members of base types in another assembly (`InternalsVisibleTo` is not considered). The members declared
+on `System.Object`, `System.ValueType` and `System.Enum` are excluded as well, as every type would otherwise have
+`ToString`, `Equals`, `GetHashCode`, …; `.IncludingObjectMembers()` adds them. An interface inherits the members of
+its base interfaces.
+
+| Area                                                                                          | Default                                                                         | Options                                                                                                         |
+|-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+| [Attributes](#attributes) of types, methods, properties and events                            | also the attributes inherited from a base type or an overridden member          | `.Directly()`: only the attributes declared on the item                                                         |
+| [Operators](#operators) and conversion operators of types                                     | also the operators of base types                                                | `.Directly()`: only the operators declared on the type                                                          |
+| Relations (`InheritsFrom<T>()`, `Implements<T>()`, their filters and negations)               | the base class anywhere in the base-class chain, or any implemented interface   | `.Directly()`: only the direct base class or a directly implemented interface                                   |
+| Member checks (`ContainsMethods(…)`, `WhichContainMethods(…)`, `OnlyHasNullableMembers()`, …) | also the inherited members                                                      | `.Directly()`: only the declared members, or `.IncludingObjectMembers()`: also the members of the three roots   |
+| Member listings of types (`Types().Methods()`, `In.Type<T>().Properties()`, …)                | only the declared members                                                       | `.IncludingInherited()`: also the inherited members, `.IncludingObjectMembers()`: also those of the three roots |
+| Member listings of assemblies (`In.AssemblyContaining<T>().Methods()`, …)                     | each member once, on the type that declares it                                  | -                                                                                                               |
+| Constructors, and the attributes of assemblies, constructors and fields                       | no inheritance                                                                  | -                                                                                                               |
+
+```csharp
+await Expect.That(typeof(AlbumController)).InheritsFrom<ControllerBase>().Directly();
+await Expect.That(typeof(AlbumRepository)).Implements<IRepository>().Directly();
+await Expect.That(typeof(TrackDuration)).HasOperator(Operator.Addition).Directly();
+await Expect.That(typeof(Album)).Has<SerializableAttribute>().Directly();
+await Expect.That(typeof(Album)).ContainsMethods(methods => methods.WithName("Play")).Directly();
+
+// The declared methods of the album types, also the inherited ones, and also those of System.Object
+await Expect.That(In.AssemblyContaining<Album>().Types().Methods()).AreNotObsolete();
+await Expect.That(In.AssemblyContaining<Album>().Types().Methods().IncludingInherited()).AreNotObsolete();
+await Expect.That(In.AssemblyContaining<Album>().Types().Methods().IncludingObjectMembers()).AreNotObsolete();
+```
+
+On a member check, `.Directly()` and `.IncludingObjectMembers()` exclude each other, so only one of them can be set.
+The options apply to the whole result, e.g. to all attributes of `.With<T1>().OrWith<T2>().Directly()`. On the
+`WhichContain…` filters, set them before the quantifier, which ends the filter. On a member listing, set them directly
+after selecting the members, e.g. `Types().Methods().IncludingInherited().WhichArePublic()`, as a filter returns a
+plain listing. Inside a member check, `.Directly()` on an attribute filter only restricts the attributes: in
+`ContainsMethods(m => m.With<FactAttribute>().Directly())` the method may still be inherited. Only the
+[immutability](#types) check considers all fields and properties of base types, including those a derived type
+cannot access, as they hold the state of an instance.
 
 ## Access modifiers
 
@@ -68,11 +115,12 @@ Shared by all types, members, and assemblies.
 | any of several attributes          | `.With<T1>().OrWith<T2>()`  | -                            | -                           |
 | does not have attribute            | `.Without<TAttribute>()`    | `.DoesNotHave<TAttribute>()` | `.DoNotHave<TAttribute>()`  |
 
-Most attribute filters and expectations (`With`, `OrWith`, `Without`, `Has`, `Have`, `DoesNotHave`, `DoNotHave`,
-`OrHas`, `OrHave`) take an optional `inherit` parameter (default `true`) that controls whether attributes
-inherited from base types are considered: `.With<TAttribute>(inherit: false)`. Fields and constructors cannot
-inherit attributes, so their attribute filters and expectations omit the parameter. Chain multiple
-`.Without<TAttribute>()` calls to exclude several attributes (an item must have none of them).
+For types, methods, properties and events, attributes inherited from a base type or an overridden member are
+considered as well; append `.Directly()` to only consider the attributes declared on the item itself, e.g.
+`.With<TAttribute>().Directly()` or `.Has<TAttribute>().Directly()` (see [Inheritance](#inheritance)). The
+attributes of assemblies, constructors and fields cannot be inherited, so their attribute filters and expectations
+do not offer `.Directly()`. Chain multiple `.Without<TAttribute>()` calls to exclude several attributes (an item
+must have none of them).
 
 ```csharp
 await Expect.That(type).Has<ObsoleteAttribute>(a => a.Message == "Use NewClass instead");
@@ -159,9 +207,7 @@ string matching options, `IsNotWithinNamespace` also excludes all sub-namespaces
 | generic                   | `.WhichAreGeneric()` / `.Generic`               | `.IsGeneric()`                 | `.AreGeneric()`                 |
 | nested                    | `.WhichAreNested()` / `.Nested`                 | `.IsNested()`                  | `.AreNested()`                  |
 | inherits from             | `.WhichInheritFrom<T>()`                        | `.InheritsFrom<T>()`           | `.InheritFrom<T>()`             |
-| inherits directly from    | `.WhichInheritDirectlyFrom<T>()`                | `.InheritsDirectlyFrom<T>()`   | `.InheritDirectlyFrom<T>()`     |
 | implements                | `.WhichImplement<T>()`                          | `.Implements<T>()`             | `.Implement<T>()`               |
-| implements directly       | `.WhichImplementDirectly<T>()`                  | `.ImplementsDirectly<T>()`     | `.ImplementDirectly<T>()`       |
 | assignable to             | `.WhichAreAssignableTo<T>()`                    | `.IsAssignableTo<T>()`         | `.AreAssignableTo<T>()`         |
 | assignable from           | `.WhichAreAssignableFrom<T>()`                  | `.IsAssignableFrom<T>()`       | `.AreAssignableFrom<T>()`       |
 | instantiable              | `.WhichAreInstantiable()`                       | `.IsInstantiable()`            | `.AreInstantiable()`            |
@@ -172,16 +218,16 @@ string matching options, `IsNotWithinNamespace` also excludes all sub-namespaces
 | custom predicate          | `.Which(t => …)`                                | `.Satisfies(t => …)`           | `.All().Satisfy(t => …)`        |
 
 `WhichInheritFrom` / `InheritsFrom` consider only the **base-class chain** (not implemented interfaces) and
-accept a generic argument or a `Type`. The `…DirectlyFrom` variants require the base class to be the *direct*
-parent. Passing an interface throws; use `Implements` for that.
+accept a generic argument or a `Type`. Append `.Directly()` to require the base class to be the *direct* parent.
+Passing an interface throws; use `Implements` for that.
 
-`WhichImplement` / `Implements` consider only implemented **interfaces**; passing a non-interface throws. For
-the `…Directly` variants, an interface reached only through a base class or through another implemented
-interface does not count as *directly* implemented.
+`WhichImplement` / `Implements` consider only implemented **interfaces**; passing a non-interface throws. With
+`.Directly()`, an interface reached only through a base class or through another implemented interface does not
+count as *directly* implemented.
 
 ```csharp
-await Expect.That(typeof(AlbumController)).InheritsDirectlyFrom<ControllerBase>();
-await Expect.That(typeof(AlbumRepository)).ImplementsDirectly<IRepository>();
+await Expect.That(typeof(AlbumController)).InheritsFrom<ControllerBase>().Directly();
+await Expect.That(typeof(AlbumRepository)).Implements<IRepository>().Directly();
 ```
 
 `IsAssignableTo` / `IsAssignableFrom` (and their `WhichAre…` / `Are…` forms) use runtime assignability, which
@@ -208,8 +254,8 @@ properties (including inherited ones) have no setter or an `init`-only setter. S
 immutability. Failure messages list the offending mutable members for actionable feedback.
 
 `OnlyHasNullableMembers` / `OnlyHaveNullableMembers` (and the non-nullable counterparts) verify the
-[nullability](#nullability) of all declared fields, properties and events of the type; the failure message
-lists the non-compliant members per type:
+[nullability](#nullability) of all fields, properties and events of the type, including the inherited ones unless
+`.Directly()` is appended; the failure message lists the non-compliant members per type:
 
 ```csharp
 await Expect.That(In.AssemblyContaining<AddTrackRequest>()
@@ -222,14 +268,15 @@ Every kind/modifier row above has a negated form. Most use `WhichAreNot…` on f
 `IsNot…` / `AreNot…` on expectations (e.g. `WhichAreNotSealed()`, `IsNotAClass()`, `AreNotStatic()`,
 `IsNotInstantiable()`). The *default constructor* row uses `WhichDoNotHaveADefaultConstructor()`,
 `DoesNotHaveADefaultConstructor()` and `DoNotHaveADefaultConstructor()`. The *inherits* and *implements* rows
-use `WhichDoNot…`, `DoesNot…` and `DoNot…` (e.g. `WhichDoNotInheritDirectlyFrom<T>()`,
-`DoesNotImplementDirectly<T>()`, `DoNotImplement<T>()`).
+use `WhichDoNot…`, `DoesNot…` and `DoNot…` (e.g. `WhichDoNotInheritFrom<T>().Directly()`,
+`DoesNotImplement<T>().Directly()`, `DoNotImplement<T>()`).
 :::
 
 ### Types containing specific members
 
-You can select types based on the members they declare. The lambda receives the members declared on each
-individual type and may use the full member-filter API:
+You can select types based on their members. The lambda receives the members of each individual type, including
+the inherited ones unless `.Directly()` is appended (see [Inheritance](#inheritance)), and may use the full
+member-filter API:
 
 ```csharp
 // Types that contain at least one method with [Fact] or [Theory]
@@ -429,8 +476,9 @@ variants and `>>>` (`UnsignedRightShift`).
 // Method-level: narrow an operator method to a specific operator
 await Expect.That(methodInfo).IsAnOperator(Operator.Equality);
 
-// Type-level presence (op_* lookup); inherit: true also considers base-type operators
+// Type-level presence (op_* lookup), including the operators of base types
 await Expect.That(typeof(TrackDuration)).HasOperator(Operator.Addition);
+await Expect.That(typeof(TrackDuration)).HasOperator(Operator.Subtraction).Directly();
 await Expect.That(typeof(TrackDuration)).DoesNotHaveOperator(Operator.Modulus);
 
 // Disambiguate overloads by operand type
@@ -441,8 +489,8 @@ await Expect.That(typeof(TrackDuration)).HasImplicitConversionOperator<TrackDura
 await Expect.That(typeof(TrackDuration)).HasExplicitConversionOperator(typeof(TrackDuration), typeof(int));
 ```
 
-`HasOperator` / conversion operators match operators declared on the type itself; pass `inherit: true` to also
-consider operators inherited from base types. Conversion source/target types are matched exactly.
+`HasOperator` / conversion operators also match the operators inherited from base types; append `.Directly()` to only
+match the operators declared on the type itself. Conversion source/target types are matched exactly.
 
 :::note[Operators are hidden by default]
 Operators are special-name members that are

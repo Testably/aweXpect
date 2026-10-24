@@ -11,28 +11,44 @@ public interface IMemberSelectors
 	Filtered.Constructors Constructors();
 
 	/// <summary>
-	///     Get all methods matching the current member filter, including inherited members or only those
-	///     declared directly on the type according to the <paramref name="memberScope" />.
+	///     Get all methods declared on the types matching the current member filter.
 	/// </summary>
-	Filtered.Methods Methods(MemberScope memberScope = MemberScope.DeclaredOnly);
+	/// <remarks>
+	///     Add the inherited methods with <see cref="Filtered.Methods.MemberScopeResult.IncludingInherited" /> and also
+	///     those declared on <see cref="object" />, <see cref="System.ValueType" /> and <see cref="System.Enum" /> with
+	///     <see cref="Filtered.Methods.MemberScopeResult.IncludingObjectMembers" />.
+	/// </remarks>
+	Filtered.Methods.MemberScopeResult Methods();
 
 	/// <summary>
-	///     Get all properties matching the current member filter, including inherited members or only those
-	///     declared directly on the type according to the <paramref name="memberScope" />.
+	///     Get all properties declared on the types matching the current member filter.
 	/// </summary>
-	Filtered.Properties Properties(MemberScope memberScope = MemberScope.DeclaredOnly);
+	/// <remarks>
+	///     Add the inherited properties with <see cref="Filtered.Properties.MemberScopeResult.IncludingInherited" /> and
+	///     also those declared on <see cref="object" />, <see cref="System.ValueType" /> and <see cref="System.Enum" />
+	///     with <see cref="Filtered.Properties.MemberScopeResult.IncludingObjectMembers" />.
+	/// </remarks>
+	Filtered.Properties.MemberScopeResult Properties();
 
 	/// <summary>
-	///     Get all fields matching the current member filter, including inherited members or only those
-	///     declared directly on the type according to the <paramref name="memberScope" />.
+	///     Get all fields declared on the types matching the current member filter.
 	/// </summary>
-	Filtered.Fields Fields(MemberScope memberScope = MemberScope.DeclaredOnly);
+	/// <remarks>
+	///     Add the inherited fields with <see cref="Filtered.Fields.MemberScopeResult.IncludingInherited" /> and also
+	///     those declared on <see cref="object" />, <see cref="System.ValueType" /> and <see cref="System.Enum" /> with
+	///     <see cref="Filtered.Fields.MemberScopeResult.IncludingObjectMembers" />.
+	/// </remarks>
+	Filtered.Fields.MemberScopeResult Fields();
 
 	/// <summary>
-	///     Get all events matching the current member filter, including inherited members or only those
-	///     declared directly on the type according to the <paramref name="memberScope" />.
+	///     Get all events declared on the types matching the current member filter.
 	/// </summary>
-	Filtered.Events Events(MemberScope memberScope = MemberScope.DeclaredOnly);
+	/// <remarks>
+	///     Add the inherited events with <see cref="Filtered.Events.MemberScopeResult.IncludingInherited" /> and also
+	///     those declared on <see cref="object" />, <see cref="System.ValueType" /> and <see cref="System.Enum" /> with
+	///     <see cref="Filtered.Events.MemberScopeResult.IncludingObjectMembers" />.
+	/// </remarks>
+	Filtered.Events.MemberScopeResult Events();
 }
 
 /// <summary>
@@ -90,20 +106,32 @@ public interface IMembers : IMemberSelectors
 public interface ILimitedAbstractSealedMembers
 {
 	/// <summary>
-	///     Get all methods matching the current member filter, including inherited members or only those
-	///     declared directly on the type according to the <paramref name="memberScope" />.
+	///     Get all methods declared on the types matching the current member filter.
 	/// </summary>
-	Filtered.Methods Methods(MemberScope memberScope = MemberScope.DeclaredOnly);
+	/// <remarks>
+	///     Add the inherited methods with <see cref="Filtered.Methods.MemberScopeResult.IncludingInherited" /> and also
+	///     those declared on <see cref="object" />, <see cref="System.ValueType" /> and <see cref="System.Enum" /> with
+	///     <see cref="Filtered.Methods.MemberScopeResult.IncludingObjectMembers" />.
+	/// </remarks>
+	Filtered.Methods.MemberScopeResult Methods();
 
 	/// <summary>
-	///     Get all properties matching the current member filter, including inherited members or only those
-	///     declared directly on the type according to the <paramref name="memberScope" />.
+	///     Get all properties declared on the types matching the current member filter.
 	/// </summary>
-	Filtered.Properties Properties(MemberScope memberScope = MemberScope.DeclaredOnly);
+	/// <remarks>
+	///     Add the inherited properties with <see cref="Filtered.Properties.MemberScopeResult.IncludingInherited" /> and
+	///     also those declared on <see cref="object" />, <see cref="System.ValueType" /> and <see cref="System.Enum" />
+	///     with <see cref="Filtered.Properties.MemberScopeResult.IncludingObjectMembers" />.
+	/// </remarks>
+	Filtered.Properties.MemberScopeResult Properties();
 
 	/// <summary>
-	///     Get all events matching the current member filter, including inherited members or only those
-	///     declared directly on the type according to the <paramref name="memberScope" />.
+	///     Get all events declared on the types matching the current member filter.
 	/// </summary>
-	Filtered.Events Events(MemberScope memberScope = MemberScope.DeclaredOnly);
+	/// <remarks>
+	///     Add the inherited events with <see cref="Filtered.Events.MemberScopeResult.IncludingInherited" /> and also
+	///     those declared on <see cref="object" />, <see cref="System.ValueType" /> and <see cref="System.Enum" /> with
+	///     <see cref="Filtered.Events.MemberScopeResult.IncludingObjectMembers" />.
+	/// </remarks>
+	Filtered.Events.MemberScopeResult Events();
 }
