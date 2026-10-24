@@ -10,7 +10,7 @@ namespace aweXpect.Results;
 public class AndResult<TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue)
-	: ExpectationResult(expectationBuilder)
+	: ExpectationResultWithoutValue<AndResult<TThat>>(expectationBuilder)
 {
 	/// <summary>
 	///     Combines the previous expectation with the next one; both must be met.

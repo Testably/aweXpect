@@ -20,6 +20,22 @@ public sealed partial class ThatDelegate
 				}
 
 				[Test]
+				public async Task WhenBecauseIsSpecifiedBeforeWhoseResult_ShouldIncludeTheReason()
+				{
+					Func<int> @delegate = () => 1;
+
+					async Task Act()
+						=> await That(@delegate).DoesNotThrow().Because("it must succeed").WhoseResult.IsEqualTo(2);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that @delegate
+						             does not throw any exception and its result is equal to 2, because it must succeed,
+						             but it was 1, which differs by -1
+						             """);
+				}
+
+				[Test]
 				public async Task WhenDelegateThrows_ShouldFail()
 				{
 					Func<int> @delegate = () => throw new CustomException();
@@ -63,6 +79,23 @@ public sealed partial class ThatDelegate
 
 			public sealed class GenericTests
 			{
+				[Test]
+				public async Task WhenBecauseIsSpecifiedBeforeWhoseResult_ShouldIncludeTheReason()
+				{
+					Func<int> @delegate = () => 1;
+
+					async Task Act()
+						=> await That(@delegate).DoesNotThrow<CustomException>().Because("it must succeed")
+							.WhoseResult.IsEqualTo(2);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that @delegate
+						             does not throw a ThatDelegate.CustomException and its result is equal to 2, because it must succeed,
+						             but it was 1, which differs by -1
+						             """);
+				}
+
 				[Test]
 				public async Task WhenDelegateThrowsExpectedException_ShouldFail()
 				{
@@ -127,6 +160,23 @@ public sealed partial class ThatDelegate
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 			public sealed class TypeTests
 			{
+				[Test]
+				public async Task WhenBecauseIsSpecifiedBeforeWhoseResult_ShouldIncludeTheReason()
+				{
+					Func<int> @delegate = () => 1;
+
+					async Task Act()
+						=> await That(@delegate).DoesNotThrow(typeof(CustomException)).Because("it must succeed")
+							.WhoseResult.IsEqualTo(2);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that @delegate
+						             does not throw a ThatDelegate.CustomException and its result is equal to 2, because it must succeed,
+						             but it was 1, which differs by -1
+						             """);
+				}
+
 				[Test]
 				public async Task WhenDelegateThrowsExpectedException_ShouldFail()
 				{

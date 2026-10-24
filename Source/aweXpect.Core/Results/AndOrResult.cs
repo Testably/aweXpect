@@ -3,41 +3,6 @@
 namespace aweXpect.Results;
 
 /// <summary>
-///     The result of an expectation with no underlying value.
-///     <para />
-///     Allows combining multiple expectations with <see cref="And" /> and <see cref="Or" />.
-/// </summary>
-public class AndOrResult<TThat>(
-	ExpectationBuilder expectationBuilder,
-	TThat returnValue)
-	: ExpectationResult(expectationBuilder)
-{
-	/// <summary>
-	///     Combines the previous expectation with the next one; both must be met.
-	/// </summary>
-	public TThat And
-	{
-		get
-		{
-			ExpectationBuilder.And();
-			return returnValue;
-		}
-	}
-
-	/// <summary>
-	///     Combines the previous expectation with the next one; at least one of them must be met.
-	/// </summary>
-	public TThat Or
-	{
-		get
-		{
-			ExpectationBuilder.Or();
-			return returnValue;
-		}
-	}
-}
-
-/// <summary>
 ///     The result of an expectation with an underlying value of type <typeparamref name="TType" />.
 ///     <para />
 ///     Allows combining multiple expectations with <see cref="AndOrResult{TResult,TValue,TSelf}.And" /> and

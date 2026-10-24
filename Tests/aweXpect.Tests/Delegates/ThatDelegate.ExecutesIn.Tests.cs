@@ -11,6 +11,24 @@ public sealed partial class ThatDelegate
 		public sealed class ActionTests
 		{
 			[Test]
+			public async Task WhenBecauseIsSpecifiedBeforeAnd_ShouldIncludeTheReason()
+			{
+				Action @delegate = () => throw new MyException();
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(10.Milliseconds())
+						.Because("it must be fast").And.DoesNotThrow().WithTimeSystem(new VirtualTimeSystem());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that @delegate
+					              executes in at most 0:00.010 allowing exceptions and does not throw any exception, because it must be fast,
+					              but it did throw a MyException:
+					                {nameof(WhenBecauseIsSpecifiedBeforeAnd_ShouldIncludeTheReason)}
+					              """);
+			}
+
+			[Test]
 			public async Task WhenDelegateIsFastEnough_ShouldSucceed()
 			{
 				Action @delegate = () => { };
@@ -602,6 +620,23 @@ public sealed partial class ThatDelegate
 
 		public sealed class FuncValueTests
 		{
+			[Test]
+			public async Task WhenBecauseIsSpecifiedBeforeAnd_ShouldIncludeTheReason()
+			{
+				Func<int> @delegate = () => 0;
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).Because("it must be fast")
+						.And.DoesNotThrow().WhoseResult.IsEqualTo(1).WithTimeSystem(new VirtualTimeSystem());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in at most 0:00.010 and does not throw any exception and its result is equal to 1, because it must be fast,
+					             but it was 0, which differs by -1
+					             """);
+			}
+
 			[Test]
 			public async Task WhenDelegateIsFastEnough_ShouldSucceed()
 			{

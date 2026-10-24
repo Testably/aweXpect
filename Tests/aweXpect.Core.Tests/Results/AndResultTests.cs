@@ -1,4 +1,5 @@
-﻿using aweXpect.Core.Extending;
+﻿using System.Threading;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
@@ -19,6 +20,16 @@ public class AndResultTests
 			=> await result.IsEqualTo(1);
 
 		await That(Act).DoesNotThrow();
+		await That(result.Get().ExpectationBuilder.GetRootNode()).Is<AndNode>();
+	}
+
+	[Test]
+	public async Task Because_ShouldKeepAnd()
+	{
+		AndResult<IThat<int>> sut = CreateSut(1);
+
+		IThat<int> result = sut.Because("the reason").And;
+
 		await That(result.Get().ExpectationBuilder.GetRootNode()).Is<AndNode>();
 	}
 
@@ -57,6 +68,26 @@ public class AndResultTests
 		async Task Act() => await sut;
 
 		await That(Act).DoesNotThrow();
+	}
+
+	[Test]
+	public async Task WithCancellation_ShouldKeepAnd()
+	{
+		AndResult<IThat<int>> sut = CreateSut(1);
+
+		IThat<int> result = sut.WithCancellation(CancellationToken.None).And;
+
+		await That(result.Get().ExpectationBuilder.GetRootNode()).Is<AndNode>();
+	}
+
+	[Test]
+	public async Task WithTimeout_ShouldKeepAnd()
+	{
+		AndResult<IThat<int>> sut = CreateSut(1);
+
+		IThat<int> result = sut.WithTimeout(TimeSpan.FromSeconds(1)).And;
+
+		await That(result.Get().ExpectationBuilder.GetRootNode()).Is<AndNode>();
 	}
 
 	private static AndResult<IThat<T>> CreateSut<T>(T subject)

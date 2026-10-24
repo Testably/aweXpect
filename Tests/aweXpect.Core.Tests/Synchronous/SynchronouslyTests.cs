@@ -119,6 +119,21 @@ public class SynchronouslyTests
 	}
 
 	[Test]
+	public void WhenAndResultFails_ShouldFail()
+	{
+		void Act() => Verify(That(() => ThrowIf(true)).ExecutesIn().AtMost(TimeSpan.FromMilliseconds(500))
+			.Because("it must be fast"));
+
+		Verify(That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that () => ThrowIf(true)
+			             executes in at most 0:00.500, because it must be fast,
+			             but it did throw a MyException:
+			               WhenAndResultFails_ShouldFail
+			             """));
+	}
+
+	[Test]
 	public void WhenEvaluationIsMetRightAwayOnABlockedSynchronizationContext_WithValue_ShouldReturnTheValue()
 	{
 		int value = 0;

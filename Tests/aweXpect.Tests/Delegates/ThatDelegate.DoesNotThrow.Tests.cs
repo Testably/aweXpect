@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using System.Threading;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatDelegate
 {
@@ -129,6 +131,17 @@ public sealed partial class ThatDelegate
 		{
 			[Test]
 			[AutoArguments]
+			public async Task WhenAwaited_AfterBecause_ShouldReturnResultFromDelegate(int value)
+			{
+				Func<int> @delegate = () => value;
+
+				int result = await That(@delegate).DoesNotThrow().Because("it must succeed");
+
+				await That(result).IsEqualTo(value);
+			}
+
+			[Test]
+			[AutoArguments]
 			public async Task WhenAwaited_ShouldReturnResultFromDelegate(int value)
 			{
 				Func<int> @delegate = () => value;
@@ -197,6 +210,39 @@ public sealed partial class ThatDelegate
 					             Expected that subject
 					             does not throw any exception and its result is equal to 1,
 					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenWithCancellationIsSpecifiedBeforeWhoseResult_ShouldVerifyTheResult()
+			{
+				Func<int> @delegate = () => 1;
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrow().WithCancellation(CancellationToken.None)
+						.WhoseResult.IsEqualTo(2);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             does not throw any exception and its result is equal to 2,
+					             but it was 1, which differs by -1
+					             """);
+			}
+
+			[Test]
+			public async Task WhenWithTimeoutIsSpecifiedBeforeWhoseResult_ShouldVerifyTheResult()
+			{
+				Func<int> @delegate = () => 1;
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrow().WithTimeout(30.Seconds()).WhoseResult.IsEqualTo(2);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             does not throw any exception and its result is equal to 2,
+					             but it was 1, which differs by -1
 					             """);
 			}
 		}

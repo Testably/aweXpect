@@ -12,6 +12,23 @@ public sealed partial class ThatDelegate
 		public sealed class ActionTests
 		{
 			[Test]
+			public async Task WhenBecauseIsSpecifiedBeforeAnd_ShouldIncludeTheReason()
+			{
+				Action @delegate = () => GC.KeepAlive(new byte[1000]);
+
+				async Task Act()
+					=> await That(@delegate).Allocates().Nothing().Because("it runs on the hot path")
+						.And.DoesNotThrow();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             allocates nothing and does not throw any exception, because it runs on the hot path,
+					             but it allocated * bytes
+					             """).AsWildcard();
+			}
+
+			[Test]
 			public async Task WhenDelegateAllocates_ShouldFail()
 			{
 				Action @delegate = () => GC.KeepAlive(new byte[1000]);
