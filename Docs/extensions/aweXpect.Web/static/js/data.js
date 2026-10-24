@@ -546,6 +546,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
         "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
+      },
+      {
+        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
+        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
       }
     ],
     "labels": [
@@ -639,7 +645,8 @@ window.BENCHMARK_DATA = {
       "c72faf85",
       "5b99ffec",
       "d2a64ca4",
-      "67eb3ff5"
+      "67eb3ff5",
+      "46bf8489"
     ],
     "datasets": [
       {
@@ -736,7 +743,8 @@ window.BENCHMARK_DATA = {
           344.3765674273173,
           443.42809163607086,
           356.7696855068207,
-          416.48378423282077
+          416.48378423282077,
+          209.29368393237775
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -780,6 +788,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -943,7 +952,8 @@ window.BENCHMARK_DATA = {
           990.0870785032,
           1005.3163151059832,
           943.3736949920655,
-          1097.9800065994264
+          1097.9800065994264,
+          508.6536352975028
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -955,6 +965,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1605,6 +1616,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
         "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
+      },
+      {
+        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
+        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
       }
     ],
     "labels": [
@@ -1698,7 +1715,8 @@ window.BENCHMARK_DATA = {
       "c72faf85",
       "5b99ffec",
       "d2a64ca4",
-      "67eb3ff5"
+      "67eb3ff5",
+      "46bf8489"
     ],
     "datasets": [
       {
@@ -1795,7 +1813,8 @@ window.BENCHMARK_DATA = {
           191.2691992010389,
           200.2507420539856,
           189.04937202135721,
-          196.80501375198364
+          196.80501375198364,
+          114.82823797861735
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1843,6 +1862,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -2002,7 +2022,8 @@ window.BENCHMARK_DATA = {
           268.8747660432543,
           268.615898166384,
           263.35365692774457,
-          271.6400808606829
+          271.6400808606829,
+          134.90528260866802
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2014,6 +2035,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -2604,6 +2626,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
         "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
+      },
+      {
+        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
+        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
       }
     ],
     "labels": [
@@ -2687,7 +2715,8 @@ window.BENCHMARK_DATA = {
       "c72faf85",
       "5b99ffec",
       "d2a64ca4",
-      "67eb3ff5"
+      "67eb3ff5",
+      "46bf8489"
     ],
     "datasets": [
       {
@@ -2774,7 +2803,8 @@ window.BENCHMARK_DATA = {
           592.4834735734122,
           630.8778647104899,
           570.9022811253866,
-          607.3748012270246
+          607.3748012270246,
+          355.3106013933818
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2808,6 +2838,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -2961,7 +2992,8 @@ window.BENCHMARK_DATA = {
           949.3286008834839,
           1025.7848145802816,
           909.4116854985555,
-          1039.7940177281698
+          1039.7940177281698,
+          505.6420774459839
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2973,6 +3005,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -3553,6 +3586,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
         "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
+      },
+      {
+        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
+        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
       }
     ],
     "labels": [
@@ -3636,7 +3675,8 @@ window.BENCHMARK_DATA = {
       "c72faf85",
       "5b99ffec",
       "d2a64ca4",
-      "67eb3ff5"
+      "67eb3ff5",
+      "46bf8489"
     ],
     "datasets": [
       {
@@ -3723,7 +3763,8 @@ window.BENCHMARK_DATA = {
           1258.729504585266,
           1703.9086700439452,
           1292.0750061915471,
-          1769.8177486419677
+          1769.8177486419677,
+          1074.1256467183432
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3757,6 +3798,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -3910,7 +3952,8 @@ window.BENCHMARK_DATA = {
           14823.98594556536,
           22255.65346883138,
           14773.613700279822,
-          19042.2948832194
+          19042.2948832194,
+          10391.593965802875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4002,6 +4045,7 @@ window.BENCHMARK_DATA = {
           34712,
           34713,
           34712,
+          34713,
           34713
         ],
         "borderColor": "#FF671B",
@@ -4502,6 +4546,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
         "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
+      },
+      {
+        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
+        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
       }
     ],
     "labels": [
@@ -4585,7 +4635,8 @@ window.BENCHMARK_DATA = {
       "c72faf85",
       "5b99ffec",
       "d2a64ca4",
-      "67eb3ff5"
+      "67eb3ff5",
+      "46bf8489"
     ],
     "datasets": [
       {
@@ -4672,7 +4723,8 @@ window.BENCHMARK_DATA = {
           607.8492760976155,
           768.3135033925374,
           585.1712422688802,
-          665.4601954142253
+          665.4601954142253,
+          383.1473029576815
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4702,6 +4754,7 @@ window.BENCHMARK_DATA = {
           1408,
           1408,
           1120,
+          1080,
           1080,
           1080,
           1080,
@@ -4859,7 +4912,8 @@ window.BENCHMARK_DATA = {
           1254.8571048464094,
           1310.455684153239,
           1247.9527597427368,
-          1374.1340159098306
+          1374.1340159098306,
+          720.5601240158081
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4871,6 +4925,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -5451,6 +5506,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
         "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
+      },
+      {
+        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
+        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
       }
     ],
     "labels": [
@@ -5534,7 +5595,8 @@ window.BENCHMARK_DATA = {
       "c72faf85",
       "5b99ffec",
       "d2a64ca4",
-      "67eb3ff5"
+      "67eb3ff5",
+      "46bf8489"
     ],
     "datasets": [
       {
@@ -5621,7 +5683,8 @@ window.BENCHMARK_DATA = {
           918.1541979129498,
           1089.6834097544352,
           853.8127340316772,
-          1086.208152516683
+          1086.208152516683,
+          703.7574090276446
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5655,6 +5718,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -5808,7 +5872,8 @@ window.BENCHMARK_DATA = {
           819.4260051591056,
           760.8382181803386,
           753.312181854248,
-          808.1741786956787
+          808.1741786956787,
+          440.42451333999634
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5820,6 +5885,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
