@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
 using aweXpect.Customization;
@@ -44,11 +44,6 @@ public partial class StringEqualityOptions
 	/// </exception>
 	public StringEqualityOptions AsRegex()
 	{
-		if (_comparer is not null)
-		{
-			throw ComparerAndPatternConflict();
-		}
-
 		SetMatchType(RegexMatch, nameof(AsRegex));
 		return this;
 	}
@@ -69,11 +64,6 @@ public partial class StringEqualityOptions
 	/// </exception>
 	public StringEqualityOptions AsRegex(RegexOptions regexOptions)
 	{
-		if (_comparer is not null)
-		{
-			throw ComparerAndPatternConflict();
-		}
-
 		ThrowIfInvalidRegexOptions(regexOptions);
 		SetMatchType(new RegexMatchType(regexOptions), nameof(AsRegex));
 		return this;
@@ -126,7 +116,7 @@ public partial class StringEqualityOptions
 		return regex;
 	}
 
-	private sealed class RegexMatchType(RegexOptions regexOptions) : BuiltInMatchType
+	private sealed class RegexMatchType(RegexOptions regexOptions) : StringMatchType
 	{
 		private static readonly MatchPhrase SharedPhrase =
 			MatchPhrase.Verb("matches regex", "match regex", "matching regex")
@@ -134,16 +124,69 @@ public partial class StringEqualityOptions
 				.WithPattern("regex", "regex pattern");
 
 		/// <summary>
-		///     The <see cref="RegexOptions" /> that the pattern is matched with.
+		///     The last pattern that was accepted, because it is validated again for every item of a collection.
 		/// </summary>
-		public RegexOptions Options { get; } = regexOptions;
+		private string? _validatedPattern;
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     A regex may match any part of the subject, like a substring.
+		/// </remarks>
+		public override StringMatchAnchors Anchors => StringMatchAnchors.None;
+
+		/// <inheritdoc />
+		public override bool InspectsSubject => true;
+
+		/// <inheritdoc />
+		public override MatchPhrase Phrase => SharedPhrase;
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     A pattern is matched by the regex engine, which has no way to consult a comparer.
+		/// </remarks>
+		public override StringMatchSettingKinds SupportedSettings
+			=> StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.WhiteSpace;
+
+		/// <inheritdoc />
+		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+			=> new RegexMatcher(this, settings.IgnoreCase);
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     An empty regex pattern matches every value, so that the expectation would say nothing about the subject.
+		/// </remarks>
+		public override void ValidateExpected(string? expected, string parameterName)
+		{
+			if (expected is null || string.Equals(expected, _validatedPattern, StringComparison.Ordinal))
+			{
+				return;
+			}
+
+			if (expected.Length == 0)
+			{
+				throw CreateEmptyPatternException(parameterName, "regex pattern");
+			}
+
+			try
+			{
+				_ = CreateRegex(expected, false);
+			}
+			catch (ArgumentException exception) when (exception is not ArgumentOutOfRangeException)
+			{
+				// ReSharper disable once LocalizableElement
+				throw Tracing.WriteException(new ArgumentException(
+					$"The '{parameterName}' regex pattern is invalid: {exception.Message}", parameterName, exception));
+			}
+
+			_validatedPattern = expected;
+		}
 
 		/// <summary>
-		///     Parses the <paramref name="expected" /> pattern with the <see cref="Options" /> and the timeout.
+		///     Parses the <paramref name="expected" /> pattern with the regex options and the timeout.
 		/// </summary>
-		public Regex CreateRegex(string expected, bool ignoreCase)
+		private Regex CreateRegex(string expected, bool ignoreCase)
 		{
-			RegexOptions options = Options;
+			RegexOptions options = regexOptions;
 			if (ignoreCase)
 			{
 				options |= IgnoreCaseOptions;
@@ -175,43 +218,60 @@ public partial class StringEqualityOptions
 			return count;
 		}
 
-		#region IMatchType Members
-
-		/// <inheritdoc />
-		public override MatchPhrase Phrase => SharedPhrase;
-
-		/// <inheritdoc />
-		public override bool InspectsSubject => true;
-
-		/// <inheritdoc />
-		public override string GetExtendedFailure(string it, string? actual, string? expected,
-			bool ignoreCase,
-			IEqualityComparer<string> comparer,
-			StringDifferenceSettings? settings)
+		/// <summary>
+		///     Matches the patterns of one evaluation, in which a collection compares every item with the same pattern, so
+		///     it keeps the regex that was parsed last.
+		/// </summary>
+		private sealed class RegexMatcher(RegexMatchType matchType, bool ignoreCase) : StringMatcher
 		{
-			if (expected is null)
+			private string? _pattern;
+			private Regex? _regex;
+
+			/// <inheritdoc />
+			public override ValueTask<MatchResult> Match(string? actual, string? expected)
 			{
-				return $"could not compare the <null> regex with {Formatter.Format(actual)}";
+				if (actual is null || expected is null)
+				{
+					return new ValueTask<MatchResult>(MatchResult.NoMatch);
+				}
+
+				return new ValueTask<MatchResult>(MatchResult.From(GetRegex(expected).IsMatch(actual)));
 			}
 
-			StringDifference stringDifference = new(actual, expected, comparer,
-				settings.WithMatchType(StringDifference.MatchType.Regex));
-			return $"{it} did not match{stringDifference.ToString("")}";
-		}
-
-		/// <inheritdoc />
-		public override MatchResult
-			Compare(string? actual, string? expected, bool ignoreCase,
-				IEqualityComparer<string>? comparer)
-		{
-			if (actual is null || expected is null)
+			/// <inheritdoc />
+			public override string GetFailure(string it, ExpectationGrammars grammars, string? actual,
+				string? expected, MatchResult result, StringDifferenceSettings? differenceSettings)
 			{
-				return MatchResult.From(false);
+				if (expected is null)
+				{
+					return $"could not compare the <null> regex with {Formatter.Format(actual)}";
+				}
+
+				StringDifference stringDifference = new(actual, expected,
+					ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal,
+					differenceSettings.WithMatchType(StringDifference.MatchType.Regex));
+				return $"{it} did not match{stringDifference.ToString("")}";
 			}
 
-			return MatchResult.From(CreateRegex(expected, ignoreCase).IsMatch(actual));
-		}
+			/// <inheritdoc />
+			/// <remarks>
+			///     A pattern can match a different number of characters than it is long, so its occurrences are counted
+			///     by the regex engine.
+			/// </remarks>
+			public override int? CountOccurrences(string actual, string expected, int maximum)
+				=> RegexMatchType.CountOccurrences(actual, GetRegex(expected), maximum);
 
-		#endregion
+			private Regex GetRegex(string expected)
+			{
+				if (_regex is null || !string.Equals(_pattern, expected, StringComparison.Ordinal) ||
+				    _regex.MatchTimeout != GetRegexTimeout())
+				{
+					_regex = matchType.CreateRegex(expected, ignoreCase);
+					_pattern = expected;
+				}
+
+				return _regex;
+			}
+		}
 	}
 }

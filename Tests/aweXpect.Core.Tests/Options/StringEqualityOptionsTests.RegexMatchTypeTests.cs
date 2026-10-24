@@ -33,7 +33,7 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage(
-					"""The regex "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+					"""The regex pattern "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
 				.AsPrefix().And
 				.WithParamName("expected")
 				.Because("the timeout must name the pattern instead of surfacing as a generic evaluation error");
@@ -49,7 +49,7 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act() => await task;
 
 			await That(Act).Throws<ArgumentException>()
-				.WithMessage("""The regex "(a+)+$" did not complete within 0:01.*""").AsWildcard()
+				.WithMessage("""The regex pattern "(a+)+$" did not complete within 0:01.*""").AsWildcard()
 				.Because("only an unusable pattern is rejected at the call, the matching itself still fails the task");
 		}
 
@@ -152,7 +152,7 @@ public sealed partial class StringEqualityOptionsTests
 			{
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage(
-						"""The regex "(a+)+$" did not complete within 0:00.010. Simplify the pattern to avoid catastrophic backtracking.""")
+						"""The regex pattern "(a+)+$" did not complete within 0:00.010. Simplify the pattern to avoid catastrophic backtracking.""")
 					.AsPrefix()
 					.Because("the options must not reuse the regex they parsed with the default timeout");
 			}
@@ -161,7 +161,7 @@ public sealed partial class StringEqualityOptionsTests
 			{
 				await That(OtherAct).Throws<ArgumentException>()
 					.WithMessage(
-						"""The regex "(a+)+$" did not complete within 0:00.020. Simplify the pattern to avoid catastrophic backtracking.""")
+						"""The regex pattern "(a+)+$" did not complete within 0:00.020. Simplify the pattern to avoid catastrophic backtracking.""")
 					.AsPrefix()
 					.Because("the shared cache must not reuse a regex that was parsed with another timeout");
 			}
@@ -193,7 +193,7 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act() => await sut.AreConsideredEqual(new string('a', 30) + "!", "(a+)+$");
 
 			await That(Act).Throws<ArgumentException>()
-				.WithMessage("""The regex "(a+)+$" did not complete within 0:01.*""").AsWildcard().And
+				.WithMessage("""The regex pattern "(a+)+$" did not complete within 0:01.*""").AsWildcard().And
 				.WithParamName("unexpected")
 				.Because("a negated expectation receives the pattern as 'unexpected'");
 		}
@@ -330,7 +330,7 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage(
-					"""The regex "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+					"""The regex pattern "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
 				.AsPrefix().And
 				.WithParamName("expected")
 				.Because("counting the occurrences runs the same pattern and must fail the same way");

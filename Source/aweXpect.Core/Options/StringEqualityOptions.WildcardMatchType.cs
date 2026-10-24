@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
 
@@ -18,43 +19,39 @@ public partial class StringEqualityOptions
 	/// </exception>
 	public StringEqualityOptions AsWildcard()
 	{
-		if (_comparer is not null)
-		{
-			throw ComparerAndPatternConflict();
-		}
-
 		SetMatchType(WildcardMatch, nameof(AsWildcard));
 		return this;
 	}
 
-	private sealed class WildcardMatchType : BuiltInMatchType
+	private sealed class WildcardMatchType : StringMatchType
 	{
 		private static readonly MatchPhrase SharedPhrase =
 			MatchPhrase.Verb("matches", "match", "matching")
 				.WithName(" as wildcard")
 				.WithPattern("wildcard", "wildcard pattern");
 
-		/// <summary>
-		///     Counts the non-overlapping matches of the <paramref name="expected" /> wildcard pattern in the
-		///     <paramref name="actual" /> value, up to the <paramref name="maximum" />.
-		/// </summary>
-		public static int CountOccurrences(string actual, string expected, bool ignoreCase, int maximum)
-			=> RegexMatchType.CountOccurrences(FoldCase(actual, ignoreCase),
-				GetOrParseRegex(WildcardToUnanchoredRegularExpression(FoldCase(expected, ignoreCase)),
-					RegexOptions.Singleline), maximum);
+		/// <inheritdoc />
+		public override bool InspectsSubject => true;
+
+		/// <inheritdoc />
+		public override MatchPhrase Phrase => SharedPhrase;
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     A pattern is matched by the regex engine, which has no way to consult a comparer.
+		/// </remarks>
+		public override StringMatchSettingKinds SupportedSettings
+			=> StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.WhiteSpace;
+
+		/// <inheritdoc />
+		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+			=> new WildcardMatcher(settings.IgnoreCase);
 
 		/// <summary>
 		///     Parses the <paramref name="expected" /> wildcard pattern into a regex that has to cover the whole value.
 		/// </summary>
-		public static Regex CreateRegex(string expected, bool ignoreCase)
+		private static Regex CreateRegex(string expected, bool ignoreCase)
 			=> GetOrParseRegex(WildcardToRegularExpression(FoldCase(expected, ignoreCase)), RegexOptions.Singleline);
-
-		/// <summary>
-		///     Whether the <paramref name="actual" /> value matches the <paramref name="regex" /> from
-		///     <see cref="CreateRegex" />.
-		/// </summary>
-		public static bool IsMatch(Regex regex, string actual, bool ignoreCase)
-			=> regex.IsMatch(FoldCase(actual, ignoreCase));
 
 		/// <remarks>
 		///     The casing is ignored by comparing the upper-case invariant values instead of with
@@ -82,43 +79,63 @@ public partial class StringEqualityOptions
 				.Replace("\\?", @"(?>[\uD800-\uDBFF][\uDC00-\uDFFF]|.)")
 				.Replace("\\*", ".*");
 
-		#region IStringMatchType Members
-
-		/// <inheritdoc />
-		public override MatchPhrase Phrase => SharedPhrase;
-
-		/// <inheritdoc />
-		public override bool InspectsSubject => true;
-
-		/// <inheritdoc />
-		public override string GetExtendedFailure(string it, string? actual, string? expected,
-			bool ignoreCase,
-			IEqualityComparer<string> comparer,
-			StringDifferenceSettings? settings)
+		/// <summary>
+		///     Matches the patterns of one evaluation, in which a collection compares every item with the same pattern, so
+		///     it keeps the regex that was parsed last.
+		/// </summary>
+		private sealed class WildcardMatcher(bool ignoreCase) : StringMatcher
 		{
-			if (expected is null)
+			private string? _pattern;
+			private Regex? _regex;
+
+			/// <inheritdoc />
+			public override ValueTask<MatchResult> Match(string? actual, string? expected)
 			{
-				return $"could not compare the <null> wildcard pattern with {Formatter.Format(actual)}";
+				if (actual is null || expected is null)
+				{
+					return new ValueTask<MatchResult>(MatchResult.NoMatch);
+				}
+
+				return new ValueTask<MatchResult>(
+					MatchResult.From(GetRegex(expected).IsMatch(FoldCase(actual, ignoreCase))));
 			}
 
-			StringDifference stringDifference = new(actual, expected, comparer,
-				settings.WithMatchType(StringDifference.MatchType.Wildcard));
-			return $"{it} did not match{stringDifference.ToString("")}";
-		}
-
-		/// <inheritdoc />
-		public override MatchResult
-			Compare(string? actual, string? expected, bool ignoreCase,
-				IEqualityComparer<string>? comparer)
-		{
-			if (actual is null || expected is null)
+			/// <inheritdoc />
+			public override string GetFailure(string it, ExpectationGrammars grammars, string? actual,
+				string? expected, MatchResult result, StringDifferenceSettings? differenceSettings)
 			{
-				return MatchResult.From(false);
+				if (expected is null)
+				{
+					return $"could not compare the <null> wildcard pattern with {Formatter.Format(actual)}";
+				}
+
+				StringDifference stringDifference = new(actual, expected,
+					ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal,
+					differenceSettings.WithMatchType(StringDifference.MatchType.Wildcard));
+				return $"{it} did not match{stringDifference.ToString("")}";
 			}
 
-			return MatchResult.From(IsMatch(CreateRegex(expected, ignoreCase), actual, ignoreCase));
-		}
+			/// <inheritdoc />
+			/// <remarks>
+			///     A pattern can match a different number of characters than it is long, so its occurrences are counted
+			///     by the regex engine.
+			/// </remarks>
+			public override int? CountOccurrences(string actual, string expected, int maximum)
+				=> RegexMatchType.CountOccurrences(FoldCase(actual, ignoreCase),
+					GetOrParseRegex(WildcardToUnanchoredRegularExpression(FoldCase(expected, ignoreCase)),
+						RegexOptions.Singleline), maximum);
 
-		#endregion
+			private Regex GetRegex(string expected)
+			{
+				if (_regex is null || !string.Equals(_pattern, expected, StringComparison.Ordinal) ||
+				    _regex.MatchTimeout != GetRegexTimeout())
+				{
+					_regex = CreateRegex(expected, ignoreCase);
+					_pattern = expected;
+				}
+
+				return _regex;
+			}
+		}
 	}
 }

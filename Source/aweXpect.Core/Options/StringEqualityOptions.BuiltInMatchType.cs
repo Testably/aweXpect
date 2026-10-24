@@ -7,7 +7,7 @@ namespace aweXpect.Options;
 public partial class StringEqualityOptions
 {
 	/// <summary>
-	///     A built-in match type, which compares and explains with the settings alone, so that its matchers keep no state
+	///     A built-in match type that compares and explains with the settings alone, so that its matchers keep no state
 	///     and are shared unless a comparer is specified.
 	/// </summary>
 	private abstract class BuiltInMatchType : StringMatchType
@@ -28,6 +28,16 @@ public partial class StringEqualityOptions
 			bool ignoreCase,
 			IEqualityComparer<string> comparer,
 			StringDifferenceSettings? settings);
+
+		/// <inheritdoc cref="StringMatcher.CountOccurrences(string, string, int)" />
+		public virtual int? CountOccurrences(string actual, string expected, StringMatchSettings settings,
+			int maximum)
+			=> null;
+
+		/// <inheritdoc cref="StringMatcher.GetOccurrenceDetails(string, string, int)" />
+		public virtual string GetOccurrenceDetails(string actual, string expected, StringMatchSettings settings,
+			int count)
+			=> "";
 
 		/// <inheritdoc />
 		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
@@ -54,6 +64,14 @@ public partial class StringEqualityOptions
 				string? expected, MatchResult result, StringDifferenceSettings? differenceSettings)
 				=> matchType.GetExtendedFailure(it, actual, expected, settings.IgnoreCase,
 					settings.EffectiveComparer, differenceSettings);
+
+			/// <inheritdoc />
+			public override int? CountOccurrences(string actual, string expected, int maximum)
+				=> matchType.CountOccurrences(actual, expected, settings, maximum);
+
+			/// <inheritdoc />
+			public override string GetOccurrenceDetails(string actual, string expected, int count)
+				=> matchType.GetOccurrenceDetails(actual, expected, settings, count);
 		}
 	}
 }

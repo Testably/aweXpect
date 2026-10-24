@@ -24,31 +24,12 @@ internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 	public override MatchPhrase Phrase => SharedPhrase;
 
 	/// <inheritdoc />
-	/// <exception cref="InvalidOperationException">
-	///     The casing is ignored or a <paramref name="comparer" /> is specified, which a JSON comparison cannot honour.
-	/// </exception>
-	public override void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
-	{
-		if (ignoreCase)
-		{
-			throw Tracing.WriteException(
-				new InvalidOperationException("IgnoringCase cannot be combined with AsJson."));
-		}
-
-		if (comparer is not null)
-		{
-			throw Tracing.WriteException(
-				new InvalidOperationException("Using cannot be combined with AsJson."));
-		}
-	}
-
-	/// <inheritdoc />
 	/// <remarks>
 	///     The last accepted value is remembered, because it is validated again for every item of a collection.
 	/// </remarks>
 	/// <exception cref="ArgumentNullException">The <paramref name="expected" /> value is <see langword="null" />.</exception>
 	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid JSON.</exception>
-	public override void ValidateExpected(string? expected)
+	public override void ValidateExpected(string? expected, string parameterName)
 	{
 		if (expected is not null && string.Equals(expected, _validatedExpected, StringComparison.Ordinal))
 		{

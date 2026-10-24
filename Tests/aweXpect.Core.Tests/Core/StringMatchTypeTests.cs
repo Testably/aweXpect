@@ -8,6 +8,31 @@ namespace aweXpect.Core.Tests.Core;
 public sealed class StringMatchTypeTests
 {
 	[Test]
+	public async Task Capabilities_ByDefault_ShouldBehaveLikeAnEquality()
+	{
+		StringMatchType sut = new MinimalMatchType();
+
+		await That(sut.Anchors).IsEqualTo(StringMatchAnchors.StartAndEnd);
+		await That(sut.InspectsSubject).IsFalse();
+		await That(sut.ListsLineDifferences).IsFalse();
+		await That(sut.SuggestsIgnoringNewlineStyle).IsFalse();
+		await That(sut.SupportedSettings).IsEqualTo(StringMatchSettingKinds.WhiteSpace)
+			.Because("a custom match type must declare the casing and the comparer before they are honoured");
+	}
+
+	[Test]
+	public async Task CountOccurrences_WhenTheMatcherCountsOnItsOwn_ShouldUseItsCount()
+	{
+		string subject = "Let It Be";
+
+		async Task Act()
+			=> await That(subject).Contains("It").AsTitle(new MinimalMatchType(2)).Exactly(2);
+
+		await That(Act).DoesNotThrow()
+			.Because("a matcher whose expected value can match a different number of characters counts on its own");
+	}
+
+	[Test]
 	public async Task ForEvaluation_ShouldFreezeTheSettings()
 	{
 		RecordingMatchType matchType = new();
@@ -42,7 +67,7 @@ public sealed class StringMatchTypeTests
 	[Test]
 	public async Task ForEvaluation_WhenTheMatcherIsShared_ShouldReturnTheSameOptions()
 	{
-		StringEqualityOptions sut = new StringEqualityOptions("expected").AsWildcard();
+		StringEqualityOptions sut = new StringEqualityOptions("expected").AsPrefix();
 
 		StringEqualityOptions first =
 			sut.ForEvaluation(new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
@@ -138,6 +163,23 @@ public sealed class StringMatchTypeTests
 			             """);
 	}
 
+	private sealed class MinimalMatchType(int? occurrences = null) : StringMatchType
+	{
+		public override MatchPhrase Phrase { get; } = MatchPhrase.EqualTo;
+
+		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+			=> new Matcher(occurrences);
+
+		private sealed class Matcher(int? occurrences) : StringMatcher
+		{
+			public override ValueTask<MatchResult> Match(string? actual, string? expected)
+				=> new(MatchResult.From(actual == expected));
+
+			public override int? CountOccurrences(string actual, string expected, int maximum)
+				=> occurrences;
+		}
+	}
+
 	private sealed class RecordingMatchType(string? notComparableReason = null) : StringMatchType
 	{
 		public List<MatchEnvironment> Environments { get; } = [];
@@ -154,6 +196,9 @@ public sealed class StringMatchTypeTests
 		}
 
 		public override MatchPhrase Phrase { get; } = MatchPhrase.Being("titled").WithName(" as title");
+
+		public override StringMatchSettingKinds SupportedSettings
+			=> StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.Comparer | StringMatchSettingKinds.WhiteSpace;
 
 		public sealed class CountingMatcher(string? notComparableReason) : StringMatcher
 		{

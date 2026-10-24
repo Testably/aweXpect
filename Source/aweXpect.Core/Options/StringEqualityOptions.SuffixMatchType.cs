@@ -53,6 +53,29 @@ public partial class StringEqualityOptions
 		public override bool InspectsSubject => true;
 
 		/// <inheritdoc />
+		public override StringMatchAnchors Anchors => StringMatchAnchors.End;
+
+		/// <inheritdoc />
+		public override StringMatchSettingKinds SupportedSettings
+			=> StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.Comparer |
+			   StringMatchSettingKinds.WhiteSpace;
+
+		/// <inheritdoc />
+		public override bool SuggestsIgnoringNewlineStyle => true;
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     An empty suffix matches every value, so that the expectation would say nothing about the subject.
+		/// </remarks>
+		public override void ValidateExpected(string? expected, string parameterName)
+		{
+			if (expected?.Length == 0)
+			{
+				throw CreateEmptyPatternException(parameterName, "suffix");
+			}
+		}
+
+		/// <inheritdoc />
 		public override string GetExtendedFailure(string it, string? actual, string? expected,
 			bool ignoreCase,
 			IEqualityComparer<string> comparer,

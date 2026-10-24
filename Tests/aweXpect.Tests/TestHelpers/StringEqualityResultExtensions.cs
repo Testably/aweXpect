@@ -58,6 +58,9 @@ public static class StringEqualityResultExtensions
 		public override MatchPhrase Phrase { get; } =
 			MatchPhrase.Being("case-folded equal to").WithName(" as case-folded");
 
+		public override StringMatchSettingKinds SupportedSettings
+			=> StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.Comparer | StringMatchSettingKinds.WhiteSpace;
+
 		private sealed class CaseFoldedMatcher(string? context) : StringMatcher
 		{
 			public override ValueTask<MatchResult> Match(string? actual, string? expected)
@@ -83,20 +86,7 @@ public static class StringEqualityResultExtensions
 
 		public override MatchPhrase Phrase { get; } = MatchPhrase.Being("the number").WithName(" as number");
 
-		public override void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			if (ignoreCase)
-			{
-				throw new InvalidOperationException("IgnoringCase cannot be combined with AsNumber.");
-			}
-
-			if (comparer is not null)
-			{
-				throw new InvalidOperationException("A custom comparer is not supported for AsNumber.");
-			}
-		}
-
-		public override void ValidateExpected(string? expected)
+		public override void ValidateExpected(string? expected, string parameterName)
 		{
 			if (!TryParse(expected, out _))
 			{

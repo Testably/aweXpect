@@ -37,7 +37,7 @@ public sealed partial class ThatString
 
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage(
-						"""The regex "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+						"""The regex pattern "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
 					.AsPrefix().And
 					.WithParamName("unexpected")
 					.Because("a pattern that cannot be evaluated says nothing about the subject in either polarity");

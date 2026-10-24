@@ -28,28 +28,9 @@ internal sealed class XmlMatchType(XmlOptions options) : StringMatchType
 	public override MatchPhrase Phrase => SharedPhrase;
 
 	/// <inheritdoc />
-	/// <exception cref="InvalidOperationException">
-	///     The casing is ignored or a <paramref name="comparer" /> is specified, which an XML comparison cannot honour.
-	/// </exception>
-	public override void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
-	{
-		if (ignoreCase)
-		{
-			throw Tracing.WriteException(
-				new InvalidOperationException("IgnoringCase cannot be combined with AsXml."));
-		}
-
-		if (comparer is not null)
-		{
-			throw Tracing.WriteException(
-				new InvalidOperationException("Using cannot be combined with AsXml."));
-		}
-	}
-
-	/// <inheritdoc />
 	/// <exception cref="ArgumentNullException">The <paramref name="expected" /> value is <see langword="null" />.</exception>
 	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid XML.</exception>
-	public override void ValidateExpected(string? expected)
+	public override void ValidateExpected(string? expected, string parameterName)
 		=> GetExpectedDocument(expected);
 
 	/// <remarks>

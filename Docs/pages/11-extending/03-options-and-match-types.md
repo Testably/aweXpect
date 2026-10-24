@@ -231,10 +231,14 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
 - For strings, derive from `StringMatchType` instead and set it with `SetMatchType` on the `StringEqualityOptions`.
   Its `ForEvaluation` also receives the `StringMatchSettings`, i.e. whether the casing is ignored and the comparer of the
   caller, and its `StringMatcher` compares the values after the whitespace options are applied. Core appends these
-  options to the expectation text, e.g. "starts with "Let it" ignoring case". Throw in its
-  `ValidateOptions` for a casing or a comparer that it cannot honour, and in its `ValidateExpected` for an expected value
-  that it cannot use: the first throws at the call that specifies the conflict, the second for every subject, also when
-  nothing is compared with the expected value, e.g. for an empty collection.
+  options to the expectation text, e.g. "starts with "Let it" ignoring case". Declare the settings that the match type
+  honours in `SupportedSettings`: Core rejects every other one with the same message, e.g. "IgnoringCase cannot be
+  combined with AsTitle.", at the call that specifies the conflict, in either order. The whitespace options are
+  supported unless you leave them out. Throw in its `ValidateExpected` for an expected value that it cannot use: it is
+  called for every subject, also when nothing is compared with the expected value, e.g. for an empty collection.
+- A string match type can also tell Core where its expected value lines up with the subject (`Anchors`, e.g. a prefix
+  only at the start), count the occurrences of the expected value for a quantified `Contains` (`CountOccurrences` of
+  the matcher), and whether a failure lists the differing lines or hints at a different newline style.
 
 A string matcher adds its contexts in `AppendContexts` too. They are only added to a failure of the string comparison,
 also for an item of a collection or a member inside `Whose`, and not to a failure of another expectation on the same

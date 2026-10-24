@@ -24,6 +24,9 @@ internal static class YieldingStringMatch
 
 		public override MatchPhrase Phrase { get; } = MatchPhrase.EqualTo.WithName(" after yielding");
 
+		public override StringMatchSettingKinds SupportedSettings
+			=> StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.Comparer | StringMatchSettingKinds.WhiteSpace;
+
 		private sealed class YieldingMatcher : StringMatcher
 		{
 			public override async ValueTask<MatchResult> Match(string? actual, string? expected)

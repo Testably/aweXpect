@@ -45,6 +45,28 @@ public abstract class StringMatcher
 		=> result.Explanation?.GetFailure(it, grammars, null) ?? $"{it} was {Formatter.Format(actual)}";
 
 	/// <summary>
+	///     Counts the non-overlapping occurrences of the already normalized <paramref name="expected" /> value in the
+	///     <paramref name="actual" /> value, but at most <paramref name="maximum" /> times, for a quantified
+	///     <c>Contains</c>.
+	/// </summary>
+	/// <remarks>
+	///     The default returns <see langword="null" />, so that Core compares the <paramref name="expected" /> value with
+	///     every window of the same length in the <paramref name="actual" /> value. A matcher whose expected value can
+	///     match a different number of characters, e.g. a pattern, counts on its own.
+	/// </remarks>
+	public virtual int? CountOccurrences(string actual, string expected, int maximum) => null;
+
+	/// <summary>
+	///     Describes where the first <paramref name="count" /> occurrences of the <paramref name="expected" /> value are
+	///     in the <paramref name="actual" /> value, or without an occurrence, how it is missed.
+	/// </summary>
+	/// <remarks>
+	///     The text starts with its own separator, e.g. <c>" at lines 3-4"</c>, as it follows the formatted
+	///     <paramref name="actual" /> value. The default is an empty string.
+	/// </remarks>
+	public virtual string GetOccurrenceDetails(string actual, string expected, int count) => "";
+
+	/// <summary>
 	///     Adds the contexts that explain a failure of this evaluation, e.g. the options of the match type.
 	/// </summary>
 	/// <remarks>

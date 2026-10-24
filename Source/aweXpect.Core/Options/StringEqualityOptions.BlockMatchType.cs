@@ -27,7 +27,6 @@ public partial class StringEqualityOptions
 	/// </exception>
 	public StringEqualityOptions AsBlock()
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_matchTypeOption ?? _lineOption, nameof(AsBlock));
 		SetMatchType(BlockMatch, nameof(AsBlock));
 		return this;
 	}
@@ -465,6 +464,27 @@ public partial class StringEqualityOptions
 
 		/// <inheritdoc />
 		public override bool InspectsSubject => true;
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     The block compares the lines on its own, so the options that change the whitespace or the lines are not
+		///     supported.
+		/// </remarks>
+		public override StringMatchSettingKinds SupportedSettings
+			=> StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.Comparer;
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     A block spans whole lines, so its occurrences cannot be found with a window of the expected length.
+		/// </remarks>
+		public override int? CountOccurrences(string actual, string expected, StringMatchSettings settings,
+			int maximum)
+			=> CountOccurrences(actual, expected, settings.EffectiveComparer, maximum);
+
+		/// <inheritdoc />
+		public override string GetOccurrenceDetails(string actual, string expected, StringMatchSettings settings,
+			int count)
+			=> GetOccurrenceDetails(actual, expected, count, settings.EffectiveComparer);
 
 		/// <inheritdoc />
 		/// <remarks>

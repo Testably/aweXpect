@@ -541,6 +541,22 @@ namespace aweXpect.Core
     {
         public static aweXpect.Core.StringDifferenceSettings WithMatchType(this aweXpect.Core.StringDifferenceSettings? settings, aweXpect.Core.StringDifference.MatchType matchType) { }
     }
+    [System.Flags]
+    public enum StringMatchAnchors
+    {
+        None = 0,
+        Start = 1,
+        End = 2,
+        StartAndEnd = 3,
+    }
+    [System.Flags]
+    public enum StringMatchSettingKinds
+    {
+        None = 0,
+        IgnoreCase = 1,
+        Comparer = 2,
+        WhiteSpace = 4,
+    }
     public readonly struct StringMatchSettings
     {
         public StringMatchSettings(bool ignoreCase, System.Collections.Generic.IEqualityComparer<string>? comparer) { }
@@ -551,17 +567,22 @@ namespace aweXpect.Core
     public abstract class StringMatchType
     {
         protected StringMatchType() { }
+        public virtual aweXpect.Core.StringMatchAnchors Anchors { get; }
         public virtual bool InspectsSubject { get; }
+        public virtual bool ListsLineDifferences { get; }
         public abstract aweXpect.Core.MatchPhrase Phrase { get; }
+        public virtual bool SuggestsIgnoringNewlineStyle { get; }
+        public virtual aweXpect.Core.StringMatchSettingKinds SupportedSettings { get; }
         public abstract aweXpect.Core.StringMatcher ForEvaluation(aweXpect.Core.MatchEnvironment environment, aweXpect.Core.StringMatchSettings settings);
-        public virtual void ValidateExpected(string? expected) { }
-        public virtual void ValidateOptions(bool ignoreCase, System.Collections.Generic.IEqualityComparer<string>? comparer) { }
+        public virtual void ValidateExpected(string? expected, string parameterName) { }
     }
     public abstract class StringMatcher
     {
         protected StringMatcher() { }
         public virtual void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
+        public virtual int? CountOccurrences(string actual, string expected, int maximum) { }
         public virtual string GetFailure(string it, aweXpect.Core.ExpectationGrammars grammars, string? actual, string? expected, aweXpect.Core.MatchResult result, aweXpect.Core.StringDifferenceSettings? differenceSettings) { }
+        public virtual string GetOccurrenceDetails(string actual, string expected, int count) { }
         public abstract System.Threading.Tasks.ValueTask<aweXpect.Core.MatchResult> Match(string? actual, string? expected);
     }
     [System.Diagnostics.DebuggerDisplay("ThatBoolSubject: {ExpectationBuilder}")]

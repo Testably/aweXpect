@@ -53,6 +53,14 @@ public partial class StringEqualityOptions
 		public override bool InspectsSubject => true;
 
 		/// <inheritdoc />
+		public override StringMatchAnchors Anchors => StringMatchAnchors.None;
+
+		/// <inheritdoc />
+		public override StringMatchSettingKinds SupportedSettings
+			=> StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.Comparer |
+			   StringMatchSettingKinds.WhiteSpace;
+
+		/// <inheritdoc />
 		public override string GetExtendedFailure(string it, string? actual, string? expected,
 			bool ignoreCase,
 			IEqualityComparer<string> comparer,

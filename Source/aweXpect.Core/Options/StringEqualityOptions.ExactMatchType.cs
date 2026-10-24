@@ -23,6 +23,29 @@ public partial class StringEqualityOptions
 		public override bool InspectsSubject => false;
 
 		/// <inheritdoc />
+		public override bool ListsLineDifferences => true;
+
+		/// <inheritdoc />
+		public override bool SuggestsIgnoringNewlineStyle => true;
+
+		/// <inheritdoc />
+		public override StringMatchSettingKinds SupportedSettings
+			=> StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.Comparer |
+			   StringMatchSettingKinds.WhiteSpace;
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     Without a comparer, a window equals the <paramref name="expected" /> string exactly where an ordinal search
+		///     finds it, so the windows are not copied.
+		/// </remarks>
+		public override int? CountOccurrences(string actual, string expected, StringMatchSettings settings,
+			int maximum)
+			=> settings.Comparer is null
+				? CountOrdinalOccurrences(actual, expected,
+					settings.IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal, maximum)
+				: null;
+
+		/// <inheritdoc />
 		public override string GetExtendedFailure(string it, string? actual, string? expected,
 			bool ignoreCase,
 			IEqualityComparer<string> comparer,
