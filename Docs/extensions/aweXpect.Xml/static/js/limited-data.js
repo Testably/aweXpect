@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "afefacb2fc325c2acb0fe509b9001e658b3db753",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
-        "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
-      },
-      {
         "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
         "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
+      },
+      {
+        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
+        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
       }
     ],
     "labels": [
-      "afefacb2",
       "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "4eec7318",
       "df357ed3",
       "c010bba3",
-      "5bc15a41"
+      "5bc15a41",
+      "1945e0a4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          688.871600151062,
           689.144854765672,
           461.6032927195231,
           549.2897597040449,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           577.492098734929,
           588.2506223678589,
           707.5846187151395,
-          786.9106901804606
+          786.9106901804606,
+          535.1321917374929
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          721.1655401229858,
           700.0534820556641,
           519.4800776754107,
           548.1114939176119,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           536.9896809032986,
           564.5030789375305,
           653.4171895980835,
-          677.5861765316555
+          677.5861765316555,
+          579.5811695371356
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "afefacb2fc325c2acb0fe509b9001e658b3db753",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
-        "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
-      },
-      {
         "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
         "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
+      },
+      {
+        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
+        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
       }
     ],
     "labels": [
-      "afefacb2",
       "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "4eec7318",
       "df357ed3",
       "c010bba3",
-      "5bc15a41"
+      "5bc15a41",
+      "1945e0a4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4745.038444519043,
           4505.529690551758,
           3368.750720977783,
           4311.383964538574,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3523.849180094401,
           3581.9025093078612,
           4305.464863368443,
-          4415.6176900227865
+          4415.6176900227865,
+          3260.9461220961352
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24276,
           24276,
           24276,
           24276,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           24119,
           24119,
           24119,
+          24119,
           24119
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5288.010634358724,
           5168.3868326459615,
           4209.841989898681,
           4589.769191996256,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4150.829909769694,
           3925.0110560099283,
           5154.546627298991,
-          5069.611690227802
+          5069.611690227802,
+          3922.5485727945966
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "afefacb2fc325c2acb0fe509b9001e658b3db753",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
-        "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
-      },
-      {
         "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
         "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
+      },
+      {
+        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
+        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
       }
     ],
     "labels": [
-      "afefacb2",
       "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "4eec7318",
       "df357ed3",
       "c010bba3",
-      "5bc15a41"
+      "5bc15a41",
+      "1945e0a4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2604.359392674764,
           2539.0659070332845,
           1765.821253712972,
           2081.376038869222,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1952.6132261912028,
           2006.5430682046074,
           2545.288360050746,
-          2676.6508934020994
+          2676.6508934020994,
+          1876.2194380078997
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1678,14 +1678,14 @@ window.BENCHMARK_DATA = {
           12856,
           12856,
           12856,
-          12856,
           12780,
           12856,
           12780,
           12780,
           12856,
           12780,
-          12856
+          12856,
+          12780
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3682.93826751709,
           3333.295943705241,
           2542.8334930419924,
           2881.8859361921036,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2742.032110850016,
           2834.7653319040933,
           3431.645770209176,
-          3394.0853655497235
+          3394.0853655497235,
+          2579.708838242751
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "afefacb2fc325c2acb0fe509b9001e658b3db753",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
-        "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
-      },
-      {
         "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
         "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
+      },
+      {
+        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
+        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
       }
     ],
     "labels": [
-      "afefacb2",
       "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "4eec7318",
       "df357ed3",
       "c010bba3",
-      "5bc15a41"
+      "5bc15a41",
+      "1945e0a4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          14361.160401916504,
           13975.433365958077,
           10125.802240224984,
           10461.290688650948,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           10503.588162231445,
           10913.545343526204,
           13473.099870954242,
-          14205.218841552734
+          14205.218841552734,
+          10664.058569771903
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2286,14 +2286,14 @@ window.BENCHMARK_DATA = {
           25568,
           25568,
           25568,
-          25568,
           25494,
           25568,
           25494,
           25494,
           25568,
           25494,
-          25568
+          25568,
+          25494
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          363182.51481119794,
           353419.3955829327,
           221415.20205078126,
           251876.168359375,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           246463.16821289062,
           247312.63839017428,
           348778.28271484375,
-          358449.90481770836
+          358449.90481770836,
+          211837.90339006696
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544246,
           544335,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544335
+          544335,
+          544245
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
