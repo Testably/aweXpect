@@ -55,7 +55,8 @@ order of the list, and otherwise the built-in comparison.
 - An exception of a comparer or of its condition fails the expectation both ways, with the exception as its cause, and
   neither records nor accepts the value.
 
-## Testing a comparer
+<details>
+<summary>Testing a comparer</summary>
 
 `SnapshotContent.FromText(…)` and `SnapshotContent.FromBytes(…)` create the contents like a store keeps them, so that a
 comparer can be tested on its own:
@@ -69,3 +70,5 @@ SnapshotComparison comparison = await new CoverArtComparer(0.99).CompareAsync(co
 
 await Expect.That(comparison.IsEqual).IsTrue();
 ```
+
+</details>
