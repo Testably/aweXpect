@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "97d791911888342afd484a82f270e43100d5afa6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
-        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
-      },
-      {
         "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
-      "97d79191",
       "97f51880",
       "f79b883b",
       "a1c8667e",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10890.095181274413,
           10516.810688563755,
           5565.60806110927,
           10032.839408287635,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           7765.589809962681,
           7822.334305899484,
           7674.64283316476,
-          5438.740982055664
+          5438.740982055664,
+          10763.331905658428
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          367925.5975260417,
           382014.3905552455,
           193524.22182992788,
           327843.73541666666,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           299425.33346354164,
           253496.61342075892,
           243978.09936523438,
-          171168.4903564453
+          171168.4903564453,
+          368104.6346261161
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590287,
           590288,
           590290,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590226,
           590289,
           590288,
-          590287
+          590287,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19173.963389078777,
           20383.85305582682,
           10966.696462777945,
           18188.214909144812,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           17956.768531799316,
           14615.994557698568,
           14318.853892008463,
-          10280.287642342704
+          10280.287642342704,
+          19452.899841308594
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "97d791911888342afd484a82f270e43100d5afa6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
-        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
-      },
-      {
         "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
-      "97d79191",
       "97f51880",
       "f79b883b",
       "a1c8667e",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          327.0365262372153,
           270.479339156832,
           134.29815770785015,
           242.85649299621582,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           270.98244549677923,
           205.65544237409318,
           193.84326260884603,
-          131.96356910925644
+          131.96356910925644,
+          307.8254539489746
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          488.27002703348796,
           502.7086584726969,
           280.3892458120982,
           538.0535874048869,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           608.7831144968669,
           454.4919906616211,
           408.8997362136841,
-          263.95452427864075
+          263.95452427864075,
+          522.02847637449
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          377.1775811059134,
           386.9814012209574,
           223.3083086013794,
           394.9460385322571,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           406.96304297447205,
           310.2939220428467,
           293.45769952138266,
-          208.53382562001545
+          208.53382562001545,
+          413.87239166895546
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "97d791911888342afd484a82f270e43100d5afa6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
-        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
-      },
-      {
         "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
-      "97d79191",
       "97f51880",
       "f79b883b",
       "a1c8667e",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          122.70457618053143,
           130.71092019081115,
           69.70118754704794,
           131.46318513552347,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           153.11850668589275,
           111.65735150178274,
           112.97628557682037,
-          73.56691530772618
+          73.56691530772618,
+          148.81204695701598
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          255.67919741358077,
           251.06090536117554,
           131.66076879501344,
           262.4545056819916,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           326.08622087751115,
           213.2433645884196,
           207.0913911966177,
-          134.71666740576427
+          134.71666740576427,
+          266.2779497782389
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          237.19032276471455,
           235.86409366925557,
           131.8313106218974,
           241.21304072652543,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           242.46588732646063,
           192.27366811888558,
           186.34868797234125,
-          125.0022577898843
+          125.0022577898843,
+          253.5050666515644
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "97d791911888342afd484a82f270e43100d5afa6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
-        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
-      },
-      {
         "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
-      "97d79191",
       "97f51880",
       "f79b883b",
       "a1c8667e",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          239.05454270044962,
           250.2786771138509,
           134.7234858104161,
           238.57285486857097,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           244.57540913990564,
           201.55737851460773,
           199.81796620442316,
-          139.46009581429618
+          139.46009581429618,
+          267.86706886291506
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          522.4018257776896,
           503.6238045374552,
           294.3372019131978,
           530.3193781534831,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           652.7113464900425,
           426.06097049713134,
           422.7588239987691,
-          266.4523186683655
+          266.4523186683655,
+          529.1981568018596
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          326.15928347905475,
           324.0084431171417,
           198.53151828447977,
           336.73750281333923,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           345.77950392450606,
           255.58313453992207,
           256.9804555892944,
-          181.3638050556183
+          181.3638050556183,
+          346.1922581036886
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "97d791911888342afd484a82f270e43100d5afa6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
-        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
-      },
-      {
         "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
-      "97d79191",
       "97f51880",
       "f79b883b",
       "a1c8667e",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          694.6887767155965,
           638.7472033500671,
           336.51094420750934,
           610.549770281865,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           573.8886089691749,
           492.58369140625,
           510.66708011627196,
-          352.70454772313434
+          352.70454772313434,
+          689.2711715017047
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1364.1833601633707,
           1306.8218197141375,
           771.0488004048665,
           1473.319426981608,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1509.6490745544434,
           1129.9494004567464,
           1081.0514310201008,
-          775.774098777771
+          775.774098777771,
+          1372.5945108958654
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          634.9048854192098,
           645.032735824585,
           383.0595750808716,
           666.8937075932821,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           626.6024329845721,
           530.8613119125366,
           509.4476782480876,
-          356.4490525325139
+          356.4490525325139,
+          665.2836076100667
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "97d791911888342afd484a82f270e43100d5afa6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
-        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
-      },
-      {
         "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
-      "97d79191",
       "97f51880",
       "f79b883b",
       "a1c8667e",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          666.0835699081421,
           621.4816630681356,
           318.46661682128905,
           619.1422570546468,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           569.881523336683,
           534.1135330200195,
           489.50927035013837,
-          358.2784534601065
+          358.2784534601065,
+          658.7635319573538
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26552.7427344689,
           28324.214085170202,
           11110.653725760323,
           20550.406850179035,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           17844.134950764976,
           17186.323482259115,
           16172.026527913411,
-          10866.246428353446
+          10866.246428353446,
+          28518.05124104818
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          748.2636072158814,
           805.3896629333497,
           437.79312161604565,
           784.8698439280192,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           751.1669582220225,
           620.2818890889486,
           583.8545824050904,
-          447.77828108469646
+          447.77828108469646,
+          825.5862543741862
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "97d791911888342afd484a82f270e43100d5afa6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
-        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
-      },
-      {
         "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
-      "97d79191",
       "97f51880",
       "f79b883b",
       "a1c8667e",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          665.2568990071615,
           654.0513550213406,
           374.3703487941197,
           650.9256905237834,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           698.6867324965341,
           548.080187865666,
           526.0074049631754,
-          346.3725249608358
+          346.3725249608358,
+          761.1003993579319
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4865,7 +4865,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
-          1680,
+          1688,
           1688,
           1688
         ],
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          82453.56459147135,
           84169.06353759766,
           30317.08906656901,
           62032.67530168806,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           34187.34366455078,
           53812.21346028646,
           53011.61732991537,
-          28738.300939941408
+          28738.300939941408,
+          81938.48835100446
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5252,
           5256,
           5252,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "97d791911888342afd484a82f270e43100d5afa6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
-        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
-      },
       {
         "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
-      "97d79191",
       "97f51880",
       "f79b883b",
       "a1c8667e",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          150.1350065867106,
           158.92731838959915,
           91.01379098211017,
           169.73957769076029,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           185.00628903706868,
           127.07751408645085,
           140.83969394365946,
-          93.76304816282712
+          93.76304816282712,
+          183.7586667060852
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          31451.981811523438,
           32033.89337158203,
           10491.69473702567,
           18978.51334431966,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           16816.85038248698,
           15506.104487101236,
           14674.948780940129,
-          10180.244286170373
+          10180.244286170373,
+          33364.99719238281
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5552,7 +5552,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5614,
-          5614,
           5615,
           5614,
           5614,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          243.6103123664856,
           240.73449042638143,
           133.82153594493866,
           241.12588799794514,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           236.6107426484426,
           183.42867705027263,
           187.80983516375224,
-          124.98722064495087
+          124.98722064495087,
+          250.2806865618779
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "97d791911888342afd484a82f270e43100d5afa6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
-        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
-      },
-      {
         "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
-      "97d79191",
       "97f51880",
       "f79b883b",
       "a1c8667e",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          334.60001604897633,
           346.09351307551066,
           178.4351622717721,
           322.7528621037801,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           334.36145370347157,
           283.74410346349083,
           264.24854806264244,
-          191.41836733477456
+          191.41836733477456,
+          353.37041641871133
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          380.2279771486918,
           370.74706166131153,
           228.26306172779627,
           419.54236466089884,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           465.0975208963667,
           325.79122712061957,
           311.7337171481206,
-          207.38212335904439
+          207.38212335904439,
+          401.18589331309
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          400.5109440939767,
           398.76665977636975,
           233.39736609799522,
           439.96566715240476,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           389.5008248601641,
           347.3669530550639,
           334.90938445499967,
-          211.25591054329504
+          211.25591054329504,
+          405.34118874867755
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "97d791911888342afd484a82f270e43100d5afa6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
-        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
-      },
-      {
         "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
-      "97d79191",
       "97f51880",
       "f79b883b",
       "a1c8667e",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          616.4769527571542,
           615.635834757487,
           348.6488876978556,
           608.6549126942953,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           657.4390679872953,
           535.659684254573,
           532.4402893702189,
-          365.53554512659707
+          365.53554512659707,
+          689.5380158057579
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6915,7 +6915,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
-          1376,
+          1384,
           1384,
           1384,
           1384,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1837.1268725077312,
           2048.7143463134767,
           1099.1247670309883,
           1958.177791595459,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           2137.9968823024205,
           1671.4951089223225,
           1580.8377159118652,
-          1019.6383450371878
+          1019.6383450371878,
+          1949.5197568620954
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          899.8230046590169,
           919.4237275804792,
           518.8190714518229,
           946.2125942866007,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           907.7002262702355,
           787.5017206192017,
           732.459457842509,
-          479.40765967735877
+          479.40765967735877,
+          951.285573550633
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "97d791911888342afd484a82f270e43100d5afa6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
-        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
-      },
-      {
         "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
-      "97d79191",
       "97f51880",
       "f79b883b",
       "a1c8667e",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11445.702445983887,
           11481.407565777119,
           5834.7691895621165,
           10486.539161682129,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           9208.048548771785,
           8152.490203857422,
           8117.148913792202,
-          5803.115167890276
+          5803.115167890276,
+          11320.518356323242
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          39806.093994140625,
           40645.24767659505,
           18604.067947387695,
           34197.107291085376,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           31453.90966796875,
           27208.274605887276,
           26717.617213948568,
-          18841.228112357003
+          18841.228112357003,
+          40509.79100254604
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7753,7 +7753,6 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18609,
           18393,
           18609,
           18394,
@@ -7789,6 +7788,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10508.666722978864,
           10611.692029680524,
           5673.658806434045,
           10063.809443882534,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           8832.719029017857,
           7969.653987339565,
           7766.589430588942,
-          5755.20072072347
+          5755.20072072347,
+          10481.123935406025
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "97d791911888342afd484a82f270e43100d5afa6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
-        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
-      },
-      {
         "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
-      "97d79191",
       "97f51880",
       "f79b883b",
       "a1c8667e",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10901.345772376428,
           11045.634909057617,
           5530.587349524865,
           9802.961926051548,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           8728.175127156575,
           7692.775153526893,
           7745.5442622258115,
-          5642.8367039998375
+          5642.8367039998375,
+          11112.797286987305
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          57885.68425641741,
           58736.55983323317,
           27581.644738333565,
           49131.589040902945,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           45086.952185058595,
           38888.241878255205,
           38277.96702067057,
-          28154.758806501115
+          28154.758806501115,
+          58533.55694173177
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8483,7 +8483,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          23553,
           23553,
           23553,
           23553,
@@ -8532,6 +8531,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
+          23553,
           23553
         ],
         "borderColor": "#FF671B",
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          21123.60546875,
           20907.663456508093,
           11391.779818943569,
           19770.943290201823,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           17436.937591552734,
           15523.372462972005,
           15394.716619873047,
-          11718.632803344726
+          11718.632803344726,
+          20758.081342424666
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
