@@ -32,7 +32,7 @@ public static class In
 	public static Filtered.Assemblies AllLoadedAssemblies()
 	{
 		IEnumerable<Assembly> assemblies = AppDomain.CurrentDomain.GetAssemblies();
-		string[] prefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
+		IReadOnlyList<string> prefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
 		assemblies = assemblies.Where(assembly => !assembly.GetName().Name.IsExcludedAssemblyName(prefixes));
 
 		return new Filtered.Assemblies(assemblies, "in all loaded assemblies");

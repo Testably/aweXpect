@@ -129,7 +129,7 @@ namespace aweXpect.Web
         public static aweXpect.Web.WebCustomizationExtensions.WebCustomization Web(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
         public class WebCustomization
         {
-            public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Web.ContentProcessors.IContentProcessor[]> ContentProcessors { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Web.ContentProcessors.IContentProcessor>> ContentProcessors { get; }
         }
     }
 }

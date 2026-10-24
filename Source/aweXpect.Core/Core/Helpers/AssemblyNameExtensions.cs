@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace aweXpect.Core.Helpers;
 
@@ -22,12 +22,26 @@ internal static class AssemblyNameExtensions
 	///     An empty prefix is ignored: it cannot identify an assembly and would otherwise silently exclude
 	///     either everything or nothing.
 	/// </remarks>
-	public static bool IsExcludedAssemblyName(this string? assemblyName, string[] excludedPrefixes)
-		=> assemblyName is not null &&
-		   excludedPrefixes.Any(prefix
-			   => prefix.Length > 0 &&
-			      assemblyName.StartsWith(prefix, StringComparison.Ordinal) &&
-			      (prefix[prefix.Length - 1] == '.' ||
-			       assemblyName.Length == prefix.Length ||
-			       assemblyName[prefix.Length] == '.'));
+	public static bool IsExcludedAssemblyName(this string? assemblyName, IReadOnlyList<string> excludedPrefixes)
+	{
+		if (assemblyName is null)
+		{
+			return false;
+		}
+
+		for (int i = 0; i < excludedPrefixes.Count; i++)
+		{
+			string prefix = excludedPrefixes[i];
+			if (prefix.Length > 0 &&
+			    assemblyName.StartsWith(prefix, StringComparison.Ordinal) &&
+			    (prefix[prefix.Length - 1] == '.' ||
+			     assemblyName.Length == prefix.Length ||
+			     assemblyName[prefix.Length] == '.'))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

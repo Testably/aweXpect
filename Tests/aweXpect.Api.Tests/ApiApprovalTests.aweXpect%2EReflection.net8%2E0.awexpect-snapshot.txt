@@ -3051,7 +3051,7 @@ namespace aweXpect.Reflection
         public class ReflectionCustomization
         {
             public aweXpect.Customization.ICustomizationValueSetter<System.Func<System.Type, System.Collections.Generic.IEnumerable<System.Type>>?> DependencyResolver { get; }
-            public aweXpect.Customization.ICustomizationValueSetter<string[]> ExcludedAttributeTypes { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<string>> ExcludedAttributeTypes { get; }
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Reflection.CompilerGeneratedMembers> IncludedCompilerGeneratedMembers { get; }
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Reflection.SpecialNameMembers> IncludedSpecialNameMembers { get; }
         }

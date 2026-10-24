@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Reflection.Helpers;
@@ -53,8 +54,8 @@ public static class ReflectionCustomizationExtensions
 				new CustomizationValue<Func<Type, IEnumerable<Type>>?>(awexpectCustomization,
 					KeyPrefix + nameof(DependencyResolver), null),
 				TypeHelpers.SignatureDependencies);
-			ExcludedAttributeTypes = new CopiedOnGet(new CustomizationValue<string[]>(awexpectCustomization,
-				KeyPrefix + nameof(ExcludedAttributeTypes), [],
+			ExcludedAttributeTypes = new CopyingSetter<string>(new CustomizationValue<IReadOnlyList<string>>(
+				awexpectCustomization, KeyPrefix + nameof(ExcludedAttributeTypes), Array.Empty<string>(),
 				value =>
 				{
 					if (value is null)
@@ -92,9 +93,10 @@ public static class ReflectionCustomizationExtensions
 		/// </summary>
 		/// <remarks>
 		///     Defaults to an empty list. Extends the built-in set (nullability metadata, state machines, …), so that
-		///     e.g. a marker attribute of a future compiler version can be excluded without a library update.
+		///     e.g. a marker attribute of a future compiler version can be excluded without a library update. The list
+		///     is copied, so changing it afterwards does not change the setting.
 		/// </remarks>
-		public ICustomizationValueSetter<string[]> ExcludedAttributeTypes { get; }
+		public ICustomizationValueSetter<IReadOnlyList<string>> ExcludedAttributeTypes { get; }
 
 		/// <summary>
 		///     The compiler-generated members that are included when reflecting over types and members.
@@ -114,16 +116,22 @@ public static class ReflectionCustomizationExtensions
 		public ICustomizationValueSetter<SpecialNameMembers> IncludedSpecialNameMembers { get; }
 
 		/// <summary>
-		///     Returns a copy of the stored array, so that changing it cannot bypass the scoping of the setting.
+		///     Stores a read-only copy of the list, as a setting would otherwise change with a mutable list it was set
+		///     from or that was cast from the returned list, which would bypass the scoping of the setting.
 		/// </summary>
-		private sealed class CopiedOnGet(ICustomizationValueSetter<string[]> inner)
-			: ICustomizationValueSetter<string[]>
+		/// <remarks>
+		///     A <see langword="null" /> list is passed on unchanged, so that the validation of the
+		///     <paramref name="inner" /> value rejects it.
+		/// </remarks>
+		private sealed class CopyingSetter<TItem>(ICustomizationValueSetter<IReadOnlyList<TItem>> inner)
+			: ICustomizationValueSetter<IReadOnlyList<TItem>>
 		{
 			/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Get()" />
-			public string[] Get() => (string[])inner.Get().Clone();
+			public IReadOnlyList<TItem> Get() => inner.Get();
 
 			/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Set(TValue)" />
-			public CustomizationLifetime Set(string[] value) => inner.Set(value);
+			public CustomizationLifetime Set(IReadOnlyList<TItem> value)
+				=> inner.Set(value is null ? value! : Array.AsReadOnly(value.ToArray()));
 		}
 
 		/// <summary>

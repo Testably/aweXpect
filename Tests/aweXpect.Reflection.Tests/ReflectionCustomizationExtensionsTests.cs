@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using aweXpect.Customization;
 
 namespace aweXpect.Reflection.Tests;
@@ -7,19 +8,24 @@ public sealed class ReflectionCustomizationExtensionsTests
 {
 	private const string UnusedAttributeName = "aweXpect.Reflection.Tests.UnusedAttribute";
 
+#if NET8_0_OR_GREATER
 	[Test]
-	public async Task ExcludedAttributeTypes_Get_ShouldReturnACopy()
+	public async Task ExcludedAttributeTypes_ChangingTheReturnedList_ShouldThrowNotSupportedException()
 	{
 		using (Customize.aweXpect.Reflection().ExcludedAttributeTypes.Set([UnusedAttributeName,]))
 		{
-			string[] value = Customize.aweXpect.Reflection().ExcludedAttributeTypes.Get();
-			value[0] = "changed";
+			IReadOnlyList<string> value = Customize.aweXpect.Reflection().ExcludedAttributeTypes.Get();
 
+			void Act() => ((IList<string>)value)[0] = "changed";
+
+			await That(Act).Throws<NotSupportedException>()
+				.WithMessage("Collection is read-only.");
 			await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes.Get())
 				.IsEqualTo([UnusedAttributeName,])
-				.Because("changing the returned array must not bypass the scoping of the setting");
+				.Because("changing the returned list must not bypass the scoping of the setting");
 		}
 	}
+#endif
 
 	[Test]
 	public async Task ExcludedAttributeTypes_SetNull_ShouldThrowArgumentNullException()
@@ -32,6 +38,18 @@ public sealed class ReflectionCustomizationExtensionsTests
 		await That(Act).Throws<ArgumentNullException>()
 			.WithMessage("The 'value' cannot be null.*").AsWildcard();
 		await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes.Get()).IsEmpty();
+	}
+
+	[Test]
+	public async Task ExcludedAttributeTypes_WhenTheListIsChangedAfterSetting_ShouldKeepTheSetting()
+	{
+		List<string> attributeTypes = [UnusedAttributeName,];
+		using CustomizationLifetime _ = Customize.aweXpect.Reflection().ExcludedAttributeTypes.Set(attributeTypes);
+
+		attributeTypes.Add("changed");
+
+		await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes.Get()).IsEqualTo([UnusedAttributeName,])
+			.Because("changing the list afterwards must not change the setting");
 	}
 
 	[Test]

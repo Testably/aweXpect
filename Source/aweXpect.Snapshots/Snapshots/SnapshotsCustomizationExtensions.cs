@@ -119,7 +119,8 @@ public static class SnapshotsCustomizationExtensions
 		}
 
 		/// <summary>
-		///     Stores a copy of the list, as a setting would otherwise change with a mutable list it was set from.
+		///     Stores a read-only copy of the list, as a setting would otherwise change with a mutable list it was set
+		///     from or that was cast from the returned list, which would bypass the scoping of the setting.
 		/// </summary>
 		/// <remarks>
 		///     A <see langword="null" /> list is passed on unchanged, so that the validation of the
@@ -131,7 +132,7 @@ public static class SnapshotsCustomizationExtensions
 			public IReadOnlyList<TItem> Get() => inner.Get();
 
 			public CustomizationLifetime Set(IReadOnlyList<TItem> value)
-				=> inner.Set(value is null ? value! : value.ToArray());
+				=> inner.Set(value is null ? value! : Array.AsReadOnly(value.ToArray()));
 		}
 	}
 }

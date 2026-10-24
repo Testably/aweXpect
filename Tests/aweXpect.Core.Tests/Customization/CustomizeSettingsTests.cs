@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
@@ -279,16 +280,21 @@ public sealed class CustomizeSettingsTests
 			.DoesNotContain(additionalExcludedAssemblyNamespace);
 	}
 
+#if NET8_0_OR_GREATER
 	[Test]
-	public async Task ExcludedAssemblyPrefixes_ChangingTheReturnedArray_ShouldNotChangeTheSetting()
+	public async Task ExcludedAssemblyPrefixes_ChangingTheReturnedList_ShouldThrowNotSupportedException()
 	{
-		string[] prefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
+		IReadOnlyList<string> prefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
 		string original = prefixes[0];
-		prefixes[0] = "CHANGED";
 
+		void Act() => ((IList<string>)prefixes)[0] = "CHANGED";
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage("Collection is read-only.");
 		await That(Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get()[0]).IsEqualTo(original)
-			.Because("a change of the returned array would bypass the scoping of the setting");
+			.Because("a change of the returned list would bypass the scoping of the setting");
 	}
+#endif
 
 	[Test]
 	public async Task ExcludedAssemblyPrefixes_ShouldBeInitializedCorrectly()
@@ -318,6 +324,18 @@ public sealed class CustomizeSettingsTests
 			.WithParamName("prefixes").And
 			.WithMessage("The 'prefixes' cannot be null.").AsPrefix()
 			.Because("a stored null would be returned as null instead of the default prefixes");
+	}
+
+	[Test]
+	public async Task ExcludedAssemblyPrefixes_WhenTheListIsChangedAfterSetting_ShouldKeepTheSetting()
+	{
+		List<string> prefixes = ["foo",];
+		using CustomizationLifetime _ = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Set(prefixes);
+
+		prefixes.Add("bar");
+
+		await That(Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get()).IsEqualTo(["foo",])
+			.Because("changing the list afterwards must not change the setting");
 	}
 
 	[Test]
