@@ -180,11 +180,11 @@ namespace aweXpect.Json.Results
 {
     public class IsArrayResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>
     {
-        public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Text.Json.JsonElement>> WhoseElements { get; }
+        public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<System.Text.Json.JsonElement>> WhoseElements { get; }
     }
     public class IsObjectResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>
     {
-        public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Text.Json.JsonProperty>> WhoseProperties { get; }
+        public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<System.Text.Json.JsonProperty>> WhoseProperties { get; }
     }
 }
 

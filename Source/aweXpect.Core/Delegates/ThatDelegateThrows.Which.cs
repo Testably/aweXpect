@@ -5,6 +5,6 @@ namespace aweXpect.Delegates;
 public partial class ThatDelegateThrows<TException>
 {
 	/// <inheritdoc />
-	public IThat<TException> Which
+	public IThatSubject<TException> Which
 		=> new ThatSubject<TException>(ExpectationBuilder.And(" that "));
 }

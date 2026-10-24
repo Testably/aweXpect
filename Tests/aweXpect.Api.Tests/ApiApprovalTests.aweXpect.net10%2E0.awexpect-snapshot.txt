@@ -5553,25 +5553,25 @@ namespace aweXpect
         public static aweXpect.Results.StringEqualityResult<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, string>, aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, string>>> IsNotEqualTo<TKey>(this aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, string>> subject, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, string>> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") where TKey : notnull { }
         extension<TKey, TValue>(aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?> subject) where TKey : notnull
         {
-            public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TKey>?> Keys { get; }
-            public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TValue>?> Values { get; }
+            public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TKey>?> Keys { get; }
+            public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TValue>?> Values { get; }
         }
         extension<TKey, TValue>(aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?> subject)
         {
-            public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TKey>?> Keys { get; }
-            public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TValue>?> Values { get; }
+            public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TKey>?> Keys { get; }
+            public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TValue>?> Values { get; }
         }
         extension<TKey, TValue>(aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?> subject)
         {
             [System.Runtime.CompilerServices.OverloadResolutionPriority(-1)]
-            public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TKey>?> Keys { get; }
+            public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TKey>?> Keys { get; }
             [System.Runtime.CompilerServices.OverloadResolutionPriority(-1)]
-            public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TValue>?> Values { get; }
+            public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TValue>?> Values { get; }
         }
         extension<TKey, TValue>(aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?> subject) where TKey : notnull
         {
-            public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TKey>?> Keys { get; }
-            public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TValue>?> Values { get; }
+            public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TKey>?> Keys { get; }
+            public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TValue>?> Values { get; }
         }
     }
     public static class ThatEnum
@@ -9176,7 +9176,7 @@ namespace aweXpect.Results
 {
     public class AsyncSingleItemResult<TCollection, TItem> : aweXpect.Results.ExpectationResult<TItem, aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.PredicateOptions<TItem>>
     {
-        public aweXpect.Core.IThat<TItem> Which { get; }
+        public aweXpect.Core.IThatSubject<TItem> Which { get; }
         public aweXpect.Results.AsyncSingleMatchingItemResult<TCollection, T> Matching<T>() { }
         public aweXpect.Results.AsyncSingleMatchingItemResult<TCollection, T> Matching<T>(System.Func<T, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public aweXpect.Results.AsyncSingleMatchingItemResult<TCollection, TItem> Matching(System.Func<TItem, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
@@ -9185,7 +9185,7 @@ namespace aweXpect.Results
     }
     public class AsyncSingleMatchingItemResult<TCollection, TItem> : aweXpect.Results.ExpectationResult<TItem, aweXpect.Results.AsyncSingleMatchingItemResult<TCollection, TItem>>
     {
-        public aweXpect.Core.IThat<TItem> Which { get; }
+        public aweXpect.Core.IThatSubject<TItem> Which { get; }
     }
     public class CasingResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>
     {
@@ -9201,11 +9201,11 @@ namespace aweXpect.Results
     }
     public class ContainsKeyResult<TCollection, TThat, TKey, TValue> : aweXpect.Results.AndOrResult<TCollection, TThat>
     {
-        public aweXpect.Core.IThat<TValue> WhoseValue { get; }
+        public aweXpect.Core.IThatSubject<TValue> WhoseValue { get; }
     }
     public class ContainsKeysResult<TCollection, TThat, TKey, TValue> : aweXpect.Results.AndOrResult<TCollection, TThat>
     {
-        public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TValue>> WhoseValues { get; }
+        public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TValue>> WhoseValues { get; }
     }
     public class DidNotSignalResult : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult, aweXpect.Core.IThat<aweXpect.Signaling.Signaler>, aweXpect.Results.DidNotSignalResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>
     {
@@ -9269,17 +9269,17 @@ namespace aweXpect.Results
     public class IsParsableResult<TType> : aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> where TType : System.IParsable<TType>
     {
         public IsParsableResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<string?> subject, System.IFormatProvider? formatProvider) { }
-        public aweXpect.Core.IThat<TType> Which { get; }
+        public aweXpect.Core.IThatSubject<TType> Which { get; }
     }
     public class IsSpanParsableResult<TType> : aweXpect.Results.AndOrResult<aweXpect.Core.SpanWrapper<char>, aweXpect.Core.IThat<aweXpect.Core.SpanWrapper<char>>> where TType : System.ISpanParsable<TType>
     {
         public IsSpanParsableResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<aweXpect.Core.SpanWrapper<char>> subject, System.IFormatProvider? formatProvider) { }
-        public aweXpect.Core.IThat<TType> Which { get; }
+        public aweXpect.Core.IThatSubject<TType> Which { get; }
     }
     public class IsUtf8SpanParsableResult<TType> : aweXpect.Results.AndOrResult<aweXpect.Core.SpanWrapper<byte>, aweXpect.Core.IThat<aweXpect.Core.SpanWrapper<byte>>> where TType : System.IUtf8SpanParsable<TType>
     {
         public IsUtf8SpanParsableResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<aweXpect.Core.SpanWrapper<byte>> subject, System.IFormatProvider? formatProvider) { }
-        public aweXpect.Core.IThat<TType> Which { get; }
+        public aweXpect.Core.IThatSubject<TType> Which { get; }
     }
     public class ObjectCollectionMatchResult<TType, TThat, TElement> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.ObjectCollectionMatchResult<TType, TThat, TElement>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityOptions<TElement>>, aweXpect.Results.IObjectEqualityResult<aweXpect.Results.ObjectCollectionMatchResult<TType, TThat, TElement>, TElement>
     {
@@ -9336,7 +9336,7 @@ namespace aweXpect.Results
     public class SignalCountWhoseResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>>, aweXpect.Results.SignalCountWhoseResult<TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions<TParameter>>, aweXpect.Results.ISignalerResult<aweXpect.Results.SignalCountWhoseResult<TParameter>, TParameter>
     {
         public SignalCountWhoseResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.SignalerOptions<TParameter> options) { }
-        public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TParameter>> WhoseParameters { get; }
+        public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TParameter>> WhoseParameters { get; }
     }
     public class SignaledResult : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult, aweXpect.Core.IThat<aweXpect.Signaling.Signaler>, aweXpect.Results.SignaledResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>
     {
@@ -9345,11 +9345,11 @@ namespace aweXpect.Results
     public class SignaledWhoseResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>>, aweXpect.Results.SignaledWhoseResult<TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions<TParameter>>, aweXpect.Results.ISignalerResult<aweXpect.Results.SignaledWhoseResult<TParameter>, TParameter>
     {
         public SignaledWhoseResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> returnValue, aweXpect.Options.SignalerOptions<TParameter> options) { }
-        public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TParameter>> WhoseParameters { get; }
+        public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TParameter>> WhoseParameters { get; }
     }
     public class SingleItemResult<TCollection, TItem> : aweXpect.Results.ExpectationResult<TItem, aweXpect.Results.SingleItemResult<TCollection, TItem>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.PredicateOptions<TItem>>
     {
-        public aweXpect.Core.IThat<TItem> Which { get; }
+        public aweXpect.Core.IThatSubject<TItem> Which { get; }
         public aweXpect.Results.SingleMatchingItemResult<TCollection, T> Matching<T>() { }
         public aweXpect.Results.SingleMatchingItemResult<TCollection, T> Matching<T>(System.Func<T, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public aweXpect.Results.SingleMatchingItemResult<TCollection, TItem> Matching(System.Func<TItem, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
@@ -9358,7 +9358,7 @@ namespace aweXpect.Results
     }
     public class SingleMatchingItemResult<TCollection, TItem> : aweXpect.Results.ExpectationResult<TItem, aweXpect.Results.SingleMatchingItemResult<TCollection, TItem>>
     {
-        public aweXpect.Core.IThat<TItem> Which { get; }
+        public aweXpect.Core.IThatSubject<TItem> Which { get; }
     }
     public class StringProperCollectionMatchResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.StringProperCollectionMatchResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.ICollectionContainmentOptions, aweXpect.Results.IProperContainmentOptions, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
     {

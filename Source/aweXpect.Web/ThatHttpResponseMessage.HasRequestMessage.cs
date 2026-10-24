@@ -14,7 +14,7 @@ public static partial class ThatHttpResponseMessage
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
-		HasRequestMessage(this IThat<HttpResponseMessage?> subject, Action<IThat<HttpRequestMessage>> expectations)
+		HasRequestMessage(this IThat<HttpResponseMessage?> subject, Action<IThatSubject<HttpRequestMessage?>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		return new(subject.Get().ExpectationBuilder
@@ -25,7 +25,7 @@ public static partial class ThatHttpResponseMessage
 					null,
 					false)
 				.AddExpectations(expectations, static (expectations, expectationBuilder) =>
-						expectations(new ThatSubject<HttpRequestMessage>(expectationBuilder)),
+						expectations(new ThatSubject<HttpRequestMessage?>(expectationBuilder)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			subject);
 	}

@@ -77,7 +77,7 @@ public class HasQueryParameterValueResult
 	///     Verifies that the query parameter has exactly one value which satisfies the <paramref name="expectations" />.
 	/// </summary>
 	public AndOrResult<Uri, IThat<Uri?>> WhoseValue(
-		Action<IThat<string?>> expectations)
+		Action<IThatSubject<string?>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		_expectationBuilder
@@ -101,14 +101,14 @@ public class HasQueryParameterValueResult
 	///     Verifies that the values of the query parameter satisfy the <paramref name="expectations" />.
 	/// </summary>
 	public AndOrResult<Uri, IThat<Uri?>> WhoseValues(
-		Action<IThat<string?[]?>> expectations)
+		Action<IThatSubject<string?[]?>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		_expectationBuilder
 			.ForMember(
 				MemberAccessor<Uri, string?[]?>.FromFunc(u => u.GetQueryParameterValues(_name), "the values "),
 				(_, stringBuilder) => stringBuilder.Append(" whose values "))
-			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?[]>(e)),
+			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?[]?>(e)),
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural);
 		return this;
 	}

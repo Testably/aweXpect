@@ -25,6 +25,6 @@ public class AsyncSingleMatchingItemResult<TCollection, TItem>
 	/// <summary>
 	///     Further expectations on the single item.
 	/// </summary>
-	public IThat<TItem> Which
+	public IThatSubject<TItem> Which
 		=> new ThatSubject<TItem>(ExpectationBuilder.ForWhich(_asyncMemberAccessor, " that "));
 }

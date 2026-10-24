@@ -75,7 +75,7 @@ public class HasHeaderValueResult<TType, TThat>
 	///     Verifies that the header value satisfies the <paramref name="expectations" />.
 	/// </summary>
 	public AndOrResult<TType, TThat> WhoseValue(
-		Action<IThat<string?>> expectations)
+		Action<IThatSubject<string?>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		_expectationBuilder
@@ -99,14 +99,14 @@ public class HasHeaderValueResult<TType, TThat>
 	///     Verifies that the header values satisfy the <paramref name="expectations" />.
 	/// </summary>
 	public AndOrResult<TType, TThat> WhoseValues(
-		Action<IThat<string?[]?>> expectations)
+		Action<IThatSubject<string?[]?>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		_expectationBuilder
 			.ForMember(
 				MemberAccessor<TType, string?[]?>.FromFunc(t => _headerValueAccessor(t), "the values "),
 				(_, stringBuilder) => stringBuilder.Append(" whose values "))
-			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?[]>(e)),
+			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?[]?>(e)),
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural);
 		return this;
 	}

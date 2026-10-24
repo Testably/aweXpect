@@ -34,7 +34,7 @@ public class ContainsKeysResult<TCollection, TThat, TKey, TValue>
 	/// <summary>
 	///     Further expectations on the selected values of the dictionary.
 	/// </summary>
-	public IThat<IEnumerable<TValue>> WhoseValues
+	public IThatSubject<IEnumerable<TValue>> WhoseValues
 		=> new ThatSubject<IEnumerable<TValue>>(ExpectationBuilder
 			.ForWhich((TCollection collection) => _valuesAccessor(collection, _keys), " whose values ", $"values of keys {Formatter.Format(_keys)}",
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural |

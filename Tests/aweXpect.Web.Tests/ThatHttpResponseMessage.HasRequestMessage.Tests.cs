@@ -70,6 +70,30 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenResponseHasNoRequestMessage_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("bar");
+
+				async Task Act()
+					=> await That(subject).HasRequestMessage(request => request.IsNotNull());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a request message which is not null,
+					             but it was <null>
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 3
+					               bar
+					             """)
+					.Because("a response does not need a request message, so the nested subject can be null");
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_Negated_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;

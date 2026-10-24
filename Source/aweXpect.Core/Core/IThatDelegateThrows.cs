@@ -18,7 +18,7 @@ public interface IThatDelegateThrows<TException> : IExpectThat<TException>
 	/// <summary>
 	///     Further expectations on the <typeparamref name="TException" />.
 	/// </summary>
-	IThat<TException> Which { get; }
+	IThatSubject<TException> Which { get; }
 
 	/// <summary>
 	///     Verifies the <paramref name="expectations" /> on the member selected by the <paramref name="memberAccessor" />.

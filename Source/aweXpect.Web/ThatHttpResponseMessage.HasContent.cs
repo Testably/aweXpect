@@ -37,7 +37,7 @@ public static partial class ThatHttpResponseMessage
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
-		HasContent(this IThat<HttpResponseMessage?> subject, Action<IThat<string?>> expectations)
+		HasContent(this IThat<HttpResponseMessage?> subject, Action<IThatSubject<string?>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		return new AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(

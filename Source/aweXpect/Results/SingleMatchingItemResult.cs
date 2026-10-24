@@ -24,7 +24,7 @@ public class SingleMatchingItemResult<TCollection, TItem>
 	/// <summary>
 	///     Further expectations on the single <typeparamref name="TItem" />.
 	/// </summary>
-	public IThat<TItem> Which
+	public IThatSubject<TItem> Which
 		=> new ThatSubject<TItem>(ExpectationBuilder.ForWhich(_memberAccessor, " that ", "it",
 			grammars => grammars & ~ExpectationGrammars.Plural));
 }

@@ -147,7 +147,7 @@ returned `ThatSubject<T>` apply to it:
 public class LongestTrackResult(ExpectationBuilder expectationBuilder, IThat<Track[]?> returnValue)
     : AndOrResult<Track[], IThat<Track[]?>>(expectationBuilder, returnValue)
 {
-    public IThat<Track?> Which
+    public IThatSubject<Track?> Which
         => new ThatSubject<Track?>(ExpectationBuilder.ForWhich<Track[], Track?>(
             tracks => tracks.OrderByDescending(track => track.Duration).FirstOrDefault(),
             " whose longest track ", "longest track"));
@@ -156,6 +156,9 @@ public class LongestTrackResult(ExpectationBuilder expectationBuilder, IThat<Tra
 
 The second argument of `ForWhich` writes the text in front of the expectations on the new subject, and the third one
 replaces `it` in their result texts. Unlike `ForMember`, the expectations are added later by the caller, after `Which`.
+
+Hand out a new subject as `IThatSubject<T>`, both in an `Action<IThatSubject<T>>` parameter and in a property like
+`Which`, so that the caller can narrow it with `Is<TType>()` and the other type checks.
 
 ### Expectations in expected values
 

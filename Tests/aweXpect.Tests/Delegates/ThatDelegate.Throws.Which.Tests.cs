@@ -41,6 +41,39 @@ public sealed partial class ThatDelegate
 						              but HResult was {hResult}, which differs by -1
 						              """);
 				}
+
+				[Test]
+				public async Task WhenTypeCheckFails_ShouldFail()
+				{
+					void Delegate() => throw new InvalidOperationException("foo");
+
+					async Task Act()
+						=> await That(Delegate).Throws()
+							.Which.Is<ArgumentException>();
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that Delegate
+						             throws an exception that is of type ArgumentException,
+						             but it was InvalidOperationException
+
+						             Actual:
+						             InvalidOperationException: foo
+						             """);
+				}
+
+				[Test]
+				public async Task WhenTypeCheckMatches_ShouldSucceed()
+				{
+					void Delegate() => throw new ArgumentNullException("foo");
+
+					async Task Act()
+						=> await That(Delegate).Throws()
+							.Which.Is<ArgumentException>().Whose(e => e.ParamName, p => p.IsEqualTo("foo"));
+
+					await That(Act).DoesNotThrow()
+						.Because("Which allows narrowing the thrown exception to a more specific type");
+				}
 			}
 
 			public sealed class GenericTests

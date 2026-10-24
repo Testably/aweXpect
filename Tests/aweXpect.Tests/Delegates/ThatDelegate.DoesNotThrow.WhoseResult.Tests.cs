@@ -52,6 +52,36 @@ public sealed partial class ThatDelegate
 				}
 
 				[Test]
+				public async Task WhenResultIsNotOfType_ShouldFail()
+				{
+					Func<object> @delegate = () => 42;
+
+					async Task Act() => await That(@delegate).DoesNotThrow().WhoseResult.Is<string>();
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that @delegate
+						             does not throw any exception and its result is of type string,
+						             but it was int
+
+						             Actual:
+						             42
+						             """);
+				}
+
+				[Test]
+				public async Task WhenResultIsOfType_ShouldSucceed()
+				{
+					Func<object> @delegate = () => "foo";
+
+					async Task Act()
+						=> await That(@delegate).DoesNotThrow().WhoseResult.Is<string>().Whose(s => s.Length, l => l.IsEqualTo(3));
+
+					await That(Act).DoesNotThrow()
+						.Because("WhoseResult allows narrowing the result to a more specific type");
+				}
+
+				[Test]
 				[AutoArguments]
 				public async Task WhenReturnValueDoesNotMatch_ShouldFail(int value)
 				{

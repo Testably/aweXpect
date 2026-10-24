@@ -33,7 +33,7 @@ public class ContainsKeyResult<TCollection, TThat, TKey, TValue>
 	/// <summary>
 	///     Further expectations on the selected value of the dictionary.
 	/// </summary>
-	public IThat<TValue> WhoseValue
+	public IThatSubject<TValue> WhoseValue
 		=> new ThatSubject<TValue>(ExpectationBuilder.ForWhich((TCollection collection) => _valueAccessor(collection, _key),
 			" whose value ",
 			$"value of key {Formatter.Format(_key)}",

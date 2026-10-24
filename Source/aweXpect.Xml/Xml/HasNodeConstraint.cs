@@ -33,7 +33,7 @@ internal static class HasNodeConstraint
 	}
 
 	public static AndOrResult<TSubject?, IThat<TSubject?>> HasAttribute<TSubject>(IThat<TSubject?> source,
-		XName name, Action<IThat<string?>> expectations, Func<TSubject, XElement?> getElement)
+		XName name, Action<IThatSubject<string?>> expectations, Func<TSubject, XElement?> getElement)
 		where TSubject : XNode
 	{
 		ThrowHelper.ThrowIfNull(name, nameof(name));
@@ -66,7 +66,7 @@ internal static class HasNodeConstraint
 	}
 
 	public static AndOrResult<TSubject?, IThat<TSubject?>> HasElement<TSubject>(IThat<TSubject?> source,
-		XName name, Action<IThat<XElement?>> expectations, Func<TSubject, XElement?> getElement)
+		XName name, Action<IThatSubject<XElement?>> expectations, Func<TSubject, XElement?> getElement)
 		where TSubject : XNode
 	{
 		ThrowHelper.ThrowIfNull(name, nameof(name));
