@@ -432,6 +432,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:07:43 2026 \u002B0200",
         "message": "refactor!: move ObjectEqualityWithToleranceResult to aweXpect.Core (#1975)"
+      },
+      {
+        "sha": "bb3fba5158f4879c128188659a3631064e1a2d02",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
+        "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
       }
     ],
     "labels": [
@@ -506,7 +512,8 @@ window.BENCHMARK_DATA = {
       "9077e206",
       "4713c904",
       "906ecb34",
-      "cba28a96"
+      "cba28a96",
+      "bb3fba51"
     ],
     "datasets": [
       {
@@ -584,7 +591,8 @@ window.BENCHMARK_DATA = {
           366.67571754455565,
           388.4548445769719,
           200.23015294075012,
-          384.57425727844236
+          384.57425727844236,
+          218.22899656636375
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -628,6 +636,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -753,7 +762,8 @@ window.BENCHMARK_DATA = {
           1024.1380373636882,
           996.1316584178379,
           518.3544442653656,
-          967.0257820129394
+          967.0257820129394,
+          508.7216437339783
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -765,6 +775,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1282,6 +1293,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:07:43 2026 \u002B0200",
         "message": "refactor!: move ObjectEqualityWithToleranceResult to aweXpect.Core (#1975)"
+      },
+      {
+        "sha": "bb3fba5158f4879c128188659a3631064e1a2d02",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
+        "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
       }
     ],
     "labels": [
@@ -1356,7 +1373,8 @@ window.BENCHMARK_DATA = {
       "9077e206",
       "4713c904",
       "906ecb34",
-      "cba28a96"
+      "cba28a96",
+      "bb3fba51"
     ],
     "datasets": [
       {
@@ -1434,7 +1452,8 @@ window.BENCHMARK_DATA = {
           199.73049473762512,
           188.97816782731277,
           97.69687722410474,
-          197.47144654818945
+          197.47144654818945,
+          99.25370342731476
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1482,6 +1501,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -1603,7 +1623,8 @@ window.BENCHMARK_DATA = {
           283.2892374038696,
           239.7529261793409,
           127.71110326449076,
-          262.25118817601884
+          262.25118817601884,
+          135.6464058717092
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1615,6 +1636,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -2072,6 +2094,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:07:43 2026 \u002B0200",
         "message": "refactor!: move ObjectEqualityWithToleranceResult to aweXpect.Core (#1975)"
+      },
+      {
+        "sha": "bb3fba5158f4879c128188659a3631064e1a2d02",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
+        "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
       }
     ],
     "labels": [
@@ -2136,7 +2164,8 @@ window.BENCHMARK_DATA = {
       "9077e206",
       "4713c904",
       "906ecb34",
-      "cba28a96"
+      "cba28a96",
+      "bb3fba51"
     ],
     "datasets": [
       {
@@ -2204,7 +2233,8 @@ window.BENCHMARK_DATA = {
           597.3025952852689,
           610.3273275375366,
           319.1982346262251,
-          656.6291298548381
+          656.6291298548381,
+          325.55441849572316
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2238,6 +2268,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -2353,7 +2384,8 @@ window.BENCHMARK_DATA = {
           992.0628306525094,
           947.5516492207845,
           526.2295643488566,
-          977.9620162963868
+          977.9620162963868,
+          490.00890693664553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2365,6 +2397,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -2812,6 +2845,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:07:43 2026 \u002B0200",
         "message": "refactor!: move ObjectEqualityWithToleranceResult to aweXpect.Core (#1975)"
+      },
+      {
+        "sha": "bb3fba5158f4879c128188659a3631064e1a2d02",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
+        "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
       }
     ],
     "labels": [
@@ -2876,7 +2915,8 @@ window.BENCHMARK_DATA = {
       "9077e206",
       "4713c904",
       "906ecb34",
-      "cba28a96"
+      "cba28a96",
+      "bb3fba51"
     ],
     "datasets": [
       {
@@ -2944,7 +2984,8 @@ window.BENCHMARK_DATA = {
           1402.9950939178466,
           1696.4904258728027,
           1008.981315612793,
-          1731.6900789896647
+          1731.6900789896647,
+          1002.4598702748616
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2978,6 +3019,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -3093,7 +3135,8 @@ window.BENCHMARK_DATA = {
           15991.098974609375,
           21753.95571899414,
           9690.10424601237,
-          20998.26385904948
+          20998.26385904948,
+          9892.840139535758
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3164,6 +3207,7 @@ window.BENCHMARK_DATA = {
           34712,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713
@@ -3552,6 +3596,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:07:43 2026 \u002B0200",
         "message": "refactor!: move ObjectEqualityWithToleranceResult to aweXpect.Core (#1975)"
+      },
+      {
+        "sha": "bb3fba5158f4879c128188659a3631064e1a2d02",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
+        "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
       }
     ],
     "labels": [
@@ -3616,7 +3666,8 @@ window.BENCHMARK_DATA = {
       "9077e206",
       "4713c904",
       "906ecb34",
-      "cba28a96"
+      "cba28a96",
+      "bb3fba51"
     ],
     "datasets": [
       {
@@ -3684,7 +3735,8 @@ window.BENCHMARK_DATA = {
           601.0401885986328,
           661.7120940526327,
           334.3014140469687,
-          767.1537151972453
+          767.1537151972453,
+          367.42497256596886
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3714,6 +3766,7 @@ window.BENCHMARK_DATA = {
           1408,
           1408,
           1120,
+          1080,
           1080,
           1080,
           1080,
@@ -3833,7 +3886,8 @@ window.BENCHMARK_DATA = {
           1391.5811150868733,
           1318.8082169850668,
           692.6456676210676,
-          1391.395280710856
+          1391.395280710856,
+          688.7206003189087
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3845,6 +3899,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -4292,6 +4347,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:07:43 2026 \u002B0200",
         "message": "refactor!: move ObjectEqualityWithToleranceResult to aweXpect.Core (#1975)"
+      },
+      {
+        "sha": "bb3fba5158f4879c128188659a3631064e1a2d02",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
+        "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
       }
     ],
     "labels": [
@@ -4356,7 +4417,8 @@ window.BENCHMARK_DATA = {
       "9077e206",
       "4713c904",
       "906ecb34",
-      "cba28a96"
+      "cba28a96",
+      "bb3fba51"
     ],
     "datasets": [
       {
@@ -4424,7 +4486,8 @@ window.BENCHMARK_DATA = {
           934.7572992869785,
           1008.1398048400879,
           624.3500148909433,
-          1136.4157549540203
+          1136.4157549540203,
+          589.3935366312663
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4458,6 +4521,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -4573,7 +4637,8 @@ window.BENCHMARK_DATA = {
           828.1725108464559,
           740.4327473322551,
           415.74057227770487,
-          790.8081305185954
+          790.8081305185954,
+          399.7294277826945
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4585,6 +4650,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
