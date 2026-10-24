@@ -23,9 +23,13 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>?>> DependOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>?>> DependOnlyOn(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>?> subject, params string[] allowed) { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>?>> DependOnlyOn(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>?> subject, System.Collections.Generic.IEnumerable<string> expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>?>> DependOnlyOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>?> subject, params string[] allowed) { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>?>> DependOnlyOn(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>?> subject, params string[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>?>> DependOnlyOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>?> subject, System.Collections.Generic.IEnumerable<string> expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>?>> DependOnlyOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>?> subject, params string[] expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>?>> DoNotDependOn(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>?> subject, string unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -86,7 +90,9 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly, aweXpect.Core.IThat<System.Reflection.Assembly?>> DependsOn(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly, aweXpect.Core.IThat<System.Reflection.Assembly?>> DependsOnlyOn(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, params string[] allowed) { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly, aweXpect.Core.IThat<System.Reflection.Assembly?>> DependsOnlyOn(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, System.Collections.Generic.IEnumerable<string> expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly, aweXpect.Core.IThat<System.Reflection.Assembly?>> DependsOnlyOn(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, params string[] expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly, aweXpect.Core.IThat<System.Reflection.Assembly?>> DoesNotDependOn(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -2605,7 +2611,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Assemblies WhichAreNotStrongNamed(this aweXpect.Reflection.Collections.Filtered.Assemblies @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies WhichAreStrongNamed(this aweXpect.Reflection.Collections.Filtered.Assemblies @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult WhichDependOn(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult WhichDependOnlyOn(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, params string[] allowed) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult WhichDependOnlyOn(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, System.Collections.Generic.IEnumerable<string> expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult WhichDependOnlyOn(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, params string[] expected) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult WhichDoNotDependOn(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string unexpected) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult WhichDoNotTarget(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string unexpected) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult WhichTarget(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }

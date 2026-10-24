@@ -1,4 +1,5 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests.Filters;
@@ -18,6 +19,19 @@ public sealed partial class AssemblyFilters
 				await That(assemblies.GetDescription())
 					.IsEqualTo(
 						"in assembly containing type PublicAbstractClass which have dependencies only on assemblies equal to \"aweXpect.Core\"");
+			}
+
+			[Test]
+			public async Task ShouldDescribeTheFilterForEnumerableOfAllowedAssemblies()
+			{
+				List<string> expected = ["aweXpect.Core", "aweXpect",];
+
+				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
+					.WhichDependOnlyOn(expected);
+
+				await That(assemblies.GetDescription())
+					.IsEqualTo(
+						"in assembly containing type PublicAbstractClass which have dependencies only on assemblies equal to \"aweXpect.Core\" or equal to \"aweXpect\"");
 			}
 
 			[Test]
@@ -52,6 +66,17 @@ public sealed partial class AssemblyFilters
 			}
 
 			[Test]
+			public async Task ShouldFilterForAssembliesDependingOnlyOnEnumerable()
+			{
+				List<string> expected = ["aweXpect.Core",];
+
+				Filtered.Assemblies assemblies = In.Assemblies(typeof(In).Assembly, typeof(PublicAbstractClass).Assembly)
+					.WhichDependOnlyOn(expected);
+
+				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(In).Assembly);
+			}
+
+			[Test]
 			public async Task ShouldSupportAsWildcard()
 			{
 				Filtered.Assemblies assemblies = In.Assemblies(typeof(In).Assembly)
@@ -76,6 +101,19 @@ public sealed partial class AssemblyFilters
 					.WhichDependOnlyOn("aweXpect.Core");
 
 				await That(assemblies).IsEmpty();
+			}
+
+			[Test]
+			public async Task WhenEnumerableIsNull_ShouldThrowArgumentNullException()
+			{
+				void Act()
+				{
+					_ = In.AssemblyContaining<PublicAbstractClass>().WhichDependOnlyOn((IEnumerable<string>)null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' cannot be null.").AsPrefix();
 			}
 		}
 	}

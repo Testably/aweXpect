@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using aweXpect.Customization;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 
@@ -107,6 +108,59 @@ public sealed partial class ThatAssembly
 
 					await That(Act).DoesNotThrow();
 				}
+			}
+
+			[Test]
+			public async Task WhenEnumerableContainsAllDependencies_ShouldSucceed()
+			{
+				Assembly subject = typeof(In).Assembly;
+				List<string> expected = ["aweXpect.Core",];
+
+				async Task Act()
+				{
+					await That(subject).DependsOnlyOn(expected);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenEnumerableDoesNotContainADependency_ShouldFail()
+			{
+				Assembly subject = typeof(In).Assembly;
+				List<string> expected = ["First", "Second",];
+
+				async Task Act()
+				{
+					await That(subject).DependsOnlyOn(expected);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has dependencies only on assemblies equal to "First" or equal to "Second",
+					             but it had disallowed dependencies
+
+					             Disallowed dependencies:
+					             [
+					               "aweXpect.Core"
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenEnumerableIsNull_ShouldThrowArgumentNullException()
+			{
+				Assembly subject = typeof(In).Assembly;
+
+				async Task Act()
+				{
+					await That(subject).DependsOnlyOn((IEnumerable<string>)null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' cannot be null.").AsPrefix();
 			}
 
 			[Test]
