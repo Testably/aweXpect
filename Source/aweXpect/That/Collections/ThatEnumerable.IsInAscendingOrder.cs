@@ -24,7 +24,7 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("Is{Not}InAscendingOrder", GuaranteesNotNull = true,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
-	internal static CollectionOrderResult<TItem, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
+	internal static CollectionOrderResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsInAscendingOrderCore<TItem>(
 			IThat<IEnumerable<TItem>?> subject,
 			bool negated)
@@ -32,7 +32,7 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("Is{Not}InAscendingOrder", GuaranteesNotNull = true,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
-	internal static CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
+	internal static CollectionOrderResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TMember>
 		IsInAscendingOrderByMemberCore<TItem, TMember>(
 			IThat<IEnumerable<TItem>?> subject,
 			Func<TItem, TMember> memberAccessor,
@@ -43,7 +43,7 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("Is{Not}InAscendingOrder", GuaranteesNotNull = true, Priority = -1,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder, Remarks = MixedDateTimeKinds)]
-	internal static CollectionOrderResult<object?, IEnumerable, IThat<IEnumerable?>>
+	internal static CollectionOrderResult<IEnumerable, IThat<IEnumerable?>, object?>
 		IsInAscendingOrderForEnumerableCore(
 			IThat<IEnumerable?> subject,
 			bool negated)
@@ -51,7 +51,7 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("Is{Not}InAscendingOrder", GuaranteesNotNull = true,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder, Remarks = MixedDateTimeKinds)]
-	internal static CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable?>>
+	internal static CollectionOrderResult<IEnumerable, IThat<IEnumerable?>, TMember>
 		IsInAscendingOrderForEnumerableByMemberCore<TMember>(
 			IThat<IEnumerable?> subject,
 			Func<object?, TMember> memberAccessor,
@@ -62,7 +62,7 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("Is{Not}InAscendingOrder", PerSubject = true,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
-	internal static CollectionOrderResult<TItem, TCollection, IThat<TCollection>>
+	internal static CollectionOrderResult<TCollection, IThat<TCollection>, TItem>
 		IsInAscendingOrderForCollectionCore<TCollection, TItem>(
 			IThat<TCollection> subject,
 			bool negated)
@@ -72,7 +72,7 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("Is{Not}InAscendingOrder", PerSubject = true,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
-	internal static CollectionOrderResult<TMember, TCollection, IThat<TCollection>>
+	internal static CollectionOrderResult<TCollection, IThat<TCollection>, TMember>
 		IsInAscendingOrderForCollectionByMemberCore<TCollection, TItem, TMember>(
 			IThat<TCollection> subject,
 			Func<TItem, TMember> memberAccessor,
@@ -90,21 +90,21 @@ public static partial class ThatEnumerable
 	///     values, unless a custom comparer is used.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static CollectionOrderResult<DateTime, IEnumerable<DateTime>, IThat<IEnumerable<DateTime>?>>
+	public static CollectionOrderResult<IEnumerable<DateTime>, IThat<IEnumerable<DateTime>?>, DateTime>
 		IsInAscendingOrder(this IThat<IEnumerable<DateTime>?> subject)
 		=> IsInOrder(subject, x => x, SortOrder.Ascending, "", false,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsInAscendingOrder(IThat{IEnumerable{DateTime}?})" />
 	[GuaranteesNotNull]
-	public static CollectionOrderResult<DateTime?, IEnumerable<DateTime?>, IThat<IEnumerable<DateTime?>?>>
+	public static CollectionOrderResult<IEnumerable<DateTime?>, IThat<IEnumerable<DateTime?>?>, DateTime?>
 		IsInAscendingOrder(this IThat<IEnumerable<DateTime?>?> subject)
 		=> IsInOrder(subject, x => x, SortOrder.Ascending, "", false,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsInAscendingOrder(IThat{IEnumerable{DateTime}?})" />
 	[GuaranteesNotNull]
-	public static CollectionOrderResult<DateTime, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
+	public static CollectionOrderResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, DateTime>
 		IsInAscendingOrder<TItem>(
 			this IThat<IEnumerable<TItem>?> subject,
 			Func<TItem, DateTime> memberAccessor,
@@ -116,7 +116,7 @@ public static partial class ThatEnumerable
 
 	/// <inheritdoc cref="IsInAscendingOrder(IThat{IEnumerable{DateTime}?})" />
 	[GuaranteesNotNull]
-	public static CollectionOrderResult<DateTime?, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
+	public static CollectionOrderResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, DateTime?>
 		IsInAscendingOrder<TItem>(
 			this IThat<IEnumerable<TItem>?> subject,
 			Func<TItem, DateTime?> memberAccessor,
@@ -128,19 +128,19 @@ public static partial class ThatEnumerable
 
 #if NET8_0_OR_GREATER
 	/// <inheritdoc cref="IsInAscendingOrder(IThat{IEnumerable{DateTime}?})" />
-	public static CollectionOrderResult<DateTime, ImmutableArray<DateTime>, IThat<ImmutableArray<DateTime>>>
+	public static CollectionOrderResult<ImmutableArray<DateTime>, IThat<ImmutableArray<DateTime>>, DateTime>
 		IsInAscendingOrder(this IThat<ImmutableArray<DateTime>> subject)
 		=> IsInOrder(subject, x => x, SortOrder.Ascending, "", false,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsInAscendingOrder(IThat{IEnumerable{DateTime}?})" />
-	public static CollectionOrderResult<DateTime?, ImmutableArray<DateTime?>, IThat<ImmutableArray<DateTime?>>>
+	public static CollectionOrderResult<ImmutableArray<DateTime?>, IThat<ImmutableArray<DateTime?>>, DateTime?>
 		IsInAscendingOrder(this IThat<ImmutableArray<DateTime?>> subject)
 		=> IsInOrder(subject, x => x, SortOrder.Ascending, "", false,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsInAscendingOrder(IThat{IEnumerable{DateTime}?})" />
-	public static CollectionOrderResult<DateTime, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
+	public static CollectionOrderResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, DateTime>
 		IsInAscendingOrder<TItem>(
 			this IThat<ImmutableArray<TItem>> subject,
 			Func<TItem, DateTime> memberAccessor,
@@ -151,7 +151,7 @@ public static partial class ThatEnumerable
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsInAscendingOrder(IThat{IEnumerable{DateTime}?})" />
-	public static CollectionOrderResult<DateTime?, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
+	public static CollectionOrderResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, DateTime?>
 		IsInAscendingOrder<TItem>(
 			this IThat<ImmutableArray<TItem>> subject,
 			Func<TItem, DateTime?> memberAccessor,
@@ -170,21 +170,21 @@ public static partial class ThatEnumerable
 	///     values, unless a custom comparer is used.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static CollectionOrderResult<DateTime, IEnumerable<DateTime>, IThat<IEnumerable<DateTime>?>>
+	public static CollectionOrderResult<IEnumerable<DateTime>, IThat<IEnumerable<DateTime>?>, DateTime>
 		IsNotInAscendingOrder(this IThat<IEnumerable<DateTime>?> subject)
 		=> IsInOrder(subject, x => x, SortOrder.Ascending, "", true,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsNotInAscendingOrder(IThat{IEnumerable{DateTime}?})" />
 	[GuaranteesNotNull]
-	public static CollectionOrderResult<DateTime?, IEnumerable<DateTime?>, IThat<IEnumerable<DateTime?>?>>
+	public static CollectionOrderResult<IEnumerable<DateTime?>, IThat<IEnumerable<DateTime?>?>, DateTime?>
 		IsNotInAscendingOrder(this IThat<IEnumerable<DateTime?>?> subject)
 		=> IsInOrder(subject, x => x, SortOrder.Ascending, "", true,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsNotInAscendingOrder(IThat{IEnumerable{DateTime}?})" />
 	[GuaranteesNotNull]
-	public static CollectionOrderResult<DateTime, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
+	public static CollectionOrderResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, DateTime>
 		IsNotInAscendingOrder<TItem>(
 			this IThat<IEnumerable<TItem>?> subject,
 			Func<TItem, DateTime> memberAccessor,
@@ -196,7 +196,7 @@ public static partial class ThatEnumerable
 
 	/// <inheritdoc cref="IsNotInAscendingOrder(IThat{IEnumerable{DateTime}?})" />
 	[GuaranteesNotNull]
-	public static CollectionOrderResult<DateTime?, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
+	public static CollectionOrderResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, DateTime?>
 		IsNotInAscendingOrder<TItem>(
 			this IThat<IEnumerable<TItem>?> subject,
 			Func<TItem, DateTime?> memberAccessor,
@@ -208,19 +208,19 @@ public static partial class ThatEnumerable
 
 #if NET8_0_OR_GREATER
 	/// <inheritdoc cref="IsNotInAscendingOrder(IThat{IEnumerable{DateTime}?})" />
-	public static CollectionOrderResult<DateTime, ImmutableArray<DateTime>, IThat<ImmutableArray<DateTime>>>
+	public static CollectionOrderResult<ImmutableArray<DateTime>, IThat<ImmutableArray<DateTime>>, DateTime>
 		IsNotInAscendingOrder(this IThat<ImmutableArray<DateTime>> subject)
 		=> IsInOrder(subject, x => x, SortOrder.Ascending, "", true,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsNotInAscendingOrder(IThat{IEnumerable{DateTime}?})" />
-	public static CollectionOrderResult<DateTime?, ImmutableArray<DateTime?>, IThat<ImmutableArray<DateTime?>>>
+	public static CollectionOrderResult<ImmutableArray<DateTime?>, IThat<ImmutableArray<DateTime?>>, DateTime?>
 		IsNotInAscendingOrder(this IThat<ImmutableArray<DateTime?>> subject)
 		=> IsInOrder(subject, x => x, SortOrder.Ascending, "", true,
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsNotInAscendingOrder(IThat{IEnumerable{DateTime}?})" />
-	public static CollectionOrderResult<DateTime, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
+	public static CollectionOrderResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, DateTime>
 		IsNotInAscendingOrder<TItem>(
 			this IThat<ImmutableArray<TItem>> subject,
 			Func<TItem, DateTime> memberAccessor,
@@ -231,7 +231,7 @@ public static partial class ThatEnumerable
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 
 	/// <inheritdoc cref="IsNotInAscendingOrder(IThat{IEnumerable{DateTime}?})" />
-	public static CollectionOrderResult<DateTime?, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
+	public static CollectionOrderResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, DateTime?>
 		IsNotInAscendingOrder<TItem>(
 			this IThat<ImmutableArray<TItem>> subject,
 			Func<TItem, DateTime?> memberAccessor,
@@ -242,7 +242,7 @@ public static partial class ThatEnumerable
 			DateTimeKindHelpers.CreateIncompatibleKindCheck);
 #endif
 
-	private static CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
+	private static CollectionOrderResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TMember>
 		IsInOrder<TItem, TMember>(
 			IThat<IEnumerable<TItem>?> subject,
 			Func<TItem, TMember> memberAccessor,
@@ -254,7 +254,7 @@ public static partial class ThatEnumerable
 		memberAccessor.ThrowIfNull();
 		CollectionOrderOptions<TMember> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
+		return new CollectionOrderResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TMember>(
 			expectationBuilder.AddConstraint(
 				(MemberAccessor: memberAccessor, SortOrder: sortOrder, Options: options,
 					MemberExpression: memberExpression, CreateIncompatibilityCheck: createIncompatibilityCheck,
@@ -278,7 +278,7 @@ public static partial class ThatEnumerable
 	/// <remarks>
 	///     The kind-aware <see cref="DateTime" /> overloads cannot infer the element for the collection helper.
 	/// </remarks>
-	private static CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
+	private static CollectionOrderResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TMember>
 		IsInOrder<TItem, TMember>(
 			IThat<ImmutableArray<TItem>> subject,
 			Func<TItem, TMember> memberAccessor,
@@ -290,7 +290,7 @@ public static partial class ThatEnumerable
 			createIncompatibilityCheck);
 #endif
 
-	private static CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable?>>
+	private static CollectionOrderResult<IEnumerable, IThat<IEnumerable?>, TMember>
 		IsInOrderForEnumerable<TMember>(
 			IThat<IEnumerable?> subject,
 			Func<object?, TMember> memberAccessor,
@@ -301,7 +301,7 @@ public static partial class ThatEnumerable
 		memberAccessor.ThrowIfNull();
 		CollectionOrderOptions<TMember> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable?>>(
+		return new CollectionOrderResult<IEnumerable, IThat<IEnumerable?>, TMember>(
 			expectationBuilder.AddConstraint(
 				(MemberAccessor: memberAccessor, SortOrder: sortOrder, Options: options,
 					MemberExpression: memberExpression, IsNegated: isNegated),
@@ -320,7 +320,7 @@ public static partial class ThatEnumerable
 			options);
 	}
 
-	private static CollectionOrderResult<TMember, TCollection, IThat<TCollection>>
+	private static CollectionOrderResult<TCollection, IThat<TCollection>, TMember>
 		IsInOrderForCollection<TCollection, TItem, TMember>(
 			IThat<TCollection> subject,
 			Func<TItem, TMember> memberAccessor,
@@ -333,7 +333,7 @@ public static partial class ThatEnumerable
 		memberAccessor.ThrowIfNull();
 		CollectionOrderOptions<TMember> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionOrderResult<TMember, TCollection, IThat<TCollection>>(
+		return new CollectionOrderResult<TCollection, IThat<TCollection>, TMember>(
 			expectationBuilder.AddConstraint(
 				(MemberAccessor: memberAccessor, SortOrder: sortOrder, Options: options,
 					MemberExpression: memberExpression, CreateIncompatibilityCheck: createIncompatibilityCheck,

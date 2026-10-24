@@ -74,7 +74,7 @@ public class AllocatesResult<TResult>
 	/// <summary>
 	///     …between <paramref name="minimum" />…
 	/// </summary>
-	public BetweenResult Between(long minimum) => new(maximum =>
+	public BetweenResult<TResult, long> Between(long minimum) => new(maximum =>
 	{
 		_options.Between(minimum, maximum);
 		return _returnValue;
@@ -91,27 +91,6 @@ public class AllocatesResult<TResult>
 	{
 		_options.Nothing();
 		return _returnValue;
-	}
-
-	/// <summary>
-	///     An intermediate type to collect the maximum of the allocation range.
-	/// </summary>
-	public class BetweenResult
-	{
-		private readonly Func<long, TResult> _callback;
-
-		internal BetweenResult(Func<long, TResult> callback)
-		{
-			_callback = callback;
-		}
-
-		/// <summary>
-		///     …and <paramref name="maximum" /> bytes.
-		/// </summary>
-		/// <exception cref="ArgumentOutOfRangeException">The range is negative or inverted.</exception>
-		/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
-		public TResult And(long maximum)
-			=> _callback(maximum);
 	}
 }
 #endif

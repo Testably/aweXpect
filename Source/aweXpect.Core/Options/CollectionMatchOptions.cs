@@ -182,9 +182,9 @@ public partial class CollectionMatchOptions(
 	/// <summary>
 	///     Get the collection matcher for the <paramref name="expected" /> enumerable.
 	/// </summary>
-	public ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(IEnumerable<T> expected)
-		where T : T2
-		=> GetCollectionMatcher<T, T2>(expected, null);
+	public ICollectionMatcher<TItem, TMatch> GetCollectionMatcher<TItem, TMatch>(IEnumerable<TItem> expected)
+		where TItem : TMatch
+		=> GetCollectionMatcher<TItem, TMatch>(expected, null);
 
 	/// <summary>
 	///     Get the collection matcher for the <paramref name="expected" /> enumerable and a subject that is an array
@@ -196,8 +196,9 @@ public partial class CollectionMatchOptions(
 	///     in every dimension, e.g. <c>[1,1]</c>. Without more than one dimension it names an item by its position in
 	///     the sequence.
 	/// </remarks>
-	public ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(IEnumerable<T> expected, int[]? dimensions)
-		where T : T2
+	public ICollectionMatcher<TItem, TMatch> GetCollectionMatcher<TItem, TMatch>(IEnumerable<TItem> expected,
+		int[]? dimensions)
+		where TItem : TMatch
 	{
 		if (dimensions?.Length <= 1)
 		{
@@ -206,12 +207,12 @@ public partial class CollectionMatchOptions(
 
 		return (_inAnyOrder, _ignoringDuplicates) switch
 		{
-			(true, true) => new AnyOrderIgnoreDuplicatesCollectionMatcher<T, T2>(_equivalenceRelations, expected,
+			(true, true) => new AnyOrderIgnoreDuplicatesCollectionMatcher<TItem, TMatch>(_equivalenceRelations, expected,
 				dimensions),
-			(true, false) => new AnyOrderCollectionMatcher<T, T2>(_equivalenceRelations, expected, dimensions),
-			(false, true) => new SameOrderIgnoreDuplicatesCollectionMatcher<T, T2>(_equivalenceRelations, expected,
-				_ignoringInterspersedItems, dimensions),
-			(false, false) => new SameOrderCollectionMatcher<T, T2>(_equivalenceRelations, expected,
+			(true, false) => new AnyOrderCollectionMatcher<TItem, TMatch>(_equivalenceRelations, expected, dimensions),
+			(false, true) => new SameOrderIgnoreDuplicatesCollectionMatcher<TItem, TMatch>(_equivalenceRelations,
+				expected, _ignoringInterspersedItems, dimensions),
+			(false, false) => new SameOrderCollectionMatcher<TItem, TMatch>(_equivalenceRelations, expected,
 				_ignoringInterspersedItems, AddsInAnyOrderHint, dimensions),
 		};
 	}
@@ -222,18 +223,21 @@ public partial class CollectionMatchOptions(
 	/// <exception cref="ArgumentException">
 	///     A predicate of the <paramref name="expected" /> enumerable is <see langword="null" />.
 	/// </exception>
-	public ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(IEnumerable<Expression<Func<T, bool>>> expected)
-		where T : T2
+	public ICollectionMatcher<TItem, TMatch> GetCollectionMatcher<TItem, TMatch>(
+		IEnumerable<Expression<Func<TItem, bool>>> expected)
+		where TItem : TMatch
 	{
-		Expression<Func<T, bool>>[] predicates = WithoutNullElements(expected, nameof(expected));
+		Expression<Func<TItem, bool>>[] predicates = WithoutNullElements(expected, nameof(expected));
 		return (_inAnyOrder, _ignoringDuplicates) switch
 		{
-			(true, true) => new AnyOrderIgnoreDuplicatesFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations,
+			(true, true) => new AnyOrderIgnoreDuplicatesFromPredicateCollectionMatcher<TItem, TMatch>(
+				_equivalenceRelations, predicates),
+			(true, false) => new AnyOrderFromPredicateCollectionMatcher<TItem, TMatch>(_equivalenceRelations,
 				predicates),
-			(true, false) => new AnyOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, predicates),
-			(false, true) => new SameOrderIgnoreDuplicatesFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations,
-				predicates, _ignoringInterspersedItems),
-			(false, false) => new SameOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, predicates,
+			(false, true) => new SameOrderIgnoreDuplicatesFromPredicateCollectionMatcher<TItem, TMatch>(
+				_equivalenceRelations, predicates, _ignoringInterspersedItems),
+			(false, false) => new SameOrderFromPredicateCollectionMatcher<TItem, TMatch>(_equivalenceRelations,
+				predicates,
 				_ignoringInterspersedItems, AddsInAnyOrderHint),
 		};
 	}
@@ -244,18 +248,21 @@ public partial class CollectionMatchOptions(
 	/// <exception cref="ArgumentException">
 	///     An expectation of the <paramref name="expected" /> enumerable is <see langword="null" />.
 	/// </exception>
-	public ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(IEnumerable<ExpectationItem<T>> expected)
-		where T : T2
+	public ICollectionMatcher<TItem, TMatch> GetCollectionMatcher<TItem, TMatch>(
+		IEnumerable<ExpectationItem<TItem>> expected)
+		where TItem : TMatch
 	{
-		ExpectationItem<T>[] expectations = WithoutNullElements(expected, nameof(expected));
+		ExpectationItem<TItem>[] expectations = WithoutNullElements(expected, nameof(expected));
 		return (_inAnyOrder, _ignoringDuplicates) switch
 		{
-			(true, true) => new AnyOrderIgnoreDuplicatesFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations,
+			(true, true) => new AnyOrderIgnoreDuplicatesFromExpectationCollectionMatcher<TItem, TMatch>(
+				_equivalenceRelations, expectations),
+			(true, false) => new AnyOrderFromExpectationCollectionMatcher<TItem, TMatch>(_equivalenceRelations,
 				expectations),
-			(true, false) => new AnyOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expectations),
-			(false, true) => new SameOrderIgnoreDuplicatesFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations,
-				expectations, _ignoringInterspersedItems),
-			(false, false) => new SameOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expectations,
+			(false, true) => new SameOrderIgnoreDuplicatesFromExpectationCollectionMatcher<TItem, TMatch>(
+				_equivalenceRelations, expectations, _ignoringInterspersedItems),
+			(false, false) => new SameOrderFromExpectationCollectionMatcher<TItem, TMatch>(_equivalenceRelations,
+				expectations,
 				_ignoringInterspersedItems, AddsInAnyOrderHint),
 		};
 	}

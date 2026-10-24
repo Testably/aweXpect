@@ -130,17 +130,17 @@ namespace aweXpect.Json
             aweXpect.Json.IJsonObjectResult Properties();
         }
     }
-    public interface IJsonPropertyResult<out TReturn>
+    public interface IJsonPropertyResult<out TResult>
     {
-        TReturn ABoolean();
-        TReturn ANumber();
-        TReturn AString();
-        TReturn AnArray();
-        TReturn AnArray(System.Action<aweXpect.Json.IJsonArrayResult> expectations);
-        TReturn AnObject();
-        TReturn AnObject(System.Action<aweXpect.Json.IJsonObjectResult> expectations);
-        TReturn Matching(object? expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "");
-        TReturn Null();
+        TResult ABoolean();
+        TResult ANumber();
+        TResult AString();
+        TResult AnArray();
+        TResult AnArray(System.Action<aweXpect.Json.IJsonArrayResult> expectations);
+        TResult AnObject();
+        TResult AnObject(System.Action<aweXpect.Json.IJsonObjectResult> expectations);
+        TResult Matching(object? expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "");
+        TResult Null();
     }
     public static class JsonCustomizationExtensions
     {

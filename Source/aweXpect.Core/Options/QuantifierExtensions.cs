@@ -58,7 +58,7 @@ public static class QuantifierExtensions
 	/// <summary>
 	///     Verifies that it occurs between <paramref name="minimum" />…
 	/// </summary>
-	public static BetweenResult<TResult> Between<TResult>(this TResult result, int minimum)
+	public static BetweenResult<TResult, Times> Between<TResult>(this TResult result, int minimum)
 		where TResult : IOptionsProvider<Quantifier>
 		=> new(maximum =>
 		{

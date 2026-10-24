@@ -680,6 +680,16 @@ public static class PropertyResult
 	}
 
 	/// <summary>
+	///     Result for a <see langword="string" /> property that continues on the <see cref="IThat{TItem}" /> subject.
+	/// </summary>
+	public class String<TItem>(
+		IThat<TItem> subject,
+		Func<TItem, string?> mapper,
+		string propertyExpression,
+		Action<string?, string>? validation = null)
+		: String<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation);
+
+	/// <summary>
 	///     Result for a <see langword="string" /> property of a <typeparamref name="TValue" /> which continues on
 	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
 	/// </summary>

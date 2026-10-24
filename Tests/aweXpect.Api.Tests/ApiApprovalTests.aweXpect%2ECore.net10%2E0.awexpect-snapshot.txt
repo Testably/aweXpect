@@ -148,7 +148,7 @@ namespace aweXpect
         public static aweXpect.Results.CountTimesResult<TResult> AtLeast<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
         public static TResult AtMost<TResult>(this TResult result, aweXpect.Core.Times maximum) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
         public static aweXpect.Results.CountTimesResult<TResult> AtMost<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
-        public static aweXpect.Results.BetweenResult<TResult> Between<TResult>(this TResult result, int minimum) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+        public static aweXpect.Results.BetweenResult<TResult, aweXpect.Core.Times> Between<TResult>(this TResult result, int minimum) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
         public static TResult Exactly<TResult>(this TResult result, aweXpect.Core.Times expected) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
         public static TResult LessThan<TResult>(this TResult result, aweXpect.Core.Times maximum) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
         public static aweXpect.Results.CountTimesResult<TResult> LessThan<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
@@ -321,11 +321,11 @@ namespace aweXpect.Core
     {
         public GuaranteesNotNullAttribute() { }
     }
-    public interface ICollectionMatcher<in T, out T2> where T : out T2
+    public interface ICollectionMatcher<in TItem, out TMatch> where TItem : out TMatch
     {
         bool IsDetermined { get; }
-        System.Threading.Tasks.ValueTask<(bool IsFailure, string? Failure)> Verify(string it, T value, aweXpect.Core.IOptionsEquality<out T2> options, int maximumNumber);
-        System.Threading.Tasks.ValueTask<(bool IsFailure, string? Failure)> VerifyComplete(string it, aweXpect.Core.IOptionsEquality<out T2> options, int maximumNumber);
+        System.Threading.Tasks.ValueTask<(bool IsFailure, string? Failure)> Verify(string it, TItem value, aweXpect.Core.IOptionsEquality<out TMatch> options, int maximumNumber);
+        System.Threading.Tasks.ValueTask<(bool IsFailure, string? Failure)> VerifyComplete(string it, aweXpect.Core.IOptionsEquality<out TMatch> options, int maximumNumber);
     }
     public interface IDescribableSubject
     {
@@ -1426,10 +1426,10 @@ namespace aweXpect.Options
     public class CollectionMatchOptions
     {
         public CollectionMatchOptions(aweXpect.Options.CollectionMatchOptions.EquivalenceRelations equivalenceRelations = aweXpect.Options.CollectionMatchOptions.EquivalenceRelations.Equivalent) { }
-        public aweXpect.Core.ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<T, bool>>> expected) where T : T2 { }
-        public aweXpect.Core.ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<T> expected) where T : T2 { }
-        public aweXpect.Core.ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<T> expected, int[]? dimensions) where T : T2 { }
-        public aweXpect.Core.ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<aweXpect.Options.CollectionMatchOptions.ExpectationItem<T>> expected) where T : T2 { }
+        public aweXpect.Core.ICollectionMatcher<TItem, TMatch> GetCollectionMatcher<TItem, TMatch>(System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<TItem, bool>>> expected) where TItem : TMatch { }
+        public aweXpect.Core.ICollectionMatcher<TItem, TMatch> GetCollectionMatcher<TItem, TMatch>(System.Collections.Generic.IEnumerable<TItem> expected) where TItem : TMatch { }
+        public aweXpect.Core.ICollectionMatcher<TItem, TMatch> GetCollectionMatcher<TItem, TMatch>(System.Collections.Generic.IEnumerable<TItem> expected, int[]? dimensions) where TItem : TMatch { }
+        public aweXpect.Core.ICollectionMatcher<TItem, TMatch> GetCollectionMatcher<TItem, TMatch>(System.Collections.Generic.IEnumerable<aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>> expected) where TItem : TMatch { }
         public string GetExpectation(string expectedExpression, aweXpect.Core.ExpectationGrammars grammars) { }
         public string GetNegatedResultVerb(string it, aweXpect.Core.ExpectationGrammars grammars) { }
         public aweXpect.Options.CollectionMatchOptions IgnoringDuplicates(bool ignoreDuplicates = true) { }
@@ -1670,12 +1670,8 @@ namespace aweXpect.Results
         public aweXpect.Results.AllocatesResult<TResult> AllowingExceptions(bool allowExceptions = true) { }
         public TResult AtLeast(long minimum) { }
         public TResult AtMost(long maximum) { }
-        public aweXpect.Results.AllocatesResult<TResult>.BetweenResult Between(long minimum) { }
+        public aweXpect.Results.BetweenResult<TResult, long> Between(long minimum) { }
         public TResult Nothing() { }
-        public class BetweenResult
-        {
-            public TResult And(long maximum) { }
-        }
     }
     public class AndOrResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.AndOrResult<TType, TThat>>
     {
@@ -1723,33 +1719,28 @@ namespace aweXpect.Results
         public AndResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue) { }
         public TThat And { get; }
     }
-    public class BetweenResult<TTarget>
+    public class BetweenResult<TResult, TValue>
     {
-        public BetweenResult(System.Func<int, TTarget> callback) { }
-        public TTarget And(aweXpect.Core.Times maximum) { }
+        public BetweenResult(System.Func<TValue, TResult> callback) { }
+        public TResult And(TValue maximum) { }
     }
-    public class BetweenResult<TTarget, TType>
+    public class CollectionCountResult<TResult>
     {
-        public BetweenResult(System.Func<TType, TTarget> callback) { }
-        public TTarget And(TType maximum) { }
+        public CollectionCountResult(System.Func<aweXpect.Options.EnumerableQuantifier, bool, TResult> factory) { }
+        public aweXpect.Results.BetweenResult<TResult, int?> Between(int? minimum) { }
+        public TResult EqualTo(int? expected) { }
+        public TResult GreaterThan(int? expected) { }
+        public TResult GreaterThanOrEqualTo(int? expected) { }
+        public TResult LessThan(int? expected) { }
+        public TResult LessThanOrEqualTo(int? expected) { }
+        public aweXpect.Results.BetweenResult<TResult, int?> NotBetween(int? minimum) { }
+        public TResult NotEqualTo(int? unexpected) { }
+        public TResult NotGreaterThan(int? unexpected) { }
+        public TResult NotGreaterThanOrEqualTo(int? unexpected) { }
+        public TResult NotLessThan(int? unexpected) { }
+        public TResult NotLessThanOrEqualTo(int? unexpected) { }
     }
-    public class CollectionCountResult<TReturn>
-    {
-        public CollectionCountResult(System.Func<aweXpect.Options.EnumerableQuantifier, bool, TReturn> factory) { }
-        public aweXpect.Results.BetweenResult<TReturn, int?> Between(int? minimum) { }
-        public TReturn EqualTo(int? expected) { }
-        public TReturn GreaterThan(int? expected) { }
-        public TReturn GreaterThanOrEqualTo(int? expected) { }
-        public TReturn LessThan(int? expected) { }
-        public TReturn LessThanOrEqualTo(int? expected) { }
-        public aweXpect.Results.BetweenResult<TReturn, int?> NotBetween(int? minimum) { }
-        public TReturn NotEqualTo(int? unexpected) { }
-        public TReturn NotGreaterThan(int? unexpected) { }
-        public TReturn NotGreaterThanOrEqualTo(int? unexpected) { }
-        public TReturn NotLessThan(int? unexpected) { }
-        public TReturn NotLessThanOrEqualTo(int? unexpected) { }
-    }
-    public class CollectionOrderResult<TMember, TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionOrderOptions<TMember>>
+    public class CollectionOrderResult<TType, TThat, TMember> : aweXpect.Results.AndOrResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionOrderOptions<TMember>>
     {
         public CollectionOrderResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.CollectionOrderOptions<TMember> options) { }
         public aweXpect.Results.AndOrResult<TType, TThat> Using(System.Collections.Generic.IComparer<TMember> comparer) { }
@@ -1758,11 +1749,11 @@ namespace aweXpect.Results
     {
         public CountResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier) { }
     }
-    public class CountTimesResult<TTarget>
+    public class CountTimesResult<TResult>
     {
-        public CountTimesResult(System.Func<int, TTarget> callback) { }
-        public TTarget Once() { }
-        public TTarget Twice() { }
+        public CountTimesResult(System.Func<int, TResult> callback) { }
+        public TResult Once() { }
+        public TResult Twice() { }
     }
     public class DelegateWithOptionalValueResult<T> : aweXpect.Results.ExpectationResultWithoutValue<aweXpect.Results.DelegateWithOptionalValueResult<T>>
     {
@@ -1780,12 +1771,7 @@ namespace aweXpect.Results
         public aweXpect.Results.ExecutesInResult<TResult> AllowingExceptions(bool allowExceptions = true) { }
         public TResult AtLeast(System.TimeSpan minimum) { }
         public TResult AtMost(System.TimeSpan maximum) { }
-        public aweXpect.Results.ExecutesInResult<TResult>.BetweenResult Between(System.TimeSpan minimum) { }
-        public class BetweenResult
-        {
-            public BetweenResult(System.Func<System.TimeSpan, TResult> callback) { }
-            public TResult And(System.TimeSpan maximum) { }
-        }
+        public aweXpect.Results.BetweenResult<TResult, System.TimeSpan> Between(System.TimeSpan minimum) { }
     }
     public class ExecutesInToleranceResult<TResult>
     {
@@ -1948,6 +1934,10 @@ namespace aweXpect.Results
             public aweXpect.Results.AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(long? unexpected) { }
             public aweXpect.Results.AndOrResult<TType, TThat> NotLessThan(long? unexpected) { }
             public aweXpect.Results.AndOrResult<TType, TThat> NotLessThanOrEqualTo(long? unexpected) { }
+        }
+        public class String<TItem> : aweXpect.Results.PropertyResult.String<TItem, TItem, aweXpect.Core.IThat<TItem>>
+        {
+            public String(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null) { }
         }
         public class String<TValue, TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
         {

@@ -113,6 +113,22 @@ public sealed partial class ThatDelegate
 		public sealed class BetweenTests
 		{
 			[Test]
+			public async Task WhenAndIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			{
+				Action @delegate = () => { };
+				BetweenResult<AndResult<Delegates.ThatDelegate.WithoutValue>, long> sut =
+					That(@delegate).Allocates().Between(1);
+				_ = sut.And(2);
+
+				void Act()
+					=> sut.And(3);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Between cannot be specified more than once.")
+					.Because("the range would silently replace the first one");
+			}
+
+			[Test]
 			public async Task WhenDelegateAllocatesAboveTheRange_ShouldFail()
 			{
 				Action @delegate = () => GC.KeepAlive(new byte[1000]);

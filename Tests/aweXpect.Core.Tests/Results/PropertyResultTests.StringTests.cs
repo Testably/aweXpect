@@ -366,6 +366,33 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Test]
+		public async Task EqualTo_WhenUsingTheSingleTypeParameterShortcut_ShouldContinueOnTheSubject()
+		{
+			PropertyResult.String<MyClass?> sut = new(MyClass.WithStringValue("foo"), a => a?.StringValue,
+				"string value");
+
+			MyClass? result = await sut.EqualTo("foo");
+
+			await That(result?.StringValue).IsEqualTo("foo")
+				.Because("the shortcut continues on the subject like the shortcuts of the other property types");
+		}
+
+		[Test]
+		public async Task EqualTo_WhenUsingTheSingleTypeParameterShortcut_ShouldTriggerValidation()
+		{
+			Signaler<string?> signal = new();
+			PropertyResult.String<string> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.EqualTo("foo");
+
+			await That(signal).Signaled().With(e => e == "foo")
+				.Because("the shortcut forwards the validation to the full property result");
+		}
+
+		[Test]
 		public async Task EqualTo_WhenValueIsNullAndExpectedIsNull_ShouldSucceed()
 		{
 			StringProperty sut = MyClass.HasStringValue(null);

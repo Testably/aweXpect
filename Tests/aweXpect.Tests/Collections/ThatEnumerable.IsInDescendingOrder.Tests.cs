@@ -16,7 +16,7 @@ public sealed partial class ThatEnumerable
 			public async Task WhenComparerIsSpecifiedTwice_ShouldThrowInvalidOperationException()
 			{
 				IEnumerable<int> subject = ToEnumerable([3, 2, 1,]);
-				CollectionOrderResult<int, IEnumerable<int>, IThat<IEnumerable<int>?>> sut =
+				CollectionOrderResult<IEnumerable<int>, IThat<IEnumerable<int>?>, int> sut =
 					That(subject).IsInDescendingOrder();
 				_ = sut.Using(Comparer<int>.Default);
 
