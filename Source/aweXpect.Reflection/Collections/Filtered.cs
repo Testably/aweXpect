@@ -60,6 +60,16 @@ public abstract class Filtered<T, TFiltered>
 	}
 
 	/// <summary>
+	///     Creates a clone that reuses the ORIGINAL <paramref name="original" />'s underlying source (never wrapping the
+	///     instance itself) together with a fresh <paramref name="filters" /> list, so that filters are never re-applied
+	///     on top of an already-filtered sequence.
+	/// </summary>
+	private protected Filtered(Filtered<T, TFiltered> original, IReadOnlyList<IFilter<T>> filters)
+		: this(original._source, filters)
+	{
+	}
+
+	/// <summary>
 	///     The filters on the source.
 	/// </summary>
 	private protected IReadOnlyList<IFilter<T>> Filters { get; }
@@ -100,20 +110,6 @@ public abstract class Filtered<T, TFiltered>
 	/// <param name="filter">The filter to apply on <typeparamref name="T" />.</param>
 	public TFiltered Which(IFilter<T> filter)
 		=> CloneWith([.. Filters, filter,]);
-
-	/// <summary>
-	///     Creates a clone that reuses the ORIGINAL <paramref name="original" />'s underlying source (never wrapping the
-	///     instance itself) together with a fresh <paramref name="filters" /> list, so that filters are never re-applied
-	///     on top of an already-filtered sequence.
-	/// </summary>
-	/// <remarks>
-	///     Declared after the iterator methods on purpose: it must stay out of the way of the compiler-generated async
-	///     iterator state-machine ordinal so the public API surface (which captures that generated name) is preserved.
-	/// </remarks>
-	private protected Filtered(Filtered<T, TFiltered> original, IReadOnlyList<IFilter<T>> filters)
-		: this(original._source, filters)
-	{
-	}
 
 	/// <summary>
 	///     Creates a new instance of <typeparamref name="TFiltered" /> that shares this collection's original source and
