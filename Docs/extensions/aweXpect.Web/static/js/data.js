@@ -510,6 +510,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
@@ -597,7 +603,8 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
@@ -688,7 +695,8 @@ window.BENCHMARK_DATA = {
           226.31324475152152,
           414.86984654835294,
           319.0249760945638,
-          410.31975078582764
+          410.31975078582764,
+          421.28656787872313
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -732,6 +740,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -883,7 +892,8 @@ window.BENCHMARK_DATA = {
           536.072971534729,
           970.2753125508626,
           869.0043994903565,
-          944.1509282430013
+          944.1509282430013,
+          923.4321902138846
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -895,6 +905,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1503,6 +1514,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
@@ -1590,7 +1607,8 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
@@ -1681,7 +1699,8 @@ window.BENCHMARK_DATA = {
           99.99071205513818,
           194.592351214091,
           166.54280826250712,
-          198.02909326553345
+          198.02909326553345,
+          191.61604723930358
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1729,6 +1748,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -1876,7 +1896,8 @@ window.BENCHMARK_DATA = {
           128.6137250491551,
           253.18679602940878,
           224.63416498502096,
-          243.37135826746623
+          243.37135826746623,
+          253.7671848297119
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1888,6 +1909,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -2436,6 +2458,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
@@ -2513,7 +2541,8 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
@@ -2594,7 +2623,8 @@ window.BENCHMARK_DATA = {
           341.25137255986533,
           614.4018684795925,
           537.5697986602784,
-          634.0030492373875
+          634.0030492373875,
+          606.2456460952759
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2628,6 +2658,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -2769,7 +2800,8 @@ window.BENCHMARK_DATA = {
           495.3376374925886,
           965.9930225372315,
           840.2415881474813,
-          988.0361700057983
+          988.0361700057983,
+          989.6869799296061
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2781,6 +2813,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -3319,6 +3352,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
@@ -3396,7 +3435,8 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
@@ -3477,7 +3517,8 @@ window.BENCHMARK_DATA = {
           992.5125962893168,
           1677.1769700050354,
           1197.4525799384485,
-          1775.927513709435
+          1775.927513709435,
+          1798.5724258422852
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3511,6 +3552,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -3652,7 +3694,8 @@ window.BENCHMARK_DATA = {
           9646.317310587565,
           20968.100540161133,
           13405.245967610677,
-          20631.42825571696
+          20631.42825571696,
+          20441.783891950334
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3738,6 +3781,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713
         ],
         "borderColor": "#FF671B",
@@ -4202,6 +4246,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
@@ -4279,7 +4329,8 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
@@ -4360,7 +4411,8 @@ window.BENCHMARK_DATA = {
           365.026276077543,
           686.1853793144226,
           512.6089921951294,
-          711.735968726022
+          711.735968726022,
+          691.8549032892499
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4390,6 +4442,7 @@ window.BENCHMARK_DATA = {
           1408,
           1408,
           1120,
+          1080,
           1080,
           1080,
           1080,
@@ -4535,7 +4588,8 @@ window.BENCHMARK_DATA = {
           657.6701698303223,
           1343.359947340829,
           1127.2770821889242,
-          1259.993591602032
+          1259.993591602032,
+          1318.0788556507655
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4547,6 +4601,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -5085,6 +5140,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
@@ -5162,7 +5223,8 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
@@ -5243,7 +5305,8 @@ window.BENCHMARK_DATA = {
           634.790694173177,
           1130.3970631917318,
           846.7878972371419,
-          1072.1992802253137
+          1072.1992802253137,
+          1087.9209363301595
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5277,6 +5340,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -5418,7 +5482,8 @@ window.BENCHMARK_DATA = {
           408.295764986674,
           761.956848526001,
           718.0018542925517,
-          732.5534484863281
+          732.5534484863281,
+          731.3458156585693
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5430,6 +5495,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
