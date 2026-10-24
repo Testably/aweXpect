@@ -5,7 +5,8 @@ public API of an assembly against a reviewed snapshot, so that every change of t
 request:
 
 ```csharp
-await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot().UniqueFor.TargetFramework();
+await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot()
+    .UniqueFor.TargetFramework();
 ```
 
 The expectation is in the namespace `aweXpect`, like `MatchesSnapshot()`. `PublicApiDeclarations.GenerateFrom(…)`, which

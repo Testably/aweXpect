@@ -87,21 +87,26 @@ missing. On another operating system, `.UniqueFor.OperatingSystem()` throws a `P
 
 A [custom store](07-storing-snapshots.md) receives the environment as `SnapshotId.Variant`, e.g. `net8.0@windows`.
 
-## Migrating from 0.1
+## Nesting in the IDE
 
-Version 0.1 named the files `<Class>.<Method>.snapshot.txt` and `<Class>.<Method>.snapshot.pending.txt`. Files with
-the old names are neither read nor reported as orphaned, so the tests fail with missing snapshots until they are
-renamed. Rename them in the directory of the test project, including pending files, names, environments and
-extensions, with PowerShell:
+In a C# project, the build targets of aweXpect.Snapshots nest each snapshot and pending file under its test file, so
+that Rider and Visual Studio show them below it in the solution explorer. As the names of test files and snapshots can
+both contain dots, the test file is the longest prefix of the file name, of up to eight parts separated by a dot, for
+which a `.cs` file exists in the same directory, e.g. `AlbumTests.Describes.Abbey Road.awexpect-snapshot.txt` is nested
+under `AlbumTests.Describes.cs` if it exists, and under `AlbumTests.cs` otherwise.
 
-```powershell
-Get-ChildItem -Recurse -File -Filter *.snapshot.* | Where-Object Name -Match '\.snapshot(\.pending)?\.[^.]+$' | Rename-Item -NewName { $_.Name -replace '\.snapshot(\.pending)?(\.[^.]+)$', '.awexpect-snapshot$1$2' }
+A `DependentUpon` that you set yourself is kept, e.g. to nest the snapshots under another file:
+
+```xml
+<ItemGroup>
+  <None Update="ApiApprovalTests.*.awexpect-snapshot.txt" DependentUpon="ApiApprovalTests.cs"/>
+</ItemGroup>
 ```
 
-or with bash:
+To turn the nesting off, set the property `AweXpectSnapshotsNestFiles` to `false` in the test project:
 
-```bash
-find . -type f -name '*.snapshot.*' -exec sh -c 'for f; do n=$(printf "%s\n" "$f" | sed -E "s/\.snapshot(\.pending)?(\.[^./]+)$/.awexpect-snapshot\1\2/"); [ "$n" = "$f" ] || mv "$f" "$n"; done' _ {} +
+```xml
+<PropertyGroup>
+  <AweXpectSnapshotsNestFiles>false</AweXpectSnapshotsNestFiles>
+</PropertyGroup>
 ```
-
-Then replace `*.snapshot.pending.*` in your `.gitignore` with `*.awexpect-snapshot.pending.*`.

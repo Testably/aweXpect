@@ -8,10 +8,6 @@
 		<ProjectReference Include="..\..\..\Source\aweXpect.Snapshots\aweXpect.Snapshots.csproj"/>
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Update="Checks.*.awexpect-snapshot.*" DependentUpon="Checks.cs"/>
-	</ItemGroup>
-
 	<!--
 	    The smoke tests are built deterministically, as a CI build of a consumer is, so that the snapshots are only found
 	    when the source root that the build targets of the package record maps the paths `/_/…` back. A project
