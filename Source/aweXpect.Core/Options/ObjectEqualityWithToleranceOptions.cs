@@ -97,13 +97,20 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 
 		/// <inheritdoc />
 		/// <remarks>
-		///     A default tolerance can be customized, so it is read once for each evaluation, while a specified tolerance
-		///     is the same for every evaluation.
+		///     A default tolerance can be customized, so it is read once for each evaluation, and outside an evaluation
+		///     for every comparison, while a specified tolerance is the same for every evaluation.
 		/// </remarks>
 		public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
-			=> isDefault
-				? new WithinMatcher(this, tolerance())
-				: _matcher ??= new WithinMatcher(this, tolerance());
+		{
+			if (!isDefault)
+			{
+				return _matcher ??= new WithinMatcher(this, tolerance());
+			}
+
+			return environment.Evaluation is null
+				? _matcher ??= new WithinMatcher(this, default!, true)
+				: new WithinMatcher(this, tolerance());
+		}
 
 		/// <inheritdoc />
 		/// <remarks>
@@ -128,9 +135,11 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		#endregion
 
 		/// <remarks>
-		///     A value that is not a <typeparamref name="TSubject" /> never matches.
+		///     A value that is not a <typeparamref name="TSubject" /> never matches. The matcher reads the
+		///     <paramref name="tolerance" /> of the match type for every comparison when it
+		///     <paramref name="readsTolerance" />.
 		/// </remarks>
-		private sealed class WithinMatcher(WithinMatchType matchType, TTolerance tolerance)
+		private sealed class WithinMatcher(WithinMatchType matchType, TTolerance tolerance, bool readsTolerance = false)
 			: ObjectMatcher<TSubject, TSubject>
 		{
 			/// <inheritdoc />
@@ -148,10 +157,15 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 			}
 
 			private TTolerance ToleranceFor(TSubject expected)
-				=> matchType.AbsoluteTolerance is not null && expected is TTolerance typedExpected
-					? matchType.AbsoluteTolerance(tolerance, typedExpected)
-					: tolerance;
+			{
+				TTolerance value = readsTolerance ? matchType.Tolerance : tolerance;
+				return matchType.AbsoluteTolerance is not null && expected is TTolerance typedExpected
+					? matchType.AbsoluteTolerance(value, typedExpected)
+					: value;
+			}
 		}
+
+		private TTolerance Tolerance => tolerance();
 
 		private bool IsWithinTolerance(TSubject actual, TSubject expected, TTolerance value)
 			=> isWithinTolerance(actual, expected, value);

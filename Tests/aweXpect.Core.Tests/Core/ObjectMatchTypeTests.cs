@@ -9,6 +9,24 @@ namespace aweXpect.Core.Tests.Core;
 public sealed class ObjectMatchTypeTests
 {
 	[Test]
+	public async Task ForEvaluation_ShouldNotKeepTheMatcherOfTheEvaluationInTheOptions()
+	{
+		RecordingMatchType<Track> matchType = new();
+		ObjectEqualityOptions<Track> options = new();
+		options.SetMatchType(matchType, "ByTitle");
+
+		ObjectEqualityOptions<Track> evaluationOptions =
+			options.ForEvaluation(new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
+		await evaluationOptions.AreConsideredEqual(new Track("Let It Be"), new Track("Let It Be"));
+		await options.AreConsideredEqual(new Track("Get Back"), new Track("Get Back"));
+
+		await That(evaluationOptions).IsNotSameAs(options);
+		await That(matchType.Matchers[0].Comparisons).IsEqualTo(1)
+			.Because("a comparison outside the evaluation must not use the matcher of the evaluation");
+		await That(matchType.MatcherWithoutEvaluation?.Comparisons).IsEqualTo(1);
+	}
+
+	[Test]
 	public async Task ForEvaluation_ShouldReceiveTheContextAndTheCancellationOfTheEvaluation()
 	{
 		using CancellationTokenSource cts = new();
@@ -23,6 +41,25 @@ public sealed class ObjectMatchTypeTests
 		await That(matchType.Environments).HasCount(1);
 		await That(matchType.Environments[0].Context).IsSameAs(context);
 		await That(matchType.Environments[0].CancellationToken).IsEqualTo(cts.Token);
+	}
+
+	[Test]
+	public async Task WhenATypedMatcherExplainsAMismatch_ShouldUseItsExplanation()
+	{
+		Track subject = new("Let It Be");
+
+		async Task Act()
+			=> await That(subject).IsEqualTo(new Track("Get Back")).ByTitle(new ExplainingMatchType<object?>());
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is titled like ObjectMatchTypeTests.Track {
+			                 Title = "Get Back"
+			               },
+			             but it differed in its title: "Let It Be" instead of "Get Back"
+			             """)
+			.Because("a typed matcher explains a mismatch with the typed values in its MatchWithExplanation");
 	}
 
 	[Test]
@@ -108,6 +145,36 @@ public sealed class ObjectMatchTypeTests
 		public string Title { get; } = title;
 	}
 
+	private sealed class ExplainingMatchType<TSubject> : ObjectMatchType<TSubject>
+	{
+		private static readonly Matcher SharedMatcher = new();
+
+		public override MatchPhrase Phrase { get; } = MatchPhrase.Being("titled like");
+
+		public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
+			=> SharedMatcher;
+
+		private sealed class Matcher : ObjectMatcher<TSubject, Track>
+		{
+			public override ValueTask<MatchResult> Match(TSubject actual, Track expected)
+				=> new(MatchResult.From(TitleOf(actual) == expected.Title));
+
+			public override ValueTask<MatchResult> MatchWithExplanation(TSubject actual, Track expected)
+				=> new(TitleOf(actual) == expected.Title
+					? MatchResult.Match
+					: MatchResult.NoMatchBecause(new TitleExplanation(TitleOf(actual), expected.Title)));
+
+			private static string? TitleOf(TSubject? subject)
+				=> subject is Track track ? track.Title : null;
+		}
+
+		private sealed class TitleExplanation(string? actual, string expected) : MatchExplanation
+		{
+			public override string GetFailure(string it, ExpectationGrammars grammars, string? indentation)
+				=> $"{it} differed in its title: {Formatter.Format(actual)} instead of {Formatter.Format(expected)}";
+		}
+	}
+
 	private sealed class NotComparableMatchType<TSubject> : ObjectMatchType<TSubject>
 	{
 		public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
@@ -126,9 +193,15 @@ public sealed class ObjectMatchTypeTests
 	{
 		public List<MatchEnvironment> Environments { get; } = [];
 		public List<CountingMatcher> Matchers { get; } = [];
+		public CountingMatcher? MatcherWithoutEvaluation { get; private set; }
 
 		public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
 		{
+			if (environment.Evaluation is null)
+			{
+				return MatcherWithoutEvaluation ??= new CountingMatcher();
+			}
+
 			CountingMatcher matcher = new();
 			Environments.Add(environment);
 			Matchers.Add(matcher);

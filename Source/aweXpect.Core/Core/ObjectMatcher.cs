@@ -89,6 +89,17 @@ public abstract class ObjectMatcher<TSubject, TExpected> : ObjectMatcher<TSubjec
 	public abstract ValueTask<MatchResult> Match(TSubject actual, TExpected expected);
 
 	/// <summary>
+	///     Compares the <paramref name="actual" /> value with the <paramref name="expected" /> value like
+	///     <see cref="Match(TSubject, TExpected)" />, for a comparison whose failure is explained.
+	/// </summary>
+	/// <remarks>
+	///     Override it when explaining a mismatch costs more than deciding it, e.g. to collect all differences into a
+	///     <see cref="MatchExplanation" />.
+	/// </remarks>
+	public virtual ValueTask<MatchResult> MatchWithExplanation(TSubject actual, TExpected expected)
+		=> Match(actual, expected);
+
+	/// <summary>
 	///     The failure text for the comparison of the <paramref name="actual" /> with the <paramref name="expected" />
 	///     value that returned the <paramref name="result" />, starting with <paramref name="it" />.
 	/// </summary>
@@ -104,6 +115,12 @@ public abstract class ObjectMatcher<TSubject, TExpected> : ObjectMatcher<TSubjec
 	public sealed override ValueTask<MatchResult> Match<TOther>(TSubject actual, TOther expected)
 		=> TryCast(expected, out TExpected typedExpected)
 			? Match(actual, typedExpected)
+			: new ValueTask<MatchResult>(MatchResult.NoMatch);
+
+	/// <inheritdoc />
+	public sealed override ValueTask<MatchResult> MatchWithExplanation<TOther>(TSubject actual, TOther expected)
+		=> TryCast(expected, out TExpected typedExpected)
+			? MatchWithExplanation(actual, typedExpected)
 			: new ValueTask<MatchResult>(MatchResult.NoMatch);
 
 	/// <inheritdoc />

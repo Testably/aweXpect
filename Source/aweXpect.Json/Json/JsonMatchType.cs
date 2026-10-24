@@ -109,7 +109,7 @@ internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 		{
 			if (actual is null)
 			{
-				return $"{it} was <null>";
+				return $"{it}{grammars.SubjectVerb(it, " was ", " were ")}<null>";
 			}
 
 			return result.Explanation?.GetFailure(it, grammars, null) ?? "";

@@ -61,18 +61,19 @@ public partial class StringEqualityOptions
 			   StringMatchSettingKinds.WhiteSpace;
 
 		/// <inheritdoc />
-		public override string GetExtendedFailure(string it, string? actual, string? expected,
+		public override string GetExtendedFailure(string it, ExpectationGrammars grammars, string? actual,
+			string? expected,
 			bool ignoreCase,
 			IEqualityComparer<string> comparer,
 			StringDifferenceSettings? settings)
 		{
 			if (string.IsNullOrEmpty(actual) || expected == null)
 			{
-				return $"{it} was {Formatter.Format(actual)}";
+				return $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual)}";
 			}
 
 			string contains =
-				$"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
+				$"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
 			if (actual.Length < expected.Length)
 			{
 				contains +=

@@ -24,7 +24,8 @@ public partial class StringEqualityOptions
 		/// <summary>
 		///     Get an extended failure text.
 		/// </summary>
-		public abstract string GetExtendedFailure(string it, string? actual, string? expected,
+		public abstract string GetExtendedFailure(string it, ExpectationGrammars grammars, string? actual,
+			string? expected,
 			bool ignoreCase,
 			IEqualityComparer<string> comparer,
 			StringDifferenceSettings? settings);
@@ -62,7 +63,7 @@ public partial class StringEqualityOptions
 			/// <inheritdoc />
 			public override string GetFailure(string it, ExpectationGrammars grammars, string? actual,
 				string? expected, MatchResult result, StringDifferenceSettings? differenceSettings)
-				=> matchType.GetExtendedFailure(it, actual, expected, settings.IgnoreCase,
+				=> matchType.GetExtendedFailure(it, grammars, actual, expected, settings.IgnoreCase,
 					settings.EffectiveComparer, differenceSettings);
 
 			/// <inheritdoc />

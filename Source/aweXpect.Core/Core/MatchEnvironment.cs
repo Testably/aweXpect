@@ -9,8 +9,13 @@ namespace aweXpect.Core;
 ///     <see cref="StringMatchType.ForEvaluation(MatchEnvironment, StringMatchSettings)" /> and
 ///     <see cref="ObjectMatchType{TSubject}.ForEvaluation(MatchEnvironment)" />.
 /// </summary>
+/// <remarks>
+///     The <see langword="default" /> value describes a comparison outside an evaluation.
+/// </remarks>
 public readonly struct MatchEnvironment
 {
+	private readonly IEvaluationContext? _context;
+
 	/// <summary>
 	///     Describes the evaluation in the <paramref name="context" /> that the <paramref name="cancellationToken" />
 	///     cancels.
@@ -19,21 +24,21 @@ public readonly struct MatchEnvironment
 	public MatchEnvironment(IEvaluationContext context, CancellationToken cancellationToken)
 	{
 		context.ThrowIfNull();
-		Context = context;
+		_context = context;
 		CancellationToken = cancellationToken;
 	}
 
 	/// <summary>
 	///     The environment of a comparison outside an evaluation.
 	/// </summary>
-	internal static MatchEnvironment WithoutEvaluation { get; }
-		= new(ExpectationTextEvaluationContext.For(null), CancellationToken.None);
+	internal static MatchEnvironment WithoutEvaluation => default;
+
+	private static IEvaluationContext ContextWithoutEvaluation { get; } = ExpectationTextEvaluationContext.For(null);
 
 	/// <summary>
 	///     The <see cref="Context" />, or <see langword="null" /> outside an evaluation.
 	/// </summary>
-	internal IEvaluationContext? Evaluation
-		=> ReferenceEquals(Context, WithoutEvaluation.Context) ? null : Context;
+	internal IEvaluationContext? Evaluation => _context;
 
 	/// <summary>
 	///     The context of the evaluation.
@@ -42,7 +47,7 @@ public readonly struct MatchEnvironment
 	///     A comparison outside an evaluation, e.g. in a filter that is not part of an expectation, receives a context
 	///     that stores nothing and is never completed.
 	/// </remarks>
-	public IEvaluationContext Context { get; }
+	public IEvaluationContext Context => _context ?? ContextWithoutEvaluation;
 
 	/// <summary>
 	///     The cancellation of the evaluation.

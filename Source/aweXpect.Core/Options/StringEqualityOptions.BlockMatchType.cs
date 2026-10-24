@@ -491,17 +491,19 @@ public partial class StringEqualityOptions
 		///     The first line that does not match is explained before a different number of lines, because it also locates
 		///     a missing or an additional line inside the block.
 		/// </remarks>
-		public override string GetExtendedFailure(string it, string? actual, string? expected,
+		public override string GetExtendedFailure(string it, ExpectationGrammars grammars, string? actual,
+			string? expected,
 			bool ignoreCase,
 			IEqualityComparer<string> comparer,
 			StringDifferenceSettings? settings)
 		{
 			if (string.IsNullOrEmpty(actual) || expected == null)
 			{
-				return $"{it} was {Formatter.Format(actual)}";
+				return $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual)}";
 			}
 
-			string prefix = $"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
+			string prefix =
+				$"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
 			string[] actualLines = SplitLines(actual);
 			string[] expectedLines = SplitLines(expected);
 			string? mismatch = DescribeFirstMismatch(actualLines, 0, expectedLines,

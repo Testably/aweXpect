@@ -46,18 +46,19 @@ public partial class StringEqualityOptions
 				: null;
 
 		/// <inheritdoc />
-		public override string GetExtendedFailure(string it, string? actual, string? expected,
+		public override string GetExtendedFailure(string it, ExpectationGrammars grammars, string? actual,
+			string? expected,
 			bool ignoreCase,
 			IEqualityComparer<string> comparer,
 			StringDifferenceSettings? settings)
 		{
 			if (actual == null || expected == null)
 			{
-				return $"{it} was {Formatter.Format(actual)}";
+				return $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual)}";
 			}
 
 			string prefix =
-				$"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
+				$"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
 			int minCommonLength = Math.Min(actual.Length, expected.Length);
 			StringDifference stringDifference = new(actual, expected, comparer, settings);
 			int indexOfFirstMismatch = stringDifference.IndexOfFirstMismatch(StringDifference.MatchType.Equality);

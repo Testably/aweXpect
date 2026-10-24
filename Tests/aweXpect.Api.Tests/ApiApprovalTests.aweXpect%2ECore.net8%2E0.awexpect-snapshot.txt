@@ -501,6 +501,8 @@ namespace aweXpect.Core
         public virtual string GetFailure(string it, aweXpect.Core.ExpectationGrammars grammars, TSubject? actual, TExpected expected, aweXpect.Core.MatchResult result, string? indentation) { }
         public abstract System.Threading.Tasks.ValueTask<aweXpect.Core.MatchResult> Match(TSubject actual, TExpected expected);
         public override sealed System.Threading.Tasks.ValueTask<aweXpect.Core.MatchResult> Match<TOther>(TSubject actual, TOther expected) { }
+        public override sealed System.Threading.Tasks.ValueTask<aweXpect.Core.MatchResult> MatchWithExplanation<TOther>(TSubject actual, TOther expected) { }
+        public virtual System.Threading.Tasks.ValueTask<aweXpect.Core.MatchResult> MatchWithExplanation(TSubject actual, TExpected expected) { }
     }
     public static class ReflectionFallback
     {

@@ -41,11 +41,14 @@ public static partial class ThatAssembly
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
 			IAsyncContextConstraint<Assembly?>
 	{
+		private StringEqualityOptions? _evaluationOptions;
+
 		public async ValueTask<ConstraintResult> IsMetBy(Assembly? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			StringEqualityOptions evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = evaluationOptions;
 			Outcome = actual is not null &&
 			          await actual.GetReferencedAssemblyNames()
 				          .AnyAsync(dep => evaluationOptions.AreConsideredEqual(dep.Name, expected))
@@ -76,7 +79,7 @@ public static partial class ThatAssembly
 					Actual.GetReferencedAssemblyNames().Select(dep => dep.Name).ToArray());
 			}
 
-			options.AppendContexts(contexts);
+			(_evaluationOptions ?? options).AppendContexts(contexts);
 		}
 	}
 }

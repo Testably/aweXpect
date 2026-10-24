@@ -226,11 +226,14 @@ internal static class ObjectEqualityOptions
 public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject>
 {
 	/// <summary>
-	///     The matcher that compares the objects, created for the first evaluation or comparison.
+	///     The matcher of the evaluation for options returned by <see cref="ForEvaluation" />, otherwise the matcher for
+	///     the comparisons outside an evaluation.
 	/// </summary>
 	/// <remarks>
-	///     A match type without state per evaluation returns the same matcher for every evaluation, so the options are
-	///     only copied for an evaluation that gets a matcher of its own.
+	///     The options are configured once and serve every evaluation, so they never keep the matcher of an evaluation,
+	///     which may hold its state, its context and its cancellation. A match type without state per evaluation returns
+	///     this matcher for every evaluation, so the options are only copied for an evaluation that gets a matcher of
+	///     its own.
 	/// </remarks>
 	private ObjectMatcher<TSubject>? _matcher;
 
@@ -354,8 +357,7 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 		}
 
 		ObjectMatcher<TSubject> matcher = _matchType.ForEvaluation(new MatchEnvironment(context, cancellationToken));
-		ObjectMatcher<TSubject>? current = Interlocked.CompareExchange(ref _matcher, matcher, null);
-		return current is null || ReferenceEquals(current, matcher)
+		return ReferenceEquals(matcher, GetMatcher())
 			? this
 			: new ObjectEqualityOptions<TSubject>
 			{

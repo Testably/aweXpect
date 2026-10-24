@@ -42,7 +42,8 @@ public abstract class StringMatcher
 	/// </remarks>
 	public virtual string GetFailure(string it, ExpectationGrammars grammars, string? actual, string? expected,
 		MatchResult result, StringDifferenceSettings? differenceSettings)
-		=> result.Explanation?.GetFailure(it, grammars, null) ?? $"{it} was {Formatter.Format(actual)}";
+		=> result.Explanation?.GetFailure(it, grammars, null) ??
+		   $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual)}";
 
 	/// <summary>
 	///     Counts the non-overlapping occurrences of the already normalized <paramref name="expected" /> value in the

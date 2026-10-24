@@ -836,6 +836,40 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task GetExtendedFailure_WhenAPluralSubjectIsIt_ShouldKeepTheSingularVerb()
+		{
+			StringEqualityOptions sut = new("expected");
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.Plural, "foo", "bar", MatchResult.NoMatch);
+
+			await That(result).StartsWith("it was \"foo\"")
+				.Because("the generic pronoun always takes the singular verb");
+		}
+
+		[Test]
+		[Arguments("AsBlock")]
+		[Arguments("AsCustom")]
+		[Arguments("AsPrefix")]
+		[Arguments("AsSuffix")]
+		[Arguments("Containing")]
+		[Arguments("Exact")]
+		public async Task GetExtendedFailure_WhenAPluralSubjectIsNamed_ShouldUseThePluralVerb(string matchType)
+		{
+			StringEqualityOptions sut = matchType == "AsCustom"
+				? new StringEqualityOptions("expected").SetMatchType(new DefaultFailureMatchType(), "AsCustom")
+				: WithMatchType(matchType);
+
+			string result = sut.GetExtendedFailure("the titles", ExpectationGrammars.Plural, "foo", "bar",
+				MatchResult.NoMatch);
+			string negatedResult = sut.GetExtendedFailure("the titles",
+				ExpectationGrammars.Plural | ExpectationGrammars.Negated, "foo", "bar", MatchResult.NoMatch);
+
+			await That(result).StartsWith("the titles were \"foo\"")
+				.Because("a custom match type uses the same verb as the built-in ones");
+			await That(negatedResult).IsEqualTo("the titles were \"foo\"");
+		}
+
+		[Test]
 		[Arguments("Exact", "1.2.3", "1.2.4")]
 		[Arguments("AsPrefix", "1.2.3.4", "1.2.4")]
 		[Arguments("AsSuffix", "0.1.2.3", "1.2.4")]
@@ -988,6 +1022,18 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(result).IsEqualTo("my custom failure")
 				.Because("only the failures of the built-in match types can be rephrased");
+		}
+
+		[Test]
+		public async Task GetExtendedMemberFailure_WhenThePluralSubjectIsNamed_ShouldKeepTheMemberSingular()
+		{
+			StringEqualityOptions sut = new("expected");
+
+			string result = sut.GetExtendedMemberFailure("the requests", "header value", ExpectationGrammars.Plural,
+				"foo", "bar", MatchResult.NoMatch);
+
+			await That(result).StartsWith("the requests had header value \"foo\", which differs at index 0:")
+				.Because("the member holds a single value, also for a plural subject");
 		}
 
 		[Test]
@@ -1752,6 +1798,20 @@ public sealed partial class StringEqualityOptionsTests
 
 				public override void AppendContexts(ResultContextCollector contexts)
 					=> throw new NotSupportedException();
+			}
+		}
+
+		private sealed class DefaultFailureMatchType : StringMatchType
+		{
+			public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+				=> new Matcher();
+
+			public override MatchPhrase Phrase => MatchPhrase.EqualTo;
+
+			private sealed class Matcher : StringMatcher
+			{
+				public override ValueTask<MatchResult> Match(string? actual, string? expected)
+					=> new(MatchResult.From(actual == expected));
 			}
 		}
 

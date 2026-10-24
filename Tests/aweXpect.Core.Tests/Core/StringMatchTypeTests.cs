@@ -49,6 +49,24 @@ public sealed class StringMatchTypeTests
 	}
 
 	[Test]
+	public async Task ForEvaluation_ShouldNotKeepTheMatcherOfTheEvaluationInTheOptions()
+	{
+		RecordingMatchType matchType = new();
+		StringEqualityOptions options = new("expected");
+		options.SetMatchType(matchType, "AsTitle");
+
+		StringEqualityOptions evaluationOptions =
+			options.ForEvaluation(new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
+		await evaluationOptions.AreConsideredEqual("Let It Be", "Let It Be");
+		await options.AreConsideredEqual("Get Back", "Get Back");
+
+		await That(evaluationOptions).IsNotSameAs(options);
+		await That(matchType.Matchers[0].Comparisons).IsEqualTo(1)
+			.Because("a comparison outside the evaluation must not use the matcher of the evaluation");
+		await That(matchType.MatcherWithoutEvaluation?.Comparisons).IsEqualTo(1);
+	}
+
+	[Test]
 	public async Task ForEvaluation_ShouldReceiveTheContextAndTheCancellationOfTheEvaluation()
 	{
 		using CancellationTokenSource cts = new();
@@ -184,10 +202,16 @@ public sealed class StringMatchTypeTests
 	{
 		public List<MatchEnvironment> Environments { get; } = [];
 		public List<CountingMatcher> Matchers { get; } = [];
+		public CountingMatcher? MatcherWithoutEvaluation { get; private set; }
 		public List<StringMatchSettings> Settings { get; } = [];
 
 		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
 		{
+			if (environment.Evaluation is null)
+			{
+				return MatcherWithoutEvaluation ??= new CountingMatcher(notComparableReason);
+			}
+
 			CountingMatcher matcher = new(notComparableReason);
 			Environments.Add(environment);
 			Settings.Add(settings);
