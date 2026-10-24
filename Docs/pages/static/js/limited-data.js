@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
-        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
-      },
-      {
         "sha": "7bc1d2a86731d34850aedd6151dc098960c068cd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
-      "dc36798f",
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10878.934569295247,
           7914.070397513254,
           10785.703227742513,
           7683.338574000767,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           5583.981989724295,
           10933.24072592599,
           9900.051738194057,
-          10870.915044148764
+          10870.915044148764,
+          10832.311373197115
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          360770.4884114583,
           257814.98951822918,
           372205.4109375,
           243022.30611979167,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           174479.35338541667,
           353625.9864583333,
           307824.81096540176,
-          386705.76848958334
+          386705.76848958334,
+          371048.873828125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590288,
           590292,
           590288,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590288,
           590292,
           590291,
-          590292
+          590292,
+          590290
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19388.047072190504,
           14535.702073904184,
           19946.654009137834,
           14174.112354823521,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           11863.69603083684,
           19288.080270620492,
           18147.87191772461,
-          19971.390464782715
+          19971.390464782715,
+          19921.152348109656
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
-        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
-      },
-      {
         "sha": "7bc1d2a86731d34850aedd6151dc098960c068cd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
-      "dc36798f",
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          253.46592041651408,
           198.8369191010793,
           288.3566347190312,
           186.6161285718282,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           121.8177456344877,
           274.0318586667379,
           255.92106409072875,
-          288.8466412226359
+          288.8466412226359,
+          335.15895795822144
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          469.92834091186523,
           429.0586912790934,
           563.7408034642538,
           404.70598452885946,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           239.0663721561432,
           492.2113595690046,
           500.66824047906056,
-          550.6628290812174
+          550.6628290812174,
+          490.70683758599415
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          381.3150689418499,
           314.97164381467377,
           396.1303338686625,
           285.79106384913126,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           193.0339252948761,
           385.11965996424357,
           362.1571411132812,
-          411.00827697345187
+          411.00827697345187,
+          387.37396478652954
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
-        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
-      },
-      {
         "sha": "7bc1d2a86731d34850aedd6151dc098960c068cd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
-      "dc36798f",
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          126.24566105433873,
           104.22662406762441,
           137.32749166091284,
           101.19247957865397,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           71.25115094979604,
           147.30706893603008,
           144.03939834662847,
-          163.13414532343546
+          163.13414532343546,
+          151.13110345204672
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          236.63229066984994,
           218.87891046206155,
           252.7813046528743,
           199.8627430541175,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           120.12895100457328,
           234.33284458747278,
           254.58254766464233,
-          274.72456899056067
+          274.72456899056067,
+          251.36154244740803
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          232.91293862660726,
           183.94765920639037,
           235.84552110036213,
           179.53965737138475,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           115.08514378752027,
           227.622831259455,
           223.251633644104,
-          260.9330695470174
+          260.9330695470174,
+          246.57321246465048
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
-        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
-      },
-      {
         "sha": "7bc1d2a86731d34850aedd6151dc098960c068cd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
-      "dc36798f",
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          249.05706218310766,
           195.34442613806044,
           247.61652224404472,
           175.5745747770582,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           126.93179818562099,
           269.1535796483358,
           247.38883461271013,
-          282.36354075159346
+          282.36354075159346,
+          257.3949202219645
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          500.4933693749564,
           439.4998317865225,
           528.5579905192058,
           410.0362854321798,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           250.44029739697774,
           524.8281442642212,
           519.4290476799011,
-          561.7477843602499
+          561.7477843602499,
+          497.3336700598399
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          342.5249245325724,
           283.39578542709353,
           328.24125560124713,
           256.3212544759115,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           164.67576413154603,
           332.54285968144734,
           326.54257723263333,
-          363.1258801619212
+          363.1258801619212,
+          343.05807479222614
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
-        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
-      },
-      {
         "sha": "7bc1d2a86731d34850aedd6151dc098960c068cd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
-      "dc36798f",
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          641.9405632019043,
           515.3437846257136,
           644.5963696161906,
           474.9660445962633,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           318.8360381126404,
           644.5281498432159,
           629.2215803010123,
-          699.8700706618173
+          699.8700706618173,
+          629.5781616483416
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1366.0103533608574,
           1224.2596327463787,
           1346.082272720337,
           1081.5649642944336,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           651.7777333577474,
           1391.0748462677002,
           1348.5155803973857,
-          1459.4424999782018
+          1459.4424999782018,
+          1375.784213747297
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          654.7875469647921,
           527.442332131522,
           663.5732850294846,
           501.903692817688,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           328.33154888153075,
           647.6594259555524,
           649.5477940695627,
-          683.5578035354614
+          683.5578035354614,
+          698.8061735788981
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
-        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
-      },
-      {
         "sha": "7bc1d2a86731d34850aedd6151dc098960c068cd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
-      "dc36798f",
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          624.8891443888347,
           513.6756317274911,
           639.4158733231681,
           489.6057282961332,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           303.0474685522226,
           630.6185597011021,
           622.6646172659738,
-          666.9187263488769
+          666.9187263488769,
+          611.2960834503174
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27846.395044962566,
           17123.705084228517,
           27431.53550720215,
           15707.938596452985,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           9698.37726949056,
           28108.841302490233,
           19988.218900408065,
-          28546.07060139974
+          28546.07060139974,
+          28074.099779401506
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          778.9101071724525,
           631.4908175150554,
           788.1361436843872,
           592.8825717339149,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           386.9497960897592,
           798.4996932983398,
           742.53206837972,
-          808.0674879074097
+          808.0674879074097,
+          849.7840337117512
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
-        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
-      },
-      {
         "sha": "7bc1d2a86731d34850aedd6151dc098960c068cd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
-      "dc36798f",
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          677.132239137377,
           534.5085590998332,
           674.388996711144,
           501.0904170354207,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           359.28014039993286,
           727.4627500942776,
           695.563232866923,
-          763.981609471639
+          763.981609471639,
+          724.4463818232218
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4858,7 +4858,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
-          1680,
+          1688,
           1688,
           1688,
           1688,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          82046.29443359375,
           52762.10483660017,
           83382.88087815505,
           53600.605712890625,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           28907.538509114584,
           82584.03497314453,
           59704.00927734375,
-          85521.0860921224
+          85521.0860921224,
+          84115.55133463541
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5256,
           5252,
           5256,
@@ -4992,6 +4991,7 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
-        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
-      },
       {
         "sha": "7bc1d2a86731d34850aedd6151dc098960c068cd",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
-      "dc36798f",
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          155.46120498975117,
           136.00354714393615,
           164.65683561960856,
           122.54405978747776,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           87.88983015219371,
           190.6457013607025,
           169.32747317949932,
-          190.5678290469306
+          190.5678290469306,
+          202.61823102633159
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          31712.331085205078,
           15490.34553120931,
           32059.95147235577,
           14625.619245402018,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           8701.174492469201,
           32311.253295898438,
           17534.30565752302,
-          33259.39869588216
+          33259.39869588216,
+          33027.11542765299
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5551,7 +5551,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5614,
           5615,
           5614,
           5615,
@@ -5598,6 +5597,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614,
           5614,
           5614
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          233.38425465992518,
           184.35905677477518,
           236.87475269181388,
           176.23457074165344,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           114.47191688647636,
           237.59201208750406,
           226.52730754443579,
-          260.7919875894274
+          260.7919875894274,
+          244.8237632751465
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
-        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
-      },
-      {
         "sha": "7bc1d2a86731d34850aedd6151dc098960c068cd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
-      "dc36798f",
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          327.68283055623374,
           274.9088496140071,
           331.8518228530884,
           262.3391123453776,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           177.54076727231345,
           370.9582050868443,
           337.4225765977587,
-          361.3528435230255
+          361.3528435230255,
+          348.0887165387472
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          355.1375172478812,
           344.180385239919,
           370.3412171681722,
           313.74648211552545,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           207.29008773167928,
           374.78709376653035,
           397.5660521189372,
-          390.6793306555067
+          390.6793306555067,
+          366.91732358932495
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          421.7204269996056,
           346.6191984176636,
           410.3584384600321,
           334.67340288162234,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           203.9201653957367,
           403.0150963147481,
           426.97392096886267,
-          477.97781726292203
+          477.97781726292203,
+          412.1185622851054
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
-        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
-      },
-      {
         "sha": "7bc1d2a86731d34850aedd6151dc098960c068cd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
-      "dc36798f",
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          618.6557116826375,
           475.5657831192017,
           612.8073773017296,
           450.04854290301984,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           324.72805484135944,
           689.61351146698,
           662.281340789795,
-          746.0307025909424
+          746.0307025909424,
+          690.4038049697876
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6908,7 +6908,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
-          1376,
+          1384,
           1384,
           1384,
           1384,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1837.4576030144324,
           1664.8836292266847,
           1862.7592698415122,
           1495.8328587214153,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           937.1197942587046,
           1967.8240077972412,
           1886.8460487365724,
-          2023.164930343628
+          2023.164930343628,
+          1952.0433807373047
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          907.7526652262761,
           740.7899601118905,
           886.56546681722,
           712.3232481820243,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           439.55423560509314,
           937.8556420644125,
           936.712846824101,
-          1015.1897013346354
+          1015.1897013346354,
+          957.6677699770246
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
-        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
-      },
-      {
         "sha": "7bc1d2a86731d34850aedd6151dc098960c068cd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
-      "dc36798f",
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11478.552010672433,
           8230.440595186674,
           11268.857204730693,
           8130.3790415445965,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           5421.450059763591,
           11328.430355616978,
           10455.180888584682,
-          11375.462392534528
+          11375.462392534528,
+          11550.72001538958
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          40245.214038085935,
           26152.97976902553,
           40469.83618570964,
           25770.636692592077,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           17232.991384652945,
           40240.80591430664,
           33767.36208234514,
-          41971.7538655599
+          41971.7538655599,
+          41918.698704310824
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18393,
           18609,
           18393,
@@ -7782,6 +7781,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10596.49831172398,
           7974.762027195522,
           10606.227949778238,
           7798.431198120117,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           5361.4586621798,
           10592.714027913411,
           10135.210980006626,
-          10664.439044952393
+          10664.439044952393,
+          10706.022544273963
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
-        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
-      },
-      {
         "sha": "7bc1d2a86731d34850aedd6151dc098960c068cd",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
         "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
+      },
+      {
+        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
+        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
       }
     ],
     "labels": [
-      "dc36798f",
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "c010bba3",
       "5bc15a41",
       "1945e0a4",
-      "c6264268"
+      "c6264268",
+      "c61c4c1b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10807.108089991978,
           7717.237173227163,
           10655.998033963717,
           7635.995834350586,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           5191.428594462077,
           11195.707397460938,
           9848.062934875488,
-          10956.196783883232
+          10956.196783883232,
+          11041.578094482422
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          58961.40998128255,
           38847.40747506278,
           58148.7701171875,
           38248.78789411272,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           25041.485275268555,
           58738.80475725447,
           48103.74697641226,
-          59760.42678128756
+          59760.42678128756,
+          58727.364103190106
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8483,7 +8483,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          23553,
           23553,
           23553,
           23553,
@@ -8532,6 +8531,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
+          23553,
           23553
         ],
         "borderColor": "#FF671B",
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          20780.307187398274,
           15452.317711463342,
           21012.97775033804,
           15406.235414945162,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           10577.82020670573,
           20866.56011526925,
           19644.558395385742,
-          21044.809646606445
+          21044.809646606445,
+          20946.3355082194
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
