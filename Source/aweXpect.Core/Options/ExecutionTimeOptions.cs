@@ -93,32 +93,35 @@ public class ExecutionTimeOptions
 	///     Requires the value to be within the given <paramref name="duration" />.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
-	public void Within(TimeSpan duration)
+	public ExecutionTimeOptions Within(TimeSpan duration)
 	{
 		ThrowHelper.ThrowIfDurationIsNegative(duration);
 		SetLimit(new MaximumLimit(duration, true), nameof(Within));
 		SetUpperBound(duration);
+		return this;
 	}
 
 	/// <summary>
 	///     Requires the value to be at most <paramref name="maximum" />.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
-	public void AtMost(TimeSpan maximum)
+	public ExecutionTimeOptions AtMost(TimeSpan maximum)
 	{
 		ThrowHelper.ThrowIfDurationIsNegative(maximum);
 		SetLimit(new MaximumLimit(maximum), nameof(AtMost));
 		SetUpperBound(maximum);
+		return this;
 	}
 
 	/// <summary>
 	///     Requires the value to be at least <paramref name="minimum" />.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
-	public void AtLeast(TimeSpan minimum)
+	public ExecutionTimeOptions AtLeast(TimeSpan minimum)
 	{
 		ThrowHelper.ThrowIfDurationIsNegative(minimum);
 		SetLimit(new MinimumLimit(minimum), nameof(AtLeast));
+		return this;
 	}
 
 	/// <summary>
@@ -141,13 +144,14 @@ public class ExecutionTimeOptions
 	///     Requires the value to be between <paramref name="minimum" /> and <paramref name="maximum" />.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
-	public void Between(TimeSpan minimum, TimeSpan maximum)
+	public ExecutionTimeOptions Between(TimeSpan minimum, TimeSpan maximum)
 	{
 		ThrowHelper.ThrowIfDurationIsNegative(minimum);
 		ThrowHelper.ThrowIfDurationIsNegative(maximum);
 		ThrowHelper.ThrowIfMaximumIsBelowMinimum<TimeSpan>(minimum, maximum);
 		SetLimit(new BetweenLimit(minimum, maximum), nameof(Between));
 		SetUpperBound(maximum);
+		return this;
 	}
 
 	/// <summary>

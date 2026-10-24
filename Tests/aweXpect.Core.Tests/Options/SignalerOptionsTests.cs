@@ -22,7 +22,7 @@ public sealed class SignalerOptionsTests
 		public async Task ToString_WithInfiniteTimeout_ShouldReturnEmptyString()
 		{
 			SignalerOptions sut = new();
-			sut.Timeout = Timeout.InfiniteTimeSpan;
+			sut.Within(Timeout.InfiniteTimeSpan);
 
 			string result = sut.ToString();
 
@@ -34,11 +34,35 @@ public sealed class SignalerOptionsTests
 		public async Task ToString_WithTimeout_ShouldIncludeTimeout()
 		{
 			SignalerOptions sut = new();
-			sut.Timeout = 5.Seconds();
+			sut.Within(5.Seconds());
 
 			string result = sut.ToString();
 
 			await That(result).IsEqualTo(" within 0:05");
+		}
+
+		[Test]
+		public async Task Within_ShouldReturnTheSameOptions()
+		{
+			SignalerOptions sut = new();
+
+			SignalerOptions result = sut.Within(5.Seconds());
+
+			await That(result).IsSameAs(sut);
+		}
+
+		[Test]
+		public async Task Within_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		{
+			SignalerOptions sut = new();
+			sut.Within(5.Seconds());
+
+			void Act() => sut.Within(6.Seconds());
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("Within cannot be specified more than once.");
+			await That(sut.Timeout).IsEqualTo(5.Seconds())
+				.Because("a rejected timeout must not replace the first one");
 		}
 	}
 
@@ -58,7 +82,7 @@ public sealed class SignalerOptionsTests
 		public async Task ToString_WhenPredicateIsAddedAfterFirstCall_ShouldAppendTimeoutLast()
 		{
 			SignalerOptions<int> sut = new();
-			sut.Timeout = 75.Seconds();
+			sut.Within(75.Seconds());
 			sut.WithPredicate(_ => true, "my predicate");
 			_ = sut.ToString();
 			sut.WithPredicate(_ => true, "my other predicate");
@@ -83,7 +107,7 @@ public sealed class SignalerOptionsTests
 		public async Task ToString_WithTimeout_ShouldIncludeTimeout()
 		{
 			SignalerOptions<int> sut = new();
-			sut.Timeout = 5.Seconds();
+			sut.Within(5.Seconds());
 
 			string result = sut.ToString();
 
@@ -94,7 +118,7 @@ public sealed class SignalerOptionsTests
 		public async Task ToString_WithTimeoutAndPredicate_ShouldIncludePredicateExpression()
 		{
 			SignalerOptions<int> sut = new();
-			sut.Timeout = 75.Seconds();
+			sut.Within(75.Seconds());
 			sut.WithPredicate(_ => true, "my predicate");
 
 			string result = sut.ToString();
@@ -106,13 +130,23 @@ public sealed class SignalerOptionsTests
 		public async Task ToString_WithTimeoutAndPredicate_WhenCalledTwice_ShouldReturnSameText()
 		{
 			SignalerOptions<int> sut = new();
-			sut.Timeout = 75.Seconds();
+			sut.Within(75.Seconds());
 			sut.WithPredicate(_ => true, "my predicate");
 
 			_ = sut.ToString();
 			string result = sut.ToString();
 
 			await That(result).IsEqualTo(" with my predicate within 1:15");
+		}
+
+		[Test]
+		public async Task WithPredicate_ShouldReturnTheSameOptions()
+		{
+			SignalerOptions<int> sut = new();
+
+			SignalerOptions<int> result = sut.WithPredicate(_ => true, "my predicate");
+
+			await That(result).IsSameAs(sut);
 		}
 	}
 }

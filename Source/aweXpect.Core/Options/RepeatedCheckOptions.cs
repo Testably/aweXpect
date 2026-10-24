@@ -56,12 +56,13 @@ public class RepeatedCheckOptions
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
-	public void Within(TimeSpan timeout)
+	public RepeatedCheckOptions Within(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isTimeoutSpecified, nameof(Within));
 		_isTimeoutSpecified = true;
 		Timeout = timeout;
+		return this;
 	}
 
 	/// <summary>
@@ -72,7 +73,7 @@ public class RepeatedCheckOptions
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="interval" /> is not positive.</exception>
 	/// <exception cref="InvalidOperationException">An interval is already set.</exception>
-	public void CheckEvery(TimeSpan interval)
+	public RepeatedCheckOptions CheckEvery(TimeSpan interval)
 	{
 		if (interval <= TimeSpan.Zero)
 		{
@@ -81,6 +82,7 @@ public class RepeatedCheckOptions
 
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_interval is not null, nameof(CheckEvery));
 		_interval = interval;
+		return this;
 	}
 
 	/// <summary>

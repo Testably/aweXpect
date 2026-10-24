@@ -39,7 +39,7 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 	/// <exception cref="InvalidOperationException">
 	///     Another option already specified how two objects are compared, or a tolerance is already set.
 	/// </exception>
-	public ObjectEqualityOptions<TSubject> Within(TTolerance tolerance)
+	public ObjectEqualityWithToleranceOptions<TSubject, TTolerance> Within(TTolerance tolerance)
 	{
 		ToleranceHelpers.ThrowIfInvalid(tolerance);
 		ThrowIfMatchTypeIsSpecified(nameof(Within));
@@ -86,9 +86,7 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 			return base.ForEvaluation(context, cancellationToken);
 		}
 
-		ObjectEqualityOptions<TSubject> options = new();
-		options.SetMatchType(matchType.WithResolvedTolerance());
-		return options;
+		return ForEvaluation(matchType.WithResolvedTolerance());
 	}
 
 	private sealed class WithinMatchType(

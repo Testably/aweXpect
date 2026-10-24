@@ -18,6 +18,16 @@ namespace aweXpect.Core.Tests.Options;
 public sealed class RepeatedCheckOptionsTests
 {
 	[Test]
+	public async Task CheckEvery_ShouldReturnTheSameOptions()
+	{
+		RepeatedCheckOptions sut = new();
+
+		RepeatedCheckOptions result = sut.CheckEvery(1.Seconds());
+
+		await That(result).IsSameAs(sut);
+	}
+
+	[Test]
 	[Arguments(0)]
 	[Arguments(-1)]
 	public async Task CheckEvery_WhenIntervalIsNotPositive_ShouldThrowArgumentOutOfRangeException(int milliseconds)
@@ -277,6 +287,16 @@ public sealed class RepeatedCheckOptionsTests
 		await That(Act).DoesNotThrow()
 			.Because("an exception of the code of the caller counts as not met and is checked again, like in Satisfies");
 		await That(checks).IsEqualTo(3);
+	}
+
+	[Test]
+	public async Task Within_ShouldReturnTheSameOptions()
+	{
+		RepeatedCheckOptions sut = new();
+
+		RepeatedCheckOptions result = sut.Within(1.Seconds());
+
+		await That(result).IsSameAs(sut);
 	}
 
 	/// <summary>

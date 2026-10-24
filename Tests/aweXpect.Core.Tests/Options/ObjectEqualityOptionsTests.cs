@@ -235,6 +235,16 @@ public class ObjectEqualityOptionsTests
 	}
 
 	[Test]
+	public async Task SetMatchType_WithOptionName_ShouldReturnTheSameOptions()
+	{
+		ObjectEqualityOptions<object> sut = new();
+
+		ObjectEqualityOptions<object> result = sut.SetMatchType(new DummyMatchType(), "Custom");
+
+		await That(result).IsSameAs(sut);
+	}
+
+	[Test]
 	public async Task SetMatchType_WithOptionName_WhenAnotherOptionIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		ObjectEqualityOptions<object> sut = new();
@@ -258,18 +268,6 @@ public class ObjectEqualityOptionsTests
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("Custom cannot be specified more than once.")
 			.Because("the second match type would silently replace the first one");
-	}
-
-	[Test]
-	public async Task SetMatchType_WithoutOptionName_ShouldReplaceTheMatchType()
-	{
-		ObjectEqualityOptions<object> sut = new();
-		sut.Using(new AllEqualComparer());
-
-		sut.SetMatchType(new DummyMatchType());
-
-		await That(sut.ToString()).IsEqualTo("dummy")
-			.Because("without an option name the match type is set as is, e.g. to resolve a default");
 	}
 
 	[Test]

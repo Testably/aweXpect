@@ -52,11 +52,12 @@ public class NumberTolerance<TNumber>(
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="tolerance" /> is negative or NaN.</exception>
 	/// <exception cref="InvalidOperationException">A tolerance is already set.</exception>
-	public void SetTolerance(TNumber tolerance)
+	public NumberTolerance<TNumber> Within(TNumber tolerance)
 	{
 		ToleranceHelpers.ThrowIfInvalid(tolerance, IsNaN(tolerance));
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Tolerance is not null, "Within");
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Tolerance is not null, nameof(Within));
 		Tolerance = tolerance;
+		return this;
 	}
 
 #if NET8_0_OR_GREATER

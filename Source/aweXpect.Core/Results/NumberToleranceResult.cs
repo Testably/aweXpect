@@ -34,7 +34,7 @@ public class NumberToleranceResult<TType, TThat>(
 	/// <inheritdoc cref="ToleranceExtensions.Within{TSelf, TNumber}(INumberToleranceResult{TSelf, TNumber}, TNumber)" />
 	public WithinResult Within(TType tolerance)
 	{
-		options.SetTolerance(tolerance);
+		options.Within(tolerance);
 		return new WithinResult(ExpectationBuilder, _returnValue, options);
 	}
 

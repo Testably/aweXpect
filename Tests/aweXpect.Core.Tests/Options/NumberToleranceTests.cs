@@ -42,7 +42,7 @@ public class NumberToleranceTests
 	public async Task IsWithinTolerance_WhenTheDifferenceOverflows_ShouldReturnFalse()
 	{
 		NumberTolerance<int> sut = new((a, b) => checked(a - b));
-		sut.SetTolerance(1);
+		sut.Within(1);
 
 		bool result = sut.IsWithinTolerance(int.MinValue, int.MaxValue);
 
@@ -57,7 +57,7 @@ public class NumberToleranceTests
 		int actual, int expected, int tolerance, bool expectedResult)
 	{
 		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
-		sut.SetTolerance(tolerance);
+		sut.Within(tolerance);
 
 		bool result = sut.IsWithinTolerance(actual, expected);
 
@@ -72,7 +72,7 @@ public class NumberToleranceTests
 		int actual, int expected, bool expectedResult)
 	{
 		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
-		sut.SetTolerance(5);
+		sut.Within(5);
 		sut.UseRelativeTolerance((t, e) => t * Math.Abs(e) / 100, "%");
 
 		bool result = sut.IsWithinTolerance(actual, expected);
@@ -84,7 +84,7 @@ public class NumberToleranceTests
 	public async Task ToleranceFor_WithoutRelativeTolerance_ShouldReturnTheTolerance()
 	{
 		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
-		sut.SetTolerance(5);
+		sut.Within(5);
 
 		int? result = sut.ToleranceFor(200);
 
@@ -106,7 +106,7 @@ public class NumberToleranceTests
 	public async Task ToleranceFor_WithRelativeTolerance_ShouldCalculateTheAbsoluteTolerance()
 	{
 		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
-		sut.SetTolerance(5);
+		sut.Within(5);
 		sut.UseRelativeTolerance((t, e) => t * e / 100, "%");
 
 		int? result = sut.ToleranceFor(200);
@@ -120,7 +120,7 @@ public class NumberToleranceTests
 	public async Task ToString_WhenToleranceIsAChar_ShouldFormatItAsNumber()
 	{
 		NumberTolerance<char> sut = new((_, _) => null);
-		sut.SetTolerance('\u0001');
+		sut.Within('\u0001');
 
 		string result = sut.ToString();
 
@@ -132,7 +132,7 @@ public class NumberToleranceTests
 	public async Task ToString_WithRelativeTolerance_ShouldAppendTheUnit()
 	{
 		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
-		sut.SetTolerance(5);
+		sut.Within(5);
 		sut.UseRelativeTolerance((t, e) => t * e / 100, "%");
 
 		string result = sut.ToString();
@@ -145,7 +145,7 @@ public class NumberToleranceTests
 	{
 		NumberTolerance<double> sut = new((_, _) => null);
 
-		void Act() => sut.SetTolerance(double.NaN);
+		void Act() => sut.Within(double.NaN);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithMessage("The tolerance must not be NaN.*").AsWildcard().And
@@ -158,7 +158,7 @@ public class NumberToleranceTests
 	{
 		NumberTolerance<double> sut = new((_, _) => null);
 
-		void Act() => sut.SetTolerance(0.1);
+		void Act() => sut.Within(0.1);
 
 		await That(Act).DoesNotThrow();
 		await That(sut.Tolerance).IsEqualTo(0.1);
@@ -169,7 +169,7 @@ public class NumberToleranceTests
 	{
 		NumberTolerance<float> sut = new((_, _) => null);
 
-		void Act() => sut.SetTolerance(float.NaN);
+		void Act() => sut.Within(float.NaN);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithMessage("The tolerance must not be NaN.*").AsWildcard().And
@@ -183,7 +183,7 @@ public class NumberToleranceTests
 	{
 		NumberTolerance<Half> sut = new((_, _) => null);
 
-		void Act() => sut.SetTolerance(Half.NaN);
+		void Act() => sut.Within(Half.NaN);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithMessage("The tolerance must not be NaN.*").AsWildcard().And
@@ -197,7 +197,7 @@ public class NumberToleranceTests
 	{
 		NumberTolerance<int> sut = new((_, _) => null);
 
-		void Act() => sut.SetTolerance(-1);
+		void Act() => sut.Within(-1);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithMessage("*The tolerance must not be negative.*").AsWildcard();
@@ -207,9 +207,9 @@ public class NumberToleranceTests
 	public async Task WhenToleranceIsSetTwice_ShouldThrowInvalidOperationException()
 	{
 		NumberTolerance<int> sut = new((_, _) => null);
-		sut.SetTolerance(1);
+		sut.Within(1);
 
-		void Act() => sut.SetTolerance(2);
+		void Act() => sut.Within(2);
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("Within cannot be specified more than once.")
@@ -221,9 +221,19 @@ public class NumberToleranceTests
 	{
 		NumberTolerance<int> sut = new((_, _) => null);
 
-		void Act() => sut.SetTolerance(0);
+		void Act() => sut.Within(0);
 
 		await That(Act).DoesNotThrow();
 		await That(sut.Tolerance).IsEqualTo(0);
+	}
+
+	[Test]
+	public async Task Within_ShouldReturnTheSameTolerance()
+	{
+		NumberTolerance<int> sut = new((_, _) => null);
+
+		NumberTolerance<int> result = sut.Within(1);
+
+		await That(result).IsSameAs(sut);
 	}
 }

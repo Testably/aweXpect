@@ -5,6 +5,16 @@ namespace aweXpect.Core.Tests.Options;
 public class CollectionIndexOptionsTests
 {
 	[Test]
+	public async Task AtIndex_ShouldReturnTheSameOptions()
+	{
+		CollectionIndexOptions sut = new();
+
+		CollectionIndexOptions result = sut.AtIndex(1);
+
+		await That(result).IsSameAs(sut);
+	}
+
+	[Test]
 	public async Task AtIndex_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		CollectionIndexOptions sut = new();
@@ -38,6 +48,16 @@ public class CollectionIndexOptionsTests
 		await That(sut.Match.GetDescription()).IsEqualTo(" at index 1 from end");
 		await That(sut.Match).Is<CollectionIndexOptions.IMatchFromEnd>()
 			.Whose(match => match.MatchesIndex(3, 5), it => it.IsTrue());
+	}
+
+	[Test]
+	public async Task AtIndexFromEnd_ShouldReturnTheSameOptions()
+	{
+		CollectionIndexOptions sut = new();
+
+		CollectionIndexOptions result = sut.AtIndexFromEnd(1);
+
+		await That(result).IsSameAs(sut);
 	}
 
 	[Test]
@@ -153,7 +173,7 @@ public class CollectionIndexOptionsTests
 	public async Task MatchesIndex_WhenMatchIsNeitherFromBeginningNorFromEnd_ShouldReturnFalse()
 	{
 		CollectionIndexOptions sut = new();
-		sut.SetMatch(new MyMatch());
+		sut.SetMatch(new MyMatch(), "AtMyIndex");
 
 		bool? result = sut.MatchesIndex(0, 1);
 
@@ -173,15 +193,13 @@ public class CollectionIndexOptionsTests
 	}
 
 	[Test]
-	public async Task SetMatch_ShouldReplaceASpecifiedIndex()
+	public async Task SetMatch_WithOption_ShouldReturnTheSameOptions()
 	{
 		CollectionIndexOptions sut = new();
-		sut.AtIndex(1);
 
-		sut.SetMatch(new MyMatch());
+		CollectionIndexOptions result = sut.SetMatch(new MyMatch(), "AtMyIndex");
 
-		await That(sut.Match).Is<MyMatch>()
-			.Because("only the overload with the name of the option rejects a second index");
+		await That(result).IsSameAs(sut);
 	}
 
 	[Test]

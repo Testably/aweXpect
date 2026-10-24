@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using aweXpect.Core.Helpers;
 using aweXpect.Signaling;
 
 namespace aweXpect.Options;
@@ -16,7 +17,23 @@ public class SignalerOptions
 	/// <remarks>
 	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
 	/// </remarks>
-	public TimeSpan? Timeout { get; set; }
+	public TimeSpan? Timeout { get; private set; }
+
+	/// <summary>
+	///     Specifies the <paramref name="timeout" /> to use for the recording.
+	/// </summary>
+	/// <remarks>
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
+	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
+	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
+	public SignalerOptions Within(TimeSpan timeout)
+	{
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Timeout is not null, nameof(Within));
+		Timeout = timeout;
+		return this;
+	}
 
 	/// <inheritdoc cref="object.ToString()" />
 	public override string ToString()
@@ -42,7 +59,10 @@ public class SignalerOptions<TParameter> : SignalerOptions
 	/// <summary>
 	///     Add a predicate to the signaler options.
 	/// </summary>
-	public void WithPredicate(Func<TParameter, bool> predicate, string predicateExpression)
+	/// <remarks>
+	///     The predicates of several calls are combined, so that a signal has to match all of them.
+	/// </remarks>
+	public SignalerOptions<TParameter> WithPredicate(Func<TParameter, bool> predicate, string predicateExpression)
 	{
 		_predicates ??= new List<Func<TParameter, bool>>();
 		_predicates.Add(predicate);
@@ -57,6 +77,8 @@ public class SignalerOptions<TParameter> : SignalerOptions
 			_builder.Append(" and with ");
 			_builder.Append(predicateExpression);
 		}
+
+		return this;
 	}
 
 	/// <summary>

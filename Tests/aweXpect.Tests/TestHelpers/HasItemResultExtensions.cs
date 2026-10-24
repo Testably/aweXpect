@@ -8,7 +8,7 @@ public static class HasItemResultExtensions
 	public static TResult WithInvalidMatch<TResult>(this TResult hasItemResult)
 		where TResult : IOptionsProvider<CollectionIndexOptions>
 	{
-		hasItemResult.Options.SetMatch(new InvalidMatch());
+		hasItemResult.Options.SetMatch(new InvalidMatch(), nameof(WithInvalidMatch));
 		return hasItemResult;
 	}
 

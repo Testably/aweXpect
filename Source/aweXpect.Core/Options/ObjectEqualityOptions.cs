@@ -315,16 +315,20 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 			return this;
 		}
 
-		return new ObjectEqualityOptions<TSubject>
-		{
-			MatchType = matchType.ForEvaluation(context, cancellationToken),
-		};
+		return ForEvaluation(matchType.ForEvaluation(context, cancellationToken));
 	}
 
 	/// <summary>
-	///     Specifies a new <see cref="IObjectMatchType" /> to use for matching two objects.
+	///     Creates the options for an evaluation that compare with the <paramref name="matchType" />.
 	/// </summary>
-	public void SetMatchType(IObjectMatchType matchType) => MatchType = matchType;
+	/// <remarks>
+	///     A subclass cannot set the protected <see cref="MatchType" /> on a new instance of this class itself.
+	/// </remarks>
+	private protected static ObjectEqualityOptions<TSubject> ForEvaluation(IObjectMatchType matchType)
+		=> new()
+		{
+			MatchType = matchType,
+		};
 
 	/// <summary>
 	///     Specifies the <paramref name="matchType" /> of the option named <paramref name="optionName" /> to use for
@@ -333,11 +337,12 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	/// <exception cref="InvalidOperationException">
 	///     Another option already specified how two objects are compared, or the same option was already specified.
 	/// </exception>
-	public void SetMatchType(IObjectMatchType matchType, string optionName)
+	public ObjectEqualityOptions<TSubject> SetMatchType(IObjectMatchType matchType, string optionName)
 	{
 		ThrowIfMatchTypeIsSpecified(optionName);
 		_matchTypeOption = optionName;
 		MatchType = matchType;
+		return this;
 	}
 
 	/// <summary>

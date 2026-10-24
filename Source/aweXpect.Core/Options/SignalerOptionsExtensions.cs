@@ -23,9 +23,7 @@ public static class SignalerOptionsExtensions
 	public static TResult Within<TResult>(this TResult result, TimeSpan timeout)
 		where TResult : IOptionsProvider<SignalerOptions>
 	{
-		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(result.Options.Timeout is not null, nameof(Within));
-		result.Options.Timeout = timeout;
+		result.Options.Within(timeout);
 		return result;
 	}
 

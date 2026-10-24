@@ -143,11 +143,7 @@ public static partial class ThatJsonObject
 		}
 
 		private static ObjectEqualityOptions<object?> CreateEqualityOptions(EquivalencyOptions options)
-		{
-			ObjectEqualityOptions<object?> equalityOptions = new();
-			equalityOptions.SetMatchType(new EquivalencyMatchType(options));
-			return equalityOptions;
-		}
+			=> new ObjectEqualityOptions<object?>().SetMatchType(new EquivalencyMatchType(options), "Equivalent");
 
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> _evaluationOptions?.AppendContexts(contexts);

@@ -62,6 +62,9 @@ Verify every review finding against the code before changing anything. If you di
 5. **Uniform argument handling.** Arguments are validated eagerly, expectations are marked `[GuaranteesNotNull]`, and caller expressions are captured where they make the message readable.
 6. **Trimming-safe by construction.** Reflection only through the type metadata registry, and member metadata annotations wherever a value reaches equivalency.
 7. **Predictable layout.** One method family per file in its `That<Type>` partial class, results and options in their own namespaces, generated families never written by hand.
+8. **The extension surface is API too.** Results, options, `ExpectationBuilder` and the other types extension authors call or name follow the same rules as the user-facing methods: one name per concept, the option rules below, and the same type-parameter names and order across results. An inconsistency there is fixed in the next major version like any other API break, not kept because users never call it directly.
+
+The options of Core are mutable state of a single expectation, reached through the extension methods on the `IOptionsProvider<…>` of a result, unlike the immutable package options configured with a `Func<Options, Options>` (rule 4 of the extension packages). A method that sets a Core option returns the options type, so that calls chain. Every option can be set only once, and a strategy hook takes the `optionName` of the custom option that uses it, which the exception names. Strategy hooks are named `Set<Thing>`, like `SetMatchType`, `SetMatch` or `SetComparer`; a method that mirrors a user-facing option has the name of its extension method, like `Within` on `TimeTolerance` or `SignalerOptions`.
 
 ### Extension packages
 
