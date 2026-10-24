@@ -468,6 +468,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
@@ -548,7 +554,8 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
@@ -632,7 +639,8 @@ window.BENCHMARK_DATA = {
           1628.936642919268,
           2059.2430502084585,
           2152.2504931858607,
-          1169.6636221749443
+          1169.6636221749443,
+          1145.0289196286883
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -672,6 +680,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -813,7 +822,8 @@ window.BENCHMARK_DATA = {
           10560.262005106608,
           14304.517127482097,
           16045.113749186197,
-          8035.335116795131
+          8035.335116795131,
+          6973.754959106445
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -825,6 +835,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -1384,6 +1395,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
@@ -1464,7 +1481,8 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
@@ -1548,7 +1566,8 @@ window.BENCHMARK_DATA = {
           1143.701976776123,
           1428.076683998108,
           1588.7682478978084,
-          890.2935569763183
+          890.2935569763183,
+          870.7372204235622
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1588,6 +1607,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1200,
           1200,
           1200,
           1200,
@@ -1729,7 +1749,8 @@ window.BENCHMARK_DATA = {
           10380.56452331543,
           12828.901016235352,
           14857.244620689979,
-          7542.466027832032
+          7542.466027832032,
+          6962.013743591308
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1741,6 +1762,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -2240,6 +2262,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
@@ -2310,7 +2338,8 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
@@ -2384,7 +2413,8 @@ window.BENCHMARK_DATA = {
           3612.62359085083,
           4581.695713043213,
           4954.822295555701,
-          2905.5170974731445
+          2905.5170974731445,
+          2714.3292135511124
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2462,6 +2492,7 @@ window.BENCHMARK_DATA = {
           3472,
           3472,
           3472,
+          3688,
           3688,
           3688
         ],
@@ -2545,7 +2576,8 @@ window.BENCHMARK_DATA = {
           30574.79249674479,
           38482.76127929687,
           48225.366878255205,
-          20878.040095738
+          20878.040095738,
+          18855.999037679037
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2624,7 +2656,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
-          61926
+          61926,
+          61925
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3046,6 +3079,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
@@ -3116,7 +3155,8 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
@@ -3190,7 +3230,8 @@ window.BENCHMARK_DATA = {
           7464.456149174617,
           9297.990197988656,
           9210.143589274088,
-          5189.552988688151
+          5189.552988688151,
+          4854.9527259239785
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3220,6 +3261,7 @@ window.BENCHMARK_DATA = {
           7048,
           7048,
           7048,
+          7024,
           7024,
           7024,
           7024,
@@ -3351,7 +3393,8 @@ window.BENCHMARK_DATA = {
           207047.54278971354,
           272480.3418782552,
           300665.87147739955,
-          155792.6568033854
+          155792.6568033854,
+          134597.66573660713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3417,6 +3460,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521572,
+          521594,
           521594,
           521594,
           521594,
@@ -3852,6 +3896,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
@@ -3922,7 +3972,8 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
@@ -3996,7 +4047,8 @@ window.BENCHMARK_DATA = {
           2239.4649927956716,
           2774.2142036982946,
           2872.807994588216,
-          1574.0036358466516
+          1574.0036358466516,
+          1576.3318719863892
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4041,6 +4093,7 @@ window.BENCHMARK_DATA = {
           1488,
           1488,
           1488,
+          1328,
           1328,
           1328,
           1328,
@@ -4157,7 +4210,8 @@ window.BENCHMARK_DATA = {
           1534.3787896474203,
           1959.5409950843225,
           1956.9309529622396,
-          1129.0730483191353
+          1129.0730483191353,
+          1044.671351841518
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4169,6 +4223,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -4658,6 +4713,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
         "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
+      },
+      {
+        "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
+        "message": "fix: limit the item lists in aweXpect.Reflection failures (#1980)"
       }
     ],
     "labels": [
@@ -4728,7 +4789,8 @@ window.BENCHMARK_DATA = {
       "c80cc523",
       "198a7440",
       "12a2b76f",
-      "67432f46"
+      "67432f46",
+      "91cfa9f0"
     ],
     "datasets": [
       {
@@ -4802,7 +4864,8 @@ window.BENCHMARK_DATA = {
           1585.102479662214,
           2062.30086517334,
           2063.1368512471518,
-          1217.647954940796
+          1217.647954940796,
+          1107.8161717732748
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4858,6 +4921,7 @@ window.BENCHMARK_DATA = {
           2848,
           2848,
           2848,
+          2856,
           2856,
           2856,
           2856,
@@ -4963,7 +5027,8 @@ window.BENCHMARK_DATA = {
           1439.8897539774578,
           1801.9433146158854,
           1781.3884722845894,
-          967.0898893992106
+          967.0898893992106,
+          915.2064297749446
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4975,6 +5040,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
