@@ -62,8 +62,8 @@ public sealed class CollectionConstraintResultTests
 	{
 		TestableResult sut = new(ExpectationGrammars.None);
 
-		await That(sut.MatchingElements).IsEmpty();
-		await That(sut.NotMatchingElements).IsEmpty();
+		await That(sut.MatchingItems).IsEmpty();
+		await That(sut.NotMatchingItems).IsEmpty();
 	}
 
 	[Test]
@@ -92,8 +92,8 @@ public sealed class CollectionConstraintResultTests
 	private sealed class TestableResult(ExpectationGrammars grammars)
 		: CollectionConstraintResult<int>("it", grammars)
 	{
-		public int[] MatchingElements => Matching;
-		public int[] NotMatchingElements => NotMatching;
+		public int[] MatchingItems => Matching;
+		public int[] NotMatchingItems => NotMatching;
 
 		public void SetMatch(IEnumerable<int> matching, IEnumerable<int> notMatching)
 		{

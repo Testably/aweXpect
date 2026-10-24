@@ -1206,7 +1206,7 @@ internal static class TypeHelpers
 	///     Normalizes a resolver's output: array/by-ref/pointer element types and generic type arguments are
 	///     unwrapped recursively (see <see cref="Unwrap" />), the result is de-duplicated and the
 	///     <paramref name="type" /> itself is removed. A <see langword="null" /> result and <see langword="null" />
-	///     elements are treated as empty, so a custom resolver does not have to guard them.
+	///     items are treated as empty, so a custom resolver does not have to guard them.
 	/// </summary>
 	private static Type[] NormalizeDependencies(Type type, IEnumerable<Type?>? dependencies)
 	{

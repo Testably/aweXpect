@@ -9,7 +9,7 @@ using aweXpect.Options;
 namespace aweXpect;
 
 /// <summary>
-///     What a quantified expectation on the elements of a collection verifies for every item, e.g. that it is equal to
+///     What a quantified expectation on the items of a collection verifies for every item, e.g. that it is equal to
 ///     an expected value or satisfies a predicate.
 /// </summary>
 /// <remarks>

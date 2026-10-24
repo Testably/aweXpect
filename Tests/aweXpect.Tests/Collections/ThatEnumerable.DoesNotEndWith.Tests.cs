@@ -197,7 +197,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
-			public async Task WhenEnumerableHasDifferentEndingElements_ShouldSucceed()
+			public async Task WhenEnumerableHasDifferentEndingItems_ShouldSucceed()
 			{
 				IEnumerable<int> subject = ToEnumerable([0, 0, 1, 2, 3,]);
 				IEnumerable<int> unexpected = [1, 3,];
@@ -245,7 +245,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
-			public async Task WhenUnexpectedContainsAdditionalElements_ShouldSucceed()
+			public async Task WhenUnexpectedContainsAdditionalItems_ShouldSucceed()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
 

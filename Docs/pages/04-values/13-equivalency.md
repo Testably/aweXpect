@@ -223,7 +223,7 @@ await Expect.That(album).IsEquivalentTo(expected, o => o.IgnoringMember("PlayCou
 ```
 
 The match is case-insensitive. For nested members, the path is dot-separated (e.g. `"Artist.Name"`); for collection
-elements, the index is bracketed (e.g. `"Tracks[3]"`), and for dictionary entries the key, formatted with the invariant
+items, the index is bracketed (e.g. `"Tracks[3]"`), and for dictionary entries the key, formatted with the invariant
 culture (e.g. `"Ratings[4.5]"`).
 
 The name must cover whole segments at the end of the member path, so `"Name"` ignores every member called `Name` at any
@@ -253,7 +253,7 @@ A field or property is matched by its declared type, with `Nullable<T>` unwrappe
 matched by the runtime type of its value, or by `object` when it is `null`.
 
 Use `IgnoringFields` or `IgnoringProperties` instead of `IgnoringMembers` to restrict a predicate to one kind of member.
-They take the same member path and type, and are never applied to collection elements, which are neither a field nor a
+They take the same member path and type, and are never applied to collection items, which are neither a field nor a
 property:
 
 ```csharp
@@ -290,9 +290,9 @@ await Expect.That(subject).IsEquivalentTo(expected, o => o.IgnoringCollectionOrd
 
 Pass `false` to re-enable ordered comparison if it was disabled globally.
 
-The elements do not have to be comparable: each expected element is matched against an element that is equivalent to
+The items do not have to be comparable: each expected item is matched against an item that is equivalent to
 it, and every element can be matched only once, so `[1, 1, 2]` is not equivalent to `[1, 2, 2]`. When no such matching
-covers both collections, only the elements that were left over are reported, each against the leftover element it
+covers both collections, only the items that were left over are reported, each against the leftover item it
 differs from the least.
 
 ### Comparing different types with a predicate

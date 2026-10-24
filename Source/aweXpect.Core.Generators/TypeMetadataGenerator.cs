@@ -736,7 +736,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				SeedInterfaceRoot(named);
 				SeedDictionaries(named);
 				SeedSets(named);
-				SeedElements(named);
+				SeedItems(named);
 				SeedMembers(named, true);
 				return;
 			}
@@ -827,7 +827,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			}
 		}
 
-		private void SeedElements(INamedTypeSymbol enumerable)
+		private void SeedItems(INamedTypeSymbol enumerable)
 		{
 			foreach (INamedTypeSymbol type in enumerable.AllInterfaces.Prepend(enumerable).Where(x
 				         => x.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T))

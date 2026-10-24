@@ -305,9 +305,9 @@ internal static class CollectionExpectationWriter
 		sb.AppendLine();
 	}
 
-	private static string SyncConstraint(ItemModel item) => $"{item.ConstraintPrefix}ElementsConstraint";
+	private static string SyncConstraint(ItemModel item) => $"{item.ConstraintPrefix}ItemsConstraint";
 
-	private static string AsyncConstraint(ItemModel item) => $"{item.ConstraintPrefix}AsyncElementsConstraint";
+	private static string AsyncConstraint(ItemModel item) => $"{item.ConstraintPrefix}AsyncItemsConstraint";
 
 	/// <param name="model">The expectation.</param>
 	/// <param name="item">The item type.</param>

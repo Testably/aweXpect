@@ -3,7 +3,7 @@ using System;
 namespace aweXpect.Core.Extending;
 
 /// <summary>
-///     Generates an expectation on the elements of a collection from the marked <see langword="static" /> method, which
+///     Generates an expectation on the items of a collection from the marked <see langword="static" /> method, which
 ///     decides whether a single item meets it, e.g. <c>That(tracks).All().AreRadioFriendly()</c>.
 /// </summary>
 /// <remarks>
@@ -17,7 +17,7 @@ namespace aweXpect.Core.Extending;
 ///     An item that the method cannot answer fails the expectation and its negation with the reason of the
 ///     <see cref="PredicateResult" />, unless the items before already determine the outcome.
 ///     <para />
-///     The expectation extends the elements that a quantifier like <c>All()</c> or <c>AtLeast(2)</c> selects, of every
+///     The expectation extends the items that a quantifier like <c>All()</c> or <c>AtLeast(2)</c> selects, of every
 ///     kind of collection that can hold the item. A <see langword="null" /> item does not match, unless the item
 ///     parameter is nullable: then the method decides, and <c>[DisallowNull]</c> on the parameter restores that a
 ///     <see langword="null" /> item does not match.
@@ -30,7 +30,7 @@ namespace aweXpect.Core.Extending;
 public sealed class GenerateCollectionExpectationAttribute : Attribute
 {
 	/// <summary>
-	///     Generates the expectation <paramref name="name" /> on the elements of a collection, with the
+	///     Generates the expectation <paramref name="name" /> on the items of a collection, with the
 	///     <paramref name="expectationText" /> on a single item and its plural.
 	/// </summary>
 	public GenerateCollectionExpectationAttribute(string name, string expectationText, string pluralExpectationText)
@@ -41,7 +41,7 @@ public sealed class GenerateCollectionExpectationAttribute : Attribute
 	}
 
 	/// <summary>
-	///     Generates the expectation <paramref name="name" /> on the elements of a collection, whose text on a single
+	///     Generates the expectation <paramref name="name" /> on the items of a collection, whose text on a single
 	///     item is the expectation text of the <see cref="GenerateExpectationAttribute" /> on the same method, without
 	///     <c>{not}</c>.
 	/// </summary>
@@ -124,7 +124,7 @@ public sealed class GenerateCollectionExpectationAttribute : Attribute
 	///     <see cref="PluralExpectationText" />.
 	/// </summary>
 	/// <remarks>
-	///     It documents the expectation on the elements that a quantifier selected; the summaries of the expectations
+	///     It documents the expectation on the items that a quantifier selected; the summaries of the expectations
 	///     directly on the collection are derived from the <see cref="PluralExpectationText" />.
 	/// </remarks>
 	public string? Summary { get; set; }

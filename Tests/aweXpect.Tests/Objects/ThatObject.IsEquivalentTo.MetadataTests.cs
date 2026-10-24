@@ -33,7 +33,7 @@ public sealed partial class ThatObject
 			}
 
 			[Test]
-			public async Task IgnoringProperties_ShouldNotApplyToCollectionElements()
+			public async Task IgnoringProperties_ShouldNotApplyToCollectionItems()
 			{
 				List<string> subject = ["foo",];
 				List<string> expected = ["bar",];

@@ -228,7 +228,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Test]
-			public async Task WhenEnumerableContainsNoMatchingElements_ShouldFail()
+			public async Task WhenEnumerableContainsNoMatchingItems_ShouldFail()
 			{
 				IAsyncEnumerable<MyBaseClass> subject = ToAsyncEnumerable<MyBaseClass>(new MyClass(1), new MyClass(2));
 
@@ -748,7 +748,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Test]
-			public async Task WhenEnumerableContainsNoMatchingElements_ShouldFail()
+			public async Task WhenEnumerableContainsNoMatchingItems_ShouldFail()
 			{
 				IAsyncEnumerable<MyBaseClass> subject = ToAsyncEnumerable([1, 2, 3,], x => new MyBaseClass(x));
 

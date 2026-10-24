@@ -96,12 +96,12 @@ public sealed class CoreCollectionExpectationGeneratorTests
 				[global::aweXpect.Core.GuaranteesNotNull]
 				public static global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<string?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?>> AreEmpty(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?> subject)
 				{
-					return new global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<string?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?>>(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint((__it, __grammars) => new IsEmpty_GeneratedElementsConstraint<global::System.Collections.Generic.IEnumerable<string?>?>(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true)),
+					return new global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<string?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?>>(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint((__it, __grammars) => new IsEmpty_GeneratedItemsConstraint<global::System.Collections.Generic.IEnumerable<string?>?>(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true)),
 						subject);
 				}
 			""");
 		await That(result.Generated)
-			.Contains("new IsEmpty_GeneratedAsyncElementsConstraint(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true)");
+			.Contains("new IsEmpty_GeneratedAsyncItemsConstraint(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true)");
 		await That(result.Generated).Contains("(__it, __grammars, __state, false)").Exactly(3)
 			.Because("the expectations on the elements are not on the collection");
 		await That(result.Generated).Contains(": base(it, grammars, quantifier, isOnCollection)").Exactly(2);
@@ -123,7 +123,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 		await That(result.Generated)
 			.Contains(" AreBetween(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<int>?> subject, int minimum, int maximum)");
 		await That(result.Generated)
-			.Contains("AddConstraint((minimum, maximum), (__state, __it, __grammars) => new IsBetween_GeneratedElementsConstraint<global::System.Collections.Generic.IEnumerable<int>?>(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true, __state.Item1, __state.Item2))");
+			.Contains("AddConstraint((minimum, maximum), (__state, __it, __grammars) => new IsBetween_GeneratedItemsConstraint<global::System.Collections.Generic.IEnumerable<int>?>(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true, __state.Item1, __state.Item2))");
 		await That(result.Generated)
 			.Contains("(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.None(global::aweXpect.Core.ExpectationGrammars.Nested), true, __state.Item1, __state.Item2)")
 			.Exactly(2);
@@ -259,11 +259,11 @@ public sealed class CoreCollectionExpectationGeneratorTests
 		await That(result.Generated)
 			.Contains(" AreNotPublic<TMember>(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<TMember?>?> subject)");
 		await That(result.Generated)
-			.Contains("new IsPublic_GeneratedElementsConstraint<global::System.Collections.Generic.IEnumerable<TMember?>?, TMember>(");
-		await That(result.Generated).Contains("new IsPublic_GeneratedAsyncElementsConstraint<TMember>(");
+			.Contains("new IsPublic_GeneratedItemsConstraint<global::System.Collections.Generic.IEnumerable<TMember?>?, TMember>(");
+		await That(result.Generated).Contains("new IsPublic_GeneratedAsyncItemsConstraint<TMember>(");
 		await ThatContainsLines(result,
 			"""
-				private sealed class IsPublic_GeneratedElementsConstraint<TCollection, TMember> : global::aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TMember?>
+				private sealed class IsPublic_GeneratedItemsConstraint<TCollection, TMember> : global::aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TMember?>
 					where TCollection : global::System.Collections.Generic.IEnumerable<TMember?>?
 					where TMember : global::System.Reflection.MemberInfo
 			""");
@@ -406,7 +406,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 				[global::aweXpect.Core.GuaranteesNotNull]
 				public static global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<int>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<int>?>> AreNotZero(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<int>?> subject)
 				{
-					return new global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<int>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<int>?>>(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint((__it, __grammars) => new IsZero_GeneratedElementsConstraint<global::System.Collections.Generic.IEnumerable<int>?>(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.None(global::aweXpect.Core.ExpectationGrammars.Nested), true)),
+					return new global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<int>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<int>?>>(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint((__it, __grammars) => new IsZero_GeneratedItemsConstraint<global::System.Collections.Generic.IEnumerable<int>?>(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.None(global::aweXpect.Core.ExpectationGrammars.Nested), true)),
 						subject);
 				}
 			""");
@@ -503,8 +503,8 @@ public sealed class CoreCollectionExpectationGeneratorTests
 			""");
 
 		await ThatCompiles(result);
-		await That(result.Generated).Contains("class IsZero_GeneratedElementsConstraint<").Once();
-		await That(result.Generated).Contains("class IsZero_1_GeneratedElementsConstraint<").Once();
+		await That(result.Generated).Contains("class IsZero_GeneratedItemsConstraint<").Once();
+		await That(result.Generated).Contains("class IsZero_1_GeneratedItemsConstraint<").Once();
 	}
 
 	[Test]

@@ -40,7 +40,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
-	public async Task Mapping_WhenCollectionOrderIsIgnored_ShouldPairTheElementsByTheMappedMembers()
+	public async Task Mapping_WhenCollectionOrderIsIgnored_ShouldPairTheItemsByTheMappedMembers()
 	{
 		MappedDto[] actual = [new(1, "a"), new(2, "b"),];
 		MappedEntity[] expected = [new(2, "b"), new(1, "a"),];

@@ -147,7 +147,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNull();
-		IEnumerable<Expression<Func<TItem, bool>>> expectedValues = expected.WithoutNullElements();
+		IEnumerable<Expression<Func<TItem, bool>>> expectedValues = expected.WithoutNullItems();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -178,7 +178,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNull();
-		IEnumerable<Action<IThatSubject<TItem>>> expectedValues = expected.WithoutNullElements();
+		IEnumerable<Action<IThatSubject<TItem>>> expectedValues = expected.WithoutNullItems();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -283,7 +283,7 @@ public static partial class ThatAsyncEnumerable
 			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNull();
-		IEnumerable<Expression<Func<TItem, bool>>> unexpectedValues = unexpected.WithoutNullElements();
+		IEnumerable<Expression<Func<TItem, bool>>> unexpectedValues = unexpected.WithoutNullItems();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -316,7 +316,7 @@ public static partial class ThatAsyncEnumerable
 			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNull();
-		IEnumerable<Action<IThatSubject<TItem>>> unexpectedValues = unexpected.WithoutNullElements();
+		IEnumerable<Action<IThatSubject<TItem>>> unexpectedValues = unexpected.WithoutNullItems();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(

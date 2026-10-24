@@ -103,24 +103,24 @@ internal static class ExceptionHelpers
 	///     to <typeparamref name="T" />, e.g. a list of expectations on a less specific subject.
 	/// </remarks>
 	[return: NotNullIfNotNull(nameof(parameter))]
-	public static IEnumerable<T>? WithoutNullElements<T>(this IEnumerable<T>? parameter,
+	public static IEnumerable<T>? WithoutNullItems<T>(this IEnumerable<T>? parameter,
 		[CallerArgumentExpression(nameof(parameter))]
 		string? paramName = null)
 		where T : class
-		=> WithoutNullElementsNamed(parameter, paramName);
+		=> WithoutNullItemsNamed(parameter, paramName);
 
 	/// <summary>
-	///     <see cref="WithoutNullElements{T}(IEnumerable{T}?,string?)" /> for the <paramref name="parameter" /> named
+	///     <see cref="WithoutNullItems{T}(IEnumerable{T}?,string?)" /> for the <paramref name="parameter" /> named
 	///     after the polarity of the expectation: the expected collection, or the unexpected one when
 	///     <paramref name="negated" />.
 	/// </summary>
 	[return: NotNullIfNotNull(nameof(parameter))]
-	public static IEnumerable<T>? WithoutNullElements<T>(this IEnumerable<T>? parameter, bool negated)
+	public static IEnumerable<T>? WithoutNullItems<T>(this IEnumerable<T>? parameter, bool negated)
 		where T : class
-		=> WithoutNullElementsNamed(parameter, negated ? "unexpected" : "expected");
+		=> WithoutNullItemsNamed(parameter, negated ? "unexpected" : "expected");
 
 	[return: NotNullIfNotNull(nameof(parameter))]
-	private static IEnumerable<T>? WithoutNullElementsNamed<T>(IEnumerable<T>? parameter, string? paramName)
+	private static IEnumerable<T>? WithoutNullItemsNamed<T>(IEnumerable<T>? parameter, string? paramName)
 		where T : class
 	{
 		parameter = parameter.NullIfDefaultImmutableArray();

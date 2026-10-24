@@ -170,7 +170,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
-			public async Task WhenEnumerableHasDifferentStartingElements_ShouldSucceed()
+			public async Task WhenEnumerableHasDifferentStartingItems_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
 				IEnumerable<int> unexpected = [1, 3,];
@@ -202,7 +202,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
-			public async Task WhenUnexpectedContainsAdditionalElements_ShouldSucceed()
+			public async Task WhenUnexpectedContainsAdditionalItems_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
 

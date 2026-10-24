@@ -59,7 +59,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
-			public async Task WhenEnumerableHasDifferentStartingElements_ShouldFail()
+			public async Task WhenEnumerableHasDifferentStartingItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,]);
 				IEnumerable<int> expected = [1, 3,];
@@ -79,7 +79,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
-			public async Task WhenExpectedContainsAdditionalElements_ShouldFail()
+			public async Task WhenExpectedContainsAdditionalItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,]);
 				IEnumerable<int> expected = [1, 2, 3, 4,];
