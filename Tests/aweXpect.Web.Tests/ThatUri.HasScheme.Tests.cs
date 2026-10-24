@@ -39,6 +39,54 @@ public sealed partial class ThatUri
 			}
 
 			[Test]
+			public async Task Containing_AsWildcard_WhenSchemeDoesNotContainThePattern_ShouldFail()
+			{
+				Uri subject = new("https://www.awexpect.com:80");
+
+				async Task Act()
+					=> await That(subject).HasScheme().Containing("h?p").AsWildcard();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has scheme containing "h?p" as wildcard at least once,
+					             but scheme did not contain "h?p" in "https"
+					             """);
+			}
+
+			[Test]
+			public async Task Containing_IgnoringCase_WhenSchemeContainsExpectedTooRarely_ShouldFail()
+			{
+				Uri subject = new("https://www.awexpect.com:80");
+
+				async Task Act()
+					=> await That(subject).HasScheme().Containing("T").IgnoringCase().AtLeast(3);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has scheme containing "T" ignoring case at least 3 times,
+					             but scheme contained "T" twice in "https"
+					             """);
+			}
+
+			[Test]
+			public async Task Containing_WhenSubjectIsNull_ShouldFail()
+			{
+				Uri? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasScheme().Containing("http");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has scheme containing "http" at least once,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
 			public async Task Containing_WhenSubjectSchemeContainsTheExpectedValue_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -141,6 +189,23 @@ public sealed partial class ThatUri
 			}
 
 			[Test]
+			public async Task Containing_Never_WhenSchemeDoesNotContainTheExpectedValue_ShouldFail()
+			{
+				Uri subject = new("https://www.awexpect.com:80");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasScheme().Containing("ftp").Never());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has scheme containing "ftp" at least once,
+					             but scheme did not contain "ftp" in "https"
+					             """)
+					.Because("the negation of never is at least once");
+			}
+
+			[Test]
 			public async Task Containing_WhenSubjectSchemeContainsTheExpectedValue_ShouldFail()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -152,7 +217,7 @@ public sealed partial class ThatUri
 					.WithMessage("""
 					             Expected that subject
 					             does not have scheme containing "http",
-					             but it had scheme "https"
+					             but scheme contained "http" at least once in "https"
 					             """);
 			}
 

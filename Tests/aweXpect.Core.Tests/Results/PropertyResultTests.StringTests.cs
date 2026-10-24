@@ -10,6 +10,38 @@ public sealed partial class PropertyResultTests
 	public sealed class StringTests
 	{
 		[Test]
+		public async Task Containing_AsBlock_WhenTheBlockOccursTooOften_ShouldNameTheLinesOfTheOccurrences()
+		{
+			StringProperty sut = MyClass.HasStringValue("a\nb\nx\na\nb");
+
+			async Task Act()
+				=> await sut.Containing("a\nb").AsBlock().Once();
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             has string value containing "a\nb" as block exactly once,
+				             but string value contained "a\nb" at least twice in "a\nb\nx\na\nb" at lines 1-2 and 4-5
+				             """);
+		}
+
+		[Test]
+		public async Task Containing_AtLeast_WhenValueContainsExpectedTooRarely_ShouldFail()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo foo");
+
+			async Task Act()
+				=> await sut.Containing("foo").AtLeast(3);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             has string value containing "foo" at least 3 times,
+				             but string value contained "foo" twice in "foo foo"
+				             """);
+		}
+
+		[Test]
 		[Arguments("foo", "foobar")]
 		[Arguments("foo", "bar")]
 		[Arguments("foo", "FOO")]
@@ -23,9 +55,9 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that subject
-				              has string value containing "{expected}",
-				              but it had string value "{actual}"*
-				              """).AsWildcard();
+				              has string value containing "{expected}" at least once,
+				              but string value did not contain "{expected}" in "{actual}"
+				              """);
 		}
 
 		[Test]
@@ -42,8 +74,8 @@ public sealed partial class PropertyResultTests
 				.OnlyIf(!ignoringCase)
 				.WithMessage("""
 				             Expected that subject
-				             has string value containing "FOO",
-				             but it had string value "something with foo in it"
+				             has string value containing "FOO" at least once,
+				             but string value did not contain "FOO" in "something with foo in it"
 				             """);
 		}
 
@@ -100,6 +132,39 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Test]
+		public async Task Containing_WhenPatternIsInvalidAndReadingThePropertyThrows_ShouldThrowArgumentException()
+		{
+			StringProperty sut = MyClass.HasThrowingStringValue(new InvalidOperationException("foo"));
+
+			async Task Act()
+				=> await sut.Containing("[").AsRegex();
+
+			await That(Act).Throws<ArgumentException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' regex pattern is invalid: ").AsPrefix()
+				.Because("an unusable pattern is rejected whichever value the property has");
+		}
+
+		[Test]
+		public async Task Containing_WhenReadingThePropertyThrows_ShouldFailWithTheExceptionAsInnerException()
+		{
+			InvalidOperationException exception = new("foo");
+			StringProperty sut = MyClass.HasThrowingStringValue(exception);
+
+			async Task Act()
+				=> await sut.Containing("bar");
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             has string value containing "bar" at least once,
+				             but string value did throw an InvalidOperationException:
+				               foo
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+		}
+
+		[Test]
 		public async Task Containing_WhenSubjectIsNull_ShouldFail()
 		{
 			StringProperty sut = MyClass.HasStringValueOfNullSubject();
@@ -110,8 +175,40 @@ public sealed partial class PropertyResultTests
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
-				             has string value containing "foo",
+				             has string value containing "foo" at least once,
 				             but it was <null>
+				             """);
+		}
+
+		[Test]
+		public async Task Containing_WhenValueIsNullAndNegated_ShouldFail()
+		{
+			async Task Act()
+				=> await MyClass.WithStringValue(null!)
+					.DoesNotComplyWith(s => MyClass.StringValueOf(s).Containing("foo"));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have string value containing "foo",
+				             but string value was <null>
+				             """)
+				.Because("a null value has no content to inspect, so the negation cannot be answered either");
+		}
+
+		[Test]
+		public async Task Containing_WhenValueIsNull_ShouldFail()
+		{
+			StringProperty sut = MyClass.HasStringValue(null);
+
+			async Task Act()
+				=> await sut.Containing("foo");
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             has string value containing "foo" at least once,
+				             but string value was <null>
 				             """);
 		}
 
@@ -1029,8 +1126,8 @@ public sealed partial class PropertyResultTests
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has string value containing "foo" and has string value containing "baz",
-					             but it had string value "foo-bar"
+					             has string value containing "foo" at least once and has string value containing "baz" at least once,
+					             but string value did not contain "baz" in "foo-bar"
 
 					             String value:
 					             foo-bar
@@ -1095,6 +1192,46 @@ public sealed partial class PropertyResultTests
 					             with string value equal to "bar",
 					             but it had string value "foo"*
 					             """).AsWildcard();
+			}
+
+			[Test]
+			[Arguments(ExpectationGrammars.None, false, "has string value containing \"bar\" at least once")]
+			[Arguments(ExpectationGrammars.None, true, "does not have string value containing \"foo\"")]
+			[Arguments(ExpectationGrammars.Plural, false, "have string value containing \"bar\" at least once")]
+			[Arguments(ExpectationGrammars.Plural, true, "do not have string value containing \"foo\"")]
+			[Arguments(ExpectationGrammars.Active, false, "with string value containing \"bar\" at least once")]
+			[Arguments(ExpectationGrammars.Active, true, "with string value not containing \"foo\"")]
+			[Arguments(ExpectationGrammars.Nested, false, "whose string value contains \"bar\" at least once")]
+			[Arguments(ExpectationGrammars.Nested, true, "whose string value does not contain \"foo\"")]
+			[Arguments(ExpectationGrammars.Nested | ExpectationGrammars.Plural, false,
+				"whose string value contains \"bar\" at least once")]
+			public async Task WhenContaining_ShouldFollowTheGrammars(ExpectationGrammars grammars, bool isNever,
+				string expectedExpectation)
+			{
+				PropertyResult.String<MyClass?, MyClass?, IThat<MyClass?>> sut = MyClass.HasStringValue("foo", grammars);
+				string expectedResult = isNever
+					? "string value contained \"foo\" at least once in \"foo\""
+					: "string value did not contain \"bar\" in \"foo\"";
+
+				async Task Act()
+				{
+					if (isNever)
+					{
+						await sut.Containing("foo").Never();
+					}
+					else
+					{
+						await sut.Containing("bar");
+					}
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              {expectedExpectation},
+					              but {expectedResult}
+					              """)
+					.Because("the property is the subject of the result, whichever grammar the expectation uses");
 			}
 
 			[Test]

@@ -9,6 +9,57 @@ public sealed partial class ThatDelegate
 			public sealed class ContainingTests
 			{
 				[Test]
+				public async Task AsRegex_WhenThePatternMatchesTooOften_ShouldFail()
+				{
+					Action action = () => throw new CustomException("a1 b2");
+
+					async Task Act()
+						=> await That(action).Throws().WithMessage().Containing("[a-z][0-9]").AsRegex().Exactly(1);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception with message containing "[a-z][0-9]" as regex exactly once,
+						             but message contained "[a-z][0-9]" at least twice in "a1 b2"
+
+						             Message:
+						             a1 b2
+						             """)
+						.Because("the search stops as soon as the count is decided");
+				}
+
+				[Test]
+				public async Task AtLeast_WhenMessageContainsExpectedOftenEnough_ShouldSucceed()
+				{
+					CustomException exception = new("foo bar foo");
+					Action action = () => throw exception;
+
+					CustomException result = await That(action).Throws<CustomException>()
+						.WithMessage().Containing("foo").AtLeast(2);
+
+					await That(result).IsSameAs(exception);
+				}
+
+				[Test]
+				public async Task AtLeast_WhenMessageContainsExpectedTooRarely_ShouldFail()
+				{
+					Action action = () => throw new CustomException("foo bar foo");
+
+					async Task Act()
+						=> await That(action).Throws().WithMessage().Containing("foo").AtLeast(3);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception with message containing "foo" at least 3 times,
+						             but message contained "foo" twice in "foo bar foo"
+
+						             Message:
+						             foo bar foo
+						             """);
+				}
+
+				[Test]
 				public async Task CanCompareCaseInsensitive()
 				{
 					string message = "_FOO_BAR";
@@ -21,6 +72,25 @@ public sealed partial class ThatDelegate
 							.WithMessage().Containing("foo").IgnoringCase();
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
+				public async Task Never_WhenMessageContainsExpected_ShouldFail()
+				{
+					Action action = () => throw new CustomException("foo bar");
+
+					async Task Act()
+						=> await That(action).Throws().WithMessage().Containing("foo").Never();
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception with message not containing "foo",
+						             but message contained "foo" at least once in "foo bar"
+
+						             Message:
+						             foo bar
+						             """);
 				}
 
 				[Test]
@@ -38,8 +108,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws an exception with message containing "foo",
-						             but it had message "FOO"
+						             throws an exception with message containing "foo" at least once,
+						             but message did not contain "foo" in "FOO"
 
 						             Message:
 						             FOO
@@ -90,8 +160,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws a ThatDelegate.CustomException with message containing "foo",
-						             but it had message "FOO"
+						             throws a ThatDelegate.CustomException with message containing "foo" at least once,
+						             but message did not contain "foo" in "FOO"
 
 						             Message:
 						             FOO
@@ -125,8 +195,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
-						             throws an exception with message containing "expected other text",
-						             but it had message "expected actual text"
+						             throws an exception with message containing "expected other text" at least once,
+						             but message did not contain "expected other text" in "expected actual text"
 
 						             Message:
 						             expected actual text

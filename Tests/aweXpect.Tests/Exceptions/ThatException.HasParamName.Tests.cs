@@ -30,8 +30,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has param name containing "somethingElse",
-					             but it had param name "message" with a length of 7, which is shorter than the expected length of 13
+					             has param name containing "somethingElse" at least once,
+					             but param name did not contain "somethingElse" in "message"
 
 					             Param name:
 					             message

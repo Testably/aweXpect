@@ -233,7 +233,7 @@ internal readonly record struct CountBounds
 		}
 	}
 
-	private static void AppendOccurrences(StringBuilder stringBuilder, int count)
+	public static void AppendOccurrences(StringBuilder stringBuilder, int count)
 	{
 		switch (count)
 		{

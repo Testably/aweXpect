@@ -207,15 +207,37 @@ public static class PropertyResult
 		///     A <see langword="null" /> or empty <paramref name="expected" /> throws, because neither is a substring
 		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
 		///     string always does.
+		///     <para />
+		///     Without a quantifier, the <paramref name="expected" /> value has to occur at least once; specify how often
+		///     it has to occur, e.g. with <c>AtLeast(2)</c> or <c>Never()</c>, and how it is matched, e.g. with
+		///     <c>AsWildcard()</c>, on the result.
 		/// </remarks>
-		public StringEqualityResult<TType, TThat> Containing(
+		public StringOccurrenceCountResult<TType, TThat> Containing(
 			string expected)
 		{
 			ThrowIfNullOrEmpty(expected, nameof(expected));
 			validation?.Invoke(expected, nameof(expected));
+			Quantifier quantifier = new();
 			StringEqualityOptions options = new(nameof(expected));
-			options.Containing();
-			return new StringEqualityResult<TType, TThat>(Build(expected, options, false), subject, options);
+			return new StringOccurrenceCountResult<TType, TThat>(
+				subject.Get().ExpectationBuilder
+					.AddConstraint(
+						(IncludeValueInContext: includeValueInContext, Grammars: grammars, Expected: expected,
+							Mapper: mapper, PropertyExpression: propertyExpression, Quantifier: quantifier,
+							Options: options),
+						static (state, it, constraintGrammars) =>
+							new ContainingConstraint<TValue>(
+								state.IncludeValueInContext,
+								it,
+								constraintGrammars | state.Grammars,
+								state.Expected,
+								state.Mapper,
+								state.PropertyExpression,
+								state.Quantifier,
+								state.Options)),
+				subject,
+				quantifier,
+				options);
 		}
 
 		/// <summary>
@@ -584,10 +606,140 @@ public static class PropertyResult
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
+	}
 
-		private static string ToTitle(string propertyExpression)
-			=> propertyExpression.Length == 0
-				? propertyExpression
-				: char.ToUpperInvariant(propertyExpression[0]) + propertyExpression.Substring(1);
+	private static string ToTitle(string propertyExpression)
+		=> propertyExpression.Length == 0
+			? propertyExpression
+			: char.ToUpperInvariant(propertyExpression[0]) + propertyExpression.Substring(1);
+
+	/// <remarks>
+	///     The result names the property as the subject that contained the expected value, like the result of
+	///     <see cref="StringOccurrenceConstraint" /> names the subject, because a chain of member expectations leaves
+	///     ambiguous which member <c>it</c> refers to.
+	/// </remarks>
+	private sealed class ContainingConstraint<TItem>(
+		bool includeValueInContext,
+		string it,
+		ExpectationGrammars grammars,
+		string expected,
+		Func<TItem, string?> mapper,
+		string propertyExpression,
+		Quantifier quantifier,
+		StringEqualityOptions options) : ConstraintResult.WithNotNullValue<TItem>(it, grammars),
+		IAsyncContextConstraint<TItem>
+	{
+		private int _count;
+		private StringEqualityOptions? _evaluationOptions;
+		private Exception? _exception;
+		private bool _isFinished;
+		private string? _value;
+
+		/// <inheritdoc />
+		public override Exception? FailureCause => _exception;
+
+		/// <remarks>
+		///     The occurrences are also counted when the property cannot be read or is <see langword="null" />, as in an
+		///     empty value, because the options validate the expected value while they count, so an unusable pattern is
+		///     rejected whichever value the property has.
+		/// </remarks>
+		public async ValueTask<ConstraintResult> IsMetBy(TItem actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
+			Actual = actual;
+			_exception = null;
+			_value = null;
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			if (actual is not null)
+			{
+				try
+				{
+					_value = mapper(actual);
+				}
+				catch (Exception exception)
+				{
+					_exception = exception;
+				}
+			}
+
+			(_count, _isFinished) =
+				await StringOccurrences.Count(_evaluationOptions, _value ?? string.Empty, expected, quantifier);
+			if (_exception is not null || _value is null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
+			Outcome = quantifier.Check(_count, true) == true ? Outcome.Success : Outcome.Failure;
+			return this;
+		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (!string.IsNullOrEmpty(_value))
+			{
+				if (includeValueInContext)
+				{
+					contexts.Add(new ResultContext.Fixed(ToTitle(propertyExpression), _value));
+				}
+				else
+				{
+					contexts.AddStringContext(ToTitle(propertyExpression), _value, this);
+				}
+
+				contexts.AddStringContext("Expected", expected, this);
+			}
+
+			(_evaluationOptions ?? options).AppendContexts(contexts);
+		}
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			string verb;
+			string negatedVerb;
+			if (Grammars.IsActive())
+			{
+				verb = $"with {propertyExpression} containing";
+				negatedVerb = $"with {propertyExpression} not containing";
+			}
+			else if (Grammars.HasFlag(ExpectationGrammars.Nested))
+			{
+				verb = $"whose {propertyExpression} contains";
+				negatedVerb = $"whose {propertyExpression} does not contain";
+			}
+			else
+			{
+				verb = $"{Grammars.Verb("has", "have")} {propertyExpression} containing";
+				negatedVerb = $"{Grammars.Verb("does not have", "do not have")} {propertyExpression} containing";
+			}
+
+			StringOccurrences.AppendExpectation(stringBuilder, quantifier, IsNegated, verb, negatedVerb, expected,
+				options);
+		}
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			if (_exception is not null)
+			{
+				stringBuilder.Append(propertyExpression).Append(" did throw ")
+					.Append(ThatDelegate.FormatForMessage(_exception, indentation));
+				return;
+			}
+
+			if (_value is null)
+			{
+				stringBuilder.Append(propertyExpression).Append(" was <null>");
+				return;
+			}
+
+			StringOccurrences.AppendResult(stringBuilder, propertyExpression, expected, _value, _count, _isFinished,
+				_evaluationOptions ?? options, indentation);
+		}
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> AppendNormalExpectation(stringBuilder, indentation);
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

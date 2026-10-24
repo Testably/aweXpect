@@ -202,6 +202,17 @@ void Act() => throw new CustomException("Yesterday, all my troubles seemed so fa
 await Expect.That(Act).Throws().WithMessage("yesterday*").AsWildcard().IgnoringCase();
 ```
 
+`Containing` counts the occurrences like [`Contains`](../04-values/03-string.md#contains) on a string: without a
+quantifier the value has to occur at least once, and you can specify how often it has to occur and how it is matched:
+
+```csharp
+void Act() => throw new CustomException("Help, I need somebody, help, not just anybody");
+
+await Expect.That(Act).Throws().WithMessage().Containing("help").IgnoringCase().Twice();
+await Expect.That(Act).Throws().WithMessage().Containing("?body").AsWildcard().AtLeast(2);
+await Expect.That(Act).Throws().WithMessage().Containing("yesterday").Never();
+```
+
 ### Inner exceptions
 
 You can verify the inner exception of the thrown exception:
