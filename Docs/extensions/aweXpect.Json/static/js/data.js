@@ -552,6 +552,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
         "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
+      },
+      {
+        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
+        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
       }
     ],
     "labels": [
@@ -646,7 +652,8 @@ window.BENCHMARK_DATA = {
       "5b99ffec",
       "d2a64ca4",
       "67eb3ff5",
-      "46bf8489"
+      "46bf8489",
+      "411dfe77"
     ],
     "datasets": [
       {
@@ -744,7 +751,8 @@ window.BENCHMARK_DATA = {
           1213.7504262190598,
           1633.2585581370763,
           1222.5893129621234,
-          1734.4624180112567
+          1734.4624180112567,
+          2125.523791503906
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -784,6 +792,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -953,7 +962,8 @@ window.BENCHMARK_DATA = {
           8030.103820800781,
           10394.312529500325,
           7636.493247440883,
-          12679.608971228967
+          12679.608971228967,
+          16647.831636868992
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -965,6 +975,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -1622,6 +1633,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
         "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
+      },
+      {
+        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
+        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
       }
     ],
     "labels": [
@@ -1716,7 +1733,8 @@ window.BENCHMARK_DATA = {
       "5b99ffec",
       "d2a64ca4",
       "67eb3ff5",
-      "46bf8489"
+      "46bf8489",
+      "411dfe77"
     ],
     "datasets": [
       {
@@ -1814,7 +1832,8 @@ window.BENCHMARK_DATA = {
           1009.363245010376,
           1291.1996859232584,
           996.8183837890625,
-          1359.705027444022
+          1359.705027444022,
+          1732.2526360920497
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1907,6 +1926,7 @@ window.BENCHMARK_DATA = {
           1200,
           1200,
           1200,
+          1240,
           1240,
           1240,
           1240,
@@ -2023,7 +2043,8 @@ window.BENCHMARK_DATA = {
           7127.283035823277,
           9863.261068071637,
           7693.901894705637,
-          11765.828029378255
+          11765.828029378255,
+          15365.802527872722
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2035,6 +2056,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -2632,6 +2654,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
         "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
+      },
+      {
+        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
+        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
       }
     ],
     "labels": [
@@ -2716,7 +2744,8 @@ window.BENCHMARK_DATA = {
       "5b99ffec",
       "d2a64ca4",
       "67eb3ff5",
-      "46bf8489"
+      "46bf8489",
+      "411dfe77"
     ],
     "datasets": [
       {
@@ -2804,7 +2833,8 @@ window.BENCHMARK_DATA = {
           2848.637716838292,
           3831.7965456644692,
           3029.876132420131,
-          4015.734772745768
+          4015.734772745768,
+          5301.408675560584
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2887,6 +2917,7 @@ window.BENCHMARK_DATA = {
           3688,
           3688,
           3688,
+          3736,
           3736,
           3736,
           3736,
@@ -2993,7 +3024,8 @@ window.BENCHMARK_DATA = {
           18711.026035853796,
           29660.37185872396,
           21197.665112304687,
-          35876.38364664713
+          35876.38364664713,
+          48654.33093261719
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3086,7 +3118,8 @@ window.BENCHMARK_DATA = {
           61925,
           61925,
           61925,
-          61925
+          61925,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3592,6 +3625,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
         "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
+      },
+      {
+        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
+        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
       }
     ],
     "labels": [
@@ -3676,7 +3715,8 @@ window.BENCHMARK_DATA = {
       "5b99ffec",
       "d2a64ca4",
       "67eb3ff5",
-      "46bf8489"
+      "46bf8489",
+      "411dfe77"
     ],
     "datasets": [
       {
@@ -3764,7 +3804,8 @@ window.BENCHMARK_DATA = {
           5092.678106580462,
           7407.676108805338,
           5392.196280797322,
-          8311.757658894856
+          8311.757658894856,
+          9556.204983302525
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3847,6 +3888,7 @@ window.BENCHMARK_DATA = {
           7024,
           7024,
           7024,
+          7064,
           7064,
           7064,
           7064,
@@ -3953,7 +3995,8 @@ window.BENCHMARK_DATA = {
           142528.02943522137,
           211294.42856445312,
           149480.61223144532,
-          256499.33935546875
+          256499.33935546875,
+          305174.6518066406
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4046,7 +4089,8 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
-          521541
+          521541,
+          521594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4552,6 +4596,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
         "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
+      },
+      {
+        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
+        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
       }
     ],
     "labels": [
@@ -4636,7 +4686,8 @@ window.BENCHMARK_DATA = {
       "5b99ffec",
       "d2a64ca4",
       "67eb3ff5",
-      "46bf8489"
+      "46bf8489",
+      "411dfe77"
     ],
     "datasets": [
       {
@@ -4724,7 +4775,8 @@ window.BENCHMARK_DATA = {
           1598.8393001556396,
           2242.3307056427,
           1703.351029586792,
-          2567.362981062669
+          2567.362981062669,
+          2878.469115193685
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4769,6 +4821,7 @@ window.BENCHMARK_DATA = {
           1488,
           1488,
           1488,
+          1328,
           1328,
           1328,
           1328,
@@ -4913,7 +4966,8 @@ window.BENCHMARK_DATA = {
           1092.966466494969,
           1500.364474360148,
           1185.738100941976,
-          1881.4299924033028
+          1881.4299924033028,
+          2063.703771718343
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4925,6 +4979,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -5512,6 +5567,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
         "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
+      },
+      {
+        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
+        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
       }
     ],
     "labels": [
@@ -5596,7 +5657,8 @@ window.BENCHMARK_DATA = {
       "5b99ffec",
       "d2a64ca4",
       "67eb3ff5",
-      "46bf8489"
+      "46bf8489",
+      "411dfe77"
     ],
     "datasets": [
       {
@@ -5684,7 +5746,8 @@ window.BENCHMARK_DATA = {
           1214.025117111206,
           1602.1157148801362,
           1257.3030274254936,
-          1789.9506123406547
+          1789.9506123406547,
+          2071.735781097412
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5767,6 +5830,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2864,
           2864,
           2864,
           2864,
@@ -5873,7 +5937,8 @@ window.BENCHMARK_DATA = {
           995.3533075877598,
           1345.447067941938,
           936.3673584620158,
-          2012.2194717407226
+          2012.2194717407226,
+          1793.6431161244711
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5885,6 +5950,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
