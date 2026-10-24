@@ -8,88 +8,88 @@ public sealed partial class ThatConstructor
 	{
 		public sealed class AttributeTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenConstructorDoesNotHaveAttribute_ShouldFail()
 			{
 				ConstructorInfo subject = typeof(TestClass).GetConstructor(Type.EmptyTypes)!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ThatConstructor.Has.AttributeTests.TestAttribute,
+					             has ThatConstructor.Has.AttributeTests.MarkerAttribute,
 					             but it did not in ThatConstructor.Has.AttributeTests.TestClass()
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenConstructorHasAttribute_ShouldSucceed()
 			{
 				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenConstructorHasMatchingAttribute_ShouldSucceed()
 			{
 				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>(attr => attr.Value == "ConstructorValue");
+					await That(subject).Has<MarkerAttribute>(attr => attr.Value == "ConstructorValue");
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenConstructorHasNotMatchingAttribute_ShouldFail()
 			{
 				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>(attr => attr.Value == "WrongValue");
+					await That(subject).Has<MarkerAttribute>(attr => attr.Value == "WrongValue");
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ThatConstructor.Has.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+					             has ThatConstructor.Has.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
 					             but it did not in ThatConstructor.Has.AttributeTests.TestClass(string value)
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenConstructorIsNull_ShouldFail()
 			{
 				ConstructorInfo? subject = null;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             has ThatConstructor.Has.AttributeTests.TestAttribute,
+					             has ThatConstructor.Has.AttributeTests.MarkerAttribute,
 					             but it was <null>
 					             """);
 			}
 
 			[AttributeUsage(AttributeTargets.Constructor)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -99,7 +99,7 @@ public sealed partial class ThatConstructor
 			{
 				public TestClass() { }
 
-				[Test(Value = "ConstructorValue")]
+				[Marker(Value = "ConstructorValue")]
 				// ReSharper disable once UnusedParameter.Local
 				public TestClass(string value) { }
 			}
@@ -110,7 +110,7 @@ public sealed partial class ThatConstructor
 		{
 			public sealed class AttributeTests
 			{
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenConstructorHasBothAttributes_ShouldSucceed()
 				{
 					ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
@@ -123,7 +123,7 @@ public sealed partial class ThatConstructor
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenConstructorHasFirstAttribute_ShouldSucceed()
 				{
 					ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(int),])!;
@@ -136,7 +136,7 @@ public sealed partial class ThatConstructor
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenConstructorHasMatchingAttribute_ShouldSucceed()
 				{
 					ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
@@ -150,7 +150,7 @@ public sealed partial class ThatConstructor
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenConstructorHasMatchingSecondAttribute_ShouldSucceed()
 				{
 					ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
@@ -164,7 +164,7 @@ public sealed partial class ThatConstructor
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenConstructorHasNeitherAttribute_ShouldFail()
 				{
 					ConstructorInfo subject = typeof(TestClass).GetConstructor(Type.EmptyTypes)!;
@@ -182,7 +182,7 @@ public sealed partial class ThatConstructor
 						             """);
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenConstructorHasSecondAttribute_ShouldSucceed()
 				{
 					ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
@@ -195,7 +195,7 @@ public sealed partial class ThatConstructor
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WithPredicate_WhenConstructorHasNotMatchingAttribute_ShouldFail()
 				{
 					ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
@@ -249,20 +249,20 @@ public sealed partial class ThatConstructor
 
 		public sealed class NegatedTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenConstructorDoesNotHaveAttribute_ShouldSucceed()
 			{
 				ConstructorInfo subject = typeof(TestClass).GetConstructor(Type.EmptyTypes)!;
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+					await That(subject).DoesNotComplyWith(it => it.Has<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenConstructorDoesNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
@@ -270,32 +270,32 @@ public sealed partial class ThatConstructor
 				async Task Act()
 				{
 					await That(subject)
-						.DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == "NonExistent"));
+						.DoesNotComplyWith(it => it.Has<MarkerAttribute>(attr => attr.Value == "NonExistent"));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenConstructorHasAttribute_ShouldFail()
 			{
 				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+					await That(subject).DoesNotComplyWith(it => it.Has<MarkerAttribute>());
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has no ThatConstructor.Has.NegatedTests.TestAttribute,
+					             has no ThatConstructor.Has.NegatedTests.MarkerAttribute,
 					             but it did in ThatConstructor.Has.NegatedTests.TestClass(string value)
 					             """);
 			}
 
 			[AttributeUsage(AttributeTargets.Constructor)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -305,7 +305,7 @@ public sealed partial class ThatConstructor
 			{
 				public TestClass() { }
 
-				[Test(Value = "ConstructorValue")]
+				[Marker(Value = "ConstructorValue")]
 				// ReSharper disable once UnusedParameter.Local
 				public TestClass(string value) { }
 			}

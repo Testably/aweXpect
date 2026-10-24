@@ -8,20 +8,20 @@ public sealed partial class ThatAssembly
 	{
 		public sealed class AttributeTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAssemblyDoesNotHaveAttribute_ShouldSucceed()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
 
 				async Task Act()
 				{
-					await That(subject).DoesNotHave<TestAttribute>();
+					await That(subject).DoesNotHave<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAssemblyHasAttribute_ShouldFail()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -40,7 +40,7 @@ public sealed partial class ThatAssembly
 			}
 
 			[AttributeUsage(AttributeTargets.Assembly)]
-			private class TestAttribute : Attribute;
+			private class MarkerAttribute : Attribute;
 		}
 	}
 }

@@ -8,88 +8,88 @@ public sealed partial class ThatMethod
 	{
 		public sealed class AttributeTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenMethodDoesNotHaveAttribute_ShouldFail()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod("NoAttributeMethod")!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ThatMethod.Has.AttributeTests.TestAttribute,
+					             has ThatMethod.Has.AttributeTests.MarkerAttribute,
 					             but it did not in void ThatMethod.Has.AttributeTests.TestClass.NoAttributeMethod()
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenMethodHasAttribute_ShouldSucceed()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenMethodHasMatchingAttribute_ShouldSucceed()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>(attr => attr.Value == "MethodValue");
+					await That(subject).Has<MarkerAttribute>(attr => attr.Value == "MethodValue");
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenMethodHasNotMatchingAttribute_ShouldFail()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>(attr => attr.Value == "WrongValue");
+					await That(subject).Has<MarkerAttribute>(attr => attr.Value == "WrongValue");
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ThatMethod.Has.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+					             has ThatMethod.Has.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
 					             but it did not in void ThatMethod.Has.AttributeTests.TestClass.TestMethod()
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenMethodIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             has ThatMethod.Has.AttributeTests.TestAttribute,
+					             has ThatMethod.Has.AttributeTests.MarkerAttribute,
 					             but it was <null>
 					             """);
 			}
 
 			[AttributeUsage(AttributeTargets.Method)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -97,7 +97,7 @@ public sealed partial class ThatMethod
 			// ReSharper disable UnusedMember.Local
 			private class TestClass
 			{
-				[Test(Value = "MethodValue")]
+				[Marker(Value = "MethodValue")]
 				public static void TestMethod() { }
 
 				public static void NoAttributeMethod() { }
@@ -107,20 +107,20 @@ public sealed partial class ThatMethod
 
 		public sealed class NegatedTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenMethodDoesNotHaveAttribute_ShouldSucceed()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod("NoAttributeMethod")!;
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+					await That(subject).DoesNotComplyWith(it => it.Has<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenMethodDoesNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
@@ -128,32 +128,32 @@ public sealed partial class ThatMethod
 				async Task Act()
 				{
 					await That(subject)
-						.DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == "NonExistent"));
+						.DoesNotComplyWith(it => it.Has<MarkerAttribute>(attr => attr.Value == "NonExistent"));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenMethodHasAttribute_ShouldFail()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+					await That(subject).DoesNotComplyWith(it => it.Has<MarkerAttribute>());
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has no ThatMethod.Has.NegatedTests.TestAttribute,
+					             has no ThatMethod.Has.NegatedTests.MarkerAttribute,
 					             but it did in void ThatMethod.Has.NegatedTests.TestClass.TestMethod()
 					             """);
 			}
 
 			[AttributeUsage(AttributeTargets.Method)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -161,7 +161,7 @@ public sealed partial class ThatMethod
 			// ReSharper disable UnusedMember.Local
 			private class TestClass
 			{
-				[Test(Value = "MethodValue")]
+				[Marker(Value = "MethodValue")]
 				public static void TestMethod() { }
 
 				public static void NoAttributeMethod() { }

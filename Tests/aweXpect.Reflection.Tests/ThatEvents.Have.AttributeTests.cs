@@ -12,7 +12,7 @@ public sealed partial class ThatEvents
 	{
 		public sealed class AttributeTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAllEventsHaveAttribute_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject = new[]
@@ -22,13 +22,13 @@ public sealed partial class ThatEvents
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>();
+					await That(subject).Have<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAllEventsHaveMatchingAttribute_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject = new[]
@@ -38,13 +38,13 @@ public sealed partial class ThatEvents
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Event"));
+					await That(subject).Have<MarkerAttribute>(attr => attr.Value.StartsWith("Event"));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAllEventsInheritAttributeFromOverriddenEvents_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject = new[]
@@ -54,27 +54,27 @@ public sealed partial class ThatEvents
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>();
+					await That(subject).Have<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow()
 					.Because("the attribute on the overridden base event is inherited, as in the Events().With<TAttribute>() filter");
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenEventsAreFilteredByInheritedAttribute_ShouldSucceed()
 			{
 				async Task Act()
 				{
-					await That(In.Type<DerivedClass>().Events().With<TestAttribute>())
-						.IsNotEmpty().And.Have<TestAttribute>();
+					await That(In.Type<DerivedClass>().Events().With<MarkerAttribute>())
+						.IsNotEmpty().And.Have<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow()
 					.Because("the expectation must agree with the filter on the inherited attribute");
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenNotAllEventsHaveAttribute_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = new[]
@@ -84,13 +84,13 @@ public sealed partial class ThatEvents
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>();
+					await That(subject).Have<MarkerAttribute>();
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have ThatEvents.Have.AttributeTests.TestAttribute,
+					             all have ThatEvents.Have.AttributeTests.MarkerAttribute,
 					             but it contained not matching events
 
 					             Not matching items:
@@ -100,7 +100,7 @@ public sealed partial class ThatEvents
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenNotAllEventsHaveMatchingAttribute_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = new[]
@@ -110,13 +110,13 @@ public sealed partial class ThatEvents
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+					await That(subject).Have<MarkerAttribute>(attr => attr.Value == "WrongValue");
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have ThatEvents.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+					             all have ThatEvents.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
 					             but it contained not matching events
 
 					             Not matching items:
@@ -127,7 +127,7 @@ public sealed partial class ThatEvents
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WithInheritFalse_WhenAllEventsInheritAttributeFromOverriddenEvents_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = new[]
@@ -137,13 +137,13 @@ public sealed partial class ThatEvents
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>(false);
+					await That(subject).Have<MarkerAttribute>(false);
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have direct ThatEvents.Have.AttributeTests.TestAttribute,
+					             all have direct ThatEvents.Have.AttributeTests.MarkerAttribute,
 					             but it contained not matching events
 
 					             Not matching items:
@@ -157,7 +157,7 @@ public sealed partial class ThatEvents
 #if NET8_0_OR_GREATER
 			public sealed class AsyncEnumerableTests
 			{
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenAllEventsHaveAttribute_ShouldSucceed()
 				{
 					IAsyncEnumerable<EventInfo?> subject = new[]
@@ -167,13 +167,13 @@ public sealed partial class ThatEvents
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>();
+						await That(subject).Have<MarkerAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenAllEventsHaveMatchingAttribute_ShouldSucceed()
 				{
 					IAsyncEnumerable<EventInfo?> subject = new[]
@@ -183,13 +183,13 @@ public sealed partial class ThatEvents
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Event"));
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value.StartsWith("Event"));
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenNotAllEventsHaveAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<EventInfo?> subject = new[]
@@ -199,13 +199,13 @@ public sealed partial class ThatEvents
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>();
+						await That(subject).Have<MarkerAttribute>();
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatEvents.Have.AttributeTests.TestAttribute,
+						             all have ThatEvents.Have.AttributeTests.MarkerAttribute,
 						             but it contained not matching events
 
 						             Not matching items:
@@ -215,7 +215,7 @@ public sealed partial class ThatEvents
 						             """);
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenNotAllEventsHaveMatchingAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<EventInfo?> subject = new[]
@@ -225,13 +225,13 @@ public sealed partial class ThatEvents
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "WrongValue");
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatEvents.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+						             all have ThatEvents.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
 						             but it contained not matching events
 
 						             Not matching items:
@@ -245,7 +245,7 @@ public sealed partial class ThatEvents
 #endif
 
 			[AttributeUsage(AttributeTargets.Event)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -253,16 +253,16 @@ public sealed partial class ThatEvents
 #pragma warning disable CS0067 // Event is never used
 			private class TestClass
 			{
-				[Test(Value = "Event1Value")] public event Action? TestEvent1;
+				[Marker(Value = "Event1Value")] public event Action? TestEvent1;
 
-				[Test(Value = "Event2Value")] public event Action? TestEvent2;
+				[Marker(Value = "Event2Value")] public event Action? TestEvent2;
 
 				public event Action? NoAttributeEvent;
 			}
 
 			private class BaseClass
 			{
-				[Test(Value = "BaseValue")] public virtual event Action? InheritedEvent;
+				[Marker(Value = "BaseValue")] public virtual event Action? InheritedEvent;
 			}
 
 			private class DerivedClass : BaseClass
@@ -276,7 +276,7 @@ public sealed partial class ThatEvents
 		{
 			public sealed class AttributeTests
 			{
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenEventsHaveBothAttributes_ShouldSucceed()
 				{
 					IEnumerable<EventInfo> subject = new[]
@@ -286,13 +286,13 @@ public sealed partial class ThatEvents
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenEventsHaveFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<EventInfo> subject = new[]
@@ -302,13 +302,13 @@ public sealed partial class ThatEvents
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenEventsHaveMatchingFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<EventInfo> subject = new[]
@@ -318,14 +318,14 @@ public sealed partial class ThatEvents
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "Event1Value")
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "Event1Value")
 							.OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenEventsHaveMatchingSecondAttribute_ShouldSucceed()
 				{
 					IEnumerable<EventInfo> subject = new[]
@@ -335,14 +335,14 @@ public sealed partial class ThatEvents
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "NonExistent")
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "NonExistent")
 							.OrHave<BarAttribute>(attr => attr.Name == "bar");
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenEventsHaveNeitherAttribute_ShouldFail()
 				{
 					IEnumerable<EventInfo> subject = new[]
@@ -352,13 +352,13 @@ public sealed partial class ThatEvents
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatEvents.Have.OrHave.AttributeTests.TestAttribute or ThatEvents.Have.OrHave.AttributeTests.BarAttribute,
+						             all have ThatEvents.Have.OrHave.AttributeTests.MarkerAttribute or ThatEvents.Have.OrHave.AttributeTests.BarAttribute,
 						             but it contained not matching events
 
 						             Not matching items:
@@ -368,7 +368,7 @@ public sealed partial class ThatEvents
 						             """);
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenEventsHaveSecondAttribute_ShouldSucceed()
 				{
 					IEnumerable<EventInfo> subject = new[]
@@ -378,13 +378,13 @@ public sealed partial class ThatEvents
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WithPredicate_WhenEventsHaveNotMatchingAttribute_ShouldFail()
 				{
 					IEnumerable<EventInfo> subject = new[]
@@ -394,14 +394,14 @@ public sealed partial class ThatEvents
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue")
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "WrongValue")
 							.OrHave<BarAttribute>(attr => attr.Name == "wrong");
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatEvents.Have.OrHave.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue" or ThatEvents.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
+						             all have ThatEvents.Have.OrHave.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue" or ThatEvents.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
 						             but it contained not matching events
 
 						             Not matching items:
@@ -412,7 +412,7 @@ public sealed partial class ThatEvents
 				}
 
 				[AttributeUsage(AttributeTargets.Event)]
-				private class TestAttribute : Attribute
+				private class MarkerAttribute : Attribute
 				{
 					public string Value { get; set; } = "";
 				}
@@ -426,11 +426,11 @@ public sealed partial class ThatEvents
 #pragma warning disable CS0067 // Event is never used
 				private class TestClass
 				{
-					[Test(Value = "Event1Value")] public event Action? TestEvent1;
+					[Marker(Value = "Event1Value")] public event Action? TestEvent1;
 
 					[Bar(Name = "bar")] public event Action? BarEvent;
 
-					[Test(Value = "BothValue")]
+					[Marker(Value = "BothValue")]
 					[Bar(Name = "both")]
 					public event Action? BothEvent;
 
@@ -442,7 +442,7 @@ public sealed partial class ThatEvents
 
 		public sealed class NegatedTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenEventsDoNotHaveAttribute_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subjects = new[]
@@ -452,13 +452,13 @@ public sealed partial class ThatEvents
 
 				async Task Act()
 				{
-					await That(subjects).DoesNotComplyWith(they => they.Have<TestAttribute>());
+					await That(subjects).DoesNotComplyWith(they => they.Have<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenEventsDoNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subjects = new[]
@@ -469,13 +469,13 @@ public sealed partial class ThatEvents
 				async Task Act()
 				{
 					await That(subjects).DoesNotComplyWith(they
-						=> they.Have<TestAttribute>(attr => attr.Value == "NonExistent"));
+						=> they.Have<MarkerAttribute>(attr => attr.Value == "NonExistent"));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenEventsHaveAttribute_ShouldFail()
 			{
 				IEnumerable<EventInfo> subjects = new[]
@@ -486,13 +486,13 @@ public sealed partial class ThatEvents
 				async Task Act()
 				{
 					await That(subjects).DoesNotComplyWith(they
-						=> they.Have<TestAttribute>().OrHave<TestAttribute>(x => x.Value == "foo"));
+						=> they.Have<MarkerAttribute>().OrHave<MarkerAttribute>(x => x.Value == "foo"));
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
-					             not all have ThatEvents.Have.NegatedTests.TestAttribute or ThatEvents.Have.NegatedTests.TestAttribute matching x => x.Value == "foo",
+					             not all have ThatEvents.Have.NegatedTests.MarkerAttribute or ThatEvents.Have.NegatedTests.MarkerAttribute matching x => x.Value == "foo",
 					             but it only contained matching events
 
 					             Collection:
@@ -503,7 +503,7 @@ public sealed partial class ThatEvents
 			}
 
 			[AttributeUsage(AttributeTargets.Event)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -511,7 +511,7 @@ public sealed partial class ThatEvents
 #pragma warning disable CS0067 // Event is never used
 			private class TestClass
 			{
-				[Test(Value = "Event1Value")] public event Action? TestEvent1;
+				[Marker(Value = "Event1Value")] public event Action? TestEvent1;
 
 				public event Action? NoAttributeEvent;
 			}

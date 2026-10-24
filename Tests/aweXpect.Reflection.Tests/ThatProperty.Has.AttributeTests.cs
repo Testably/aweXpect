@@ -8,115 +8,115 @@ public sealed partial class ThatProperty
 	{
 		public sealed class AttributeTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertyDoesNotHaveAttribute_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty("NoAttributeProperty")!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ThatProperty.Has.AttributeTests.TestAttribute,
+					             has ThatProperty.Has.AttributeTests.MarkerAttribute,
 					             but it did not in public string ThatProperty.Has.AttributeTests.TestClass.NoAttributeProperty { get; set; }
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertyHasAttribute_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertyHasMatchingAttribute_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>(attr => attr.Value == "PropertyValue");
+					await That(subject).Has<MarkerAttribute>(attr => attr.Value == "PropertyValue");
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertyHasNotMatchingAttribute_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>(attr => attr.Value == "WrongValue");
+					await That(subject).Has<MarkerAttribute>(attr => attr.Value == "WrongValue");
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ThatProperty.Has.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+					             has ThatProperty.Has.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
 					             but it did not in public string ThatProperty.Has.AttributeTests.TestClass.TestProperty { get; set; }
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertyInheritsAttributeFromOverriddenProperty_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow()
 					.Because("the attribute on the overridden base property is inherited, as in the Properties().With<TAttribute>() filter");
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertyInheritsMatchingAttributeFromOverriddenProperty_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>(attr => attr.Value == "BaseValue");
+					await That(subject).Has<MarkerAttribute>(attr => attr.Value == "BaseValue");
 				}
 
 				await That(Act).DoesNotThrow()
 					.Because("the predicate is evaluated on the attribute inherited from the overridden base property");
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertyIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             has ThatProperty.Has.AttributeTests.TestAttribute,
+					             has ThatProperty.Has.AttributeTests.MarkerAttribute,
 					             but it was <null>
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertyOverridesPropertyWithNonInheritableAttribute_ShouldFail()
 			{
 				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.NonInheritableProperty))!;
@@ -135,27 +135,27 @@ public sealed partial class ThatProperty
 					.Because("an attribute with Inherited = false is not inherited from the overridden base property");
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WithInheritFalse_WhenPropertyInheritsAttributeFromOverriddenProperty_ShouldFail()
 			{
 				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>(false);
+					await That(subject).Has<MarkerAttribute>(false);
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has direct ThatProperty.Has.AttributeTests.TestAttribute,
+					             has direct ThatProperty.Has.AttributeTests.MarkerAttribute,
 					             but it did not in public string ThatProperty.Has.AttributeTests.DerivedClass.InheritedProperty { get; set; }
 					             """)
 					.Because("with inherit: false only the attributes declared on the overriding property count");
 			}
 
 			[AttributeUsage(AttributeTargets.Property)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -168,14 +168,14 @@ public sealed partial class ThatProperty
 			// ReSharper disable UnusedMember.Local
 			private class TestClass
 			{
-				[Test(Value = "PropertyValue")] public string TestProperty { get; set; } = "";
+				[Marker(Value = "PropertyValue")] public string TestProperty { get; set; } = "";
 
 				public string NoAttributeProperty { get; set; } = "";
 			}
 
 			private class BaseClass
 			{
-				[Test(Value = "BaseValue")] public virtual string InheritedProperty { get; set; } = "";
+				[Marker(Value = "BaseValue")] public virtual string InheritedProperty { get; set; } = "";
 
 				[NonInheritable] public virtual string NonInheritableProperty { get; set; } = "";
 			}
@@ -191,20 +191,20 @@ public sealed partial class ThatProperty
 
 		public sealed class NegatedTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertyDoesNotHaveAttribute_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty("NoAttributeProperty")!;
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+					await That(subject).DoesNotComplyWith(it => it.Has<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertyDoesNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
@@ -212,32 +212,32 @@ public sealed partial class ThatProperty
 				async Task Act()
 				{
 					await That(subject)
-						.DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == "NonExistent"));
+						.DoesNotComplyWith(it => it.Has<MarkerAttribute>(attr => attr.Value == "NonExistent"));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenPropertyHasAttribute_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+					await That(subject).DoesNotComplyWith(it => it.Has<MarkerAttribute>());
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has no ThatProperty.Has.NegatedTests.TestAttribute,
+					             has no ThatProperty.Has.NegatedTests.MarkerAttribute,
 					             but it did in public string ThatProperty.Has.NegatedTests.TestClass.TestProperty { get; set; }
 					             """);
 			}
 
 			[AttributeUsage(AttributeTargets.Property)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -245,7 +245,7 @@ public sealed partial class ThatProperty
 			// ReSharper disable UnusedMember.Local
 			private class TestClass
 			{
-				[Test(Value = "PropertyValue")] public string TestProperty { get; set; } = "";
+				[Marker(Value = "PropertyValue")] public string TestProperty { get; set; } = "";
 
 				public string NoAttributeProperty { get; set; } = "";
 			}

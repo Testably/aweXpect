@@ -8,135 +8,135 @@ public sealed partial class ThatEvent
 	{
 		public sealed class AttributeTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenEventDoesNotHaveAttribute_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent("NoAttributeEvent")!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ThatEvent.Has.AttributeTests.TestAttribute,
+					             has ThatEvent.Has.AttributeTests.MarkerAttribute,
 					             but it did not in event Action ThatEvent.Has.AttributeTests.TestClass.NoAttributeEvent
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenEventHasAttribute_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent("TestEvent")!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenEventHasMatchingAttribute_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent("TestEventWithValue")!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>(attr => attr.Value == 42);
+					await That(subject).Has<MarkerAttribute>(attr => attr.Value == 42);
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenEventHasNotMatchingAttribute_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent("TestEventWithValue")!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>(attr => attr.Value == 99);
+					await That(subject).Has<MarkerAttribute>(attr => attr.Value == 99);
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ThatEvent.Has.AttributeTests.TestAttribute matching attr => attr.Value == 99,
+					             has ThatEvent.Has.AttributeTests.MarkerAttribute matching attr => attr.Value == 99,
 					             but it did not in event Action ThatEvent.Has.AttributeTests.TestClass.TestEventWithValue
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenEventInheritsAttributeFromOverriddenEvent_ShouldSucceed()
 			{
 				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow()
 					.Because("the attribute on the overridden base event is inherited, as in the Events().With<TAttribute>() filter");
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenEventInheritsMatchingAttributeFromOverriddenEvent_ShouldSucceed()
 			{
 				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>(attr => attr.Value == 7);
+					await That(subject).Has<MarkerAttribute>(attr => attr.Value == 7);
 				}
 
 				await That(Act).DoesNotThrow()
 					.Because("the predicate is evaluated on the attribute inherited from the overridden base event");
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenEventIsNull_ShouldFail()
 			{
 				EventInfo? subject = null;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             has ThatEvent.Has.AttributeTests.TestAttribute,
+					             has ThatEvent.Has.AttributeTests.MarkerAttribute,
 					             but it was <null>
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WithInheritFalse_WhenEventInheritsAttributeFromOverriddenEvent_ShouldFail()
 			{
 				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>(false);
+					await That(subject).Has<MarkerAttribute>(false);
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has direct ThatEvent.Has.AttributeTests.TestAttribute,
+					             has direct ThatEvent.Has.AttributeTests.MarkerAttribute,
 					             but it did not in event Action ThatEvent.Has.AttributeTests.DerivedClass.InheritedEvent
 					             """)
 					.Because("with inherit: false only the attributes declared on the overriding event count");
 			}
 
 			[AttributeUsage(AttributeTargets.Event)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public int Value { get; set; }
 			}
@@ -144,16 +144,16 @@ public sealed partial class ThatEvent
 #pragma warning disable CS0067 // Event is never used
 			private class TestClass
 			{
-				[Test] public event Action? TestEvent;
+				[Marker] public event Action? TestEvent;
 
-				[Test(Value = 42)] public event Action? TestEventWithValue;
+				[Marker(Value = 42)] public event Action? TestEventWithValue;
 
 				public event Action? NoAttributeEvent;
 			}
 
 			private class BaseClass
 			{
-				[Test(Value = 7)] public virtual event Action? InheritedEvent;
+				[Marker(Value = 7)] public virtual event Action? InheritedEvent;
 			}
 
 			private class DerivedClass : BaseClass
@@ -167,7 +167,7 @@ public sealed partial class ThatEvent
 		{
 			public sealed class AttributeTests
 			{
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenEventHasBothAttributes_ShouldSucceed()
 				{
 					EventInfo subject = typeof(FooBarClass).GetEvent("FooBarEvent")!;
@@ -180,7 +180,7 @@ public sealed partial class ThatEvent
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenEventHasFirstAttribute_ShouldSucceed()
 				{
 					EventInfo subject = typeof(FooClass).GetEvent("FooEvent")!;
@@ -193,7 +193,7 @@ public sealed partial class ThatEvent
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenEventHasMatchingAttribute_ShouldSucceed()
 				{
 					EventInfo subject = typeof(FooClass2).GetEvent("FooEvent2")!;
@@ -206,7 +206,7 @@ public sealed partial class ThatEvent
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenEventHasMatchingSecondAttribute_ShouldSucceed()
 				{
 					EventInfo subject = typeof(BarClass3).GetEvent("BarEvent3")!;
@@ -220,7 +220,7 @@ public sealed partial class ThatEvent
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenEventHasNeitherAttribute_ShouldFail()
 				{
 					EventInfo subject = typeof(BazClass).GetEvent("BazEvent")!;
@@ -238,7 +238,7 @@ public sealed partial class ThatEvent
 						             """);
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenEventHasSecondAttribute_ShouldSucceed()
 				{
 					EventInfo subject = typeof(BarClass).GetEvent("BarEvent")!;
@@ -251,7 +251,7 @@ public sealed partial class ThatEvent
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WithPredicate_WhenEventHasNotMatchingAttribute_ShouldFail()
 				{
 					EventInfo subject = typeof(FooClass2).GetEvent("FooEvent2")!;
@@ -323,20 +323,20 @@ public sealed partial class ThatEvent
 
 		public sealed class NegatedTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenEventDoesNotHaveAttribute_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent("NoAttributeEvent")!;
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+					await That(subject).DoesNotComplyWith(it => it.Has<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenEventDoesNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent("TestEvent")!;
@@ -344,32 +344,32 @@ public sealed partial class ThatEvent
 				async Task Act()
 				{
 					await That(subject)
-						.DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == "NonExistent"));
+						.DoesNotComplyWith(it => it.Has<MarkerAttribute>(attr => attr.Value == "NonExistent"));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenEventHasAttribute_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent("TestEvent")!;
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+					await That(subject).DoesNotComplyWith(it => it.Has<MarkerAttribute>());
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has no ThatEvent.Has.NegatedTests.TestAttribute,
+					             has no ThatEvent.Has.NegatedTests.MarkerAttribute,
 					             but it did in event Action ThatEvent.Has.NegatedTests.TestClass.TestEvent
 					             """);
 			}
 
 			[AttributeUsage(AttributeTargets.Event)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -377,7 +377,7 @@ public sealed partial class ThatEvent
 #pragma warning disable CS0067 // Event is never used
 			private class TestClass
 			{
-				[Test(Value = "EventValue")] public event Action? TestEvent;
+				[Marker(Value = "EventValue")] public event Action? TestEvent;
 
 				public event Action? NoAttributeEvent;
 			}

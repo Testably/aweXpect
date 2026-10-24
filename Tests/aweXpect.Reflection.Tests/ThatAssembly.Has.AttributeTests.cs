@@ -8,25 +8,25 @@ public sealed partial class ThatAssembly
 	{
 		public sealed class AttributeTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAssemblyDoesNotHaveAttribute_ShouldFail()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
 
 				async Task Act()
 				{
-					await That(subject).Has<TestAttribute>();
+					await That(subject).Has<MarkerAttribute>();
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has ThatAssembly.Has.AttributeTests.TestAttribute,
+					             has ThatAssembly.Has.AttributeTests.MarkerAttribute,
 					             but it did not in aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             """).AsWildcard();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAssemblyHasAttribute_ShouldSucceed()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -39,7 +39,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAssemblyHasMatchingAttribute_ShouldSucceed()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -52,7 +52,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAssemblyHasNotMatchingAttribute_ShouldFail()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -70,7 +70,7 @@ public sealed partial class ThatAssembly
 					             """).AsWildcard();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAssemblyIsNull_ShouldFail()
 			{
 				Assembly? subject = null;
@@ -89,25 +89,25 @@ public sealed partial class ThatAssembly
 			}
 
 			[AttributeUsage(AttributeTargets.Assembly)]
-			private class TestAttribute : Attribute;
+			private class MarkerAttribute : Attribute;
 		}
 
 		public sealed class NegatedTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAssemblyDoesNotHaveAttribute_ShouldSucceed()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+					await That(subject).DoesNotComplyWith(it => it.Has<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAssemblyDoesNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -121,7 +121,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAssemblyHasAttribute_ShouldFail()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -129,19 +129,19 @@ public sealed partial class ThatAssembly
 				async Task Act()
 				{
 					await That(subject)
-						.DoesNotComplyWith(it => it.Has<AssemblyTitleAttribute>().OrHas<TestAttribute>());
+						.DoesNotComplyWith(it => it.Has<AssemblyTitleAttribute>().OrHas<MarkerAttribute>());
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has no AssemblyTitleAttribute or ThatAssembly.Has.NegatedTests.TestAttribute,
+					             has no AssemblyTitleAttribute or ThatAssembly.Has.NegatedTests.MarkerAttribute,
 					             but it did in aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             """).AsWildcard();
 			}
 
 			[AttributeUsage(AttributeTargets.Assembly)]
-			private class TestAttribute : Attribute;
+			private class MarkerAttribute : Attribute;
 		}
 	}
 }

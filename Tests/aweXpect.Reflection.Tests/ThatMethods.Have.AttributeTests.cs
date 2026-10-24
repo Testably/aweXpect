@@ -12,7 +12,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class AttributeTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAllMethodsHaveAttribute_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject = new[]
@@ -22,13 +22,13 @@ public sealed partial class ThatMethods
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>();
+					await That(subject).Have<MarkerAttribute>();
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenAllMethodsHaveMatchingAttribute_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject = new[]
@@ -38,13 +38,13 @@ public sealed partial class ThatMethods
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Method"));
+					await That(subject).Have<MarkerAttribute>(attr => attr.Value.StartsWith("Method"));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenNotAllMethodsHaveAttribute_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject = new[]
@@ -54,13 +54,13 @@ public sealed partial class ThatMethods
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>();
+					await That(subject).Have<MarkerAttribute>();
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have ThatMethods.Have.AttributeTests.TestAttribute,
+					             all have ThatMethods.Have.AttributeTests.MarkerAttribute,
 					             but it contained not matching methods
 
 					             Not matching items:
@@ -70,7 +70,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenNotAllMethodsHaveMatchingAttribute_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject = new[]
@@ -80,13 +80,13 @@ public sealed partial class ThatMethods
 
 				async Task Act()
 				{
-					await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+					await That(subject).Have<MarkerAttribute>(attr => attr.Value == "WrongValue");
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have ThatMethods.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+					             all have ThatMethods.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
 					             but it contained not matching methods
 
 					             Not matching items:
@@ -100,7 +100,7 @@ public sealed partial class ThatMethods
 #if NET8_0_OR_GREATER
 			public sealed class AsyncEnumerableTests
 			{
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenAllMethodsHaveAttribute_ShouldSucceed()
 				{
 					IAsyncEnumerable<MethodInfo?> subject = new[]
@@ -110,13 +110,13 @@ public sealed partial class ThatMethods
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>();
+						await That(subject).Have<MarkerAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenAllMethodsHaveMatchingAttribute_ShouldSucceed()
 				{
 					IAsyncEnumerable<MethodInfo?> subject = new[]
@@ -126,13 +126,13 @@ public sealed partial class ThatMethods
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Method"));
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value.StartsWith("Method"));
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenNotAllMethodsHaveAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<MethodInfo?> subject = new[]
@@ -142,13 +142,13 @@ public sealed partial class ThatMethods
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>();
+						await That(subject).Have<MarkerAttribute>();
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatMethods.Have.AttributeTests.TestAttribute,
+						             all have ThatMethods.Have.AttributeTests.MarkerAttribute,
 						             but it contained not matching methods
 
 						             Not matching items:
@@ -158,7 +158,7 @@ public sealed partial class ThatMethods
 						             """);
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenNotAllMethodsHaveMatchingAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<MethodInfo?> subject = new[]
@@ -168,13 +168,13 @@ public sealed partial class ThatMethods
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "WrongValue");
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatMethods.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+						             all have ThatMethods.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
 						             but it contained not matching methods
 
 						             Not matching items:
@@ -188,7 +188,7 @@ public sealed partial class ThatMethods
 #endif
 
 			[AttributeUsage(AttributeTargets.Method)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -196,10 +196,10 @@ public sealed partial class ThatMethods
 			// ReSharper disable UnusedMember.Local
 			private class TestClass
 			{
-				[Test(Value = "Method1Value")]
+				[Marker(Value = "Method1Value")]
 				public static void TestMethod1() { }
 
-				[Test(Value = "Method2Value")]
+				[Marker(Value = "Method2Value")]
 				public static void TestMethod2() { }
 
 				public static void NoAttributeMethod() { }
@@ -211,7 +211,7 @@ public sealed partial class ThatMethods
 		{
 			public sealed class AttributeTests
 			{
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenMethodsHaveBothAttributes_ShouldSucceed()
 				{
 					IEnumerable<MethodInfo> subject = new[]
@@ -221,13 +221,13 @@ public sealed partial class ThatMethods
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenMethodsHaveFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<MethodInfo> subject = new[]
@@ -237,13 +237,13 @@ public sealed partial class ThatMethods
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenMethodsHaveMatchingFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<MethodInfo> subject = new[]
@@ -253,14 +253,14 @@ public sealed partial class ThatMethods
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "Method1Value")
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "Method1Value")
 							.OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenMethodsHaveMatchingSecondAttribute_ShouldSucceed()
 				{
 					IEnumerable<MethodInfo> subject = new[]
@@ -270,14 +270,14 @@ public sealed partial class ThatMethods
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "NonExistent")
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "NonExistent")
 							.OrHave<BarAttribute>(attr => attr.Name == "bar");
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenMethodsHaveNeitherAttribute_ShouldFail()
 				{
 					IEnumerable<MethodInfo> subject = new[]
@@ -287,13 +287,13 @@ public sealed partial class ThatMethods
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatMethods.Have.OrHave.AttributeTests.TestAttribute or ThatMethods.Have.OrHave.AttributeTests.BarAttribute,
+						             all have ThatMethods.Have.OrHave.AttributeTests.MarkerAttribute or ThatMethods.Have.OrHave.AttributeTests.BarAttribute,
 						             but it contained not matching methods
 
 						             Not matching items:
@@ -303,7 +303,7 @@ public sealed partial class ThatMethods
 						             """);
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WhenMethodsHaveSecondAttribute_ShouldSucceed()
 				{
 					IEnumerable<MethodInfo> subject = new[]
@@ -313,13 +313,13 @@ public sealed partial class ThatMethods
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+						await That(subject).Have<MarkerAttribute>().OrHave<BarAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();
 				}
 
-				[TUnit.Core.Test]
+				[Test]
 				public async Task WithPredicate_WhenMethodsHaveNotMatchingAttribute_ShouldFail()
 				{
 					IEnumerable<MethodInfo> subject = new[]
@@ -329,14 +329,14 @@ public sealed partial class ThatMethods
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue")
+						await That(subject).Have<MarkerAttribute>(attr => attr.Value == "WrongValue")
 							.OrHave<BarAttribute>(attr => attr.Name == "wrong");
 					}
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all have ThatMethods.Have.OrHave.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue" or ThatMethods.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
+						             all have ThatMethods.Have.OrHave.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue" or ThatMethods.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
 						             but it contained not matching methods
 
 						             Not matching items:
@@ -347,7 +347,7 @@ public sealed partial class ThatMethods
 				}
 
 				[AttributeUsage(AttributeTargets.Method)]
-				private class TestAttribute : Attribute
+				private class MarkerAttribute : Attribute
 				{
 					public string Value { get; set; } = "";
 				}
@@ -361,13 +361,13 @@ public sealed partial class ThatMethods
 				// ReSharper disable UnusedMember.Local
 				private class TestClass
 				{
-					[Test(Value = "Method1Value")]
+					[Marker(Value = "Method1Value")]
 					public static void TestMethod1() { }
 
 					[Bar(Name = "bar")]
 					public static void BarMethod() { }
 
-					[Test(Value = "BothValue")]
+					[Marker(Value = "BothValue")]
 					[Bar(Name = "both")]
 					public static void BothMethod() { }
 
@@ -379,7 +379,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenMethodsDoNotHaveAttribute_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subjects = new[]
@@ -389,13 +389,13 @@ public sealed partial class ThatMethods
 
 				async Task Act()
 				{
-					await That(subjects).DoesNotComplyWith(they => they.Have<TestAttribute>());
+					await That(subjects).DoesNotComplyWith(they => they.Have<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenMethodsDoNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subjects = new[]
@@ -406,13 +406,13 @@ public sealed partial class ThatMethods
 				async Task Act()
 				{
 					await That(subjects).DoesNotComplyWith(they
-						=> they.Have<TestAttribute>(attr => attr.Value == "NonExistent"));
+						=> they.Have<MarkerAttribute>(attr => attr.Value == "NonExistent"));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[TUnit.Core.Test]
+			[Test]
 			public async Task WhenMethodsHaveAttribute_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subjects = new[]
@@ -423,13 +423,13 @@ public sealed partial class ThatMethods
 				async Task Act()
 				{
 					await That(subjects).DoesNotComplyWith(they
-						=> they.Have<TestAttribute>().OrHave<TestAttribute>(x => x.Value == "foo"));
+						=> they.Have<MarkerAttribute>().OrHave<MarkerAttribute>(x => x.Value == "foo"));
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
-					             not all have ThatMethods.Have.NegatedTests.TestAttribute or ThatMethods.Have.NegatedTests.TestAttribute matching x => x.Value == "foo",
+					             not all have ThatMethods.Have.NegatedTests.MarkerAttribute or ThatMethods.Have.NegatedTests.MarkerAttribute matching x => x.Value == "foo",
 					             but it only contained matching methods
 
 					             Collection:
@@ -440,7 +440,7 @@ public sealed partial class ThatMethods
 			}
 
 			[AttributeUsage(AttributeTargets.Method)]
-			private class TestAttribute : Attribute
+			private class MarkerAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
 			}
@@ -448,7 +448,7 @@ public sealed partial class ThatMethods
 			// ReSharper disable UnusedMember.Local
 			private class TestClass
 			{
-				[Test(Value = "Method1Value")]
+				[Marker(Value = "Method1Value")]
 				public static void TestMethod1() { }
 
 				public static void NoAttributeMethod() { }
