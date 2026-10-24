@@ -17,6 +17,10 @@
 		</PackageReference>
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Update="ThatSnapshot.MatchesSnapshot.DiskStoreTests.*.awexpect-snapshot.*" DependentUpon="ThatSnapshot.MatchesSnapshot.DiskStoreTests.cs"/>
+	</ItemGroup>
+
 	<!-- A project reference does not import the build targets of the package, so they are imported here. -->
 	<Import Project="$(MSBuildThisFileDirectory)../../Source/aweXpect.Snapshots/buildTransitive/aweXpect.Snapshots.targets"/>
 
