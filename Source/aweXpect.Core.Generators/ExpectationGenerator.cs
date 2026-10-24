@@ -205,26 +205,16 @@ public class ExpectationGenerator : IIncrementalGenerator
 			return signature.FailCollection($"the name '{name}' is not a valid method name");
 		}
 
-		if (expectationText.Contains("{not}") || pluralExpectationText.Contains("{not}"))
+		if (GetCollectionTextProblem(expectationText, pluralExpectationText, signature.GetParameterNames(),
+			    out EquatableArray<TextPart> text, out EquatableArray<TextPart> pluralText) is { } textProblem)
 		{
-			return signature.FailCollection(
-				"the expectation text contains '{not}', but the quantifier carries the negation");
-		}
-
-		if (!TryParseText(expectationText.Trim(), signature.GetParameterNames(),
-			    out EquatableArray<TextPart> text, out string? unknownPlaceholder) ||
-		    !TryParseText(pluralExpectationText.Trim(), signature.GetParameterNames(),
-			    out EquatableArray<TextPart> pluralText, out unknownPlaceholder))
-		{
-			return signature.FailCollection(
-				$"the placeholder '{{{unknownPlaceholder}}}' names no parameter of the expectation");
+			return signature.FailCollection(textProblem);
 		}
 
 		string? negatedName = GetNamedArgument<string>(attribute, "NegatedName");
-		if (negatedName is not null && (!SyntaxFacts.IsValidIdentifier(negatedName) || negatedName == name))
+		if (GetCollectionNegatedNameProblem(name, negatedName) is { } negatedNameProblem)
 		{
-			return signature.FailCollection(
-				$"the negated name '{negatedName}' is not a valid method name that differs from the name");
+			return signature.FailCollection(negatedNameProblem);
 		}
 
 		string? formattedItem = GetNamedArgument<string>(attribute, "FormattedItem");
@@ -403,6 +393,35 @@ public class ExpectationGenerator : IIncrementalGenerator
 			    parameterNames, out negatedText, out unknownPlaceholder))
 		{
 			return $"the placeholder '{{{unknownPlaceholder}}}' names no parameter of the expectation";
+		}
+
+		return null;
+	}
+
+	private static string? GetCollectionTextProblem(string expectationText, string pluralExpectationText,
+		List<string> parameterNames, out EquatableArray<TextPart> text, out EquatableArray<TextPart> pluralText)
+	{
+		text = default;
+		pluralText = default;
+		if (expectationText.Contains("{not}") || pluralExpectationText.Contains("{not}"))
+		{
+			return "the expectation text contains '{not}', but the quantifier carries the negation";
+		}
+
+		if (!TryParseText(expectationText.Trim(), parameterNames, out text, out string? unknownPlaceholder) ||
+		    !TryParseText(pluralExpectationText.Trim(), parameterNames, out pluralText, out unknownPlaceholder))
+		{
+			return $"the placeholder '{{{unknownPlaceholder}}}' names no parameter of the expectation";
+		}
+
+		return null;
+	}
+
+	private static string? GetCollectionNegatedNameProblem(string name, string? negatedName)
+	{
+		if (negatedName is not null && (!SyntaxFacts.IsValidIdentifier(negatedName) || negatedName == name))
+		{
+			return $"the negated name '{negatedName}' is not a valid method name that differs from the name";
 		}
 
 		return null;

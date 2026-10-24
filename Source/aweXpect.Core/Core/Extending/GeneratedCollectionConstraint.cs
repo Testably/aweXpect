@@ -116,23 +116,38 @@ public abstract class GeneratedCollectionConstraint<TCollection, TItem>(
 			}
 
 			hasItems = true;
-			if (result.Reason is { } reason)
+			if (RecordAndTryCompleteEarly(item, result, readsAllItems))
 			{
-				Record(item, new PredicateResult.UnansweredItem(item, reason));
-				CompleteEarly();
-				return this;
-			}
-
-			Record(item, result.Outcome == Outcome.Success);
-			if (!readsAllItems && IsDetermined)
-			{
-				CompleteEarly();
 				return this;
 			}
 		}
 
 		Complete();
 		return this;
+	}
+
+	/// <summary>
+	///     Records the <paramref name="result" /> for the <paramref name="item" /> and completes the evaluation early,
+	///     when the item is unanswered or, unless <paramref name="readsAllItems" />, the outcome is determined.
+	/// </summary>
+	/// <returns><see langword="true" />, when the evaluation is complete.</returns>
+	private bool RecordAndTryCompleteEarly(TItem item, PredicateResult result, bool readsAllItems)
+	{
+		if (result.Reason is { } reason)
+		{
+			Record(item, new PredicateResult.UnansweredItem(item, reason));
+			CompleteEarly();
+			return true;
+		}
+
+		Record(item, result.Outcome == Outcome.Success);
+		if (!readsAllItems && IsDetermined)
+		{
+			CompleteEarly();
+			return true;
+		}
+
+		return false;
 	}
 
 	/// <summary>
