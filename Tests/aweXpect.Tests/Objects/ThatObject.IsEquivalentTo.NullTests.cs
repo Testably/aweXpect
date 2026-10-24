@@ -36,7 +36,7 @@ public sealed partial class ThatObject
 					{
 						// Only compiles when the generic overload is selected.
 						EquivalencyOptions<OuterClass> typedOptions = o;
-						return typedOptions.Ignoring(memberPath => memberPath == "Value");
+						return typedOptions.IgnoringMembers(memberPath => memberPath == "Value");
 					});
 
 				await That(Act).DoesNotThrow();

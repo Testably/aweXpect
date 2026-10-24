@@ -56,7 +56,7 @@ Verify every review finding against the code before changing anything. If you di
 ### aweXpect and aweXpect.Core
 
 1. **Readable both ways.** A negatable expectation has its natural negation next to it (same file, same constraint), and a negated expectation never passes on a null subject or an undecided outcome.
-2. **One meaning per option word.** `Ignoring…` relaxes a check, `As…` changes the match type, `Using` supplies a comparer, `Within` sets a tolerance or a timeout; options chain in any order.
+2. **One meaning per option word.** `Ignoring…` relaxes a check, `As…` changes the match type, `Using` supplies a comparer, `Within` sets a tolerance or a timeout, `Including…` and `Limiting…` widen or bound the scope of a comparison instead of relaxing it; options chain in any order.
 3. **Messages follow the message conventions.** The expectation reads in the present tense, the result starts with "it" in the past tense, values go through the formatter, and tests pin the complete message.
 4. **Subjects keep their type.** Reference subjects are nullable, value types get a nullable twin, methods on base types are generic over the subject so chaining keeps the concrete type; property checks offer a direct overload and a property result, collection quantifiers read as plural sentences; every parameter or property that hands out a subject for further expectations (nested `Action<…>` expectations, `Which`, `Whose…`) uses `IThatSubject<T>`, so that `Is<TType>()` and the other type checks are available everywhere.
 5. **Uniform argument handling.** Arguments are validated eagerly, expectations are marked `[GuaranteesNotNull]`, and caller expressions are captured where they make the message readable.

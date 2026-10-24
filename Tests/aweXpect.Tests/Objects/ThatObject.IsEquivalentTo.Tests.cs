@@ -239,7 +239,7 @@ public sealed partial class ThatObject
 
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o
-						.Ignoring((memberPath, memberType)
+						.IgnoringMembers((memberPath, memberType)
 							=> memberPath.EndsWith("IntValue") && memberType == typeof(int)));
 
 				await That(Act).DoesNotThrow();
@@ -267,7 +267,7 @@ public sealed partial class ThatObject
 
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o
-						.Ignoring(memberPath => memberPath == "Inner.IntValue"));
+						.IgnoringMembers(memberPath => memberPath == "Inner.IntValue"));
 
 				await That(Act).DoesNotThrow();
 			}
@@ -321,7 +321,7 @@ public sealed partial class ThatObject
 
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o
-						.Ignoring(memberType => memberType == typeof(int)));
+						.IgnoringMembers(memberType => memberType == typeof(int)));
 
 				await That(Act).DoesNotThrow();
 			}
