@@ -13,7 +13,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			int[] actual = [3, 2, 4, 1, 5,];
 			List<int> expected = [1, 4, 3, 2, 5,];
-			EquivalencyMatchType sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
 
 			bool result = await AreConsideredEqual(sut, actual, expected);
 
@@ -25,7 +25,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			List<int> actual = [1, 5, 3, 4, 2,];
 			int[] expected = [5, 4, 3, 2, 1,];
-			EquivalencyMatchType sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
 
 			bool result = await AreConsideredEqual(sut, actual, expected);
 
@@ -37,7 +37,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			int[] actual = [1, 4, 3, 2,];
 			List<int> expected = [1, 5, 3, 4, 2,];
-			EquivalencyMatchType sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
 
 			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
@@ -56,7 +56,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			int[] actual = [1, 5, 4, 3, 2,];
 			List<int> expected = [1, 3, 2, 4,];
-			EquivalencyMatchType sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
 
 			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
@@ -77,7 +77,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			int[] actual = [1, 2, 3, 4, 5,];
 			List<int> expected = [1, 5, 2, 3, 4,];
-			EquivalencyMatchType sut = new(new EquivalencyOptions().IgnoringCollectionOrder(ignoreCollectionOrder));
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions().IgnoringCollectionOrder(ignoreCollectionOrder));
 
 			bool result = await AreConsideredEqual(sut, actual, expected);
 

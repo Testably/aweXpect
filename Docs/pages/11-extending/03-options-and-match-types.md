@@ -163,35 +163,33 @@ there are none.
 ## Custom match types
 
 `IsEqualTo` compares two values with `Equals`, unless the caller chooses another comparison, e.g. with `.Equivalent()`.
-You can offer a comparison of your own: derive from `ObjectMatchType` and set it on the options of the result with
-`SetMatchType`, passing the name of your option, so that combining it with another comparison throws. For example, two
-tracks with the same title can count as equal:
+You can offer a comparison of your own: derive from `ObjectMatchType<TSubject>` and set it on the options of the result
+with `SetMatchType`, passing the name of your option, so that combining it with another comparison throws. For example,
+two tracks with the same title can count as equal:
 
 ```csharp
 public static TSelf ByTitle<TSelf, TElement>(this IObjectEqualityResult<TSelf, TElement> result)
     where TSelf : IObjectEqualityResult<TSelf, TElement>
 {
-    result.Options.SetMatchType(new ByTitleMatchType(), nameof(ByTitle));
+    result.Options.SetMatchType(new ByTitleMatchType<TElement>(), nameof(ByTitle));
     return (TSelf)result;
 }
 
-private sealed class ByTitleMatchType : ObjectMatchType
+private sealed class ByTitleMatchType<TSubject> : ObjectMatchType<TSubject>
 {
     private static readonly ByTitleMatcher Matcher = new();
 
     public override MatchPhrase Phrase { get; } = MatchPhrase.Being("titled like").WithName(" by title");
 
-    public override ObjectMatcher ForEvaluation(MatchEnvironment environment) => Matcher;
+    public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment) => Matcher;
 
-    private sealed class ByTitleMatcher : ObjectMatcher
+    private sealed class ByTitleMatcher : ObjectMatcher<TSubject, Track>
     {
-        public override ValueTask<MatchResult> Match<TActual, TExpected>(TActual actual, TExpected expected)
-            => new(MatchResult.From(actual is Track a && expected is Track e
-                ? a.Title == e.Title
-                : actual is null && expected is null));
+        public override ValueTask<MatchResult> Match(TSubject actual, Track expected)
+            => new(MatchResult.From(actual is Track track && track.Title == expected.Title));
 
-        public override string GetFailure(string it, ExpectationGrammars grammars, object? actual,
-            object? expected, MatchResult result, string? indentation)
+        public override string GetFailure(string it, ExpectationGrammars grammars, TSubject? actual,
+            Track expected, MatchResult result, string? indentation)
         {
             string verb = grammars.IsPlural() && it != "it" ? " were" : " was";
             return $"{it}{verb} titled {Formatter.Format((actual as Track)?.Title)}";
@@ -207,8 +205,11 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
 ```
 
 - The match type is configured once and serves every evaluation of the expectation. `ForEvaluation` creates the
-  `ObjectMatcher` for one evaluation, with the context and the cancellation of the evaluation in the
+  `ObjectMatcher<TSubject>` for one evaluation, with the context and the cancellation of the evaluation in the
   `MatchEnvironment`. A matcher without state is shared, as above, so that an evaluation allocates nothing.
+- `ObjectMatcher<TSubject, TExpected>` compares with expected values of a known type, e.g. a `Track`, and an expected
+  value of another type never matches. Derive from `ObjectMatcher<TSubject>` instead when the type of the expected
+  value varies, e.g. an anonymous object for an equivalency, and implement the generic `Match<TExpected>`.
 - `Match` compares two values and returns a `MatchResult`: `MatchResult.Match`, `MatchResult.NoMatch`, or
   `MatchResult.NotComparable(reason)` for a subject that it cannot compare at all. The expectation and its negation then
   both fail, with the reason as the result. Like
@@ -262,7 +263,7 @@ When the result text spans several lines, indent the lines after the first by th
 `FormattingOptions.Indented(indentation)` for a formatted value, so that it stays aligned inside `Expect.ThatAll`.
 
 An `ObjectEqualityOptions<T>` compares like `IsEquivalentTo` with
-`SetMatchType(new EquivalencyMatchType(options), "Equivalent")`. A constraint compares with the options that
+`SetMatchType(new EquivalencyMatchType<T>(options), "Equivalent")`. A constraint compares with the options that
 `ForEvaluation(context, cancellationToken)` returns for its evaluation, so that the timeout and the cancellation of the
 evaluation also end the expectations of an `It.Is…` in the expected object. It also appends its contexts from these
 options, as only they know what the comparisons found, e.g. a member to ignore that matched no member.

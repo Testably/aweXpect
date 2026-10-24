@@ -15,7 +15,7 @@ namespace aweXpect.Options;
 internal sealed class ItemEqualityWithToleranceOptions<TSubject, TTolerance>
 	: ObjectEqualityWithToleranceOptions<TSubject, TTolerance>, IHasDefaultMatchType
 {
-	private readonly ObjectMatchType _defaultMatchType;
+	private readonly ObjectMatchType<TSubject> _defaultMatchType;
 
 	public ItemEqualityWithToleranceOptions(Func<TSubject, TSubject, TTolerance, bool> isWithinTolerance,
 		Func<TTolerance, string>? toString = null, Func<TTolerance>? defaultTolerance = null)

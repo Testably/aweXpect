@@ -13,7 +13,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			int[] actual = [1, 2, 3, 4, 5,];
 			List<int> expected = [1, 2, 3, 4, 5,];
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			bool result = await AreConsideredEqual(sut, actual, expected);
 
@@ -25,7 +25,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			List<int> actual = [1, 2, 3, 4, 5,];
 			int[] expected = [1, 2, 3, 4, 5,];
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			bool result = await AreConsideredEqual(sut, actual, expected);
 
@@ -37,7 +37,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			int[] actual = [1, 2, 3, 4,];
 			List<int> expected = [1, 2, 3, 4, 5,];
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
@@ -55,7 +55,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			int[] actual = [1, 2, 3, 4, 5,];
 			List<int> expected = [1, 2, 3, 4,];
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
@@ -73,7 +73,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			int[] actual = [1, 2, 3, 4, 5,];
 			List<int> expected = [1, 5, 2, 3, 4,];
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;

@@ -4,7 +4,7 @@ using aweXpect.Core.Helpers;
 namespace aweXpect.Core;
 
 /// <summary>
-///     The result of comparing two values with a <see cref="StringMatcher" /> or an <see cref="ObjectMatcher" />.
+///     The result of comparing two values with a <see cref="StringMatcher" /> or an <see cref="ObjectMatcher{TSubject}" />.
 /// </summary>
 /// <remarks>
 ///     A match and a plain mismatch allocate nothing. Only a mismatch that has to remember why it failed carries a

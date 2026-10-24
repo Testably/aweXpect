@@ -7,7 +7,7 @@ namespace aweXpect.Core;
 /// <summary>
 ///     The evaluation for which a match type creates its matcher, see
 ///     <see cref="StringMatchType.ForEvaluation(MatchEnvironment, StringMatchSettings)" /> and
-///     <see cref="ObjectMatchType.ForEvaluation(MatchEnvironment)" />.
+///     <see cref="ObjectMatchType{TSubject}.ForEvaluation(MatchEnvironment)" />.
 /// </summary>
 public readonly struct MatchEnvironment
 {

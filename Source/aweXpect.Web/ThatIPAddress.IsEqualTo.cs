@@ -105,7 +105,8 @@ public static partial class ThatIPAddress
 				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected,
+				_matchResult, indentation));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalExpectation(stringBuilder, indentation);
@@ -114,7 +115,7 @@ public static partial class ThatIPAddress
 			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
-	private sealed class IgnoringIPv4MappedToIPv6MatchType : ObjectMatchType
+	private sealed class IgnoringIPv4MappedToIPv6MatchType : ObjectMatchType<IPAddress?>
 	{
 		public static readonly IgnoringIPv4MappedToIPv6MatchType Instance = new();
 		private static readonly Matcher SharedMatcher = new();
@@ -125,16 +126,16 @@ public static partial class ThatIPAddress
 
 		public override MatchPhrase Phrase => SharedPhrase;
 
-		public override ObjectMatcher ForEvaluation(MatchEnvironment environment)
+		public override ObjectMatcher<IPAddress?> ForEvaluation(MatchEnvironment environment)
 			=> SharedMatcher;
 
 		private static IPAddress? Normalize(IPAddress? address)
 			=> address is { IsIPv4MappedToIPv6: true, } ? address.MapToIPv4() : address;
 
-		private sealed class Matcher : ObjectMatcher
+		private sealed class Matcher : ObjectMatcher<IPAddress?, IPAddress?>
 		{
-			public override ValueTask<MatchResult> Match<TActual, TExpected>(TActual actual, TExpected expected)
-				=> new(MatchResult.From(Equals(Normalize(actual as IPAddress), Normalize(expected as IPAddress))));
+			public override ValueTask<MatchResult> Match(IPAddress? actual, IPAddress? expected)
+				=> new(MatchResult.From(Equals(Normalize(actual), Normalize(expected))));
 		}
 	}
 }

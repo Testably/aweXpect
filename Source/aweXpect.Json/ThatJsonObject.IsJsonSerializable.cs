@@ -88,7 +88,7 @@ public static partial class ThatJsonObject
 			: callback(Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get());
 
 	/// <remarks>
-	///     Compares through <see cref="ObjectEqualityOptions{TSubject}" /> with an <see cref="EquivalencyMatchType" />
+	///     Compares through <see cref="ObjectEqualityOptions{TSubject}" /> with an <see cref="EquivalencyMatchType{TSubject}" />
 	///     like <c>IsEquivalentTo</c>, so that the comparison is part of the evaluation and the failure lists the
 	///     equivalency options with a hint for every member to ignore that matched no member.
 	/// </remarks>
@@ -143,7 +143,7 @@ public static partial class ThatJsonObject
 		}
 
 		private static ObjectEqualityOptions<object?> CreateEqualityOptions(EquivalencyOptions options)
-			=> new ObjectEqualityOptions<object?>().SetMatchType(new EquivalencyMatchType(options), "Equivalent");
+			=> new ObjectEqualityOptions<object?>().SetMatchType(new EquivalencyMatchType<object?>(options), "Equivalent");
 
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> _evaluationOptions?.AppendContexts(contexts);

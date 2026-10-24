@@ -85,7 +85,7 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		Func<TTolerance, string> toString,
 		Func<TTolerance, TTolerance, TTolerance>? absoluteTolerance = null,
 		string unit = "")
-		: ObjectMatchType
+		: ObjectMatchType<TSubject>
 	{
 		private WithinMatcher? _matcher;
 
@@ -100,7 +100,7 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		///     A default tolerance can be customized, so it is read once for each evaluation, while a specified tolerance
 		///     is the same for every evaluation.
 		/// </remarks>
-		public override ObjectMatcher ForEvaluation(MatchEnvironment environment)
+		public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
 			=> isDefault
 				? new WithinMatcher(this, tolerance())
 				: _matcher ??= new WithinMatcher(this, tolerance());
@@ -127,21 +127,24 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 
 		#endregion
 
-		private sealed class WithinMatcher(WithinMatchType matchType, TTolerance tolerance) : ObjectMatcher
+		/// <remarks>
+		///     A value that is not a <typeparamref name="TSubject" /> never matches.
+		/// </remarks>
+		private sealed class WithinMatcher(WithinMatchType matchType, TTolerance tolerance)
+			: ObjectMatcher<TSubject, TSubject>
 		{
 			/// <inheritdoc />
-			public override ValueTask<MatchResult> Match<TActual, TExpected>(TActual actual, TExpected expected)
+			public override ValueTask<MatchResult> Match(TSubject actual, TSubject expected)
 				=> new(MatchResult.From(IsEqual(actual, expected)));
 
-			private bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
+			private bool IsEqual(TSubject actual, TSubject expected)
 			{
-				if (actual is null && expected is null)
+				if (actual is null || expected is null)
 				{
-					return true;
+					return actual is null && expected is null;
 				}
 
-				return actual is TSubject typedActual && expected is TSubject typedExpected &&
-				       matchType.IsWithinTolerance(typedActual, typedExpected, ToleranceFor(typedExpected));
+				return matchType.IsWithinTolerance(actual, expected, ToleranceFor(expected));
 			}
 
 			private TTolerance ToleranceFor(TSubject expected)

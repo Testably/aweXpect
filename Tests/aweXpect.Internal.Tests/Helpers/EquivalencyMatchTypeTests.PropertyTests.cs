@@ -18,7 +18,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			{
 				MyValue = "foo",
 			};
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			bool result = await AreConsideredEqual(sut, actual, expected);
 
@@ -32,7 +32,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			{
 				MyValue = "foo",
 			};
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			bool result = await AreConsideredEqual(sut, actual, new
 			{
@@ -56,7 +56,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			{
 				MyValue = expectedValue,
 			};
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
@@ -82,7 +82,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			{
 				MyValue = "bar",
 			};
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
@@ -102,7 +102,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			MyClassWithProtectedProperties actual = new(1, 3);
 			MyClassWithProtectedProperties expected = new(2, 3);
-			EquivalencyMatchType sut = new(new EquivalencyOptions
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions
 			{
 				Properties = IncludeMembers.Internal,
 			});
@@ -129,7 +129,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			MyClassWithProperties actual = new(1, actualInternalValue, 3);
 			MyClassWithProperties expected = new(2, expectedInternalValue, 4);
-			EquivalencyMatchType sut = new(new EquivalencyOptions
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions
 			{
 				Properties = IncludeMembers.Internal,
 			});
@@ -155,7 +155,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			MyClassWithProtectedProperties actual = new(1, 3);
 			MyClassWithProtectedProperties expected = new(1, 4);
-			EquivalencyMatchType sut = new(new EquivalencyOptions
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions
 			{
 				Properties = IncludeMembers.Internal,
 			});
@@ -176,7 +176,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			MyClassWithProperties actual = new(actualPublicValue, actualInternalValue, 3);
 			MyClassWithProperties expected = new(expectedPublicValue, expectedInternalValue, 4);
-			EquivalencyMatchType sut = new(new EquivalencyOptions
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions
 			{
 				Properties = IncludeMembers.Public | IncludeMembers.Internal,
 			});
@@ -195,7 +195,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			MyClassWithProperties actual = new(actualPublicValue, 1, 3);
 			MyClassWithProperties expected = new(expectedPublicValue, 2, 4);
-			EquivalencyMatchType sut = new(new EquivalencyOptions
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions
 			{
 				Properties = IncludeMembers.Public,
 			});

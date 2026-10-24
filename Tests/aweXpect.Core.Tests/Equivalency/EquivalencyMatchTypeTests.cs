@@ -18,7 +18,7 @@ public sealed class EquivalencyMatchTypeTests
 	[Test]
 	public async Task AppendContexts_AfterAFailedComparisonWithAMapping_ShouldNameItsUnmatchedMember()
 	{
-		ObjectMatcher sut = new EquivalencyMatchType(new EquivalencyOptions().Mapping("Value", "Valeu"))
+		ObjectMatcher<object> sut = new EquivalencyMatchType<object>(new EquivalencyOptions().Mapping("Value", "Valeu"))
 			.ForEvaluation(CreateEnvironment());
 		await sut.MatchWithExplanation(new Dummy
 		{
@@ -41,7 +41,7 @@ public sealed class EquivalencyMatchTypeTests
 	[Test]
 	public async Task AppendContexts_AfterAFailedDecidingComparison_ShouldNameTheMembersToIgnore()
 	{
-		ObjectMatcher sut = new EquivalencyMatchType(IgnoringMember("Valeu")).ForEvaluation(CreateEnvironment());
+		ObjectMatcher<object> sut = new EquivalencyMatchType<object>(IgnoringMember("Valeu")).ForEvaluation(CreateEnvironment());
 		await sut.Match(new Dummy
 		{
 			Value = 1,
@@ -63,7 +63,7 @@ public sealed class EquivalencyMatchTypeTests
 	[Test]
 	public async Task AppendContexts_AfterAFailedDecidingComparisonWithAMatchedMapping_ShouldNotNameIt()
 	{
-		ObjectMatcher sut = new EquivalencyMatchType(new EquivalencyOptions().Mapping("Missing", "Value"))
+		ObjectMatcher<object> sut = new EquivalencyMatchType<object>(new EquivalencyOptions().Mapping("Missing", "Value"))
 			.ForEvaluation(CreateEnvironment());
 		MatchResult matchResult = await sut.Match(new Dummy
 		{
@@ -86,7 +86,7 @@ public sealed class EquivalencyMatchTypeTests
 	[Test]
 	public async Task AppendContexts_AfterAFailedDecidingComparisonWithRegisteredOptions_ShouldNameTheMembersToIgnore()
 	{
-		ObjectMatcher sut = new EquivalencyMatchType(new EquivalencyOptions().For<Dummy>(o => o with
+		ObjectMatcher<object> sut = new EquivalencyMatchType<object>(new EquivalencyOptions().For<Dummy>(o => o with
 		{
 			MembersToIgnore = [new MemberToIgnore.ByName("Valeu"),],
 		})).ForEvaluation(CreateEnvironment());
@@ -113,7 +113,7 @@ public sealed class EquivalencyMatchTypeTests
 	[Test]
 	public async Task AppendContexts_AfterSeveralFailedComparisons_ShouldKeepTheSuggestionOfAnEarlierOne()
 	{
-		ObjectMatcher sut = new EquivalencyMatchType(IgnoringMember("Titel")).ForEvaluation(CreateEnvironment());
+		ObjectMatcher<object> sut = new EquivalencyMatchType<object>(IgnoringMember("Titel")).ForEvaluation(CreateEnvironment());
 		await sut.MatchWithExplanation(new Album
 		{
 			Title = "Abbey Road",
@@ -142,7 +142,7 @@ public sealed class EquivalencyMatchTypeTests
 	[Test]
 	public async Task AppendContexts_WhenEquivalent_ShouldNotNameTheMembersToIgnore()
 	{
-		ObjectMatcher sut = new EquivalencyMatchType(IgnoringMember("Valeu")).ForEvaluation(CreateEnvironment());
+		ObjectMatcher<object> sut = new EquivalencyMatchType<object>(IgnoringMember("Valeu")).ForEvaluation(CreateEnvironment());
 		await sut.MatchWithExplanation(new Dummy
 		{
 			Value = 1,
@@ -163,7 +163,7 @@ public sealed class EquivalencyMatchTypeTests
 	public async Task Constructor_WhenOptionsAreNull_ShouldThrowArgumentNullException()
 	{
 		void Act()
-			=> _ = new EquivalencyMatchType(null!);
+			=> _ = new EquivalencyMatchType<object>(null!);
 
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("equivalencyOptions").And
@@ -173,9 +173,9 @@ public sealed class EquivalencyMatchTypeTests
 	[Test]
 	public async Task ForEvaluation_ShouldKeepTheMembersToIgnoreOfEachEvaluationApart()
 	{
-		EquivalencyMatchType sut = new(IgnoringMember("Valeu"));
-		ObjectMatcher firstEvaluation = sut.ForEvaluation(CreateEnvironment());
-		ObjectMatcher secondEvaluation = sut.ForEvaluation(CreateEnvironment());
+		EquivalencyMatchType<object> sut = new(IgnoringMember("Valeu"));
+		ObjectMatcher<object> firstEvaluation = sut.ForEvaluation(CreateEnvironment());
+		ObjectMatcher<object> secondEvaluation = sut.ForEvaluation(CreateEnvironment());
 		await firstEvaluation.MatchWithExplanation(new Dummy
 		{
 			Value = 1,
@@ -204,7 +204,7 @@ public sealed class EquivalencyMatchTypeTests
 	[Arguments(2, false)]
 	public async Task Match_ShouldDecideWhetherTheObjectsAreEquivalent(int expectedValue, bool expectMatch)
 	{
-		ObjectMatcher sut = new EquivalencyMatchType(new EquivalencyOptions()).ForEvaluation(CreateEnvironment());
+		ObjectMatcher<object> sut = new EquivalencyMatchType<object>(new EquivalencyOptions()).ForEvaluation(CreateEnvironment());
 
 		MatchResult result = await sut.Match(new Dummy
 		{
@@ -222,7 +222,7 @@ public sealed class EquivalencyMatchTypeTests
 	[Test]
 	public async Task MatchWithExplanation_WhenNotEquivalent_ShouldExplainTheDifferences()
 	{
-		ObjectMatcher sut = new EquivalencyMatchType(new EquivalencyOptions()).ForEvaluation(CreateEnvironment());
+		ObjectMatcher<object> sut = new EquivalencyMatchType<object>(new EquivalencyOptions()).ForEvaluation(CreateEnvironment());
 
 		MatchResult result = await sut.MatchWithExplanation(new Dummy
 			{
@@ -248,7 +248,7 @@ public sealed class EquivalencyMatchTypeTests
 	public async Task Phrase_ShouldPrependTheItemNoun()
 	{
 		ObjectEqualityOptions<int> sut = new();
-		sut.SetMatchType(new EquivalencyMatchType(new EquivalencyOptions()), "Equivalent");
+		sut.SetMatchType(new EquivalencyMatchType<int>(new EquivalencyOptions()), "Equivalent");
 
 		string result = sut.GetItemExpectation("expected", "an item", "equal to");
 
@@ -260,7 +260,7 @@ public sealed class EquivalencyMatchTypeTests
 	public async Task Phrase_WithoutItemNoun_ShouldOnlyNameTheEquivalency()
 	{
 		ObjectEqualityOptions<int> sut = new();
-		sut.SetMatchType(new EquivalencyMatchType(new EquivalencyOptions()), "Equivalent");
+		sut.SetMatchType(new EquivalencyMatchType<int>(new EquivalencyOptions()), "Equivalent");
 
 		string result = sut.GetItemExpectation("expected", comparison: "equal to");
 
@@ -271,7 +271,7 @@ public sealed class EquivalencyMatchTypeTests
 	public async Task ToString_ShouldDescribeTheEquivalency()
 	{
 		ObjectEqualityOptions<int> options = new();
-		options.SetMatchType(new EquivalencyMatchType(new EquivalencyOptions()), "Equivalent");
+		options.SetMatchType(new EquivalencyMatchType<int>(new EquivalencyOptions()), "Equivalent");
 
 		string? result = options.ToString();
 
@@ -474,7 +474,7 @@ public sealed class EquivalencyMatchTypeTests
 			.Because("the failure is the same as the one of the built-in expectation");
 	}
 
-	private static async Task<string?> ContextOf(ObjectMatcher matcher)
+	private static async Task<string?> ContextOf(ObjectMatcher<object> matcher)
 	{
 		ResultContextCollector contexts = new();
 		matcher.AppendContexts(contexts);
@@ -518,7 +518,7 @@ public sealed class EquivalencyMatchTypeTests
 internal static class EquivalencyMatchTypeTestExtensions
 {
 	/// <summary>
-	///     An equivalency expectation of a Core-only extension, which uses the <see cref="EquivalencyMatchType" />.
+	///     An equivalency expectation of a Core-only extension, which uses the <see cref="EquivalencyMatchType{TSubject}" />.
 	/// </summary>
 	public static AndOrResult<TSubject, IThat<TSubject>> IsEquivalentToUsingMatchType<TSubject, TExpected>(
 		this IThat<TSubject> subject,
@@ -545,7 +545,7 @@ internal static class EquivalencyMatchTypeTestExtensions
 	{
 		ObjectEqualityOptions<TSubject> options = new();
 		options.SetMatchType(
-			new EquivalencyMatchType(equivalencyOptions
+			new EquivalencyMatchType<TSubject>(equivalencyOptions
 			                         ?? Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get()),
 			"Equivalent");
 		return options;

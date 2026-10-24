@@ -540,9 +540,10 @@ public class ObjectEqualityOptionsTests
 		public int Seconds { get; } = seconds;
 	}
 
-	private sealed class DummyMatchType : ObjectMatchType
+	private sealed class DummyMatchType : ObjectMatchType<object>
 	{
-		public override ObjectMatcher ForEvaluation(MatchEnvironment environment) => throw new NotSupportedException();
+		public override ObjectMatcher<object> ForEvaluation(MatchEnvironment environment)
+			=> throw new NotSupportedException();
 
 		public override MatchPhrase Phrase { get; } = MatchPhrase.EqualTo.WithName("dummy");
 	}

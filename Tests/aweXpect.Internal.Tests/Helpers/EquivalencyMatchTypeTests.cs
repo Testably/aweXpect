@@ -17,7 +17,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			{
 				MyValue = "foo",
 			};
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			bool result = await AreConsideredEqual(sut, actual, actual);
 
@@ -37,7 +37,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			};
 			actual.Nested = expected;
 			expected.Nested = actual;
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
@@ -61,7 +61,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			MyClass? actual = null;
 			MyClass? expected = null;
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			bool result = await AreConsideredEqual(sut, actual, expected);
 
@@ -73,7 +73,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			MyClass? actual = null;
 			MyClass expected = new();
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
@@ -90,7 +90,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			MyClass actual = new();
 			MyClass? expected = null;
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
@@ -103,14 +103,14 @@ public sealed partial class EquivalencyMatchTypeTests
 		}
 	}
 
-	private static ValueTask<bool> AreConsideredEqual<TActual, TExpected>(EquivalencyMatchType sut, TActual actual,
+	private static ValueTask<bool> AreConsideredEqual<TActual, TExpected>(EquivalencyMatchType<object?> sut, TActual actual,
 		TExpected expected)
-		=> new ObjectEqualityOptions<TActual>().SetMatchType(sut, "Equivalent").AreConsideredEqual(actual, expected);
+		=> new ObjectEqualityOptions<object?>().SetMatchType(sut, "Equivalent").AreConsideredEqual(actual, expected);
 
-	private static async Task<Explanation> ExplainAsync<TActual, TExpected>(EquivalencyMatchType sut, TActual actual,
+	private static async Task<Explanation> ExplainAsync<TActual, TExpected>(EquivalencyMatchType<object?> sut, TActual actual,
 		TExpected expected)
 	{
-		ObjectEqualityOptions<TActual> options = new ObjectEqualityOptions<TActual>().SetMatchType(sut, "Equivalent");
+		ObjectEqualityOptions<object?> options = new ObjectEqualityOptions<object?>().SetMatchType(sut, "Equivalent");
 		MatchResult result = await options.MatchWithExplanation(actual, expected);
 		return new Explanation(result.IsMatch,
 			(it, grammars, a, e) => options.GetExtendedFailure(it, grammars, a, e, result));

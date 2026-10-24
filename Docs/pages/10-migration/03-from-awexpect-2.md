@@ -201,8 +201,7 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   [null rule](../11-extending/02-constraints-and-results.md#null-subjects).
 - The element interfaces nested in `ThatEnumerable` and `ThatAsyncEnumerable` moved to the top level, e.g.
   `ThatEnumerable.IElements<TItem>` is now `IEnumerableElements<TItem>`.
-- A custom match type derives from `ObjectMatchType` or `StringMatchType` and creates a matcher for each evaluation,
-  whose `MatchResult` can fail both ways or explain a mismatch. See
-  [Custom match types](../11-extending/03-options-and-match-types.md#custom-match-types).
+- A custom `IObjectMatchType` implements `AppendContexts(…)` and `AreConsideredEqualWithExplanation(…)`, which takes
+  over `GetExtendedFailure`.
 - A customization group stores each value on its own. See
   [Customization values](../11-extending/07-customization-values.md#add-a-customization-group).

@@ -784,7 +784,7 @@ public sealed class ResultContextCollectorExtensionsTests
 	public async Task AddEqualityOptionsContexts_ShouldAddTheContextsOfTheMatchType()
 	{
 		ObjectEqualityOptions<int> options = new();
-		options.SetMatchType(new EquivalencyMatchType(new EquivalencyOptions()), "Equivalent");
+		options.SetMatchType(new EquivalencyMatchType<int>(new EquivalencyOptions()), "Equivalent");
 
 		async Task Act()
 			=> await That(1).ShowsContexts((contexts, _, _) => contexts.AddEqualityOptionsContexts(options));

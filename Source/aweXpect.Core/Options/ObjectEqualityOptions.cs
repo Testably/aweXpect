@@ -15,8 +15,6 @@ namespace aweXpect.Options;
 
 internal static class ObjectEqualityOptions
 {
-	internal static readonly ObjectMatchType EqualsMatch = new EqualsMatchType();
-
 	/// <summary>
 	///     Throws for a <paramref name="result" /> that could not compare the subject, so that every expectation and
 	///     every collection fails for it in both polarities, like for an exception of the caller's code.
@@ -26,16 +24,12 @@ internal static class ObjectEqualityOptions
 			? result
 			: throw new UserCodeException(new NotComparableException(result.NotComparableReason!, result.Cause));
 
-	internal sealed class EqualsMatchType : ObjectMatchType
+	/// <summary>
+	///     The comparison by <see cref="object.Equals(object)" />, which also considers numbers of different types equal
+	///     when they have the same value.
+	/// </summary>
+	internal static class EqualsMatchType
 	{
-		private static readonly EqualsMatcher Matcher = new();
-
-		#region IEquality Members
-
-		/// <inheritdoc />
-		public override ObjectMatcher ForEvaluation(MatchEnvironment environment)
-			=> Matcher;
-
 		internal static bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
 		{
 			if (actual is null && expected is null)
@@ -200,17 +194,28 @@ internal static class ObjectEqualityOptions
 				_ => false,
 			};
 #endif
+	}
+
+	/// <summary>
+	///     The match type that compares by <see cref="EqualsMatchType.IsEqual{TActual, TExpected}" />.
+	/// </summary>
+	internal sealed class EqualsMatchType<TSubject> : ObjectMatchType<TSubject>
+	{
+		internal static readonly EqualsMatchType<TSubject> Instance = new();
+		private static readonly EqualsMatcher Matcher = new();
 
 		/// <inheritdoc />
 		public override MatchPhrase Phrase => MatchPhrase.EqualTo;
 
-		#endregion
+		/// <inheritdoc />
+		public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
+			=> Matcher;
 
-		private sealed class EqualsMatcher : ObjectMatcher
+		private sealed class EqualsMatcher : ObjectMatcher<TSubject>
 		{
 			/// <inheritdoc />
-			public override ValueTask<MatchResult> Match<TActual, TExpected>(TActual actual, TExpected expected)
-				=> new(MatchResult.From(IsEqual(actual, expected)));
+			public override ValueTask<MatchResult> Match<TExpected>(TSubject actual, TExpected expected)
+				=> new(MatchResult.From(EqualsMatchType.IsEqual(actual, expected)));
 		}
 	}
 }
@@ -227,9 +232,9 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	///     A match type without state per evaluation returns the same matcher for every evaluation, so the options are
 	///     only copied for an evaluation that gets a matcher of its own.
 	/// </remarks>
-	private ObjectMatcher? _matcher;
+	private ObjectMatcher<TSubject>? _matcher;
 
-	private ObjectMatchType _matchType = ObjectEqualityOptions.EqualsMatch;
+	private ObjectMatchType<TSubject> _matchType = ObjectEqualityOptions.EqualsMatchType<TSubject>.Instance;
 	private string? _matchTypeOption;
 
 	/// <summary>
@@ -237,9 +242,9 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	/// </summary>
 	/// <remarks>
 	///     Only aweXpect.Core sets the match type, so that every option sets it through
-	///     <see cref="SetMatchType(ObjectMatchType, string)" /> and is checked to be specified only once.
+	///     <see cref="SetMatchType(ObjectMatchType{TSubject}, string)" /> and is checked to be specified only once.
 	/// </remarks>
-	protected ObjectMatchType MatchType
+	protected ObjectMatchType<TSubject> MatchType
 	{
 		get => _matchType;
 		private protected set
@@ -252,7 +257,7 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	/// <summary>
 	///     Whether the options compare by <see cref="object.Equals(object)" />.
 	/// </summary>
-	internal bool UsesEqualsMatch => _matchType == ObjectEqualityOptions.EqualsMatch;
+	internal bool UsesEqualsMatch => ReferenceEquals(_matchType, ObjectEqualityOptions.EqualsMatchType<TSubject>.Instance);
 
 	/// <inheritdoc />
 	/// <remarks>
@@ -281,7 +286,7 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	/// <summary>
 	///     Compares the <paramref name="actual" /> with the <paramref name="expected" /> value and returns the result,
 	///     from which
-	///     <see cref="GetExtendedFailure(string, ExpectationGrammars, object?, object?, MatchResult, string?)" />
+	///     <see cref="GetExtendedFailure{TExpected}(string, ExpectationGrammars, TSubject, TExpected, MatchResult, string?)" />
 	///     explains a failure.
 	/// </summary>
 	/// <remarks>
@@ -323,8 +328,8 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	///     The indentation for the lines after the first, when the failure text is part of a nested result, e.g. of an
 	///     expectation in <c>Expect.ThatAll</c>. Pass on the <c>indentation</c> of <c>AppendResult</c>.
 	/// </param>
-	public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected,
-		MatchResult result, string? indentation = null)
+	public string GetExtendedFailure<TExpected>(string it, ExpectationGrammars grammars, TSubject? actual,
+		TExpected expected, MatchResult result, string? indentation = null)
 		=> GetMatcher().GetFailure(it, grammars, actual, expected, result, indentation);
 
 	/// <summary>
@@ -348,8 +353,8 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 			return this;
 		}
 
-		ObjectMatcher matcher = _matchType.ForEvaluation(new MatchEnvironment(context, cancellationToken));
-		ObjectMatcher? current = Interlocked.CompareExchange(ref _matcher, matcher, null);
+		ObjectMatcher<TSubject> matcher = _matchType.ForEvaluation(new MatchEnvironment(context, cancellationToken));
+		ObjectMatcher<TSubject>? current = Interlocked.CompareExchange(ref _matcher, matcher, null);
 		return current is null || ReferenceEquals(current, matcher)
 			? this
 			: new ObjectEqualityOptions<TSubject>
@@ -363,9 +368,9 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	/// <summary>
 	///     Returns the matcher of the evaluation, or for a comparison outside an evaluation, a matcher without one.
 	/// </summary>
-	private ObjectMatcher GetMatcher()
+	private ObjectMatcher<TSubject> GetMatcher()
 	{
-		ObjectMatcher? matcher = _matcher;
+		ObjectMatcher<TSubject>? matcher = _matcher;
 		if (matcher is null)
 		{
 			matcher = _matchType.ForEvaluation(MatchEnvironment.WithoutEvaluation);
@@ -382,7 +387,7 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	/// <exception cref="InvalidOperationException">
 	///     Another option already specified how two objects are compared, or the same option was already specified.
 	/// </exception>
-	public ObjectEqualityOptions<TSubject> SetMatchType(ObjectMatchType matchType, string optionName)
+	public ObjectEqualityOptions<TSubject> SetMatchType(ObjectMatchType<TSubject> matchType, string optionName)
 	{
 		matchType.ThrowIfNull();
 		ThrowIfMatchTypeIsSpecified(optionName);

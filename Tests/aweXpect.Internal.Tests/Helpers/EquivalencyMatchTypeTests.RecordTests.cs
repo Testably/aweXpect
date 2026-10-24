@@ -12,7 +12,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			AnAlwaysEqualRecord actual = new(1);
 			AnAlwaysEqualRecord expected = new(2);
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
@@ -33,7 +33,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			ARecordWithValue actual = new(1);
 			ARecordWithValue expected = new(2);
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
@@ -53,7 +53,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			ARecordWithValue actual = new(1);
 			ARecordWithValue expected = new(1);
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			bool result = await AreConsideredEqual(sut, actual, expected);
 
@@ -65,7 +65,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			SomeRecord actual = new();
 			SomeOtherRecord expected = new();
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
@@ -85,7 +85,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			SomeRecord actual = new();
 			SomeRecord expected = new();
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			async Task Act() => await AreConsideredEqual(sut, actual, expected);
 

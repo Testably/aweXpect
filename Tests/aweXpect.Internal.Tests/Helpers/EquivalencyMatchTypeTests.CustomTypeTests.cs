@@ -14,7 +14,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			SomeWrapper actual = new(new SomeDerivedRecord([1, 2,]));
 			SomeWrapper expected = new(new SomeDerivedRecord([2, 1,]));
-			EquivalencyMatchType sut = new(new EquivalencyOptions().For<SomeBaseRecord>(o => o with
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions().For<SomeBaseRecord>(o => o with
 			{
 				IgnoreCollectionOrder = true,
 			}));
@@ -30,7 +30,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			SomeRecord actual = new(new SomeCustomRecord([1, 2,]), new SomeOtherRecord([1, 2,]));
 			SomeRecord expected = new(new SomeCustomRecord([2, 1,]), new SomeOtherRecord([2, 1,]));
-			EquivalencyMatchType sut = new(new EquivalencyOptions().For<SomeOtherRecord>(o => o with
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions().For<SomeOtherRecord>(o => o with
 			{
 				IgnoreCollectionOrder = true,
 			}));
@@ -57,7 +57,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			SomeRecord actual = new(new SomeCustomRecord([1, 2,]), new SomeOtherRecord([1, 2,]));
 			SomeRecord expected = new(new SomeCustomRecord([2, 1,]), new SomeOtherRecord([2, 1,]));
-			EquivalencyMatchType sut = new(new EquivalencyOptions());
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions());
 
 			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
@@ -89,7 +89,7 @@ public sealed partial class EquivalencyMatchTypeTests
 		{
 			SomeRecord actual = new(new SomeCustomRecord([1, 2,]), new SomeOtherRecord([1, 2,]));
 			SomeRecord expected = new(new SomeCustomRecord([2, 1,]), new SomeOtherRecord([2, 1,]));
-			EquivalencyMatchType sut = new(new EquivalencyOptions
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions
 			{
 				IgnoreCollectionOrder = true,
 			});
