@@ -204,17 +204,17 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
   .IgnoringCollectionOrder());
 ```
 
-| Option                                                                               | Effect                                           |
-|--------------------------------------------------------------------------------------|--------------------------------------------------|
-| [`IgnoringMember`](#ignoring-members-by-name)                                        | ignores members by name                          |
-| [`Ignoring`, `IgnoringFields`, `IgnoringProperties`](#ignoring-members-by-predicate) | ignores members by path and type                 |
-| [`IncludingFields`, `IncludingProperties`](#including-fields-and-properties)         | chooses which fields and properties are compared |
-| [`IgnoringCollectionOrder`](#ignoring-collection-order)                              | matches collection items without an order        |
-| [`Comparing<TActual, TExpected>`](#comparing-different-types-with-a-predicate)       | compares a pair of types with a predicate        |
-| [`Mapping`](#mapping-differently-named-members)                                      | compares differently named members               |
-| [`For<T>`](#per-type-options-with-fort)                                              | applies options to members of type `T` only      |
-| [`ComparisonType`](#comparing-by-value-or-by-members)                                | compares a type by value or by its members       |
-| [`LimitingRecursionDepth`](#limiting-the-recursion-depth)                            | changes the maximum recursion depth of 100       |
+| Option                                                                                      | Effect                                           |
+|---------------------------------------------------------------------------------------------|--------------------------------------------------|
+| [`IgnoringMember`](#ignoring-members-by-name)                                               | ignores members by name                          |
+| [`IgnoringMembers`, `IgnoringFields`, `IgnoringProperties`](#ignoring-members-by-predicate) | ignores members by path and type                 |
+| [`IncludingFields`, `IncludingProperties`](#including-fields-and-properties)                | chooses which fields and properties are compared |
+| [`IgnoringCollectionOrder`](#ignoring-collection-order)                                     | matches collection items without an order        |
+| [`Comparing<TActual, TExpected>`](#comparing-different-types-with-a-predicate)              | compares a pair of types with a predicate        |
+| [`Mapping`](#mapping-differently-named-members)                                             | compares differently named members               |
+| [`For<T>`](#per-type-options-with-fort)                                                     | applies options to members of type `T` only      |
+| [`ComparisonType`](#comparing-by-value-or-by-members)                                       | compares a type by value or by its members       |
+| [`LimitingRecursionDepth`](#limiting-the-recursion-depth)                                   | changes the maximum recursion depth of 100       |
 
 ### Ignoring members by name
 
@@ -231,28 +231,28 @@ depth, while `"ame"` or `"t.Name"` ignore nothing.
 
 ### Ignoring members by predicate
 
-There are three overloads of `Ignoring`, depending on which information you need:
+There are three overloads of `IgnoringMembers`, depending on which information you need:
 
 ```csharp
 // by member path and type
 await Expect.That(album).IsEquivalentTo(expected, o => o
-  .Ignoring((memberPath, memberType)
+  .IgnoringMembers((memberPath, memberType)
     => memberPath.EndsWith("PlayCount") && memberType == typeof(int)));
 
 // by member path only
 await Expect.That(album).IsEquivalentTo(expected, o => o
-  .Ignoring(memberPath => memberPath == "Artist.Name"));
+  .IgnoringMembers(memberPath => memberPath == "Artist.Name"));
 
 // by type only
 await Expect.That(album).IsEquivalentTo(expected, o => o
-  .Ignoring(memberType => memberType == typeof(DateTime)));
+  .IgnoringMembers(memberType => memberType == typeof(DateTime)));
 ```
 
 A field or property is matched by its declared type, with `Nullable<T>` unwrapped, so the last example also ignores a
 `DateTime?` member, but not an `object` member that holds a `DateTime`. A collection item or a dictionary value is
 matched by the runtime type of its value, or by `object` when it is `null`.
 
-Use `IgnoringFields` or `IgnoringProperties` instead of `Ignoring` to restrict a predicate to one kind of member.
+Use `IgnoringFields` or `IgnoringProperties` instead of `IgnoringMembers` to restrict a predicate to one kind of member.
 They take the same member path and type, and are never applied to collection elements, which are neither a field nor a
 property:
 

@@ -14,6 +14,9 @@ public static class EquivalencyOptionsExtensions
 	/// <summary>
 	///     Ignores the <paramref name="memberToIgnore" /> when checking for equivalency.
 	/// </summary>
+	/// <remarks>
+	///     To ignore all members matching a predicate, use <c>IgnoringMembers</c>.
+	/// </remarks>
 	public static TEquivalencyOptions IgnoringMember<TEquivalencyOptions>(
 		this TEquivalencyOptions options,
 		string memberToIgnore)
@@ -34,9 +37,14 @@ public static class EquivalencyOptionsExtensions
 	}
 
 	/// <summary>
-	///     Ignores members matching the <paramref name="predicate" /> when checking for equivalency.
+	///     Ignores all members whose path and type match the <paramref name="predicate" /> when checking for equivalency.
 	/// </summary>
-	public static TEquivalencyOptions Ignoring<TEquivalencyOptions>(
+	/// <remarks>
+	///     The <paramref name="predicate" /> receives the path of each member (e.g. <c>Artist.Name</c>) and its type.
+	///     To ignore members by their name, use
+	///     <see cref="IgnoringMember{TEquivalencyOptions}(TEquivalencyOptions, string)" />.
+	/// </remarks>
+	public static TEquivalencyOptions IgnoringMembers<TEquivalencyOptions>(
 		this TEquivalencyOptions options,
 		Func<string, Type, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -55,9 +63,14 @@ public static class EquivalencyOptionsExtensions
 	}
 
 	/// <summary>
-	///     Ignores members matching the <paramref name="predicate" /> when checking for equivalency.
+	///     Ignores all members whose path matches the <paramref name="predicate" /> when checking for equivalency.
 	/// </summary>
-	public static TEquivalencyOptions Ignoring<TEquivalencyOptions>(
+	/// <remarks>
+	///     The <paramref name="predicate" /> receives the path of each member (e.g. <c>Artist.Name</c>).
+	///     To ignore members by their name, use
+	///     <see cref="IgnoringMember{TEquivalencyOptions}(TEquivalencyOptions, string)" />.
+	/// </remarks>
+	public static TEquivalencyOptions IgnoringMembers<TEquivalencyOptions>(
 		this TEquivalencyOptions options,
 		Func<string, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -77,9 +90,9 @@ public static class EquivalencyOptionsExtensions
 	}
 
 	/// <summary>
-	///     Ignores members matching the <paramref name="predicate" /> when checking for equivalency.
+	///     Ignores all members whose type matches the <paramref name="predicate" /> when checking for equivalency.
 	/// </summary>
-	public static TEquivalencyOptions Ignoring<TEquivalencyOptions>(
+	public static TEquivalencyOptions IgnoringMembers<TEquivalencyOptions>(
 		this TEquivalencyOptions options,
 		Func<Type, bool> predicate,
 		[CallerArgumentExpression("predicate")]
