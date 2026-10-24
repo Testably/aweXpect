@@ -443,6 +443,7 @@ namespace aweXpect.Core
     }
     public static class ReflectionFallback
     {
+        public const string SwitchName = "aweXpect.ReflectionFallback.IsSupported";
         [System.Diagnostics.CodeAnalysis.FeatureGuard(typeof(System.Diagnostics.CodeAnalysis.RequiresDynamicCodeAttribute))]
         [System.Diagnostics.CodeAnalysis.FeatureGuard(typeof(System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute))]
         [System.Diagnostics.CodeAnalysis.FeatureSwitchDefinition("aweXpect.ReflectionFallback.IsSupported")]
@@ -917,7 +918,6 @@ namespace aweXpect.Customization
         public aweXpect.Customization.CustomizationLifetime EnableTracing(aweXpect.Customization.ITraceWriter traceWriter) { }
         public aweXpect.Customization.AwexpectCustomization.EquivalencyCustomization Equivalency() { }
         public aweXpect.Customization.AwexpectCustomization.FormattingCustomization Formatting() { }
-        public aweXpect.Customization.AwexpectCustomization.ReflectionCustomization Reflection() { }
         public aweXpect.Customization.AwexpectCustomization.SettingsCustomization Settings() { }
         public class EquivalencyCustomization : aweXpect.Customization.IAwexpectCustomization
         {
@@ -929,10 +929,6 @@ namespace aweXpect.Customization
             public aweXpect.Customization.ICustomizationValueSetter<int> MaximumStringLength { get; }
             public aweXpect.Customization.ICustomizationValueSetter<int> MinimumNumberOfCharactersAfterStringDifference { get; }
         }
-        public class ReflectionCustomization : aweXpect.Customization.IAwexpectCustomization
-        {
-            public aweXpect.Customization.ICustomizationValueSetter<string[]> ExcludedAssemblyPrefixes { get; }
-        }
         public class SettingsCustomization : aweXpect.Customization.IAwexpectCustomization
         {
             public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultCheckInterval { get; }
@@ -940,6 +936,7 @@ namespace aweXpect.Customization
             public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultRegexTimeout { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultSignalerTimeout { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultTimeComparisonTolerance { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<string[]> ExcludedAssemblyPrefixes { get; }
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Customization.TestCancellation?> TestCancellation { get; }
         }
     }

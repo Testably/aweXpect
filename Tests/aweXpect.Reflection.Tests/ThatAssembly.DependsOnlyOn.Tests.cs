@@ -97,7 +97,7 @@ public sealed partial class ThatAssembly
 
 				// A customized prefix in the natural trailing-dot form ("aweXpect.") must exclude the
 				// aweXpect.Core reference at the (then explicit) name-segment boundary.
-				using (Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes
+				using (Customize.aweXpect.Settings().ExcludedAssemblyPrefixes
 					       .Set(["System", "netstandard", "mscorlib", "Microsoft", "aweXpect.",]))
 				{
 					async Task Act()

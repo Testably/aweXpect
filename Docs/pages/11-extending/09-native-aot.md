@@ -77,5 +77,5 @@ that it should compare. The other methods cover the other kinds of metadata:
 
 An extension that reflects over a subject itself should guard the reflection with `ReflectionFallback.IsSupported`
 and fail with a message that names the `aweXpect.ReflectionFallback.IsSupported` runtime switch otherwise, so that it
-behaves the same way as the built-in expectations. The constant with the name of the switch is internal, so write the
-name into your message yourself.
+behaves the same way as the built-in expectations. Take the name of the switch from the constant
+`ReflectionFallback.SwitchName`.

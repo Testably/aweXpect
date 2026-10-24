@@ -10,12 +10,12 @@ public sealed class ReflectionCustomizationExtensionsTests
 	[Test]
 	public async Task ExcludedAttributeTypes_Get_ShouldReturnACopy()
 	{
-		using (Customize.aweXpect.Reflection().ExcludedAttributeTypes().Set([UnusedAttributeName,]))
+		using (Customize.aweXpect.Reflection().ExcludedAttributeTypes.Set([UnusedAttributeName,]))
 		{
-			string[] value = Customize.aweXpect.Reflection().ExcludedAttributeTypes().Get();
+			string[] value = Customize.aweXpect.Reflection().ExcludedAttributeTypes.Get();
 			value[0] = "changed";
 
-			await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes().Get())
+			await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes.Get())
 				.IsEqualTo([UnusedAttributeName,])
 				.Because("changing the returned array must not bypass the scoping of the setting");
 		}
@@ -26,31 +26,60 @@ public sealed class ReflectionCustomizationExtensionsTests
 	{
 		void Act()
 		{
-			Customize.aweXpect.Reflection().ExcludedAttributeTypes().Set(null!);
+			Customize.aweXpect.Reflection().ExcludedAttributeTypes.Set(null!);
 		}
 
 		await That(Act).Throws<ArgumentNullException>()
 			.WithMessage("The 'value' cannot be null.*").AsWildcard();
-		await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes().Get()).IsEmpty();
+		await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes.Get()).IsEmpty();
+	}
+
+	[Test]
+	public async Task Reflection_ShouldReturnSameInstance()
+	{
+		ReflectionCustomizationExtensions.ReflectionCustomization reflection1 = Customize.aweXpect.Reflection();
+		ReflectionCustomizationExtensions.ReflectionCustomization reflection2 = Customize.aweXpect.Reflection();
+
+		await That(reflection1).IsSameAs(reflection2)
+			.Because("the group is read for every type that is reflected over, so it must not be created anew");
+	}
+
+	[Test]
+	public async Task Reflection_WhenTakenFromAnotherCustomization_ShouldStoreTheValuesInIt()
+	{
+		AwexpectCustomization customization = new();
+
+		using (customization.Reflection().IncludedSpecialNameMembers.Set(SpecialNameMembers.Operators))
+		{
+			await That(customization.Reflection().IncludedSpecialNameMembers.Get())
+				.IsEqualTo(SpecialNameMembers.Operators);
+			await That(Customize.aweXpect.Reflection().IncludedSpecialNameMembers.Get())
+				.IsEqualTo(SpecialNameMembers.None)
+				.Because("the value is stored in the customization the group was taken from, not in the one taken last");
+		}
+
+		await That(customization.Reflection().IncludedSpecialNameMembers.Get())
+			.IsEqualTo(SpecialNameMembers.None)
+			.Because("disposing the lifetime restores the default");
 	}
 
 	[Test]
 	public async Task WhenDisposedOutOfOrder_ShouldKeepTheValueOfTheRemainingLifetime()
 	{
-		CustomizationLifetime first = Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+		CustomizationLifetime first = Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers
 			.Set(CompilerGeneratedMembers.Types);
-		CustomizationLifetime second = Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+		CustomizationLifetime second = Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers
 			.Set(CompilerGeneratedMembers.Methods);
 
 		first.Dispose();
 
-		await That(Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers().Get())
+		await That(Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers.Get())
 			.IsEqualTo(CompilerGeneratedMembers.Methods)
 			.Because("disposing the first lifetime must not remove the value of the second one");
 
 		second.Dispose();
 
-		await That(Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers().Get())
+		await That(Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers.Get())
 			.IsEqualTo(CompilerGeneratedMembers.None)
 			.Because("disposing both lifetimes restores the default");
 	}
@@ -59,10 +88,10 @@ public sealed class ReflectionCustomizationExtensionsTests
 	public async Task WhenSetOnGlobal_ShouldApplyToAllAsyncFlows()
 	{
 		CustomizationLifetime lifetime = await Task.Run(() => Customize.aweXpect.Global.Reflection()
-			.ExcludedAttributeTypes().Set([UnusedAttributeName,]));
+			.ExcludedAttributeTypes.Set([UnusedAttributeName,]));
 		try
 		{
-			await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes().Get())
+			await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes.Get())
 				.IsEqualTo([UnusedAttributeName,])
 				.Because("a value set on Global in another async flow must be visible in this one");
 		}
@@ -71,7 +100,7 @@ public sealed class ReflectionCustomizationExtensionsTests
 			lifetime.Dispose();
 		}
 
-		await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes().Get()).IsEmpty()
+		await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes.Get()).IsEmpty()
 			.Because("disposing the global lifetime restores the default");
 	}
 
@@ -79,7 +108,7 @@ public sealed class ReflectionCustomizationExtensionsTests
 	public async Task WhenSetOnGlobal_ShouldApplyToTheEvaluationInAllAsyncFlows()
 	{
 		CustomizationLifetime lifetime = await Task.Run(() => Customize.aweXpect.Global.Reflection()
-			.ExcludedAttributeTypes().Set([typeof(GlobalMarkerAttribute).FullName!,]));
+			.ExcludedAttributeTypes.Set([typeof(GlobalMarkerAttribute).FullName!,]));
 		try
 		{
 			await That(typeof(WithGlobalMarker)).DoesNotDependOn<GlobalMarkerAttribute>()
@@ -97,15 +126,15 @@ public sealed class ReflectionCustomizationExtensionsTests
 	[Test]
 	public async Task WhenSetOnScopedAndGlobal_ShouldPreferTheScopedValue()
 	{
-		using CustomizationLifetime global = Customize.aweXpect.Global.Reflection().ExcludedAttributeTypes()
+		using CustomizationLifetime global = Customize.aweXpect.Global.Reflection().ExcludedAttributeTypes
 			.Set([UnusedAttributeName,]);
-		using (Customize.aweXpect.Reflection().ExcludedAttributeTypes().Set([]))
+		using (Customize.aweXpect.Reflection().ExcludedAttributeTypes.Set([]))
 		{
-			await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes().Get()).IsEmpty()
+			await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes.Get()).IsEmpty()
 				.Because("a scoped value takes precedence over the global one");
 		}
 
-		await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes().Get())
+		await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes.Get())
 			.IsEqualTo([UnusedAttributeName,])
 			.Because("disposing the scoped lifetime falls back to the global value");
 	}
@@ -114,9 +143,9 @@ public sealed class ReflectionCustomizationExtensionsTests
 	public async Task WhenSetOnScopedCustomization_ShouldNotApplyToTheCallingAsyncFlow()
 	{
 		await Task.Run(() => Customize.aweXpect.Reflection()
-			.IncludedSpecialNameMembers().Set(SpecialNameMembers.Operators));
+			.IncludedSpecialNameMembers.Set(SpecialNameMembers.Operators));
 
-		await That(Customize.aweXpect.Reflection().IncludedSpecialNameMembers().Get())
+		await That(Customize.aweXpect.Reflection().IncludedSpecialNameMembers.Get())
 			.IsEqualTo(SpecialNameMembers.None)
 			.Because("a value set on the scoped customization stays in the async flow that set it");
 	}
@@ -124,14 +153,14 @@ public sealed class ReflectionCustomizationExtensionsTests
 	[Test]
 	public async Task WhenSetOnScopedCustomization_ShouldApplyUntilDisposed()
 	{
-		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers
 			       .Set(CompilerGeneratedMembers.Types))
 		{
-			await That(Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers().Get())
+			await That(Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers.Get())
 				.IsEqualTo(CompilerGeneratedMembers.Types);
 		}
 
-		await That(Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers().Get())
+		await That(Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers.Get())
 			.IsEqualTo(CompilerGeneratedMembers.None);
 	}
 

@@ -14,7 +14,7 @@ public sealed partial class MethodFilters
 			[Test]
 			public async Task ShouldAllowFilteringForOperators()
 			{
-				using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
+				using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers
 					       .Set(SpecialNameMembers.Operators))
 				{
 					Filtered.Methods methods = In.AssemblyContaining<MethodFilters>()

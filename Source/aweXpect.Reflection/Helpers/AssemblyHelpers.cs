@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 using aweXpect.Customization;
 using aweXpect.Options;
 
@@ -100,32 +101,9 @@ internal static class AssemblyHelpers
 		=> MapFrameworkName(assembly?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName);
 
 	/// <summary>
-	///     Checks if the <paramref name="assemblyName" /> matches one of the <paramref name="excludedPrefixes" />
-	///     at a name-segment boundary, i.e. it equals the prefix or continues with a <c>.</c> after it.
-	/// </summary>
-	/// <remarks>
-	///     The boundary check prevents unrelated assemblies from being swallowed by a framework prefix:
-	///     <c>System</c> matches <c>System</c> and <c>System.Text.Json</c>, but not <c>SystemsBiology.Core</c>.
-	///     <para />
-	///     A prefix that already ends with the <c>.</c> separator (e.g. a customized <c>MyCompany.</c>) is
-	///     boundary-safe by construction and matches everything that starts with it.
-	///     <para />
-	///     An empty prefix is ignored: it cannot identify an assembly and would otherwise silently exclude
-	///     either everything or nothing.
-	/// </remarks>
-	public static bool IsExcludedAssemblyName(this string? assemblyName, string[] excludedPrefixes)
-		=> assemblyName is not null &&
-		   excludedPrefixes.Any(prefix
-			   => prefix.Length > 0 &&
-			      assemblyName.StartsWith(prefix, StringComparison.Ordinal) &&
-			      (prefix.EndsWith('.') ||
-			       assemblyName.Length == prefix.Length ||
-			       assemblyName[prefix.Length] == '.'));
-
-	/// <summary>
 	///     Returns the names of all assemblies the <paramref name="assembly" /> references which are neither
 	///     covered by the
-	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> nor
+	///     <see cref="AwexpectCustomization.SettingsCustomization.ExcludedAssemblyPrefixes" /> nor
 	///     considered equal to one of the <paramref name="allowed" /> names.
 	/// </summary>
 	/// <remarks>
@@ -135,7 +113,7 @@ internal static class AssemblyHelpers
 	public static async ValueTask<string?[]> GetDisallowedAssemblyDependencies(this Assembly assembly,
 		string[] allowed, StringEqualityOptions options)
 	{
-		string[] prefixes = Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get();
+		string[] prefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
 		List<string?> violations = [];
 		foreach (AssemblyName dependency in assembly.GetReferencedAssemblyNames())
 		{

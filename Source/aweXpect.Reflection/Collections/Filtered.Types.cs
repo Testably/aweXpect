@@ -243,7 +243,7 @@ public static partial class Filtered
 				throw ReflectionFallbackHelpers.NotSupported(assembly, "types");
 			}
 
-			bool includeCompilerGenerated = (Customize.aweXpect.Reflection().GetIncludedCompilerGeneratedMembers() &
+			bool includeCompilerGenerated = (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers.Get() &
 			                                 CompilerGeneratedMembers.Types) != 0;
 			if (LoadableTypesCache.TryGetValue(assembly, out LoadableTypes? cached))
 			{

@@ -20,7 +20,7 @@ public sealed class CompilerGeneratedFilteringTests
 	[Test]
 	public async Task Types_WhenIncludingCompilerGenerated_ShouldContainStateMachinesAndClosures()
 	{
-		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers
 			       .Set(CompilerGeneratedMembers.Types))
 		{
 			IReadOnlyList<Type> types = await GetTypes();
@@ -36,7 +36,7 @@ public sealed class CompilerGeneratedFilteringTests
 		IReadOnlyList<Type> withoutCompilerGenerated = await GetTypes();
 		await That(withoutCompilerGenerated).None().Satisfy(t => t.Name.Contains("AsyncMethod"));
 
-		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers
 			       .Set(CompilerGeneratedMembers.Types))
 		{
 			IReadOnlyList<Type> withCompilerGenerated = await GetTypes();
@@ -58,7 +58,7 @@ public sealed class CompilerGeneratedFilteringTests
 	[Test]
 	public async Task Methods_WhenIncludingMethods_ShouldContainLocalFunctions()
 	{
-		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers
 			       .Set(CompilerGeneratedMembers.Methods))
 		{
 			IReadOnlyList<MethodInfo> methods = await GetMethods<Sample>();
@@ -83,7 +83,7 @@ public sealed class CompilerGeneratedFilteringTests
 		IReadOnlyList<MethodInfo> withoutOperators = await GetMethods<SampleRecord>();
 		await That(withoutOperators).None().Satisfy(m => m.Name == "op_Equality");
 
-		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
+		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers
 			       .Set(SpecialNameMembers.Operators))
 		{
 			IReadOnlyList<MethodInfo> withOperators = await GetMethods<SampleRecord>();
@@ -99,7 +99,7 @@ public sealed class CompilerGeneratedFilteringTests
 		await That(withoutCopy).None()
 			.Satisfy(c => c.GetParameters().Any(p => p.ParameterType == typeof(SampleRecord)));
 
-		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers
 			       .Set(CompilerGeneratedMembers.Constructors))
 		{
 			IReadOnlyList<ConstructorInfo> withCopy = await GetConstructors<SampleRecord>();

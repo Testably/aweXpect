@@ -1,17 +1,17 @@
 # Configuration
 
-All customizations live under `Customize.aweXpect.Reflection()`: the assembly exclusions are provided by
-aweXpect.Core, the others by this library as extension methods in the namespace `aweXpect.Reflection`, together with
-the enums `CompilerGeneratedMembers` and `SpecialNameMembers`. Every `Set(…)` returns a scope that restores the previous
-value when disposed.
+The customizations of this library live under `Customize.aweXpect.Reflection()`, which this library provides in the
+namespace `aweXpect.Reflection`, together with the enums `CompilerGeneratedMembers` and `SpecialNameMembers`. The
+assembly exclusions are shared with aweXpect.Core and live under `Customize.aweXpect.Settings()`. Every `Set(…)` returns
+a scope that restores the previous value when disposed.
 
 | Customization                                                              | Default                           | Summary                                                                                      |
 |----------------------------------------------------------------------------|-----------------------------------|----------------------------------------------------------------------------------------------|
-| [`ExcludedAssemblyPrefixes`](#assembly-exclusions)                         | `System`, `Microsoft`, …          | assemblies excluded from `In.AllLoadedAssemblies()` and ignored by the `DependOnlyOn` family |
-| [`IncludedCompilerGeneratedMembers()`](#compiler-generated-members)        | `CompilerGeneratedMembers.None`   | the compiler-generated types and members included in the navigations                         |
-| [`IncludedSpecialNameMembers()`](#compiler-generated-members)              | `SpecialNameMembers.None`         | the operators and accessors included in `.Methods()`                                         |
-| [`DependencyResolver()`](#dependency-resolver)                             | built-in signature-level resolver | how the type-level dependency expectations determine the dependencies of a type              |
-| [`ExcludedAttributeTypes()`](./03-architecture-rules.md#type-dependencies) | none                              | additional compiler-emitted attributes that never count as dependencies                      |
+| [`Settings().ExcludedAssemblyPrefixes`](#assembly-exclusions)              | `System`, `Microsoft`, …          | assemblies excluded from `In.AllLoadedAssemblies()` and ignored by the `DependOnlyOn` family |
+| [`IncludedCompilerGeneratedMembers`](#compiler-generated-members)          | `CompilerGeneratedMembers.None`   | the compiler-generated types and members included in the navigations                         |
+| [`IncludedSpecialNameMembers`](#compiler-generated-members)                | `SpecialNameMembers.None`         | the operators and accessors included in `.Methods()`                                         |
+| [`DependencyResolver`](#dependency-resolver)                               | built-in signature-level resolver | how the type-level dependency expectations determine the dependencies of a type              |
+| [`ExcludedAttributeTypes`](./03-architecture-rules.md#type-dependencies)   | none                              | additional compiler-emitted attributes that never count as dependencies                      |
 
 A value set on `Customize.aweXpect` applies to the current async flow only, e.g. a single test. To apply a
 customization to all tests, set it on `Customize.aweXpect.Global`, e.g. once in an assembly-level setup; a value set
@@ -21,7 +21,7 @@ in the current async flow takes precedence over the global one:
 using aweXpect.Customization;
 using aweXpect.Reflection;
 
-Customize.aweXpect.Global.Reflection().IncludedSpecialNameMembers()
+Customize.aweXpect.Global.Reflection().IncludedSpecialNameMembers
     .Set(SpecialNameMembers.Operators);
 ```
 
@@ -39,11 +39,11 @@ matches at a name-segment boundary, so `System` covers `System` and `System.Text
 named `SystemsBiology`. A prefix written with a trailing dot (e.g. `MusicStore.`) is boundary-safe by
 construction and covers everything starting with it. Empty prefixes are ignored.
 
-Customize this via `Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes`. `Set(…)` replaces the
+Customize this via `Customize.aweXpect.Settings().ExcludedAssemblyPrefixes`. `Set(…)` replaces the
 list and returns a scope that restores the previous value when disposed:
 
 ```csharp
-using (Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes
+using (Customize.aweXpect.Settings().ExcludedAssemblyPrefixes
     .Set(new[] { "mscorlib", "System", "Microsoft", "MusicStore.Generated" }))
 {
     // In.AllLoadedAssemblies() applies the custom prefixes within this scope
@@ -62,7 +62,7 @@ Opt specific kinds back in with the `[Flags]` enum `CompilerGeneratedMembers`
 (`None`, `Types`, `Constructors`, `Methods`, `Properties`, `Fields`, `Events`, `All`):
 
 ```csharp
-using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers
     .Set(CompilerGeneratedMembers.Types | CompilerGeneratedMembers.Methods))
 {
     // closures, state machines and compiler-generated methods are now visible
@@ -74,7 +74,7 @@ but likewise excluded by default. Include them via the separate `SpecialNameMemb
 (`None`, `Operators`, `Accessors`, `All`), which only affects `.Methods()`:
 
 ```csharp
-using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
+using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers
     .Set(SpecialNameMembers.Operators))
 {
     // operator methods are now visible in .Methods()
@@ -91,14 +91,14 @@ dependency on it; reference the package yourself), for IL/body-level accuracy:
 
 ```csharp
 // Replace the resolver within a scope
-using (Customize.aweXpect.Reflection().DependencyResolver()
+using (Customize.aweXpect.Reflection().DependencyResolver
     .Set(type => MyCecilResolver.GetUsedTypes(type)))
 {
     // body-level references now count as dependencies
 }
 
 // Or augment instead of replace: compose on the current default
-var resolver = Customize.aweXpect.Reflection().DependencyResolver();
+var resolver = Customize.aweXpect.Reflection().DependencyResolver;
 var builtin = resolver.Get()!;
 using (resolver.Set(type => builtin(type).Concat(MyCecilResolver.GetBodyTypes(type))))
 {
@@ -107,7 +107,7 @@ using (resolver.Set(type => builtin(type).Concat(MyCecilResolver.GetBodyTypes(ty
 
 // Setting null reverts to the built-in default, e.g. to opt a single test out
 // of a globally configured resolver
-using (Customize.aweXpect.Reflection().DependencyResolver().Set(null))
+using (Customize.aweXpect.Reflection().DependencyResolver.Set(null))
 {
     // the signature-level default applies within this scope
 }

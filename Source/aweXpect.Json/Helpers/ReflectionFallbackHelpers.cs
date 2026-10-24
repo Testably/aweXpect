@@ -1,4 +1,5 @@
 using System;
+using aweXpect.Core;
 
 namespace aweXpect.Helpers;
 
@@ -12,5 +13,5 @@ internal static class ReflectionFallbackHelpers
 	/// </remarks>
 	public static NotSupportedException SerializationNotSupported(string what)
 		=> new(
-			$"{what} cannot be serialized as JSON by reflection, which is switched off when publishing with trimming or Native AOT enabled. Set the runtime switch 'aweXpect.ReflectionFallback.IsSupported' to true to reflect anyway.");
+			$"{what} cannot be serialized as JSON by reflection, which is switched off when publishing with trimming or Native AOT enabled. Set the runtime switch '{ReflectionFallback.SwitchName}' to true to reflect anyway.");
 }

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Options;
@@ -69,7 +70,7 @@ internal static class TypeHelpers
 	///     same instance on every <c>Get()</c> for its cache bucket to be stable.
 	/// </summary>
 	internal static readonly Func<Type, IEnumerable<Type>> SignatureDependencies =
-		static type => type.GetSignatureDependencies(Customization.ExcludedAttributeTypes().Get());
+		static type => type.GetSignatureDependencies(Customization.ExcludedAttributeTypes.Get());
 
 	/// <summary>
 	///     Caches the resolved dependencies per resolver and <see cref="Type" />: the outer table is keyed weakly
@@ -86,18 +87,18 @@ internal static class TypeHelpers
 	///     The compiler-generated members that are currently included via customization.
 	/// </summary>
 	private static CompilerGeneratedMembers IncludedCompilerGeneratedMembers
-		=> Customization.GetIncludedCompilerGeneratedMembers();
+		=> Customization.IncludedCompilerGeneratedMembers.Get();
 
 	/// <summary>
 	///     The special-name methods that are currently included via customization.
 	/// </summary>
 	private static SpecialNameMembers IncludedSpecialNameMembers
-		=> Customization.GetIncludedSpecialNameMembers();
+		=> Customization.IncludedSpecialNameMembers.Get();
 
 	/// <summary>
 	///     The reflection customization of the current async flow, which falls back to the global one.
 	/// </summary>
-	private static AwexpectCustomization.ReflectionCustomization Customization
+	private static ReflectionCustomizationExtensions.ReflectionCustomization Customization
 		=> Customize.aweXpect.Reflection();
 
 	/// <summary>
@@ -1018,7 +1019,7 @@ internal static class TypeHelpers
 	/// <summary>
 	///     Determines whether the <paramref name="type" /> belongs to a framework assembly, i.e. its assembly name
 	///     matches one of the <paramref name="excludedPrefixes" /> at a name-segment boundary
-	///     (see <see cref="AssemblyHelpers.IsExcludedAssemblyName" />).
+	///     (see <see cref="AssemblyNameExtensions.IsExcludedAssemblyName" />).
 	/// </summary>
 	private static bool IsFrameworkDependency(this Type type, string[] excludedPrefixes)
 	{
@@ -1108,7 +1109,7 @@ internal static class TypeHelpers
 		this Type type, Func<Type, string?, string[], bool> isViolation)
 	{
 		string? ownNamespace = type.Namespace;
-		string[] excludedPrefixes = Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get();
+		string[] excludedPrefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
 		return type.ResolveDependencies()
 			.Where(dependency => isViolation(dependency, ownNamespace, excludedPrefixes));
 	}
@@ -1185,9 +1186,9 @@ internal static class TypeHelpers
 	internal static Type[] ResolveDependencies(this Type type)
 	{
 		Func<Type, IEnumerable<Type>> resolver =
-			Customization.DependencyResolver().Get() ?? SignatureDependencies;
+			Customization.DependencyResolver.Get() ?? SignatureDependencies;
 		if (ReferenceEquals(resolver, SignatureDependencies) &&
-		    Customization.ExcludedAttributeTypes().Get().Length > 0)
+		    Customization.ExcludedAttributeTypes.Get().Length > 0)
 		{
 			// A customized attribute exclusion changes the built-in dependency set, so it must not be baked into
 			// the customization-independent cache; the (rare) customized path recomputes instead.

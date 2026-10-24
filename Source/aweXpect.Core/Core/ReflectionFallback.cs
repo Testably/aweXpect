@@ -24,7 +24,11 @@ public static class ReflectionFallback
 	/// <summary>
 	///     The name of the runtime switch that forces the fallback on or off.
 	/// </summary>
-	internal const string SwitchName = "aweXpect.ReflectionFallback.IsSupported";
+	/// <remarks>
+	///     Name it in the message of an extension that cannot reflect over a subject while <see cref="IsSupported" /> is
+	///     <see langword="false" />, so that users learn how to reflect anyway.
+	/// </remarks>
+	public const string SwitchName = "aweXpect.ReflectionFallback.IsSupported";
 
 	/// <summary>
 	///     Whether the fallback is available.

@@ -52,7 +52,7 @@ public sealed class TypeHelpersTests
 		FieldInfo[] declaredAgain = type.GetDeclaredFields();
 		FieldInfo[] includingInherited = type.GetDeclaredFields(MemberScope.IncludingInherited);
 		FieldInfo[] includingBackingFields;
-		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers
 			       .Set(CompilerGeneratedMembers.Fields))
 		{
 			includingBackingFields = type.GetDeclaredFields();
@@ -102,7 +102,7 @@ public sealed class TypeHelpersTests
 	[Test]
 	public async Task GetDeclaredMethods_WithOnlyAccessorsIncluded_ShouldContainAccessorButNotOperator()
 	{
-		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
+		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers
 			       .Set(SpecialNameMembers.Accessors))
 		{
 			MethodInfo[] methods = typeof(OperatorAndAccessorTestClass).GetDeclaredMethods();
@@ -115,7 +115,7 @@ public sealed class TypeHelpersTests
 	[Test]
 	public async Task GetDeclaredMethods_WithOnlyOperatorsIncluded_ShouldContainOperatorButNotAccessor()
 	{
-		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
+		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers
 			       .Set(SpecialNameMembers.Operators))
 		{
 			MethodInfo[] methods = typeof(OperatorAndAccessorTestClass).GetDeclaredMethods();

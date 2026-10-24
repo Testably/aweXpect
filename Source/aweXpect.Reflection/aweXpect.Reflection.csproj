@@ -13,6 +13,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Include="..\aweXpect.Core\Core\Helpers\AssemblyNameExtensions.cs" Link="Helpers\AssemblyNameExtensions.cs"/>
+	</ItemGroup>
+
+	<ItemGroup>
 		<InternalsVisibleTo Include="aweXpect.Reflection.Internal.Tests" PublicKey="$(PublicKey)"/>
 	</ItemGroup>
 

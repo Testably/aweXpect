@@ -259,6 +259,68 @@ public sealed class CustomizeSettingsTests
 	}
 
 	[Test]
+	public async Task ExcludeAssemblies_ShouldChangeTheExcludedAssemblyPrefixes()
+	{
+		string additionalExcludedAssemblyNamespace = "foo";
+
+		await That(Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get())
+			.DoesNotContain(additionalExcludedAssemblyNamespace);
+
+		using (IDisposable _ = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Set([
+			       ..Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get(),
+			       additionalExcludedAssemblyNamespace,
+		       ]))
+		{
+			await That(Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get())
+				.Contains(additionalExcludedAssemblyNamespace);
+		}
+
+		await That(Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get())
+			.DoesNotContain(additionalExcludedAssemblyNamespace);
+	}
+
+	[Test]
+	public async Task ExcludedAssemblyPrefixes_ChangingTheReturnedArray_ShouldNotChangeTheSetting()
+	{
+		string[] prefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
+		string original = prefixes[0];
+		prefixes[0] = "CHANGED";
+
+		await That(Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get()[0]).IsEqualTo(original)
+			.Because("a change of the returned array would bypass the scoping of the setting");
+	}
+
+	[Test]
+	public async Task ExcludedAssemblyPrefixes_ShouldBeInitializedCorrectly()
+	{
+		AwexpectCustomization.SettingsCustomization settings = Customize.aweXpect.Settings();
+
+		await That(settings.ExcludedAssemblyPrefixes.Get()).IsEqualTo([
+			"mscorlib",
+			"System",
+			"Microsoft",
+			"netstandard",
+			"WindowsBase",
+			"JetBrains",
+			"xunit",
+			"TUnit",
+			"Castle",
+			"DynamicProxyGenAssembly2",
+		]).InAnyOrder();
+	}
+
+	[Test]
+	public async Task ExcludedAssemblyPrefixes_WhenNull_ShouldThrowArgumentNullException()
+	{
+		void Act() => Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Set(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("prefixes").And
+			.WithMessage("The 'prefixes' cannot be null.").AsPrefix()
+			.Because("a stored null would be returned as null instead of the default prefixes");
+	}
+
+	[Test]
 	public async Task Settings_ShouldReturnSameInstance()
 	{
 		AwexpectCustomization.SettingsCustomization settings1 = Customize.aweXpect.Settings();

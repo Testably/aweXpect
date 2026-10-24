@@ -23,7 +23,7 @@ public static partial class ThatType
 	/// </summary>
 	/// <remarks>
 	///     Dependencies on types whose assembly name matches one of the
-	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
+	///     <see cref="AwexpectCustomization.SettingsCustomization.ExcludedAssemblyPrefixes" /> at a
 	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
 	///     <c>SystemsBiology.Core</c>) are ignored, so
 	///     that framework namespaces do not have to be listed explicitly. The default prefixes include
@@ -62,7 +62,7 @@ public static partial class ThatType
 	///     <see cref="TypeSetDependencyOnlyOnResult{TType, TThat}.ExcludingOwnSubNamespaces" /> is used.
 	///     <para />
 	///     Dependencies on types whose assembly name matches one of the
-	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
+	///     <see cref="AwexpectCustomization.SettingsCustomization.ExcludedAssemblyPrefixes" /> at a
 	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
 	///     <c>SystemsBiology.Core</c>) are ignored, so
 	///     that framework types do not have to be included explicitly. The default prefixes include

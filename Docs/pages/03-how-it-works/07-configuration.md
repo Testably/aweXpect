@@ -97,36 +97,19 @@ The maximum number of collection items must be positive, and the other two value
 To format your own types, register an `IValueFormatter` with `ValueFormatter.Register(…)`, which returns an
 `IDisposable` that removes it again, see [initialization](../11-extending/08-initialization.md).
 
-## Reflection
-
-Under `Customize.aweXpect.Reflection()`:
-
-| Option                     | Type       | Default                                              | Description                                                                               |
-|----------------------------|------------|------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| `ExcludedAssemblyPrefixes` | `string[]` | `mscorlib`, `System`, `Microsoft`, `netstandard`, `WindowsBase`, `JetBrains`, `xunit`, `TUnit`, `Castle`, `DynamicProxyGenAssembly2` | The assemblies that are not scanned for a test framework adapter, matched by name prefix. |
-
-A prefix matches at a segment boundary of the assembly name, so `System` excludes `System.Net.Http`, but not an
-assembly named `Systemics`.
-
-:::note
-The loaded assemblies are only scanned for a test framework adapter below .NET 8, e.g. on .NET Framework. On .NET 8 or
-later the generated adapter registers itself when the test assembly is loaded, so `ExcludedAssemblyPrefixes` has no
-effect there. This registration needs C# 9 or later, see
-[aweXpect2002](../08-analyzers.md#test-framework-adapter).
-:::
-
 ## Settings
 
 Under `Customize.aweXpect.Settings()`:
 
-| Option                           | Type               | Default | Description                                                                                                         |
-|----------------------------------|--------------------|---------|---------------------------------------------------------------------------------------------------------------------|
-| `TestCancellation`               | `TestCancellation` | none    | A [timeout or `CancellationToken`](./06-time-and-cancellation.md) that is applied to all expectations.              |
-| `DefaultCheckInterval`           | `TimeSpan`         | 100 ms  | The interval for re-checking a condition, e.g. for [`Eventually()`](./06-time-and-cancellation.md#eventually).      |
-| `DefaultEventuallyTimeout`       | `TimeSpan`         | 30 s    | How long [`Eventually()`](./06-time-and-cancellation.md#eventually) retries until the expectations must be met.     |
-| `DefaultRegexTimeout`            | `TimeSpan`         | 1 s     | How long a [wildcard or regex pattern](../04-values/03-string.md#match-types) may take to match.                    |
-| `DefaultSignalerTimeout`         | `TimeSpan`         | 30 s    | How long a [`Signaler`](../06-behaviour/04-callbacks.md) expectation waits without `Within(…)`.                     |
-| `DefaultTimeComparisonTolerance` | `TimeSpan`         | 0       | The [tolerance](../04-values/10-datetime-offset.md#default-tolerance) for date and time values without `Within(…)`. |
+| Option                           | Type               | Default   | Description                                                                                                         |
+|----------------------------------|--------------------|-----------|---------------------------------------------------------------------------------------------------------------------|
+| `TestCancellation`               | `TestCancellation` | none      | A [timeout or `CancellationToken`](./06-time-and-cancellation.md) that is applied to all expectations.              |
+| `DefaultCheckInterval`           | `TimeSpan`         | 100 ms    | The interval for re-checking a condition, e.g. for [`Eventually()`](./06-time-and-cancellation.md#eventually).      |
+| `DefaultEventuallyTimeout`       | `TimeSpan`         | 30 s      | How long [`Eventually()`](./06-time-and-cancellation.md#eventually) retries until the expectations must be met.     |
+| `DefaultRegexTimeout`            | `TimeSpan`         | 1 s       | How long a [wildcard or regex pattern](../04-values/03-string.md#match-types) may take to match.                    |
+| `DefaultSignalerTimeout`         | `TimeSpan`         | 30 s      | How long a [`Signaler`](../06-behaviour/04-callbacks.md) expectation waits without `Within(…)`.                     |
+| `DefaultTimeComparisonTolerance` | `TimeSpan`         | 0         | The [tolerance](../04-values/10-datetime-offset.md#default-tolerance) for date and time values without `Within(…)`. |
+| `ExcludedAssemblyPrefixes`       | `string[]`         | see below | The assemblies that are not scanned for a test framework adapter, matched by name prefix.                           |
 
 See [time and cancellation](./06-time-and-cancellation.md#cancellationtoken) for how to create a `TestCancellation`.
 
@@ -149,6 +132,19 @@ using (Customize.aweXpect.Settings().DefaultRegexTimeout.Set(TimeSpan.FromSecond
 :::tip
 On Windows the `DateTime` resolution is [about 10 to 15 milliseconds](https://stackoverflow.com/q/3140826/4003370), so
 a `DefaultTimeComparisonTolerance` of about 15 ms avoids brittle comparisons of timestamps.
+:::
+
+`ExcludedAssemblyPrefixes` defaults to `mscorlib`, `System`, `Microsoft`, `netstandard`, `WindowsBase`, `JetBrains`,
+`xunit`, `TUnit`, `Castle` and `DynamicProxyGenAssembly2`. A prefix matches at a segment boundary of the assembly name,
+so `System` excludes `System.Net.Http`, but not an assembly named `Systemics`. A prefix that ends with a `.`, e.g.
+`MyCompany.`, excludes all assemblies whose name starts with it, and an empty prefix excludes nothing. Extensions such
+as aweXpect.Reflection use the same prefixes with the same matching.
+
+:::note
+The loaded assemblies are only scanned for a test framework adapter below .NET 8, e.g. on .NET Framework. On .NET 8 or
+later the generated adapter registers itself when the test assembly is loaded, so `ExcludedAssemblyPrefixes` has no
+effect on the test framework detection there. This registration needs C# 9 or later, see
+[aweXpect2002](../08-analyzers.md#test-framework-adapter).
 :::
 
 ## Tracing

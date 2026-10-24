@@ -308,7 +308,6 @@ public class AwexpectCustomizationTests
 	[Test]
 	[Arguments(nameof(AwexpectCustomization.Equivalency))]
 	[Arguments(nameof(AwexpectCustomization.Formatting))]
-	[Arguments(nameof(AwexpectCustomization.Reflection))]
 	[Arguments(nameof(AwexpectCustomization.Settings))]
 	public async Task Global_Group_Set_ShouldApplyToAllFlowsUntilDisposed(string group)
 	{
@@ -462,7 +461,6 @@ public class AwexpectCustomizationTests
 	[Test]
 	[Arguments(nameof(AwexpectCustomization.Equivalency))]
 	[Arguments(nameof(AwexpectCustomization.Formatting))]
-	[Arguments(nameof(AwexpectCustomization.Reflection))]
 	[Arguments(nameof(AwexpectCustomization.Settings))]
 	public async Task Group_Set_ShouldApplyToTheCurrentFlowUntilDisposed(string group)
 	{
@@ -609,7 +607,6 @@ public class AwexpectCustomizationTests
 		{
 			nameof(AwexpectCustomization.Equivalency) => customization.Equivalency(),
 			nameof(AwexpectCustomization.Formatting) => customization.Formatting(),
-			nameof(AwexpectCustomization.Reflection) => customization.Reflection(),
 			nameof(AwexpectCustomization.Settings) => customization.Settings(),
 			_ => throw new ArgumentOutOfRangeException(nameof(group)),
 		};

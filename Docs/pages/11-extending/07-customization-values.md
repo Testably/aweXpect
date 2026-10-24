@@ -116,18 +116,18 @@ values, also when they are disposed out of order.
 
 ## Add a value to a built-in group
 
-The built-in groups `Equivalency()`, `Formatting()`, `Reflection()` and `Settings()` implement
-`IAwexpectCustomization` as well, so you can add a value to one of them with an extension method on the group:
+The built-in groups `Equivalency()`, `Formatting()` and `Settings()` implement `IAwexpectCustomization` as well, so
+you can add a value to one of them with an extension method on the group:
 
 ```csharp
-public static class MyReflectionCustomizationExtensions
+public static class MySettingsCustomizationExtensions
 {
     public static ICustomizationValueSetter<string[]> ExcludedTypePrefixes(
-        this AwexpectCustomization.ReflectionCustomization reflection)
-        => new CustomizationValue<string[]>(reflection, "MyExtension.Reflection.ExcludedTypePrefixes", []);
+        this AwexpectCustomization.SettingsCustomization settings)
+        => new CustomizationValue<string[]>(settings, "MyExtension.Settings.ExcludedTypePrefixes", []);
 }
 ```
 
-Users then find the value next to the built-in ones, e.g. `Customize.aweXpect.Reflection().ExcludedTypePrefixes()`. A
+Users then find the value next to the built-in ones, e.g. `Customize.aweXpect.Settings().ExcludedTypePrefixes()`. A
 group stores its values in the customization it was taken from, so
-`Customize.aweXpect.Global.Reflection().ExcludedTypePrefixes().Set(…)` stores the value for all async flows.
+`Customize.aweXpect.Global.Settings().ExcludedTypePrefixes().Set(…)` stores the value for all async flows.

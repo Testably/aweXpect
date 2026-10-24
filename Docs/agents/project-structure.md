@@ -137,9 +137,10 @@ User code picks a source, navigates to a member kind, filters and expects:
 - `That<Kind>.<Name>.cs` for a single subject (`ThatType`, ...) and `That<Kinds>.<Name>.cs` for collections
   (`ThatTypes`, ...), in the namespace `aweXpect` unlike the rest of the package; `ThatMember`/`ThatMembers` hold what
   all member kinds share.
-- `Customization/` (namespace `aweXpect.Reflection`): `Customize.aweXpect.Reflection()` (`DependencyResolver()`,
-  `ExcludedAttributeTypes()`, ...);
-  `ExcludedAssemblyPrefixes` comes from `aweXpect.Core`.
+- `Customization/` (namespace `aweXpect.Reflection`): `Customize.aweXpect.Reflection()` (`DependencyResolver`,
+  `ExcludedAttributeTypes`, ...); the `ExcludedAssemblyPrefixes` come from `Customize.aweXpect.Settings()` in
+  `aweXpect.Core`, which matches them with the same rule, compiled into both from
+  `Source/aweXpect.Core/Core/Helpers/AssemblyNameExtensions.cs`.
 - `Formatting/`: members are formatted through the wrapper `FormattableMember`, registered by a module initializer,
   so that the registration survives trimming.
 - Every method that reflects over the members, interfaces, types or assembly references of a subject checks
