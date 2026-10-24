@@ -23,10 +23,10 @@ public static partial class ThatString
 	{
 		expectations.ThrowIfNull();
 		return new AndOrResult<string, IThat<string?>>(subject.Get().ExpectationBuilder
-				.ForMember<string?, IEnumerable<string?>>(
-					s => s.GetLines(),
-					" that ",
-					false)
+				.ForMember(MemberAccessor<string?, IEnumerable<string?>>.FromFuncWithName(
+						s => s.GetLines(),
+						" that "),
+					replaceIt: false)
 				.Validate((it, grammars) => new HasLinesConstraint(it, grammars))
 				.AddExpectations(expectations, static (expectations, e) => expectations(
 						new ThatSubject<IEnumerable<string>>(e)),

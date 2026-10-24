@@ -43,7 +43,7 @@ public static partial class ThatHttpResponseMessage
 		return new AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
-				.ForAsyncMember(MemberAccessor<HttpResponseMessage, Task<string?>>.FromFunc(
+				.ForAsyncMember(MemberAccessor<HttpResponseMessage, Task<string?>>.FromFuncWithName(
 						async m => await m.Content.ReadAsStringAsync(),
 						" the string content"),
 					(_, stringBuilder) => stringBuilder.Append("has a string content which "))

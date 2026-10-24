@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -499,6 +500,13 @@ public abstract class ExpectationBuilder
 		bool replaceIt = true)
 		=> new(this, null, memberAccessor, expectationTextGenerator, replaceIt);
 
+	/// <inheritdoc cref="ForAsyncMember{TSource, TTarget}(MemberAccessor{TSource, Task{TTarget}}, Action{MemberAccessor, StringBuilder}?, bool)" />
+	public MemberExpectationBuilder<TSource, TTarget> ForAsyncMember<TSource, TTarget>(
+		MemberAccessor<TSource, ValueTask<TTarget>> memberAccessor,
+		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null,
+		bool replaceIt = true)
+		=> new(this, null, memberAccessor, expectationTextGenerator, replaceIt);
+
 	/// <summary>
 	///     Adds the <paramref name="memberNode" /> and the <paramref name="expectations" /> on the member, which receive
 	///     the <paramref name="state" />, after the constraint from the <paramref name="sourceConstraint" /> on the value,
@@ -591,10 +599,11 @@ public abstract class ExpectationBuilder
 	///     Adds a <paramref name="cancellationToken" /> to be used by the constraints.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">A cancellation token is already set.</exception>
-	public void WithCancellation(CancellationToken cancellationToken)
+	public ExpectationBuilder WithCancellation(CancellationToken cancellationToken)
 	{
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(CancellationToken is not null, nameof(WithCancellation));
 		GetRareSettings().CancellationToken = cancellationToken;
+		return this;
 	}
 
 	/// <summary>
@@ -605,10 +614,11 @@ public abstract class ExpectationBuilder
 	///     loosen it. <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> imposes no limit.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
-	public void WithTimeout(TimeSpan timeout)
+	public ExpectationBuilder WithTimeout(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
 		GetRareSettings().Timeout = TimerHelpers.Tighter(Timeout, timeout) ?? timeout;
+		return this;
 	}
 
 	/// <summary>
@@ -880,15 +890,7 @@ public abstract class ExpectationBuilder
 		AddWhichNode((memberAccessor, separator, negateMemberOnly, subjectName, contextMember),
 			static (state, parentNode) => new WhichNode<TSource, TTarget>(parentNode, state.memberAccessor,
 				state.separator, state.negateMemberOnly, state.subjectName, state.contextMember));
-
-		if (subjectName != null)
-		{
-			_it = subjectName;
-		}
-
-		ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
-		ExpectationGrammars = expectationGrammars?.Invoke(memberGrammars) ?? memberGrammars;
-		return this;
+		return ContinueWithMember(subjectName, expectationGrammars);
 	}
 
 	/// <summary>
@@ -898,8 +900,13 @@ public abstract class ExpectationBuilder
 	///     The member continues only the expectation in front of it, also after <c>And</c>/<c>Or</c>, and is only
 	///     accessed when that expectation is met.
 	///     <para />
-	///     The member is a single value, so its expectations are in singular form and refer to it as <c>it</c>, even
-	///     when the enclosing expectation named its subject (e.g. inside <c>Whose</c>).
+	///     Set <paramref name="negateMemberOnly" /> when the previous expectation only navigates to the member, so that
+	///     a negation applies to the member expectation instead of the whole expectation.
+	///     <para />
+	///     The expectations on the member keep the current name for the subject and the
+	///     <see cref="ExpectationGrammars.Plural" /> form, so for a single value, e.g. inside <c>Whose</c>, pass
+	///     <c>"it"</c> as <paramref name="subjectName" /> and remove <see cref="ExpectationGrammars.Plural" /> with the
+	///     <paramref name="expectationGrammars" />.
 	///     <para />
 	///     If accessing or awaiting the member throws, the expectations on the member fail with <c>… did throw …</c> and
 	///     the exception as <see cref="ConstraintResult.FailureCause" />, which a negation does not invert. An
@@ -908,18 +915,71 @@ public abstract class ExpectationBuilder
 	///     <para />
 	///     Canceling the evaluation while the member is awaited leaves the expectation inconclusive, and a timeout
 	///     fails it with <c>did not finish within …</c>, even if the member ignores the cancellation.
+	///     <para />
+	///     The contexts of the member are labelled with the <paramref name="contextMember" />, or with the
+	///     <paramref name="subjectName" />, unless the member is called <c>it</c>.
 	/// </remarks>
 	/// <param name="asyncMemberAccessor">Accesses the member on the source value asynchronously.</param>
 	/// <param name="separator">The text between the previous expectation and the expectations on the member.</param>
-	public ExpectationBuilder ForWhich<TSource, TTarget>(
+	/// <param name="subjectName">
+	///     The name that the expectations on the member use for it, or <see langword="null" /> to keep the current one.
+	/// </param>
+	/// <param name="expectationGrammars">
+	///     Changes the <see cref="ExpectationGrammars" /> of the expectations on the member.
+	/// </param>
+	/// <param name="negateMemberOnly">
+	///     Whether a negation only applies to the expectations on the member instead of the whole expectation.
+	/// </param>
+	/// <param name="contextMember">
+	///     The member that labels the contexts of the expectations on the member, or <see langword="null" /> for the
+	///     <paramref name="subjectName" />.
+	/// </param>
+	[OverloadResolutionPriority(1)]
+	public ExpectationBuilder ForAsyncWhich<TSource, TTarget>(
 		Func<TSource, Task<TTarget?>> asyncMemberAccessor,
-		string? separator = null)
+		string? separator = null,
+		string? subjectName = null,
+		Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars = null,
+		bool negateMemberOnly = false,
+		string? contextMember = null)
 	{
-		AddWhichNode((asyncMemberAccessor, separator),
+		contextMember ??= subjectName == DefaultCurrentSubject ? null : subjectName;
+		AddWhichNode((asyncMemberAccessor, separator, negateMemberOnly, subjectName, contextMember),
 			static (state, parentNode) => new WhichNode<TSource, TTarget>(parentNode, state.asyncMemberAccessor,
-				state.separator));
-		_it = DefaultCurrentSubject;
-		ExpectationGrammars &= ~(ExpectationGrammars.Introduced | ExpectationGrammars.Plural);
+				state.separator, state.negateMemberOnly, state.subjectName, state.contextMember));
+		return ContinueWithMember(subjectName, expectationGrammars);
+	}
+
+	/// <inheritdoc cref="ForAsyncWhich{TSource, TTarget}(Func{TSource, Task{TTarget}}, string?, string?, Func{ExpectationGrammars, ExpectationGrammars}?, bool, string?)" />
+	public ExpectationBuilder ForAsyncWhich<TSource, TTarget>(
+		Func<TSource, ValueTask<TTarget?>> asyncMemberAccessor,
+		string? separator = null,
+		string? subjectName = null,
+		Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars = null,
+		bool negateMemberOnly = false,
+		string? contextMember = null)
+	{
+		contextMember ??= subjectName == DefaultCurrentSubject ? null : subjectName;
+		AddWhichNode((asyncMemberAccessor, separator, negateMemberOnly, subjectName, contextMember),
+			static (state, parentNode) => new WhichNode<TSource, TTarget>(parentNode, state.asyncMemberAccessor,
+				state.separator, state.negateMemberOnly, state.subjectName, state.contextMember));
+		return ContinueWithMember(subjectName, expectationGrammars);
+	}
+
+	/// <summary>
+	///     Lets the following expectations refer to the member of a which node as <paramref name="subjectName" />, if
+	///     set, with the <paramref name="expectationGrammars" />.
+	/// </summary>
+	private ExpectationBuilder ContinueWithMember(string? subjectName,
+		Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars)
+	{
+		if (subjectName != null)
+		{
+			_it = subjectName;
+		}
+
+		ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
+		ExpectationGrammars = expectationGrammars?.Invoke(memberGrammars) ?? memberGrammars;
 		return this;
 	}
 
@@ -1392,7 +1452,12 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	public class MemberExpectationBuilder<TSource, TMember>
 	{
-		private readonly MemberAccessor<TSource, Task<TMember>>? _asyncMemberAccessor;
+		/// <summary>
+		///     The accessor of a member that returns a <see cref="Task{TResult}" /> or a
+		///     <see cref="ValueTask{TResult}" /> of <typeparamref name="TMember" />.
+		/// </summary>
+		private readonly MemberAccessor? _asyncMemberAccessor;
+
 		private readonly ExpectationBuilder _expectationBuilder;
 		private readonly Action<MemberAccessor, StringBuilder>? _expectationTextGenerator;
 		private readonly MemberAccessor<TSource, TMember>? _memberAccessor;
@@ -1407,7 +1472,7 @@ public abstract class ExpectationBuilder
 		/// </remarks>
 		internal MemberExpectationBuilder(ExpectationBuilder expectationBuilder,
 			MemberAccessor<TSource, TMember>? memberAccessor,
-			MemberAccessor<TSource, Task<TMember>>? asyncMemberAccessor,
+			MemberAccessor? asyncMemberAccessor,
 			Action<MemberAccessor, StringBuilder>? expectationTextGenerator,
 			bool replaceIt)
 		{
@@ -1481,9 +1546,20 @@ public abstract class ExpectationBuilder
 		///     Creates the mapping node whose expectations are typed at <typeparamref name="TNarrowed" />.
 		/// </summary>
 		private MappingNode<TSource, TMember, TNarrowed> CreateMappingNode<TNarrowed>()
-			=> _memberAccessor is not null
-				? new MappingNode<TSource, TMember, TNarrowed>(_memberAccessor, _expectationTextGenerator)
-				: new MappingNode<TSource, TMember, TNarrowed>(_asyncMemberAccessor!, _expectationTextGenerator);
+		{
+			if (_memberAccessor is not null)
+			{
+				return new MappingNode<TSource, TMember, TNarrowed>(_memberAccessor, _expectationTextGenerator);
+			}
+
+			if (_asyncMemberAccessor is MemberAccessor<TSource, Task<TMember>> taskMemberAccessor)
+			{
+				return new MappingNode<TSource, TMember, TNarrowed>(taskMemberAccessor, _expectationTextGenerator);
+			}
+
+			return new MappingNode<TSource, TMember, TNarrowed>(
+				(MemberAccessor<TSource, ValueTask<TMember>>)_asyncMemberAccessor!, _expectationTextGenerator);
+		}
 	}
 }
 

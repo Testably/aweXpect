@@ -54,7 +54,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 		return new AdditionalAndOrWhoseResult(
 			ExpectationBuilder
 				.ForMember(
-					MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberAccessor, doNotPopulateThisValue),
+					MemberAccessor<TType, TMember?>.FromFuncWithCallerExpression(memberAccessor, doNotPopulateThisValue),
 					(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
 				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
 					grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
@@ -84,7 +84,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 		return new AdditionalAndOrWhoseResult(
 			ExpectationBuilder
 				.ForAsyncMember(
-					MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,
+					MemberAccessor<TType, Task<TMember>>.FromFuncWithCallerExpression(memberAccessor,
 						doNotPopulateThisValue),
 					(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
 				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
@@ -111,7 +111,16 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 			string doNotPopulateThisValue = "")
 	{
 		memberAccessor.ThrowIfNull();
-		return Whose(x => memberAccessor(x).AsTask(), expectations, doNotPopulateThisValue);
+		expectations.ThrowIfNull();
+		return new AdditionalAndOrWhoseResult(
+			ExpectationBuilder
+				.ForAsyncMember(
+					MemberAccessor<TType, ValueTask<TMember>>.FromFuncWithCallerExpression(memberAccessor,
+						doNotPopulateThisValue),
+					(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
+				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
+					grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
+			_returnValue);
 	}
 
 	/// <summary>
@@ -149,7 +158,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 			return new AdditionalAndOrWhoseResult(
 				ExpectationBuilder
 					.ForMember(
-						MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberAccessor,
+						MemberAccessor<TType, TMember?>.FromFuncWithCallerExpression(memberAccessor,
 							doNotPopulateThisValue),
 						(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
 					.AddExpectations(expectations,
@@ -182,7 +191,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 			return new AdditionalAndOrWhoseResult(
 				ExpectationBuilder
 					.ForAsyncMember(
-						MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,
+						MemberAccessor<TType, Task<TMember>>.FromFuncWithCallerExpression(memberAccessor,
 							doNotPopulateThisValue),
 						(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
 					.AddExpectations(expectations,
@@ -210,7 +219,18 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 				string doNotPopulateThisValue = "")
 		{
 			memberAccessor.ThrowIfNull();
-			return AndWhose(x => memberAccessor(x).AsTask(), expectations, doNotPopulateThisValue);
+			expectations.ThrowIfNull();
+			ExpectationBuilder.AndContinuing(" and");
+			return new AdditionalAndOrWhoseResult(
+				ExpectationBuilder
+					.ForAsyncMember(
+						MemberAccessor<TType, ValueTask<TMember>>.FromFuncWithCallerExpression(memberAccessor,
+							doNotPopulateThisValue),
+						(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
+					.AddExpectations(expectations,
+						static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
+						grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
+				_returnValue);
 		}
 	}
 }

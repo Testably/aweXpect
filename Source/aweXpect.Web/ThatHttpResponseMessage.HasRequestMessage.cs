@@ -19,7 +19,7 @@ public static partial class ThatHttpResponseMessage
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		return new(subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
-				.ForMember(MemberAccessor<HttpResponseMessage?, HttpRequestMessage?>.FromFunc(
+				.ForMember(MemberAccessor<HttpResponseMessage?, HttpRequestMessage?>.FromFuncWithName(
 						response => response?.RequestMessage,
 						"has a request message which "),
 					null,

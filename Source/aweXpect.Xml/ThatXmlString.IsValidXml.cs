@@ -58,7 +58,7 @@ public static partial class ThatXmlString
 	private static ExpectationBuilder AddIsValidXmlConstraint(IThat<string?> subject,
 		Action<IThatSubject<XElement>> expectations)
 		=> AddIsValidXmlConstraint(subject)
-			.ForMember(MemberAccessor<XDocument, XElement>.FromFunc(document => document.Root!, "it"),
+			.ForMember(MemberAccessor<XDocument, XElement>.FromFuncWithName(document => document.Root!, "it"),
 				(_, stringBuilder) => stringBuilder.Append(" which "))
 			.AddExpectations(expectations,
 				static (expectations, e) => expectations(new ThatSubject<XElement>(e)));

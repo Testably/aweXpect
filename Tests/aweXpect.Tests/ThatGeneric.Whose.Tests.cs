@@ -1250,6 +1250,25 @@ public sealed partial class ThatGeneric
 			}
 
 			[Test]
+			public async Task WhenValueTaskMemberCompletesSynchronously_AndConditionIsNotSatisfied_ShouldFail()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.GetValueAsCompletedValueTask(), v => v.IsEqualTo(2));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose GetValueAsCompletedValueTask() is equal to 2,
+					             but GetValueAsCompletedValueTask() was 1, which differs by -1
+					             """);
+			}
+
+			[Test]
 			public async Task WhenValueTaskMemberConditionIsNotSatisfied_ShouldFail()
 			{
 				MyClass subject = new()
@@ -1336,6 +1355,44 @@ public sealed partial class ThatGeneric
 					             """).WithTimeout(10.Seconds());
 			}
 
+			[Test]
+			public async Task WhenValueTaskMemberNeverCompletes_ShouldFailAfterTheTimeout()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.HangValueTaskAsync(), v => v.IsEqualTo(1))
+						.WithTimeout(50.Milliseconds());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose HangValueTaskAsync() is equal to 1,
+					             but it did not finish within 0:00.050
+					             """).And
+					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+					.WithTimeout(10.Seconds());
+			}
+
+			[Test]
+			public async Task WhenValueTaskMemberThrowsBeforeReturningValueTask_ShouldFail()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.ThrowsBeforeReturningValueTask(), v => v.IsEqualTo(1));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose ThrowsBeforeReturningValueTask() is equal to 1,
+					             but ThrowsBeforeReturningValueTask() did throw an InvalidOperationException:
+					               thrown before returning the value task
+					             """)
+					.And.WithInner<InvalidOperationException>(inner
+						=> inner.HasMessage("thrown before returning the value task"));
+			}
+
 			private sealed class CancelingClass(CancellationTokenSource cts)
 			{
 				public Task<int> CancelAsync()
@@ -1377,6 +1434,9 @@ public sealed partial class ThatGeneric
 					await Task.Yield();
 					throw new InvalidOperationException("async member failed");
 				}
+
+				public ValueTask<int> ThrowsBeforeReturningValueTask()
+					=> throw new InvalidOperationException("thrown before returning the value task");
 #pragma warning restore CA1822
 			}
 
@@ -1395,6 +1455,9 @@ public sealed partial class ThatGeneric
 					await Task.Yield();
 					return Value;
 				}
+
+				public ValueTask<int> GetValueAsCompletedValueTask()
+					=> new(Value);
 			}
 
 			private sealed class ItemsClass(params int[] items)

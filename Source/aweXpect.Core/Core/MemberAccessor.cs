@@ -77,21 +77,23 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 	///     Creates a member accessor from the given <paramref name="func" />, which is displayed as the
 	///     <paramref name="name" /> verbatim.
 	/// </summary>
-	public static MemberAccessor<TSource, TTarget> FromFunc(
+	public static MemberAccessor<TSource, TTarget> FromFuncWithName(
 		Func<TSource, TTarget> func, string name)
 		=> new(func, name);
 
 	/// <summary>
-	///     Creates a member accessor from the given <paramref name="func" />, which treats the <paramref name="name" /> as
-	///     a lambda expression and is displayed as its member path (for example <c>x => x.Foo</c> as <c>Foo</c>).
+	///     Creates a member accessor from the given <paramref name="func" />, which treats the
+	///     <paramref name="callerExpression" /> as a lambda expression and is displayed as its member path (for example
+	///     <c>x => x.Foo</c> as <c>Foo</c>).
 	/// </summary>
 	/// <remarks>
-	///     A <paramref name="name" /> that is not such a lambda expression is displayed as is, without surrounding
-	///     whitespace.
+	///     Pass the expression of the <paramref name="func" /> from a <c>CallerArgumentExpression</c> parameter. A
+	///     <paramref name="callerExpression" /> that is not such a lambda expression is displayed as is, without
+	///     surrounding whitespace.
 	/// </remarks>
-	public static MemberAccessor<TSource, TTarget> FromFuncAsMemberAccessor(
-		Func<TSource, TTarget> func, string name)
-		=> new(func, ExtractMemberPath(name.Trim()), true);
+	public static MemberAccessor<TSource, TTarget> FromFuncWithCallerExpression(
+		Func<TSource, TTarget> func, string callerExpression)
+		=> new(func, ExtractMemberPath(callerExpression.Trim()), true);
 
 	/// <inheritdoc cref="object.Equals(object?)" />
 	public override bool Equals(object? obj) => obj is MemberAccessor<TSource, TTarget> other && Equals(other);

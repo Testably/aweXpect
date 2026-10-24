@@ -16,7 +16,7 @@ public partial class ThatDelegateThrows<TException>
 		expectations.ThrowIfNull();
 		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder
 				.ForMember(
-					MemberAccessor<Exception, Exception?>.FromFunc(
+					MemberAccessor<Exception, Exception?>.FromFuncWithName(
 						e => e.InnerException,
 						"the inner exception"),
 					(_, s) => s.Append(" that "),
@@ -43,9 +43,8 @@ public partial class ThatDelegateThrows<TException>
 	{
 		expectations.ThrowIfNull();
 		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder
-				.ForMember<Exception, Exception?>(e => e.InnerException,
-					" that ",
-					false)
+				.ForMember(MemberAccessor<Exception, Exception?>.FromFuncWithName(e => e.InnerException, " that "),
+					replaceIt: false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(TInnerException), it, grammars, true))
 				.AddExpectations<TInnerException?>(e => expectations(new ThatSubject<TInnerException?>(e)),
@@ -71,10 +70,10 @@ public partial class ThatDelegateThrows<TException>
 		expectations.ThrowIfNull();
 		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder
 				// An inner exception of another type is hidden like a missing one, as the type mismatch already fails.
-				.ForMember<Exception, Exception?>(
-					e => e.InnerException.IsOfType(type) ? e.InnerException : null,
-					" that ",
-					false)
+				.ForMember(MemberAccessor<Exception, Exception?>.FromFuncWithName(
+						e => e.InnerException.IsOfType(type) ? e.InnerException : null,
+						" that "),
+					replaceIt: false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(type, it, grammars, true))
 				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<Exception?>(e)),

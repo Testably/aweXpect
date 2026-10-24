@@ -13,7 +13,7 @@ public class NarrowingMappingNodeTests
 	{
 		string? receivedValue = null;
 		MappingNode<object, object?, string> node = new(
-			MemberAccessor<object, Task<object?>>.FromFunc(v => Task.FromResult<object?>(v), " which "));
+			MemberAccessor<object, Task<object?>>.FromFuncWithName(v => Task.FromResult<object?>(v), " which "));
 		node.AddConstraint(new DummyValueConstraint<string>(v =>
 		{
 			receivedValue = v;
@@ -30,7 +30,7 @@ public class NarrowingMappingNodeTests
 	public async Task Async_IsMetBy_WhenMemberIsOfAnotherType_ShouldNotUseInnerConstraint()
 	{
 		MappingNode<object, object?, string> node = new(
-			MemberAccessor<object, Task<object?>>.FromFunc(v => Task.FromResult<object?>(v), " which "));
+			MemberAccessor<object, Task<object?>>.FromFuncWithName(v => Task.FromResult<object?>(v), " which "));
 		node.AddConstraint(new NarrowedStringConstraint("is a string"));
 		StringBuilder sb = new();
 
@@ -46,7 +46,7 @@ public class NarrowingMappingNodeTests
 	public async Task Async_IsMetBy_WhenMemberIsOfAnotherType_ShouldUseTheExpectationResultOfTheInnerConstraint()
 	{
 		MappingNode<object, object?, string> node = new(
-			MemberAccessor<object, Task<object?>>.FromFunc(v => Task.FromResult<object?>(v), " which "));
+			MemberAccessor<object, Task<object?>>.FromFuncWithName(v => Task.FromResult<object?>(v), " which "));
 		node.AddConstraint(new ExpectationTextConstraint<string>("is a string", "is no string"));
 		StringBuilder sb = new();
 
@@ -62,7 +62,7 @@ public class NarrowingMappingNodeTests
 	{
 		string? receivedValue = null;
 		MappingNode<object, object?, string> node = new(
-			MemberAccessor<object, object?>.FromFunc(v => v, " which "));
+			MemberAccessor<object, object?>.FromFuncWithName(v => v, " which "));
 		node.AddConstraint(new DummyValueConstraint<string>(v =>
 		{
 			receivedValue = v;
@@ -80,7 +80,7 @@ public class NarrowingMappingNodeTests
 	{
 		bool wasCalled = false;
 		MappingNode<object, object?, string> node = new(
-			MemberAccessor<object, object?>.FromFunc(_ => null, " which "));
+			MemberAccessor<object, object?>.FromFuncWithName(_ => null, " which "));
 		node.AddConstraint(new DummyValueConstraint<string?>(_ =>
 		{
 			wasCalled = true;
@@ -97,7 +97,7 @@ public class NarrowingMappingNodeTests
 	public async Task IsMetBy_WhenMemberIsOfAnotherType_ShouldNotUseInnerConstraint()
 	{
 		MappingNode<object, object?, string> node = new(
-			MemberAccessor<object, object?>.FromFunc(v => v, " which "));
+			MemberAccessor<object, object?>.FromFuncWithName(v => v, " which "));
 		node.AddConstraint(new NarrowedStringConstraint("is a string"));
 		StringBuilder sb = new();
 
@@ -113,7 +113,7 @@ public class NarrowingMappingNodeTests
 	public async Task IsMetBy_WhenMemberIsOfAnotherType_ShouldUseTheExpectationResultOfTheInnerConstraint()
 	{
 		MappingNode<object, object?, string> node = new(
-			MemberAccessor<object, object?>.FromFunc(v => v, " which "));
+			MemberAccessor<object, object?>.FromFuncWithName(v => v, " which "));
 		node.AddConstraint(new ExpectationTextConstraint<string>("is a string", "is no string"));
 		StringBuilder sb = new();
 

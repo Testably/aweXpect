@@ -252,12 +252,15 @@ namespace aweXpect.Core
         public aweXpect.Core.ExpectationBuilder AddSubjectContexts<TValue>(System.Action<TValue, aweXpect.Core.ResultContextCollector> appendContexts) { }
         public aweXpect.Core.ExpectationBuilder And(string textSeparator = " and ") { }
         public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TTarget> ForAsyncMember<TSource, TTarget>(aweXpect.Core.MemberAccessor<TSource, System.Threading.Tasks.Task<TTarget>> memberAccessor, System.Action<aweXpect.Core.MemberAccessor, System.Text.StringBuilder>? expectationTextGenerator = null, bool replaceIt = true) { }
+        public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TTarget> ForAsyncMember<TSource, TTarget>(aweXpect.Core.MemberAccessor<TSource, System.Threading.Tasks.ValueTask<TTarget>> memberAccessor, System.Action<aweXpect.Core.MemberAccessor, System.Text.StringBuilder>? expectationTextGenerator = null, bool replaceIt = true) { }
+        [System.Runtime.CompilerServices.OverloadResolutionPriority(1)]
+        public aweXpect.Core.ExpectationBuilder ForAsyncWhich<TSource, TTarget>(System.Func<TSource, System.Threading.Tasks.Task<TTarget?>> asyncMemberAccessor, string? separator = null, string? subjectName = null, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null, bool negateMemberOnly = false, string? contextMember = null) { }
+        public aweXpect.Core.ExpectationBuilder ForAsyncWhich<TSource, TTarget>(System.Func<TSource, System.Threading.Tasks.ValueTask<TTarget?>> asyncMemberAccessor, string? separator = null, string? subjectName = null, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null, bool negateMemberOnly = false, string? contextMember = null) { }
         public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TTarget> ForMember<TSource, TTarget>(aweXpect.Core.MemberAccessor<TSource, TTarget> memberAccessor, System.Action<aweXpect.Core.MemberAccessor, System.Text.StringBuilder>? expectationTextGenerator = null, bool replaceIt = true) { }
-        public aweXpect.Core.ExpectationBuilder ForWhich<TSource, TTarget>(System.Func<TSource, System.Threading.Tasks.Task<TTarget?>> asyncMemberAccessor, string? separator = null) { }
         public aweXpect.Core.ExpectationBuilder ForWhich<TSource, TTarget>(System.Func<TSource, TTarget?> memberAccessor, string? separator = null, string? subjectName = null, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null, bool negateMemberOnly = false, string? contextMember = null) { }
         public aweXpect.Core.ExpectationBuilder Or(string textSeparator = " or ") { }
-        public void WithCancellation(System.Threading.CancellationToken cancellationToken) { }
-        public void WithTimeout(System.TimeSpan timeout) { }
+        public aweXpect.Core.ExpectationBuilder WithCancellation(System.Threading.CancellationToken cancellationToken) { }
+        public aweXpect.Core.ExpectationBuilder WithTimeout(System.TimeSpan timeout) { }
         public class MemberExpectationBuilder<TSource, TMember>
         {
             public aweXpect.Core.ExpectationBuilder AddExpectations(System.Action<aweXpect.Core.ExpectationBuilder> expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) { }
@@ -265,10 +268,6 @@ namespace aweXpect.Core
             public aweXpect.Core.ExpectationBuilder AddExpectations<TState>(TState state, System.Action<TState, aweXpect.Core.ExpectationBuilder> expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) { }
             public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TMember> Validate(System.Func<string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TSource>> constraintBuilder) { }
         }
-    }
-    public static class ExpectationBuilderExtensions
-    {
-        public static aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TTarget> ForMember<TSource, TTarget>(this aweXpect.Core.ExpectationBuilder expectationBuilder, System.Func<TSource, TTarget> memberAccessor, string displayName, bool replaceIt = true) { }
     }
     [System.Flags]
     public enum ExpectationGrammars
@@ -413,8 +412,8 @@ namespace aweXpect.Core
         public override bool Equals(object? obj) { }
         public override int GetHashCode() { }
         public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromExpression(System.Linq.Expressions.Expression<System.Func<TSource, TTarget>> expression) { }
-        public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromFunc(System.Func<TSource, TTarget> func, string name) { }
-        public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromFuncAsMemberAccessor(System.Func<TSource, TTarget> func, string name) { }
+        public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromFuncWithCallerExpression(System.Func<TSource, TTarget> func, string callerExpression) { }
+        public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromFuncWithName(System.Func<TSource, TTarget> func, string name) { }
     }
     public static class ReflectionFallback
     {

@@ -203,7 +203,7 @@ public sealed class CombinedResultTests
 	}
 
 	private static MappingNode<object, object, object> CreateMappingNode(string memberText)
-		=> new MappingNode<object, object, object>(MemberAccessor<object, object>.FromFunc(value => value, memberText));
+		=> new MappingNode<object, object, object>(MemberAccessor<object, object>.FromFuncWithName(value => value, memberText));
 
 	private sealed class FailureCauseResult(Outcome outcome, Exception failureCause)
 		: ConstraintResult(FurtherProcessingStrategy.Continue)

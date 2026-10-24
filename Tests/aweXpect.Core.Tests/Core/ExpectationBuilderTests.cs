@@ -617,7 +617,7 @@ public class ExpectationBuilderTests
 		ManualExpectationBuilder<string> sut = new();
 		ExpectationGrammars usedExpectationGrammars = ExpectationGrammars.None;
 
-		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
+		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFuncWithName(x => Task.FromResult(x.Length), "length "))
 			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, g)
 				=>
 			{
@@ -636,9 +636,9 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForMember(MemberAccessor<string, string?>.FromFunc(_ => null, "inner "))
+		sut.ForMember(MemberAccessor<string, string?>.FromFuncWithName(_ => null, "inner "))
 			.AddExpectations(inner => inner
-				.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
+				.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFuncWithName(x => Task.FromResult(x.Length), "length "))
 				.AddExpectations(length => length.AddConstraint((_, _)
 					=> new DummyConstraint<int>(v => v == 3, "equal to 3"))));
 
@@ -654,7 +654,7 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
+		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFuncWithName(x => Task.FromResult(x.Length), "length "))
 			.AddExpectations(expectationBuilder => expectationBuilder
 				.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 3, "equal to 3"))
 				.And()
@@ -671,7 +671,7 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
+		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFuncWithName(x => Task.FromResult(x.Length), "length "))
 			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
 				=> new DummyConstraint<int>(v => v == 2, "equal to 2")));
 
@@ -686,7 +686,7 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
+		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFuncWithName(x => Task.FromResult(x.Length), "length "))
 			.AddExpectations(expectationBuilder =>
 			{
 				expectationBuilder.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 2, "equal to 2"));
@@ -705,7 +705,7 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
+		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFuncWithName(x => Task.FromResult(x.Length), "length "))
 			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
 				=> new DummyConstraint<int>(v => v == 3, "equal to 3")));
 
@@ -720,7 +720,7 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
+		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFuncWithName(x => Task.FromResult(x.Length), "length "))
 			.Validate((_, _) => new DummyConstraint<string>(_ => false, "validated and "))
 			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
 				=> new DummyConstraint<int>(v => v == 3, "equal to 3")));
@@ -732,12 +732,213 @@ public class ExpectationBuilderTests
 	}
 
 	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
+	public async Task ForAsyncMember_WithValueTask_ShouldApplyTheExpectationsToTheAwaitedMember(
+		bool completesSynchronously)
+	{
+		Func<string, ValueTask<int>> length = completesSynchronously
+			? s => new ValueTask<int>(s.Length)
+			: async s =>
+			{
+				await Task.Yield();
+				return s.Length;
+			};
+		ManualExpectationBuilder<string> sut = new();
+
+		sut.ForAsyncMember(MemberAccessor<string, ValueTask<int>>.FromFuncWithName(length, "length "))
+			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
+				=> new DummyConstraint<int>(v => v == 2, "equal to 2")));
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
+		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 2");
+		await That(constraintResult.TryGetValue(out string? value)).IsTrue();
+		await That(value).IsEqualTo("bar");
+	}
+
+	[Test]
+	public async Task ForAsyncWhich_AfterOr_WhenTheLeftOperandIsMet_ShouldSucceed()
+	{
+		Func<string, Task<int>> lengthAccessor = s => Task.FromResult(s.Length);
+		ManualExpectationBuilder<string> sut = new();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
+		sut.Or();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
+		sut.ForAsyncWhich(lengthAccessor, " whose length ");
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 3, "is 3"));
+
+		ConstraintResult result = await sut.IsMetBy("", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Success);
+		await That(result.GetExpectationText()).IsEqualTo("is empty or is foo whose length is 3");
+	}
+
+	[Test]
+	public async Task ForAsyncWhich_CalledTwice_ShouldHonorConstraintsFromAllLevels()
+	{
+		Func<string, Task<string?>> upperAccessor = s => Task.FromResult<string?>(s.ToUpperInvariant());
+		Func<string, Task<string?>> doubledAccessor = s => Task.FromResult<string?>(s + s);
+		ManualExpectationBuilder<string> sut = new();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
+		sut.ForAsyncWhich(upperAccessor, " whose upper ");
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "FOO", "is FOO"));
+		sut.ForAsyncWhich(doubledAccessor, " and whose doubled ");
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "FOOFOO", "is FOOFOO"));
+
+		ConstraintResult result = await sut.IsMetBy("foo", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Success);
+		await That(result.GetExpectationText())
+			.IsEqualTo("is foo whose upper is FOO and whose doubled is FOOFOO");
+	}
+
+	[Test]
+	public async Task ForAsyncWhich_CalledTwice_WhereSecondProjectsFromFirstResult_ShouldChainProjections()
+	{
+		Func<int, Task<string?>> stringify = i =>
+			Task.FromResult<string?>(i.ToString(CultureInfo.InvariantCulture));
+		Func<string, Task<string?>> doubled = s => Task.FromResult<string?>(s + s);
+		ManualExpectationBuilder<int> sut = new();
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 12, "is 12"));
+		sut.ForAsyncWhich(stringify, " whose string ");
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "12", "is \"12\""));
+		sut.ForAsyncWhich(doubled, " and whose doubled ");
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "1212", "is \"1212\""));
+
+		ConstraintResult result = await sut.IsMetBy(12, null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Success);
+		await That(result.GetExpectationText())
+			.IsEqualTo("is 12 whose string is \"12\" and whose doubled is \"1212\"");
+	}
+
+	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
+	public async Task ForAsyncWhich_InsideAPluralMember_ShouldKeepTheNameAndTheGrammarsLikeForWhich(bool isAsync)
+	{
+		ManualExpectationBuilder<string> sut = new();
+		string? usedIt = null;
+		ExpectationGrammars usedExpectationGrammars = ExpectationGrammars.None;
+
+		sut.ForMember(MemberAccessor<string, string>.FromFuncWithName(x => x, "chars "))
+			.AddExpectations(expectationBuilder => ForFirstChar(expectationBuilder, isAsync)
+				.AddConstraint((it, g) =>
+				{
+					usedIt = it;
+					usedExpectationGrammars = g;
+					return new DummyConstraint<char>(c => c == 'b', "is 'b'");
+				}), _ => ExpectationGrammars.Plural | ExpectationGrammars.Introduced);
+
+		await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(usedIt).IsEqualTo("chars")
+			.Because("the async and the sync member keep the current name by default");
+		await That(usedExpectationGrammars).IsEqualTo(ExpectationGrammars.Plural)
+			.Because("the async and the sync member only remove the introduction by default");
+	}
+
+	[Test]
+	public async Task ForAsyncWhich_InsideAPluralMember_WithSubjectNameItAndWithoutPlural_ShouldReferToTheSingularValueAsIt()
+	{
+		Func<string, Task<char>> firstChar = s => Task.FromResult(s[0]);
+		ManualExpectationBuilder<string> sut = new();
+		string? usedIt = null;
+		ExpectationGrammars usedExpectationGrammars = ExpectationGrammars.None;
+
+		sut.ForMember(MemberAccessor<string, string>.FromFuncWithName(x => x, "chars "))
+			.AddExpectations(expectationBuilder => expectationBuilder
+				.ForAsyncWhich(firstChar, " whose first ", "it", g => g & ~ExpectationGrammars.Plural)
+				.AddConstraint((it, g) =>
+				{
+					usedIt = it;
+					usedExpectationGrammars = g;
+					return new DummyConstraint<char>(c => c == 'b', "is 'b'");
+				}), _ => ExpectationGrammars.Plural);
+
+		await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(usedIt).IsEqualTo("it")
+			.Because("the value is no longer the member that the enclosing expectation named");
+		await That(usedExpectationGrammars).IsEqualTo(ExpectationGrammars.None);
+	}
+
+	[Test]
+	public async Task ForAsyncWhich_WithAsyncLambda_ShouldEvaluateTheAwaitedMember()
+	{
+		ManualExpectationBuilder<string> sut = new();
+		sut.ForAsyncWhich<string, int>(async s =>
+		{
+			await Task.Yield();
+			return s.Length;
+		}, " whose length ");
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 4, "is 4"));
+
+		ConstraintResult result = await sut.IsMetBy("foo", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure)
+			.Because("an async lambda resolves to the Task overload instead of being ambiguous");
+		await That(result.GetExpectationText()).IsEqualTo("whose length is 4");
+	}
+
+	[Test]
+	public async Task ForAsyncWhich_WithSubjectNameAndExpectationGrammars_ShouldApplyThemToTheMember()
+	{
+		Func<string, Task<int>> lengthAccessor = s => Task.FromResult(s.Length);
+		ManualExpectationBuilder<string> sut = new();
+		string? usedIt = null;
+		ExpectationGrammars usedExpectationGrammars = ExpectationGrammars.None;
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
+		sut.ForAsyncWhich(lengthAccessor, " whose length ",
+			"the length",
+			g => g | ExpectationGrammars.Nested);
+		sut.AddConstraint((it, g) =>
+		{
+			usedIt = it;
+			usedExpectationGrammars = g;
+			return new DummyConstraint<int>(i => i == 3, "is 3");
+		});
+
+		await sut.IsMetBy("foo", null!, CancellationToken.None);
+
+		await That(usedIt).IsEqualTo("the length");
+		await That(usedExpectationGrammars).IsEqualTo(ExpectationGrammars.Nested);
+	}
+
+	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
+	public async Task ForAsyncWhich_WithValueTask_ShouldEvaluateTheAwaitedMember(bool completesSynchronously)
+	{
+		Func<string, ValueTask<int>> lengthAccessor = completesSynchronously
+			? s => new ValueTask<int>(s.Length)
+			: async s =>
+			{
+				await Task.Yield();
+				return s.Length;
+			};
+		ManualExpectationBuilder<string> sut = new();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
+		sut.ForAsyncWhich(lengthAccessor, " whose length ");
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 4, "is 4"));
+
+		ConstraintResult result = await sut.IsMetBy("foo", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.GetExpectationText()).IsEqualTo("is foo whose length is 4");
+		await That(result.TryGetValue(out int value)).IsTrue();
+		await That(value).IsEqualTo(3);
+	}
+
+	[Test]
 	public async Task ForMember_ShouldUseAndResetExpectationGrammars()
 	{
 		ManualExpectationBuilder<string> sut = new();
 		ExpectationGrammars usedExpectationGrammars = ExpectationGrammars.None;
 
-		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+		sut.ForMember(MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "length "))
 			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, g)
 				=>
 			{
@@ -756,9 +957,9 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForMember(MemberAccessor<string, string?>.FromFunc(_ => null, "inner "))
+		sut.ForMember(MemberAccessor<string, string?>.FromFuncWithName(_ => null, "inner "))
 			.AddExpectations(inner => inner
-				.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+				.ForMember(MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "length "))
 				.AddExpectations(length => length.AddConstraint((_, _)
 					=> new DummyConstraint<int>(v => v == 3, "equal to 3"))));
 
@@ -774,9 +975,9 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForMember(MemberAccessor<string, string?>.FromFunc(_ => null, "items "))
+		sut.ForMember(MemberAccessor<string, string?>.FromFuncWithName(_ => null, "items "))
 			.AddExpectations(inner => inner
-					.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+					.ForMember(MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "length "))
 					.AddExpectations(length => length.AddConstraint((_, _)
 						=> new DummyConstraint<int>(v => v == 3, "equal to 3"))),
 				g => g | ExpectationGrammars.Plural);
@@ -791,7 +992,7 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+		sut.ForMember(MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "length "))
 			.AddExpectations(length => length.AddConstraint((_, _)
 				=> new DummyConstraint<int>(v => v == 3, "equal to 3")));
 
@@ -805,7 +1006,7 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+		sut.ForMember(MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "length "))
 			.AddExpectations(expectationBuilder => expectationBuilder
 				.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 3, "equal to 3"))
 				.And()
@@ -822,7 +1023,7 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+		sut.ForMember(MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "length "))
 			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
 				=> new DummyConstraint<int>(v => v == 2, "equal to 2")));
 
@@ -837,7 +1038,7 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+		sut.ForMember(MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "length "))
 			.AddExpectations(expectationBuilder =>
 			{
 				expectationBuilder.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 2, "equal to 2"));
@@ -856,7 +1057,7 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+		sut.ForMember(MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "length "))
 			.AddExpectations(3, static (expected, expectationBuilder) => expectationBuilder.AddConstraint((_, _)
 				=> new DummyConstraint<int>(v => v == expected, $"equal to {expected}")));
 
@@ -871,7 +1072,7 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+		sut.ForMember(MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "length "))
 			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
 				=> new DummyConstraint<int>(v => v == 3, "equal to 3")));
 
@@ -886,7 +1087,7 @@ public class ExpectationBuilderTests
 	{
 		ManualExpectationBuilder<string> sut = new();
 
-		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+		sut.ForMember(MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "length "))
 			.Validate((_, _) => new DummyConstraint<string>(_ => false, "validated and "))
 			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
 				=> new DummyConstraint<int>(v => v == 3, "equal to 3")));
@@ -982,7 +1183,7 @@ public class ExpectationBuilderTests
 		sut.Or();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
 		sut.ForWhich<string, int>(s => s.Length, " whose length ");
-		sut.ForMember(MemberAccessor<int, int>.FromFunc(i => 2 * i, "doubled "))
+		sut.ForMember(MemberAccessor<int, int>.FromFuncWithName(i => 2 * i, "doubled "))
 			.AddExpectations(e => e.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 6, "is 6")));
 
 		ConstraintResult result = await sut.IsMetBy("", null!, CancellationToken.None);
@@ -1008,87 +1209,6 @@ public class ExpectationBuilderTests
 		await That(result.Outcome).IsEqualTo(Outcome.Success);
 		await That(result.GetExpectationText())
 			.IsEqualTo("is empty or starts with f and is foo whose length is 3");
-	}
-
-	[Test]
-	public async Task ForWhich_Async_AfterOr_WhenTheLeftOperandIsMet_ShouldSucceed()
-	{
-		Func<string, Task<int>> lengthAccessor = s => Task.FromResult(s.Length);
-		ManualExpectationBuilder<string> sut = new();
-		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
-		sut.Or();
-		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
-		sut.ForWhich(lengthAccessor, " whose length ");
-		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 3, "is 3"));
-
-		ConstraintResult result = await sut.IsMetBy("", null!, CancellationToken.None);
-
-		await That(result.Outcome).IsEqualTo(Outcome.Success);
-		await That(result.GetExpectationText()).IsEqualTo("is empty or is foo whose length is 3");
-	}
-
-	[Test]
-	public async Task ForWhich_Async_CalledTwice_ShouldHonorConstraintsFromAllLevels()
-	{
-		Func<string, Task<string?>> upperAccessor = s => Task.FromResult<string?>(s.ToUpperInvariant());
-		Func<string, Task<string?>> doubledAccessor = s => Task.FromResult<string?>(s + s);
-		ManualExpectationBuilder<string> sut = new();
-		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
-		sut.ForWhich(upperAccessor, " whose upper ");
-		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "FOO", "is FOO"));
-		sut.ForWhich(doubledAccessor, " and whose doubled ");
-		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "FOOFOO", "is FOOFOO"));
-
-		ConstraintResult result = await sut.IsMetBy("foo", null!, CancellationToken.None);
-
-		await That(result.Outcome).IsEqualTo(Outcome.Success);
-		await That(result.GetExpectationText())
-			.IsEqualTo("is foo whose upper is FOO and whose doubled is FOOFOO");
-	}
-
-	[Test]
-	public async Task ForWhich_Async_CalledTwice_WhereSecondProjectsFromFirstResult_ShouldChainProjections()
-	{
-		Func<int, Task<string?>> stringify = i =>
-			Task.FromResult<string?>(i.ToString(CultureInfo.InvariantCulture));
-		Func<string, Task<string?>> doubled = s => Task.FromResult<string?>(s + s);
-		ManualExpectationBuilder<int> sut = new();
-		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 12, "is 12"));
-		sut.ForWhich(stringify, " whose string ");
-		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "12", "is \"12\""));
-		sut.ForWhich(doubled, " and whose doubled ");
-		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "1212", "is \"1212\""));
-
-		ConstraintResult result = await sut.IsMetBy(12, null!, CancellationToken.None);
-
-		await That(result.Outcome).IsEqualTo(Outcome.Success);
-		await That(result.GetExpectationText())
-			.IsEqualTo("is 12 whose string is \"12\" and whose doubled is \"1212\"");
-	}
-
-	[Test]
-	public async Task ForWhich_Async_InsideAPluralMember_ShouldReferToTheSingularValueAsIt()
-	{
-		Func<string, Task<char>> firstChar = s => Task.FromResult(s[0]);
-		ManualExpectationBuilder<string> sut = new();
-		string? usedIt = null;
-		ExpectationGrammars usedExpectationGrammars = ExpectationGrammars.None;
-
-		sut.ForMember(MemberAccessor<string, string>.FromFunc(x => x, "chars "))
-			.AddExpectations(expectationBuilder => expectationBuilder
-				.ForWhich(firstChar, " whose first ")
-				.AddConstraint((it, g) =>
-				{
-					usedIt = it;
-					usedExpectationGrammars = g;
-					return new DummyConstraint<char>(c => c == 'b', "is 'b'");
-				}), _ => ExpectationGrammars.Plural);
-
-		await sut.IsMetBy("bar", null!, CancellationToken.None);
-
-		await That(usedIt).IsEqualTo("it")
-			.Because("the value is no longer the member that the enclosing expectation named");
-		await That(usedExpectationGrammars).IsEqualTo(ExpectationGrammars.None);
 	}
 
 	[Test]
@@ -1456,6 +1576,19 @@ public class ExpectationBuilderTests
 	}
 
 	[Test]
+	public async Task WithCancellation_ShouldReturnTheBuilderForChaining()
+	{
+		using CancellationTokenSource cts = new();
+		ManualExpectationBuilder<int> sut = new();
+
+		ExpectationBuilder result = sut.WithCancellation(cts.Token).WithTimeout(50.Milliseconds());
+
+		await That(result).IsSameAs(sut);
+		await That(sut.CancellationToken).IsEqualTo(cts.Token);
+		await That(sut.Timeout).IsEqualTo(50.Milliseconds());
+	}
+
+	[Test]
 	public async Task WithCancellation_TogetherWithTimeout_ShouldApplyBoth()
 	{
 		using CancellationTokenSource cts = new();
@@ -1495,6 +1628,19 @@ public class ExpectationBuilderTests
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("WithCancellation cannot be specified more than once.");
+	}
+
+	[Test]
+	public async Task WithTimeout_ShouldReturnTheBuilderForChaining()
+	{
+		using CancellationTokenSource cts = new();
+		ManualExpectationBuilder<int> sut = new();
+
+		ExpectationBuilder result = sut.WithTimeout(50.Milliseconds()).WithCancellation(cts.Token);
+
+		await That(result).IsSameAs(sut);
+		await That(sut.Timeout).IsEqualTo(50.Milliseconds());
+		await That(sut.CancellationToken).IsEqualTo(cts.Token);
 	}
 
 	[Test]
@@ -1587,6 +1733,11 @@ public class ExpectationBuilderTests
 			             """).And
 			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00."));
 	}
+
+	private static ExpectationBuilder ForFirstChar(ExpectationBuilder expectationBuilder, bool isAsync)
+		=> isAsync
+			? expectationBuilder.ForAsyncWhich<string, char>(s => Task.FromResult(s[0]), " whose first ")
+			: expectationBuilder.ForWhich<string, char>(s => s[0], " whose first ");
 
 	private static ExpectationResult ThatAwaiting(int subject)
 		=> new(That(subject).Get().ExpectationBuilder.AddConstraint((_, _) => new AwaitingConstraint()));

@@ -33,7 +33,7 @@ public static partial class ThatGeneric
 		ExpectationGrammars grammars = expectationBuilder.ExpectationGrammars;
 		expectationBuilder
 			.ForMember(
-				MemberAccessor<T, TMember?>.FromFuncAsMemberAccessor(memberAccessor, doNotPopulateThisValue),
+				MemberAccessor<T, TMember?>.FromFuncWithCallerExpression(memberAccessor, doNotPopulateThisValue),
 				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
 			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
 				memberGrammars => MemberGrammars<TMember>(memberGrammars, grammars));
@@ -65,7 +65,7 @@ public static partial class ThatGeneric
 		ExpectationGrammars grammars = expectationBuilder.ExpectationGrammars;
 		expectationBuilder
 			.ForAsyncMember(
-				MemberAccessor<T, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor, doNotPopulateThisValue),
+				MemberAccessor<T, Task<TMember>>.FromFuncWithCallerExpression(memberAccessor, doNotPopulateThisValue),
 				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
 			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
 				memberGrammars => MemberGrammars<TMember>(memberGrammars, grammars));
@@ -92,7 +92,17 @@ public static partial class ThatGeneric
 		string doNotPopulateThisValue = "")
 	{
 		memberAccessor.ThrowIfNull();
-		return subject.Whose(x => memberAccessor(x).AsTask(), expectations, doNotPopulateThisValue);
+		expectations.ThrowIfNull();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		ExpectationGrammars grammars = expectationBuilder.ExpectationGrammars;
+		expectationBuilder
+			.ForAsyncMember(
+				MemberAccessor<T, ValueTask<TMember>>.FromFuncWithCallerExpression(memberAccessor,
+					doNotPopulateThisValue),
+				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
+			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
+				memberGrammars => MemberGrammars<TMember>(memberGrammars, grammars));
+		return new AndOrResult<T, IThat<T?>>(expectationBuilder, subject);
 	}
 
 	/// <summary>

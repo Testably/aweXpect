@@ -434,7 +434,7 @@ public sealed class WhichNodeTests
 		using CancellationTokenSource cts = new();
 		cts.Cancel();
 		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success)),
-			_ => throw new OperationCanceledException("canceled", cts.Token), memberName: "value [1]");
+			int (_) => throw new OperationCanceledException("canceled", cts.Token), memberName: "value [1]");
 		whichNode.AddNode(new ExpectationNode());
 		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
 
@@ -451,7 +451,7 @@ public sealed class WhichNodeTests
 	{
 		MyException exception = new();
 		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success)),
-			_ => throw exception, " whose value ", memberName: "value [1]");
+			int (_) => throw exception, " whose value ", memberName: "value [1]");
 		whichNode.AddNode(new ExpectationNode());
 		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
 		StringBuilder sb = new();
@@ -473,7 +473,7 @@ public sealed class WhichNodeTests
 	{
 		MyException exception = new();
 		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success)),
-			_ => throw exception, " whose value ", memberName: "value [1]");
+			int (_) => throw exception, " whose value ", memberName: "value [1]");
 		whichNode.AddNode(new ExpectationNode());
 		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
 
@@ -531,7 +531,7 @@ public sealed class WhichNodeTests
 	{
 		WhichNode<string, int> whichNode = new(
 			new DummyNode("", () => new DummyConstraintResult(parentOutcome, "e1", "r1")),
-			_ => throw new MyException("The member must not be accessed."), " which ");
+			int (_) => throw new MyException("The member must not be accessed."), " which ");
 		whichNode.AddNode(new ExpectationNode());
 		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
 
@@ -899,7 +899,7 @@ public sealed class WhichNodeTests
 		WhichNode<Dummy, Dummy.Nested> whichNode = new(
 			new DummyNode("", () => new NegatableConstraintResult(Outcome.Success, "1")), d => d.Inner, " which ");
 		whichNode.AddNode(new ExpectationNode());
-		whichNode.AddMapping(MemberAccessor<Dummy.Nested, int>.FromFunc(n => n.Field, "has field "))
+		whichNode.AddMapping(MemberAccessor<Dummy.Nested, int>.FromFuncWithName(n => n.Field, "has field "))
 			.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
 
 		ConstraintResult result = await whichNode.IsMetBy(new Dummy(), null!, CancellationToken.None);
@@ -1181,6 +1181,99 @@ public sealed class WhichNodeTests
 	}
 
 	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
+	public async Task WhenValueTaskMemberCompletes_ShouldVerifyTheAwaitedMember(bool completesSynchronously)
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await WhoseValueTaskLength(That(subject), completesSynchronously
+					? s => new ValueTask<int>(s.Length)
+					: async s =>
+					{
+						await Task.Yield();
+						return s.Length;
+					})
+				.IsEqualTo(4);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose length is equal to 4,
+			             but it was 3, which differs by -1
+			             """);
+	}
+
+	[Test]
+	public async Task WhenValueTaskMemberDoesNotFinishBeforeTheCancellation_ShouldBeInconclusive()
+	{
+		string subject = "foo";
+		using CancellationTokenSource cts = new();
+		cts.CancelAfter(50.Milliseconds());
+
+		async Task Act()
+			=> await WhoseValueTaskLength(That(subject), _ => new ValueTask<int>(PendingTask.Of<int>()))
+				.IsEqualTo(3)
+				.WithCancellation(cts.Token);
+
+		await That(Act).Throws<InconclusiveTestException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose length is equal to 3,
+			             but it could not be verified, because the evaluation was already canceled
+			             """)
+			.Because("the cancellation must stop waiting for a member value task that does not observe it");
+	}
+
+	[Test]
+	public async Task WhenValueTaskMemberDoesNotFinishWithinTheTimeout_ShouldFailWithTheTimeout()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await WhoseValueTaskLength(That(subject), _ => new ValueTask<int>(PendingTask.Of<int>()))
+				.IsEqualTo(3)
+				.WithTimeout(50.Milliseconds());
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose length is equal to 3,
+			             but it did not finish within 0:00.050
+			             """).And
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+			.Because("the timeout must abandon a member value task that never finishes");
+	}
+
+	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
+	public async Task WhenValueTaskMemberThrows_ShouldFailWithTheException(bool throwsSynchronously)
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await WhoseValueTaskLength(That(subject), throwsSynchronously
+					? _ => throw new MyException("no length")
+					: async _ =>
+					{
+						await Task.Yield();
+						throw new MyException("no length");
+					})
+				.IsEqualTo(4);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose length is equal to 4,
+			             but it did throw a MyException:
+			               no length
+			             """).And
+			.WithInner<MyException>(inner => inner.HasMessage("no length"));
+	}
+
+	[Test]
 	public async Task WhichCreatesGoodMessage()
 	{
 		Dummy subject = new()
@@ -1209,14 +1302,39 @@ public sealed class WhichNodeTests
 	}
 
 	[Test]
-	public async Task WhichWithNegateMemberOnly_WhenParentFails_ShouldFailAlsoWhenNegated()
+	[Arguments(false)]
+	[Arguments(true)]
+	public async Task WhichWithContextMember_ShouldLabelTheContextsOfTheMember(bool isAsync)
 	{
 		string subject = "foo";
 
 		async Task Act()
-			=> await That(subject).DoesNotComplyWith(it => new ThatSubject<int>(it.Get().ExpectationBuilder
-					.AddConstraint((i, g) => new StartsWithBarConstraint(i, g))
-					.ForWhich<string, int>(s => s.Length, " whose length ", negateMemberOnly: true))
+			=> await new ThatSubject<int>(ForLength(That(subject).Get().ExpectationBuilder, isAsync,
+					contextMember: "Length"))
+				.WithSubjectContext().IsEqualTo(4);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose length is equal to 4,
+			             but it was 3, which differs by -1
+
+			             Subject (Length):
+			             3
+			             """)
+			.Because("the async member labels its contexts like the sync member");
+	}
+
+	[Test]
+	[Arguments(false)]
+	[Arguments(true)]
+	public async Task WhichWithNegateMemberOnly_WhenParentFails_ShouldFailAlsoWhenNegated(bool isAsync)
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(it => new ThatSubject<int>(ForLength(it.Get().ExpectationBuilder
+					.AddConstraint((i, g) => new StartsWithBarConstraint(i, g)), isAsync, negateMemberOnly: true))
 				.IsEqualTo(3));
 
 		await That(Act).Throws<FailException>()
@@ -1226,6 +1344,27 @@ public sealed class WhichNodeTests
 			             but it was "foo"
 			             """)
 			.Because("the negation only applies to the member, so the failed parent still fails the expectation");
+	}
+
+	[Test]
+	[Arguments(false)]
+	[Arguments(true)]
+	public async Task WhichWithNegateMemberOnly_WhenParentIsMet_ShouldOnlyNegateTheMember(bool isAsync)
+	{
+		string subject = "barz";
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(it => new ThatSubject<int>(ForLength(it.Get().ExpectationBuilder
+					.AddConstraint((i, g) => new StartsWithBarConstraint(i, g)), isAsync, negateMemberOnly: true))
+				.IsEqualTo(4));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             starts with "bar" whose length is not equal to 4,
+			             but it was 4
+			             """)
+			.Because("the parent keeps its positive form and only the member expectation is negated");
 	}
 
 	[Test]
@@ -1260,6 +1399,30 @@ public sealed class WhichNodeTests
 			               no length
 			             """)
 			.Because("the failure message is the only place that names the member whose accessor threw");
+	}
+
+	[Test]
+	[Arguments(false)]
+	[Arguments(true)]
+	public async Task WhichWithSubjectName_ShouldUseItForTheMemberAndItsContexts(bool isAsync)
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await new ThatSubject<int>(ForLength(That(subject).Get().ExpectationBuilder, isAsync,
+					"the length"))
+				.WithSubjectContext().IsEqualTo(4);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose length is equal to 4,
+			             but the length was 3, which differs by -1
+
+			             Subject (the length):
+			             3
+			             """)
+			.Because("the async member uses the subject name like the sync member");
 	}
 
 	[Test]
@@ -1311,7 +1474,17 @@ public sealed class WhichNodeTests
 
 	private static ThatSubject<int> WhoseLength(IThat<string> subject, Func<string, int> length) => new(subject.Get().ExpectationBuilder.ForWhich(length, " whose length "));
 
-	private static ThatSubject<int> WhoseAsyncLength(IThat<string> subject, Func<string, Task<int>> length) => new(subject.Get().ExpectationBuilder.ForWhich(length, " whose length "));
+	private static ThatSubject<int> WhoseAsyncLength(IThat<string> subject, Func<string, Task<int>> length) => new(subject.Get().ExpectationBuilder.ForAsyncWhich(length, " whose length "));
+
+	private static ThatSubject<int> WhoseValueTaskLength(IThat<string> subject, Func<string, ValueTask<int>> length) => new(subject.Get().ExpectationBuilder.ForAsyncWhich(length, " whose length "));
+
+	private static ExpectationBuilder ForLength(ExpectationBuilder expectationBuilder, bool isAsync,
+		string? subjectName = null, bool negateMemberOnly = false, string? contextMember = null)
+		=> isAsync
+			? expectationBuilder.ForAsyncWhich<string, int>(s => Task.FromResult(s.Length), " whose length ",
+				subjectName, negateMemberOnly: negateMemberOnly, contextMember: contextMember)
+			: expectationBuilder.ForWhich<string, int>(s => s.Length, " whose length ",
+				subjectName, negateMemberOnly: negateMemberOnly, contextMember: contextMember);
 
 	private sealed class StartsWithBarConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<string>(it, grammars), IValueConstraint<string>

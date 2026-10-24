@@ -120,7 +120,7 @@ public static AndOrResult<Track, IThat<Track?>> HasTitle(
     Action<IThatSubject<string?>> expectations)
     => new(subject.Get().ExpectationBuilder
             .ForMember(
-                MemberAccessor<Track?, string?>.FromFunc(track => track?.Title, "title "),
+                MemberAccessor<Track?, string?>.FromFuncWithName(track => track?.Title, "title "),
                 (member, stringBuilder) => stringBuilder.Append("has ").Append(member).Append("that "))
             .AddExpectations(expectations,
                 static (expectations, e) => expectations(new ThatSubject<string?>(e)),
@@ -138,7 +138,7 @@ public static AndOrResult<Track, IThat<Track?>> HasTitle(
 - `Validate(…)` before `AddExpectations` adds a constraint on the subject itself, e.g. based on
   `ConstraintResult.WithNotNullValue<T>` to rule out a `null` subject, as `WithInner` does.
 - An exception that the member selector throws fails the nested expectations with "… did throw …".
-- `ForAsyncMember` does the same for a member that has to be awaited.
+- `ForAsyncMember` does the same for a member that has to be awaited, returned as a `Task<T>` or a `ValueTask<T>`.
 
 A result that continues with a new subject after the expectation, like `HasSingle().Which`, uses `ForWhich` instead.
 It selects the new subject from the value of the expectation, and the expectations that the caller adds to the
@@ -157,6 +157,8 @@ public class LongestTrackResult(ExpectationBuilder expectationBuilder, IThat<Tra
 
 The second argument of `ForWhich` writes the text in front of the expectations on the new subject, and the third one
 replaces `it` in their result texts. Unlike `ForMember`, the expectations are added later by the caller, after `Which`.
+`ForAsyncWhich` takes the same arguments for a new subject that has to be awaited, returned as a `Task<T>` or a
+`ValueTask<T>`.
 
 Hand out a new subject as `IThatSubject<T>`, both in an `Action<IThatSubject<T>>` parameter and in a property like
 `Which`, so that the caller can narrow it with `Is<TType>()` and the other type checks. Unlike `Expect.That<T>(T)`,

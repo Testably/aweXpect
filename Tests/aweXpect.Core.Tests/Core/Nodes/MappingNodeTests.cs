@@ -14,9 +14,9 @@ public class MappingNodeTests
 	public async Task Equals_IfMemberAccessorsAreDifferent_ShouldBeFalse()
 	{
 		MappingNode<string, int, int> node1 = new(
-			MemberAccessor<string, int>.FromFunc(s => s.Length, " length1 "));
+			MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length1 "));
 		MappingNode<string, int, int> node2 = new(
-			MemberAccessor<string, int>.FromFunc(s => s.Length, " length2 "));
+			MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length2 "));
 
 		bool result = node1.Equals(node2);
 
@@ -28,9 +28,9 @@ public class MappingNodeTests
 	public async Task Equals_IfMemberAccessorsAreSame_ShouldBeTrue()
 	{
 		MappingNode<string, int, int> node1 = new(
-			MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+			MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length "));
 		MappingNode<string, int, int> node2 = new(
-			MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+			MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length "));
 
 		bool result = node1.Equals(node2);
 
@@ -42,10 +42,10 @@ public class MappingNodeTests
 	public async Task Equals_IfMemberExpectationsAreDifferent_ShouldBeFalse()
 	{
 		MappingNode<string, int, int> node1 = new(
-			MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+			MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length "));
 		node1.AddConstraint(new DummyConstraint("is 1"));
 		MappingNode<string, int, int> node2 = new(
-			MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+			MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length "));
 		node2.AddConstraint(new DummyConstraint("is 2"));
 
 		await That(node1.Equals(node2)).IsFalse();
@@ -56,10 +56,10 @@ public class MappingNodeTests
 	public async Task Equals_IfMemberExpectationsAreSame_ShouldBeTrue()
 	{
 		MappingNode<string, int, int> node1 = new(
-			MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+			MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length "));
 		node1.AddConstraint(new DummyConstraint("is 1"));
 		MappingNode<string, int, int> node2 = new(
-			MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+			MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length "));
 		node2.AddConstraint(new DummyConstraint("is 1"));
 
 		await That(node1.Equals(node2)).IsTrue();
@@ -70,10 +70,10 @@ public class MappingNodeTests
 	public async Task Equals_IfNodesWithMemberExpectationsAreDifferent_ShouldBeFalse()
 	{
 		MappingNode<string, int, int> node1 = new(
-			MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+			MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length "));
 		node1.AddNode(new DummyNode("is 1"));
 		MappingNode<string, int, int> node2 = new(
-			MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+			MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length "));
 		node2.AddNode(new DummyNode("is 2"));
 
 		await That(node1.Equals(node2)).IsFalse();
@@ -83,8 +83,8 @@ public class MappingNodeTests
 	[Test]
 	public async Task Equals_WhenOtherIsDifferentNode_ShouldBeFalse()
 	{
-		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
-		object other = new MappingNode<int, int, int>(MemberAccessor<int, int>.FromFunc(s => s * 2, " duplicate "));
+		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length "));
+		object other = new MappingNode<int, int, int>(MemberAccessor<int, int>.FromFuncWithName(s => s * 2, " duplicate "));
 
 		bool result = node.Equals(other);
 
@@ -94,7 +94,7 @@ public class MappingNodeTests
 	[Test]
 	public async Task Equals_WhenOtherIsNull_ShouldBeFalse()
 	{
-		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length "));
 
 		bool result = node.Equals(null);
 
@@ -104,7 +104,7 @@ public class MappingNodeTests
 	[Test]
 	public async Task IsMetBy_ShouldUseInnerConstraintWithOuterValue()
 	{
-		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length "));
 		node.AddConstraint(new DummyValueConstraint<int>(v
 			=> new DummyConstraintResult<int>(Outcome.Success, v, $"yeah: {v}")));
 		StringBuilder sb = new();
@@ -121,7 +121,7 @@ public class MappingNodeTests
 	[Test]
 	public async Task IsMetBy_WhenMemberExpectationsCompleteAsynchronously_ShouldUseInnerConstraintWithOuterValue()
 	{
-		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length "));
 		node.AddConstraint(new DummyAsyncConstraint<int>(async v =>
 		{
 			await Task.Yield();
@@ -140,7 +140,7 @@ public class MappingNodeTests
 	public async Task IsMetBy_WhenMemberThrows_ShouldFailWithoutEvaluatingMemberConstraints()
 	{
 		NotSupportedException exception = new("foo");
-		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFunc(_ => throw exception, " length "));
+		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFuncWithName(_ => throw exception, " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
 
@@ -156,7 +156,7 @@ public class MappingNodeTests
 	public async Task IsMetBy_WhenMemberThrows_ShouldUseTheExpectationResultOfExpectationTextConstraints()
 	{
 		MappingNode<string, int, int> node = new(
-			MemberAccessor<string, int>.FromFunc(_ => throw new NotSupportedException("foo"), " length "));
+			MemberAccessor<string, int>.FromFuncWithName(_ => throw new NotSupportedException("foo"), " length "));
 		node.AddConstraint(new ExpectationTextConstraint<int>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
 
@@ -172,7 +172,7 @@ public class MappingNodeTests
 	public async Task IsMetBy_WhenMemberThrows_WhenNegated_ShouldNegateExpectationAndStillFail()
 	{
 		MappingNode<string, int, int> node = new(
-			MemberAccessor<string, int>.FromFunc(_ => throw new NotSupportedException("foo"), " length "));
+			MemberAccessor<string, int>.FromFuncWithName(_ => throw new NotSupportedException("foo"), " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
 
@@ -187,7 +187,7 @@ public class MappingNodeTests
 	[Test]
 	public async Task IsMetBy_WithInvalidType_ShouldNotApplyTheMemberExpectations()
 	{
-		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
 
 		ConstraintResult result = await node.IsMetBy(42, null!, CancellationToken.None);
@@ -201,7 +201,7 @@ public class MappingNodeTests
 	public async Task IsMetBy_WithNullDelegate_ShouldReturnNullFailure()
 	{
 		DelegateValue<string?> value = new("foo", null, 10.Milliseconds(), true);
-		MappingNode<string?, int?, int?> node = new(MemberAccessor<string?, int?>.FromFunc(s => s?.Length, " length "));
+		MappingNode<string?, int?, int?> node = new(MemberAccessor<string?, int?>.FromFuncWithName(s => s?.Length, " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int?>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
 
@@ -216,7 +216,7 @@ public class MappingNodeTests
 	[Test]
 	public async Task IsMetBy_WithNullValue_ShouldReturnNullFailure()
 	{
-		MappingNode<string?, int?, int?> node = new(MemberAccessor<string?, int?>.FromFunc(s => s?.Length, " length "));
+		MappingNode<string?, int?, int?> node = new(MemberAccessor<string?, int?>.FromFuncWithName(s => s?.Length, " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int?>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
 
@@ -231,7 +231,7 @@ public class MappingNodeTests
 	[Test]
 	public async Task IsMetBy_WithNullValue_WhenNegated_ShouldNegateExpectationAndStillFail()
 	{
-		MappingNode<string?, int?, int?> node = new(MemberAccessor<string?, int?>.FromFunc(s => s?.Length, " length "));
+		MappingNode<string?, int?, int?> node = new(MemberAccessor<string?, int?>.FromFuncWithName(s => s?.Length, " length "));
 		node.AddConstraint(new NotEvaluatedConstraint<int?>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
 

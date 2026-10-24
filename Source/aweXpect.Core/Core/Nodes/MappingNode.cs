@@ -54,7 +54,12 @@ internal abstract class MappingNode : ExpectationNode
 /// </remarks>
 internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 {
-	private readonly MemberAccessor<TSource, Task<TTarget>>? _asyncMemberAccessor;
+	/// <summary>
+	///     The accessor of a member that returns a <see cref="Task{TResult}" /> or a
+	///     <see cref="ValueTask{TResult}" /> of <typeparamref name="TTarget" />.
+	/// </summary>
+	private readonly MemberAccessor? _asyncMemberAccessor;
+
 	private readonly Action<MemberAccessor, StringBuilder>? _expectationTextGenerator;
 	private readonly MemberAccessor<TSource, TTarget>? _memberAccessor;
 
@@ -73,6 +78,17 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	///     Maps to the member that the <paramref name="asyncMemberAccessor" /> accesses and that is awaited.
 	/// </summary>
 	public MappingNode(MemberAccessor<TSource, Task<TTarget>> asyncMemberAccessor,
+		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
+	{
+		_asyncMemberAccessor = asyncMemberAccessor;
+		MemberAccessor = asyncMemberAccessor;
+		_expectationTextGenerator = expectationTextGenerator;
+	}
+
+	/// <summary>
+	///     Maps to the member that the <paramref name="asyncMemberAccessor" /> accesses and that is awaited.
+	/// </summary>
+	public MappingNode(MemberAccessor<TSource, ValueTask<TTarget>> asyncMemberAccessor,
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
 	{
 		_asyncMemberAccessor = asyncMemberAccessor;
@@ -225,17 +241,36 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 
 		TTarget member = default!;
 		Task<TTarget>? memberTask = null;
+		bool isNullTask = false;
 		try
 		{
 			if (_asyncMemberAccessor is null)
 			{
 				member = _memberAccessor!.AccessMember(typedValue);
 			}
+			else if (_asyncMemberAccessor is MemberAccessor<TSource, Task<TTarget>> taskMemberAccessor)
+			{
+				memberTask = taskMemberAccessor.AccessMember(typedValue);
+				if (memberTask is null)
+				{
+					isNullTask = true;
+				}
+				else
+				{
+					member = await memberTask.AbandonOnCancellation(cancellationToken);
+				}
+			}
 			else
 			{
-				memberTask = _asyncMemberAccessor.AccessMember(typedValue);
-				if (memberTask is not null)
+				ValueTask<TTarget> memberValueTask =
+					((MemberAccessor<TSource, ValueTask<TTarget>>)_asyncMemberAccessor).AccessMember(typedValue);
+				if (memberValueTask.IsCompletedSuccessfully)
 				{
+					member = memberValueTask.Result;
+				}
+				else
+				{
+					memberTask = memberValueTask.AsTask();
 					member = await memberTask.AbandonOnCancellation(cancellationToken);
 				}
 			}
@@ -247,7 +282,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 				memberTask?.GetOtherExceptions(exception));
 		}
 
-		if (_asyncMemberAccessor is not null && memberTask is null)
+		if (isNullTask)
 		{
 			ConstraintResult result = await GetExpectationResult(context, cancellationToken);
 			return NullSubjectResult.CreateForNullTask(result, MemberAccessor.GetTrimmedName(), value);

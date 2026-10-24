@@ -18,9 +18,8 @@ public static partial class ThatException
 	{
 		expectations.ThrowIfNull();
 		return new AndOrResult<Exception, IThat<Exception?>>(subject.Get().ExpectationBuilder
-				.ForMember<Exception, Exception?>(e => e.InnerException,
-					" that ",
-					false)
+				.ForMember(MemberAccessor<Exception, Exception?>.FromFuncWithName(e => e.InnerException, " that "),
+					replaceIt: false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars, true))
 				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<Exception?>(e)),
@@ -50,9 +49,8 @@ public static partial class ThatException
 	{
 		expectations.ThrowIfNull();
 		return new AndOrResult<Exception, IThat<Exception?>>(subject.Get().ExpectationBuilder
-				.ForMember<Exception, Exception?>(e => e.InnerException,
-					" that ",
-					false)
+				.ForMember(MemberAccessor<Exception, Exception?>.FromFuncWithName(e => e.InnerException, " that "),
+					replaceIt: false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(TInnerException), it, grammars, true))
 				.AddExpectations<TInnerException?>(e => expectations(new ThatSubject<TInnerException?>(e)),
@@ -85,10 +83,10 @@ public static partial class ThatException
 		expectations.ThrowIfNull();
 		return new AndOrResult<Exception, IThat<Exception?>>(subject.Get().ExpectationBuilder
 				// An inner exception of another type is hidden like a missing one, as the type mismatch already fails.
-				.ForMember<Exception, Exception?>(
-					e => e.InnerException is { } inner && type.IsOrImplements(inner) ? inner : null,
-					" that ",
-					false)
+				.ForMember(MemberAccessor<Exception, Exception?>.FromFuncWithName(
+						e => e.InnerException is { } inner && type.IsOrImplements(inner) ? inner : null,
+						" that "),
+					replaceIt: false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(type, it, grammars, true))
 				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<Exception?>(e)),
