@@ -81,6 +81,21 @@ public partial class AwexpectCustomization
 							new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must not be negative."));
 					}
 				});
+			ExcludedAssemblyPrefixes = new CopiedOnGet(new CustomizationValue<string[]>(awexpectCustomization,
+				KeyPrefix + nameof(ExcludedAssemblyPrefixes),
+				[
+					"mscorlib",
+					"System",
+					"Microsoft",
+					"netstandard",
+					"WindowsBase",
+					"JetBrains",
+					"xunit",
+					"TUnit",
+					"Castle",
+					"DynamicProxyGenAssembly2",
+				],
+				prefixes => prefixes.ThrowIfNull()));
 			TestCancellation = new CustomizationValue<TestCancellation?>(awexpectCustomization,
 				TestCancellationKey, null);
 		}
@@ -151,6 +166,29 @@ public partial class AwexpectCustomization
 		public ICustomizationValueSetter<TimeSpan> DefaultTimeComparisonTolerance { get; }
 
 		/// <summary>
+		///     The assembly name prefixes of framework assemblies, which are excluded when assemblies are scanned, e.g.
+		///     for the test framework adapter or by extensions such as aweXpect.Reflection.
+		/// </summary>
+		/// <remarks>
+		///     A prefix excludes the assembly with exactly this name and all assemblies whose name continues with a
+		///     <c>.</c> after it, so <c>System</c> excludes <c>System.Net.Http</c>, but not <c>Systemics</c>. A prefix
+		///     that ends with a <c>.</c>, e.g. <c>MyCompany.</c>, excludes all assemblies whose name starts with it, and
+		///     an empty prefix excludes nothing.<br />
+		///     Defaults to<br />
+		///     - mscorlib<br />
+		///     - System<br />
+		///     - Microsoft<br />
+		///     - netstandard<br />
+		///     - WindowsBase<br />
+		///     - JetBrains<br />
+		///     - xunit<br />
+		///     - TUnit<br />
+		///     - Castle<br />
+		///     - DynamicProxyGenAssembly2
+		/// </remarks>
+		public ICustomizationValueSetter<string[]> ExcludedAssemblyPrefixes { get; }
+
+		/// <summary>
 		///     If set, applies the cancellation logic for all tests.
 		/// </summary>
 		public ICustomizationValueSetter<TestCancellation?> TestCancellation { get; }
@@ -162,5 +200,17 @@ public partial class AwexpectCustomization
 		/// <inheritdoc cref="IAwexpectCustomization.Set{TValue}(string, TValue)" />
 		CustomizationLifetime IAwexpectCustomization.Set<TValue>(string key, TValue value)
 			=> _awexpectCustomization.Set(key, value);
+
+		/// <summary>
+		///     Returns a copy of the stored array, so that changing it cannot bypass the scoping of the setting.
+		/// </summary>
+		private sealed class CopiedOnGet(ICustomizationValueSetter<string[]> inner) : ICustomizationValueSetter<string[]>
+		{
+			/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Get()" />
+			public string[] Get() => (string[])inner.Get().Clone();
+
+			/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Set(TValue)" />
+			public CustomizationLifetime Set(string[] value) => inner.Set(value);
+		}
 	}
 }

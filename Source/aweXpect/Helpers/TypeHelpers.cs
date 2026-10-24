@@ -40,7 +40,7 @@ internal static class TypeHelpers
 		{
 			throw Tracing.WriteException(
 				new NotSupportedException(
-					$"The interfaces of {Formatter.Format(actualType)} cannot be found by reflection, which is switched off when publishing with trimming or Native AOT enabled. Check against a constructed interface instead of its generic definition. Alternatively, set the runtime switch 'aweXpect.ReflectionFallback.IsSupported' to true to reflect anyway."));
+					$"The interfaces of {Formatter.Format(actualType)} cannot be found by reflection, which is switched off when publishing with trimming or Native AOT enabled. Check against a constructed interface instead of its generic definition. Alternatively, set the runtime switch '{ReflectionFallback.SwitchName}' to true to reflect anyway."));
 		}
 
 		return actualType.GetInterfaces()

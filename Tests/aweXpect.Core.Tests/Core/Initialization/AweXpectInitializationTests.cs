@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using aweXpect.Core.Adapters;
 using aweXpect.Core.Initialization;
+using aweXpect.Customization;
 
 namespace aweXpect.Core.Tests.Core.Initialization;
 
@@ -52,6 +53,25 @@ public sealed class AweXpectInitializationTests
 		bool included = AweXpectInitialization.IsAssemblyNameIncluded(assemblyName);
 
 		await That(included).IsEqualTo(true).Because(because);
+	}
+
+	[Test]
+	[Arguments("MyCompany.", "MyCompany.Product", false, "a prefix ending with a dot excludes every name starting with it")]
+	[Arguments("MyCompany.", "MyCompany", true, "a prefix ending with a dot requires the dot")]
+	[Arguments("", "MyCompany.Product", true, "an empty prefix excludes nothing")]
+	[Arguments("MyCompany", "MyCompany", false, "a prefix excludes the assembly with exactly its name")]
+	[Arguments("MyCompany", "MyCompany.Product", false, "a prefix excludes the names continuing with a dot after it")]
+	[Arguments("MyCompany", "MyCompanyProduct", true, "a prefix only matches at a name-segment boundary")]
+	public async Task IsAssemblyNameIncluded_WithCustomizedPrefix_ShouldMatchLikeAweXpectReflection(
+		string prefix, string assemblyName, bool expected, string because)
+	{
+		bool included;
+		using (Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Set([prefix,]))
+		{
+			included = AweXpectInitialization.IsAssemblyNameIncluded(assemblyName);
+		}
+
+		await That(included).IsEqualTo(expected).Because(because);
 	}
 
 	[Test]

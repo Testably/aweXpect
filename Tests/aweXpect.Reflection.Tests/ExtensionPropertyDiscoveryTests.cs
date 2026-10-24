@@ -45,7 +45,7 @@ public sealed class ExtensionPropertyDiscoveryTests
 	[Test]
 	public async Task Methods_WhenIncludingAccessors_ShouldContainExtensionPropertyAccessors()
 	{
-		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers().Set(SpecialNameMembers.Accessors))
+		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers.Set(SpecialNameMembers.Accessors))
 		{
 			IReadOnlyList<MethodInfo> methods = await GetMethods();
 
@@ -67,7 +67,7 @@ public sealed class ExtensionPropertyDiscoveryTests
 	[Test]
 	public async Task Methods_WhenIncludingAccessors_ShouldContainSettableExtensionPropertyAccessors()
 	{
-		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers().Set(SpecialNameMembers.Accessors))
+		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers.Set(SpecialNameMembers.Accessors))
 		{
 			IReadOnlyList<MethodInfo> methods = await GetMethods();
 

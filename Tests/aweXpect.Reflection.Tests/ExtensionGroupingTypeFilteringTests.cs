@@ -30,7 +30,7 @@ public sealed class ExtensionGroupingTypeFilteringTests
 	[Test]
 	public async Task Types_WhenIncludingCompilerGenerated_ShouldContainExtensionGroupingTypes()
 	{
-		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers
 			       .Set(CompilerGeneratedMembers.Types))
 		{
 			IReadOnlyList<Type> types = await GetTypes();

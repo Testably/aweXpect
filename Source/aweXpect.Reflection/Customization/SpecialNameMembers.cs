@@ -8,7 +8,7 @@ namespace aweXpect.Reflection;
 /// <remarks>
 ///     By default, special-name methods (operators and property/event accessors) are excluded. Use these flags to opt
 ///     specific kinds back in via
-///     <see cref="ReflectionCustomizationExtensions.IncludedSpecialNameMembers" />.
+///     <see cref="ReflectionAwexpectCustomizationExtensions.ReflectionCustomization.IncludedSpecialNameMembers" />.
 ///     <para />
 ///     Unlike <see cref="CompilerGeneratedMembers" />, these members are user-written but are nonetheless hidden by
 ///     default because they are not normally reflected over directly.

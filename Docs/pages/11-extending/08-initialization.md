@@ -154,7 +154,7 @@ namespace MyTests
   wins, independent of the order in which the module initializers run.
 - Without any registration, aweXpect throws its own `FailException`, `SkipException` or `InconclusiveException`.
   Only below .NET 8, e.g. on .NET Framework, it first scans the loaded assemblies for a type that implements
-  `ITestFrameworkAdapter`, see [reflection](../03-how-it-works/07-configuration.md#reflection).
+  `ITestFrameworkAdapter`, see [settings](../03-how-it-works/07-configuration.md#settings).
 - The generated registration is a module initializer, which needs C# 9 or later. On .NET 8 or later, a test project
   with an older `<LangVersion>` has to register the generated adapter itself, which the warning
   [aweXpect2002](../08-analyzers.md#test-framework-adapter) points out.

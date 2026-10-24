@@ -9,8 +9,8 @@ public class AssemblySetup
 	private CustomizationLifetime? _customizer;
 
 	[OneTimeSetUp]
-	public void RunBeforeAnyTests() => _customizer = Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Set([
-		..Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get(),
+	public void RunBeforeAnyTests() => _customizer = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Set([
+		..Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get(),
 		"aweXpect.Core",
 	]);
 

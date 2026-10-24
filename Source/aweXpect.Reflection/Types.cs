@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection;
@@ -22,9 +23,10 @@ public static class Types
 	///     <see cref="System.AppDomain.CurrentDomain" />.
 	/// </summary>
 	/// <remarks>
-	///     Assemblies whose name matches one of the <c>ExcludedAssemblyPrefixes</c> at a name-segment boundary
-	///     are skipped — the same matching the dependency assertions use, so one customization value has one
-	///     meaning everywhere.
+	///     Assemblies whose name matches one of the
+	///     <see cref="AwexpectCustomization.SettingsCustomization.ExcludedAssemblyPrefixes" /> are skipped, with the
+	///     same matching as the dependency assertions and the test framework detection, so one customization value has
+	///     one meaning everywhere.
 	/// </remarks>
 	public static Filtered.Types InAllLoadedAssemblies()
 		=> In.AllLoadedAssemblies().Types();
