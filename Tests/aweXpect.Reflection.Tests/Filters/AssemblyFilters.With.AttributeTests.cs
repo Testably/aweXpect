@@ -29,18 +29,6 @@ public sealed partial class AssemblyFilters
 			}
 
 			[Test]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForAssembliesWithAttributeDirectlySet()
-			{
-				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
-					.With<AssemblyTitleAttribute>(false);
-
-				await That(assemblies).HasCount().GreaterThanOrEqualTo(2);
-				await That(assemblies.GetDescription())
-					.IsEqualTo("in all loaded assemblies with direct AssemblyTitleAttribute")
-					.AsPrefix();
-			}
-
-			[Test]
 			public async Task WithPredicate_ShouldFilterForAssembliesWithMatchingAttribute()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -50,19 +38,6 @@ public sealed partial class AssemblyFilters
 				await That(assemblies.GetDescription())
 					.IsEqualTo(
 						"in all loaded assemblies with AssemblyTitleAttribute matching attribute => attribute.Title == \"aweXpect.Reflection.Tests\"");
-			}
-
-			[Test]
-			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldDescribeAsDirect()
-			{
-				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
-					.With<AssemblyTitleAttribute>(attribute => attribute.Title == "aweXpect.Reflection.Tests",
-						false);
-
-				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
-				await That(assemblies.GetDescription())
-					.IsEqualTo(
-						"in all loaded assemblies with direct AssemblyTitleAttribute matching attribute => attribute.Title == \"aweXpect.Reflection.Tests\"");
 			}
 
 			[Test]
@@ -111,31 +86,6 @@ public sealed partial class AssemblyFilters
 
 				// No assembly has the NeverAppliedAssemblyAttribute, so an "and" semantic would yield none.
 				await That(assemblies).HasCount().GreaterThanOrEqualTo(2);
-			}
-
-			[Test]
-			public async Task OrWithoutPredicate_WhenInheritIsSetToFalse_ShouldDescribeAsDirect()
-			{
-				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
-					.With<AssemblyTitleAttribute>()
-					.OrWith<NeverAppliedAssemblyAttribute>(false);
-
-				await That(assemblies.GetDescription())
-					.IsEqualTo(
-						"in all loaded assemblies with AssemblyTitleAttribute or with direct AssemblyFilters.With.NeverAppliedAssemblyAttribute")
-					.AsPrefix();
-			}
-
-			[Test]
-			public async Task OrWithPredicate_WhenInheritIsSetToFalse_ShouldDescribeAsDirect()
-			{
-				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
-					.With<AssemblyTitleAttribute>(attribute => attribute.Title == "aweXpect.Reflection.Tests")
-					.OrWith<AssemblyTitleAttribute>(attribute => attribute.Title == "aweXpect.Reflection", false);
-
-				await That(assemblies.GetDescription())
-					.IsEqualTo(
-						"in all loaded assemblies with AssemblyTitleAttribute matching attribute => attribute.Title == \"aweXpect.Reflection.Tests\" or with direct AssemblyTitleAttribute matching attribute => attribute.Title == \"aweXpect.Reflection\"");
 			}
 
 			[Test]

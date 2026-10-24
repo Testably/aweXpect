@@ -33,6 +33,19 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenATypeHasAttributeIndirectly_Directly_ShouldSucceed()
+			{
+				List<Type?> subjects = [typeof(FooChildClass2),];
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<FooAttribute>().Directly();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task WhenATypeHasAttributeIndirectly_ShouldFail()
 			{
 				List<Type?> subjects = [typeof(FooChildClass2),];
@@ -53,19 +66,6 @@ public sealed partial class ThatTypes
 					               ThatTypes.DoNotHave.AttributeTests.FooChildClass2
 					             ]
 					             """);
-			}
-
-			[Test]
-			public async Task WhenATypeHasAttributeIndirectly_WhenInheritIsFalse_ShouldSucceed()
-			{
-				List<Type?> subjects = [typeof(FooChildClass2),];
-
-				async Task Act()
-				{
-					await That(subjects).DoNotHave<FooAttribute>(false);
-				}
-
-				await That(Act).DoesNotThrow();
 			}
 
 			[Test]

@@ -26,10 +26,10 @@ public sealed partial class MethodFilters
 			}
 
 			[Test]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForMethodsWithAttributeDirectlySet()
+			public async Task WhenDirectly_ShouldFilterForMethodsWithAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().With<BarAttribute>(false);
+					.Methods().With<BarAttribute>().Directly();
 
 				await That(methods).HasSingle().Which.IsEqualTo(typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod)));
 				await That(methods.GetDescription())
@@ -53,10 +53,10 @@ public sealed partial class MethodFilters
 			}
 
 			[Test]
-			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForMethodsWithAttributeDirectlySet()
+			public async Task WithPredicate_WhenDirectly_ShouldFilterForMethodsWithAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().With<FooAttribute>(foo => foo.Value == 2, false);
+					.Methods().With<FooAttribute>(foo => foo.Value == 2).Directly();
 
 				await That(methods).HasSingle().Which
 					.IsEqualTo(typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod2)));
@@ -122,20 +122,19 @@ public sealed partial class MethodFilters
 			}
 
 			[Test]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForMethodsWithAttributeDirectlySet()
+			public async Task WhenDirectly_ShouldApplyToAllAttributes()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().With<BarAttribute>().OrWith<FooAttribute>(false);
+					.Methods().With<BarAttribute>().OrWith<FooAttribute>().Directly();
 
 				await That(methods).IsEqualTo([
 					typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod))!,
 					typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod2))!,
 					typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod3))!,
-					typeof(DummyChild).GetMethod(nameof(DummyChild.MyBarMethod))!,
 				]).InAnyOrder();
 				await That(methods.GetDescription())
 					.IsEqualTo(
-						"methods with MethodFilters.With.BarAttribute or with direct MethodFilters.With.FooAttribute")
+						"methods with direct MethodFilters.With.BarAttribute or with direct MethodFilters.With.FooAttribute")
 					.AsPrefix();
 			}
 
@@ -145,27 +144,27 @@ public sealed partial class MethodFilters
 				MethodInfo?[] expectedMethods)
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().With<BarAttribute>(false).OrWith<FooAttribute>(foo => foo.Value == value);
+					.Methods().With<BarAttribute>().OrWith<FooAttribute>(foo => foo.Value == value);
 
 				await That(methods).IsEqualTo(expectedMethods).InAnyOrder();
 				await That(methods.GetDescription())
 					.IsEqualTo(
-						"methods with direct MethodFilters.With.BarAttribute or with MethodFilters.With.FooAttribute matching foo => foo.Value == value")
+						"methods with MethodFilters.With.BarAttribute or with MethodFilters.With.FooAttribute matching foo => foo.Value == value")
 					.AsPrefix();
 			}
 
 			[Test]
-			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForMethodsWithAttributeDirectlySet()
+			public async Task WithPredicate_WhenDirectly_ShouldApplyToAllAttributes()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().With<BarAttribute>(_ => false)
-					.OrWith<FooAttribute>(foo => foo.Value == 2, false);
+					.OrWith<FooAttribute>(foo => foo.Value == 2).Directly();
 
 				await That(methods).HasSingle().Which
 					.IsEqualTo(typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod2)));
 				await That(methods.GetDescription())
 					.IsEqualTo(
-						"methods with MethodFilters.With.BarAttribute matching _ => false or with direct MethodFilters.With.FooAttribute matching foo => foo.Value == 2")
+						"methods with direct MethodFilters.With.BarAttribute matching _ => false or with direct MethodFilters.With.FooAttribute matching foo => foo.Value == 2")
 					.AsPrefix();
 			}
 
@@ -175,6 +174,7 @@ public sealed partial class MethodFilters
 					() => (
 						2, [
 							typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod)),
+							typeof(DummyChild).GetMethod(nameof(DummyChild.MyBarMethod)),
 							typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod2)),
 							typeof(DummyChild).GetMethod(nameof(DummyChild.MyFooMethod2)),
 						]
@@ -182,6 +182,7 @@ public sealed partial class MethodFilters
 					() => (
 						3, [
 							typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod)),
+							typeof(DummyChild).GetMethod(nameof(DummyChild.MyBarMethod)),
 							typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod3)),
 						]
 					),

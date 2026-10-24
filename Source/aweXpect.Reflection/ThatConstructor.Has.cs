@@ -24,7 +24,7 @@ public static partial class ThatConstructor
 	{
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
+		attributeFilterOptions.RegisterAttribute<TAttribute>();
 		return new HasAttributeWithoutInheritResult<ConstructorInfo, ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
@@ -46,7 +46,7 @@ public static partial class ThatConstructor
 	{
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue);
+		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue);
 		return new HasAttributeWithoutInheritResult<ConstructorInfo, ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),

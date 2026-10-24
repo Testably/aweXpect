@@ -8,7 +8,7 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
-using aweXpect.Results;
+using aweXpect.Reflection.Results;
 #if NET8_0_OR_GREATER
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,22 +25,23 @@ public static partial class ThatMethods
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-	///     the attribute can be inherited from a base type.
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
+	///     to the attributes declared directly on the member with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> DoNotHave<TAttribute>(
-		this IThat<IEnumerable<MethodInfo?>?> subject, bool inherit = true)
+	public static InheritanceScopeResult<IEnumerable<MethodInfo?>, IEnumerable<MethodInfo?>?> DoNotHave<TAttribute>(
+		this IThat<IEnumerable<MethodInfo?>?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>>(
+		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		return new InheritanceScopeResult<IEnumerable<MethodInfo?>, IEnumerable<MethodInfo?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<MethodInfo?>, IEnumerable<MethodInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
-			subject);
+			subject,
+			attributeFilterOptions.Scope);
 	}
 
 #if NET8_0_OR_GREATER
@@ -49,22 +50,23 @@ public static partial class ThatMethods
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-	///     the attribute can be inherited from a base type.
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
+	///     to the attributes declared directly on the member with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> DoNotHave<TAttribute>(
-		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, bool inherit = true)
+	public static InheritanceScopeResult<IAsyncEnumerable<MethodInfo?>, IAsyncEnumerable<MethodInfo?>?> DoNotHave<TAttribute>(
+		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>>(
+		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		return new InheritanceScopeResult<IAsyncEnumerable<MethodInfo?>, IAsyncEnumerable<MethodInfo?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<MethodInfo?>, IAsyncEnumerable<MethodInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
-			subject);
+			subject,
+			attributeFilterOptions.Scope);
 	}
 #endif
 

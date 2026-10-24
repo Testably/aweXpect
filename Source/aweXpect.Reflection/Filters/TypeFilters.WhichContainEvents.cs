@@ -13,10 +13,12 @@ public static partial class TypeFilters
 	/// <remarks>
 	///     By default a type passes when it contains at least one matching event. Append a quantifier
 	///     (e.g. <see cref="TypesContainingMembers.Exactly(Times)" />) to require a specific count.<br />
-	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
+	///     The inherited events are considered, but neither those declared on <see cref="object" />,
+	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access.
+	///     Restrict them with <see cref="TypesContainingMembersScopeResult.Directly" /> or add the members of these
+	///     roots with <see cref="TypesContainingMembersScopeResult.IncludingObjectMembers" />.
 	/// </remarks>
-	public static TypesContainingMembers WhichContainEvents(this Filtered.Types @this,
-		Func<Filtered.Events, Filtered.Events> filter,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
-		=> Containing<EventInfo, Filtered.Events>(@this, types => types.Events(memberScope), filter);
+	public static TypesContainingMembersScopeResult WhichContainEvents(this Filtered.Types @this,
+		Func<Filtered.Events, Filtered.Events> filter)
+		=> ContainingMembers<EventInfo, Filtered.Events>(@this, (types, memberScope) => types.Events(memberScope), filter);
 }

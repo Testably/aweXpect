@@ -14,48 +14,41 @@ public static partial class EventFilters
 	///     Filter for events with attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-	///     the attribute can be inherited from a base type.
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the filter to the
+	///     attributes declared directly on the event with <see cref="EventsWith.Directly" />.
 	/// </remarks>
-	public static EventsWith With<TAttribute>(this Filtered.Events @this, bool inherit = true)
+	public static EventsWith With<TAttribute>(this Filtered.Events @this)
 		where TAttribute : Attribute
-	{
-		Filter.GenericFilter<EventInfo> filter = Filter.Suffix<EventInfo>(
-			eventInfo => eventInfo.HasAttribute<TAttribute>(inherit: inherit),
-			() => $"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
-		return new EventsWith(@this, filter);
-	}
+		=> new(@this, new AttributeFilter<EventInfo>(
+			(eventInfo, inherit) => eventInfo.HasAttribute<TAttribute>(inherit: inherit),
+			directly => $"with {(directly ? DirectText : "")}{Formatter.Format(typeof(TAttribute))} "));
 
 	/// <summary>
 	///     Filter for events with attribute of type <typeparamref name="TAttribute" /> that
-	///     match the <paramref name="predicate" />.
+	///     matches the <paramref name="predicate" />.
 	/// </summary>
 	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-	///     the attribute can be inherited from a base type.
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the filter to the
+	///     attributes declared directly on the event with <see cref="EventsWith.Directly" />.
 	/// </remarks>
 	public static EventsWith With<TAttribute>(this Filtered.Events @this,
 		Func<TAttribute, bool>? predicate,
-		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
-	{
-		Filter.GenericFilter<EventInfo> filter = Filter.Suffix<EventInfo>(
-			eventInfo => eventInfo.HasAttribute(predicate, inherit),
-			() => $"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
-		return new EventsWith(@this, filter);
-	}
+		=> new(@this, new AttributeFilter<EventInfo>(
+			(eventInfo, inherit) => eventInfo.HasAttribute(predicate, inherit),
+			directly => $"with {(directly ? DirectText : "")}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} "));
 
 	/// <summary>
 	///     Additional filters on events with an attribute.
 	/// </summary>
 	public class EventsWith : Filtered.Events
 	{
-		private readonly Filter.GenericFilter<EventInfo> _filter;
+		private readonly AttributeFilter<EventInfo> _filter;
 		private readonly Filtered.Events _source;
 
-		internal EventsWith(Filtered.Events source, Filter.GenericFilter<EventInfo> filter)
+		internal EventsWith(Filtered.Events source, AttributeFilter<EventInfo> filter)
 			: base(source.Which(filter))
 		{
 			_source = source;
@@ -65,33 +58,32 @@ public static partial class EventFilters
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" />.
 		/// </summary>
-		/// <remarks>
-		///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-		///     the attribute can be inherited from a base type.
-		/// </remarks>
-		public EventsWith OrWith<TAttribute>(bool inherit = true)
+		public EventsWith OrWith<TAttribute>()
 			where TAttribute : Attribute
-			=> new(_source, _filter.Extend((result, eventInfo) => result || eventInfo.HasAttribute<TAttribute>(inherit: inherit),
-				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} "));
+			=> new(_source, _filter.Or(
+				(eventInfo, inherit) => eventInfo.HasAttribute<TAttribute>(inherit: inherit),
+				directly => $"or with {(directly ? DirectText : "")}{Formatter.Format(typeof(TAttribute))} "));
 
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" /> that
 		///     matches the <paramref name="predicate" />.
 		/// </summary>
-		/// <remarks>
-		///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-		///     the attribute can be inherited from a base type.
-		/// </remarks>
 		public EventsWith OrWith<TAttribute>(
 			Func<TAttribute, bool>? predicate,
-			bool inherit = true,
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
-			=> new(_source, _filter.Extend(
-				(result, eventInfo) => result || eventInfo.HasAttribute(predicate, inherit),
-				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} "));
+			=> new(_source, _filter.Or(
+				(eventInfo, inherit) => eventInfo.HasAttribute(predicate, inherit),
+				directly => $"or with {(directly ? DirectText : "")}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} "));
+
+		/// <summary>
+		///     Only considers the attributes declared directly on the event, not those inherited from a base type or an overridden member.
+		/// </summary>
+		/// <remarks>
+		///     Applies to all attributes of the filter, also to those added via <see cref="OrWith{TAttribute}()" />.
+		/// </remarks>
+		public EventsWith Directly()
+			=> new(_source, _filter.Directly());
 	}
 }

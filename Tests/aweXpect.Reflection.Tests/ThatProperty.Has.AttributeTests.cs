@@ -71,6 +71,25 @@ public sealed partial class ThatProperty
 			}
 
 			[Test]
+			public async Task WhenPropertyInheritsAttributeFromOverriddenProperty_Directly_ShouldFail()
+			{
+				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).Has<MarkerAttribute>().Directly();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has direct ThatProperty.Has.AttributeTests.MarkerAttribute,
+					             but it did not in public string ThatProperty.Has.AttributeTests.DerivedClass.InheritedProperty { get; set; }
+					             """)
+					.Because("with Directly only the attributes declared on the overriding property count");
+			}
+
+			[Test]
 			public async Task WhenPropertyInheritsAttributeFromOverriddenProperty_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!;
@@ -133,25 +152,6 @@ public sealed partial class ThatProperty
 					             but it did not in public string ThatProperty.Has.AttributeTests.DerivedClass.NonInheritableProperty { get; set; }
 					             """)
 					.Because("an attribute with Inherited = false is not inherited from the overridden base property");
-			}
-
-			[Test]
-			public async Task WithInheritFalse_WhenPropertyInheritsAttributeFromOverriddenProperty_ShouldFail()
-			{
-				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!;
-
-				async Task Act()
-				{
-					await That(subject).Has<MarkerAttribute>(false);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             has direct ThatProperty.Has.AttributeTests.MarkerAttribute,
-					             but it did not in public string ThatProperty.Has.AttributeTests.DerivedClass.InheritedProperty { get; set; }
-					             """)
-					.Because("with inherit: false only the attributes declared on the overriding property count");
 			}
 
 			[AttributeUsage(AttributeTargets.Property)]

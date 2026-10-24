@@ -16,18 +16,14 @@ public static partial class ThatAssembly
 	/// <summary>
 	///     Verifies that the <see cref="Assembly" /> has attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
-	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
-	///     the attribute can be inherited from a base type.
-	/// </remarks>
 	[GuaranteesNotNull]
-	public static HasAttributeResult<Assembly, Assembly?> Has<TAttribute>(this IThat<Assembly?> subject, bool inherit = true)
+	public static HasAttributeWithoutInheritResult<Assembly, Assembly?> Has<TAttribute>(this IThat<Assembly?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HasAttributeResult<Assembly, Assembly?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
+		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		return new HasAttributeWithoutInheritResult<Assembly, Assembly?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
@@ -38,23 +34,18 @@ public static partial class ThatAssembly
 	///     Verifies that the <see cref="Assembly" /> has attribute of type <typeparamref name="TAttribute" /> that
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
-	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
-	///     the attribute can be inherited from a base type.
-	/// </remarks>
 	[GuaranteesNotNull]
-	public static HasAttributeResult<Assembly, Assembly?> Has<TAttribute>(
+	public static HasAttributeWithoutInheritResult<Assembly, Assembly?> Has<TAttribute>(
 		this IThat<Assembly?> subject,
 		Func<TAttribute, bool> predicate,
-		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimExpression());
-		return new HasAttributeResult<Assembly, Assembly?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
+		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
+		return new HasAttributeWithoutInheritResult<Assembly, Assembly?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,

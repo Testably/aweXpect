@@ -50,7 +50,7 @@ public sealed class TypeHelpersTests
 
 		FieldInfo[] declared = type.GetDeclaredFields();
 		FieldInfo[] declaredAgain = type.GetDeclaredFields();
-		FieldInfo[] includingInherited = type.GetDeclaredFields(MemberScope.IncludingInherited);
+		FieldInfo[] includingInherited = type.GetDeclaredFields(MemberScopes.None);
 		FieldInfo[] includingBackingFields;
 		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers
 			       .Set(CompilerGeneratedMembers.Fields))
@@ -97,6 +97,25 @@ public sealed class TypeHelpersTests
 		}
 
 		await That(Act).Throws<InvalidOperationException>();
+	}
+
+	[Test]
+	public async Task GetDeclaredMethods_ShouldCacheTheMembersPerScope()
+	{
+		Type type = typeof(CachedMembersTestClass);
+
+		MethodInfo[] inherited = type.GetDeclaredMethods(MemberScopes.None);
+		MethodInfo[] includingObjectMembers = type.GetDeclaredMethods(MemberScopes.IncludingObjectMembers);
+		MethodInfo[] declared = type.GetDeclaredMethods(MemberScopes.DeclaredOnly);
+		MethodInfo[] declaredIncludingObjectMembers =
+	type.GetDeclaredMethods(MemberScopes.DeclaredOnly | MemberScopes.IncludingObjectMembers);
+
+		await That(inherited).IsEmpty()
+	.Because("the methods declared on System.Object are not included by default");
+		await That(includingObjectMembers).Contains(m => m.Name == nameof(ToString))
+	.Because("the scope is part of the cache key");
+		await That(declaredIncludingObjectMembers).IsSameAs(declared)
+	.Because("the members of System.Object are never declared on another type, so both scopes share a cache entry");
 	}
 
 	[Test]

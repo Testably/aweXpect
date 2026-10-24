@@ -22,10 +22,10 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForTypesWithoutAttributeDirectlySet()
+			public async Task WhenDirectly_ShouldFilterForTypesWithoutAttributeDirectlySet()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
-					.Types().Without<BarAttribute>(false);
+					.Types().Without<BarAttribute>().Directly();
 
 				await That(types).DoesNotContain(typeof(BarClass)).And.Contains(typeof(BarChildClass));
 				await That(types.GetDescription())

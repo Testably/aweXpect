@@ -14,48 +14,41 @@ public static partial class PropertyFilters
 	///     Filter for properties with attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-	///     the attribute can be inherited from a base type.
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the filter to the
+	///     attributes declared directly on the property with <see cref="PropertiesWith.Directly" />.
 	/// </remarks>
-	public static PropertiesWith With<TAttribute>(this Filtered.Properties @this, bool inherit = true)
+	public static PropertiesWith With<TAttribute>(this Filtered.Properties @this)
 		where TAttribute : Attribute
-	{
-		Filter.GenericFilter<PropertyInfo> filter = Filter.Suffix<PropertyInfo>(
-			propertyInfo => propertyInfo.HasAttribute<TAttribute>(inherit: inherit),
-			() => $"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
-		return new PropertiesWith(@this, filter);
-	}
+		=> new(@this, new AttributeFilter<PropertyInfo>(
+			(propertyInfo, inherit) => propertyInfo.HasAttribute<TAttribute>(inherit: inherit),
+			directly => $"with {(directly ? DirectText : "")}{Formatter.Format(typeof(TAttribute))} "));
 
 	/// <summary>
 	///     Filter for properties with attribute of type <typeparamref name="TAttribute" /> that
-	///     match the <paramref name="predicate" />.
+	///     matches the <paramref name="predicate" />.
 	/// </summary>
 	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-	///     the attribute can be inherited from a base type.
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the filter to the
+	///     attributes declared directly on the property with <see cref="PropertiesWith.Directly" />.
 	/// </remarks>
 	public static PropertiesWith With<TAttribute>(this Filtered.Properties @this,
 		Func<TAttribute, bool>? predicate,
-		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
-	{
-		Filter.GenericFilter<PropertyInfo> filter = Filter.Suffix<PropertyInfo>(
-			propertyInfo => propertyInfo.HasAttribute(predicate, inherit),
-			() => $"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
-		return new PropertiesWith(@this, filter);
-	}
+		=> new(@this, new AttributeFilter<PropertyInfo>(
+			(propertyInfo, inherit) => propertyInfo.HasAttribute(predicate, inherit),
+			directly => $"with {(directly ? DirectText : "")}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} "));
 
 	/// <summary>
 	///     Additional filters on properties with an attribute.
 	/// </summary>
 	public class PropertiesWith : Filtered.Properties
 	{
-		private readonly Filter.GenericFilter<PropertyInfo> _filter;
+		private readonly AttributeFilter<PropertyInfo> _filter;
 		private readonly Filtered.Properties _source;
 
-		internal PropertiesWith(Filtered.Properties source, Filter.GenericFilter<PropertyInfo> filter)
+		internal PropertiesWith(Filtered.Properties source, AttributeFilter<PropertyInfo> filter)
 			: base(source.Which(filter))
 		{
 			_source = source;
@@ -65,34 +58,32 @@ public static partial class PropertyFilters
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" />.
 		/// </summary>
-		/// <remarks>
-		///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-		///     the attribute can be inherited from a base type.
-		/// </remarks>
-		public PropertiesWith OrWith<TAttribute>(bool inherit = true)
+		public PropertiesWith OrWith<TAttribute>()
 			where TAttribute : Attribute
-			=> new(_source, _filter.Extend(
-				(result, propertyInfo) => result || propertyInfo.HasAttribute<TAttribute>(inherit: inherit),
-				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} "));
+			=> new(_source, _filter.Or(
+				(propertyInfo, inherit) => propertyInfo.HasAttribute<TAttribute>(inherit: inherit),
+				directly => $"or with {(directly ? DirectText : "")}{Formatter.Format(typeof(TAttribute))} "));
 
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" /> that
 		///     matches the <paramref name="predicate" />.
 		/// </summary>
-		/// <remarks>
-		///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-		///     the attribute can be inherited from a base type.
-		/// </remarks>
 		public PropertiesWith OrWith<TAttribute>(
 			Func<TAttribute, bool>? predicate,
-			bool inherit = true,
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
-			=> new(_source, _filter.Extend(
-				(result, propertyInfo) => result || propertyInfo.HasAttribute(predicate, inherit),
-				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} "));
+			=> new(_source, _filter.Or(
+				(propertyInfo, inherit) => propertyInfo.HasAttribute(predicate, inherit),
+				directly => $"or with {(directly ? DirectText : "")}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} "));
+
+		/// <summary>
+		///     Only considers the attributes declared directly on the property, not those inherited from a base type or an overridden member.
+		/// </summary>
+		/// <remarks>
+		///     Applies to all attributes of the filter, also to those added via <see cref="OrWith{TAttribute}()" />.
+		/// </remarks>
+		public PropertiesWith Directly()
+			=> new(_source, _filter.Directly());
 	}
 }

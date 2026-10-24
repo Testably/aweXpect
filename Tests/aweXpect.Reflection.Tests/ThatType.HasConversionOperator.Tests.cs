@@ -37,6 +37,38 @@ public sealed partial class ThatType
 			}
 
 			[Test]
+			public async Task DoesNotHave_WhenOnlyInherited_Directly_ShouldSucceed()
+			{
+				Type subject = typeof(OperatorDerivedClass);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHaveImplicitConversionOperator<OperatorBaseClass, int>().Directly();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with Directly only the conversion operators declared on the type count");
+			}
+
+			[Test]
+			public async Task DoesNotHave_WhenOnlyInherited_ShouldFail()
+			{
+				Type subject = typeof(OperatorDerivedClass);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHaveImplicitConversionOperator<OperatorBaseClass, int>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not have an implicit conversion operator from OperatorBaseClass to int,
+					              but it had an implicit conversion operator from OperatorBaseClass to int {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Test]
 			public async Task DoesNotHave_WhenPresent_ShouldFail()
 			{
 				Type subject = typeof(Money);
@@ -52,6 +84,38 @@ public sealed partial class ThatType
 					              does not have an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))},
 					              but it had an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))} {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Test]
+			public async Task WhenConversionIsOnlyInherited_Directly_ShouldFail()
+			{
+				Type subject = typeof(OperatorDerivedClass);
+
+				async Task Act()
+				{
+					await That(subject).HasImplicitConversionOperator<OperatorBaseClass, int>().Directly();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              declares an implicit conversion operator from OperatorBaseClass to int,
+					              but it did not declare an implicit conversion operator from OperatorBaseClass to int {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Test]
+			public async Task WhenConversionIsOnlyInherited_ShouldSucceed()
+			{
+				Type subject = typeof(OperatorDerivedClass);
+
+				async Task Act()
+				{
+					await That(subject).HasImplicitConversionOperator<OperatorBaseClass, int>();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("conversion operators inherited from base types are considered by default");
 			}
 
 			[Test]

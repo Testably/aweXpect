@@ -27,7 +27,7 @@ public sealed partial class ThatTypes
 
 #if NET8_0_OR_GREATER
 			[Test]
-			public async Task WhenAsyncEnumerableTypesOnlyContainInheritedEvent_WithIncludingInherited_ShouldSucceed()
+			public async Task WhenAsyncEnumerableTypesOnlyContainInheritedEvent_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
 				{
@@ -36,8 +36,7 @@ public sealed partial class ThatTypes
 
 				async Task Act()
 				{
-					await That(subject).ContainEvents(events => events.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
+					await That(subject).ContainEvents(events => events.With<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();
@@ -68,20 +67,20 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
-			public async Task WhenTypeOnlyContainsInheritedEvent_WithDeclaredOnly_ShouldFail()
+			public async Task WhenTypeOnlyContainsInheritedEvent_Directly_ShouldFail()
 			{
 				Filtered.Types subject =
 					In.Types<DerivedClassWithInheritedMarkedEvent, BaseClassWithMarkedEvent>();
 
 				async Task Act()
 				{
-					await That(subject).ContainEvents(events => events.With<MarkerAttribute>());
+					await That(subject).ContainEvents(events => events.With<MarkerAttribute>()).Directly();
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainEvents.DerivedClassWithInheritedMarkedEvent and ThatTypes.ContainEvents.BaseClassWithMarkedEvent
-					             all contain events with ThatTypes.ContainEvents.MarkerAttribute at least once,
+					             all declare events with ThatTypes.ContainEvents.MarkerAttribute at least once,
 					             but it contained not matching types
 
 					             Not matching items:
@@ -92,15 +91,14 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
-			public async Task WhenTypesOnlyContainInheritedEvent_WithIncludingInherited_ShouldSucceed()
+			public async Task WhenTypesOnlyContainInheritedEvent_ShouldSucceed()
 			{
 				Filtered.Types subject =
 					In.Types<DerivedClassWithInheritedMarkedEvent, BaseClassWithMarkedEvent>();
 
 				async Task Act()
 				{
-					await That(subject).ContainEvents(events => events.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
+					await That(subject).ContainEvents(events => events.With<MarkerAttribute>());
 				}
 
 				await That(Act).DoesNotThrow();

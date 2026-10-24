@@ -2,7 +2,7 @@
 
 public sealed partial class TypeFilters
 {
-	public sealed class WhichInheritFrom
+	public sealed partial class WhichInheritFrom
 	{
 		public sealed class Tests
 		{
@@ -68,7 +68,7 @@ public sealed partial class TypeFilters
 		}
 	}
 
-	public sealed class WhichDoNotInheritFrom
+	public sealed partial class WhichDoNotInheritFrom
 	{
 		public sealed class Tests
 		{

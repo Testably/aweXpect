@@ -12,7 +12,7 @@ using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Options;
 using MembersKey = (
-	aweXpect.Reflection.Collections.MemberScope Scope,
+	aweXpect.Reflection.Collections.MemberScopes Scope,
 	aweXpect.Reflection.CompilerGeneratedMembers CompilerGenerated,
 	aweXpect.Reflection.SpecialNameMembers SpecialName);
 
@@ -135,12 +135,12 @@ internal static class TypeHelpers
 	}
 
 	/// <summary>
-	///     Searches for events in the <paramref name="type" />, optionally including inherited ones according to the
-	///     <paramref name="memberScope" />.
+	///     Searches for events in the <paramref name="type" />, including inherited ones unless the
+	///     <paramref name="memberScope" /> is <see cref="MemberScopes.DeclaredOnly" />.
 	/// </summary>
 	public static EventInfo[] GetDeclaredEvents(
 		this Type type,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
+		MemberScopes memberScope = MemberScopes.DeclaredOnly)
 	{
 		if (!ReflectionFallback.IsSupported)
 		{
@@ -150,6 +150,7 @@ internal static class TypeHelpers
 		try
 		{
 			CompilerGeneratedMembers included = IncludedCompilerGeneratedMembers;
+			memberScope = memberScope.Normalize();
 			MembersKey key = (memberScope, included, SpecialNameMembers.None);
 			DeclaredMembers? cache = GetDeclaredMembersCache(type);
 			if (cache?.Events is { } cached && cached.Key == key)
@@ -163,21 +164,16 @@ internal static class TypeHelpers
 				           BindingFlags.Public |
 				           BindingFlags.Instance |
 				           BindingFlags.Static);
-			if (memberScope == MemberScope.IncludingInherited)
+			if (type.IsInterface && !memberScope.IsDirect())
 			{
-				for (Type? baseType = type.BaseType; baseType is not null; baseType = baseType.BaseType)
+				foreach (Type baseInterface in type.GetInterfaces())
 				{
-					events = events.Concat(baseType
-						.GetEvents(BindingFlags.DeclaredOnly |
-						           BindingFlags.NonPublic |
-						           BindingFlags.Instance |
-						           BindingFlags.Static)
-						.Where(@event => @event.AddMethod is not { IsPrivate: false, } &&
-						                 @event.RemoveMethod is not { IsPrivate: false, }));
+					events = events.Concat(baseInterface.GetEvents(InterfaceMemberFlags));
 				}
 			}
 
 			EventInfo[] result = events
+				.Where(m => memberScope.Includes(m, type))
 				.Where(m => !m.IsCompilerGenerated() ||
 				            (included & CompilerGeneratedMembers.Events) != 0)
 				.ToArray();
@@ -198,12 +194,12 @@ internal static class TypeHelpers
 	}
 
 	/// <summary>
-	///     Searches for fields in the <paramref name="type" />, optionally including inherited ones according to the
-	///     <paramref name="memberScope" />.
+	///     Searches for fields in the <paramref name="type" />, including inherited ones unless the
+	///     <paramref name="memberScope" /> is <see cref="MemberScopes.DeclaredOnly" />.
 	/// </summary>
 	public static FieldInfo[] GetDeclaredFields(
 		this Type type,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
+		MemberScopes memberScope = MemberScopes.DeclaredOnly)
 	{
 		if (!ReflectionFallback.IsSupported)
 		{
@@ -213,6 +209,7 @@ internal static class TypeHelpers
 		try
 		{
 			CompilerGeneratedMembers included = IncludedCompilerGeneratedMembers;
+			memberScope = memberScope.Normalize();
 			MembersKey key = (memberScope, included, SpecialNameMembers.None);
 			DeclaredMembers? cache = GetDeclaredMembersCache(type);
 			if (cache?.Fields is { } cached && cached.Key == key)
@@ -226,7 +223,7 @@ internal static class TypeHelpers
 				           BindingFlags.Public |
 				           BindingFlags.Instance |
 				           BindingFlags.Static);
-			if (memberScope == MemberScope.IncludingInherited)
+			if ((memberScope & MemberScopes.IncludingPrivateBaseMembers) != 0)
 			{
 				for (Type? baseType = type.BaseType; baseType is not null; baseType = baseType.BaseType)
 				{
@@ -239,7 +236,16 @@ internal static class TypeHelpers
 				}
 			}
 
+			if (type.IsInterface && !memberScope.IsDirect())
+			{
+				foreach (Type baseInterface in type.GetInterfaces())
+				{
+					fields = fields.Concat(baseInterface.GetFields(InterfaceMemberFlags));
+				}
+			}
+
 			FieldInfo[] result = fields
+				.Where(m => memberScope.Includes(m, type))
 				.Where(m => !m.IsSpecialName)
 				.Where(m => !m.IsCompilerGenerated() ||
 				            (included & CompilerGeneratedMembers.Fields) != 0)
@@ -261,12 +267,12 @@ internal static class TypeHelpers
 	}
 
 	/// <summary>
-	///     Searches for methods in the <paramref name="type" />, optionally including inherited ones according to the
-	///     <paramref name="memberScope" />.
+	///     Searches for methods in the <paramref name="type" />, including inherited ones unless the
+	///     <paramref name="memberScope" /> is <see cref="MemberScopes.DeclaredOnly" />.
 	/// </summary>
 	public static MethodInfo[] GetDeclaredMethods(
 		this Type type,
-		MemberScope memberScope = MemberScope.DeclaredOnly,
+		MemberScopes memberScope = MemberScopes.DeclaredOnly,
 		bool includeOperators = false)
 	{
 		if (!ReflectionFallback.IsSupported)
@@ -283,6 +289,7 @@ internal static class TypeHelpers
 				includedSpecialName |= SpecialNameMembers.Operators;
 			}
 
+			memberScope = memberScope.Normalize();
 			MembersKey key = (memberScope, includedCompilerGenerated, includedSpecialName);
 			DeclaredMembers? cache = GetDeclaredMembersCache(type);
 			if (cache?.Methods is { } cached && cached.Key == key)
@@ -296,20 +303,16 @@ internal static class TypeHelpers
 				            BindingFlags.Public |
 				            BindingFlags.Static |
 				            BindingFlags.Instance);
-			if (memberScope == MemberScope.IncludingInherited)
+			if (type.IsInterface && !memberScope.IsDirect())
 			{
-				for (Type? baseType = type.BaseType; baseType is not null; baseType = baseType.BaseType)
+				foreach (Type baseInterface in type.GetInterfaces())
 				{
-					methods = methods.Concat(baseType
-						.GetMethods(BindingFlags.DeclaredOnly |
-						            BindingFlags.NonPublic |
-						            BindingFlags.Instance |
-						            BindingFlags.Static)
-						.Where(method => method.IsPrivate));
+					methods = methods.Concat(baseInterface.GetMethods(InterfaceMemberFlags));
 				}
 			}
 
 			MethodInfo[] result = methods
+				.Where(m => memberScope.Includes(m, type))
 				.Where(m => IncludeMethod(m, includedCompilerGenerated, includedSpecialName))
 				.ToArray();
 			if (cache is not null)
@@ -329,12 +332,12 @@ internal static class TypeHelpers
 	}
 
 	/// <summary>
-	///     Searches for properties in the <paramref name="type" />, optionally including inherited ones according to the
-	///     <paramref name="memberScope" />.
+	///     Searches for properties in the <paramref name="type" />, including inherited ones unless the
+	///     <paramref name="memberScope" /> is <see cref="MemberScopes.DeclaredOnly" />.
 	/// </summary>
 	public static PropertyInfo[] GetDeclaredProperties(
 		this Type type,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
+		MemberScopes memberScope = MemberScopes.DeclaredOnly)
 	{
 		if (!ReflectionFallback.IsSupported)
 		{
@@ -344,6 +347,7 @@ internal static class TypeHelpers
 		try
 		{
 			CompilerGeneratedMembers included = IncludedCompilerGeneratedMembers;
+			memberScope = memberScope.Normalize();
 			MembersKey key = (memberScope, included, SpecialNameMembers.None);
 			DeclaredMembers? cache = GetDeclaredMembersCache(type);
 			if (cache?.Properties is { } cached && cached.Key == key)
@@ -357,7 +361,7 @@ internal static class TypeHelpers
 				               BindingFlags.Public |
 				               BindingFlags.Static |
 				               BindingFlags.Instance);
-			if (memberScope == MemberScope.IncludingInherited)
+			if ((memberScope & MemberScopes.IncludingPrivateBaseMembers) != 0)
 			{
 				for (Type? baseType = type.BaseType; baseType is not null; baseType = baseType.BaseType)
 				{
@@ -371,7 +375,16 @@ internal static class TypeHelpers
 				}
 			}
 
+			if (type.IsInterface && !memberScope.IsDirect())
+			{
+				foreach (Type baseInterface in type.GetInterfaces())
+				{
+					properties = properties.Concat(baseInterface.GetProperties(InterfaceMemberFlags));
+				}
+			}
+
 			PropertyInfo[] result = properties
+				.Where(m => memberScope.Includes(m, type))
 				.Where(m => !m.IsSpecialName)
 				.Where(m => !m.IsCompilerGenerated() ||
 				            (included & CompilerGeneratedMembers.Properties) != 0)
@@ -397,18 +410,74 @@ internal static class TypeHelpers
 	///     Maps the <paramref name="memberScope" /> to the corresponding <see cref="BindingFlags" />.
 	/// </summary>
 	/// <remarks>
-	///     <see cref="MemberScope.DeclaredOnly" /> restricts the search to members declared directly on the type, while
-	///     <see cref="MemberScope.IncludingInherited" /> also returns inherited members (including inherited static members
-	///     via <see cref="BindingFlags.FlattenHierarchy" />). Inherited <see langword="private" /> members are not covered
-	///     by <see cref="BindingFlags.FlattenHierarchy" /> and are collected separately by walking the base type chain
-	///     and keeping only those members that reflection excludes from the derived type (i.e. members without any
-	///     non-private accessor). Each caller walks the chain itself, because the trim analyzer does not apply the
-	///     <see cref="ReflectionFallback.IsSupported" /> guard of a method to a lambda in it.
+	///     <see cref="MemberScopes.DeclaredOnly" /> restricts the search to members declared directly on the type, otherwise
+	///     the inherited members are returned as well (including inherited static members via
+	///     <see cref="BindingFlags.FlattenHierarchy" />), but like for <see cref="Type.GetMethods()" /> without
+	///     <see cref="BindingFlags.DeclaredOnly" /> never the <see langword="private" /> members of base types. Only
+	///     <see cref="MemberScopes.IncludingPrivateBaseMembers" /> collects them by walking the base type chain. As reflection
+	///     does not return the members of base interfaces, the members of an interface type are collected from its base
+	///     interfaces with <see cref="InterfaceMemberFlags" />. Each caller walks the chain itself, because the trim analyzer
+	///     does not apply the <see cref="ReflectionFallback.IsSupported" /> guard of a method to a lambda in it.
 	/// </remarks>
-	private static BindingFlags ToBindingFlags(this MemberScope memberScope)
-		=> memberScope == MemberScope.DeclaredOnly
+	private static BindingFlags ToBindingFlags(this MemberScopes memberScope)
+		=> memberScope.IsDirect()
 			? BindingFlags.DeclaredOnly
 			: BindingFlags.FlattenHierarchy;
+
+	/// <summary>
+	///     The <see cref="BindingFlags" /> for the members declared on a base interface.
+	/// </summary>
+	private const BindingFlags InterfaceMemberFlags = BindingFlags.DeclaredOnly |
+	                                                  BindingFlags.NonPublic |
+	                                                  BindingFlags.Public |
+	                                                  BindingFlags.Instance |
+	                                                  BindingFlags.Static;
+
+	/// <summary>
+	///     Drops the flags that have no effect together with <see cref="MemberScopes.DeclaredOnly" />, so that equivalent
+	///     scopes share one cache entry.
+	/// </summary>
+	private static MemberScopes Normalize(this MemberScopes memberScope)
+		=> memberScope.IsDirect() ? MemberScopes.DeclaredOnly : memberScope;
+
+	/// <summary>
+	///     Checks if the <paramref name="member" /> of the <paramref name="type" /> belongs to the
+	///     <paramref name="memberScope" />: a member inherited from <see cref="object" />, <see cref="ValueType" /> or
+	///     <see cref="Enum" /> only with <see cref="MemberScopes.IncludingObjectMembers" />, and an inherited member that the
+	///     <paramref name="type" /> cannot access only with <see cref="MemberScopes.IncludingPrivateBaseMembers" />.
+	/// </summary>
+	private static bool Includes(this MemberScopes memberScope, MemberInfo member, Type type)
+		=> member.DeclaringType == type ||
+		   (((memberScope & MemberScopes.IncludingObjectMembers) != 0 ||
+		     (member.DeclaringType != typeof(object) &&
+		      member.DeclaringType != typeof(ValueType) &&
+		      member.DeclaringType != typeof(Enum))) &&
+		    ((memberScope & MemberScopes.IncludingPrivateBaseMembers) != 0 ||
+		     member.IsAccessibleFrom(type)));
+
+	/// <summary>
+	///     Checks if the inherited <paramref name="member" /> is accessible from the derived <paramref name="type" />:
+	///     its <see langword="internal" /> and <see langword="private protected" /> members only when it is declared in the
+	///     same assembly.
+	/// </summary>
+	/// <remarks>
+	///     The <see cref="System.Runtime.CompilerServices.InternalsVisibleToAttribute" /> is not considered.
+	/// </remarks>
+	private static bool IsAccessibleFrom(this MemberInfo member, Type type)
+		=> member.DeclaringType?.Assembly == type.Assembly ||
+		   member switch
+		   {
+			   MethodBase method => method.IsAccessibleFromOtherAssemblies(),
+			   FieldInfo field => field.IsPublic || field.IsFamily || field.IsFamilyOrAssembly,
+			   PropertyInfo property => property.GetMethod.IsAccessibleFromOtherAssemblies() ||
+			                            property.SetMethod.IsAccessibleFromOtherAssemblies(),
+			   EventInfo @event => @event.AddMethod.IsAccessibleFromOtherAssemblies() ||
+			                       @event.RemoveMethod.IsAccessibleFromOtherAssemblies(),
+			   _ => true,
+		   };
+
+	private static bool IsAccessibleFromOtherAssemblies(this MethodBase? method)
+		=> method is not null && (method.IsPublic || method.IsFamily || method.IsFamilyOrAssembly);
 
 	/// <summary>
 	///     Determines whether the <paramref name="member" /> (or any of its declaring types) is compiler-generated.
@@ -1515,10 +1584,10 @@ internal static class TypeHelpers
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
 	public static MemberInfo[] GetMutableMembers(this Type type)
-		=> type.GetDeclaredFields(MemberScope.IncludingInherited)
+		=> type.GetDeclaredFields(MemberScopes.IncludingPrivateBaseMembers)
 			.Where(field => field is { IsStatic: false, IsInitOnly: false, })
 			.OfType<MemberInfo>()
-			.Concat(type.GetDeclaredProperties(MemberScope.IncludingInherited)
+			.Concat(type.GetDeclaredProperties(MemberScopes.IncludingPrivateBaseMembers)
 				.Where(property => !property.IsReallyStatic() && property.HasSetter()))
 			.ToArray();
 
@@ -1562,36 +1631,36 @@ internal static class TypeHelpers
 	}
 
 	/// <summary>
-	///     Gets a value indicating whether the <paramref name="type" /> declares the <paramref name="operator" />.
+	///     Gets a value indicating whether the <paramref name="type" /> has the <paramref name="operator" />.
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
 	/// <param name="operator">The <see cref="Operator" /> to look for.</param>
 	/// <param name="inherit">
-	///     <see langword="true" /> to also consider operators inherited from base types; otherwise,
-	///     <see langword="false" /> (the default).
+	///     <see langword="true" /> to also consider operators inherited from base types; <see langword="false" /> to only
+	///     consider the operators declared on the <paramref name="type" />.
 	/// </param>
-	public static bool HasOperator(this Type? type, Operator @operator, bool inherit = false)
+	public static bool HasOperator(this Type? type, Operator @operator, bool inherit)
 		=> type?.GetOperatorMethods(inherit).Any(m => m.IsOperator(@operator)) == true;
 
 	/// <summary>
-	///     Gets a value indicating whether the <paramref name="type" /> declares the <paramref name="operator" /> with an
+	///     Gets a value indicating whether the <paramref name="type" /> has the <paramref name="operator" /> with an
 	///     overload that takes the <paramref name="operand" /> as one of its parameters.
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
 	/// <param name="operator">The <see cref="Operator" /> to look for.</param>
 	/// <param name="operand">The operand type that one of the operator's parameters must match exactly.</param>
 	/// <param name="inherit">
-	///     <see langword="true" /> to also consider operators inherited from base types; otherwise,
-	///     <see langword="false" /> (the default).
+	///     <see langword="true" /> to also consider operators inherited from base types; <see langword="false" /> to only
+	///     consider the operators declared on the <paramref name="type" />.
 	/// </param>
-	public static bool HasOperator(this Type? type, Operator @operator, Type operand, bool inherit = false)
+	public static bool HasOperator(this Type? type, Operator @operator, Type operand, bool inherit)
 		=> type?.GetOperatorMethods(inherit)
 			.Any(m => m.IsOperator(@operator) &&
 			          m.GetParameters().Any(p => p.ParameterType.IsEqualTo(operand))) == true;
 
 	/// <summary>
 	///     Gets the conversion operator on the <paramref name="type" /> that converts from <paramref name="source" /> to
-	///     <paramref name="target" />, or <see langword="null" /> if no such operator is declared.
+	///     <paramref name="target" />, or <see langword="null" /> if it has no such operator.
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
 	/// <param name="isImplicit">
@@ -1601,11 +1670,11 @@ internal static class TypeHelpers
 	/// <param name="source">The source type (the single parameter of the conversion).</param>
 	/// <param name="target">The target type (the return type of the conversion).</param>
 	/// <param name="inherit">
-	///     <see langword="true" /> to also consider conversion operators inherited from base types; otherwise,
-	///     <see langword="false" /> (the default).
+	///     <see langword="true" /> to also consider conversion operators inherited from base types;
+	///     <see langword="false" /> to only consider the conversion operators declared on the <paramref name="type" />.
 	/// </param>
 	public static MethodInfo? GetConversionOperator(
-		this Type? type, bool isImplicit, Type source, Type target, bool inherit = false)
+		this Type? type, bool isImplicit, Type source, Type target, bool inherit)
 		=> type?.GetOperatorMethods(inherit)
 			.FirstOrDefault(m =>
 			{

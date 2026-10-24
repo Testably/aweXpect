@@ -23,32 +23,31 @@ public sealed partial class ThatType
 			}
 
 			[Test]
-			public async Task WhenInheritedPropertyMatches_WithDeclaredOnly_ShouldFail()
+			public async Task WhenInheritedPropertyMatches_Directly_ShouldFail()
+			{
+				Type subject = typeof(DerivedClassWithInheritedMarkedProperty);
+
+				async Task Act()
+				{
+					await That(subject).ContainsProperties(properties => properties.With<MarkerAttribute>()).Directly();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             declares properties with ThatType.ContainsProperties.MarkerAttribute at least once,
+					             but it contained 0 matching members in ThatType.ContainsProperties.DerivedClassWithInheritedMarkedProperty
+					             """);
+			}
+
+			[Test]
+			public async Task WhenInheritedPropertyMatches_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClassWithInheritedMarkedProperty);
 
 				async Task Act()
 				{
 					await That(subject).ContainsProperties(properties => properties.With<MarkerAttribute>());
-				}
-
-				await That(Act).Throws()
-					.WithMessage("""
-					             Expected that subject
-					             contains properties with ThatType.ContainsProperties.MarkerAttribute at least once,
-					             but it contained 0 matching members in ThatType.ContainsProperties.DerivedClassWithInheritedMarkedProperty
-					             """);
-			}
-
-			[Test]
-			public async Task WhenInheritedPropertyMatches_WithIncludingInherited_ShouldSucceed()
-			{
-				Type subject = typeof(DerivedClassWithInheritedMarkedProperty);
-
-				async Task Act()
-				{
-					await That(subject).ContainsProperties(properties => properties.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
 				}
 
 				await That(Act).DoesNotThrow();

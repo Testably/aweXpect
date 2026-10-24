@@ -71,6 +71,25 @@ public sealed partial class ThatEvent
 			}
 
 			[Test]
+			public async Task WhenEventInheritsAttributeFromOverriddenEvent_Directly_ShouldFail()
+			{
+				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).Has<MarkerAttribute>().Directly();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has direct ThatEvent.Has.AttributeTests.MarkerAttribute,
+					             but it did not in event Action ThatEvent.Has.AttributeTests.DerivedClass.InheritedEvent
+					             """)
+					.Because("with Directly only the attributes declared on the overriding event count");
+			}
+
+			[Test]
 			public async Task WhenEventInheritsAttributeFromOverriddenEvent_ShouldSucceed()
 			{
 				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
@@ -114,25 +133,6 @@ public sealed partial class ThatEvent
 					             has ThatEvent.Has.AttributeTests.MarkerAttribute,
 					             but it was <null>
 					             """);
-			}
-
-			[Test]
-			public async Task WithInheritFalse_WhenEventInheritsAttributeFromOverriddenEvent_ShouldFail()
-			{
-				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
-
-				async Task Act()
-				{
-					await That(subject).Has<MarkerAttribute>(false);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             has direct ThatEvent.Has.AttributeTests.MarkerAttribute,
-					             but it did not in event Action ThatEvent.Has.AttributeTests.DerivedClass.InheritedEvent
-					             """)
-					.Because("with inherit: false only the attributes declared on the overriding event count");
 			}
 
 			[AttributeUsage(AttributeTargets.Event)]

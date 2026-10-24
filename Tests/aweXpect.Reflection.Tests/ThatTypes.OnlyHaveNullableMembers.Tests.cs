@@ -31,6 +31,45 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenBaseTypeHasNonNullableMembers_Directly_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(DerivedClassWithNullableMembers),
+				};
+
+				async Task Act()
+				{
+					await That(subject).OnlyHaveNullableMembers().Directly();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with Directly only the members declared on the types count");
+			}
+
+			[Test]
+			public async Task WhenBaseTypeHasNonNullableMembers_ShouldFail()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(DerivedClassWithNullableMembers),
+				};
+
+				async Task Act()
+				{
+					await That(subject).OnlyHaveNullableMembers();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             only have nullable members,
+					             but it contained types with non-nullable members*
+					             """).AsWildcard()
+					.Because("inherited members are considered by default");
+			}
+
+			[Test]
 			public async Task WhenCollectionContainsNull_ShouldListNullWithoutViolations()
 			{
 				IEnumerable<Type?> subject =

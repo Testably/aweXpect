@@ -8,8 +8,8 @@ using aweXpect.Results;
 namespace aweXpect.Reflection.Results;
 
 /// <summary>
-///     Allows chaining of multiple attributes for members whose attributes cannot be inherited
-///     (fields and constructors).
+///     Allows chaining of multiple attributes for subjects whose attributes cannot be inherited
+///     (assemblies, constructors and fields).
 /// </summary>
 public sealed class HasAttributeWithoutInheritResult<TType, TMember>
 	: AndOrResult<TType, IThat<TMember>, HasAttributeWithoutInheritResult<TType, TMember>>,
@@ -36,7 +36,7 @@ public sealed class HasAttributeWithoutInheritResult<TType, TMember>
 	public HasAttributeWithoutInheritResult<TType, TMember> OrHas<TAttribute>()
 		where TAttribute : Attribute
 	{
-		_attributeFilterOptions.RegisterAttribute<TAttribute>(true);
+		_attributeFilterOptions.RegisterAttribute<TAttribute>();
 		return this;
 	}
 
@@ -50,7 +50,7 @@ public sealed class HasAttributeWithoutInheritResult<TType, TMember>
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		_attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue.TrimExpression());
+		_attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
 		return this;
 	}
 }

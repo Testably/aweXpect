@@ -11,12 +11,12 @@ public static partial class PropertyFilters
 	///     Filter for properties without attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-	///     the attribute can be inherited from a base type.
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the filter to the
+	///     attributes declared directly on the property with <see cref="InheritanceScopeResult.Directly" />.
 	/// </remarks>
-	public static Filtered.Properties Without<TAttribute>(this Filtered.Properties @this, bool inherit = true)
+	public static InheritanceScopeResult Without<TAttribute>(this Filtered.Properties @this)
 		where TAttribute : Attribute
-		=> @this.Which(Filter.Suffix<PropertyInfo>(
-			propertyInfo => !propertyInfo.HasAttribute<TAttribute>(inherit: inherit),
-			() => $"without {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} "));
+		=> new(@this, new AttributeFilter<PropertyInfo>(
+			(propertyInfo, inherit) => !propertyInfo.HasAttribute<TAttribute>(inherit: inherit),
+			directly => $"without {(directly ? DirectText : "")}{Formatter.Format(typeof(TAttribute))} "));
 }

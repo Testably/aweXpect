@@ -11,14 +11,16 @@ public static partial class TypeFilters
 	///     Filters for types that contain methods matching the <paramref name="filter" />.
 	/// </summary>
 	/// <remarks>
-	///     The <paramref name="filter" /> receives the methods declared on each individual type and may use the
+	///     The <paramref name="filter" /> receives the methods of each individual type and may use the
 	///     full method-filter DSL (e.g. <c>methods.With&lt;FactAttribute&gt;().OrWith&lt;TheoryAttribute&gt;()</c>).<br />
 	///     By default a type passes when it contains at least one matching method. Append a quantifier
 	///     (e.g. <see cref="TypesContainingMembers.Exactly(Times)" />) to require a specific count.<br />
-	///     The <paramref name="memberScope" /> controls whether inherited methods are considered.
+	///     The inherited methods are considered, but neither those declared on <see cref="object" />,
+	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access.
+	///     Restrict them with <see cref="TypesContainingMembersScopeResult.Directly" /> or add the members of these
+	///     roots with <see cref="TypesContainingMembersScopeResult.IncludingObjectMembers" />.
 	/// </remarks>
-	public static TypesContainingMembers WhichContainMethods(this Filtered.Types @this,
-		Func<Filtered.Methods, Filtered.Methods> filter,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
-		=> Containing<MethodInfo, Filtered.Methods>(@this, types => types.Methods(memberScope), filter);
+	public static TypesContainingMembersScopeResult WhichContainMethods(this Filtered.Types @this,
+		Func<Filtered.Methods, Filtered.Methods> filter)
+		=> ContainingMembers<MethodInfo, Filtered.Methods>(@this, (types, memberScope) => types.Methods(memberScope), filter);
 }

@@ -33,17 +33,6 @@ public sealed partial class AssemblyFilters
 					.AsPrefix();
 			}
 
-			[Test]
-			public async Task WhenInheritIsSetToFalse_ShouldDescribeAsDirect()
-			{
-				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
-					.Without<AssemblyTitleAttribute>(false);
-
-				await That(assemblies).DoesNotContain(typeof(AssemblyFilters).Assembly);
-				await That(assemblies.GetDescription())
-					.IsEqualTo("in all loaded assemblies without direct AssemblyTitleAttribute").AsPrefix();
-			}
-
 			[AttributeUsage(AttributeTargets.Assembly)]
 			private sealed class NeverAppliedAssemblyAttribute : Attribute;
 		}

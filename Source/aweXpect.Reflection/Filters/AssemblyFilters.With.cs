@@ -8,21 +8,15 @@ namespace aweXpect.Reflection;
 
 public static partial class AssemblyFilters
 {
-	private const string DirectText = "direct ";
-
 	/// <summary>
 	///     Filter for assemblies with attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
-	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-	///     the attribute can be inherited from a base type.
-	/// </remarks>
-	public static AssembliesWith With<TAttribute>(this Filtered.Assemblies @this, bool inherit = true)
+	public static AssembliesWith With<TAttribute>(this Filtered.Assemblies @this)
 		where TAttribute : Attribute
 	{
 		Filter.GenericFilter<Assembly> filter = Filter.Suffix<Assembly>(
-			assembly => assembly.HasAttribute<TAttribute>(inherit: inherit),
-			() => $" with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))}");
+			assembly => assembly.HasAttribute<TAttribute>(),
+			() => $" with {Formatter.Format(typeof(TAttribute))}");
 		return new AssembliesWith(@this, filter);
 	}
 
@@ -30,20 +24,15 @@ public static partial class AssemblyFilters
 	///     Filter for assemblies with attribute of type <typeparamref name="TAttribute" /> that
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
-	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-	///     the attribute can be inherited from a base type.
-	/// </remarks>
 	public static AssembliesWith With<TAttribute>(this Filtered.Assemblies @this,
 		Func<TAttribute, bool>? predicate,
-		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
 		Filter.GenericFilter<Assembly> filter = Filter.Suffix<Assembly>(
-			assembly => assembly.HasAttribute(predicate, inherit),
-			() => $" with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()}");
+			assembly => assembly.HasAttribute(predicate),
+			() => $" with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()}");
 		return new AssembliesWith(@this, filter);
 	}
 
@@ -65,33 +54,24 @@ public static partial class AssemblyFilters
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" />.
 		/// </summary>
-		/// <remarks>
-		///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-		///     the attribute can be inherited from a base type.
-		/// </remarks>
-		public AssembliesWith OrWith<TAttribute>(bool inherit = true)
+		public AssembliesWith OrWith<TAttribute>()
 			where TAttribute : Attribute
-			=> new(_source, _filter.Extend((result, assembly) => result || assembly.HasAttribute<TAttribute>(inherit: inherit),
+			=> new(_source, _filter.Extend((result, assembly) => result || assembly.HasAttribute<TAttribute>(),
 				description
-					=> $"{description} or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))}"));
+					=> $"{description} or with {Formatter.Format(typeof(TAttribute))}"));
 
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" /> that
 		///     matches the <paramref name="predicate" />.
 		/// </summary>
-		/// <remarks>
-		///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-		///     the attribute can be inherited from a base type.
-		/// </remarks>
 		public AssembliesWith OrWith<TAttribute>(
 			Func<TAttribute, bool>? predicate,
-			bool inherit = true,
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
 			=> new(_source, _filter.Extend(
-				(result, assembly) => result || assembly.HasAttribute(predicate, inherit),
+				(result, assembly) => result || assembly.HasAttribute(predicate),
 				description
-					=> $"{description} or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()}"));
+					=> $"{description} or with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()}"));
 	}
 }

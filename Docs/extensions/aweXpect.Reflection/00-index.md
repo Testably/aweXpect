@@ -81,6 +81,7 @@ Each filter narrows a selection and its expectation counterpart verifies it, e.g
 
 | Topic                                                                 | Applies to                    | Filters / expectations                                                                                               |
 |-----------------------------------------------------------------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| [Inheritance](./02-filters.md#inheritance)                   | types and members             | `Directly`, `IncludingInherited`, `IncludingObjectMembers`                                                           |
 | [Access modifiers](./02-filters.md#access-modifiers)         | types and members             | `WhichArePublic` / `IsPublic`, `WhichAreInternal` / `IsInternal`, …                                                  |
 | [Attributes](./02-filters.md#attributes)                     | types, members and assemblies | `With<TAttribute>` / `Has<TAttribute>`, `Without<TAttribute>` / `DoesNotHave<TAttribute>`                            |
 | [Obsolete](./02-filters.md#obsolete)                         | types and members             | `WhichAreObsolete` / `IsObsolete`, `WhichAreNotObsolete` / `IsNotObsolete`                                           |

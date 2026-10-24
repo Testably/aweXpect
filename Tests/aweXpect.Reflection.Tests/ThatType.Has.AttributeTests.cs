@@ -7,50 +7,6 @@ public sealed partial class ThatType
 		public sealed class AttributeTests
 		{
 			[Test]
-			public async Task WhenTypeHasAttribute_ShouldSucceed()
-			{
-				Type subject = typeof(FooClass2);
-
-				async Task Act()
-				{
-					await That(subject).Has<FooAttribute>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task WhenTypeHasAttributeIndirectly_ShouldSucceed()
-			{
-				Type subject = typeof(FooChildClass2);
-
-				async Task Act()
-				{
-					await That(subject).Has<FooAttribute>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task WhenTypeHasAttributeIndirectly_WhenInheritIsFalse_ShouldFail()
-			{
-				Type subject = typeof(FooChildClass2);
-
-				async Task Act()
-				{
-					await That(subject).Has<FooAttribute>(false);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             has direct ThatType.Has.AttributeTests.FooAttribute,
-					             but it did not in ThatType.Has.AttributeTests.FooChildClass2
-					             """);
-			}
-
-			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				Type subject = typeof(FooClass2);
@@ -71,6 +27,50 @@ public sealed partial class ThatType
 			}
 
 			[Test]
+			public async Task WhenTypeHasAttribute_ShouldSucceed()
+			{
+				Type subject = typeof(FooClass2);
+
+				async Task Act()
+				{
+					await That(subject).Has<FooAttribute>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenTypeHasAttributeIndirectly_Directly_ShouldFail()
+			{
+				Type subject = typeof(FooChildClass2);
+
+				async Task Act()
+				{
+					await That(subject).Has<FooAttribute>().Directly();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has direct ThatType.Has.AttributeTests.FooAttribute,
+					             but it did not in ThatType.Has.AttributeTests.FooChildClass2
+					             """);
+			}
+
+			[Test]
+			public async Task WhenTypeHasAttributeIndirectly_ShouldSucceed()
+			{
+				Type subject = typeof(FooChildClass2);
+
+				async Task Act()
+				{
+					await That(subject).Has<FooAttribute>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task WhenTypeHasMatchingAttribute_ShouldSucceed()
 			{
 				Type subject = typeof(FooClass2);
@@ -84,6 +84,24 @@ public sealed partial class ThatType
 			}
 
 			[Test]
+			public async Task WhenTypeHasMatchingAttributeIndirectly_Directly_ShouldFail()
+			{
+				Type subject = typeof(FooChildClass2);
+
+				async Task Act()
+				{
+					await That(subject).Has<FooAttribute>(foo => foo.Value == 2).Directly();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has direct ThatType.Has.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but it did not in ThatType.Has.AttributeTests.FooChildClass2
+					             """);
+			}
+
+			[Test]
 			public async Task WhenTypeHasMatchingAttributeIndirectly_ShouldSucceed()
 			{
 				Type subject = typeof(FooChildClass2);
@@ -94,24 +112,6 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task WhenTypeHasMatchingAttributeIndirectly_WhenInheritIsFalse_ShouldFail()
-			{
-				Type subject = typeof(FooChildClass2);
-
-				async Task Act()
-				{
-					await That(subject).Has<FooAttribute>(foo => foo.Value == 2, false);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             has direct ThatType.Has.AttributeTests.FooAttribute matching foo => foo.Value == 2,
-					             but it did not in ThatType.Has.AttributeTests.FooChildClass2
-					             """);
 			}
 
 			[Test]
@@ -167,7 +167,6 @@ public sealed partial class ThatType
 					             but it was <null>
 					             """);
 			}
-
 			[AttributeUsage(AttributeTargets.Class)]
 			private class FooAttribute : Attribute
 			{
@@ -360,6 +359,24 @@ public sealed partial class ThatType
 				}
 
 				[Test]
+				public async Task WithDirectly_ShouldWorkCorrectly()
+				{
+					Type subject = typeof(FooChildClass);
+
+					async Task Act()
+					{
+						await That(subject).Has<FooAttribute>().OrHas<BarAttribute>().Directly();
+					}
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             has direct ThatType.Has.OrHas.AttributeTests.FooAttribute or direct ThatType.Has.OrHas.AttributeTests.BarAttribute,
+						             but it did not in ThatType.Has.OrHas.AttributeTests.FooChildClass
+						             """);
+				}
+
+				[Test]
 				public async Task WithInheritance_ShouldWorkCorrectly()
 				{
 					Type subject = typeof(FooChildClass);
@@ -370,24 +387,6 @@ public sealed partial class ThatType
 					}
 
 					await That(Act).DoesNotThrow();
-				}
-
-				[Test]
-				public async Task WithInheritanceFalse_ShouldWorkCorrectly()
-				{
-					Type subject = typeof(FooChildClass);
-
-					async Task Act()
-					{
-						await That(subject).Has<FooAttribute>(false).OrHas<BarAttribute>(false);
-					}
-
-					await That(Act).Throws<FailException>()
-						.WithMessage("""
-						             Expected that subject
-						             has direct ThatType.Has.OrHas.AttributeTests.FooAttribute or direct ThatType.Has.OrHas.AttributeTests.BarAttribute,
-						             but it did not in ThatType.Has.OrHas.AttributeTests.FooChildClass
-						             """);
 				}
 
 				[Test]
@@ -408,7 +407,6 @@ public sealed partial class ThatType
 						             but it did not in ThatType.Has.OrHas.AttributeTests.FooClass2
 						             """);
 				}
-
 				[AttributeUsage(AttributeTargets.Class)]
 				private class FooAttribute : Attribute
 				{

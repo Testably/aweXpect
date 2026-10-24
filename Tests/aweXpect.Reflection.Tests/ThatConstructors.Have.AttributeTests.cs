@@ -45,6 +45,19 @@ public sealed partial class ThatConstructors
 			}
 
 			[Test]
+			public async Task WhenCheckingTheResult_ShouldNotOfferDirectly()
+			{
+				async Task Act()
+				{
+					await That(typeof(Reflection.Results.HaveAttributeWithoutInheritResult<,>))
+						.ContainsMethods(methods => methods.WithName("Directly")).Never();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the attributes of assemblies, constructors and fields cannot be inherited");
+			}
+
+			[Test]
 			public async Task WhenNotAllConstructorsHaveAttribute_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> subject = new[]

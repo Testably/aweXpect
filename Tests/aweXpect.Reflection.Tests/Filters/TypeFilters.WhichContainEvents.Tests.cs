@@ -18,6 +18,15 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
+			public async Task ShouldIncludeTypesWithInheritedMatchingEvent()
+			{
+				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedEvent>()
+					.WhichContainEvents(events => events.With<MarkerAttribute>());
+
+				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedEvent),]).InAnyOrder();
+			}
+
+			[Test]
 			public async Task ShouldUseTheInnerFilterDescription()
 			{
 				Filtered.Types types = In.AssemblyContaining<MarkerAttribute>().Types()
@@ -30,22 +39,12 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
-			public async Task WithDeclaredOnly_ShouldNotIncludeTypesWithOnlyInheritedMatchingEvent()
+			public async Task WhenDirectly_ShouldNotIncludeTypesWithOnlyInheritedMatchingEvent()
 			{
 				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedEvent>()
-					.WhichContainEvents(events => events.With<MarkerAttribute>());
+					.WhichContainEvents(events => events.With<MarkerAttribute>()).Directly();
 
 				await That(types).IsEmpty();
-			}
-
-			[Test]
-			public async Task WithIncludingInherited_ShouldIncludeTypesWithInheritedMatchingEvent()
-			{
-				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedEvent>()
-					.WhichContainEvents(events => events.With<MarkerAttribute>(),
-						MemberScope.IncludingInherited);
-
-				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedEvent),]).InAnyOrder();
 			}
 		}
 

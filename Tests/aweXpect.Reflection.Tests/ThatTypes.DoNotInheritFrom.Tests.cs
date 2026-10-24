@@ -5,7 +5,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class DoNotInheritFrom
+	public sealed partial class DoNotInheritFrom
 	{
 		public sealed class GenericTests
 		{

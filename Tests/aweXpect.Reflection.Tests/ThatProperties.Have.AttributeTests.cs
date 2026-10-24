@@ -45,6 +45,33 @@ public sealed partial class ThatProperties
 			}
 
 			[Test]
+			public async Task WhenAllPropertiesInheritAttributeFromOverriddenProperties_Directly_ShouldFail()
+			{
+				IEnumerable<PropertyInfo> subject = new[]
+				{
+					typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!,
+				};
+
+				async Task Act()
+				{
+					await That(subject).Have<MarkerAttribute>().Directly();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have direct ThatProperties.Have.AttributeTests.MarkerAttribute,
+					             but it contained not matching properties
+
+					             Not matching items:
+					             [
+					               public string ThatProperties.Have.AttributeTests.DerivedClass.InheritedProperty { get; set; }
+					             ]
+					             """)
+					.Because("with Directly only the attributes declared on the overriding property count");
+			}
+
+			[Test]
 			public async Task WhenAllPropertiesInheritAttributeFromOverriddenProperties_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = new[]
@@ -125,33 +152,6 @@ public sealed partial class ThatProperties
 
 				await That(Act).DoesNotThrow()
 					.Because("the expectation must agree with the filter on the inherited attribute");
-			}
-
-			[Test]
-			public async Task WithInheritFalse_WhenAllPropertiesInheritAttributeFromOverriddenProperties_ShouldFail()
-			{
-				IEnumerable<PropertyInfo> subject = new[]
-				{
-					typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!,
-				};
-
-				async Task Act()
-				{
-					await That(subject).Have<MarkerAttribute>(false);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             all have direct ThatProperties.Have.AttributeTests.MarkerAttribute,
-					             but it contained not matching properties
-
-					             Not matching items:
-					             [
-					               public string ThatProperties.Have.AttributeTests.DerivedClass.InheritedProperty { get; set; }
-					             ]
-					             """)
-					.Because("with inherit: false only the attributes declared on the overriding property count");
 			}
 
 #if NET8_0_OR_GREATER

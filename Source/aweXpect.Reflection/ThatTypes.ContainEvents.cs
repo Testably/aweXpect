@@ -16,15 +16,17 @@ public static partial class ThatTypes
 	/// <remarks>
 	///     By default each type must contain at least one matching event. Append a quantifier
 	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.<br />
-	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
+	///     The inherited events are considered, but neither those declared on <see cref="object" />,
+	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
+	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.Directly" /> or add the members of these roots with
+	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.IncludingObjectMembers" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IEnumerable<Type?>, IEnumerable<Type?>?> ContainEvents(
+	public static TypeContainingMembersScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> ContainEvents(
 		this IThat<IEnumerable<Type?>?> subject,
-		Func<Filtered.Events, Filtered.Events> filter,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
-		=> Contain<EventInfo, Filtered.Events>(subject, types => types.Events(memberScope), filter);
-
+		Func<Filtered.Events, Filtered.Events> filter)
+		=> ContainMembers<EventInfo, Filtered.Events>(subject,
+			(types, memberScope) => types.Events(memberScope), filter);
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> contain events matching the
@@ -33,13 +35,16 @@ public static partial class ThatTypes
 	/// <remarks>
 	///     By default each type must contain at least one matching event. Append a quantifier
 	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.<br />
-	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
+	///     The inherited events are considered, but neither those declared on <see cref="object" />,
+	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
+	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.Directly" /> or add the members of these roots with
+	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.IncludingObjectMembers" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> ContainEvents(
+	public static TypeContainingMembersScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> ContainEvents(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
-		Func<Filtered.Events, Filtered.Events> filter,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
-		=> Contain<EventInfo, Filtered.Events>(subject, types => types.Events(memberScope), filter);
+		Func<Filtered.Events, Filtered.Events> filter)
+		=> ContainMembers<EventInfo, Filtered.Events>(subject,
+			(types, memberScope) => types.Events(memberScope), filter);
 #endif
 }

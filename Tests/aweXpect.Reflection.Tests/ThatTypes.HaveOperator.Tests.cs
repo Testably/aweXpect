@@ -31,6 +31,49 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenOperatorIsOnlyInherited_Directly_ShouldFail()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(OperatorBaseClass), typeof(OperatorDerivedClass),
+				};
+
+				async Task Act()
+				{
+					await That(subject).HaveOperator(Operator.Subtraction).Directly();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all declare the operator Subtraction,
+					             but it contained types not declaring the operator Subtraction
+
+					             Not matching items:
+					             [
+					               OperatorDerivedClass
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenOperatorIsOnlyInherited_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(OperatorBaseClass), typeof(OperatorDerivedClass),
+				};
+
+				async Task Act()
+				{
+					await That(subject).HaveOperator(Operator.Subtraction);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("operators inherited from base types are considered by default");
+			}
+
+			[Test]
 			public async Task WhenSomeTypeDoesNotHaveTheOperator_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -160,6 +203,23 @@ public sealed partial class ThatTypes
 					               *
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenTypeOnlyInheritsTheOperator_Directly_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(OperatorDerivedClass),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHaveOperator(Operator.Subtraction).Directly();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with Directly only the operators declared on the types count");
 			}
 		}
 
