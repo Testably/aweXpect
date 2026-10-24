@@ -912,6 +912,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
         "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
+      },
+      {
+        "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
+        "message": "test: rename the fixture attribute of the Reflection attribute tests to MarkerAttribute (#1994)"
       }
     ],
     "labels": [
@@ -1066,7 +1072,8 @@ window.BENCHMARK_DATA = {
       "411dfe77",
       "053d3134",
       "22b71d85",
-      "487b869a"
+      "487b869a",
+      "f19d2281"
     ],
     "datasets": [
       {
@@ -1224,7 +1231,8 @@ window.BENCHMARK_DATA = {
           11336.477849687848,
           11395.802784846379,
           11249.33114506648,
-          5655.226250239781
+          5655.226250239781,
+          10620.57931391398
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1320,6 +1328,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -1553,7 +1562,8 @@ window.BENCHMARK_DATA = {
           366426.31927083334,
           373018.89752604166,
           365334.82868303574,
-          190959.17200520833
+          190959.17200520833,
+          374784.2891927083
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1716,7 +1726,8 @@ window.BENCHMARK_DATA = {
           590291,
           590292,
           590292,
-          590288
+          590288,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1882,7 +1893,8 @@ window.BENCHMARK_DATA = {
           18983.021453857422,
           21541.66244099935,
           19511.90078531901,
-          11773.428721836635
+          11773.428721836635,
+          19087.3535349528
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1894,6 +1906,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -2929,6 +2942,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
         "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
+      },
+      {
+        "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
+        "message": "test: rename the fixture attribute of the Reflection attribute tests to MarkerAttribute (#1994)"
       }
     ],
     "labels": [
@@ -3076,7 +3095,8 @@ window.BENCHMARK_DATA = {
       "411dfe77",
       "053d3134",
       "22b71d85",
-      "487b869a"
+      "487b869a",
+      "f19d2281"
     ],
     "datasets": [
       {
@@ -3227,7 +3247,8 @@ window.BENCHMARK_DATA = {
           339.06615053812664,
           277.1475984891256,
           277.62977613721574,
-          135.63560212575473
+          135.63560212575473,
+          304.57259205409457
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3316,6 +3337,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -3542,7 +3564,8 @@ window.BENCHMARK_DATA = {
           500.59982115881786,
           540.4162743432181,
           523.6626597813198,
-          271.54918013300215
+          271.54918013300215,
+          507.4222799709865
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3554,6 +3577,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -3857,7 +3881,8 @@ window.BENCHMARK_DATA = {
           384.5791349411011,
           412.2259154955546,
           386.6878523190816,
-          212.97754265467327
+          212.97754265467327,
+          390.0544413248698
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3869,6 +3894,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -9517,6 +9543,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
         "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
+      },
+      {
+        "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
+        "message": "test: rename the fixture attribute of the Reflection attribute tests to MarkerAttribute (#1994)"
       }
     ],
     "labels": [
@@ -10434,7 +10466,8 @@ window.BENCHMARK_DATA = {
       "411dfe77",
       "053d3134",
       "22b71d85",
-      "487b869a"
+      "487b869a",
+      "f19d2281"
     ],
     "datasets": [
       {
@@ -11355,7 +11388,8 @@ window.BENCHMARK_DATA = {
           149.66489672660828,
           149.9047156016032,
           162.0713161468506,
-          77.13261929580143
+          77.13261929580143,
+          142.71817706312453
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12214,6 +12248,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -13210,7 +13245,8 @@ window.BENCHMARK_DATA = {
           245.30206060409546,
           267.93976482978235,
           251.06753702163695,
-          134.60186587061202
+          134.60186587061202,
+          254.55581630071003
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13403,6 +13439,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -14346,7 +14383,8 @@ window.BENCHMARK_DATA = {
           246.99125872339522,
           246.72875105539958,
           240.87568702016557,
-          126.59069859981537
+          126.59069859981537,
+          248.16104885737101
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -14358,6 +14396,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -15479,6 +15518,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
         "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
+      },
+      {
+        "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
+        "message": "test: rename the fixture attribute of the Reflection attribute tests to MarkerAttribute (#1994)"
       }
     ],
     "labels": [
@@ -15633,7 +15678,8 @@ window.BENCHMARK_DATA = {
       "411dfe77",
       "053d3134",
       "22b71d85",
-      "487b869a"
+      "487b869a",
+      "f19d2281"
     ],
     "datasets": [
       {
@@ -15791,7 +15837,8 @@ window.BENCHMARK_DATA = {
           265.2164976119995,
           276.9224334716797,
           273.91977246602374,
-          136.34527066775732
+          136.34527066775732,
+          278.85454524358113
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15887,6 +15934,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -16120,7 +16168,8 @@ window.BENCHMARK_DATA = {
           501.7712921778361,
           573.4885652405875,
           522.4292542139689,
-          290.1745611704313
+          290.1745611704313,
+          517.1072385152181
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16132,6 +16181,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -16449,7 +16499,8 @@ window.BENCHMARK_DATA = {
           337.1840680440267,
           361.1542561531067,
           330.66274493081227,
-          184.6544436454773
+          184.6544436454773,
+          346.32178967793783
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -16461,6 +16512,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -22116,6 +22168,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
         "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
+      },
+      {
+        "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
+        "message": "test: rename the fixture attribute of the Reflection attribute tests to MarkerAttribute (#1994)"
       }
     ],
     "labels": [
@@ -23033,7 +23091,8 @@ window.BENCHMARK_DATA = {
       "411dfe77",
       "053d3134",
       "22b71d85",
-      "487b869a"
+      "487b869a",
+      "f19d2281"
     ],
     "datasets": [
       {
@@ -23954,7 +24013,8 @@ window.BENCHMARK_DATA = {
           699.6938508987427,
           663.2849822411171,
           647.9162706647601,
-          342.22358150482177
+          342.22358150482177,
+          747.8786731447492
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24813,6 +24873,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -25809,7 +25870,8 @@ window.BENCHMARK_DATA = {
           1339.0758642469134,
           1482.377771650042,
           1362.6480599721274,
-          717.7753578186035
+          717.7753578186035,
+          1489.7919970194498
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26002,6 +26064,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -26945,7 +27008,8 @@ window.BENCHMARK_DATA = {
           638.3984323910305,
           693.4532709121704,
           630.4388307571411,
-          361.67689379056293
+          361.67689379056293,
+          685.7061446507772
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -26957,6 +27021,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -32656,6 +32721,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
         "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
+      },
+      {
+        "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
+        "message": "test: rename the fixture attribute of the Reflection attribute tests to MarkerAttribute (#1994)"
       }
     ],
     "labels": [
@@ -33573,7 +33644,8 @@ window.BENCHMARK_DATA = {
       "411dfe77",
       "053d3134",
       "22b71d85",
-      "487b869a"
+      "487b869a",
+      "f19d2281"
     ],
     "datasets": [
       {
@@ -34494,7 +34566,8 @@ window.BENCHMARK_DATA = {
           701.2724409103394,
           674.1200460706439,
           644.4066113789876,
-          335.4732711498554
+          335.4732711498554,
+          709.0897643906729
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35353,6 +35426,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -36349,7 +36423,8 @@ window.BENCHMARK_DATA = {
           27532.356663004557,
           29025.36367579869,
           28007.803867885046,
-          10697.157378060478
+          10697.157378060478,
+          29057.486753191268
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37275,6 +37350,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -37485,7 +37561,8 @@ window.BENCHMARK_DATA = {
           787.518795522054,
           834.3047547340393,
           754.6306347480187,
-          439.98503071921215
+          439.98503071921215,
+          835.5585192952838
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -37497,6 +37574,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -38966,6 +39044,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
         "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
+      },
+      {
+        "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
+        "message": "test: rename the fixture attribute of the Reflection attribute tests to MarkerAttribute (#1994)"
       }
     ],
     "labels": [
@@ -39178,7 +39262,8 @@ window.BENCHMARK_DATA = {
       "411dfe77",
       "053d3134",
       "22b71d85",
-      "487b869a"
+      "487b869a",
+      "f19d2281"
     ],
     "datasets": [
       {
@@ -39394,7 +39479,8 @@ window.BENCHMARK_DATA = {
           720.8437297684806,
           723.371571413676,
           715.9844835281372,
-          381.2439911365509
+          381.2439911365509,
+          701.342793528239
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39596,6 +39682,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
+          1688,
           1688,
           1688,
           1688,
@@ -39839,7 +39926,8 @@ window.BENCHMARK_DATA = {
           83968.32868652344,
           84747.58401053293,
           83387.27444893973,
-          29609.07480061849
+          29609.07480061849,
+          82990.52136230469
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40060,7 +40148,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41334,6 +41423,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
         "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
+      },
+      {
+        "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
+        "message": "test: rename the fixture attribute of the Reflection attribute tests to MarkerAttribute (#1994)"
       }
     ],
     "labels": [
@@ -41546,7 +41641,8 @@ window.BENCHMARK_DATA = {
       "411dfe77",
       "053d3134",
       "22b71d85",
-      "487b869a"
+      "487b869a",
+      "f19d2281"
     ],
     "datasets": [
       {
@@ -41762,7 +41858,8 @@ window.BENCHMARK_DATA = {
           181.90043394382184,
           182.33299022454483,
           180.18845554760523,
-          91.71720045804977
+          91.71720045804977,
+          177.4088528474172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41916,6 +42013,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -42207,7 +42305,8 @@ window.BENCHMARK_DATA = {
           32531.27817946214,
           32593.614685058594,
           31853.289794921875,
-          9916.93203531901
+          9916.93203531901,
+          32328.276894705636
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42428,7 +42527,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42638,7 +42738,8 @@ window.BENCHMARK_DATA = {
           276.52117541631065,
           258.54222525869096,
           242.79254662195842,
-          120.6841071503503
+          120.6841071503503,
+          271.1728576660156
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -42650,6 +42751,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -43771,6 +43873,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
         "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
+      },
+      {
+        "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
+        "message": "test: rename the fixture attribute of the Reflection attribute tests to MarkerAttribute (#1994)"
       }
     ],
     "labels": [
@@ -43925,7 +44033,8 @@ window.BENCHMARK_DATA = {
       "411dfe77",
       "053d3134",
       "22b71d85",
-      "487b869a"
+      "487b869a",
+      "f19d2281"
     ],
     "datasets": [
       {
@@ -44083,7 +44192,8 @@ window.BENCHMARK_DATA = {
           366.6423488685063,
           355.6039056777954,
           362.6878184636434,
-          183.9999742269516
+          183.9999742269516,
+          349.1959339777629
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44179,6 +44289,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -44412,7 +44523,8 @@ window.BENCHMARK_DATA = {
           367.0265413284302,
           384.2086161613464,
           391.72735665639243,
-          212.6866849569174
+          212.6866849569174,
+          379.1371545155843
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44424,6 +44536,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -44741,7 +44854,8 @@ window.BENCHMARK_DATA = {
           404.4071646077292,
           407.95674773624967,
           417.9847776412964,
-          221.80191598619734
+          221.80191598619734,
+          404.96318629582726
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -44753,6 +44867,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -45830,6 +45945,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
         "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
+      },
+      {
+        "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
+        "message": "test: rename the fixture attribute of the Reflection attribute tests to MarkerAttribute (#1994)"
       }
     ],
     "labels": [
@@ -45984,7 +46105,8 @@ window.BENCHMARK_DATA = {
       "411dfe77",
       "053d3134",
       "22b71d85",
-      "487b869a"
+      "487b869a",
+      "f19d2281"
     ],
     "datasets": [
       {
@@ -46142,7 +46264,8 @@ window.BENCHMARK_DATA = {
           698.0126701082502,
           737.63518510546,
           716.0406578699748,
-          366.3769912083944
+          366.3769912083944,
+          701.5374867121378
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46262,6 +46385,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
+          1384,
           1384,
           1384,
           1384,
@@ -46471,7 +46595,8 @@ window.BENCHMARK_DATA = {
           1835.2847777048746,
           2039.8655288696289,
           1832.8877876281738,
-          1054.238603728158
+          1054.238603728158,
+          1861.4059046427408
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46483,6 +46608,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -46800,7 +46926,8 @@ window.BENCHMARK_DATA = {
           896.0568555196127,
           960.4152881622315,
           908.423682085673,
-          498.66435755216156
+          498.66435755216156,
+          920.972328039316
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -46812,6 +46939,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -47889,6 +48017,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
         "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
+      },
+      {
+        "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
+        "message": "test: rename the fixture attribute of the Reflection attribute tests to MarkerAttribute (#1994)"
       }
     ],
     "labels": [
@@ -48043,7 +48177,8 @@ window.BENCHMARK_DATA = {
       "411dfe77",
       "053d3134",
       "22b71d85",
-      "487b869a"
+      "487b869a",
+      "f19d2281"
     ],
     "datasets": [
       {
@@ -48201,7 +48336,8 @@ window.BENCHMARK_DATA = {
           11318.549934387207,
           11490.656721932548,
           11353.748610276441,
-          5926.38283593314
+          5926.38283593314,
+          11793.521875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48297,6 +48433,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -48530,7 +48667,8 @@ window.BENCHMARK_DATA = {
           40597.48044527494,
           41583.99515206473,
           40533.000052897136,
-          19293.963371276855
+          19293.963371276855,
+          41790.572880336214
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48665,6 +48803,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -48859,7 +48998,8 @@ window.BENCHMARK_DATA = {
           10623.953646850587,
           10612.534378051758,
           10576.444466224084,
-          5741.2267332810625
+          5741.2267332810625,
+          10759.94312613351
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -48871,6 +49011,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -49948,6 +50089,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
         "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
+      },
+      {
+        "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
+        "message": "test: rename the fixture attribute of the Reflection attribute tests to MarkerAttribute (#1994)"
       }
     ],
     "labels": [
@@ -50102,7 +50249,8 @@ window.BENCHMARK_DATA = {
       "411dfe77",
       "053d3134",
       "22b71d85",
-      "487b869a"
+      "487b869a",
+      "f19d2281"
     ],
     "datasets": [
       {
@@ -50260,7 +50408,8 @@ window.BENCHMARK_DATA = {
           10839.987969534737,
           11042.193294818584,
           10793.697049822125,
-          5560.076871431791
+          5560.076871431791,
+          11228.584060668945
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50356,6 +50505,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -50589,7 +50739,8 @@ window.BENCHMARK_DATA = {
           59043.16948445638,
           59088.44705810547,
           59751.123714192705,
-          27087.251029459636
+          27087.251029459636,
+          60281.108825683594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50752,7 +50903,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553
+          23553,
+          23554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50918,7 +51070,8 @@ window.BENCHMARK_DATA = {
           20892.055485316687,
           21011.66107940674,
           21064.80082484654,
-          11289.37282409668
+          11289.37282409668,
+          21233.00857761928
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -50930,6 +51083,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
