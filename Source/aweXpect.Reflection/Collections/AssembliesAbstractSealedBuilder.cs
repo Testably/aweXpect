@@ -32,14 +32,14 @@ internal sealed class AssembliesAbstractSealedBuilder
 	public ILimitedAbstractSealedTypeAssemblies Nested
 		=> AppendTypeFilter(t => t.IsNested, "nested ");
 
-	public Filtered.Types Types(AccessModifiers accessModifier = AccessModifiers.Any)
-		=> BuildTypes(_typeFilters, _typeFilterDescription, accessModifier, "types ");
+	public Filtered.Types Types()
+		=> BuildTypes(_typeFilters, _typeFilterDescription, "types ");
 
-	public Filtered.Types Classes(AccessModifiers accessModifier = AccessModifiers.Any)
-		=> BuildTypes(AppendFilter(t => t.IsReallyClass()), _typeFilterDescription, accessModifier, "classes ");
+	public Filtered.Types Classes()
+		=> BuildTypes(AppendFilter(t => t.IsReallyClass()), _typeFilterDescription, "classes ");
 
-	public Filtered.Types Records(AccessModifiers accessModifier = AccessModifiers.Any)
-		=> BuildTypes(AppendFilter(t => t.IsRecordClass()), _typeFilterDescription, accessModifier, "records ");
+	public Filtered.Types Records()
+		=> BuildTypes(AppendFilter(t => t.IsRecordClass()), _typeFilterDescription, "records ");
 
 	// Member selectors below intentionally do NOT apply _typeFilters to the source type set:
 	// `assemblies.Sealed.Methods()` returns sealed methods on ALL types in the assembly, not
@@ -83,7 +83,6 @@ internal sealed class AssembliesAbstractSealedBuilder
 	private Filtered.Types BuildTypes(
 		List<Func<Type, bool>> typeFilters,
 		string typeFilterDescription,
-		AccessModifiers accessModifier,
 		string typeDescription)
 	{
 		AccessModifiers? implicitAccess = _memberState.AccessModifier;
@@ -94,15 +93,6 @@ internal sealed class AssembliesAbstractSealedBuilder
 			withImplicit.Add(t => t.HasAccessModifier(implicitAccess.Value));
 			typeFilters = withImplicit;
 			typeFilterDescription += implicitAccess.Value.GetString(" ");
-		}
-
-		if (accessModifier != AccessModifiers.Any)
-		{
-			List<Func<Type, bool>> withExplicit = new(typeFilters.Count + 1);
-			withExplicit.AddRange(typeFilters);
-			withExplicit.Add(t => t.HasAccessModifier(accessModifier));
-			typeFilters = withExplicit;
-			typeFilterDescription = accessModifier.GetString(" ") + typeFilterDescription;
 		}
 
 		Filtered.Types result = new(_source, typeDescription);

@@ -47,7 +47,7 @@ public sealed partial class Filtered
 				{
 					async Task Act()
 					{
-						await That(In.AllLoadedAssemblies().Generic.Records(accessModifier))
+						await That(In.AllLoadedAssemblies().Generic.Records().WhichAre(accessModifier))
 							.AreNotGeneric();
 					}
 

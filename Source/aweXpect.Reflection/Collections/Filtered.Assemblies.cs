@@ -136,33 +136,26 @@ public static partial class Filtered
 		ITypeAssemblies ITypeAssemblies.IProtected.Internal
 			=> NewBuilder(MemberFilterState.Empty.WithAccess(AccessModifiers.ProtectedInternal));
 
-		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Types(AccessModifiers)" />
-		public Types Types(AccessModifiers accessModifier = AccessModifiers.Any)
-			=> NewBuilder(MemberFilterState.Empty).Types(accessModifier);
+		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Types()" />
+		public Types Types() => NewBuilder(MemberFilterState.Empty).Types();
 
-		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Classes(AccessModifiers)" />
-		public Types Classes(AccessModifiers accessModifier = AccessModifiers.Any)
-			=> NewBuilder(MemberFilterState.Empty).Classes(accessModifier);
+		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Classes()" />
+		public Types Classes() => NewBuilder(MemberFilterState.Empty).Classes();
 
-		/// <inheritdoc cref="ILimitedAbstractSealedTypeAssemblies.Records(AccessModifiers)" />
-		public Types Records(AccessModifiers accessModifier = AccessModifiers.Any)
-			=> NewBuilder(MemberFilterState.Empty).Records(accessModifier);
+		/// <inheritdoc cref="ILimitedAbstractSealedTypeAssemblies.Records()" />
+		public Types Records() => NewBuilder(MemberFilterState.Empty).Records();
 
-		/// <inheritdoc cref="ITypeAssemblies.RecordStructs(AccessModifiers)" />
-		public Types RecordStructs(AccessModifiers accessModifier = AccessModifiers.Any)
-			=> NewBuilder(MemberFilterState.Empty).RecordStructs(accessModifier);
+		/// <inheritdoc cref="ITypeAssemblies.RecordStructs()" />
+		public Types RecordStructs() => NewBuilder(MemberFilterState.Empty).RecordStructs();
 
-		/// <inheritdoc cref="ITypeAssemblies.Structs(AccessModifiers)" />
-		public Types Structs(AccessModifiers accessModifier = AccessModifiers.Any)
-			=> NewBuilder(MemberFilterState.Empty).Structs(accessModifier);
+		/// <inheritdoc cref="ITypeAssemblies.Structs()" />
+		public Types Structs() => NewBuilder(MemberFilterState.Empty).Structs();
 
-		/// <inheritdoc cref="ITypeAssemblies.Interfaces(AccessModifiers)" />
-		public Types Interfaces(AccessModifiers accessModifier = AccessModifiers.Any)
-			=> NewBuilder(MemberFilterState.Empty).Interfaces(accessModifier);
+		/// <inheritdoc cref="ITypeAssemblies.Interfaces()" />
+		public Types Interfaces() => NewBuilder(MemberFilterState.Empty).Interfaces();
 
-		/// <inheritdoc cref="ITypeAssemblies.Enums(AccessModifiers)" />
-		public Types Enums(AccessModifiers accessModifier = AccessModifiers.Any)
-			=> NewBuilder(MemberFilterState.Empty).Enums(accessModifier);
+		/// <inheritdoc cref="ITypeAssemblies.Enums()" />
+		public Types Enums() => NewBuilder(MemberFilterState.Empty).Enums();
 
 		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Constructors()" />
 		public Constructors Constructors() => NewBuilder(MemberFilterState.Empty).Constructors();

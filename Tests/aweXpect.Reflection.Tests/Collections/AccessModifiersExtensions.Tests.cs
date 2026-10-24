@@ -19,7 +19,7 @@ public sealed class AccessModifiersExtensionsTests
 		public async Task CombinationIncludingPrivate_ShouldListPrivate()
 		{
 			Reflection.Collections.Filtered.Types types =
-				In.AllLoadedAssemblies().Types(AccessModifiers.Private | AccessModifiers.Internal);
+				In.AllLoadedAssemblies().Types().WhichAre(AccessModifiers.Private | AccessModifiers.Internal);
 
 			await That(types.GetDescription()).IsEqualTo("private or internal types in all loaded assemblies")
 				.AsPrefix();
@@ -29,7 +29,7 @@ public sealed class AccessModifiersExtensionsTests
 		public async Task CombinationIncludingPrivateProtected_ShouldListPrivateProtected()
 		{
 			Reflection.Collections.Filtered.Types types =
-				In.AllLoadedAssemblies().Types(AccessModifiers.PrivateProtected | AccessModifiers.Internal);
+				In.AllLoadedAssemblies().Types().WhichAre(AccessModifiers.PrivateProtected | AccessModifiers.Internal);
 
 			await That(types.GetDescription())
 				.IsEqualTo("internal or private protected types in all loaded assemblies").AsPrefix();
@@ -39,7 +39,7 @@ public sealed class AccessModifiersExtensionsTests
 		public async Task CombinationIncludingProtectedInternal_ShouldListProtectedInternal()
 		{
 			Reflection.Collections.Filtered.Types types =
-				In.AllLoadedAssemblies().Types(AccessModifiers.ProtectedInternal | AccessModifiers.Internal);
+				In.AllLoadedAssemblies().Types().WhichAre(AccessModifiers.ProtectedInternal | AccessModifiers.Internal);
 
 			await That(types.GetDescription())
 				.IsEqualTo("internal or protected internal types in all loaded assemblies").AsPrefix();

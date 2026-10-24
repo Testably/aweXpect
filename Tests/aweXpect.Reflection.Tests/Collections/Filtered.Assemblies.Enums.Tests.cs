@@ -23,7 +23,7 @@ public sealed partial class Filtered
 				public async Task ShouldConsiderAccessModifier(AccessModifiers accessModifier, Func<Type, bool> check)
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
-						.Enums(accessModifier);
+						.Enums().WhichAre(accessModifier);
 
 					await That(types).All().Satisfy(type => type.IsEnum && check(type));
 				}

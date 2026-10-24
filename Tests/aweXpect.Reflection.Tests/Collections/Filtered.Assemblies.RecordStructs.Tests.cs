@@ -24,7 +24,7 @@ public sealed partial class Filtered
 				public async Task ShouldConsiderAccessModifier(AccessModifiers accessModifier, Func<Type, bool> check)
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
-						.RecordStructs(accessModifier);
+						.RecordStructs().WhichAre(accessModifier);
 
 					await That(types).All().Satisfy(type
 							=> type is { IsClass: false, IsEnum: false, IsValueType: true, } && check(type)).And

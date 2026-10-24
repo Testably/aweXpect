@@ -59,26 +59,26 @@ internal sealed class AssembliesTypeBuilder :
 			_typeFilters,
 			_typeFilterDescription);
 
-	public Filtered.Types Types(AccessModifiers accessModifier = AccessModifiers.Any)
-		=> BuildTypes(_typeFilters, _typeFilterDescription, accessModifier, "types ", false);
+	public Filtered.Types Types()
+		=> BuildTypes(_typeFilters, _typeFilterDescription, "types ", false);
 
-	public Filtered.Types Classes(AccessModifiers accessModifier = AccessModifiers.Any)
-		=> BuildTypes(AppendFilter(t => t.IsReallyClass()), _typeFilterDescription, accessModifier, "classes ");
+	public Filtered.Types Classes()
+		=> BuildTypes(AppendFilter(t => t.IsReallyClass()), _typeFilterDescription, "classes ");
 
-	public Filtered.Types Records(AccessModifiers accessModifier = AccessModifiers.Any)
-		=> BuildTypes(AppendFilter(t => t.IsRecordClass()), _typeFilterDescription, accessModifier, "records ");
+	public Filtered.Types Records()
+		=> BuildTypes(AppendFilter(t => t.IsRecordClass()), _typeFilterDescription, "records ");
 
-	public Filtered.Types RecordStructs(AccessModifiers accessModifier = AccessModifiers.Any)
-		=> BuildTypes(AppendFilter(t => t.IsRecordStruct()), _typeFilterDescription, accessModifier, "record structs ");
+	public Filtered.Types RecordStructs()
+		=> BuildTypes(AppendFilter(t => t.IsRecordStruct()), _typeFilterDescription, "record structs ");
 
-	public Filtered.Types Structs(AccessModifiers accessModifier = AccessModifiers.Any)
-		=> BuildTypes(AppendFilter(t => t.IsReallyStruct()), _typeFilterDescription, accessModifier, "structs ");
+	public Filtered.Types Structs()
+		=> BuildTypes(AppendFilter(t => t.IsReallyStruct()), _typeFilterDescription, "structs ");
 
-	public Filtered.Types Interfaces(AccessModifiers accessModifier = AccessModifiers.Any)
-		=> BuildTypes(AppendFilter(t => t.IsInterface), _typeFilterDescription, accessModifier, "interfaces ");
+	public Filtered.Types Interfaces()
+		=> BuildTypes(AppendFilter(t => t.IsInterface), _typeFilterDescription, "interfaces ");
 
-	public Filtered.Types Enums(AccessModifiers accessModifier = AccessModifiers.Any)
-		=> BuildTypes(AppendFilter(t => t.IsEnum), _typeFilterDescription, accessModifier, "enums ");
+	public Filtered.Types Enums()
+		=> BuildTypes(AppendFilter(t => t.IsEnum), _typeFilterDescription, "enums ");
 
 	// Member selectors below intentionally do NOT apply _typeFilters to the source type set:
 	// `assemblies.Static.Methods()` returns static methods on ALL types in the assembly, not
@@ -143,7 +143,6 @@ internal sealed class AssembliesTypeBuilder :
 	private Filtered.Types BuildTypes(
 		List<Func<Type, bool>> typeFilters,
 		string typeFilterDescription,
-		AccessModifiers accessModifier,
 		string typeDescription,
 		bool includeWhenEmpty = true)
 	{
@@ -155,15 +154,6 @@ internal sealed class AssembliesTypeBuilder :
 			withImplicit.Add(t => t.HasAccessModifier(implicitAccess.Value));
 			typeFilters = withImplicit;
 			typeFilterDescription += implicitAccess.Value.GetString(" ");
-		}
-
-		if (accessModifier != AccessModifiers.Any)
-		{
-			List<Func<Type, bool>> withExplicit = new(typeFilters.Count + 1);
-			withExplicit.AddRange(typeFilters);
-			withExplicit.Add(t => t.HasAccessModifier(accessModifier));
-			typeFilters = withExplicit;
-			typeFilterDescription = accessModifier.GetString(" ") + typeFilterDescription;
 		}
 
 		Filtered.Types result = new(_source, typeDescription);

@@ -53,7 +53,7 @@ public sealed partial class Filtered
 				{
 					async Task Act()
 					{
-						await That(In.AllLoadedAssemblies().Sealed.Types(accessModifier))
+						await That(In.AllLoadedAssemblies().Sealed.Types().WhichAre(accessModifier))
 							.AreNotSealed();
 					}
 

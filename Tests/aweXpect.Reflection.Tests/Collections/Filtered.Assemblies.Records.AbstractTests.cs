@@ -23,7 +23,7 @@ public sealed partial class Filtered
 				public async Task ShouldConsiderAccessModifier()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
-						.Abstract.Records(AccessModifiers.Public);
+						.Public.Abstract.Records();
 
 					await That(types).All().Satisfy(type
 						=> type.IsAbstract && type.IsRecordClass() &&

@@ -24,7 +24,7 @@ public sealed partial class Filtered
 				public async Task ShouldConsiderAccessModifier()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
-						.Nested.Structs(AccessModifiers.Protected);
+						.Protected.Nested.Structs();
 
 					await That(types).All().Satisfy(type
 						=> type is
