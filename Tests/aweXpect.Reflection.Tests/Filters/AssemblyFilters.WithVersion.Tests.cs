@@ -76,6 +76,23 @@ public sealed partial class AssemblyFilters
 		public sealed class ComponentTests
 		{
 			[Test]
+			public async Task Between_ShouldMatchBothBoundaryValues()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				Filtered.Assemblies atMinimum = In.Assemblies(assembly).WithVersion().WithMajor.Between(major).And(major + 1);
+				Filtered.Assemblies atMaximum = In.Assemblies(assembly).WithVersion().WithMajor.Between(major - 1).And(major);
+				Filtered.Assemblies outside = In.Assemblies(assembly).WithVersion().WithMajor.Between(major + 1).And(major + 2);
+
+				await That(atMinimum).HasSingle().Which.IsEqualTo(assembly);
+				await That(atMaximum).HasSingle().Which.IsEqualTo(assembly);
+				await That(outside).IsEmpty();
+				await That(atMinimum.GetDescription())
+					.IsEqualTo($" with major version between {major} and {major + 1}").AsSuffix();
+			}
+
+			[Test]
 			public async Task EqualTo_ShouldMatchOnlyTheExactValue()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -117,6 +134,17 @@ public sealed partial class AssemblyFilters
 
 				await That(excluded).IsEmpty();
 				await That(included).HasSingle().Which.IsEqualTo(assembly);
+			}
+
+			[Test]
+			public async Task GreaterThan_WhenExpectedIsNull_ShouldNotMatch()
+			{
+				Filtered.Assemblies assemblies = In.AllLoadedAssemblies().WithVersion().WithMajor.GreaterThan(null);
+
+				await That(assemblies).IsEmpty()
+					.Because("an ordering against null cannot be answered, so no assembly matches");
+				await That(assemblies.GetDescription())
+					.IsEqualTo("in all loaded assemblies with major version greater than <null>");
 			}
 
 			[Test]
@@ -162,6 +190,21 @@ public sealed partial class AssemblyFilters
 			}
 
 			[Test]
+			public async Task NotBetween_ShouldMatchOnlyOutsideTheRange()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				Filtered.Assemblies excluded = In.Assemblies(assembly).WithVersion().WithMajor.NotBetween(major).And(major + 1);
+				Filtered.Assemblies included = In.Assemblies(assembly).WithVersion().WithMajor.NotBetween(major + 1).And(major + 2);
+
+				await That(excluded).IsEmpty();
+				await That(included).HasSingle().Which.IsEqualTo(assembly);
+				await That(excluded.GetDescription())
+					.IsEqualTo($" with major version not between {major} and {major + 1}").AsSuffix();
+			}
+
+			[Test]
 			public async Task NotEqualTo_ShouldMatchEverythingExceptTheExactValue()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -175,12 +218,31 @@ public sealed partial class AssemblyFilters
 			}
 
 			[Test]
+			public async Task NotGreaterThan_ShouldMatchTheBoundaryValue()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				Filtered.Assemblies included = In.Assemblies(assembly).WithVersion().WithMajor.NotGreaterThan(major);
+				Filtered.Assemblies excluded = In.Assemblies(assembly).WithVersion().WithMajor.NotGreaterThan(major - 1);
+
+				await That(included).HasSingle().Which.IsEqualTo(assembly);
+				await That(excluded).IsEmpty();
+			}
+
+			[Test]
 			[Arguments("GreaterThan", 5, "greater than 5")]
 			[Arguments("GreaterThanOrEqualTo", 5, "greater than or equal to 5")]
 			[Arguments("LessThan", 5, "less than 5")]
 			[Arguments("LessThanOrEqualTo", 5, "less than or equal to 5")]
 			[Arguments("EqualTo", 5, "equal to 5")]
 			[Arguments("NotEqualTo", 5, "not equal to 5")]
+			[Arguments("Between", 5, "between 5 and 6")]
+			[Arguments("NotBetween", 5, "not between 5 and 6")]
+			[Arguments("NotGreaterThan", 5, "not greater than 5")]
+			[Arguments("NotGreaterThanOrEqualTo", 5, "not greater than or equal to 5")]
+			[Arguments("NotLessThan", 5, "not less than 5")]
+			[Arguments("NotLessThanOrEqualTo", 5, "not less than or equal to 5")]
 			public async Task ShouldDescribeComparison(string comparison, int expected, string expectedText)
 			{
 				Reflection.AssemblyFilters.VersionComponent major = In.AllLoadedAssemblies().WithVersion().WithMajor;
@@ -191,7 +253,13 @@ public sealed partial class AssemblyFilters
 					"LessThan" => major.LessThan(expected),
 					"LessThanOrEqualTo" => major.LessThanOrEqualTo(expected),
 					"EqualTo" => major.EqualTo(expected),
-					_ => major.NotEqualTo(expected),
+					"NotEqualTo" => major.NotEqualTo(expected),
+					"Between" => major.Between(expected).And(expected + 1),
+					"NotBetween" => major.NotBetween(expected).And(expected + 1),
+					"NotGreaterThan" => major.NotGreaterThan(expected),
+					"NotGreaterThanOrEqualTo" => major.NotGreaterThanOrEqualTo(expected),
+					"NotLessThan" => major.NotLessThan(expected),
+					_ => major.NotLessThanOrEqualTo(expected),
 				};
 
 				await That(assemblies.GetDescription())

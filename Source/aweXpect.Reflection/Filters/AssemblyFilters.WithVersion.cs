@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 using aweXpect.Core;
+using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
+using aweXpect.Results;
 
 namespace aweXpect.Reflection;
 
@@ -74,7 +77,11 @@ public static partial class AssemblyFilters
 	/// <summary>
 	///     Comparison of a single component of the <see cref="AssemblyName.Version" />.
 	/// </summary>
-	public class VersionComponent
+	/// <remarks>
+	///     The comparison operators, e.g. <c>EqualTo(…)</c> or <c>Between(…).And(…)</c>, are extension methods in
+	///     <see cref="IntPropertyResultExtensions" />.
+	/// </remarks>
+	public class VersionComponent : IIntPropertyResult<AssembliesWithVersion>
 	{
 		private readonly string _component;
 		private readonly AssembliesWithVersion _owner;
@@ -90,46 +97,25 @@ public static partial class AssemblyFilters
 			_selector = selector;
 		}
 
-		/// <summary>
-		///     The component is greater than the <paramref name="expected" /> value.
-		/// </summary>
-		public AssembliesWithVersion GreaterThan(int expected)
-			=> Apply(value => value > expected, $"greater than {expected}");
+		/// <inheritdoc cref="IIntPropertyResult{TResult}.Validation" />
+		Action<int?, string>? IIntPropertyResult<AssembliesWithVersion>.Validation => null;
 
-		/// <summary>
-		///     The component is greater than or equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public AssembliesWithVersion GreaterThanOrEqualTo(int expected)
-			=> Apply(value => value >= expected, $"greater than or equal to {expected}");
-
-		/// <summary>
-		///     The component is less than the <paramref name="expected" /> value.
-		/// </summary>
-		public AssembliesWithVersion LessThan(int expected)
-			=> Apply(value => value < expected, $"less than {expected}");
-
-		/// <summary>
-		///     The component is less than or equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public AssembliesWithVersion LessThanOrEqualTo(int expected)
-			=> Apply(value => value <= expected, $"less than or equal to {expected}");
-
-		/// <summary>
-		///     The component is equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public AssembliesWithVersion EqualTo(int expected)
-			=> Apply(value => value == expected, $"equal to {expected}");
-
-		/// <summary>
-		///     The component is not equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public AssembliesWithVersion NotEqualTo(int expected)
-			=> Apply(value => value != expected, $"not equal to {expected}");
-
-		private AssembliesWithVersion Apply(Func<int, bool> comparison, string comparisonText)
+		/// <inheritdoc cref="IIntPropertyResult{TResult}.Compare(PropertyComparison{int})" />
+		AssembliesWithVersion IIntPropertyResult<AssembliesWithVersion>.Compare(PropertyComparison<int> comparison)
 			=> _owner.Extend(
-				(result, assembly)
-					=> result && assembly.GetName().Version is { } version && comparison(_selector(version)),
-				description => $"{description} with {_component} version {comparisonText}");
+				(result, assembly) => result && assembly.GetName().Version is { } version &&
+				                      comparison.Evaluate(_selector(version)) == Outcome.Success,
+				description =>
+				{
+					StringBuilder stringBuilder = new(description);
+					stringBuilder.Append(" with ").Append(_component).Append(" version ");
+					if (comparison.IsNegated)
+					{
+						stringBuilder.Append("not ");
+					}
+
+					comparison.AppendExpectation(stringBuilder);
+					return stringBuilder.ToString();
+				});
 	}
 }

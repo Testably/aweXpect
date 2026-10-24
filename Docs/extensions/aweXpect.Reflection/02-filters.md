@@ -661,11 +661,11 @@ An assembly is considered strong named when its name carries a non-empty public 
 
 The version filter and expectations come in two forms. Pass a `Func<Version, bool>` predicate to match the whole
 version, or omit it to compare individual components (`WithMajor`, `WithMinor`, `WithBuild`, `WithRevision`).
-The filter compares a component with `GreaterThan`, `GreaterThanOrEqualTo`, `LessThan`, `LessThanOrEqualTo`, `EqualTo`
-and `NotEqualTo`. The expectations offer the same comparisons as the `int` properties of core aweXpect, e.g.
-`HasLength()`: additionally `Between(…).And(…)` and the negations `NotGreaterThan`, `NotBetween(…).And(…)`, and so
-on. Component comparisons chain (all must hold), and an assembly without a version never matches. The `Build` and
-`Revision` components are `-1` when absent from the version.
+The filter and the expectations compare a component with the same operators as the `int` properties of core aweXpect,
+e.g. `HasLength()`: `EqualTo`, `GreaterThan`, `GreaterThanOrEqualTo`, `LessThan`, `LessThanOrEqualTo`,
+`Between(…).And(…)` and their negations `NotEqualTo`, `NotGreaterThan`, `NotBetween(…).And(…)`, and so on. Component
+comparisons chain (all must hold), and an assembly without a version never matches. The `Build` and `Revision`
+components are `-1` when absent from the version.
 
 ```csharp
 // Predicate form
@@ -674,6 +674,7 @@ await Expect.That(subject).HasVersion(version => version.Major >= 2);
 
 // Component form
 In.AllLoadedAssemblies().WithVersion().WithMajor.GreaterThanOrEqualTo(2).WithMinor.EqualTo(0)
+In.AllLoadedAssemblies().WithVersion().WithMajor.Between(2).And(4).WithMinor.NotLessThan(1)
 await Expect.That(subject).HasVersion().WithMajor.GreaterThanOrEqualTo(2);
 await Expect.That(subjects).HaveVersion().WithMajor.EqualTo(1);
 await Expect.That(subject).HasVersion().WithMajor.Between(2).And(4).WithMinor.NotEqualTo(0);

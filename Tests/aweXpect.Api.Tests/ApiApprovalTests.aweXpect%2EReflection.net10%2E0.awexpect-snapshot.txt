@@ -2484,14 +2484,8 @@ namespace aweXpect.Reflection
             public aweXpect.Reflection.AssemblyFilters.VersionComponent WithMinor { get; }
             public aweXpect.Reflection.AssemblyFilters.VersionComponent WithRevision { get; }
         }
-        public class VersionComponent
+        public class VersionComponent : aweXpect.Results.IIntPropertyResult<aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion>
         {
-            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion EqualTo(int expected) { }
-            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion GreaterThan(int expected) { }
-            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion GreaterThanOrEqualTo(int expected) { }
-            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion LessThan(int expected) { }
-            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion LessThanOrEqualTo(int expected) { }
-            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion NotEqualTo(int expected) { }
         }
     }
     [System.Flags]
