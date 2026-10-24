@@ -38,7 +38,8 @@ await Expect.That(exception.Message).MatchesSnapshot().UniqueFor.TargetFramework
 
 // verify the public API of an assembly, written as C# declarations
 // (package aweXpect.Snapshots.PublicApi)
-await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot().UniqueFor.TargetFramework();
+await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot()
+    .UniqueFor.TargetFramework();
 ```
 
 The snapshot is stored as `<Class>.<Method>.awexpect-snapshot.txt` next to the test file, where `<Class>` is the name
