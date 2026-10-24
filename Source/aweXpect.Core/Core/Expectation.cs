@@ -19,11 +19,21 @@ namespace aweXpect.Core;
 ///     Base class for expectation results.
 /// </summary>
 /// <remarks>
-///     Create instances by using the static methods on the <see cref="Expect" /> class.
+///     Create instances by using the static methods on the <see cref="Expect" /> class and the expectation methods.
+///     This class is not meant to be derived from directly: extension authors return an
+///     <see cref="aweXpect.Results.ExpectationResult" /> or <see cref="aweXpect.Results.ExpectationResult{TType, TSelf}" />
+///     for results and derive custom combinations from <see cref="Combination{TSelf}" />.
 /// </remarks>
 [StackTraceHidden]
 public abstract class Expectation
 {
+	/// <remarks>
+	///     Only aweXpect.Core can derive, because the evaluation relies on members that are not public.
+	/// </remarks>
+	private protected Expectation()
+	{
+	}
+
 #pragma warning disable S3877 // Exceptions should not be thrown from unexpected methods
 	/// <summary>
 	///     <i>Not supported!</i><br />

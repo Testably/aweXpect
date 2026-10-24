@@ -1,7 +1,42 @@
-﻿namespace aweXpect.Tests;
+﻿using aweXpect.Core;
+using aweXpect.Core.Constraints;
+
+namespace aweXpect.Tests;
 
 public class ExpectTests
 {
+	public class CustomCombinationTests
+	{
+		[Test]
+		public async Task WhenOneExpectationIsNotMet_ShouldFailWithTheCustomSubjectLine()
+		{
+			async Task Act()
+				=> await new Both(
+						That(true).IsTrue(),
+						That(false).IsTrue())
+					.Because("both must hold");
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected both of the following to succeed, because both must hold:
+				              [01] Expected that true is True
+				              [02] Expected that false is True
+				             but
+				              [02] it was False
+				             """)
+				.Because("a combination derived outside aweXpect.Core uses its own subject line and outcome");
+		}
+
+		private sealed class Both(params Expectation[] expectations) : Expectation.Combination<Both>(expectations)
+		{
+			protected override string GetSubjectLine()
+				=> "Expected both of the following to succeed:";
+
+			protected override Outcome CheckOutcome(Outcome? previous, Outcome current)
+				=> previous == Outcome.Failure || current == Outcome.Failure ? Outcome.Failure : Outcome.Success;
+		}
+	}
+
 	public class ThatAllTests
 	{
 		[Test]
