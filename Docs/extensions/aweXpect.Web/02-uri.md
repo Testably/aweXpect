@@ -101,6 +101,16 @@ await Expect.That(uri).HasPath().StartingWith("/tracks/");
 await Expect.That(new Uri("https://music.example.com/my%20song")).HasPath().EqualTo("/my song");
 ```
 
+`Containing` on the scheme, host, path or fragment counts the occurrences like `Contains` on a string, so it also
+accepts a quantifier and a match type:
+
+```csharp
+Uri uri = new("https://music.example.com/albums/1/tracks/2");
+
+await Expect.That(uri).HasPath().Containing("/").Exactly(4);
+await Expect.That(uri).HasPath().Containing("tr?cks").AsWildcard().Once();
+```
+
 ## Fragment
 
 You can verify the URL-decoded fragment of the `Uri`, without the leading `#`:

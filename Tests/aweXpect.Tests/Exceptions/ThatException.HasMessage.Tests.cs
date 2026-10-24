@@ -7,6 +7,36 @@ public sealed partial class ThatException
 		public sealed class ContainingTests
 		{
 			[Test]
+			public async Task AsWildcard_WhenThePatternOccursTooRarely_ShouldFail()
+			{
+				MyException exception = new("a1b a2b");
+
+				async Task Act()
+					=> await That(exception).HasMessage().Containing("a?b").AsWildcard().AtLeast(3);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that exception
+					             has message containing "a?b" as wildcard at least 3 times,
+					             but message contained "a?b" twice in "a1b a2b"
+
+					             Message:
+					             a1b a2b
+					             """);
+			}
+
+			[Test]
+			public async Task AtLeast_WhenMessageContainsExpectedOftenEnough_ShouldSucceed()
+			{
+				MyException exception = new("foo bar foo");
+
+				async Task Act()
+					=> await That(exception).HasMessage().Containing("foo").AtLeast(2);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task CanCompareCaseInsensitive()
 			{
 				string message = "_FOO_BAR";
@@ -14,6 +44,75 @@ public sealed partial class ThatException
 
 				async Task Act()
 					=> await That(exception).HasMessage().Containing("foo").IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Exactly_WhenMessageContainsExpectedTooOften_ShouldFail()
+			{
+				MyException exception = new("foo foo foo");
+
+				async Task Act()
+					=> await That(exception).HasMessage().Containing("foo").Exactly(2);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that exception
+					             has message containing "foo" exactly twice,
+					             but message contained "foo" at least 3 times in "foo foo foo"
+
+					             Message:
+					             foo foo foo
+					             """)
+					.Because("the search stops as soon as the count is decided");
+			}
+
+			[Test]
+			public async Task IgnoringCase_WhenMessageContainsExpectedTooRarely_ShouldFail()
+			{
+				MyException exception = new("Foo FOO foo");
+
+				async Task Act()
+					=> await That(exception).HasMessage().Containing("foo").IgnoringCase().AtLeast(4);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that exception
+					             has message containing "foo" ignoring case at least 4 times,
+					             but message contained "foo" 3 times in "Foo FOO foo"
+
+					             Message:
+					             Foo FOO foo
+					             """);
+			}
+
+			[Test]
+			public async Task Never_WhenMessageContainsExpected_ShouldFail()
+			{
+				MyException exception = new("foo bar");
+
+				async Task Act()
+					=> await That(exception).HasMessage().Containing("foo").Never();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that exception
+					             does not have message containing "foo",
+					             but message contained "foo" at least once in "foo bar"
+
+					             Message:
+					             foo bar
+					             """);
+			}
+
+			[Test]
+			public async Task Never_WhenMessageDoesNotContainExpected_ShouldSucceed()
+			{
+				MyException exception = new("bar");
+
+				async Task Act()
+					=> await That(exception).HasMessage().Containing("foo").Never();
 
 				await That(Act).DoesNotThrow();
 			}
@@ -30,8 +129,8 @@ public sealed partial class ThatException
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that exception
-					             has message containing "foo",
-					             but it had message "FOO"
+					             has message containing "foo" at least once,
+					             but message did not contain "foo" in "FOO"
 
 					             Message:
 					             FOO
@@ -89,6 +188,25 @@ public sealed partial class ThatException
 			}
 
 			[Test]
+			public async Task WhenReadingTheMessageThrows_ShouldFail()
+			{
+				InvalidOperationException exception = new("message failed");
+				Exception subject = new ThrowingMessageException(exception);
+
+				async Task Act()
+					=> await That(subject).HasMessage().Containing("foo");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has message containing "foo" at least once,
+					             but message did throw an InvalidOperationException:
+					               message failed
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Exception? subject = null;
@@ -99,7 +217,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has message containing "foo",
+					             has message containing "foo" at least once,
 					             but it was <null>
 					             """);
 			}
@@ -281,6 +399,62 @@ public sealed partial class ThatException
 		public sealed class NegatedTests
 		{
 			[Test]
+			public async Task WhenContainingAtLeastIsNegated_ShouldNameTheComplement()
+			{
+				Exception subject = new("foo foo");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(e => e.HasMessage().Containing("foo").AtLeast(2));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has message containing "foo" fewer than twice,
+					             but message contained "foo" at least twice in "foo foo"
+
+					             Message:
+					             foo foo
+					             """);
+			}
+
+			[Test]
+			public async Task WhenContainingExactlyIsNegated_ShouldNegateTheVerb()
+			{
+				Exception subject = new("foo foo");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(e => e.HasMessage().Containing("foo").Exactly(2));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have message containing "foo" exactly twice,
+					             but message contained "foo" twice in "foo foo"
+
+					             Message:
+					             foo foo
+					             """)
+					.Because("\"not\" in front of a quantifier without a complement reads more naturally on the verb");
+			}
+
+			[Test]
+			public async Task WhenContainingIsNegatedAndSubjectIsNull_ShouldFail()
+			{
+				Exception? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(e => e.HasMessage().Containing("foo"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have message containing "foo",
+					             but it was <null>
+					             """)
+					.Because("a negated expectation never passes on a null subject");
+			}
+
+			[Test]
 			public async Task WhenContainingIsNegated_ShouldReadAsNotContaining()
 			{
 				Exception subject = new("foo and bar");
@@ -292,7 +466,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             does not have message containing "foo",
-					             but it had message "foo and bar"
+					             but message contained "foo" at least once in "foo and bar"
 
 					             Message:
 					             foo and bar
