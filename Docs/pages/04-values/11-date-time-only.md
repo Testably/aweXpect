@@ -212,6 +212,7 @@ DateOnly releaseDate = new DateOnly(1969, 9, 26);
 await Expect.That(releaseDate).HasYear(1969);
 await Expect.That(releaseDate).HasMonth().GreaterThan(6);
 await Expect.That(releaseDate).HasDay(26);
+await Expect.That(releaseDate).HasDayOfWeek(DayOfWeek.Friday);
 ```
 
 </TabItem>
@@ -230,3 +231,5 @@ await Expect.That(startTime).HasMillisecond(189);
 </Tabs>
 
 <PropertyComparisons example="HasYear(1969)" />
+
+`HasDayOfWeek()` only supports `EqualTo` and `NotEqualTo`.

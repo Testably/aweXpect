@@ -4,12 +4,12 @@ namespace aweXpect.Core.Tests.Results;
 
 public sealed partial class PropertyResultTests
 {
-	public sealed class DateTimeKindTests
+	public sealed class EnumTests
 	{
 		[Test]
 		public async Task EqualTo_WhenValueIsNull_ShouldFail()
 		{
-			PropertyResult.DateTimeKind<MyClass?> sut = MyClass.HasNullDateTimeKindValue();
+			PropertyResult.Enum<MyClass?, DateTimeKind> sut = MyClass.HasNullDateTimeKindValue();
 
 			async Task Act()
 				=> await sut.EqualTo(DateTimeKind.Utc);
@@ -25,7 +25,7 @@ public sealed partial class PropertyResultTests
 		[Test]
 		public async Task EqualTo_WhenValueIsNullAndExpectedIsNull_ShouldSucceed()
 		{
-			PropertyResult.DateTimeKind<MyClass?> sut = MyClass.HasNullDateTimeKindValue();
+			PropertyResult.Enum<MyClass?, DateTimeKind> sut = MyClass.HasNullDateTimeKindValue();
 
 			async Task Act()
 				=> await sut.EqualTo(null);
@@ -37,7 +37,7 @@ public sealed partial class PropertyResultTests
 		[Test]
 		public async Task NotEqualTo_WhenValueIsNull_ShouldSucceed()
 		{
-			PropertyResult.DateTimeKind<MyClass?> sut = MyClass.HasNullDateTimeKindValue();
+			PropertyResult.Enum<MyClass?, DateTimeKind> sut = MyClass.HasNullDateTimeKindValue();
 
 			async Task Act()
 				=> await sut.NotEqualTo(DateTimeKind.Utc);
@@ -48,7 +48,7 @@ public sealed partial class PropertyResultTests
 		[Test]
 		public async Task NotEqualTo_WhenValueIsNullAndUnexpectedIsNull_ShouldFail()
 		{
-			PropertyResult.DateTimeKind<MyClass?> sut = MyClass.HasNullDateTimeKindValue();
+			PropertyResult.Enum<MyClass?, DateTimeKind> sut = MyClass.HasNullDateTimeKindValue();
 
 			async Task Act()
 				=> await sut.NotEqualTo(null);
@@ -67,7 +67,7 @@ public sealed partial class PropertyResultTests
 			[Test]
 			public async Task WhenActive_ShouldUseTheActiveVoice()
 			{
-				PropertyResult.DateTimeKind<MyClass?, MyClass?, IThat<MyClass?>> sut =
+				PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> sut =
 					MyClass.HasDateTimeKindValue(DateTimeKind.Utc, ExpectationGrammars.Active);
 
 				async Task Act()
@@ -118,7 +118,7 @@ public sealed partial class PropertyResultTests
 			[Test]
 			public async Task WhenNested_ShouldNameTheProperty()
 			{
-				PropertyResult.DateTimeKind<MyClass?, MyClass?, IThat<MyClass?>> sut =
+				PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> sut =
 					MyClass.HasDateTimeKindValue(DateTimeKind.Utc, ExpectationGrammars.Nested);
 
 				async Task Act()

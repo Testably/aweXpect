@@ -1161,21 +1161,20 @@ public sealed class GuaranteesNotNullTests
 	private static IEnumerable<MethodInfo> GetExtensionContinuations(Type resultType)
 	{
 		Dictionary<Type, Type> interfaces = resultType.GetInterfaces()
-			.Where(type => type.IsGenericType && type.GetGenericArguments().Length == 1)
+			.Where(type => type.IsGenericType)
 			.GroupBy(type => type.GetGenericTypeDefinition())
 			.ToDictionary(group => group.Key, group => group.First());
 		return typeof(IIntPropertyResult<>).Assembly.GetExportedTypes()
 			.Where(type => type is { IsAbstract: true, IsSealed: true, } &&
 			               type.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute)))
 			.SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.Static))
-			.Where(method => method.IsGenericMethodDefinition && method.GetGenericArguments().Length == 1 &&
-			                 method.ReturnType != typeof(void))
+			.Where(method => method.IsGenericMethodDefinition && method.ReturnType != typeof(void))
 			.Select(method => (Method: method, Receiver: method.GetParameters().FirstOrDefault()?.ParameterType))
 			.Where(candidate => candidate.Receiver is { IsGenericType: true, IsInterface: true, } receiver &&
-			                    receiver.GetGenericArguments()[0] == candidate.Method.GetGenericArguments()[0] &&
+			                    receiver.GetGenericArguments().SequenceEqual(candidate.Method.GetGenericArguments()) &&
 			                    interfaces.ContainsKey(receiver.GetGenericTypeDefinition()))
 			.Select(candidate => candidate.Method.MakeGenericMethod(
-				interfaces[candidate.Receiver!.GetGenericTypeDefinition()].GetGenericArguments()[0]));
+				interfaces[candidate.Receiver!.GetGenericTypeDefinition()].GetGenericArguments()));
 	}
 
 	private static object? InvokeContinuation(MethodInfo continuation, object expectation, bool nullValues)

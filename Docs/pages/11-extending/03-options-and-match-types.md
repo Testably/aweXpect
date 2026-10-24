@@ -87,12 +87,12 @@ operators as the built-in property expectations like `HasLength()`: `EqualTo`, `
 their `Not…` counterparts, with the same argument checks and texts. Implement the interface for the type of the
 property:
 
-| Property type  | Interface                              | Operators                                                    |
-|----------------|----------------------------------------|--------------------------------------------------------------|
-| `int`          | `IIntPropertyResult<TResult>`          | equality, ordering, `Between` and their negations            |
-| `long`         | `ILongPropertyResult<TResult>`         | equality, ordering, `Between` and their negations            |
-| `TimeSpan`     | `ITimeSpanPropertyResult<TResult>`     | equality, ordering, `Between` and their negations            |
-| `DateTimeKind` | `IDateTimeKindPropertyResult<TResult>` | `EqualTo`, `NotEqualTo`                                      |
+| Property type | Interface                             | Operators                                                    |
+|---------------|---------------------------------------|--------------------------------------------------------------|
+| `int`         | `IIntPropertyResult<TResult>`         | equality, ordering, `Between` and their negations            |
+| `long`        | `ILongPropertyResult<TResult>`        | equality, ordering, `Between` and their negations            |
+| `TimeSpan`    | `ITimeSpanPropertyResult<TResult>`    | equality, ordering, `Between` and their negations            |
+| an enum       | `IEnumPropertyResult<TEnum, TResult>` | `EqualTo`, `NotEqualTo`                                      |
 
 The operators are extension methods in the `aweXpect` namespace. They check the arguments with your `Validation`, which
 receives the value and the name of its parameter, e.g. `minimum`, and pass a `PropertyComparison<T>` to your `Compare`

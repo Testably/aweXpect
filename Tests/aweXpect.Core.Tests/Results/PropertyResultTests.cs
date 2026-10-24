@@ -38,7 +38,7 @@ public sealed partial class PropertyResultTests
 		public string? StringValue { get; private init; }
 		public TimeSpan TimeSpanValue { get; private init; }
 
-		public static PropertyResult.DateTimeKind<MyClass?, MyClass?, IThat<MyClass?>> HasDateTimeKindValue(
+		public static PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> HasDateTimeKindValue(
 			DateTimeKind dateTimeKindValue, ExpectationGrammars grammars)
 		{
 			MyClass subject = new()
@@ -48,11 +48,11 @@ public sealed partial class PropertyResultTests
 #pragma warning disable aweXpect0001
 			IThat<MyClass> source = That(subject);
 #pragma warning restore aweXpect0001
-			return new PropertyResult.DateTimeKind<MyClass?, MyClass?, IThat<MyClass?>>(
+			return new PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind>(
 				source, a => a?.DateTimeKindValue, "kind value", grammars);
 		}
 
-		public static PropertyResult.DateTimeKind<MyClass?, MyClass?, IThat<MyClass?>> DateTimeKindValueOf(
+		public static PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> DateTimeKindValueOf(
 			IThat<MyClass?> source, ExpectationGrammars grammars)
 			=> new(source, a => a?.DateTimeKindValue, "kind value", grammars);
 
@@ -60,13 +60,13 @@ public sealed partial class PropertyResultTests
 		///     The mapper returns <see langword="null" /> for a subject that is not <see langword="null" />, which is the
 		///     shape of a nullable property.
 		/// </summary>
-		public static PropertyResult.DateTimeKind<MyClass?> HasNullDateTimeKindValue()
+		public static PropertyResult.Enum<MyClass?, DateTimeKind> HasNullDateTimeKindValue()
 		{
 			MyClass subject = new();
 #pragma warning disable aweXpect0001
 			IThat<MyClass> source = That(subject);
 #pragma warning restore aweXpect0001
-			return new PropertyResult.DateTimeKind<MyClass?>(source, _ => null, "kind value");
+			return new PropertyResult.Enum<MyClass?, DateTimeKind>(source, _ => null, "kind value");
 		}
 
 		/// <inheritdoc cref="HasNullDateTimeKindValue" />

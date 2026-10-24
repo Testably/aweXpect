@@ -52,10 +52,12 @@ namespace aweXpect
     {
         public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> HasDay(this aweXpect.Core.IThat<System.DateTime> subject, int? expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasDay(this aweXpect.Core.IThat<System.DateTime> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> HasDayOfWeek(this aweXpect.Core.IThat<System.DateTime> subject, System.DayOfWeek? expected) { }
+        public static aweXpect.Results.PropertyResult.Enum<System.DateTime, System.DayOfWeek> HasDayOfWeek(this aweXpect.Core.IThat<System.DateTime> subject) { }
         public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> HasHour(this aweXpect.Core.IThat<System.DateTime> subject, int? expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasHour(this aweXpect.Core.IThat<System.DateTime> subject) { }
         public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> HasKind(this aweXpect.Core.IThat<System.DateTime> subject, System.DateTimeKind? expected) { }
-        public static aweXpect.Results.PropertyResult.DateTimeKind<System.DateTime> HasKind(this aweXpect.Core.IThat<System.DateTime> subject) { }
+        public static aweXpect.Results.PropertyResult.Enum<System.DateTime, System.DateTimeKind> HasKind(this aweXpect.Core.IThat<System.DateTime> subject) { }
         public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> HasMillisecond(this aweXpect.Core.IThat<System.DateTime> subject, int? expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasMillisecond(this aweXpect.Core.IThat<System.DateTime> subject) { }
         public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> HasMinute(this aweXpect.Core.IThat<System.DateTime> subject, int? expected) { }
@@ -89,6 +91,8 @@ namespace aweXpect
     {
         public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> HasDay(this aweXpect.Core.IThat<System.DateTimeOffset> subject, int? expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset> HasDay(this aweXpect.Core.IThat<System.DateTimeOffset> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> HasDayOfWeek(this aweXpect.Core.IThat<System.DateTimeOffset> subject, System.DayOfWeek? expected) { }
+        public static aweXpect.Results.PropertyResult.Enum<System.DateTimeOffset, System.DayOfWeek> HasDayOfWeek(this aweXpect.Core.IThat<System.DateTimeOffset> subject) { }
         public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> HasHour(this aweXpect.Core.IThat<System.DateTimeOffset> subject, int? expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset> HasHour(this aweXpect.Core.IThat<System.DateTimeOffset> subject) { }
         public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> HasMillisecond(this aweXpect.Core.IThat<System.DateTimeOffset> subject, int? expected) { }
@@ -5377,13 +5381,17 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTime?, System.DateTime, aweXpect.Core.IThat<System.DateTime?>> HasDay(this aweXpect.Core.IThat<System.DateTime?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime?>> HasDayOfWeek(this aweXpect.Core.IThat<System.DateTime?> subject, System.DayOfWeek? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.PropertyResult.Enum<System.DateTime?, System.DateTime, aweXpect.Core.IThat<System.DateTime?>, System.DayOfWeek> HasDayOfWeek(this aweXpect.Core.IThat<System.DateTime?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime?>> HasHour(this aweXpect.Core.IThat<System.DateTime?> subject, int? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTime?, System.DateTime, aweXpect.Core.IThat<System.DateTime?>> HasHour(this aweXpect.Core.IThat<System.DateTime?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime?>> HasKind(this aweXpect.Core.IThat<System.DateTime?> subject, System.DateTimeKind? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.PropertyResult.DateTimeKind<System.DateTime?, System.DateTime, aweXpect.Core.IThat<System.DateTime?>> HasKind(this aweXpect.Core.IThat<System.DateTime?> subject) { }
+        public static aweXpect.Results.PropertyResult.Enum<System.DateTime?, System.DateTime, aweXpect.Core.IThat<System.DateTime?>, System.DateTimeKind> HasKind(this aweXpect.Core.IThat<System.DateTime?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime?>> HasMillisecond(this aweXpect.Core.IThat<System.DateTime?> subject, int? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -5439,6 +5447,10 @@ namespace aweXpect
         public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset?>> HasDay(this aweXpect.Core.IThat<System.DateTimeOffset?> subject, int? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset?, System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset?>> HasDay(this aweXpect.Core.IThat<System.DateTimeOffset?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset?>> HasDayOfWeek(this aweXpect.Core.IThat<System.DateTimeOffset?> subject, System.DayOfWeek? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.PropertyResult.Enum<System.DateTimeOffset?, System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset?>, System.DayOfWeek> HasDayOfWeek(this aweXpect.Core.IThat<System.DateTimeOffset?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset?>> HasHour(this aweXpect.Core.IThat<System.DateTimeOffset?> subject, int? expected) { }
         [aweXpect.Core.GuaranteesNotNull]

@@ -192,6 +192,13 @@ internal static class Checks
 				await That(RegexOptions.Multiline | RegexOptions.IgnoreCase).IsDefined();
 				await That((RegexOptions)(1 << 20)).IsNotDefined();
 			})),
+		new("an enum property is compared by value",
+			() => ShouldFail(async () =>
+			{
+				DateTime importedAt = new(2024, 12, 31, 0, 0, 0, DateTimeKind.Utc);
+				await That(importedAt).HasKind(DateTimeKind.Utc);
+				await That(importedAt).HasDayOfWeek().NotEqualTo(DayOfWeek.Tuesday);
+			}, "does not have day of week equal to Tuesday", "had day of week Tuesday")),
 		new("a failure message renders the members of an object",
 			() => ShouldFail(async () =>
 			{
