@@ -492,6 +492,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:16 2026 \u002B0200",
         "message": "refactor: share the JsonElement constraints with the nullable JsonElement expectations (#1983)"
+      },
+      {
+        "sha": "5bc15a41325c24b15833d34b97d81c4fe903757a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
+        "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
       }
     ],
     "labels": [
@@ -576,7 +582,8 @@ window.BENCHMARK_DATA = {
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
-      "c010bba3"
+      "c010bba3",
+      "5bc15a41"
     ],
     "datasets": [
       {
@@ -664,7 +671,8 @@ window.BENCHMARK_DATA = {
           740.3751885550363,
           541.8445484297616,
           728.4765524546306,
-          531.6080593744914
+          531.6080593744914,
+          739.6213786443075
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -709,6 +717,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -853,7 +862,8 @@ window.BENCHMARK_DATA = {
           921.6054147720337,
           676.299202855428,
           902.5782305399576,
-          661.0437071873591
+          661.0437071873591,
+          921.8691773732503
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -865,6 +875,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -1452,6 +1463,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:16 2026 \u002B0200",
         "message": "refactor: share the JsonElement constraints with the nullable JsonElement expectations (#1983)"
+      },
+      {
+        "sha": "5bc15a41325c24b15833d34b97d81c4fe903757a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
+        "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
       }
     ],
     "labels": [
@@ -1536,7 +1553,8 @@ window.BENCHMARK_DATA = {
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
-      "c010bba3"
+      "c010bba3",
+      "5bc15a41"
     ],
     "datasets": [
       {
@@ -1624,7 +1642,8 @@ window.BENCHMARK_DATA = {
           139.56489001787625,
           102.37992800871531,
           140.78907472746712,
-          105.10591294765473
+          105.10591294765473,
+          172.376277582986
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1664,6 +1683,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -1813,7 +1833,8 @@ window.BENCHMARK_DATA = {
           219.19358132680256,
           167.35272923537664,
           201.83495831489563,
-          164.55310793717703
+          164.55310793717703,
+          219.53655123710632
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,6 +1846,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -2412,6 +2434,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:16 2026 \u002B0200",
         "message": "refactor: share the JsonElement constraints with the nullable JsonElement expectations (#1983)"
+      },
+      {
+        "sha": "5bc15a41325c24b15833d34b97d81c4fe903757a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
+        "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
       }
     ],
     "labels": [
@@ -2496,7 +2524,8 @@ window.BENCHMARK_DATA = {
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
-      "c010bba3"
+      "c010bba3",
+      "5bc15a41"
     ],
     "datasets": [
       {
@@ -2584,7 +2613,8 @@ window.BENCHMARK_DATA = {
           2049.007117207845,
           1526.1955661773682,
           2021.956418355306,
-          1483.3820114135742
+          1483.3820114135742,
+          2061.23411026001
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2624,6 +2654,7 @@ window.BENCHMARK_DATA = {
           2104,
           2104,
           2104,
+          2080,
           2080,
           2080,
           2080,
@@ -2773,7 +2804,8 @@ window.BENCHMARK_DATA = {
           1518.0134572347006,
           1086.7772301265172,
           1368.5969854501577,
-          1064.1629419962564
+          1064.1629419962564,
+          1508.5125479016986
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2866,6 +2898,7 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1864,
+          1953,
           1953
         ],
         "borderColor": "#FF671B",
@@ -3312,6 +3345,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:16 2026 \u002B0200",
         "message": "refactor: share the JsonElement constraints with the nullable JsonElement expectations (#1983)"
+      },
+      {
+        "sha": "5bc15a41325c24b15833d34b97d81c4fe903757a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
+        "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
       }
     ],
     "labels": [
@@ -3386,7 +3425,8 @@ window.BENCHMARK_DATA = {
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
-      "c010bba3"
+      "c010bba3",
+      "5bc15a41"
     ],
     "datasets": [
       {
@@ -3464,7 +3504,8 @@ window.BENCHMARK_DATA = {
           2761.607299511249,
           2172.3256541660853,
           2773.4250082288468,
-          2111.183001926967
+          2111.183001926967,
+          2785.187909262521
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3547,7 +3588,8 @@ window.BENCHMARK_DATA = {
           2992,
           2992,
           3048,
-          3048
+          3048,
+          2992
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3633,7 +3675,8 @@ window.BENCHMARK_DATA = {
           3829.7031408456655,
           3012.4205368041994,
           3810.8355209350584,
-          2877.6087117876327
+          2877.6087117876327,
+          3845.054905482701
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3716,7 +3759,8 @@ window.BENCHMARK_DATA = {
           3980,
           3981,
           3981,
-          3981
+          3981,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4162,6 +4206,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:16 2026 \u002B0200",
         "message": "refactor: share the JsonElement constraints with the nullable JsonElement expectations (#1983)"
+      },
+      {
+        "sha": "5bc15a41325c24b15833d34b97d81c4fe903757a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
+        "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
       }
     ],
     "labels": [
@@ -4236,7 +4286,8 @@ window.BENCHMARK_DATA = {
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
-      "c010bba3"
+      "c010bba3",
+      "5bc15a41"
     ],
     "datasets": [
       {
@@ -4314,7 +4365,8 @@ window.BENCHMARK_DATA = {
           446.7010202407837,
           279.3819700876872,
           392.4275111516317,
-          284.37703634897866
+          284.37703634897866,
+          383.51597350438436
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4344,6 +4396,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -4483,7 +4536,8 @@ window.BENCHMARK_DATA = {
           2362.1384694026065,
           1728.6543463193452,
           2301.3842923482257,
-          1673.498295211792
+          1673.498295211792,
+          2276.1366676330567
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4495,6 +4549,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -5012,6 +5067,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:16 2026 \u002B0200",
         "message": "refactor: share the JsonElement constraints with the nullable JsonElement expectations (#1983)"
+      },
+      {
+        "sha": "5bc15a41325c24b15833d34b97d81c4fe903757a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
+        "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
       }
     ],
     "labels": [
@@ -5086,7 +5147,8 @@ window.BENCHMARK_DATA = {
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
-      "c010bba3"
+      "c010bba3",
+      "5bc15a41"
     ],
     "datasets": [
       {
@@ -5164,7 +5226,8 @@ window.BENCHMARK_DATA = {
           3831.8958718436106,
           2741.5542033059255,
           3597.776055908203,
-          2683.4077151371885
+          2683.4077151371885,
+          3668.7661895751953
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5223,6 +5286,7 @@ window.BENCHMARK_DATA = {
           3672,
           3672,
           3673,
+          3705,
           3705,
           3705,
           3705,
@@ -5333,7 +5397,8 @@ window.BENCHMARK_DATA = {
           280890.86207932694,
           241181.9345327524,
           281530.1885114397,
-          239487.40112304688
+          239487.40112304688,
+          282074.11061197915
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5403,6 +5468,7 @@ window.BENCHMARK_DATA = {
           17573,
           17719,
           17574,
+          17577,
           17577,
           17577,
           17577,
