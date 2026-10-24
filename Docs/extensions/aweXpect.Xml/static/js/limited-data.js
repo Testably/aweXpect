@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
-        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
-      },
-      {
         "sha": "41520e7b947145dd74bf8643cb168530ace5b6fb",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
         "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
+      },
+      {
+        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
+        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
       }
     ],
     "labels": [
-      "7d8edd0d",
       "41520e7b",
       "3804f6c8",
       "8dcdaffe",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "c72faf85",
       "5b99ffec",
       "d2a64ca4",
-      "67eb3ff5"
+      "67eb3ff5",
+      "46bf8489"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          538.8217232043927,
           389.78603083292643,
           407.48797688117395,
           763.2313607533773,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           603.2817399842398,
           682.6754199345906,
           424.3596668584006,
-          574.0596321105957
+          574.0596321105957,
+          726.3567088445028
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          527.3701492718288,
           347.39538662250226,
           411.8085243151738,
           707.4805875142415,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           553.2956221262614,
           695.2853548049927,
           368.0349154812949,
-          668.3090302785238
+          668.3090302785238,
+          653.9794925053915
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
-        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
-      },
-      {
         "sha": "41520e7b947145dd74bf8643cb168530ace5b6fb",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
         "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
+      },
+      {
+        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
+        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
       }
     ],
     "labels": [
-      "7d8edd0d",
       "41520e7b",
       "3804f6c8",
       "8dcdaffe",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "c72faf85",
       "5b99ffec",
       "d2a64ca4",
-      "67eb3ff5"
+      "67eb3ff5",
+      "46bf8489"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3228.510995718149,
           2762.8077014042783,
           3272.19241632734,
           4686.171871439616,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3620.760728200277,
           4225.2101800101145,
           2765.930946222941,
-          3642.3418284098307
+          3642.3418284098307,
+          4375.925300852457
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24276,
           24276,
           24114,
           24047,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           24119,
           24119,
           24119,
+          24119,
           24119
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3836.524383544922,
           3111.628623453776,
           3523.8924476623533,
           5408.619949849447,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           3984.3653884887694,
           4938.080196674054,
           2989.5687555948894,
-          4246.657741292318
+          4246.657741292318,
+          5083.4145020705
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
-        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
-      },
-      {
         "sha": "41520e7b947145dd74bf8643cb168530ace5b6fb",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
         "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
+      },
+      {
+        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
+        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
       }
     ],
     "labels": [
-      "7d8edd0d",
       "41520e7b",
       "3804f6c8",
       "8dcdaffe",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "c72faf85",
       "5b99ffec",
       "d2a64ca4",
-      "67eb3ff5"
+      "67eb3ff5",
+      "46bf8489"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1838.229270054744,
           1463.9351108551025,
           1883.5369534125696,
           2784.0185748508998,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1924.5130320328933,
           2393.0661022479717,
           1537.6733750661215,
-          2153.9317972819013
+          2153.9317972819013,
+          2477.3926864624023
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1670,7 +1670,6 @@ window.BENCHMARK_DATA = {
           12856,
           12856,
           12856,
-          12856,
           12780,
           12856,
           12780,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           12780,
           12780,
           12780,
-          12856
+          12856,
+          12780
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2554.2349221547443,
           1970.8272138323102,
           2291.3090694134053,
           3624.4518163045245,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2696.716030629476,
           3386.680041503906,
           1898.9041987827845,
-          2805.8357434953964
+          2805.8357434953964,
+          3416.8917748587473
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
-        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
-      },
-      {
         "sha": "41520e7b947145dd74bf8643cb168530ace5b6fb",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
         "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
+      },
+      {
+        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
+        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
       }
     ],
     "labels": [
-      "7d8edd0d",
       "41520e7b",
       "3804f6c8",
       "8dcdaffe",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "c72faf85",
       "5b99ffec",
       "d2a64ca4",
-      "67eb3ff5"
+      "67eb3ff5",
+      "46bf8489"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10003.31691792806,
           7903.254301217886,
           8736.177742004395,
           14483.74091884068,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           10588.259856160481,
           14314.15000806536,
           7614.810343606131,
-          11770.738427734375
+          11770.738427734375,
+          14615.642984662738
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2278,7 +2278,6 @@ window.BENCHMARK_DATA = {
           25568,
           25568,
           25568,
-          25568,
           25494,
           25568,
           25494,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           25494,
           25494,
           25494,
-          25568
+          25568,
+          25494
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          241999.55224609375,
           175760.42744140624,
           192950.8249308268,
           374541.91106770834,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           247419.63115234376,
           352722.9095703125,
           168410.2824988732,
-          234030.18372395833
+          234030.18372395833,
+          357835.10716145835
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544335,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544245
+          544245,
+          544329
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
