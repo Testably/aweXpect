@@ -17,7 +17,7 @@ public sealed partial class ThatUri
 							.ComplyWith(item => item.IsNotFile()));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*whose Uris are not file URIs for all items,*""").AsWildcard()
+					.WithMessage("""*whose Uris are not a file URI for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 

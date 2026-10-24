@@ -222,7 +222,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage("""
 					             Expected that subject
 					             is not an object,
-					             but it was
+					             but it was an object
 					             """);
 			}
 
@@ -2669,7 +2669,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage("""
 					             Expected that subject
 					             is not an object whose properties have exactly 2 items,
-					             but it was
+					             but it was an object
 					             """);
 			}
 

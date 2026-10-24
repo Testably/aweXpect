@@ -17,7 +17,7 @@ public sealed partial class ThatUri
 							.ComplyWith(item => item.IsUnc()));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*whose Uris are UNC paths for all items,*""").AsWildcard()
+					.WithMessage("""*whose Uris are a UNC path for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 

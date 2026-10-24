@@ -17,7 +17,8 @@ public static partial class ThatUri
 	/// </summary>
 	/// <remarks>
 	///     Used in front of the property results, whose constraints come from aweXpect.Core, and of
-	///     <see cref="HasQueryParameter" />; the other constraints derive from <see cref="AbsoluteUriConstraint" />.
+	///     <see cref="HasQueryParameter" />; the generated expectations return <see cref="WasRelative" /> and the other
+	///     constraints derive from <see cref="AbsoluteUriConstraint" />.
 	/// </remarks>
 	private static IThat<Uri?> FailIfRelative(this IThat<Uri?> subject)
 	{
@@ -26,6 +27,12 @@ public static partial class ThatUri
 			.And("");
 		return subject;
 	}
+
+	/// <summary>
+	///     The result of a generated expectation for a relative URI, whose components cannot be accessed, so that it
+	///     fails both ways.
+	/// </summary>
+	private static PredicateResult WasRelative => PredicateResult.FailureBothWays("was relative");
 
 	internal static void ThrowIfNotAbsolute(Uri value, string paramName)
 	{

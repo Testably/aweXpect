@@ -19,7 +19,7 @@ public sealed partial class ThatIPAddress
 							.ComplyWith(item => item.IsNotIPv4()));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*whose Addresses are not IPv4 addresses for all items,*""").AsWildcard()
+					.WithMessage("""*whose Addresses are not an IPv4 address for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 

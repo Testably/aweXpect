@@ -343,7 +343,7 @@ public sealed partial class ThatJsonNode
 					.WithMessage("""
 					             Expected that subject
 					             is not an object whose properties have exactly one item,
-					             but it was
+					             but it was an object
 					             """);
 			}
 

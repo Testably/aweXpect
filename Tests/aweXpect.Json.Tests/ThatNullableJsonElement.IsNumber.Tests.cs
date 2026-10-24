@@ -74,7 +74,7 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage("""
 					             Expected that subject
 					             is not a number,
-					             but it was
+					             but it was a number
 					             """);
 			}
 
