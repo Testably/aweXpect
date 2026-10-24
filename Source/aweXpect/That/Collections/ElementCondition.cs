@@ -206,9 +206,9 @@ internal sealed class ElementEqualToString<TItem>(
 {
 	/// <inheritdoc />
 	public override ValueTask<bool> IsMetBy(TItem item)
-		=> subjectOptions is null
-			? options.AreConsideredEqual((string?)(object?)item, expected)
-			: subjectOptions.AreConsideredEqual((string?)(object?)item, expected);
+		=> subjectOptions is { Comparer: not null, }
+			? subjectOptions.AreConsideredEqual((string?)(object?)item, expected)
+			: options.AreConsideredEqual((string?)(object?)item, expected);
 
 	/// <inheritdoc />
 	/// <remarks>
@@ -219,7 +219,10 @@ internal sealed class ElementEqualToString<TItem>(
 		CancellationToken cancellationToken)
 	{
 		options.ValidateExpected(expected);
-		return this;
+		StringEqualityOptions evaluationOptions = options.ForEvaluation(context, cancellationToken);
+		return ReferenceEquals(evaluationOptions, options)
+			? this
+			: new ElementEqualToString<TItem>(evaluationOptions, expected, subjectOptions);
 	}
 
 	/// <inheritdoc />

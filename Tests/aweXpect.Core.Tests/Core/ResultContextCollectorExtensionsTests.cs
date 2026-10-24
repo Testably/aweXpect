@@ -1086,37 +1086,26 @@ public sealed class ResultContextCollectorExtensionsTests
 			=> throw new InvalidOperationException("The context must list all items.");
 	}
 
-	private sealed class MatchTypeWithContext : IStringMatchType
+	private sealed class MatchTypeWithContext : StringMatchType
 	{
-		public bool InspectsSubject => false;
+		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+			=> new Matcher();
 
-		public ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
-			IEqualityComparer<string>? comparer)
+		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
 			=> throw new NotSupportedException();
 
-		public void AppendContexts(ResultContextCollector contexts)
-			=> contexts.Add(new ResultContext.Fixed("Match type", "with context"));
+		public override string GetTypeString() => throw new NotSupportedException();
 
-		public string GetExpectation(string? expected, ExpectationGrammars grammars)
+		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
 			=> throw new NotSupportedException();
 
-		public string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase,
-			IEqualityComparer<string> comparer, StringDifferenceSettings? settings)
-			=> throw new NotSupportedException();
-
-		public string GetTypeString() => throw new NotSupportedException();
-
-		public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-			=> throw new NotSupportedException();
-
-		public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
+		private sealed class Matcher : StringMatcher
 		{
-			// Every option is accepted.
-		}
+			public override ValueTask<MatchResult> Match(string? actual, string? expected)
+				=> throw new NotSupportedException();
 
-		public void ValidateExpected(string? expected)
-		{
-			// Every expected value is accepted.
+			public override void AppendContexts(ResultContextCollector contexts)
+				=> contexts.Add(new ResultContext.Fixed("Match type", "with context"));
 		}
 	}
 

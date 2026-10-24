@@ -7,7 +7,7 @@ namespace aweXpect.Core.Nodes;
 
 /// <summary>
 ///     The result of a node whose constraint could not compare the subject, because a match type answered
-///     <see cref="StringMatchResult.FailureBothWays(string, Exception)" />.
+///     <see cref="MatchResult.NotComparable(string, Exception)" />.
 /// </summary>
 /// <remarks>
 ///     Like <see cref="MemberExceptionResult" />, it fails the expectation and its negation alike, with the reason of the

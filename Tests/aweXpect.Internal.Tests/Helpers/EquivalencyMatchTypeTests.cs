@@ -1,5 +1,6 @@
 ﻿using aweXpect.Core;
 using aweXpect.Equivalency;
+using aweXpect.Options;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable NotAccessedField.Local
@@ -18,7 +19,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			};
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, actual);
+			bool result = await AreConsideredEqual(sut, actual, actual);
 
 			await That(result).IsTrue();
 		}
@@ -38,7 +39,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			expected.Nested = actual;
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
@@ -62,7 +63,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			MyClass? expected = null;
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await AreConsideredEqual(sut, actual, expected);
 
 			await That(result).IsTrue();
 		}
@@ -74,7 +75,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			MyClass expected = new();
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
@@ -91,7 +92,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			MyClass? expected = null;
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
@@ -100,6 +101,29 @@ public sealed partial class EquivalencyMatchTypeTests
 			                              it was EquivalencyMatchTypeTests.MyClass { MyValue = <null>, Nested = <null> } instead of <null>
 			                              """);
 		}
+	}
+
+	private static ValueTask<bool> AreConsideredEqual<TActual, TExpected>(EquivalencyMatchType sut, TActual actual,
+		TExpected expected)
+		=> new ObjectEqualityOptions<TActual>().SetMatchType(sut, "Equivalent").AreConsideredEqual(actual, expected);
+
+	private static async Task<Explanation> ExplainAsync<TActual, TExpected>(EquivalencyMatchType sut, TActual actual,
+		TExpected expected)
+	{
+		ObjectEqualityOptions<TActual> options = new ObjectEqualityOptions<TActual>().SetMatchType(sut, "Equivalent");
+		MatchResult result = await options.MatchWithExplanation(actual, expected);
+		return new Explanation(result.IsMatch,
+			(it, grammars, a, e) => options.GetExtendedFailure(it, grammars, a, e, result));
+	}
+
+	private sealed class Explanation(
+		bool isMatch,
+		Func<string, ExpectationGrammars, object?, object?, string> getExtendedFailure)
+	{
+		public bool IsMatch => isMatch;
+
+		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
+			=> getExtendedFailure(it, grammars, actual, expected);
 	}
 
 	private sealed class MyClass

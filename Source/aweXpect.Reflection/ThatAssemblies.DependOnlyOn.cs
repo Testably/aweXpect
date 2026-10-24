@@ -83,17 +83,27 @@ public static partial class ThatAssemblies
 			, IAsyncContextConstraint<IAsyncEnumerable<Assembly?>>
 #endif
 	{
+		private StringEqualityOptions? _evaluationOptions;
+
+		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options;
+
 		private readonly Dictionary<Assembly, string?[]> _disallowedDependencies = new();
 
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, DependsOnlyOnAllowed, cancellationToken);
+		{
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			return await SetAsyncValue(actual, context, DependsOnlyOnAllowed, cancellationToken);
+		}
 #endif
 
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetValue(actual, context, DependsOnlyOnAllowed, cancellationToken);
+		{
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			return await SetValue(actual, context, DependsOnlyOnAllowed, cancellationToken);
+		}
 
 		private async ValueTask<bool> DependsOnlyOnAllowed(Assembly? assembly)
 		{
@@ -102,7 +112,7 @@ public static partial class ThatAssemblies
 				return false;
 			}
 
-			string?[] violations = await assembly.GetDisallowedAssemblyDependencies(allowed, options);
+			string?[] violations = await assembly.GetDisallowedAssemblyDependencies(allowed, EvaluationOptions);
 			if (violations.Length > 0)
 			{
 				_disallowedDependencies[assembly] = violations;
@@ -115,7 +125,7 @@ public static partial class ThatAssemblies
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			base.AppendContexts(contexts);
-			options.AppendContexts(contexts);
+			EvaluationOptions.AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

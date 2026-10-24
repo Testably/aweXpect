@@ -318,7 +318,8 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 		CancellationToken cancellationToken)
 	{
 		options.ValidateExpected(Expected);
-		return this;
+		StringEqualityOptions evaluationOptions = options.ForEvaluation(context, cancellationToken);
+		return ReferenceEquals(evaluationOptions, options) ? this : new EqualStringItem(evaluationOptions, Expected);
 	}
 
 	/// <inheritdoc />

@@ -10,90 +10,19 @@ using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Xml;
 
-internal sealed class XmlMatchType(XmlOptions options) : IStringMatchType
+internal sealed class XmlMatchType(XmlOptions options) : StringMatchType
 {
-	private XmlComparer.XmlComparisonResult? _comparisonResult;
-	private XDocument? _expectedDocument;
-	private string? _expectedXml;
-	private Dictionary<string, string?>? _unmatchedMembersToIgnore;
+	private ParsedExpected? _parsedExpected;
 
-	/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
-	public bool InspectsSubject => true;
+	/// <inheritdoc />
+	public override bool InspectsSubject => true;
 
-	/// <inheritdoc
-	///     cref="IStringMatchType.GetExtendedFailure(string, string?, string?, bool, IEqualityComparer{string}, StringDifferenceSettings?)" />
-	public string GetExtendedFailure(
-		string it,
-		string? actual,
-		string? expected,
-		bool ignoreCase,
-		IEqualityComparer<string> comparer,
-		StringDifferenceSettings? settings)
-	{
-		if (actual is null)
-		{
-			return $"{it} was <null>";
-		}
+	/// <inheritdoc />
+	public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+		=> new XmlMatcher(this, options);
 
-		string? result = _comparisonResult?.ToString();
-		if (!string.IsNullOrEmpty(result))
-		{
-			return $"{it} differed as{result}";
-		}
-
-		return "";
-	}
-
-	/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-	/// <remarks>
-	///     The state of the previous comparison is reset first, because the same match type compares every value the
-	///     expectation is evaluated for.
-	/// </remarks>
-	/// <exception cref="ArgumentNullException">The <paramref name="expected" /> value is <see langword="null" />.</exception>
-	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid XML.</exception>
-	public ValueTask<StringMatchResult> AreConsideredEqual(
-		string? actual,
-		string? expected,
-		bool ignoreCase,
-		IEqualityComparer<string>? comparer)
-	{
-		_comparisonResult = null;
-		XDocument expectedDocument = GetExpectedDocument(expected);
-		if (actual is null)
-		{
-			return new ValueTask<StringMatchResult>(false);
-		}
-
-		XDocument actualDocument;
-		try
-		{
-			actualDocument = SecureXml.Load(actual);
-		}
-		catch (XmlException e)
-		{
-			return new ValueTask<StringMatchResult>(StringMatchResult.FailureBothWays(
-				$"was {Formatter.Format(actual)}, which {SecureXml.DescribeLoadError(actual, e)}", e));
-		}
-
-		_comparisonResult = XmlComparer.Compare(actualDocument.Root!, expectedDocument.Root!, options);
-		_unmatchedMembersToIgnore = MembersToIgnoreTracker.Keep(_unmatchedMembersToIgnore,
-			_comparisonResult.GetUnmatchedMembersToIgnore());
-		return new ValueTask<StringMatchResult>(!_comparisonResult.HasError);
-	}
-
-	/// <summary>
-	///     Adds the "XML options" context with the members to ignore by path that matched no member in a failed
-	///     comparison.
-	/// </summary>
-	/// <remarks>
-	///     The items of a collection are compared one after the other with the same match type, so the members to ignore
-	///     of every failed comparison are kept, and a suggestion found for an item is not lost to a later item.
-	/// </remarks>
-	public void AppendContexts(ResultContextCollector contexts)
-		=> options.AddContext(contexts, _unmatchedMembersToIgnore);
-
-	/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />
-	public string GetExpectation(string? expected, ExpectationGrammars grammars)
+	/// <inheritdoc />
+	public override string GetExpectation(string? expected, ExpectationGrammars grammars)
 		=> (grammars.HasFlag(ExpectationGrammars.Active), grammars.HasFlag(ExpectationGrammars.Negated)) switch
 		{
 			(true, false) => $"{grammars.Verb("is", "are")} XML equivalent to {expected}",
@@ -102,22 +31,22 @@ internal sealed class XmlMatchType(XmlOptions options) : IStringMatchType
 			(false, true) => $"not XML equivalent to {expected}",
 		};
 
-	/// <inheritdoc cref="IStringMatchType.GetTypeString()" />
-	public string GetTypeString()
+	/// <inheritdoc />
+	public override string GetTypeString()
 		=> " as XML";
 
-	/// <inheritdoc cref="IStringMatchType.GetOptionString(bool, IEqualityComparer{string})" />
+	/// <inheritdoc />
 	/// <remarks>
 	///     The casing and a comparer are rejected when they are specified, so there is no option to describe.
 	/// </remarks>
-	public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
+	public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
 		=> "";
 
-	/// <inheritdoc cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />
+	/// <inheritdoc />
 	/// <exception cref="InvalidOperationException">
 	///     The casing is ignored or a <paramref name="comparer" /> is specified, which an XML comparison cannot honour.
 	/// </exception>
-	public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
+	public override void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
 	{
 		if (ignoreCase)
 		{
@@ -132,24 +61,110 @@ internal sealed class XmlMatchType(XmlOptions options) : IStringMatchType
 		}
 	}
 
-	/// <inheritdoc cref="IStringMatchType.ValidateExpected(string?)" />
+	/// <inheritdoc />
 	/// <exception cref="ArgumentNullException">The <paramref name="expected" /> value is <see langword="null" />.</exception>
 	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid XML.</exception>
-	public void ValidateExpected(string? expected)
+	public override void ValidateExpected(string? expected)
 		=> GetExpectedDocument(expected);
 
 	/// <remarks>
 	///     The last parsed document is kept, because the expected value is validated and compared again for every item of
-	///     a collection.
+	///     a collection, and in every evaluation.
 	/// </remarks>
 	private XDocument GetExpectedDocument(string? expected)
 	{
-		if (_expectedDocument is null || !string.Equals(expected, _expectedXml, StringComparison.Ordinal))
+		ParsedExpected? parsedExpected = _parsedExpected;
+		if (parsedExpected is null || !string.Equals(expected, parsedExpected.Xml, StringComparison.Ordinal))
 		{
-			_expectedDocument = SecureXml.LoadExpected(expected);
-			_expectedXml = expected;
+			parsedExpected = new ParsedExpected(expected, SecureXml.LoadExpected(expected));
+			_parsedExpected = parsedExpected;
 		}
 
-		return _expectedDocument;
+		return parsedExpected.Document;
+	}
+
+	/// <remarks>
+	///     Immutable, so that it can be replaced as a whole while another evaluation reads it.
+	/// </remarks>
+	private sealed class ParsedExpected(string? xml, XDocument document)
+	{
+		public string? Xml { get; } = xml;
+		public XDocument Document { get; } = document;
+	}
+
+	/// <summary>
+	///     Compares the XML strings of one evaluation and keeps the members to ignore that matched no member.
+	/// </summary>
+	private sealed class XmlMatcher(XmlMatchType matchType, XmlOptions options) : StringMatcher
+	{
+		private Dictionary<string, string?>? _unmatchedMembersToIgnore;
+
+		/// <inheritdoc />
+		/// <exception cref="ArgumentNullException">The <paramref name="expected" /> value is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid XML.</exception>
+		public override ValueTask<MatchResult> Match(string? actual, string? expected)
+		{
+			XDocument expectedDocument = matchType.GetExpectedDocument(expected);
+			if (actual is null)
+			{
+				return new ValueTask<MatchResult>(MatchResult.NoMatch);
+			}
+
+			XDocument actualDocument;
+			try
+			{
+				actualDocument = SecureXml.Load(actual);
+			}
+			catch (XmlException e)
+			{
+				return new ValueTask<MatchResult>(MatchResult.NotComparable(
+					$"was {Formatter.Format(actual)}, which {SecureXml.DescribeLoadError(actual, e)}", e));
+			}
+
+			XmlComparer.XmlComparisonResult comparisonResult =
+				XmlComparer.Compare(actualDocument.Root!, expectedDocument.Root!, options);
+			_unmatchedMembersToIgnore = MembersToIgnoreTracker.Keep(_unmatchedMembersToIgnore,
+				comparisonResult.GetUnmatchedMembersToIgnore());
+			return new ValueTask<MatchResult>(comparisonResult.HasError
+				? MatchResult.NoMatchBecause(new DifferencesExplanation(comparisonResult))
+				: MatchResult.Match);
+		}
+
+		/// <inheritdoc />
+		public override string GetFailure(string it, ExpectationGrammars grammars, string? actual, string? expected,
+			MatchResult result, StringDifferenceSettings? differenceSettings)
+		{
+			if (actual is null)
+			{
+				return $"{it} was <null>";
+			}
+
+			return result.Explanation?.GetFailure(it, grammars, null) ?? "";
+		}
+
+		/// <summary>
+		///     Adds the "XML options" context with the members to ignore by path that matched no member in a failed
+		///     comparison.
+		/// </summary>
+		/// <remarks>
+		///     The items of a collection are compared one after the other with the same matcher, so the members to ignore
+		///     of every failed comparison are kept, and a suggestion found for an item is not lost to a later item.
+		/// </remarks>
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AddContext(contexts, _unmatchedMembersToIgnore);
+	}
+
+	/// <summary>
+	///     The differences that an XML comparison found.
+	/// </summary>
+	private sealed class DifferencesExplanation(XmlComparer.XmlComparisonResult comparisonResult)
+		: MatchExplanation
+	{
+		/// <inheritdoc />
+		public override string GetFailure(string it, ExpectationGrammars grammars, string? indentation)
+		{
+			string result = comparisonResult.ToString();
+			return string.IsNullOrEmpty(result) ? "" : $"{it} differed as{result}";
+		}
 	}
 }

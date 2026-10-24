@@ -7,69 +7,6 @@ namespace aweXpect.Core.Tests.Options;
 public class ObjectEqualityOptionsTests
 {
 	[Test]
-	public async Task AreConsideredEqualWithExplanation_WhenEqual_ShouldReturnAMatch()
-	{
-		ObjectEqualityOptions<int> sut = new();
-
-		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(1, 1);
-
-		await That(result.IsMatch).IsTrue();
-	}
-
-	[Test]
-	public async Task AreConsideredEqualWithExplanation_WhenNotEqual_ShouldExplainWithTheActualValue()
-	{
-		ObjectEqualityOptions<int> sut = new();
-
-		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(1, 2);
-
-		await That(result.IsMatch).IsFalse();
-		await That(result.GetExtendedFailure("it", ExpectationGrammars.None, 1, 2)).IsEqualTo("it was 1");
-	}
-
-	[Test]
-	public async Task AreConsideredEqualWithExplanation_WhenNotEqual_WithIndentation_ShouldIndentTheActualValue()
-	{
-		ObjectEqualityOptions<object> sut = new();
-		object actual = new
-		{
-			Value = 1,
-		};
-
-		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(actual, 2);
-
-		await That(result.GetExtendedFailure("it", ExpectationGrammars.None, actual, 2, "      "))
-			.IsEqualTo($"it was {Formatter.Format(actual, FormattingOptions.Indented("      "))}")
-			.Because("the lines of the value are indented like the result they belong to");
-	}
-
-	[Test]
-	[Arguments(11, true)]
-	[Arguments(12, false)]
-	public async Task AreConsideredEqualWithExplanation_WithATypedComparer_ShouldDecideWithIt(int expected,
-		bool expectMatch)
-	{
-		ObjectEqualityOptions<int> sut = new();
-		sut.Using(new ModuloComparer(10));
-
-		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(1, expected);
-
-		await That(result.IsMatch).IsEqualTo(expectMatch);
-		await That(result.GetExtendedFailure("it", ExpectationGrammars.None, 1, expected)).IsEqualTo("it was 1");
-	}
-
-	[Test]
-	public async Task AreConsideredEqualWithExplanation_WithAnUntypedComparer_ShouldDecideWithIt()
-	{
-		ObjectEqualityOptions<object> sut = new();
-		sut.Using(new AllEqualComparer());
-
-		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(1, "foo");
-
-		await That(result.IsMatch).IsTrue();
-	}
-
-	[Test]
 	public async Task AreConsideredEqual_WhenBothAreNull_ShouldReturnTrue()
 	{
 		ObjectEqualityOptions<string?> sut = new();
@@ -232,6 +169,69 @@ public class ObjectEqualityOptionsTests
 		string result = sut.GetItemExpectation("3", "an item", "equal to");
 
 		await That(result).IsEqualTo("an item equal to 3 using ObjectEqualityOptionsTests.AllEqualComparer");
+	}
+
+	[Test]
+	public async Task MatchWithExplanation_WhenEqual_ShouldReturnAMatch()
+	{
+		ObjectEqualityOptions<int> sut = new();
+
+		MatchResult result = await sut.MatchWithExplanation(1, 1);
+
+		await That(result.IsMatch).IsTrue();
+	}
+
+	[Test]
+	public async Task MatchWithExplanation_WhenNotEqual_ShouldExplainWithTheActualValue()
+	{
+		ObjectEqualityOptions<int> sut = new();
+
+		MatchResult result = await sut.MatchWithExplanation(1, 2);
+
+		await That(result.IsMatch).IsFalse();
+		await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, 1, 2, result)).IsEqualTo("it was 1");
+	}
+
+	[Test]
+	public async Task MatchWithExplanation_WhenNotEqual_WithIndentation_ShouldIndentTheActualValue()
+	{
+		ObjectEqualityOptions<object> sut = new();
+		object actual = new
+		{
+			Value = 1,
+		};
+
+		MatchResult result = await sut.MatchWithExplanation(actual, 2);
+
+		await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, 2, result, "      "))
+			.IsEqualTo($"it was {Formatter.Format(actual, FormattingOptions.Indented("      "))}")
+			.Because("the lines of the value are indented like the result they belong to");
+	}
+
+	[Test]
+	[Arguments(11, true)]
+	[Arguments(12, false)]
+	public async Task MatchWithExplanation_WithATypedComparer_ShouldDecideWithIt(int expected,
+		bool expectMatch)
+	{
+		ObjectEqualityOptions<int> sut = new();
+		sut.Using(new ModuloComparer(10));
+
+		MatchResult result = await sut.MatchWithExplanation(1, expected);
+
+		await That(result.IsMatch).IsEqualTo(expectMatch);
+		await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, 1, expected, result)).IsEqualTo("it was 1");
+	}
+
+	[Test]
+	public async Task MatchWithExplanation_WithAnUntypedComparer_ShouldDecideWithIt()
+	{
+		ObjectEqualityOptions<object> sut = new();
+		sut.Using(new AllEqualComparer());
+
+		MatchResult result = await sut.MatchWithExplanation(1, "foo");
+
+		await That(result.IsMatch).IsTrue();
 	}
 
 	[Test]
@@ -540,24 +540,15 @@ public class ObjectEqualityOptionsTests
 		public int Seconds { get; } = seconds;
 	}
 
-	private sealed class DummyMatchType : IObjectMatchType
+	private sealed class DummyMatchType : ObjectMatchType
 	{
-		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-			=> new(true);
+		public override ObjectMatcher ForEvaluation(MatchEnvironment environment) => throw new NotSupportedException();
 
-		public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
-			TExpected expected)
-			=> throw new NotSupportedException();
+		public override string GetExpectation(string expected, ExpectationGrammars grammars) => "";
 
-		public string GetExpectation(string expected, ExpectationGrammars grammars) => "";
-
-		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
+		public override string PrependItemAndComparison(string expected, string? itemNoun = null,
+			string? comparison = null)
 			=> "";
-
-		public void AppendContexts(ResultContextCollector contexts)
-		{
-			// The dummy adds no context.
-		}
 
 		public override string ToString() => "dummy";
 	}

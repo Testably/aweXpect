@@ -65,9 +65,10 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 	///     <see cref="Within(TTolerance)" />.
 	/// </summary>
 	/// <remarks>
-	///     The <paramref name="defaultTolerance" /> is read when the comparison is made or described, or once per
-	///     evaluation through <see cref="ForEvaluation(IEvaluationContext, CancellationToken)" />, and it is only named
-	///     in the expectation text when it differs from the default value of <typeparamref name="TTolerance" />.
+	///     The <paramref name="defaultTolerance" /> is read when the comparison is described, and once per evaluation
+	///     through <see cref="ObjectEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />,
+	///     and it is only named in the expectation text when it differs from the default value of
+	///     <typeparamref name="TTolerance" />.
 	/// </remarks>
 	public ObjectEqualityWithToleranceOptions<TSubject, TTolerance> WithDefaultTolerance(
 		Func<TTolerance> defaultTolerance)
@@ -77,18 +78,6 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		return this;
 	}
 
-	/// <inheritdoc />
-	public override ObjectEqualityOptions<TSubject> ForEvaluation(IEvaluationContext context,
-		CancellationToken cancellationToken)
-	{
-		if (MatchType is not WithinMatchType { IsDefault: true, } matchType)
-		{
-			return base.ForEvaluation(context, cancellationToken);
-		}
-
-		return ForEvaluation(matchType.WithResolvedTolerance());
-	}
-
 	private sealed class WithinMatchType(
 		Func<TTolerance> tolerance,
 		bool isDefault,
@@ -96,15 +85,9 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		Func<TTolerance, string> toString,
 		Func<TTolerance, TTolerance, TTolerance>? absoluteTolerance = null,
 		string unit = "")
-		: IObjectMatchType
+		: ObjectMatchType
 	{
-		public bool IsDefault => isDefault;
-
-		public WithinMatchType WithResolvedTolerance()
-		{
-			TTolerance value = tolerance();
-			return new WithinMatchType(() => value, isDefault, isWithinTolerance, toString, absoluteTolerance, unit);
-		}
+		private WithinMatcher? _matcher;
 
 		public WithinMatchType WithRelativeTolerance(Func<TTolerance, TTolerance, TTolerance> relativeTolerance,
 			string relativeUnit)
@@ -112,27 +95,23 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 
 		#region IEquality Members
 
-		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TSubject, TExpected}(TSubject, TExpected)" />
-		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-			=> new(IsEqual(actual, expected));
+		/// <inheritdoc />
+		/// <remarks>
+		///     A default tolerance can be customized, so it is read once for each evaluation, while a specified tolerance
+		///     is the same for every evaluation.
+		/// </remarks>
+		public override ObjectMatcher ForEvaluation(MatchEnvironment environment)
+			=> isDefault
+				? new WithinMatcher(this, tolerance())
+				: _matcher ??= new WithinMatcher(this, tolerance());
 
-		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqualWithExplanation{TActual, TExpected}(TActual, TExpected)" />
-		public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
-			TExpected expected)
-			=> ObjectEqualityOptions.ExplainWithActualValue(IsEqual(actual, expected));
-
-		/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
-		public string GetExpectation(string expected, ExpectationGrammars grammars)
+		/// <inheritdoc />
+		public override string GetExpectation(string expected, ExpectationGrammars grammars)
 			=> $"{grammars.Verb("is", "are")} {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equal to {expected}" + ToString();
 
-		/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
-		public void AppendContexts(ResultContextCollector contexts)
-		{
-			// The tolerance is part of the expectation, so the comparison has no options to explain.
-		}
-
-		/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
-		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
+		/// <inheritdoc />
+		public override string PrependItemAndComparison(string expected, string? itemNoun = null,
+			string? comparison = null)
 			=> ObjectEqualityOptions.GetItemExpectation(expected, itemNoun, comparison) + ToString();
 
 		/// <inheritdoc cref="object.ToString()" />
@@ -144,25 +123,34 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 				: toString.Invoke(value) + unit;
 		}
 
-		private bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
+		#endregion
+
+		private sealed class WithinMatcher(WithinMatchType matchType, TTolerance tolerance) : ObjectMatcher
 		{
-			if (actual is null && expected is null)
+			/// <inheritdoc />
+			public override ValueTask<MatchResult> Match<TActual, TExpected>(TActual actual, TExpected expected)
+				=> new(MatchResult.From(IsEqual(actual, expected)));
+
+			private bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
 			{
-				return true;
+				if (actual is null && expected is null)
+				{
+					return true;
+				}
+
+				return actual is TSubject typedActual && expected is TSubject typedExpected &&
+				       matchType.IsWithinTolerance(typedActual, typedExpected, ToleranceFor(typedExpected));
 			}
 
-			return actual is TSubject typedActual && expected is TSubject typedExpected &&
-			       isWithinTolerance(typedActual, typedExpected, ToleranceFor(typedExpected));
+			private TTolerance ToleranceFor(TSubject expected)
+				=> matchType.AbsoluteTolerance is not null && expected is TTolerance typedExpected
+					? matchType.AbsoluteTolerance(tolerance, typedExpected)
+					: tolerance;
 		}
 
-		private TTolerance ToleranceFor(TSubject expected)
-		{
-			TTolerance value = tolerance();
-			return absoluteTolerance is not null && expected is TTolerance typedExpected
-				? absoluteTolerance(value, typedExpected)
-				: value;
-		}
+		private bool IsWithinTolerance(TSubject actual, TSubject expected, TTolerance value)
+			=> isWithinTolerance(actual, expected, value);
 
-		#endregion
+		private Func<TTolerance, TTolerance, TTolerance>? AbsoluteTolerance => absoluteTolerance;
 	}
 }

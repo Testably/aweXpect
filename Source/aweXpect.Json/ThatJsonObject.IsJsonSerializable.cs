@@ -104,7 +104,7 @@ public static partial class ThatJsonObject
 		private string? _deserializationError;
 		private object? _deserializedObject;
 		private ObjectEqualityOptions<object?>? _evaluationOptions;
-		private IObjectMatchResult? _matchResult;
+		private MatchResult _matchResult;
 
 		public async ValueTask<ConstraintResult> IsMetBy(object? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -137,7 +137,7 @@ public static partial class ThatJsonObject
 
 			_deserializedObject = deserializedObject;
 			_evaluationOptions = _equalityOptions.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.AreConsideredEqualWithExplanation(deserializedObject, actual);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(deserializedObject, actual);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -172,10 +172,10 @@ public static partial class ThatJsonObject
 			{
 				stringBuilder.Append(It).Append(" could not be deserialized: ").Append(_deserializationError);
 			}
-			else if (_matchResult is not null)
+			else if (_evaluationOptions is not null)
 			{
-				stringBuilder.Append(_matchResult.GetExtendedFailure(It, Grammars, _deserializedObject, Actual,
-					indentation));
+				stringBuilder.Append(_evaluationOptions.GetExtendedFailure(It, Grammars, _deserializedObject, Actual,
+					_matchResult, indentation));
 			}
 		}
 
@@ -193,7 +193,7 @@ public static partial class ThatJsonObject
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_matchResult is not null)
+			if (_evaluationOptions is not null)
 			{
 				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
 			}

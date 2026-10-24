@@ -281,7 +281,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsSuffix();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "some text \t ", "some text");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "some text \t ", "some text", MatchResult.NoMatch);
 
 			await That(result)
 				.IsEqualTo("it was \"some text \\t \", which has unexpected whitespace (\" \\t \" at the end)");
@@ -293,7 +293,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsSuffix().IgnoringCase();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "SOME TEXT \t ", "some text");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "SOME TEXT \t ", "some text", MatchResult.NoMatch);
 
 			await That(result)
 				.IsEqualTo("it was \"SOME TEXT \\t \", which has unexpected whitespace (\" \\t \" at the end)");
@@ -305,7 +305,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsSuffix();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "some text", " \t some text");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "some text", " \t some text", MatchResult.NoMatch);
 
 			await That(result)
 				.IsEqualTo("it was \"some text\", which misses some whitespace (\" \\t \" at the beginning)");
@@ -317,7 +317,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsSuffix();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "some text", "some text \t ");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "some text", "some text \t ", MatchResult.NoMatch);
 
 			await That(result)
 				.IsEqualTo("it was \"some text\", which misses some whitespace (\" \\t \" at the end)");
@@ -329,7 +329,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsSuffix().Using(StringComparer.OrdinalIgnoreCase);
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "SOME TEXT", "some text \t ");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "SOME TEXT", "some text \t ", MatchResult.NoMatch);
 
 			await That(result)
 				.IsEqualTo("it was \"SOME TEXT\", which misses some whitespace (\" \\t \" at the end)");
@@ -341,7 +341,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsSuffix();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "text \t ", "some text");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "text \t ", "some text", MatchResult.NoMatch);
 
 			await That(result).StartsWith("it was \"text \\t \", which differs")
 				.Because("removing the whitespace would still leave the subject without the expected suffix");

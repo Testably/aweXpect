@@ -110,23 +110,33 @@ public static partial class ThatTypes
 			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
+		private StringEqualityOptions? _evaluationOptions;
+
+		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options;
+
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context,
-				type => options.AreConsideredEqual(type?.Namespace, expected), cancellationToken);
+		{
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			return await SetAsyncValue(actual, context,
+				type => EvaluationOptions.AreConsideredEqual(type?.Namespace, expected), cancellationToken);
+		}
 #endif
 
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetValue(actual, context,
-				type => options.AreConsideredEqual(type?.Namespace, expected), cancellationToken);
+		{
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			return await SetValue(actual, context,
+				type => EvaluationOptions.AreConsideredEqual(type?.Namespace, expected), cancellationToken);
+		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			base.AppendContexts(contexts);
-			options.AppendContexts(contexts);
+			EvaluationOptions.AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -154,18 +164,28 @@ public static partial class ThatTypes
 			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
+		private StringEqualityOptions? _evaluationOptions;
+
+		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options;
+
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, DoesNotHaveNamespace, cancellationToken);
+		{
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			return await SetAsyncValue(actual, context, DoesNotHaveNamespace, cancellationToken);
+		}
 #endif
 
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetValue(actual, context, DoesNotHaveNamespace, cancellationToken);
+		{
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			return await SetValue(actual, context, DoesNotHaveNamespace, cancellationToken);
+		}
 
 		private async ValueTask<bool> DoesNotHaveNamespace(Type? type)
-			=> type is not null && !await options.AreConsideredEqual(type.Namespace, unexpected);
+			=> type is not null && !await EvaluationOptions.AreConsideredEqual(type.Namespace, unexpected);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have namespace ").Append(options.GetExpectation(unexpected, Grammars.Negate()));

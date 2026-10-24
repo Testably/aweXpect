@@ -50,83 +50,49 @@ public static class StringEqualityResultExtensions
 		return result;
 	}
 
-	private sealed class CaseFoldedMatchType(string? context = null) : IStringMatchType
+	private sealed class CaseFoldedMatchType(string? context = null) : StringMatchType
 	{
-		public bool InspectsSubject => false;
+		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+			=> new CaseFoldedMatcher(context);
 
-		public ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
-			IEqualityComparer<string>? comparer)
-			=> new(string.Equals(actual?.ToUpperInvariant(), expected?.ToUpperInvariant(), StringComparison.Ordinal));
-
-		public void AppendContexts(ResultContextCollector contexts)
-		{
-			if (context is not null)
-			{
-				contexts.Add(new ResultContext.Fixed("Case folding", context));
-			}
-		}
-
-		public string GetExpectation(string? expected, ExpectationGrammars grammars)
+		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
 			=> $"{(grammars.HasFlag(ExpectationGrammars.Negated) ? "is not" : "is")} case-folded equal to {Formatter.Format(expected)}";
 
-		public string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase,
-			IEqualityComparer<string> comparer, StringDifferenceSettings? settings)
-			=> $"{it} was {Formatter.Format(actual)}";
+		public override string GetTypeString() => " as case-folded";
 
-		public string GetTypeString() => " as case-folded";
+		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer) => "";
 
-		public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer) => "";
-
-		public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
+		private sealed class CaseFoldedMatcher(string? context) : StringMatcher
 		{
-			// The comparison folds the case on its own, so every option is accepted.
-		}
+			public override ValueTask<MatchResult> Match(string? actual, string? expected)
+				=> new(MatchResult.From(string.Equals(actual?.ToUpperInvariant(), expected?.ToUpperInvariant(),
+					StringComparison.Ordinal)));
 
-		public void ValidateExpected(string? expected)
-		{
-			// Every expected value can be folded.
+			public override void AppendContexts(ResultContextCollector contexts)
+			{
+				if (context is not null)
+				{
+					contexts.Add(new ResultContext.Fixed("Case folding", context));
+				}
+			}
 		}
 	}
 
-	private sealed class NumberMatchType : IStringMatchType
+	private sealed class NumberMatchType : StringMatchType
 	{
-		public bool InspectsSubject => false;
+		private static readonly NumberMatcher Matcher = new();
 
-		public ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
-			IEqualityComparer<string>? comparer)
-		{
-			if (actual is null)
-			{
-				return new ValueTask<StringMatchResult>(false);
-			}
+		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+			=> Matcher;
 
-			if (!TryParse(actual, out int actualNumber))
-			{
-				return new ValueTask<StringMatchResult>(
-					StringMatchResult.FailureBothWays($"was {Formatter.Format(actual)}, which is no number"));
-			}
-
-			return new ValueTask<StringMatchResult>(TryParse(expected, out int expectedNumber) &&
-			                                        actualNumber == expectedNumber);
-		}
-
-		public void AppendContexts(ResultContextCollector contexts)
-		{
-			// The expectation already explains the comparison.
-		}
-
-		public string GetExpectation(string? expected, ExpectationGrammars grammars)
+		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
 			=> $"{(grammars.HasFlag(ExpectationGrammars.Negated) ? "is not" : "is")} the number {Formatter.Format(expected)}";
 
-		public string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase,
-			IEqualityComparer<string> comparer, StringDifferenceSettings? settings)
-			=> $"{it} was {Formatter.Format(actual)}";
+		public override string GetTypeString() => " as number";
 
-		public string GetTypeString() => " as number";
+		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer) => "";
 
-		public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer) => "";
-
-		public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
+		public override void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
 		{
 			if (ignoreCase)
 			{
@@ -139,7 +105,7 @@ public static class StringEqualityResultExtensions
 			}
 		}
 
-		public void ValidateExpected(string? expected)
+		public override void ValidateExpected(string? expected)
 		{
 			if (!TryParse(expected, out _))
 			{
@@ -149,5 +115,25 @@ public static class StringEqualityResultExtensions
 
 		private static bool TryParse(string? value, out int number)
 			=> int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out number);
+
+		private sealed class NumberMatcher : StringMatcher
+		{
+			public override ValueTask<MatchResult> Match(string? actual, string? expected)
+			{
+				if (actual is null)
+				{
+					return new ValueTask<MatchResult>(MatchResult.NoMatch);
+				}
+
+				if (!TryParse(actual, out int actualNumber))
+				{
+					return new ValueTask<MatchResult>(
+						MatchResult.NotComparable($"was {Formatter.Format(actual)}, which is no number"));
+				}
+
+				return new ValueTask<MatchResult>(MatchResult.From(TryParse(expected, out int expectedNumber) &&
+				                                                   actualNumber == expectedNumber));
+			}
+		}
 	}
 }

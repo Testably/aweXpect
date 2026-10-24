@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
 
@@ -8,7 +7,7 @@ namespace aweXpect.Options;
 
 public partial class StringEqualityOptions
 {
-	private static readonly IStringMatchType ContainingMatch = new ContainingMatchType();
+	private static readonly StringMatchType ContainingMatch = new ContainingMatchType();
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a substring that must be contained in the actual string.
@@ -20,7 +19,7 @@ public partial class StringEqualityOptions
 		return this;
 	}
 
-	private sealed class ContainingMatchType : IStringMatchType
+	private sealed class ContainingMatchType : BuiltInMatchType
 	{
 		private static bool Contains(string actual, string expected, IEqualityComparer<string> comparer)
 		{
@@ -43,12 +42,11 @@ public partial class StringEqualityOptions
 
 		#region IMatchType Members
 
-		/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
-		public bool InspectsSubject => true;
+		/// <inheritdoc />
+		public override bool InspectsSubject => true;
 
-		/// <inheritdoc
-		///     cref="IStringMatchType.GetExtendedFailure(string, string?, string?, bool, IEqualityComparer{string}, StringDifferenceSettings?)" />
-		public string GetExtendedFailure(string it, string? actual, string? expected,
+		/// <inheritdoc />
+		public override string GetExtendedFailure(string it, string? actual, string? expected,
 			bool ignoreCase,
 			IEqualityComparer<string> comparer,
 			StringDifferenceSettings? settings)
@@ -69,37 +67,31 @@ public partial class StringEqualityOptions
 			return contains;
 		}
 
-		/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-		public ValueTask<StringMatchResult>
-			AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+		/// <inheritdoc />
+		public override MatchResult
+			Compare(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 		{
 			if (actual is null && expected is null)
 			{
-				return new ValueTask<StringMatchResult>(true);
+				return MatchResult.From(true);
 			}
 
 			if (actual is null || expected is null)
 			{
-				return new ValueTask<StringMatchResult>(false);
+				return MatchResult.From(false);
 			}
 
 			if (comparer is not null)
 			{
-				return new ValueTask<StringMatchResult>(Contains(actual, expected, comparer));
+				return MatchResult.From(Contains(actual, expected, comparer));
 			}
 
-			return new ValueTask<StringMatchResult>(actual.Contains(expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
+			return MatchResult.From(actual.Contains(expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 		}
 
-		/// <inheritdoc cref="IStringMatchType.AppendContexts(ResultContextCollector)" />
-		public void AppendContexts(ResultContextCollector contexts)
-		{
-			// The options are already part of the expectation.
-		}
-
-		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />
-		public string GetExpectation(string? expected, ExpectationGrammars grammars)
+		/// <inheritdoc />
+		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
 			=> (grammars.IsActive(), grammars.IsNegated()) switch
 			{
 				(true, false) =>
@@ -112,12 +104,12 @@ public partial class StringEqualityOptions
 					$"not containing {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
 			};
 
-		/// <inheritdoc cref="IStringMatchType.GetTypeString()" />
-		public string GetTypeString()
+		/// <inheritdoc />
+		public override string GetTypeString()
 			=> " containing";
 
-		/// <inheritdoc cref="IStringMatchType.GetOptionString(bool, IEqualityComparer{string})" />
-		public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
+		/// <inheritdoc />
+		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
 		{
 			if (comparer != null)
 			{
@@ -130,18 +122,6 @@ public partial class StringEqualityOptions
 			}
 
 			return "";
-		}
-
-		/// <inheritdoc cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />
-		public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			// StringEqualityOptions rejects the options that a built-in match type cannot honour.
-		}
-
-		/// <inheritdoc cref="IStringMatchType.ValidateExpected(string?)" />
-		public void ValidateExpected(string? expected)
-		{
-			// StringEqualityOptions validates the expected value of a built-in match type.
 		}
 
 		#endregion

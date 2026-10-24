@@ -68,10 +68,13 @@ a `TimeTolerance`. The hooks for a strategy of your own are named `Set…` and t
 `SetMatchType(matchType, nameof(ByTitle))`, or `SetMatch(match, nameof(AtTrackNumber))` on the
 `CollectionIndexOptions`, so that a second call or a conflicting option throws with that name.
 
-In the constraint, the `StringEqualityOptions` also write the texts for every match type: `GetExpectation(expected,
-grammars)` the expectation and `GetExtendedFailure(it, grammars, actual, expected)` the result, e.g. "it was "Yesterday",
+In the constraint, compare with the options that `ForEvaluation(context, cancellationToken)` returns for its evaluation,
+so that the match type can use the evaluation and keep what its comparisons found. `MatchWithExplanation(actual,
+expected)` returns a `MatchResult`, which the constraint keeps for its failure message, as the options keep nothing of a
+comparison. The `StringEqualityOptions` also write the texts for every match type: `GetExpectation(expected, grammars)`
+the expectation and `GetExtendedFailure(it, grammars, actual, expected, result)` the result, e.g. "it was "Yesterday",
 which differs …". When the string is a member of the subject, `GetExtendedMemberFailure(it, "title", grammars, actual,
-expected)` names it like the built-in expectations do, e.g. "it had title "Yesterday", which differs …".
+expected, result)` names it like the built-in expectations do, e.g. "it had title "Yesterday", which differs …".
 
 For the index options, call `MatchesIndex(index, count)` on the `CollectionIndexOptions` for each item, with the number
 of items or `null` while it is not known yet. Only `true` means that the item is at the expected index: `null` means
@@ -160,7 +163,7 @@ there are none.
 ## Custom match types
 
 `IsEqualTo` compares two values with `Equals`, unless the caller chooses another comparison, e.g. with `.Equivalent()`.
-You can offer a comparison of your own: implement `IObjectMatchType` and set it on the options of the result with
+You can offer a comparison of your own: derive from `ObjectMatchType` and set it on the options of the result with
 `SetMatchType`, passing the name of your option, so that combining it with another comparison throws. For example, two
 tracks with the same title can count as equal:
 
@@ -172,38 +175,32 @@ public static TSelf ByTitle<TSelf, TElement>(this IObjectEqualityResult<TSelf, T
     return (TSelf)result;
 }
 
-private sealed class ByTitleMatchType : IObjectMatchType
+private sealed class ByTitleMatchType : ObjectMatchType
 {
-    public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-        => new(HaveSameTitle(actual, expected));
+    private static readonly ByTitleMatcher Matcher = new();
 
-    public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(
-        TActual actual, TExpected expected)
-        => new(new ByTitleResult(HaveSameTitle(actual, expected)));
+    public override ObjectMatcher ForEvaluation(MatchEnvironment environment) => Matcher;
 
-    public string GetExpectation(string expected, ExpectationGrammars grammars)
+    public override string GetExpectation(string expected, ExpectationGrammars grammars)
     {
         string verb = grammars.IsPlural() ? "are" : "is";
         string negation = grammars.IsNegated() ? " not" : "";
         return $"{verb}{negation} titled like {expected}";
     }
 
-    public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
+    public override string PrependItemAndComparison(string expected, string? itemNoun = null,
+        string? comparison = null)
         => $"{(itemNoun is null ? "" : itemNoun + " ")}titled like {expected}";
 
-    public void AppendContexts(ResultContextCollector contexts)
+    private sealed class ByTitleMatcher : ObjectMatcher
     {
-    }
+        public override ValueTask<MatchResult> Match<TActual, TExpected>(TActual actual, TExpected expected)
+            => new(MatchResult.From(actual is Track a && expected is Track e
+                ? a.Title == e.Title
+                : actual is null && expected is null));
 
-    private static bool HaveSameTitle(object? actual, object? expected)
-        => actual is Track a && expected is Track e ? a.Title == e.Title : actual is null && expected is null;
-
-    private sealed class ByTitleResult(bool isMatch) : IObjectMatchResult
-    {
-        public bool IsMatch => isMatch;
-
-        public string GetExtendedFailure(string it, ExpectationGrammars grammars,
-            object? actual, object? expected, string? indentation = null)
+        public override string GetFailure(string it, ExpectationGrammars grammars, object? actual,
+            object? expected, MatchResult result, string? indentation)
         {
             string verb = grammars.IsPlural() && it != "it" ? " were" : " was";
             return $"{it}{verb} titled {Formatter.Format((actual as Track)?.Title)}";
@@ -218,41 +215,49 @@ Track track = new("Hey Jude", new TimeSpan(0, 7, 11));
 await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4))).ByTitle();
 ```
 
-- `AreConsideredEqual` only decides, e.g. for each item of a collection. `AreConsideredEqualWithExplanation` compares
-  for a failure message and returns an `IObjectMatchResult`, whose `GetExtendedFailure` writes the result text.
+- The match type is configured once and serves every evaluation of the expectation. `ForEvaluation` creates the
+  `ObjectMatcher` for one evaluation, with the context and the cancellation of the evaluation in the
+  `MatchEnvironment`. A matcher without state is shared, as above, so that an evaluation allocates nothing.
+- `Match` compares two values and returns a `MatchResult`: `MatchResult.Match`, `MatchResult.NoMatch`, or
+  `MatchResult.NotComparable(reason)` for a subject that it cannot compare at all. The expectation and its negation then
+  both fail, with the reason as the result. Like
+  [`PredicateResult.FailureBothWays`](./01-generated-expectations.md#questions-that-cannot-be-answered), the reason
+  follows "it". Inside `Whose` it follows the member name instead, and in a collection "an item", so name the value in
+  the reason as well.
+- `GetFailure` writes the result text of a mismatch. A comparison that finds more than the values show, e.g. the
+  differences of two documents, returns `MatchResult.NoMatchBecause(explanation)` with a `MatchExplanation` of its own,
+  which the default `GetFailure` writes. `MatchWithExplanation` compares for a failure message, while `Match` only
+  decides, e.g. for each item of a collection; override it when explaining costs more than deciding.
 - `GetExpectation` replaces "is equal to …" in the expectation text.
 - `PrependItemAndComparison` describes a single expected item, e.g. in "has item titled like …".
-- `AppendContexts` can add [contexts](./06-message-conventions.md#contexts) that explain a failure, e.g. the options of
-  the comparison.
-- For strings, implement `IStringMatchType` instead and set it with `SetMatchType` on the `StringEqualityOptions`.
-  Throw in its `ValidateOptions` for a casing or a comparer that it cannot honour, and in its `ValidateExpected` for an
-  expected value that it cannot use: the first throws at the call that specifies the conflict, the second for every
-  subject, also when nothing is compared with the expected value, e.g. for an empty collection. Its
-  `AreConsideredEqual` returns whether the strings are equal as a `StringMatchResult`, to which a `bool` converts, or
-  `StringMatchResult.FailureBothWays(reason)` for a subject that it cannot compare at all, e.g. a string that is no
-  valid JSON: the expectation and its negation then both fail, with the reason as the result. Like
-  [`PredicateResult.FailureBothWays`](./01-generated-expectations.md#questions-that-cannot-be-answered), the reason
-  follows "it", e.g. "could not be parsed as JSON" in "but it could not be parsed as JSON". Inside `Whose` it follows
-  the member name instead, and in a collection "an item", so name the value in the reason as well.
+- The matcher can add [contexts](./06-message-conventions.md#contexts) that explain a failure in `AppendContexts`, e.g.
+  the options of the comparison.
+- For strings, derive from `StringMatchType` instead and set it with `SetMatchType` on the `StringEqualityOptions`.
+  Its `ForEvaluation` also receives the `StringMatchSettings`, i.e. whether the casing is ignored and the comparer of the
+  caller, and its `StringMatcher` compares the values after the whitespace options are applied. Throw in its
+  `ValidateOptions` for a casing or a comparer that it cannot honour, and in its `ValidateExpected` for an expected value
+  that it cannot use: the first throws at the call that specifies the conflict, the second for every subject, also when
+  nothing is compared with the expected value, e.g. for an empty collection.
 
-A string match type adds its contexts in `AppendContexts` too. They are only added to a failure of the string
-comparison, also for an item of a collection or a member inside `Whose`, and not to a failure of another expectation on
-the same subject. Leave the method empty when the expectation text already explains the comparison:
+A string matcher adds its contexts in `AppendContexts` too. They are only added to a failure of the string comparison,
+also for an item of a collection or a member inside `Whose`, and not to a failure of another expectation on the same
+subject. Leave the method empty when the expectation text already explains the comparison:
 
 ```csharp no-compile
-public void AppendContexts(ResultContextCollector contexts)
+public override void AppendContexts(ResultContextCollector contexts)
     => contexts.Add(new ResultContext.Fixed("Title options", " - ignore leading articles"));
 ```
 
 A constraint of your own that compares strings with `StringEqualityOptions` forwards these contexts from its
-`AppendContexts` with `options.AppendContexts(contexts)`.
+`AppendContexts` with `options.AppendContexts(contexts)`, on the options of its evaluation.
 
 <details>
-<summary>Match results, multi-line texts and equivalency</summary>
+<summary>State per evaluation, multi-line texts and equivalency</summary>
 
-A match type that keeps the differences of the comparison may return itself as the result of
-`AreConsideredEqualWithExplanation`, which is then only valid until its next comparison. When the result text spans
-several lines, indent the lines after the first by the `indentation`, e.g. with
+The items of a collection are compared one after the other with the matcher of the evaluation, so a matcher may keep
+state across them, e.g. which options matched nothing in any comparison, and report it in `AppendContexts`. Keep what a
+single comparison found in its `MatchExplanation` instead, as a collection compares many items before it explains one.
+When the result text spans several lines, indent the lines after the first by the `indentation`, e.g. with
 `FormattingOptions.Indented(indentation)` for a formatted value, so that it stays aligned inside `Expect.ThatAll`.
 
 An `ObjectEqualityOptions<T>` compares like `IsEquivalentTo` with

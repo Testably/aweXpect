@@ -295,7 +295,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsPrefix();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo", "foo\n\"bar\"");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo", "foo\n\"bar\"", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("""
 			                             it was "foo" with a length of 3, which is shorter than the expected length of 9 and misses:

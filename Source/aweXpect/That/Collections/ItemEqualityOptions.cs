@@ -9,7 +9,7 @@ namespace aweXpect;
 /// </summary>
 internal sealed class ItemEqualityOptions<TItem> : ObjectEqualityOptions<TItem>, IHasDefaultMatchType
 {
-	private readonly IObjectMatchType _defaultMatchType;
+	private readonly ObjectMatchType _defaultMatchType;
 
 	public ItemEqualityOptions()
 	{

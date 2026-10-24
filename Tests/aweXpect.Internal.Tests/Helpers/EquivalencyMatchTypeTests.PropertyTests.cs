@@ -20,7 +20,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			};
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await AreConsideredEqual(sut, actual, expected);
 
 			await That(result).IsTrue();
 		}
@@ -34,7 +34,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			};
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, new
+			bool result = await AreConsideredEqual(sut, actual, new
 			{
 				MyValue = "foo",
 			});
@@ -58,7 +58,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			};
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
@@ -84,7 +84,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			};
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
@@ -107,7 +107,7 @@ public sealed partial class EquivalencyMatchTypeTests
 				Properties = IncludeMembers.Internal,
 			});
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 
 			await That(result).IsFalse()
@@ -134,7 +134,7 @@ public sealed partial class EquivalencyMatchTypeTests
 				Properties = IncludeMembers.Internal,
 			});
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 
 			await That(result).IsEqualTo(expectedResult);
@@ -160,7 +160,7 @@ public sealed partial class EquivalencyMatchTypeTests
 				Properties = IncludeMembers.Internal,
 			});
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await AreConsideredEqual(sut, actual, expected);
 
 			await That(result).IsTrue()
 				.Because("a private protected property is only visible to derived types within the assembly");
@@ -181,7 +181,7 @@ public sealed partial class EquivalencyMatchTypeTests
 				Properties = IncludeMembers.Public | IncludeMembers.Internal,
 			});
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await AreConsideredEqual(sut, actual, expected);
 
 			await That(result).IsEqualTo(expectedResult)
 				.Because("a property has to satisfy one of the requested visibilities, not all of them at once");
@@ -200,7 +200,7 @@ public sealed partial class EquivalencyMatchTypeTests
 				Properties = IncludeMembers.Public,
 			});
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 
 			await That(result).IsEqualTo(expectedResult);

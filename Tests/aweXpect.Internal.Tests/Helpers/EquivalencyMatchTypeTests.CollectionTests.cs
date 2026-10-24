@@ -15,7 +15,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			List<int> expected = [1, 2, 3, 4, 5,];
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await AreConsideredEqual(sut, actual, expected);
 
 			await That(result).IsTrue();
 		}
@@ -27,7 +27,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			int[] expected = [1, 2, 3, 4, 5,];
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await AreConsideredEqual(sut, actual, expected);
 
 			await That(result).IsTrue();
 		}
@@ -39,7 +39,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			List<int> expected = [1, 2, 3, 4, 5,];
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
@@ -57,7 +57,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			List<int> expected = [1, 2, 3, 4,];
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
@@ -75,7 +75,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			List<int> expected = [1, 5, 2, 3, 4,];
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 

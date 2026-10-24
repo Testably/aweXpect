@@ -333,7 +333,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsWildcard();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo", null);
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo", null, MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("could not compare the <null> wildcard pattern with \"foo\"");
 		}

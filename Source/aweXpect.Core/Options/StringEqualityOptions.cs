@@ -4,8 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Customization;
 
@@ -38,7 +40,16 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// </summary>
 	private string? _lineOption;
 
-	private IStringMatchType _matchType = ExactMatch;
+	/// <summary>
+	///     The matcher that compares the strings, created for the first evaluation or comparison.
+	/// </summary>
+	/// <remarks>
+	///     A match type without state per evaluation returns the same matcher for every evaluation, so the options are
+	///     only copied for an evaluation that gets a matcher of its own.
+	/// </remarks>
+	private StringMatcher? _matcher;
+
+	private StringMatchType _matchType = ExactMatch;
 	private string? _matchTypeOption;
 
 	/// <summary>
@@ -54,6 +65,37 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	{
 		_parameterName = parameterName;
 	}
+
+	/// <summary>
+	///     Copies the <paramref name="options" /> for an evaluation that compares with the <paramref name="matcher" />.
+	/// </summary>
+	private StringEqualityOptions(StringEqualityOptions options, StringMatcher matcher)
+	{
+		_parameterName = options._parameterName;
+		_comparer = options._comparer;
+		_ignoreCase = options._ignoreCase;
+		_ignoreIndentation = options._ignoreIndentation;
+		_ignoreLeadingWhiteSpace = options._ignoreLeadingWhiteSpace;
+		_ignoreNewlineStyle = options._ignoreNewlineStyle;
+		_ignoreTrailingWhiteSpace = options._ignoreTrailingWhiteSpace;
+		_isIgnoreCaseSpecified = options._isIgnoreCaseSpecified;
+		_isIgnoreIndentationSpecified = options._isIgnoreIndentationSpecified;
+		_isIgnoreLeadingWhiteSpaceSpecified = options._isIgnoreLeadingWhiteSpaceSpecified;
+		_isIgnoreNewlineStyleSpecified = options._isIgnoreNewlineStyleSpecified;
+		_isIgnoreTrailingWhiteSpaceSpecified = options._isIgnoreTrailingWhiteSpaceSpecified;
+		_isNormalizeWhiteSpaceSpecified = options._isNormalizeWhiteSpaceSpecified;
+		_normalizeWhiteSpace = options._normalizeWhiteSpace;
+		_lineOption = options._lineOption;
+		_matchType = options._matchType;
+		_matchTypeOption = options._matchTypeOption;
+		_parsedPattern = options._parsedPattern;
+		_matcher = matcher;
+	}
+
+	/// <summary>
+	///     The settings that the matcher of an evaluation is created with.
+	/// </summary>
+	private StringMatchSettings Settings => new(_ignoreCase, _comparer);
 
 	/// <summary>
 	///     Indicates whether the current match type inspects the content of the subject instead of comparing it as a value.
@@ -90,17 +132,95 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			return new ValueTask<bool>(string.Equals(actual, expected as string));
 		}
 
-		if (expected is not string expectedString)
+		ValueTask<MatchResult> result = Compare(actual, expected as string);
+		if (!result.IsCompletedSuccessfully)
+		{
+			return AwaitIsMatch(result);
+		}
+
+		return new ValueTask<bool>(result.Result.IsMatch);
+
+		static async ValueTask<bool> AwaitIsMatch(ValueTask<MatchResult> result)
+			=> (await result).IsMatch;
+	}
+
+	/// <summary>
+	///     Compares the <paramref name="actual" /> with the <paramref name="expected" /> value like
+	///     <see cref="AreConsideredEqual{TExpected}(string?, TExpected)" />, and returns the result, from which
+	///     <see cref="GetExtendedFailure(string, ExpectationGrammars, string?, string?, MatchResult)" /> explains a
+	///     failure.
+	/// </summary>
+	/// <remarks>
+	///     A constraint keeps the result for its failure message, so that the options keep nothing of a comparison.<br />
+	///     A subject that the match type cannot compare throws, so that the expectation fails in both polarities.
+	/// </remarks>
+	public ValueTask<MatchResult> MatchWithExplanation(string? actual, string? expected)
+	{
+		if (ComparesByOrdinalEquality)
+		{
+			return new ValueTask<MatchResult>(MatchResult.From(string.Equals(actual, expected)));
+		}
+
+		return Compare(actual, expected);
+	}
+
+	/// <summary>
+	///     Returns the options to use for all comparisons of the evaluation in the <paramref name="context" />.
+	/// </summary>
+	/// <remarks>
+	///     The match type creates the matcher of the evaluation with the settings that are specified at this point, so
+	///     that it can keep state across the items of a collection and use the <paramref name="context" /> and the
+	///     <paramref name="cancellationToken" />. A constraint compares with the returned options, and also appends its
+	///     contexts and explains its failures with them, as only they know what the comparisons of the evaluation
+	///     found.<br />
+	///     The options return themselves, unless the evaluation gets a matcher of its own.
+	/// </remarks>
+	public StringEqualityOptions ForEvaluation(IEvaluationContext context, CancellationToken cancellationToken)
+	{
+		if (ComparesByOrdinalEquality)
+		{
+			return this;
+		}
+
+		StringMatcher matcher = _matchType.ForEvaluation(new MatchEnvironment(context, cancellationToken), Settings);
+		StringMatcher? current = Interlocked.CompareExchange(ref _matcher, matcher, null);
+		return current is null || ReferenceEquals(current, matcher)
+			? this
+			: new StringEqualityOptions(this, matcher);
+	}
+
+	/// <summary>
+	///     Returns the matcher of the evaluation, or for a comparison outside an evaluation, a matcher without one.
+	/// </summary>
+	private StringMatcher GetMatcher()
+	{
+		StringMatcher? matcher = _matcher;
+		if (matcher is null)
+		{
+			matcher = _matchType.ForEvaluation(MatchEnvironment.WithoutEvaluation, Settings);
+			_matcher = matcher;
+		}
+
+		return matcher;
+	}
+
+	/// <summary>
+	///     Validates and normalizes the <paramref name="expected" /> value and compares it with the normalized
+	///     <paramref name="actual" /> value.
+	/// </summary>
+	private ValueTask<MatchResult> Compare(string? actual, string? expected)
+	{
+		if (expected is null)
 		{
 			ValidatePattern(null);
 			return CompareWithMatchType(actual, null);
 		}
 
 		(bool IsStartAnchored, bool IsEndAnchored) anchoredEdges = GetAnchoredEdges();
-		expectedString = NormalizeExpected(expectedString, anchoredEdges);
-		Regex? regex = ValidatePattern(expectedString);
+		expected = NormalizeExpected(expected, anchoredEdges);
+		Regex? regex = ValidatePattern(expected);
 		return AreConsideredEqualToPattern(
-			PadWithInnerWhiteSpace(Normalize(actual), expectedString, anchoredEdges), expectedString, regex);
+			PadWithInnerWhiteSpace(Normalize(actual), expected, anchoredEdges), expected, regex);
 	}
 
 	/// <summary>
@@ -110,7 +230,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// <remarks>
 	///     An expectation calls this for every expected value before it looks at the subject, so that an unusable
 	///     value is rejected whichever subject it is verified for, also when no value is compared with it.<br />
-	///     A custom match type rejects the value in its <see cref="IStringMatchType.ValidateExpected(string?)" />, whose
+	///     A custom match type rejects the value in its <see cref="StringMatchType.ValidateExpected(string?)" />, whose
 	///     exception is thrown unchanged.
 	/// </remarks>
 	/// <exception cref="ArgumentNullException">
@@ -131,7 +251,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Without a pattern, a comparison that completes synchronously is returned without a state machine, because
 	///     every item of a string collection is compared this way.
 	/// </remarks>
-	private ValueTask<bool> AreConsideredEqualToPattern(string? actual, string expected, Regex? regex)
+	private ValueTask<MatchResult> AreConsideredEqualToPattern(string? actual, string expected, Regex? regex)
 	{
 		if (regex is not null || _matchType is WildcardMatchType)
 		{
@@ -142,18 +262,18 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
-	///     Compares the <paramref name="actual" /> value with the <paramref name="expected" /> value by the match type.
+	///     Compares the <paramref name="actual" /> value with the <paramref name="expected" /> value by the matcher.
 	/// </summary>
 	/// <remarks>
-	///     A subject that the match type cannot compare is reported like an exception of the caller's code, so that every
+	///     A subject that the matcher cannot compare is reported like an exception of the caller's code, so that every
 	///     expectation and every collection fails for it in both polarities, without having to check for it.
 	/// </remarks>
-	private ValueTask<bool> CompareWithMatchType(string? actual, string? expected)
+	private ValueTask<MatchResult> CompareWithMatchType(string? actual, string? expected)
 	{
-		ValueTask<StringMatchResult> result;
+		ValueTask<MatchResult> result;
 		try
 		{
-			result = _matchType.AreConsideredEqual(actual, expected, _ignoreCase, _comparer);
+			result = GetMatcher().Match(actual, expected);
 		}
 		catch (RegexMatchTimeoutException exception)
 		{
@@ -165,14 +285,14 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			return AwaitTheComparison(result, expected);
 		}
 
-		return new ValueTask<bool>(IsEqualOrThrow(result.Result));
+		return new ValueTask<MatchResult>(ComparableOrThrow(result.Result));
 	}
 
-	private async ValueTask<bool> AwaitTheComparison(ValueTask<StringMatchResult> result, string? expected)
+	private async ValueTask<MatchResult> AwaitTheComparison(ValueTask<MatchResult> result, string? expected)
 	{
 		try
 		{
-			return IsEqualOrThrow(await result);
+			return ComparableOrThrow(await result);
 		}
 		catch (RegexMatchTimeoutException exception)
 		{
@@ -180,25 +300,26 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		}
 	}
 
-	private static bool IsEqualOrThrow(StringMatchResult result)
-		=> result.NotComparableReason is null
-			? result.IsEqual
-			: throw new UserCodeException(new NotComparableException(result.NotComparableReason, result.Cause));
+	private static MatchResult ComparableOrThrow(MatchResult result)
+		=> result.Outcome != MatchOutcome.NotComparable
+			? result
+			: throw new UserCodeException(new NotComparableException(result.NotComparableReason!, result.Cause));
 
-	private async ValueTask<bool> AreConsideredEqualToPatternAsync(string? actual, string expected, Regex? regex)
+	private async ValueTask<MatchResult> AreConsideredEqualToPatternAsync(string? actual, string expected,
+		Regex? regex)
 	{
 		try
 		{
 			if (regex is not null)
 			{
-				return actual is not null && regex.IsMatch(actual);
+				return MatchResult.From(actual is not null && regex.IsMatch(actual));
 			}
 
 			if (_matchType is WildcardMatchType)
 			{
-				return actual is not null && WildcardMatchType.IsMatch(
+				return MatchResult.From(actual is not null && WildcardMatchType.IsMatch(
 					GetParsedPattern(expected, static (_, pattern, ignoreCase)
-						=> WildcardMatchType.CreateRegex(pattern, ignoreCase)), actual, _ignoreCase);
+						=> WildcardMatchType.CreateRegex(pattern, ignoreCase)), actual, _ignoreCase));
 			}
 
 			return await CompareWithMatchType(actual, expected);
@@ -356,8 +477,8 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		int index = 0;
 		while (index < actual.Length && count < maximum)
 		{
-			if (await CompareWithMatchType(
-				    actual.Substring(index, Math.Min(expected.Length, actual.Length - index)), expected))
+			if ((await CompareWithMatchType(
+				    actual.Substring(index, Math.Min(expected.Length, actual.Length - index)), expected)).IsMatch)
 			{
 				count++;
 				index += expected.Length;
@@ -385,30 +506,32 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
-	///     Specifies a new <see cref="IStringMatchType" /> to use for matching two strings, named
+	///     Specifies a new <see cref="StringMatchType" /> to use for matching two strings, named
 	///     <paramref name="optionName" /> in the exception when another match type is already specified.
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="matchType" /> can reject the casing and the comparer that are already specified in its
-	///     <see cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />, whose exception is thrown
+	///     <see cref="StringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />, whose exception is thrown
 	///     unchanged.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">A match type is already specified.</exception>
-	public StringEqualityOptions SetMatchType(IStringMatchType matchType, string optionName)
+	public StringEqualityOptions SetMatchType(StringMatchType matchType, string optionName)
 	{
+		matchType.ThrowIfNull();
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_matchTypeOption, optionName);
 		matchType.ValidateOptions(_ignoreCase, _comparer);
 		_matchTypeOption = optionName;
 		_matchType = matchType;
+		_matcher = null;
 		return this;
 	}
 
 	/// <summary>
-	///     Adds the contexts of the match type to the <paramref name="contexts" />, e.g. the options of a custom match
+	///     Adds the contexts of the matcher to the <paramref name="contexts" />, e.g. the options of a custom match
 	///     type.
 	/// </summary>
 	public void AppendContexts(ResultContextCollector contexts)
-		=> _matchType.AppendContexts(contexts);
+		=> GetMatcher().AppendContexts(contexts);
 
 	/// <summary>
 	///     Rejects a second call of the line <paramref name="option" />, and any line option in combination with
@@ -452,9 +575,16 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		} + formattedExpected;
 
 	/// <summary>
-	///     Get an extended failure text.
+	///     Get an extended failure text for the comparison of the <paramref name="actual" /> with the
+	///     <paramref name="expected" /> value that returned the <paramref name="result" />.
 	/// </summary>
-	public string GetExtendedFailure(string it, ExpectationGrammars grammars, string? actual, string? expected)
+	/// <remarks>
+	///     Pass the <paramref name="result" /> of
+	///     <see cref="MatchWithExplanation(string?, string?)" />, as a match type may explain the failure with what the
+	///     comparison found.
+	/// </remarks>
+	public string GetExtendedFailure(string it, ExpectationGrammars grammars, string? actual, string? expected,
+		MatchResult result)
 	{
 		if (grammars.HasFlag(ExpectationGrammars.Negated))
 		{
@@ -480,8 +610,8 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 		try
 		{
-			return _matchType.GetExtendedFailure(it, actual, expected, _ignoreCase,
-				_comparer ?? UseDefaultComparer(_ignoreCase), settings) + GetNewlineStyleHint(actual, expected);
+			return GetMatcher().GetFailure(it, grammars, actual, expected, result, settings) +
+			       GetNewlineStyleHint(actual, expected);
 		}
 		catch (Exception) when (_comparer is not null)
 		{
@@ -521,15 +651,14 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 		try
 		{
-			ValueTask<StringMatchResult> result = _matchType.AreConsideredEqual(
-				PadWithInnerWhiteSpace(normalizedActual, normalizedExpected, GetAnchoredEdges()), normalizedExpected,
-				_ignoreCase, _comparer);
+			ValueTask<MatchResult> result = GetMatcher().Match(
+				PadWithInnerWhiteSpace(normalizedActual, normalizedExpected, GetAnchoredEdges()), normalizedExpected);
 			if (!result.IsCompletedSuccessfully)
 			{
 				return "";
 			}
 
-			return result.Result.IsEqual
+			return result.Result.IsMatch
 				? Environment.NewLine + "(but the values match when ignoring the newline style)"
 				: "";
 		}
@@ -620,15 +749,15 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     <paramref name="member" />, e.g. <c>it had message "foo", which differs …</c>.
 	/// </summary>
 	/// <remarks>
-	///     The text of <see cref="GetExtendedFailure(string, ExpectationGrammars, string?, string?)" /> for the
-	///     <paramref name="member" /> is rephrased when it starts with <c>&lt;member&gt; was</c> or
+	///     The text of <see cref="GetExtendedFailure(string, ExpectationGrammars, string?, string?, MatchResult)" /> for
+	///     the <paramref name="member" /> is rephrased when it starts with <c>&lt;member&gt; was</c> or
 	///     <c>&lt;member&gt; did not match</c>, as for every built-in match type; any other text, e.g. of a custom
 	///     match type, is returned unchanged.
 	/// </remarks>
 	public string GetExtendedMemberFailure(string it, string member, ExpectationGrammars grammars,
-		string? actual, string? expected)
+		string? actual, string? expected, MatchResult result)
 	{
-		string failure = GetExtendedFailure(member, grammars, actual, expected);
+		string failure = GetExtendedFailure(member, grammars, actual, expected, result);
 		string wasPrefix = member + " was ";
 		if (failure.StartsWith(wasPrefix, StringComparison.Ordinal))
 		{
@@ -650,7 +779,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// </summary>
 	/// <remarks>
 	///     A custom match type can reject the casing in its
-	///     <see cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />, whose exception is thrown
+	///     <see cref="StringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />, whose exception is thrown
 	///     unchanged.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">
@@ -668,6 +797,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		_matchType.ValidateOptions(ignoreCase, _comparer);
 		_isIgnoreCaseSpecified = true;
 		_ignoreCase = ignoreCase;
+		_matcher = null;
 		return this;
 	}
 
@@ -784,7 +914,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Without a comparer, the <see cref="StringComparer.Ordinal" /> or <see cref="StringComparer.OrdinalIgnoreCase" />
 	///     is used depending on whether the casing is ignored.<br />
 	///     A custom match type can reject the <paramref name="comparer" /> in its
-	///     <see cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />, whose exception is thrown
+	///     <see cref="StringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />, whose exception is thrown
 	///     unchanged.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">
@@ -807,6 +937,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 		_matchType.ValidateOptions(_ignoreCase, comparer);
 		_comparer = comparer;
+		_matcher = null;
 		return this;
 	}
 
@@ -1190,7 +1321,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Returns the regex for the <paramref name="expected" /> pattern of the current match type, and parses it with
 	///     <paramref name="parse" /> only when the last parsed pattern was a different one or has another timeout.
 	/// </summary>
-	private Regex GetParsedPattern(string expected, Func<IStringMatchType, string, bool, Regex> parse)
+	private Regex GetParsedPattern(string expected, Func<StringMatchType, string, bool, Regex> parse)
 	{
 		ParsedPattern? parsedPattern = _parsedPattern;
 		if (parsedPattern is not null && parsedPattern.IsFor(_matchType, expected, _ignoreCase) &&
@@ -1207,11 +1338,11 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// <remarks>
 	///     Immutable, so that it can be replaced as a whole while another evaluation reads it.
 	/// </remarks>
-	private sealed class ParsedPattern(IStringMatchType matchType, string expected, bool ignoreCase, Regex regex)
+	private sealed class ParsedPattern(StringMatchType matchType, string expected, bool ignoreCase, Regex regex)
 	{
 		public Regex Regex { get; } = regex;
 
-		public bool IsFor(IStringMatchType otherMatchType, string otherExpected, bool otherIgnoreCase)
+		public bool IsFor(StringMatchType otherMatchType, string otherExpected, bool otherIgnoreCase)
 			=> ReferenceEquals(matchType, otherMatchType) && ignoreCase == otherIgnoreCase &&
 			   string.Equals(expected, otherExpected, StringComparison.Ordinal);
 	}

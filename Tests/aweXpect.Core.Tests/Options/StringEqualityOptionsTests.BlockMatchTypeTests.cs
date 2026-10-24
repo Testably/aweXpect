@@ -245,7 +245,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, null, "foo");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, null, "foo", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("it was <null>");
 		}
@@ -256,7 +256,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\n  x\nb", "a\n\nb");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\n  x\nb", "a\n\nb", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("it was \"a\\n  x\\nb\", which has \"  x\" on line 2 instead of a blank line");
 		}
@@ -267,7 +267,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  a\n  bxd\n  c", "a\nbyd\nc");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  a\n  bxd\n  c", "a\nbyd\nc", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("""
 			                             it was "  a\n  bxd\n  c", which differs on line 2 and column 4:
@@ -284,7 +284,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\nx\nb", "a\nb");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\nx\nb", "a\nb", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("""
 			                             it was "a\nx\nb", which differs on line 2 and column 1:
@@ -307,7 +307,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected, MatchResult.NoMatch);
 
 			await That(result).IsEqualTo(expectedMessage);
 		}
@@ -318,7 +318,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock().IgnoringCase();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  FOO\n  bar\n  BAZ", "foo\nBAR\nbax");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  FOO\n  bar\n  BAZ", "foo\nBAR\nbax", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("""
 			                             it was "  FOO\n  bar\n  BAZ", which differs on line 3 and column 5:
@@ -335,7 +335,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock().Using(new IgnoreCaseComparer());
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  FOO\nBAR", "foo\nbar");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  FOO\nBAR", "foo\nbar", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("it was \"  FOO\\nBAR\", which has line 2 indented by \"\" instead of \"  \"");
 		}
@@ -346,7 +346,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock().Using(new ThrowingComparer(new NotSupportedException("foo")));
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\nb", "a\nc");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\nb", "a\nc", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("it was \"a\\nb\"");
 		}
@@ -357,7 +357,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock().Using(new ThrowingForMultipleLinesComparer());
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\nx", "a\nb");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\nx", "a\nb", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("it was \"a\\nx\", which differs on line 2")
 				.Because("the difference is located in the whole text, which the comparer cannot compare");
@@ -369,7 +369,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a", "");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a", "", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("it was \"a\", which has 1 line instead of 0");
 		}
@@ -380,7 +380,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo\nbar", "foo");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo\nbar", "foo", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("it was \"foo\\nbar\", which has 2 lines instead of 1");
 		}
@@ -391,7 +391,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\nb\n", "a\nb\nc");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\nb\n", "a\nb\nc", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("it was \"a\\nb\\n\", which has 2 lines instead of 3")
 				.Because("a single trailing line terminator does not start a new line");
@@ -403,7 +403,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "fob", "foo");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "fob", "foo", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("""
 			                             it was "fob", which differs at index 2:
@@ -420,7 +420,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "", "a");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "", "a", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("it was \"\"");
 		}
@@ -435,7 +435,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, "a\nb\nc");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, "a\nb\nc", MatchResult.NoMatch);
 
 			await That(result).StartsWith($"it was {Formatter.Format(actual)}, which differs on line 3 and column 1:");
 		}
@@ -446,7 +446,7 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock();
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "\n \n  a\n  x", "\n\na\nb");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "\n \n  a\n  x", "\n\na\nb", MatchResult.NoMatch);
 
 			await That(result).StartsWith("it was \"\\n \\n  a\\n  x\", which differs on line 4 and column 3:");
 		}

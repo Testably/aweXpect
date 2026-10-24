@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
 
@@ -33,7 +32,7 @@ public partial class StringEqualityOptions
 		return this;
 	}
 
-	private sealed class BlockMatchType : IStringMatchType
+	private sealed class BlockMatchType : BuiltInMatchType
 	{
 		/// <summary>
 		///     The most lines of the subject times the lines of the block that are compared to find the closest match, so
@@ -456,16 +455,15 @@ public partial class StringEqualityOptions
 
 		#region IMatchType Members
 
-		/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
-		public bool InspectsSubject => true;
+		/// <inheritdoc />
+		public override bool InspectsSubject => true;
 
-		/// <inheritdoc
-		///     cref="IStringMatchType.GetExtendedFailure(string, string?, string?, bool, IEqualityComparer{string}, StringDifferenceSettings?)" />
+		/// <inheritdoc />
 		/// <remarks>
 		///     The first line that does not match is explained before a different number of lines, because it also locates
 		///     a missing or an additional line inside the block.
 		/// </remarks>
-		public string GetExtendedFailure(string it, string? actual, string? expected,
+		public override string GetExtendedFailure(string it, string? actual, string? expected,
 			bool ignoreCase,
 			IEqualityComparer<string> comparer,
 			StringDifferenceSettings? settings)
@@ -494,9 +492,9 @@ public partial class StringEqualityOptions
 			return prefix;
 		}
 
-		/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-		public ValueTask<StringMatchResult>
-			AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+		/// <inheritdoc />
+		public override MatchResult
+			Compare(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 		{
 			bool result;
@@ -512,17 +510,11 @@ public partial class StringEqualityOptions
 				         MatchesAt(actualLines, 0, expectedLines, comparer ?? UseDefaultComparer(ignoreCase));
 			}
 
-			return new ValueTask<StringMatchResult>(result);
+			return MatchResult.From(result);
 		}
 
-		/// <inheritdoc cref="IStringMatchType.AppendContexts(ResultContextCollector)" />
-		public void AppendContexts(ResultContextCollector contexts)
-		{
-			// The options are already part of the expectation.
-		}
-
-		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />
-		public string GetExpectation(string? expected, ExpectationGrammars grammars)
+		/// <inheritdoc />
+		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
 			=> (grammars.IsActive(), grammars.IsNegated()) switch
 			{
 				(true, false) =>
@@ -535,12 +527,12 @@ public partial class StringEqualityOptions
 					$"not matching {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))} as block",
 			};
 
-		/// <inheritdoc cref="IStringMatchType.GetTypeString()" />
-		public string GetTypeString()
+		/// <inheritdoc />
+		public override string GetTypeString()
 			=> " as block";
 
-		/// <inheritdoc cref="IStringMatchType.GetOptionString(bool, IEqualityComparer{string})" />
-		public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
+		/// <inheritdoc />
+		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
 		{
 			if (comparer != null)
 			{
@@ -553,18 +545,6 @@ public partial class StringEqualityOptions
 			}
 
 			return "";
-		}
-
-		/// <inheritdoc cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />
-		public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			// StringEqualityOptions rejects the options that a built-in match type cannot honour.
-		}
-
-		/// <inheritdoc cref="IStringMatchType.ValidateExpected(string?)" />
-		public void ValidateExpected(string? expected)
-		{
-			// StringEqualityOptions validates the expected value of a built-in match type.
 		}
 
 		#endregion

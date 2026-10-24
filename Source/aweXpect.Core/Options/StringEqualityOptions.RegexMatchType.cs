@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
 using aweXpect.Customization;
@@ -22,7 +21,7 @@ public partial class StringEqualityOptions
 
 	private const int MaximumParsedRegexes = 256;
 
-	private static readonly IStringMatchType RegexMatch = new RegexMatchType(RegexOptions.None);
+	private static readonly StringMatchType RegexMatch = new RegexMatchType(RegexOptions.None);
 
 	/// <summary>
 	///     The regexes parsed by any expectation, as each expectation has options of its own, and parsing a pattern
@@ -127,7 +126,7 @@ public partial class StringEqualityOptions
 		return regex;
 	}
 
-	private sealed class RegexMatchType(RegexOptions regexOptions) : IStringMatchType
+	private sealed class RegexMatchType(RegexOptions regexOptions) : BuiltInMatchType
 	{
 		/// <summary>
 		///     The <see cref="RegexOptions" /> that the pattern is matched with.
@@ -173,12 +172,11 @@ public partial class StringEqualityOptions
 
 		#region IMatchType Members
 
-		/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
-		public bool InspectsSubject => true;
+		/// <inheritdoc />
+		public override bool InspectsSubject => true;
 
-		/// <inheritdoc
-		///     cref="IStringMatchType.GetExtendedFailure(string, string?, string?, bool, IEqualityComparer{string}, StringDifferenceSettings?)" />
-		public string GetExtendedFailure(string it, string? actual, string? expected,
+		/// <inheritdoc />
+		public override string GetExtendedFailure(string it, string? actual, string? expected,
 			bool ignoreCase,
 			IEqualityComparer<string> comparer,
 			StringDifferenceSettings? settings)
@@ -193,27 +191,21 @@ public partial class StringEqualityOptions
 			return $"{it} did not match{stringDifference.ToString("")}";
 		}
 
-		/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-		public ValueTask<StringMatchResult>
-			AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+		/// <inheritdoc />
+		public override MatchResult
+			Compare(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 		{
 			if (actual is null || expected is null)
 			{
-				return new ValueTask<StringMatchResult>(false);
+				return MatchResult.From(false);
 			}
 
-			return new ValueTask<StringMatchResult>(CreateRegex(expected, ignoreCase).IsMatch(actual));
+			return MatchResult.From(CreateRegex(expected, ignoreCase).IsMatch(actual));
 		}
 
-		/// <inheritdoc cref="IStringMatchType.AppendContexts(ResultContextCollector)" />
-		public void AppendContexts(ResultContextCollector contexts)
-		{
-			// The options are already part of the expectation.
-		}
-
-		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />
-		public string GetExpectation(string? expected, ExpectationGrammars grammars)
+		/// <inheritdoc />
+		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
 			=> (grammars.IsActive(), grammars.IsNegated()) switch
 			{
 				(true, false) =>
@@ -226,28 +218,16 @@ public partial class StringEqualityOptions
 					$"not matching regex {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
 			};
 
-		/// <inheritdoc cref="IStringMatchType.GetTypeString()" />
-		public string GetTypeString()
+		/// <inheritdoc />
+		public override string GetTypeString()
 			=> " as regex";
 
-		/// <inheritdoc cref="IStringMatchType.GetOptionString(bool, IEqualityComparer{string})" />
+		/// <inheritdoc />
 		/// <remarks>
 		///     A <paramref name="comparer" /> is rejected for a pattern, so only the casing can be ignored here.
 		/// </remarks>
-		public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
+		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
 			=> ignoreCase ? " ignoring case" : "";
-
-		/// <inheritdoc cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />
-		public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			// StringEqualityOptions rejects the options that a built-in match type cannot honour.
-		}
-
-		/// <inheritdoc cref="IStringMatchType.ValidateExpected(string?)" />
-		public void ValidateExpected(string? expected)
-		{
-			// StringEqualityOptions validates the expected value of a built-in match type.
-		}
 
 		#endregion
 	}

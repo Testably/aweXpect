@@ -85,14 +85,14 @@ public static partial class ThatIPAddress
 			IAsyncContextConstraint<IPAddress?>
 	{
 		private ObjectEqualityOptions<IPAddress?>? _evaluationOptions;
-		private IObjectMatchResult? _matchResult;
+		private MatchResult _matchResult;
 
 		public async ValueTask<ConstraintResult> IsMetBy(IPAddress? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.AreConsideredEqualWithExplanation(actual, expected);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -105,7 +105,7 @@ public static partial class ThatIPAddress
 				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalExpectation(stringBuilder, indentation);
@@ -114,45 +114,30 @@ public static partial class ThatIPAddress
 			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
-	private sealed class IgnoringIPv4MappedToIPv6MatchType : IObjectMatchType
+	private sealed class IgnoringIPv4MappedToIPv6MatchType : ObjectMatchType
 	{
 		public static readonly IgnoringIPv4MappedToIPv6MatchType Instance = new();
+		private static readonly Matcher SharedMatcher = new();
 
-		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-			=> new(IsEqual(actual, expected));
+		public override ObjectMatcher ForEvaluation(MatchEnvironment environment)
+			=> SharedMatcher;
 
-		public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
-			TExpected expected)
-			=> new(IsEqual(actual, expected) ? MatchResult.Match : MatchResult.NoMatch);
-
-		public string GetExpectation(string expected, ExpectationGrammars grammars)
+		public override string GetExpectation(string expected, ExpectationGrammars grammars)
 			=> $"{grammars.Verb("is", "are")} {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equal to {expected}{this}";
 
-		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
+		public override string PrependItemAndComparison(string expected, string? itemNoun = null,
+			string? comparison = null)
 			=> (itemNoun is null ? "" : itemNoun + " ") + (comparison is null ? "" : comparison + " ") + expected + this;
-
-		public void AppendContexts(ResultContextCollector contexts)
-		{
-		}
 
 		public override string ToString() => " ignoring IPv4-to-IPv6 mapping";
 
-		private static bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
-			=> Equals(Normalize(actual as IPAddress), Normalize(expected as IPAddress));
-
 		private static IPAddress? Normalize(IPAddress? address)
 			=> address is { IsIPv4MappedToIPv6: true, } ? address.MapToIPv4() : address;
-	}
 
-	private sealed class MatchResult(bool isMatch) : IObjectMatchResult
-	{
-		public static readonly IObjectMatchResult Match = new MatchResult(true);
-		public static readonly IObjectMatchResult NoMatch = new MatchResult(false);
-
-		public bool IsMatch => isMatch;
-
-		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected,
-			string? indentation = null)
-			=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented(indentation))}";
+		private sealed class Matcher : ObjectMatcher
+		{
+			public override ValueTask<MatchResult> Match<TActual, TExpected>(TActual actual, TExpected expected)
+				=> new(MatchResult.From(Equals(Normalize(actual as IPAddress), Normalize(expected as IPAddress))));
+		}
 	}
 }

@@ -225,7 +225,6 @@ public sealed class NestedExpectationEvaluationTests
 		});
 
 		await That(result).IsTrue();
-		await That(options).IsNotSameAs(sut);
 		await That(constraint.Context).IsNotSameAs(context)
 			.Because("the collections and the reasons of the nested expectation are released after the comparison");
 		await That(constraint.Context?.Cancellation).IsSameAs(context.Cancellation);
@@ -242,19 +241,20 @@ public sealed class NestedExpectationEvaluationTests
 			Value = 1,
 		};
 
-		IObjectMatchResult first = await sut.ForEvaluation(new Context(), CancellationToken.None)
-			.AreConsideredEqualWithExplanation(actual, new
-			{
-				Value = 2,
-			});
-		IObjectMatchResult second = await sut.ForEvaluation(new Context(), CancellationToken.None)
-			.AreConsideredEqualWithExplanation(actual, new
-			{
-				Value = 3,
-			});
+		ObjectEqualityOptions<MyClass> firstEvaluation = sut.ForEvaluation(new Context(), CancellationToken.None);
+		MatchResult first = await firstEvaluation.MatchWithExplanation(actual, new
+		{
+			Value = 2,
+		});
+		ObjectEqualityOptions<MyClass> secondEvaluation = sut.ForEvaluation(new Context(), CancellationToken.None);
+		await secondEvaluation.MatchWithExplanation(actual, new
+		{
+			Value = 3,
+		});
 
-		await That(second).IsNotSameAs(first);
-		await That(first.GetExtendedFailure("it", ExpectationGrammars.None, actual, actual))
+		await That(secondEvaluation).IsNotSameAs(firstEvaluation)
+			.Because("the second evaluation gets a matcher of its own");
+		await That(firstEvaluation.GetExtendedFailure("it", ExpectationGrammars.None, actual, actual, first))
 			.IsEqualTo("""
 			           it was not:
 			             Property Value differed:
@@ -273,8 +273,8 @@ public sealed class NestedExpectationEvaluationTests
 		It.IsEquivalent<int> expectation = ItIs(constraint);
 		_ = expectation.Because(Task.FromResult<string?>("of a reason"));
 
-		IObjectMatchResult result = await Equivalent().ForEvaluation(context, CancellationToken.None)
-			.AreConsideredEqualWithExplanation(new MyClass
+		MatchResult result = await Equivalent().ForEvaluation(context, CancellationToken.None)
+			.MatchWithExplanation(new MyClass
 			{
 				Value = 1,
 			}, new

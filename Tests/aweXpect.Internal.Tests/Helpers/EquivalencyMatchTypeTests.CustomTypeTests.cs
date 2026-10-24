@@ -19,7 +19,7 @@ public sealed partial class EquivalencyMatchTypeTests
 				IgnoreCollectionOrder = true,
 			}));
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await AreConsideredEqual(sut, actual, expected);
 
 			await That(result).IsTrue()
 				.Because("a member of an abstract type is always an instance of a derived type");
@@ -35,7 +35,7 @@ public sealed partial class EquivalencyMatchTypeTests
 				IgnoreCollectionOrder = true,
 			}));
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
@@ -59,7 +59,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			SomeRecord expected = new(new SomeCustomRecord([2, 1,]), new SomeOtherRecord([2, 1,]));
 			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
@@ -94,7 +94,7 @@ public sealed partial class EquivalencyMatchTypeTests
 				IgnoreCollectionOrder = true,
 			});
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await AreConsideredEqual(sut, actual, expected);
 
 			await That(result).IsTrue();
 		}

@@ -434,9 +434,7 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 	/// </summary>
 	protected IOptionsEquality<TMatch> GetItemOptions(IEvaluationContext context, CancellationToken cancellationToken)
 	{
-		_evaluationOptions = options is ObjectEqualityOptions<TMatch> objectOptions
-			? objectOptions.ForEvaluation(context, cancellationToken)
-			: options;
+		_evaluationOptions = options.ForEvaluation(context, cancellationToken);
 		return _evaluationOptions;
 	}
 

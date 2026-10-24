@@ -68,23 +68,33 @@ public static partial class ThatMembers
 #endif
 		where TMember : MemberInfo?
 	{
+		private StringEqualityOptions? _evaluationOptions;
+
+		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options;
+
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context,
-				async memberInfo => !await options.AreConsideredEqual(memberInfo?.Name, unexpected), cancellationToken);
+		{
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			return await SetAsyncValue(actual, context,
+				async memberInfo => !await EvaluationOptions.AreConsideredEqual(memberInfo?.Name, unexpected), cancellationToken);
+		}
 #endif
 
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<TMember> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetValue(actual, context,
-				async memberInfo => !await options.AreConsideredEqual(memberInfo?.Name, unexpected), cancellationToken);
+		{
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			return await SetValue(actual, context,
+				async memberInfo => !await EvaluationOptions.AreConsideredEqual(memberInfo?.Name, unexpected), cancellationToken);
+		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			base.AppendContexts(contexts);
-			options.AppendContexts(contexts);
+			EvaluationOptions.AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

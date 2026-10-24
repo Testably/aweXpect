@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Delegates;
 using aweXpect.Options;
@@ -476,9 +477,11 @@ public static class PropertyResult
 		Func<TItem, string?> mapper,
 		string propertyExpression,
 		StringEqualityOptions options) : ConstraintResult.WithNotNullValue<TItem>(it, grammars),
-		IAsyncConstraint<TItem>
+		IAsyncContextConstraint<TItem>
 	{
+		private StringEqualityOptions? _evaluationOptions;
 		private Exception? _exception;
+		private MatchResult _matchResult;
 		private string? _value;
 
 		/// <inheritdoc />
@@ -488,11 +491,13 @@ public static class PropertyResult
 		///     A match type that inspects the content of the value, e.g. a prefix or a pattern, cannot answer for a
 		///     <see langword="null" /> value, because it has no content.
 		/// </remarks>
-		public async ValueTask<ConstraintResult> IsMetBy(TItem actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TItem actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			_exception = null;
 			_value = null;
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			// An unusable pattern is rejected whichever value the property has, also when it cannot be read.
 			options.ValidateExpected(expected);
 			try
@@ -506,7 +511,8 @@ public static class PropertyResult
 				return this;
 			}
 
-			Outcome = await options.AreConsideredEqual(_value, expected) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await _evaluationOptions.MatchWithExplanation(_value, expected);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			if (_value is null && options.InspectsSubject)
 			{
 				Outcome = Outcome.FailureBothWays;
@@ -522,7 +528,7 @@ public static class PropertyResult
 				contexts.Add(new ResultContext.Fixed(ToTitle(propertyExpression), _value));
 			}
 
-			options.AppendContexts(contexts);
+			(_evaluationOptions ?? options).AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -566,8 +572,9 @@ public static class PropertyResult
 
 			stringBuilder.Append((Grammars.IsNested() &&
 			                      !Grammars.IsActive()
-					? options.GetExtendedFailure(propertyExpression, Grammars, _value, expected)
-					: options.GetExtendedMemberFailure(It, propertyExpression, Grammars, _value, expected))
+					? (_evaluationOptions ?? options).GetExtendedFailure(propertyExpression, Grammars, _value, expected, _matchResult)
+					: (_evaluationOptions ?? options).GetExtendedMemberFailure(It, propertyExpression, Grammars, _value, expected,
+						_matchResult))
 				.Indent(indentation, false));
 		}
 

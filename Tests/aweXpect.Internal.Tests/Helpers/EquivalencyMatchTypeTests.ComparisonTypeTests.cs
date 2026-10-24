@@ -40,7 +40,7 @@ public sealed partial class EquivalencyMatchTypeTests
 					ComparisonType = EquivalencyComparisonType.ByValue,
 				}));
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
@@ -69,7 +69,7 @@ public sealed partial class EquivalencyMatchTypeTests
 				DefaultComparisonTypeSelector = _ => EquivalencyComparisonType.ByValue,
 			});
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 

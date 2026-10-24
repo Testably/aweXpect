@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -120,12 +121,15 @@ public class HasQueryParameterValueResult
 		string name,
 		StringEqualityOptions options)
 		: ConstraintResult.WithNotNullValue<Uri?>(it, grammars),
-			IAsyncConstraint<Uri?>
+			IAsyncContextConstraint<Uri?>
 	{
+		private StringEqualityOptions? _evaluationOptions;
+		private MatchResult _matchResult;
 		private string? _value;
 		private string[]? _values;
 
-		public async ValueTask<ConstraintResult> IsMetBy(Uri? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(Uri? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			_value = null;
@@ -143,13 +147,15 @@ public class HasQueryParameterValueResult
 				return this;
 			}
 
-			Outcome = await options.AreConsideredEqual(_value, expected) ? Outcome.Success : Outcome.Failure;
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(_value, expected);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AppendContexts(contexts);
+			=> (_evaluationOptions ?? options).AppendContexts(contexts);
 
 		/// <remarks>
 		///     The text continues the one of the query parameter, which carries the negation and the number of the
@@ -181,8 +187,8 @@ public class HasQueryParameterValueResult
 			=> AppendValueFailure(stringBuilder);
 
 		private void AppendValueFailure(StringBuilder stringBuilder)
-			=> stringBuilder.Append(options.GetExtendedMemberFailure(It, "query parameter value", Grammars,
-				_value, expected));
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It,
+				"query parameter value", Grammars, _value, expected, _matchResult));
 	}
 
 	private sealed class WithValuesConstraint(
@@ -193,11 +199,13 @@ public class HasQueryParameterValueResult
 		StringEqualityOptions options,
 		CollectionMatchOptions matchOptions)
 		: ConstraintResult.WithNotNullValue<Uri?>(it, grammars),
-			IAsyncConstraint<Uri?>
+			IAsyncContextConstraint<Uri?>
 	{
+		private StringEqualityOptions? _evaluationOptions;
 		private string[]? _values;
 
-		public async ValueTask<ConstraintResult> IsMetBy(Uri? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(Uri? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual?.IsAbsoluteUri != true)
@@ -207,7 +215,8 @@ public class HasQueryParameterValueResult
 			}
 
 			_values = actual.GetQueryParameterValues(name);
-			Outcome = _values is not null && await matchOptions.Matches(It, _values, expected, options)
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			Outcome = _values is not null && await matchOptions.Matches(It, _values, expected, _evaluationOptions)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -215,7 +224,7 @@ public class HasQueryParameterValueResult
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AppendContexts(contexts);
+			=> (_evaluationOptions ?? options).AppendContexts(contexts);
 
 		/// <remarks>
 		///     The text continues the one of the query parameter, which carries the negation and the number of the

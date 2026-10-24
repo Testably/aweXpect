@@ -228,7 +228,7 @@ The `grammars` a constraint receives tell it how its texts are used in the sente
 | `Active`     | the expectation continues a `With…` clause, which drops the verb, e.g. `with message equal to "Yesterday"`    |
 | `Introduced` | the subject was already introduced by a connector like the `that` of `has item that`                          |
 
-`Active` has the opposite meaning for the expectation text of a string match type (`IStringMatchType.GetExpectation`):
+`Active` has the opposite meaning for the expectation text of a string match type (`StringMatchType.GetExpectation`):
 there it asks for the text with the verb (`is equal to "Yesterday"`), and without it the text starts with the
 comparison (`equal to "Yesterday"`).
 

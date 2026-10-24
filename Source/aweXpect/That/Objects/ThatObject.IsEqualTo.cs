@@ -129,14 +129,14 @@ public static partial class ThatObject
 			IAsyncContextConstraint<TSubject>
 	{
 		private ObjectEqualityOptions<TSubject>? _evaluationOptions;
-		private IObjectMatchResult? _matchResult;
+		private MatchResult _matchResult;
 
 		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.AreConsideredEqualWithExplanation(actual, expected);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -150,14 +150,14 @@ public static partial class ThatObject
 				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
 				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
 	}
 
 	private sealed class IsEqualToConstraint<T>(
@@ -170,14 +170,14 @@ public static partial class ThatObject
 		where T : struct
 	{
 		private ObjectEqualityOptions<T>? _evaluationOptions;
-		private IObjectMatchResult? _matchResult;
+		private MatchResult _matchResult;
 
 		public async ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.AreConsideredEqualWithExplanation(actual, expected);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -191,14 +191,14 @@ public static partial class ThatObject
 				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
 				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
 	}
 
 	private sealed class NullableIsEqualToConstraint<T>(
@@ -211,14 +211,14 @@ public static partial class ThatObject
 		where T : struct
 	{
 		private ObjectEqualityOptions<T?>? _evaluationOptions;
-		private IObjectMatchResult? _matchResult;
+		private MatchResult _matchResult;
 
 		public async ValueTask<ConstraintResult> IsMetBy(T? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.AreConsideredEqualWithExplanation(actual, expected);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -232,13 +232,13 @@ public static partial class ThatObject
 				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
 				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
 	}
 }
