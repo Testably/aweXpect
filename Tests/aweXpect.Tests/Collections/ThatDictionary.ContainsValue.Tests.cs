@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
@@ -81,6 +82,49 @@ public sealed partial class ThatDictionary
 					=> await That(subject).ContainsValue("BAR").IgnoringCase();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenStringValueDoesNotMatchTheWildcard_AsWildcard_ShouldFail()
+			{
+				Dictionary<int, string?> subject = new()
+				{
+					[1] = "foo",
+					[2] = "bar",
+				};
+
+				async Task Act()
+					=> await That(subject).ContainsValue("b*z").AsWildcard();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains value "b*z" as wildcard,
+					             but it did not contain value "b*z"
+
+					             Dictionary:
+					             {
+					               [1] = "foo",
+					               [2] = "bar"
+					             }
+					             """)
+					.Because("a pattern suggests no closest value");
+			}
+
+			[Test]
+			public async Task WhenStringValueMatchesTheRegex_AsRegex_ShouldSucceed()
+			{
+				ReadOnlyDictionary<int, string?> subject = new(new Dictionary<int, string?>
+				{
+					[1] = "foo",
+					[2] = "bar",
+				});
+
+				async Task Act()
+					=> await That(subject).ContainsValue("^b.r$").AsRegex();
+
+				await That(Act).DoesNotThrow()
+					.Because("the regex is matched against each value, also for a ReadOnlyDictionary");
 			}
 
 			[Test]

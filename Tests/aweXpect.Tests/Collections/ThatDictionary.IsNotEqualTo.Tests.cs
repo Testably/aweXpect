@@ -302,6 +302,37 @@ public sealed partial class ThatDictionary
 					             }
 					             """);
 			}
+
+			[Test]
+			public async Task WhenTheValuesMatchTheirPrefixes_AsPrefix_ShouldFail()
+			{
+				Dictionary<int, string> subject = new()
+				{
+					[1] = "Let It Be",
+					[2] = "Help!",
+				};
+				Dictionary<int, string> unexpected = new()
+				{
+					[1] = "Let",
+					[2] = "He",
+				};
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected).AsPrefix();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to dictionary unexpected as prefix,
+					             but it was
+
+					             Dictionary:
+					             {
+					               [1] = "Let It Be",
+					               [2] = "Help!"
+					             }
+					             """);
+			}
 		}
 
 		public sealed class WithinTests

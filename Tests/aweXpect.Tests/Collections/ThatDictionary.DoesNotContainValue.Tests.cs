@@ -83,6 +83,47 @@ public sealed partial class ThatDictionary
 			}
 
 			[Test]
+			public async Task WhenStringValueDoesNotMatchTheWildcard_AsWildcard_ShouldSucceed()
+			{
+				Dictionary<int, string?> subject = new()
+				{
+					[1] = "foo",
+					[2] = "bar",
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotContainValue("b*z").AsWildcard();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenStringValueMatchesTheWildcard_AsWildcard_ShouldFail()
+			{
+				Dictionary<int, string?> subject = new()
+				{
+					[1] = "foo",
+					[2] = "bar",
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotContainValue("b*r").AsWildcard();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain value "b*r" as wildcard,
+					             but it did
+
+					             Dictionary:
+					             {
+					               [1] = "foo",
+					               [2] = "bar"
+					             }
+					             """);
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Dictionary<int, string>? subject = null;
