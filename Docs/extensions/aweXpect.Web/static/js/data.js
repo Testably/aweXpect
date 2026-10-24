@@ -480,6 +480,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
         "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
+      },
+      {
+        "sha": "df357ed35457a8c4de5f369b77c871f05352eb04",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
+        "message": "fix: let \u0060?\u0060 in a snapshot wildcard mask match a surrogate pair as one character (#1982)"
       }
     ],
     "labels": [
@@ -562,7 +568,8 @@ window.BENCHMARK_DATA = {
       "12a2b76f",
       "67432f46",
       "91cfa9f0",
-      "4eec7318"
+      "4eec7318",
+      "df357ed3"
     ],
     "datasets": [
       {
@@ -648,7 +655,8 @@ window.BENCHMARK_DATA = {
           412.76016426086426,
           413.8617702211653,
           230.41401382593008,
-          202.58517438570658
+          202.58517438570658,
+          312.5136297225952
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -692,6 +700,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -833,7 +842,8 @@ window.BENCHMARK_DATA = {
           1039.4963851341834,
           1012.7240455627441,
           585.3375666936239,
-          509.61538991928103
+          509.61538991928103,
+          764.2756281534831
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -845,6 +855,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1418,6 +1429,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
         "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
+      },
+      {
+        "sha": "df357ed35457a8c4de5f369b77c871f05352eb04",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
+        "message": "fix: let \u0060?\u0060 in a snapshot wildcard mask match a surrogate pair as one character (#1982)"
       }
     ],
     "labels": [
@@ -1500,7 +1517,8 @@ window.BENCHMARK_DATA = {
       "12a2b76f",
       "67432f46",
       "91cfa9f0",
-      "4eec7318"
+      "4eec7318",
+      "df357ed3"
     ],
     "datasets": [
       {
@@ -1586,7 +1604,8 @@ window.BENCHMARK_DATA = {
           210.67126162846884,
           204.14735911687214,
           106.93414230530078,
-          99.80279644046512
+          99.80279644046512,
+          153.01855700016023
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1634,6 +1653,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -1771,7 +1791,8 @@ window.BENCHMARK_DATA = {
           282.18141657511393,
           257.3448562939962,
           135.88817761739094,
-          134.35186891555787
+          134.35186891555787,
+          206.85194873809814
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1783,6 +1804,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -2296,6 +2318,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
         "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
+      },
+      {
+        "sha": "df357ed35457a8c4de5f369b77c871f05352eb04",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
+        "message": "fix: let \u0060?\u0060 in a snapshot wildcard mask match a surrogate pair as one character (#1982)"
       }
     ],
     "labels": [
@@ -2368,7 +2396,8 @@ window.BENCHMARK_DATA = {
       "12a2b76f",
       "67432f46",
       "91cfa9f0",
-      "4eec7318"
+      "4eec7318",
+      "df357ed3"
     ],
     "datasets": [
       {
@@ -2444,7 +2473,8 @@ window.BENCHMARK_DATA = {
           671.1110255559286,
           625.4612544377645,
           368.15118753910065,
-          342.4811784585317
+          342.4811784585317,
+          452.43272294998167
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2478,6 +2508,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -2609,7 +2640,8 @@ window.BENCHMARK_DATA = {
           1056.425248336792,
           960.7464949289957,
           538.7910346984863,
-          493.76175855000815
+          493.76175855000815,
+          725.0246744155884
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2621,6 +2653,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -3124,6 +3157,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
         "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
+      },
+      {
+        "sha": "df357ed35457a8c4de5f369b77c871f05352eb04",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
+        "message": "fix: let \u0060?\u0060 in a snapshot wildcard mask match a surrogate pair as one character (#1982)"
       }
     ],
     "labels": [
@@ -3196,7 +3235,8 @@ window.BENCHMARK_DATA = {
       "12a2b76f",
       "67432f46",
       "91cfa9f0",
-      "4eec7318"
+      "4eec7318",
+      "df357ed3"
     ],
     "datasets": [
       {
@@ -3272,7 +3312,8 @@ window.BENCHMARK_DATA = {
           1711.952152633667,
           1772.881751759847,
           1104.8566191746638,
-          988.8901557922363
+          988.8901557922363,
+          1329.9361852918353
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3306,6 +3347,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -3437,7 +3479,8 @@ window.BENCHMARK_DATA = {
           22609.194880167644,
           20965.88822065081,
           11042.498340861002,
-          9444.673855121318
+          9444.673855121318,
+          13931.69404296875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3508,6 +3551,7 @@ window.BENCHMARK_DATA = {
           34712,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -3952,6 +3996,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
         "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
+      },
+      {
+        "sha": "df357ed35457a8c4de5f369b77c871f05352eb04",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
+        "message": "fix: let \u0060?\u0060 in a snapshot wildcard mask match a surrogate pair as one character (#1982)"
       }
     ],
     "labels": [
@@ -4024,7 +4074,8 @@ window.BENCHMARK_DATA = {
       "12a2b76f",
       "67432f46",
       "91cfa9f0",
-      "4eec7318"
+      "4eec7318",
+      "df357ed3"
     ],
     "datasets": [
       {
@@ -4100,7 +4151,8 @@ window.BENCHMARK_DATA = {
           687.5476997375488,
           745.1118661880494,
           380.1355583667755,
-          359.8475132306417
+          359.8475132306417,
+          489.4575740269252
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4130,6 +4182,7 @@ window.BENCHMARK_DATA = {
           1408,
           1408,
           1120,
+          1080,
           1080,
           1080,
           1080,
@@ -4265,7 +4318,8 @@ window.BENCHMARK_DATA = {
           1448.0826936449323,
           1323.6651947021485,
           707.9585289001465,
-          635.7478855450948
+          635.7478855450948,
+          1004.3303532233605
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4277,6 +4331,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -4780,6 +4835,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
         "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
+      },
+      {
+        "sha": "df357ed35457a8c4de5f369b77c871f05352eb04",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
+        "message": "fix: let \u0060?\u0060 in a snapshot wildcard mask match a surrogate pair as one character (#1982)"
       }
     ],
     "labels": [
@@ -4852,7 +4913,8 @@ window.BENCHMARK_DATA = {
       "12a2b76f",
       "67432f46",
       "91cfa9f0",
-      "4eec7318"
+      "4eec7318",
+      "df357ed3"
     ],
     "datasets": [
       {
@@ -4928,7 +4990,8 @@ window.BENCHMARK_DATA = {
           1138.9138442993165,
           1098.5001433445857,
           640.2496321996053,
-          621.6783431598118
+          621.6783431598118,
+          827.5620208104451
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4962,6 +5025,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -5093,7 +5157,8 @@ window.BENCHMARK_DATA = {
           860.174117565155,
           740.7243648937771,
           425.13423497336254,
-          383.1417550359453
+          383.1417550359453,
+          620.9934958049229
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5105,6 +5170,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
