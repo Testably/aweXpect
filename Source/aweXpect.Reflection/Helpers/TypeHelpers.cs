@@ -98,7 +98,7 @@ internal static class TypeHelpers
 	/// <summary>
 	///     The reflection customization of the current async flow, which falls back to the global one.
 	/// </summary>
-	private static ReflectionAwexpectCustomizationExtensions.ReflectionCustomization Customization
+	private static ReflectionCustomizationExtensions.ReflectionCustomization Customization
 		=> Customize.aweXpect.Reflection();
 
 	/// <summary>

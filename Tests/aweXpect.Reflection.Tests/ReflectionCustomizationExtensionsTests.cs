@@ -3,7 +3,7 @@ using aweXpect.Customization;
 namespace aweXpect.Reflection.Tests;
 
 [NotInParallel]
-public sealed class ReflectionAwexpectCustomizationExtensionsTests
+public sealed class ReflectionCustomizationExtensionsTests
 {
 	private const string UnusedAttributeName = "aweXpect.Reflection.Tests.UnusedAttribute";
 
@@ -37,8 +37,8 @@ public sealed class ReflectionAwexpectCustomizationExtensionsTests
 	[Test]
 	public async Task Reflection_ShouldReturnSameInstance()
 	{
-		ReflectionAwexpectCustomizationExtensions.ReflectionCustomization reflection1 = Customize.aweXpect.Reflection();
-		ReflectionAwexpectCustomizationExtensions.ReflectionCustomization reflection2 = Customize.aweXpect.Reflection();
+		ReflectionCustomizationExtensions.ReflectionCustomization reflection1 = Customize.aweXpect.Reflection();
+		ReflectionCustomizationExtensions.ReflectionCustomization reflection2 = Customize.aweXpect.Reflection();
 
 		await That(reflection1).IsSameAs(reflection2)
 			.Because("the group is read for every type that is reflected over, so it must not be created anew");

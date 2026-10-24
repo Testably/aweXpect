@@ -8,7 +8,7 @@ namespace aweXpect.Reflection;
 /// <remarks>
 ///     By default, compiler-generated members (e.g. closures, state machines, record members, backing fields) are
 ///     excluded. Use these flags to opt specific kinds back in via
-///     <see cref="ReflectionAwexpectCustomizationExtensions.ReflectionCustomization.IncludedCompilerGeneratedMembers" />.
+///     <see cref="ReflectionCustomizationExtensions.ReflectionCustomization.IncludedCompilerGeneratedMembers" />.
 /// </remarks>
 [Flags]
 public enum CompilerGeneratedMembers

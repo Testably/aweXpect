@@ -2270,9 +2270,9 @@ namespace aweXpect.Reflection
             public aweXpect.Reflection.PropertyFilters.PropertiesWith OrWith<TAttribute>(bool inherit = true) where TAttribute : System.Attribute { }
         }
     }
-    public static class ReflectionAwexpectCustomizationExtensions
+    public static class ReflectionCustomizationExtensions
     {
-        public static aweXpect.Reflection.ReflectionAwexpectCustomizationExtensions.ReflectionCustomization Reflection(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
+        public static aweXpect.Reflection.ReflectionCustomizationExtensions.ReflectionCustomization Reflection(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
         public class ReflectionCustomization
         {
             public aweXpect.Customization.ICustomizationValueSetter<System.Func<System.Type, System.Collections.Generic.IEnumerable<System.Type>>?> DependencyResolver { get; }

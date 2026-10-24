@@ -9,7 +9,7 @@ namespace aweXpect.Reflection;
 /// <summary>
 ///     Extension methods on <see cref="AwexpectCustomization" /> for aweXpect.Reflection.
 /// </summary>
-public static class ReflectionAwexpectCustomizationExtensions
+public static class ReflectionCustomizationExtensions
 {
 	private static ReflectionCustomization? _lastCustomization;
 
