@@ -444,6 +444,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
         "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
+      },
+      {
+        "sha": "c80cc523cff83d50a435c4a920a0d3528f2ff2b4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
+        "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
       }
     ],
     "labels": [
@@ -520,7 +526,8 @@ window.BENCHMARK_DATA = {
       "906ecb34",
       "cba28a96",
       "bb3fba51",
-      "487fa47b"
+      "487fa47b",
+      "c80cc523"
     ],
     "datasets": [
       {
@@ -600,7 +607,8 @@ window.BENCHMARK_DATA = {
           200.23015294075012,
           384.57425727844236,
           218.22899656636375,
-          408.1207265218099
+          408.1207265218099,
+          222.87557382583617
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -644,6 +652,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -773,7 +782,8 @@ window.BENCHMARK_DATA = {
           518.3544442653656,
           967.0257820129394,
           508.7216437339783,
-          1022.3452154306265
+          1022.3452154306265,
+          547.8302759806315
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -785,6 +795,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1316,6 +1327,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
         "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
+      },
+      {
+        "sha": "c80cc523cff83d50a435c4a920a0d3528f2ff2b4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
+        "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
       }
     ],
     "labels": [
@@ -1392,7 +1409,8 @@ window.BENCHMARK_DATA = {
       "906ecb34",
       "cba28a96",
       "bb3fba51",
-      "487fa47b"
+      "487fa47b",
+      "c80cc523"
     ],
     "datasets": [
       {
@@ -1472,7 +1490,8 @@ window.BENCHMARK_DATA = {
           97.69687722410474,
           197.47144654818945,
           99.25370342731476,
-          192.84283181826274
+          192.84283181826274,
+          112.87162331172398
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1520,6 +1539,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -1645,7 +1665,8 @@ window.BENCHMARK_DATA = {
           127.71110326449076,
           262.25118817601884,
           135.6464058717092,
-          246.35788621902466
+          246.35788621902466,
+          158.33815803527833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1657,6 +1678,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -2128,6 +2150,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
         "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
+      },
+      {
+        "sha": "c80cc523cff83d50a435c4a920a0d3528f2ff2b4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
+        "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
       }
     ],
     "labels": [
@@ -2194,7 +2222,8 @@ window.BENCHMARK_DATA = {
       "906ecb34",
       "cba28a96",
       "bb3fba51",
-      "487fa47b"
+      "487fa47b",
+      "c80cc523"
     ],
     "datasets": [
       {
@@ -2264,7 +2293,8 @@ window.BENCHMARK_DATA = {
           319.1982346262251,
           656.6291298548381,
           325.55441849572316,
-          633.2978848775227
+          633.2978848775227,
+          352.3491025311606
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2298,6 +2328,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -2417,7 +2448,8 @@ window.BENCHMARK_DATA = {
           526.2295643488566,
           977.9620162963868,
           490.00890693664553,
-          1002.706467114962
+          1002.706467114962,
+          538.6996406408457
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2429,6 +2461,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -2890,6 +2923,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
         "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
+      },
+      {
+        "sha": "c80cc523cff83d50a435c4a920a0d3528f2ff2b4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
+        "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
       }
     ],
     "labels": [
@@ -2956,7 +2995,8 @@ window.BENCHMARK_DATA = {
       "906ecb34",
       "cba28a96",
       "bb3fba51",
-      "487fa47b"
+      "487fa47b",
+      "c80cc523"
     ],
     "datasets": [
       {
@@ -3026,7 +3066,8 @@ window.BENCHMARK_DATA = {
           1008.981315612793,
           1731.6900789896647,
           1002.4598702748616,
-          1700.4994123899019
+          1700.4994123899019,
+          1059.6640184842622
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3060,6 +3101,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -3179,7 +3221,8 @@ window.BENCHMARK_DATA = {
           9690.10424601237,
           20998.26385904948,
           9892.840139535758,
-          21013.64437866211
+          21013.64437866211,
+          10854.874990190778
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3250,6 +3293,7 @@ window.BENCHMARK_DATA = {
           34712,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -3652,6 +3696,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
         "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
+      },
+      {
+        "sha": "c80cc523cff83d50a435c4a920a0d3528f2ff2b4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
+        "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
       }
     ],
     "labels": [
@@ -3718,7 +3768,8 @@ window.BENCHMARK_DATA = {
       "906ecb34",
       "cba28a96",
       "bb3fba51",
-      "487fa47b"
+      "487fa47b",
+      "c80cc523"
     ],
     "datasets": [
       {
@@ -3788,7 +3839,8 @@ window.BENCHMARK_DATA = {
           334.3014140469687,
           767.1537151972453,
           367.42497256596886,
-          734.0201663335164
+          734.0201663335164,
+          377.5990890094212
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3818,6 +3870,7 @@ window.BENCHMARK_DATA = {
           1408,
           1408,
           1120,
+          1080,
           1080,
           1080,
           1080,
@@ -3941,7 +3994,8 @@ window.BENCHMARK_DATA = {
           692.6456676210676,
           1391.395280710856,
           688.7206003189087,
-          1311.3438532511393
+          1311.3438532511393,
+          809.5433173546425
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3953,6 +4007,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -4414,6 +4469,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
         "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
+      },
+      {
+        "sha": "c80cc523cff83d50a435c4a920a0d3528f2ff2b4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
+        "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
       }
     ],
     "labels": [
@@ -4480,7 +4541,8 @@ window.BENCHMARK_DATA = {
       "906ecb34",
       "cba28a96",
       "bb3fba51",
-      "487fa47b"
+      "487fa47b",
+      "c80cc523"
     ],
     "datasets": [
       {
@@ -4550,7 +4612,8 @@ window.BENCHMARK_DATA = {
           624.3500148909433,
           1136.4157549540203,
           589.3935366312663,
-          1068.355264790853
+          1068.355264790853,
+          687.937394062678
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4584,6 +4647,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -4703,7 +4767,8 @@ window.BENCHMARK_DATA = {
           415.74057227770487,
           790.8081305185954,
           399.7294277826945,
-          753.9881951649984
+          753.9881951649984,
+          493.63346726553783
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4715,6 +4780,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
