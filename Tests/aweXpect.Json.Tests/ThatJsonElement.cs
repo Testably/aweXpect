@@ -22,7 +22,7 @@ public sealed partial class ThatJsonElement
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		expectationBuilder
-			.ForMember(MemberAccessor<JsonElement, JsonElement>.FromFunc(items => items, "Items"),
+			.ForMember(MemberAccessor<JsonElement, JsonElement>.FromFuncWithName(items => items, "Items"),
 				(_, stringBuilder) => stringBuilder.Append("whose Items "))
 			.AddExpectations(e => expectations(new ThatSubject<JsonElement>(e)),
 				grammars => grammars | ExpectationGrammars.Plural);

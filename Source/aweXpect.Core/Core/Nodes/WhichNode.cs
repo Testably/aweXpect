@@ -12,7 +12,12 @@ namespace aweXpect.Core.Nodes;
 
 internal class WhichNode<TSource, TMember> : Node
 {
-	private readonly Func<TSource, Task<TMember?>>? _asyncMemberAccessor;
+	/// <summary>
+	///     The accessor of a member that returns a <see cref="Task{TResult}" /> or a
+	///     <see cref="ValueTask{TResult}" /> of <typeparamref name="TMember" />.
+	/// </summary>
+	private readonly Delegate? _asyncMemberAccessor;
+
 	private readonly string? _contextMember;
 	private readonly Func<TSource, TMember?>? _memberAccessor;
 	private readonly string _memberName = "it";
@@ -28,23 +33,47 @@ internal class WhichNode<TSource, TMember> : Node
 		bool negateMemberOnly = false,
 		string? memberName = null,
 		string? contextMember = null)
+		: this(parent, separator, negateMemberOnly, memberName, contextMember)
 	{
-		_contextMember = contextMember;
-		_parent = parent;
 		_memberAccessor = memberAccessor;
-		_separator = separator;
-		_negateMemberOnly = negateMemberOnly;
-		_memberName = memberName ?? _memberName;
 	}
 
 	public WhichNode(
 		Node? parent,
 		Func<TSource, Task<TMember?>> asyncMemberAccessor,
-		string? separator = null)
+		string? separator = null,
+		bool negateMemberOnly = false,
+		string? memberName = null,
+		string? contextMember = null)
+		: this(parent, separator, negateMemberOnly, memberName, contextMember)
 	{
-		_parent = parent;
 		_asyncMemberAccessor = asyncMemberAccessor;
+	}
+
+	public WhichNode(
+		Node? parent,
+		Func<TSource, ValueTask<TMember?>> asyncMemberAccessor,
+		string? separator = null,
+		bool negateMemberOnly = false,
+		string? memberName = null,
+		string? contextMember = null)
+		: this(parent, separator, negateMemberOnly, memberName, contextMember)
+	{
+		_asyncMemberAccessor = asyncMemberAccessor;
+	}
+
+	private WhichNode(
+		Node? parent,
+		string? separator,
+		bool negateMemberOnly,
+		string? memberName,
+		string? contextMember)
+	{
+		_contextMember = contextMember;
+		_parent = parent;
 		_separator = separator;
+		_negateMemberOnly = negateMemberOnly;
+		_memberName = memberName ?? _memberName;
 	}
 
 	/// <inheritdoc />
@@ -195,10 +224,18 @@ internal class WhichNode<TSource, TMember> : Node
 			return (_memberAccessor(source), NullSubjectKind.None);
 		}
 
-		Task<TMember?>? task = _asyncMemberAccessor!.Invoke(source);
-		return task is null
-			? (default, NullSubjectKind.NullTaskReturned)
-			: (await task.AbandonOnCancellation(cancellationToken), NullSubjectKind.None);
+		if (_asyncMemberAccessor is Func<TSource, Task<TMember?>> taskMemberAccessor)
+		{
+			Task<TMember?>? task = taskMemberAccessor.Invoke(source);
+			return task is null
+				? (default, NullSubjectKind.NullTaskReturned)
+				: (await task.AbandonOnCancellation(cancellationToken), NullSubjectKind.None);
+		}
+
+		ValueTask<TMember?> valueTask = ((Func<TSource, ValueTask<TMember?>>)_asyncMemberAccessor!).Invoke(source);
+		return valueTask.IsCompletedSuccessfully
+			? (valueTask.Result, NullSubjectKind.None)
+			: (await valueTask.AsTask().AbandonOnCancellation(cancellationToken), NullSubjectKind.None);
 	}
 
 	/// <inheritdoc cref="object.Equals(object?)" />

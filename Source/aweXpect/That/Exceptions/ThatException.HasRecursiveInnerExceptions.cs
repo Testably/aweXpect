@@ -29,10 +29,10 @@ public static partial class ThatException
 		expectations.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<TException, IThat<TException?>>(expectationBuilder
-				.ForMember<Exception?, IEnumerable<Exception?>>(
-					e => e.GetInnerExceptions(),
-					" that ",
-					false)
+				.ForMember(MemberAccessor<Exception?, IEnumerable<Exception?>>.FromFuncWithName(
+						e => e.GetInnerExceptions(),
+						" that "),
+					replaceIt: false)
 				.Validate((it, grammars)
 					=> new HasRecursiveInnerExceptionsConstraint(it, grammars))
 				.AddExpectations(expectations, static (expectations, e) => expectations(

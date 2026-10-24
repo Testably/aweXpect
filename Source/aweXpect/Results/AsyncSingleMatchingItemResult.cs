@@ -26,5 +26,6 @@ public class AsyncSingleMatchingItemResult<TCollection, TItem>
 	///     Further expectations on the single item.
 	/// </summary>
 	public IThatSubject<TItem> Which
-		=> new ThatSubject<TItem>(ExpectationBuilder.ForWhich(_asyncMemberAccessor, " that "));
+		=> new ThatSubject<TItem>(ExpectationBuilder.ForAsyncWhich(_asyncMemberAccessor, " that ", "it",
+			grammars => grammars & ~ExpectationGrammars.Plural));
 }

@@ -136,10 +136,10 @@ public class ManualExpectationBuilderTests
 		string expectation1, string expectation2, bool expectedResult)
 	{
 		ManualExpectationBuilder<string> sut1 = new();
-		sut1.ForMember(MemberAccessor<string, int>.FromFunc(s => s.Length, "length "))
+		sut1.ForMember(MemberAccessor<string, int>.FromFuncWithName(s => s.Length, "length "))
 			.AddExpectations(e => e.AddConstraint((_, _, _) => new DummyConstraint(expectation1)));
 		ManualExpectationBuilder<string> sut2 = new();
-		sut2.ForMember(MemberAccessor<string, int>.FromFunc(s => s.Length, "length "))
+		sut2.ForMember(MemberAccessor<string, int>.FromFuncWithName(s => s.Length, "length "))
 			.AddExpectations(e => e.AddConstraint((_, _, _) => new DummyConstraint(expectation2)));
 
 		await That(sut1.Equals(sut2)).IsEqualTo(expectedResult);
@@ -417,7 +417,7 @@ public class ManualExpectationBuilderTests
 	{
 		TaskCompletionSource<string?> becauseSource = new();
 		ManualExpectationBuilder<string> sut = new();
-		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+		sut.ForMember(MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "length "))
 			.AddExpectations(length =>
 			{
 				length.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 3, "equal to 3"));
@@ -442,7 +442,7 @@ public class ManualExpectationBuilderTests
 	public async Task IsMetBy_WithoutContext_WhenMetMemberHasAsyncReason_AndEvaluationFails_ShouldAppendTheReason()
 	{
 		ManualExpectationBuilder<string> sut = new();
-		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+		sut.ForMember(MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "length "))
 			.AddExpectations(length =>
 			{
 				length.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 3, "equal to 3"));

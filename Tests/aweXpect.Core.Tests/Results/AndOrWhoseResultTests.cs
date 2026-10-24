@@ -183,6 +183,24 @@ public class AndOrWhoseResultTests
 	}
 
 	[Test]
+	public async Task AndWhose_WithValueTaskMember_ShouldVerifyAwaitedValue()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value2, f => f.IsFalse())
+				.AndWhose(f => f.GetValue1AsValueTask(), f => f.IsTrue());
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.MyClass whose Value2 is False and whose GetValue1AsValueTask() is True,
+			             but GetValue1AsValueTask() was False
+			             """);
+	}
+
+	[Test]
 	public async Task MultipleWhose_ShouldAllowChaining()
 	{
 		MyClass sut = new();
@@ -677,6 +695,23 @@ public class AndOrWhoseResultTests
 			.WithTimeout(30.Seconds());
 	}
 
+	[Test]
+	public async Task Whose_WithValueTaskMember_ShouldVerifyAwaitedValue()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.GetValue1AsValueTask(), f => f.IsTrue());
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.MyClass whose GetValue1AsValueTask() is True,
+			             but GetValue1AsValueTask() was False
+			             """);
+	}
+
 	private static AndOrWhoseResult<int, IThat<string?>> IsNumeric(IThat<string?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 			=> new IsNumericConstraint(it, grammars)), subject);
@@ -734,6 +769,8 @@ public class AndOrWhoseResultTests
 		public bool Value2 { get; set; }
 
 		public Task<bool> GetValue1Async() => Task.FromResult(Value1);
+
+		public ValueTask<bool> GetValue1AsValueTask() => new(Value1);
 
 		public Task<bool> NeverCompletesAsync() => _neverCompleted.Task;
 	}

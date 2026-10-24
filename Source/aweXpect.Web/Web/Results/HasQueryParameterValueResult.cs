@@ -82,7 +82,7 @@ public class HasQueryParameterValueResult
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		_expectationBuilder
 			.ForMember(
-				MemberAccessor<Uri, string?>.FromFunc(u =>
+				MemberAccessor<Uri, string?>.FromFuncWithName(u =>
 				{
 					string[]? values = u.GetQueryParameterValues(_name);
 					if (values?.Length != 1)
@@ -106,7 +106,7 @@ public class HasQueryParameterValueResult
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		_expectationBuilder
 			.ForMember(
-				MemberAccessor<Uri, string?[]?>.FromFunc(u => u.GetQueryParameterValues(_name), "the values "),
+				MemberAccessor<Uri, string?[]?>.FromFuncWithName(u => u.GetQueryParameterValues(_name), "the values "),
 				(_, stringBuilder) => stringBuilder.Append(" whose values "))
 			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?[]?>(e)),
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural);

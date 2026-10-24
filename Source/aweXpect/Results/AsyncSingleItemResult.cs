@@ -33,7 +33,8 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	///     Further expectations on the single item.
 	/// </summary>
 	public IThatSubject<TItem> Which
-		=> new ThatSubject<TItem>(ExpectationBuilder.ForWhich<TCollection, TItem>(_source.GetAsync, " that "));
+		=> new ThatSubject<TItem>(ExpectationBuilder.ForAsyncWhich<TCollection, TItem>(_source.GetAsync, " that ",
+			"it", grammars => grammars & ~ExpectationGrammars.Plural));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	PredicateOptions<TItem> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;

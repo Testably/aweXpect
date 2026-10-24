@@ -17,7 +17,7 @@ public sealed class MemberAccessorTests
 	{
 		MemberAccessor<string, int> sut = MemberAccessor<string, int>.FromExpression(x => x.Length);
 		MemberAccessor<string, int> other =
-			MemberAccessor<string, int>.FromFunc(x => x.Length, otherStringRepresentation);
+			MemberAccessor<string, int>.FromFuncWithName(x => x.Length, otherStringRepresentation);
 
 		bool result = sut.Equals(other);
 
@@ -160,18 +160,6 @@ public sealed class MemberAccessorTests
 	}
 
 	[Test]
-	[Arguments("Foo")]
-	[Arguments("  x => x.Foo")]
-	[Arguments("x => x.Foo  ")]
-	public async Task FromFunc_ShouldKeepNameUnchanged(string expression)
-	{
-		MemberAccessor<string, int> subject = MemberAccessor<string, int>
-			.FromFunc(x => x.Length, expression);
-
-		await That(subject.ToString()).IsEqualTo(expression);
-	}
-
-	[Test]
 	[Arguments("Foo", "Foo ")]
 	[Arguments(".Foo", ".Foo ")]
 	[Arguments("x => x.Foo", "Foo ")]
@@ -199,10 +187,10 @@ public sealed class MemberAccessorTests
 	[Arguments("GetSelector(x => x.Value)", "GetSelector(x => x.Value) ")]
 	[Arguments("selector", "selector ")]
 	[Arguments("1 => 1.Value", "1 => 1.Value ")]
-	public async Task FromFuncAsMemberAccessor_ShouldTryToExtractMemberAccessor(string expression, string expected)
+	public async Task FromFuncWithCallerExpression_ShouldTryToExtractMemberAccessor(string expression, string expected)
 	{
 		MemberAccessor<string, int> subject = MemberAccessor<string, int>
-			.FromFuncAsMemberAccessor(x => x.Length, expression);
+			.FromFuncWithCallerExpression(x => x.Length, expression);
 
 		await That(subject.ToString()).IsEqualTo(expected);
 	}
@@ -237,11 +225,11 @@ public sealed class MemberAccessorTests
 	[Arguments("async o => await o.GetAsync(\"a)")]
 	[Arguments("async o => await o.GetAsync(/* )")]
 	[Arguments("async o => await o.GetAsync(// )")]
-	public async Task FromFuncAsMemberAccessor_WithAsyncLambdaWithoutMemberPath_ShouldKeepExpression(
+	public async Task FromFuncWithCallerExpression_WithAsyncLambdaWithoutMemberPath_ShouldKeepExpression(
 		string expression)
 	{
 		MemberAccessor<string, int> subject = MemberAccessor<string, int>
-			.FromFuncAsMemberAccessor(x => x.Length, expression);
+			.FromFuncWithCallerExpression(x => x.Length, expression);
 
 		await That(subject.ToString()).IsEqualTo($"{expression} ")
 			.Because("only an awaited member path of the parameter can be reduced without changing its meaning");
@@ -274,20 +262,32 @@ public sealed class MemberAccessorTests
 	[Arguments("async o => await o.GetAsync<List<int?>[], My_Type.Inner>()", "GetAsync<List<int?>[], My_Type.Inner>() ")]
 	[Arguments("async o => await o.GetAsync(\"a\\\")\")", "GetAsync(\"a\\\")\") ")]
 	[Arguments("async o => await o.GetAsync(1 / 2)", "GetAsync(1 / 2) ")]
-	public async Task FromFuncAsMemberAccessor_WithAsyncMemberLambda_ShouldExtractMemberPath(
+	public async Task FromFuncWithCallerExpression_WithAsyncMemberLambda_ShouldExtractMemberPath(
 		string expression, string expected)
 	{
 		MemberAccessor<string, int> subject = MemberAccessor<string, int>
-			.FromFuncAsMemberAccessor(x => x.Length, expression);
+			.FromFuncWithCallerExpression(x => x.Length, expression);
 
 		await That(subject.ToString()).IsEqualTo(expected);
 	}
 
 	[Test]
+	[Arguments("Foo")]
+	[Arguments("  x => x.Foo")]
+	[Arguments("x => x.Foo  ")]
+	public async Task FromFuncWithName_ShouldKeepNameUnchanged(string expression)
+	{
+		MemberAccessor<string, int> subject = MemberAccessor<string, int>
+			.FromFuncWithName(x => x.Length, expression);
+
+		await That(subject.ToString()).IsEqualTo(expression);
+	}
+
+	[Test]
 	public async Task GetHashCode_DifferentConstraint_ShouldNotBeEqual()
 	{
-		MemberAccessor<string, int> sut1 = MemberAccessor<string, int>.FromFunc(x => x.Length, "foo");
-		MemberAccessor<string, int> sut2 = MemberAccessor<string, int>.FromFunc(x => x.Length, "bar");
+		MemberAccessor<string, int> sut1 = MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "foo");
+		MemberAccessor<string, int> sut2 = MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "bar");
 
 		await That(sut1.GetHashCode()).IsNotEqualTo(sut2.GetHashCode());
 	}
@@ -295,8 +295,8 @@ public sealed class MemberAccessorTests
 	[Test]
 	public async Task GetHashCode_SameConstraint_ShouldBeEqual()
 	{
-		MemberAccessor<string, int> sut1 = MemberAccessor<string, int>.FromFunc(x => x.Length, "foo");
-		MemberAccessor<string, int> sut2 = MemberAccessor<string, int>.FromFunc(x => x.Length, "foo");
+		MemberAccessor<string, int> sut1 = MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "foo");
+		MemberAccessor<string, int> sut2 = MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "foo");
 
 		await That(sut1.GetHashCode()).IsEqualTo(sut2.GetHashCode());
 	}

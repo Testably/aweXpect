@@ -19,7 +19,7 @@ public partial class ThatDelegateThrows<TException>
 		memberAccessor.ThrowIfNull();
 		expectations.ThrowIfNull();
 		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder.ForMember(
-					MemberAccessor<TException, TMember?>.FromFuncAsMemberAccessor(memberAccessor,
+					MemberAccessor<TException, TMember?>.FromFuncWithCallerExpression(memberAccessor,
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))
 				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
@@ -38,7 +38,7 @@ public partial class ThatDelegateThrows<TException>
 		memberAccessor.ThrowIfNull();
 		expectations.ThrowIfNull();
 		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder.ForAsyncMember(
-					MemberAccessor<TException, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,
+					MemberAccessor<TException, Task<TMember>>.FromFuncWithCallerExpression(memberAccessor,
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))
 				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
@@ -55,6 +55,13 @@ public partial class ThatDelegateThrows<TException>
 		string doNotPopulateThisValue = "")
 	{
 		memberAccessor.ThrowIfNull();
-		return Whose(x => memberAccessor(x).AsTask(), expectations, doNotPopulateThisValue);
+		expectations.ThrowIfNull();
+		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder.ForAsyncMember(
+					MemberAccessor<TException, ValueTask<TMember>>.FromFuncWithCallerExpression(memberAccessor,
+						doNotPopulateThisValue),
+					(member, expectation) => expectation.Append("whose ").Append(member))
+				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
+					grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
+			this);
 	}
 }

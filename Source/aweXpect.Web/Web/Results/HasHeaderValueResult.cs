@@ -80,7 +80,7 @@ public class HasHeaderValueResult<TType, TThat>
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		_expectationBuilder
 			.ForMember(
-				MemberAccessor<TType, string?>.FromFunc(t =>
+				MemberAccessor<TType, string?>.FromFuncWithName(t =>
 				{
 					string?[]? values = _headerValueAccessor(t);
 					if (values?.Length != 1)
@@ -104,7 +104,7 @@ public class HasHeaderValueResult<TType, TThat>
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		_expectationBuilder
 			.ForMember(
-				MemberAccessor<TType, string?[]?>.FromFunc(t => _headerValueAccessor(t), "the values "),
+				MemberAccessor<TType, string?[]?>.FromFuncWithName(t => _headerValueAccessor(t), "the values "),
 				(_, stringBuilder) => stringBuilder.Append(" whose values "))
 			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?[]?>(e)),
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural);

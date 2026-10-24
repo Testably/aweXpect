@@ -38,7 +38,7 @@ public static partial class ThatJsonString
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		JsonDocumentOptions documentOptions = GetDocumentOptions(options);
 		return new AndOrResult<string, IThat<string?>>(AddIsValidJsonConstraint(subject, documentOptions)
-				.ForMember(MemberAccessor<string, JsonElement>.FromFunc(jsonString =>
+				.ForMember(MemberAccessor<string, JsonElement>.FromFuncWithName(jsonString =>
 					{
 						using JsonDocument jsonDocument = JsonDocument.Parse(jsonString, documentOptions);
 						return jsonDocument.RootElement.Clone();

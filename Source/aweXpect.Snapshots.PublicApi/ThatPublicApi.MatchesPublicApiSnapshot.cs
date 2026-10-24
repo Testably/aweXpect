@@ -117,7 +117,7 @@ public static class ThatPublicApi
 	{
 		SnapshotResult<string?, IThat<string?>>? result = null;
 		subject.Get().ExpectationBuilder
-			.ForMember(MemberAccessor<TSubject?, string?>.FromFunc(
+			.ForMember(MemberAccessor<TSubject?, string?>.FromFuncWithName(
 					value => value is null ? null : write(value), "public API"),
 				(_, stringBuilder) => stringBuilder.Append("has a public API which "))
 			.AddExpectations(expectationBuilder => result =

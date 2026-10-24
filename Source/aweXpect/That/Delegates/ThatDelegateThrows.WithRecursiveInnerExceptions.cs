@@ -26,7 +26,7 @@ public static partial class ThatDelegateThrows
 		expectations.ThrowIfNull();
 		return new AndOrResult<TException, IThatDelegateThrows<TException>>(subject.Get().ExpectationBuilder
 				.ForMember(
-					MemberAccessor<Exception?, IEnumerable<Exception>>.FromFunc(
+					MemberAccessor<Exception?, IEnumerable<Exception>>.FromFuncWithName(
 						e => e.GetInnerExceptions(),
 						"recursive inner exceptions"),
 					(_, s) => s.Append(" that "))
