@@ -74,8 +74,17 @@ public static partial class ThatTypes
 	[GuaranteesNotNull]
 	public static TypeDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DependOn<T>(
 		this IThat<IEnumerable<Type?>?> subject)
+		=> subject.DependOn(typeof(T));
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> depend on (reference in their
+	///     signature) the <paramref name="type" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static TypeDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DependOn(
+		this IThat<IEnumerable<Type?>?> subject, Type type)
 	{
-		TypeDependencyOptions options = new(typeof(T));
+		TypeDependencyOptions options = new(type);
 		return new TypeDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<TypeDependencyOptions, IEnumerable<Type?>>(options,
 					static (options, it, grammars)
@@ -92,8 +101,17 @@ public static partial class ThatTypes
 	[GuaranteesNotNull]
 	public static TypeDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DependOn<T>(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
+		=> subject.DependOn(typeof(T));
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> depend on (reference in their
+	///     signature) the <paramref name="type" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static TypeDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DependOn(
+		this IThat<IAsyncEnumerable<Type?>?> subject, Type type)
 	{
-		TypeDependencyOptions options = new(typeof(T));
+		TypeDependencyOptions options = new(type);
 		return new TypeDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<TypeDependencyOptions, IAsyncEnumerable<Type?>>(options,
 					static (options, it, grammars)
@@ -206,8 +224,17 @@ public static partial class ThatTypes
 	[GuaranteesNotNull]
 	public static TypeDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotDependOn<T>(
 		this IThat<IEnumerable<Type?>?> subject)
+		=> subject.DoNotDependOn(typeof(T));
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> do not depend on (do not reference
+	///     in their signature) the <paramref name="type" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static TypeDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotDependOn(
+		this IThat<IEnumerable<Type?>?> subject, Type type)
 	{
-		TypeDependencyOptions options = new(typeof(T));
+		TypeDependencyOptions options = new(type);
 		return new TypeDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<TypeDependencyOptions, IEnumerable<Type?>>(options,
 					static (options, it, grammars)
@@ -224,8 +251,17 @@ public static partial class ThatTypes
 	[GuaranteesNotNull]
 	public static TypeDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotDependOn<T>(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
+		=> subject.DoNotDependOn(typeof(T));
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> do not depend on (do not reference
+	///     in their signature) the <paramref name="type" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static TypeDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotDependOn(
+		this IThat<IAsyncEnumerable<Type?>?> subject, Type type)
 	{
-		TypeDependencyOptions options = new(typeof(T));
+		TypeDependencyOptions options = new(type);
 		return new TypeDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<TypeDependencyOptions, IAsyncEnumerable<Type?>>(options,
 					static (options, it, grammars)
