@@ -9,7 +9,7 @@ namespace aweXpect.Snapshots;
 /// <summary>
 ///     Extension methods on <see cref="AwexpectCustomization" /> for snapshots.
 /// </summary>
-public static class SnapshotsAwexpectCustomizationExtensions
+public static class SnapshotsCustomizationExtensions
 {
 	/// <summary>
 	///     Customize the snapshot settings.

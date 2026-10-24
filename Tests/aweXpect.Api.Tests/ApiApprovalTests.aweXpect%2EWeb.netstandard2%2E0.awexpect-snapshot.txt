@@ -124,9 +124,9 @@ namespace aweXpect
 }
 namespace aweXpect.Web
 {
-    public static class WebAwexpectCustomizationExtensions
+    public static class WebCustomizationExtensions
     {
-        public static aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomization Web(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
+        public static aweXpect.Web.WebCustomizationExtensions.WebCustomization Web(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
         public class WebCustomization
         {
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Web.ContentProcessors.IContentProcessor[]> ContentProcessors { get; }

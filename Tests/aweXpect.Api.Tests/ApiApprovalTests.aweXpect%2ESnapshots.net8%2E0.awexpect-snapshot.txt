@@ -218,9 +218,9 @@ namespace aweXpect.Snapshots
     public sealed class SnapshotValuesWithName<TReturn, TValue> : aweXpect.Snapshots.SnapshotValues<TReturn, TValue>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
     {
     }
-    public static class SnapshotsAwexpectCustomizationExtensions
+    public static class SnapshotsCustomizationExtensions
     {
-        public static aweXpect.Snapshots.SnapshotsAwexpectCustomizationExtensions.SnapshotsCustomization Snapshots(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
+        public static aweXpect.Snapshots.SnapshotsCustomizationExtensions.SnapshotsCustomization Snapshots(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
         public class SnapshotsCustomization
         {
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotAcceptance?> Acceptance { get; }

@@ -8,7 +8,7 @@ namespace aweXpect.Json;
 /// <summary>
 ///     Extension methods on <see cref="AwexpectCustomization" /> for JSON.
 /// </summary>
-public static class JsonAwexpectCustomizationExtensions
+public static class JsonCustomizationExtensions
 {
 	private static JsonCustomization? _lastCustomization;
 
