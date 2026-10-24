@@ -191,9 +191,32 @@ public sealed partial class PropertyResultTests
 				.WithMessage("""
 				             Expected that subject
 				             does not have string value containing "foo",
-				             but string value was <null>
+				             but it had string value <null>
 				             """)
 				.Because("a null value has no content to inspect, so the negation cannot be answered either");
+		}
+
+		[Test]
+		[Arguments(ExpectationGrammars.None, "it had string value <null>")]
+		[Arguments(ExpectationGrammars.Plural, "it had string value <null>")]
+		[Arguments(ExpectationGrammars.Active, "it had string value <null>")]
+		[Arguments(ExpectationGrammars.Nested, "string value was <null>")]
+		[Arguments(ExpectationGrammars.Nested | ExpectationGrammars.Plural, "string value were <null>")]
+		public async Task Containing_WhenValueIsNull_ShouldDescribeItLikeNotContaining(ExpectationGrammars grammars,
+			string expectedResult)
+		{
+			async Task ActContaining()
+				=> await MyClass.HasStringValue(null, grammars).Containing("foo");
+
+			async Task ActNotContaining()
+				=> await MyClass.HasStringValue(null, grammars).NotContaining("foo");
+
+			await That(ActContaining).Throws<FailException>()
+				.WithMessage($"*,{Environment.NewLine}but {expectedResult}").AsWildcard()
+				.Because("a null value is described like by the other operators of the property");
+			await That(ActNotContaining).Throws<FailException>()
+				.WithMessage($"*,{Environment.NewLine}but {expectedResult}").AsWildcard()
+				.Because("this is the wording of the sibling operator that is mirrored");
 		}
 
 		[Test]
@@ -208,7 +231,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("""
 				             Expected that subject
 				             has string value containing "foo" at least once,
-				             but string value was <null>
+				             but it had string value <null>
 				             """);
 		}
 

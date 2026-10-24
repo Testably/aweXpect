@@ -728,7 +728,17 @@ public static class PropertyResult
 
 			if (_value is null)
 			{
-				stringBuilder.Append(propertyExpression).Append(" was <null>");
+				if (Grammars.IsNested() && !Grammars.IsActive())
+				{
+					stringBuilder.Append(propertyExpression)
+						.Append(Grammars.SubjectVerb(propertyExpression, " was ", " were "));
+				}
+				else
+				{
+					stringBuilder.Append(It).Append(" had ").Append(propertyExpression).Append(' ');
+				}
+
+				stringBuilder.Append("<null>");
 				return;
 			}
 
