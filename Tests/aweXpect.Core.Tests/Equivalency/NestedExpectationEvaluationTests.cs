@@ -743,11 +743,8 @@ public sealed class NestedExpectationEvaluationTests
 	}
 
 	private static ObjectEqualityOptions<MyClass> Equivalent()
-	{
-		ObjectEqualityOptions<MyClass> options = new();
-		options.SetMatchType(new EquivalencyMatchType(new EquivalencyOptions()));
-		return options;
-	}
+		=> new ObjectEqualityOptions<MyClass>().SetMatchType(new EquivalencyMatchType(new EquivalencyOptions()),
+			"Equivalent");
 
 	private static EquivalencyExpectationBuilder GetBuilder(It.IsEquivalent<int> expectation)
 		=> (EquivalencyExpectationBuilder)((IExpectThat<int>)expectation).ExpectationBuilder;

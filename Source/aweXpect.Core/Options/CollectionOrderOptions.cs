@@ -26,11 +26,12 @@ public class CollectionOrderOptions<TItem>
 	///     Set the comparer to use to compare the order of items.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">A comparer is already set.</exception>
-	public void SetComparer(IComparer<TItem> comparer)
+	public CollectionOrderOptions<TItem> SetComparer(IComparer<TItem> comparer)
 	{
 		comparer.ThrowIfNull();
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_comparer is not null, nameof(CollectionOrderResult<,,>.Using));
 		_comparer = comparer;
+		return this;
 	}
 
 	private static IComparer<TItem> GetDefaultComparer()

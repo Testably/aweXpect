@@ -5,6 +5,16 @@ namespace aweXpect.Core.Tests.Options;
 public class TriggerEventFilterTests
 {
 	[Test]
+	public async Task AddPredicate_ShouldReturnTheSameFilter()
+	{
+		TriggerEventFilter sut = new();
+
+		TriggerEventFilter result = sut.AddPredicate(p => p.Length > 0, " with a parameter");
+
+		await That(result).IsSameAs(sut);
+	}
+
+	[Test]
 	public async Task AddPredicate_Twice_ShouldRequireBothPredicatesAndNameBoth()
 	{
 		TriggerEventFilter sut = new();

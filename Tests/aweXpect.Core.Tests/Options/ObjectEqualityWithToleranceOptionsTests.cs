@@ -270,6 +270,20 @@ public class ObjectEqualityWithToleranceOptionsTests
 	}
 
 	[Test]
+	public async Task Within_ShouldReturnTheSameOptionsWithTheirToleranceMembers()
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new((a, e, t) => Math.Abs(a - e) <= t);
+
+		ObjectEqualityWithToleranceOptions<int, int> result = sut.Within(5);
+		result.UseRelativeTolerance((t, e) => t * e / 100, "%");
+
+		await That(result).IsSameAs(sut);
+		await That(sut.GetExpectation("100", ExpectationGrammars.None)).IsEqualTo("is equal to 100 ± 5%")
+			.Because("the relative tolerance can be chained directly after Within");
+	}
+
+	[Test]
 	public async Task Within_WhenComparerIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		ObjectEqualityWithToleranceOptions<double, double> sut =

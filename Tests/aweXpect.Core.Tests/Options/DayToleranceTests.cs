@@ -22,7 +22,7 @@ public class DayToleranceTests
 	public async Task GetToleranceOrDefault_WhenToleranceIsSet_ShouldReturnTheTolerance()
 	{
 		DayTolerance sut = new();
-		sut.SetTolerance(2.Days());
+		sut.Within(2.Days());
 		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(36.Hours());
 
 		TimeSpan result = sut.GetToleranceOrDefault();
@@ -57,7 +57,7 @@ public class DayToleranceTests
 	public async Task ToString_WhenToleranceIsOneDay_ShouldShowTheDay()
 	{
 		TimeTolerance sut = new DayTolerance();
-		sut.SetTolerance(1.Days());
+		sut.Within(1.Days());
 
 		string result = sut.ToString();
 
@@ -80,7 +80,7 @@ public class DayToleranceTests
 	{
 		DayTolerance sut = new();
 
-		void Act() => sut.SetTolerance(-12.Hours());
+		void Act() => sut.Within(-12.Hours());
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithParamName("tolerance").And
@@ -93,7 +93,7 @@ public class DayToleranceTests
 	{
 		DayTolerance sut = new();
 
-		void Act() => sut.SetTolerance(-1.Days());
+		void Act() => sut.Within(-1.Days());
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithParamName("tolerance").And
@@ -110,7 +110,7 @@ public class DayToleranceTests
 	{
 		DayTolerance sut = new();
 
-		void Act() => sut.SetTolerance(hours.Hours() + minutes.Minutes());
+		void Act() => sut.Within(hours.Hours() + minutes.Minutes());
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithParamName("tolerance").And
@@ -122,10 +122,10 @@ public class DayToleranceTests
 	public async Task WhenToleranceIsNotWholeDays_ShouldNotStoreIt()
 	{
 		DayTolerance sut = new();
-		await That(() => sut.SetTolerance(12.Hours())).Throws<ArgumentOutOfRangeException>()
+		await That(() => sut.Within(12.Hours())).Throws<ArgumentOutOfRangeException>()
 			.WithMessage("The tolerance must be a whole number of days.").AsPrefix();
 
-		void Act() => sut.SetTolerance(1.Days());
+		void Act() => sut.Within(1.Days());
 
 		await That(Act).DoesNotThrow()
 			.Because("the rejected tolerance must leave the options unchanged");
@@ -136,9 +136,9 @@ public class DayToleranceTests
 	public async Task WhenToleranceIsSetTwice_ShouldThrowInvalidOperationException()
 	{
 		DayTolerance sut = new();
-		sut.SetTolerance(1.Days());
+		sut.Within(1.Days());
 
-		void Act() => sut.SetTolerance(2.Days());
+		void Act() => sut.Within(2.Days());
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("Within cannot be specified more than once.")
@@ -149,9 +149,9 @@ public class DayToleranceTests
 	public async Task WhenToleranceIsSetTwice_WithNotWholeDays_ShouldThrowInvalidOperationException()
 	{
 		DayTolerance sut = new();
-		sut.SetTolerance(1.Days());
+		sut.Within(1.Days());
 
-		void Act() => sut.SetTolerance(12.Hours());
+		void Act() => sut.Within(12.Hours());
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("Within cannot be specified more than once.")
@@ -166,9 +166,19 @@ public class DayToleranceTests
 	{
 		DayTolerance sut = new();
 
-		void Act() => sut.SetTolerance(days.Days());
+		void Act() => sut.Within(days.Days());
 
 		await That(Act).DoesNotThrow();
 		await That(sut.Tolerance).IsEqualTo(days.Days());
+	}
+
+	[Test]
+	public async Task Within_ShouldReturnTheSameTolerance()
+	{
+		DayTolerance sut = new();
+
+		TimeTolerance result = sut.Within(1.Days());
+
+		await That(result).IsSameAs(sut);
 	}
 }

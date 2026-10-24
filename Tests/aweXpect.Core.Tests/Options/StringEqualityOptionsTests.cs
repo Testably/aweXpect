@@ -1196,6 +1196,16 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task SetMatchType_ShouldReturnTheSameOptions()
+		{
+			StringEqualityOptions sut = new("expected");
+
+			StringEqualityOptions result = sut.SetMatchType(new CustomMatchType(), "AsCustom");
+
+			await That(result).IsSameAs(sut);
+		}
+
+		[Test]
 		[Arguments(nameof(StringEqualityOptions.AsPrefix))]
 		[Arguments(nameof(StringEqualityOptions.AsRegex))]
 		[Arguments(nameof(StringEqualityOptions.AsSuffix))]

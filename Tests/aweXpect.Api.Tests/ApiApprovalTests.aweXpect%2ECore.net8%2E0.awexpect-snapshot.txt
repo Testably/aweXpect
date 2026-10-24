@@ -1403,11 +1403,10 @@ namespace aweXpect.Options
     {
         public CollectionIndexOptions() { }
         public aweXpect.Options.CollectionIndexOptions.IMatch Match { get; }
-        public void AtIndex(int index) { }
-        public void AtIndexFromEnd(int index) { }
+        public aweXpect.Options.CollectionIndexOptions AtIndex(int index) { }
+        public aweXpect.Options.CollectionIndexOptions AtIndexFromEnd(int index) { }
         public bool? MatchesIndex(int index, int? count) { }
-        public void SetMatch(aweXpect.Options.CollectionIndexOptions.IMatch match) { }
-        public void SetMatch(aweXpect.Options.CollectionIndexOptions.IMatch match, string optionName) { }
+        public aweXpect.Options.CollectionIndexOptions SetMatch(aweXpect.Options.CollectionIndexOptions.IMatch match, string optionName) { }
         public interface IMatch
         {
             string GetDescription();
@@ -1432,11 +1431,11 @@ namespace aweXpect.Options
         public aweXpect.Core.ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<aweXpect.Options.CollectionMatchOptions.ExpectationItem<T>> expected) where T : T2 { }
         public string GetExpectation(string expectedExpression, aweXpect.Core.ExpectationGrammars grammars) { }
         public string GetNegatedResultVerb(string it, aweXpect.Core.ExpectationGrammars grammars) { }
-        public void IgnoringDuplicates(bool ignoreDuplicates = true) { }
-        public void IgnoringInterspersedItems(bool ignoreInterspersedItems = true) { }
-        public void InAnyOrder() { }
-        public void Properly() { }
-        public void SetEquivalenceRelation(aweXpect.Options.CollectionMatchOptions.EquivalenceRelations equivalenceRelation) { }
+        public aweXpect.Options.CollectionMatchOptions IgnoringDuplicates(bool ignoreDuplicates = true) { }
+        public aweXpect.Options.CollectionMatchOptions IgnoringInterspersedItems(bool ignoreInterspersedItems = true) { }
+        public aweXpect.Options.CollectionMatchOptions InAnyOrder() { }
+        public aweXpect.Options.CollectionMatchOptions Properly() { }
+        public aweXpect.Options.CollectionMatchOptions SetEquivalenceRelation(aweXpect.Options.CollectionMatchOptions.EquivalenceRelations equivalenceRelation) { }
         [System.Flags]
         public enum EquivalenceRelations
         {
@@ -1462,15 +1461,15 @@ namespace aweXpect.Options
         public CollectionOrderOptions() { }
         public bool HasComparer { get; }
         public System.Collections.Generic.IComparer<TItem> GetComparer() { }
-        public void SetComparer(System.Collections.Generic.IComparer<TItem> comparer) { }
+        public aweXpect.Options.CollectionOrderOptions<TItem> SetComparer(System.Collections.Generic.IComparer<TItem> comparer) { }
         public override string ToString() { }
     }
     public sealed class DayTolerance : aweXpect.Options.TimeTolerance
     {
         public DayTolerance() { }
         public override System.TimeSpan GetToleranceOrDefault() { }
-        public override void SetTolerance(System.TimeSpan tolerance) { }
         public override string ToString() { }
+        public override aweXpect.Options.TimeTolerance Within(System.TimeSpan tolerance) { }
     }
     public abstract class EnumerableQuantifier
     {
@@ -1502,11 +1501,11 @@ namespace aweXpect.Options
         public ExecutionTimeOptions() { }
         public void AppendFailureResult(System.Text.StringBuilder stringBuilder, System.TimeSpan actual) { }
         public void AppendTo(System.Text.StringBuilder stringBuilder, string prefix) { }
-        public void AtLeast(System.TimeSpan minimum) { }
-        public void AtMost(System.TimeSpan maximum) { }
-        public void Between(System.TimeSpan minimum, System.TimeSpan maximum) { }
+        public aweXpect.Options.ExecutionTimeOptions AtLeast(System.TimeSpan minimum) { }
+        public aweXpect.Options.ExecutionTimeOptions AtMost(System.TimeSpan maximum) { }
+        public aweXpect.Options.ExecutionTimeOptions Between(System.TimeSpan minimum, System.TimeSpan maximum) { }
         public bool IsWithinLimit(System.TimeSpan? actual) { }
-        public void Within(System.TimeSpan duration) { }
+        public aweXpect.Options.ExecutionTimeOptions Within(System.TimeSpan duration) { }
     }
     public interface IRelativeToleranceOptions<TTolerance>
     {
@@ -1518,10 +1517,10 @@ namespace aweXpect.Options
         public TNumber? Tolerance { get; }
         public TNumber? CalculateDifference(TNumber? actual, TNumber? expected) { }
         public bool IsWithinTolerance(TNumber? actual, TNumber? expected) { }
-        public void SetTolerance(TNumber tolerance) { }
         public override string ToString() { }
         public TNumber? ToleranceFor(TNumber expected) { }
         public void UseRelativeTolerance(System.Func<TNumber, TNumber, TNumber> absoluteTolerance, string unit) { }
+        public aweXpect.Options.NumberTolerance<TNumber> Within(TNumber tolerance) { }
     }
     public class ObjectEqualityOptions<TSubject> : aweXpect.Core.IOptionsEquality<TSubject>
     {
@@ -1533,8 +1532,7 @@ namespace aweXpect.Options
         public virtual aweXpect.Options.ObjectEqualityOptions<TSubject> ForEvaluation(aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
         public string GetExpectation(string expectedExpression, aweXpect.Core.ExpectationGrammars grammars) { }
         public string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null) { }
-        public void SetMatchType(aweXpect.Core.IObjectMatchType matchType) { }
-        public void SetMatchType(aweXpect.Core.IObjectMatchType matchType, string optionName) { }
+        public aweXpect.Options.ObjectEqualityOptions<TSubject> SetMatchType(aweXpect.Core.IObjectMatchType matchType, string optionName) { }
         public override string? ToString() { }
         public aweXpect.Options.ObjectEqualityOptions<TSubject> Using(System.Collections.Generic.IEqualityComparer<TSubject> comparer) { }
         public aweXpect.Options.ObjectEqualityOptions<TSubject> Using(System.Collections.Generic.IEqualityComparer<object> comparer) { }
@@ -1546,20 +1544,20 @@ namespace aweXpect.Options
         public void UseRelativeTolerance(System.Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit) { }
         public aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance> WithDefaultTolerance(System.Func<TTolerance> defaultTolerance) { }
         public aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance> WithToleranceValidation(System.Action<TTolerance> validation) { }
-        public aweXpect.Options.ObjectEqualityOptions<TSubject> Within(TTolerance tolerance) { }
+        public aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance> Within(TTolerance tolerance) { }
     }
     public class Quantifier
     {
         public Quantifier() { }
         public int DeterminableAmount { get; }
-        public void AtLeast(int minimum) { }
-        public void AtMost(int maximum) { }
-        public void Between(int minimum, int maximum) { }
+        public aweXpect.Options.Quantifier AtLeast(int minimum) { }
+        public aweXpect.Options.Quantifier AtMost(int maximum) { }
+        public aweXpect.Options.Quantifier Between(int minimum, int maximum) { }
         public bool? Check(int amount, bool isLast, bool isNegated = false) { }
-        public void Exactly(int expected) { }
+        public aweXpect.Options.Quantifier Exactly(int expected) { }
         public bool IsNever(bool isNegated) { }
-        public void LessThan(int maximum) { }
-        public void MoreThan(int minimum) { }
+        public aweXpect.Options.Quantifier LessThan(int maximum) { }
+        public aweXpect.Options.Quantifier MoreThan(int minimum) { }
         public override string ToString() { }
         public string ToString(bool isNegated) { }
         public static aweXpect.Options.Quantifier Never() { }
@@ -1570,23 +1568,24 @@ namespace aweXpect.Options
         public System.TimeSpan Interval { get; }
         public bool IsRepeated { get; }
         public System.TimeSpan Timeout { get; }
-        public void CheckEvery(System.TimeSpan interval) { }
+        public aweXpect.Options.RepeatedCheckOptions CheckEvery(System.TimeSpan interval) { }
         public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.Outcome> CheckRepeatedly(System.Func<aweXpect.Core.EvaluationContext.IEvaluationContext, System.Threading.Tasks.ValueTask<bool>> check, aweXpect.Core.EvaluationContext.IEvaluationContext context) { }
         public override string ToString() { }
-        public void Within(System.TimeSpan timeout) { }
+        public aweXpect.Options.RepeatedCheckOptions Within(System.TimeSpan timeout) { }
     }
     public class SignalerOptions
     {
         public SignalerOptions() { }
-        public System.TimeSpan? Timeout { get; set; }
+        public System.TimeSpan? Timeout { get; }
         public override string ToString() { }
+        public aweXpect.Options.SignalerOptions Within(System.TimeSpan timeout) { }
     }
     public class SignalerOptions<TParameter> : aweXpect.Options.SignalerOptions
     {
         public SignalerOptions() { }
         public bool Matches(TParameter parameter) { }
         public override string ToString() { }
-        public void WithPredicate(System.Func<TParameter, bool> predicate, string predicateExpression) { }
+        public aweXpect.Options.SignalerOptions<TParameter> WithPredicate(System.Func<TParameter, bool> predicate, string predicateExpression) { }
     }
     public class StringEqualityOptions : aweXpect.Core.IOptionsEquality<string?>
     {
@@ -1615,7 +1614,7 @@ namespace aweXpect.Options
         public aweXpect.Options.StringEqualityOptions IgnoringNewlineStyle(bool ignoreNewlineStyle = true) { }
         public aweXpect.Options.StringEqualityOptions IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) { }
         public aweXpect.Options.StringEqualityOptions NormalizingWhiteSpace(bool normalizeWhiteSpace = true) { }
-        public void SetMatchType(aweXpect.Core.IStringMatchType matchType, string optionName) { }
+        public aweXpect.Options.StringEqualityOptions SetMatchType(aweXpect.Core.IStringMatchType matchType, string optionName) { }
         public override string ToString() { }
         public aweXpect.Options.StringEqualityOptions Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
         public void ValidateExpected(string? expected) { }
@@ -1625,14 +1624,14 @@ namespace aweXpect.Options
         public TimeTolerance() { }
         public System.TimeSpan? Tolerance { get; }
         public virtual System.TimeSpan GetToleranceOrDefault() { }
-        public virtual void SetTolerance(System.TimeSpan tolerance) { }
         public string ToDayString() { }
         public override string ToString() { }
+        public virtual aweXpect.Options.TimeTolerance Within(System.TimeSpan tolerance) { }
     }
     public class TriggerEventFilter
     {
         public TriggerEventFilter() { }
-        public void AddPredicate(System.Func<object?[], bool> predicate, string predicateExpression) { }
+        public aweXpect.Options.TriggerEventFilter AddPredicate(System.Func<object?[], bool> predicate, string predicateExpression) { }
         public bool IsMatch(object?[] parameters) { }
         public override string ToString() { }
     }

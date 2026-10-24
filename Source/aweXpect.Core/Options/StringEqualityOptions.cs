@@ -394,12 +394,13 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     unchanged.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">A match type is already specified.</exception>
-	public void SetMatchType(IStringMatchType matchType, string optionName)
+	public StringEqualityOptions SetMatchType(IStringMatchType matchType, string optionName)
 	{
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_matchTypeOption, optionName);
 		matchType.ValidateOptions(_ignoreCase, _comparer);
 		_matchTypeOption = optionName;
 		_matchType = matchType;
+		return this;
 	}
 
 	/// <summary>

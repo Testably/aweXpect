@@ -2467,6 +2467,28 @@ public class CollectionMatchOptionsTests
 			await That(sut.GetExpectation("[1]", ExpectationGrammars.None))
 				.IsEqualTo("contains collection [1] in order and contiguous");
 		}
+
+		[Test]
+		[Arguments("IgnoringDuplicates")]
+		[Arguments("IgnoringInterspersedItems")]
+		[Arguments("InAnyOrder")]
+		[Arguments("Properly")]
+		[Arguments("SetEquivalenceRelation")]
+		public async Task Setter_ShouldReturnTheSameOptions(string option)
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+
+			CollectionMatchOptions result = option switch
+			{
+				"IgnoringDuplicates" => sut.IgnoringDuplicates(),
+				"IgnoringInterspersedItems" => sut.IgnoringInterspersedItems(),
+				"InAnyOrder" => sut.InAnyOrder(),
+				"Properly" => sut.Properly(),
+				_ => sut.SetEquivalenceRelation(CollectionMatchOptions.EquivalenceRelations.IsContainedIn),
+			};
+
+			await That(result).IsSameAs(sut);
+		}
 	}
 
 	/// <summary>

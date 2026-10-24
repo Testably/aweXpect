@@ -34,6 +34,16 @@ public class CollectionOrderOptionsTests
 	}
 
 	[Test]
+	public async Task SetComparer_ShouldReturnTheSameOptions()
+	{
+		CollectionOrderOptions<int> sut = new();
+
+		CollectionOrderOptions<int> result = sut.SetComparer(new ReverseComparer<int>());
+
+		await That(result).IsSameAs(sut);
+	}
+
+	[Test]
 	public async Task SetComparer_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 	{
 		CollectionOrderOptions<int> sut = new();

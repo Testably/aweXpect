@@ -92,8 +92,11 @@ public partial class CollectionMatchOptions(
 	/// <summary>
 	///     Specifies the equivalence relation between subject and expected.
 	/// </summary>
-	public void SetEquivalenceRelation(EquivalenceRelations equivalenceRelation)
-		=> _equivalenceRelations = equivalenceRelation;
+	public CollectionMatchOptions SetEquivalenceRelation(EquivalenceRelations equivalenceRelation)
+	{
+		_equivalenceRelations = equivalenceRelation;
+		return this;
+	}
 
 	/// <summary>
 	///     Ignores the order in the subject and expected values.
@@ -102,10 +105,11 @@ public partial class CollectionMatchOptions(
 	///     The order is already specified, e.g. interspersed items are already ignored via
 	///     <see cref="IgnoringInterspersedItems(bool)" />.
 	/// </exception>
-	public void InAnyOrder()
+	public CollectionMatchOptions InAnyOrder()
 	{
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(OrderOption, nameof(InAnyOrder));
 		_inAnyOrder = true;
+		return this;
 	}
 
 	/// <summary>
@@ -118,11 +122,12 @@ public partial class CollectionMatchOptions(
 	///     <c>[1, 2]</c>.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">The duplicates are already specified.</exception>
-	public void IgnoringDuplicates(bool ignoreDuplicates = true)
+	public CollectionMatchOptions IgnoringDuplicates(bool ignoreDuplicates = true)
 	{
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isIgnoringDuplicatesSpecified, nameof(IgnoringDuplicates));
 		_isIgnoringDuplicatesSpecified = true;
 		_ignoringDuplicates = ignoreDuplicates;
+		return this;
 	}
 
 	/// <summary>
@@ -137,7 +142,7 @@ public partial class CollectionMatchOptions(
 	///     The option is already specified, or the relation is neither <see cref="EquivalenceRelations.Contains" /> nor
 	///     <see cref="EquivalenceRelations.IsContainedIn" />.
 	/// </exception>
-	public void Properly()
+	public CollectionMatchOptions Properly()
 	{
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isProperlySpecified, nameof(Properly));
 		_equivalenceRelations = _equivalenceRelations switch
@@ -149,6 +154,7 @@ public partial class CollectionMatchOptions(
 				$"{nameof(Properly)} requires a containment relation, but the relation is {_equivalenceRelations}.")),
 		};
 		_isProperlySpecified = true;
+		return this;
 	}
 
 	/// <summary>
@@ -159,7 +165,7 @@ public partial class CollectionMatchOptions(
 	///     The interspersed items are already specified, or the order is already ignored via
 	///     <see cref="InAnyOrder()" />.
 	/// </exception>
-	public void IgnoringInterspersedItems(bool ignoreInterspersedItems = true)
+	public CollectionMatchOptions IgnoringInterspersedItems(bool ignoreInterspersedItems = true)
 	{
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isIgnoringInterspersedItemsSpecified,
 			nameof(IgnoringInterspersedItems));
@@ -170,6 +176,7 @@ public partial class CollectionMatchOptions(
 
 		_isIgnoringInterspersedItemsSpecified = true;
 		_ignoringInterspersedItems = ignoreInterspersedItems;
+		return this;
 	}
 
 	/// <summary>

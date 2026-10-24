@@ -22,7 +22,7 @@ internal sealed class JsonNumberTolerance
 	public JsonNumberTolerance(double tolerance, Func<double, double, double>? absoluteTolerance = null,
 		string unit = "")
 	{
-		_numberTolerance.SetTolerance(tolerance);
+		_numberTolerance.Within(tolerance);
 		if (absoluteTolerance is not null)
 		{
 			_numberTolerance.UseRelativeTolerance(absoluteTolerance, unit);

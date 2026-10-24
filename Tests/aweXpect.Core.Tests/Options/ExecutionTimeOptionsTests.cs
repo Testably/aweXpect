@@ -103,6 +103,20 @@ public class ExecutionTimeOptionsTests
 	}
 
 	[Test]
+	[Arguments("AtLeast")]
+	[Arguments("AtMost")]
+	[Arguments("Between")]
+	[Arguments("Within")]
+	public async Task WhenALimitIsSpecified_ShouldReturnTheSameOptions(string option)
+	{
+		ExecutionTimeOptions sut = new();
+
+		ExecutionTimeOptions result = Specify(sut, option);
+
+		await That(result).IsSameAs(sut);
+	}
+
+	[Test]
 	public async Task WhenApproximatelyIsSpecifiedTwice_ShouldThrowInvalidOperationException()
 	{
 		ExecutionTimeOptions sut = new();
@@ -176,22 +190,12 @@ public class ExecutionTimeOptionsTests
 			.WithMessage($"{option} cannot be specified more than once.");
 	}
 
-	private static void Specify(ExecutionTimeOptions sut, string option)
-	{
-		switch (option)
+	private static ExecutionTimeOptions Specify(ExecutionTimeOptions sut, string option)
+		=> option switch
 		{
-			case "AtLeast":
-				sut.AtLeast(1.Seconds());
-				break;
-			case "AtMost":
-				sut.AtMost(1.Seconds());
-				break;
-			case "Between":
-				sut.Between(1.Seconds(), 2.Seconds());
-				break;
-			default:
-				sut.Within(1.Seconds());
-				break;
-		}
-	}
+			"AtLeast" => sut.AtLeast(1.Seconds()),
+			"AtMost" => sut.AtMost(1.Seconds()),
+			"Between" => sut.Between(1.Seconds(), 2.Seconds()),
+			_ => sut.Within(1.Seconds()),
+		};
 }

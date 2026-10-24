@@ -21,7 +21,7 @@ public class TimeToleranceTests
 	public async Task GetToleranceOrDefault_WhenToleranceIsSet_ShouldReturnTheTolerance()
 	{
 		TimeTolerance sut = new();
-		sut.SetTolerance(3.Seconds());
+		sut.Within(3.Seconds());
 		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(36.Hours());
 
 		TimeSpan result = sut.GetToleranceOrDefault();
@@ -35,7 +35,7 @@ public class TimeToleranceTests
 	public async Task ToDayString_WhenToleranceIsNotOneDay_ShouldUsePlural(int days)
 	{
 		TimeTolerance sut = new();
-		sut.SetTolerance(days.Days());
+		sut.Within(days.Days());
 
 		string result = sut.ToDayString();
 
@@ -81,7 +81,7 @@ public class TimeToleranceTests
 	public async Task ToDayString_WhenToleranceIsOneDay_ShouldUseSingular()
 	{
 		TimeTolerance sut = new();
-		sut.SetTolerance(1.Days());
+		sut.Within(1.Days());
 
 		string result = sut.ToDayString();
 
@@ -115,7 +115,7 @@ public class TimeToleranceTests
 	public async Task ToString_WhenToleranceIsSet_ShouldIgnoreTheDefault()
 	{
 		TimeTolerance sut = new();
-		sut.SetTolerance(TimeSpan.Zero);
+		sut.Within(TimeSpan.Zero);
 		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
 
 		string result = sut.ToString();
@@ -129,7 +129,7 @@ public class TimeToleranceTests
 	{
 		TimeTolerance sut = new();
 
-		void Act() => sut.SetTolerance(-1.Seconds());
+		void Act() => sut.Within(-1.Seconds());
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithMessage("*The tolerance must not be negative.*").AsWildcard();
@@ -139,9 +139,9 @@ public class TimeToleranceTests
 	public async Task WhenToleranceIsSetTwice_ShouldThrowInvalidOperationException()
 	{
 		TimeTolerance sut = new();
-		sut.SetTolerance(1.Seconds());
+		sut.Within(1.Seconds());
 
-		void Act() => sut.SetTolerance(2.Seconds());
+		void Act() => sut.Within(2.Seconds());
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("Within cannot be specified more than once.")
@@ -154,7 +154,7 @@ public class TimeToleranceTests
 		TimeTolerance sut = new();
 		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
 
-		void Act() => sut.SetTolerance(1.Seconds());
+		void Act() => sut.Within(1.Seconds());
 
 		await That(Act).DoesNotThrow()
 			.Because("a customized default is not an explicit tolerance");
@@ -166,9 +166,19 @@ public class TimeToleranceTests
 	{
 		TimeTolerance sut = new();
 
-		void Act() => sut.SetTolerance(TimeSpan.Zero);
+		void Act() => sut.Within(TimeSpan.Zero);
 
 		await That(Act).DoesNotThrow();
 		await That(sut.Tolerance).IsEqualTo(TimeSpan.Zero);
+	}
+
+	[Test]
+	public async Task Within_ShouldReturnTheSameTolerance()
+	{
+		TimeTolerance sut = new();
+
+		TimeTolerance result = sut.Within(1.Seconds());
+
+		await That(result).IsSameAs(sut);
 	}
 }

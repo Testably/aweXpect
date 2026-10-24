@@ -17,7 +17,7 @@ public class TriggerEventFilter
 	///     Filters the event parameters using the <paramref name="predicate" />.
 	///     The <paramref name="predicateExpression" /> is used in the expectation string.
 	/// </summary>
-	public void AddPredicate(Func<object?[], bool> predicate, string predicateExpression)
+	public TriggerEventFilter AddPredicate(Func<object?[], bool> predicate, string predicateExpression)
 	{
 		// ReSharper disable once LocalizableElement
 		_ = predicate ?? throw Tracing.WriteException(
@@ -30,6 +30,7 @@ public class TriggerEventFilter
 
 		_toString.Append(predicateExpression);
 		(_predicates ??= []).Add(predicate);
+		return this;
 	}
 
 	/// <summary>

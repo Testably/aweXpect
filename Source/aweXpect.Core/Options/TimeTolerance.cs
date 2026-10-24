@@ -30,11 +30,12 @@ public class TimeTolerance
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="tolerance" /> is negative.</exception>
 	/// <exception cref="InvalidOperationException">A tolerance is already set.</exception>
-	public virtual void SetTolerance(TimeSpan tolerance)
+	public virtual TimeTolerance Within(TimeSpan tolerance)
 	{
 		ToleranceHelpers.ThrowIfInvalid(tolerance);
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Tolerance is not null, "Within");
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Tolerance is not null, nameof(Within));
 		Tolerance = tolerance;
+		return this;
 	}
 
 	/// <summary>

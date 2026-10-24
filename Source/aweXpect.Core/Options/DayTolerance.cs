@@ -29,14 +29,14 @@ public sealed class DayTolerance : TimeTolerance
 	///     A negative or repeated tolerance is left to the base class, so that its exception takes precedence, and a
 	///     rejected tolerance is never stored.
 	/// </remarks>
-	public override void SetTolerance(TimeSpan tolerance)
+	public override TimeTolerance Within(TimeSpan tolerance)
 	{
 		if (tolerance >= TimeSpan.Zero && Tolerance is null)
 		{
 			ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance);
 		}
 
-		base.SetTolerance(tolerance);
+		return base.Within(tolerance);
 	}
 
 	/// <inheritdoc cref="TimeTolerance.ToDayString()" />

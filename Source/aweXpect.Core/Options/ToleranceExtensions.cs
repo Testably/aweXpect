@@ -32,7 +32,7 @@ public static class ToleranceExtensions
 		where TNumber : struct, IComparable<TNumber>
 #endif
 	{
-		result.Options.SetTolerance(tolerance);
+		result.Options.Within(tolerance);
 		return (TSelf)result;
 	}
 
@@ -93,7 +93,7 @@ public static class ToleranceExtensions
 	public static TResult Within<TResult>(this TResult result, TimeSpan tolerance)
 		where TResult : IOptionsProvider<TimeTolerance>
 	{
-		result.Options.SetTolerance(tolerance);
+		result.Options.Within(tolerance);
 		return result;
 	}
 

@@ -18,16 +18,10 @@ public class CollectionIndexOptions
 	public IMatch Match { get; private set; } = DefaultMatch;
 
 	/// <summary>
-	///     Sets the object to verify the index match.
-	/// </summary>
-	public void SetMatch(IMatch match)
-		=> Match = match;
-
-	/// <summary>
 	///     Sets the object of the option named <paramref name="optionName" /> to verify the index match.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">An index is already specified.</exception>
-	public void SetMatch(IMatch match, string optionName)
+	public CollectionIndexOptions SetMatch(IMatch match, string optionName)
 		=> SetIndex(match, optionName);
 
 	/// <summary>
@@ -35,7 +29,7 @@ public class CollectionIndexOptions
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
 	/// <exception cref="InvalidOperationException">An index is already specified.</exception>
-	public void AtIndex(int index)
+	public CollectionIndexOptions AtIndex(int index)
 		=> SetIndex(new AtIndexMatch(index), nameof(AtIndex));
 
 	/// <summary>
@@ -44,7 +38,7 @@ public class CollectionIndexOptions
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
 	/// <exception cref="InvalidOperationException">An index is already specified.</exception>
-	public void AtIndexFromEnd(int index)
+	public CollectionIndexOptions AtIndexFromEnd(int index)
 		=> SetIndex(new AtIndexMatch(index).FromEnd(), nameof(AtIndexFromEnd));
 
 	/// <summary>
@@ -72,11 +66,12 @@ public class CollectionIndexOptions
 			_ => false,
 		};
 
-	private void SetIndex(IMatch match, string option)
+	private CollectionIndexOptions SetIndex(IMatch match, string option)
 	{
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_indexOption, option);
 		_indexOption = option;
 		Match = match;
+		return this;
 	}
 
 	private sealed class AtIndexMatch : IMatchFromBeginning

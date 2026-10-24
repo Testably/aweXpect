@@ -351,6 +351,30 @@ public class QuantifierTests
 	}
 
 	[Test]
+	[Arguments("AtLeast")]
+	[Arguments("AtMost")]
+	[Arguments("Between")]
+	[Arguments("Exactly")]
+	[Arguments("LessThan")]
+	[Arguments("MoreThan")]
+	public async Task Setter_ShouldReturnTheSameQuantifier(string method)
+	{
+		Quantifier sut = new();
+
+		Quantifier result = method switch
+		{
+			"AtLeast" => sut.AtLeast(1),
+			"AtMost" => sut.AtMost(1),
+			"Between" => sut.Between(1, 2),
+			"Exactly" => sut.Exactly(1),
+			"LessThan" => sut.LessThan(1),
+			_ => sut.MoreThan(1),
+		};
+
+		await That(result).IsSameAs(sut);
+	}
+
+	[Test]
 	[Arguments(2, "fewer than twice")]
 	[Arguments(3, "fewer than 3 times")]
 	public async Task ToString_LessThan_ShouldSayFewerThan(int maximum, string expected)

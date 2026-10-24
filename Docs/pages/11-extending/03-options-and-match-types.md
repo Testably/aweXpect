@@ -61,6 +61,13 @@ own results: throw it with `Tracing.WriteException` at the second call, worded l
 `WithTitle cannot be specified more than once.` or `AtMost cannot be combined with AtLeast.`. An expectation that
 already sets an option itself, e.g. `StartsWith` the match type, returns a result that does not offer it again.
 
+The options objects of `aweXpect.Core` belong to a single expectation and are changed in place. You can also call
+their methods directly, e.g. in an option of your own: each method that sets an option returns the options object, so
+that calls chain, e.g. `quantifier.AtLeast(2)`, and has the name of the option that the caller writes, e.g. `Within` on
+a `TimeTolerance`. The hooks for a strategy of your own are named `Set…` and take the name of your option, e.g.
+`SetMatchType(matchType, nameof(ByTitle))`, or `SetMatch(match, nameof(AtTrackNumber))` on the
+`CollectionIndexOptions`, so that a second call or a conflicting option throws with that name.
+
 In the constraint, the `StringEqualityOptions` also write the texts for every match type: `GetExpectation(expected,
 grammars)` the expectation and `GetExtendedFailure(it, grammars, actual, expected)` the result, e.g. "it was "Yesterday",
 which differs …". When the string is a member of the subject, `GetExtendedMemberFailure(it, "title", grammars, actual,
