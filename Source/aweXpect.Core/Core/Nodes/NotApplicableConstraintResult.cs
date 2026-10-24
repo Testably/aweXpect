@@ -24,6 +24,13 @@ internal sealed class NotApplicableConstraintResult(Action<StringBuilder, string
 	{
 	}
 
+	/// <inheritdoc cref="ConstraintResult.IsExpectationOnly" />
+	/// <remarks>
+	///     The expectations were not applied, so they must not turn an expectation that fails both ways into an undecided
+	///     one under negation.
+	/// </remarks>
+	internal override bool IsExpectationOnly => true;
+
 	/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
 	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 	{

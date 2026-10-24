@@ -49,9 +49,9 @@ public sealed partial class ThatXDocument
 					.WithMessage("""
 					             Expected that document
 					             does not have a value which is equal to "Let It Be",
-					             but it could not be verified, because the expectation did not decide its outcome
+					             but it had no root element
 					             """)
-					.Because("aweXpect.Core leaves a negated member expectation undecided when the subject fails both ways");
+					.Because("the expectations on the value are not applied when the document has no root element");
 			}
 
 			[Test]

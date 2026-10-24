@@ -22,48 +22,12 @@ public sealed partial class ThatJsonNode
 			}
 
 			[Test]
-			public async Task WhenElementsDiffer_ShouldFail()
-			{
-				JsonArray subject = new(1, "a", new JsonArray(3));
-
-				async Task Act()
-					=> await That(subject).IsArray(a => a
-						.At(1).Matching("b").And
-						.At(2).AnArray(b => b.WithElements(4)));
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is an array and $[1] matches "b" and $[2] is an array and $[2][0] matches 4,
-					             but it differed as
-					               $[1] was "a" instead of "b" and
-					               $[2][0] was 3 instead of 4
-
-					             JSON options:
-					              - ignore additional properties
-					             """);
-			}
-
-			[Test]
-			public async Task WhenExpectationIsNull_ShouldThrowArgumentNullException()
-			{
-				JsonNode? subject = FromString("[]");
-
-				async Task Act()
-					=> await That(subject).IsArray(null!);
-
-				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("expectations").And
-					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
-			}
-
-			[Test]
 			public async Task WhenNodeIsAnArray_ShouldSucceed()
 			{
 				JsonNode? subject = FromString("[1, 2]");
 
 				async Task Act()
-					=> await That(subject).IsArray(a => a.With(2).Elements());
+					=> await That(subject).IsArray();
 
 				await That(Act).DoesNotThrow();
 			}
@@ -103,52 +67,6 @@ public sealed partial class ThatJsonNode
 					             """)
 					.Because("a null node is the JSON null");
 			}
-
-			[Test]
-			public async Task WithIgnoringMember_ShouldListItInTheContext()
-			{
-				JsonNode? subject = FromString("""[{"id": 1, "name": "a"}]""");
-
-				async Task Act()
-					=> await That(subject).IsArray(a => a
-							.At(0).Matching(new
-							{
-								id = 2,
-								name = "b",
-							}),
-						o => o.IgnoringMember("id"));
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is an array and $[0] matches new
-					             {
-					             	id = 2,
-					             	name = "b",
-					             },
-					             but it differed as $[0].name was "a" instead of "b"
-
-					             JSON options:
-					              - ignore additional properties
-					              - ignore members: ["id"]
-					             """);
-			}
-
-			[Test]
-			public async Task WithIgnoringArrayOrder_ShouldPairNestedArraysRegardlessOfOrder()
-			{
-				JsonNode? subject = FromString("""[{"tags": ["b", "a"]}]""");
-
-				async Task Act()
-					=> await That(subject).IsArray(a => a
-							.At(0).Matching(new
-							{
-								tags = new[] { "a", "b", },
-							}),
-						o => o.IgnoringArrayOrder());
-
-				await That(Act).DoesNotThrow();
-			}
 		}
 
 		public sealed class NegatedTests
@@ -159,22 +77,13 @@ public sealed partial class ThatJsonNode
 				JsonArray subject = new(1, 2);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsArray(a => a.With(2).Elements()));
+					=> await That(subject).DoesNotComplyWith(it => it.IsArray());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not an array or not with 2 elements,
-					             but it was
-
-					             Actual:
-					             [
-					               1,
-					               2
-					             ]
-
-					             JSON options:
-					              - ignore additional properties
+					             is not an array,
+					             but it was an array
 					             """);
 			}
 

@@ -70,5 +70,134 @@ public sealed partial class ThatJsonNode
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class WithExpectationsTests
+		{
+			[Test]
+			public async Task WhenExpectationsAreNotMet_ShouldFail()
+			{
+				JsonValue subject = JsonValue.Create(42.5);
+
+				async Task Act()
+					=> await That(subject).IsNumber(n => n.IsLessThan(10));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a number which is less than 10.0,
+					             but it was 42.5, which differs by 32.5
+					             """);
+			}
+
+			[Test]
+			public async Task WhenExpectationsAreNull_ShouldThrowArgumentNullException()
+			{
+				JsonValue subject = JsonValue.Create(1);
+
+				async Task Act()
+					=> await That(subject).IsNumber(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonNode? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsNumber(n => n.IsLessThan(10));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a number which is less than 10.0,
+					             but it was null
+					             """);
+			}
+		}
+
+		public sealed class OfTypeTests
+		{
+			[Test]
+			public async Task WhenExpectationsAreMet_ShouldSucceed()
+			{
+				JsonNode? subject = FromString("{\"durationSeconds\": 243}");
+
+				async Task Act()
+					=> await That(subject).HasProperty("durationSeconds", d => d.IsNumber<long>(n => n.IsEqualTo(243)));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenExpectationsAreNull_ShouldThrowArgumentNullException()
+			{
+				JsonValue subject = JsonValue.Create(1);
+
+				async Task Act()
+					=> await That(subject).IsNumber<int>(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenNodeHoldsAnotherNumberType_ShouldReadTheValue()
+			{
+				JsonValue subject = JsonValue.Create(5L);
+
+				async Task Act()
+					=> await That(subject).IsNumber<int>(n => n.IsEqualTo(5));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNumberDoesNotFit_ShouldFail()
+			{
+				JsonValue subject = JsonValue.Create(1.5);
+
+				async Task Act()
+					=> await That(subject).IsNumber<int>();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an int,
+					             but it was 1.5, which is not an int
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonNode? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsNumber<int>();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an int,
+					             but it was null
+					             """);
+			}
+
+			[Test]
+			public async Task WhenTypeIsNotSupported_ShouldThrowNotSupportedException()
+			{
+				JsonValue subject = JsonValue.Create(1);
+
+				async Task Act()
+					=> await That(subject).IsNumber<bool>();
+
+				await That(Act).Throws<NotSupportedException>()
+					.WithMessage(
+						"The number type bool is not supported. Use byte, sbyte, short, ushort, int, uint, long, ulong, float, double or decimal.");
+			}
+		}
 	}
 }

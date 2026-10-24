@@ -168,6 +168,23 @@ public sealed class ResultContextCollectorTests
 	}
 
 	[Test]
+	[Arguments("Inner.Second", "Inner.Second")]
+	[Arguments("Inner[1]", "Inner[1]")]
+	[Arguments("InnerSecond", "Inner.InnerSecond")]
+	public async Task NestedMemberWithFullName_ShouldOnlyReplaceThePathItContinues(string name, string expectedLabel)
+	{
+		Outer subject = new(new Pair(1, 2));
+
+		async Task Act()
+			=> await That(subject).WhoseNamed("Inner", x => x.Inner, inner => inner
+				.WhoseNamed(name, x => x.Second, second => second.MatchesValue("Value", 3)));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage($"*Value ({expectedLabel}):*2").AsWildcard()
+			.Because("a name that already continues the path of its parent with '.' or '[' does not repeat it");
+	}
+
+	[Test]
 	public async Task Or_WhenBothPartsFail_ShouldShowBothContexts()
 	{
 		Pair subject = new(1, 2);
@@ -282,6 +299,21 @@ internal sealed class CallCounter
 
 internal static class ResultContextCollectorTestExtensions
 {
+	/// <summary>
+	///     Verifies the <paramref name="expectations" /> on the member that the <paramref name="accessor" /> selects, which
+	///     is called <paramref name="name" />.
+	/// </summary>
+	public static AndOrResult<TSource, IThat<TSource>> WhoseNamed<TSource, TMember>(this IThat<TSource> subject,
+		string name, Func<TSource, TMember> accessor, Action<IThat<TMember>> expectations)
+	{
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		expectationBuilder
+			.ForMember(MemberAccessor<TSource, TMember>.FromFuncWithName(accessor, name),
+				(member, stringBuilder) => stringBuilder.Append("whose ").Append(member).Append(' '))
+			.AddExpectations(e => expectations(new ThatSubject<TMember>(e)));
+		return new AndOrResult<TSource, IThat<TSource>>(expectationBuilder, subject);
+	}
+
 	/// <summary>
 	///     Verifies that the subject is equal to the <paramref name="expected" /> value and adds the subject as context
 	///     with the <paramref name="title" />.

@@ -2,200 +2,190 @@
 
 Describes the possible expectations for the kind and the content of a `JsonElement` or a [`JsonNode`](#jsonnode).
 
-| Expectation                               | Negated | Summary                                                    |
-|-------------------------------------------|---------|------------------------------------------------------------|
-| [`IsObject`](#isobject)                   |         | a JSON object, optionally with expectations on it          |
-| [`IsObject().WhoseProperties`](#isobject) |         | collection expectations on the properties of a JSON object |
-| [`IsArray`](#isarray)                     |         | a JSON array, optionally with expectations on it           |
-| [`IsArray().WhoseElements`](#isarray)     |         | collection expectations on the elements of a JSON array    |
-| [`IsString`](#value-kinds)                |         | a JSON string                                              |
-| [`IsNumber`](#value-kinds)                |         | a JSON number                                              |
-| [`IsBoolean`](#value-kinds)               |         | a JSON boolean, i.e. `true` or `false`                     |
-| [`IsNull`](#value-kinds)                  |         | the JSON value `null`, only for a `JsonElement`            |
+| Expectation                                         | Negated               | Summary                                                          |
+|-----------------------------------------------------|-----------------------|------------------------------------------------------------------|
+| [`HasProperty`](#properties)                        | `DoesNotHaveProperty` | a JSON object with the property, optionally with expectations    |
+| [`HasValueAt`](#values-at-a-path)                   |                       | a value at a path, which satisfies the expectations              |
+| [`HasElementAt`](#elements)                         |                       | a JSON array with an element at the index, which satisfies them  |
+| [`IsObject`](#isobject)                             |                       | a JSON object                                                    |
+| [`IsObject().WhoseProperties`](#isobject)           |                       | collection expectations on the properties of a JSON object       |
+| [`IsArray`](#isarray)                               |                       | a JSON array                                                     |
+| [`IsArray().WhoseElements`](#isarray)               |                       | collection expectations on the elements of a JSON array          |
+| [`IsString`](#value-kinds)                          |                       | a JSON string, optionally with expectations on its value         |
+| [`IsNumber`](#value-kinds)                          |                       | a JSON number, optionally with expectations on its value         |
+| [`IsNumber<TNumber>`](#numbers)                     |                       | a JSON number that fits into the number type                     |
+| [`IsBoolean`](#value-kinds)                         |                       | a JSON boolean, i.e. `true` or `false`, optionally with its value |
+| [`IsNull`](#value-kinds)                            |                       | the JSON value `null`, only for a `JsonElement`                  |
 
-## IsObject
+## Properties
 
-You can verify that a `JsonElement` is a JSON object that satisfies some expectations:
+You can verify that a `JsonElement` is a JSON object with or without a property. The expectations on the value of a
+property are the ones of a `JsonElement`, so all expectations on this page are available for it, and the
+[typed values](#value-kinds) give access to all expectations of aweXpect:
 
 ```csharp
-JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "artist": "The Beatles", "durationSeconds": 243}""").RootElement;
 
-await Expect.That(track).IsObject(o => o
-    .With("title").Matching("Let It Be").And
-    .With("artist").Matching("The Beatles"));
+await Expect.That(track)
+    .HasProperty("title", t => t.IsString(s => s.StartsWith("Let"))).And
+    .HasProperty("durationSeconds", d => d.IsNumber<int>(n => n.IsBetween(120).And(600))).And
+    .DoesNotHaveProperty("password");
 ```
 
-With `.With("artist").Matching("The Rolling Stones")` instead, the expectation would fail with:
+The failure names the value by its JSON path. If the title was "Yesterday", the expectation would fail with:
 
 ```text title="Failure message"
 Expected that track
-is an object and $.title matches "Let It Be" and $.artist matches "The Rolling Stones",
-but it differed as $.artist was "The Beatles" instead of "The Rolling Stones"
-
-JSON options:
- - ignore additional properties
-```
-
-`Matching(…)` also accepts `It.Is…` expectations, e.g. to verify a value with the string expectations of aweXpect:
-
-```csharp
-JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
-
-await Expect.That(track).IsObject(o => o
-    .With("title").Matching(It.Is<string>().That.StartsWith("Let")));
-```
-
-If the title was "Yesterday" instead, the expectation would fail with:
-
-```text title="Failure message"
-Expected that track
-is an object and $.title matches It.Is<string>().That.StartsWith("Let"),
-but it differed as $.title was "Yesterday", which differs at index 0:
+has property "title" which is a string which starts with "Let" and has property "durationSeconds" which is an int which is between 120 and 600 and does not have property "password",
+but $.title was "Yesterday", which differs at index 0:
    ↓ (actual)
   "Yesterday"
   "Let"
    ↑ (expected prefix)
-
-JSON options:
- - ignore additional properties
 ```
 
-You can verify that a property is another object, recursively:
+Every failing part of a combined expectation is reported. The expectations on a property are only verified when the
+property exists, otherwise the failure says that it did not exist, e.g. `but property $.title did not exist`. With
+`.DoesNotHaveProperty("artist")`, the track would fail with:
 
-```csharp
-JsonElement track = JsonDocument.Parse(
-    """{"title": "Let It Be", "album": {"title": "Let It Be", "year": 1970}}""").RootElement;
-
-await Expect.That(track).IsObject(o => o
-    .With("album").AnObject(album => album
-        .With("year").Matching(1970)));
+```text title="Failure message"
+Expected that track
+has property "title" and does not have property "artist",
+but it had property "artist" with "The Beatles"
 ```
 
-You can verify that a property is an array:
+The name is taken literally, so that names like `"@odata.context"` or `"user.name"` can be addressed. A subject that is
+no JSON object fails `HasProperty` and `DoesNotHaveProperty` alike, e.g. with `but it was an array`.
+
+The expectations can be nested, and the JSON path in the failure continues with each level:
 
 ```csharp
 JsonElement album = JsonDocument.Parse(
-    """{"title": "Abbey Road", "tracks": ["Come Together", "Something"]}""").RootElement;
+    """{"artist": {"name": "The Beatles", "origin": {"city": "Liverpool"}}}""").RootElement;
 
-await Expect.That(album).IsObject(o => o
-    .With("tracks").AnArray(tracks => tracks.WithElements("Come Together", "Something")));
+await Expect.That(album).HasProperty("artist", a => a
+    .HasProperty("origin", o => o.Matches(new { city = "Liverpool" })));
 ```
 
-You can address a nested value with a path relative to the object, instead of nesting `AnObject(…)` and
-`AnArray(…)`. The path is a property name, followed by any number of `.name` or zero-based `[index]` segments, and
+If the city was "London" instead, the expectation would fail with:
+
+```text title="Failure message"
+Expected that album
+has property "artist" which has property "origin" which matches new { city = "Liverpool" },
+but $.artist.origin differed as $.artist.origin.city was "London" instead of "Liverpool"
+
+JSON options ($.artist.origin):
+ - ignore additional properties
+```
+
+The paths of a nested `Matches` continue the path in the same way, also for the members to ignore, e.g.
+`Ignoring(path => path == "$.artist.origin.city")`.
+
+### `null` and missing properties
+
+A property with the value `null` exists, so `HasProperty` accepts it and `DoesNotHaveProperty` fails for it. Verify the
+value with `IsNull()`:
+
+```csharp
+JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "label": null}""").RootElement;
+
+await Expect.That(track).HasProperty("label", l => l.IsNull()).And.DoesNotHaveProperty("legacyId");
+```
+
+With `TreatingNullAsAbsent()`, a property with the value `null` counts as absent, so `DoesNotHaveProperty` accepts it
+and `HasProperty` fails for it, also on the way to a [value at a path](#values-at-a-path):
+
+```csharp
+JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "label": null}""").RootElement;
+
+await Expect.That(track).DoesNotHaveProperty("label").TreatingNullAsAbsent();
+```
+
+Without the option, the expectation would fail with:
+
+```text title="Failure message"
+Expected that track
+does not have property "label",
+but it had property "label" with <null>
+```
+
+## Values at a path
+
+You can verify a nested value with a path relative to the subject, instead of nesting `HasProperty` and
+`HasElementAt`. The path is a property name, followed by any number of `.name` or zero-based `[index]` segments, and
 is written without a leading `$`. Wildcards, filters and recursive descent are not supported, and property names that
-contain `.`, `[` or `]` can only be addressed with `With(…)`. The addressed value supports the same expectations as
-`With(…)`:
+contain `.`, `[` or `]` can only be addressed with `HasProperty`:
 
 ```csharp
 JsonElement album = JsonDocument.Parse(
     """{"artist": {"origin": {"city": "Liverpool"}}, "tracks": [{"title": "Come Together"}]}""").RootElement;
 
-await Expect.That(album).IsObject(o => o
-    .At("artist.origin.city").Matching("Liverpool").And
-    .At("tracks[0].title").AString());
+await Expect.That(album)
+    .HasValueAt("artist.origin.city", c => c.IsString(s => s.IsEqualTo("Liverpool"))).And
+    .HasValueAt("tracks[0].title", t => t.IsString());
 ```
 
 If the artist had no origin, the expectation would fail with the first segment that could not be reached:
 
 ```text title="Failure message"
 Expected that album
-is an object and $.artist.origin.city matches "Liverpool" and $.tracks[0].title is a string,
-but it differed as property $.artist.origin did not exist
-
-JSON options:
- - ignore additional properties
+has value at "artist.origin.city" which is a string which is equal to "Liverpool" and has value at "tracks[0].title" which is a string,
+but property $.artist.origin did not exist
 ```
 
-You can verify the kind of a property value without pinning the value itself with `AString()`, `ANumber()`,
-`ABoolean()` (`true` or `false`) and `Null()`. They are also available for array elements, e.g. `.At(0).AString()`:
+A value on the way that has another kind than the next segment requires fails with e.g.
+`but $.artist was a string instead of an object`. `TreatingNullAsAbsent()` is available like for
+[`HasProperty`](#null-and-missing-properties).
+
+## Elements
+
+You can verify the element at a zero-based index of a JSON array:
 
 ```csharp
-JsonElement track = JsonDocument.Parse(
-    """{"title": "Let It Be", "durationSeconds": 243, "explicit": false, "label": null}""").RootElement;
+JsonElement tracks = JsonDocument.Parse("""[{"title": "Let It Be"}, {"title": "Yesterday"}]""").RootElement;
 
-await Expect.That(track).IsObject(o => o
-    .With("title").AString().And
-    .With("durationSeconds").ANumber().And
-    .With("explicit").ABoolean().And
-    .With("label").Null());
+await Expect.That(tracks).HasElementAt(0, t => t.HasProperty("title", p => p.IsString(s => s.StartsWith("Let"))));
 ```
 
-If the duration was the string `"243"` instead, the expectation would fail with:
+If the first track was "Yesterday", the expectation would fail with:
 
 ```text title="Failure message"
-Expected that track
-is an object and $.title is a string and $.durationSeconds is a number and $.explicit is a boolean and $.label is null,
-but it differed as $.durationSeconds was a string
-
-JSON options:
- - ignore additional properties
+Expected that tracks
+has element at index 0 which has property "title" which is a string which starts with "Let",
+but $[0].title was "Yesterday", which differs at index 0:
+   ↓ (actual)
+  "Yesterday"
+  "Let"
+   ↑ (expected prefix)
 ```
 
-You can verify the number of properties in a JSON object:
+An index beyond the end fails with e.g. `but index $[2] did not exist`, without verifying the expectations. To verify
+the number of elements or the elements regardless of their position, use [`WhoseElements`](#isarray), and to match
+the elements directly, use [`Matches`](./02-matching.md) with an expected array, e.g.
+`Matches(new[] { "Let It Be", "Yesterday" })`.
+
+## IsObject
+
+You can verify that a `JsonElement` is a JSON object:
 
 ```csharp
 JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
 
-await Expect.That(track).IsObject(o => o.With(2).Properties());
-```
-
-You can verify that a JSON object does not contain a property. A property with the value `null` exists and fails
-the expectation, unless `TreatingNullAsAbsent()` is set:
-
-```csharp
-JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
-
-await Expect.That(track).IsObject(o => o
-    .With("title").Matching("Let It Be").And
-    .Without("label"));
-```
-
-With `.Without("artist")` instead, the expectation would fail with:
-
-```text title="Failure message"
-Expected that track
-is an object and $.title matches "Let It Be" and $.artist does not exist,
-but it differed as $.artist was "The Beatles"
-
-JSON options:
- - ignore additional properties
-```
-
-With `TreatingNullAsAbsent()`, a property with the value `null` counts as absent for the whole expectation:
-`Without` accepts it, `With(…).Matching(null)` also accepts a missing property, every other expectation on the
-property fails as if it did not exist, and `With(…).Properties()` does not count it:
-
-```csharp
-JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "label": null}""").RootElement;
-
-await Expect.That(track).IsObject(o => o
-    .With("title").Matching("Let It Be").And
-    .Without("label"),
-    o => o.TreatingNullAsAbsent());
-```
-
-With `.With("label").Matching("Apple")` instead of `.Without("label")`, the expectation would fail with:
-
-```text title="Failure message"
-Expected that track
-is an object and $.title matches "Let It Be" and $.label matches "Apple",
-but it differed as property $.label did not exist
-
-JSON options:
- - ignore additional properties
- - treat null as absent
+await Expect.That(track).IsObject();
 ```
 
 You can verify the properties of an object regardless of their name with `WhoseProperties`. Like
 [`WhoseElements`](#isarray) for arrays, it provides all
 [collection expectations](https://docs.testably.org/aweXpect/collections/items) of aweXpect, here on the
-`JsonProperty` items in the order of the document. A name that occurs more than once in the object is kept as often as
-it occurs:
+`JsonProperty` items in the order of the document, e.g. `HasCount(2)` for the number of properties. A name that occurs
+more than once in the object is kept as often as it occurs:
 
 ```csharp
 JsonElement track = JsonDocument.Parse(
     """{"title": "Let It Be", "artist": "The Beatles", "album": "Let It Be"}""").RootElement;
+
+await Expect.That(track).IsObject().WhoseProperties.HasCount(3);
 
 await Expect.That(track).IsObject().WhoseProperties
     .All().Satisfy(p => p.Value.ValueKind == JsonValueKind.String);
@@ -207,7 +197,7 @@ await Expect.That(track).IsObject().WhoseProperties
     .None().Satisfy(p => p.Name.StartsWith("_"));
 ```
 
-If the track also had `"durationSeconds": 243`, the first expectation would fail with:
+If the track also had `"durationSeconds": 243`, the second expectation would fail with:
 
 ```text title="Failure message"
 Expected that track
@@ -236,73 +226,12 @@ A `JsonProperty` has no value equality, so verify the properties with predicates
 
 ## IsArray
 
-You can verify that a `JsonElement` is a JSON array that satisfies some expectations:
+You can verify that a `JsonElement` is a JSON array:
 
 ```csharp
 JsonElement titles = JsonDocument.Parse("""["Let It Be", "Yesterday"]""").RootElement;
 
-await Expect.That(titles).IsArray(a => a
-    .At(0).Matching("Let It Be").And
-    .At(1).Matching("Yesterday"));
-```
-
-You can verify the number of elements in a JSON array:
-
-```csharp
-JsonElement titles = JsonDocument.Parse("""["Let It Be", "Yesterday"]""").RootElement;
-
-await Expect.That(titles).IsArray(a => a.With(2).Elements());
-```
-
-You can match the expected elements of an array directly:
-
-```csharp
-JsonElement titles = JsonDocument.Parse("""["Let It Be", "Yesterday"]""").RootElement;
-
-await Expect.That(titles).IsArray(a => a.WithElements("Let It Be", "Yesterday"));
-```
-
-With `WithElements("Let It Be", "Hey Jude")` instead, the expectation would fail with:
-
-```text title="Failure message"
-Expected that titles
-is an array and $[0] matches "Let It Be" and $[1] matches "Hey Jude",
-but it differed as $[1] was "Yesterday" instead of "Hey Jude"
-
-JSON options:
- - ignore additional properties
-```
-
-You can match nested arrays recursively (use `null` to skip an element):
-
-```csharp
-JsonElement sides = JsonDocument.Parse(
-    """[["Come Together", "Something"], ["Here Comes the Sun"], ["The End", "Her Majesty"]]""").RootElement;
-
-await Expect.That(sides).IsArray(a => a
-    .WithArrays(
-        side => side.WithElements("Come Together", "Something"),
-        null,
-        side => side.At(1).Matching("Her Majesty")));
-```
-
-You can match objects in an array recursively (use `null` to skip an element):
-
-```csharp
-JsonElement tracks = JsonDocument.Parse(
-    """
-    [
-      {"title": "Let It Be"},
-      {"title": "Yesterday"},
-      {"title": "Hey Jude", "durationSeconds": 431}
-    ]
-    """).RootElement;
-
-await Expect.That(tracks).IsArray(a => a
-    .WithObjects(
-        track => track.With("title").Matching("Let It Be"),
-        null,
-        track => track.With(2).Properties()));
+await Expect.That(titles).IsArray();
 ```
 
 You can verify the elements of an array regardless of their position with `WhoseElements`. It provides all
@@ -325,7 +254,7 @@ await Expect.That(tracks).IsArray().WhoseElements
     .All().ComplyWith(t => t.Matches(new { artist = "The Beatles" }));
 
 await Expect.That(tracks).IsArray().WhoseElements
-    .AtLeast(2).ComplyWith(t => t.IsObject(o => o.With("durationSeconds").ANumber()));
+    .AtLeast(2).ComplyWith(t => t.HasProperty("durationSeconds", d => d.IsNumber()));
 
 await Expect.That(tracks).IsArray().WhoseElements
     .Contains([t => t.Matches(new { title = "Hey Jude" })]);
@@ -387,23 +316,68 @@ is a number,
 but it was a string
 ```
 
+`IsString`, `IsNumber` and `IsBoolean` also accept expectations on the value as a `string`, a `double` or a `bool`, so
+that all expectations of aweXpect apply to it, e.g. string options or numeric tolerances:
+
+```csharp
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "rating": 4.5, "explicit": false}""").RootElement;
+
+await Expect.That(track)
+    .HasProperty("title", t => t.IsString(s => s.StartsWith("let").IgnoringCase())).And
+    .HasProperty("rating", r => r.IsNumber(n => n.IsEqualTo(4.5).Within(0.1))).And
+    .HasProperty("explicit", e => e.IsBoolean(b => b.IsFalse()));
+```
+
+If the rating was 4.7, the expectation would fail with:
+
+```text title="Failure message"
+Expected that track
+has property "title" which is a string which starts with "let" ignoring case and has property "rating" which is a number which is equal to 4.5 ± 0.1 and has property "explicit" which is a boolean which is False,
+but $.rating was 4.7, which differs by 0.2
+```
+
 :::note
 For a nullable `JsonElement?`, `IsNull()` is the general expectation of aweXpect that verifies that the subject itself
 is `null`, so `IsString()`, `IsNumber()` and `IsBoolean()` are available, but not a JSON-specific `IsNull()`.
 :::
 
+### Numbers
+
+`IsNumber<TNumber>()` verifies that a number fits into the number type, e.g. that it is an integer within the range of
+an `int`, and `IsNumber<TNumber>(n => …)` verifies the value as this type. The supported types are `byte`, `sbyte`,
+`short`, `ushort`, `int`, `uint`, `long`, `ulong`, `float`, `double` and `decimal`; any other type throws a
+`NotSupportedException`. `IsNumber(n => …)` without a type argument verifies the number as `double`:
+
+```csharp
+JsonElement track = JsonDocument.Parse("""{"durationSeconds": 243, "price": 9.99}""").RootElement;
+
+await Expect.That(track)
+    .HasProperty("durationSeconds", d => d.IsNumber<long>(n => n.IsBetween(120).And(600))).And
+    .HasProperty("price", p => p.IsNumber<decimal>(n => n.IsEqualTo(9.99m)));
+```
+
+If the duration was `243.5`, `HasProperty("durationSeconds", d => d.IsNumber<int>())` would fail with:
+
+```text title="Failure message"
+Expected that track
+has property "durationSeconds" which is an int,
+but $.durationSeconds was 243.5, which is not an int
+```
+
 ## `JsonNode`
 
 A [`JsonNode`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonnode) and its subtypes
 `JsonObject`, `JsonArray` and `JsonValue`, nullable or not, have the same expectations as a `JsonElement`:
-[`Matches`, `MatchesExactly`](./02-matching.md), `IsObject` (with `WhoseProperties`), `IsArray` (with
-`WhoseElements`), `IsString`, `IsNumber` and `IsBoolean`, with the same options and failure messages:
+[`Matches`, `MatchesExactly`](./02-matching.md), `HasProperty`, `DoesNotHaveProperty`, `HasValueAt`, `HasElementAt`,
+`IsObject` (with `WhoseProperties`), `IsArray` (with `WhoseElements`), `IsString`, `IsNumber` and `IsBoolean`, with the
+same options and failure messages:
 
 ```csharp
 JsonNode? track = JsonNode.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""");
 
 await Expect.That(track).Matches(new { title = "Let It Be" });
-await Expect.That(track).IsObject(o => o.With("artist").Matching("The Beatles"));
+await Expect.That(track).HasProperty("artist", a => a.IsString(s => s.IsEqualTo("The Beatles")));
 
 JsonArray titles = new("Let It Be", "Yesterday");
 
@@ -423,7 +397,8 @@ The node is verified in the state it has when the expectation is awaited, so cha
 included.
 :::
 
-A `null` node is the JSON value `null`, as `JsonNode.Parse("null")` returns it. `Matches(null)` succeeds for it, while
+The expectations on a property, a value at a path or an element receive the node itself, e.g. for `IsSameAs(…)`. A
+`null` node is the JSON value `null`, as `JsonNode.Parse("null")` returns it. `Matches(null)` succeeds for it, while
 `IsObject()` would fail with:
 
 ```text title="Failure message"
@@ -432,8 +407,8 @@ is an object,
 but it was null
 ```
 
-Use the general `IsNull()` expectation of aweXpect to verify that a node is the JSON value `null`, so there is no
-JSON-specific `IsNull()` for a `JsonNode`.
+Use the general `IsNull()` expectation of aweXpect to verify that a node is the JSON value `null`, e.g.
+`HasProperty("label", l => l.IsNull())`, so there is no JSON-specific `IsNull()` for a `JsonNode`.
 
 ## Newtonsoft.Json
 

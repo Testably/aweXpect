@@ -98,5 +98,63 @@ public sealed partial class ThatJsonElement
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class WithExpectationsTests
+		{
+			[Test]
+			public async Task WhenExpectationsAreMet_ShouldSucceed()
+			{
+				JsonElement subject = FromString("false");
+
+				async Task Act()
+					=> await That(subject).IsBoolean(b => b.IsFalse());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenExpectationsAreNotMet_ShouldFail()
+			{
+				JsonElement subject = FromString("true");
+
+				async Task Act()
+					=> await That(subject).IsBoolean(b => b.IsFalse());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a boolean which is False,
+					             but it was True
+					             """);
+			}
+
+			[Test]
+			public async Task WhenExpectationsAreNull_ShouldThrowArgumentNullException()
+			{
+				JsonElement subject = FromString("true");
+
+				async Task Act()
+					=> await That(subject).IsBoolean(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenJsonIsNoBoolean_ShouldNotVerifyTheExpectations()
+			{
+				JsonElement subject = FromString("\"false\"");
+
+				async Task Act()
+					=> await That(subject).IsBoolean(b => b.IsFalse());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a boolean which is False,
+					             but it was a string
+					             """);
+			}
+		}
 	}
 }

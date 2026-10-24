@@ -551,6 +551,45 @@ public class ExpectationNodeTests
 	}
 
 	[Test]
+	[Arguments(Outcome.Failure)]
+	[Arguments(Outcome.FailureBothWays)]
+	public async Task AddMapping_WhenSubjectIsNullAndConstraintFails_ShouldOnlyReportTheConstraint(Outcome node1)
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(node1, "foo1", "bar1")));
+		node.AddMapping(MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length: "))
+			.AddConstraint(new NotEvaluatedConstraint<int>("foo2", "not foo2"));
+
+		ConstraintResult result = await node.IsMetBy<string?>(null, null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(node1);
+		await That(result.GetResultText()).IsEqualTo("bar1")
+			.Because("the failed constraint already describes the null subject in its own way");
+	}
+
+	[Test]
+	[Arguments(false)]
+	[Arguments(true)]
+	public async Task AddMapping_WhenValueHasOtherTypeAndConstraintFailsBothWays_ShouldFailBothWays(bool negate)
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyValueConstraint<string>(_
+			=> new DummyConstraintResult(Outcome.FailureBothWays, "foo1", "bar1")));
+		node.AddMapping(MemberAccessor<int, int>.FromFuncWithName(i => i * 2, " doubled: "))
+			.AddConstraint(new NotEvaluatedConstraint<int>("foo2", "not foo2"));
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+		if (negate)
+		{
+			result.Negate();
+		}
+
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays)
+			.Because("the expectations on the member were not applied, so they cannot leave the negation undecided");
+		await That(result.GetResultText()).IsEqualTo("bar1");
+	}
+
+	[Test]
 	public async Task AddMapping_WithCustomExpectationTextGenerator_ShouldUseIt()
 	{
 		ExpectationNode node = new();

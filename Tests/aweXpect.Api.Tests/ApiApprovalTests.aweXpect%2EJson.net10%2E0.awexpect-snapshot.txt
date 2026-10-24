@@ -10,14 +10,22 @@ namespace aweXpect
     }
     public static class ThatJsonElement
     {
+        public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> DoesNotHaveProperty(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string name) { }
+        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> HasElementAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, int index, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
+        public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> HasProperty(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string name) { }
+        public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> HasProperty(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string name, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
+        public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> HasValueAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string path, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
         public static aweXpect.Json.Results.IsArrayResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
-        public static aweXpect.Json.Results.IsArrayResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, System.Action<aweXpect.Json.IJsonArrayResult> expectations, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsBoolean(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsBoolean(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, System.Action<aweXpect.Core.IThatSubject<bool>> expectations) { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsNull(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsNumber(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsNumber(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, System.Action<aweXpect.Core.IThatSubject<double>> expectations) { }
+        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, System.Action<aweXpect.Core.IThatSubject<TNumber>> expectations) { }
         public static aweXpect.Json.Results.IsObjectResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsObject(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
-        public static aweXpect.Json.Results.IsObjectResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsObject(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, System.Action<aweXpect.Json.IJsonObjectResult> expectations, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsString(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsString(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, System.Action<aweXpect.Core.IThatSubject<string>> expectations) { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> Matches(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, object? expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> Matches<T>(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, System.Collections.Generic.IEnumerable<T> expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> MatchesExactly(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, object? expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
@@ -26,19 +34,35 @@ namespace aweXpect
     public static class ThatJsonNode
     {
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Json.Results.IsArrayResult<TNode, aweXpect.Core.IThat<TNode?>> IsArray<TNode>(this aweXpect.Core.IThat<TNode?> subject) where TNode : System.Text.Json.Nodes.JsonNode { }
+        public static aweXpect.Json.Results.JsonPropertyResult<TNode, aweXpect.Core.IThat<TNode?>> DoesNotHaveProperty<TNode>(this aweXpect.Core.IThat<TNode?> subject, string name) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Json.Results.IsArrayResult<TNode, aweXpect.Core.IThat<TNode?>> IsArray<TNode>(this aweXpect.Core.IThat<TNode?> subject, System.Action<aweXpect.Json.IJsonArrayResult> expectations, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) where TNode : System.Text.Json.Nodes.JsonNode { }
+        public static aweXpect.Results.AndOrResult<TNode, aweXpect.Core.IThat<TNode?>> HasElementAt<TNode>(this aweXpect.Core.IThat<TNode?> subject, int index, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.Nodes.JsonNode?>> expectations) where TNode : System.Text.Json.Nodes.JsonNode { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Json.Results.JsonPropertyResult<TNode, aweXpect.Core.IThat<TNode?>> HasProperty<TNode>(this aweXpect.Core.IThat<TNode?> subject, string name) where TNode : System.Text.Json.Nodes.JsonNode { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Json.Results.JsonPropertyResult<TNode, aweXpect.Core.IThat<TNode?>> HasProperty<TNode>(this aweXpect.Core.IThat<TNode?> subject, string name, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.Nodes.JsonNode?>> expectations) where TNode : System.Text.Json.Nodes.JsonNode { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Json.Results.JsonPropertyResult<TNode, aweXpect.Core.IThat<TNode?>> HasValueAt<TNode>(this aweXpect.Core.IThat<TNode?> subject, string path, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.Nodes.JsonNode?>> expectations) where TNode : System.Text.Json.Nodes.JsonNode { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Json.Results.IsArrayResult<TNode, aweXpect.Core.IThat<TNode?>> IsArray<TNode>(this aweXpect.Core.IThat<TNode?> subject) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TNode, aweXpect.Core.IThat<TNode?>> IsBoolean<TNode>(this aweXpect.Core.IThat<TNode?> subject) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<TNode, aweXpect.Core.IThat<TNode?>> IsBoolean<TNode>(this aweXpect.Core.IThat<TNode?> subject, System.Action<aweXpect.Core.IThatSubject<bool>> expectations) where TNode : System.Text.Json.Nodes.JsonNode { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Text.Json.Nodes.JsonNode, aweXpect.Core.IThat<System.Text.Json.Nodes.JsonNode?>> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.Nodes.JsonNode?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Text.Json.Nodes.JsonNode, aweXpect.Core.IThat<System.Text.Json.Nodes.JsonNode?>> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.Nodes.JsonNode?> subject, System.Action<aweXpect.Core.IThatSubject<TNumber>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TNode, aweXpect.Core.IThat<TNode?>> IsNumber<TNode>(this aweXpect.Core.IThat<TNode?> subject) where TNode : System.Text.Json.Nodes.JsonNode { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<TNode, aweXpect.Core.IThat<TNode?>> IsNumber<TNode>(this aweXpect.Core.IThat<TNode?> subject, System.Action<aweXpect.Core.IThatSubject<double>> expectations) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Json.Results.IsObjectResult<TNode, aweXpect.Core.IThat<TNode?>> IsObject<TNode>(this aweXpect.Core.IThat<TNode?> subject) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Json.Results.IsObjectResult<TNode, aweXpect.Core.IThat<TNode?>> IsObject<TNode>(this aweXpect.Core.IThat<TNode?> subject, System.Action<aweXpect.Json.IJsonObjectResult> expectations, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) where TNode : System.Text.Json.Nodes.JsonNode { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TNode, aweXpect.Core.IThat<TNode?>> IsString<TNode>(this aweXpect.Core.IThat<TNode?> subject) where TNode : System.Text.Json.Nodes.JsonNode { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<TNode, aweXpect.Core.IThat<TNode?>> IsString<TNode>(this aweXpect.Core.IThat<TNode?> subject, System.Action<aweXpect.Core.IThatSubject<string>> expectations) where TNode : System.Text.Json.Nodes.JsonNode { }
         public static aweXpect.Results.AndOrResult<TNode?, aweXpect.Core.IThat<TNode?>> Matches<TNode, T>(this aweXpect.Core.IThat<TNode?> subject, System.Collections.Generic.IEnumerable<T> expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") where TNode : System.Text.Json.Nodes.JsonNode { }
         public static aweXpect.Results.AndOrResult<TNode?, aweXpect.Core.IThat<TNode?>> Matches<TNode>(this aweXpect.Core.IThat<TNode?> subject, object? expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") where TNode : System.Text.Json.Nodes.JsonNode { }
         public static aweXpect.Results.AndOrResult<TNode?, aweXpect.Core.IThat<TNode?>> MatchesExactly<TNode, T>(this aweXpect.Core.IThat<TNode?> subject, System.Collections.Generic.IEnumerable<T> expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") where TNode : System.Text.Json.Nodes.JsonNode { }
@@ -78,19 +102,35 @@ namespace aweXpect
     public static class ThatNullableJsonElement
     {
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Json.Results.IsArrayResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject) { }
+        public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> DoesNotHaveProperty(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, string name) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Json.Results.IsArrayResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, System.Action<aweXpect.Json.IJsonArrayResult> expectations, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) { }
+        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> HasElementAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, int index, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> HasProperty(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, string name) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> HasProperty(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, string name, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> HasValueAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, string path, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Json.Results.IsArrayResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsBoolean(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsBoolean(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, System.Action<aweXpect.Core.IThatSubject<bool>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsNumber(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsNumber(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, System.Action<aweXpect.Core.IThatSubject<double>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, System.Action<aweXpect.Core.IThatSubject<TNumber>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Json.Results.IsObjectResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsObject(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Json.Results.IsObjectResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsObject(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, System.Action<aweXpect.Json.IJsonObjectResult> expectations, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsString(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsString(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, System.Action<aweXpect.Core.IThatSubject<string>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> Matches(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, object? expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -103,46 +143,6 @@ namespace aweXpect
 }
 namespace aweXpect.Json
 {
-    public interface IJsonArrayResult
-    {
-        aweXpect.Json.IJsonArrayResult And { get; }
-        aweXpect.Json.IJsonPropertyResult<aweXpect.Json.IJsonArrayResult> At(int index);
-        aweXpect.Json.IJsonArrayResult.IJsonArrayLengthResult With(int amount);
-        aweXpect.Json.IJsonArrayResult.IJsonArrayElementsResult WithArrays(params System.Action<aweXpect.Json.IJsonArrayResult>?[] expectations);
-        aweXpect.Json.IJsonArrayResult.IJsonArrayElementsResult WithElements(params object?[] expected);
-        aweXpect.Json.IJsonArrayResult.IJsonArrayElementsResult WithObjects(params System.Action<aweXpect.Json.IJsonObjectResult>?[] expectations);
-        public interface IJsonArrayElementsResult : aweXpect.Json.IJsonArrayResult
-        {
-        }
-        public interface IJsonArrayLengthResult
-        {
-            aweXpect.Json.IJsonArrayResult Elements();
-        }
-    }
-    public interface IJsonObjectResult
-    {
-        aweXpect.Json.IJsonObjectResult And { get; }
-        aweXpect.Json.IJsonPropertyResult<aweXpect.Json.IJsonObjectResult> At(string path);
-        aweXpect.Json.IJsonObjectResult.IJsonObjectLengthResult With(int amount);
-        aweXpect.Json.IJsonPropertyResult<aweXpect.Json.IJsonObjectResult> With(string name);
-        aweXpect.Json.IJsonObjectResult Without(string name);
-        public interface IJsonObjectLengthResult
-        {
-            aweXpect.Json.IJsonObjectResult Properties();
-        }
-    }
-    public interface IJsonPropertyResult<out TResult>
-    {
-        TResult ABoolean();
-        TResult ANumber();
-        TResult AString();
-        TResult AnArray();
-        TResult AnArray(System.Action<aweXpect.Json.IJsonArrayResult> expectations);
-        TResult AnObject();
-        TResult AnObject(System.Action<aweXpect.Json.IJsonObjectResult> expectations);
-        TResult Matching(object? expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "");
-        TResult Null();
-    }
     public static class JsonCustomizationExtensions
     {
         public static aweXpect.Json.JsonCustomizationExtensions.JsonCustomization Json(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
@@ -185,6 +185,10 @@ namespace aweXpect.Json.Results
     public class IsObjectResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>
     {
         public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<System.Text.Json.JsonProperty>> WhoseProperties { get; }
+    }
+    public class JsonPropertyResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>
+    {
+        public aweXpect.Results.AndOrResult<TType, TThat> TreatingNullAsAbsent(bool treatNullAsAbsent = true) { }
     }
 }
 

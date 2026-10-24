@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,6 +18,13 @@ public static partial class ThatJsonElement
 {
 	internal static string DescribeValueKind(JsonElement element, string it, ExpectationGrammars grammars)
 		=> it + grammars.SubjectVerb(it, " was ", " were ") + JsonValidation.Format(element.ValueKind);
+
+	/// <summary>
+	///     The JSON path of the subject named <paramref name="it" />, which continues the path of a value that an
+	///     enclosing expectation like <c>HasProperty</c> found, and is <c>$</c> otherwise.
+	/// </summary>
+	internal static string GetPath(string it)
+		=> it.StartsWith("$.", StringComparison.Ordinal) || it.StartsWith("$[", StringComparison.Ordinal) ? it : "$";
 
 	internal sealed class MatchesConstraint(
 		string it,
@@ -55,6 +63,7 @@ public static partial class ThatJsonElement
 			}
 
 			_comparisonResult = await JsonElementValidator.Compare(
+				GetPath(It),
 				actual.Value,
 				expectedDocument.RootElement,
 				options,
@@ -124,7 +133,7 @@ public static partial class ThatJsonElement
 	/// <summary>
 	///     Verifies the kind of a <see cref="JsonElement" /> for the expectations that cannot be generated, e.g. on a
 	///     <see cref="System.Text.Json.Nodes.JsonNode" />, with the same messages as the generated ones, e.g.
-	///     <see cref="IsBoolean" />.
+	///     <see cref="IsBoolean(IThat{JsonElement})" />.
 	/// </summary>
 	internal sealed class IsValueKindConstraint(string it, ExpectationGrammars grammars, JsonValueKind expected)
 		: ConstraintResult.WithNotNullValue<JsonElement?>(it, grammars),

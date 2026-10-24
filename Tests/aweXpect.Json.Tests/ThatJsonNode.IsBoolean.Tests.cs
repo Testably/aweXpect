@@ -94,5 +94,47 @@ public sealed partial class ThatJsonNode
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class WithExpectationsTests
+		{
+			[Test]
+			public async Task WhenExpectationsAreMet_ShouldSucceed()
+			{
+				JsonNode? subject = FromString("{\"explicit\": false}");
+
+				async Task Act()
+					=> await That(subject).HasProperty("explicit", e => e.IsBoolean(b => b.IsFalse()));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenExpectationsAreNotMet_ShouldFail()
+			{
+				JsonValue subject = JsonValue.Create(true);
+
+				async Task Act()
+					=> await That(subject).IsBoolean(b => b.IsFalse());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a boolean which is False,
+					             but it was True
+					             """);
+			}
+
+			[Test]
+			public async Task WhenExpectationsAreNull_ShouldThrowArgumentNullException()
+			{
+				JsonValue subject = JsonValue.Create(true);
+
+				async Task Act()
+					=> await That(subject).IsBoolean(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+		}
 	}
 }

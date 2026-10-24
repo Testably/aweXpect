@@ -125,6 +125,9 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	/// <remarks>
 	///     The member is accessed on the value that a met <paramref name="source" /> stores, e.g. after a constraint
 	///     that converts the value, and otherwise on the <paramref name="value" /> itself.
+	///     <para />
+	///     A <see langword="null" /> <paramref name="value" /> for which the <paramref name="source" /> already failed is
+	///     not reported again, as the source can describe it in its own way, e.g. as the JSON value <c>null</c>.
 	/// </remarks>
 	public override ValueTask<ConstraintResult> IsMetByContinuing<TValue>(
 		TValue? value,
@@ -141,6 +144,12 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		    source.TryGetStoredValue(out TSource? storedValue))
 		{
 			return IsMetByValue(storedValue, context, cancellationToken);
+		}
+
+		if (value is null && source is { Outcome: Outcome.Failure or Outcome.FailureBothWays, } &&
+		    context is not ExpectationTextEvaluationContext)
+		{
+			return GetNotApplicableResult(context, cancellationToken);
 		}
 
 		return IsMetByValue(value, context, cancellationToken);

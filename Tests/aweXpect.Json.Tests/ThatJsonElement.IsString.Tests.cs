@@ -97,5 +97,83 @@ public sealed partial class ThatJsonElement
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class WithExpectationsTests
+		{
+			[Test]
+			public async Task WhenExpectationsAreMet_ShouldSucceed()
+			{
+				JsonElement subject = FromString("\"Let It Be\"");
+
+				async Task Act()
+					=> await That(subject).IsString(s => s.StartsWith("let").IgnoringCase());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenExpectationsAreNotMet_ShouldFail()
+			{
+				JsonElement subject = FromString("\"Yesterday\"");
+
+				async Task Act()
+					=> await That(subject).IsString(s => s.IsEqualTo("Let*").AsWildcard());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a string which matches "Let*",
+					             but it did not match:
+					               ↓ (actual)
+					               "Yesterday"
+					               "Let*"
+					               ↑ (wildcard pattern)
+					             """);
+			}
+
+			[Test]
+			public async Task WhenExpectationsAreNull_ShouldThrowArgumentNullException()
+			{
+				JsonElement subject = FromString("\"foo\"");
+
+				async Task Act()
+					=> await That(subject).IsString(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenJsonIsNoString_ShouldNotVerifyTheExpectations()
+			{
+				JsonElement subject = FromString("243");
+
+				async Task Act()
+					=> await That(subject).IsString(s => s.IsEqualTo("243"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a string which is equal to "243",
+					             but it was a number
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNegatedAndExpectationsAreMet_ShouldFail()
+			{
+				JsonElement subject = FromString("\"Let It Be\"");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString(s => s.StartsWith("Let")));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a string which starts with "Let",
+					             but it was a string
+					             """);
+			}
+		}
 	}
 }

@@ -149,7 +149,9 @@ public sealed class ResultContextCollector
 		///     The member path, e.g. <c>Order.Items</c> or <c>Items[2]</c>, or <see langword="null" /> for the subject.
 		/// </summary>
 		/// <remarks>
-		///     An item index directly follows its collection, and an item of the subject is called <c>item [2]</c>.
+		///     An item index directly follows its collection, and an item of the subject is called <c>item [2]</c>. A
+		///     member whose name already continues the path, e.g. <c>$.artist.origin</c> within <c>$.artist</c>, replaces
+		///     it instead of repeating it.
 		/// </remarks>
 		public string? GetSubjectLabel()
 		{
@@ -161,7 +163,11 @@ public sealed class ResultContextCollector
 			StringBuilder sb = new();
 			foreach (string segment in Subject)
 			{
-				if (segment.StartsWith('['))
+				if (ContinuesPath(segment, sb))
+				{
+					sb.Clear().Append(segment);
+				}
+				else if (segment.StartsWith('['))
 				{
 					sb.Append(sb.Length == 0 ? "item " : "").Append(segment);
 				}
@@ -172,6 +178,24 @@ public sealed class ResultContextCollector
 			}
 
 			return sb.ToString();
+		}
+
+		private static bool ContinuesPath(string segment, StringBuilder path)
+		{
+			if (path.Length == 0 || segment.Length <= path.Length || segment[path.Length] is not ('.' or '['))
+			{
+				return false;
+			}
+
+			for (int i = 0; i < path.Length; i++)
+			{
+				if (segment[i] != path[i])
+				{
+					return false;
+				}
+			}
+
+			return true;
 		}
 	}
 }

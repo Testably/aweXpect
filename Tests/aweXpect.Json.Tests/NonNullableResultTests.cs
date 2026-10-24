@@ -8,21 +8,61 @@ public sealed class NonNullableResultTests
 	private const string Reason = "the awaited result is the verified subject, which cannot be null";
 
 	[Test]
-	public async Task JsonNodeIsArray_ShouldReturnNonNullableNode()
+	public async Task JsonNodeDoesNotHaveProperty_ShouldReturnNonNullableNode()
 	{
-		JsonNode? subject = new JsonArray(1);
+		JsonNode? subject = new JsonObject();
 
-		JsonNode result = await That(subject).IsArray();
+		JsonNode result = await That(subject).DoesNotHaveProperty("foo");
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
 
 	[Test]
-	public async Task JsonNodeIsArrayWithExpectations_ShouldReturnNonNullableNode()
+	public async Task JsonNodeHasElementAt_ShouldReturnNonNullableNode()
 	{
 		JsonNode? subject = new JsonArray(1);
 
-		JsonNode result = await That(subject).IsArray(a => a.At(0).Matching(1));
+		JsonNode result = await That(subject).HasElementAt(0, e => e.IsNumber());
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
+	public async Task JsonNodeHasProperty_ShouldReturnNonNullableNode()
+	{
+		JsonNode? subject = new JsonObject { ["foo"] = new JsonArray(), };
+
+		JsonNode result = await That(subject).HasProperty("foo");
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
+	public async Task JsonNodeHasPropertyWithExpectations_ShouldReturnNonNullableNode()
+	{
+		JsonNode? subject = new JsonObject { ["foo"] = new JsonArray(), };
+
+		JsonNode result = await That(subject).HasProperty("foo", p => p.IsArray());
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
+	public async Task JsonNodeHasValueAt_ShouldReturnNonNullableNode()
+	{
+		JsonNode? subject = new JsonObject { ["foo"] = new JsonArray(1), };
+
+		JsonNode result = await That(subject).HasValueAt("foo[0]", v => v.IsNumber());
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
+	public async Task JsonNodeIsArray_ShouldReturnNonNullableNode()
+	{
+		JsonNode? subject = new JsonArray(1);
+
+		JsonNode result = await That(subject).IsArray();
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
@@ -38,11 +78,51 @@ public sealed class NonNullableResultTests
 	}
 
 	[Test]
+	public async Task JsonNodeIsBooleanWithExpectations_ShouldReturnNonNullableNode()
+	{
+		JsonNode? subject = JsonValue.Create(true);
+
+		JsonNode result = await That(subject).IsBoolean(b => b.IsTrue());
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
 	public async Task JsonNodeIsNumber_ShouldReturnNonNullableNode()
 	{
 		JsonNode? subject = JsonValue.Create(1);
 
 		JsonNode result = await That(subject).IsNumber();
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
+	public async Task JsonNodeIsNumberOfType_ShouldReturnNonNullableNode()
+	{
+		JsonNode? subject = JsonValue.Create(1);
+
+		JsonNode result = await That(subject).IsNumber<int>();
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
+	public async Task JsonNodeIsNumberOfTypeWithExpectations_ShouldReturnNonNullableNode()
+	{
+		JsonNode? subject = JsonValue.Create(1);
+
+		JsonNode result = await That(subject).IsNumber<int>(n => n.IsEqualTo(1));
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
+	public async Task JsonNodeIsNumberWithExpectations_ShouldReturnNonNullableNode()
+	{
+		JsonNode? subject = JsonValue.Create(1);
+
+		JsonNode result = await That(subject).IsNumber(n => n.IsEqualTo(1));
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
@@ -58,21 +138,21 @@ public sealed class NonNullableResultTests
 	}
 
 	[Test]
-	public async Task JsonNodeIsObjectWithExpectations_ShouldReturnNonNullableNode()
-	{
-		JsonNode? subject = new JsonObject { ["foo"] = new JsonArray(), };
-
-		JsonNode result = await That(subject).IsObject(o => o.With("foo").AnArray());
-
-		await That(result).IsSameAs(subject).Because(Reason);
-	}
-
-	[Test]
 	public async Task JsonNodeIsString_ShouldReturnNonNullableNode()
 	{
 		JsonNode? subject = JsonValue.Create("foo");
 
 		JsonNode result = await That(subject).IsString();
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
+	public async Task JsonNodeIsStringWithExpectations_ShouldReturnNonNullableNode()
+	{
+		JsonNode? subject = JsonValue.Create("foo");
+
+		JsonNode result = await That(subject).IsString(s => s.IsEqualTo("foo"));
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}

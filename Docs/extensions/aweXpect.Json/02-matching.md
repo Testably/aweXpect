@@ -92,8 +92,8 @@ but it differed as $.artist had unexpected "The Beatles"
 ## Options
 
 The options are available wherever `JsonOptions` are accepted, e.g. `Matches`, `MatchesExactly`,
-`IsEqualTo(expected).AsJson(o => …)`, `IsValidJsonMatching`, [`IsObject`](./03-objects-and-arrays.md#isobject),
-[`IsArray`](./03-objects-and-arrays.md#isarray) and [`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json).
+`IsEqualTo(expected).AsJson(o => …)`, `IsValidJsonMatching` and
+[`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json).
 Like the [options of aweXpect](https://docs.testably.org/aweXpect/how-it-works/options), an option that switches
 something on takes an optional `bool`:
 
@@ -176,9 +176,8 @@ JSON options:
 
 When exactly one element remains unpaired on each side, they are compared with each other instead, e.g.
 `$[1] was "Yesterday" instead of "Something"`. Combined with `IgnoringAdditionalArrayElements()`, the expected
-elements only have to be contained in the subject in any order. The positional members of
-[`IsArray`](./03-objects-and-arrays.md#isarray) (`At`, `WithElements`, `WithArrays` and `WithObjects`) still verify the
-element at each index.
+elements only have to be contained in the subject in any order.
+[`HasElementAt`](./03-objects-and-arrays.md#elements) still verifies the element at its index.
 
 :::warning
 The pairing is greedy, so overlapping `It.Is…` expectations can fail, although another pairing would succeed.
@@ -203,9 +202,9 @@ The name is matched against the JSON path, as it is shown in failure messages, a
 of it, ignoring the casing: `"id"` ignores `$.id` and `$.items[0].id`, but not `$.parentId`, `"meta.createdAt"` only
 ignores `createdAt` within `meta`, and `"$.id"` only ignores the property of the root. `"[0]"` ignores the first
 element of every array; with `IgnoringArrayOrder()`, an index refers to the element of the subject, which is then left
-out of the pairing. Explicit expectations of [`IsObject`](./03-objects-and-arrays.md#isobject) and
-[`IsArray`](./03-objects-and-arrays.md#isarray), e.g. `With("id")`, `Without("id")` or `At(0)`, still verify an
-ignored value.
+out of the pairing. Explicit expectations like [`HasProperty("id")`](./03-objects-and-arrays.md#properties),
+`DoesNotHaveProperty("id")` or [`HasElementAt(0, …)`](./03-objects-and-arrays.md#elements) still verify an ignored
+value.
 
 The members to ignore are listed in the "JSON options" context. When the comparison fails, each name that matched no
 member is named below them, together with the member it most likely meant, as a misspelled name otherwise silently
@@ -286,6 +285,5 @@ otherwise a `NotSupportedException` names the missing `[JsonSerializable(typeof(
 ### Options in failure messages
 
 The failure message lists the active options in a "JSON options" context, like in the examples above, and omits it
-when no option is active. The options of `WithDocumentOptions(…)` and `WithSerializerOptions(…)` are not listed. As `Matches`, `IsValidJsonMatching`, [`IsObject`](./03-objects-and-arrays.md#isobject) and
-[`IsArray`](./03-objects-and-arrays.md#isarray) ignore additional properties by default, their failures list
+when no option is active. The options of `WithDocumentOptions(…)` and `WithSerializerOptions(…)` are not listed. As `Matches` and `IsValidJsonMatching` ignore additional properties by default, their failures list
 `ignore additional properties`.

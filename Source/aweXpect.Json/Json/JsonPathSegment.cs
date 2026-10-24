@@ -34,6 +34,16 @@ internal sealed class JsonPathSegment
 		=> PropertyName is null ? $"[{Index}]" : $".{PropertyName}";
 
 	/// <summary>
+	///     A segment for the property with the literal <paramref name="name" />, which is not parsed as a path.
+	/// </summary>
+	public static JsonPathSegment Property(string name) => new(name, 0);
+
+	/// <summary>
+	///     A segment for the array element at the zero-based <paramref name="index" />.
+	/// </summary>
+	public static JsonPathSegment Element(int index) => new(null, index);
+
+	/// <summary>
 	///     Parses the <paramref name="path" />, which starts with a property name, followed by any number of
 	///     <c>.name</c> or <c>[index]</c> segments.
 	/// </summary>

@@ -95,5 +95,47 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class WithExpectationsTests
+		{
+			[Test]
+			public async Task WhenExpectationsAreMet_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("true");
+
+				async Task Act()
+					=> await That(subject).IsBoolean(b => b.IsTrue());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenExpectationsAreNull_ShouldThrowArgumentNullException()
+			{
+				JsonElement? subject = FromString("true");
+
+				async Task Act()
+					=> await That(subject).IsBoolean(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsBoolean(b => b.IsTrue());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a boolean which is True,
+					             but it was <null>
+					             """);
+			}
+		}
 	}
 }
