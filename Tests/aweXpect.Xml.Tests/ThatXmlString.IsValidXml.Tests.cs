@@ -240,7 +240,7 @@ public sealed partial class ThatXmlString
 		}
 
 		[UseEnglishMessages]
-		public sealed class WhichTests
+		public sealed class ExpectationsTests
 		{
 			[Test]
 			public async Task WhenActualContainsDtd_ShouldFailWithoutExpandingEntities()
@@ -248,12 +248,12 @@ public sealed partial class ThatXmlString
 				string subject = "<!DOCTYPE a [<!ENTITY e \"expanded\">]><a>&e;</a>";
 
 				async Task Act()
-					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Value == "expanded"));
+					=> await That(subject).IsValidXml(r => r.Satisfies(e => e.Value == "expanded"));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             is valid XML which satisfies e => e!.Value == "expanded",
+					             is valid XML which satisfies e => e.Value == "expanded",
 					             but it contained a document type definition (DTD), which is prohibited for security reasons
 					             """);
 			}
@@ -264,12 +264,12 @@ public sealed partial class ThatXmlString
 				string subject = "<a><b>";
 
 				async Task Act()
-					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Name == "a"));
+					=> await That(subject).IsValidXml(r => r.Satisfies(e => e.Name == "a"));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             is valid XML which satisfies e => e!.Name == "a",
+					             is valid XML which satisfies e => e.Name == "a",
 					             but it could not be parsed: Unexpected end of file has occurred. The following elements are not closed: b, a. Line 1, position 7.
 					             """);
 			}
@@ -280,40 +280,40 @@ public sealed partial class ThatXmlString
 				string subject = "<a/>";
 
 				async Task Act()
-					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Name == "a"))
+					=> await That(subject).IsValidXml(r => r.Satisfies(e => e.Name == "a"))
 						.And.HasLength().GreaterThan(4);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             is valid XML which satisfies e => e!.Name == "a" and has length greater than 4,
+					             is valid XML which satisfies e => e.Name == "a" and has length greater than 4,
 					             but it had length 4
 					             """);
 			}
 
 			[Test]
-			public async Task WhenExpectationInWhichFails_ShouldFail()
+			public async Task WhenExpectationFails_ShouldFail()
 			{
 				string subject = "<a/>";
 
 				async Task Act()
-					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Name == "b"));
+					=> await That(subject).IsValidXml(r => r.Satisfies(e => e.Name == "b"));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             is valid XML which satisfies e => e!.Name == "b",
+					             is valid XML which satisfies e => e.Name == "b",
 					             but it was <a />
 					             """);
 			}
 
 			[Test]
-			public async Task WhenExpectationInWhichIsSatisfied_ShouldSucceed()
+			public async Task WhenExpectationIsSatisfied_ShouldSucceed()
 			{
 				string subject = "<?xml version=\"1.0\"?><!-- comment --><a><b/></a>";
 
 				async Task Act()
-					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Name == "a"));
+					=> await That(subject).IsValidXml(r => r.Satisfies(e => e.Name == "a"));
 
 				await That(Act).DoesNotThrow()
 					.Because("the expectations apply to the root element, not to the document");
@@ -325,11 +325,38 @@ public sealed partial class ThatXmlString
 				string subject = "<a/>";
 
 				async Task Act()
-					=> await That(subject).IsValidXml().Which(null!);
+					=> await That(subject).IsValidXml(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("expectations").And
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenNegatedAndExpectationFails_ShouldSucceed()
+			{
+				string subject = "<a/>";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsValidXml(r => r.Satisfies(e => e.Name == "b")));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNegatedAndExpectationIsSatisfied_ShouldFail()
+			{
+				string subject = "<a/>";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsValidXml(r => r.Satisfies(e => e.Name == "a")));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not valid XML which satisfies e => e.Name == "a",
+					             but it was "<a/>"
+					             """);
 			}
 
 			[Test]
@@ -338,52 +365,9 @@ public sealed partial class ThatXmlString
 				string subject = "<x:a xmlns:x=\"urn:x\"/>";
 
 				async Task Act()
-					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Name == XName.Get("a", "urn:x")));
+					=> await That(subject).IsValidXml(r => r.Satisfies(e => e.Name == XName.Get("a", "urn:x")));
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task WhenSubjectIsNull_ShouldFail()
-			{
-				string? subject = null;
-
-				async Task Act()
-					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Name == "a"));
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is valid XML which satisfies e => e!.Name == "a",
-					             but it was <null>
-					             """);
-			}
-
-			[Test]
-			public async Task WhenNegatedAndExpectationInWhichFails_ShouldSucceed()
-			{
-				string subject = "<a/>";
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsValidXml().Which(r => r.Satisfies(e => e!.Name == "b")));
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task WhenNegatedAndExpectationInWhichIsSatisfied_ShouldFail()
-			{
-				string subject = "<a/>";
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsValidXml().Which(r => r.Satisfies(e => e!.Name == "a")));
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not valid XML which satisfies e => e!.Name == "a",
-					             but it was "<a/>"
-					             """);
 			}
 
 			[Test]
@@ -394,10 +378,26 @@ public sealed partial class ThatXmlString
 				int expectedNodes)
 			{
 				async Task Act()
-					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Nodes().Count() == expectedNodes));
+					=> await That(subject).IsValidXml(r => r.Satisfies(e => e.Nodes().Count() == expectedNodes));
 
 				await That(Act).DoesNotThrow()
 					.Because("whitespace-only text is dropped like by XDocument.Parse, unless xml:space preserves it");
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsValidXml(r => r.Satisfies(e => e.Name == "a"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid XML which satisfies e => e.Name == "a",
+					             but it was <null>
+					             """);
 			}
 		}
 	}

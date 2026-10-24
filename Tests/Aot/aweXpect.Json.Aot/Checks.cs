@@ -41,8 +41,8 @@ internal static partial class Checks
 			() => ShouldFail(async () => await That(Parse("{\"a\": \"x\", \"b\": [1, null]}")).IsObject().WhoseProperties
 					.All().Satisfy(p => p.Value.ValueKind == JsonValueKind.String),
 				"whose properties satisfy", "  \"a\":\"x\",", "  \"b\":[1,null]")),
-		new("a parsed JSON string is inspected with Which",
-			() => ShouldFail(async () => await That("[1]").IsValidJson().Which(e => e.IsObject()),
+		new("the root element of a valid JSON string can be verified",
+			() => ShouldFail(async () => await That("[1]").IsValidJson(e => e.IsObject()),
 				"is an object")),
 		new("an element is formatted on a single line",
 			() => ShouldEqual(Formatter.Format(Parse("{ \"a\": [1, \"\\u00e4\"] }")), "{\"a\":[1,\"\\u00E4\"]}")),

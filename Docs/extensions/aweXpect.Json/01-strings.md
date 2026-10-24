@@ -2,12 +2,12 @@
 
 Describes the possible expectations for strings that contain JSON.
 
-| Expectation                                           | Negated                    | Summary                                            |
-|-------------------------------------------------------|----------------------------|----------------------------------------------------|
-| [`IsEqualTo(…).AsJson()`](#string-comparison-as-json) | `IsNotEqualTo(…).AsJson()` | equal to the expected JSON, compared by structure  |
-| [`IsValidJson`](#validation)                          |                            | can be parsed as JSON                              |
-| [`IsValidJsonMatching`](#validation)                  |                            | valid JSON that matches the expected value         |
-| [`IsValidJsonMatchingExactly`](#validation)           |                            | valid JSON that matches the expected value exactly |
+| Expectation                                           | Negated                    | Summary                                                         |
+|-------------------------------------------------------|----------------------------|-----------------------------------------------------------------|
+| [`IsEqualTo(…).AsJson()`](#string-comparison-as-json) | `IsNotEqualTo(…).AsJson()` | equal to the expected JSON, compared by structure               |
+| [`IsValidJson`](#validation)                          |                            | can be parsed as JSON, optionally with expectations on its root |
+| [`IsValidJsonMatching`](#validation)                  |                            | valid JSON that matches the expected value                      |
+| [`IsValidJsonMatchingExactly`](#validation)           |                            | valid JSON that matches the expected value exactly              |
 
 ## String comparison as JSON
 
@@ -89,13 +89,15 @@ string track = """{"title": "Let It Be"}""";
 await Expect.That(track).IsValidJson(o => o with { CommentHandling = JsonCommentHandling.Disallow });
 ```
 
-You can add further expectations on the
-[`JsonElement`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement) parsed from the subject:
+You can add further expectations on the root
+[`JsonElement`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement) parsed from the subject,
+optionally followed by the `JsonDocumentOptions`:
 
 ```csharp
 string track = """{"title": "Let It Be"}""";
 
-await Expect.That(track).IsValidJson().Which(j => j.Matches(new { title = "Let It Be" }));
+await Expect.That(track).IsValidJson(j => j.Matches(new { title = "Let It Be" }));
+await Expect.That(track).IsValidJson(j => j.IsObject(), o => o with { AllowTrailingCommas = true });
 ```
 
 Or you can verify that the string is valid JSON and [matches](./02-matching.md) an expected value in one step:

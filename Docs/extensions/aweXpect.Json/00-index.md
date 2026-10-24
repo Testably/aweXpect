@@ -41,24 +41,24 @@ JSON options:
 
 ## Overview
 
-| Expectation                                                                 | Subject                   | Summary                                                   |
-|-----------------------------------------------------------------------------|---------------------------|-----------------------------------------------------------|
-| [`IsEqualTo(…).AsJson()`](./01-strings.md#string-comparison-as-json) | `string`                  | equal to the expected JSON, compared by structure         |
-| [`IsValidJson`](./01-strings.md#validation)                        | `string`                  | can be parsed as JSON                                     |
-| [`IsValidJsonMatching`](./01-strings.md#validation)                | `string`                  | valid JSON that matches the expected value                |
-| [`IsValidJsonMatchingExactly`](./01-strings.md#validation)         | `string`                  | valid JSON that matches the expected value exactly        |
-| [`Matches`](./02-matching.md)                                      | `JsonElement`, `JsonNode` | matches the expected value, additional properties allowed |
-| [`MatchesExactly`](./02-matching.md)                               | `JsonElement`, `JsonNode` | matches the expected value exactly                        |
-| [`IsObject`](./03-objects-and-arrays.md#isobject)                  | `JsonElement`, `JsonNode` | a JSON object, optionally with expectations on it         |
-| [`IsObject().WhoseProperties`](./03-objects-and-arrays.md#isobject) | `JsonElement`, `JsonNode` | collection expectations on the properties of a JSON object |
-| [`IsArray`](./03-objects-and-arrays.md#isarray)                    | `JsonElement`, `JsonNode` | a JSON array, optionally with expectations on it          |
-| [`IsArray().WhoseElements`](./03-objects-and-arrays.md#isarray)    | `JsonElement`, `JsonNode` | collection expectations on the elements of a JSON array   |
-| [`IsString`](./03-objects-and-arrays.md#value-kinds)               | `JsonElement`, `JsonNode` | a JSON string                                             |
-| [`IsNumber`](./03-objects-and-arrays.md#value-kinds)               | `JsonElement`, `JsonNode` | a JSON number                                             |
-| [`IsBoolean`](./03-objects-and-arrays.md#value-kinds)              | `JsonElement`, `JsonNode` | a JSON boolean, i.e. `true` or `false`                    |
-| [`IsNull`](./03-objects-and-arrays.md#value-kinds)                 | `JsonElement`             | the JSON value `null`                                     |
-| [`IsJsonSerializable`](./04-serialization.md#json-serializable)    | `object`                  | survives a round trip through the JSON serializer         |
-| [`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json)   | `object`                  | serialized by the JSON serializer as the expected JSON    |
+| Expectation                                                                 | Subject                   | Summary                                                         |
+|-----------------------------------------------------------------------------|---------------------------|-----------------------------------------------------------------|
+| [`IsEqualTo(…).AsJson()`](./01-strings.md#string-comparison-as-json) | `string`                  | equal to the expected JSON, compared by structure               |
+| [`IsValidJson`](./01-strings.md#validation)                        | `string`                  | can be parsed as JSON, optionally with expectations on its root |
+| [`IsValidJsonMatching`](./01-strings.md#validation)                | `string`                  | valid JSON that matches the expected value                      |
+| [`IsValidJsonMatchingExactly`](./01-strings.md#validation)         | `string`                  | valid JSON that matches the expected value exactly              |
+| [`Matches`](./02-matching.md)                                      | `JsonElement`, `JsonNode` | matches the expected value, additional properties allowed       |
+| [`MatchesExactly`](./02-matching.md)                               | `JsonElement`, `JsonNode` | matches the expected value exactly                              |
+| [`IsObject`](./03-objects-and-arrays.md#isobject)                  | `JsonElement`, `JsonNode` | a JSON object, optionally with expectations on it               |
+| [`IsObject().WhoseProperties`](./03-objects-and-arrays.md#isobject) | `JsonElement`, `JsonNode` | collection expectations on the properties of a JSON object      |
+| [`IsArray`](./03-objects-and-arrays.md#isarray)                    | `JsonElement`, `JsonNode` | a JSON array, optionally with expectations on it                |
+| [`IsArray().WhoseElements`](./03-objects-and-arrays.md#isarray)    | `JsonElement`, `JsonNode` | collection expectations on the elements of a JSON array         |
+| [`IsString`](./03-objects-and-arrays.md#value-kinds)               | `JsonElement`, `JsonNode` | a JSON string                                                   |
+| [`IsNumber`](./03-objects-and-arrays.md#value-kinds)               | `JsonElement`, `JsonNode` | a JSON number                                                   |
+| [`IsBoolean`](./03-objects-and-arrays.md#value-kinds)              | `JsonElement`, `JsonNode` | a JSON boolean, i.e. `true` or `false`                          |
+| [`IsNull`](./03-objects-and-arrays.md#value-kinds)                 | `JsonElement`             | the JSON value `null`                                           |
+| [`IsJsonSerializable`](./04-serialization.md#json-serializable)    | `object`                  | survives a round trip through the JSON serializer               |
+| [`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json)   | `object`                  | serialized by the JSON serializer as the expected JSON          |
 
 The comparisons can be relaxed with options like `TreatingNullAsAbsent()`, `IgnoringArrayOrder()`,
 `IgnoringMember(name)` or `ComparingNumbersWithin(tolerance)`, see [Matching JSON](./02-matching.md).

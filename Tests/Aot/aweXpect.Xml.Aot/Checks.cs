@@ -17,11 +17,11 @@ internal static class Checks
 			() => ShouldFail(async () => await That("<!DOCTYPE a [<!ENTITY e \"x\">]><a>&e;</a>").IsValidXml(),
 				"is valid XML", "contained a document type definition (DTD)")),
 		new("the root element of a valid XML string can be verified",
-			() => ShouldPass(async () => await That("<a><b c=\"1\"/></a>").IsValidXml()
-				.Which(r => r.Satisfies(e => e!.Name.LocalName == "a")))),
+			() => ShouldPass(async () => await That("<a><b c=\"1\"/></a>")
+				.IsValidXml(r => r.Satisfies(e => e.Name.LocalName == "a")))),
 		new("a failing expectation on the root element fails",
-			() => ShouldFail(async () => await That("<a/>").IsValidXml()
-				.Which(r => r.Satisfies(e => e!.Name.LocalName == "b")), "is valid XML which satisfies")),
+			() => ShouldFail(async () => await That("<a/>")
+				.IsValidXml(r => r.Satisfies(e => e.Name.LocalName == "b")), "is valid XML which satisfies")),
 		new("equivalent XML strings pass",
 			() => ShouldPass(async () => await That("<a y=\"2\" x=\"1\"><b/></a>")
 				.IsEqualTo("<a x=\"1\" y=\"2\">\n  <b></b>\n</a>").AsXml())),

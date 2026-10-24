@@ -41,7 +41,7 @@ internal sealed class MatchesXmlConstraint<TNode>(
 	/// <remarks>
 	///     The <paramref name="expected" /> XML is parsed once when the expectation is specified, so that an invalid value
 	///     is rejected for every subject, also when the constraint is not evaluated, e.g. after a failed
-	///     <see cref="ThatXmlString.IsValidXml" />.
+	///     <see cref="ThatXmlString.IsValidXml(IThat{string})" />.
 	/// </remarks>
 	/// <exception cref="ArgumentNullException">The <paramref name="expected" /> value is <see langword="null" />.</exception>
 	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid XML.</exception>

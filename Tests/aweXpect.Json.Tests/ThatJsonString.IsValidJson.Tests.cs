@@ -1,4 +1,7 @@
-﻿namespace aweXpect.Json.Tests;
+﻿using System.Text.Json;
+using aweXpect.Core;
+
+namespace aweXpect.Json.Tests;
 
 public sealed partial class ThatJsonString
 {
@@ -113,15 +116,32 @@ public sealed partial class ThatJsonString
 			}
 		}
 
-		public sealed class WhichTests
+		public sealed class ExpectationsTests
 		{
+			[Test]
+			public async Task WhenActualIsInvalidJson_ShouldFail()
+			{
+				string subject = "[1, 2";
+
+				async Task Act()
+					=> await That(subject).IsValidJson(d => d.Matches([1, 2,]));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [1, 2,],
+					             but it could not be parsed: '2' is an invalid end of a number. Expected a delimiter. LineNumber: 0 | BytePositionInLine: 5. and it did throw a JsonReaderException:
+					               '2' is an invalid end of a number. Expected a delimiter. LineNumber: 0 | BytePositionInLine: 5.
+					             """);
+			}
+
 			[Test]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsValidJson().Which(d => d.Matches([1, 2,]));
+					=> await That(subject).IsValidJson(d => d.Matches([1, 2,]));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -132,12 +152,29 @@ public sealed partial class ThatJsonString
 			}
 
 			[Test]
-			public async Task WhenExpectationInWhichFails_ShouldFail()
+			public async Task WhenCombinedWithAnd_ShouldApplyFollowingExpectationToString()
 			{
 				string subject = "[1, 2]";
 
 				async Task Act()
-					=> await That(subject).IsValidJson().Which(d => d.Matches([1, 3,]));
+					=> await That(subject).IsValidJson(d => d.Matches([1, 2,]))
+						.And.HasLength().GreaterThan(6);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [1, 2,] and has length greater than 6,
+					             but it had length 6
+					             """);
+			}
+
+			[Test]
+			public async Task WhenExpectationFails_ShouldFail()
+			{
+				string subject = "[1, 2]";
+
+				async Task Act()
+					=> await That(subject).IsValidJson(d => d.Matches([1, 3,]));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -151,12 +188,12 @@ public sealed partial class ThatJsonString
 			}
 
 			[Test]
-			public async Task WhenExpectationInWhichIsSatisfied_ShouldSucceed()
+			public async Task WhenExpectationIsSatisfied_ShouldSucceed()
 			{
 				string subject = "[1, 2]";
 
 				async Task Act()
-					=> await That(subject).IsValidJson().Which(d => d.Matches([1, 2,]));
+					=> await That(subject).IsValidJson(d => d.Matches([1, 2,]));
 
 				await That(Act).DoesNotThrow();
 			}
@@ -167,11 +204,172 @@ public sealed partial class ThatJsonString
 				string subject = "[1, 2]";
 
 				async Task Act()
-					=> await That(subject).IsValidJson().Which(null!);
+					=> await That(subject).IsValidJson(expectations: null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("expectations").And
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenNegatedAndExpectationFails_ShouldSucceed()
+			{
+				string subject = "[1, 2]";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsValidJson(d => d.Matches([1, 3,])));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNegatedAndExpectationIsSatisfied_ShouldFail()
+			{
+				string subject = "[1, 2]";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsValidJson(d => d.Matches([1, 2,])));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not valid JSON which matches [1, 2,],
+					             but it was "[1, 2]"
+					             """);
+			}
+
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
+			public async Task WhenOptionsAreProvided_ShouldParseWithThem(bool allowTrailingCommas)
+			{
+				string subject = "[1, 2,]";
+
+				async Task Act()
+					=> await That(subject).IsValidJson(d => d.Matches([1, 2,]), o => o with
+					{
+						AllowTrailingCommas = allowTrailingCommas,
+					});
+
+				await That(Act).Throws<FailException>().OnlyIf(!allowTrailingCommas)
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [1, 2,],
+					             but it could not be parsed: The JSON array contains a trailing comma at the end which is not supported in this mode. Change the reader options. LineNumber: 0 | BytePositionInLine: 6. and it did throw a JsonReaderException:
+					               The JSON array contains a trailing comma at the end which is not supported in this mode. Change the reader options. LineNumber: 0 | BytePositionInLine: 6.
+					             """);
+			}
+
+			[Test]
+			public async Task WhenRootIsJsonNull_ShouldProvideNonNullableElement()
+			{
+				string subject = "null";
+
+				async Task Act()
+					=> await That(subject).IsValidJson(d => d.IsNull());
+
+				await That(Act).DoesNotThrow()
+					.Because("the root element of a parsed document always exists, so it is a non-nullable JsonElement that offers IsNull for the JSON null");
+			}
+		}
+
+		public sealed class OverloadResolutionTests
+		{
+			[Test]
+			public async Task WhenLambdaCreatesOptions_ShouldBindToOptions()
+			{
+				string subject = "[1, 2,]";
+
+				async Task Act()
+					=> await That(subject).IsValidJson(_ => new JsonDocumentOptions
+					{
+						AllowTrailingCommas = true,
+					});
+
+				await That(Act).DoesNotThrow()
+					.Because("an object creation is also a valid statement for the expectations, but a lambda with a return value binds better to the options");
+			}
+
+			[Test]
+			public async Task WhenLambdaReturnsModifiedOptions_ShouldBindToOptions()
+			{
+				string subject = "[1, 2,]";
+
+				async Task Act()
+					=> await That(subject).IsValidJson(o => o with
+					{
+						AllowTrailingCommas = true,
+					});
+
+				await That(Act).DoesNotThrow()
+					.Because("a with expression only compiles for the options");
+			}
+
+			[Test]
+			public async Task WhenLambdaUsesExpectation_ShouldBindToExpectations()
+			{
+				string subject = "[1]";
+
+				async Task Act()
+					=> await That(subject).IsValidJson(j => j.IsObject());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which is an object,
+					             but it was an array
+					             """)
+					.Because("an expectation only compiles on the subject");
+			}
+
+			[Test]
+			public async Task WhenMethodGroupReturnsOptions_ShouldBindToOptions()
+			{
+				string subject = "[1, 2,]";
+
+				async Task Act()
+					=> await That(subject).IsValidJson(AllowTrailingCommas);
+
+				await That(Act).DoesNotThrow()
+					.Because("the method group only converts to the options");
+
+				static JsonDocumentOptions AllowTrailingCommas(JsonDocumentOptions options)
+					=> options with
+					{
+						AllowTrailingCommas = true,
+					};
+			}
+
+			[Test]
+			public async Task WhenMethodGroupTakesSubject_ShouldBindToExpectations()
+			{
+				string subject = "[1]";
+
+				async Task Act()
+					=> await That(subject).IsValidJson(IsAnObject);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which is an object,
+					             but it was an array
+					             """)
+					.Because("the method group only converts to the expectations");
+
+				static void IsAnObject(IThatSubject<JsonElement> subject)
+					=> subject.IsObject();
+			}
+
+			[Test]
+			public async Task WhenOptionsAreNamedNull_ShouldBindToOptions()
+			{
+				string subject = "[1]";
+
+				async Task Act()
+					=> await That(subject).IsValidJson(options: null);
+
+				await That(Act).DoesNotThrow()
+					.Because("an unnamed null is ambiguous, but a named null binds to the overload without expectations");
 			}
 		}
 	}
