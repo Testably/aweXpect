@@ -498,6 +498,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
         "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
+      },
+      {
+        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
+        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
       }
     ],
     "labels": [
@@ -583,7 +589,8 @@ window.BENCHMARK_DATA = {
       "4eec7318",
       "df357ed3",
       "c010bba3",
-      "5bc15a41"
+      "5bc15a41",
+      "1945e0a4"
     ],
     "datasets": [
       {
@@ -672,7 +679,8 @@ window.BENCHMARK_DATA = {
           202.58517438570658,
           312.5136297225952,
           226.31324475152152,
-          414.86984654835294
+          414.86984654835294,
+          319.0249760945638
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -716,6 +724,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -863,7 +872,8 @@ window.BENCHMARK_DATA = {
           509.61538991928103,
           764.2756281534831,
           536.072971534729,
-          970.2753125508626
+          970.2753125508626,
+          869.0043994903565
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -875,6 +885,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1469,6 +1480,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
         "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
+      },
+      {
+        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
+        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
       }
     ],
     "labels": [
@@ -1554,7 +1571,8 @@ window.BENCHMARK_DATA = {
       "4eec7318",
       "df357ed3",
       "c010bba3",
-      "5bc15a41"
+      "5bc15a41",
+      "1945e0a4"
     ],
     "datasets": [
       {
@@ -1643,7 +1661,8 @@ window.BENCHMARK_DATA = {
           99.80279644046512,
           153.01855700016023,
           99.99071205513818,
-          194.592351214091
+          194.592351214091,
+          166.54280826250712
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1691,6 +1710,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -1834,7 +1854,8 @@ window.BENCHMARK_DATA = {
           134.35186891555787,
           206.85194873809814,
           128.6137250491551,
-          253.18679602940878
+          253.18679602940878,
+          224.63416498502096
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1846,6 +1867,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -2380,6 +2402,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
         "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
+      },
+      {
+        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
+        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
       }
     ],
     "labels": [
@@ -2455,7 +2483,8 @@ window.BENCHMARK_DATA = {
       "4eec7318",
       "df357ed3",
       "c010bba3",
-      "5bc15a41"
+      "5bc15a41",
+      "1945e0a4"
     ],
     "datasets": [
       {
@@ -2534,7 +2563,8 @@ window.BENCHMARK_DATA = {
           342.4811784585317,
           452.43272294998167,
           341.25137255986533,
-          614.4018684795925
+          614.4018684795925,
+          537.5697986602784
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2568,6 +2598,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -2705,7 +2736,8 @@ window.BENCHMARK_DATA = {
           493.76175855000815,
           725.0246744155884,
           495.3376374925886,
-          965.9930225372315
+          965.9930225372315,
+          840.2415881474813
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2717,6 +2749,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -3241,6 +3274,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
         "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
+      },
+      {
+        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
+        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
       }
     ],
     "labels": [
@@ -3316,7 +3355,8 @@ window.BENCHMARK_DATA = {
       "4eec7318",
       "df357ed3",
       "c010bba3",
-      "5bc15a41"
+      "5bc15a41",
+      "1945e0a4"
     ],
     "datasets": [
       {
@@ -3395,7 +3435,8 @@ window.BENCHMARK_DATA = {
           988.8901557922363,
           1329.9361852918353,
           992.5125962893168,
-          1677.1769700050354
+          1677.1769700050354,
+          1197.4525799384485
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3429,6 +3470,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -3566,7 +3608,8 @@ window.BENCHMARK_DATA = {
           9444.673855121318,
           13931.69404296875,
           9646.317310587565,
-          20968.100540161133
+          20968.100540161133,
+          13405.245967610677
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,7 +3693,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4102,6 +4146,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
         "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
+      },
+      {
+        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
+        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
       }
     ],
     "labels": [
@@ -4177,7 +4227,8 @@ window.BENCHMARK_DATA = {
       "4eec7318",
       "df357ed3",
       "c010bba3",
-      "5bc15a41"
+      "5bc15a41",
+      "1945e0a4"
     ],
     "datasets": [
       {
@@ -4256,7 +4307,8 @@ window.BENCHMARK_DATA = {
           359.8475132306417,
           489.4575740269252,
           365.026276077543,
-          686.1853793144226
+          686.1853793144226,
+          512.6089921951294
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4286,6 +4338,7 @@ window.BENCHMARK_DATA = {
           1408,
           1408,
           1120,
+          1080,
           1080,
           1080,
           1080,
@@ -4427,7 +4480,8 @@ window.BENCHMARK_DATA = {
           635.7478855450948,
           1004.3303532233605,
           657.6701698303223,
-          1343.359947340829
+          1343.359947340829,
+          1127.2770821889242
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4439,6 +4493,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -4963,6 +5018,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:18:57 2026 \u002B0200",
         "message": "refactor!: remove \u0060IOptionsProvider\u003CExpectationBuilder\u003E\u0060 from the expectation results (#1984)"
+      },
+      {
+        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
+        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
       }
     ],
     "labels": [
@@ -5038,7 +5099,8 @@ window.BENCHMARK_DATA = {
       "4eec7318",
       "df357ed3",
       "c010bba3",
-      "5bc15a41"
+      "5bc15a41",
+      "1945e0a4"
     ],
     "datasets": [
       {
@@ -5117,7 +5179,8 @@ window.BENCHMARK_DATA = {
           621.6783431598118,
           827.5620208104451,
           634.790694173177,
-          1130.3970631917318
+          1130.3970631917318,
+          846.7878972371419
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5151,6 +5214,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -5288,7 +5352,8 @@ window.BENCHMARK_DATA = {
           383.1417550359453,
           620.9934958049229,
           408.295764986674,
-          761.956848526001
+          761.956848526001,
+          718.0018542925517
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5300,6 +5365,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
