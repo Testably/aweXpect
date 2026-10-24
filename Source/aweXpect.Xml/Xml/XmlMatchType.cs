@@ -12,6 +12,9 @@ namespace aweXpect.Xml;
 
 internal sealed class XmlMatchType(XmlOptions options) : StringMatchType
 {
+	private static readonly MatchPhrase SharedPhrase =
+		MatchPhrase.Being("XML equivalent to").WithName(" as XML").WithUnformattedExpected();
+
 	private ParsedExpected? _parsedExpected;
 
 	/// <inheritdoc />
@@ -22,25 +25,7 @@ internal sealed class XmlMatchType(XmlOptions options) : StringMatchType
 		=> new XmlMatcher(this, options);
 
 	/// <inheritdoc />
-	public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-		=> (grammars.HasFlag(ExpectationGrammars.Active), grammars.HasFlag(ExpectationGrammars.Negated)) switch
-		{
-			(true, false) => $"{grammars.Verb("is", "are")} XML equivalent to {expected}",
-			(false, false) => $"XML equivalent to {expected}",
-			(true, true) => $"{grammars.Verb("is not", "are not")} XML equivalent to {expected}",
-			(false, true) => $"not XML equivalent to {expected}",
-		};
-
-	/// <inheritdoc />
-	public override string GetTypeString()
-		=> " as XML";
-
-	/// <inheritdoc />
-	/// <remarks>
-	///     The casing and a comparer are rejected when they are specified, so there is no option to describe.
-	/// </remarks>
-	public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-		=> "";
+	public override MatchPhrase Phrase => SharedPhrase;
 
 	/// <inheritdoc />
 	/// <exception cref="InvalidOperationException">

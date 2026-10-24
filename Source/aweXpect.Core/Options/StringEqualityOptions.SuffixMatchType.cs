@@ -22,6 +22,11 @@ public partial class StringEqualityOptions
 
 	private sealed class SuffixMatchType : BuiltInMatchType
 	{
+		private static readonly MatchPhrase SharedPhrase =
+			MatchPhrase.Verb("ends with", "end with", "ending with")
+				.WithName(" as suffix")
+				.WithPattern("suffix", "suffix");
+
 		private static int GetIndexOfFirstMatch(string stringWithLeadingWhitespace, string value,
 			IEqualityComparer<string> comparer)
 		{
@@ -40,6 +45,9 @@ public partial class StringEqualityOptions
 		}
 
 		#region IMatchType Members
+
+		/// <inheritdoc />
+		public override MatchPhrase Phrase => SharedPhrase;
 
 		/// <inheritdoc />
 		public override bool InspectsSubject => true;
@@ -109,40 +117,6 @@ public partial class StringEqualityOptions
 			}
 
 			return MatchResult.From(actual.EndsWith(expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
-		}
-
-		/// <inheritdoc />
-		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> (grammars.IsActive(), grammars.IsNegated()) switch
-			{
-				(true, false) =>
-					$"{grammars.Verb("ends", "end")} with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, false) =>
-					$"ending with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(true, true) =>
-					$"{grammars.Verb("does not end", "do not end")} with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, true) =>
-					$"not ending with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-			};
-
-		/// <inheritdoc />
-		public override string GetTypeString()
-			=> " as suffix";
-
-		/// <inheritdoc />
-		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			if (comparer != null)
-			{
-				return $" using {Formatter.Format(comparer.GetType())}";
-			}
-
-			if (ignoreCase)
-			{
-				return " ignoring case";
-			}
-
-			return "";
 		}
 
 		#endregion

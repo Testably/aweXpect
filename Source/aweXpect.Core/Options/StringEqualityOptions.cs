@@ -548,8 +548,18 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// <summary>
 	///     Get the expectations text.
 	/// </summary>
+	/// <remarks>
+	///     The text is written from the <see cref="StringMatchType.Phrase" /> of the match type for the
+	///     <paramref name="grammars" />, followed by the options, e.g. <c>starts with "Let it" ignoring case</c>.
+	/// </remarks>
 	public string GetExpectation(string? expected, ExpectationGrammars grammars)
-		=> _matchType.GetExpectation(expected, grammars) + GetOptionString();
+	{
+		MatchPhrase phrase = _matchType.Phrase;
+		string formattedExpected = phrase.FormatsExpected
+			? Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))
+			: expected ?? "";
+		return phrase.GetExpectation(formattedExpected, grammars, false) + GetOptionString();
+	}
 
 	/// <summary>
 	///     Formats the <paramref name="expected" /> item of an expected collection.
@@ -565,14 +575,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Precedes the already <paramref name="formattedExpected" /> item with the kind of the pattern.
 	/// </summary>
 	internal string WithPatternKind(string formattedExpected)
-		=> _matchType switch
-		{
-			PrefixMatchType => "prefix ",
-			SuffixMatchType => "suffix ",
-			RegexMatchType => "regex ",
-			WildcardMatchType => "wildcard ",
-			_ => "",
-		} + formattedExpected;
+		=> _matchType.Phrase.PatternItemPrefix + formattedExpected;
 
 	/// <summary>
 	///     Get an extended failure text for the comparison of the <paramref name="actual" /> with the
@@ -905,7 +908,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <inheritdoc />
-	public override string ToString() => _matchType.GetTypeString() + GetOptionString();
+	public override string ToString() => _matchType.Phrase.Name + GetOptionString();
 
 	/// <summary>
 	///     Specifies a specific <see cref="IEqualityComparer{T}" /> to use for comparing <see langword="string" />s.
@@ -1180,7 +1183,11 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 	private string GetOptionString()
 	{
-		string initialString = _matchType.GetOptionString(_ignoreCase, _comparer);
+		string initialString = _comparer is not null
+			? $" using {Formatter.Format(_comparer.GetType())}"
+			: _ignoreCase
+				? " ignoring case"
+				: "";
 		if (!_ignoreLeadingWhiteSpace && !_ignoreTrailingWhiteSpace && !_ignoreNewlineStyle &&
 		    !_ignoreIndentation)
 		{
@@ -1260,14 +1267,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     value is not a pattern.
 	/// </summary>
 	private string? GetPatternKind()
-		=> _matchType switch
-		{
-			PrefixMatchType => "prefix",
-			SuffixMatchType => "suffix",
-			RegexMatchType => "regex pattern",
-			WildcardMatchType => "wildcard pattern",
-			_ => null,
-		};
+		=> _matchType.Phrase.PatternNoun;
 
 	/// <summary>
 	///     Verifies that the <paramref name="expected" /> value is usable for the current match type and returns the

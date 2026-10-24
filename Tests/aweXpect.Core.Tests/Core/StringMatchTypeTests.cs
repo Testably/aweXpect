@@ -153,12 +153,7 @@ public sealed class StringMatchTypeTests
 			return matcher;
 		}
 
-		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> $"is {(grammars.IsNegated() ? "not " : "")}titled {Formatter.Format(expected)}";
-
-		public override string GetTypeString() => " as title";
-
-		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer) => "";
+		public override MatchPhrase Phrase { get; } = MatchPhrase.Being("titled").WithName(" as title");
 
 		public sealed class CountingMatcher(string? notComparableReason) : StringMatcher
 		{

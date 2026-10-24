@@ -128,6 +128,11 @@ public partial class StringEqualityOptions
 
 	private sealed class RegexMatchType(RegexOptions regexOptions) : BuiltInMatchType
 	{
+		private static readonly MatchPhrase SharedPhrase =
+			MatchPhrase.Verb("matches regex", "match regex", "matching regex")
+				.WithName(" as regex")
+				.WithPattern("regex", "regex pattern");
+
 		/// <summary>
 		///     The <see cref="RegexOptions" /> that the pattern is matched with.
 		/// </summary>
@@ -173,6 +178,9 @@ public partial class StringEqualityOptions
 		#region IMatchType Members
 
 		/// <inheritdoc />
+		public override MatchPhrase Phrase => SharedPhrase;
+
+		/// <inheritdoc />
 		public override bool InspectsSubject => true;
 
 		/// <inheritdoc />
@@ -203,31 +211,6 @@ public partial class StringEqualityOptions
 
 			return MatchResult.From(CreateRegex(expected, ignoreCase).IsMatch(actual));
 		}
-
-		/// <inheritdoc />
-		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> (grammars.IsActive(), grammars.IsNegated()) switch
-			{
-				(true, false) =>
-					$"{grammars.Verb("matches", "match")} regex {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, false) =>
-					$"matching regex {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(true, true) =>
-					$"{grammars.Verb("does not match", "do not match")} regex {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, true) =>
-					$"not matching regex {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-			};
-
-		/// <inheritdoc />
-		public override string GetTypeString()
-			=> " as regex";
-
-		/// <inheritdoc />
-		/// <remarks>
-		///     A <paramref name="comparer" /> is rejected for a pattern, so only the casing can be ignored here.
-		/// </remarks>
-		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-			=> ignoreCase ? " ignoring case" : "";
 
 		#endregion
 	}

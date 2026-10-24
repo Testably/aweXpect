@@ -163,7 +163,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has message is the number "1",
+					             has message the number "1",
 					             but it was "foo", which is no number
 
 					             Message:
@@ -182,7 +182,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have message is the number "1",
+					             does not have message the number "1",
 					             but it was "foo", which is no number
 
 					             Message:

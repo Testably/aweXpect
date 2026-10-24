@@ -119,17 +119,14 @@ public static partial class ThatIPAddress
 		public static readonly IgnoringIPv4MappedToIPv6MatchType Instance = new();
 		private static readonly Matcher SharedMatcher = new();
 
+		private static readonly MatchPhrase SharedPhrase = MatchPhrase.EqualTo
+			.WithSuffix(" ignoring IPv4-to-IPv6 mapping")
+			.WithName(" ignoring IPv4-to-IPv6 mapping");
+
+		public override MatchPhrase Phrase => SharedPhrase;
+
 		public override ObjectMatcher ForEvaluation(MatchEnvironment environment)
 			=> SharedMatcher;
-
-		public override string GetExpectation(string expected, ExpectationGrammars grammars)
-			=> $"{grammars.Verb("is", "are")} {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equal to {expected}{this}";
-
-		public override string PrependItemAndComparison(string expected, string? itemNoun = null,
-			string? comparison = null)
-			=> (itemNoun is null ? "" : itemNoun + " ") + (comparison is null ? "" : comparison + " ") + expected + this;
-
-		public override string ToString() => " ignoring IPv4-to-IPv6 mapping";
 
 		private static IPAddress? Normalize(IPAddress? address)
 			=> address is { IsIPv4MappedToIPv6: true, } ? address.MapToIPv4() : address;

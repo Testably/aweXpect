@@ -245,22 +245,24 @@ public sealed class EquivalencyMatchTypeTests
 	}
 
 	[Test]
-	public async Task PrependItemAndComparison_ShouldPrependTheItemNoun()
+	public async Task Phrase_ShouldPrependTheItemNoun()
 	{
-		EquivalencyMatchType sut = new(new EquivalencyOptions());
+		ObjectEqualityOptions<int> sut = new();
+		sut.SetMatchType(new EquivalencyMatchType(new EquivalencyOptions()), "Equivalent");
 
-		string result = sut.PrependItemAndComparison("expected", "an item", "equal to");
+		string result = sut.GetItemExpectation("expected", "an item", "equal to");
 
 		await That(result).IsEqualTo("an item equivalent to expected")
 			.Because("the comparison is replaced by the equivalency");
 	}
 
 	[Test]
-	public async Task PrependItemAndComparison_WithoutItemNoun_ShouldOnlyNameTheEquivalency()
+	public async Task Phrase_WithoutItemNoun_ShouldOnlyNameTheEquivalency()
 	{
-		EquivalencyMatchType sut = new(new EquivalencyOptions());
+		ObjectEqualityOptions<int> sut = new();
+		sut.SetMatchType(new EquivalencyMatchType(new EquivalencyOptions()), "Equivalent");
 
-		string result = sut.PrependItemAndComparison("expected", comparison: "equal to");
+		string result = sut.GetItemExpectation("expected", comparison: "equal to");
 
 		await That(result).IsEqualTo("equivalent to expected");
 	}

@@ -21,6 +21,10 @@ public partial class StringEqualityOptions
 
 	private sealed class ContainingMatchType : BuiltInMatchType
 	{
+		private static readonly MatchPhrase SharedPhrase =
+			MatchPhrase.Verb("contains", "contain", "containing")
+				.WithName(" containing");
+
 		private static bool Contains(string actual, string expected, IEqualityComparer<string> comparer)
 		{
 			if (actual.Length < expected.Length)
@@ -41,6 +45,9 @@ public partial class StringEqualityOptions
 		}
 
 		#region IMatchType Members
+
+		/// <inheritdoc />
+		public override MatchPhrase Phrase => SharedPhrase;
 
 		/// <inheritdoc />
 		public override bool InspectsSubject => true;
@@ -88,40 +95,6 @@ public partial class StringEqualityOptions
 			}
 
 			return MatchResult.From(actual.Contains(expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
-		}
-
-		/// <inheritdoc />
-		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> (grammars.IsActive(), grammars.IsNegated()) switch
-			{
-				(true, false) =>
-					$"{grammars.Verb("contains", "contain")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, false) =>
-					$"containing {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(true, true) =>
-					$"{grammars.Verb("does not contain", "do not contain")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, true) =>
-					$"not containing {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-			};
-
-		/// <inheritdoc />
-		public override string GetTypeString()
-			=> " containing";
-
-		/// <inheritdoc />
-		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			if (comparer != null)
-			{
-				return $" using {Formatter.Format(comparer.GetType())}";
-			}
-
-			if (ignoreCase)
-			{
-				return " ignoring case";
-			}
-
-			return "";
 		}
 
 		#endregion

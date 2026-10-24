@@ -8,6 +8,9 @@ namespace aweXpect.Json;
 
 internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 {
+	private static readonly MatchPhrase SharedPhrase =
+		MatchPhrase.Being("JSON equivalent to").WithName(" as JSON").WithUnformattedExpected();
+
 	private string? _validatedExpected;
 
 	/// <inheritdoc />
@@ -18,25 +21,7 @@ internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 		=> new JsonMatcher(options);
 
 	/// <inheritdoc />
-	public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-		=> (grammars.HasFlag(ExpectationGrammars.Active), grammars.HasFlag(ExpectationGrammars.Negated)) switch
-		{
-			(true, false) => $"{grammars.Verb("is", "are")} JSON equivalent to {expected}",
-			(false, false) => $"JSON equivalent to {expected}",
-			(true, true) => $"{grammars.Verb("is not", "are not")} JSON equivalent to {expected}",
-			(false, true) => $"not JSON equivalent to {expected}",
-		};
-
-	/// <inheritdoc />
-	public override string GetTypeString()
-		=> " as JSON";
-
-	/// <inheritdoc />
-	/// <remarks>
-	///     The casing and a comparer are rejected when they are specified, so there is no option to describe.
-	/// </remarks>
-	public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-		=> "";
+	public override MatchPhrase Phrase => SharedPhrase;
 
 	/// <inheritdoc />
 	/// <exception cref="InvalidOperationException">

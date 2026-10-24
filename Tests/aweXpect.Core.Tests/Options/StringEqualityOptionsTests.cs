@@ -1264,7 +1264,7 @@ public sealed partial class StringEqualityOptionsTests
 			sut.SetMatchType(matchType, "AsCustom");
 
 			await That(matchType.ValidatedOptions).IsEqualTo([(false, StringComparer.Ordinal),]);
-			await That(sut.ToString()).IsEqualTo(" as custom using a comparer");
+			await That(sut.ToString()).IsEqualTo($" as custom using {Formatter.Format(StringComparer.Ordinal.GetType())}");
 		}
 
 		[Test]
@@ -1416,7 +1416,7 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(matchType.ValidatedOptions)
 				.IsEqualTo([(false, null), (false, null), (false, StringComparer.Ordinal),]);
-			await That(sut.ToString()).IsEqualTo(" as custom using a comparer");
+			await That(sut.ToString()).IsEqualTo($" as custom using {Formatter.Format(StringComparer.Ordinal.GetType())}");
 		}
 
 		[Test]
@@ -1746,13 +1746,7 @@ public sealed partial class StringEqualityOptionsTests
 			public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
 				=> new Matcher();
 
-			public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-				=> throw new NotSupportedException();
-
-			public override string GetTypeString() => throw new NotSupportedException();
-
-			public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-				=> throw new NotSupportedException();
+			public override MatchPhrase Phrase => MatchPhrase.EqualTo;
 
 			private sealed class Matcher : StringMatcher
 			{
@@ -1774,13 +1768,7 @@ public sealed partial class StringEqualityOptionsTests
 			public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
 				=> new Matcher(match, failure);
 
-			public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-				=> throw new NotSupportedException();
-
-			public override string GetTypeString() => throw new NotSupportedException();
-
-			public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-				=> throw new NotSupportedException();
+			public override MatchPhrase Phrase => MatchPhrase.EqualTo;
 
 			private sealed class Matcher(Func<ValueTask<MatchResult>> match, string failure) : StringMatcher
 			{
@@ -1814,13 +1802,7 @@ public sealed partial class StringEqualityOptionsTests
 			public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
 				=> new Matcher(ComparedExpected);
 
-			public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-				=> throw new NotSupportedException();
-
-			public override string GetTypeString() => " as custom";
-
-			public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-				=> (ignoreCase ? " ignoring case" : "") + (comparer is null ? "" : " using a comparer");
+			public override MatchPhrase Phrase { get; } = MatchPhrase.EqualTo.WithName(" as custom");
 
 			public override void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
 			{

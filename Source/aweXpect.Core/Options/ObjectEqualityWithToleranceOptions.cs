@@ -106,21 +106,23 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 				: _matcher ??= new WithinMatcher(this, tolerance());
 
 		/// <inheritdoc />
-		public override string GetExpectation(string expected, ExpectationGrammars grammars)
-			=> $"{grammars.Verb("is", "are")} {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equal to {expected}" + ToString();
-
-		/// <inheritdoc />
-		public override string PrependItemAndComparison(string expected, string? itemNoun = null,
-			string? comparison = null)
-			=> ObjectEqualityOptions.GetItemExpectation(expected, itemNoun, comparison) + ToString();
-
-		/// <inheritdoc cref="object.ToString()" />
-		public override string ToString()
+		/// <remarks>
+		///     A default tolerance can be customized, so the phrase is written whenever it is asked for, and names the
+		///     tolerance only when it differs from the default value of <typeparamref name="TTolerance" />.
+		/// </remarks>
+		public override MatchPhrase Phrase
 		{
-			TTolerance value = tolerance();
-			return isDefault && EqualityComparer<TTolerance>.Default.Equals(value, default!)
-				? ""
-				: toString.Invoke(value) + unit;
+			get
+			{
+				TTolerance value = tolerance();
+				if (isDefault && EqualityComparer<TTolerance>.Default.Equals(value, default!))
+				{
+					return MatchPhrase.EqualTo;
+				}
+
+				string name = toString.Invoke(value) + unit;
+				return MatchPhrase.EqualTo.WithSuffix(name).WithName(name);
+			}
 		}
 
 		#endregion

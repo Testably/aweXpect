@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using aweXpect.Core;
+﻿using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect.Snapshots.Tests.TestHelpers;
@@ -23,12 +22,7 @@ internal static class YieldingStringMatch
 		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
 			=> Matcher;
 
-		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> $"{(grammars.HasFlag(ExpectationGrammars.Negated) ? "is not" : "is")} equal to \"{expected}\"";
-
-		public override string GetTypeString() => " after yielding";
-
-		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer) => "";
+		public override MatchPhrase Phrase { get; } = MatchPhrase.EqualTo.WithName(" after yielding");
 
 		private sealed class YieldingMatcher : StringMatcher
 		{

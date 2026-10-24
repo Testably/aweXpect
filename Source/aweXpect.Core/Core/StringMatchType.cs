@@ -26,6 +26,15 @@ public abstract class StringMatchType
 	public virtual bool InspectsSubject => false;
 
 	/// <summary>
+	///     The words with which the match type describes its comparison.
+	/// </summary>
+	/// <remarks>
+	///     Core writes the expectation text for every grammar from them, followed by the casing and the comparer that
+	///     are specified, e.g. <c>starts with "Let it" ignoring case</c>.
+	/// </remarks>
+	public abstract MatchPhrase Phrase { get; }
+
+	/// <summary>
 	///     Creates the matcher that compares the strings of one evaluation in the <paramref name="environment" /> with
 	///     the <paramref name="settings" />.
 	/// </summary>
@@ -33,21 +42,6 @@ public abstract class StringMatchType
 	///     A match type without state per evaluation returns a shared matcher, so that an evaluation allocates nothing.
 	/// </remarks>
 	public abstract StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings);
-
-	/// <summary>
-	///     Get the expectations text.
-	/// </summary>
-	public abstract string GetExpectation(string? expected, ExpectationGrammars grammars);
-
-	/// <summary>
-	///     A string representation of the match type.
-	/// </summary>
-	public abstract string GetTypeString();
-
-	/// <summary>
-	///     A string representation of the options.
-	/// </summary>
-	public abstract string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer);
 
 	/// <summary>
 	///     Rejects options that the match type cannot honour, by throwing.

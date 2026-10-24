@@ -21,19 +21,11 @@ public abstract class ObjectMatchType
 	public abstract ObjectMatcher ForEvaluation(MatchEnvironment environment);
 
 	/// <summary>
-	///     Get the expectations text.
-	/// </summary>
-	public abstract string GetExpectation(string expected, ExpectationGrammars grammars);
-
-	/// <summary>
-	///     Get the expectation text for a single expected item, e.g. <c>equivalent to {expected}</c>.
+	///     The words with which the match type describes its comparison.
 	/// </summary>
 	/// <remarks>
-	///     A match type that describes the item instead of only formatting it prepends the
-	///     <paramref name="itemNoun" />, so that a verb such as <c>contains</c> keeps a direct object.<br />
-	///     A match type that only formats the value prepends the <paramref name="comparison" /> instead, so that a verb
-	///     which already names the item reads <c>has item equal to 3</c>.
+	///     Core writes the expectation text for every grammar from them, and the text for a single expected item, e.g.
+	///     <c>contains an item equivalent to …</c>.
 	/// </remarks>
-	public abstract string PrependItemAndComparison(string expected, string? itemNoun = null,
-		string? comparison = null);
+	public abstract MatchPhrase Phrase { get; }
 }

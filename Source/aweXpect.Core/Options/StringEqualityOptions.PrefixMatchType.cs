@@ -22,6 +22,11 @@ public partial class StringEqualityOptions
 
 	private sealed class PrefixMatchType : BuiltInMatchType
 	{
+		private static readonly MatchPhrase SharedPhrase =
+			MatchPhrase.Verb("starts with", "start with", "starting with")
+				.WithName(" as prefix")
+				.WithPattern("prefix", "prefix");
+
 		private static int GetIndexOfFirstMatch(string stringWithLeadingWhitespace, string value,
 			IEqualityComparer<string> comparer)
 		{
@@ -40,6 +45,9 @@ public partial class StringEqualityOptions
 		}
 
 		#region IMatchType Members
+
+		/// <inheritdoc />
+		public override MatchPhrase Phrase => SharedPhrase;
 
 		/// <inheritdoc />
 		public override bool InspectsSubject => true;
@@ -106,40 +114,6 @@ public partial class StringEqualityOptions
 			}
 
 			return MatchResult.From(actual.StartsWith(expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
-		}
-
-		/// <inheritdoc />
-		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> (grammars.IsActive(), grammars.IsNegated()) switch
-			{
-				(true, false) =>
-					$"{grammars.Verb("starts", "start")} with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, false) =>
-					$"starting with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(true, true) =>
-					$"{grammars.Verb("does not start", "do not start")} with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, true) =>
-					$"not starting with {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-			};
-
-		/// <inheritdoc />
-		public override string GetTypeString()
-			=> " as prefix";
-
-		/// <inheritdoc />
-		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			if (comparer != null)
-			{
-				return $" using {Formatter.Format(comparer.GetType())}";
-			}
-
-			if (ignoreCase)
-			{
-				return " ignoring case";
-			}
-
-			return "";
 		}
 
 		#endregion

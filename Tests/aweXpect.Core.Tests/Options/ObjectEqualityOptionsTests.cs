@@ -544,12 +544,6 @@ public class ObjectEqualityOptionsTests
 	{
 		public override ObjectMatcher ForEvaluation(MatchEnvironment environment) => throw new NotSupportedException();
 
-		public override string GetExpectation(string expected, ExpectationGrammars grammars) => "";
-
-		public override string PrependItemAndComparison(string expected, string? itemNoun = null,
-			string? comparison = null)
-			=> "";
-
-		public override string ToString() => "dummy";
+		public override MatchPhrase Phrase { get; } = MatchPhrase.EqualTo.WithName("dummy");
 	}
 }

@@ -179,18 +179,9 @@ private sealed class ByTitleMatchType : ObjectMatchType
 {
     private static readonly ByTitleMatcher Matcher = new();
 
+    public override MatchPhrase Phrase { get; } = MatchPhrase.Being("titled like").WithName(" by title");
+
     public override ObjectMatcher ForEvaluation(MatchEnvironment environment) => Matcher;
-
-    public override string GetExpectation(string expected, ExpectationGrammars grammars)
-    {
-        string verb = grammars.IsPlural() ? "are" : "is";
-        string negation = grammars.IsNegated() ? " not" : "";
-        return $"{verb}{negation} titled like {expected}";
-    }
-
-    public override string PrependItemAndComparison(string expected, string? itemNoun = null,
-        string? comparison = null)
-        => $"{(itemNoun is null ? "" : itemNoun + " ")}titled like {expected}";
 
     private sealed class ByTitleMatcher : ObjectMatcher
     {
@@ -228,13 +219,19 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
   differences of two documents, returns `MatchResult.NoMatchBecause(explanation)` with a `MatchExplanation` of its own,
   which the default `GetFailure` writes. `MatchWithExplanation` compares for a failure message, while `Match` only
   decides, e.g. for each item of a collection; override it when explaining costs more than deciding.
-- `GetExpectation` replaces "is equal to …" in the expectation text.
-- `PrependItemAndComparison` describes a single expected item, e.g. in "has item titled like …".
+- `Phrase` holds the words of the comparison, from which Core writes the expectation text for every grammar, e.g. "is
+  titled like …", "are not titled like …" or "has item titled like …". `MatchPhrase.Being(comparison)` reads "is …",
+  `MatchPhrase.Verb(singular, plural, participle)` has a verb of its own, e.g. "starts with", and `MatchPhrase.EqualTo`
+  is the equality, which the text of a single item may leave out, e.g. "contains 3". `WithName` names the match type in a
+  short description of the options, and `WithSuffix` follows the expected value, e.g. " using TitleComparer". For a
+  string match type, `WithPattern(kind, noun)` marks the expected value as a pattern, e.g. `wildcard "Let*"` for an
+  expected item, and `WithUnformattedExpected()` writes it as it is instead of quoting it, e.g. a JSON document.
 - The matcher can add [contexts](./06-message-conventions.md#contexts) that explain a failure in `AppendContexts`, e.g.
   the options of the comparison.
 - For strings, derive from `StringMatchType` instead and set it with `SetMatchType` on the `StringEqualityOptions`.
   Its `ForEvaluation` also receives the `StringMatchSettings`, i.e. whether the casing is ignored and the comparer of the
-  caller, and its `StringMatcher` compares the values after the whitespace options are applied. Throw in its
+  caller, and its `StringMatcher` compares the values after the whitespace options are applied. Core appends these
+  options to the expectation text, e.g. "starts with "Let it" ignoring case". Throw in its
   `ValidateOptions` for a casing or a comparer that it cannot honour, and in its `ValidateExpected` for an expected value
   that it cannot use: the first throws at the call that specifies the conflict, the second for every subject, also when
   nothing is compared with the expected value, e.g. for an empty collection.

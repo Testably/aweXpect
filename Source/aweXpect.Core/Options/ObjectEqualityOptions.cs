@@ -18,17 +18,6 @@ internal static class ObjectEqualityOptions
 	internal static readonly ObjectMatchType EqualsMatch = new EqualsMatchType();
 
 	/// <summary>
-	///     Prepends the <paramref name="itemNoun" /> and the <paramref name="comparison" /> to the
-	///     <paramref name="expected" /> value.
-	/// </summary>
-	/// <remarks>
-	///     A match type that only formats the value names neither the item nor the comparison on its own, so a verb
-	///     that needs both reads <c>contains an item equal to 3</c>.
-	/// </remarks>
-	internal static string GetItemExpectation(string expected, string? itemNoun, string? comparison)
-		=> (itemNoun is null ? "" : itemNoun + " ") + (comparison is null ? "" : comparison + " ") + expected;
-
-	/// <summary>
 	///     Throws for a <paramref name="result" /> that could not compare the subject, so that every expectation and
 	///     every collection fails for it in both polarities, like for an exception of the caller's code.
 	/// </summary>
@@ -40,9 +29,6 @@ internal static class ObjectEqualityOptions
 	internal sealed class EqualsMatchType : ObjectMatchType
 	{
 		private static readonly EqualsMatcher Matcher = new();
-
-		/// <inheritdoc cref="object.ToString()" />
-		public override string ToString() => "";
 
 		#region IEquality Members
 
@@ -216,13 +202,7 @@ internal static class ObjectEqualityOptions
 #endif
 
 		/// <inheritdoc />
-		public override string GetExpectation(string expected, ExpectationGrammars grammars)
-			=> $"{grammars.Verb("is", "are")} {(grammars.IsNegated() ? "not " : "")}equal to {expected}";
-
-		/// <inheritdoc />
-		public override string PrependItemAndComparison(string expected, string? itemNoun = null,
-			string? comparison = null)
-			=> GetItemExpectation(expected, itemNoun, comparison);
+		public override MatchPhrase Phrase => MatchPhrase.EqualTo;
 
 		#endregion
 
@@ -422,12 +402,19 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	///     Returns the expectation string, e.g. <c>be equal to {expectedExpression}</c>.
 	/// </summary>
 	public string GetExpectation(string expectedExpression, ExpectationGrammars grammars)
-		=> MatchType.GetExpectation(expectedExpression, grammars);
+		=> MatchType.Phrase.GetExpectation(expectedExpression, grammars, true);
 
-
-	/// <inheritdoc cref="ObjectMatchType.PrependItemAndComparison" />
+	/// <summary>
+	///     Get the expectation text for a single expected item, e.g. <c>an item equivalent to {expected}</c>.
+	/// </summary>
+	/// <remarks>
+	///     A comparison other than the equality is always named after the <paramref name="itemNoun" />, so that a verb
+	///     such as <c>contains</c> keeps a direct object.<br />
+	///     The equality is named with the <paramref name="comparison" /> instead, or left out without one, so that a
+	///     verb which already names the item reads <c>has item equal to 3</c>.
+	/// </remarks>
 	public string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null)
-		=> MatchType.PrependItemAndComparison(expected, itemNoun, comparison);
+		=> MatchType.Phrase.GetItemExpectation(expected, itemNoun, comparison);
 
 	/// <summary>
 	///     Adds the contexts of the matcher to the <paramref name="contexts" />, e.g. the options of an equivalency
@@ -437,5 +424,5 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 		=> GetMatcher().AppendContexts(contexts);
 
 	/// <inheritdoc />
-	public override string? ToString() => MatchType.ToString();
+	public override string ToString() => MatchType.Phrase.Name;
 }

@@ -55,12 +55,8 @@ public static class StringEqualityResultExtensions
 		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
 			=> new CaseFoldedMatcher(context);
 
-		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> $"{(grammars.HasFlag(ExpectationGrammars.Negated) ? "is not" : "is")} case-folded equal to {Formatter.Format(expected)}";
-
-		public override string GetTypeString() => " as case-folded";
-
-		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer) => "";
+		public override MatchPhrase Phrase { get; } =
+			MatchPhrase.Being("case-folded equal to").WithName(" as case-folded");
 
 		private sealed class CaseFoldedMatcher(string? context) : StringMatcher
 		{
@@ -85,12 +81,7 @@ public static class StringEqualityResultExtensions
 		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
 			=> Matcher;
 
-		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> $"{(grammars.HasFlag(ExpectationGrammars.Negated) ? "is not" : "is")} the number {Formatter.Format(expected)}";
-
-		public override string GetTypeString() => " as number";
-
-		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer) => "";
+		public override MatchPhrase Phrase { get; } = MatchPhrase.Being("the number").WithName(" as number");
 
 		public override void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
 		{

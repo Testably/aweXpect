@@ -34,6 +34,11 @@ public partial class StringEqualityOptions
 
 	private sealed class BlockMatchType : BuiltInMatchType
 	{
+		private static readonly MatchPhrase SharedPhrase =
+			MatchPhrase.Verb("matches", "match", "matching")
+				.WithSuffix(" as block")
+				.WithName(" as block");
+
 		/// <summary>
 		///     The most lines of the subject times the lines of the block that are compared to find the closest match, so
 		///     that explaining a failure in a long subject stays cheap.
@@ -456,6 +461,9 @@ public partial class StringEqualityOptions
 		#region IMatchType Members
 
 		/// <inheritdoc />
+		public override MatchPhrase Phrase => SharedPhrase;
+
+		/// <inheritdoc />
 		public override bool InspectsSubject => true;
 
 		/// <inheritdoc />
@@ -511,40 +519,6 @@ public partial class StringEqualityOptions
 			}
 
 			return MatchResult.From(result);
-		}
-
-		/// <inheritdoc />
-		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> (grammars.IsActive(), grammars.IsNegated()) switch
-			{
-				(true, false) =>
-					$"{grammars.Verb("matches", "match")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))} as block",
-				(false, false) =>
-					$"matching {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))} as block",
-				(true, true) =>
-					$"{grammars.Verb("does not match", "do not match")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))} as block",
-				(false, true) =>
-					$"not matching {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))} as block",
-			};
-
-		/// <inheritdoc />
-		public override string GetTypeString()
-			=> " as block";
-
-		/// <inheritdoc />
-		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			if (comparer != null)
-			{
-				return $" using {Formatter.Format(comparer.GetType())}";
-			}
-
-			if (ignoreCase)
-			{
-				return " ignoring case";
-			}
-
-			return "";
 		}
 
 		#endregion

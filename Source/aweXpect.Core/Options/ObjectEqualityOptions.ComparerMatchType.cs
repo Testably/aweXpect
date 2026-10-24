@@ -46,6 +46,8 @@ public partial class ObjectEqualityOptions<TSubject>
 		{
 			_comparer = comparer;
 			_matcher = new Matcher(this);
+			string name = $" using {Formatter.Format(comparer.GetType())}";
+			Phrase = MatchPhrase.EqualTo.WithSuffix(name).WithName(name);
 		}
 
 		#region IEquality Members
@@ -55,17 +57,8 @@ public partial class ObjectEqualityOptions<TSubject>
 			=> _matcher;
 
 		/// <inheritdoc />
-		public override string GetExpectation(string expected, ExpectationGrammars grammars)
-			=> $"{grammars.Verb("is", "are")} {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equal to {expected}" + ToString();
+		public override MatchPhrase Phrase { get; }
 
-		/// <inheritdoc />
-		public override string PrependItemAndComparison(string expected, string? itemNoun = null,
-			string? comparison = null)
-			=> ObjectEqualityOptions.GetItemExpectation(expected, itemNoun, comparison) + ToString();
-
-		/// <inheritdoc cref="object.ToString()" />
-		public override string ToString()
-			=> $" using {Formatter.Format(_comparer.GetType())}";
 
 		private bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
 			=> TryCast(actual, out TSubject typedActual) &&
@@ -108,6 +101,8 @@ public partial class ObjectEqualityOptions<TSubject>
 		{
 			_comparer = comparer;
 			_matcher = new Matcher(this);
+			string name = $" using {Formatter.Format(comparer.GetType())}";
+			Phrase = MatchPhrase.EqualTo.WithSuffix(name).WithName(name);
 		}
 
 		#region IEquality Members
@@ -117,17 +112,8 @@ public partial class ObjectEqualityOptions<TSubject>
 			=> _matcher;
 
 		/// <inheritdoc />
-		public override string GetExpectation(string expected, ExpectationGrammars grammars)
-			=> $"{grammars.Verb("is", "are")} {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equal to {expected}" + ToString();
+		public override MatchPhrase Phrase { get; }
 
-		/// <inheritdoc />
-		public override string PrependItemAndComparison(string expected, string? itemNoun = null,
-			string? comparison = null)
-			=> ObjectEqualityOptions.GetItemExpectation(expected, itemNoun, comparison) + ToString();
-
-		/// <inheritdoc cref="object.ToString()" />
-		public override string ToString()
-			=> $" using {Formatter.Format(_comparer.GetType())}";
 
 		private bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
 			=> UserCode.Invoke(static values => values.Comparer.Equals(values.Actual, values.Expected),

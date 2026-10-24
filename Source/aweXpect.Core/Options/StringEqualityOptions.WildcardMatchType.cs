@@ -29,6 +29,11 @@ public partial class StringEqualityOptions
 
 	private sealed class WildcardMatchType : BuiltInMatchType
 	{
+		private static readonly MatchPhrase SharedPhrase =
+			MatchPhrase.Verb("matches", "match", "matching")
+				.WithName(" as wildcard")
+				.WithPattern("wildcard", "wildcard pattern");
+
 		/// <summary>
 		///     Counts the non-overlapping matches of the <paramref name="expected" /> wildcard pattern in the
 		///     <paramref name="actual" /> value, up to the <paramref name="maximum" />.
@@ -80,6 +85,9 @@ public partial class StringEqualityOptions
 		#region IStringMatchType Members
 
 		/// <inheritdoc />
+		public override MatchPhrase Phrase => SharedPhrase;
+
+		/// <inheritdoc />
 		public override bool InspectsSubject => true;
 
 		/// <inheritdoc />
@@ -110,31 +118,6 @@ public partial class StringEqualityOptions
 
 			return MatchResult.From(IsMatch(CreateRegex(expected, ignoreCase), actual, ignoreCase));
 		}
-
-		/// <inheritdoc />
-		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> (grammars.IsActive(), grammars.IsNegated()) switch
-			{
-				(true, false) =>
-					$"{grammars.Verb("matches", "match")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, false) =>
-					$"matching {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(true, true) =>
-					$"{grammars.Verb("does not match", "do not match")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, true) =>
-					$"not matching {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-			};
-
-		/// <inheritdoc />
-		public override string GetTypeString()
-			=> " as wildcard";
-
-		/// <inheritdoc />
-		/// <remarks>
-		///     A <paramref name="comparer" /> is rejected for a pattern, so only the casing can be ignored here.
-		/// </remarks>
-		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-			=> ignoreCase ? " ignoring case" : "";
 
 		#endregion
 	}

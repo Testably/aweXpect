@@ -12,7 +12,12 @@ public partial class StringEqualityOptions
 
 	private sealed class ExactMatchType : BuiltInMatchType
 	{
+		private static readonly MatchPhrase SharedPhrase = MatchPhrase.EqualTo;
+
 		#region IMatchType Members
+
+		/// <inheritdoc />
+		public override MatchPhrase Phrase => SharedPhrase;
 
 		/// <inheritdoc />
 		public override bool InspectsSubject => false;
@@ -99,40 +104,6 @@ public partial class StringEqualityOptions
 			}
 
 			return MatchResult.From(string.Equals(actual, expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
-		}
-
-		/// <inheritdoc />
-		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> (grammars.IsActive(), grammars.IsNegated()) switch
-			{
-				(true, false) =>
-					$"{grammars.Verb("is", "are")} equal to {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, false) =>
-					$"equal to {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(true, true) =>
-					$"{grammars.Verb("is not", "are not")} equal to {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, true) =>
-					$"not equal to {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-			};
-
-		/// <inheritdoc />
-		public override string GetTypeString()
-			=> "";
-
-		/// <inheritdoc />
-		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			if (comparer != null)
-			{
-				return $" using {Formatter.Format(comparer.GetType())}";
-			}
-
-			if (ignoreCase)
-			{
-				return " ignoring case";
-			}
-
-			return "";
 		}
 
 		#endregion

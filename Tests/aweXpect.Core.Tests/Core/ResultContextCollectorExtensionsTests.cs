@@ -1091,13 +1091,7 @@ public sealed class ResultContextCollectorExtensionsTests
 		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
 			=> new Matcher();
 
-		public override string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> throw new NotSupportedException();
-
-		public override string GetTypeString() => throw new NotSupportedException();
-
-		public override string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-			=> throw new NotSupportedException();
+		public override MatchPhrase Phrase => throw new NotSupportedException();
 
 		private sealed class Matcher : StringMatcher
 		{

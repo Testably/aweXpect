@@ -418,6 +418,16 @@ namespace aweXpect.Core
         Match = 1,
         NotComparable = 2,
     }
+    public sealed class MatchPhrase
+    {
+        public static aweXpect.Core.MatchPhrase EqualTo { get; }
+        public aweXpect.Core.MatchPhrase WithName(string name) { }
+        public aweXpect.Core.MatchPhrase WithPattern(string kind, string noun) { }
+        public aweXpect.Core.MatchPhrase WithSuffix(string suffix) { }
+        public aweXpect.Core.MatchPhrase WithUnformattedExpected() { }
+        public static aweXpect.Core.MatchPhrase Being(string comparison) { }
+        public static aweXpect.Core.MatchPhrase Verb(string singular, string plural, string participle) { }
+    }
     public readonly struct MatchResult
     {
         public System.Exception? Cause { get; }
@@ -447,9 +457,8 @@ namespace aweXpect.Core
     public abstract class ObjectMatchType
     {
         protected ObjectMatchType() { }
+        public abstract aweXpect.Core.MatchPhrase Phrase { get; }
         public abstract aweXpect.Core.ObjectMatcher ForEvaluation(aweXpect.Core.MatchEnvironment environment);
-        public abstract string GetExpectation(string expected, aweXpect.Core.ExpectationGrammars grammars);
-        public abstract string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null);
     }
     public abstract class ObjectMatcher
     {
@@ -543,10 +552,8 @@ namespace aweXpect.Core
     {
         protected StringMatchType() { }
         public virtual bool InspectsSubject { get; }
+        public abstract aweXpect.Core.MatchPhrase Phrase { get; }
         public abstract aweXpect.Core.StringMatcher ForEvaluation(aweXpect.Core.MatchEnvironment environment, aweXpect.Core.StringMatchSettings settings);
-        public abstract string GetExpectation(string? expected, aweXpect.Core.ExpectationGrammars grammars);
-        public abstract string GetOptionString(bool ignoreCase, System.Collections.Generic.IEqualityComparer<string>? comparer);
-        public abstract string GetTypeString();
         public virtual void ValidateExpected(string? expected) { }
         public virtual void ValidateOptions(bool ignoreCase, System.Collections.Generic.IEqualityComparer<string>? comparer) { }
     }
@@ -1131,10 +1138,8 @@ namespace aweXpect.Equivalency
     public sealed class EquivalencyMatchType : aweXpect.Core.ObjectMatchType
     {
         public EquivalencyMatchType(aweXpect.Equivalency.EquivalencyOptions equivalencyOptions) { }
+        public override aweXpect.Core.MatchPhrase Phrase { get; }
         public override aweXpect.Core.ObjectMatcher ForEvaluation(aweXpect.Core.MatchEnvironment environment) { }
-        public override string GetExpectation(string expected, aweXpect.Core.ExpectationGrammars grammars) { }
-        public override string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null) { }
-        public override string ToString() { }
     }
     public record EquivalencyOptions : aweXpect.Equivalency.EquivalencyTypeOptions, System.IEquatable<aweXpect.Equivalency.EquivalencyOptions>
     {
@@ -1545,7 +1550,7 @@ namespace aweXpect.Options
         public string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null) { }
         public System.Threading.Tasks.ValueTask<aweXpect.Core.MatchResult> MatchWithExplanation<TExpected>(TSubject actual, TExpected expected) { }
         public aweXpect.Options.ObjectEqualityOptions<TSubject> SetMatchType(aweXpect.Core.ObjectMatchType matchType, string optionName) { }
-        public override string? ToString() { }
+        public override string ToString() { }
         public aweXpect.Options.ObjectEqualityOptions<TSubject> Using(System.Collections.Generic.IEqualityComparer<TSubject> comparer) { }
         public aweXpect.Options.ObjectEqualityOptions<TSubject> Using(System.Collections.Generic.IEqualityComparer<object> comparer) { }
     }

@@ -23,6 +23,9 @@ namespace aweXpect.Equivalency;
 /// </remarks>
 public sealed class EquivalencyMatchType : ObjectMatchType
 {
+	private static readonly MatchPhrase SharedPhrase =
+		MatchPhrase.Being("equivalent to").WithName(" using equivalency");
+
 	private readonly EquivalencyOptions _equivalencyOptions;
 
 	/// <summary>
@@ -45,16 +48,7 @@ public sealed class EquivalencyMatchType : ObjectMatchType
 		=> new EquivalencyMatcher(_equivalencyOptions, environment.Evaluation, environment.CancellationToken);
 
 	/// <inheritdoc />
-	public override string GetExpectation(string expected, ExpectationGrammars grammars)
-		=> $"{grammars.Verb("is", "are")} {(grammars.IsNegated() ? "not " : "")}equivalent to {expected}";
-
-	/// <inheritdoc />
-	public override string PrependItemAndComparison(string expected, string? itemNoun = null,
-		string? comparison = null)
-		=> itemNoun is null ? $"equivalent to {expected}" : $"{itemNoun} equivalent to {expected}";
-
-	/// <inheritdoc />
-	public override string ToString() => " using equivalency";
+	public override MatchPhrase Phrase => SharedPhrase;
 
 	private sealed class EquivalencyMatcher(
 		EquivalencyOptions equivalencyOptions,

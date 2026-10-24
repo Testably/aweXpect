@@ -98,12 +98,7 @@ public sealed class ObjectMatchTypeTests
 		public override ObjectMatcher ForEvaluation(MatchEnvironment environment)
 			=> new Matcher();
 
-		public override string GetExpectation(string expected, ExpectationGrammars grammars)
-			=> $"is {(grammars.IsNegated() ? "not " : "")}titled like {expected}";
-
-		public override string PrependItemAndComparison(string expected, string? itemNoun = null,
-			string? comparison = null)
-			=> $"titled like {expected}";
+		public override MatchPhrase Phrase { get; } = MatchPhrase.Being("titled like");
 
 		private sealed class Matcher : ObjectMatcher
 		{
@@ -125,12 +120,7 @@ public sealed class ObjectMatchTypeTests
 			return matcher;
 		}
 
-		public override string GetExpectation(string expected, ExpectationGrammars grammars)
-			=> $"is {(grammars.IsNegated() ? "not " : "")}titled like {expected}";
-
-		public override string PrependItemAndComparison(string expected, string? itemNoun = null,
-			string? comparison = null)
-			=> $"titled like {expected}";
+		public override MatchPhrase Phrase { get; } = MatchPhrase.Being("titled like");
 
 		public sealed class CountingMatcher : ObjectMatcher
 		{
