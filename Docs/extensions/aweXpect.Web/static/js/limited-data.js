@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
-        "message": "refactor: fix the reported Sonar issues (#1931)"
-      },
-      {
         "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
         "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
+      },
+      {
+        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
+        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
       }
     ],
     "labels": [
-      "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
       "3484beb9",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "df357ed3",
       "c010bba3",
       "5bc15a41",
-      "1945e0a4"
+      "1945e0a4",
+      "c6264268"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          184.25182256698608,
           424.43458577564786,
           303.2391261320848,
           190.86936885118484,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           312.5136297225952,
           226.31324475152152,
           414.86984654835294,
-          319.0249760945638
+          319.0249760945638,
+          410.31975078582764
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          500.7465371290843,
           969.9469004410964,
           749.3833591461182,
           505.84492056710377,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           764.2756281534831,
           536.072971534729,
           970.2753125508626,
-          869.0043994903565
+          869.0043994903565,
+          944.1509282430013
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
-        "message": "refactor: fix the reported Sonar issues (#1931)"
-      },
-      {
         "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
         "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
+      },
+      {
+        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
+        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
       }
     ],
     "labels": [
-      "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
       "3484beb9",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "df357ed3",
       "c010bba3",
       "5bc15a41",
-      "1945e0a4"
+      "1945e0a4",
+      "c6264268"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          89.44713534627643,
           176.69042602607183,
           136.19537967046102,
           95.56459149030539,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           153.01855700016023,
           99.99071205513818,
           194.592351214091,
-          166.54280826250712
+          166.54280826250712,
+          198.02909326553345
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,7 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           448,
-          448,
+          440,
           440,
           440,
           440,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          128.38879132270813,
           249.1606605734144,
           202.6834634267367,
           130.89620540936787,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           206.85194873809814,
           128.6137250491551,
           253.18679602940878,
-          224.63416498502096
+          224.63416498502096,
+          243.37135826746623
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
-        "message": "refactor: fix the reported Sonar issues (#1931)"
-      },
-      {
         "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
         "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
+      },
+      {
+        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
+        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
       }
     ],
     "labels": [
-      "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
       "3484beb9",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "df357ed3",
       "c010bba3",
       "5bc15a41",
-      "1945e0a4"
+      "1945e0a4",
+      "c6264268"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          317.55568797771747,
           586.1415869849069,
           434.19923884073893,
           322.412013224193,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           452.43272294998167,
           341.25137255986533,
           614.4018684795925,
-          537.5697986602784
+          537.5697986602784,
+          634.0030492373875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          481.0117667061942,
           921.8625114147479,
           705.1115565981183,
           465.1260594367981,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           725.0246744155884,
           495.3376374925886,
           965.9930225372315,
-          840.2415881474813
+          840.2415881474813,
+          988.0361700057983
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
-        "message": "refactor: fix the reported Sonar issues (#1931)"
-      },
-      {
         "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
         "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
+      },
+      {
+        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
+        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
       }
     ],
     "labels": [
-      "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
       "3484beb9",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "df357ed3",
       "c010bba3",
       "5bc15a41",
-      "1945e0a4"
+      "1945e0a4",
+      "c6264268"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          987.7633643831525,
           1687.5765762329102,
           1286.6074449099028,
           995.4051141738892,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1329.9361852918353,
           992.5125962893168,
           1677.1769700050354,
-          1197.4525799384485
+          1197.4525799384485,
+          1775.927513709435
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10127.185043334961,
           21462.276153564453,
           13513.559795125326,
           9627.292917104867,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           13931.69404296875,
           9646.317310587565,
           20968.100540161133,
-          13405.245967610677
+          13405.245967610677,
+          20631.42825571696
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2375,7 +2375,6 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34712,
           34713,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
-        "message": "refactor: fix the reported Sonar issues (#1931)"
-      },
       {
         "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
         "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
+      },
+      {
+        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
+        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
       }
     ],
     "labels": [
-      "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
       "3484beb9",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "df357ed3",
       "c010bba3",
       "5bc15a41",
-      "1945e0a4"
+      "1945e0a4",
+      "c6264268"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          320.3147409439087,
           662.0531340916951,
           482.44414021418646,
           339.39234946324274,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           489.4575740269252,
           365.026276077543,
           686.1853793144226,
-          512.6089921951294
+          512.6089921951294,
+          711.735968726022
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          643.0599452336629,
           1276.6368090311687,
           970.1646416003888,
           644.4940678523137,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1004.3303532233605,
           657.6701698303223,
           1343.359947340829,
-          1127.2770821889242
+          1127.2770821889242,
+          1259.993591602032
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
-        "message": "refactor: fix the reported Sonar issues (#1931)"
-      },
-      {
         "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
         "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
+      },
+      {
+        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
+        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
       }
     ],
     "labels": [
-      "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
       "3484beb9",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "df357ed3",
       "c010bba3",
       "5bc15a41",
-      "1945e0a4"
+      "1945e0a4",
+      "c6264268"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          570.3321486881802,
           1025.975347995758,
           790.5095790454319,
           586.5908978144328,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           827.5620208104451,
           634.790694173177,
           1130.3970631917318,
-          846.7878972371419
+          846.7878972371419,
+          1072.1992802253137
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          391.17236614227295,
           745.2747132619222,
           594.5088098526,
           415.57454210917155,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           620.9934958049229,
           408.295764986674,
           761.956848526001,
-          718.0018542925517
+          718.0018542925517,
+          732.5534484863281
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
