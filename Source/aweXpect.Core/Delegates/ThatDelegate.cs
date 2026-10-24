@@ -95,7 +95,7 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 	/// <summary>
 	///     Options on expectations if a delegate throws.
 	/// </summary>
-	public class ThrowsOption
+	internal class ThrowsOption
 	{
 		/// <summary>
 		///     Flag indicating if the delegate is expected to throw an exception.

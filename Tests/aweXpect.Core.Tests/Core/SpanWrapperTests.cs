@@ -1,4 +1,5 @@
 ﻿#if NET8_0_OR_GREATER
+using System.Collections.Generic;
 using aweXpect.Synchronous;
 
 // ReSharper disable CollectionNeverUpdated.Local
@@ -11,7 +12,7 @@ public sealed class SpanWrapperTests
 	[Test]
 	public void Add_ShouldThrowNotSupportedException()
 	{
-		SpanWrapper<char> sut = new("foo".AsSpan());
+		ICollection<char> sut = new SpanWrapper<char>("foo".AsSpan());
 
 		void Act()
 			=> sut.Add('b');
@@ -23,7 +24,7 @@ public sealed class SpanWrapperTests
 	[Test]
 	public void Clear_ShouldThrowNotSupportedException()
 	{
-		SpanWrapper<char> sut = new("foo".AsSpan());
+		ICollection<char> sut = new SpanWrapper<char>("foo".AsSpan());
 
 		void Act()
 			=> sut.Clear();
@@ -77,7 +78,7 @@ public sealed class SpanWrapperTests
 	[Test]
 	public void Remove_ShouldThrowNotSupportedException()
 	{
-		SpanWrapper<char> sut = new("foo".AsSpan());
+		ICollection<char> sut = new SpanWrapper<char>("foo".AsSpan());
 
 		void Act()
 			=> sut.Remove('b');

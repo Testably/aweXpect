@@ -9,7 +9,8 @@ different extensions.
 
 Reference `aweXpect.Core` in your extension, not `aweXpect`, and use the lowest version that contains the API you
 need, so that the extension works together with as many versions of `aweXpect` as possible. The namespace
-`aweXpect.Core.Internal` may change in any version, so don't use it in the code that your extension ships.
+`aweXpect.Core.Internal` may change in any version, so don't use it in the code that your extension ships. The
+compiler reminds you of this with the diagnostic `aweXpect5001`.
 
 Keep your extensions trimmable and AOT compatible like aweXpect itself, as described in
 [Native AOT for extensions](./09-native-aot.md).

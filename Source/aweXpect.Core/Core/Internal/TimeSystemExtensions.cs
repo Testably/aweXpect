@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using aweXpect.Core.Helpers;
 
 namespace aweXpect.Core.Internal;
@@ -9,6 +10,7 @@ namespace aweXpect.Core.Internal;
 /// <remarks>
 ///     The types in this namespace are infrastructure, e.g. for a virtual clock in tests, and may change in any version.
 /// </remarks>
+[Experimental("aweXpect5001")]
 public static class TimeSystemExtensions
 {
 	/// <summary>
@@ -25,6 +27,7 @@ public static class TimeSystemExtensions
 	///     The <paramref name="expectation" /> or the <paramref name="timeSystem" /> is <see langword="null" />.
 	/// </exception>
 	/// <exception cref="InvalidOperationException">A time system is already set.</exception>
+	[Experimental("aweXpect5001")]
 	public static TExpectation WithTimeSystem<TExpectation>(this TExpectation expectation, ITimeSystem timeSystem)
 		where TExpectation : Expectation
 	{

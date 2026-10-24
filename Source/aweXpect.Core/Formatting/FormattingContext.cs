@@ -12,7 +12,7 @@ public class FormattingContext
 	/// <summary>
 	///     Tracks the objects and collections that are being formatted to catch recursions.
 	/// </summary>
-	public HashSet<object> FormattedObjects { get; } = new(ReferenceComparer.Instance);
+	internal HashSet<object> FormattedObjects { get; } = new(ReferenceComparer.Instance);
 
 	/// <summary>
 	///     The number of objects, collections and tuples whose content is being written.
