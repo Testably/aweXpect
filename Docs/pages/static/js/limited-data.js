@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
-        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
-      },
-      {
         "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
-      "e6ee3749",
       "d5baef73",
       "16d46b22",
       "3009dddd",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5400.608945210774,
           11000.793195452008,
           11035.918569946289,
           5145.994079589844,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           11474.741711207798,
           7792.21450398763,
           10548.444505964007,
-          10910.83150775616
+          10910.83150775616,
+          5053.62136777242
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          170158.6887394832,
           394994.18777901784,
           374524.65652901784,
           161290.56471354168,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           381965.9596354167,
           288962.058984375,
           363574.403515625,
-          355007.5724051339
+          355007.5724051339,
+          161249.7178780692
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590287,
           590292,
           590292,
           590287,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590292,
           590225,
           590292,
-          590290
+          590290,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          9581.275565011161,
           20335.475594656808,
           20285.122494506835,
           10095.689301045735,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           18938.75010579427,
           17557.867744954427,
           19972.647086007255,
-          19846.692822265624
+          19846.692822265624,
+          9386.836663382393
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
-        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
-      },
-      {
         "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
-      "e6ee3749",
       "d5baef73",
       "16d46b22",
       "3009dddd",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          123.11643706049237,
           301.3293744967534,
           313.4784437928881,
           132.47893340247018,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           292.30259546866785,
           265.40355285008746,
           293.7104996999105,
-          309.07959547042844
+          309.07959547042844,
+          126.73873751958212
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          250.0093619187673,
           547.9582899093627,
           539.6706928888957,
           260.43213081359863,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           538.2803305943806,
           523.9076752344768,
           490.8075387661274,
-          505.0891153335571
+          505.0891153335571,
+          244.2520772298177
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          196.22040678773607,
           408.9720551627023,
           387.9510932604472,
           186.86871829399695,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           388.35702323913574,
           377.069112096514,
           382.3827592409574,
-          386.6035411516825
+          386.6035411516825,
+          189.65586798007672
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
-        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
-      },
-      {
         "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
-      "e6ee3749",
       "d5baef73",
       "16d46b22",
       "3009dddd",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          67.22933446509498,
           145.69859178249652,
           148.68989426294962,
           64.55654364426931,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           148.67894015312194,
           151.24444648424785,
           150.85344893137614,
-          143.76623986562092
+          143.76623986562092,
+          67.98332713331494
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          127.63511827786763,
           278.9406660886911,
           276.0284797350566,
           121.46104904810588,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           256.7051009813944,
           271.7530816713969,
           246.24987751642863,
-          252.17327394485474
+          252.17327394485474,
+          120.82234115259988
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          119.77442303498586,
           261.3472133416396,
           250.200190671285,
           115.60350522824696,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           249.56785089174906,
           209.64396478335064,
           263.3786003112793,
-          252.39129244486492
+          252.39129244486492,
+          113.25102055072784
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
-        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
-      },
-      {
         "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
-      "e6ee3749",
       "d5baef73",
       "16d46b22",
       "3009dddd",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          128.639973623412,
           271.39230556488036,
           263.0757025082906,
           126.15319045384724,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           275.7990000798152,
           235.85690314429146,
           257.6488490445273,
-          257.66481419404346
+          257.66481419404346,
+          127.67586382230122
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          269.34060049057007,
           599.9043617884319,
           540.0748545573308,
           251.28869821230572,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           529.5509026209513,
           586.8207597732544,
           499.7254817826407,
-          492.1018944422404
+          492.1018944422404,
+          246.11900498072308
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          177.5032828092575,
           360.99014946392606,
           334.47567488352456,
           165.87069220542907,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           355.90114835330417,
           329.7483487447103,
           328.38712075551354,
-          335.8325977643331
+          335.8325977643331,
+          166.73054394355188
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
-        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
-      },
-      {
         "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
-      "e6ee3749",
       "d5baef73",
       "16d46b22",
       "3009dddd",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          324.41010771478926,
           712.2639809335981,
           662.5475570042928,
           323.66008571216037,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           681.7743913943951,
           566.4655011040824,
           651.8734267098563,
-          640.0723020008633
+          640.0723020008633,
+          311.31280282827527
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          703.9579772215623,
           1550.2128809611002,
           1473.0074490865072,
           640.5755175862994,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1505.8446476800102,
           1389.625244140625,
           1339.4407258351644,
-          1401.5896479288738
+          1401.5896479288738,
+          629.3383340835571
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          342.60260009765625,
           715.3743420380813,
           644.9033665974935,
           331.0907334940774,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           666.4595280329387,
           602.058416219858,
           638.4697349548339,
-          706.41517162323
+          706.41517162323,
+          310.45724616731917
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
-        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
-      },
-      {
         "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
-      "e6ee3749",
       "d5baef73",
       "16d46b22",
       "3009dddd",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          341.97174770491466,
           654.6825386683146,
           654.0846815109253,
           294.8128121239798,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           657.4406617482504,
           560.8412355276255,
           647.2279743467059,
-          671.5735786301749
+          671.5735786301749,
+          306.343235874176
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9780.914921351841,
           28620.160689290366,
           28633.31409708659,
           9816.010982806865,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           28574.206649780273,
           17152.0526776995,
           27286.937502179826,
-          28968.595120943508
+          28968.595120943508,
+          9665.264728001186
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          406.2164990718548,
           814.254658290318,
           827.2581593195597,
           391.12323812338025,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           786.1035472324917,
           679.2375106811523,
           748.04342212677,
-          809.150712966919
+          809.150712966919,
+          385.42870752628033
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
-        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
-      },
-      {
         "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
-      "e6ee3749",
       "d5baef73",
       "16d46b22",
       "3009dddd",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          361.75716539223987,
           737.6013310114542,
           706.2803685506185,
           342.0495410283407,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           698.7303930918375,
           655.2682765324911,
           680.8315929412842,
-          677.8308525085449
+          677.8308525085449,
+          327.27256182523877
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4841,7 +4841,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
-          1680,
+          1688,
           1688,
           1688,
           1688,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28108.937866210938,
           84259.90938313802,
           83882.04572753907,
           27421.826108492336,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           84722.46673114483,
           31092.284920828683,
           83414.74680739183,
-          83281.71494838169
+          83281.71494838169,
+          26083.840297154016
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5256,
           5252,
           5252,
           5256,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
-        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
-      },
       {
         "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
-      "e6ee3749",
       "d5baef73",
       "16d46b22",
       "3009dddd",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          88.0090849717458,
           187.07066957155862,
           180.41693486486162,
           84.86785351313077,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           177.4089002609253,
           171.99811844825746,
           183.84894798483168,
-          200.84096678665705
+          200.84096678665705,
+          93.48704391717911
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9581.95962117513,
           32923.75720621745,
           33069.13197835287,
           9418.380696614584,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           32242.578523763023,
           16449.15181405204,
           31784.83371480306,
-          33072.02576904297
+          33072.02576904297,
+          9118.87947998047
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5551,7 +5551,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5615,
           5614,
           5614,
           5615,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          121.36933832902174,
           258.45064566930137,
           236.83989099661508,
           116.01052769025166,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           251.22789192199707,
           213.58226540883382,
           252.4558780670166,
-          250.13719367980957
+          250.13719367980957,
+          114.74391627311707
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
-        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
-      },
-      {
         "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
-      "e6ee3749",
       "d5baef73",
       "16d46b22",
       "3009dddd",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          193.43693833351136,
           366.75934525898526,
           362.8493113517761,
           164.99766865798406,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           351.58830308914185,
           335.5123173077901,
           343.78303108215334,
-          350.18670660654703
+          350.18670660654703,
+          165.2740936108998
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          194.1953224182129,
           413.8394460360209,
           422.2229034900665,
           190.17301377228327,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           391.42152144114175,
           424.534925587972,
           371.5145013809204,
-          361.62693147659303
+          361.62693147659303,
+          183.90481077829998
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          202.4171911239624,
           432.4113624890645,
           417.66544618606565,
           195.42194975217183,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           430.04025443394977,
           390.4338947614034,
           402.8684435231345,
-          406.13322085600635
+          406.13322085600635,
+          198.61529209063605
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
-        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
-      },
-      {
         "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
-      "e6ee3749",
       "d5baef73",
       "16d46b22",
       "3009dddd",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          324.3589371681213,
           723.6676161629813,
           700.2702398981367,
           323.26542986356293,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           712.4708762486775,
           595.2419684727987,
           680.745740000407,
-          711.0751499811809
+          711.0751499811809,
+          326.253500978152
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1020.3494524274554,
           2045.596595509847,
           1990.8591883523125,
           978.0236087526594,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1917.2211101531982,
           1770.117872619629,
           1934.090978182279,
-          1976.0144137064615
+          1976.0144137064615,
+          993.2838106791179
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          442.5047735214233,
           970.5110425313313,
           926.5604732513427,
           448.36756478037154,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           938.719270501818,
           833.2149947484335,
           916.904253133138,
-          966.6547949864314
+          966.6547949864314,
+          452.28819794654845
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
-        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
-      },
-      {
         "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
-      "e6ee3749",
       "d5baef73",
       "16d46b22",
       "3009dddd",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5628.697000356821,
           11473.480842003455,
           11292.1032816569,
           5556.290245056152,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           11499.901942326473,
           8721.836579386394,
           11291.316971842449,
-          11645.786562093099
+          11645.786562093099,
+          5466.891509501139
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          17858.19163077218,
           40424.68985493978,
           41353.638083321704,
           17806.672297159832,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           42133.98496500651,
           29663.2270517985,
           41785.77132004958,
-          42174.426538085936
+          42174.426538085936,
+          17203.229110717773
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18394,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18608,
           18609,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          5505.860894266764,
           10528.551496233258,
           10809.885394795736,
           5504.403658185686,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           10537.090539785531,
           8467.758183797201,
           10612.96129314716,
-          10606.527669270834
+          10606.527669270834,
+          5337.7669993809295
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
-        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
-      },
-      {
         "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
         "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
+      },
+      {
+        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
+        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
       }
     ],
     "labels": [
-      "e6ee3749",
       "d5baef73",
       "16d46b22",
       "3009dddd",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "7d17a8ab",
       "5d9a56d9",
       "b7f4f05b",
-      "1785986b"
+      "1785986b",
+      "73754c62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5308.279452732631,
           10932.972702026367,
           10952.841056315105,
           5351.609930772048,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           10959.129989624023,
           8309.856656901042,
           10846.792976966271,
-          11443.748285566058
+          11443.748285566058,
+          5194.05392397367
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26070.184802246094,
           60205.94738769531,
           59633.41945800781,
           25856.064980643136,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           60719.24805559431,
           42593.38434651693,
           61269.807654747594,
-          60971.03026471819
+          60971.03026471819,
+          25127.185221354168
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8486,7 +8486,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8532,7 +8531,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
-          23554
+          23554,
+          23553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11009.43418766902,
           21079.71027483259,
           21036.080520629883,
           10806.609595743816,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           21058.93306556115,
           16241.79555460612,
           21146.885258265906,
-          21150.895552571616
+          21150.895552571616,
+          10499.018555704753
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
