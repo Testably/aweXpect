@@ -159,7 +159,9 @@ The second argument of `ForWhich` writes the text in front of the expectations o
 replaces `it` in their result texts. Unlike `ForMember`, the expectations are added later by the caller, after `Which`.
 
 Hand out a new subject as `IThatSubject<T>`, both in an `Action<IThatSubject<T>>` parameter and in a property like
-`Which`, so that the caller can narrow it with `Is<TType>()` and the other type checks.
+`Which`, so that the caller can narrow it with `Is<TType>()` and the other type checks. Unlike `Expect.That<T>(T)`,
+which returns an `IThatSubject<T>`, `Expect.That(bool)` returns a `ThatBoolSubject` that is only an `IThat<bool>`,
+because a type check cannot narrow a `bool`, so write expectations on booleans for `IThat<bool>`.
 
 ### Expectations in expected values
 

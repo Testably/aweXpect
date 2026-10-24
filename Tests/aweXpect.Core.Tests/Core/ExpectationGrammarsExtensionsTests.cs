@@ -4,13 +4,26 @@ public sealed class ExpectationGrammarsExtensionsTests
 {
 	[Test]
 	[Arguments(ExpectationGrammars.None, false)]
-	[Arguments(ExpectationGrammars.Nested, true)]
-	[Arguments(ExpectationGrammars.Plural, true)]
-	[Arguments(ExpectationGrammars.Negated, false)]
-	[Arguments(ExpectationGrammars.Negated | ExpectationGrammars.Plural, true)]
-	public async Task HasAnyFlag_ShouldReturnWhetherAnyOfTheFlagsIsSet(ExpectationGrammars input, bool expected)
+	[Arguments(ExpectationGrammars.Active, true)]
+	[Arguments(ExpectationGrammars.Negated | ExpectationGrammars.Active, true)]
+	[Arguments(ExpectationGrammars.Nested | ExpectationGrammars.Introduced, false)]
+	[Arguments(ExpectationGrammars.Nested | ExpectationGrammars.Active | ExpectationGrammars.Introduced, true)]
+	public async Task IsActive_ShouldReturnExpectedValue(ExpectationGrammars input, bool expected)
 	{
-		bool result = input.HasAnyFlag(ExpectationGrammars.Nested, ExpectationGrammars.Plural);
+		bool result = input.IsActive();
+
+		await That(result).IsEqualTo(expected);
+	}
+
+	[Test]
+	[Arguments(ExpectationGrammars.None, false)]
+	[Arguments(ExpectationGrammars.Introduced, true)]
+	[Arguments(ExpectationGrammars.Plural | ExpectationGrammars.Introduced, true)]
+	[Arguments(ExpectationGrammars.Nested | ExpectationGrammars.Active, false)]
+	[Arguments(ExpectationGrammars.Nested | ExpectationGrammars.Active | ExpectationGrammars.Introduced, true)]
+	public async Task IsIntroduced_ShouldReturnExpectedValue(ExpectationGrammars input, bool expected)
+	{
+		bool result = input.IsIntroduced();
 
 		await That(result).IsEqualTo(expected);
 	}

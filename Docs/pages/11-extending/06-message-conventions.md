@@ -232,8 +232,8 @@ The `grammars` a constraint receives tell it how its texts are used in the sente
 there it asks for the text with the verb (`is equal to "Yesterday"`), and without it the text starts with the
 comparison (`equal to "Yesterday"`).
 
-`ExpectationGrammarsExtensions` checks them with `IsNegated()`, `IsNested()`, `IsPlural()` or
-`HasAnyFlag(…)`, and toggles the negation with `Negate()`. Use the plural form of the verb in the expectation text
+`ExpectationGrammarsExtensions` checks them with `IsNegated()`, `IsNested()`, `IsPlural()`, `IsActive()` or
+`IsIntroduced()`, and toggles the negation with `Negate()`. Use the plural form of the verb in the expectation text
 when the grammars are plural, but keep the singular form in the result text as long as the subject is the pronoun
 `it`:
 

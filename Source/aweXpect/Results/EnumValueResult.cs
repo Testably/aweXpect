@@ -289,7 +289,7 @@ public class EnumValueResult<TValue, TType>
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested) && !Grammars.HasFlag(ExpectationGrammars.Active))
+			if (Grammars.IsNested() && !Grammars.IsActive())
 			{
 				// The "whose" clause made the property the subject.
 				stringBuilder.Append(propertyExpression).Append(" was ");
@@ -311,7 +311,7 @@ public class EnumValueResult<TValue, TType>
 		private void Append(StringBuilder stringBuilder, bool isNegated)
 		{
 			string negation = isNegated ? "not " : "";
-			if (Grammars.HasFlag(ExpectationGrammars.Active))
+			if (Grammars.IsActive())
 			{
 				stringBuilder.Append("with ").Append(propertyExpression).Append(' ').Append(negation);
 			}
