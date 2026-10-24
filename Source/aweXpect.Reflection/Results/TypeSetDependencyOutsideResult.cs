@@ -10,14 +10,14 @@ namespace aweXpect.Reflection.Results;
 ///     types, allowing to widen the allowed collections and to opt out of the implicit allowance of the type's
 ///     own sub-namespaces.
 /// </summary>
-public sealed class TypeSetDependencyOutsideResult<TType, TThat>
-	: AndOrResult<TType, IThat<TThat>, TypeSetDependencyOutsideResult<TType, TThat>>
+public sealed class TypeSetDependencyOutsideResult<TType, TValue>
+	: AndOrResult<TType, IThat<TValue>, TypeSetDependencyOutsideResult<TType, TValue>>
 {
 	private readonly TypeSetDependencyOptions _options;
 
 	internal TypeSetDependencyOutsideResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat> subject,
+		IThat<TValue> subject,
 		TypeSetDependencyOptions options)
 		: base(expectationBuilder, subject)
 	{
@@ -28,7 +28,7 @@ public sealed class TypeSetDependencyOutsideResult<TType, TThat>
 	///     Widens the allowed set by the given <paramref name="targets" />, so that dependencies on their types no
 	///     longer count as outside.
 	/// </summary>
-	public TypeSetDependencyOutsideResult<TType, TThat> OrOn(params Filtered.Types[] targets)
+	public TypeSetDependencyOutsideResult<TType, TValue> OrOn(params Filtered.Types[] targets)
 	{
 		_options.OrOn(targets);
 		return this;
@@ -42,7 +42,7 @@ public sealed class TypeSetDependencyOutsideResult<TType, TThat>
 	/// <remarks>
 	///     The type's own namespace itself never counts as outside.
 	/// </remarks>
-	public TypeSetDependencyOutsideResult<TType, TThat> ExcludingOwnSubNamespaces()
+	public TypeSetDependencyOutsideResult<TType, TValue> ExcludingOwnSubNamespaces()
 	{
 		_options.ExcludingOwnSubNamespaces();
 		return this;

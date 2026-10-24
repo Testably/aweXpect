@@ -7,12 +7,12 @@ namespace aweXpect.Reflection.Results;
 /// <summary>
 ///     Additional constraints on a collection of generic arguments with a specific type.
 /// </summary>
-public class GenericArgumentCollectionWithArgumentResult<TType, TThat>
-	: GenericArgumentCollectionWithArgumentResult<TType, TThat, GenericArgumentCollectionWithArgumentResult<TType, TThat>>
+public sealed class GenericArgumentCollectionWithArgumentResult<TType, TValue>
+	: GenericArgumentCollectionWithArgumentResult<TType, TValue, GenericArgumentCollectionWithArgumentResult<TType, TValue>>
 {
 	internal GenericArgumentCollectionWithArgumentResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat> subject,
+		IThat<TValue> subject,
 		GenericArgumentsFilterOptions genericArgumentsFilterOptions,
 		CollectionIndexOptions collectionIndexOptions)
 		: base(expectationBuilder, subject, genericArgumentsFilterOptions, collectionIndexOptions)
@@ -26,16 +26,16 @@ public class GenericArgumentCollectionWithArgumentResult<TType, TThat>
 /// <remarks>
 ///     The index of the generic argument is specified via <see cref="CollectionIndexOptionsExtensions" />.
 /// </remarks>
-public class GenericArgumentCollectionWithArgumentResult<TType, TThat, TSelf>
-	: GenericArgumentCollectionResult<TType, TThat, TSelf>,
+public class GenericArgumentCollectionWithArgumentResult<TType, TValue, TSelf>
+	: GenericArgumentCollectionResult<TType, TValue, TSelf>,
 		IOptionsProvider<CollectionIndexOptions>
-	where TSelf : GenericArgumentCollectionWithArgumentResult<TType, TThat, TSelf>
+	where TSelf : GenericArgumentCollectionWithArgumentResult<TType, TValue, TSelf>
 {
 	private readonly CollectionIndexOptions _collectionIndexOptions;
 
 	internal GenericArgumentCollectionWithArgumentResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat> subject,
+		IThat<TValue> subject,
 		GenericArgumentsFilterOptions genericArgumentsFilterOptions,
 		CollectionIndexOptions collectionIndexOptions)
 		: base(expectationBuilder, subject, genericArgumentsFilterOptions)

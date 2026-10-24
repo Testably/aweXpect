@@ -4,6 +4,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -14,7 +15,7 @@ public static partial class ThatMethod
 	///     Verifies that the method returns exactly type <typeparamref name="TReturn" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodReturnResult<MethodInfo, IThat<MethodInfo?>> ReturnsExactly<TReturn>(
+	public static ReturnsResult<MethodInfo> ReturnsExactly<TReturn>(
 		this IThat<MethodInfo?> subject)
 		=> ReturnsExactly(subject, typeof(TReturn));
 
@@ -22,12 +23,12 @@ public static partial class ThatMethod
 	///     Verifies that the method returns exactly type <paramref name="returnType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodReturnResult<MethodInfo, IThat<MethodInfo?>> ReturnsExactly(
+	public static ReturnsResult<MethodInfo> ReturnsExactly(
 		this IThat<MethodInfo?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(returnType, true);
-		return new MethodReturnResult<MethodInfo, IThat<MethodInfo?>>(
+		return new ReturnsResult<MethodInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new ReturnsConstraint(it, grammars, typeFilterOptions)),
@@ -57,23 +58,5 @@ public static partial class ThatMethod
 				static (typeFilterOptions, it, grammars)
 				=> new ReturnsConstraint(it, grammars, typeFilterOptions).Invert()),
 			subject);
-	}
-
-	public sealed partial class MethodReturnResult<TValue, TResult>
-	{
-		/// <summary>
-		///     Allow an alternative exact return type <typeparamref name="TReturn" />.
-		/// </summary>
-		public MethodReturnResult<TValue, TResult> OrReturnsExactly<TReturn>()
-			=> OrReturnsExactly(typeof(TReturn));
-
-		/// <summary>
-		///     Allow an alternative exact return type <paramref name="returnType" />.
-		/// </summary>
-		public MethodReturnResult<TValue, TResult> OrReturnsExactly(Type returnType)
-		{
-			_typeFilterOptions.RegisterType(returnType, true);
-			return this;
-		}
 	}
 }

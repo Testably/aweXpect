@@ -5,6 +5,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -15,7 +16,7 @@ public static partial class ThatEvent
 	///     Verifies that the <see cref="EventInfo" /> has a handler of type <typeparamref name="THandler" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventOfTypeResult<EventInfo, IThat<EventInfo?>> IsOfType<THandler>(
+	public static OfTypeResult<EventInfo> IsOfType<THandler>(
 		this IThat<EventInfo?> subject)
 		=> IsOfType(subject, typeof(THandler));
 
@@ -23,12 +24,12 @@ public static partial class ThatEvent
 	///     Verifies that the <see cref="EventInfo" /> has a handler of type <paramref name="handlerType" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventOfTypeResult<EventInfo, IThat<EventInfo?>> IsOfType(
+	public static OfTypeResult<EventInfo> IsOfType(
 		this IThat<EventInfo?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(handlerType, false);
-		return new EventOfTypeResult<EventInfo, IThat<EventInfo?>>(
+		return new OfTypeResult<EventInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions)),
@@ -60,44 +61,6 @@ public static partial class ThatEvent
 				static (typeFilterOptions, it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions).Invert()),
 			subject);
-	}
-
-	/// <summary>
-	///     Result that allows chaining additional types for a single event.
-	/// </summary>
-	public sealed partial class EventOfTypeResult<TValue, TResult>
-		: AndOrResult<TValue, TResult>,
-			IOptionsProvider<TypeFilterOptions>
-		where TResult : IThat<TValue?>
-	{
-		private readonly TypeFilterOptions _typeFilterOptions;
-
-		internal EventOfTypeResult(
-			ExpectationBuilder expectationBuilder,
-			TResult subject,
-			TypeFilterOptions typeFilterOptions)
-			: base(expectationBuilder, subject)
-		{
-			_typeFilterOptions = typeFilterOptions;
-		}
-
-		/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
-		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => _typeFilterOptions;
-
-		/// <summary>
-		///     Allow an alternative type <typeparamref name="THandler" /> (or a subtype).
-		/// </summary>
-		public EventOfTypeResult<TValue, TResult> OrOfType<THandler>()
-			=> OrOfType(typeof(THandler));
-
-		/// <summary>
-		///     Allow an alternative type <paramref name="handlerType" /> (or a subtype).
-		/// </summary>
-		public EventOfTypeResult<TValue, TResult> OrOfType(Type handlerType)
-		{
-			_typeFilterOptions.RegisterType(handlerType, false);
-			return this;
-		}
 	}
 
 	private sealed class IsOfTypeConstraint(

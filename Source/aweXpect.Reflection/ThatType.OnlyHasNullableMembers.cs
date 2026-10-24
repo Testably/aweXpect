@@ -20,8 +20,8 @@ public static partial class ThatType
 	///     reference type annotated as nullable (according to the nullable reference type metadata).<br />
 	///     The inherited members are considered, but neither those declared on <see cref="object" />,
 	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those the type cannot access. Restrict them with
-	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" /> or add the members of these roots with
-	///     <see cref="MemberScopeResult{TType, TThat}.IncludingObjectMembers" />.
+	///     <see cref="InheritanceScopeResult{TType, TValue}.Directly" /> or add the members of these roots with
+	///     <see cref="MemberScopeResult{TType, TValue}.IncludingObjectMembers" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static MemberScopeResult<Type, Type?> OnlyHasNullableMembers(

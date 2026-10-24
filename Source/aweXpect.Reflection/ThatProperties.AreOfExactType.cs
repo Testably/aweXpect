@@ -4,6 +4,7 @@ using System.Reflection;
 using aweXpect.Core;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -14,21 +15,20 @@ public static partial class ThatProperties
 	///     Verifies that all properties in the filtered collection are of exactly type <typeparamref name="TProperty" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertiesOfTypeResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>>
-		AreOfExactType<TProperty>(
-			this IThat<IEnumerable<PropertyInfo?>?> subject)
+	public static OfTypeResult<IEnumerable<PropertyInfo?>> AreOfExactType<TProperty>(
+		this IThat<IEnumerable<PropertyInfo?>?> subject)
 		=> AreOfExactType(subject, typeof(TProperty));
 
 	/// <summary>
 	///     Verifies that all properties in the filtered collection are of exactly type <paramref name="propertyType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertiesOfTypeResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> AreOfExactType(
+	public static OfTypeResult<IEnumerable<PropertyInfo?>> AreOfExactType(
 		this IThat<IEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(propertyType, true);
-		return new PropertiesOfTypeResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>>(
+		return new OfTypeResult<IEnumerable<PropertyInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
@@ -41,22 +41,20 @@ public static partial class ThatProperties
 	///     Verifies that all properties in the filtered collection are of exactly type <typeparamref name="TProperty" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>>
-		AreOfExactType<TProperty>(
-			this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
+	public static OfTypeResult<IAsyncEnumerable<PropertyInfo?>> AreOfExactType<TProperty>(
+		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
 		=> AreOfExactType(subject, typeof(TProperty));
 
 	/// <summary>
 	///     Verifies that all properties in the filtered collection are of exactly type <paramref name="propertyType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>>
-		AreOfExactType(
-			this IThat<IAsyncEnumerable<PropertyInfo?>?> subject, Type propertyType)
+	public static OfTypeResult<IAsyncEnumerable<PropertyInfo?>> AreOfExactType(
+		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(propertyType, true);
-		return new PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>>(
+		return new OfTypeResult<IAsyncEnumerable<PropertyInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
@@ -121,22 +119,4 @@ public static partial class ThatProperties
 			subject);
 	}
 #endif
-
-	public sealed partial class PropertiesOfTypeResult<TValue, TResult>
-	{
-		/// <summary>
-		///     Allow an alternative exact type <typeparamref name="TProperty" />.
-		/// </summary>
-		public PropertiesOfTypeResult<TValue, TResult> OrOfExactType<TProperty>()
-			=> OrOfExactType(typeof(TProperty));
-
-		/// <summary>
-		///     Allow an alternative exact type <paramref name="propertyType" />.
-		/// </summary>
-		public PropertiesOfTypeResult<TValue, TResult> OrOfExactType(Type propertyType)
-		{
-			_typeFilterOptions.RegisterType(propertyType, true);
-			return this;
-		}
-	}
 }

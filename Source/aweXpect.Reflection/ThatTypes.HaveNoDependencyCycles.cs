@@ -32,7 +32,7 @@ public static partial class ThatTypes
 	///     ignored.
 	///     <para />
 	///     A namespace and its sub-namespaces are treated as one family, so references within a family never create an
-	///     edge. Use <see cref="DependencyCyclesResult{TThat}.ExcludingSubNamespaces" /> to treat every namespace as its
+	///     edge. Use <see cref="DependencyCyclesResult{TType}.ExcludingSubNamespaces" /> to treat every namespace as its
 	///     own node instead.
 	/// </remarks>
 	[GuaranteesNotNull]

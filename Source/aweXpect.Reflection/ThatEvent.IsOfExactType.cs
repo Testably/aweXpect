@@ -4,6 +4,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -14,7 +15,7 @@ public static partial class ThatEvent
 	///     Verifies that the <see cref="EventInfo" /> has a handler of exactly type <typeparamref name="THandler" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventOfTypeResult<EventInfo, IThat<EventInfo?>> IsOfExactType<THandler>(
+	public static OfTypeResult<EventInfo> IsOfExactType<THandler>(
 		this IThat<EventInfo?> subject)
 		=> IsOfExactType(subject, typeof(THandler));
 
@@ -22,12 +23,12 @@ public static partial class ThatEvent
 	///     Verifies that the <see cref="EventInfo" /> has a handler of exactly type <paramref name="handlerType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventOfTypeResult<EventInfo, IThat<EventInfo?>> IsOfExactType(
+	public static OfTypeResult<EventInfo> IsOfExactType(
 		this IThat<EventInfo?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(handlerType, true);
-		return new EventOfTypeResult<EventInfo, IThat<EventInfo?>>(
+		return new OfTypeResult<EventInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions)),
@@ -59,23 +60,5 @@ public static partial class ThatEvent
 				static (typeFilterOptions, it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions).Invert()),
 			subject);
-	}
-
-	public sealed partial class EventOfTypeResult<TValue, TResult>
-	{
-		/// <summary>
-		///     Allow an alternative exact type <typeparamref name="THandler" />.
-		/// </summary>
-		public EventOfTypeResult<TValue, TResult> OrOfExactType<THandler>()
-			=> OrOfExactType(typeof(THandler));
-
-		/// <summary>
-		///     Allow an alternative exact type <paramref name="handlerType" />.
-		/// </summary>
-		public EventOfTypeResult<TValue, TResult> OrOfExactType(Type handlerType)
-		{
-			_typeFilterOptions.RegisterType(handlerType, true);
-			return this;
-		}
 	}
 }

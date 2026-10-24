@@ -24,7 +24,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> HaveImplicitConversionOperator<TSource,
@@ -38,7 +38,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> HaveImplicitConversionOperator(
@@ -61,7 +61,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>
@@ -75,7 +75,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> HaveImplicitConversionOperator(
@@ -98,7 +98,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotHaveImplicitConversionOperator<TSource,
@@ -112,7 +112,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotHaveImplicitConversionOperator(
@@ -135,7 +135,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>
@@ -149,7 +149,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotHaveImplicitConversionOperator(
@@ -172,7 +172,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.<br />
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.<br />
 	///     Matches the non-checked <c>op_Explicit</c> conversion. Because C# requires a <c>checked</c> explicit
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
@@ -189,7 +189,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.<br />
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.<br />
 	///     Matches the non-checked <c>op_Explicit</c> conversion. Because C# requires a <c>checked</c> explicit
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
@@ -215,7 +215,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.<br />
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.<br />
 	///     Matches the non-checked <c>op_Explicit</c> conversion. Because C# requires a <c>checked</c> explicit
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
@@ -232,7 +232,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.<br />
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.<br />
 	///     Matches the non-checked <c>op_Explicit</c> conversion. Because C# requires a <c>checked</c> explicit
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
@@ -258,7 +258,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.<br />
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.<br />
 	///     Matches the non-checked <c>op_Explicit</c> conversion. Because C# requires a <c>checked</c> explicit
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
@@ -275,7 +275,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.<br />
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.<br />
 	///     Matches the non-checked <c>op_Explicit</c> conversion. Because C# requires a <c>checked</c> explicit
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
@@ -301,7 +301,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.<br />
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.<br />
 	///     Matches the non-checked <c>op_Explicit</c> conversion. Because C# requires a <c>checked</c> explicit
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
@@ -318,7 +318,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.<br />
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.<br />
 	///     Matches the non-checked <c>op_Explicit</c> conversion. Because C# requires a <c>checked</c> explicit
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.

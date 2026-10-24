@@ -29,8 +29,8 @@ public static partial class ThatTypes
 	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.<br />
 	///     The inherited methods are considered, but neither those declared on <see cref="object" />,
 	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
-	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.Directly" /> or add the members of these roots with
-	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.IncludingObjectMembers" />.
+	///     <see cref="TypeContainingMembersScopeResult{TType, TValue}.Directly" /> or add the members of these roots with
+	///     <see cref="TypeContainingMembersScopeResult{TType, TValue}.IncludingObjectMembers" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static TypeContainingMembersScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> ContainMethods(
@@ -49,8 +49,8 @@ public static partial class ThatTypes
 	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.<br />
 	///     The inherited methods are considered, but neither those declared on <see cref="object" />,
 	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
-	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.Directly" /> or add the members of these roots with
-	///     <see cref="TypeContainingMembersScopeResult{TType, TThat}.IncludingObjectMembers" />.
+	///     <see cref="TypeContainingMembersScopeResult{TType, TValue}.Directly" /> or add the members of these roots with
+	///     <see cref="TypeContainingMembersScopeResult{TType, TValue}.IncludingObjectMembers" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static TypeContainingMembersScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> ContainMethods(

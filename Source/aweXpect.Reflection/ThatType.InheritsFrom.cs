@@ -18,7 +18,7 @@ public static partial class ThatType
 	///     To check for an implemented interface use <see cref="Implements{TInterface}(IThat{Type})" />,
 	///     or use <see cref="IsAssignableTo{TType}(IThat{Type})" /> to cover base classes and interfaces in one step.<br />
 	///     To require <typeparamref name="TBaseType" /> to be the direct parent use
-	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
@@ -35,7 +35,7 @@ public static partial class ThatType
 	///     To check for an implemented interface use <see cref="Implements(IThat{Type}, Type)" />,
 	///     or use <see cref="IsAssignableTo(IThat{Type}, Type)" /> to cover base classes and interfaces in one step.<br />
 	///     To require <paramref name="baseType" /> to be the direct parent use
-	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
 	/// <param name="baseType">The base type to check inheritance from.</param>
@@ -61,7 +61,7 @@ public static partial class ThatType
 	/// <remarks>
 	///     Only the base-class chain is considered; implemented interfaces are ignored.<br />
 	///     To check that an interface is not implemented use <see cref="DoesNotImplement{TInterface}(IThat{Type})" />.<br />
-	///     With <see cref="InheritanceScopeResult{TType, TThat}.Directly" /> only <typeparamref name="TBaseType" /> as the
+	///     With <see cref="InheritanceScopeResult{TType, TValue}.Directly" /> only <typeparamref name="TBaseType" /> as the
 	///     direct parent fails, so a type that inherits from it only indirectly satisfies the expectation.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
@@ -77,7 +77,7 @@ public static partial class ThatType
 	/// <remarks>
 	///     Only the base-class chain is considered; implemented interfaces are ignored.<br />
 	///     To check that an interface is not implemented use <see cref="DoesNotImplement(IThat{Type}, Type)" />.<br />
-	///     With <see cref="InheritanceScopeResult{TType, TThat}.Directly" /> only <paramref name="baseType" /> as the
+	///     With <see cref="InheritanceScopeResult{TType, TValue}.Directly" /> only <paramref name="baseType" /> as the
 	///     direct parent fails, so a type that inherits from it only indirectly satisfies the expectation.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>

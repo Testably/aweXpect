@@ -16,13 +16,13 @@ namespace aweXpect.Reflection.Results;
 ///     <see cref="System.ValueType" /> or <see cref="System.Enum" /> nor those a derived type cannot access. The two
 ///     options exclude each other.
 /// </remarks>
-public sealed class TypeContainingMembersScopeResult<TType, TThat> : TypeContainingMembersResult<TType, TThat>
+public sealed class TypeContainingMembersScopeResult<TType, TValue> : TypeContainingMembersResult<TType, TValue>
 {
 	private readonly ScopeOptions _scope;
 
 	internal TypeContainingMembersScopeResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat> subject,
+		IThat<TValue> subject,
 		Quantifier quantifier,
 		ScopeOptions scope)
 		: base(expectationBuilder, subject, quantifier)
@@ -33,7 +33,7 @@ public sealed class TypeContainingMembersScopeResult<TType, TThat> : TypeContain
 	/// <summary>
 	///     Only considers the members declared directly on the type.
 	/// </summary>
-	public TypeContainingMembersResult<TType, TThat> Directly()
+	public TypeContainingMembersResult<TType, TValue> Directly()
 	{
 		_scope.Directly();
 		return this;
@@ -43,7 +43,7 @@ public sealed class TypeContainingMembersScopeResult<TType, TThat> : TypeContain
 	///     Also considers the inherited members declared on <see cref="object" />, <see cref="System.ValueType" /> and
 	///     <see cref="System.Enum" />.
 	/// </summary>
-	public TypeContainingMembersResult<TType, TThat> IncludingObjectMembers()
+	public TypeContainingMembersResult<TType, TValue> IncludingObjectMembers()
 	{
 		_scope.IncludingObjectMembers();
 		return this;

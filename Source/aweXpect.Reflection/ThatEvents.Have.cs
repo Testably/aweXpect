@@ -27,17 +27,17 @@ public static partial class ThatEvents
 	/// </summary>
 	/// <remarks>
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
-	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TMember, TResult}.Directly" />.
+	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TType, TMember}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<EventInfo?, IEnumerable<EventInfo?>> Have<TAttribute>(
+	public static HaveAttributeResult<IEnumerable<EventInfo?>, EventInfo?> Have<TAttribute>(
 		this IThat<IEnumerable<EventInfo?>?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>();
-		return new HaveAttributeResult<EventInfo?, IEnumerable<EventInfo?>>(
+		return new HaveAttributeResult<IEnumerable<EventInfo?>, EventInfo?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<EventInfo?>, IEnumerable<EventInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -51,10 +51,10 @@ public static partial class ThatEvents
 	/// </summary>
 	/// <remarks>
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
-	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TMember, TResult}.Directly" />.
+	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TType, TMember}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<EventInfo?, IEnumerable<EventInfo?>> Have<TAttribute>(
+	public static HaveAttributeResult<IEnumerable<EventInfo?>, EventInfo?> Have<TAttribute>(
 		this IThat<IEnumerable<EventInfo?>?> subject,
 		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -64,7 +64,7 @@ public static partial class ThatEvents
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
-		return new HaveAttributeResult<EventInfo?, IEnumerable<EventInfo?>>(
+		return new HaveAttributeResult<IEnumerable<EventInfo?>, EventInfo?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<EventInfo?>, IEnumerable<EventInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -79,17 +79,17 @@ public static partial class ThatEvents
 	/// </summary>
 	/// <remarks>
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
-	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TMember, TResult}.Directly" />.
+	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TType, TMember}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<EventInfo?, IAsyncEnumerable<EventInfo?>> Have<TAttribute>(
+	public static HaveAttributeResult<IAsyncEnumerable<EventInfo?>, EventInfo?> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<EventInfo?>?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>();
-		return new HaveAttributeResult<EventInfo?, IAsyncEnumerable<EventInfo?>>(
+		return new HaveAttributeResult<IAsyncEnumerable<EventInfo?>, EventInfo?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<EventInfo?>, IAsyncEnumerable<EventInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -105,10 +105,10 @@ public static partial class ThatEvents
 	/// </summary>
 	/// <remarks>
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
-	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TMember, TResult}.Directly" />.
+	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TType, TMember}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<EventInfo?, IAsyncEnumerable<EventInfo?>> Have<TAttribute>(
+	public static HaveAttributeResult<IAsyncEnumerable<EventInfo?>, EventInfo?> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<EventInfo?>?> subject,
 		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -118,7 +118,7 @@ public static partial class ThatEvents
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
-		return new HaveAttributeResult<EventInfo?, IAsyncEnumerable<EventInfo?>>(
+		return new HaveAttributeResult<IAsyncEnumerable<EventInfo?>, EventInfo?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<EventInfo?>, IAsyncEnumerable<EventInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),

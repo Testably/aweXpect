@@ -8,6 +8,7 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
 using System.Threading;
@@ -25,9 +26,8 @@ public static partial class ThatEvents
 	///     subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventsOfTypeResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>?>>
-		AreOfType<THandler>(
-			this IThat<IEnumerable<EventInfo?>?> subject)
+	public static OfTypeResult<IEnumerable<EventInfo?>> AreOfType<THandler>(
+		this IThat<IEnumerable<EventInfo?>?> subject)
 		=> AreOfType(subject, typeof(THandler));
 
 	/// <summary>
@@ -35,12 +35,12 @@ public static partial class ThatEvents
 	///     subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventsOfTypeResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>?>> AreOfType(
+	public static OfTypeResult<IEnumerable<EventInfo?>> AreOfType(
 		this IThat<IEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(handlerType, false);
-		return new EventsOfTypeResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>?>>(
+		return new OfTypeResult<IEnumerable<EventInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
@@ -54,9 +54,8 @@ public static partial class ThatEvents
 	///     subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventsOfTypeResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>?>>
-		AreOfType<THandler>(
-			this IThat<IAsyncEnumerable<EventInfo?>?> subject)
+	public static OfTypeResult<IAsyncEnumerable<EventInfo?>> AreOfType<THandler>(
+		this IThat<IAsyncEnumerable<EventInfo?>?> subject)
 		=> AreOfType(subject, typeof(THandler));
 
 	/// <summary>
@@ -64,13 +63,12 @@ public static partial class ThatEvents
 	///     subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventsOfTypeResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>?>>
-		AreOfType(
-			this IThat<IAsyncEnumerable<EventInfo?>?> subject, Type handlerType)
+	public static OfTypeResult<IAsyncEnumerable<EventInfo?>> AreOfType(
+		this IThat<IAsyncEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(handlerType, false);
-		return new EventsOfTypeResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>?>>(
+		return new OfTypeResult<IAsyncEnumerable<EventInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
@@ -133,44 +131,6 @@ public static partial class ThatEvents
 			subject);
 	}
 #endif
-
-	/// <summary>
-	///     Result that allows chaining additional types for event collections.
-	/// </summary>
-	public sealed partial class EventsOfTypeResult<TValue, TResult>
-		: AndOrResult<TValue, TResult>,
-			IOptionsProvider<TypeFilterOptions>
-		where TResult : IThat<TValue?>
-	{
-		private readonly TypeFilterOptions _typeFilterOptions;
-
-		internal EventsOfTypeResult(
-			ExpectationBuilder expectationBuilder,
-			TResult subject,
-			TypeFilterOptions typeFilterOptions)
-			: base(expectationBuilder, subject)
-		{
-			_typeFilterOptions = typeFilterOptions;
-		}
-
-		/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
-		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => _typeFilterOptions;
-
-		/// <summary>
-		///     Allow an alternative type <typeparamref name="THandler" /> (or a subtype).
-		/// </summary>
-		public EventsOfTypeResult<TValue, TResult> OrOfType<THandler>()
-			=> OrOfType(typeof(THandler));
-
-		/// <summary>
-		///     Allow an alternative type <paramref name="handlerType" /> (or a subtype).
-		/// </summary>
-		public EventsOfTypeResult<TValue, TResult> OrOfType(Type handlerType)
-		{
-			_typeFilterOptions.RegisterType(handlerType, false);
-			return this;
-		}
-	}
 
 	private sealed class AreOfTypeConstraint(
 		string it,

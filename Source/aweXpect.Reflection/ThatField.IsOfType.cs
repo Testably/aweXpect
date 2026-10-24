@@ -5,6 +5,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -15,7 +16,7 @@ public static partial class ThatField
 	///     Verifies that the <see cref="FieldInfo" /> is of type <typeparamref name="TField" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldOfTypeResult<FieldInfo, IThat<FieldInfo?>> IsOfType<TField>(
+	public static OfTypeResult<FieldInfo> IsOfType<TField>(
 		this IThat<FieldInfo?> subject)
 		=> IsOfType(subject, typeof(TField));
 
@@ -23,12 +24,12 @@ public static partial class ThatField
 	///     Verifies that the <see cref="FieldInfo" /> is of type <paramref name="fieldType" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldOfTypeResult<FieldInfo, IThat<FieldInfo?>> IsOfType(
+	public static OfTypeResult<FieldInfo> IsOfType(
 		this IThat<FieldInfo?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(fieldType, false);
-		return new FieldOfTypeResult<FieldInfo, IThat<FieldInfo?>>(
+		return new OfTypeResult<FieldInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions)),
@@ -58,44 +59,6 @@ public static partial class ThatField
 				static (typeFilterOptions, it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions).Invert()),
 			subject);
-	}
-
-	/// <summary>
-	///     Result that allows chaining additional types for a single field.
-	/// </summary>
-	public sealed partial class FieldOfTypeResult<TValue, TResult>
-		: AndOrResult<TValue, TResult>,
-			IOptionsProvider<TypeFilterOptions>
-		where TResult : IThat<TValue?>
-	{
-		private readonly TypeFilterOptions _typeFilterOptions;
-
-		internal FieldOfTypeResult(
-			ExpectationBuilder expectationBuilder,
-			TResult subject,
-			TypeFilterOptions typeFilterOptions)
-			: base(expectationBuilder, subject)
-		{
-			_typeFilterOptions = typeFilterOptions;
-		}
-
-		/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
-		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => _typeFilterOptions;
-
-		/// <summary>
-		///     Allow an alternative type <typeparamref name="TField" /> (or a subtype).
-		/// </summary>
-		public FieldOfTypeResult<TValue, TResult> OrOfType<TField>()
-			=> OrOfType(typeof(TField));
-
-		/// <summary>
-		///     Allow an alternative type <paramref name="fieldType" /> (or a subtype).
-		/// </summary>
-		public FieldOfTypeResult<TValue, TResult> OrOfType(Type fieldType)
-		{
-			_typeFilterOptions.RegisterType(fieldType, false);
-			return this;
-		}
 	}
 
 	private sealed class IsOfTypeConstraint(

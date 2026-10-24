@@ -27,17 +27,17 @@ public static partial class ThatMethods
 	/// </summary>
 	/// <remarks>
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
-	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TMember, TResult}.Directly" />.
+	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TType, TMember}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<MethodInfo?, IEnumerable<MethodInfo?>> Have<TAttribute>(
+	public static HaveAttributeResult<IEnumerable<MethodInfo?>, MethodInfo?> Have<TAttribute>(
 		this IThat<IEnumerable<MethodInfo?>?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>();
-		return new HaveAttributeResult<MethodInfo?, IEnumerable<MethodInfo?>>(
+		return new HaveAttributeResult<IEnumerable<MethodInfo?>, MethodInfo?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<MethodInfo?>, IEnumerable<MethodInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -51,10 +51,10 @@ public static partial class ThatMethods
 	/// </summary>
 	/// <remarks>
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
-	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TMember, TResult}.Directly" />.
+	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TType, TMember}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<MethodInfo?, IEnumerable<MethodInfo?>> Have<TAttribute>(
+	public static HaveAttributeResult<IEnumerable<MethodInfo?>, MethodInfo?> Have<TAttribute>(
 		this IThat<IEnumerable<MethodInfo?>?> subject,
 		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -64,7 +64,7 @@ public static partial class ThatMethods
 		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
-		return new HaveAttributeResult<MethodInfo?, IEnumerable<MethodInfo?>>(
+		return new HaveAttributeResult<IEnumerable<MethodInfo?>, MethodInfo?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<MethodInfo?>, IEnumerable<MethodInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -79,17 +79,17 @@ public static partial class ThatMethods
 	/// </summary>
 	/// <remarks>
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
-	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TMember, TResult}.Directly" />.
+	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TType, TMember}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<MethodInfo?, IAsyncEnumerable<MethodInfo?>> Have<TAttribute>(
+	public static HaveAttributeResult<IAsyncEnumerable<MethodInfo?>, MethodInfo?> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>();
-		return new HaveAttributeResult<MethodInfo?, IAsyncEnumerable<MethodInfo?>>(
+		return new HaveAttributeResult<IAsyncEnumerable<MethodInfo?>, MethodInfo?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<MethodInfo?>, IAsyncEnumerable<MethodInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -105,10 +105,10 @@ public static partial class ThatMethods
 	/// </summary>
 	/// <remarks>
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
-	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TMember, TResult}.Directly" />.
+	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TType, TMember}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<MethodInfo?, IAsyncEnumerable<MethodInfo?>> Have<TAttribute>(
+	public static HaveAttributeResult<IAsyncEnumerable<MethodInfo?>, MethodInfo?> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject,
 		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -118,7 +118,7 @@ public static partial class ThatMethods
 		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
-		return new HaveAttributeResult<MethodInfo?, IAsyncEnumerable<MethodInfo?>>(
+		return new HaveAttributeResult<IAsyncEnumerable<MethodInfo?>, MethodInfo?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<MethodInfo?>, IAsyncEnumerable<MethodInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),

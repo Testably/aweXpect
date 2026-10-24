@@ -11,14 +11,14 @@ namespace aweXpect.Reflection.Results;
 ///     namespaces and to opt out of sub-namespace matching — for the allowed namespaces and for the type's own
 ///     namespace.
 /// </summary>
-public sealed class NamespaceDependencyOutsideResult<TType, TThat>
-	: AndOrResult<TType, IThat<TThat>, NamespaceDependencyOutsideResult<TType, TThat>>
+public sealed class NamespaceDependencyOutsideResult<TType, TValue>
+	: AndOrResult<TType, IThat<TValue>, NamespaceDependencyOutsideResult<TType, TValue>>
 {
 	private readonly NamespaceDependencyOptions _options;
 
 	internal NamespaceDependencyOutsideResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat> subject,
+		IThat<TValue> subject,
 		NamespaceDependencyOptions options)
 		: base(expectationBuilder, subject)
 	{
@@ -29,14 +29,14 @@ public sealed class NamespaceDependencyOutsideResult<TType, TThat>
 	///     Widens the allowed set by the given <paramref name="namespaces" /> (including sub-namespaces unless
 	///     <see cref="ExcludingSubNamespaces" /> is used), so that dependencies on them no longer count as outside.
 	/// </summary>
-	public NamespaceDependencyOutsideResult<TType, TThat> OrOn(params string[] namespaces)
+	public NamespaceDependencyOutsideResult<TType, TValue> OrOn(params string[] namespaces)
 		=> OrOn(namespaces.AsEnumerable());
 
 	/// <summary>
 	///     Widens the allowed set by the given <paramref name="namespaces" /> (including sub-namespaces unless
 	///     <see cref="ExcludingSubNamespaces" /> is used), so that dependencies on them no longer count as outside.
 	/// </summary>
-	public NamespaceDependencyOutsideResult<TType, TThat> OrOn(IEnumerable<string> namespaces)
+	public NamespaceDependencyOutsideResult<TType, TValue> OrOn(IEnumerable<string> namespaces)
 	{
 		_options.OrOn(namespaces);
 		return this;
@@ -53,7 +53,7 @@ public sealed class NamespaceDependencyOutsideResult<TType, TThat>
 	///     The type's own namespace never counts as outside, and neither do its sub-namespaces unless
 	///     <see cref="ExcludingOwnSubNamespaces" /> is also used.
 	/// </remarks>
-	public NamespaceDependencyOutsideResult<TType, TThat> ExcludingSubNamespaces()
+	public NamespaceDependencyOutsideResult<TType, TValue> ExcludingSubNamespaces()
 	{
 		_options.ExcludingSubNamespaces();
 		return this;
@@ -67,7 +67,7 @@ public sealed class NamespaceDependencyOutsideResult<TType, TThat>
 	/// <remarks>
 	///     The type's own namespace itself never counts as outside.
 	/// </remarks>
-	public NamespaceDependencyOutsideResult<TType, TThat> ExcludingOwnSubNamespaces()
+	public NamespaceDependencyOutsideResult<TType, TValue> ExcludingOwnSubNamespaces()
 	{
 		_options.ExcludingOwnSubNamespaces();
 		return this;

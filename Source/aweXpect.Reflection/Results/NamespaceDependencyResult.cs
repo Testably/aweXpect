@@ -10,14 +10,14 @@ namespace aweXpect.Reflection.Results;
 ///     The result of a namespace-based type dependency assertion, allowing to widen the targeted/allowed namespaces
 ///     and to opt out of sub-namespace matching.
 /// </summary>
-public sealed class NamespaceDependencyResult<TType, TThat>
-	: AndOrResult<TType, IThat<TThat>, NamespaceDependencyResult<TType, TThat>>
+public sealed class NamespaceDependencyResult<TType, TValue>
+	: AndOrResult<TType, IThat<TValue>, NamespaceDependencyResult<TType, TValue>>
 {
 	private readonly NamespaceDependencyOptions _options;
 
 	internal NamespaceDependencyResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat> subject,
+		IThat<TValue> subject,
 		NamespaceDependencyOptions options)
 		: base(expectationBuilder, subject)
 	{
@@ -28,14 +28,14 @@ public sealed class NamespaceDependencyResult<TType, TThat>
 	///     Widens the expression by the given <paramref name="namespaces" /> (including sub-namespaces unless
 	///     <see cref="ExcludingSubNamespaces" /> is used).
 	/// </summary>
-	public NamespaceDependencyResult<TType, TThat> OrOn(params string[] namespaces)
+	public NamespaceDependencyResult<TType, TValue> OrOn(params string[] namespaces)
 		=> OrOn(namespaces.AsEnumerable());
 
 	/// <summary>
 	///     Widens the expression by the given <paramref name="namespaces" /> (including sub-namespaces unless
 	///     <see cref="ExcludingSubNamespaces" /> is used).
 	/// </summary>
-	public NamespaceDependencyResult<TType, TThat> OrOn(IEnumerable<string> namespaces)
+	public NamespaceDependencyResult<TType, TValue> OrOn(IEnumerable<string> namespaces)
 	{
 		_options.OrOn(namespaces);
 		return this;
@@ -48,7 +48,7 @@ public sealed class NamespaceDependencyResult<TType, TThat>
 	///     Without this call, a namespace matches itself and all its sub-namespaces (so <c>Foo.Bar</c> includes
 	///     <c>Foo.Bar.Baz</c> but not <c>Foo.BarBaz</c>).
 	/// </remarks>
-	public NamespaceDependencyResult<TType, TThat> ExcludingSubNamespaces()
+	public NamespaceDependencyResult<TType, TValue> ExcludingSubNamespaces()
 	{
 		_options.ExcludingSubNamespaces();
 		return this;

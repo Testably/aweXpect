@@ -4,6 +4,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -14,7 +15,7 @@ public static partial class ThatField
 	///     Verifies that the <see cref="FieldInfo" /> is of exactly type <typeparamref name="TField" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldOfTypeResult<FieldInfo, IThat<FieldInfo?>> IsOfExactType<TField>(
+	public static OfTypeResult<FieldInfo> IsOfExactType<TField>(
 		this IThat<FieldInfo?> subject)
 		=> IsOfExactType(subject, typeof(TField));
 
@@ -22,12 +23,12 @@ public static partial class ThatField
 	///     Verifies that the <see cref="FieldInfo" /> is of exactly type <paramref name="fieldType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldOfTypeResult<FieldInfo, IThat<FieldInfo?>> IsOfExactType(
+	public static OfTypeResult<FieldInfo> IsOfExactType(
 		this IThat<FieldInfo?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(fieldType, true);
-		return new FieldOfTypeResult<FieldInfo, IThat<FieldInfo?>>(
+		return new OfTypeResult<FieldInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions)),
@@ -57,23 +58,5 @@ public static partial class ThatField
 				static (typeFilterOptions, it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions).Invert()),
 			subject);
-	}
-
-	public sealed partial class FieldOfTypeResult<TValue, TResult>
-	{
-		/// <summary>
-		///     Allow an alternative exact type <typeparamref name="TField" />.
-		/// </summary>
-		public FieldOfTypeResult<TValue, TResult> OrOfExactType<TField>()
-			=> OrOfExactType(typeof(TField));
-
-		/// <summary>
-		///     Allow an alternative exact type <paramref name="fieldType" />.
-		/// </summary>
-		public FieldOfTypeResult<TValue, TResult> OrOfExactType(Type fieldType)
-		{
-			_typeFilterOptions.RegisterType(fieldType, true);
-			return this;
-		}
 	}
 }

@@ -29,8 +29,8 @@ public static partial class ThatTypes
 	///     reference type annotated as nullable (according to the nullable reference type metadata).<br />
 	///     The inherited members are considered, but neither those declared on <see cref="object" />,
 	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
-	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" /> or add the members of these roots with
-	///     <see cref="MemberScopeResult{TType, TThat}.IncludingObjectMembers" />.
+	///     <see cref="InheritanceScopeResult{TType, TValue}.Directly" /> or add the members of these roots with
+	///     <see cref="MemberScopeResult{TType, TValue}.IncludingObjectMembers" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static MemberScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> OnlyHaveNonNullableMembers(
@@ -54,8 +54,8 @@ public static partial class ThatTypes
 	///     reference type annotated as nullable (according to the nullable reference type metadata).<br />
 	///     The inherited members are considered, but neither those declared on <see cref="object" />,
 	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
-	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" /> or add the members of these roots with
-	///     <see cref="MemberScopeResult{TType, TThat}.IncludingObjectMembers" />.
+	///     <see cref="InheritanceScopeResult{TType, TValue}.Directly" /> or add the members of these roots with
+	///     <see cref="MemberScopeResult{TType, TValue}.IncludingObjectMembers" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static MemberScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> OnlyHaveNonNullableMembers(

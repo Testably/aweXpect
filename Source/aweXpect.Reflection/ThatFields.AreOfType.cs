@@ -8,6 +8,7 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
 using System.Threading;
@@ -24,7 +25,7 @@ public static partial class ThatFields
 	///     Verifies that all fields in the filtered collection are of type <typeparamref name="TField" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreOfType<TField>(
+	public static OfTypeResult<IEnumerable<FieldInfo?>> AreOfType<TField>(
 		this IThat<IEnumerable<FieldInfo?>?> subject)
 		=> AreOfType(subject, typeof(TField));
 
@@ -32,12 +33,12 @@ public static partial class ThatFields
 	///     Verifies that all fields in the filtered collection are of type <paramref name="fieldType" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreOfType(
+	public static OfTypeResult<IEnumerable<FieldInfo?>> AreOfType(
 		this IThat<IEnumerable<FieldInfo?>?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(fieldType, false);
-		return new FieldsOfTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>>(
+		return new OfTypeResult<IEnumerable<FieldInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<FieldInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
@@ -50,21 +51,20 @@ public static partial class ThatFields
 	///     Verifies that all fields in the filtered collection are of type <typeparamref name="TField" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>>
-		AreOfType<TField>(
-			this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
+	public static OfTypeResult<IAsyncEnumerable<FieldInfo?>> AreOfType<TField>(
+		this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
 		=> AreOfType(subject, typeof(TField));
 
 	/// <summary>
 	///     Verifies that all fields in the filtered collection are of type <paramref name="fieldType" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> AreOfType(
+	public static OfTypeResult<IAsyncEnumerable<FieldInfo?>> AreOfType(
 		this IThat<IAsyncEnumerable<FieldInfo?>?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(fieldType, false);
-		return new FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>>(
+		return new OfTypeResult<IAsyncEnumerable<FieldInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<FieldInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
@@ -126,44 +126,6 @@ public static partial class ThatFields
 			subject);
 	}
 #endif
-
-	/// <summary>
-	///     Result that allows chaining additional types for field collections.
-	/// </summary>
-	public sealed partial class FieldsOfTypeResult<TValue, TResult>
-		: AndOrResult<TValue, TResult>,
-			IOptionsProvider<TypeFilterOptions>
-		where TResult : IThat<TValue?>
-	{
-		private readonly TypeFilterOptions _typeFilterOptions;
-
-		internal FieldsOfTypeResult(
-			ExpectationBuilder expectationBuilder,
-			TResult subject,
-			TypeFilterOptions typeFilterOptions)
-			: base(expectationBuilder, subject)
-		{
-			_typeFilterOptions = typeFilterOptions;
-		}
-
-		/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
-		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => _typeFilterOptions;
-
-		/// <summary>
-		///     Allow an alternative type <typeparamref name="TField" /> (or a subtype).
-		/// </summary>
-		public FieldsOfTypeResult<TValue, TResult> OrOfType<TField>()
-			=> OrOfType(typeof(TField));
-
-		/// <summary>
-		///     Allow an alternative type <paramref name="fieldType" /> (or a subtype).
-		/// </summary>
-		public FieldsOfTypeResult<TValue, TResult> OrOfType(Type fieldType)
-		{
-			_typeFilterOptions.RegisterType(fieldType, false);
-			return this;
-		}
-	}
 
 	private sealed class AreOfTypeConstraint(
 		string it,

@@ -98,7 +98,7 @@ public static partial class ThatTypes
 	///     union of the resolved collections (by <see cref="Type" /> identity; a generic type definition in a
 	///     collection matches any construction of it). A type's own namespace is always allowed, including its
 	///     sub-namespaces unless
-	///     <see cref="TypeSetDependencyOnlyOnResult{TType, TThat}.ExcludingOwnSubNamespaces" /> is used.
+	///     <see cref="TypeSetDependencyOnlyOnResult{TType, TValue}.ExcludingOwnSubNamespaces" /> is used.
 	///     <para />
 	///     Dependencies on types whose assembly name matches one of the
 	///     <see cref="AwexpectCustomization.SettingsCustomization.ExcludedAssemblyPrefixes" /> at a
@@ -132,7 +132,7 @@ public static partial class ThatTypes
 	///     union of the resolved collections (by <see cref="Type" /> identity; a generic type definition in a
 	///     collection matches any construction of it). A type's own namespace is always allowed, including its
 	///     sub-namespaces unless
-	///     <see cref="TypeSetDependencyOnlyOnResult{TType, TThat}.ExcludingOwnSubNamespaces" /> is used.
+	///     <see cref="TypeSetDependencyOnlyOnResult{TType, TValue}.ExcludingOwnSubNamespaces" /> is used.
 	///     <para />
 	///     Dependencies on types whose assembly name matches one of the
 	///     <see cref="AwexpectCustomization.SettingsCustomization.ExcludedAssemblyPrefixes" /> at a

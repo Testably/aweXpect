@@ -11,15 +11,15 @@ namespace aweXpect.Reflection.Results;
 ///     Allows chaining of multiple attributes for subjects whose attributes cannot be inherited
 ///     (assemblies, constructors and fields).
 /// </summary>
-public sealed class HaveAttributeWithoutInheritResult<TMember, TResult>
-	: AndOrResult<TResult, IThat<TResult?>, HaveAttributeWithoutInheritResult<TMember, TResult>>,
+public sealed class HaveAttributeWithoutInheritResult<TType, TMember>
+	: AndOrResult<TType, IThat<TType?>, HaveAttributeWithoutInheritResult<TType, TMember>>,
 		IOptionsProvider<AttributeFilterOptions<TMember>>
 {
 	private readonly AttributeFilterOptions<TMember> _attributeFilterOptions;
 
 	internal HaveAttributeWithoutInheritResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TResult?> subject,
+		IThat<TType?> subject,
 		AttributeFilterOptions<TMember> attributeFilterOptions)
 		: base(expectationBuilder, subject)
 	{
@@ -33,7 +33,7 @@ public sealed class HaveAttributeWithoutInheritResult<TMember, TResult>
 	/// <summary>
 	///     Allows an alternative attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
-	public HaveAttributeWithoutInheritResult<TMember, TResult> OrHave<TAttribute>()
+	public HaveAttributeWithoutInheritResult<TType, TMember> OrHave<TAttribute>()
 		where TAttribute : Attribute
 	{
 		_attributeFilterOptions.RegisterAttribute<TAttribute>();
@@ -44,7 +44,7 @@ public sealed class HaveAttributeWithoutInheritResult<TMember, TResult>
 	///     Allows an alternative attribute of type <typeparamref name="TAttribute" /> that
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
-	public HaveAttributeWithoutInheritResult<TMember, TResult> OrHave<TAttribute>(
+	public HaveAttributeWithoutInheritResult<TType, TMember> OrHave<TAttribute>(
 		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")

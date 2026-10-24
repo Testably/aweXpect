@@ -63,7 +63,7 @@ public static partial class ThatType
 	///     is a member of the union of the resolved collections (by <see cref="Type" /> identity; a generic type
 	///     definition in a collection matches any construction of it). The type's own namespace never counts as
 	///     outside, including its sub-namespaces unless
-	///     <see cref="TypeSetDependencyOutsideResult{TType, TThat}.ExcludingOwnSubNamespaces" /> is used.
+	///     <see cref="TypeSetDependencyOutsideResult{TType, TValue}.ExcludingOwnSubNamespaces" /> is used.
 	///     <para />
 	///     Dependencies on types whose assembly name matches one of the
 	///     <see cref="AwexpectCustomization.SettingsCustomization.ExcludedAssemblyPrefixes" /> at a

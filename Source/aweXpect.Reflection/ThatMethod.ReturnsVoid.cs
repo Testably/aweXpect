@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using aweXpect.Core;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -10,7 +11,7 @@ public static partial class ThatMethod
 	///     Verifies that the method returns <see langword="void" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodReturnResult<MethodInfo, IThat<MethodInfo?>> ReturnsVoid(
+	public static ReturnsResult<MethodInfo> ReturnsVoid(
 		this IThat<MethodInfo?> subject)
 		=> Returns(subject, typeof(void));
 

@@ -12,12 +12,12 @@ namespace aweXpect.Reflection.Results;
 /// <summary>
 ///     Additional constraints on a parameter collection with a parameter of a specific type.
 /// </summary>
-public class ParameterCollectionResult<TType, TThat, TParameter>
-	: ParameterCollectionResult<TType, TThat, TParameter, ParameterCollectionResult<TType, TThat, TParameter>>
+public sealed class ParameterCollectionResult<TType, TValue, TParameter>
+	: ParameterCollectionResult<TType, TValue, TParameter, ParameterCollectionResult<TType, TValue, TParameter>>
 {
 	internal ParameterCollectionResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat> subject,
+		IThat<TValue> subject,
 		CollectionIndexOptions collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions)
 		: base(expectationBuilder, subject, collectionIndexOptions, parameterFilterOptions)
@@ -31,18 +31,18 @@ public class ParameterCollectionResult<TType, TThat, TParameter>
 /// <remarks>
 ///     The index of the parameter is specified via <see cref="CollectionIndexOptionsExtensions" />.
 /// </remarks>
-public class ParameterCollectionResult<TType, TThat, TParameter, TSelf>
-	: AndOrResult<TType, IThat<TThat>, TSelf>,
+public class ParameterCollectionResult<TType, TValue, TParameter, TSelf>
+	: AndOrResult<TType, IThat<TValue>, TSelf>,
 		IOptionsProvider<CollectionIndexOptions>,
 		IOptionsProvider<ParameterFilterOptions>
-	where TSelf : ParameterCollectionResult<TType, TThat, TParameter, TSelf>
+	where TSelf : ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 {
 	private readonly CollectionIndexOptions _collectionIndexOptions;
 	private readonly ParameterFilterOptions _parameterFilterOptions;
 
 	internal ParameterCollectionResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat> subject,
+		IThat<TValue> subject,
 		CollectionIndexOptions collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions)
 		: base(expectationBuilder, subject)
@@ -78,8 +78,8 @@ public class ParameterCollectionResult<TType, TThat, TParameter, TSelf>
 	/// <summary>
 	///     …with the <paramref name="expected" /> default value.
 	/// </summary>
-	public TSelf WithDefaultValue<TValue>(TValue expected)
-		where TValue : TParameter
+	public TSelf WithDefaultValue<TDefault>(TDefault expected)
+		where TDefault : TParameter
 	{
 		_parameterFilterOptions.AddPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
 			() => $"with default value {Formatter.Format(expected)}");
