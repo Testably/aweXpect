@@ -486,6 +486,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
         "message": "fix: let \u0060?\u0060 in a snapshot wildcard mask match a surrogate pair as one character (#1982)"
+      },
+      {
+        "sha": "c010bba3c255a9f125a98a8db41346d1da4810e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:27:16 2026 \u002B0200",
+        "message": "refactor: share the JsonElement constraints with the nullable JsonElement expectations (#1983)"
       }
     ],
     "labels": [
@@ -569,7 +575,8 @@ window.BENCHMARK_DATA = {
       "67432f46",
       "91cfa9f0",
       "4eec7318",
-      "df357ed3"
+      "df357ed3",
+      "c010bba3"
     ],
     "datasets": [
       {
@@ -656,7 +663,8 @@ window.BENCHMARK_DATA = {
           726.1480231285095,
           557.0184995944684,
           577.492098734929,
-          588.2506223678589
+          588.2506223678589,
+          707.5846187151395
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -696,6 +704,7 @@ window.BENCHMARK_DATA = {
           1160,
           1160,
           1160,
+          1120,
           1120,
           1120,
           1120,
@@ -843,7 +852,8 @@ window.BENCHMARK_DATA = {
           705.4793984731039,
           533.8381036244906,
           536.9896809032986,
-          564.5030789375305
+          564.5030789375305,
+          653.4171895980835
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -855,6 +865,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -1435,6 +1446,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
         "message": "fix: let \u0060?\u0060 in a snapshot wildcard mask match a surrogate pair as one character (#1982)"
+      },
+      {
+        "sha": "c010bba3c255a9f125a98a8db41346d1da4810e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:27:16 2026 \u002B0200",
+        "message": "refactor: share the JsonElement constraints with the nullable JsonElement expectations (#1983)"
       }
     ],
     "labels": [
@@ -1518,7 +1535,8 @@ window.BENCHMARK_DATA = {
       "67432f46",
       "91cfa9f0",
       "4eec7318",
-      "df357ed3"
+      "df357ed3",
+      "c010bba3"
     ],
     "datasets": [
       {
@@ -1605,7 +1623,8 @@ window.BENCHMARK_DATA = {
           4570.510669199625,
           3205.7255582173666,
           3523.849180094401,
-          3581.9025093078612
+          3581.9025093078612,
+          4305.464863368443
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1677,6 +1696,7 @@ window.BENCHMARK_DATA = {
           24047,
           24114,
           24047,
+          24119,
           24119,
           24119,
           24119,
@@ -1792,7 +1812,8 @@ window.BENCHMARK_DATA = {
           5269.56157430013,
           3839.9061807904923,
           4150.829909769694,
-          3925.0110560099283
+          3925.0110560099283,
+          5154.546627298991
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1804,6 +1825,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -2324,6 +2346,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
         "message": "fix: let \u0060?\u0060 in a snapshot wildcard mask match a surrogate pair as one character (#1982)"
+      },
+      {
+        "sha": "c010bba3c255a9f125a98a8db41346d1da4810e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:27:16 2026 \u002B0200",
+        "message": "refactor: share the JsonElement constraints with the nullable JsonElement expectations (#1983)"
       }
     ],
     "labels": [
@@ -2397,7 +2425,8 @@ window.BENCHMARK_DATA = {
       "67432f46",
       "91cfa9f0",
       "4eec7318",
-      "df357ed3"
+      "df357ed3",
+      "c010bba3"
     ],
     "datasets": [
       {
@@ -2474,7 +2503,8 @@ window.BENCHMARK_DATA = {
           2667.7054397583006,
           1886.9257835388185,
           1952.6132261912028,
-          2006.5430682046074
+          2006.5430682046074,
+          2545.288360050746
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2556,7 +2586,8 @@ window.BENCHMARK_DATA = {
           12856,
           12780,
           12780,
-          12856
+          12856,
+          12780
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2641,7 +2672,8 @@ window.BENCHMARK_DATA = {
           3480.1524286905924,
           2662.9175486246745,
           2742.032110850016,
-          2834.7653319040933
+          2834.7653319040933,
+          3431.645770209176
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2653,6 +2685,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -3163,6 +3196,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
         "message": "fix: let \u0060?\u0060 in a snapshot wildcard mask match a surrogate pair as one character (#1982)"
+      },
+      {
+        "sha": "c010bba3c255a9f125a98a8db41346d1da4810e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 05:27:16 2026 \u002B0200",
+        "message": "refactor: share the JsonElement constraints with the nullable JsonElement expectations (#1983)"
       }
     ],
     "labels": [
@@ -3236,7 +3275,8 @@ window.BENCHMARK_DATA = {
       "67432f46",
       "91cfa9f0",
       "4eec7318",
-      "df357ed3"
+      "df357ed3",
+      "c010bba3"
     ],
     "datasets": [
       {
@@ -3313,7 +3353,8 @@ window.BENCHMARK_DATA = {
           13622.883841378349,
           9964.835115705218,
           10503.588162231445,
-          10913.545343526204
+          10913.545343526204,
+          13473.099870954242
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3395,7 +3436,8 @@ window.BENCHMARK_DATA = {
           25568,
           25494,
           25494,
-          25568
+          25568,
+          25494
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3480,7 +3522,8 @@ window.BENCHMARK_DATA = {
           362704.26959635416,
           243419.34921875,
           246463.16821289062,
-          247312.63839017428
+          247312.63839017428,
+          348778.28271484375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3547,6 +3590,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544246,
+          544335,
           544335,
           544335,
           544335,
