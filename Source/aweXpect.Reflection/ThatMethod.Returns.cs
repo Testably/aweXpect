@@ -5,6 +5,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -15,7 +16,7 @@ public static partial class ThatMethod
 	///     Verifies that the method returns type <typeparamref name="TReturn" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodReturnResult<MethodInfo, IThat<MethodInfo?>> Returns<TReturn>(
+	public static ReturnsResult<MethodInfo> Returns<TReturn>(
 		this IThat<MethodInfo?> subject)
 		=> Returns(subject, typeof(TReturn));
 
@@ -23,12 +24,12 @@ public static partial class ThatMethod
 	///     Verifies that the method returns type <paramref name="returnType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodReturnResult<MethodInfo, IThat<MethodInfo?>> Returns(
+	public static ReturnsResult<MethodInfo> Returns(
 		this IThat<MethodInfo?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(returnType, false);
-		return new MethodReturnResult<MethodInfo, IThat<MethodInfo?>>(
+		return new ReturnsResult<MethodInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new ReturnsConstraint(it, grammars, typeFilterOptions)),
@@ -58,44 +59,6 @@ public static partial class ThatMethod
 				static (typeFilterOptions, it, grammars)
 				=> new ReturnsConstraint(it, grammars, typeFilterOptions).Invert()),
 			subject);
-	}
-
-	/// <summary>
-	///     Result that allows chaining additional return types for a single method.
-	/// </summary>
-	public sealed partial class MethodReturnResult<TValue, TResult>
-		: AndOrResult<TValue, TResult>,
-			IOptionsProvider<TypeFilterOptions>
-		where TResult : IThat<TValue?>
-	{
-		private readonly TypeFilterOptions _typeFilterOptions;
-
-		internal MethodReturnResult(
-			ExpectationBuilder expectationBuilder,
-			TResult subject,
-			TypeFilterOptions typeFilterOptions)
-			: base(expectationBuilder, subject)
-		{
-			_typeFilterOptions = typeFilterOptions;
-		}
-
-		/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
-		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => _typeFilterOptions;
-
-		/// <summary>
-		///     Allow an alternative return type <typeparamref name="TReturn" />.
-		/// </summary>
-		public MethodReturnResult<TValue, TResult> OrReturns<TReturn>()
-			=> OrReturns(typeof(TReturn));
-
-		/// <summary>
-		///     Allow an alternative return type <paramref name="returnType" />.
-		/// </summary>
-		public MethodReturnResult<TValue, TResult> OrReturns(Type returnType)
-		{
-			_typeFilterOptions.RegisterType(returnType, false);
-			return this;
-		}
 	}
 
 	private sealed class ReturnsConstraint(

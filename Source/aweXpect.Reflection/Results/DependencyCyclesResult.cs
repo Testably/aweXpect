@@ -8,14 +8,14 @@ namespace aweXpect.Reflection.Results;
 ///     The result of a namespace dependency cycle assertion, allowing to opt out of treating a namespace and its
 ///     sub-namespaces as one family.
 /// </summary>
-public sealed class DependencyCyclesResult<TThat>
-	: AndOrResult<TThat, IThat<TThat?>, DependencyCyclesResult<TThat>>
+public sealed class DependencyCyclesResult<TType>
+	: AndOrResult<TType, IThat<TType?>, DependencyCyclesResult<TType>>
 {
 	private readonly DependencyCyclesOptions _options;
 
 	internal DependencyCyclesResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat?> subject,
+		IThat<TType?> subject,
 		DependencyCyclesOptions options)
 		: base(expectationBuilder, subject)
 	{
@@ -30,7 +30,7 @@ public sealed class DependencyCyclesResult<TThat>
 	///     Without this call, a namespace and its sub-namespaces are treated as one family, so references within a family
 	///     (a node and its ancestor or descendant) never create an edge — only references between unrelated namespaces do.
 	/// </remarks>
-	public DependencyCyclesResult<TThat> ExcludingSubNamespaces()
+	public DependencyCyclesResult<TType> ExcludingSubNamespaces()
 	{
 		_options.ExcludingSubNamespaces();
 		return this;

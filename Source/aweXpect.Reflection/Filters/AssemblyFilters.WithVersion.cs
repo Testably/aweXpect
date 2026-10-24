@@ -51,24 +51,24 @@ public static partial class AssemblyFilters
 		/// <summary>
 		///     Compares the <see cref="Version.Major" /> version component.
 		/// </summary>
-		public VersionComponent WithMajor => new(this, "major", version => version.Major);
+		public VersionComponentResult WithMajor => new(this, "major", version => version.Major);
 
 		/// <summary>
 		///     Compares the <see cref="Version.Minor" /> version component.
 		/// </summary>
-		public VersionComponent WithMinor => new(this, "minor", version => version.Minor);
+		public VersionComponentResult WithMinor => new(this, "minor", version => version.Minor);
 
 		/// <summary>
 		///     Compares the <see cref="Version.Build" /> version component.
 		/// </summary>
 		/// <remarks>The build component is <c>-1</c> when it is absent from the version.</remarks>
-		public VersionComponent WithBuild => new(this, "build", version => version.Build);
+		public VersionComponentResult WithBuild => new(this, "build", version => version.Build);
 
 		/// <summary>
 		///     Compares the <see cref="Version.Revision" /> version component.
 		/// </summary>
 		/// <remarks>The revision component is <c>-1</c> when it is absent from the version.</remarks>
-		public VersionComponent WithRevision => new(this, "revision", version => version.Revision);
+		public VersionComponentResult WithRevision => new(this, "revision", version => version.Revision);
 
 		internal AssembliesWithVersion Extend(Func<bool, Assembly, bool> predicate, Func<string, string> description)
 			=> new(_source, _filter.Extend(predicate, description));
@@ -81,13 +81,13 @@ public static partial class AssemblyFilters
 	///     The comparison operators, e.g. <c>EqualTo(…)</c> or <c>Between(…).And(…)</c>, are extension methods in
 	///     <see cref="IntPropertyResultExtensions" />.
 	/// </remarks>
-	public class VersionComponent : IIntPropertyResult<AssembliesWithVersion>
+	public sealed class VersionComponentResult : IIntPropertyResult<AssembliesWithVersion>
 	{
 		private readonly string _component;
 		private readonly AssembliesWithVersion _owner;
 		private readonly Func<Version, int> _selector;
 
-		internal VersionComponent(
+		internal VersionComponentResult(
 			AssembliesWithVersion owner,
 			string component,
 			Func<Version, int> selector)

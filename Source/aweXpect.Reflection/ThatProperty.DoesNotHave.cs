@@ -17,7 +17,7 @@ public static partial class ThatProperty
 	/// </summary>
 	/// <remarks>
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
-	///     to the attributes declared directly on the member with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     to the attributes declared directly on the member with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<PropertyInfo, PropertyInfo?> DoesNotHave<TAttribute>(

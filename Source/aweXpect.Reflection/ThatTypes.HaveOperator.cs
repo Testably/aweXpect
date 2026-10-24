@@ -25,7 +25,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> HaveOperator(
@@ -46,7 +46,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> HaveOperator(
@@ -68,7 +68,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> HaveOperator<TOperand>(
@@ -83,7 +83,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> HaveOperator(
@@ -104,7 +104,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> HaveOperator(
@@ -126,7 +126,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> HaveOperator<TOperand>(
@@ -141,7 +141,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotHaveOperator(
@@ -162,7 +162,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotHaveOperator(
@@ -184,7 +184,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotHaveOperator<TOperand>(
@@ -199,7 +199,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotHaveOperator(
@@ -220,7 +220,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotHaveOperator(
@@ -242,7 +242,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotHaveOperator<TOperand>(

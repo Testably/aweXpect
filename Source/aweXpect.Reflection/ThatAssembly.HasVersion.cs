@@ -7,6 +7,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -35,96 +36,10 @@ public static partial class ThatAssembly
 	///     Verifies the individual components of the <see cref="AssemblyName.Version" /> of the <see cref="Assembly" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HasVersionResult HasVersion(this IThat<Assembly?> subject)
-		=> new(subject);
-
-	/// <summary>
-	///     The result of verifying the <see cref="AssemblyName.Version" /> of an <see cref="Assembly" />,
-	///     allowing comparisons on its individual components.
-	/// </summary>
-	public class HasVersionResult : AndOrResult<Assembly, IThat<Assembly?>>
-	{
-		private readonly List<VersionComponentCheck> _checks = [];
-
-		internal HasVersionResult(IThat<Assembly?> subject)
-			: this(subject, subject.Get().ExpectationBuilder)
-		{
-		}
-
-		private HasVersionResult(IThat<Assembly?> subject, ExpectationBuilder expectationBuilder)
-			: base(expectationBuilder, subject)
-		{
-			expectationBuilder.AddConstraint(_checks,
-				static (checks, it, grammars) => new HasVersionComponentsConstraint(it, grammars, checks));
-		}
-
-		/// <summary>
-		///     Compares the <see cref="Version.Major" /> version component.
-		/// </summary>
-		public VersionComponent WithMajor => new(this, "major version", version => version.Major);
-
-		/// <summary>
-		///     Compares the <see cref="Version.Minor" /> version component.
-		/// </summary>
-		public VersionComponent WithMinor => new(this, "minor version", version => version.Minor);
-
-		/// <summary>
-		///     Compares the <see cref="Version.Build" /> version component.
-		/// </summary>
-		/// <remarks>The build component is <c>-1</c> when it is absent from the version.</remarks>
-		public VersionComponent WithBuild => new(this, "build version", version => version.Build);
-
-		/// <summary>
-		///     Compares the <see cref="Version.Revision" /> version component.
-		/// </summary>
-		/// <remarks>The revision component is <c>-1</c> when it is absent from the version.</remarks>
-		public VersionComponent WithRevision => new(this, "revision version", version => version.Revision);
-
-		internal HasVersionResult Add(string component, Func<Version, int> selector,
-			PropertyComparison<int> comparison)
-		{
-			_checks.Add(new VersionComponentCheck(component, selector, comparison));
-			return this;
-		}
-	}
-
-	/// <summary>
-	///     Comparison of a single component of the <see cref="AssemblyName.Version" /> of an <see cref="Assembly" />.
-	/// </summary>
-	/// <remarks>
-	///     The comparison operators, e.g. <c>EqualTo(…)</c> or <c>Between(…).And(…)</c>, are extension methods in
-	///     <see cref="IntPropertyResultExtensions" />.
-	/// </remarks>
-	public class VersionComponent : IIntPropertyResult<HasVersionResult>
-	{
-		private readonly string _component;
-		private readonly HasVersionResult _owner;
-		private readonly Func<Version, int> _selector;
-
-		internal VersionComponent(HasVersionResult owner, string component, Func<Version, int> selector)
-		{
-			_owner = owner;
-			_component = component;
-			_selector = selector;
-		}
-
-		/// <inheritdoc cref="IIntPropertyResult{TResult}.Validation" />
-		Action<int?, string>? IIntPropertyResult<HasVersionResult>.Validation => null;
-
-		/// <inheritdoc cref="IIntPropertyResult{TResult}.Compare(PropertyComparison{int})" />
-		HasVersionResult IIntPropertyResult<HasVersionResult>.Compare(PropertyComparison<int> comparison)
-			=> _owner.Add(_component, _selector, comparison);
-	}
-
-	private sealed class VersionComponentCheck(
-		string component,
-		Func<Version, int> selector,
-		PropertyComparison<int> comparison)
-	{
-		public string Component { get; } = component;
-		public Func<Version, int> Selector { get; } = selector;
-		public PropertyComparison<int> Comparison { get; } = comparison;
-	}
+	public static VersionResult<Assembly> HasVersion(this IThat<Assembly?> subject)
+		=> new(subject, (expectationBuilder, checks)
+			=> expectationBuilder.AddConstraint(checks,
+				static (checks, it, grammars) => new HasVersionComponentsConstraint(it, grammars, checks)));
 
 	private sealed class HasVersionComponentsConstraint(
 		string it,

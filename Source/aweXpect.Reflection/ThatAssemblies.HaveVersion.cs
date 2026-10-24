@@ -8,6 +8,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
 using System.Threading;
@@ -63,7 +64,7 @@ public static partial class ThatAssemblies
 	///     collection of <see cref="Assembly" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HaveVersionResult<IEnumerable<Assembly?>> HaveVersion(this IThat<IEnumerable<Assembly?>?> subject)
+	public static VersionResult<IEnumerable<Assembly?>> HaveVersion(this IThat<IEnumerable<Assembly?>?> subject)
 		=> new(subject, (expectationBuilder, checks)
 			=> expectationBuilder.AddConstraint<List<VersionComponentCheck>, IEnumerable<Assembly?>>(checks,
 				static (checks, it, grammars)
@@ -75,108 +76,13 @@ public static partial class ThatAssemblies
 	///     collection of <see cref="Assembly" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HaveVersionResult<IAsyncEnumerable<Assembly?>> HaveVersion(
+	public static VersionResult<IAsyncEnumerable<Assembly?>> HaveVersion(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject)
 		=> new(subject, (expectationBuilder, checks)
 			=> expectationBuilder.AddConstraint<List<VersionComponentCheck>, IAsyncEnumerable<Assembly?>>(checks,
 				static (checks, it, grammars)
 				=> new HaveVersionComponentsConstraint(it, grammars, checks)));
 #endif
-
-	/// <summary>
-	///     The result of verifying the <see cref="AssemblyName.Version" /> of a collection of <see cref="Assembly" />,
-	///     allowing comparisons on the individual version components.
-	/// </summary>
-	public class HaveVersionResult<TCollection> : AndOrResult<TCollection, IThat<TCollection?>>
-	{
-		private readonly List<VersionComponentCheck> _checks = [];
-
-		internal HaveVersionResult(IThat<TCollection?> subject,
-			Func<ExpectationBuilder, List<VersionComponentCheck>, ExpectationBuilder> addConstraint)
-			: this(subject, subject.Get().ExpectationBuilder, addConstraint)
-		{
-		}
-
-		private HaveVersionResult(IThat<TCollection?> subject, ExpectationBuilder expectationBuilder,
-			Func<ExpectationBuilder, List<VersionComponentCheck>, ExpectationBuilder> addConstraint)
-			: base(expectationBuilder, subject)
-		{
-			addConstraint(expectationBuilder, _checks);
-		}
-
-		/// <summary>
-		///     Compares the <see cref="Version.Major" /> version component.
-		/// </summary>
-		public VersionComponentResult<TCollection> WithMajor => new(this, "major version", version => version.Major);
-
-		/// <summary>
-		///     Compares the <see cref="Version.Minor" /> version component.
-		/// </summary>
-		public VersionComponentResult<TCollection> WithMinor => new(this, "minor version", version => version.Minor);
-
-		/// <summary>
-		///     Compares the <see cref="Version.Build" /> version component.
-		/// </summary>
-		/// <remarks>The build component is <c>-1</c> when it is absent from the version.</remarks>
-		public VersionComponentResult<TCollection> WithBuild => new(this, "build version", version => version.Build);
-
-		/// <summary>
-		///     Compares the <see cref="Version.Revision" /> version component.
-		/// </summary>
-		/// <remarks>The revision component is <c>-1</c> when it is absent from the version.</remarks>
-		public VersionComponentResult<TCollection> WithRevision
-			=> new(this, "revision version", version => version.Revision);
-
-		internal HaveVersionResult<TCollection> Add(string component, Func<Version, int> selector,
-			PropertyComparison<int> comparison)
-		{
-			_checks.Add(new VersionComponentCheck(component, selector, comparison));
-			return this;
-		}
-	}
-
-	/// <summary>
-	///     Comparison of a single component of the <see cref="AssemblyName.Version" /> for all items in a collection of
-	///     <see cref="Assembly" />.
-	/// </summary>
-	/// <remarks>
-	///     The comparison operators, e.g. <c>EqualTo(…)</c> or <c>Between(…).And(…)</c>, are extension methods in
-	///     <see cref="IntPropertyResultExtensions" />.
-	/// </remarks>
-	public class VersionComponentResult<TCollection> : IIntPropertyResult<HaveVersionResult<TCollection>>
-	{
-		private readonly string _component;
-		private readonly HaveVersionResult<TCollection> _owner;
-		private readonly Func<Version, int> _selector;
-
-		internal VersionComponentResult(
-			HaveVersionResult<TCollection> owner,
-			string component,
-			Func<Version, int> selector)
-		{
-			_owner = owner;
-			_component = component;
-			_selector = selector;
-		}
-
-		/// <inheritdoc cref="IIntPropertyResult{TResult}.Validation" />
-		Action<int?, string>? IIntPropertyResult<HaveVersionResult<TCollection>>.Validation => null;
-
-		/// <inheritdoc cref="IIntPropertyResult{TResult}.Compare(PropertyComparison{int})" />
-		HaveVersionResult<TCollection> IIntPropertyResult<HaveVersionResult<TCollection>>.Compare(
-			PropertyComparison<int> comparison)
-			=> _owner.Add(_component, _selector, comparison);
-	}
-
-	internal sealed class VersionComponentCheck(
-		string component,
-		Func<Version, int> selector,
-		PropertyComparison<int> comparison)
-	{
-		public string Component { get; } = component;
-		public Func<Version, int> Selector { get; } = selector;
-		public PropertyComparison<int> Comparison { get; } = comparison;
-	}
 
 	private sealed class HaveVersionComponentsConstraint(
 		string it,

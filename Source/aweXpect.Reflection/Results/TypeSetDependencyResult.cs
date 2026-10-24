@@ -9,14 +9,14 @@ namespace aweXpect.Reflection.Results;
 ///     The result of a dependency assertion whose targets are filtered collections of types, allowing to widen
 ///     the targeted/allowed collections.
 /// </summary>
-public sealed class TypeSetDependencyResult<TType, TThat>
-	: AndOrResult<TType, IThat<TThat>, TypeSetDependencyResult<TType, TThat>>
+public sealed class TypeSetDependencyResult<TType, TValue>
+	: AndOrResult<TType, IThat<TValue>, TypeSetDependencyResult<TType, TValue>>
 {
 	private readonly TypeSetDependencyOptions _options;
 
 	internal TypeSetDependencyResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat> subject,
+		IThat<TValue> subject,
 		TypeSetDependencyOptions options)
 		: base(expectationBuilder, subject)
 	{
@@ -26,7 +26,7 @@ public sealed class TypeSetDependencyResult<TType, TThat>
 	/// <summary>
 	///     Widens the expression by the given <paramref name="targets" />.
 	/// </summary>
-	public TypeSetDependencyResult<TType, TThat> OrOn(params Filtered.Types[] targets)
+	public TypeSetDependencyResult<TType, TValue> OrOn(params Filtered.Types[] targets)
 	{
 		_options.OrOn(targets);
 		return this;

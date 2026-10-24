@@ -26,7 +26,7 @@ public static partial class ThatEvents
 	/// </summary>
 	/// <remarks>
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
-	///     to the attributes declared directly on the member with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     to the attributes declared directly on the member with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IEnumerable<EventInfo?>, IEnumerable<EventInfo?>?> DoNotHave<TAttribute>(
@@ -51,7 +51,7 @@ public static partial class ThatEvents
 	/// </summary>
 	/// <remarks>
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
-	///     to the attributes declared directly on the member with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     to the attributes declared directly on the member with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IAsyncEnumerable<EventInfo?>, IAsyncEnumerable<EventInfo?>?> DoNotHave<TAttribute>(

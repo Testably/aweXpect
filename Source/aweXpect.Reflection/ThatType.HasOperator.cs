@@ -17,7 +17,7 @@ public static partial class ThatType
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
 	/// <param name="operator">The <see cref="Operator" /> to look for.</param>
@@ -40,7 +40,7 @@ public static partial class ThatType
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	/// <typeparam name="TOperand">The operand type that one of the operator's parameters must match exactly.</typeparam>
 	/// <param name="subject">The type subject.</param>
@@ -57,7 +57,7 @@ public static partial class ThatType
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
 	/// <param name="operator">The <see cref="Operator" /> to look for.</param>
@@ -82,7 +82,7 @@ public static partial class ThatType
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
 	/// <param name="operator">The <see cref="Operator" /> to look for.</param>
@@ -105,7 +105,7 @@ public static partial class ThatType
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	/// <typeparam name="TOperand">The operand type that one of the operator's parameters must match exactly.</typeparam>
 	/// <param name="subject">The type subject.</param>
@@ -122,7 +122,7 @@ public static partial class ThatType
 	/// </summary>
 	/// <remarks>
 	///     Operators inherited from base types are considered as well; restrict the check to the operators declared
-	///     on the type with <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     on the type with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
 	/// <param name="operator">The <see cref="Operator" /> to look for.</param>

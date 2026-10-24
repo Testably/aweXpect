@@ -8,6 +8,7 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
 using System.Threading;
@@ -24,7 +25,7 @@ public static partial class ThatMethods
 	///     Verifies that all methods in the filtered collection return type <typeparamref name="TReturn" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodsReturnResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> Return<TReturn>(
+	public static ReturnResult<IEnumerable<MethodInfo?>> Return<TReturn>(
 		this IThat<IEnumerable<MethodInfo?>?> subject)
 		=> Return(subject, typeof(TReturn));
 
@@ -32,12 +33,12 @@ public static partial class ThatMethods
 	///     Verifies that all methods in the filtered collection return type <paramref name="returnType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodsReturnResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> Return(
+	public static ReturnResult<IEnumerable<MethodInfo?>> Return(
 		this IThat<IEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(returnType, false);
-		return new MethodsReturnResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>>(
+		return new ReturnResult<IEnumerable<MethodInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
@@ -50,9 +51,8 @@ public static partial class ThatMethods
 	///     Verifies that all methods in the filtered collection return type <typeparamref name="TReturn" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodsReturnResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>>
-		Return<TReturn>(
-			this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
+	public static ReturnResult<IAsyncEnumerable<MethodInfo?>> Return<TReturn>(
+		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
 		=> Return(subject, typeof(TReturn));
 #endif
 
@@ -61,12 +61,12 @@ public static partial class ThatMethods
 	///     Verifies that all methods in the filtered collection return type <paramref name="returnType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodsReturnResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> Return(
+	public static ReturnResult<IAsyncEnumerable<MethodInfo?>> Return(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(returnType, false);
-		return new MethodsReturnResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>>(
+		return new ReturnResult<IAsyncEnumerable<MethodInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
@@ -128,44 +128,6 @@ public static partial class ThatMethods
 			subject);
 	}
 #endif
-
-	/// <summary>
-	///     Result that allows chaining additional return types for method collections.
-	/// </summary>
-	public sealed partial class MethodsReturnResult<TValue, TResult>
-		: AndOrResult<TValue, TResult>,
-			IOptionsProvider<TypeFilterOptions>
-		where TResult : IThat<TValue?>
-	{
-		private readonly TypeFilterOptions _typeFilterOptions;
-
-		internal MethodsReturnResult(
-			ExpectationBuilder expectationBuilder,
-			TResult subject,
-			TypeFilterOptions typeFilterOptions)
-			: base(expectationBuilder, subject)
-		{
-			_typeFilterOptions = typeFilterOptions;
-		}
-
-		/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
-		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => _typeFilterOptions;
-
-		/// <summary>
-		///     Allow an alternative return type <typeparamref name="TReturn" />.
-		/// </summary>
-		public MethodsReturnResult<TValue, TResult> OrReturn<TReturn>()
-			=> OrReturn(typeof(TReturn));
-
-		/// <summary>
-		///     Allow an alternative return type <paramref name="returnType" />.
-		/// </summary>
-		public MethodsReturnResult<TValue, TResult> OrReturn(Type returnType)
-		{
-			_typeFilterOptions.RegisterType(returnType, false);
-			return this;
-		}
-	}
 
 	private sealed class ReturnConstraint(
 		string it,

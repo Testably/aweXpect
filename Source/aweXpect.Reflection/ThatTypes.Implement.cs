@@ -27,7 +27,7 @@ public static partial class ThatTypes
 	///     To check for base-class inheritance use <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}})" />,
 	///     or use <see cref="AreAssignableTo{TType}(IThat{IEnumerable{Type}})" /> to cover base classes and interfaces.<br />
 	///     To require <typeparamref name="TInterface" /> to be implemented directly use
-	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
@@ -45,7 +45,7 @@ public static partial class ThatTypes
 	///     To check for base-class inheritance use <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type)" />,
 	///     or use <see cref="AreAssignableTo(IThat{IEnumerable{Type}}, Type)" /> to cover base classes and interfaces.<br />
 	///     To require <paramref name="interfaceType" /> to be implemented directly use
-	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="interfaceType">The interface to check implementation of.</param>
@@ -66,7 +66,7 @@ public static partial class ThatTypes
 	///     To check for base-class inheritance use <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}})" />,
 	///     or use <see cref="AreAssignableTo{TType}(IThat{IEnumerable{Type}})" /> to cover base classes and interfaces.<br />
 	///     To require <typeparamref name="TInterface" /> to be implemented directly use
-	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
@@ -86,7 +86,7 @@ public static partial class ThatTypes
 	///     To check for base-class inheritance use <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type)" />,
 	///     or use <see cref="AreAssignableTo(IThat{IEnumerable{Type}}, Type)" /> to cover base classes and interfaces.<br />
 	///     To require <paramref name="interfaceType" /> to be implemented directly use
-	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />.
+	///     <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="interfaceType">The interface to check implementation of.</param>

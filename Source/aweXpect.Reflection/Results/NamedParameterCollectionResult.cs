@@ -9,8 +9,8 @@ namespace aweXpect.Reflection.Results;
 ///     Additional constraints on a parameter collection with a named parameter of a specific type, which in addition
 ///     allows specifying how the parameter name is compared via <see cref="StringEqualityOptionsExtensions" />.
 /// </summary>
-public class NamedParameterCollectionResult<TType, TThat, TParameter>
-	: ParameterCollectionResult<TType, TThat, TParameter, NamedParameterCollectionResult<TType, TThat, TParameter>>,
+public sealed class NamedParameterCollectionResult<TType, TValue, TParameter>
+	: ParameterCollectionResult<TType, TValue, TParameter, NamedParameterCollectionResult<TType, TValue, TParameter>>,
 		IOptionsProvider<StringEqualityOptions>,
 		IStringMatchTypeOptions
 {
@@ -18,7 +18,7 @@ public class NamedParameterCollectionResult<TType, TThat, TParameter>
 
 	internal NamedParameterCollectionResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat> subject,
+		IThat<TValue> subject,
 		CollectionIndexOptions collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions,
 		StringEqualityOptions options)

@@ -9,8 +9,8 @@ namespace aweXpect.Reflection.Results;
 ///     Additional constraints on a collection of generic arguments with a parameter with an expected name, which in
 ///     addition allows specifying how the name is compared via <see cref="StringEqualityOptionsExtensions" />.
 /// </summary>
-public class GenericArgumentCollectionWithNamedArgumentResult<TType, TThat>
-	: GenericArgumentCollectionWithArgumentResult<TType, TThat, GenericArgumentCollectionWithNamedArgumentResult<TType, TThat>>,
+public sealed class GenericArgumentCollectionWithNamedArgumentResult<TType, TValue>
+	: GenericArgumentCollectionWithArgumentResult<TType, TValue, GenericArgumentCollectionWithNamedArgumentResult<TType, TValue>>,
 		IOptionsProvider<StringEqualityOptions>,
 		IStringMatchTypeOptions
 {
@@ -18,7 +18,7 @@ public class GenericArgumentCollectionWithNamedArgumentResult<TType, TThat>
 
 	internal GenericArgumentCollectionWithNamedArgumentResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat> subject,
+		IThat<TValue> subject,
 		GenericArgumentsFilterOptions genericArgumentsFilterOptions,
 		CollectionIndexOptions collectionIndexOptions,
 		StringEqualityOptions options)

@@ -8,14 +8,14 @@ namespace aweXpect.Reflection.Results;
 ///     The result of an expectation that considers inherited attributes, operators, members or relations, allowing to
 ///     restrict it to declared ones or direct relations via <see cref="Directly" />.
 /// </summary>
-public class InheritanceScopeResult<TType, TThat>
-	: AndOrResult<TType, IThat<TThat>, InheritanceScopeResult<TType, TThat>>
+public class InheritanceScopeResult<TType, TValue>
+	: AndOrResult<TType, IThat<TValue>, InheritanceScopeResult<TType, TValue>>
 {
 	private readonly ScopeOptions _scope;
 
 	internal InheritanceScopeResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat> subject,
+		IThat<TValue> subject,
 		ScopeOptions scope)
 		: base(expectationBuilder, subject)
 	{
@@ -26,7 +26,7 @@ public class InheritanceScopeResult<TType, TThat>
 	///     Only considers the attributes, operators or members declared directly on the subject, or a direct relation
 	///     (a direct base class or a directly implemented interface).
 	/// </summary>
-	public InheritanceScopeResult<TType, TThat> Directly()
+	public InheritanceScopeResult<TType, TValue> Directly()
 	{
 		_scope.Directly();
 		return this;

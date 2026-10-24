@@ -245,7 +245,7 @@ public sealed partial class AssemblyFilters
 			[Arguments("NotLessThanOrEqualTo", 5, "not less than or equal to 5")]
 			public async Task ShouldDescribeComparison(string comparison, int expected, string expectedText)
 			{
-				Reflection.AssemblyFilters.VersionComponent major = In.AllLoadedAssemblies().WithVersion().WithMajor;
+				Reflection.AssemblyFilters.VersionComponentResult major = In.AllLoadedAssemblies().WithVersion().WithMajor;
 				Filtered.Assemblies assemblies = comparison switch
 				{
 					"GreaterThan" => major.GreaterThan(expected),
@@ -274,7 +274,7 @@ public sealed partial class AssemblyFilters
 			public async Task ShouldDescribeComponent(string name)
 			{
 				Reflection.AssemblyFilters.AssembliesWithVersion version = In.AllLoadedAssemblies().WithVersion();
-				Reflection.AssemblyFilters.VersionComponent component = name switch
+				Reflection.AssemblyFilters.VersionComponentResult component = name switch
 				{
 					"major" => version.WithMajor,
 					"minor" => version.WithMinor,

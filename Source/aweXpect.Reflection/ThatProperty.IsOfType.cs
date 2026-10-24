@@ -5,6 +5,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -15,7 +16,7 @@ public static partial class ThatProperty
 	///     Verifies that the <see cref="PropertyInfo" /> is of type <typeparamref name="TProperty" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyOfTypeResult<PropertyInfo, IThat<PropertyInfo?>> IsOfType<TProperty>(
+	public static OfTypeResult<PropertyInfo> IsOfType<TProperty>(
 		this IThat<PropertyInfo?> subject)
 		=> IsOfType(subject, typeof(TProperty));
 
@@ -23,12 +24,12 @@ public static partial class ThatProperty
 	///     Verifies that the <see cref="PropertyInfo" /> is of type <paramref name="propertyType" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyOfTypeResult<PropertyInfo, IThat<PropertyInfo?>> IsOfType(
+	public static OfTypeResult<PropertyInfo> IsOfType(
 		this IThat<PropertyInfo?> subject, Type propertyType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(propertyType, false);
-		return new PropertyOfTypeResult<PropertyInfo, IThat<PropertyInfo?>>(
+		return new OfTypeResult<PropertyInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions)),
@@ -58,44 +59,6 @@ public static partial class ThatProperty
 				static (typeFilterOptions, it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions).Invert()),
 			subject);
-	}
-
-	/// <summary>
-	///     Result that allows chaining additional types for a single property.
-	/// </summary>
-	public sealed partial class PropertyOfTypeResult<TValue, TResult>
-		: AndOrResult<TValue, TResult>,
-			IOptionsProvider<TypeFilterOptions>
-		where TResult : IThat<TValue?>
-	{
-		private readonly TypeFilterOptions _typeFilterOptions;
-
-		internal PropertyOfTypeResult(
-			ExpectationBuilder expectationBuilder,
-			TResult subject,
-			TypeFilterOptions typeFilterOptions)
-			: base(expectationBuilder, subject)
-		{
-			_typeFilterOptions = typeFilterOptions;
-		}
-
-		/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
-		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => _typeFilterOptions;
-
-		/// <summary>
-		///     Allow an alternative type <typeparamref name="TProperty" /> (or a subtype).
-		/// </summary>
-		public PropertyOfTypeResult<TValue, TResult> OrOfType<TProperty>()
-			=> OrOfType(typeof(TProperty));
-
-		/// <summary>
-		///     Allow an alternative type <paramref name="propertyType" /> (or a subtype).
-		/// </summary>
-		public PropertyOfTypeResult<TValue, TResult> OrOfType(Type propertyType)
-		{
-			_typeFilterOptions.RegisterType(propertyType, false);
-			return this;
-		}
 	}
 
 	private sealed class IsOfTypeConstraint(

@@ -9,12 +9,12 @@ namespace aweXpect.Reflection.Results;
 /// <summary>
 ///     Additional constraints on a parameter collection with a parameter of a specific type.
 /// </summary>
-public class GenericArgumentCollectionResult<TType, TThat>
-	: GenericArgumentCollectionResult<TType, TThat, GenericArgumentCollectionResult<TType, TThat>>
+public sealed class GenericArgumentCollectionResult<TType, TValue>
+	: GenericArgumentCollectionResult<TType, TValue, GenericArgumentCollectionResult<TType, TValue>>
 {
 	internal GenericArgumentCollectionResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat> subject,
+		IThat<TValue> subject,
 		GenericArgumentsFilterOptions genericArgumentsFilterOptions)
 		: base(expectationBuilder, subject, genericArgumentsFilterOptions)
 	{
@@ -24,18 +24,18 @@ public class GenericArgumentCollectionResult<TType, TThat>
 /// <summary>
 ///     Additional constraints on a parameter collection with a parameter of a specific type.
 /// </summary>
-public class GenericArgumentCollectionResult<TType, TThat, TSelf>
-	: AndOrResult<TType, IThat<TThat>, TSelf>,
+public class GenericArgumentCollectionResult<TType, TValue, TSelf>
+	: AndOrResult<TType, IThat<TValue>, TSelf>,
 		IOptionsProvider<GenericArgumentsFilterOptions>
-	where TSelf : GenericArgumentCollectionResult<TType, TThat, TSelf>
+	where TSelf : GenericArgumentCollectionResult<TType, TValue, TSelf>
 {
 	private readonly ExpectationBuilder _expectationBuilder;
 	private readonly GenericArgumentsFilterOptions _genericArgumentsFilterOptions;
-	private readonly IThat<TThat> _subject;
+	private readonly IThat<TValue> _subject;
 
 	internal GenericArgumentCollectionResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TThat> subject,
+		IThat<TValue> subject,
 		GenericArgumentsFilterOptions genericArgumentsFilterOptions)
 		: base(expectationBuilder, subject)
 	{
@@ -61,7 +61,7 @@ public class GenericArgumentCollectionResult<TType, TThat, TSelf>
 	/// <summary>
 	///     …with a generic argument constrained to type <typeparamref name="T" />.
 	/// </summary>
-	public GenericArgumentCollectionWithArgumentResult<TType, TThat> WithArgument<T>()
+	public GenericArgumentCollectionWithArgumentResult<TType, TValue> WithArgument<T>()
 	{
 		Type argumentType = typeof(T);
 		GenericArgumentFilterOptions genericArgumentFilterOptions = new(
@@ -69,14 +69,14 @@ public class GenericArgumentCollectionResult<TType, TThat, TSelf>
 			() => $"of type {Formatter.Format(typeof(T))}");
 		CollectionIndexOptions collectionIndexOptions = new();
 		_genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);
-		return new GenericArgumentCollectionWithArgumentResult<TType, TThat>(
+		return new GenericArgumentCollectionWithArgumentResult<TType, TValue>(
 			_expectationBuilder, _subject, _genericArgumentsFilterOptions, collectionIndexOptions);
 	}
 
 	/// <summary>
 	///     …with a generic argument constrained to type <typeparamref name="T" /> and the <paramref name="expected" /> name.
 	/// </summary>
-	public GenericArgumentCollectionWithNamedArgumentResult<TType, TThat> WithArgument<T>(string expected)
+	public GenericArgumentCollectionWithNamedArgumentResult<TType, TValue> WithArgument<T>(string expected)
 	{
 		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		Type argumentType = typeof(T);
@@ -88,7 +88,7 @@ public class GenericArgumentCollectionResult<TType, TThat, TSelf>
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
 		_genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);
-		return new GenericArgumentCollectionWithNamedArgumentResult<TType, TThat>(
+		return new GenericArgumentCollectionWithNamedArgumentResult<TType, TValue>(
 			_expectationBuilder, _subject, _genericArgumentsFilterOptions, collectionIndexOptions,
 			stringEqualityOptions);
 	}
@@ -96,7 +96,7 @@ public class GenericArgumentCollectionResult<TType, TThat, TSelf>
 	/// <summary>
 	///     …with a generic argument with the <paramref name="expected" /> name.
 	/// </summary>
-	public GenericArgumentCollectionWithNamedArgumentResult<TType, TThat> WithArgument(string expected)
+	public GenericArgumentCollectionWithNamedArgumentResult<TType, TValue> WithArgument(string expected)
 	{
 		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
 		GenericArgumentFilterOptions genericArgumentFilterOptions = new(
@@ -104,7 +104,7 @@ public class GenericArgumentCollectionResult<TType, TThat, TSelf>
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
 		_genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);
-		return new GenericArgumentCollectionWithNamedArgumentResult<TType, TThat>(
+		return new GenericArgumentCollectionWithNamedArgumentResult<TType, TValue>(
 			_expectationBuilder, _subject, _genericArgumentsFilterOptions, collectionIndexOptions,
 			stringEqualityOptions);
 	}

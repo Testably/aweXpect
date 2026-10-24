@@ -10,15 +10,15 @@ namespace aweXpect.Reflection.Results;
 /// <summary>
 ///     Allows chaining of multiple attributes.
 /// </summary>
-public sealed class HaveAttributeResult<TMember, TResult>
-	: AndOrResult<TResult, IThat<TResult?>, HaveAttributeResult<TMember, TResult>>,
+public sealed class HaveAttributeResult<TType, TMember>
+	: AndOrResult<TType, IThat<TType?>, HaveAttributeResult<TType, TMember>>,
 		IOptionsProvider<AttributeFilterOptions<TMember>>
 {
 	private readonly AttributeFilterOptions<TMember> _attributeFilterOptions;
 
 	internal HaveAttributeResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TResult?> subject,
+		IThat<TType?> subject,
 		AttributeFilterOptions<TMember> attributeFilterOptions)
 		: base(expectationBuilder, subject)
 	{
@@ -32,7 +32,7 @@ public sealed class HaveAttributeResult<TMember, TResult>
 	/// <summary>
 	///     Allows an alternative attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
-	public HaveAttributeResult<TMember, TResult> OrHave<TAttribute>()
+	public HaveAttributeResult<TType, TMember> OrHave<TAttribute>()
 		where TAttribute : Attribute
 	{
 		_attributeFilterOptions.RegisterAttribute<TAttribute>();
@@ -43,7 +43,7 @@ public sealed class HaveAttributeResult<TMember, TResult>
 	///     Allows an alternative attribute of type <typeparamref name="TAttribute" /> that
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
-	public HaveAttributeResult<TMember, TResult> OrHave<TAttribute>(
+	public HaveAttributeResult<TType, TMember> OrHave<TAttribute>(
 		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
@@ -60,7 +60,7 @@ public sealed class HaveAttributeResult<TMember, TResult>
 	/// <remarks>
 	///     Applies to all attributes of the expectation, also to those added via <see cref="OrHave{TAttribute}()" />.
 	/// </remarks>
-	public HaveAttributeResult<TMember, TResult> Directly()
+	public HaveAttributeResult<TType, TMember> Directly()
 	{
 		_attributeFilterOptions.Scope.Directly();
 		return this;

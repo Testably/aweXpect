@@ -19,7 +19,7 @@ public static partial class ThatType
 	///     To check for base-class inheritance use <see cref="InheritsFrom{TBaseType}(IThat{Type})" />,
 	///     or use <see cref="IsAssignableTo{TType}(IThat{Type})" /> to cover base classes and interfaces in one step.<br />
 	///     To require <typeparamref name="TInterface" /> to be implemented directly use
-	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />: an interface that the type only receives
+	///     <see cref="InheritanceScopeResult{TType, TValue}.Directly" />: an interface that the type only receives
 	///     through a base class or through another implemented interface is not implemented directly. As the compiler
 	///     emits all inherited interfaces into the metadata, an interface that is declared on the type and also
 	///     inherited cannot be told apart and counts as not direct.
@@ -40,7 +40,7 @@ public static partial class ThatType
 	///     To check for base-class inheritance use <see cref="InheritsFrom(IThat{Type}, Type)" />,
 	///     or use <see cref="IsAssignableTo(IThat{Type}, Type)" /> to cover base classes and interfaces in one step.<br />
 	///     To require <paramref name="interfaceType" /> to be implemented directly use
-	///     <see cref="InheritanceScopeResult{TType, TThat}.Directly" />: an interface that the type only receives
+	///     <see cref="InheritanceScopeResult{TType, TValue}.Directly" />: an interface that the type only receives
 	///     through a base class or through another implemented interface is not implemented directly. As the compiler
 	///     emits all inherited interfaces into the metadata, an interface that is declared on the type and also
 	///     inherited cannot be told apart and counts as not direct.
@@ -69,7 +69,7 @@ public static partial class ThatType
 	/// <remarks>
 	///     Only implemented interfaces are considered; base-class inheritance is ignored.<br />
 	///     To check that a base class is not inherited use <see cref="DoesNotInheritFrom{TBaseType}(IThat{Type})" />.<br />
-	///     With <see cref="InheritanceScopeResult{TType, TThat}.Directly" /> a type that implements
+	///     With <see cref="InheritanceScopeResult{TType, TValue}.Directly" /> a type that implements
 	///     <typeparamref name="TInterface" /> only through a base class or through another implemented interface
 	///     satisfies this expectation.
 	/// </remarks>
@@ -86,7 +86,7 @@ public static partial class ThatType
 	/// <remarks>
 	///     Only implemented interfaces are considered; base-class inheritance is ignored.<br />
 	///     To check that a base class is not inherited use <see cref="DoesNotInheritFrom(IThat{Type}, Type)" />.<br />
-	///     With <see cref="InheritanceScopeResult{TType, TThat}.Directly" /> a type that implements
+	///     With <see cref="InheritanceScopeResult{TType, TValue}.Directly" /> a type that implements
 	///     <paramref name="interfaceType" /> only through a base class or through another implemented interface
 	///     satisfies this expectation.
 	/// </remarks>

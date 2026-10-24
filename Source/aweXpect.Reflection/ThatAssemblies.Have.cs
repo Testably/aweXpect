@@ -26,14 +26,14 @@ public static partial class ThatAssemblies
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HaveAttributeWithoutInheritResult<Assembly?, IEnumerable<Assembly?>> Have<TAttribute>(
+	public static HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?> Have<TAttribute>(
 		this IThat<IEnumerable<Assembly?>?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>();
-		return new HaveAttributeWithoutInheritResult<Assembly?, IEnumerable<Assembly?>>(
+		return new HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<Assembly?>, IEnumerable<Assembly?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -46,7 +46,7 @@ public static partial class ThatAssemblies
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HaveAttributeWithoutInheritResult<Assembly?, IEnumerable<Assembly?>> Have<TAttribute>(
+	public static HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?> Have<TAttribute>(
 		this IThat<IEnumerable<Assembly?>?> subject,
 		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -56,7 +56,7 @@ public static partial class ThatAssemblies
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
-		return new HaveAttributeWithoutInheritResult<Assembly?, IEnumerable<Assembly?>>(
+		return new HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<Assembly?>, IEnumerable<Assembly?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -70,14 +70,14 @@ public static partial class ThatAssemblies
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HaveAttributeWithoutInheritResult<Assembly?, IAsyncEnumerable<Assembly?>> Have<TAttribute>(
+	public static HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>();
-		return new HaveAttributeWithoutInheritResult<Assembly?, IAsyncEnumerable<Assembly?>>(
+		return new HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<Assembly?>, IAsyncEnumerable<Assembly?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
@@ -92,7 +92,7 @@ public static partial class ThatAssemblies
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HaveAttributeWithoutInheritResult<Assembly?, IAsyncEnumerable<Assembly?>> Have<TAttribute>(
+	public static HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject,
 		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -102,7 +102,7 @@ public static partial class ThatAssemblies
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
-		return new HaveAttributeWithoutInheritResult<Assembly?, IAsyncEnumerable<Assembly?>>(
+		return new HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<Assembly?>, IAsyncEnumerable<Assembly?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
