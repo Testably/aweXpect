@@ -941,6 +941,12 @@ namespace aweXpect.Core.Extending
         protected abstract System.Threading.Tasks.ValueTask<aweXpect.Core.Extending.PredicateResult> IsMatch(TItem item, System.Threading.CancellationToken cancellationToken);
         public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy(TCollection actual, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
     }
+    [System.AttributeUsage(System.AttributeTargets.Parameter)]
+    public sealed class NegatedParameterNameAttribute : System.Attribute
+    {
+        public NegatedParameterNameAttribute(string name) { }
+        public string Name { get; }
+    }
     public readonly struct PredicateResult
     {
         public aweXpect.Core.Constraints.Outcome Outcome { get; }

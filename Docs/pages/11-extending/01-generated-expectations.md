@@ -66,6 +66,19 @@ private static bool HasTitle(Track track, string title)
     => track.Title == title;
 ```
 
+The negated expectation names its parameters like the method. To give a parameter another name there, e.g.
+`unexpected` instead of `expected`, mark it with `[NegatedParameterName]`. The name applies to the signature, the
+argument check and the derived XML documentation of the negated expectation, while the placeholders of both texts keep
+the name of the method's parameter:
+
+```csharp no-compile
+[GenerateExpectation("Is{Not}Named", "is {not} named {expected}")]
+private static bool IsNamed(Track track, [NegatedParameterName("unexpected")] string expected)
+    => track.Title == expected;
+```
+
+This generates `IsNamed(string expected)` and `IsNotNamed(string unexpected)`.
+
 The result after "but" shows the formatted subject. To describe it differently, name a `static` method that returns the
 text after the subject in `Result`. It takes the subject, optionally followed by the other parameters:
 
@@ -221,6 +234,8 @@ await Expect.That(tracks).AreNotLongerThan(TimeSpan.FromMinutes(5));
   or that meets it for the `NegatedName`. Use a quantifier like `All()` instead on a collection that never ends.
 - The summary of the XML documentation is derived from the plural text, e.g. "Verifies that all items are longer
   than …" and "Verifies that no items are longer than …"; the `Remarks` apply to them as well.
+- A parameter marked with `[NegatedParameterName]` has that name in the `NegatedName` expectation, also in a
+  `<paramref>` of the `Remarks`, and keeps its name in all other expectations.
 
 ### Formatting the items
 

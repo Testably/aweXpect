@@ -70,38 +70,38 @@ internal static class CollectionExpectationWriter
 
 		if (model.CollectionOverload)
 		{
-			AppendCollectionExpectations(sb, model, item, model.Name, $"{EnumerableQuantifier}.All()", "all items");
+			AppendCollectionExpectations(sb, model, item, model.Name, "all items", false);
 		}
 
 		if (model.NegatedName is { } negatedName)
 		{
-			AppendCollectionExpectations(sb, model, item, negatedName,
-				$"{EnumerableQuantifier}.None({Grammars}.Nested)", "no items");
+			AppendCollectionExpectations(sb, model, item, negatedName, "no items", true);
 		}
 	}
 
 	/// <summary>
-	///     Appends the expectations directly on the collections of the <paramref name="item" /> that the
-	///     <paramref name="quantifier" /> applies to.
+	///     Appends the expectations directly on the collections of the <paramref name="item" /> that require all items
+	///     to match, or with <paramref name="negated" /> no item.
 	/// </summary>
 	/// <param name="sb">The source to append to.</param>
 	/// <param name="model">The expectation.</param>
 	/// <param name="item">The item type.</param>
 	/// <param name="name">The name of the expectation.</param>
-	/// <param name="quantifier">
-	///     The expression of the quantifier, which names the items in the nested form of the text, e.g. "none".
-	/// </param>
 	/// <param name="items">The items that the quantifier selects in the summary, e.g. "all items".</param>
+	/// <param name="negated">
+	///     Whether the expectation is the negated one, which requires no item to match and whose parameters have their
+	///     negated names.
+	/// </param>
 	private static void AppendCollectionExpectations(StringBuilder sb, CollectionExpectationModel model,
-		ItemModel item, string name, string quantifier, string items)
+		ItemModel item, string name, string items, bool negated)
 	{
-		string summary = $"Verifies that {items} {ToDocumentation(model.PluralText, model.Class)}.";
+		string summary = $"Verifies that {items} {ToDocumentation(model.PluralText, model.Class, negated)}.";
 		AppendCollectionExpectation(sb, model, name, $"{EnumerableType}<{item.ItemType}>",
-			SyncConstraintOf(model, item, $"{EnumerableType}<{item.ItemType}>?"), quantifier, summary);
+			SyncConstraintOf(model, item, $"{EnumerableType}<{item.ItemType}>?"), summary, negated);
 		if (model.SupportsAsyncEnumerables)
 		{
 			AppendCollectionExpectation(sb, model, name, $"{AsyncEnumerableType}<{item.ItemType}>",
-				AsyncConstraintOf(model, item), quantifier, summary);
+				AsyncConstraintOf(model, item), summary, negated);
 		}
 	}
 
@@ -156,12 +156,21 @@ internal static class CollectionExpectationWriter
 	/// <param name="name">The name of the expectation.</param>
 	/// <param name="collection">The type of the extended collection.</param>
 	/// <param name="constraint">The constructed constraint.</param>
-	/// <param name="quantifier">The expression of the quantifier.</param>
 	/// <param name="summary">The XML documentation of the summary.</param>
+	/// <param name="negated">
+	///     Whether the expectation is the negated one, which requires no item to match and whose parameters have their
+	///     negated names.
+	/// </param>
+	/// <remarks>
+	///     The quantifier of the negated expectation names the items in the nested form of the text, e.g. "none".
+	/// </remarks>
 	private static void AppendCollectionExpectation(StringBuilder sb, CollectionExpectationModel model, string name,
-		string collection, string constraint, string quantifier, string summary)
+		string collection, string constraint, string summary, bool negated)
 	{
 		ClassModel classModel = model.Class;
+		string quantifier = negated
+			? $"{EnumerableQuantifier}.None({Grammars}.Nested)"
+			: $"{EnumerableQuantifier}.All()";
 		string resultType =
 			$"global::aweXpect.Results.AndOrResult<{collection}, global::aweXpect.Core.IThat<{collection}?>>";
 		sb.AppendLine("\t/// <summary>");
@@ -170,7 +179,7 @@ internal static class CollectionExpectationWriter
 		if (model.Remarks is { Length: > 0, } remarks)
 		{
 			sb.AppendLine("\t/// <remarks>");
-			AppendDocumentation(sb, remarks);
+			AppendDocumentation(sb, negated ? RenameReferences(remarks, classModel.Parameters) : remarks);
 			sb.AppendLine("\t/// </remarks>");
 		}
 
@@ -181,13 +190,13 @@ internal static class CollectionExpectationWriter
 		foreach (ParameterModel parameter in classModel.Parameters.Values)
 		{
 			sb.Append(", ").Append(parameter.IsParams ? "params " : "").Append(parameter.Type).Append(' ')
-				.Append(parameter.Name);
+				.Append(parameter.GetName(negated));
 		}
 
 		sb.AppendLine(")");
 		AppendItemTypeConstraints(sb, model);
 		sb.AppendLine("\t{");
-		AppendNullChecks(sb, classModel.Parameters);
+		AppendNullChecks(sb, classModel.Parameters, negated);
 		int count = classModel.Parameters.Count;
 		string arguments = string.Concat(Enumerable.Range(0, count)
 			.Select(i => count == 1 ? ", __state" : $", __state.Item{i + 1}"));
@@ -200,10 +209,10 @@ internal static class CollectionExpectationWriter
 				sb.Append("(__it, __grammars) => ");
 				break;
 			case 1:
-				sb.Append(classModel.Parameters.Values[0].Name).Append(", (__state, __it, __grammars) => ");
+				sb.Append(classModel.Parameters.Values[0].GetName(negated)).Append(", (__state, __it, __grammars) => ");
 				break;
 			default:
-				sb.Append('(').Append(string.Join(", ", classModel.Parameters.Values.Select(p => p.Name)))
+				sb.Append('(').Append(string.Join(", ", classModel.Parameters.Values.Select(p => p.GetName(negated))))
 					.Append("), (__state, __it, __grammars) => ");
 				break;
 		}
@@ -261,7 +270,7 @@ internal static class CollectionExpectationWriter
 		string resultType =
 			$"global::aweXpect.Results.AndOrResult<{collection}, global::aweXpect.Core.IThat<{thatType}>>";
 		sb.AppendLine("\t/// <summary>");
-		AppendDocumentation(sb, model.Summary ?? $"…{ToDocumentation(model.PluralText, classModel)}.");
+		AppendDocumentation(sb, model.Summary ?? $"…{ToDocumentation(model.PluralText, classModel, false)}.");
 		sb.AppendLine("\t/// </summary>");
 		if (model.Remarks is { Length: > 0, } remarks)
 		{
@@ -287,7 +296,7 @@ internal static class CollectionExpectationWriter
 
 		AppendItemTypeConstraints(sb, model);
 		sb.AppendLine("\t{");
-		AppendNullChecks(sb, classModel.Parameters);
+		AppendNullChecks(sb, classModel.Parameters, false);
 		int count = classModel.Parameters.Count;
 		string state = count == 0
 			? $"{receiver}.Quantifier"
@@ -455,8 +464,16 @@ internal static class CollectionExpectationWriter
 		}
 	}
 
-	private static string ToDocumentation(EquatableArray<TextPart> parts, ClassModel classModel)
+	private static string ToDocumentation(EquatableArray<TextPart> parts, ClassModel classModel, bool negated)
 		=> string.Concat(parts.Values.Select(part => part.Text is null
-			? $"<paramref name=\"{classModel.Parameters.Values[part.ParameterIndex].Name.TrimStart('@')}\" />"
+			? $"<paramref name=\"{classModel.Parameters.Values[part.ParameterIndex].GetName(negated).TrimStart('@')}\" />"
 			: EscapeXml(part.Text)));
+
+	/// <summary>
+	///     The <paramref name="text" /> with every <c>&lt;paramref&gt;</c> to a parameter renamed to its negated name.
+	/// </summary>
+	private static string RenameReferences(string text, EquatableArray<ParameterModel> parameters)
+		=> parameters.Values.Where(p => p.NegatedName != p.Name).Aggregate(text, (current, p)
+			=> current.Replace($"<paramref name=\"{p.Name.TrimStart('@')}\"",
+				$"<paramref name=\"{p.NegatedName.TrimStart('@')}\""));
 }

@@ -417,6 +417,43 @@ public sealed class CoreCollectionExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task NegatedName_WithNegatedParameterName_ShouldNameTheParameterOfTheNegatedExpectation()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreNamed", "is named {expected}", "are named {expected}",
+				CollectionOverload = true, NegatedName = "AreNotNamed",
+				Remarks = "The <paramref name=\"expected\" /> name is compared exactly.")]
+			private static bool IsNamed(string value, [NegatedParameterName("unexpected")] string expected) => value == expected;
+			""");
+
+		await ThatCompiles(result);
+		await ThatContainsLines(result,
+			"""
+				/// <summary>
+				///     Verifies that no items are named <paramref name="unexpected" />.
+				/// </summary>
+				/// <remarks>
+				///     The <paramref name="unexpected" /> name is compared exactly.
+				/// </remarks>
+				[global::aweXpect.Core.GuaranteesNotNull]
+				public static global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<string?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?>> AreNotNamed(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?> subject, string unexpected)
+				{
+					if (unexpected is null)
+					{
+						throw global::aweXpect.Core.Tracing.WriteException(new global::System.ArgumentNullException(nameof(unexpected), "The 'unexpected' cannot be null."));
+					}
+
+					return new global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<string?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?>>(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint(unexpected, (__state, __it, __grammars) => new
+			""");
+		await That(result.Generated).Contains(" AreNotNamed(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IAsyncEnumerable<string?>?> subject, string unexpected)");
+		await That(result.Generated).Contains(" AreNamed(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?> subject, string expected)")
+			.Because("the expectation that all items meet keeps the name of the parameter");
+		await That(result.Generated).Contains("The <paramref name=\"expected\" /> name is compared exactly.").Exactly(5)
+			.Because("only the remarks of the negated expectations follow the negated name");
+	}
+
+	[Test]
 	[Arguments("AreZero")]
 	[Arguments("Are{Not}Zero")]
 	public async Task NegatedNameIsInvalid_ShouldReportADiagnostic(string negatedName)

@@ -428,6 +428,91 @@ public sealed class CoreExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task NegatedParameterName_OnTheEvaluationCancellationToken_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Zero", "is {not} zero")]
+			private static bool IsZero(int value,
+				[EvaluationCancellationToken, NegatedParameterName("other")] CancellationToken cancellationToken) => value == 0;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsZero(int, CancellationToken)' cannot generate an expectation, because the parameter 'cancellationToken' is marked with [EvaluationCancellationToken] and cannot be marked with [NegatedParameterName]");
+	}
+
+	[Test]
+	public async Task NegatedParameterName_OnTheSubject_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Zero", "is {not} zero")]
+			private static bool IsZero([NegatedParameterName("other")] int value) => value == 0;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsZero(int)' cannot generate an expectation, because the subject cannot be marked with [NegatedParameterName]");
+	}
+
+	[Test]
+	public async Task NegatedParameterName_ShouldNameTheParameterOfTheNegatedExpectation()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Named", "is {not} named {expected}")]
+			private static bool IsNamed(string value, [NegatedParameterName("unexpected")] string expected) => value == expected;
+			""");
+
+		await ThatCompiles(result);
+		await ThatContainsLines(result,
+			"""
+				/// <summary>
+				///     Verifies that the subject is not named <paramref name="unexpected" />.
+				/// </summary>
+				[global::aweXpect.Core.GuaranteesNotNull]
+				public static global::aweXpect.Results.AndOrResult<string, global::aweXpect.Core.IThat<string?>> IsNotNamed(this global::aweXpect.Core.IThat<string?> subject, string unexpected)
+				{
+					if (unexpected is null)
+					{
+						throw global::aweXpect.Core.Tracing.WriteException(new global::System.ArgumentNullException(nameof(unexpected), "The 'unexpected' cannot be null."));
+					}
+
+					return new global::aweXpect.Results.AndOrResult<string, global::aweXpect.Core.IThat<string?>>(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint(unexpected, (__state, __it, __grammars) => global::aweXpect.Core.Constraints.ConstraintResultExtensions.Invert(new IsNamed_GeneratedConstraint(__it, __grammars, __state))),
+			""");
+		await That(result.Generated).Contains(" IsNamed(this global::aweXpect.Core.IThat<string?> subject, string expected)")
+			.Because("the expectation keeps the name of the parameter");
+		await That(result.Generated).Contains("Verifies that the subject is named <paramref name=\"expected\" />.");
+	}
+
+	[Test]
+	public async Task NegatedParameterName_WhenInvalid_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Equal", "is {not} equal to {expected}")]
+			private static bool IsEqual(int value, [NegatedParameterName("not expected")] int expected) => value == expected;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsEqual(int, int)' cannot generate an expectation, because the negated parameter name 'not expected' is not a valid parameter name");
+	}
+
+	[Test]
+	[Arguments("[NegatedParameterName(\"maximum\")] int minimum, int maximum", "maximum")]
+	[Arguments("[NegatedParameterName(\"subject\")] int minimum, int maximum", "subject")]
+	public async Task NegatedParameterName_WhenItClashes_ShouldReportADiagnostic(string parameters, string clash)
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			$$"""
+			  [GenerateExpectation("Is{Not}Between", "is {not} between {minimum} and {maximum}")]
+			  private static bool IsBetween(int value, {{parameters}}) => value >= minimum && value <= maximum;
+			  """);
+
+		await ThatReports(result,
+			$"aweXpect4002: 'ThatSample.IsBetween(int, int, int)' cannot generate an expectation, because the negated parameter name '{clash}' would clash with another parameter of the negated expectation");
+	}
+
+	[Test]
 	public async Task NotNullWhenFalse_ShouldOnlyGuaranteeNotNullForTheNegatedExpectation()
 	{
 		GeneratorRunner.GeneratorResult result = RunOn(
