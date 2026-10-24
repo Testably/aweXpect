@@ -11,6 +11,11 @@ public static partial class ThatException
 	/// <summary>
 	///     Verifies that the subject has an inner exception which satisfies the <paramref name="expectations" />.
 	/// </summary>
+	/// <remarks>
+	///     Continues on <see cref="Exception" /> instead of the exception type of the subject, as a generic overload
+	///     would shadow <see cref="HasInner{TInnerException}(IThat{Exception}, Action{IThatSubject{TInnerException}})" />
+	///     for a type argument the subject is assignable to.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception, IThat<Exception?>> HasInner(
 		this IThat<Exception?> subject,
@@ -30,6 +35,11 @@ public static partial class ThatException
 	/// <summary>
 	///     Verifies that the subject has an inner exception.
 	/// </summary>
+	/// <remarks>
+	///     Continues on <see cref="Exception" /> instead of the exception type of the subject, as a generic overload
+	///     would shadow <see cref="HasInner{TInnerException}(IThat{Exception})" /> for a type argument the subject
+	///     is assignable to.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception, IThat<Exception?>> HasInner(
 		this IThat<Exception?> subject)
@@ -41,6 +51,10 @@ public static partial class ThatException
 	///     Verifies that the subject has an inner exception of type <typeparamref name="TInnerException" /> which
 	///     satisfies the <paramref name="expectations" />.
 	/// </summary>
+	/// <remarks>
+	///     Continues on <see cref="Exception" /> instead of the exception type of the subject, as the explicit
+	///     <typeparamref name="TInnerException" /> leaves no room to infer the subject type.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception, IThat<Exception?>> HasInner<TInnerException>(
 		this IThat<Exception?> subject,
@@ -61,6 +75,10 @@ public static partial class ThatException
 	/// <summary>
 	///     Verifies that the subject has an inner exception of type <typeparamref name="TInnerException" />.
 	/// </summary>
+	/// <remarks>
+	///     Continues on <see cref="Exception" /> instead of the exception type of the subject, as the explicit
+	///     <typeparamref name="TInnerException" /> leaves no room to infer the subject type.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception, IThat<Exception?>> HasInner<TInnerException>(
 		this IThat<Exception?> subject)
@@ -74,14 +92,15 @@ public static partial class ThatException
 	///     satisfies the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<Exception, IThat<Exception?>> HasInner(
-		this IThat<Exception?> subject,
+	public static AndOrResult<TException, IThat<TException?>> HasInner<TException>(
+		this IThat<TException?> subject,
 		Type type,
 		Action<IThatSubject<Exception?>> expectations)
+		where TException : Exception
 	{
 		type.ThrowIfNotAnExceptionType();
 		expectations.ThrowIfNull();
-		return new AndOrResult<Exception, IThat<Exception?>>(subject.Get().ExpectationBuilder
+		return new AndOrResult<TException, IThat<TException?>>(subject.Get().ExpectationBuilder
 				// An inner exception of another type is hidden like a missing one, as the type mismatch already fails.
 				.ForMember(MemberAccessor<Exception, Exception?>.FromFuncWithName(
 						e => e.InnerException is { } inner && type.IsOrImplements(inner) ? inner : null,
@@ -98,12 +117,13 @@ public static partial class ThatException
 	///     Verifies that the subject has an inner exception of type <paramref name="type" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<Exception, IThat<Exception?>> HasInner(
-		this IThat<Exception?> subject,
+	public static AndOrResult<TException, IThat<TException?>> HasInner<TException>(
+		this IThat<TException?> subject,
 		Type type)
+		where TException : Exception
 	{
 		type.ThrowIfNotAnExceptionType();
-		return new AndOrResult<Exception, IThat<Exception?>>(subject.Get().ExpectationBuilder.AddConstraint(type, static (innerExceptionType, it, grammars)
+		return new AndOrResult<TException, IThat<TException?>>(subject.Get().ExpectationBuilder.AddConstraint(type, static (innerExceptionType, it, grammars)
 				=> new HasInnerExceptionValueConstraint(innerExceptionType, it, grammars)),
 			subject);
 	}

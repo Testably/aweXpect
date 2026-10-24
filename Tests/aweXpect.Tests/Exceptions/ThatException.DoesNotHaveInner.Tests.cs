@@ -60,6 +60,18 @@ public sealed partial class ThatException
 					             but it was <null>
 					             """);
 			}
+
+			[Test]
+			public async Task WhenSubjectIsOfTheInnerExceptionType_ShouldCheckTheInnerExceptionType()
+			{
+				ArgumentException subject = new("outer", new InvalidOperationException("inner"));
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveInner<ArgumentException>();
+
+				await That(Act).DoesNotThrow()
+					.Because("the type argument names the inner exception type, even when the subject has the same type");
+			}
 		}
 
 		public sealed class NegatedTests
@@ -155,6 +167,40 @@ public sealed partial class ThatException
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 		public sealed class TypeTests
 		{
+			[Test]
+			public async Task WhenAwaited_ShouldReturnTheSubject()
+			{
+				ArgumentException subject = new("outer", "paramName", new InvalidOperationException("inner"));
+
+				ArgumentException result = await That(subject).DoesNotHaveInner(typeof(CustomException));
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Test]
+			public async Task WhenChainedWithHasParamName_ShouldApplyBoth()
+			{
+				ArgumentException subject = new("outer", "paramName", new InvalidOperationException("inner"));
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveInner(typeof(CustomException)).And.HasParamName("other");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have an inner ThatException.CustomException and has param name equal to "other",
+					             but it had param name "paramName", which differs at index 0:
+					                ↓ (actual)
+					               "paramName"
+					               "other"
+					                ↑ (expected)
+
+					             Param name:
+					             paramName
+					             """)
+					.Because("the chain continues on the ArgumentException subject");
+			}
+
 			[Test]
 			public async Task WhenInnerExceptionIsNotOfTheType_ShouldSucceed()
 			{
