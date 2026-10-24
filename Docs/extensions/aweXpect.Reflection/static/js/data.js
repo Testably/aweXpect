@@ -606,6 +606,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
         "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
+      },
+      {
+        "sha": "1785986badc06d46b51d798e2c9694662bfbb744",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
+        "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
       }
     ],
     "labels": [
@@ -709,7 +715,8 @@ window.BENCHMARK_DATA = {
       "5703bc6b",
       "7d17a8ab",
       "5d9a56d9",
-      "b7f4f05b"
+      "b7f4f05b",
+      "1785986b"
     ],
     "datasets": [
       {
@@ -816,7 +823,8 @@ window.BENCHMARK_DATA = {
           668.9805035957924,
           727.0333199867836,
           720.2225927988688,
-          741.83694896698
+          741.83694896698,
+          712.8034720787635
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -861,6 +869,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -1043,7 +1052,8 @@ window.BENCHMARK_DATA = {
           900.9963165283203,
           906.5954185632559,
           893.2920358022054,
-          952.4476119995118
+          952.4476119995118,
+          884.153502591451
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1055,6 +1065,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -1775,6 +1786,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
         "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
+      },
+      {
+        "sha": "1785986badc06d46b51d798e2c9694662bfbb744",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
+        "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
       }
     ],
     "labels": [
@@ -1878,7 +1895,8 @@ window.BENCHMARK_DATA = {
       "5703bc6b",
       "7d17a8ab",
       "5d9a56d9",
-      "b7f4f05b"
+      "b7f4f05b",
+      "1785986b"
     ],
     "datasets": [
       {
@@ -1985,7 +2003,8 @@ window.BENCHMARK_DATA = {
           131.4170844554901,
           145.58146114349364,
           136.19154029233115,
-          139.82838221696707
+          139.82838221696707,
+          140.36278365453083
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2025,6 +2044,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -2212,7 +2232,8 @@ window.BENCHMARK_DATA = {
           223.58723241488138,
           213.83226698239645,
           201.45117840766906,
-          229.8117606798808
+          229.8117606798808,
+          208.2459235872541
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2224,6 +2245,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -2944,6 +2966,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
         "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
+      },
+      {
+        "sha": "1785986badc06d46b51d798e2c9694662bfbb744",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
+        "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
       }
     ],
     "labels": [
@@ -3047,7 +3075,8 @@ window.BENCHMARK_DATA = {
       "5703bc6b",
       "7d17a8ab",
       "5d9a56d9",
-      "b7f4f05b"
+      "b7f4f05b",
+      "1785986b"
     ],
     "datasets": [
       {
@@ -3154,7 +3183,8 @@ window.BENCHMARK_DATA = {
           1885.1727737426759,
           2014.831847635905,
           1926.3809438432966,
-          1921.2660827636719
+          1921.2660827636719,
+          1951.390224202474
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3256,6 +3286,7 @@ window.BENCHMARK_DATA = {
           2080,
           2080,
           2080,
+          2008,
           2008,
           2008,
           2008,
@@ -3381,7 +3412,8 @@ window.BENCHMARK_DATA = {
           1450.5548323313394,
           1435.281399181911,
           1427.744249343872,
-          1470.6034059524536
+          1470.6034059524536,
+          1431.7392248006968
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3493,7 +3525,8 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1864,
-          1864
+          1864,
+          1953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4053,6 +4086,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
         "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
+      },
+      {
+        "sha": "1785986badc06d46b51d798e2c9694662bfbb744",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
+        "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
       }
     ],
     "labels": [
@@ -4146,7 +4185,8 @@ window.BENCHMARK_DATA = {
       "5703bc6b",
       "7d17a8ab",
       "5d9a56d9",
-      "b7f4f05b"
+      "b7f4f05b",
+      "1785986b"
     ],
     "datasets": [
       {
@@ -4243,7 +4283,8 @@ window.BENCHMARK_DATA = {
           2556.395638783773,
           2813.0071193988506,
           2831.742437362671,
-          2790.622283935547
+          2790.622283935547,
+          2772.8117552537183
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4345,7 +4386,8 @@ window.BENCHMARK_DATA = {
           2936,
           2936,
           2936,
-          2880
+          2880,
+          2936
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4450,7 +4492,8 @@ window.BENCHMARK_DATA = {
           3780.366123471941,
           3833.794622693743,
           3875.469121492826,
-          3827.1143733433314
+          3827.1143733433314,
+          3779.7670486450197
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4552,7 +4595,8 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3980,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5112,6 +5156,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
         "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
+      },
+      {
+        "sha": "1785986badc06d46b51d798e2c9694662bfbb744",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
+        "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
       }
     ],
     "labels": [
@@ -5205,7 +5255,8 @@ window.BENCHMARK_DATA = {
       "5703bc6b",
       "7d17a8ab",
       "5d9a56d9",
-      "b7f4f05b"
+      "b7f4f05b",
+      "1785986b"
     ],
     "datasets": [
       {
@@ -5302,7 +5353,8 @@ window.BENCHMARK_DATA = {
           359.4597821235657,
           389.6331788471767,
           387.3943570943979,
-          399.93954429626467
+          399.93954429626467,
+          362.35625178019205
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5332,6 +5384,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -5509,7 +5562,8 @@ window.BENCHMARK_DATA = {
           2295.665142604283,
           2276.236703999837,
           2289.9613647460938,
-          2328.9953509739466
+          2328.9953509739466,
+          2219.0782673175518
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5521,6 +5575,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -6171,6 +6226,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
         "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
+      },
+      {
+        "sha": "1785986badc06d46b51d798e2c9694662bfbb744",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
+        "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
       }
     ],
     "labels": [
@@ -6264,7 +6325,8 @@ window.BENCHMARK_DATA = {
       "5703bc6b",
       "7d17a8ab",
       "5d9a56d9",
-      "b7f4f05b"
+      "b7f4f05b",
+      "1785986b"
     ],
     "datasets": [
       {
@@ -6361,7 +6423,8 @@ window.BENCHMARK_DATA = {
           3404.6754338582355,
           2948.1811141967773,
           2891.332280476888,
-          2969.031482187907
+          2969.031482187907,
+          2890.231046131679
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6461,6 +6524,7 @@ window.BENCHMARK_DATA = {
           3032,
           3032,
           3032,
+          2912,
           2912,
           2912,
           2912
@@ -6568,7 +6632,8 @@ window.BENCHMARK_DATA = {
           313961.87027994794,
           280620.37939453125,
           282221.9178292411,
-          284836.4395926339
+          284836.4395926339,
+          278378.42354910716
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6668,6 +6733,7 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17727,
+          17577,
           17577,
           17577,
           17577
