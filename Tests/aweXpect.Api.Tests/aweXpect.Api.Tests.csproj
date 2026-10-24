@@ -16,10 +16,14 @@
 		<ProjectReference Include="..\..\Source\aweXpect.Json\aweXpect.Json.csproj" ReferenceOutputAssembly="false"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Reflection\aweXpect.Reflection.csproj" ReferenceOutputAssembly="false"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Snapshots\aweXpect.Snapshots.csproj"/>
-		<ProjectReference Include="..\..\Source\aweXpect.Snapshots.DiffEngine\aweXpect.Snapshots.DiffEngine.csproj" ReferenceOutputAssembly="false"/>
+		<ProjectReference Include="..\..\Source\aweXpect.Snapshots.DiffEngine\aweXpect.Snapshots.DiffEngine.csproj"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Snapshots.PublicApi\aweXpect.Snapshots.PublicApi.csproj"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Web\aweXpect.Web.csproj" ReferenceOutputAssembly="false"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Xml\aweXpect.Xml.csproj" ReferenceOutputAssembly="false"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="ApiApprovalTests.*.awexpect-snapshot.txt" DependentUpon="ApiApprovalTests.cs"/>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -38,5 +42,6 @@
 
 	<!-- A project reference does not import the build targets of the package, so they are imported here. -->
 	<Import Project="$(MSBuildThisFileDirectory)../../Source/aweXpect.Snapshots/buildTransitive/aweXpect.Snapshots.targets"/>
+	<Import Project="$(MSBuildThisFileDirectory)../../Source/aweXpect.Snapshots.DiffEngine/buildTransitive/aweXpect.Snapshots.DiffEngine.targets"/>
 
 </Project>
