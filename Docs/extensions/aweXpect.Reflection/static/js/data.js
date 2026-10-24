@@ -570,6 +570,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
         "message": "refactor!: return the non-null subject type from expectations that guarantee it (#1992)"
+      },
+      {
+        "sha": "487b869aca9f751f6188528a45c205e3a6031130",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
+        "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
       }
     ],
     "labels": [
@@ -667,7 +673,8 @@ window.BENCHMARK_DATA = {
       "46bf8489",
       "411dfe77",
       "053d3134",
-      "22b71d85"
+      "22b71d85",
+      "487b869a"
     ],
     "datasets": [
       {
@@ -768,7 +775,8 @@ window.BENCHMARK_DATA = {
           828.2216255823771,
           749.2761193055373,
           425.31231810496405,
-          726.8025828679403
+          726.8025828679403,
+          712.0349316279094
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -813,6 +821,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -983,7 +992,8 @@ window.BENCHMARK_DATA = {
           1000.652376683553,
           932.9730427815364,
           508.68624890645344,
-          883.4874388149807
+          883.4874388149807,
+          916.2251561482748
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -995,6 +1005,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -1673,6 +1684,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
         "message": "refactor!: return the non-null subject type from expectations that guarantee it (#1992)"
+      },
+      {
+        "sha": "487b869aca9f751f6188528a45c205e3a6031130",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
+        "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
       }
     ],
     "labels": [
@@ -1770,7 +1787,8 @@ window.BENCHMARK_DATA = {
       "46bf8489",
       "411dfe77",
       "053d3134",
-      "22b71d85"
+      "22b71d85",
+      "487b869a"
     ],
     "datasets": [
       {
@@ -1871,7 +1889,8 @@ window.BENCHMARK_DATA = {
           152.42138187090555,
           155.72861753191268,
           70.83842553411212,
-          142.92735702650887
+          142.92735702650887,
+          151.62605946404594
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1911,6 +1930,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -2086,7 +2106,8 @@ window.BENCHMARK_DATA = {
           260.91552282969155,
           238.63771850722176,
           129.16618806521097,
-          201.9518550078074
+          201.9518550078074,
+          236.02032203674315
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2098,6 +2119,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -2776,6 +2798,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
         "message": "refactor!: return the non-null subject type from expectations that guarantee it (#1992)"
+      },
+      {
+        "sha": "487b869aca9f751f6188528a45c205e3a6031130",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
+        "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
       }
     ],
     "labels": [
@@ -2873,7 +2901,8 @@ window.BENCHMARK_DATA = {
       "46bf8489",
       "411dfe77",
       "053d3134",
-      "22b71d85"
+      "22b71d85",
+      "487b869a"
     ],
     "datasets": [
       {
@@ -2974,7 +3003,8 @@ window.BENCHMARK_DATA = {
           2265.132890319824,
           2047.0730746132988,
           1069.8902866656963,
-          2055.6503170558385
+          2055.6503170558385,
+          2049.9847272237143
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3076,6 +3106,7 @@ window.BENCHMARK_DATA = {
           2080,
           2080,
           2080,
+          2008,
           2008,
           2008,
           2008,
@@ -3189,7 +3220,8 @@ window.BENCHMARK_DATA = {
           1796.0417376200357,
           1505.7171404702324,
           872.5869185583932,
-          1456.1909824371337
+          1456.1909824371337,
+          1500.995586268107
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3294,6 +3326,7 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1864,
+          1953,
           1953,
           1953
         ],
@@ -3819,6 +3852,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
         "message": "refactor!: return the non-null subject type from expectations that guarantee it (#1992)"
+      },
+      {
+        "sha": "487b869aca9f751f6188528a45c205e3a6031130",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
+        "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
       }
     ],
     "labels": [
@@ -3906,7 +3945,8 @@ window.BENCHMARK_DATA = {
       "46bf8489",
       "411dfe77",
       "053d3134",
-      "22b71d85"
+      "22b71d85",
+      "487b869a"
     ],
     "datasets": [
       {
@@ -3997,7 +4037,8 @@ window.BENCHMARK_DATA = {
           3246.1514302571613,
           2773.519156864711,
           1399.525321667011,
-          2787.1265342712404
+          2787.1265342712404,
+          2960.0839465005056
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4093,7 +4134,8 @@ window.BENCHMARK_DATA = {
           2936,
           2880,
           2880,
-          2880
+          2880,
+          2936
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4192,7 +4234,8 @@ window.BENCHMARK_DATA = {
           4610.656294686453,
           3969.400400797526,
           2316.0214854649134,
-          3882.7427925109864
+          3882.7427925109864,
+          3907.7729588826496
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4286,6 +4329,7 @@ window.BENCHMARK_DATA = {
           3981,
           3981,
           3981,
+          3980,
           3980,
           3980,
           3980
@@ -4812,6 +4856,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
         "message": "refactor!: return the non-null subject type from expectations that guarantee it (#1992)"
+      },
+      {
+        "sha": "487b869aca9f751f6188528a45c205e3a6031130",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
+        "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
       }
     ],
     "labels": [
@@ -4899,7 +4949,8 @@ window.BENCHMARK_DATA = {
       "46bf8489",
       "411dfe77",
       "053d3134",
-      "22b71d85"
+      "22b71d85",
+      "487b869a"
     ],
     "datasets": [
       {
@@ -4990,7 +5041,8 @@ window.BENCHMARK_DATA = {
           423.73469829559326,
           400.68615396206195,
           181.66628491083782,
-          375.9836460627042
+          375.9836460627042,
+          399.74061816533407
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5020,6 +5072,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -5185,7 +5238,8 @@ window.BENCHMARK_DATA = {
           2542.0603912353517,
           2398.626402446202,
           1393.3115966503437,
-          2240.1842733110702
+          2240.1842733110702,
+          2340.9311060587565
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5197,6 +5251,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -5805,6 +5860,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
         "message": "refactor!: return the non-null subject type from expectations that guarantee it (#1992)"
+      },
+      {
+        "sha": "487b869aca9f751f6188528a45c205e3a6031130",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
+        "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
       }
     ],
     "labels": [
@@ -5892,7 +5953,8 @@ window.BENCHMARK_DATA = {
       "46bf8489",
       "411dfe77",
       "053d3134",
-      "22b71d85"
+      "22b71d85",
+      "487b869a"
     ],
     "datasets": [
       {
@@ -5983,7 +6045,8 @@ window.BENCHMARK_DATA = {
           3903.961083730062,
           3506.04370198931,
           1858.380207334246,
-          3404.654327392578
+          3404.654327392578,
+          3555.4454658508303
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6075,6 +6138,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3032,
           3032,
           3032,
           3032,
@@ -6178,7 +6242,8 @@ window.BENCHMARK_DATA = {
           309410.88004557294,
           282585.4908203125,
           170873.35857747396,
-          281964.36495535716
+          281964.36495535716,
+          285186.0317220052
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6274,6 +6339,7 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17576,
+          17577,
           17577
         ],
         "borderColor": "#FF671B",
