@@ -762,6 +762,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
@@ -891,7 +897,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "f760ae08"
     ],
     "datasets": [
       {
@@ -1024,7 +1031,8 @@ window.BENCHMARK_DATA = {
           556.9036045755659,
           723.0359685604388,
           770.6385414416974,
-          774.8481519063314
+          774.8481519063314,
+          617.3371315002441
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1162,7 +1170,8 @@ window.BENCHMARK_DATA = {
           1152,
           1152,
           1152,
-          1152
+          1152,
+          1080
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1303,7 +1312,8 @@ window.BENCHMARK_DATA = {
           536.8590538161142,
           819.3194525792048,
           712.6537930806478,
-          793.3384056091309
+          793.3384056091309,
+          751.2140968029315
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1315,6 +1325,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2217,6 +2228,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
@@ -2346,7 +2363,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "f760ae08"
     ],
     "datasets": [
       {
@@ -2479,7 +2497,8 @@ window.BENCHMARK_DATA = {
           3369.1946081433975,
           5287.1284739176435,
           4842.347706134503,
-          5088.288535817464
+          5088.288535817464,
+          4200.797970835368
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2614,6 +2633,7 @@ window.BENCHMARK_DATA = {
           24320,
           24320,
           24321,
+          24320,
           24320,
           24320,
           24320,
@@ -2758,7 +2778,8 @@ window.BENCHMARK_DATA = {
           3771.373131615775,
           6042.507995605469,
           5509.599374389649,
-          5681.303656441824
+          5681.303656441824,
+          5345.694017028809
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2770,6 +2791,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -3612,6 +3634,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
@@ -3731,7 +3759,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "f760ae08"
     ],
     "datasets": [
       {
@@ -3854,7 +3883,8 @@ window.BENCHMARK_DATA = {
           1889.9165905543737,
           2922.6299258640834,
           2742.5520622253416,
-          2873.360083516439
+          2873.360083516439,
+          2547.1726687295095
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3982,6 +4012,7 @@ window.BENCHMARK_DATA = {
           12780,
           12856,
           12780,
+          12856,
           12856
         ],
         "borderColor": "#63A2AC",
@@ -4113,7 +4144,8 @@ window.BENCHMARK_DATA = {
           2628.119952901204,
           3858.8307413373673,
           3810.9593646709736,
-          3760.2646779378256
+          3760.2646779378256,
+          3519.164355214437
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4125,6 +4157,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -4957,6 +4990,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
@@ -5076,7 +5115,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "f760ae08"
     ],
     "datasets": [
       {
@@ -5199,7 +5239,8 @@ window.BENCHMARK_DATA = {
           10029.750903789814,
           14144.61555480957,
           14272.117397562663,
-          14520.231580607096
+          14520.231580607096,
+          12620.04585164388
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5327,6 +5368,7 @@ window.BENCHMARK_DATA = {
           25494,
           25568,
           25494,
+          25568,
           25568
         ],
         "borderColor": "#63A2AC",
@@ -5458,7 +5500,8 @@ window.BENCHMARK_DATA = {
           239298.7164776142,
           284605.6375450721,
           360097.71064453124,
-          378766.24045973556
+          378766.24045973556,
+          256199.9169921875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5586,7 +5629,8 @@ window.BENCHMARK_DATA = {
           544335,
           544246,
           544335,
-          544268
+          544268,
+          544247
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
