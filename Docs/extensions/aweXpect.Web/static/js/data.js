@@ -654,6 +654,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:31:34 2026 \u002B0200",
         "message": "refactor!: generate the plural expectations of aweXpect.Reflection (#2012)"
+      },
+      {
+        "sha": "4bb0504618c214ce4ea0346e0f6adc7d425a6b35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
+        "message": "refactor!: offer the property result operators through interfaces (#2009)"
       }
     ],
     "labels": [
@@ -765,7 +771,8 @@ window.BENCHMARK_DATA = {
       "4f69216a",
       "64f45253",
       "996e0f28",
-      "cda7e4aa"
+      "cda7e4aa",
+      "4bb05046"
     ],
     "datasets": [
       {
@@ -880,7 +887,8 @@ window.BENCHMARK_DATA = {
           310.9212535108839,
           430.45553966930936,
           319.49599704742434,
-          388.8703674719884
+          388.8703674719884,
+          406.4779588063558
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -924,6 +932,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -1123,7 +1132,8 @@ window.BENCHMARK_DATA = {
           802.7326445579529,
           1067.702608517238,
           743.1075038228716,
-          953.4641242980957
+          953.4641242980957,
+          966.5307211875916
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1135,6 +1145,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1911,6 +1922,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:31:34 2026 \u002B0200",
         "message": "refactor!: generate the plural expectations of aweXpect.Reflection (#2012)"
+      },
+      {
+        "sha": "4bb0504618c214ce4ea0346e0f6adc7d425a6b35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
+        "message": "refactor!: offer the property result operators through interfaces (#2009)"
       }
     ],
     "labels": [
@@ -2022,7 +2039,8 @@ window.BENCHMARK_DATA = {
       "4f69216a",
       "64f45253",
       "996e0f28",
-      "cda7e4aa"
+      "cda7e4aa",
+      "4bb05046"
     ],
     "datasets": [
       {
@@ -2137,7 +2155,8 @@ window.BENCHMARK_DATA = {
           170.93705185254416,
           207.31884090717023,
           151.0462215287345,
-          191.88393333980017
+          191.88393333980017,
+          190.9830601533254
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2185,6 +2204,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -2380,7 +2400,8 @@ window.BENCHMARK_DATA = {
           222.59993745599473,
           253.89268129212516,
           202.54263632638114,
-          238.79780387878418
+          238.79780387878418,
+          262.9670210202535
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2392,6 +2413,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -3108,6 +3130,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:31:34 2026 \u002B0200",
         "message": "refactor!: generate the plural expectations of aweXpect.Reflection (#2012)"
+      },
+      {
+        "sha": "4bb0504618c214ce4ea0346e0f6adc7d425a6b35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
+        "message": "refactor!: offer the property result operators through interfaces (#2009)"
       }
     ],
     "labels": [
@@ -3209,7 +3237,8 @@ window.BENCHMARK_DATA = {
       "4f69216a",
       "64f45253",
       "996e0f28",
-      "cda7e4aa"
+      "cda7e4aa",
+      "4bb05046"
     ],
     "datasets": [
       {
@@ -3314,7 +3343,8 @@ window.BENCHMARK_DATA = {
           512.4719073613485,
           661.5239128385272,
           441.12032457987465,
-          600.1823513031006
+          600.1823513031006,
+          568.7372217178345
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3348,6 +3378,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -3537,7 +3568,8 @@ window.BENCHMARK_DATA = {
           785.0526830128262,
           1095.1692711966377,
           704.8076385089329,
-          916.6427883420672
+          916.6427883420672,
+          917.9858008531423
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3549,6 +3581,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -4255,6 +4288,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:31:34 2026 \u002B0200",
         "message": "refactor!: generate the plural expectations of aweXpect.Reflection (#2012)"
+      },
+      {
+        "sha": "4bb0504618c214ce4ea0346e0f6adc7d425a6b35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
+        "message": "refactor!: offer the property result operators through interfaces (#2009)"
       }
     ],
     "labels": [
@@ -4356,7 +4395,8 @@ window.BENCHMARK_DATA = {
       "4f69216a",
       "64f45253",
       "996e0f28",
-      "cda7e4aa"
+      "cda7e4aa",
+      "4bb05046"
     ],
     "datasets": [
       {
@@ -4461,7 +4501,8 @@ window.BENCHMARK_DATA = {
           1231.1201866467793,
           1766.1332702636719,
           1316.935558827718,
-          1701.087031809489
+          1701.087031809489,
+          1688.343087387085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4495,6 +4536,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -4684,7 +4726,8 @@ window.BENCHMARK_DATA = {
           12619.867664882115,
           21791.218760172527,
           13628.172399902343,
-          20224.627244059244
+          20224.627244059244,
+          17748.76021931966
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4792,6 +4835,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713
@@ -5402,6 +5446,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:31:34 2026 \u002B0200",
         "message": "refactor!: generate the plural expectations of aweXpect.Reflection (#2012)"
+      },
+      {
+        "sha": "4bb0504618c214ce4ea0346e0f6adc7d425a6b35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
+        "message": "refactor!: offer the property result operators through interfaces (#2009)"
       }
     ],
     "labels": [
@@ -5503,7 +5553,8 @@ window.BENCHMARK_DATA = {
       "4f69216a",
       "64f45253",
       "996e0f28",
-      "cda7e4aa"
+      "cda7e4aa",
+      "4bb05046"
     ],
     "datasets": [
       {
@@ -5608,7 +5659,8 @@ window.BENCHMARK_DATA = {
           517.862739054362,
           797.3725770314535,
           498.9809914271037,
-          647.372589747111
+          647.372589747111,
+          630.6622560501098
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5638,6 +5690,7 @@ window.BENCHMARK_DATA = {
           1408,
           1408,
           1120,
+          1080,
           1080,
           1080,
           1080,
@@ -5831,7 +5884,8 @@ window.BENCHMARK_DATA = {
           1068.5134974259597,
           1364.90220413208,
           977.5212942759196,
-          1290.4777698516846
+          1290.4777698516846,
+          1271.2093032690195
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5843,6 +5897,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -6549,6 +6604,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:31:34 2026 \u002B0200",
         "message": "refactor!: generate the plural expectations of aweXpect.Reflection (#2012)"
+      },
+      {
+        "sha": "4bb0504618c214ce4ea0346e0f6adc7d425a6b35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
+        "message": "refactor!: offer the property result operators through interfaces (#2009)"
       }
     ],
     "labels": [
@@ -6650,7 +6711,8 @@ window.BENCHMARK_DATA = {
       "4f69216a",
       "64f45253",
       "996e0f28",
-      "cda7e4aa"
+      "cda7e4aa",
+      "4bb05046"
     ],
     "datasets": [
       {
@@ -6755,7 +6817,8 @@ window.BENCHMARK_DATA = {
           801.998154258728,
           1140.1723847707112,
           820.1638487407139,
-          1114.4624626159668
+          1114.4624626159668,
+          1056.830520248413
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6789,6 +6852,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -6978,7 +7042,8 @@ window.BENCHMARK_DATA = {
           646.9914715630667,
           758.9285321235657,
           594.7244026819865,
-          762.9887119439932
+          762.9887119439932,
+          758.6388153711955
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6990,6 +7055,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
