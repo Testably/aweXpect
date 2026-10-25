@@ -40,23 +40,32 @@ public static partial class ThatAssembly
 		this IThat<Assembly?> subject, IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder
-				.AddConstraint((Allowed: expected.ToArray(), Options: options),
-					static (s, it, grammars)
-					=> new DependsOnlyOnConstraint(it, grammars, s.Allowed, s.Options)),
+				.AddConstraint(expected.ToArray(),
+					static (allowed, it, grammars)
+					=> new DependsOnlyOnConstraint(it, grammars, allowed),
+					out DependsOnlyOnConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	private sealed class DependsOnlyOnConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		string[] allowed,
-		OptionsHolder<StringEqualityOptions> options)
+		string[] allowed)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
-			IAsyncContextConstraint<Assembly?>
+			IAsyncContextConstraint<Assembly?>,
+			IOptionsHolderSource<StringEqualityOptions>
 	{
+		private OptionsHolder<StringEqualityOptions>? _optionsHolder;
+
+		private StringEqualityOptions CurrentOptions
+			=> _optionsHolder is null ? StringEqualityOptions.Default : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<StringEqualityOptions> IOptionsHolderSource<StringEqualityOptions>.Holder
+			=> _optionsHolder ??= new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default);
+
 		private StringEqualityOptions? _evaluationOptions;
 		private string?[] _violations = [];
 
@@ -70,7 +79,7 @@ public static partial class ThatAssembly
 				return this;
 			}
 
-			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 			_violations = await actual.GetDisallowedAssemblyDependencies(allowed, _evaluationOptions);
 			Outcome = _violations.Length == 0 ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -96,12 +105,12 @@ public static partial class ThatAssembly
 				contexts.AddDependenciesContext("Disallowed dependencies", _violations);
 			}
 
-			(_evaluationOptions ?? options.Value).AppendContexts(contexts);
+			(_evaluationOptions ?? CurrentOptions).AppendContexts(contexts);
 		}
 
 		private string DescribeAllowed()
 			=> allowed.Length == 0
 				? "no assemblies"
-				: $"assemblies {string.Join(" or ", allowed.Select(expected => options.Value.GetExpectation(expected, ExpectationGrammars.None)))}";
+				: $"assemblies {string.Join(" or ", allowed.Select(expected => CurrentOptions.GetExpectation(expected, ExpectationGrammars.None)))}";
 	}
 }

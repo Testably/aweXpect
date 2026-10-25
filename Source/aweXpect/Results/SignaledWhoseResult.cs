@@ -21,14 +21,14 @@ public class SignaledWhoseResult<TParameter>
 		IOptionsProvider<SignalerOptions>,
 		ISignalerResult<SignaledWhoseResult<TParameter>, TParameter>
 {
-	private readonly OptionsHolder<SignalerOptions> _options;
-	private readonly OptionsHolder<SignalerPredicateOptions<TParameter>> _predicates;
+	private readonly IOptionsHolderSource<SignalerOptions> _options;
+	private readonly IOptionsHolderSource<SignalerPredicateOptions<TParameter>> _predicates;
 
 	internal SignaledWhoseResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<Signaler<TParameter>?> returnValue,
-		OptionsHolder<SignalerOptions> options,
-		OptionsHolder<SignalerPredicateOptions<TParameter>> predicates)
+		IOptionsHolderSource<SignalerOptions> options,
+		IOptionsHolderSource<SignalerPredicateOptions<TParameter>> predicates)
 		: base(expectationBuilder, returnValue)
 	{
 		_options = options;
@@ -44,15 +44,15 @@ public class SignaledWhoseResult<TParameter>
 	public IThatSubject<IEnumerable<TParameter>> WhoseParameters
 		=> new ThatSubject<IEnumerable<TParameter>>(
 			ExpectationBuilder.ForWhich<SignalerResult<TParameter>, IEnumerable<TParameter>>(
-				x => x.Parameters.Where(_predicates.Value.Matches).ToArray(),
+				x => x.Parameters.Where(_predicates.Holder.Value.Matches).ToArray(),
 				" with parameters that ", null,
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural |
 				            ExpectationGrammars.Introduced));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<SignalerOptions> IOptionsProvider<SignalerOptions>.Options => _options;
+	OptionsHolder<SignalerOptions> IOptionsProvider<SignalerOptions>.Options => _options.Holder;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	OptionsHolder<SignalerPredicateOptions<TParameter>> IOptionsProvider<SignalerPredicateOptions<TParameter>>.Options
-		=> _predicates;
+		=> _predicates.Holder;
 }

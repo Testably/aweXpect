@@ -23,13 +23,13 @@ public static partial class ThatNullableDateTime
 		this IThat<DateTime?> subject,
 		DateTime? expected)
 	{
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<DateTime, IThat<DateTime?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
-				static (state, it, grammars) =>
-					new IsOnOrBeforeConstraint(it, grammars, state.Expected, state.Tolerance)),
+			subject.Get().ExpectationBuilder.AddConstraint(expected,
+				static (expected, it, grammars) =>
+					new IsOnOrBeforeConstraint(it, grammars, expected),
+				out IsOnOrBeforeConstraint constraint),
 			subject,
-			tolerance);
+			constraint);
 	}
 
 	/// <summary>
@@ -45,23 +45,32 @@ public static partial class ThatNullableDateTime
 		this IThat<DateTime?> subject,
 		DateTime? unexpected)
 	{
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<DateTime, IThat<DateTime?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
-				static (state, it, grammars) =>
-					new IsOnOrBeforeConstraint(it, grammars, state.Unexpected, state.Tolerance).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint(unexpected,
+				static (unexpected, it, grammars) =>
+					new IsOnOrBeforeConstraint(it, grammars, unexpected).Invert(),
+				out IsOnOrBeforeConstraint constraint),
 			subject,
-			tolerance);
+			constraint);
 	}
 
 	private sealed class IsOnOrBeforeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		DateTime? expected,
-		OptionsHolder<TimeTolerance> tolerance)
+		DateTime? expected)
 		: OrderingConstraint<DateTime?>(it, grammars, expected is null),
-			IValueConstraint<DateTime?>
+			IValueConstraint<DateTime?>,
+			IOptionsHolderSource<TimeTolerance>
 	{
+		private OptionsHolder<TimeTolerance>? _toleranceHolder;
+
+		private TimeTolerance CurrentTolerance
+			=> _toleranceHolder is null ? TimeTolerance.Default : _toleranceHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<TimeTolerance> IOptionsHolderSource<TimeTolerance>.Holder
+			=> _toleranceHolder ??= new OptionsHolder<TimeTolerance>(TimeTolerance.Default);
+
 		private DateTimeKind? _incompatibleKind;
 
 		public ConstraintResult IsMetBy(DateTime? actual)
@@ -81,7 +90,7 @@ public static partial class ThatNullableDateTime
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
+				TimeSpan timeTolerance = CurrentTolerance.GetToleranceOrDefault();
 				Outcome = expected - actual.Value >= timeTolerance.Negate() ? Outcome.Success : Outcome.Failure;
 			}
 
@@ -92,7 +101,7 @@ public static partial class ThatNullableDateTime
 		{
 			stringBuilder.Append(Grammars.Verb("is on or before ", "are on or before "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(tolerance);
+			stringBuilder.Append(CurrentTolerance);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -114,7 +123,7 @@ public static partial class ThatNullableDateTime
 		{
 			stringBuilder.Append(Grammars.Verb("is not on or before ", "are not on or before "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(tolerance);
+			stringBuilder.Append(CurrentTolerance);
 		}
 	}
 }

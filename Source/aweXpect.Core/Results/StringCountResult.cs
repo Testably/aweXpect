@@ -14,15 +14,15 @@ namespace aweXpect.Results;
 public class StringCountResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<Quantifier> quantifier,
-	OptionsHolder<StringEqualityOptions> options)
+	IOptionsHolderSource<Quantifier> quantifier,
+	IOptionsHolderSource<StringEqualityOptions> options)
 	: AndOrResult<TType, TThat, StringCountResult<TType, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<Quantifier>,
 		IOptionsProvider<StringEqualityOptions>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier.Holder;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options;
+	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options.Holder;
 }

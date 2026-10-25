@@ -25,13 +25,13 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		expected.ThrowIfNaN("expected value");
-		OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
-				static (state, it, grammars) =>
-					new IsLessThanConstraint<TNumber>(it, grammars, state.Expected, state.Options)),
+			subject.Get().ExpectationBuilder.AddConstraint(expected,
+				static (expected, it, grammars) =>
+					new IsLessThanConstraint<TNumber>(it, grammars, expected),
+				out IsLessThanConstraint<TNumber> constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	/// <summary>
@@ -46,13 +46,13 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		expected.ThrowIfNaN("expected value");
-		OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NumberToleranceResult<TNumber, IThat<TNumber?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
-				static (state, it, grammars) =>
-					new NullableIsLessThanConstraint<TNumber>(it, grammars, state.Expected, state.Options)),
+			subject.Get().ExpectationBuilder.AddConstraint(expected,
+				static (expected, it, grammars) =>
+					new NullableIsLessThanConstraint<TNumber>(it, grammars, expected),
+				out NullableIsLessThanConstraint<TNumber> constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	/// <summary>
@@ -69,13 +69,13 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		unexpected.ThrowIfNaN("unexpected value");
-		OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
-				static (state, it, grammars) =>
-					new IsLessThanConstraint<TNumber>(it, grammars, state.Unexpected, state.Options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint(unexpected,
+				static (unexpected, it, grammars) =>
+					new IsLessThanConstraint<TNumber>(it, grammars, unexpected).Invert(),
+				out IsLessThanConstraint<TNumber> constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	/// <summary>
@@ -93,24 +93,33 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		unexpected.ThrowIfNaN("unexpected value");
-		OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NumberToleranceResult<TNumber, IThat<TNumber?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
-				static (state, it, grammars) =>
-					new NullableIsLessThanConstraint<TNumber>(it, grammars, state.Unexpected, state.Options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint(unexpected,
+				static (unexpected, it, grammars) =>
+					new NullableIsLessThanConstraint<TNumber>(it, grammars, unexpected).Invert(),
+				out NullableIsLessThanConstraint<TNumber> constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	private sealed class IsLessThanConstraint<TNumber>(
 		string it,
 		ExpectationGrammars grammars,
-		TNumber? expected,
-		OptionsHolder<NumberTolerance<TNumber>> options)
+		TNumber? expected)
 		: OrderingConstraint<TNumber>(it, grammars, expected is null),
-			IValueConstraint<TNumber>
+			IValueConstraint<TNumber>,
+			IOptionsHolderSource<NumberTolerance<TNumber>>
 		where TNumber : struct, INumber<TNumber>
 	{
+		private OptionsHolder<NumberTolerance<TNumber>>? _optionsHolder;
+
+		private NumberTolerance<TNumber> CurrentOptions
+			=> _optionsHolder is null ? new NumberTolerance<TNumber>(CalculateDifference) : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<NumberTolerance<TNumber>> IOptionsHolderSource<NumberTolerance<TNumber>>.Holder
+			=> _optionsHolder ??= new OptionsHolder<NumberTolerance<TNumber>>(new NumberTolerance<TNumber>(CalculateDifference));
+
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
@@ -120,7 +129,7 @@ public static partial class ThatNumber
 				return this;
 			}
 
-			Outcome = options.Value.IsLessThan(actual, expected) ? Outcome.Success : Outcome.Failure;
+			Outcome = CurrentOptions.IsLessThan(actual, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -128,7 +137,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(Grammars.Verb("is less than ", "are less than "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(options);
+			stringBuilder.Append(CurrentOptions);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -142,19 +151,28 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(Grammars.Verb("is not less than ", "are not less than "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(options);
+			stringBuilder.Append(CurrentOptions);
 		}
 	}
 
 	private sealed class NullableIsLessThanConstraint<TNumber>(
 		string it,
 		ExpectationGrammars grammars,
-		TNumber? expected,
-		OptionsHolder<NumberTolerance<TNumber>> options)
+		TNumber? expected)
 		: OrderingConstraint<TNumber?>(it, grammars, expected is null),
-			IValueConstraint<TNumber?>
+			IValueConstraint<TNumber?>,
+			IOptionsHolderSource<NumberTolerance<TNumber>>
 		where TNumber : struct, INumber<TNumber>
 	{
+		private OptionsHolder<NumberTolerance<TNumber>>? _optionsHolder;
+
+		private NumberTolerance<TNumber> CurrentOptions
+			=> _optionsHolder is null ? new NumberTolerance<TNumber>(CalculateDifference) : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<NumberTolerance<TNumber>> IOptionsHolderSource<NumberTolerance<TNumber>>.Holder
+			=> _optionsHolder ??= new OptionsHolder<NumberTolerance<TNumber>>(new NumberTolerance<TNumber>(CalculateDifference));
+
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
@@ -164,7 +182,7 @@ public static partial class ThatNumber
 				return this;
 			}
 
-			Outcome = options.Value.IsLessThan(actual, expected) ? Outcome.Success : Outcome.Failure;
+			Outcome = CurrentOptions.IsLessThan(actual, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -172,7 +190,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(Grammars.Verb("is less than ", "are less than "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(options);
+			stringBuilder.Append(CurrentOptions);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -186,7 +204,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(Grammars.Verb("is not less than ", "are not less than "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(options);
+			stringBuilder.Append(CurrentOptions);
 		}
 	}
 #else
@@ -215,15 +233,16 @@ public static partial class ThatNumber
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		OptionsHolder<NumberTolerance<TNumber>> options = new(initialOptions);
+		NumberTolerance<TNumber> options = initialOptions;
 		ThrowIfNaN(expected, negated);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars) =>
 					new IsLessThanConstraint<TNumber>(it, grammars, state.Expected, state.Options)
-						.InvertIf(state.Negated)),
+						.InvertIf(state.Negated),
+				out IsLessThanConstraint<TNumber> constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	[CreateExpectationFamily("Is{Not}LessThan", Factory = typeof(NumberToleranceFactory), GuaranteesNotNull = true,
@@ -236,26 +255,36 @@ public static partial class ThatNumber
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		OptionsHolder<NumberTolerance<TNumber>> options = new(initialOptions);
+		NumberTolerance<TNumber> options = initialOptions;
 		ThrowIfNaN(expected, negated);
 		return new NumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars) =>
 					new NullableIsLessThanConstraint<TNumber>(it, grammars, state.Expected, state.Options)
-						.InvertIf(state.Negated)),
+						.InvertIf(state.Negated),
+				out NullableIsLessThanConstraint<TNumber> constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	private sealed class IsLessThanConstraint<TNumber>(
 		string it,
 		ExpectationGrammars grammars,
 		TNumber? expected,
-		OptionsHolder<NumberTolerance<TNumber>> options)
+		NumberTolerance<TNumber> options)
 		: OrderingConstraint<TNumber>(it, grammars, expected is null),
-			IValueConstraint<TNumber>
+			IValueConstraint<TNumber>,
+			IOptionsHolderSource<NumberTolerance<TNumber>>
 		where TNumber : struct, IComparable<TNumber>
 	{
+		private OptionsHolder<NumberTolerance<TNumber>>? _optionsHolder;
+
+		private NumberTolerance<TNumber> CurrentOptions => _optionsHolder is null ? options : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<NumberTolerance<TNumber>> IOptionsHolderSource<NumberTolerance<TNumber>>.Holder
+			=> _optionsHolder ??= new OptionsHolder<NumberTolerance<TNumber>>(options);
+
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
@@ -265,7 +294,7 @@ public static partial class ThatNumber
 				return this;
 			}
 
-			Outcome = options.Value.IsLessThan(actual, expected) ? Outcome.Success : Outcome.Failure;
+			Outcome = CurrentOptions.IsLessThan(actual, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -273,21 +302,21 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(Grammars.Verb("is less than ", "are less than "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(options);
+			stringBuilder.Append(CurrentOptions);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			AppendDifference(stringBuilder, Actual, expected, options.Value);
+			AppendDifference(stringBuilder, Actual, expected, CurrentOptions);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not less than ", "are not less than "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(options);
+			stringBuilder.Append(CurrentOptions);
 		}
 	}
 
@@ -295,11 +324,20 @@ public static partial class ThatNumber
 		string it,
 		ExpectationGrammars grammars,
 		TNumber? expected,
-		OptionsHolder<NumberTolerance<TNumber>> options)
+		NumberTolerance<TNumber> options)
 		: OrderingConstraint<TNumber?>(it, grammars, expected is null),
-			IValueConstraint<TNumber?>
+			IValueConstraint<TNumber?>,
+			IOptionsHolderSource<NumberTolerance<TNumber>>
 		where TNumber : struct, IComparable<TNumber>
 	{
+		private OptionsHolder<NumberTolerance<TNumber>>? _optionsHolder;
+
+		private NumberTolerance<TNumber> CurrentOptions => _optionsHolder is null ? options : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<NumberTolerance<TNumber>> IOptionsHolderSource<NumberTolerance<TNumber>>.Holder
+			=> _optionsHolder ??= new OptionsHolder<NumberTolerance<TNumber>>(options);
+
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
@@ -309,7 +347,7 @@ public static partial class ThatNumber
 				return this;
 			}
 
-			Outcome = options.Value.IsLessThan(actual, expected) ? Outcome.Success : Outcome.Failure;
+			Outcome = CurrentOptions.IsLessThan(actual, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -317,21 +355,21 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(Grammars.Verb("is less than ", "are less than "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(options);
+			stringBuilder.Append(CurrentOptions);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			AppendDifference(stringBuilder, Actual, expected, options.Value);
+			AppendDifference(stringBuilder, Actual, expected, CurrentOptions);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not less than ", "are not less than "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(options);
+			stringBuilder.Append(CurrentOptions);
 		}
 	}
 #endif

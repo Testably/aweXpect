@@ -16,17 +16,17 @@ public class SignaledResult
 	: AndOrResult<SignalerResult, IThat<Signaler?>, SignaledResult>,
 		IOptionsProvider<SignalerOptions>
 {
-	private readonly OptionsHolder<SignalerOptions> _options;
+	private readonly IOptionsHolderSource<SignalerOptions> _options;
 
 	internal SignaledResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<Signaler?> returnValue,
-		OptionsHolder<SignalerOptions> options)
+		IOptionsHolderSource<SignalerOptions> options)
 		: base(expectationBuilder, returnValue)
 	{
 		_options = options;
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<SignalerOptions> IOptionsProvider<SignalerOptions>.Options => _options;
+	OptionsHolder<SignalerOptions> IOptionsProvider<SignalerOptions>.Options => _options.Holder;
 }

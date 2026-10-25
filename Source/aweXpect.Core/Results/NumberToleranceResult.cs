@@ -16,7 +16,7 @@ namespace aweXpect.Results;
 public class NumberToleranceResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<NumberTolerance<TType>> options)
+	IOptionsHolderSource<NumberTolerance<TType>> options)
 	: AndOrResult<TType, TThat, NumberToleranceResult<TType, TThat>>(expectationBuilder, returnValue),
 		INumberToleranceResult<NumberToleranceResult<TType, TThat>, TType>
 #if NET8_0_OR_GREATER
@@ -28,12 +28,12 @@ public class NumberToleranceResult<TType, TThat>(
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<NumberTolerance<TType>> IOptionsProvider<NumberTolerance<TType>>.Options => options;
+	OptionsHolder<NumberTolerance<TType>> IOptionsProvider<NumberTolerance<TType>>.Options => options.Holder;
 
 	/// <inheritdoc cref="ToleranceExtensions.Within{TSelf, TNumber}(INumberToleranceResult{TSelf, TNumber}, TNumber)" />
 	public WithinResult Within(TType tolerance)
 	{
-		options.Within(tolerance);
+		options.Holder.Within(tolerance);
 		return new WithinResult(ExpectationBuilder, _returnValue, options);
 	}
 
@@ -44,7 +44,7 @@ public class NumberToleranceResult<TType, TThat>(
 	public sealed class WithinResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsHolder<NumberTolerance<TType>> options)
+		IOptionsHolderSource<NumberTolerance<TType>> options)
 		: NumberToleranceResult<TType, TThat>(expectationBuilder, returnValue, options),
 			IWithinToleranceResult<NumberToleranceResult<TType, TThat>, TType>
 	{
@@ -69,7 +69,7 @@ public class NumberToleranceResult<TType, TThat>(
 public class NumberToleranceResult<TType, TThat, TNumber>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<NumberTolerance<TNumber>> options)
+	IOptionsHolderSource<NumberTolerance<TNumber>> options)
 	: AndOrResult<TType, TThat, NumberToleranceResult<TType, TThat, TNumber>>(expectationBuilder, returnValue),
 		INumberToleranceResult<NumberToleranceResult<TType, TThat, TNumber>, TNumber>
 #if NET8_0_OR_GREATER
@@ -81,12 +81,12 @@ public class NumberToleranceResult<TType, TThat, TNumber>(
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<NumberTolerance<TNumber>> IOptionsProvider<NumberTolerance<TNumber>>.Options => options;
+	OptionsHolder<NumberTolerance<TNumber>> IOptionsProvider<NumberTolerance<TNumber>>.Options => options.Holder;
 
 	/// <inheritdoc cref="ToleranceExtensions.Within{TSelf, TNumber}(INumberToleranceResult{TSelf, TNumber}, TNumber)" />
 	public WithinResult Within(TNumber tolerance)
 	{
-		options.Within(tolerance);
+		options.Holder.Within(tolerance);
 		return new WithinResult(ExpectationBuilder, _returnValue, options);
 	}
 
@@ -97,7 +97,7 @@ public class NumberToleranceResult<TType, TThat, TNumber>(
 	public sealed class WithinResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsHolder<NumberTolerance<TNumber>> options)
+		IOptionsHolderSource<NumberTolerance<TNumber>> options)
 		: NumberToleranceResult<TType, TThat, TNumber>(expectationBuilder, returnValue, options),
 			IWithinToleranceResult<NumberToleranceResult<TType, TThat, TNumber>, TNumber>
 	{

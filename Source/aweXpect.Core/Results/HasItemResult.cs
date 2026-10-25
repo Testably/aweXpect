@@ -12,10 +12,10 @@ namespace aweXpect.Results;
 public class HasItemResult<TCollection, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<CollectionIndexOptions> collectionIndexOptions)
+	IOptionsHolderSource<CollectionIndexOptions> collectionIndexOptions)
 	: AndOrResult<TCollection, TThat, HasItemResult<TCollection, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<CollectionIndexOptions>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions.Holder;
 }

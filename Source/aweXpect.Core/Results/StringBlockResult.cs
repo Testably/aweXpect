@@ -14,7 +14,7 @@ namespace aweXpect.Results;
 public class StringBlockResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<StringEqualityOptions> options)
+	IOptionsHolderSource<StringEqualityOptions> options)
 	: AndOrResult<TType, TThat, StringBlockResult<TType, TThat>>(expectationBuilder, returnValue)
 {
 	/// <summary>
@@ -22,7 +22,7 @@ public class StringBlockResult<TType, TThat>(
 	/// </summary>
 	public StringBlockResult<TType, TThat> IgnoringCase(bool ignoreCase = true)
 	{
-		options.IgnoringCase(ignoreCase);
+		options.Holder.IgnoringCase(ignoreCase);
 		return this;
 	}
 
@@ -32,7 +32,7 @@ public class StringBlockResult<TType, TThat>(
 	public StringBlockResult<TType, TThat> Using(
 		IEqualityComparer<string> comparer)
 	{
-		options.Using(comparer);
+		options.Holder.Using(comparer);
 		return this;
 	}
 }

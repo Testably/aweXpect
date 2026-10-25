@@ -24,15 +24,15 @@ public static partial class ThatNullableTimeOnly
 		this IThat<TimeOnly?> subject,
 		TimeOnly? minimum)
 	{
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<TimeOnly, IThat<TimeOnly?>>, TimeOnly?>(maximum
 			=> new TimeToleranceResult<TimeOnly, IThat<TimeOnly?>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
-					(Minimum: minimum, Maximum: maximum, Tolerance: tolerance),
+					(Minimum: minimum, Maximum: maximum),
 					static (state, it, grammars) =>
-						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum, state.Tolerance)),
+						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum),
+					out IsBetweenConstraint constraint),
 				subject,
-				tolerance));
+				constraint));
 	}
 
 	/// <summary>
@@ -48,26 +48,35 @@ public static partial class ThatNullableTimeOnly
 		this IThat<TimeOnly?> subject,
 		TimeOnly? minimum)
 	{
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<TimeOnly, IThat<TimeOnly?>>, TimeOnly?>(maximum
 			=> new TimeToleranceResult<TimeOnly, IThat<TimeOnly?>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
-					(Minimum: minimum, Maximum: maximum, Tolerance: tolerance),
+					(Minimum: minimum, Maximum: maximum),
 					static (state, it, grammars) =>
-						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum, state.Tolerance).Invert()),
+						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum).Invert(),
+					out IsBetweenConstraint constraint),
 				subject,
-				tolerance));
+				constraint));
 	}
 
 	private sealed class IsBetweenConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		TimeOnly? minimum,
-		TimeOnly? maximum,
-		OptionsHolder<TimeTolerance> tolerance)
+		TimeOnly? maximum)
 		: OrderingConstraint<TimeOnly?>(it, grammars, minimum is null || maximum is null),
-			IValueConstraint<TimeOnly?>
+			IValueConstraint<TimeOnly?>,
+			IOptionsHolderSource<TimeTolerance>
 	{
+		private OptionsHolder<TimeTolerance>? _toleranceHolder;
+
+		private TimeTolerance CurrentTolerance
+			=> _toleranceHolder is null ? TimeTolerance.Default : _toleranceHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<TimeTolerance> IOptionsHolderSource<TimeTolerance>.Holder
+			=> _toleranceHolder ??= new OptionsHolder<TimeTolerance>(TimeTolerance.Default);
+
 		public ConstraintResult IsMetBy(TimeOnly? actual)
 		{
 			Actual = actual;
@@ -77,7 +86,7 @@ public static partial class ThatNullableTimeOnly
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
+				TimeSpan timeTolerance = CurrentTolerance.GetToleranceOrDefault();
 				Outcome = actual.Value.IsOnArc(minimum.Value, maximum.Value, timeTolerance)
 					? Outcome.Success
 					: Outcome.Failure;
@@ -92,7 +101,7 @@ public static partial class ThatNullableTimeOnly
 			Formatter.Format(stringBuilder, minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, maximum);
-			stringBuilder.Append(tolerance);
+			stringBuilder.Append(CurrentTolerance);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -108,7 +117,7 @@ public static partial class ThatNullableTimeOnly
 			Formatter.Format(stringBuilder, minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, maximum);
-			stringBuilder.Append(tolerance);
+			stringBuilder.Append(CurrentTolerance);
 		}
 	}
 }

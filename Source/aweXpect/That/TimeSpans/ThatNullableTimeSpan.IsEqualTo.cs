@@ -17,13 +17,13 @@ public static partial class ThatNullableTimeSpan
 		this IThat<TimeSpan?> subject,
 		TimeSpan? expected)
 	{
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
-				static (state, it, grammars) =>
-					new IsEqualToConstraint(it, grammars, state.Expected, state.Tolerance)),
+			subject.Get().ExpectationBuilder.AddConstraint(expected,
+				static (expected, it, grammars) =>
+					new IsEqualToConstraint(it, grammars, expected),
+				out IsEqualToConstraint constraint),
 			subject,
-			tolerance);
+			constraint);
 	}
 
 	/// <summary>
@@ -33,28 +33,37 @@ public static partial class ThatNullableTimeSpan
 		this IThat<TimeSpan?> subject,
 		TimeSpan? unexpected)
 	{
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
-				static (state, it, grammars) =>
-					new IsEqualToConstraint(it, grammars, state.Unexpected, state.Tolerance).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint(unexpected,
+				static (unexpected, it, grammars) =>
+					new IsEqualToConstraint(it, grammars, unexpected).Invert(),
+				out IsEqualToConstraint constraint),
 			subject,
-			tolerance);
+			constraint);
 	}
 
 	private sealed class IsEqualToConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TimeSpan? expected,
-		OptionsHolder<TimeTolerance> tolerance)
+		TimeSpan? expected)
 		: ConstraintResult.WithEqualToValue<TimeSpan?>(it, grammars, expected is null),
-			IValueConstraint<TimeSpan?>
+			IValueConstraint<TimeSpan?>,
+			IOptionsHolderSource<TimeTolerance>
 	{
+		private OptionsHolder<TimeTolerance>? _toleranceHolder;
+
+		private TimeTolerance CurrentTolerance
+			=> _toleranceHolder is null ? TimeTolerance.Default : _toleranceHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<TimeTolerance> IOptionsHolderSource<TimeTolerance>.Holder
+			=> _toleranceHolder ??= new OptionsHolder<TimeTolerance>(TimeTolerance.Default);
+
 		public ConstraintResult IsMetBy(TimeSpan? actual)
 		{
 			Actual = actual;
 			Outcome = (actual is null && expected is null) ||
-			          IsWithinTolerance(tolerance.Value.Tolerance, actual, expected)
+			          IsWithinTolerance(CurrentTolerance.Tolerance, actual, expected)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -64,7 +73,7 @@ public static partial class ThatNullableTimeSpan
 		{
 			stringBuilder.Append(Grammars.Verb("is equal to ", "are equal to "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(tolerance);
+			stringBuilder.Append(CurrentTolerance);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -78,7 +87,7 @@ public static partial class ThatNullableTimeSpan
 		{
 			stringBuilder.Append(Grammars.Verb("is not equal to ", "are not equal to "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(tolerance);
+			stringBuilder.Append(CurrentTolerance);
 		}
 	}
 }

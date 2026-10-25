@@ -18,15 +18,15 @@ public class ObjectCountWithToleranceResult<TCollection, TThat, TItem, TToleranc
 		IObjectEqualityWithToleranceResult<ObjectCountWithToleranceResult<TCollection, TThat, TItem, TTolerance>,
 			TItem, TTolerance>
 {
-	private readonly OptionsHolder<ObjectMatchType<TItem>> _options;
-	private readonly OptionsHolder<Quantifier> _quantifier;
+	private readonly IOptionsHolderSource<ObjectMatchType<TItem>> _options;
+	private readonly IOptionsHolderSource<Quantifier> _quantifier;
 	private readonly TThat _returnValue;
 
 	internal ObjectCountWithToleranceResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsHolder<Quantifier> quantifier,
-		OptionsHolder<ObjectMatchType<TItem>> options)
+		IOptionsHolderSource<Quantifier> quantifier,
+		IOptionsHolderSource<ObjectMatchType<TItem>> options)
 		: base(expectationBuilder, returnValue)
 	{
 		_returnValue = returnValue;
@@ -35,15 +35,15 @@ public class ObjectCountWithToleranceResult<TCollection, TThat, TItem, TToleranc
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options;
+	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options.Holder;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier.Holder;
 
 	/// <inheritdoc cref="ObjectMatchTypeExtensions.Within{TSelf, TItem, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TItem, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
 	{
-		_options.Within(tolerance);
+		_options.Holder.Within(tolerance);
 		return new WithinResult(ExpectationBuilder, _returnValue, _quantifier, _options);
 	}
 
@@ -58,8 +58,8 @@ public class ObjectCountWithToleranceResult<TCollection, TThat, TItem, TToleranc
 		internal WithinResult(
 			ExpectationBuilder expectationBuilder,
 			TThat returnValue,
-			OptionsHolder<Quantifier> quantifier,
-			OptionsHolder<ObjectMatchType<TItem>> options)
+			IOptionsHolderSource<Quantifier> quantifier,
+			IOptionsHolderSource<ObjectMatchType<TItem>> options)
 			: base(expectationBuilder, returnValue, quantifier, options)
 		{
 		}

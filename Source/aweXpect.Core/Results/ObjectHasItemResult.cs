@@ -13,15 +13,15 @@ namespace aweXpect.Results;
 public class ObjectHasItemResult<TCollection, TThat, TItem>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
-	OptionsHolder<ObjectMatchType<TItem>> options)
+	IOptionsHolderSource<CollectionIndexOptions> collectionIndexOptions,
+	IOptionsHolderSource<ObjectMatchType<TItem>> options)
 	: AndOrResult<TCollection, TThat, ObjectHasItemResult<TCollection, TThat, TItem>>(expectationBuilder, returnValue),
 		IOptionsProvider<CollectionIndexOptions>,
 		IObjectEqualityResult<ObjectHasItemResult<TCollection, TThat, TItem>, TItem>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => options;
+	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => options.Holder;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions.Holder;
 }

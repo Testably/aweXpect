@@ -19,14 +19,14 @@ public class StringProperCollectionMatchResult<TCollection, TThat>
 		ICollectionContainmentOptions,
 		IProperContainmentOptions
 {
-	private readonly OptionsHolder<CollectionMatchOptions> _collectionMatchOptions;
-	private readonly OptionsHolder<StringEqualityOptions> _options;
+	private readonly IOptionsHolderSource<CollectionMatchOptions> _collectionMatchOptions;
+	private readonly IOptionsHolderSource<StringEqualityOptions> _options;
 
 	internal StringProperCollectionMatchResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsHolder<StringEqualityOptions> options,
-		OptionsHolder<CollectionMatchOptions> collectionMatchOptions)
+		IOptionsHolderSource<StringEqualityOptions> options,
+		IOptionsHolderSource<CollectionMatchOptions> collectionMatchOptions)
 		: base(expectationBuilder, returnValue)
 	{
 		_options = options;
@@ -34,8 +34,8 @@ public class StringProperCollectionMatchResult<TCollection, TThat>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<CollectionMatchOptions> IOptionsProvider<CollectionMatchOptions>.Options => _collectionMatchOptions;
+	OptionsHolder<CollectionMatchOptions> IOptionsProvider<CollectionMatchOptions>.Options => _collectionMatchOptions.Holder;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
+	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options.Holder;
 }

@@ -16,15 +16,15 @@ namespace aweXpect.Results;
 public class HasItemWithConditionResult<TCollection, TItem>
 	: IOptionsProvider<PredicateOptions<TItem>>
 {
-	private readonly OptionsHolder<CollectionIndexOptions> _collectionIndexOptions;
+	private readonly IOptionsHolderSource<CollectionIndexOptions> _collectionIndexOptions;
 	private readonly ExpectationBuilder _expectationBuilder;
-	private readonly OptionsHolder<PredicateOptions<TItem>> _options;
+	private readonly IOptionsHolderSource<PredicateOptions<TItem>> _options;
 	private readonly IThat<TCollection?> _subject;
 
 	internal HasItemWithConditionResult(ExpectationBuilder expectationBuilder,
 		IThat<TCollection?> subject,
-		OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
-		OptionsHolder<PredicateOptions<TItem>> options)
+		IOptionsHolderSource<CollectionIndexOptions> collectionIndexOptions,
+		IOptionsHolderSource<PredicateOptions<TItem>> options)
 	{
 		_expectationBuilder = expectationBuilder;
 		_subject = subject;
@@ -33,7 +33,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<PredicateOptions<TItem>> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;
+	OptionsHolder<PredicateOptions<TItem>> IOptionsProvider<PredicateOptions<TItem>>.Options => _options.Holder;
 
 	/// <summary>
 	///     …that satisfies the <paramref name="predicate" />.
@@ -43,7 +43,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_options.Value = new PredicateOptions<TItem>(predicate,
+		_options.Holder.Value = new PredicateOptions<TItem>(predicate,
 			$"matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new HasItemResult<TCollection, IThat<TCollection?>>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
@@ -53,7 +53,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	/// </summary>
 	public HasItemResult<TCollection, IThat<TCollection?>> Matching<T>()
 	{
-		_options.Value = new PredicateOptions<TItem>(item => item is T,
+		_options.Holder.Value = new PredicateOptions<TItem>(item => item is T,
 			$"of type {Formatter.Format(typeof(T))}");
 		return new HasItemResult<TCollection, IThat<TCollection?>>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
@@ -66,7 +66,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_options.Value = new PredicateOptions<TItem>(item => item is T typed && predicate(typed),
+		_options.Holder.Value = new PredicateOptions<TItem>(item => item is T typed && predicate(typed),
 			$"of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new HasItemResult<TCollection, IThat<TCollection?>>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
@@ -77,7 +77,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	public HasItemResult<TCollection, IThat<TCollection?>> MatchingExactly<T>()
 	{
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
-		_options.Value = new PredicateOptions<TItem>(item => item is T && item.GetType() == exactType,
+		_options.Holder.Value = new PredicateOptions<TItem>(item => item is T && item.GetType() == exactType,
 			$"exactly of type {Formatter.Format(typeof(T))}");
 
 		return new HasItemResult<TCollection, IThat<TCollection?>>(_expectationBuilder, _subject, _collectionIndexOptions);
@@ -92,7 +92,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	{
 		predicate.ThrowIfNull();
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
-		_options.Value = new PredicateOptions<TItem>(item => item is T typed && item.GetType() == exactType && predicate(typed),
+		_options.Holder.Value = new PredicateOptions<TItem>(item => item is T typed && item.GetType() == exactType && predicate(typed),
 			$"exactly of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new HasItemResult<TCollection, IThat<TCollection?>>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}

@@ -14,20 +14,20 @@ namespace aweXpect.Results;
 public class StringBlockCountResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<Quantifier> quantifier,
-	OptionsHolder<StringEqualityOptions> options)
+	IOptionsHolderSource<Quantifier> quantifier,
+	IOptionsHolderSource<StringEqualityOptions> options)
 	: AndOrResult<TType, TThat, StringBlockCountResult<TType, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<Quantifier>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier.Holder;
 
 	/// <summary>
 	///     Ignores casing when comparing the <see langword="string" />s.
 	/// </summary>
 	public StringBlockCountResult<TType, TThat> IgnoringCase(bool ignoreCase = true)
 	{
-		options.IgnoringCase(ignoreCase);
+		options.Holder.IgnoringCase(ignoreCase);
 		return this;
 	}
 
@@ -37,7 +37,7 @@ public class StringBlockCountResult<TType, TThat>(
 	public StringBlockCountResult<TType, TThat> Using(
 		IEqualityComparer<string> comparer)
 	{
-		options.Using(comparer);
+		options.Holder.Using(comparer);
 		return this;
 	}
 }

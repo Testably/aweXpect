@@ -30,17 +30,16 @@ public static partial class ThatString
 		bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
-				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
-					Negated: negated),
+				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Negated: negated),
 				static (state, it, grammars)
 					=> new IsOneOfConstraint(it, grammars, state.ExpectedValues, state.ExpectedExpression,
-							state.Negated ? "unexpected" : "expected", state.Options)
-						.InvertIf(state.Negated)),
+							state.Negated ? "unexpected" : "expected")
+						.InvertIf(state.Negated),
+				out IsOneOfConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	private sealed class IsOneOfConstraint(
@@ -48,11 +47,20 @@ public static partial class ThatString
 		ExpectationGrammars grammars,
 		IEnumerable<string?> expectedValues,
 		string? expectedExpression,
-		string parameterName,
-		OptionsHolder<StringEqualityOptions> options)
+		string parameterName)
 		: ConstraintResult.WithValue<string?>(it, grammars),
-			IAsyncContextConstraint<string?>
+			IAsyncContextConstraint<string?>,
+			IOptionsHolderSource<StringEqualityOptions>
 	{
+		private OptionsHolder<StringEqualityOptions>? _optionsHolder;
+
+		private StringEqualityOptions CurrentOptions
+			=> _optionsHolder is null ? StringEqualityOptions.Default : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<StringEqualityOptions> IOptionsHolderSource<StringEqualityOptions>.Holder
+			=> _optionsHolder ??= new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default);
+
 		private StringEqualityOptions? _evaluationOptions;
 
 		/// <remarks>
@@ -67,9 +75,9 @@ public static partial class ThatString
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			StringEqualityOptions stringEqualityOptions = options.Value.ForEvaluation(context, cancellationToken);
+			StringEqualityOptions stringEqualityOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 			_evaluationOptions = stringEqualityOptions;
-			bool comparesAllValues = options.Value.InspectsSubject && expectedValues is ICollection<string?>;
+			bool comparesAllValues = CurrentOptions.InspectsSubject && expectedValues is ICollection<string?>;
 			bool isOneOf = false;
 			foreach (string? value in expectedValues)
 			{
@@ -84,7 +92,7 @@ public static partial class ThatString
 				}
 			}
 
-			if (actual is null && options.Value.InspectsSubject)
+			if (actual is null && CurrentOptions.InspectsSubject)
 			{
 				Outcome = Outcome.FailureBothWays;
 			}
@@ -100,14 +108,14 @@ public static partial class ThatString
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			contexts.AddExpectedValuesContext(expectedExpression, expectedValues, Grammars);
-			(_evaluationOptions ?? options.Value).AppendContexts(contexts);
+			(_evaluationOptions ?? CurrentOptions).AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues));
-			stringBuilder.Append(options);
+			stringBuilder.Append(CurrentOptions);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -120,7 +128,7 @@ public static partial class ThatString
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expectedValues));
-			stringBuilder.Append(options);
+			stringBuilder.Append(CurrentOptions);
 		}
 	}
 }

@@ -28,13 +28,14 @@ public static partial class ThatString
 			throw Tracing.WriteException(new ArgumentException("The 'expected' string cannot be empty.", nameof(expected)));
 		}
 
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default.AsPrefix());
+		StringEqualityOptions options = StringEqualityOptions.Default.AsPrefix();
 		return new StringEqualityResult<string, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (state, it, grammars) =>
-					new StartsWithConstraint(it, grammars, state.Expected, "expected", state.Options)),
+					new StartsWithConstraint(it, grammars, state.Expected, "expected", state.Options),
+				out StartsWithConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	/// <summary>
@@ -52,13 +53,14 @@ public static partial class ThatString
 			throw Tracing.WriteException(new ArgumentException("The 'unexpected' string cannot be empty.", nameof(unexpected)));
 		}
 
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default.AsPrefix());
+		StringEqualityOptions options = StringEqualityOptions.Default.AsPrefix();
 		return new StringEqualityResult<string, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (state, it, grammars) =>
-					new StartsWithConstraint(it, grammars, state.Unexpected, "unexpected", state.Options).Invert()),
+					new StartsWithConstraint(it, grammars, state.Unexpected, "unexpected", state.Options).Invert(),
+				out StartsWithConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	private sealed class StartsWithConstraint(
@@ -66,10 +68,19 @@ public static partial class ThatString
 		ExpectationGrammars grammars,
 		string? expected,
 		string parameterName,
-		OptionsHolder<StringEqualityOptions> options)
+		StringEqualityOptions options)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
-			IAsyncContextConstraint<string?>
+			IAsyncContextConstraint<string?>,
+			IOptionsHolderSource<StringEqualityOptions>
 	{
+		private OptionsHolder<StringEqualityOptions>? _optionsHolder;
+
+		private StringEqualityOptions CurrentOptions => _optionsHolder is null ? options : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<StringEqualityOptions> IOptionsHolderSource<StringEqualityOptions>.Holder
+			=> _optionsHolder ??= new OptionsHolder<StringEqualityOptions>(options);
+
 		private StringEqualityOptions? _evaluationOptions;
 		private MatchResult _matchResult;
 
@@ -83,7 +94,7 @@ public static partial class ThatString
 			try
 			{
 				Actual = actual;
-				_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+				_evaluationOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 				ValueTask<MatchResult> match = _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
 				if (match.IsCompletedSuccessfully)
 				{
@@ -117,21 +128,21 @@ public static partial class ThatString
 				contexts.AddStringContext("Expected", expected, this);
 			}
 
-			(_evaluationOptions ?? options.Value).AppendContexts(contexts);
+			(_evaluationOptions ?? CurrentOptions).AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.Value.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
+			=> stringBuilder.Append(CurrentOptions.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult)
+			=> stringBuilder.Append((_evaluationOptions ?? CurrentOptions).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult)
 				.Indent(indentation, false));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.Value.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
+			=> stringBuilder.Append(CurrentOptions.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult)
+			=> stringBuilder.Append((_evaluationOptions ?? CurrentOptions).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult)
 				.Indent(indentation, false));
 	}
 }

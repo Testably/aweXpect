@@ -14,7 +14,7 @@ namespace aweXpect.Results;
 public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<ObjectMatchType<TElement>> options)
+	IOptionsHolderSource<ObjectMatchType<TElement>> options)
 	: AndOrResult<TType, TThat, ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>>(
 			expectationBuilder, returnValue),
 		IObjectEqualityWithToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>,
@@ -23,12 +23,12 @@ public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TToleranc
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<ObjectMatchType<TElement>> IOptionsProvider<ObjectMatchType<TElement>>.Options => options;
+	OptionsHolder<ObjectMatchType<TElement>> IOptionsProvider<ObjectMatchType<TElement>>.Options => options.Holder;
 
 	/// <inheritdoc cref="ObjectMatchTypeExtensions.Within{TSelf, TElement, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TElement, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
 	{
-		options.Within(tolerance);
+		options.Holder.Within(tolerance);
 		return new WithinResult(ExpectationBuilder, _returnValue, options);
 	}
 
@@ -39,7 +39,7 @@ public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TToleranc
 	public sealed class WithinResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsHolder<ObjectMatchType<TElement>> options)
+		IOptionsHolderSource<ObjectMatchType<TElement>> options)
 		: ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>(expectationBuilder, returnValue,
 				options),
 			IWithinToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>

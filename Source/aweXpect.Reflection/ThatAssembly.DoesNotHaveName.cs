@@ -18,12 +18,12 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> DoesNotHaveName(
 		this IThat<Assembly?> subject, string unexpected)
 	{
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
-				static (s, it, grammars)
-				=> new HasNameConstraint(it, grammars, s.Unexpected, "unexpected", s.Options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint(unexpected,
+				static (unexpected, it, grammars)
+				=> new HasNameConstraint(it, grammars, unexpected, "unexpected").Invert(),
+				out HasNameConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 }

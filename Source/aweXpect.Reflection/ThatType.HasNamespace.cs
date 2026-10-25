@@ -22,12 +22,12 @@ public static partial class ThatType
 	public static StringEqualityTypeResult<Type, IThat<Type?>> HasNamespace(
 		this IThat<Type?> subject, string expected)
 	{
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		return new StringEqualityTypeResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
-				static (s, it, grammars)
-				=> new HasNamespaceConstraint(it, grammars, s.Expected, "expected", s.Options)),
+		return new StringEqualityTypeResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint(expected,
+				static (expected, it, grammars)
+				=> new HasNamespaceConstraint(it, grammars, expected, "expected"),
+			out HasNamespaceConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	/// <summary>
@@ -42,23 +42,32 @@ public static partial class ThatType
 	public static StringEqualityTypeResult<Type, IThat<Type?>> DoesNotHaveNamespace(
 		this IThat<Type?> subject, string unexpected)
 	{
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		return new StringEqualityTypeResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
-				static (s, it, grammars)
-				=> new HasNamespaceConstraint(it, grammars, s.Unexpected, "unexpected", s.Options).Invert()),
+		return new StringEqualityTypeResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint(unexpected,
+				static (unexpected, it, grammars)
+				=> new HasNamespaceConstraint(it, grammars, unexpected, "unexpected").Invert(),
+			out HasNamespaceConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	private sealed class HasNamespaceConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		string parameterName,
-		OptionsHolder<StringEqualityOptions> options)
+		string parameterName)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
-			IAsyncContextConstraint<Type?>
+			IAsyncContextConstraint<Type?>,
+			IOptionsHolderSource<StringEqualityOptions>
 	{
+		private OptionsHolder<StringEqualityOptions>? _optionsHolder;
+
+		private StringEqualityOptions CurrentOptions
+			=> _optionsHolder is null ? StringEqualityOptions.Default : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<StringEqualityOptions> IOptionsHolderSource<StringEqualityOptions>.Holder
+			=> _optionsHolder ??= new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default);
+
 		private StringEqualityOptions? _evaluationOptions;
 		private MatchResult _matchResult;
 
@@ -66,7 +75,7 @@ public static partial class ThatType
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.Namespace, expected, parameterName);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -74,13 +83,13 @@ public static partial class ThatType
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
+			=> (_evaluationOptions ?? CurrentOptions).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has namespace ").Append(options.Value.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("has namespace ").Append(CurrentOptions.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedMemberFailure(It, "namespace", Grammars,
+			=> stringBuilder.Append((_evaluationOptions ?? CurrentOptions).GetExtendedMemberFailure(It, "namespace", Grammars,
 				Actual?.Namespace, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

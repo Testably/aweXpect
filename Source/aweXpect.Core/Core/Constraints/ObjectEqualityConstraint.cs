@@ -20,21 +20,40 @@ internal sealed class ObjectEqualityConstraint<TSubject, TExpected>(
 	ExpectationGrammars grammars,
 	TExpected expected,
 	string? expectedExpression,
-	OptionsHolder<ObjectMatchType<TSubject>> options,
+	ObjectMatchType<TSubject> options,
 	string parameterName)
 	: ConstraintResult.WithEqualToValue<TSubject>(it, grammars, expected is null),
-		IAsyncContextConstraint<TSubject>
+		IAsyncContextConstraint<TSubject>,
+		IOptionsHolderSource<ObjectMatchType<TSubject>>
 {
+	private OptionsHolder<ObjectMatchType<TSubject>>? _optionsHolder;
+
+	private ObjectMatchType<TSubject> CurrentOptions => _optionsHolder is null ? options : _optionsHolder.Value;
+
+	/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+	OptionsHolder<ObjectMatchType<TSubject>> IOptionsHolderSource<ObjectMatchType<TSubject>>.Holder
+		=> _optionsHolder ??= new OptionsHolder<ObjectMatchType<TSubject>>(options);
+
 	private ObjectMatcher<TSubject>? _matcher;
 	private MatchResult _matchResult;
 
-	private ObjectMatcher<TSubject> Matcher => _matcher ?? options.Value.ForEvaluation(default);
+	/// <summary>
+	///     Compares with the options in the <paramref name="options" /> holder, which the caller shares with its result.
+	/// </summary>
+	public ObjectEqualityConstraint(string it, ExpectationGrammars grammars, TExpected expected,
+		string? expectedExpression, OptionsHolder<ObjectMatchType<TSubject>> options, string parameterName)
+		: this(it, grammars, expected, expectedExpression, options.Value, parameterName)
+	{
+		_optionsHolder = options;
+	}
+
+	private ObjectMatcher<TSubject> Matcher => _matcher ?? CurrentOptions.ForEvaluation(default);
 
 	public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		Actual = actual;
-		ObjectMatchType<TSubject> matchType = options.Value;
+		ObjectMatchType<TSubject> matchType = CurrentOptions;
 		ValidateExpected(matchType);
 		_matcher = matchType.ForEvaluation(new MatchEnvironment(context, cancellationToken));
 		_matchResult = await _matcher.CompareWithExplanation(actual, expected);
@@ -64,7 +83,7 @@ internal sealed class ObjectEqualityConstraint<TSubject, TExpected>(
 		=> Matcher.AppendContexts(contexts);
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> stringBuilder.Append(options.Value.GetExpectation(
+		=> stringBuilder.Append(CurrentOptions.GetExpectation(
 			expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)

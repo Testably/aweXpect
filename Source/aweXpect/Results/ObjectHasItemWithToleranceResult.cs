@@ -19,14 +19,14 @@ public class ObjectHasItemWithToleranceResult<TCollection, TThat, TItem, TTolera
 			TTolerance>
 {
 	private readonly TThat _returnValue;
-	private readonly OptionsHolder<CollectionIndexOptions> _collectionIndexOptions;
-	private readonly OptionsHolder<ObjectMatchType<TItem>> _options;
+	private readonly IOptionsHolderSource<CollectionIndexOptions> _collectionIndexOptions;
+	private readonly IOptionsHolderSource<ObjectMatchType<TItem>> _options;
 
 	internal ObjectHasItemWithToleranceResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
-		OptionsHolder<ObjectMatchType<TItem>> options)
+		IOptionsHolderSource<CollectionIndexOptions> collectionIndexOptions,
+		IOptionsHolderSource<ObjectMatchType<TItem>> options)
 		: base(expectationBuilder, returnValue)
 	{
 		_returnValue = returnValue;
@@ -35,15 +35,15 @@ public class ObjectHasItemWithToleranceResult<TCollection, TThat, TItem, TTolera
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options;
+	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options.Holder;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
+	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions.Holder;
 
 	/// <inheritdoc cref="ObjectMatchTypeExtensions.Within{TSelf, TElement, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TElement, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
 	{
-		_options.Within(tolerance);
+		_options.Holder.Within(tolerance);
 		return new WithinResult(ExpectationBuilder, _returnValue, _collectionIndexOptions, _options);
 	}
 
@@ -58,8 +58,8 @@ public class ObjectHasItemWithToleranceResult<TCollection, TThat, TItem, TTolera
 		internal WithinResult(
 			ExpectationBuilder expectationBuilder,
 			TThat returnValue,
-			OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
-			OptionsHolder<ObjectMatchType<TItem>> options)
+			IOptionsHolderSource<CollectionIndexOptions> collectionIndexOptions,
+			IOptionsHolderSource<ObjectMatchType<TItem>> options)
 			: base(expectationBuilder, returnValue, collectionIndexOptions, options)
 		{
 		}

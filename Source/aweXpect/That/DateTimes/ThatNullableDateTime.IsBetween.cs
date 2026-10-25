@@ -25,17 +25,17 @@ public static partial class ThatNullableDateTime
 		this IThat<DateTime?> subject,
 		DateTime? minimum)
 	{
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<DateTime, IThat<DateTime?>>, DateTime?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 			return new TimeToleranceResult<DateTime, IThat<DateTime?>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
-					(Minimum: minimum, Maximum: maximum, Tolerance: tolerance),
+					(Minimum: minimum, Maximum: maximum),
 					static (state, it, grammars) =>
-						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum, state.Tolerance)),
+						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum),
+					out IsBetweenConstraint constraint),
 				subject,
-				tolerance);
+				constraint);
 		});
 	}
 
@@ -54,17 +54,17 @@ public static partial class ThatNullableDateTime
 		this IThat<DateTime?> subject,
 		DateTime? minimum)
 	{
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<DateTime, IThat<DateTime?>>, DateTime?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 			return new TimeToleranceResult<DateTime, IThat<DateTime?>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
-					(Minimum: minimum, Maximum: maximum, Tolerance: tolerance),
+					(Minimum: minimum, Maximum: maximum),
 					static (state, it, grammars) =>
-						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum, state.Tolerance).Invert()),
+						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum).Invert(),
+					out IsBetweenConstraint constraint),
 				subject,
-				tolerance);
+				constraint);
 		});
 	}
 
@@ -72,11 +72,20 @@ public static partial class ThatNullableDateTime
 		string it,
 		ExpectationGrammars grammars,
 		DateTime? minimum,
-		DateTime? maximum,
-		OptionsHolder<TimeTolerance> tolerance)
+		DateTime? maximum)
 		: OrderingConstraint<DateTime?>(it, grammars, minimum is null || maximum is null),
-			IValueConstraint<DateTime?>
+			IValueConstraint<DateTime?>,
+			IOptionsHolderSource<TimeTolerance>
 	{
+		private OptionsHolder<TimeTolerance>? _toleranceHolder;
+
+		private TimeTolerance CurrentTolerance
+			=> _toleranceHolder is null ? TimeTolerance.Default : _toleranceHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<TimeTolerance> IOptionsHolderSource<TimeTolerance>.Holder
+			=> _toleranceHolder ??= new OptionsHolder<TimeTolerance>(TimeTolerance.Default);
+
 		private DateTimeKind? _incompatibleKind;
 
 		public ConstraintResult IsMetBy(DateTime? actual)
@@ -110,7 +119,7 @@ public static partial class ThatNullableDateTime
 
 		private bool IsWithinRange(DateTime actual, DateTime minimum, DateTime maximum)
 		{
-			TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
+			TimeSpan timeTolerance = CurrentTolerance.GetToleranceOrDefault();
 			return minimum - actual <= timeTolerance && actual - maximum <= timeTolerance;
 		}
 
@@ -120,7 +129,7 @@ public static partial class ThatNullableDateTime
 			Formatter.Format(stringBuilder, minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, maximum);
-			stringBuilder.Append(tolerance);
+			stringBuilder.Append(CurrentTolerance);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -144,7 +153,7 @@ public static partial class ThatNullableDateTime
 			Formatter.Format(stringBuilder, minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, maximum);
-			stringBuilder.Append(tolerance);
+			stringBuilder.Append(CurrentTolerance);
 		}
 	}
 }

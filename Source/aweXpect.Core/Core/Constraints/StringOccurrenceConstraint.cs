@@ -20,16 +20,46 @@ internal sealed class StringOccurrenceConstraint(
 	ExpectationGrammars grammars,
 	string expected,
 	string parameterName,
-	OptionsHolder<Quantifier> quantifier,
-	OptionsHolder<StringEqualityOptions> options)
+	Quantifier quantifier,
+	StringEqualityOptions options)
 	: ConstraintResult(grammars),
-		IAsyncContextConstraint<string?>
+		IAsyncContextConstraint<string?>,
+		IOptionsHolderSource<Quantifier>,
+		IOptionsHolderSource<StringEqualityOptions>
 {
+	private OptionsHolder<Quantifier>? _quantifierHolder;
+
+	private Quantifier CurrentQuantifier => _quantifierHolder is null ? quantifier : _quantifierHolder.Value;
+
+	/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+	OptionsHolder<Quantifier> IOptionsHolderSource<Quantifier>.Holder
+		=> _quantifierHolder ??= new OptionsHolder<Quantifier>(quantifier);
+
+	private OptionsHolder<StringEqualityOptions>? _optionsHolder;
+
+	private StringEqualityOptions CurrentOptions => _optionsHolder is null ? options : _optionsHolder.Value;
+
+	/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+	OptionsHolder<StringEqualityOptions> IOptionsHolderSource<StringEqualityOptions>.Holder
+		=> _optionsHolder ??= new OptionsHolder<StringEqualityOptions>(options);
+
 	private string? _actual;
 	private int _actualCount;
 	private StringEqualityOptions? _evaluationOptions;
 	private bool _isFinished;
 	private bool _isNegated;
+
+	/// <summary>
+	///     Counts with the options in the <paramref name="quantifier" /> and <paramref name="options" /> holders, which
+	///     the caller shares with its result.
+	/// </summary>
+	public StringOccurrenceConstraint(string it, ExpectationGrammars grammars, string expected, string parameterName,
+		OptionsHolder<Quantifier> quantifier, OptionsHolder<StringEqualityOptions> options)
+		: this(it, grammars, expected, parameterName, quantifier.Value, options.Value)
+	{
+		_quantifierHolder = quantifier;
+		_optionsHolder = options;
+	}
 
 	/// <inheritdoc />
 	/// <remarks>
@@ -41,9 +71,9 @@ internal sealed class StringOccurrenceConstraint(
 		CancellationToken cancellationToken)
 	{
 		_actual = actual;
-		_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+		_evaluationOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 		(_actualCount, _isFinished) =
-			await StringOccurrences.Count(_evaluationOptions, actual ?? string.Empty, expected, quantifier.Value,
+			await StringOccurrences.Count(_evaluationOptions, actual ?? string.Empty, expected, CurrentQuantifier,
 				parameterName);
 		if (actual is null)
 		{
@@ -51,15 +81,15 @@ internal sealed class StringOccurrenceConstraint(
 			return this;
 		}
 
-		Outcome = quantifier.Value.Check(_actualCount, true, _isNegated) ?? _isNegated ? Outcome.Success : Outcome.Failure;
+		Outcome = CurrentQuantifier.Check(_actualCount, true, _isNegated) ?? _isNegated ? Outcome.Success : Outcome.Failure;
 		return this;
 	}
 
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> StringOccurrences.AppendExpectation(stringBuilder, quantifier.Value, _isNegated,
+		=> StringOccurrences.AppendExpectation(stringBuilder, CurrentQuantifier, _isNegated,
 			Grammars.Verb("contains", "contain"), Grammars.Verb("does not contain", "do not contain"), expected,
-			options.Value);
+			CurrentOptions);
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
@@ -70,7 +100,7 @@ internal sealed class StringOccurrenceConstraint(
 			contexts.AddStringContext("Expected", expected, this);
 		}
 
-		(_evaluationOptions ?? options.Value).AppendContexts(contexts);
+		(_evaluationOptions ?? CurrentOptions).AppendContexts(contexts);
 	}
 
 	/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
@@ -96,7 +126,7 @@ internal sealed class StringOccurrenceConstraint(
 		}
 
 		StringOccurrences.AppendResult(stringBuilder, it, expected, _actual, (_actualCount, _isFinished),
-			_evaluationOptions ?? options.Value, indentation);
+			_evaluationOptions ?? CurrentOptions, indentation);
 	}
 
 	/// <inheritdoc />

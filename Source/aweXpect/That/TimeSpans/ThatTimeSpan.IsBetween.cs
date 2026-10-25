@@ -22,17 +22,17 @@ public static partial class ThatTimeSpan
 		this IThat<TimeSpan> subject,
 		TimeSpan? minimum)
 	{
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<TimeSpan, IThat<TimeSpan>>, TimeSpan?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 			return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
-					(Minimum: minimum, Maximum: maximum, Tolerance: tolerance),
+					(Minimum: minimum, Maximum: maximum),
 					static (state, it, grammars) =>
-						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum, state.Tolerance)),
+						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum),
+					out IsBetweenConstraint constraint),
 				subject,
-				tolerance);
+				constraint);
 		});
 	}
 
@@ -48,17 +48,17 @@ public static partial class ThatTimeSpan
 		this IThat<TimeSpan> subject,
 		TimeSpan? minimum)
 	{
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<TimeSpan, IThat<TimeSpan>>, TimeSpan?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 			return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
-					(Minimum: minimum, Maximum: maximum, Tolerance: tolerance),
+					(Minimum: minimum, Maximum: maximum),
 					static (state, it, grammars) =>
-						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum, state.Tolerance).Invert()),
+						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum).Invert(),
+					out IsBetweenConstraint constraint),
 				subject,
-				tolerance);
+				constraint);
 		});
 	}
 
@@ -66,11 +66,20 @@ public static partial class ThatTimeSpan
 		string it,
 		ExpectationGrammars grammars,
 		TimeSpan? minimum,
-		TimeSpan? maximum,
-		OptionsHolder<TimeTolerance> tolerance)
+		TimeSpan? maximum)
 		: OrderingConstraint<TimeSpan>(it, grammars, minimum is null || maximum is null),
-			IValueConstraint<TimeSpan>
+			IValueConstraint<TimeSpan>,
+			IOptionsHolderSource<TimeTolerance>
 	{
+		private OptionsHolder<TimeTolerance>? _toleranceHolder;
+
+		private TimeTolerance CurrentTolerance
+			=> _toleranceHolder is null ? TimeTolerance.Default : _toleranceHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<TimeTolerance> IOptionsHolderSource<TimeTolerance>.Holder
+			=> _toleranceHolder ??= new OptionsHolder<TimeTolerance>(TimeTolerance.Default);
+
 		public ConstraintResult IsMetBy(TimeSpan actual)
 		{
 			Actual = actual;
@@ -80,7 +89,7 @@ public static partial class ThatTimeSpan
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
+				TimeSpan timeTolerance = CurrentTolerance.GetToleranceOrDefault();
 				Outcome = actual.ShiftedTicks(timeTolerance) >= minimum.Value.Ticks &&
 				          actual.ShiftedTicks(timeTolerance.Negate()) <= maximum.Value.Ticks
 					? Outcome.Success
@@ -96,7 +105,7 @@ public static partial class ThatTimeSpan
 			Formatter.Format(stringBuilder, minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, maximum);
-			stringBuilder.Append(tolerance);
+			stringBuilder.Append(CurrentTolerance);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -112,7 +121,7 @@ public static partial class ThatTimeSpan
 			Formatter.Format(stringBuilder, minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, maximum);
-			stringBuilder.Append(tolerance);
+			stringBuilder.Append(CurrentTolerance);
 		}
 	}
 }

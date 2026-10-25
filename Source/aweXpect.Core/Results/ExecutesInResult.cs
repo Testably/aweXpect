@@ -16,14 +16,14 @@ namespace aweXpect.Results;
 public class ExecutesInResult<TResult>(
 	ExpectationBuilder expectationBuilder,
 	TResult returnValue,
-	OptionsHolder<ExecutionTimeOptions> options)
+	IOptionsHolderSource<ExecutionTimeOptions> options)
 	: IOptionsProvider<ExecutionTimeOptions>, ITimeoutBound
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<ExecutionTimeOptions> IOptionsProvider<ExecutionTimeOptions>.Options => options;
+	OptionsHolder<ExecutionTimeOptions> IOptionsProvider<ExecutionTimeOptions>.Options => options.Holder;
 
 	/// <inheritdoc cref="ITimeoutBound.UpperBound" />
-	TimeSpan? ITimeoutBound.UpperBound => options.Value.UpperBound;
+	TimeSpan? ITimeoutBound.UpperBound => options.Holder.Value.UpperBound;
 
 	/// <summary>
 	///     …allowing the delegate to throw an exception, measuring the duration until it did so,
@@ -34,7 +34,7 @@ public class ExecutesInResult<TResult>(
 	/// </remarks>
 	public ExecutesInResult<TResult> AllowingExceptions(bool allowExceptions = true)
 	{
-		options.Value = options.Value.AllowingExceptions(allowExceptions);
+		options.Holder.Value = options.Holder.Value.AllowingExceptions(allowExceptions);
 		return this;
 	}
 
@@ -44,7 +44,7 @@ public class ExecutesInResult<TResult>(
 	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
 	public TResult AtMost(TimeSpan maximum)
 	{
-		options.AtMost(maximum);
+		options.Holder.AtMost(maximum);
 		expectationBuilder.AddTimeoutBound(this);
 		return returnValue;
 	}
@@ -55,7 +55,7 @@ public class ExecutesInResult<TResult>(
 	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
 	public TResult AtLeast(TimeSpan minimum)
 	{
-		options.AtLeast(minimum);
+		options.Holder.AtLeast(minimum);
 		return returnValue;
 	}
 
@@ -64,7 +64,7 @@ public class ExecutesInResult<TResult>(
 	/// </summary>
 	public BetweenResult<TResult, TimeSpan> Between(TimeSpan minimum) => new(maximum =>
 	{
-		options.Between(minimum, maximum);
+		options.Holder.Between(minimum, maximum);
 		expectationBuilder.AddTimeoutBound(this);
 		return returnValue;
 	});

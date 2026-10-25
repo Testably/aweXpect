@@ -19,13 +19,13 @@ public static partial class ThatString
 		this IThat<string?> subject,
 		string? expected)
 	{
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
-				static (state, it, grammars) =>
-					new IsEqualToConstraint(it, grammars, state.Expected, "expected", state.Options)),
+			subject.Get().ExpectationBuilder.AddConstraint(expected,
+				static (expected, it, grammars) =>
+					new IsEqualToConstraint(it, grammars, expected, "expected"),
+				out IsEqualToConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	/// <summary>
@@ -35,24 +35,33 @@ public static partial class ThatString
 		this IThat<string?> subject,
 		string? unexpected)
 	{
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
-				static (state, it, grammars) =>
-					new IsEqualToConstraint(it, grammars, state.Unexpected, "unexpected", state.Options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint(unexpected,
+				static (unexpected, it, grammars) =>
+					new IsEqualToConstraint(it, grammars, unexpected, "unexpected").Invert(),
+				out IsEqualToConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	private sealed class IsEqualToConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		string? expected,
-		string parameterName,
-		OptionsHolder<StringEqualityOptions> options)
+		string parameterName)
 		: ConstraintResult.WithEqualToValue<string?>(it, grammars, expected is null),
-			IAsyncContextConstraint<string?>
+			IAsyncContextConstraint<string?>,
+			IOptionsHolderSource<StringEqualityOptions>
 	{
+		private OptionsHolder<StringEqualityOptions>? _optionsHolder;
+
+		private StringEqualityOptions CurrentOptions
+			=> _optionsHolder is null ? StringEqualityOptions.Default : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<StringEqualityOptions> IOptionsHolderSource<StringEqualityOptions>.Holder
+			=> _optionsHolder ??= new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default);
+
 		private StringEqualityOptions? _evaluationOptions;
 		private MatchResult _matchResult;
 
@@ -68,7 +77,7 @@ public static partial class ThatString
 			try
 			{
 				Actual = actual;
-				_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+				_evaluationOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 				ValueTask<MatchResult> match = _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
 				if (match.IsCompletedSuccessfully)
 				{
@@ -90,7 +99,7 @@ public static partial class ThatString
 		{
 			_matchResult = matchResult;
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
-			if (Actual is null && options.Value.InspectsSubject)
+			if (Actual is null && CurrentOptions.InspectsSubject)
 			{
 				Outcome = Outcome.FailureBothWays;
 			}
@@ -103,26 +112,26 @@ public static partial class ThatString
 		{
 			if (!string.IsNullOrEmpty(Actual))
 			{
-				contexts.AddStringDifferencesContext(Actual, expected, _evaluationOptions ?? options.Value, Grammars);
+				contexts.AddStringDifferencesContext(Actual, expected, _evaluationOptions ?? CurrentOptions, Grammars);
 				contexts.AddStringContext("Actual", Actual, this);
 				contexts.AddStringContext("Expected", expected, this);
 			}
 
-			(_evaluationOptions ?? options.Value).AppendContexts(contexts);
+			(_evaluationOptions ?? CurrentOptions).AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.Value.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
+			=> stringBuilder.Append(CurrentOptions.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult)
+			=> stringBuilder.Append((_evaluationOptions ?? CurrentOptions).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult)
 				.Indent(indentation, false));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.Value.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
+			=> stringBuilder.Append(CurrentOptions.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult)
+			=> stringBuilder.Append((_evaluationOptions ?? CurrentOptions).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult)
 				.Indent(indentation, false));
 	}
 }

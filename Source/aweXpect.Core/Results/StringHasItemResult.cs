@@ -13,8 +13,8 @@ namespace aweXpect.Results;
 public class StringHasItemResult<TCollection, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
-	OptionsHolder<StringEqualityOptions> options)
+	IOptionsHolderSource<CollectionIndexOptions> collectionIndexOptions,
+	IOptionsHolderSource<StringEqualityOptions> options)
 	: AndOrResult<TCollection, TThat, StringHasItemResult<TCollection, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<CollectionIndexOptions>,
 		IOptionsProvider<StringEqualityOptions>,
@@ -23,10 +23,10 @@ public class StringHasItemResult<TCollection, TThat>(
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions.Holder;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options;
+	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options.Holder;
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a block of lines, which may be indented as a whole.
@@ -43,7 +43,7 @@ public class StringHasItemResult<TCollection, TThat>(
 	/// </exception>
 	public StringBlockHasItemResult<TCollection, TThat> AsBlock()
 	{
-		options.AsBlock();
+		options.Holder.AsBlock();
 		return new StringBlockHasItemResult<TCollection, TThat>(ExpectationBuilder, _returnValue, collectionIndexOptions,
 			options);
 	}

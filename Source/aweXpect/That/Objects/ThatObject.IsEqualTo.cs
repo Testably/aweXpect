@@ -15,12 +15,13 @@ public static partial class ThatObject
 		this IThat<object?> subject,
 		object? expected)
 	{
-		OptionsHolder<ObjectMatchType<object?>> options = new(ObjectMatchType<object?>.Default);
+		ObjectMatchType<object?> options = ObjectMatchType<object?>.Default;
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
-				subject.Get().ExpectationBuilder, expected, options),
+				subject.Get().ExpectationBuilder, expected, options,
+				out IOptionsHolderSource<ObjectMatchType<object?>> optionsSource),
 			subject,
-			options);
+			optionsSource);
 	}
 
 	/// <summary>
@@ -32,12 +33,13 @@ public static partial class ThatObject
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where T : struct
 	{
-		OptionsHolder<ObjectMatchType<T?>> options = new(ObjectMatchType<T?>.Default);
+		ObjectMatchType<T?> options = ObjectMatchType<T?>.Default;
 		return new ObjectEqualityResult<T?, IThat<T?>, T?>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
-				subject.Get().ExpectationBuilder, expected, options),
+				subject.Get().ExpectationBuilder, expected, options,
+				out IOptionsHolderSource<ObjectMatchType<T?>> optionsSource),
 			subject,
-			options);
+			optionsSource);
 	}
 
 	/// <summary>
@@ -49,12 +51,13 @@ public static partial class ThatObject
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where T : struct
 	{
-		OptionsHolder<ObjectMatchType<T>> options = new(ObjectMatchType<T>.Default);
+		ObjectMatchType<T> options = ObjectMatchType<T>.Default;
 		return new ObjectEqualityResult<T, IThat<T>, T>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
-				subject.Get().ExpectationBuilder, expected, options),
+				subject.Get().ExpectationBuilder, expected, options,
+				out IOptionsHolderSource<ObjectMatchType<T>> optionsSource),
 			subject,
-			options);
+			optionsSource);
 	}
 
 	/// <summary>
@@ -64,12 +67,13 @@ public static partial class ThatObject
 		this IThat<object?> subject,
 		object? unexpected)
 	{
-		OptionsHolder<ObjectMatchType<object?>> options = new(ObjectMatchType<object?>.Default);
+		ObjectMatchType<object?> options = ObjectMatchType<object?>.Default;
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
-				subject.Get().ExpectationBuilder, unexpected, options, isNegated: true),
+				subject.Get().ExpectationBuilder, unexpected, options,
+				out IOptionsHolderSource<ObjectMatchType<object?>> optionsSource, isNegated: true),
 			subject,
-			options);
+			optionsSource);
 	}
 
 	/// <summary>
@@ -82,12 +86,13 @@ public static partial class ThatObject
 		string doNotPopulateThisValue = "")
 		where T : struct
 	{
-		OptionsHolder<ObjectMatchType<T?>> options = new(ObjectMatchType<T?>.Default);
+		ObjectMatchType<T?> options = ObjectMatchType<T?>.Default;
 		return new ObjectEqualityResult<T?, IThat<T?>, T?>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
-				subject.Get().ExpectationBuilder, unexpected, options, isNegated: true),
+				subject.Get().ExpectationBuilder, unexpected, options,
+				out IOptionsHolderSource<ObjectMatchType<T?>> optionsSource, isNegated: true),
 			subject,
-			options);
+			optionsSource);
 	}
 
 	/// <summary>
@@ -100,11 +105,12 @@ public static partial class ThatObject
 		string doNotPopulateThisValue = "")
 		where T : struct
 	{
-		OptionsHolder<ObjectMatchType<T>> options = new(ObjectMatchType<T>.Default);
+		ObjectMatchType<T> options = ObjectMatchType<T>.Default;
 		return new ObjectEqualityResult<T, IThat<T>, T>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
-				subject.Get().ExpectationBuilder, unexpected, options, isNegated: true),
+				subject.Get().ExpectationBuilder, unexpected, options,
+				out IOptionsHolderSource<ObjectMatchType<T>> optionsSource, isNegated: true),
 			subject,
-			options);
+			optionsSource);
 	}
 }

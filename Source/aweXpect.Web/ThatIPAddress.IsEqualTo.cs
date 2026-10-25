@@ -22,11 +22,12 @@ public static partial class ThatIPAddress
 		this IThat<IPAddress?> subject,
 		IPAddress? expected)
 	{
-		OptionsHolder<ObjectMatchType<IPAddress?>> options = new(ObjectMatchType<IPAddress?>.Default);
+		ObjectMatchType<IPAddress?> options = ObjectMatchType<IPAddress?>.Default;
 		return new ObjectEqualityResult<IPAddress?, IThat<IPAddress?>, IPAddress?>(
-			subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options),
+			subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options,
+			out IOptionsHolderSource<ObjectMatchType<IPAddress?>> optionsSource),
 			subject,
-			options);
+			optionsSource);
 	}
 
 	/// <summary>
@@ -41,11 +42,12 @@ public static partial class ThatIPAddress
 		this IThat<IPAddress?> subject,
 		IPAddress? unexpected)
 	{
-		OptionsHolder<ObjectMatchType<IPAddress?>> options = new(ObjectMatchType<IPAddress?>.Default);
+		ObjectMatchType<IPAddress?> options = ObjectMatchType<IPAddress?>.Default;
 		return new ObjectEqualityResult<IPAddress?, IThat<IPAddress?>, IPAddress?>(
-			subject.Get().ExpectationBuilder.AddEqualityConstraint(unexpected, options, isNegated: true),
+			subject.Get().ExpectationBuilder.AddEqualityConstraint(unexpected, options,
+			out IOptionsHolderSource<ObjectMatchType<IPAddress?>> optionsSource, isNegated: true),
 			subject,
-			options);
+			optionsSource);
 	}
 
 	/// <summary>

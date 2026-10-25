@@ -30,16 +30,15 @@ public static partial class ThatNullableTimeOnly
 		bool negated)
 	{
 		IEnumerable<TimeOnly?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
-				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Tolerance: tolerance,
-					Negated: negated),
+				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Negated: negated),
 				static (state, it, grammars) =>
-					new IsOneOfConstraint(it, grammars, state.ExpectedValues, state.ExpectedExpression, state.Tolerance)
-						.InvertIf(state.Negated)),
+					new IsOneOfConstraint(it, grammars, state.ExpectedValues, state.ExpectedExpression)
+						.InvertIf(state.Negated),
+				out IsOneOfConstraint constraint),
 			subject,
-			tolerance);
+			constraint);
 	}
 
 	[CreateExpectationFamily("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
@@ -57,11 +56,20 @@ public static partial class ThatNullableTimeOnly
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<TimeOnly?> expected,
-		string? expectedExpression,
-		OptionsHolder<TimeTolerance> tolerance)
+		string? expectedExpression)
 		: ConstraintResult.WithValue<TimeOnly?>(it, grammars),
-			IValueConstraint<TimeOnly?>
+			IValueConstraint<TimeOnly?>,
+			IOptionsHolderSource<TimeTolerance>
 	{
+		private OptionsHolder<TimeTolerance>? _toleranceHolder;
+
+		private TimeTolerance CurrentTolerance
+			=> _toleranceHolder is null ? TimeTolerance.Default : _toleranceHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<TimeTolerance> IOptionsHolderSource<TimeTolerance>.Holder
+			=> _toleranceHolder ??= new OptionsHolder<TimeTolerance>(TimeTolerance.Default);
+
 		public ConstraintResult IsMetBy(TimeOnly? actual)
 		{
 			Actual = actual;
@@ -71,7 +79,7 @@ public static partial class ThatNullableTimeOnly
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
+				TimeSpan timeTolerance = CurrentTolerance.GetToleranceOrDefault();
 				Outcome = expected.Any(value => value != null &&
 				                                actual.Value.CircularDistanceTicks(value.Value) <=
 				                                timeTolerance.Ticks)
@@ -90,7 +98,7 @@ public static partial class ThatNullableTimeOnly
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
-			stringBuilder.Append(tolerance);
+			stringBuilder.Append(CurrentTolerance);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -104,7 +112,7 @@ public static partial class ThatNullableTimeOnly
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
-			stringBuilder.Append(tolerance);
+			stringBuilder.Append(CurrentTolerance);
 		}
 	}
 }

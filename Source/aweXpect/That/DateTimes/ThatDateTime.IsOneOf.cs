@@ -29,16 +29,15 @@ public static partial class ThatDateTime
 		bool negated)
 	{
 		IEnumerable<DateTime?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<DateTime, IThat<DateTime>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
-				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Tolerance: tolerance,
-					Negated: negated),
+				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Negated: negated),
 				static (state, it, grammars) =>
-					new IsOneOfConstraint(it, grammars, state.ExpectedValues, state.ExpectedExpression, state.Tolerance)
-						.InvertIf(state.Negated)),
+					new IsOneOfConstraint(it, grammars, state.ExpectedValues, state.ExpectedExpression)
+						.InvertIf(state.Negated),
+				out IsOneOfConstraint constraint),
 			subject,
-			tolerance);
+			constraint);
 	}
 
 	[CreateExpectationFamily("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
@@ -56,18 +55,27 @@ public static partial class ThatDateTime
 		string it,
 		ExpectationGrammars grammars,
 		IEnumerable<DateTime?> expected,
-		string? expectedExpression,
-		OptionsHolder<TimeTolerance> tolerance)
+		string? expectedExpression)
 		: ConstraintResult.WithValue<DateTime>(it, grammars),
-			IValueConstraint<DateTime>
+			IValueConstraint<DateTime>,
+			IOptionsHolderSource<TimeTolerance>
 	{
+		private OptionsHolder<TimeTolerance>? _toleranceHolder;
+
+		private TimeTolerance CurrentTolerance
+			=> _toleranceHolder is null ? TimeTolerance.Default : _toleranceHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<TimeTolerance> IOptionsHolderSource<TimeTolerance>.Holder
+			=> _toleranceHolder ??= new OptionsHolder<TimeTolerance>(TimeTolerance.Default);
+
 		private DateTimeKind? _incompatibleKind;
 
 		public ConstraintResult IsMetBy(DateTime actual)
 		{
 			Actual = actual;
 			_incompatibleKind = null;
-			TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
+			TimeSpan timeTolerance = CurrentTolerance.GetToleranceOrDefault();
 			bool hasComparableValue = false;
 			DateTimeKind? incomparableKind = null;
 			foreach (DateTime? value in expected)
@@ -105,7 +113,7 @@ public static partial class ThatDateTime
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
-			stringBuilder.Append(tolerance);
+			stringBuilder.Append(CurrentTolerance);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -127,7 +135,7 @@ public static partial class ThatDateTime
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
-			stringBuilder.Append(tolerance);
+			stringBuilder.Append(CurrentTolerance);
 		}
 	}
 }
