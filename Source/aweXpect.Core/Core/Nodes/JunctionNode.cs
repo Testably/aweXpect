@@ -199,6 +199,48 @@ internal abstract class JunctionNode : Node
 	private static async ValueTask<ConstraintResult> AsExpectationOnlyAsync(ValueTask<ConstraintResult> isMet)
 		=> (await isMet).AsExpectationOnly();
 
+	/// <inheritdoc />
+	/// <remarks>
+	///     The operands are evaluated in order, like <see cref="IsMetBy{TValue}" /> does, until the outcome is decided:
+	///     an <c>And</c> stops at the first operand that is not met, as the regular evaluation then creates the failure,
+	///     and an <c>Or</c> stops at the first operand that is met, whose following operands the regular evaluation only
+	///     reads for their expectation text.
+	/// </remarks>
+	internal override RightAwayOutcome IsMetRightAway<TValue>(TValue value, IEvaluationContext context,
+		ref ConstraintResult? lastResult)
+	{
+		for (int index = 0; index <= _operandCount; index++)
+		{
+			(_, Node node) = GetNode(index);
+			if (!IsOperand(node))
+			{
+				continue;
+			}
+
+			RightAwayOutcome outcome = node.IsMetRightAway(value, context, ref lastResult);
+			if (outcome == RightAwayOutcome.Unsupported)
+			{
+				return RightAwayOutcome.Unsupported;
+			}
+
+			if (_isAnd ? outcome == RightAwayOutcome.NotMet : outcome == RightAwayOutcome.Met)
+			{
+				return outcome;
+			}
+		}
+
+		return _isAnd ? RightAwayOutcome.Met : RightAwayOutcome.NotMet;
+	}
+
+	/// <inheritdoc />
+	internal override void ForgetRightAwayResults()
+	{
+		for (int index = 0; index <= _operandCount; index++)
+		{
+			GetNode(index).Item2.ForgetRightAwayResults();
+		}
+	}
+
 	/// <summary>
 	///     All nodes, including the <see cref="Current" /> one.
 	/// </summary>

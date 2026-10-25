@@ -28,6 +28,12 @@ internal class ExpectationNode : Node
 
 	private string _it = "it";
 
+	/// <summary>
+	///     The result of the constraint from <see cref="IsMetRightAway{TValue}" />, as a <see cref="ConstraintResult" />
+	///     or a <see cref="Task{TResult}" />, which the next <see cref="IsMetBy{TValue}" /> returns.
+	/// </summary>
+	private object? _rightAwayResult;
+
 	private List<IBecauseReason>? _reasons;
 
 	/// <summary>
@@ -117,6 +123,17 @@ internal class ExpectationNode : Node
 		IEvaluationContext context,
 		CancellationToken cancellationToken) where TValue : default
 	{
+		if (_rightAwayResult is { } rightAwayResult)
+		{
+			_rightAwayResult = null;
+			if (context is not ExpectationTextEvaluationContext)
+			{
+				return rightAwayResult is ConstraintResult constraintResult
+					? new ValueTask<ConstraintResult>(constraintResult)
+					: new ValueTask<ConstraintResult>((Task<ConstraintResult>)rightAwayResult);
+			}
+		}
+
 		if (_constraint is null && _inner is not null && _reasons is null &&
 		    context is not ExpectationTextEvaluationContext)
 		{
@@ -158,6 +175,75 @@ internal class ExpectationNode : Node
 
 		return IsMetByAsync(value, null, context, cancellationToken);
 	}
+
+	/// <inheritdoc />
+	/// <remarks>
+	///     Only a single constraint without reasons and nested expectations is evaluated right away, like the fast path of
+	///     <see cref="IsMetBy{TValue}" /> does. An asynchronous constraint that does not complete synchronously, or a
+	///     constraint that throws, keeps its pending or converted result and leaves the outcome to the regular evaluation.
+	/// </remarks>
+	internal override RightAwayOutcome IsMetRightAway<TValue>(TValue value, IEvaluationContext context,
+		ref ConstraintResult? lastResult)
+	{
+		if (_constraint is null || _inner is not null || _reasons is not null || ContinuesPrecedingOperand)
+		{
+			return RightAwayOutcome.Unsupported;
+		}
+
+		ConstraintResult result;
+		try
+		{
+			ValueTask<ConstraintResult> isMet;
+			switch (_constraint)
+			{
+				case IValueConstraint<TValue?> valueConstraint:
+					result = valueConstraint.IsMetBy(value);
+					break;
+				case IContextConstraint<TValue?> contextConstraint:
+					result = contextConstraint.IsMetBy(value, context);
+					break;
+				case IAsyncConstraint<TValue?> asyncConstraint:
+					isMet = asyncConstraint.IsMetBy(value, CancellationToken.None);
+					if (!isMet.IsCompletedSuccessfully)
+					{
+						_rightAwayResult = AwaitConstraint(isMet, value, context, CancellationToken.None).AsTask();
+						return RightAwayOutcome.Unsupported;
+					}
+
+					result = isMet.Result;
+					break;
+				case IAsyncContextConstraint<TValue?> asyncContextConstraint:
+					isMet = asyncContextConstraint.IsMetBy(value, context, CancellationToken.None);
+					if (!isMet.IsCompletedSuccessfully)
+					{
+						_rightAwayResult = AwaitConstraint(isMet, value, context, CancellationToken.None).AsTask();
+						return RightAwayOutcome.Unsupported;
+					}
+
+					result = isMet.Result;
+					break;
+				default:
+					return RightAwayOutcome.Unsupported;
+			}
+		}
+		catch (Exception exception)
+		{
+			_rightAwayResult = FromConstraintException(exception, value, context).AsTask();
+			return RightAwayOutcome.Unsupported;
+		}
+
+		_rightAwayResult = result;
+		lastResult = result;
+		return result.Outcome switch
+		{
+			Outcome.Success => RightAwayOutcome.Met,
+			Outcome.Failure or Outcome.FailureBothWays => RightAwayOutcome.NotMet,
+			_ => RightAwayOutcome.Unsupported,
+		};
+	}
+
+	/// <inheritdoc />
+	internal override void ForgetRightAwayResults() => _rightAwayResult = null;
 
 	/// <summary>
 	///     Turns the <paramref name="exception" /> of the constraint, which was evaluated on the <paramref name="value" />

@@ -1369,6 +1369,22 @@ public abstract class ExpectationBuilder
 
 			EvaluationContext.EvaluationContext.Return(rightAwayContext);
 		}
+		else if (endsWhenMet && limit is null && combinationToken is null &&
+		         _nodeOrConstraint is JunctionNode junction && _rareSettings is null && CanEvaluateRightAway())
+		{
+			EvaluationContext.EvaluationContext rightAwayContext = EvaluationContext.EvaluationContext.Rent();
+			if (TryEvaluateJunctionRightAway(junction, rightAwayContext, out ConstraintResult? metResult))
+			{
+				junction.ForgetRightAwayResults();
+				return CompleteRightAway(new ValueTask<ConstraintResult>(metResult), rightAwayContext);
+			}
+
+			// The regular evaluation reads the results that were kept in the nodes, so it needs the same context.
+			ValueTask<ConstraintResult> isMet =
+				EvaluateRegularly(endsWhenMet, limit, combinationToken, rightAwayContext);
+			junction.ForgetRightAwayResults();
+			return isMet;
+		}
 
 		return EvaluateRegularly(endsWhenMet, limit, combinationToken);
 	}
@@ -1377,10 +1393,10 @@ public abstract class ExpectationBuilder
 	///     Evaluates the expectation through its nodes, see <see cref="IsMet(bool, TimeSpan?, CancellationToken?)" />.
 	/// </summary>
 	private ValueTask<ConstraintResult> EvaluateRegularly(bool endsWhenMet, TimeSpan? limit,
-		CancellationToken? combinationToken)
+		CancellationToken? combinationToken, EvaluationContext.EvaluationContext? context = null)
 	{
 		ResetOtherExceptions();
-		EvaluationContext.EvaluationContext context = new();
+		context ??= new EvaluationContext.EvaluationContext();
 		_evaluationContext = context;
 		ValueTask<ConstraintResult> isMet = StartEvaluation(context, limit, combinationToken);
 		if (!isMet.IsCompletedSuccessfully)
@@ -1433,6 +1449,21 @@ public abstract class ExpectationBuilder
 		out ValueTask<ConstraintResult> isMet)
 	{
 		isMet = default;
+		return false;
+	}
+
+	/// <summary>
+	///     Evaluates the expectations combined in the <paramref name="junction" /> on the subject right away, when the
+	///     subject is a value.
+	/// </summary>
+	/// <returns>
+	///     <see langword="true" />, when all expectations are met, with the <paramref name="result" /> of the last
+	///     evaluated constraint, which stores the same value as the combined result would.
+	/// </returns>
+	internal virtual bool TryEvaluateJunctionRightAway(JunctionNode junction, EvaluationContext.EvaluationContext context,
+		[NotNullWhen(true)] out ConstraintResult? result)
+	{
+		result = null;
 		return false;
 	}
 
@@ -2071,6 +2102,26 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder, IExpectThat<TVal
 			isMet = FromRightAwayException(exception, context);
 			return true;
 		}
+	}
+
+	/// <inheritdoc />
+	internal override bool TryEvaluateJunctionRightAway(JunctionNode junction, EvaluationContext.EvaluationContext context,
+		[NotNullWhen(true)] out ConstraintResult? result)
+	{
+		result = null;
+		if (_subjectSource is not null || _value is DelegateValue)
+		{
+			return false;
+		}
+
+		ConstraintResult? lastResult = null;
+		if (junction.IsMetRightAway(_value, context, ref lastResult) == RightAwayOutcome.Met)
+		{
+			result = lastResult!;
+			return true;
+		}
+
+		return false;
 	}
 
 	/// <inheritdoc />

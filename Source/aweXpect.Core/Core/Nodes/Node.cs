@@ -55,4 +55,23 @@ internal abstract class Node
 	/// </remarks>
 	public virtual Node ReplaceRightMostOperand<TState>(TState state, Func<TState, Node, Node> replace)
 		=> replace(state, this);
+
+	/// <summary>
+	///     Evaluates the constraints of the node on the <paramref name="value" /> right away, without combining their
+	///     results, and keeps each result for the next <see cref="IsMetBy{TValue}" />, so that a regular evaluation that
+	///     follows does not evaluate them again.
+	/// </summary>
+	/// <param name="value">The value of the subject.</param>
+	/// <param name="context">The context of the evaluation.</param>
+	/// <param name="lastResult">The result of the last constraint that was evaluated.</param>
+	internal virtual RightAwayOutcome IsMetRightAway<TValue>(TValue value, IEvaluationContext context,
+		ref ConstraintResult? lastResult)
+		=> RightAwayOutcome.Unsupported;
+
+	/// <summary>
+	///     Forgets the results that <see cref="IsMetRightAway{TValue}" /> kept and that were not read.
+	/// </summary>
+	internal virtual void ForgetRightAwayResults()
+	{
+	}
 }
