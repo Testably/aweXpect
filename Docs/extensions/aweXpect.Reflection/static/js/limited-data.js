@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "c80cc523cff83d50a435c4a920a0d3528f2ff2b4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
-        "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
-      },
-      {
         "sha": "198a74405c367fb20a734c670ce87625d45497b8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
-      "c80cc523",
       "198a7440",
       "12a2b76f",
       "67432f46",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          699.7814765657697,
           795.7508244881263,
           690.2106356302897,
           709.6746227400644,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           746.0109142575945,
           547.543568611145,
           698.6567604201181,
-          526.9677281012902
+          526.9677281012902,
+          714.9220267023359
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -467,7 +467,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
-          680,
+          592,
           592,
           592
         ],
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          904.7442468643188,
           921.6741224288941,
           887.1405153274536,
           885.9883030377902,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           949.1029126827533,
           713.0279911041259,
           867.1128482500712,
-          674.6214303289141
+          674.6214303289141,
+          957.8845546722412
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "c80cc523cff83d50a435c4a920a0d3528f2ff2b4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
-        "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
-      },
-      {
         "sha": "198a74405c367fb20a734c670ce87625d45497b8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
-      "c80cc523",
       "198a7440",
       "12a2b76f",
       "67432f46",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          154.9103514781365,
           136.57999633039748,
           122.45746083259583,
           131.24620888630548,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           138.64567680358886,
           111.37152926127116,
           134.05891900062562,
-          99.89562849487577
+          99.89562849487577,
+          132.5581403096517
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          197.12137749989827,
           219.01351329485576,
           199.73419701258342,
           201.6226309299469,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           235.3674200943538,
           178.66626567045847,
           236.91705253918965,
-          167.4991902938256
+          167.4991902938256,
+          235.21566251118978
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "c80cc523cff83d50a435c4a920a0d3528f2ff2b4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
-        "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
-      },
-      {
         "sha": "198a74405c367fb20a734c670ce87625d45497b8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
-      "c80cc523",
       "198a7440",
       "12a2b76f",
       "67432f46",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1901.8370746885028,
           2018.285125986735,
           1970.7627784729004,
           2059.0137525285995,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1897.2226204190936,
           1573.4939260482788,
           1741.3658753712973,
-          1402.2073993682861
+          1402.2073993682861,
+          1748.7016973495483
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1651,7 +1651,6 @@ window.BENCHMARK_DATA = {
           2080,
           2080,
           2080,
-          2080,
           2008,
           2008,
           2008,
@@ -1670,6 +1669,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          1808,
           1808,
           1808,
           1808,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1414.4486521402994,
           1527.0801696777344,
           1939.4315368107386,
           1452.995667775472,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1496.679707118443,
           1144.722375869751,
           1391.031954574585,
-          1102.9672130584718
+          1102.9672130584718,
+          1472.8300985972087
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1864,
           1953,
           1953,
           1953,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1864,
-          1864
+          1864,
+          1952
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "c80cc523cff83d50a435c4a920a0d3528f2ff2b4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
-        "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
-      },
       {
         "sha": "198a74405c367fb20a734c670ce87625d45497b8",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
-      "c80cc523",
       "198a7440",
       "12a2b76f",
       "67432f46",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2684.5250887552897,
           2905.426376070295,
           2777.4105331420897,
           2871.955703148475,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2766.2454493840537,
           2136.797777909499,
           2537.0834714253742,
-          2123.4495955247144
+          2123.4495955247144,
+          2614.70609664917
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2992,
           3048,
           2992,
           2992,
@@ -2293,6 +2292,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           3016,
+          3016,
           3016
         ],
         "borderColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3673.33359375,
           3956.424216050368,
           4298.650288508488,
           3736.079983847482,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3928.0958228478066,
           3087.4135325295583,
           3868.2142426627024,
-          2869.041006633214
+          2869.041006633214,
+          3842.4609038035073
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3981,
           3980,
           3981,
           3981,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3980,
           3981,
           3980,
-          3981
+          3981,
+          3978
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "c80cc523cff83d50a435c4a920a0d3528f2ff2b4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
-        "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
-      },
       {
         "sha": "198a74405c367fb20a734c670ce87625d45497b8",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
-      "c80cc523",
       "198a7440",
       "12a2b76f",
       "67432f46",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          424.5382276262556,
           395.7916258653005,
           389.59166816075646,
           377.480238755544,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           386.82397877375286,
           291.96210692723594,
           405.5110895792643,
-          323.82798153559366
+          323.82798153559366,
+          429.20907908219556
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2899,7 +2899,7 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
-          552,
+          696,
           696,
           696
         ],
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2309.854932785034,
           2378.339751434326,
           2226.4665581839427,
           2294.1050114949544,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2360.1266645703995,
           1810.6032690320696,
           2228.1548685709636,
-          1695.596395111084
+          1695.596395111084,
+          2483.5134607950845
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "c80cc523cff83d50a435c4a920a0d3528f2ff2b4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
-        "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
-      },
-      {
         "sha": "198a74405c367fb20a734c670ce87625d45497b8",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
-      "c80cc523",
       "198a7440",
       "12a2b76f",
       "67432f46",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3484.1356245187612,
           3639.18165234157,
           3577.2079486846924,
           3675.61808013916,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2885.2662280156064,
           2379.497585296631,
           2858.762821451823,
-          2139.9507591247557
+          2139.9507591247557,
+          2761.6953326633998
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3468,7 +3468,6 @@ window.BENCHMARK_DATA = {
           3705,
           3705,
           3705,
-          3705,
           3704,
           3705,
           3705,
@@ -3494,6 +3493,7 @@ window.BENCHMARK_DATA = {
           2912,
           2912,
           2912,
+          3232,
           3232,
           3232,
           3232,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          277517.6431070964,
           283663.09922572545,
           282042.3210449219,
           277684.9448617789,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           283260.81852213544,
           243798.26583426338,
           300848.6583333333,
-          239866.4568359375
+          239866.4568359375,
+          277684.5263997396
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17577,
           17577,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17577,
-          17577
+          17577,
+          17558
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
