@@ -18,7 +18,7 @@ public static partial class Filtered
 	/// </summary>
 	public class Events : Filtered<EventInfo, Events>, IDescribableSubject
 	{
-		private readonly string _description;
+		private readonly Func<string> _description;
 		private readonly Types? _types;
 
 		/// <summary>
@@ -28,13 +28,13 @@ public static partial class Filtered
 			: base(types.SelectMany(type => type.GetDeclaredEvents(memberScope)))
 		{
 			_types = types;
-			_description = description;
+			_description = () => description;
 		}
 
 		/// <summary>
 		///     Container for a filterable collection of the given <paramref name="events" />.
 		/// </summary>
-		internal Events(IEnumerable<EventInfo?> events, string description)
+		internal Events(IEnumerable<EventInfo?> events, Func<string> description)
 			: base(events.WhereNotNull())
 		{
 			_description = description;
@@ -56,7 +56,7 @@ public static partial class Filtered
 		/// <inheritdoc />
 		public string GetDescription()
 		{
-			string description = _description;
+			string description = _description();
 			foreach (IFilter<EventInfo> filter in Filters)
 			{
 				description = filter.Describes(description);

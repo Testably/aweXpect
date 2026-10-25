@@ -18,7 +18,7 @@ public static partial class Filtered
 	/// </summary>
 	public class Properties : Filtered<PropertyInfo, Properties>, IDescribableSubject
 	{
-		private readonly string _description;
+		private readonly Func<string> _description;
 		private readonly Types? _types;
 
 		/// <summary>
@@ -28,13 +28,13 @@ public static partial class Filtered
 			: base(types.SelectMany(type => type.GetDeclaredProperties(memberScope)))
 		{
 			_types = types;
-			_description = description;
+			_description = () => description;
 		}
 
 		/// <summary>
 		///     Container for a filterable collection of the given <paramref name="properties" />.
 		/// </summary>
-		internal Properties(IEnumerable<PropertyInfo?> properties, string description)
+		internal Properties(IEnumerable<PropertyInfo?> properties, Func<string> description)
 			: base(properties.WhereNotNull())
 		{
 			_description = description;
@@ -56,7 +56,7 @@ public static partial class Filtered
 		/// <inheritdoc />
 		public string GetDescription()
 		{
-			string description = _description;
+			string description = _description();
 			foreach (IFilter<PropertyInfo> filter in Filters)
 			{
 				description = filter.Describes(description);

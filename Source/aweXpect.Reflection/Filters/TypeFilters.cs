@@ -220,7 +220,7 @@ public static partial class TypeFilters
 			_memberScope = memberScope;
 
 			// Derive the inner description from an empty probe, e.g. "methods with FactAttribute or with TheoryAttribute ".
-			string inner = _filter(_navigate(new Filtered.Types([], ""))).GetDescription();
+			string inner = _filter(_navigate(new Filtered.Types([], static () => ""))).GetDescription();
 			if (inner.EndsWith("in "))
 			{
 				inner = inner.Substring(0, inner.Length - "in ".Length);
@@ -279,7 +279,7 @@ public static partial class TypeFilters
 			=> _quantifier.Check(await CountMatchingMembers(value, CancellationToken.None), true) ?? false;
 
 		private TFiltered Filter(Type value)
-			=> UserCode.Invoke(_filter, _navigate(new Filtered.Types([value,], "")), "the filter");
+			=> UserCode.Invoke(_filter, _navigate(new Filtered.Types([value,], static () => "")), "the filter");
 
 		public string Describes(string text)
 			=> $"{text.TrimEnd()} which {(_memberScope.IsDirect() ? "declare" : "contain")} {MembersDescription}{_memberScope.ObjectMembersText()}{_quantifier} ";

@@ -30,12 +30,12 @@ public static partial class Filtered
 		private static readonly ConditionalWeakTable<Assembly, LoadableTypes> LoadableTypesCache = new();
 
 		private readonly Assemblies? _assemblies;
-		private readonly string _description;
+		private readonly Func<string> _description;
 
 		/// <summary>
 		///     Container for a filterable collection of <see cref="Type" />.
 		/// </summary>
-		internal Types(IEnumerable<Type?> source, string description)
+		internal Types(IEnumerable<Type?> source, Func<string> description)
 			: base(source.WhereNotNull())
 		{
 			_description = description;
@@ -50,7 +50,7 @@ public static partial class Filtered
 				: assemblies.SelectMany(GetLoadableTypes))
 		{
 			_assemblies = assemblies;
-			_description = description;
+			_description = () => description;
 		}
 
 		/// <summary>
@@ -61,7 +61,7 @@ public static partial class Filtered
 			.WhereNotNull()
 			.Distinct())
 		{
-			_description = DeclaringTypesPrefix + constructors.GetDescription();
+			_description = () => DeclaringTypesPrefix + constructors.GetDescription();
 		}
 
 		/// <summary>
@@ -72,7 +72,7 @@ public static partial class Filtered
 			.WhereNotNull()
 			.Distinct())
 		{
-			_description = DeclaringTypesPrefix + properties.GetDescription();
+			_description = () => DeclaringTypesPrefix + properties.GetDescription();
 		}
 
 		/// <summary>
@@ -83,7 +83,7 @@ public static partial class Filtered
 			.WhereNotNull()
 			.Distinct())
 		{
-			_description = DeclaringTypesPrefix + methods.GetDescription();
+			_description = () => DeclaringTypesPrefix + methods.GetDescription();
 		}
 
 		/// <summary>
@@ -94,7 +94,7 @@ public static partial class Filtered
 			.WhereNotNull()
 			.Distinct())
 		{
-			_description = DeclaringTypesPrefix + fields.GetDescription();
+			_description = () => DeclaringTypesPrefix + fields.GetDescription();
 		}
 
 		/// <summary>
@@ -105,7 +105,7 @@ public static partial class Filtered
 			.WhereNotNull()
 			.Distinct())
 		{
-			_description = DeclaringTypesPrefix + events.GetDescription();
+			_description = () => DeclaringTypesPrefix + events.GetDescription();
 		}
 
 		/// <summary>
@@ -147,7 +147,7 @@ public static partial class Filtered
 		/// <inheritdoc />
 		public string GetDescription()
 		{
-			string description = _description;
+			string description = _description();
 			foreach (IFilter<Type> filter in Filters)
 			{
 				description = filter.Describes(description);
