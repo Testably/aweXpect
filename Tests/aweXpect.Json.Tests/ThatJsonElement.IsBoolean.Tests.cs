@@ -155,6 +155,22 @@ public sealed partial class ThatJsonElement
 					             but it was a string
 					             """);
 			}
+
+			[Test]
+			public async Task WhenNegatedAndExpectationsAreMet_ShouldFail()
+			{
+				JsonElement subject = FromString("false");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsBoolean(b => b.IsFalse()));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a boolean or its value is not False,
+					             but it was False
+					             """);
+			}
 		}
 
 		public sealed class WithValueTests

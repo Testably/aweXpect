@@ -171,8 +171,47 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not a string which starts with "Let",
-					             but it was a string
+					             is not a string or its value does not start with "Let",
+					             but it was "Let It Be"
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNegatedAndExpectationsAreNotMet_ShouldSucceed()
+			{
+				JsonElement subject = FromString("\"Yesterday\"");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString(s => s.StartsWith("Let")));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNegatedAndJsonIsNoString_ShouldSucceed()
+			{
+				JsonElement subject = FromString("1");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString(s => s.StartsWith("Let")));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNegatedInHasProperty_ShouldNameEveryAlternative()
+			{
+				JsonElement subject = FromString("{\"title\": \"Let It Be\"}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.HasProperty("title", t => t.IsString(s => s.StartsWith("Let"))));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have property "title" or $.title is not a string or its value does not start with "Let",
+					             but $.title was "Let It Be"
 					             """);
 			}
 		}

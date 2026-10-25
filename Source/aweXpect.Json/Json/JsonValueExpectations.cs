@@ -42,6 +42,7 @@ internal static class JsonValueExpectations
 					static found => found.Value, "value"),
 				static (_, stringBuilder) => stringBuilder.Append(" which "),
 				false)
+			.NegatedAsAlternative(static (_, stringBuilder) => stringBuilder.Append(" or its value "))
 			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TValue>(e)),
 				Singular);
 }

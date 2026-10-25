@@ -124,6 +124,22 @@ public sealed partial class ThatJsonNode
 			}
 
 			[Test]
+			public async Task WhenNegatedAndExpectationsAreMet_ShouldFail()
+			{
+				JsonValue subject = JsonValue.Create("Let It Be");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString(s => s.IsEqualTo("Let It Be")));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a string or its value is not equal to "Let It Be",
+					             but it was "Let It Be"
+					             """);
+			}
+
+			[Test]
 			public async Task WhenNodeIsNoString_ShouldNotVerifyTheExpectations()
 			{
 				JsonValue subject = JsonValue.Create(1);

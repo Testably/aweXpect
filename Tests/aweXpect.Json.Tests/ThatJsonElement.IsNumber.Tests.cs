@@ -169,6 +169,22 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Test]
+			public async Task WhenNegatedAndExpectationsAreMet_ShouldFail()
+			{
+				JsonElement subject = FromString("4.5");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNumber(n => n.IsPositive()));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a number or its value is not positive,
+					             but it was 4.5
+					             """);
+			}
+
+			[Test]
 			public async Task WhenNumberDoesNotFitIntoADouble_ShouldFail()
 			{
 				JsonElement subject = FromString("1e400");
@@ -416,6 +432,33 @@ public sealed partial class ThatJsonElement
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenNegatedAndExpectationsAreMet_ShouldFail()
+			{
+				JsonElement subject = FromString("243");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNumber<int>(n => n.IsEqualTo(243)));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an int or its value is not equal to 243,
+					             but it was 243
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNegatedAndNumberDoesNotFit_ShouldSucceed()
+			{
+				JsonElement subject = FromString("243.5");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNumber<int>(n => n.IsEqualTo(243)));
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Test]
