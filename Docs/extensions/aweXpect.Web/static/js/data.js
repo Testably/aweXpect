@@ -756,6 +756,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
         "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
+      },
+      {
+        "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
+        "message": "feat: verify that types depend on a runtime type (#2031)"
       }
     ],
     "labels": [
@@ -884,7 +890,8 @@ window.BENCHMARK_DATA = {
       "90516b35",
       "ddec9e0e",
       "5357eeb1",
-      "d5b93f89"
+      "d5b93f89",
+      "44ad4465"
     ],
     "datasets": [
       {
@@ -1016,7 +1023,8 @@ window.BENCHMARK_DATA = {
           438.66359179360524,
           454.754906018575,
           224.25309686660768,
-          443.32357464517867
+          443.32357464517867,
+          344.2021641364464
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1140,6 +1148,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          640,
           640,
           640,
           640,
@@ -1293,7 +1302,8 @@ window.BENCHMARK_DATA = {
           958.5413698832194,
           1065.7194045384724,
           541.2572590192159,
-          1042.5549468358358
+          1042.5549468358358,
+          809.4281631878445
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1305,6 +1315,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2200,6 +2211,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
         "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
+      },
+      {
+        "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
+        "message": "feat: verify that types depend on a runtime type (#2031)"
       }
     ],
     "labels": [
@@ -2328,7 +2345,8 @@ window.BENCHMARK_DATA = {
       "90516b35",
       "ddec9e0e",
       "5357eeb1",
-      "d5b93f89"
+      "d5b93f89",
+      "44ad4465"
     ],
     "datasets": [
       {
@@ -2460,7 +2478,8 @@ window.BENCHMARK_DATA = {
           210.22432080904642,
           191.45686779022216,
           98.38461604485146,
-          207.6552509466807
+          207.6552509466807,
+          158.13208064011164
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2508,6 +2527,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -2737,7 +2757,8 @@ window.BENCHMARK_DATA = {
           270.0587627887726,
           263.6513395468394,
           128.47140565285315,
-          272.7280724525452
+          272.7280724525452,
+          210.02251165253776
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2749,6 +2770,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -3584,6 +3606,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
         "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
+      },
+      {
+        "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
+        "message": "feat: verify that types depend on a runtime type (#2031)"
       }
     ],
     "labels": [
@@ -3702,7 +3730,8 @@ window.BENCHMARK_DATA = {
       "90516b35",
       "ddec9e0e",
       "5357eeb1",
-      "d5b93f89"
+      "d5b93f89",
+      "44ad4465"
     ],
     "datasets": [
       {
@@ -3824,7 +3853,8 @@ window.BENCHMARK_DATA = {
           710.7832196099417,
           618.4765843073527,
           343.43377952575685,
-          656.834012667338
+          656.834012667338,
+          518.2152183396475
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3938,6 +3968,7 @@ window.BENCHMARK_DATA = {
           976,
           976,
           976,
+          1008,
           1008,
           1008,
           1008,
@@ -4081,7 +4112,8 @@ window.BENCHMARK_DATA = {
           988.0319184621175,
           958.8835691724505,
           540.798643175761,
-          1055.6800371805828
+          1055.6800371805828,
+          748.4247174629799
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4093,6 +4125,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -4918,6 +4951,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
         "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
+      },
+      {
+        "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
+        "message": "feat: verify that types depend on a runtime type (#2031)"
       }
     ],
     "labels": [
@@ -5036,7 +5075,8 @@ window.BENCHMARK_DATA = {
       "90516b35",
       "ddec9e0e",
       "5357eeb1",
-      "d5b93f89"
+      "d5b93f89",
+      "44ad4465"
     ],
     "datasets": [
       {
@@ -5158,7 +5198,8 @@ window.BENCHMARK_DATA = {
           1869.9357604980469,
           1879.7531851359777,
           1132.7578959147136,
-          1932.4807571411134
+          1932.4807571411134,
+          1450.3247194925943
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5272,6 +5313,7 @@ window.BENCHMARK_DATA = {
           1672,
           1672,
           1672,
+          1688,
           1688,
           1688,
           1688,
@@ -5415,7 +5457,8 @@ window.BENCHMARK_DATA = {
           21581.50342450823,
           18633.3041469029,
           10550.635846964518,
-          22519.038431020883
+          22519.038431020883,
+          14781.99289449056
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5538,6 +5581,7 @@ window.BENCHMARK_DATA = {
           34713,
           34712,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -6252,6 +6296,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
         "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
+      },
+      {
+        "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
+        "message": "feat: verify that types depend on a runtime type (#2031)"
       }
     ],
     "labels": [
@@ -6370,7 +6420,8 @@ window.BENCHMARK_DATA = {
       "90516b35",
       "ddec9e0e",
       "5357eeb1",
-      "d5b93f89"
+      "d5b93f89",
+      "44ad4465"
     ],
     "datasets": [
       {
@@ -6492,7 +6543,8 @@ window.BENCHMARK_DATA = {
           807.7579476492746,
           698.1976768493653,
           373.5467294546274,
-          740.1206101008823
+          740.1206101008823,
+          532.6241367340087
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6606,6 +6658,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
+          1112,
           1112,
           1112,
           1112,
@@ -6749,7 +6802,8 @@ window.BENCHMARK_DATA = {
           1365.3951880591255,
           1289.7364835739136,
           682.034325327192,
-          1413.3773554484048
+          1413.3773554484048,
+          1039.9940446217854
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6761,6 +6815,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -7586,6 +7641,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
         "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
+      },
+      {
+        "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
+        "message": "feat: verify that types depend on a runtime type (#2031)"
       }
     ],
     "labels": [
@@ -7704,7 +7765,8 @@ window.BENCHMARK_DATA = {
       "90516b35",
       "ddec9e0e",
       "5357eeb1",
-      "d5b93f89"
+      "d5b93f89",
+      "44ad4465"
     ],
     "datasets": [
       {
@@ -7826,7 +7888,8 @@ window.BENCHMARK_DATA = {
           1185.8636094411215,
           1148.2905727113996,
           614.9718951543172,
-          1139.8622458140055
+          1139.8622458140055,
+          884.6531737872532
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7940,6 +8003,7 @@ window.BENCHMARK_DATA = {
           1424,
           1424,
           1424,
+          1456,
           1456,
           1456,
           1456,
@@ -8083,7 +8147,8 @@ window.BENCHMARK_DATA = {
           803.8133996816782,
           779.4692347844442,
           406.72581369536266,
-          809.9563345591228
+          809.9563345591228,
+          605.2539518356323
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8095,6 +8160,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
