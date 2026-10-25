@@ -85,7 +85,7 @@ public sealed class MsTestFrameworkTests
 	[TestMethod]
 	public async Task TryGetCurrentTest_ShouldNotFindTheRunningTest()
 	{
-		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
 
 		await Expect.That(isRunning).IsFalse()
 			.Because("MSTest 3 has no TestContext.Current, so the running test is only known to a TestContext that is injected into the test class");

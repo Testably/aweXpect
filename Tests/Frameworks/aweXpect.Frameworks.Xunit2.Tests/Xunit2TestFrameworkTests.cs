@@ -81,7 +81,7 @@ public sealed class Xunit2TestFrameworkTests
 	[Fact]
 	public async Task TryGetCurrentTest_ShouldNotFindTheRunningTest()
 	{
-		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
 
 		await Expect.That(isRunning).IsFalse()
 			.Because("xunit v2 has no ambient context of the running test");

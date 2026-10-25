@@ -82,19 +82,19 @@ public sealed class TunitCoreTestFrameworkTests
 	[Arguments("Revolver", 1966)]
 	public async Task TryGetCurrentTest_ShouldReturnTheArgumentsOfTheTestCase(string title, int year)
 	{
-		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
 
 		await Expect.That(isRunning).IsTrue()
 			.Because("TUnit without its assertions exposes the running test");
-		await Expect.That(currentTest!.ClassName).IsEqualTo(typeof(TunitCoreTestFrameworkTests).FullName);
-		await Expect.That(currentTest.MethodName).IsEqualTo(nameof(TryGetCurrentTest_ShouldReturnTheArgumentsOfTheTestCase));
-		await Expect.That(currentTest.Arguments).IsEqualTo(new object?[] { title, year, });
+		await Expect.That(currentTest!.Identity.ClassName).IsEqualTo(typeof(TunitCoreTestFrameworkTests).FullName);
+		await Expect.That(currentTest.Identity.MethodName).IsEqualTo(nameof(TryGetCurrentTest_ShouldReturnTheArgumentsOfTheTestCase));
+		await Expect.That(currentTest.Identity.Arguments).IsEqualTo(new object?[] { title, year, });
 	}
 
 	[Test]
 	public async Task TryGetCurrentTest_ShouldReturnTheIdAndTheDisplayName()
 	{
-		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
 
 		await Expect.That(isRunning).IsTrue();
 		await Expect.That(currentTest!.Id).IsEqualTo(TestContext.Current!.Metadata.TestDetails.TestId);
@@ -108,7 +108,7 @@ public sealed class TunitCoreTestFrameworkTests
 	{
 		int attempt = Interlocked.Increment(ref _retriedRuns) - 1;
 
-		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
 
 		await Expect.That(isRunning).IsTrue();
 		await Expect.That(currentTest!.RetryAttempt).IsEqualTo(attempt);
@@ -121,10 +121,10 @@ public sealed class TunitCoreTestFrameworkTests
 	[Test]
 	public async Task TryGetCurrentTest_WithoutParameters_ShouldReturnNoArguments()
 	{
-		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
 
 		await Expect.That(isRunning).IsTrue();
-		await Expect.That(currentTest!.MethodName).IsEqualTo(nameof(TryGetCurrentTest_WithoutParameters_ShouldReturnNoArguments));
-		await Expect.That(currentTest.Arguments).IsEmpty();
+		await Expect.That(currentTest!.Identity.MethodName).IsEqualTo(nameof(TryGetCurrentTest_WithoutParameters_ShouldReturnNoArguments));
+		await Expect.That(currentTest.Identity.Arguments).IsEmpty();
 	}
 }

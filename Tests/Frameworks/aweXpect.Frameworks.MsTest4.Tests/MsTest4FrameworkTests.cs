@@ -87,7 +87,7 @@ public sealed class MsTestFrameworkTests
 	[TestMethod]
 	public async Task TryGetCurrentTest_ShouldNotFindTheRunningTest()
 	{
-		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
 
 		await Expect.That(isRunning).IsFalse()
 			.Because("TestContext.Current of MSTest 4 is experimental (MSTESTEXP), so the generated adapter does not use it");

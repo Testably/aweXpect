@@ -131,12 +131,12 @@ namespace MyTests
 
         public void Inconclusive(string message) => throw new MyTestInconclusiveException(message);
 
-        public bool TryGetCurrentTest(out TestIdentity? currentTest)
+        public bool TryGetCurrentTest(out RunningTest? currentTest)
         {
             MyTestContext? context = MyTestContext.Current;
             currentTest = context is null
                 ? null
-                : new TestIdentity(context.ClassName, context.MethodName, context.Arguments,
+                : new RunningTest(new TestIdentity(context.ClassName, context.MethodName, context.Arguments),
                     context.Id, context.DisplayName, context.RetryCount);
             return currentTest is not null;
         }
@@ -184,13 +184,13 @@ namespace MyTests
 
 ### The running test
 
-The `TryGetCurrentTest` of an adapter returns the running test as a `TestIdentity` with the full name of the test
-class, the name of the test method and the arguments of the test case, or `false` when its test framework does not
-expose it. When the test framework reports them, it also holds the `Id` and the `DisplayName` of the test case and its
-`RetryAttempt`, which counts the runs of the test before, e.g. by a retry: `0` for the first run. The `Id` is only
-unique within one test run, and the `RetryAttempt` is not part of what identifies the test, so neither belongs in a
-persisted name. An extension reads the running test with `TestFrameworkRegistry.TryGetCurrentTest`, e.g. to tell the
-cases of a parameterized test apart, as `aweXpect.Snapshots` does with `NamedAfterTestArguments`:
+The `TryGetCurrentTest` of an adapter returns the `RunningTest`, or `false` when its test framework does not expose it.
+Its `Identity` holds what identifies the test in every run: the full name of the test class, the name of the test
+method and the arguments of the test case. When the test framework reports them, the `RunningTest` also holds the `Id`
+and the `DisplayName` of the test case and its `RetryAttempt`, which counts the runs of the test before, e.g. by a
+retry: `0` for the first run. The `Id` is only unique within one test run, so it does not belong in a persisted name.
+An extension reads the running test with `TestFrameworkRegistry.TryGetCurrentTest`, e.g. to tell the cases of a
+parameterized test apart, as `aweXpect.Snapshots` does with `NamedAfterTestArguments`:
 
 ```csharp
 using aweXpect.Core.Adapters;
@@ -198,8 +198,9 @@ using aweXpect.Core.Adapters;
 internal static class MyCaseNames
 {
     internal static string? GetCaseName()
-        => TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest) && currentTest.Arguments.Count > 0
-            ? string.Join("_", currentTest.Arguments)
+        => TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest) &&
+           currentTest.Identity.Arguments.Count > 0
+            ? string.Join("_", currentTest.Identity.Arguments)
             : null;
 }
 ```
@@ -211,7 +212,8 @@ internal static class MyCaseNames
   `false`. xUnit v3 has no retries, so its `RetryAttempt` is always `0`, and NUnit also counts the runs of `[Repeat]`.
 
 `TestFrameworkRegistry.TryGetCancellationToken` returns the token with which the test framework cancels the running
-test, which every expectation observes unless `Settings().TestCancellation` replaces it, see
+test. Expectations only observe it when `Settings().TestCancellation` is set to
+`TestCancellation.FromCancellationToken(…)` with it, see
 [time and cancellation](../03-how-it-works/06-time-and-cancellation.md#cancellationtoken).
 `TestFrameworkRegistry.TryAddAttachment(filePath, description)` attaches a file to the result of the running test, as
 `aweXpect.Snapshots` does with a recorded mismatch:
@@ -226,7 +228,8 @@ internal static class MyReports
 }
 ```
 
-- Both return `false` when the test framework does not support it or no test is running. The generated adapters
+- Both return `false` when the test framework does not support it, no test is running or the test framework fails,
+  e.g. because the file does not exist. Like `TryGetCurrentTest`, they never throw. The generated adapters
   support both for TUnit and xUnit v3, and NUnit 4 or later; NUnit 3 only supports attachments.
 - NUnit and TUnit only read the file when the test ends, so it must still exist then. xUnit v3 attaches the content of
   the file immediately, under its name.

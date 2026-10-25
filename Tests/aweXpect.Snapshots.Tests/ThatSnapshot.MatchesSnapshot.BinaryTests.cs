@@ -342,7 +342,7 @@ public sealed partial class ThatSnapshot
 				{
 					PngId with
 					{
-						Name = "title=Abbey Road",
+						Name = "Abbey Road",
 						Variant = CurrentEnvironment.OperatingSystem,
 					},
 				}).InAnyOrder();

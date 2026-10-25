@@ -58,7 +58,7 @@ internal static class AweXpectInitialization
 		/// <summary>
 		///     Returns the running test, when the test framework exposes it.
 		/// </summary>
-		public bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+		public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
 			=> testFramework.TryGetCurrentTest(out currentTest);
 
 		/// <summary>
@@ -166,7 +166,7 @@ internal static class AweXpectInitialization
 		public void Inconclusive(string message)
 			=> throw new InconclusiveException(message);
 
-		public bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+		public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
 		{
 			currentTest = null;
 			return false;

@@ -126,7 +126,7 @@ public sealed partial class ThatSnapshot
 				{
 					[Id with
 					{
-						Name = "title=Abbey Road",
+						Name = "Abbey Road",
 						Variant = CurrentEnvironment.OperatingSystem,
 						Extension = "html",
 					}] = "<h1>Abbey Road</h1><p>{Guid_1}</p>",

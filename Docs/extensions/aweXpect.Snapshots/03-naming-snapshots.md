@@ -31,7 +31,9 @@ but the snapshot was already used for another value in this test run, so name ea
 ```
 
 The same value again is allowed, so that a retried or repeated test still compares with its snapshot. When the test
-framework reports retries (NUnit and TUnit), a retry may also use another value than its failed attempt.
+framework reports retries (NUnit and TUnit), a retry may also use another value than its failed attempt. NUnit also
+counts the runs of `[Repeat]` as retries, so while accepting, a repeated test whose value changes keeps the value of
+its last run instead of failing.
 
 Names that only differ in case, e.g. `.Named("Live")` and `.Named("live")`, fail as well, also for the same value, as
 they are the same file on Windows and macOS but two files on Linux:
@@ -47,8 +49,8 @@ argument: `MatchesSnapshot("login")` throws an `ArgumentException` that points t
 
 ## Naming after the arguments
 
-`.NamedAfter(…)` names the snapshot after up to four arguments of the test. The compiler passes the name of each
-argument, so it works with every test framework and under Native AOT:
+`.NamedAfter(…)` names the snapshot after up to four arguments of the test, which works with every test framework and
+under Native AOT:
 
 ```csharp
 [Theory]
@@ -62,10 +64,16 @@ public async Task Describes(string title, int year)
 }
 ```
 
-Each argument is written as `<name>=<value>`, separated by `_`, e.g.
-`AlbumTests.Describes.title=Abbey Road_year=1969.awexpect-snapshot.txt`. A member access is named like `nameof`, so
-`.NamedAfter(album.Title)` gives `Title=Abbey Road`; any other expression is used as written. Values are written in
-the invariant culture, `null` as `null`, and escaped like any other name.
+The values are written in the invariant culture and separated by `_`, e.g.
+`AlbumTests.Describes.Abbey Road_1969.awexpect-snapshot.txt`. The name holds only the values, so that renaming a
+parameter keeps the snapshot, and it is escaped like any other name:
+
+- `null` is written as `null` and an empty string as `""`.
+- A `double` or `float` is written so that it round-trips, the same on .NET Framework and .NET.
+- The items of an array or another collection are written as `[1,2,3]`, any other value by its `ToString()`.
+- A name longer than 64 characters in the file name, where each escaped character takes three, is shortened to 55
+  characters, followed by `~` and a hash of the whole name, e.g.
+  `Sgt. Pepper's Lonely Hearts Club Band (Remastered Sup~e0c652ac`.
 
 ## Naming after the test case
 
@@ -93,19 +101,13 @@ public async Task Describes(string title, int year)
 }
 ```
 
-The arguments are written in the invariant culture and separated by `_`, e.g.
-`AlbumTests.Describes.Abbey Road_1969.awexpect-snapshot.txt`. Unlike `.NamedAfter(…)`, the name holds only the
-values, so that renaming a parameter keeps the snapshot:
+The arguments are written like those of `.NamedAfter(…)`, e.g.
+`AlbumTests.Describes.Abbey Road_1969.awexpect-snapshot.txt`, and an injected `CancellationToken` is skipped. A test
+without parameters keeps its snapshot.
 
-- `null` is written as `null` and an empty string as `""`.
-- A `double` or `float` is written so that it round-trips, the same on .NET Framework and .NET.
-- The items of an array or another collection are written as `[1,2,3]`, any other value by its `ToString()`.
-- A name longer than 64 characters is shortened to 55 characters, followed by `~` and a hash of the whole name, e.g.
-  `Sgt. Pepper's Lonely Hearts Club Band (Remastered Super~e0c652ac`.
-
-A test without parameters keeps its snapshot, and `.Named(…)` or `.NamedAfter(…)` replaces the name. Two cases whose
-arguments are written alike, e.g. two objects without their own `ToString()`, share a snapshot and fail like any
-snapshot that is used for another value.
+`.Named(…)` is appended to the arguments, e.g. `.Named("cover")` gives `Abbey Road_1969_cover`, so that each case can
+hold several snapshots, while `.NamedAfter(…)` replaces them. Two cases whose arguments are written alike, e.g. two
+objects without their own `ToString()`, share a snapshot and fail like any snapshot that is used for another value.
 
 The running test is only known when the test framework exposes it:
 

@@ -339,8 +339,7 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 		for (int i = 0; i < part.Length; i++)
 		{
 			char character = part[i];
-			if (char.IsControl(character) ||
-			    character is '<' or '>' or ':' or '"' or '/' or '\\' or '|' or '?' or '*' or '%' or '.' or '@')
+			if (IsEscaped(character))
 			{
 				escaped ??= new StringBuilder(part, 0, i, part.Length + 8);
 				escaped.Append('%').Append(((int)character).ToString("X2", CultureInfo.InvariantCulture));
@@ -353,6 +352,13 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 
 		return escaped?.ToString() ?? part;
 	}
+
+	/// <summary>
+	///     Whether <see cref="EscapeFileNamePart(string)" /> escapes the <paramref name="character" /> as <c>%XX</c>.
+	/// </summary>
+	internal static bool IsEscaped(char character)
+		=> char.IsControl(character) ||
+		   character is '<' or '>' or ':' or '"' or '/' or '\\' or '|' or '?' or '*' or '%' or '.' or '@';
 
 	/// <summary>
 	///     Reverses <see cref="EscapeFileNamePart(string)" />, or returns <see langword="false" /> for a <c>%</c> that is

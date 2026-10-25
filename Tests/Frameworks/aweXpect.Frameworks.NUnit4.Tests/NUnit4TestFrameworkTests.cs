@@ -75,6 +75,17 @@ public sealed class NUnit4TestFrameworkTests
 	}
 
 	[Test]
+	public async Task TryAddAttachment_WhenFileDoesNotExist_ShouldReturnFalse()
+	{
+		string filePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.txt");
+
+		bool isAttached = TestFrameworkRegistry.TryAddAttachment(filePath, "the received snapshot");
+
+		await Expect.That(isAttached).IsFalse()
+			.Because("NUnit throws for a missing file, which the adapter catches");
+	}
+
+	[Test]
 	public async Task TryGetCancellationToken_ShouldReturnTheTokenOfTheTest()
 	{
 		bool hasToken = TestFrameworkRegistry.TryGetCancellationToken(out CancellationToken cancellationToken);
@@ -87,19 +98,19 @@ public sealed class NUnit4TestFrameworkTests
 	[TestCase("Revolver", 1966)]
 	public async Task TryGetCurrentTest_ShouldReturnTheArgumentsOfTheTestCase(string title, int year)
 	{
-		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
 
 		await Expect.That(isRunning).IsTrue()
 			.Because("NUnit 4 exposes the running test");
-		await Expect.That(currentTest!.ClassName).IsEqualTo(typeof(NUnit4TestFrameworkTests).FullName);
-		await Expect.That(currentTest.MethodName).IsEqualTo(nameof(TryGetCurrentTest_ShouldReturnTheArgumentsOfTheTestCase));
-		await Expect.That(currentTest.Arguments).IsEqualTo(new object?[] { title, year, });
+		await Expect.That(currentTest!.Identity.ClassName).IsEqualTo(typeof(NUnit4TestFrameworkTests).FullName);
+		await Expect.That(currentTest.Identity.MethodName).IsEqualTo(nameof(TryGetCurrentTest_ShouldReturnTheArgumentsOfTheTestCase));
+		await Expect.That(currentTest.Identity.Arguments).IsEqualTo(new object?[] { title, year, });
 	}
 
 	[Test]
 	public async Task TryGetCurrentTest_ShouldReturnTheIdAndTheDisplayName()
 	{
-		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
 
 		await Expect.That(isRunning).IsTrue();
 		await Expect.That(currentTest!.Id).IsEqualTo(TestContext.CurrentContext.Test.ID);
@@ -113,7 +124,7 @@ public sealed class NUnit4TestFrameworkTests
 	{
 		int run = Interlocked.Increment(ref _repeatedRuns) - 1;
 
-		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
 
 		await Expect.That(isRunning).IsTrue();
 		await Expect.That(currentTest!.RetryAttempt).IsEqualTo(run)
@@ -123,10 +134,10 @@ public sealed class NUnit4TestFrameworkTests
 	[Test]
 	public async Task TryGetCurrentTest_WithoutParameters_ShouldReturnNoArguments()
 	{
-		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
 
 		await Expect.That(isRunning).IsTrue();
-		await Expect.That(currentTest!.MethodName).IsEqualTo(nameof(TryGetCurrentTest_WithoutParameters_ShouldReturnNoArguments));
-		await Expect.That(currentTest.Arguments).IsEmpty();
+		await Expect.That(currentTest!.Identity.MethodName).IsEqualTo(nameof(TryGetCurrentTest_WithoutParameters_ShouldReturnNoArguments));
+		await Expect.That(currentTest.Identity.Arguments).IsEmpty();
 	}
 }

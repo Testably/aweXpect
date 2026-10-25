@@ -193,11 +193,6 @@ public partial class AwexpectCustomization
 		/// <summary>
 		///     If set, applies the cancellation logic for all tests.
 		/// </summary>
-		/// <remarks>
-		///     When it is not set or only sets a timeout, every expectation is canceled with the token of the running test,
-		///     when the test framework exposes it, see
-		///     <see cref="Core.Adapters.TestFrameworkRegistry.TryGetCancellationToken" />.
-		/// </remarks>
 		public ICustomizationValueSetter<TestCancellation?> TestCancellation { get; }
 
 		/// <inheritdoc cref="IAwexpectCustomization.Get{TValue}(string, TValue)" />

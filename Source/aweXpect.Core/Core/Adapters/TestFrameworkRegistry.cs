@@ -47,7 +47,7 @@ public static class TestFrameworkRegistry
 	///     test, or no test is running, e.g. in a setup of the whole assembly. Like the adapter itself, it is resolved when
 	///     first needed and then cached.
 	/// </remarks>
-	public static bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+	public static bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
 		=> AweXpectInitialization.State.Value.TryGetCurrentTest(out currentTest);
 
 	/// <summary>
@@ -56,8 +56,9 @@ public static class TestFrameworkRegistry
 	/// </summary>
 	/// <remarks>
 	///     Returns <see langword="false" /> when no adapter is registered, its test framework does not expose the token,
-	///     or no test is running. Unless <c>Customize.aweXpect.Settings().TestCancellation</c> sets another token or
-	///     <c>TestCancellation.None()</c>, every expectation is canceled with this token.
+	///     or no test is running. Expectations do not observe it unless
+	///     <c>Customize.aweXpect.Settings().TestCancellation</c> is set to <c>TestCancellation.FromCancellationToken(…)</c>
+	///     with it.
 	/// </remarks>
 	public static bool TryGetCancellationToken(out CancellationToken cancellationToken)
 		=> AweXpectInitialization.State.Value.TryGetCancellationToken(out cancellationToken);

@@ -1582,7 +1582,8 @@ public abstract class ExpectationBuilder
 				Customize.aweXpect.GetEvaluationSettings();
 			IsTracing = traceWriter is not null;
 			CancellationToken cancellationToken = CombineCancellation(CancellationToken, combinationToken, context) ??
-			                                      GetTestCancellationToken(testCancellation);
+			                                      testCancellation?.CancellationTokenFactory?.Invoke() ??
+			                                      System.Threading.CancellationToken.None;
 			TimeSpan? timeout = TimerHelpers.Tighter(TimerHelpers.Tighter(TimerHelpers.Tighter(
 				Timeout, _rareSettings?.TimeoutBound?.UpperBound), testCancellation?.Timeout), limit);
 			// Nothing negates the result of the whole expectation, and a combination only reads the contexts of a
@@ -1601,31 +1602,6 @@ public abstract class ExpectationBuilder
 		{
 			return new ValueTask<ConstraintResult>(Task.FromException<ConstraintResult>(exception));
 		}
-	}
-
-	/// <summary>
-	///     The token of the <paramref name="testCancellation" />, or the one with which the test framework cancels the
-	///     running test when no <see cref="TestCancellation" /> or only a timeout is set.
-	/// </summary>
-	/// <remarks>
-	///     <see cref="TestCancellation.FromCancellationToken" /> and <see cref="TestCancellation.None" /> replace the
-	///     token of the test framework, so that it can be switched off.
-	/// </remarks>
-	private static CancellationToken GetTestCancellationToken(TestCancellation? testCancellation)
-	{
-		if (testCancellation?.CancellationTokenFactory is not null)
-		{
-			return testCancellation.CancellationTokenFactory.Invoke();
-		}
-
-		if (testCancellation is not null && testCancellation.Timeout is null)
-		{
-			return System.Threading.CancellationToken.None;
-		}
-
-		return AweXpectInitialization.State.Value.TryGetCancellationToken(out CancellationToken cancellationToken)
-			? cancellationToken
-			: System.Threading.CancellationToken.None;
 	}
 
 	/// <summary>

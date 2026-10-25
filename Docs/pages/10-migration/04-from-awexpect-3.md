@@ -114,13 +114,6 @@ checks of aweXpect.Web offer the quantifiers and match types of `Contains`, e.g.
 `WithTimeSystem(…)` is marked experimental with the diagnostic `aweXpect5001`. Suppress it in test projects that use
 a virtual time system.
 
-### Cancellation
-
-Every expectation is canceled together with the running test, when the test framework exposes its `CancellationToken`
-(NUnit 4 or later, TUnit and xUnit v3), so a waiting expectation stops when the test times out or the run is aborted.
-`TestCancellation.FromCancellationToken(…)` replaces that token and `TestCancellation.None()` switches it off, see
-[time and cancellation](../03-how-it-works/06-time-and-cancellation.md#cancellationtoken).
-
 ## New expectations
 
 - **Dates** gain `HasDayOfWeek(…)` on `DateTime`, `DateTimeOffset` and `DateOnly`.

@@ -489,7 +489,7 @@ public static partial class ThatSnapshot
 		{
 			int contentHashCode = GetHashCode(content);
 			bool hasComparers = snapshotOptions.Comparer is not null || settings.Comparers.Count > 0;
-			(string? testId, int retryAttempt) = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest)
+			(string? testId, int retryAttempt) = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest)
 				? (currentTest.Id, currentTest.RetryAttempt)
 				: (null, 0);
 			SnapshotId key = id with { Extension = SnapshotId.DefaultExtension, };

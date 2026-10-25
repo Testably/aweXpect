@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Threading;
 using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Snapshots.Results;
@@ -42,16 +43,24 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			[Arguments("1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20")]
+			public async Task WhenArgumentsAreLongOnceEscaped_ShouldShortenTheName(string version)
+			{
+				await ShouldBeNamed("1.2.3.4.5.6.7.8.9.10.11.12.13~9b01af3b", result => result,
+					$"each '.' in {version} takes three characters in the file name, where the length is limited");
+			}
+
+			[Test]
 			[Arguments("Sgt. Pepper's Lonely Hearts Club Band (Remastered Super Deluxe Edition, Disc One)")]
 			[Arguments("Sgt. Pepper's Lonely Hearts Club Band (Remastered Super Deluxe Edition, Disc Two)")]
 			public async Task WhenArgumentsAreLong_ShouldShortenTheNameAndAppendAHashOfTheWholeName(string title)
 			{
 				string name = title.EndsWith("One)")
-					? "Sgt. Pepper's Lonely Hearts Club Band (Remastered Super~e0c652ac"
-					: "Sgt. Pepper's Lonely Hearts Club Band (Remastered Super~cd159f2a";
+					? "Sgt. Pepper's Lonely Hearts Club Band (Remastered Sup~e0c652ac"
+					: "Sgt. Pepper's Lonely Hearts Club Band (Remastered Sup~cd159f2a";
 
 				await ShouldBeNamed(name, result => result,
-					"a file name has a limited length, and the hash keeps two names apart that only differ after the first 55 characters");
+					"a file name has a limited length, and the hash keeps two names apart that only differ after the first 55 characters in the file name");
 			}
 
 			[Test]
@@ -65,10 +74,26 @@ public sealed partial class ThatSnapshot
 
 			[Test]
 			[Arguments("Abbey Road")]
-			public async Task WhenNamed_ShouldUseTheName(string title)
+			public async Task WhenNamed_ShouldAppendTheNameToTheArguments(string title)
 			{
-				await ShouldBeNamed("cover", result => result.Named("cover"),
-					$"an explicit name replaces the name of the arguments, here of {title}");
+				await ShouldBeNamed($"{title}_cover", result => result.Named("cover"),
+					"each case of a parameterized test can hold several snapshots");
+			}
+
+			[Test]
+			[Arguments("Abbey Road")]
+			public async Task WhenNamedAfter_ShouldReplaceTheArguments(string title)
+			{
+				await ShouldBeNamed("Let It Be", result => result.NamedAfter("Let It Be"),
+					$".NamedAfter(…) names the case explicitly instead of the arguments, here of {title}");
+			}
+
+			[Test]
+			[Arguments("Abbey Road")]
+			public async Task WhenNamedTwice_ShouldAppendOnlyTheLastName(string title)
+			{
+				await ShouldBeNamed($"{title}_back", result => result.Named("cover").Named("back"),
+					"a later name replaces an earlier one");
 			}
 
 			[Test]
@@ -79,11 +104,27 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task WhenTestHasOnlyACancellationToken_ShouldKeepTheSnapshotOfTheTest(
+				CancellationToken cancellationToken)
+			{
+				await ShouldBeNamed(null, result => result,
+					$"the injected token (canceled: {cancellationToken.IsCancellationRequested}) does not tell cases apart");
+			}
+
+			[Test]
 			[Arguments(new[] { 1, 2, 3, })]
 			public async Task WithArray_ShouldWriteItsItems(int[] tracks)
 			{
 				await ShouldBeNamed("[1,2,3]", result => result,
 					$"the name of the type of the {tracks.Length} tracks would be the same in every case");
+			}
+
+			[Test]
+			[Arguments("Abbey Road")]
+			public async Task WithCancellationToken_ShouldSkipIt(string title, CancellationToken cancellationToken)
+			{
+				await ShouldBeNamed(title, result => result,
+					$"the injected token (canceled: {cancellationToken.IsCancellationRequested}) does not tell cases apart");
 			}
 
 			[Test]

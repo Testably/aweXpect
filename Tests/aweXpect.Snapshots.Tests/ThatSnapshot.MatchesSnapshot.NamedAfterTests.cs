@@ -16,7 +16,7 @@ public sealed partial class ThatSnapshot
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
 			[Test]
-			public async Task ShouldNameTheSnapshotAfterTheNamesAndValuesOfTheArguments()
+			public async Task ShouldNameTheSnapshotAfterTheValuesOfTheArguments()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -29,7 +29,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that "foo"
-					             matches the snapshot "MyTests.MyTest.title=Abbey Road_year=1969",
+					             matches the snapshot "MyTests.MyTest.Abbey Road_1969",
 					             but the snapshot did not exist
 
 					             Actual:
@@ -37,7 +37,7 @@ public sealed partial class ThatSnapshot
 					             """);
 				await That(store.Mismatches.Keys).IsEqualTo(new[]
 				{
-					Id with { Name = "title=Abbey Road_year=1969", },
+					Id with { Name = "Abbey Road_1969", },
 				}).InAnyOrder();
 			}
 
@@ -55,28 +55,8 @@ public sealed partial class ThatSnapshot
 				await That(Act).Throws<FailException>();
 				await That(store.Accepted).IsEqualTo(new Dictionary<SnapshotId, string>
 				{
-					[Id with { Name = "title=Let It Be", }] = "id=<id>",
+					[Id with { Name = "Let It Be", }] = "id=<id>",
 				});
-			}
-
-			[Test]
-			public async Task WhenArgumentIsAMemberAccess_ShouldUseTheNameOfTheMember()
-			{
-				Album album = new("Abbey Road", 1969);
-
-				await ShouldBeNamed("Title=Abbey Road_Year=1969",
-					result => result.NamedAfter(album.Title, album.Year),
-					"the name of a member access is the one that nameof returns, so that it holds no dots");
-			}
-
-			[Test]
-			public async Task WhenArgumentIsAnotherExpression_ShouldUseTheExpression()
-			{
-				int year = 1969;
-
-				await ShouldBeNamed("year + 1=1970_\"Let It Be\"=Let It Be",
-					result => result.NamedAfter(year + 1, "Let It Be"),
-					"only a name or member access has a shorter name");
 			}
 
 			[Test]
@@ -89,7 +69,7 @@ public sealed partial class ThatSnapshot
 					decimal price = 12.99m;
 					DateTime released = new(1969, 9, 26);
 
-					await ShouldBeNamed("price=12.99_released=09/26/1969 00:00:00",
+					await ShouldBeNamed("12.99_09/26/1969 00:00:00",
 						result => result.NamedAfter(price, released),
 						"the snapshot must have the same name on every machine");
 				}
@@ -104,31 +84,19 @@ public sealed partial class ThatSnapshot
 			{
 				string? title = null;
 
-				await ShouldBeNamed("title=null",
+				await ShouldBeNamed("null",
 					result => result.NamedAfter(title),
 					"a missing value has no text of its own");
 			}
 
 			[Test]
-			public async Task WhenExpressionIsEmpty_ShouldNameTheArgumentByItsPosition()
+			public async Task WhenArgumentsAreWrittenLikeTestArguments_ShouldUseTheSameName()
 			{
-				string title = "Abbey Road";
-				int year = 1969;
+				int[] tracks = [1, 2, 3,];
 
-				await ShouldBeNamed("argument1=Abbey Road_argument2=1969",
-					result => result.NamedAfter(title, year, doNotPopulateThisValue1: "", doNotPopulateThisValue2: ""),
-					"a compiler before C# 10 does not set the expressions");
-			}
-
-			[Test]
-			public async Task WhenExpressionSpansSeveralLines_ShouldCollapseTheWhitespace()
-			{
-				int year = 1969;
-
-				await ShouldBeNamed("year + 1=1970",
-					result => result.NamedAfter(year
-					                            + 1),
-					"the line ending of the test file can differ between checkouts");
+				await ShouldBeNamed("0.30000000000000004_[1,2,3]_\"\"",
+					result => result.NamedAfter(0.1 + 0.2, tracks, ""),
+					"the arguments of .NamedAfter(…) and of the running test are written alike");
 			}
 
 			[Test]
@@ -139,9 +107,9 @@ public sealed partial class ThatSnapshot
 				int year = 1969;
 				int tracks = 17;
 
-				await ShouldBeNamed("artist=The Beatles_title=Abbey Road_year=1969_tracks=17",
+				await ShouldBeNamed("The Beatles_Abbey Road_1969_17",
 					result => result.NamedAfter(artist, title, year, tracks),
-					"each argument adds its name and value");
+					"each argument adds its value");
 			}
 
 			[Test]
@@ -149,24 +117,9 @@ public sealed partial class ThatSnapshot
 			{
 				string title = "Abbey Road";
 
-				await ShouldBeNamed("title=Abbey Road",
+				await ShouldBeNamed("Abbey Road",
 					result => result.NamedAfter(title),
-					"the name of the argument is taken from the call");
-			}
-
-			[Test]
-			public async Task WhenNamedAfterSeveralStrings_ShouldNotTakeAStringAsTheExpressionOfAnotherArgument()
-			{
-				string artist = "AC/DC";
-				string title = "Highway to Hell";
-				string label = "Atlantic";
-
-				await ShouldBeNamed("artist=AC/DC_title=Highway to Hell",
-					result => result.NamedAfter(artist, title),
-					"the second string is an argument and not the expression of the first one");
-				await ShouldBeNamed("artist=AC/DC_title=Highway to Hell_label=Atlantic",
-					result => result.NamedAfter(artist, title, label),
-					"the third string is an argument and not the expression of the first one");
+					"the value of the argument names the snapshot");
 			}
 
 			[Test]
@@ -176,9 +129,9 @@ public sealed partial class ThatSnapshot
 				int year = 1970;
 				bool isLive = false;
 
-				await ShouldBeNamed("title=Let It Be_year=1970_isLive=False",
+				await ShouldBeNamed("Let It Be_1970_False",
 					result => result.NamedAfter(title, year, isLive),
-					"each argument adds its name and value");
+					"each argument adds its value");
 			}
 
 			[Test]
@@ -186,17 +139,27 @@ public sealed partial class ThatSnapshot
 			{
 				string title = "Abbey Road";
 
-				await ShouldBeNamed("title=Abbey Road",
+				await ShouldBeNamed("Abbey Road",
 					result => result.Named("login").NamedAfter(title),
 					"the last name wins, like for .Named(…)");
+			}
+
+			[Test]
+			public async Task WhenParameterIsRenamed_ShouldKeepTheName()
+			{
+				Album album = new("Abbey Road", 1969);
+
+				await ShouldBeNamed("Abbey Road_1969",
+					result => result.NamedAfter(album.Title, album.Year),
+					"only the values are written, so that renaming a parameter or a member keeps the snapshot");
 			}
 
 			[Test]
 			public async Task WhenSnapshotIsUsedForAnotherValueWithOtherArguments_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
-				store.Snapshots[Id with { Name = "title=Abbey Road", }] = "foo";
-				store.Snapshots[Id with { Name = "title=Let It Be", }] = "bar";
+				store.Snapshots[Id with { Name = "Abbey Road", }] = "foo";
+				store.Snapshots[Id with { Name = "Let It Be", }] = "bar";
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 
 				async Task Act(string title, string subject)

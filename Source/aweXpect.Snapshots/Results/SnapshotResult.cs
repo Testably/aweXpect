@@ -1,8 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Results;
 
@@ -124,7 +120,11 @@ public class SnapshotResult<TType, TThat, TSelf> : AndOrResult<TType, TThat, TSe
 	/// </summary>
 	/// <remarks>
 	///     The name is appended to the snapshot, e.g.
-	///     <c>&lt;Class&gt;.&lt;Method&gt;.&lt;Name&gt;.awexpect-snapshot.txt</c>.
+	///     <c>&lt;Class&gt;.&lt;Method&gt;.&lt;Name&gt;.awexpect-snapshot.txt</c>. When the snapshot is named after the
+	///     arguments of the running test, see <c>Customize.aweXpect.Snapshots().NamedAfterTestArguments</c>, the name is
+	///     appended to them, e.g. <c>Abbey Road_1969_cover</c>, so that each case of a parameterized test can hold several
+	///     snapshots.<br />
+	///     The name replaces one set before, also by <c>.NamedAfter(…)</c>.
 	/// </remarks>
 	public TSelf Named(string name)
 	{
@@ -138,84 +138,38 @@ public class SnapshotResult<TType, TThat, TSelf> : AndOrResult<TType, TThat, TSe
 			throw Tracing.WriteException(new ArgumentException("The 'name' cannot be empty.", nameof(name)));
 		}
 
-		_options.Name = name;
+		_options.NameWithinTestCase(name);
 		return (TSelf)this;
 	}
 
 	/// <summary>
 	///     Names the snapshot after the arguments of a parameterized test, e.g. <c>.NamedAfter(title, year)</c> as
-	///     <c>title=Abbey Road_year=1969</c>, so that its cases are kept apart.
+	///     <c>Abbey Road_1969</c>, so that its cases are kept apart.
 	/// </summary>
 	/// <remarks>
-	///     Each argument is written as <c>&lt;name&gt;=&lt;value&gt;</c>, separated by <c>_</c>. The compiler passes the
-	///     expression of each argument: a name or member access is written like <see langword="nameof" />, e.g.
-	///     <c>Title</c> for <c>album.Title</c>, and any other expression as written on one line; without an expression,
-	///     e.g. before C# 10, the position is used, e.g. <c>argument1</c>. A value is written in the invariant culture, and
-	///     <see langword="null" /> as <c>null</c>.<br />
-	///     The name replaces one set before, also by <c>.Named(…)</c>.
+	///     The values are written like the arguments of the running test with
+	///     <c>Customize.aweXpect.Snapshots().NamedAfterTestArguments</c>: in the invariant culture, separated by
+	///     <c>_</c>, without the names of the parameters, so that renaming a parameter keeps the snapshot.<br />
+	///     The name replaces one set before, also by <c>.Named(…)</c>, and the name of the arguments of the running test.
 	/// </remarks>
-	public TSelf NamedAfter(object? argument1,
-		EndOfArguments endOfArguments = default,
-		[CallerArgumentExpression(nameof(argument1))] string doNotPopulateThisValue1 = "")
-		=> SetNameAfter((argument1, doNotPopulateThisValue1));
+	public TSelf NamedAfter(object? argument1)
+		=> SetNameAfter(argument1);
 
-	/// <inheritdoc cref="NamedAfter(object, EndOfArguments, string)" />
-	public TSelf NamedAfter(object? argument1, object? argument2,
-		EndOfArguments endOfArguments = default,
-		[CallerArgumentExpression(nameof(argument1))] string doNotPopulateThisValue1 = "",
-		[CallerArgumentExpression(nameof(argument2))] string doNotPopulateThisValue2 = "")
-		=> SetNameAfter((argument1, doNotPopulateThisValue1), (argument2, doNotPopulateThisValue2));
+	/// <inheritdoc cref="NamedAfter(object)" />
+	public TSelf NamedAfter(object? argument1, object? argument2)
+		=> SetNameAfter(argument1, argument2);
 
-	/// <inheritdoc cref="NamedAfter(object, EndOfArguments, string)" />
-	public TSelf NamedAfter(object? argument1, object? argument2, object? argument3,
-		EndOfArguments endOfArguments = default,
-		[CallerArgumentExpression(nameof(argument1))] string doNotPopulateThisValue1 = "",
-		[CallerArgumentExpression(nameof(argument2))] string doNotPopulateThisValue2 = "",
-		[CallerArgumentExpression(nameof(argument3))] string doNotPopulateThisValue3 = "")
-		=> SetNameAfter((argument1, doNotPopulateThisValue1), (argument2, doNotPopulateThisValue2),
-			(argument3, doNotPopulateThisValue3));
+	/// <inheritdoc cref="NamedAfter(object)" />
+	public TSelf NamedAfter(object? argument1, object? argument2, object? argument3)
+		=> SetNameAfter(argument1, argument2, argument3);
 
-	/// <inheritdoc cref="NamedAfter(object, EndOfArguments, string)" />
-	[SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters",
-		Justification = "Each argument needs its own caller argument expression parameter.")]
-	public TSelf NamedAfter(object? argument1, object? argument2, object? argument3,
-		object? argument4,
-		EndOfArguments endOfArguments = default,
-		[CallerArgumentExpression(nameof(argument1))] string doNotPopulateThisValue1 = "",
-		[CallerArgumentExpression(nameof(argument2))] string doNotPopulateThisValue2 = "",
-		[CallerArgumentExpression(nameof(argument3))] string doNotPopulateThisValue3 = "",
-		[CallerArgumentExpression(nameof(argument4))] string doNotPopulateThisValue4 = "")
-		=> SetNameAfter((argument1, doNotPopulateThisValue1), (argument2, doNotPopulateThisValue2),
-			(argument3, doNotPopulateThisValue3), (argument4, doNotPopulateThisValue4));
+	/// <inheritdoc cref="NamedAfter(object)" />
+	public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4)
+		=> SetNameAfter(argument1, argument2, argument3, argument4);
 
-	private TSelf SetNameAfter(params (object? Value, string Expression)[] arguments)
+	private TSelf SetNameAfter(params object?[] arguments)
 	{
-		_options.Name = string.Join("_", arguments.Select((argument, index)
-			=> $"{GetArgumentName(argument.Expression, index)}={FormatArgumentValue(argument.Value)}"));
+		_options.Name = SnapshotTestArguments.Format(arguments);
 		return (TSelf)this;
 	}
-
-	/// <remarks>
-	///     Whitespace is collapsed, so that an expression over several lines has the same name with every line ending.
-	/// </remarks>
-	private static string GetArgumentName(string expression, int index)
-	{
-		string singleLine = string.Join(" ", expression.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries));
-		if (singleLine.Length == 0)
-		{
-			return "argument" + (index + 1).ToString(CultureInfo.InvariantCulture);
-		}
-
-		string[] segments = singleLine.Split('.');
-		return segments.All(IsIdentifier) ? segments[segments.Length - 1] : singleLine;
-	}
-
-	private static bool IsIdentifier(string segment)
-		=> segment.Length > 0 && !char.IsDigit(segment[0]) &&
-		   segment.All(character => character == '_' || char.IsLetterOrDigit(character));
-
-	private static string FormatArgumentValue(object? value)
-		=> (value is IFormattable formattable
-			? formattable.ToString(null, CultureInfo.InvariantCulture)
-			: value?.ToString()) ?? "null";
 }

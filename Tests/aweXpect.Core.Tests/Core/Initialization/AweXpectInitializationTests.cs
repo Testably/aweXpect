@@ -193,7 +193,7 @@ public sealed class AweXpectInitializationTests
 	{
 		ITestFrameworkAdapter fallback = AweXpectInitialization.DetectTestFramework(new TestFrameworkRegistry.Registration());
 
-		bool isRunning = fallback.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = fallback.TryGetCurrentTest(out RunningTest? currentTest);
 
 		await That(isRunning).IsFalse();
 		await That(currentTest).IsNull();
@@ -213,7 +213,8 @@ public sealed class AweXpectInitializationTests
 	[Test]
 	public async Task TryAddAttachment_WhenFrameworkSupportsAttachments_ShouldAttachTheFile()
 	{
-		TestContextFrameworkAdapter adapter = new(new TestIdentity("MyTests.AlbumTests", "Album", []),
+		TestContextFrameworkAdapter adapter = new(
+			new RunningTest(new TestIdentity("MyTests.AlbumTests", "Album", []), null, null, 0),
 			CancellationToken.None);
 		AweXpectInitialization.InitializationState state = new(adapter);
 
@@ -239,7 +240,8 @@ public sealed class AweXpectInitializationTests
 	{
 		using CancellationTokenSource cts = new();
 		AweXpectInitialization.InitializationState state = new(
-			new TestContextFrameworkAdapter(new TestIdentity("MyTests.AlbumTests", "Album", []), cts.Token));
+			new TestContextFrameworkAdapter(
+				new RunningTest(new TestIdentity("MyTests.AlbumTests", "Album", []), null, null, 0), cts.Token));
 
 		bool hasToken = state.TryGetCancellationToken(out CancellationToken cancellationToken);
 
@@ -252,7 +254,7 @@ public sealed class AweXpectInitializationTests
 	{
 		AweXpectInitialization.InitializationState state = new(new RegisteredFrameworkAdapter());
 
-		bool isRunning = state.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = state.TryGetCurrentTest(out RunningTest? currentTest);
 
 		await That(isRunning).IsFalse()
 			.Because("an adapter that only reports the results does not know the running test");
@@ -262,11 +264,12 @@ public sealed class AweXpectInitializationTests
 	[Test]
 	public async Task TryGetCurrentTest_WhenFrameworkExposesTheRunningTest_ShouldReturnItsTest()
 	{
-		TestIdentity runningTest = new("MyTests.AlbumTests", "Album_MatchesSnapshot", ["Abbey Road",]);
+		RunningTest runningTest = new(
+			new TestIdentity("MyTests.AlbumTests", "Album_MatchesSnapshot", ["Abbey Road",]), null, null, 0);
 		AweXpectInitialization.InitializationState state = new(
 			new TestContextFrameworkAdapter(runningTest, CancellationToken.None));
 
-		bool isRunning = state.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = state.TryGetCurrentTest(out RunningTest? currentTest);
 
 		await That(isRunning).IsTrue();
 		await That(currentTest).IsSameAs(runningTest);
@@ -290,7 +293,7 @@ public sealed class AweXpectInitializationTests
 		[DoesNotReturn]
 		public void Skip(string message) => throw new NotSupportedException();
 
-		public bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+		public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
 		{
 			currentTest = null;
 			return false;
@@ -324,7 +327,7 @@ public sealed class AweXpectInitializationTests
 		[DoesNotReturn]
 		public void Skip(string message) => throw new NotSupportedException();
 
-		public bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+		public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
 		{
 			currentTest = null;
 			return false;
@@ -340,7 +343,7 @@ public sealed class AweXpectInitializationTests
 #pragma warning restore CS0436
 	}
 
-	private sealed class TestContextFrameworkAdapter(TestIdentity runningTest, CancellationToken testToken)
+	private sealed class TestContextFrameworkAdapter(RunningTest runningTest, CancellationToken testToken)
 		: ITestFrameworkAdapter
 	{
 		public List<(string FilePath, string? Description)> Attachments { get; } = [];
@@ -360,7 +363,7 @@ public sealed class AweXpectInitializationTests
 		[DoesNotReturn]
 		public void Skip(string message) => throw new NotSupportedException();
 
-		public bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+		public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
 		{
 			currentTest = runningTest;
 			return true;
@@ -398,7 +401,7 @@ public sealed class AweXpectInitializationTests
 		[DoesNotReturn]
 		public void Skip(string message) => throw new NotSupportedException();
 
-		public bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+		public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
 		{
 			currentTest = null;
 			return false;

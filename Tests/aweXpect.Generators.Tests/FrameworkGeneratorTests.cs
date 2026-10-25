@@ -464,31 +464,36 @@ public sealed class FrameworkGeneratorTests
 	}
 
 	[Test]
-	public async Task WhenRunningTestIsExperimental_ShouldNotReturnACurrentTest()
+	[Arguments("[System.Diagnostics.CodeAnalysis.Experimental(\"MSTESTEXP\")] public static TestContext? Current => null; public string? TestName => null;",
+		"using an experimental API fails the build of the consumer unless the diagnostic is suppressed")]
+	[Arguments("[System.Obsolete(\"Use another API\")] public static TestContext? Current => null; public string? TestName => null;",
+		"using an obsolete API warns, which fails the build of a consumer that treats warnings as errors")]
+	[Arguments("public static TestContext? Current => null;",
+		"the generated code would use TestName, which this version of the test framework lacks")]
+	public async Task WhenRunningTestIsNotUsable_ShouldNotReturnACurrentTest(string members, string because)
 	{
-		MetadataReference msTest = GeneratorRunner.CompileToReference("MSTest.TestFramework", """
-		                                                                                      namespace Microsoft.VisualStudio.TestTools.UnitTesting
-		                                                                                      {
-		                                                                                      	public class AssertFailedException : System.Exception
-		                                                                                      	{
-		                                                                                      		public AssertFailedException(string message) : base(message) { }
-		                                                                                      		public AssertFailedException(string message, System.Exception inner) : base(message, inner) { }
-		                                                                                      	}
-		                                                                                      	public class AssertInconclusiveException(string message) : System.Exception(message);
-		                                                                                      	public class TestContext
-		                                                                                      	{
-		                                                                                      		[System.Diagnostics.CodeAnalysis.Experimental("MSTESTEXP")]
-		                                                                                      		public static TestContext? Current => null;
-		                                                                                      		public object?[]? TestData => null;
-		                                                                                      	}
-		                                                                                      }
-		                                                                                      """);
+		MetadataReference msTest = GeneratorRunner.CompileToReference("MSTest.TestFramework", $$"""
+			namespace Microsoft.VisualStudio.TestTools.UnitTesting
+			{
+				public class AssertFailedException : System.Exception
+				{
+					public AssertFailedException(string message) : base(message) { }
+					public AssertFailedException(string message, System.Exception inner) : base(message, inner) { }
+				}
+				public class AssertInconclusiveException(string message) : System.Exception(message);
+				public class TestContext
+				{
+					{{members}}
+					public string? FullyQualifiedTestClassName => null;
+					public object?[]? TestData => null;
+				}
+			}
+			""");
 
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new FrameworkGenerator(),
 			["public class Foo { }",], true, LanguageVersion.Latest, [msTest, Xunit2Assert,]);
 
-		await That(result.Errors).IsEmpty()
-			.Because("using an experimental API fails the build of the consumer unless the diagnostic is suppressed");
+		await That(result.Errors).IsEmpty().Because(because);
 		await That(result.Generated).Contains("class MsTestAdapter ").And
 			.DoesNotContain("new global::aweXpect.Core.Adapters.TestIdentity(");
 	}

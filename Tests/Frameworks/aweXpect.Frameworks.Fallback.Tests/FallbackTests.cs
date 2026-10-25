@@ -70,7 +70,7 @@ public sealed class FallbackTests
 	[Test]
 	public void TryGetCurrentTest_WhenNotSpecifyingAnyTestFramework_ShouldNotFindTheRunningTest()
 	{
-		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
 
 		Assert.That(isRunning, Is.False);
 		Assert.That(currentTest, Is.Null);

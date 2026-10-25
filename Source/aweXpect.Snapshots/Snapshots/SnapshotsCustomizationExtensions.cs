@@ -81,12 +81,13 @@ public static class SnapshotsCustomizationExtensions
 		///     It only applies when the test framework exposes the running test, see
 		///     <see cref="aweXpect.Core.Adapters.TestFrameworkRegistry.TryGetCurrentTest" />, which MSTest and xunit v2 do
 		///     not, and to a test with arguments, so the snapshot of a test without parameters keeps its name. A name set by
-		///     <c>.Named(…)</c> or <c>.NamedAfter(…)</c> replaces it.<br />
-		///     The arguments are written in the invariant culture and separated by <c>_</c>: <see langword="null" /> as
-		///     <c>null</c>, an empty string as <c>""</c>, a <see cref="double" /> or <see cref="float" /> so that it round-trips,
-		///     the items of a collection as <c>[a,b]</c> and any other value by its <see cref="object.ToString()" />. A name
-		///     longer than 64 characters is shortened and ends with <c>~</c> and a hash of the whole name, so that it stays
-		///     unique.
+		///     <c>.Named(…)</c> is appended to it, e.g. <c>Abbey Road_1969_cover</c>, and <c>.NamedAfter(…)</c> replaces it.<br />
+		///     The arguments are written like those of <c>.NamedAfter(…)</c>: in the invariant culture and separated by
+		///     <c>_</c>, <see langword="null" /> as <c>null</c>, an empty string as <c>""</c>, a <see cref="double" /> or
+		///     <see cref="float" /> so that it round-trips, the items of a collection as <c>[a,b]</c> and any other value by
+		///     its <see cref="object.ToString()" />; a <see cref="System.Threading.CancellationToken" /> is skipped. A name
+		///     longer than 64 characters in the file name, where each escaped character takes three, is shortened and ends
+		///     with <c>~</c> and a hash of the whole name, so that it stays unique.
 		/// </remarks>
 		public ICustomizationValueSetter<bool> NamedAfterTestArguments { get; }
 

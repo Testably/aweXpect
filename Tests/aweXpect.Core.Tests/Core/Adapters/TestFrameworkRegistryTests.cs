@@ -114,7 +114,7 @@ public sealed class TestFrameworkRegistryTests
 		[DoesNotReturn]
 		public void Skip(string message) => throw new NotSupportedException(message);
 
-		public bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+		public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
 		{
 			currentTest = null;
 			return false;
@@ -147,7 +147,7 @@ public sealed class TestFrameworkRegistryTests
 		[DoesNotReturn]
 		public void Skip(string message) => throw new NotSupportedException(message);
 
-		public bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+		public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
 		{
 			currentTest = null;
 			return false;

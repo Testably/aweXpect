@@ -22,10 +22,6 @@ namespace aweXpect
 }
 namespace aweXpect.Snapshots
 {
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public readonly struct EndOfArguments
-    {
-    }
     public interface IFileSnapshotStore
     {
         string GetPendingFile(aweXpect.Snapshots.SnapshotId id);
@@ -254,10 +250,10 @@ namespace aweXpect.Snapshots.Results
         public aweXpect.Results.AndOrResult<TType, TThat> Accepting(aweXpect.Snapshots.SnapshotAcceptance mode) { }
         public TSelf ComparedWith(aweXpect.Snapshots.SnapshotComparer comparer) { }
         public TSelf Named(string name) { }
-        public TSelf NamedAfter(object? argument1, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "") { }
-        public TSelf NamedAfter(object? argument1, object? argument2, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "") { }
-        public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument3")] string doNotPopulateThisValue3 = "") { }
-        public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument3")] string doNotPopulateThisValue3 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument4")] string doNotPopulateThisValue4 = "") { }
+        public TSelf NamedAfter(object? argument1) { }
+        public TSelf NamedAfter(object? argument1, object? argument2) { }
+        public TSelf NamedAfter(object? argument1, object? argument2, object? argument3) { }
+        public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4) { }
     }
     public sealed class SnapshotUniqueFor<TResult>
     {

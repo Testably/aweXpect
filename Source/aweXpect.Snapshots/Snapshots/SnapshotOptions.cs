@@ -15,6 +15,7 @@ internal sealed class SnapshotOptions
 	private static readonly char[] LineBreaks = ['\r', '\n',];
 	private readonly string _memberName;
 	private readonly string _sourceFile;
+	private readonly string? _testArgumentsName;
 	private readonly string?[] _variantParts = new string?[3];
 	private string _extension;
 	private bool _isExtensionSet;
@@ -31,7 +32,8 @@ internal sealed class SnapshotOptions
 		_memberName = memberName;
 		_extension = extension ?? SnapshotId.DefaultExtension;
 		_isExtensionSet = extension is not null;
-		_name = SnapshotTestArguments.GetName();
+		_testArgumentsName = SnapshotTestArguments.GetName();
+		_name = _testArgumentsName;
 		ClaimedSnapshots.Claim(Id);
 	}
 
@@ -105,6 +107,16 @@ internal sealed class SnapshotOptions
 			ClaimedSnapshots.Claim(Id);
 		}
 	}
+
+	/// <summary>
+	///     Names one of several snapshots of the test case after the name of the arguments of the running test, when the
+	///     snapshot is named after them, e.g. <c>Abbey Road_1969_cover</c>.
+	/// </summary>
+	/// <remarks>
+	///     It always starts from the name of the arguments, so that a later name replaces an earlier one.
+	/// </remarks>
+	public void NameWithinTestCase(string name)
+		=> Name = _testArgumentsName is null ? name : $"{_testArgumentsName}_{name}";
 
 	/// <summary>
 	///     Makes the snapshot unique for the <paramref name="value" /> of the <paramref name="part" /> of the environment.
