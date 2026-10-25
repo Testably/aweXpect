@@ -201,6 +201,17 @@ public sealed class AweXpectInitializationTests
 #endif
 
 	[Test]
+	public async Task TryAddAttachment_WhenAdapterThrows_ShouldReturnFalse()
+	{
+		AweXpectInitialization.InitializationState state = new(new ThrowingFrameworkAdapter());
+
+		bool isAttached = state.TryAddAttachment("snapshot.txt", "the received snapshot");
+
+		await That(isAttached).IsFalse()
+			.Because("a faulty adapter must not change the result of an expectation");
+	}
+
+	[Test]
 	public async Task TryAddAttachment_WhenFrameworkDoesNotSupportAttachments_ShouldReturnFalse()
 	{
 		AweXpectInitialization.InitializationState state = new(new RegisteredFrameworkAdapter());
@@ -222,6 +233,18 @@ public sealed class AweXpectInitializationTests
 
 		await That(isAttached).IsTrue();
 		await That(adapter.Attachments).IsEqualTo([("snapshot.txt", "the received snapshot"),]);
+	}
+
+	[Test]
+	public async Task TryGetCancellationToken_WhenAdapterThrows_ShouldReturnFalse()
+	{
+		AweXpectInitialization.InitializationState state = new(new ThrowingFrameworkAdapter());
+
+		bool hasToken = state.TryGetCancellationToken(out CancellationToken cancellationToken);
+
+		await That(hasToken).IsFalse()
+			.Because("a faulty adapter must not change the result of an expectation");
+		await That(cancellationToken).IsEqualTo(CancellationToken.None);
 	}
 
 	[Test]
@@ -247,6 +270,18 @@ public sealed class AweXpectInitializationTests
 
 		await That(hasToken).IsTrue();
 		await That(cancellationToken).IsEqualTo(cts.Token);
+	}
+
+	[Test]
+	public async Task TryGetCurrentTest_WhenAdapterThrows_ShouldReturnFalse()
+	{
+		AweXpectInitialization.InitializationState state = new(new ThrowingFrameworkAdapter());
+
+		bool isRunning = state.TryGetCurrentTest(out RunningTest? currentTest);
+
+		await That(isRunning).IsFalse()
+			.Because("a faulty adapter must not change the result of an expectation");
+		await That(currentTest).IsNull();
 	}
 
 	[Test]
@@ -380,6 +415,34 @@ public sealed class AweXpectInitializationTests
 			Attachments.Add((filePath, description));
 			return true;
 		}
+#pragma warning restore CS0436
+	}
+
+	private sealed class ThrowingFrameworkAdapter : ITestFrameworkAdapter
+	{
+		public bool IsAvailable => true;
+
+#pragma warning disable CS0436
+		[DoesNotReturn]
+		public void Fail(string message) => throw new NotSupportedException();
+
+		[DoesNotReturn]
+		public void Fail(string message, Exception innerException) => throw new NotSupportedException();
+
+		[DoesNotReturn]
+		public void Inconclusive(string message) => throw new NotSupportedException();
+
+		[DoesNotReturn]
+		public void Skip(string message) => throw new NotSupportedException();
+
+		public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
+			=> throw new InvalidOperationException("The test framework failed.");
+
+		public bool TryGetCancellationToken(out CancellationToken cancellationToken)
+			=> throw new InvalidOperationException("The test framework failed.");
+
+		public bool TryAddAttachment(string filePath, string? description)
+			=> throw new InvalidOperationException("The test framework failed.");
 #pragma warning restore CS0436
 	}
 

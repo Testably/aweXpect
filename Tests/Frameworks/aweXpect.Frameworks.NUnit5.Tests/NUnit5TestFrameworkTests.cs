@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Adapters;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 
 namespace aweXpect.Frameworks.NUnit5.Tests;
 
@@ -65,12 +67,15 @@ public sealed class NUnit5TestFrameworkTests
 	[Test]
 	public async Task TryAddAttachment_ShouldAttachTheFile()
 	{
-		string filePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.txt");
+		string filePath = Path.Combine(TestContext.CurrentContext.WorkDirectory,
+			$"{nameof(TryAddAttachment_ShouldAttachTheFile)}.txt");
 		File.WriteAllText(filePath, "received");
 
 		bool isAttached = TestFrameworkRegistry.TryAddAttachment(filePath, "the received snapshot");
 
-		await Expect.That(isAttached).IsTrue()
+		await Expect.That(isAttached).IsTrue();
+		await Expect.That(TestExecutionContext.CurrentContext.CurrentResult.TestAttachments
+				.Any(x => x.FilePath == filePath && x.Description == "the received snapshot")).IsTrue()
 			.Because("NUnit 5 attaches files to the result of the test");
 	}
 

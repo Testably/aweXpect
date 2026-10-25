@@ -89,6 +89,15 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			[Arguments("Sgt. Pepper's Lonely Hearts Club Band (Remastered Super Deluxe Edition")]
+			public async Task WhenNamedAndTheNameBecomesLong_ShouldShortenTheWholeName(string title)
+			{
+				await ShouldBeNamed("Sgt. Pepper's Lonely Hearts Club Band (Remastered Sup~8e83c61c",
+					result => result.Named("Disc One"),
+					$"the name appended to the arguments of {title} counts towards the limited length");
+			}
+
+			[Test]
 			[Arguments("Abbey Road")]
 			public async Task WhenNamedTwice_ShouldAppendOnlyTheLastName(string title)
 			{

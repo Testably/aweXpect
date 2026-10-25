@@ -58,20 +58,64 @@ internal static class AweXpectInitialization
 		/// <summary>
 		///     Returns the running test, when the test framework exposes it.
 		/// </summary>
+		/// <remarks>
+		///     An adapter that throws counts as one that does not expose it, so that a faulty adapter never changes the
+		///     result of an expectation; the same applies to the other <c>Try</c> methods.
+		/// </remarks>
 		public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
-			=> testFramework.TryGetCurrentTest(out currentTest);
+		{
+			try
+			{
+				if (testFramework.TryGetCurrentTest(out currentTest) && currentTest is not null)
+				{
+					return true;
+				}
+			}
+			catch (Exception exception)
+			{
+				Tracing.WriteException(exception);
+			}
+
+			currentTest = null;
+			return false;
+		}
 
 		/// <summary>
 		///     Returns the token that cancels the running test, when the test framework exposes it.
 		/// </summary>
 		public bool TryGetCancellationToken(out CancellationToken cancellationToken)
-			=> testFramework.TryGetCancellationToken(out cancellationToken);
+		{
+			try
+			{
+				if (testFramework.TryGetCancellationToken(out cancellationToken))
+				{
+					return true;
+				}
+			}
+			catch (Exception exception)
+			{
+				Tracing.WriteException(exception);
+			}
+
+			cancellationToken = CancellationToken.None;
+			return false;
+		}
 
 		/// <summary>
 		///     Attaches the file to the result of the running test, when the test framework supports it.
 		/// </summary>
 		public bool TryAddAttachment(string filePath, string? description)
-			=> testFramework.TryAddAttachment(filePath, description);
+		{
+			try
+			{
+				return testFramework.TryAddAttachment(filePath, description);
+			}
+			catch (Exception exception)
+			{
+				Tracing.WriteException(exception);
+				return false;
+			}
+		}
 
 		/// <summary>
 		///     Throws a framework-specific exception to indicate a skipped unit test.

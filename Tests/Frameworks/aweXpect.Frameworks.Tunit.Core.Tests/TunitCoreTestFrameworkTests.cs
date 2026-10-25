@@ -57,7 +57,7 @@ public sealed class TunitCoreTestFrameworkTests
 	[Test]
 	public async Task TryAddAttachment_ShouldAttachTheFile()
 	{
-		string filePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.txt");
+		string filePath = Path.Combine(AppContext.BaseDirectory, $"{nameof(TryAddAttachment_ShouldAttachTheFile)}.txt");
 		File.WriteAllText(filePath, "received");
 
 		bool isAttached = TestFrameworkRegistry.TryAddAttachment(filePath, "the received snapshot");
@@ -66,6 +66,18 @@ public sealed class TunitCoreTestFrameworkTests
 		await Expect.That(TestContext.Current!.Output.Artifacts
 				.Any(x => x.File.FullName == filePath && x.Description == "the received snapshot")).IsTrue()
 			.Because("TUnit attaches the file as an artifact of the test");
+	}
+
+	[Test]
+	public async Task TryAddAttachment_WhenFileDoesNotExist_ShouldReturnFalse()
+	{
+		string filePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.txt");
+
+		bool isAttached = TestFrameworkRegistry.TryAddAttachment(filePath, "the received snapshot");
+
+		await Expect.That(isAttached).IsFalse()
+			.Because("TUnit attaches a missing file without an error, so the adapter checks that it exists");
+		await Expect.That(TestContext.Current!.Output.Artifacts.Any(x => x.File.FullName == filePath)).IsFalse();
 	}
 
 	[Test]

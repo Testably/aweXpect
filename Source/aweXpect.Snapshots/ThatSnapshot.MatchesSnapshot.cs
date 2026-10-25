@@ -691,31 +691,13 @@ public static partial class ThatSnapshot
 
 			if (settings.Store is IFileSnapshotStore fileStore)
 			{
-				AttachToTheTest(fileStore.GetPendingFile(id));
+				// So that the recorded mismatch can be reviewed after a run on a build server; attaching never throws.
+				_ = TestFrameworkRegistry.TryAddAttachment(fileStore.GetPendingFile(id), "The received snapshot");
 			}
 
 			SnapshotContent? snapshotContent = _snapshotContent;
 			await ReportAsync(() => new SnapshotMismatch(id, settings.Store, snapshotContent, actualContent),
 				static (reporter, mismatch, token) => reporter.OnMismatchAsync(mismatch, token), cancellationToken);
-		}
-
-		/// <summary>
-		///     Attaches the recorded mismatch in the <paramref name="pendingFile" /> to the result of the running test, when
-		///     the test framework supports attachments, e.g. so that it can be reviewed after a run on a build server.
-		/// </summary>
-		/// <remarks>
-		///     An exception is traced and otherwise ignored, so that attaching never changes the result of the expectation.
-		/// </remarks>
-		private static void AttachToTheTest(string pendingFile)
-		{
-			try
-			{
-				TestFrameworkRegistry.TryAddAttachment(pendingFile, "The received snapshot");
-			}
-			catch (Exception exception)
-			{
-				Tracing.WriteException(exception);
-			}
 		}
 
 		/// <summary>

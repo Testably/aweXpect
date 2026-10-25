@@ -44,8 +44,8 @@ public static class TestFrameworkRegistry
 	/// </summary>
 	/// <remarks>
 	///     Returns <see langword="false" /> when no adapter is registered, its test framework does not expose the running
-	///     test, or no test is running, e.g. in a setup of the whole assembly. Like the adapter itself, it is resolved when
-	///     first needed and then cached.
+	///     test, no test is running, e.g. in a setup of the whole assembly, or the adapter throws. The adapter is resolved
+	///     when first needed and then cached, but the running test is read from it on every call.
 	/// </remarks>
 	public static bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
 		=> AweXpectInitialization.State.Value.TryGetCurrentTest(out currentTest);
@@ -56,7 +56,7 @@ public static class TestFrameworkRegistry
 	/// </summary>
 	/// <remarks>
 	///     Returns <see langword="false" /> when no adapter is registered, its test framework does not expose the token,
-	///     or no test is running. Expectations do not observe it unless
+	///     no test is running, or the adapter throws. Expectations do not observe it unless
 	///     <c>Customize.aweXpect.Settings().TestCancellation</c> is set to <c>TestCancellation.FromCancellationToken(…)</c>
 	///     with it.
 	/// </remarks>
@@ -69,8 +69,8 @@ public static class TestFrameworkRegistry
 	/// </summary>
 	/// <remarks>
 	///     Returns <see langword="false" /> when no adapter is registered, its test framework does not support
-	///     attachments, or no test is running. Some test frameworks only read the file when the test ends, so it must
-	///     still exist then.
+	///     attachments, no test is running, or the adapter throws. Some test frameworks only read the file when the test
+	///     ends, so it must still exist then.
 	/// </remarks>
 	public static bool TryAddAttachment(string filePath, string? description = null)
 	{

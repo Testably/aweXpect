@@ -124,7 +124,8 @@ public class SnapshotResult<TType, TThat, TSelf> : AndOrResult<TType, TThat, TSe
 	///     arguments of the running test, see <c>Customize.aweXpect.Snapshots().NamedAfterTestArguments</c>, the name is
 	///     appended to them, e.g. <c>Abbey Road_1969_cover</c>, so that each case of a parameterized test can hold several
 	///     snapshots.<br />
-	///     The name replaces one set before, also by <c>.NamedAfter(…)</c>.
+	///     The name replaces one set before, also by <c>.NamedAfter(…)</c>. A name longer than 64 characters in the file
+	///     name is shortened and ends with <c>~</c> and a hash of the whole name.
 	/// </remarks>
 	public TSelf Named(string name)
 	{

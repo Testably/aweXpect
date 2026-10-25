@@ -13,7 +13,7 @@ namespace aweXpect.Snapshots;
 /// <summary>
 ///     Names a snapshot after the arguments of the running test, see
 ///     <see cref="SnapshotsCustomizationExtensions.SnapshotsCustomization.NamedAfterTestArguments" />, or after the
-///     arguments of <c>.NamedAfter(…)</c>, which are written alike.
+///     arguments of <c>.NamedAfter(…)</c>, which are written alike, and limits the length of every name.
 /// </summary>
 /// <remarks>
 ///     The name has to be the same on every machine, culture and target framework, as it is part of the file name.
@@ -31,8 +31,8 @@ internal static class SnapshotTestArguments
 	private const int HashLength = 8;
 
 	/// <summary>
-	///     Returns the name of the arguments of the running test, or <see langword="null" /> when the setting is off, the
-	///     test framework does not expose the running test, or the test has no arguments.
+	///     Returns the name of the arguments of the running test, before it is shortened, or <see langword="null" /> when
+	///     the setting is off, the test framework does not expose the running test, or the test has no arguments.
 	/// </summary>
 	public static string? GetName()
 	{
@@ -42,17 +42,19 @@ internal static class SnapshotTestArguments
 			return null;
 		}
 
-		// A test framework injects a token instead of it telling the cases of the test apart, so that a test whose only
-		// parameter is a token keeps its snapshot.
+		// A CancellationToken parameter is injected by the test framework and is the same in every case, so it is skipped,
+		// and a test whose only parameter is a token keeps the snapshot of a test without parameters.
 		object?[] arguments = currentTest.Identity.Arguments.Where(argument => argument is not CancellationToken)
 			.ToArray();
 		return arguments.Length == 0 ? null : Format(arguments);
 	}
 
 	/// <summary>
-	///     Writes the <paramref name="values" /> in the invariant culture, separated by <c>_</c>, and shortens a long
-	///     name.
+	///     Writes the <paramref name="values" /> in the invariant culture, separated by <c>_</c>.
 	/// </summary>
+	/// <remarks>
+	///     The name is not shortened yet, see <see cref="Shorten" />, so that a name appended to it is part of the hash.
+	/// </remarks>
 	public static string Format(IReadOnlyList<object?> values)
 	{
 		StringBuilder stringBuilder = new();
@@ -66,13 +68,13 @@ internal static class SnapshotTestArguments
 			Append(stringBuilder, values[i]);
 		}
 
-		return Shorten(stringBuilder.ToString());
+		return stringBuilder.ToString();
 	}
 
 	/// <remarks>
-	///     A <see cref="double" /> or <see cref="float" /> is written with <c>R</c>, as .NET Framework writes only 15
-	///     significant digits by default, so that its name matches the one on .NET. A collection is written item by item,
-	///     as its <see cref="object.ToString()" /> is usually the name of its type.
+	///     A <see cref="double" /> or <see cref="float" /> is written with the fewest digits that round-trip, see
+	///     <see cref="RoundTripNumber" />. A collection is written item by item, as its <see cref="object.ToString()" /> is
+	///     usually the name of its type.
 	/// </remarks>
 	private static void Append(StringBuilder stringBuilder, object? value)
 	{
@@ -85,10 +87,10 @@ internal static class SnapshotTestArguments
 				stringBuilder.Append(text.Length == 0 ? "\"\"" : text);
 				break;
 			case double number:
-				stringBuilder.Append(number.ToString("R", CultureInfo.InvariantCulture));
+				RoundTripNumber.Append(stringBuilder, number, false);
 				break;
 			case float number:
-				stringBuilder.Append(number.ToString("R", CultureInfo.InvariantCulture));
+				RoundTripNumber.Append(stringBuilder, number, true);
 				break;
 			case IFormattable formattable:
 				stringBuilder.Append(formattable.ToString(null, CultureInfo.InvariantCulture));
@@ -120,9 +122,10 @@ internal static class SnapshotTestArguments
 	///     <c>~</c> and the hash of the whole name.
 	/// </summary>
 	/// <remarks>
-	///     The name is not cut within a surrogate pair, so that it stays valid text.
+	///     Every name of a snapshot is shortened, also one from <c>.Named(…)</c>. The name is not cut within a surrogate
+	///     pair, so that it stays valid text.
 	/// </remarks>
-	private static string Shorten(string name)
+	public static string Shorten(string name)
 	{
 		int escapedLength = 0;
 		foreach (char character in name)

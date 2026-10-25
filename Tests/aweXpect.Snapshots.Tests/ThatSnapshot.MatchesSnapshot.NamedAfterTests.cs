@@ -60,6 +60,46 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			[Arguments(1.0 / 3, "0.3333333333333333")]
+			[Arguments(123456789012345.6, "123456789012345.6")]
+			[Arguments(1234567890123456.7, "1234567890123456.8")]
+			[Arguments(904097094155893.2, "904097094155893.2")]
+			[Arguments(5.2037E-05, "5.2037E-05")]
+			[Arguments(-8.511904705078307E-47, "-8.511904705078307E-47")]
+			[Arguments(1e16, "10000000000000000")]
+			[Arguments(1.23e17, "1.23E+17")]
+			[Arguments(0.0001, "0.0001")]
+			[Arguments(-1e-5, "-1E-05")]
+			[Arguments(5e-324, "5E-324")]
+			[Arguments(double.MaxValue, "1.7976931348623157E+308")]
+			[Arguments(-0.0, "-0")]
+			[Arguments(double.NegativeInfinity, "-Infinity")]
+			public async Task WhenArgumentIsDouble_ShouldWriteTheShortestTextThatRoundTrips(double value,
+				string expected)
+			{
+				await ShouldBeNamed(expected,
+					result => result.NamedAfter(value),
+					".NET Framework writes other digits with \"R\" than .NET, but the name must be the same on every target framework");
+			}
+
+			[Test]
+			[Arguments(1.0000001f, "1.0000001")]
+			[Arguments(float.MaxValue, "3.4028235E+38")]
+			[Arguments(16777216f, "16777216")]
+			[Arguments(1e9f, "1E+09")]
+			[Arguments(1e-45f, "1E-45")]
+			[Arguments(0.1f, "0.1")]
+			[Arguments(1.0758664E-24f, "1.0758664E-24")]
+			[Arguments(-3.2145237E-37f, "-3.2145237E-37")]
+			public async Task WhenArgumentIsFloat_ShouldWriteTheShortestTextThatRoundTrips(float value,
+				string expected)
+			{
+				await ShouldBeNamed(expected,
+					result => result.NamedAfter(value),
+					".NET Framework writes other digits with \"R\" than .NET, but the name must be the same on every target framework");
+			}
+
+			[Test]
 			public async Task WhenArgumentIsFormattable_ShouldUseTheInvariantCulture()
 			{
 				CultureInfo previousCulture = CultureInfo.CurrentCulture;

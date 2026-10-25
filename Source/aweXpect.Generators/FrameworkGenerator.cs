@@ -505,7 +505,7 @@ public class FrameworkGenerator : IIncrementalGenerator
 
 	/// <remarks>
 	///     The id is the one of the test, not of the <c>TestContext</c>, so that it stays the same when the test is
-	///     retried.
+	///     retried. TUnit attaches a missing file without an error, so the adapter checks that it exists.
 	/// </remarks>
 	private static string TUnitTestContext(bool isDeclared, FrameworkSupport support)
 		=> TestContextMembers(isDeclared, support.CurrentTest
@@ -573,7 +573,7 @@ public class FrameworkGenerator : IIncrementalGenerator
 				  			try
 				  			{
 				  				global::TUnit.Core.TestContext context = global::TUnit.Core.TestContext.Current;
-				  				if (context == null || context.Output == null)
+				  				if (context == null || context.Output == null || !global::System.IO.File.Exists(filePath))
 				  				{
 				  					return false;
 				  				}

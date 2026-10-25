@@ -120,6 +120,23 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task WhenNamedWithLongName_ShouldShortenTheName()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id with { Name = "Sgt. Pepper's Lonely Hearts Club Band (Remastered Sup~e0c652ac", }] =
+					"foo";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Named("Sgt. Pepper's Lonely Hearts Club Band (Remastered Super Deluxe Edition, Disc One)");
+
+				await That(Act).DoesNotThrow()
+					.Because("the length of every name is limited, as a file name has a limited length");
+			}
+
+			[Test]
 			public async Task WhenNamedWithNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "foo";

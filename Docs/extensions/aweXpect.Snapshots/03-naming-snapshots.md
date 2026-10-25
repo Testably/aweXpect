@@ -21,6 +21,11 @@ applies to several snapshots in one test method. Characters that a file name can
 `.Named("AC/DC")` is stored in `ArtistTests.Describes.AC%2FDC.awexpect-snapshot.txt`. The same holds for `@`, which
 separates the environment (see below).
 
+A name longer than 64 characters in the file name, where each escaped character takes three, is shortened to 55
+characters, followed by `~` and a hash of the whole name, e.g.
+`Sgt. Pepper's Lonely Hearts Club Band (Remastered Sup~e0c652ac`, so that the path of the snapshot stays short enough
+for every file system. This applies to every name, also to one from `.Named(…)`.
+
 A snapshot that was already used for another value in the same test run fails, so that the cases cannot overwrite each
 other's pending snapshot:
 
@@ -66,14 +71,12 @@ public async Task Describes(string title, int year)
 
 The values are written in the invariant culture and separated by `_`, e.g.
 `AlbumTests.Describes.Abbey Road_1969.awexpect-snapshot.txt`. The name holds only the values, so that renaming a
-parameter keeps the snapshot, and it is escaped like any other name:
+parameter keeps the snapshot, and it is escaped and shortened like any other name:
 
 - `null` is written as `null` and an empty string as `""`.
-- A `double` or `float` is written so that it round-trips, the same on .NET Framework and .NET.
+- A `double` or `float` is written with the fewest digits that round-trip, the same on .NET Framework and .NET, e.g.
+  `0.3333333333333333` for `1.0 / 3`.
 - The items of an array or another collection are written as `[1,2,3]`, any other value by its `ToString()`.
-- A name longer than 64 characters in the file name, where each escaped character takes three, is shortened to 55
-  characters, followed by `~` and a hash of the whole name, e.g.
-  `Sgt. Pepper's Lonely Hearts Club Band (Remastered Sup~e0c652ac`.
 
 ## Naming after the test case
 
@@ -108,6 +111,11 @@ without parameters keeps its snapshot.
 `.Named(…)` is appended to the arguments, e.g. `.Named("cover")` gives `Abbey Road_1969_cover`, so that each case can
 hold several snapshots, while `.NamedAfter(…)` replaces them. Two cases whose arguments are written alike, e.g. two
 objects without their own `ToString()`, share a snapshot and fail like any snapshot that is used for another value.
+
+The name has to be the same in every run, so name a test with `.Named(…)` or `.NamedAfter(…)` instead when one of its
+arguments is written differently each time, e.g. a `Guid.NewGuid()`, a `DateTime.Now`, a mock or any other object whose
+`ToString()` contains a random value or a hash code. Otherwise each run looks for another snapshot and fails, as it
+does not exist yet. When the `ToString()` of an argument throws, `MatchesSnapshot()` throws its exception.
 
 The running test is only known when the test framework exposes it:
 

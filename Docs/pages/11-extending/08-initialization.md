@@ -229,7 +229,8 @@ internal static class MyReports
 ```
 
 - Both return `false` when the test framework does not support it, no test is running or the test framework fails,
-  e.g. because the file does not exist. Like `TryGetCurrentTest`, they never throw. The generated adapters
+  e.g. because the file does not exist. Like `TryGetCurrentTest`, they never throw: the registry also returns `false`
+  when an adapter throws, but an adapter of your own should still return `false` instead. The generated adapters
   support both for TUnit and xUnit v3, and NUnit 4 or later; NUnit 3 only supports attachments.
 - NUnit and TUnit only read the file when the test ends, so it must still exist then. xUnit v3 attaches the content of
   the file immediately, under its name.

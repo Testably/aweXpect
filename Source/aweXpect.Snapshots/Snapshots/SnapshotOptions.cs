@@ -33,7 +33,7 @@ internal sealed class SnapshotOptions
 		_extension = extension ?? SnapshotId.DefaultExtension;
 		_isExtensionSet = extension is not null;
 		_testArgumentsName = SnapshotTestArguments.GetName();
-		_name = _testArgumentsName;
+		_name = _testArgumentsName is null ? null : SnapshotTestArguments.Shorten(_testArgumentsName);
 		ClaimedSnapshots.Claim(Id);
 	}
 
@@ -95,7 +95,8 @@ internal sealed class SnapshotOptions
 	public List<SnapshotRule> Rules { get; } = new();
 
 	/// <remarks>
-	///     A new name moves the claim of the snapshot to the named one.
+	///     A new name moves the claim of the snapshot to the named one. A long name is shortened, see
+	///     <see cref="SnapshotTestArguments.Shorten" />.
 	/// </remarks>
 	public string? Name
 	{
@@ -103,7 +104,7 @@ internal sealed class SnapshotOptions
 		set
 		{
 			ClaimedSnapshots.Release(Id);
-			_name = value;
+			_name = value is null ? null : SnapshotTestArguments.Shorten(value);
 			ClaimedSnapshots.Claim(Id);
 		}
 	}
