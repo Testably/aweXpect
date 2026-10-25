@@ -62,8 +62,17 @@ internal sealed class JsonValueTarget
 	/// <summary>
 	///     The JSON path of the value after the first <paramref name="segmentCount" /> segments.
 	/// </summary>
+	/// <remarks>
+	///     A single segment, like the one of <c>HasProperty</c> or <c>HasElementAt</c>, is concatenated without a
+	///     <see cref="StringBuilder" />, as their nested expectations need the path when they are added.
+	/// </remarks>
 	public string GetPath(int segmentCount)
 	{
+		if (segmentCount == 1)
+		{
+			return _rootPath + Segments[0];
+		}
+
 		StringBuilder sb = new(_rootPath);
 		for (int i = 0; i < segmentCount; i++)
 		{

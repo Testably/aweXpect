@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Nodes;
 using aweXpect.Core;
+using aweXpect.Json.Results;
 
 namespace aweXpect.Json.Tests;
 
@@ -18,6 +19,24 @@ public sealed partial class ThatJsonNode
 				JsonObject result = await That(subject).HasProperty("foo");
 
 				await That(result).IsSameAs(subject);
+			}
+
+			[Test]
+			public async Task WhenCombinedWithAnd_ShouldVerifyEachPropertyOfTheSameNode()
+			{
+				JsonNode? subject = FromString("{\"title\": \"Let It Be\", \"durationSeconds\": 243}");
+
+				async Task Act()
+					=> await That(subject)
+						.HasProperty("title", t => t.IsString("Let It Be")).And
+						.HasProperty("durationSeconds", d => d.IsString());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has property "title" which is a string equal to "Let It Be" and has property "durationSeconds" which is a string,
+					             but $.durationSeconds was a number
+					             """);
 			}
 
 			[Test]
@@ -131,6 +150,33 @@ public sealed partial class ThatJsonNode
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNodeWasModifiedBetweenTwoEvaluations_ShouldVerifyTheModifiedNode()
+			{
+				JsonObject subject = new() { ["foo"] = 1, };
+				JsonPropertyResult<JsonObject, IThat<JsonObject?>> expectation = That(subject)
+					.HasProperty("foo").And
+					.HasProperty("bar");
+				await That(async () => await expectation).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has property "foo" and has property "bar",
+					             but property $.bar did not exist
+
+					             Actual:
+					             {
+					               "foo": 1
+					             }
+					             """);
+				subject["bar"] = 2;
+
+				async Task Act()
+					=> await expectation;
+
+				await That(Act).DoesNotThrow()
+					.Because("each evaluation converts the node in its current state");
 			}
 
 			[Test]
