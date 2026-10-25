@@ -65,6 +65,38 @@ public sealed partial class ThatJsonNode
 			}
 
 			[Test]
+			public async Task WhenNestedLookupsFailOnTwoLevels_ShouldShowTheValueOfEachLevel()
+			{
+				JsonNode? subject = JsonNode.Parse("{\"artist\": {\"name\": \"Artist-1\", \"origin\": {\"city\": \"City-1\"}}}");
+
+				async Task Act()
+					=> await That(subject).HasProperty("artist", a => a
+						.HasProperty("label").And
+						.HasProperty("origin", o => o.HasProperty("country")));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has property "artist" which has property "label" and has property "origin" which has property "country",
+					             but property $.artist.label did not exist and property $.artist.origin.country did not exist
+
+					             Actual ($.artist):
+					             {
+					               "name": "Artist-1",
+					               "origin": {
+					                 "city": "City-1"
+					               }
+					             }
+
+					             Actual ($.artist.origin):
+					             {
+					               "city": "City-1"
+					             }
+					             """)
+					.Because("each level shows the node it looked up the property in, not the whole document");
+			}
+
+			[Test]
 			public async Task WhenNodeIsNoObject_ShouldFail()
 			{
 				JsonArray subject = new(1, 2);
@@ -77,6 +109,12 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             has property "foo",
 					             but it was an array
+
+					             Actual:
+					             [
+					               1,
+					               2
+					             ]
 					             """);
 			}
 
@@ -108,6 +146,11 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             has property "foo" which is a number,
 					             but property $.foo did not exist
+
+					             Actual:
+					             {
+					               "bar": 1
+					             }
 					             """);
 			}
 
@@ -148,6 +191,11 @@ public sealed partial class ThatJsonNode
 					             has property "label" which is null,
 					             but property $.label did not exist
 
+					             Actual:
+					             {
+					               "label": null
+					             }
+
 					             JSON options:
 					              - treat null as absent
 					             """);
@@ -166,6 +214,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             has property "foo" which is a number,
 					             but it was null
+
+					             Actual:
+					             null
 					             """)
 					.Because("a null node is the JSON null");
 			}
@@ -204,6 +255,11 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             does not have property "foo",
 					             but it had property "foo" with "bar"
+
+					             Actual:
+					             {
+					               "foo": "bar"
+					             }
 					             """);
 			}
 
@@ -220,6 +276,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             does not have property "foo",
 					             but it was null
+
+					             Actual:
+					             null
 					             """);
 			}
 		}
@@ -265,6 +324,11 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             does not have property "foo",
 					             but it had property "foo" with <null>
+
+					             Actual:
+					             {
+					               "foo": null
+					             }
 					             """);
 			}
 

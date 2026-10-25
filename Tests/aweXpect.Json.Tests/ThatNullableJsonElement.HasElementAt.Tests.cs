@@ -56,6 +56,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             has element at index 0 which is a number,
 					             but index $[0] did not exist
+
+					             Actual:
+					             []
 					             """);
 			}
 

@@ -132,6 +132,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is a number which is less than 10.0,
 					             but it was null
+
+					             Actual:
+					             null
 					             """);
 			}
 		}
@@ -185,6 +188,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is an int,
 					             but it was 1.5, which is not an int
+
+					             Actual:
+					             1.5
 					             """);
 			}
 
@@ -201,6 +207,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is an int,
 					             but it was null
+
+					             Actual:
+					             null
 					             """);
 			}
 
@@ -233,6 +242,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             has property "durationSeconds" which is an int equal to 240 ± 2,
 					             but $.durationSeconds was 243
+
+					             Actual ($.durationSeconds):
+					             243
 					             """);
 			}
 
@@ -260,6 +272,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is an int equal to 5,
 					             but it was a string
+
+					             Actual:
+					             "5"
 					             """);
 			}
 
@@ -276,6 +291,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is an int equal to 1,
 					             but it was 1.5, which is not an int
+
+					             Actual:
+					             1.5
 					             """);
 			}
 
@@ -292,6 +310,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is an int equal to 1,
 					             but it was null
+
+					             Actual:
+					             null
 					             """)
 					.Because("a null node is the JSON null");
 			}
@@ -348,6 +369,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is not an int equal to 1,
 					             but it was 1
+
+					             Actual:
+					             1
 					             """);
 			}
 

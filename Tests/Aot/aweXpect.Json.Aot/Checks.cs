@@ -33,6 +33,9 @@ internal static partial class Checks
 		new("a missing property fails and names its path",
 			() => ShouldFail(async () => await That(Parse("{\"a\": {}}")).HasValueAt("a.b", b => b.IsString()),
 				"property $.a.b did not exist")),
+		new("a failed lookup shows the indented JSON it ran on",
+			() => ShouldFail(async () => await That(Parse("{\"a\": {\"c\": 1}}")).HasProperty("a", a => a.HasProperty("b")),
+				"property $.a.b did not exist", "Actual ($.a):", "  \"c\": 1")),
 		new("a number is read as the requested type",
 			() => ShouldPass(async () => await That(Parse("{\"a\": 9.5}"))
 				.HasProperty("a", a => a.IsNumber<decimal>(n => n.IsEqualTo(9.5m)))

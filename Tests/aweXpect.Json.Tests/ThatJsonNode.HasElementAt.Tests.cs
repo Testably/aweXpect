@@ -75,6 +75,11 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             has element at index 1 which is a number,
 					             but index $[1] did not exist
+
+					             Actual:
+					             [
+					               1
+					             ]
 					             """);
 			}
 
@@ -91,6 +96,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             has element at index 0 which is a number,
 					             but it was an object
+
+					             Actual:
+					             {}
 					             """);
 			}
 
@@ -144,6 +152,11 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             has element at index 1,
 					             but index $[1] did not exist
+
+					             Actual:
+					             [
+					               1
+					             ]
 					             """);
 			}
 		}

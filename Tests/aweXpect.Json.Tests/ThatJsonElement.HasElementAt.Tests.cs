@@ -77,6 +77,12 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has element at index 2 which is a number,
 					             but index $[2] did not exist
+
+					             Actual:
+					             [
+					               1,
+					               2
+					             ]
 					             """);
 			}
 
@@ -96,6 +102,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              has element at index 0 which is a number,
 					              but it was {kindString}
+
+					              Actual:
+					              {json}
 					              """);
 			}
 
@@ -194,6 +203,12 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has element at index 2,
 					             but index $[2] did not exist
+
+					             Actual:
+					             [
+					               1,
+					               2
+					             ]
 					             """);
 			}
 
@@ -210,6 +225,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has element at index 0,
 					             but it was an object
+
+					             Actual:
+					             {}
 					             """);
 			}
 

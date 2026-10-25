@@ -181,6 +181,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is a byte,
 					             but it was 300, which is not a byte
+
+					             Actual:
+					             300
 					             """);
 			}
 
@@ -240,6 +243,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an int equal to 2,
 					             but it was 1.5, which is not an int
+
+					             Actual:
+					             1.5
 					             """);
 			}
 
@@ -256,6 +262,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is a double equal to 2.0 ± 0.25,
 					             but it was 1.5
+
+					             Actual:
+					             1.5
 					             """);
 			}
 
@@ -326,6 +335,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is not an int equal to 1,
 					             but it was 1
+
+					             Actual:
+					             1
 					             """);
 			}
 

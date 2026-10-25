@@ -152,6 +152,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is a boolean equal to False,
 					             but it was True
+
+					             Actual:
+					             true
 					             """);
 			}
 
@@ -179,6 +182,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is a boolean equal to True,
 					             but it was a string
+
+					             Actual:
+					             "true"
 					             """);
 			}
 
@@ -195,6 +201,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is a boolean equal to True,
 					             but it was null
+
+					             Actual:
+					             null
 					             """)
 					.Because("a null node is the JSON null");
 			}
@@ -226,6 +235,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is not a boolean equal to True,
 					             but it was True
+
+					             Actual:
+					             true
 					             """);
 			}
 

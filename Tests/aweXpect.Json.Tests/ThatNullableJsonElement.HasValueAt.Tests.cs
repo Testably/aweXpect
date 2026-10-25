@@ -33,6 +33,11 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             has value at "foo.bar.baz" which is a number,
 					             but property $.foo.bar did not exist
+
+					             Actual:
+					             {
+					               "foo": {}
+					             }
 					             """);
 			}
 
@@ -49,6 +54,11 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             has value at "foo.bar" which is a number,
 					             but property $.foo did not exist
+
+					             Actual:
+					             {
+					               "foo": null
+					             }
 
 					             JSON options:
 					              - treat null as absent
@@ -114,6 +124,11 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             has value at "foo.bar",
 					             but property $.foo.bar did not exist
+
+					             Actual:
+					             {
+					               "foo": {}
+					             }
 					             """);
 			}
 
@@ -174,6 +189,13 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             does not have value at "foo.bar",
 					             but it had value at "foo.bar" with 2
+
+					             Actual:
+					             {
+					               "foo": {
+					                 "bar": 2
+					               }
+					             }
 					             """);
 			}
 

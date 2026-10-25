@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Linq;
+using System.Text.Json;
 using aweXpect.Core;
 
 namespace aweXpect.Json.Tests;
@@ -157,6 +158,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a string which is equal to "243",
 					             but it was a number
+
+					             Actual:
+					             243
 					             """);
 			}
 
@@ -243,6 +247,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a string equal to "42",
 					             but it was a number
+
+					             Actual:
+					             42
 					             """);
 			}
 
@@ -263,6 +270,9 @@ public sealed partial class ThatJsonElement
 					               "Yesterday"
 					               "Let It Be"
 					                ↑ (expected)
+
+					             Actual ($.title):
+					             "Yesterday"
 					             """);
 			}
 
@@ -280,6 +290,9 @@ public sealed partial class ThatJsonElement
 					             is a string equal to "Let It Be",
 					             but it was "Let It Bee" with a length of 10, which is longer than the expected length of 9 and has superfluous:
 					               "e"
+
+					             Actual:
+					             "Let It Bee"
 					             """);
 			}
 
@@ -311,6 +324,9 @@ public sealed partial class ThatJsonElement
 					               "Yesterday"
 					               "Let"
 					                ↑ (expected prefix)
+
+					             Actual:
+					             "Yesterday"
 					             """);
 			}
 
@@ -323,6 +339,25 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).IsString("Let It Be");
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenStringIsLongerThanTheMessageShows_ShouldShowItCompletelyAsContext()
+			{
+				string value = string.Join(",", Enumerable.Range(1, 60).Select(i => $"track-{i}"));
+				JsonElement subject = FromString($"\"{value}\"");
+
+				async Task Act()
+					=> await That(subject).IsString("track-0");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              *
+
+					              Actual:
+					              "{value}"
+					              """).AsWildcard()
+					.Because("the failure shortens the long string, while the context shows it completely");
 			}
 
 			[Test]
@@ -398,6 +433,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is not a string equal to "Let It Be",
 					             but it was "Let It Be"
+
+					             Actual:
+					             "Let It Be"
 					             """);
 			}
 
@@ -414,6 +452,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is not a string starting with "Let",
 					             but it was "Let It Be"
+
+					             Actual:
+					             "Let It Be"
 					             """);
 			}
 		}

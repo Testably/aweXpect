@@ -185,6 +185,9 @@ public sealed partial class ThatNullableJsonElement
 					               "Let It Be"
 					               "Yesterday"
 					                        ↑ (expected suffix)
+
+					             Actual:
+					             "Let It Be"
 					             """);
 			}
 
@@ -254,6 +257,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is not a string equal to "foo",
 					             but it was "foo"
+
+					             Actual:
+					             "foo"
 					             """);
 			}
 

@@ -31,7 +31,14 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has property "album" and does not have property "artist",
 					             but property $.album did not exist and it had property "artist" with "The Beatles"
-					             """);
+
+					             Actual:
+					             {
+					               "title": "Let It Be",
+					               "artist": "The Beatles"
+					             }
+					             """)
+					.Because("both failing parts verified the same subject, which is shown once");
 			}
 
 			[Test]
@@ -47,6 +54,12 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has property "foo",
 					             but it was an array
+
+					             Actual:
+					             [
+					               1,
+					               2
+					             ]
 					             """);
 			}
 
@@ -64,6 +77,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             whose Items have property "bar" and do not have property "foo",
 					             but property $.bar did not exist and Items had property "foo" with 1
+
+					             Actual (Items):
+					             {
+					               "foo": 1
+					             }
 					             """)
 					.Because("the plural member is the subject of the expectation");
 			}
@@ -104,6 +122,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has property "foo",
 					             but property $.foo did not exist
+
+					             Actual:
+					             {
+					               "Foo": 1
+					             }
 					             """);
 			}
 
@@ -120,6 +143,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has property "foo",
 					             but property $.foo did not exist
+
+					             Actual:
+					             {
+					               "bar": 1
+					             }
 					             """);
 			}
 
@@ -150,6 +178,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has property "foo",
 					             but property $.foo did not exist
+
+					             Actual:
+					             {
+					               "foo": null
+					             }
 
 					             JSON options:
 					              - treat null as absent
@@ -233,7 +266,12 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).HasProperty(name, x => x.HasProperty("c", c => c.IsNumber(5)));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage($"*but {expectedPath} was 1").AsWildcard()
+					.WithMessage($"""
+					              *but {expectedPath} was 1
+
+					              Actual ({expectedPath}):
+					              1
+					              """).AsWildcard()
 					.Because("a name with '.', '[' or ']' would otherwise read as several segments");
 			}
 
@@ -277,6 +315,39 @@ public sealed partial class ThatJsonElement
 					              - ignore additional properties
 					             """).AsWildcard()
 					.Because("the JSON path within the element follows the label of the element without its root");
+			}
+
+			[Test]
+			public async Task WhenNestedLookupsFailOnTwoLevels_ShouldShowTheValueOfEachLevel()
+			{
+				JsonElement subject = FromString(
+					"{\"artist\": {\"name\": \"The Beatles\", \"origin\": {\"city\": \"Liverpool\"}}, \"year\": 1970}");
+
+				async Task Act()
+					=> await That(subject).HasProperty("artist", a => a
+						.HasProperty("label").And
+						.HasProperty("origin", o => o.HasProperty("country")));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has property "artist" which has property "label" and has property "origin" which has property "country",
+					             but property $.artist.label did not exist and property $.artist.origin.country did not exist
+
+					             Actual ($.artist):
+					             {
+					               "name": "The Beatles",
+					               "origin": {
+					                 "city": "Liverpool"
+					               }
+					             }
+
+					             Actual ($.artist.origin):
+					             {
+					               "city": "Liverpool"
+					             }
+					             """)
+					.Because("each level shows the value it looked up the property in, not the whole document");
 			}
 
 			[Test]
@@ -337,6 +408,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has property "foo" which is a number,
 					             but property $.foo did not exist
+
+					             Actual:
+					             {
+					               "bar": 1
+					             }
 					             """);
 			}
 
@@ -365,6 +441,11 @@ public sealed partial class ThatJsonElement
 					             has property "label" which is null,
 					             but property $.label did not exist
 
+					             Actual:
+					             {
+					               "label": null
+					             }
+
 					             JSON options:
 					              - treat null as absent
 					             """);
@@ -385,6 +466,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has property "title" which is a number and has property "durationSeconds" which is an int,
 					             but $.title was a string and $.durationSeconds was a string
+
+					             Actual ($.durationSeconds):
+					             "243"
 					             """);
 			}
 		}
@@ -415,6 +499,14 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             does not have property "foo",
 					             but it had property "foo" with [1,2]
+
+					             Actual:
+					             {
+					               "foo": [
+					                 1,
+					                 2
+					               ]
+					             }
 					             """);
 			}
 
@@ -458,6 +550,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             does not have property "rating" or $.rating is not an int equal to 4,
 					             but $.rating was 4
+
+					             Actual ($.rating):
+					             4
 					             """);
 			}
 
@@ -475,6 +570,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             does not have property "artist" or $.artist does not have property "name" or $.artist.name is not a string equal to "The Beatles",
 					             but $.artist.name was "The Beatles"
+
+					             Actual ($.artist.name):
+					             "The Beatles"
 					             """);
 			}
 
@@ -491,6 +589,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             does not have property "foo",
 					             but it was a string
+
+					             Actual:
+					             "foo"
 					             """)
 					.Because("a property cannot be looked up in a value that is no object");
 			}
@@ -514,6 +615,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             does not have property "foo",
 					             but it was a number
+
+					             Actual:
+					             2
 					             """);
 			}
 
@@ -553,6 +657,12 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             does not have property "artist",
 					             but it had property "artist" with "The Beatles"
+
+					             Actual:
+					             {
+					               "title": "Let It Be",
+					               "artist": "The Beatles"
+					             }
 					             """);
 			}
 
@@ -569,6 +679,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             does not have property "label",
 					             but it had property "label" with "Apple"
+
+					             Actual:
+					             {
+					               "label": "Apple"
+					             }
 
 					             JSON options:
 					              - treat null as absent
@@ -588,6 +703,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             does not have property "label",
 					             but it had property "label" with <null>
+
+					             Actual:
+					             {
+					               "label": null
+					             }
 					             """)
 					.Because("a property with the value null exists");
 			}
@@ -619,6 +739,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has property "foo",
 					             but property $.foo did not exist
+
+					             Actual:
+					             {
+					               "bar": 1
+					             }
 					             """);
 			}
 

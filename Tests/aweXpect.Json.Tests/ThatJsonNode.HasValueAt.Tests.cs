@@ -35,6 +35,11 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             has value at "tracks[0].title" which is a string,
 					             but index $.tracks[0] did not exist
+
+					             Actual:
+					             {
+					               "tracks": []
+					             }
 					             """);
 			}
 
@@ -51,6 +56,11 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             has value at "artist.name" which is a string,
 					             but property $.artist did not exist
+
+					             Actual:
+					             {
+					               "artist": null
+					             }
 
 					             JSON options:
 					              - treat null as absent
@@ -70,6 +80,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             has value at "foo" which is a number,
 					             but it was null
+
+					             Actual:
+					             null
 					             """);
 			}
 
@@ -112,6 +125,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             has value at "foo",
 					             but it was null
+
+					             Actual:
+					             null
 					             """);
 			}
 
@@ -128,6 +144,11 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             has value at "tracks[0].title",
 					             but index $.tracks[0] did not exist
+
+					             Actual:
+					             {
+					               "tracks": []
+					             }
 					             """);
 			}
 
@@ -161,6 +182,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             does not have value at "foo",
 					             but it was null
+
+					             Actual:
+					             null
 					             """);
 			}
 
@@ -188,6 +212,13 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             does not have value at "artist.name",
 					             but it had value at "artist.name" with "The Beatles"
+
+					             Actual:
+					             {
+					               "artist": {
+					                 "name": "The Beatles"
+					               }
+					             }
 					             """);
 			}
 

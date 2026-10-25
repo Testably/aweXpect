@@ -21,6 +21,11 @@ public sealed partial class ThatXDocument
 					             Expected that document
 					             has element "customer",
 					             but it did not have element "customer"
+
+					             Actual:
+					             <order>
+					               <item />
+					             </order>
 					             """);
 			}
 
@@ -133,6 +138,9 @@ public sealed partial class ThatXDocument
 					             Expected that document
 					             has element "order",
 					             but it did not have element "order"
+
+					             Actual:
+					             <order />
 					             """)
 					.Because("a child of the root element is looked up, not the root element itself like by XDocument.Element");
 			}
@@ -150,6 +158,11 @@ public sealed partial class ThatXDocument
 					             Expected that document
 					             does not have element "item" which has attribute "sku",
 					             but it did
+
+					             Actual:
+					             <order>
+					               <item sku="A1" />
+					             </order>
 					             """);
 			}
 
@@ -185,6 +198,26 @@ public sealed partial class ThatXDocument
 					             but it had no root element
 					             """)
 					.Because("the expectations on the element are not applied when the document has no root element");
+			}
+
+			[Test]
+			public async Task WhenNestedLookupFails_ShouldShowTheNestedElement()
+			{
+				XDocument document = XDocument.Parse("<order><customer name=\"John\"/><item/></order>");
+
+				async Task Act()
+					=> await That(document).HasElement("customer", customer => customer.HasAttribute("id"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that document
+					             has element "customer" which has attribute "id",
+					             but element "customer" did not have attribute "id"
+
+					             Actual (element "customer"):
+					             <customer name="John" />
+					             """)
+					.Because("the nested lookup shows the element it ran on instead of the whole document");
 			}
 
 			[Test]
@@ -233,6 +266,11 @@ public sealed partial class ThatXDocument
 					             Expected that document
 					             does not have element "note",
 					             but it did
+
+					             Actual:
+					             <order>
+					               <note />
+					             </order>
 					             """);
 			}
 

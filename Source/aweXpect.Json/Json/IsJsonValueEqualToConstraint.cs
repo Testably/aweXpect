@@ -66,6 +66,14 @@ internal abstract class IsJsonValueEqualToConstraint<TValue>(
 	/// </summary>
 	protected abstract void AppendComparison(StringBuilder stringBuilder);
 
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		if (Outcome != Outcome.Success)
+		{
+			ThatJsonElement.AddActualContext(contexts, Actual);
+		}
+	}
+
 	/// <summary>
 	///     Appends the result for a value that does not match the expected value.
 	/// </summary>

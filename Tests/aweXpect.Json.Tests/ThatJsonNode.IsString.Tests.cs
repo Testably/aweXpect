@@ -152,6 +152,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is a string which is equal to "1",
 					             but it was a number
+
+					             Actual:
+					             1
 					             """);
 			}
 		}
@@ -187,6 +190,9 @@ public sealed partial class ThatJsonNode
 					               "Yesterday"
 					               "Let"
 					                ↑ (expected prefix)
+
+					             Actual ($.title):
+					             "Yesterday"
 					             """);
 			}
 
@@ -203,6 +209,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is a string equal to "1",
 					             but it was a number
+
+					             Actual:
+					             1
 					             """);
 			}
 
@@ -223,6 +232,9 @@ public sealed partial class ThatJsonNode
 					               "foo"
 					               "FOO"
 					                ↑ (expected)
+
+					             Actual:
+					             "foo"
 					             """);
 			}
 
@@ -250,6 +262,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is a string equal to "foo",
 					             but it was null
+
+					             Actual:
+					             null
 					             """)
 					.Because("a null node is the JSON null");
 			}
@@ -281,6 +296,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is not a string equal to "foo",
 					             but it was "foo"
+
+					             Actual:
+					             "foo"
 					             """);
 			}
 

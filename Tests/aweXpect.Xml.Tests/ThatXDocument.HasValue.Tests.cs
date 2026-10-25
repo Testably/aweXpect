@@ -67,6 +67,9 @@ public sealed partial class ThatXDocument
 					             Expected that document
 					             does not have a value which is equal to "Let It Be",
 					             but it did
+
+					             Actual:
+					             <title>Let It Be</title>
 					             """);
 			}
 

@@ -54,6 +54,14 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has value at "tracks[2]" which is a number,
 					             but index $.tracks[2] did not exist
+
+					             Actual:
+					             {
+					               "tracks": [
+					                 1,
+					                 2
+					               ]
+					             }
 					             """);
 			}
 
@@ -70,6 +78,13 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has value at "artist.origin.city" which is a string,
 					             but property $.artist.origin.city did not exist
+
+					             Actual:
+					             {
+					               "artist": {
+					                 "origin": {}
+					               }
+					             }
 					             """);
 			}
 
@@ -86,6 +101,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has value at "tracks[0].title" which is a string,
 					             but index $.tracks[0] did not exist
+
+					             Actual:
+					             {
+					               "tracks": []
+					             }
 					             """);
 			}
 
@@ -102,6 +122,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has value at "artist.origin.city" which is a string,
 					             but property $.artist.origin did not exist
+
+					             Actual:
+					             {
+					               "artist": {}
+					             }
 					             """);
 			}
 
@@ -118,6 +143,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has value at "artist.name" which is a string,
 					             but $.artist was null instead of an object
+
+					             Actual:
+					             {
+					               "artist": null
+					             }
 					             """);
 			}
 
@@ -135,6 +165,11 @@ public sealed partial class ThatJsonElement
 					             has value at "artist.name" which is a string,
 					             but property $.artist did not exist
 
+					             Actual:
+					             {
+					               "artist": null
+					             }
+
 					             JSON options:
 					              - treat null as absent
 					             """);
@@ -151,11 +186,16 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).HasValueAt("tracks[0]", t => t.IsNumber());
 
 				await That(Act).Throws<FailException>()
-					.WithMessage($"""
-					              Expected that subject
-					              has value at "tracks[0]" which is a number,
-					              but $.tracks was {kindString} instead of an array
-					              """);
+					.WithMessage($$"""
+					               Expected that subject
+					               has value at "tracks[0]" which is a number,
+					               but $.tracks was {{kindString}} instead of an array
+
+					               Actual:
+					               {
+					                 "tracks": {{value}}
+					               }
+					               """);
 			}
 
 			[Test]
@@ -170,11 +210,16 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).HasValueAt("artist.name", n => n.IsString());
 
 				await That(Act).Throws<FailException>()
-					.WithMessage($"""
-					              Expected that subject
-					              has value at "artist.name" which is a string,
-					              but $.artist was {kindString} instead of an object
-					              """);
+					.WithMessage($$"""
+					               Expected that subject
+					               has value at "artist.name" which is a string,
+					               but $.artist was {{kindString}} instead of an object
+
+					               Actual:
+					               {
+					                 "artist": {{value}}
+					               }
+					               """);
 			}
 
 			[Test]
@@ -190,6 +235,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has value at "foo" which is a number,
 					             but it was an array
+
+					             Actual:
+					             [
+					               1
+					             ]
 					             """);
 			}
 
@@ -286,6 +336,13 @@ public sealed partial class ThatJsonElement
 					             has value at "artist.label" which is null,
 					             but property $.artist.label did not exist
 
+					             Actual:
+					             {
+					               "artist": {
+					                 "label": null
+					               }
+					             }
+
 					             JSON options:
 					              - treat null as absent
 					             """);
@@ -307,6 +364,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             does not have value at "artist.name" or $.artist.name is not a string,
 					             but $.artist was a number instead of an object
+
+					             Actual:
+					             {
+					               "artist": 1
+					             }
 					             """)
 					.Because("the value cannot be looked up in a value of another kind");
 			}
@@ -364,6 +426,13 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has value at "artist.name",
 					             but $.artist was an array instead of an object
+
+					             Actual:
+					             {
+					               "artist": [
+					                 1
+					               ]
+					             }
 					             """);
 			}
 
@@ -392,6 +461,15 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has value at "tracks[1].title",
 					             but index $.tracks[1] did not exist
+
+					             Actual:
+					             {
+					               "tracks": [
+					                 {
+					                   "title": "Something"
+					                 }
+					               ]
+					             }
 					             """);
 			}
 
@@ -430,6 +508,13 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has value at "artist.label",
 					             but property $.artist.label did not exist
+
+					             Actual:
+					             {
+					               "artist": {
+					                 "label": null
+					               }
+					             }
 
 					             JSON options:
 					              - treat null as absent
@@ -476,6 +561,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             does not have value at "artist.name",
 					             but $.artist was a string instead of an object
+
+					             Actual:
+					             {
+					               "artist": "The Beatles"
+					             }
 					             """)
 					.Because("the value cannot be looked up in a value of another kind");
 			}
@@ -506,6 +596,15 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             does not have value at "tracks[0].title",
 					             but it had value at "tracks[0].title" with "Something"
+
+					             Actual:
+					             {
+					               "tracks": [
+					                 {
+					                   "title": "Something"
+					                 }
+					               ]
+					             }
 					             """);
 			}
 
@@ -522,6 +621,13 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             does not have value at "artist.label",
 					             but it had value at "artist.label" with <null>
+
+					             Actual:
+					             {
+					               "artist": {
+					                 "label": null
+					               }
+					             }
 					             """);
 			}
 
@@ -552,6 +658,11 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has value at "artist.name",
 					             but property $.artist.name did not exist
+
+					             Actual:
+					             {
+					               "artist": {}
+					             }
 					             """);
 			}
 

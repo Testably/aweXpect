@@ -20,6 +20,22 @@ public static partial class ThatJsonElement
 		=> it + grammars.SubjectVerb(it, " was ", " were ") + JsonValidation.Format(element.ValueKind);
 
 	/// <summary>
+	///     Adds the indented <paramref name="actual" /> value as the "Actual" context, as the failure message shows a value
+	///     only in a single line and shortened, if at all.
+	/// </summary>
+	/// <remarks>
+	///     An undefined element, e.g. a <see langword="default" /> <see cref="JsonElement" />, cannot be written.
+	/// </remarks>
+	internal static void AddActualContext(ResultContextCollector contexts, JsonElement? actual)
+	{
+		if (actual is { ValueKind: not JsonValueKind.Undefined, } value)
+		{
+			contexts.Add(new ResultContext.SyncCallback("Actual",
+				() => Formatter.Format(value, FormattingOptions.MultipleLines)));
+		}
+	}
+
+	/// <summary>
 	///     The JSON path of the subject named <paramref name="it" />, which continues the path of a value that an
 	///     enclosing expectation like <c>HasProperty</c> found, and is <c>$</c> otherwise.
 	/// </summary>
