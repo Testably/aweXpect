@@ -9,15 +9,6 @@ namespace aweXpect.Core;
 /// </summary>
 public abstract class MemberAccessor
 {
-	/// <summary>
-	///     Whether <see cref="ToString()" /> appends a space to the <see cref="_name" />.
-	/// </summary>
-	/// <remarks>
-	///     The space is only appended when the name is read for a failure message, so that the subject of the
-	///     expectations on the member (<see cref="GetTrimmedName" />) needs no second string.
-	/// </remarks>
-	private readonly bool _appendsSpace;
-
 	private readonly string _name;
 
 	/// <summary>
@@ -28,22 +19,14 @@ public abstract class MemberAccessor
 		_name = name;
 	}
 
-	private protected MemberAccessor(string name, bool appendsSpace, string? pathRoot = null)
-	{
-		_name = name;
-		_appendsSpace = appendsSpace;
-		PathRoot = pathRoot;
-	}
-
 	/// <summary>
 	///     The root that the name starts with, when the name is a path within the subject, e.g. <c>$</c> for a JSON
 	///     path, or <see langword="null" /> otherwise.
 	/// </summary>
-	internal string? PathRoot { get; }
+	internal virtual string? PathRoot => null;
 
 	/// <inheritdoc />
-	public override string ToString()
-		=> _appendsSpace ? _name + " " : _name;
+	public override string ToString() => _name;
 
 	/// <summary>
 	///     The name without surrounding white-space, e.g. as the subject of the expectations on the member.
@@ -58,9 +41,7 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 {
 	private readonly Func<TSource, TTarget> _accessor;
 
-	private MemberAccessor(Func<TSource, TTarget> accessor, string name, bool appendsSpace = false,
-		string? pathRoot = null) :
-		base(name, appendsSpace, pathRoot)
+	private MemberAccessor(Func<TSource, TTarget> accessor, string name) : base(name)
 	{
 		_accessor = accessor;
 	}
@@ -76,9 +57,7 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 		Expression<Func<TSource, TTarget>> expression)
 	{
 		Func<TSource, TTarget> compiled = expression.Compile();
-		return new MemberAccessor<TSource, TTarget>(
-			v => compiled(v),
-			ExpressionHelpers.GetMemberPath(expression), true);
+		return new SpacedMemberAccessor(v => compiled(v), ExpressionHelpers.GetMemberPath(expression));
 	}
 
 	/// <summary>
@@ -109,7 +88,7 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 				$"The path '{path}' must start with the root '{root}'.", nameof(path)));
 		}
 
-		return new MemberAccessor<TSource, TTarget>(func, path, pathRoot: root);
+		return new PathMemberAccessor(func, path, root);
 	}
 
 	/// <summary>
@@ -124,7 +103,7 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 	/// </remarks>
 	public static MemberAccessor<TSource, TTarget> FromFuncWithCallerExpression(
 		Func<TSource, TTarget> func, string callerExpression)
-		=> new(func, ExtractMemberPath(callerExpression.Trim()), true);
+		=> new SpacedMemberAccessor(func, ExtractMemberPath(callerExpression.Trim()));
 
 	/// <inheritdoc cref="object.Equals(object?)" />
 	public override bool Equals(object? obj) => obj is MemberAccessor<TSource, TTarget> other && Equals(other);
@@ -512,4 +491,32 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 	}
 
 	internal TTarget AccessMember(TSource value) => _accessor.Invoke(value);
+
+	/// <summary>
+	///     A member accessor whose name is followed by a space, when it is read for a failure message.
+	/// </summary>
+	/// <remarks>
+	///     The space is only appended when the name is read, so that the subject of the expectations on the member
+	///     (<see cref="MemberAccessor.GetTrimmedName" />) needs no second string. A type of its own instead of a flag
+	///     keeps every accessor smaller.
+	/// </remarks>
+	private sealed class SpacedMemberAccessor(Func<TSource, TTarget> accessor, string name)
+		: MemberAccessor<TSource, TTarget>(accessor, name)
+	{
+		/// <inheritdoc />
+		public override string ToString() => base.ToString() + " ";
+	}
+
+	/// <summary>
+	///     A member accessor whose name is a path within the subject that starts with the <paramref name="root" />.
+	/// </summary>
+	/// <remarks>
+	///     A type of its own instead of a field of every accessor keeps the other accessors smaller.
+	/// </remarks>
+	private sealed class PathMemberAccessor(Func<TSource, TTarget> accessor, string path, string root)
+		: MemberAccessor<TSource, TTarget>(accessor, path)
+	{
+		/// <inheritdoc />
+		internal override string PathRoot => root;
+	}
 }

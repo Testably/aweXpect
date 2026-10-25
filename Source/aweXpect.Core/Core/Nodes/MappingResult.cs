@@ -11,7 +11,6 @@ namespace aweXpect.Core.Nodes;
 internal sealed class MappingResult : CombinedResult
 {
 	private readonly MappingNode _mappingNode;
-	private readonly string? _member;
 
 	/// <summary>
 	///     The positive expectation text of the member, which a negated result keeps, as only the left part renders the
@@ -19,11 +18,10 @@ internal sealed class MappingResult : CombinedResult
 	/// </summary>
 	private string? _negatedRightExpectation;
 
-	public MappingResult(ConstraintResult left, ConstraintResult right, MappingNode mappingNode, string? member)
+	public MappingResult(ConstraintResult left, ConstraintResult right, MappingNode mappingNode)
 		: base(left, right, true, FurtherProcessingStrategy.Continue)
 	{
 		_mappingNode = mappingNode;
-		_member = member;
 		Outcome = CombineOutcomes();
 	}
 
@@ -110,7 +108,7 @@ internal sealed class MappingResult : CombinedResult
 
 	/// <inheritdoc />
 	protected override void VisitRight(ResultContextCollector contexts)
-		=> contexts.VisitOptionalMember(_member, Right, _mappingNode.MemberAccessor.PathRoot);
+		=> contexts.VisitOptionalMember(_mappingNode.ContextMember, Right, _mappingNode.MemberAccessor.PathRoot);
 
 	/// <inheritdoc />
 	public override ConstraintResult Negate()

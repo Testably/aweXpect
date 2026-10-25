@@ -76,6 +76,29 @@ internal class ExpectationNode : Node
 	public bool IsEmpty() => _constraint is null && _inner is null;
 
 	/// <summary>
+	///     Moves the constraint and the inner node of this node to a new node, which is returned.
+	/// </summary>
+	/// <remarks>
+	///     A <see cref="MappingNode" /> collects the expectations on its member itself, until they are combined, e.g.
+	///     with <c>And</c>, and need a node of their own. The reasons are only added afterward.
+	/// </remarks>
+	internal ExpectationNode MoveExpectationsToNewNode()
+	{
+		ExpectationNode node = new()
+		{
+			_constraint = _constraint,
+			_it = _it,
+			_inner = _inner,
+			_isInnerMapping = _isInnerMapping,
+		};
+		_constraint = null;
+		_it = "it";
+		_inner = null;
+		_isInnerMapping = false;
+		return node;
+	}
+
+	/// <summary>
 	///     Sets the <paramref name="node" /> which contains the nested expectations.
 	/// </summary>
 	protected void SetInnerNode(Node node) => _inner = node;
