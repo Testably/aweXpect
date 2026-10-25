@@ -93,12 +93,15 @@ operators as the built-in property expectations like `HasLength()`: `EqualTo`, `
 their `Not…` counterparts, with the same argument checks and texts. Implement the interface for the type of the
 property:
 
-| Property type | Interface                             | Operators                                                    |
-|---------------|---------------------------------------|--------------------------------------------------------------|
-| `int`         | `IIntPropertyResult<TResult>`         | equality, ordering, `Between` and their negations            |
-| `long`        | `ILongPropertyResult<TResult>`        | equality, ordering, `Between` and their negations            |
-| `TimeSpan`    | `ITimeSpanPropertyResult<TResult>`    | equality, ordering, `Between` and their negations            |
-| an enum       | `IEnumPropertyResult<TEnum, TResult>` | `EqualTo`, `NotEqualTo`                                      |
+| Property type | Interface                                            | Operators                                         |
+|---------------|------------------------------------------------------|---------------------------------------------------|
+| `int`         | `IIntPropertyResult<TResult>`                        | equality, ordering, `Between` and their negations |
+| `long`        | `ILongPropertyResult<TResult>`                       | equality, ordering, `Between` and their negations |
+| `double`      | `IDoublePropertyResult<TResult, TToleranceResult>`   | equality, ordering, `Between` and their negations |
+| `decimal`     | `IDecimalPropertyResult<TResult, TToleranceResult>`  | equality, ordering, `Between` and their negations |
+| `TimeSpan`    | `ITimeSpanPropertyResult<TResult>`                   | equality, ordering, `Between` and their negations |
+| an enum       | `IEnumPropertyResult<TEnum, TResult>`                | `EqualTo`, `NotEqualTo`                           |
+| `string`      | see [String properties](#string-properties)          |                                                   |
 
 The operators are extension methods in the `aweXpect` namespace. They check the arguments with your `Validation`, which
 receives the value and the name of its parameter, e.g. `minimum`, and pass a `PropertyComparison<T>` to your `Compare`
@@ -129,9 +132,59 @@ against `null`, and `comparison.AppendExpectation(stringBuilder)` writes the com
 but the text does not, so that you can place the "not" where your sentence needs it, e.g. "has duration not greater
 than …" or "does not have duration greater than …".
 
-A `string` property is not part of this pattern yet. Its operators return results that offer the string options, e.g.
-`IgnoringCase()`, and stay instance methods of `PropertyResult.String<TValue, TType, TThat>` until there is an
-interface for them.
+The equality operators of a `double` or `decimal` property, `EqualTo` and `NotEqualTo`, pass a
+`PropertyEqualityComparison<T>` to `CompareEquality` instead, which returns `TToleranceResult`. The tolerance is set
+after the operator returned, e.g. `.EqualTo(4.5).Within(0.1)` or `.Within(1).Percent()`, so pass
+`comparison.Options` to the result you return, e.g. a `NumberToleranceResult<TType, TThat, TNumber>`, which offers
+`Within`. The comparison compares like `IsEqualTo(…).Within(…)`, e.g. `NaN` is equal to `NaN`, and its text
+includes the tolerance, e.g. "equal to 4.5 ± 0.1". The ordering operators reject a `NaN` bound.
+
+### String properties
+
+The operators of a `string` property continue with three kinds of results, so they are split over three interfaces,
+each with its own `Validation` and `Compare` method. Implement those whose operators your property offers:
+
+| Interface                                  | Operators                                                      | Usual `TResult`                  |
+|--------------------------------------------|----------------------------------------------------------------|----------------------------------|
+| `IStringEqualityPropertyResult<TResult>`   | `EqualTo`, `NotEqualTo`                                        | `StringEqualityTypeResult<…>`    |
+| `IStringAffixPropertyResult<TResult>`      | `StartingWith`, `EndingWith`, their negations, `NotContaining` | `StringEqualityResult<…>`        |
+| `IStringOccurrencePropertyResult<TResult>` | `Containing`, with a quantifier such as `AtLeast(2)`           | `StringOccurrenceCountResult<…>` |
+
+`Compare` receives a `StringPropertyComparison`. The string options are set on your result after the operator
+returned it, e.g. `.IgnoringCase()`, so pass `comparison.Options`, and for `Containing` also `comparison.Quantifier`,
+to the result you return, and evaluate the comparison only in your constraint:
+
+```csharp no-compile
+public class TitleResult(IThat<Track?> subject)
+    : IStringAffixPropertyResult<StringEqualityResult<Track, IThat<Track?>>>
+{
+    Action<string?, string>? IStringAffixPropertyResult<StringEqualityResult<Track, IThat<Track?>>>.Validation
+        => null;
+
+    StringEqualityResult<Track, IThat<Track?>> IStringAffixPropertyResult<StringEqualityResult<Track, IThat<Track?>>>.Compare(
+        StringPropertyComparison comparison)
+        => new(subject.Get().ExpectationBuilder.AddConstraint(comparison,
+                static (c, it, grammars) => new HasTitleConstraint(it, grammars, c)),
+            subject,
+            comparison.Options);
+}
+```
+
+An expectation that returns this result, e.g. `HasTitle()`, then reads
+`Expect.That(track).HasTitle().StartingWith("let").IgnoringCase()`.
+
+In the constraint, call `comparison.ValidateExpected()` before you look at the subject, so that an unusable expected
+value, e.g. an invalid regex pattern, throws whichever value the subject has. Then
+`await comparison.Evaluate(actual, context, cancellationToken)` compares the value with the options of the evaluation
+and returns a `StringPropertyOutcome`, whose `Outcome` already includes the negation of an operator like
+`NotStartingWith`. A `null` value fails a comparison that looks into the value, e.g. a prefix or an occurrence, both
+ways. `comparison.AppendExpectation(stringBuilder, grammars)` writes the comparison with its options, e.g.
+"starting with "let" ignoring case", or "starts with …" with `ExpectationGrammars.Active`, and
+`outcome.AppendResult(stringBuilder, "title", grammars, indentation)` writes the result, e.g. "title was "Yesterday",
+which differs at index 0: …". Like for the other property types, neither text includes the negation of the operator,
+so that you can place it where your sentence needs it: for a comparison that `IsNegated`, add
+`ExpectationGrammars.Negated` to the grammars, e.g. `grammars.Negate()`, which writes "not starting with …" or
+"does not start with …". `outcome.AppendContexts(contexts)` adds the contexts of the options.
 
 ## Time tolerances
 

@@ -63,6 +63,8 @@ JSON options:
 | [`IsArray().WhoseElements`](./03-objects-and-arrays.md#isarray)    | `JsonElement`, `JsonNode` | collection expectations on the elements of a JSON array         |
 | [`IsString`](./03-objects-and-arrays.md#value-kinds)               | `JsonElement`, `JsonNode` | a JSON string, optionally equal to a value or with expectations |
 | [`IsNumber`](./03-objects-and-arrays.md#value-kinds)               | `JsonElement`, `JsonNode` | a JSON number, optionally with expectations on its value        |
+| [`IsString().StartingWith(…)`, …](./03-objects-and-arrays.md#value-kinds) | `JsonElement`, `JsonNode` | a JSON string compared with a string operator, e.g. `EqualTo`, `EndingWith` or `Containing(…).AtLeast(2)` |
+| [`IsNumber().GreaterThan(…)`, …](./03-objects-and-arrays.md#value-kinds) | `JsonElement`, `JsonNode` | a JSON number compared as `double` with a number operator, e.g. `Between(…).And(…)` or `EqualTo(…).Within(…)` |
 | [`IsNumber<TNumber>`](./03-objects-and-arrays.md#numbers)          | `JsonElement`, `JsonNode` | a JSON number that fits into the number type, e.g. an `int`, optionally equal to a value |
 | [`IsBoolean`](./03-objects-and-arrays.md#value-kinds)              | `JsonElement`, `JsonNode` | a JSON boolean, i.e. `true` or `false`, optionally equal to a value or with expectations |
 | [`IsNull`](./03-objects-and-arrays.md#value-kinds)                 | `JsonElement`             | the JSON value `null`                                           |

@@ -17,6 +17,36 @@ namespace aweXpect
         public static TResult InAnyOrder<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions> { }
         public static TResult Properly<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions>, aweXpect.Results.IProperContainmentOptions { }
     }
+    public static class DecimalPropertyResultExtensions
+    {
+        public static aweXpect.Results.BetweenResult<TResult, decimal?> Between<TResult, TToleranceResult>(this aweXpect.Results.IDecimalPropertyResult<TResult, TToleranceResult> result, decimal? minimum) { }
+        public static TToleranceResult EqualTo<TResult, TToleranceResult>(this aweXpect.Results.IDecimalPropertyResult<TResult, TToleranceResult> result, decimal? expected) { }
+        public static TResult GreaterThan<TResult, TToleranceResult>(this aweXpect.Results.IDecimalPropertyResult<TResult, TToleranceResult> result, decimal? expected) { }
+        public static TResult GreaterThanOrEqualTo<TResult, TToleranceResult>(this aweXpect.Results.IDecimalPropertyResult<TResult, TToleranceResult> result, decimal? expected) { }
+        public static TResult LessThan<TResult, TToleranceResult>(this aweXpect.Results.IDecimalPropertyResult<TResult, TToleranceResult> result, decimal? expected) { }
+        public static TResult LessThanOrEqualTo<TResult, TToleranceResult>(this aweXpect.Results.IDecimalPropertyResult<TResult, TToleranceResult> result, decimal? expected) { }
+        public static aweXpect.Results.BetweenResult<TResult, decimal?> NotBetween<TResult, TToleranceResult>(this aweXpect.Results.IDecimalPropertyResult<TResult, TToleranceResult> result, decimal? minimum) { }
+        public static TToleranceResult NotEqualTo<TResult, TToleranceResult>(this aweXpect.Results.IDecimalPropertyResult<TResult, TToleranceResult> result, decimal? unexpected) { }
+        public static TResult NotGreaterThan<TResult, TToleranceResult>(this aweXpect.Results.IDecimalPropertyResult<TResult, TToleranceResult> result, decimal? unexpected) { }
+        public static TResult NotGreaterThanOrEqualTo<TResult, TToleranceResult>(this aweXpect.Results.IDecimalPropertyResult<TResult, TToleranceResult> result, decimal? unexpected) { }
+        public static TResult NotLessThan<TResult, TToleranceResult>(this aweXpect.Results.IDecimalPropertyResult<TResult, TToleranceResult> result, decimal? unexpected) { }
+        public static TResult NotLessThanOrEqualTo<TResult, TToleranceResult>(this aweXpect.Results.IDecimalPropertyResult<TResult, TToleranceResult> result, decimal? unexpected) { }
+    }
+    public static class DoublePropertyResultExtensions
+    {
+        public static aweXpect.Results.BetweenResult<TResult, double?> Between<TResult, TToleranceResult>(this aweXpect.Results.IDoublePropertyResult<TResult, TToleranceResult> result, double? minimum) { }
+        public static TToleranceResult EqualTo<TResult, TToleranceResult>(this aweXpect.Results.IDoublePropertyResult<TResult, TToleranceResult> result, double? expected) { }
+        public static TResult GreaterThan<TResult, TToleranceResult>(this aweXpect.Results.IDoublePropertyResult<TResult, TToleranceResult> result, double? expected) { }
+        public static TResult GreaterThanOrEqualTo<TResult, TToleranceResult>(this aweXpect.Results.IDoublePropertyResult<TResult, TToleranceResult> result, double? expected) { }
+        public static TResult LessThan<TResult, TToleranceResult>(this aweXpect.Results.IDoublePropertyResult<TResult, TToleranceResult> result, double? expected) { }
+        public static TResult LessThanOrEqualTo<TResult, TToleranceResult>(this aweXpect.Results.IDoublePropertyResult<TResult, TToleranceResult> result, double? expected) { }
+        public static aweXpect.Results.BetweenResult<TResult, double?> NotBetween<TResult, TToleranceResult>(this aweXpect.Results.IDoublePropertyResult<TResult, TToleranceResult> result, double? minimum) { }
+        public static TToleranceResult NotEqualTo<TResult, TToleranceResult>(this aweXpect.Results.IDoublePropertyResult<TResult, TToleranceResult> result, double? unexpected) { }
+        public static TResult NotGreaterThan<TResult, TToleranceResult>(this aweXpect.Results.IDoublePropertyResult<TResult, TToleranceResult> result, double? unexpected) { }
+        public static TResult NotGreaterThanOrEqualTo<TResult, TToleranceResult>(this aweXpect.Results.IDoublePropertyResult<TResult, TToleranceResult> result, double? unexpected) { }
+        public static TResult NotLessThan<TResult, TToleranceResult>(this aweXpect.Results.IDoublePropertyResult<TResult, TToleranceResult> result, double? unexpected) { }
+        public static TResult NotLessThanOrEqualTo<TResult, TToleranceResult>(this aweXpect.Results.IDoublePropertyResult<TResult, TToleranceResult> result, double? unexpected) { }
+    }
     public static class EnumPropertyResultExtensions
     {
         public static TResult EqualTo<TEnum, TResult>(this aweXpect.Results.IEnumPropertyResult<TEnum, TResult> result, TEnum? expected) where TEnum : struct, System.Enum { }
@@ -206,6 +236,17 @@ namespace aweXpect
         public static TResult IgnoringTrailingWhiteSpace<TResult>(this TResult result, bool ignoreTrailingWhiteSpace = true) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions> { }
         public static TResult NormalizingWhiteSpace<TResult>(this TResult result, bool normalizeWhiteSpace = true) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions> { }
         public static TResult Using<TResult>(this TResult result, System.Collections.Generic.IEqualityComparer<string> comparer) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions> { }
+    }
+    public static class StringPropertyResultExtensions
+    {
+        public static TResult Containing<TResult>(this aweXpect.Results.IStringOccurrencePropertyResult<TResult> result, string expected) { }
+        public static TResult EndingWith<TResult>(this aweXpect.Results.IStringAffixPropertyResult<TResult> result, string expected) { }
+        public static TResult EqualTo<TResult>(this aweXpect.Results.IStringEqualityPropertyResult<TResult> result, string? expected) { }
+        public static TResult NotContaining<TResult>(this aweXpect.Results.IStringAffixPropertyResult<TResult> result, string unexpected) { }
+        public static TResult NotEndingWith<TResult>(this aweXpect.Results.IStringAffixPropertyResult<TResult> result, string unexpected) { }
+        public static TResult NotEqualTo<TResult>(this aweXpect.Results.IStringEqualityPropertyResult<TResult> result, string? unexpected) { }
+        public static TResult NotStartingWith<TResult>(this aweXpect.Results.IStringAffixPropertyResult<TResult> result, string unexpected) { }
+        public static TResult StartingWith<TResult>(this aweXpect.Results.IStringAffixPropertyResult<TResult> result, string expected) { }
     }
     public static class ThatDelegateExtensions
     {
@@ -1969,6 +2010,18 @@ namespace aweXpect.Results
     public interface ICollectionContainmentOptions
     {
     }
+    public interface IDecimalPropertyResult<out TResult, out TToleranceResult>
+    {
+        System.Action<decimal?, string>? Validation { get; }
+        TResult Compare(aweXpect.Results.PropertyComparison<decimal> comparison);
+        TToleranceResult CompareEquality(aweXpect.Results.PropertyEqualityComparison<decimal> comparison);
+    }
+    public interface IDoublePropertyResult<out TResult, out TToleranceResult>
+    {
+        System.Action<double?, string>? Validation { get; }
+        TResult Compare(aweXpect.Results.PropertyComparison<double> comparison);
+        TToleranceResult CompareEquality(aweXpect.Results.PropertyEqualityComparison<double> comparison);
+    }
     public interface IEnumPropertyResult<TEnum, out TResult> where TEnum : struct, System.Enum
     {
         TResult Compare(aweXpect.Results.PropertyComparison<TEnum> comparison);
@@ -1998,8 +2051,23 @@ namespace aweXpect.Results
     public interface ISignalerResult<TSelf, TParameter> : aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions<TParameter>> where TSelf : aweXpect.Results.ISignalerResult<TSelf, TParameter>
     {
     }
+    public interface IStringAffixPropertyResult<out TResult>
+    {
+        System.Action<string?, string>? Validation { get; }
+        TResult Compare(aweXpect.Results.StringPropertyComparison comparison);
+    }
+    public interface IStringEqualityPropertyResult<out TResult>
+    {
+        System.Action<string?, string>? Validation { get; }
+        TResult Compare(aweXpect.Results.StringPropertyComparison comparison);
+    }
     public interface IStringMatchTypeOptions : aweXpect.Results.IStringPatternMatchTypeOptions
     {
+    }
+    public interface IStringOccurrencePropertyResult<out TResult>
+    {
+        System.Action<string?, string>? Validation { get; }
+        TResult Compare(aweXpect.Results.StringPropertyComparison comparison);
     }
     public interface IStringPatternMatchTypeOptions
     {
@@ -2067,8 +2135,31 @@ namespace aweXpect.Results
         public void AppendExpectation(System.Text.StringBuilder stringBuilder) { }
         public aweXpect.Core.Constraints.Outcome Evaluate(TProperty? actual) { }
     }
+    public sealed class PropertyEqualityComparison<TNumber> where TNumber : struct, System.Numerics.INumber<TNumber>
+    {
+        public bool IsNegated { get; }
+        public aweXpect.Options.NumberTolerance<TNumber> Options { get; }
+        public void AppendExpectation(System.Text.StringBuilder stringBuilder) { }
+        public aweXpect.Core.Constraints.Outcome Evaluate(TNumber? actual) { }
+    }
     public static class PropertyResult
     {
+        public class Decimal<TItem> : aweXpect.Results.PropertyResult.Decimal<TItem, TItem, aweXpect.Core.IThat<TItem>>
+        {
+            public Decimal(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, decimal?> mapper, string propertyExpression, System.Action<decimal?, string>? validation = null) { }
+        }
+        public class Decimal<TValue, TType, TThat> : aweXpect.Results.IDecimalPropertyResult<aweXpect.Results.AndOrResult<TType, TThat>, aweXpect.Results.NumberToleranceResult<TType, TThat, decimal>> where TThat : aweXpect.Core.IThat<TValue>
+        {
+            public Decimal(TThat subject, System.Func<TValue, decimal?> mapper, string propertyExpression, System.Action<decimal?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
+        }
+        public class Double<TItem> : aweXpect.Results.PropertyResult.Double<TItem, TItem, aweXpect.Core.IThat<TItem>>
+        {
+            public Double(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, double?> mapper, string propertyExpression, System.Action<double?, string>? validation = null) { }
+        }
+        public class Double<TValue, TType, TThat> : aweXpect.Results.IDoublePropertyResult<aweXpect.Results.AndOrResult<TType, TThat>, aweXpect.Results.NumberToleranceResult<TType, TThat, double>> where TThat : aweXpect.Core.IThat<TValue>
+        {
+            public Double(TThat subject, System.Func<TValue, double?> mapper, string propertyExpression, System.Action<double?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
+        }
         public class Enum<TItem, TEnum> : aweXpect.Results.PropertyResult.Enum<TItem, TItem, aweXpect.Core.IThat<TItem>, TEnum> where TEnum : struct, System.Enum
         {
             public Enum(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, TEnum?> mapper, string propertyExpression) { }
@@ -2097,17 +2188,9 @@ namespace aweXpect.Results
         {
             public String(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null) { }
         }
-        public class String<TValue, TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
+        public class String<TValue, TType, TThat> : aweXpect.Results.IStringAffixPropertyResult<aweXpect.Results.StringEqualityResult<TType, TThat>>, aweXpect.Results.IStringEqualityPropertyResult<aweXpect.Results.StringEqualityTypeResult<TType, TThat>>, aweXpect.Results.IStringOccurrencePropertyResult<aweXpect.Results.StringOccurrenceCountResult<TType, TThat>> where TThat : aweXpect.Core.IThat<TValue>
         {
             public String(TThat subject, System.Func<TValue, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None, bool includeValueInContext = false) { }
-            public aweXpect.Results.StringOccurrenceCountResult<TType, TThat> Containing(string expected) { }
-            public aweXpect.Results.StringEqualityResult<TType, TThat> EndingWith(string expected) { }
-            public aweXpect.Results.StringEqualityTypeResult<TType, TThat> EqualTo(string? expected) { }
-            public aweXpect.Results.StringEqualityResult<TType, TThat> NotContaining(string unexpected) { }
-            public aweXpect.Results.StringEqualityResult<TType, TThat> NotEndingWith(string unexpected) { }
-            public aweXpect.Results.StringEqualityTypeResult<TType, TThat> NotEqualTo(string? unexpected) { }
-            public aweXpect.Results.StringEqualityResult<TType, TThat> NotStartingWith(string unexpected) { }
-            public aweXpect.Results.StringEqualityResult<TType, TThat> StartingWith(string expected) { }
         }
         public class TimeSpan<TItem> : aweXpect.Results.PropertyResult.TimeSpan<TItem, TItem, aweXpect.Core.IThat<TItem>>
         {
@@ -2177,6 +2260,21 @@ namespace aweXpect.Results
     {
         public StringOccurrenceCountResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.StringEqualityOptions options) { }
         public aweXpect.Results.StringBlockCountResult<TType, TThat> AsBlock() { }
+    }
+    public sealed class StringPropertyComparison
+    {
+        public bool IsNegated { get; }
+        public aweXpect.Options.StringEqualityOptions Options { get; }
+        public aweXpect.Options.Quantifier? Quantifier { get; }
+        public void AppendExpectation(System.Text.StringBuilder stringBuilder, aweXpect.Core.ExpectationGrammars grammars) { }
+        public System.Threading.Tasks.ValueTask<aweXpect.Results.StringPropertyOutcome> Evaluate(string? actual, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
+        public void ValidateExpected() { }
+    }
+    public readonly struct StringPropertyOutcome
+    {
+        public aweXpect.Core.Constraints.Outcome Outcome { get; }
+        public void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
+        public void AppendResult(System.Text.StringBuilder stringBuilder, string it, aweXpect.Core.ExpectationGrammars grammars, string? indentation = null) { }
     }
     public class TimeToleranceResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.TimeToleranceResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.TimeTolerance>
     {

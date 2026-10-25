@@ -37,7 +37,7 @@ internal sealed class IsJsonValueConstraint<TValue>(
 		if (!reader.Read(actual.Value, out TValue value))
 		{
 			_doesNotFit = true;
-			Outcome = Outcome.Failure;
+			Outcome = reader.DoesNotFitOutcome;
 			return this;
 		}
 
@@ -75,8 +75,7 @@ internal sealed class IsJsonValueConstraint<TValue>(
 	{
 		if (_doesNotFit)
 		{
-			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "))
-				.Append(JsonElementValidator.Format(Actual!.Value)).Append(", which is not ").Append(reader.TypeName);
+			AppendDoesNotFit(stringBuilder);
 		}
 		else
 		{
@@ -89,7 +88,11 @@ internal sealed class IsJsonValueConstraint<TValue>(
 
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 	{
-		if (reader.Description is null)
+		if (_doesNotFit)
+		{
+			AppendDoesNotFit(stringBuilder);
+		}
+		else if (reader.Description is null)
 		{
 			stringBuilder.Append(ThatJsonElement.DescribeValueKind(Actual!.Value, It, Grammars));
 		}
@@ -99,6 +102,10 @@ internal sealed class IsJsonValueConstraint<TValue>(
 				.Append(JsonElementValidator.Format(Actual!.Value));
 		}
 	}
+
+	private void AppendDoesNotFit(StringBuilder stringBuilder)
+		=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "))
+			.Append(JsonElementValidator.Format(Actual!.Value)).Append(", which is not ").Append(reader.TypeName);
 
 	private void AppendExpected(StringBuilder stringBuilder)
 	{

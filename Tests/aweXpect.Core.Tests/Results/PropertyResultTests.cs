@@ -33,6 +33,8 @@ public sealed partial class PropertyResultTests
 	private sealed class MyClass
 	{
 		public DateTimeKind DateTimeKindValue { get; private init; }
+		public decimal DecimalValue { get; private init; }
+		public double DoubleValue { get; private init; }
 		public int IntValue { get; private init; }
 		public long LongValue { get; private init; }
 		public string? StringValue { get; private init; }
@@ -70,6 +72,26 @@ public sealed partial class PropertyResultTests
 		}
 
 		/// <inheritdoc cref="HasNullDateTimeKindValue" />
+		public static PropertyResult.Decimal<MyClass?> HasNullDecimalValue()
+		{
+			MyClass subject = new();
+#pragma warning disable aweXpect0001
+			IThat<MyClass> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.Decimal<MyClass?>(source, _ => null, "decimal value");
+		}
+
+		/// <inheritdoc cref="HasNullDateTimeKindValue" />
+		public static PropertyResult.Double<MyClass?> HasNullDoubleValue()
+		{
+			MyClass subject = new();
+#pragma warning disable aweXpect0001
+			IThat<MyClass> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.Double<MyClass?>(source, _ => null, "double value");
+		}
+
+		/// <inheritdoc cref="HasNullDateTimeKindValue" />
 		public static PropertyResult.Int<MyClass?> HasNullIntValue()
 		{
 			MyClass subject = new();
@@ -98,6 +120,56 @@ public sealed partial class PropertyResultTests
 #pragma warning restore aweXpect0001
 			return new PropertyResult.TimeSpan<MyClass?>(source, _ => null, "TimeSpan value");
 		}
+
+		public static PropertyResult.Decimal<MyClass?> HasDecimalValue(decimal decimalValue)
+		{
+			MyClass subject = new()
+			{
+				DecimalValue = decimalValue,
+			};
+#pragma warning disable aweXpect0001
+			IThat<MyClass> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.Decimal<MyClass?>(source, a => a?.DecimalValue, "decimal value");
+		}
+
+		public static PropertyResult.Decimal<MyClass?> HasDecimalValueOfNullSubject()
+		{
+			MyClass? subject = null;
+#pragma warning disable aweXpect0001
+			IThat<MyClass?> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.Decimal<MyClass?>(source, a => a?.DecimalValue, "decimal value");
+		}
+
+		public static PropertyResult.Decimal<MyClass?, MyClass?, IThat<MyClass?>> DecimalValueOf(
+			IThat<MyClass?> source, ExpectationGrammars grammars)
+			=> new(source, a => a?.DecimalValue, "decimal value", grammars: grammars);
+
+		public static PropertyResult.Double<MyClass?> HasDoubleValue(double doubleValue)
+		{
+			MyClass subject = new()
+			{
+				DoubleValue = doubleValue,
+			};
+#pragma warning disable aweXpect0001
+			IThat<MyClass> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.Double<MyClass?>(source, a => a?.DoubleValue, "double value");
+		}
+
+		public static PropertyResult.Double<MyClass?> HasDoubleValueOfNullSubject()
+		{
+			MyClass? subject = null;
+#pragma warning disable aweXpect0001
+			IThat<MyClass?> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.Double<MyClass?>(source, a => a?.DoubleValue, "double value");
+		}
+
+		public static PropertyResult.Double<MyClass?, MyClass?, IThat<MyClass?>> DoubleValueOf(
+			IThat<MyClass?> source, ExpectationGrammars grammars)
+			=> new(source, a => a?.DoubleValue, "double value", grammars: grammars);
 
 		public static PropertyResult.Int<MyClass?> HasIntValue(int intValue)
 		{

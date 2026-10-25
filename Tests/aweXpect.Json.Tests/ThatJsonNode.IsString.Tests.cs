@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Nodes;
 using aweXpect.Core;
+using aweXpect.Json.Results;
 
 namespace aweXpect.Json.Tests;
 
@@ -155,6 +156,111 @@ public sealed partial class ThatJsonNode
 
 					             Actual:
 					             1
+					             """);
+			}
+		}
+
+		public sealed class WithOperatorTests
+		{
+			[Test]
+			public async Task WhenNodeIsNoString_ShouldFail()
+			{
+				JsonNode? subject = FromString("[1, 2]");
+
+				async Task Act()
+					=> await That(subject).IsString().StartingWith("[");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a string starting with "[",
+					             but it was an array
+
+					             Actual:
+					             [
+					               1,
+					               2
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenOperatorIsCalledTwice_ShouldThrowInvalidOperationException()
+			{
+				JsonValue subject = JsonValue.Create("Let It Be");
+
+				async Task Act()
+					=> await That(subject).CompliesWith(it =>
+					{
+						IsStringResult<JsonValue, IThat<JsonValue?>> result = it.IsString();
+						result.NotContaining("x");
+						result.NotEndingWith("y");
+					});
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("IsString() accepts only one comparison, so call only one operator on its result.");
+			}
+
+			[Test]
+			public async Task WhenStringDoesNotMatch_ShouldFail()
+			{
+				JsonValue subject = JsonValue.Create("Let It Be");
+
+				async Task Act()
+					=> await That(subject).IsString().NotContaining("It");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a string not containing "It",
+					             but it was "Let It Be"
+
+					             Actual:
+					             "Let It Be"
+					             """);
+			}
+
+			[Test]
+			public async Task WhenStringMatches_ShouldReturnTheNode()
+			{
+				JsonValue subject = JsonValue.Create("Let It Be");
+
+				JsonValue result = await That(subject).IsString().EqualTo("let it be").IgnoringCase();
+
+				await That(result).IsSameAs(subject);
+			}
+		}
+
+		public sealed class WithOperatorNegatedTests
+		{
+			[Test]
+			public async Task WhenNodeIsNoString_ShouldSucceed()
+			{
+				JsonNode? subject = FromString("42");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString().EqualTo("42"));
+
+				await That(Act).DoesNotThrow()
+					.Because("a value of another kind is no string equal to the expected value, like for IsString()");
+			}
+
+			[Test]
+			public async Task WhenStringMatches_ShouldFail()
+			{
+				JsonValue subject = JsonValue.Create("Let It Be");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString().StartingWith("Let"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a string starting with "Let",
+					             but it was "Let It Be"
+
+					             Actual:
+					             "Let It Be"
 					             """);
 			}
 		}

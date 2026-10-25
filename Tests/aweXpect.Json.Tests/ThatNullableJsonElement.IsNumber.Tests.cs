@@ -1,5 +1,7 @@
 ﻿using System.Numerics;
 using System.Text.Json;
+using aweXpect.Core;
+using aweXpect.Json.Results;
 
 namespace aweXpect.Json.Tests;
 
@@ -225,6 +227,124 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).Throws<NotSupportedException>()
 					.WithMessage(
 						$"The number type char is not supported. Use {ThatJsonElement.SupportedNumberTypes}.");
+			}
+		}
+
+		public sealed class WithOperatorTests
+		{
+			[Test]
+			public async Task WhenJsonIsNoNumber_ShouldFail()
+			{
+				JsonElement? subject = FromString("\"4.5\"");
+
+				async Task Act()
+					=> await That(subject).IsNumber().EqualTo(4.5);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a number equal to 4.5,
+					             but it was a string
+
+					             Actual:
+					             "4.5"
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNumberDoesNotMatch_ShouldFail()
+			{
+				JsonElement? subject = FromString("6");
+
+				async Task Act()
+					=> await That(subject).IsNumber().Between(1).And(5);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a number between 1.0 and 5.0,
+					             but it was 6
+
+					             Actual:
+					             6
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNumberMatches_ShouldReturnTheNotNullableElement()
+			{
+				JsonElement? subject = FromString("4.55");
+
+				JsonElement result = await That(subject).IsNumber().EqualTo(4.5).Within(0.1);
+
+				await That(result.GetDouble()).IsEqualTo(4.55);
+			}
+
+			[Test]
+			public async Task WhenOperatorIsCalledTwice_ShouldThrowInvalidOperationException()
+			{
+				JsonElement? subject = FromString("3");
+
+				async Task Act()
+					=> await That(subject).CompliesWith(it =>
+					{
+						IsNumberResult<JsonElement, IThat<JsonElement?>> result = it.IsNumber();
+						result.NotEqualTo(2);
+						result.LessThan(4);
+					});
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("IsNumber() accepts only one comparison, so call only one operator on its result.");
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsNumber().GreaterThan(1);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a number greater than 1.0,
+					             but it was <null>
+					             """);
+			}
+		}
+
+		public sealed class WithOperatorNegatedTests
+		{
+			[Test]
+			public async Task WhenJsonIsNoNumber_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("\"4.5\"");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNumber().EqualTo(4.5));
+
+				await That(Act).DoesNotThrow()
+					.Because("a value of another kind is no number equal to the expected value, like for IsNumber()");
+			}
+
+			[Test]
+			public async Task WhenNumberMatches_ShouldFail()
+			{
+				JsonElement? subject = FromString("4.5");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNumber().NotEqualTo(4));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a number not equal to 4.0,
+					             but it was 4.5
+
+					             Actual:
+					             4.5
+					             """);
 			}
 		}
 

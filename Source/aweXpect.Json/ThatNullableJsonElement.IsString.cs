@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Json;
+using aweXpect.Json.Results;
 using aweXpect.Options;
 using aweXpect.Results;
 
@@ -37,9 +37,16 @@ public static partial class ThatNullableJsonElement
 			options);
 	}
 
-	[GenerateExpectation("IsString", "is {not} a string",
-		Result = nameof(DescribeValueKind),
-		Summary = "Verifies that the subject <see cref=\"JsonElement\" /> is a <see cref=\"JsonValueKind.String\" />.")]
-	private static bool IsStringKind([DisallowNull] JsonElement? element)
-		=> element.Value.ValueKind == JsonValueKind.String;
+	/// <inheritdoc cref="ThatJsonElement.IsString(IThat{JsonElement})" />
+	[GuaranteesNotNull]
+	public static IsStringResult<JsonElement, IThat<JsonElement?>> IsString(this IThat<JsonElement?> subject)
+	{
+		JsonComparisonSlot<StringPropertyComparison> slot = new("IsString()");
+		return new IsStringResult<JsonElement, IThat<JsonElement?>>(
+			subject.Get().ExpectationBuilder.AddConstraint(slot,
+				static IAsyncContextConstraint<JsonElement?> (slot, it, grammars)
+					=> new IsJsonStringConstraint(it, grammars, slot)),
+			subject,
+			slot);
+	}
 }

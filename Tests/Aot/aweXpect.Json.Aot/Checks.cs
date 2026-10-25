@@ -51,6 +51,13 @@ internal static partial class Checks
 				.HasProperty("a", a => a.IsString("let").AsPrefix().IgnoringCase())
 				.And.HasProperty("b", b => b.IsNumber(9.4m).Within(0.1m))
 				.And.HasProperty("c", c => c.IsBoolean(true)))),
+		new("values compared with operators pass",
+			() => ShouldPass(async () => await That(Parse("{\"a\": \"Let It Be\", \"b\": 9.5}"))
+				.HasProperty("a", a => a.IsString().StartingWith("let").IgnoringCase())
+				.And.HasProperty("b", b => b.IsNumber().EqualTo(9.4).Within(0.1)))),
+		new("a value compared with an operator fails in one sentence",
+			() => ShouldFail(async () => await That(Parse("{\"a\": 3}")).HasProperty("a", a => a.IsNumber().GreaterThan(4)),
+				"has property \"a\" which is a number greater than 4.0", "$.a was 3")),
 		new("a number compared with an expected value of another type fails and names it",
 			() => ShouldFail(async () => await That(Parse("[1.5]")).HasElementAt(0, e => e.IsNumber(2)),
 				"$[0] was 1.5, which is not an int")),
