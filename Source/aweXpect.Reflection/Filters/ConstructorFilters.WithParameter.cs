@@ -19,7 +19,7 @@ public static partial class ConstructorFilters
 	public static ConstructorsWithParameter<T> WithParameter<T>(this Filtered.Constructors @this)
 	{
 		Type parameterType = typeof(T);
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
+		CollectionIndexOptions collectionIndexOptions = CollectionIndexOptions.Default;
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new ConstructorsWithParameter<T>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
@@ -32,7 +32,7 @@ public static partial class ConstructorFilters
 	public static ConstructorsWithNamedParameter<T> WithParameter<T>(this Filtered.Constructors @this, string expected)
 	{
 		Type parameterType = typeof(T);
-		return new ConstructorsWithNamedParameter<T>(@this, WithParameterFilter, new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()),
+		return new ConstructorsWithNamedParameter<T>(@this, WithParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions =>
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
@@ -49,7 +49,7 @@ public static partial class ConstructorFilters
 	/// </summary>
 	public static ConstructorsWithParameter<object?> WithParameter(this Filtered.Constructors @this, Type parameterType)
 	{
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
+		CollectionIndexOptions collectionIndexOptions = CollectionIndexOptions.Default;
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new ConstructorsWithParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
@@ -62,7 +62,7 @@ public static partial class ConstructorFilters
 	public static ConstructorsWithNamedParameter<object?> WithParameter(this Filtered.Constructors @this,
 		Type parameterType, string expected)
 	{
-		return new ConstructorsWithNamedParameter<object?>(@this, WithParameterFilter, new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()),
+		return new ConstructorsWithNamedParameter<object?>(@this, WithParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions =>
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
@@ -79,7 +79,7 @@ public static partial class ConstructorFilters
 	/// </summary>
 	public static ConstructorsWithNamedParameter<object?> WithParameter(this Filtered.Constructors @this,
 		string expected)
-		=> new(@this, WithParameterFilter, new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()),
+		=> new(@this, WithParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions => new ParameterFilterOptions(
 				p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 				() => $"with name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}"),
@@ -125,7 +125,7 @@ public static partial class ConstructorFilters
 	private static ConstructorsWithParameter<T> WithoutParameterOfType<T>(Filtered.Constructors @this,
 		Type parameterType)
 	{
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
+		CollectionIndexOptions collectionIndexOptions = CollectionIndexOptions.Default;
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new ConstructorsWithParameter<T>(@this, WithoutParameterFilter, collectionIndexOptions,
@@ -135,7 +135,7 @@ public static partial class ConstructorFilters
 	private static ConstructorsWithNamedParameter<T> WithoutNamedParameter<T>(Filtered.Constructors @this,
 		Type? parameterType, string unexpected)
 	{
-		return new ConstructorsWithNamedParameter<T>(@this, WithoutParameterFilter, new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()),
+		return new ConstructorsWithNamedParameter<T>(@this, WithoutParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions =>
 			{
 				if (parameterType is null)
@@ -158,7 +158,7 @@ public static partial class ConstructorFilters
 		=> new(@this,
 			(collectionIndexOptions, parameterFilterOptions)
 				=> WithParameterOfKindFilter(kind, collectionIndexOptions, parameterFilterOptions),
-			new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()), new ParameterFilterOptions(predicate));
+			CollectionIndexOptions.Default, new ParameterFilterOptions(predicate));
 
 	private static IFilter<ConstructorInfo> WithParameterFilter(
 		CollectionIndexOptions collectionIndexOptions, ParameterFilterOptions parameterFilterOptions)
@@ -200,7 +200,7 @@ public static partial class ConstructorFilters
 		: Filtered.Constructors,
 			IOptionsProvider<ParameterFilterOptions>
 	{
-		private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
+		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> _createFilter;
 		private readonly ParameterFilterOptions _parameterFilterOptions;
 		private readonly Filtered.Constructors _source;
@@ -208,9 +208,9 @@ public static partial class ConstructorFilters
 		internal ConstructorsWithParameter(
 			Filtered.Constructors source,
 			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> createFilter,
-			OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
+			CollectionIndexOptions collectionIndexOptions,
 			ParameterFilterOptions parameterFilterOptions)
-			: base(source.Which(createFilter(collectionIndexOptions.Value, parameterFilterOptions)))
+			: base(source.Which(createFilter(collectionIndexOptions, parameterFilterOptions)))
 		{
 			_source = source;
 			_createFilter = createFilter;
@@ -305,8 +305,8 @@ public static partial class ConstructorFilters
 			=> new(_source, _createFilter, _collectionIndexOptions,
 				_parameterFilterOptions.WithPredicate(predicate, description));
 
-		private ConstructorsWithParameter<T> WithIndex(Action<CollectionIndexOptions> setIndex)
-			=> new(_source, _createFilter, new OptionsSlot<CollectionIndexOptions>(FilterIndexOptions.With(_collectionIndexOptions.Value, setIndex)),
+		private ConstructorsWithParameter<T> WithIndex(Func<CollectionIndexOptions, CollectionIndexOptions> setIndex)
+			=> new(_source, _createFilter, setIndex(_collectionIndexOptions),
 				_parameterFilterOptions);
 	}
 
@@ -319,7 +319,7 @@ public static partial class ConstructorFilters
 			IStringMatchTypeOptions,
 			ICopyOnOption<StringEqualityOptions, ConstructorsWithNamedParameter<T>>
 	{
-		private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
+		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> _createFilter;
 		private readonly Func<StringEqualityOptions, ParameterFilterOptions> _createParameterFilterOptions;
 		private readonly OptionsSlot<StringEqualityOptions> _options;
@@ -328,7 +328,7 @@ public static partial class ConstructorFilters
 		internal ConstructorsWithNamedParameter(
 			Filtered.Constructors source,
 			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> createFilter,
-			OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
+			CollectionIndexOptions collectionIndexOptions,
 			Func<StringEqualityOptions, ParameterFilterOptions> createParameterFilterOptions,
 			OptionsSlot<StringEqualityOptions> options)
 			: base(source, createFilter, collectionIndexOptions, createParameterFilterOptions(options.Value))

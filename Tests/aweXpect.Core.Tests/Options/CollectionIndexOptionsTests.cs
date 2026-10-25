@@ -5,20 +5,22 @@ namespace aweXpect.Core.Tests.Options;
 public class CollectionIndexOptionsTests
 {
 	[Test]
-	public async Task AtIndex_ShouldReturnTheSameOptions()
+	public async Task AtIndex_ShouldNotChangeTheOriginalOptions()
 	{
-		CollectionIndexOptions sut = new();
+		CollectionIndexOptions sut = CollectionIndexOptions.Default;
 
 		CollectionIndexOptions result = sut.AtIndex(1);
 
-		await That(result).IsSameAs(sut);
+		await That(result.Match.GetDescription()).IsEqualTo(" at index 1");
+		await That(sut.Match.GetDescription()).IsEmpty()
+			.Because("the options are an immutable value that can be shared");
 	}
 
 	[Test]
 	public async Task AtIndex_WhenAtIndexFromEndIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		CollectionIndexOptions sut = new();
-		sut.AtIndexFromEnd(1);
+		sut = sut.AtIndexFromEnd(1);
 
 		void Act() => sut.AtIndex(1);
 
@@ -42,9 +44,9 @@ public class CollectionIndexOptionsTests
 	public async Task AtIndex_WhenSpecifiedTwice_ShouldUseTheLastIndex()
 	{
 		CollectionIndexOptions sut = new();
-		sut.AtIndex(1);
+		sut = sut.AtIndex(1);
 
-		sut.AtIndex(2);
+		sut = sut.AtIndex(2);
 
 		await That(sut.Match.GetDescription()).IsEqualTo(" at index 2");
 	}
@@ -54,7 +56,7 @@ public class CollectionIndexOptionsTests
 	{
 		CollectionIndexOptions sut = new();
 
-		sut.AtIndexFromEnd(1);
+		sut = sut.AtIndexFromEnd(1);
 
 		await That(sut.Match.GetDescription()).IsEqualTo(" at index 1 from end");
 		await That(sut.Match).Is<CollectionIndexOptions.IMatchFromEnd>()
@@ -62,20 +64,22 @@ public class CollectionIndexOptionsTests
 	}
 
 	[Test]
-	public async Task AtIndexFromEnd_ShouldReturnTheSameOptions()
+	public async Task AtIndexFromEnd_ShouldNotChangeTheOriginalOptions()
 	{
-		CollectionIndexOptions sut = new();
+		CollectionIndexOptions sut = CollectionIndexOptions.Default.AtIndexFromEnd(2);
 
 		CollectionIndexOptions result = sut.AtIndexFromEnd(1);
 
-		await That(result).IsSameAs(sut);
+		await That(result.Match.GetDescription()).IsEqualTo(" at index 1 from end");
+		await That(sut.Match.GetDescription()).IsEqualTo(" at index 2 from end")
+			.Because("the options are an immutable value that can be shared");
 	}
 
 	[Test]
 	public async Task AtIndexFromEnd_WhenAtIndexIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		CollectionIndexOptions sut = new();
-		sut.AtIndex(1);
+		sut = sut.AtIndex(1);
 
 		void Act() => sut.AtIndexFromEnd(1);
 
@@ -88,7 +92,7 @@ public class CollectionIndexOptionsTests
 	{
 		CollectionIndexOptions sut = new();
 
-		sut.AtIndexFromEnd(1);
+		sut = sut.AtIndexFromEnd(1);
 
 		await That(sut.Match).Is<CollectionIndexOptions.IMatchFromEnd>()
 			.Whose(match => match.MatchesIndex(3, null), it => it.IsNull());
@@ -99,10 +103,20 @@ public class CollectionIndexOptionsTests
 	{
 		CollectionIndexOptions sut = new();
 
-		sut.AtIndexFromEnd(1);
+		sut = sut.AtIndexFromEnd(1);
 
 		await That(sut.Match).Is<CollectionIndexOptions.IMatchFromEnd>()
 			.Whose(match => match.MatchesIndex(2, 5), it => it.IsNull());
+	}
+
+	[Test]
+	public async Task Default_ShouldMatchEveryIndex()
+	{
+		CollectionIndexOptions sut = default;
+
+		await That(sut.Match.GetDescription()).IsEmpty();
+		await That(sut.MatchesIndex(3, null)).IsEqualTo(true);
+		await That(CollectionIndexOptions.Default.MatchesIndex(3, 5)).IsEqualTo(true);
 	}
 
 	[Test]
@@ -147,7 +161,7 @@ public class CollectionIndexOptionsTests
 	public async Task MatchesIndex_WhenAtIndex_ShouldOnlyMatchTheIndex(int index, bool? expected)
 	{
 		CollectionIndexOptions sut = new();
-		sut.AtIndex(1);
+		sut = sut.AtIndex(1);
 
 		bool? result = sut.MatchesIndex(index, 3);
 
@@ -162,7 +176,7 @@ public class CollectionIndexOptionsTests
 	public async Task MatchesIndex_WhenAtIndexFromEnd_ShouldCountFromTheEnd(int index, bool? expected)
 	{
 		CollectionIndexOptions sut = new();
-		sut.AtIndexFromEnd(1);
+		sut = sut.AtIndexFromEnd(1);
 
 		bool? result = sut.MatchesIndex(index, 3);
 
@@ -173,7 +187,7 @@ public class CollectionIndexOptionsTests
 	public async Task MatchesIndex_WhenAtIndexFromEndAndCountIsUnknown_ShouldReturnNull()
 	{
 		CollectionIndexOptions sut = new();
-		sut.AtIndexFromEnd(1);
+		sut = sut.AtIndexFromEnd(1);
 
 		bool? result = sut.MatchesIndex(1, null);
 
@@ -184,7 +198,7 @@ public class CollectionIndexOptionsTests
 	public async Task MatchesIndex_WhenMatchIsNeitherFromBeginningNorFromEnd_ShouldReturnFalse()
 	{
 		CollectionIndexOptions sut = new();
-		sut.SetMatch(new MyMatch(), "AtMyIndex");
+		sut = sut.SetMatch(new MyMatch(), "AtMyIndex");
 
 		bool? result = sut.MatchesIndex(0, 1);
 
@@ -204,13 +218,15 @@ public class CollectionIndexOptionsTests
 	}
 
 	[Test]
-	public async Task SetMatch_WithOption_ShouldReturnTheSameOptions()
+	public async Task SetMatch_WithOption_ShouldNotChangeTheOriginalOptions()
 	{
-		CollectionIndexOptions sut = new();
+		CollectionIndexOptions sut = CollectionIndexOptions.Default;
 
 		CollectionIndexOptions result = sut.SetMatch(new MyMatch(), "AtMyIndex");
 
-		await That(result).IsSameAs(sut);
+		await That(result.Match).Is<MyMatch>();
+		await That(sut.Match).IsNot<MyMatch>()
+			.Because("the options are an immutable value that can be shared");
 	}
 
 	[Test]
@@ -218,7 +234,7 @@ public class CollectionIndexOptionsTests
 	{
 		CollectionIndexOptions sut = new();
 
-		sut.SetMatch(new MyMatch(), "AtMyIndex");
+		sut = sut.SetMatch(new MyMatch(), "AtMyIndex");
 
 		await That(sut.Match).Is<MyMatch>();
 	}
@@ -227,7 +243,7 @@ public class CollectionIndexOptionsTests
 	public async Task SetMatch_WithOption_WhenAtIndexIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		CollectionIndexOptions sut = new();
-		sut.AtIndex(1);
+		sut = sut.AtIndex(1);
 
 		void Act() => sut.SetMatch(new MyMatch(), "AtMyIndex");
 
@@ -240,7 +256,7 @@ public class CollectionIndexOptionsTests
 	public async Task SetMatch_WithOption_WhenFollowedByAtIndex_ShouldThrowInvalidOperationException()
 	{
 		CollectionIndexOptions sut = new();
-		sut.SetMatch(new MyMatch(), "AtMyIndex");
+		sut = sut.SetMatch(new MyMatch(), "AtMyIndex");
 
 		void Act() => sut.AtIndex(1);
 
@@ -254,9 +270,9 @@ public class CollectionIndexOptionsTests
 	{
 		CollectionIndexOptions sut = new();
 		MyMatch lastMatch = new();
-		sut.SetMatch(new MyMatch(), "AtMyIndex");
+		sut = sut.SetMatch(new MyMatch(), "AtMyIndex");
 
-		sut.SetMatch(lastMatch, "AtMyIndex");
+		sut = sut.SetMatch(lastMatch, "AtMyIndex");
 
 		await That(sut.Match).IsSameAs(lastMatch);
 	}

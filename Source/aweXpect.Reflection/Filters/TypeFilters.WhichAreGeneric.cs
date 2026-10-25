@@ -55,7 +55,7 @@ public static partial class TypeFilters
 				() => $"of type {Formatter.Format(typeof(T))}");
 			return new GenericTypesWithArgument(this,
 				collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions),
-				new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()));
+				CollectionIndexOptions.Default);
 		}
 
 		/// <summary>
@@ -75,7 +75,7 @@ public static partial class TypeFilters
 						() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
 				},
-				new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()), new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
+				CollectionIndexOptions.Default, new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
 		}
 
 		/// <summary>
@@ -90,7 +90,7 @@ public static partial class TypeFilters
 						() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
 				},
-				new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()), new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
+				CollectionIndexOptions.Default, new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
 
 		private static IFilter<Type> WithArgumentFilter(GenericArgumentFilterOptions genericArgumentFilterOptions,
 			CollectionIndexOptions collectionIndexOptions)
@@ -112,15 +112,15 @@ public static partial class TypeFilters
 		/// </summary>
 		public class GenericTypesWithArgument : GenericTypes
 		{
-			private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
+			private readonly CollectionIndexOptions _collectionIndexOptions;
 			private readonly Func<CollectionIndexOptions, IFilter<Type>> _createFilter;
 			private readonly Filtered.Types _source;
 
 			internal GenericTypesWithArgument(
 				Filtered.Types source,
 				Func<CollectionIndexOptions, IFilter<Type>> createFilter,
-				OptionsSlot<CollectionIndexOptions> collectionIndexOptions)
-				: base(source.Which(createFilter(collectionIndexOptions.Value)))
+				CollectionIndexOptions collectionIndexOptions)
+				: base(source.Which(createFilter(collectionIndexOptions)))
 			{
 				_source = source;
 				_createFilter = createFilter;
@@ -143,8 +143,8 @@ public static partial class TypeFilters
 			public GenericTypesWithArgument AtIndexFromEnd(int index)
 				=> WithIndex(o => o.AtIndexFromEnd(index));
 
-			private GenericTypesWithArgument WithIndex(Action<CollectionIndexOptions> setIndex)
-				=> new(_source, _createFilter, new OptionsSlot<CollectionIndexOptions>(FilterIndexOptions.With(_collectionIndexOptions.Value, setIndex)));
+			private GenericTypesWithArgument WithIndex(Func<CollectionIndexOptions, CollectionIndexOptions> setIndex)
+				=> new(_source, _createFilter, setIndex(_collectionIndexOptions));
 		}
 
 		/// <summary>
@@ -156,7 +156,7 @@ public static partial class TypeFilters
 				IStringMatchTypeOptions,
 				ICopyOnOption<StringEqualityOptions, GenericTypesWithNamedArgument>
 		{
-			private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
+			private readonly CollectionIndexOptions _collectionIndexOptions;
 			private readonly Func<StringEqualityOptions, Func<CollectionIndexOptions, IFilter<Type>>> _createFilter;
 			private readonly OptionsSlot<StringEqualityOptions> _options;
 			private readonly Filtered.Types _source;
@@ -164,7 +164,7 @@ public static partial class TypeFilters
 			internal GenericTypesWithNamedArgument(
 				Filtered.Types source,
 				Func<StringEqualityOptions, Func<CollectionIndexOptions, IFilter<Type>>> createFilter,
-				OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
+				CollectionIndexOptions collectionIndexOptions,
 				OptionsSlot<StringEqualityOptions> options)
 				: base(source, createFilter(options.Value), collectionIndexOptions)
 			{

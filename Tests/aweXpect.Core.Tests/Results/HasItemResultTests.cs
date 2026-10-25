@@ -10,14 +10,14 @@ public sealed class HasItemResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForCollectionIndexOptions()
 	{
-		CollectionIndexOptions options = new();
+		OptionsSlot<CollectionIndexOptions> options = new(CollectionIndexOptions.Default);
 		HasItemResult<int[]> sut = CreateSut(Array.Empty<int>(), options);
 
 		await That(sut).Is<IOptionsProvider<CollectionIndexOptions>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
+			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
-	private static HasItemResult<T> CreateSut<T>(T subject, CollectionIndexOptions options)
+	private static HasItemResult<T> CreateSut<T>(T subject, OptionsSlot<CollectionIndexOptions> options)
 	{
 #pragma warning disable aweXpect0001
 		IThat<T> source = That(subject);
@@ -25,6 +25,6 @@ public sealed class HasItemResultTests
 		return new HasItemResult<T>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			new OptionsSlot<CollectionIndexOptions>(options));
+			options);
 	}
 }

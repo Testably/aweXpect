@@ -3619,7 +3619,7 @@ namespace aweXpect.Reflection.Options
     public class GenericArgumentsFilterOptions
     {
         public GenericArgumentsFilterOptions() { }
-        public void AddFilter(aweXpect.Reflection.Options.GenericArgumentFilterOptions filter, aweXpect.Options.CollectionIndexOptions options) { }
+        public void AddFilter(aweXpect.Reflection.Options.GenericArgumentFilterOptions filter, aweXpect.Core.OptionsSlot<aweXpect.Options.CollectionIndexOptions> options) { }
         public void AddPredicate(System.Func<System.Type[], bool> predicate, System.Func<string> description) { }
         public string GetDescription() { }
         public System.Threading.Tasks.ValueTask<bool> Matches(System.Reflection.MethodInfo? method) { }

@@ -19,7 +19,7 @@ public static partial class ThatMethod
 		this IThat<MethodInfo?> subject)
 	{
 		Type parameterType = typeof(TParameter);
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		return new ParameterCollectionResult<MethodInfo, MethodInfo?, TParameter>(subject.Get().ExpectationBuilder
@@ -44,7 +44,7 @@ public static partial class ThatMethod
 	{
 		Type parameterType = typeof(TParameter);
 		OptionsSlot<StringEqualityOptions> stringEqualityOptions = new(new StringEqualityOptions(nameof(expected)));
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected));
@@ -68,7 +68,7 @@ public static partial class ThatMethod
 	public static ParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasParameterExactly(
 		this IThat<MethodInfo?> subject, Type parameterType)
 	{
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		return new ParameterCollectionResult<MethodInfo, MethodInfo?, object?>(subject.Get().ExpectationBuilder
@@ -92,7 +92,7 @@ public static partial class ThatMethod
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 	{
 		OptionsSlot<StringEqualityOptions> stringEqualityOptions = new(new StringEqualityOptions(nameof(expected)));
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected));

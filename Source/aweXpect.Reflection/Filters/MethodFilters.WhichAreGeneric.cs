@@ -56,7 +56,7 @@ public static partial class MethodFilters
 				() => $"of type {Formatter.Format(typeof(T))}");
 			return new GenericMethodsWithArgument(this,
 				collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions),
-				new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()));
+				CollectionIndexOptions.Default);
 		}
 
 		/// <summary>
@@ -76,7 +76,7 @@ public static partial class MethodFilters
 						() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
 				},
-				new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()), new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
+				CollectionIndexOptions.Default, new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
 		}
 
 		/// <summary>
@@ -91,7 +91,7 @@ public static partial class MethodFilters
 						() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
 				},
-				new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()), new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
+				CollectionIndexOptions.Default, new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
 
 		private static IFilter<MethodInfo> WithArgumentFilter(GenericArgumentFilterOptions genericArgumentFilterOptions,
 			CollectionIndexOptions collectionIndexOptions)
@@ -114,15 +114,15 @@ public static partial class MethodFilters
 	/// </summary>
 	public class GenericMethodsWithArgument : GenericMethods
 	{
-		private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
+		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, IFilter<MethodInfo>> _createFilter;
 		private readonly Filtered.Methods _source;
 
 		internal GenericMethodsWithArgument(
 			Filtered.Methods source,
 			Func<CollectionIndexOptions, IFilter<MethodInfo>> createFilter,
-			OptionsSlot<CollectionIndexOptions> collectionIndexOptions)
-			: base(source.Which(createFilter(collectionIndexOptions.Value)))
+			CollectionIndexOptions collectionIndexOptions)
+			: base(source.Which(createFilter(collectionIndexOptions)))
 		{
 			_source = source;
 			_createFilter = createFilter;
@@ -145,8 +145,8 @@ public static partial class MethodFilters
 		public GenericMethodsWithArgument AtIndexFromEnd(int index)
 			=> WithIndex(o => o.AtIndexFromEnd(index));
 
-		private GenericMethodsWithArgument WithIndex(Action<CollectionIndexOptions> setIndex)
-			=> new(_source, _createFilter, new OptionsSlot<CollectionIndexOptions>(FilterIndexOptions.With(_collectionIndexOptions.Value, setIndex)));
+		private GenericMethodsWithArgument WithIndex(Func<CollectionIndexOptions, CollectionIndexOptions> setIndex)
+			=> new(_source, _createFilter, setIndex(_collectionIndexOptions));
 	}
 
 	/// <summary>
@@ -158,7 +158,7 @@ public static partial class MethodFilters
 			IStringMatchTypeOptions,
 			ICopyOnOption<StringEqualityOptions, GenericMethodsWithNamedArgument>
 	{
-		private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
+		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<StringEqualityOptions, Func<CollectionIndexOptions, IFilter<MethodInfo>>> _createFilter;
 		private readonly OptionsSlot<StringEqualityOptions> _options;
 		private readonly Filtered.Methods _source;
@@ -166,7 +166,7 @@ public static partial class MethodFilters
 		internal GenericMethodsWithNamedArgument(
 			Filtered.Methods source,
 			Func<StringEqualityOptions, Func<CollectionIndexOptions, IFilter<MethodInfo>>> createFilter,
-			OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
+			CollectionIndexOptions collectionIndexOptions,
 			OptionsSlot<StringEqualityOptions> options)
 			: base(source, createFilter(options.Value), collectionIndexOptions)
 		{

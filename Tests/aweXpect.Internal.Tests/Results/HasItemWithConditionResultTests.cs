@@ -24,6 +24,6 @@ public sealed class HasItemWithConditionResultTests
 		IThat<TCollection?> source = That(subject);
 #pragma warning restore aweXpect0001
 		return new HasItemWithConditionResult<TCollection, TItem>(source.Get().ExpectationBuilder,
-			source, new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()), new OptionsSlot<PredicateOptions<TItem>>(options));
+			source, new OptionsSlot<CollectionIndexOptions>(CollectionIndexOptions.Default), new OptionsSlot<PredicateOptions<TItem>>(options));
 	}
 }

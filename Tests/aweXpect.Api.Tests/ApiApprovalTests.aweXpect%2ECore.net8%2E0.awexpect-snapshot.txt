@@ -1625,10 +1625,10 @@ namespace aweXpect.Formatting
 }
 namespace aweXpect.Options
 {
-    public class CollectionIndexOptions
+    public readonly struct CollectionIndexOptions
     {
-        public CollectionIndexOptions() { }
         public aweXpect.Options.CollectionIndexOptions.IMatch Match { get; }
+        public static aweXpect.Options.CollectionIndexOptions Default { get; }
         public aweXpect.Options.CollectionIndexOptions AtIndex(int index) { }
         public aweXpect.Options.CollectionIndexOptions AtIndexFromEnd(int index) { }
         public bool? MatchesIndex(int index, int? count) { }

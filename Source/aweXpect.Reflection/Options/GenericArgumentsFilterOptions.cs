@@ -14,7 +14,7 @@ namespace aweXpect.Reflection.Options;
 public class GenericArgumentsFilterOptions
 {
 	private readonly List<Func<string>> _descriptions = [];
-	private readonly Dictionary<GenericArgumentFilterOptions, CollectionIndexOptions> _filters = [];
+	private readonly Dictionary<GenericArgumentFilterOptions, OptionsSlot<CollectionIndexOptions>> _filters = [];
 	private readonly List<Func<Type[], bool>> _predicates = [];
 
 	/// <summary>
@@ -29,7 +29,11 @@ public class GenericArgumentsFilterOptions
 	/// <summary>
 	///     Adds an additional <see cref="GenericArgumentFilterOptions" />.
 	/// </summary>
-	public void AddFilter(GenericArgumentFilterOptions filter, CollectionIndexOptions options)
+	/// <remarks>
+	///     The index <paramref name="options" /> are read when the filter matches, so that an index option set after
+	///     adding the filter applies.
+	/// </remarks>
+	public void AddFilter(GenericArgumentFilterOptions filter, OptionsSlot<CollectionIndexOptions> options)
 		=> _filters.Add(filter, options);
 
 	/// <summary>
@@ -80,15 +84,16 @@ public class GenericArgumentsFilterOptions
 #if NET8_0_OR_GREATER
 	private async ValueTask<bool> MatchesFilters(Type[] arguments, string[]? genericTypeNames)
 	{
-		foreach (var (filter, collectionIndexOptions) in _filters)
+		foreach (var (filter, collectionIndexOptionsSlot) in _filters)
 		{
+			CollectionIndexOptions collectionIndexOptions = collectionIndexOptionsSlot.Value;
 #else
 	private async ValueTask<bool> MatchesFilters(Type[] arguments, string[]? genericTypeNames)
 	{
-		foreach (KeyValuePair<GenericArgumentFilterOptions, CollectionIndexOptions> keyItem in _filters)
+		foreach (KeyValuePair<GenericArgumentFilterOptions, OptionsSlot<CollectionIndexOptions>> keyItem in _filters)
 		{
 			GenericArgumentFilterOptions filter = keyItem.Key;
-			CollectionIndexOptions collectionIndexOptions = keyItem.Value;
+			CollectionIndexOptions collectionIndexOptions = keyItem.Value.Value;
 #endif
 			if (!await arguments.AnyAsync(async (p, i) =>
 			    {
@@ -110,7 +115,7 @@ public class GenericArgumentsFilterOptions
 	{
 		List<string> descriptions = _descriptions.Select(@delegate => @delegate()).ToList();
 		descriptions.AddRange(_filters.Select(x
-			=> $"with argument {x.Key.GetDescription()}{x.Value.Match.GetDescription()}"));
+			=> $"with argument {x.Key.GetDescription()}{x.Value.Value.Match.GetDescription()}"));
 		if (descriptions.Count == 0)
 		{
 			return string.Empty;

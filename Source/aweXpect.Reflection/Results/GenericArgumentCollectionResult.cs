@@ -70,8 +70,8 @@ public class GenericArgumentCollectionResult<TType, TValue, TSelf>
 		GenericArgumentFilterOptions genericArgumentFilterOptions = new(
 			(type, name) => argumentType == (name is null ? type.BaseType : type),
 			() => $"of type {Formatter.Format(typeof(T))}");
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
-		_genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions.Value);
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		_genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);
 		return new GenericArgumentCollectionWithArgumentResult<TType, TValue>(
 			_expectationBuilder, _subject, _genericArgumentsFilterOptions, collectionIndexOptions);
 	}
@@ -89,8 +89,8 @@ public class GenericArgumentCollectionResult<TType, TValue, TSelf>
 		genericArgumentFilterOptions.AddPredicate(
 			(type, name) => stringEqualityOptions.Value.AreConsideredEqual(name ?? type.Name, expected),
 			() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
-		_genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions.Value);
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		_genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);
 		return new GenericArgumentCollectionWithNamedArgumentResult<TType, TValue>(
 			_expectationBuilder, _subject, _genericArgumentsFilterOptions, collectionIndexOptions,
 			stringEqualityOptions);
@@ -105,8 +105,8 @@ public class GenericArgumentCollectionResult<TType, TValue, TSelf>
 		GenericArgumentFilterOptions genericArgumentFilterOptions = new(
 			(type, name) => stringEqualityOptions.Value.AreConsideredEqual(name ?? type.Name, expected),
 			() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
-		_genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions.Value);
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		_genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);
 		return new GenericArgumentCollectionWithNamedArgumentResult<TType, TValue>(
 			_expectationBuilder, _subject, _genericArgumentsFilterOptions, collectionIndexOptions,
 			stringEqualityOptions);

@@ -7,7 +7,7 @@ public sealed class OptionsSlotTests
 	[Test]
 	public async Task SetMatch_ShouldSetTheMatchOnTheValue()
 	{
-		OptionsSlot<CollectionIndexOptions> sut = new(new CollectionIndexOptions());
+		OptionsSlot<CollectionIndexOptions> sut = new(CollectionIndexOptions.Default);
 
 		OptionsSlot<CollectionIndexOptions> result = sut.SetMatch(new MyMatch(), "AtMyIndex");
 

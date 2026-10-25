@@ -16,7 +16,7 @@ public static partial class MethodFilters
 	public static MethodsWithParameter<T> WithParameterExactly<T>(this Filtered.Methods @this)
 	{
 		Type parameterType = typeof(T);
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
+		CollectionIndexOptions collectionIndexOptions = CollectionIndexOptions.Default;
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		return new MethodsWithParameter<T>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
@@ -29,7 +29,7 @@ public static partial class MethodFilters
 	public static MethodsWithNamedParameter<T> WithParameterExactly<T>(this Filtered.Methods @this, string expected)
 	{
 		Type parameterType = typeof(T);
-		return new MethodsWithNamedParameter<T>(@this, WithParameterFilter, new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()),
+		return new MethodsWithNamedParameter<T>(@this, WithParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions =>
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
@@ -46,7 +46,7 @@ public static partial class MethodFilters
 	/// </summary>
 	public static MethodsWithParameter<object?> WithParameterExactly(this Filtered.Methods @this, Type parameterType)
 	{
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
+		CollectionIndexOptions collectionIndexOptions = CollectionIndexOptions.Default;
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		return new MethodsWithParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
@@ -59,7 +59,7 @@ public static partial class MethodFilters
 	public static MethodsWithNamedParameter<object?> WithParameterExactly(this Filtered.Methods @this, Type parameterType,
 		string expected)
 	{
-		return new MethodsWithNamedParameter<object?>(@this, WithParameterFilter, new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()),
+		return new MethodsWithNamedParameter<object?>(@this, WithParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions =>
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),

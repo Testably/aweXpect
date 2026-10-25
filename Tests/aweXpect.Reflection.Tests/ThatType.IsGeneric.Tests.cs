@@ -22,7 +22,7 @@ public sealed partial class ThatType
 				{
 					GenericArgumentCollectionResult<Type, Type?> result = That(subject).IsGeneric();
 					((IOptionsProvider<GenericArgumentsFilterOptions>)result).Options.Value.AddFilter(
-						new GenericArgumentFilterOptions(predicate, () => "matching predicate"), new CollectionIndexOptions());
+						new GenericArgumentFilterOptions(predicate, () => "matching predicate"), new OptionsSlot<CollectionIndexOptions>(CollectionIndexOptions.Default));
 					await result;
 				}
 

@@ -26,7 +26,7 @@ public static partial class ThatEnumerable
 		this IThat<IEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		expectations.ThrowIfNull();
-		OptionsSlot<CollectionIndexOptions> indexOptions = new(new CollectionIndexOptions());
+		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
@@ -46,7 +46,7 @@ public static partial class ThatEnumerable
 		this IThat<IEnumerable?> subject, Action<IThatSubject<object?>> expectations)
 	{
 		expectations.ThrowIfNull();
-		OptionsSlot<CollectionIndexOptions> indexOptions = new(new CollectionIndexOptions());
+		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable>(
 			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
@@ -65,7 +65,7 @@ public static partial class ThatEnumerable
 		this IThat<ImmutableArray<TItem>> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		expectations.ThrowIfNull();
-		OptionsSlot<CollectionIndexOptions> indexOptions = new(new CollectionIndexOptions());
+		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<ImmutableArray<TItem>>(
 			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
@@ -85,7 +85,7 @@ public static partial class ThatEnumerable
 		this IThat<IEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		expectations.ThrowIfNull();
-		OptionsSlot<CollectionIndexOptions> indexOptions = new(new CollectionIndexOptions());
+		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
@@ -106,7 +106,7 @@ public static partial class ThatEnumerable
 		this IThat<IEnumerable?> subject, Action<IThatSubject<object?>> expectations)
 	{
 		expectations.ThrowIfNull();
-		OptionsSlot<CollectionIndexOptions> indexOptions = new(new CollectionIndexOptions());
+		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable>(
 			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
@@ -125,7 +125,7 @@ public static partial class ThatEnumerable
 		this IThat<ImmutableArray<TItem>> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		expectations.ThrowIfNull();
-		OptionsSlot<CollectionIndexOptions> indexOptions = new(new CollectionIndexOptions());
+		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<ImmutableArray<TItem>>(
 			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
