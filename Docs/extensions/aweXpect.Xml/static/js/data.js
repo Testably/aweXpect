@@ -738,6 +738,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
         "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
+      },
+      {
+        "sha": "ddec9e0e46062f0fb4681fb49d418b6537df4461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
+        "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
       }
     ],
     "labels": [
@@ -863,7 +869,8 @@ window.BENCHMARK_DATA = {
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
-      "90516b35"
+      "90516b35",
+      "ddec9e0e"
     ],
     "datasets": [
       {
@@ -992,7 +999,8 @@ window.BENCHMARK_DATA = {
           757.722552172343,
           737.5256697972616,
           579.6192891938346,
-          721.0687050138201
+          721.0687050138201,
+          556.9036045755659
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1116,6 +1124,7 @@ window.BENCHMARK_DATA = {
           1120,
           1120,
           1120,
+          1152,
           1152,
           1152,
           1152,
@@ -1263,7 +1272,8 @@ window.BENCHMARK_DATA = {
           734.6008099147251,
           706.4235350063869,
           593.7331276673538,
-          710.7634363174438
+          710.7634363174438,
+          536.8590538161142
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1275,6 +1285,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2149,6 +2160,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
         "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
+      },
+      {
+        "sha": "ddec9e0e46062f0fb4681fb49d418b6537df4461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
+        "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
       }
     ],
     "labels": [
@@ -2274,7 +2291,8 @@ window.BENCHMARK_DATA = {
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
-      "90516b35"
+      "90516b35",
+      "ddec9e0e"
     ],
     "datasets": [
       {
@@ -2403,7 +2421,8 @@ window.BENCHMARK_DATA = {
           4530.398605053241,
           4749.574486796061,
           3466.810075124105,
-          4485.6264572143555
+          4485.6264572143555,
+          3369.1946081433975
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2537,7 +2556,8 @@ window.BENCHMARK_DATA = {
           24320,
           24320,
           24320,
-          24321
+          24321,
+          24320
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2674,7 +2694,8 @@ window.BENCHMARK_DATA = {
           5409.940688578287,
           5302.561442057292,
           4212.467302958171,
-          5186.509382629394
+          5186.509382629394,
+          3771.373131615775
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2686,6 +2707,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -3500,6 +3522,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
         "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
+      },
+      {
+        "sha": "ddec9e0e46062f0fb4681fb49d418b6537df4461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
+        "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
       }
     ],
     "labels": [
@@ -3615,7 +3643,8 @@ window.BENCHMARK_DATA = {
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
-      "90516b35"
+      "90516b35",
+      "ddec9e0e"
     ],
     "datasets": [
       {
@@ -3734,7 +3763,8 @@ window.BENCHMARK_DATA = {
           2694.736139043172,
           2760.3796997070312,
           1966.9533726828438,
-          2585.2072432381765
+          2585.2072432381765,
+          1889.9165905543737
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3858,7 +3888,8 @@ window.BENCHMARK_DATA = {
           12856,
           12856,
           12856,
-          12856
+          12856,
+          12780
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3985,7 +4016,8 @@ window.BENCHMARK_DATA = {
           3700.7730458577475,
           3626.562834603446,
           2713.8504156385147,
-          3345.572557721819
+          3345.572557721819,
+          2628.119952901204
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3997,6 +4029,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -4801,6 +4834,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
         "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
+      },
+      {
+        "sha": "ddec9e0e46062f0fb4681fb49d418b6537df4461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
+        "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
       }
     ],
     "labels": [
@@ -4916,7 +4955,8 @@ window.BENCHMARK_DATA = {
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
-      "90516b35"
+      "90516b35",
+      "ddec9e0e"
     ],
     "datasets": [
       {
@@ -5035,7 +5075,8 @@ window.BENCHMARK_DATA = {
           13855.930011494955,
           14609.016122436524,
           11292.020663670131,
-          13641.327713521321
+          13641.327713521321,
+          10029.750903789814
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5159,7 +5200,8 @@ window.BENCHMARK_DATA = {
           25568,
           25568,
           25568,
-          25568
+          25568,
+          25494
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5286,7 +5328,8 @@ window.BENCHMARK_DATA = {
           379323.70234375,
           378302.3233468192,
           227062.4200358073,
-          342623.75895182294
+          342623.75895182294,
+          239298.7164776142
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5410,6 +5453,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544246,
+          544335,
           544335
         ],
         "borderColor": "#FF671B",
