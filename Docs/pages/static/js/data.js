@@ -1062,6 +1062,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
         "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
+      },
+      {
+        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
+        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
       }
     ],
     "labels": [
@@ -1241,7 +1247,8 @@ window.BENCHMARK_DATA = {
       "e41a7134",
       "c65f55ef",
       "8a57efc7",
-      "6b630d2b"
+      "6b630d2b",
+      "3378cc72"
     ],
     "datasets": [
       {
@@ -1424,7 +1431,8 @@ window.BENCHMARK_DATA = {
           11356.677942129281,
           5828.415414537702,
           11188.161548069545,
-          10725.838558490459
+          10725.838558490459,
+          5346.679335021972
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1604,6 +1612,7 @@ window.BENCHMARK_DATA = {
           2168,
           2168,
           2168,
+          2208,
           2208,
           2208,
           2208,
@@ -1803,7 +1812,8 @@ window.BENCHMARK_DATA = {
           384663.783203125,
           200242.60232979912,
           386225.900390625,
-          378791.923828125
+          378791.923828125,
+          169878.25319010418
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1991,7 +2001,8 @@ window.BENCHMARK_DATA = {
           590290,
           590288,
           590290,
-          590292
+          590292,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2182,7 +2193,8 @@ window.BENCHMARK_DATA = {
           19638.260791015626,
           10975.592144557408,
           20083.07002766927,
-          19759.197509765625
+          19759.197509765625,
+          9732.070493425641
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2194,6 +2206,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -3404,6 +3417,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
         "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
+      },
+      {
+        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
+        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
       }
     ],
     "labels": [
@@ -3576,7 +3595,8 @@ window.BENCHMARK_DATA = {
       "e41a7134",
       "c65f55ef",
       "8a57efc7",
-      "6b630d2b"
+      "6b630d2b",
+      "3378cc72"
     ],
     "datasets": [
       {
@@ -3752,7 +3772,8 @@ window.BENCHMARK_DATA = {
           293.36039423942566,
           151.56276639302573,
           299.9512793858846,
-          310.87667481104535
+          310.87667481104535,
+          126.35500013828278
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3841,6 +3862,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -4117,7 +4139,8 @@ window.BENCHMARK_DATA = {
           539.4087008794148,
           289.59023223604476,
           531.148554120745,
-          499.83627517406757
+          499.83627517406757,
+          248.70912674495153
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4129,6 +4152,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -4482,7 +4506,8 @@ window.BENCHMARK_DATA = {
           420.11562728881836,
           219.5969561735789,
           397.40638710657754,
-          391.1855565071106
+          391.1855565071106,
+          190.12586188316345
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4494,6 +4519,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -10317,6 +10343,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
         "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
+      },
+      {
+        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
+        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
       }
     ],
     "labels": [
@@ -11259,7 +11291,8 @@ window.BENCHMARK_DATA = {
       "e41a7134",
       "c65f55ef",
       "8a57efc7",
-      "6b630d2b"
+      "6b630d2b",
+      "3378cc72"
     ],
     "datasets": [
       {
@@ -12205,7 +12238,8 @@ window.BENCHMARK_DATA = {
           154.9043675104777,
           80.13773941142219,
           156.14635217984517,
-          149.51440051623754
+          149.51440051623754,
+          71.23183561222893
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13064,6 +13098,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -14110,7 +14145,8 @@ window.BENCHMARK_DATA = {
           261.0036664644877,
           157.22749842007954,
           275.9036222139994,
-          259.30012407302854
+          259.30012407302854,
+          124.19887183507284
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14303,6 +14339,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -15296,7 +15333,8 @@ window.BENCHMARK_DATA = {
           251.45531715665544,
           138.89531258174353,
           254.74322485923767,
-          244.2840792451586
+          244.2840792451586,
+          116.78505226281973
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15308,6 +15346,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -16604,6 +16643,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
         "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
+      },
+      {
+        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
+        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
       }
     ],
     "labels": [
@@ -16783,7 +16828,8 @@ window.BENCHMARK_DATA = {
       "e41a7134",
       "c65f55ef",
       "8a57efc7",
-      "6b630d2b"
+      "6b630d2b",
+      "3378cc72"
     ],
     "datasets": [
       {
@@ -16966,7 +17012,8 @@ window.BENCHMARK_DATA = {
           287.3800951072148,
           146.08031913212366,
           283.7267198562622,
-          286.46409527460736
+          286.46409527460736,
+          129.5158381121499
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17146,6 +17193,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          520,
           520,
           520,
           520,
@@ -17345,7 +17393,8 @@ window.BENCHMARK_DATA = {
           609.389857673645,
           305.3505081653595,
           550.3791928609212,
-          543.8346082687378
+          543.8346082687378,
+          252.30248141288757
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17357,6 +17406,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -17724,7 +17774,8 @@ window.BENCHMARK_DATA = {
           368.7214824040731,
           187.64818437894186,
           361.63201774869646,
-          351.25829841295877
+          351.25829841295877,
+          165.01991299788156
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -17736,6 +17787,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -23566,6 +23618,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
         "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
+      },
+      {
+        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
+        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
       }
     ],
     "labels": [
@@ -24508,7 +24566,8 @@ window.BENCHMARK_DATA = {
       "e41a7134",
       "c65f55ef",
       "8a57efc7",
-      "6b630d2b"
+      "6b630d2b",
+      "3378cc72"
     ],
     "datasets": [
       {
@@ -25454,7 +25513,8 @@ window.BENCHMARK_DATA = {
           653.5178035589365,
           357.8542076860155,
           697.318991456713,
-          705.2051502863566
+          705.2051502863566,
+          320.80484645707264
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26313,6 +26373,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -27359,7 +27420,8 @@ window.BENCHMARK_DATA = {
           1532.9757026672364,
           803.8106863657633,
           1469.8924522399902,
-          1411.2454528808594
+          1411.2454528808594,
+          658.4624439386221
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27552,6 +27614,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -28545,7 +28608,8 @@ window.BENCHMARK_DATA = {
           669.4174051920573,
           365.94262766838074,
           683.4718556404114,
-          645.8053511301677
+          645.8053511301677,
+          333.6246384620666
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28557,6 +28621,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -34431,6 +34496,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
         "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
+      },
+      {
+        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
+        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
       }
     ],
     "labels": [
@@ -35373,7 +35444,8 @@ window.BENCHMARK_DATA = {
       "e41a7134",
       "c65f55ef",
       "8a57efc7",
-      "6b630d2b"
+      "6b630d2b",
+      "3378cc72"
     ],
     "datasets": [
       {
@@ -36319,7 +36391,8 @@ window.BENCHMARK_DATA = {
           639.1189582188924,
           367.0375752131144,
           686.2884492238362,
-          691.6242256898147
+          691.6242256898147,
+          321.26442060470583
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37178,6 +37251,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -38224,7 +38298,8 @@ window.BENCHMARK_DATA = {
           28505.817220052082,
           11726.311918992262,
           28249.111905924477,
-          29200.94760131836
+          29200.94760131836,
+          10144.358744303385
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39175,6 +39250,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -39410,7 +39486,8 @@ window.BENCHMARK_DATA = {
           804.6561212539673,
           448.0965605735779,
           847.9214347203573,
-          787.6263622283935
+          787.6263622283935,
+          430.18995097478233
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39422,6 +39499,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -41066,6 +41144,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
         "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
+      },
+      {
+        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
+        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
       }
     ],
     "labels": [
@@ -41303,7 +41387,8 @@ window.BENCHMARK_DATA = {
       "e41a7134",
       "c65f55ef",
       "8a57efc7",
-      "6b630d2b"
+      "6b630d2b",
+      "3378cc72"
     ],
     "datasets": [
       {
@@ -41544,7 +41629,8 @@ window.BENCHMARK_DATA = {
           718.3925899778094,
           405.56573886871337,
           746.2276570638021,
-          721.3546847025553
+          721.3546847025553,
+          351.6483565012614
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41746,6 +41832,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
+          1688,
           1688,
           1688,
           1688,
@@ -42039,7 +42126,8 @@ window.BENCHMARK_DATA = {
           84728.27983680138,
           30253.282244001115,
           85564.43594563802,
-          83395.02146559495
+          83395.02146559495,
+          27365.753682454426
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42285,7 +42373,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43709,6 +43798,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
         "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
+      },
+      {
+        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
+        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
       }
     ],
     "labels": [
@@ -43946,7 +44041,8 @@ window.BENCHMARK_DATA = {
       "e41a7134",
       "c65f55ef",
       "8a57efc7",
-      "6b630d2b"
+      "6b630d2b",
+      "3378cc72"
     ],
     "datasets": [
       {
@@ -44187,7 +44283,8 @@ window.BENCHMARK_DATA = {
           194.6259012051991,
           110.20277601480484,
           187.81222772598267,
-          183.6666120015658
+          183.6666120015658,
+          89.05134416421255
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44341,6 +44438,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -44682,7 +44780,8 @@ window.BENCHMARK_DATA = {
           32993.74649282602,
           10906.61905110677,
           33191.11193440755,
-          33139.41019548689
+          33139.41019548689,
+          9323.684568132672
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44928,7 +45027,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45163,7 +45263,8 @@ window.BENCHMARK_DATA = {
           274.13450689315795,
           132.18289993490492,
           256.3050258636475,
-          266.16836449305214
+          266.16836449305214,
+          117.75027503875586
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -45175,6 +45276,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -46471,6 +46573,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
         "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
+      },
+      {
+        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
+        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
       }
     ],
     "labels": [
@@ -46650,7 +46758,8 @@ window.BENCHMARK_DATA = {
       "e41a7134",
       "c65f55ef",
       "8a57efc7",
-      "6b630d2b"
+      "6b630d2b",
+      "3378cc72"
     ],
     "datasets": [
       {
@@ -46833,7 +46942,8 @@ window.BENCHMARK_DATA = {
           364.61810808181764,
           202.55006200926644,
           372.30651003973827,
-          347.66867358343944
+          347.66867358343944,
+          164.32709153493246
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46929,6 +47039,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -47212,7 +47323,8 @@ window.BENCHMARK_DATA = {
           407.98425267537436,
           253.1466427530561,
           403.4592960357666,
-          395.78185246785483
+          395.78185246785483,
+          193.4021841287613
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47224,6 +47336,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -47591,7 +47704,8 @@ window.BENCHMARK_DATA = {
           433.830709530757,
           242.56105035146078,
           433.50025777816774,
-          413.7372666676839
+          413.7372666676839,
+          195.50226495947157
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47603,6 +47717,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -48855,6 +48970,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
         "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
+      },
+      {
+        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
+        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
       }
     ],
     "labels": [
@@ -49034,7 +49155,8 @@ window.BENCHMARK_DATA = {
       "e41a7134",
       "c65f55ef",
       "8a57efc7",
-      "6b630d2b"
+      "6b630d2b",
+      "3378cc72"
     ],
     "datasets": [
       {
@@ -49217,7 +49339,8 @@ window.BENCHMARK_DATA = {
           792.4427660428561,
           422.2042633465358,
           819.67055199941,
-          810.3135171254476
+          810.3135171254476,
+          363.0605041821798
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49397,6 +49520,7 @@ window.BENCHMARK_DATA = {
           1384,
           1384,
           1384,
+          1448,
           1448,
           1448,
           1448,
@@ -49596,7 +49720,8 @@ window.BENCHMARK_DATA = {
           2094.818353107997,
           1162.8113864898683,
           2083.255942753383,
-          1912.665381749471
+          1912.665381749471,
+          923.7328998859113
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49608,6 +49733,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -49975,7 +50101,8 @@ window.BENCHMARK_DATA = {
           1011.0394088745118,
           536.0233231272016,
           966.7127560206821,
-          982.0366469065349
+          982.0366469065349,
+          450.2476945559184
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -49987,6 +50114,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -51239,6 +51367,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
         "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
+      },
+      {
+        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
+        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
       }
     ],
     "labels": [
@@ -51418,7 +51552,8 @@ window.BENCHMARK_DATA = {
       "e41a7134",
       "c65f55ef",
       "8a57efc7",
-      "6b630d2b"
+      "6b630d2b",
+      "3378cc72"
     ],
     "datasets": [
       {
@@ -51601,7 +51736,8 @@ window.BENCHMARK_DATA = {
           11386.493086496988,
           6000.1758542742045,
           11456.64790725708,
-          11660.4072265625
+          11660.4072265625,
+          5753.702564239502
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51781,6 +51917,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1608,
           1608,
           1608,
           1608,
@@ -51980,7 +52117,8 @@ window.BENCHMARK_DATA = {
           41827.02298845564,
           19260.566722324915,
           41950.07255045573,
-          41904.63652155949
+          41904.63652155949,
+          17693.158142089844
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52148,6 +52286,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -52359,7 +52498,8 @@ window.BENCHMARK_DATA = {
           10778.82890210833,
           5811.060300554548,
           10577.883535531852,
-          10920.68641117641
+          10920.68641117641,
+          5480.875860595703
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -52371,6 +52511,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -53623,6 +53764,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
         "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
+      },
+      {
+        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
+        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
       }
     ],
     "labels": [
@@ -53802,7 +53949,8 @@ window.BENCHMARK_DATA = {
       "e41a7134",
       "c65f55ef",
       "8a57efc7",
-      "6b630d2b"
+      "6b630d2b",
+      "3378cc72"
     ],
     "datasets": [
       {
@@ -53985,7 +54133,8 @@ window.BENCHMARK_DATA = {
           11217.79602922712,
           5616.011057535808,
           10979.10561312162,
-          11288.625946044922
+          11288.625946044922,
+          5436.401277160645
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54165,6 +54314,7 @@ window.BENCHMARK_DATA = {
           2056,
           2056,
           2056,
+          2088,
           2088,
           2088,
           2088,
@@ -54364,7 +54514,8 @@ window.BENCHMARK_DATA = {
           59960.30182320731,
           27684.13321861854,
           61654.75865071615,
-          60563.74659016927
+          60563.74659016927,
+          26565.955466715495
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54552,7 +54703,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
-          23554
+          23554,
+          23553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54743,7 +54895,8 @@ window.BENCHMARK_DATA = {
           21284.710836557242,
           11421.36048235212,
           21024.556053748496,
-          21305.166082763673
+          21305.166082763673,
+          11115.603009905133
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -54755,6 +54908,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
