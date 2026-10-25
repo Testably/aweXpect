@@ -128,13 +128,15 @@ public sealed class StringPropertyComparison
 			return new StringPropertyOutcome(this, outcome, actual, options, matchResult, default);
 		}
 
+		if (actual is null)
+		{
+			ValidateExpected();
+			return new StringPropertyOutcome(this, Outcome.FailureBothWays, actual, options, default, default);
+		}
+
 		(int Count, bool IsFinished) occurrences =
-			await StringOccurrences.Count(options, actual ?? string.Empty, Expected!, Quantifier);
-		Outcome occurrenceOutcome = actual is null
-			? Outcome.FailureBothWays
-			: Quantifier.Check(occurrences.Count, true) == true
-				? Outcome.Success
-				: Outcome.Failure;
+			await StringOccurrences.Count(options, actual, Expected!, Quantifier);
+		Outcome occurrenceOutcome = Quantifier.Check(occurrences.Count, true) == true ? Outcome.Success : Outcome.Failure;
 		return new StringPropertyOutcome(this, occurrenceOutcome, actual, options, default, occurrences);
 	}
 
