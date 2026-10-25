@@ -798,6 +798,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
@@ -933,7 +939,8 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "f760ae08"
     ],
     "datasets": [
       {
@@ -1072,7 +1079,8 @@ window.BENCHMARK_DATA = {
           414.9462034702301,
           741.3719130198161,
           673.9879998524983,
-          714.901829401652
+          714.901829401652,
+          359.6314206123352
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1206,6 +1214,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          592,
           592,
           592,
           592,
@@ -1363,7 +1372,8 @@ window.BENCHMARK_DATA = {
           535.7304812944852,
           939.1226808003017,
           872.8901927471161,
-          897.9556278082041
+          897.9556278082041,
+          504.9373365402222
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1375,6 +1385,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -2319,6 +2330,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
@@ -2454,7 +2471,8 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "f760ae08"
     ],
     "datasets": [
       {
@@ -2593,7 +2611,8 @@ window.BENCHMARK_DATA = {
           80.29966062307358,
           156.31375538508098,
           137.79236728804452,
-          128.80642360051473
+          128.80642360051473,
+          71.08562221697399
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2633,6 +2652,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -2884,7 +2904,8 @@ window.BENCHMARK_DATA = {
           130.46587387720743,
           220.10515964825947,
           215.16724274953205,
-          186.6126681248347
+          186.6126681248347,
+          119.76266268583444
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2896,6 +2917,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -3840,6 +3862,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
@@ -3975,7 +4003,8 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "f760ae08"
     ],
     "datasets": [
       {
@@ -4114,7 +4143,8 @@ window.BENCHMARK_DATA = {
           995.7361735026042,
           1952.0222222464424,
           1913.4658996582032,
-          1796.7781720842634
+          1796.7781720842634,
+          967.8895690100534
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4254,6 +4284,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1800,
+          1888,
           1888,
           1888,
           1888,
@@ -4405,7 +4436,8 @@ window.BENCHMARK_DATA = {
           834.8698577245076,
           1483.188051478068,
           1406.2905220304217,
-          1448.1816564287458
+          1448.1816564287458,
+          787.9122326533
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4549,6 +4581,7 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1953,
+          1864,
           1864
         ],
         "borderColor": "#FF671B",
@@ -5301,6 +5334,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
@@ -5426,7 +5465,8 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "f760ae08"
     ],
     "datasets": [
       {
@@ -5555,7 +5595,8 @@ window.BENCHMARK_DATA = {
           1468.103524017334,
           2848.43616027832,
           2624.8519121805825,
-          2778.9553159077964
+          2778.9553159077964,
+          1396.671679360526
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5685,6 +5726,7 @@ window.BENCHMARK_DATA = {
           3016,
           3016,
           3008,
+          3184,
           3184,
           3184,
           3184,
@@ -5826,7 +5868,8 @@ window.BENCHMARK_DATA = {
           2315.7253766377767,
           3904.8881650652206,
           3851.6836260282075,
-          3737.37167263031
+          3737.37167263031,
+          2116.9674554552353
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5960,6 +6003,7 @@ window.BENCHMARK_DATA = {
           3980,
           3980,
           3981,
+          3980,
           3980
         ],
         "borderColor": "#FF671B",
@@ -6712,6 +6756,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
@@ -6837,7 +6887,8 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "f760ae08"
     ],
     "datasets": [
       {
@@ -6966,7 +7017,8 @@ window.BENCHMARK_DATA = {
           217.1549676014827,
           463.555238978068,
           388.91071122487386,
-          413.511580212911
+          413.511580212911,
+          197.72969339688618
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7090,6 +7142,7 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
+          696,
           696,
           696,
           696,
@@ -7237,7 +7290,8 @@ window.BENCHMARK_DATA = {
           1409.5500555038452,
           2373.0495864323207,
           2212.8919108254568,
-          2230.904120036534
+          2230.904120036534,
+          1270.2852588066687
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7249,6 +7303,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -8123,6 +8178,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
@@ -8248,7 +8309,8 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "f760ae08"
     ],
     "datasets": [
       {
@@ -8377,7 +8439,8 @@ window.BENCHMARK_DATA = {
           1623.9279898234777,
           3046.3959538777667,
           2887.77127632728,
-          2809.5059566497803
+          2809.5059566497803,
+          1567.33477935791
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8507,6 +8570,7 @@ window.BENCHMARK_DATA = {
           3232,
           3232,
           3224,
+          3312,
           3312,
           3312,
           3312,
@@ -8648,7 +8712,8 @@ window.BENCHMARK_DATA = {
           172382.05252278646,
           280915.2075846354,
           302177.4151436942,
-          279956.10302734375
+          279956.10302734375,
+          163951.69403948102
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8782,7 +8847,8 @@ window.BENCHMARK_DATA = {
           17576,
           17577,
           17577,
-          17577
+          17577,
+          17574
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
