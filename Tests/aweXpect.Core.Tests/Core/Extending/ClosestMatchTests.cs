@@ -38,6 +38,36 @@ public class ClosestMatchTests
 				.WithParamName("stringBuilder").And
 				.WithMessage("The * cannot be null.*").AsWildcard();
 		}
+
+		[Test]
+		public async Task WhenStringBuilderIsNull_WithASuggestion_ShouldThrowArgumentNullException()
+		{
+			void Act() => ClosestMatch.AppendHint(null!, "Username");
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("stringBuilder").And
+				.WithMessage("The * cannot be null.*").AsWildcard();
+		}
+
+		[Test]
+		public async Task WhenSuggestionIsKnown_ShouldAppendItLikeAFoundCandidate()
+		{
+			StringBuilder sb = new("it did not contain key \"Usrname\"");
+
+			ClosestMatch.AppendHint(sb, "Username");
+
+			await That(sb.ToString()).IsEqualTo("it did not contain key \"Usrname\" (did you mean \"Username\"?)");
+		}
+
+		[Test]
+		public async Task WhenSuggestionIsNull_ShouldAppendNothing()
+		{
+			StringBuilder sb = new("it did not contain key \"Usrname\"");
+
+			ClosestMatch.AppendHint(sb, null);
+
+			await That(sb.ToString()).IsEqualTo("it did not contain key \"Usrname\"");
+		}
 	}
 
 	public sealed class Find

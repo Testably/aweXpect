@@ -870,6 +870,7 @@ namespace aweXpect.Core.Extending
     public static class ClosestMatch
     {
         public static void AppendHint(System.Text.StringBuilder stringBuilder, string value, System.Collections.Generic.IEnumerable<string> candidates) { }
+        public static void AppendHint(System.Text.StringBuilder stringBuilder, string? suggestion) { }
         public static string? Find(string value, System.Collections.Generic.IEnumerable<string> candidates) { }
     }
     public static class EquivalencyExpectations

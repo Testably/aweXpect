@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using aweXpect.Core;
+using aweXpect.Core.Extending;
 using aweXpect.Formatting;
 using static aweXpect.Formatting.Format;
 
@@ -71,7 +72,9 @@ public sealed class XmlOptions
 
 		if (MembersToIgnore.Count > 0)
 		{
-			sb.Append(" - ignore members: [").Append(string.Join(", ", MembersToIgnore)).Append(']').AppendLine();
+			sb.Append(" - ignore members: ");
+			Formatter.Format(sb, MembersToIgnore, FormattingOptions.SingleLine);
+			sb.AppendLine();
 			AppendUnmatchedMembersToIgnore(sb, unmatchedMembersToIgnore);
 		}
 
@@ -93,12 +96,10 @@ public sealed class XmlOptions
 		{
 			if (unmatchedMembersToIgnore.TryGetValue(pattern, out string? suggestion))
 			{
-				sb.Append("   ").Append(Formatter.Format(pattern)).Append(" matched no member");
-				if (suggestion is not null)
-				{
-					sb.Append(" (did you mean ").Append(Formatter.Format(suggestion)).Append("?)");
-				}
-
+				sb.Append("   ");
+				Formatter.Format(sb, pattern);
+				sb.Append(" matched no member");
+				ClosestMatch.AppendHint(sb, suggestion);
 				sb.AppendLine();
 			}
 		}
