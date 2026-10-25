@@ -78,11 +78,7 @@ public static partial class ThatHttpResponseMessage
 				return this;
 			}
 
-#if NETSTANDARD2_0
-			string message = await actual.Content.ReadAsStringAsync();
-#else
-			string message = await actual.Content.ReadAsStringAsync(cancellationToken);
-#endif
+			string message = await actual.Content.ReadAsStringOrEmptyAsync(cancellationToken);
 			using JsonDocument? problemDetails = ParseObjectOrDefault(message, out _parseError);
 			if (problemDetails is null
 			    || !TryGetString(problemDetails.RootElement, "type", out string? type, out _parseError)

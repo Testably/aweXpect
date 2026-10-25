@@ -45,7 +45,7 @@ public static partial class ThatHttpResponseMessage
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.ForAsyncMember(MemberAccessor<HttpResponseMessage, Task<string?>>.FromFuncWithName(
-						async m => await m.Content.ReadAsStringAsync(),
+						async m => await m.Content.ReadAsStringOrEmptyAsync(CancellationToken.None),
 						" the string content"),
 					(_, stringBuilder) => stringBuilder.Append("has a string content which "))
 				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?>(e)),
@@ -95,11 +95,7 @@ public static partial class ThatHttpResponseMessage
 				return this;
 			}
 
-#if NETSTANDARD2_0
-			_message = await actual.Content.ReadAsStringAsync();
-#else
-			_message = await actual.Content.ReadAsStringAsync(cancellationToken);
-#endif
+			_message = await actual.Content.ReadAsStringOrEmptyAsync(cancellationToken);
 			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			_matchResult = await _evaluationOptions.MatchWithExplanation(_message, expected);
 			if (_matchResult.IsMatch)
@@ -121,17 +117,8 @@ public static partial class ThatHttpResponseMessage
 				.Append(options.GetExpectation(expected, ExpectationGrammars.None));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual?.Content is null)
-			{
-				stringBuilder.Append(It).Append(" had a <null> content");
-			}
-			else
-			{
-				stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It, "string content",
-					Grammars, _message, expected, _matchResult));
-			}
-		}
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It, "string content",
+				Grammars, _message, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have a string content ", "do not have a string content "))

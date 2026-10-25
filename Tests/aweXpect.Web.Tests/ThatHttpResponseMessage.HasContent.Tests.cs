@@ -93,6 +93,39 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenContentIsNotSet_ShouldFailAgainstEmptyContent()
+			{
+				HttpResponseMessage subject = new();
+
+				async Task Act()
+					=> await That(subject).HasContent("some content");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a string content equal to "some content",
+					             but it had string content "" with a length of 0, which is shorter than the expected length of 12 and misses:
+					               "some content"
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1*
+					             """).AsWildcard()
+					.Because("a response without content is read as an empty string on every target framework");
+			}
+
+			[Test]
+			public async Task WhenContentIsNotSet_ShouldTreatItAsEmpty()
+			{
+				HttpResponseMessage subject = new();
+
+				async Task Act()
+					=> await That(subject).HasContent("");
+
+				await That(Act).DoesNotThrow()
+					.Because("on .NET Framework the content of a new response is null, but on .NET 5+ it is empty");
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;

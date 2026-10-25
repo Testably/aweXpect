@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace aweXpect.Helpers;
 
@@ -22,6 +24,25 @@ internal static class HttpContentExtensions
 		{
 			return true;
 		}
+	}
+
+	/// <remarks>
+	///     The content of a <see cref="HttpResponseMessage" /> is <see langword="null" /> on .NET Framework until it is set,
+	///     whereas .NET 5+ uses an empty content, so a missing content is read as the empty string on every framework.
+	/// </remarks>
+	public static Task<string> ReadAsStringOrEmptyAsync(this HttpContent? content,
+		CancellationToken cancellationToken)
+	{
+		if (content == null)
+		{
+			return Task.FromResult("");
+		}
+
+#if NETSTANDARD2_0
+		return content.ReadAsStringAsync();
+#else
+		return content.ReadAsStringAsync(cancellationToken);
+#endif
 	}
 
 	public static bool TryGetContentLength(this HttpContent? content, out long length)

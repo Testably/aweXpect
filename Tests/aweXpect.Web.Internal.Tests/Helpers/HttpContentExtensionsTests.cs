@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using aweXpect.Helpers;
 
 namespace aweXpect.Web.Internal.Tests;
@@ -25,6 +26,27 @@ public sealed class HttpContentExtensionsTests
 		bool result = content.IsNullOrDisposed();
 
 		await That(result).IsTrue();
+	}
+
+	[Test]
+	public async Task ReadAsStringOrEmptyAsync_WhenNull_ShouldReturnEmptyString()
+	{
+		HttpContent? content = null;
+
+		string result = await content.ReadAsStringOrEmptyAsync(CancellationToken.None);
+
+		await That(result).IsEmpty()
+			.Because("a response without content is read like the empty content of .NET 5+");
+	}
+
+	[Test]
+	public async Task ReadAsStringOrEmptyAsync_WhenSet_ShouldReturnContent()
+	{
+		HttpContent content = new StringContent("some content");
+
+		string result = await content.ReadAsStringOrEmptyAsync(CancellationToken.None);
+
+		await That(result).IsEqualTo("some content");
 	}
 
 	[Test]
