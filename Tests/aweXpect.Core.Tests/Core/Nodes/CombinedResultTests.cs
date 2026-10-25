@@ -123,7 +123,7 @@ public sealed class CombinedResultTests
 	public async Task Negate_WhenAMappingIsNegatedTwice_ShouldRestoreItsOutcomeAndExpectation()
 	{
 		ConstraintResult sut = new MappingResult(new DummyConstraintResult(Success, "parent"),
-			new DummyConstraintResult(Failure, "member"), CreateMappingNode(" whose value "), "value");
+			new DummyConstraintResult(Failure, "member"), CreateMappingNode(" whose value "));
 
 		sut.Negate().Negate();
 
@@ -138,7 +138,7 @@ public sealed class CombinedResultTests
 		Outcome expectedWhenNegated)
 	{
 		ConstraintResult sut = new MappingResult(new DummyConstraintResult(parentOutcome),
-			new DummyConstraintResult(FailureBothWays), CreateMappingNode(" whose member "), "member");
+			new DummyConstraintResult(FailureBothWays), CreateMappingNode(" whose member "));
 
 		sut.Negate();
 

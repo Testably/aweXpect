@@ -34,9 +34,9 @@ public static partial class ThatGeneric
 		expectationBuilder
 			.ForMember(
 				MemberAccessor<T, TMember?>.FromFuncWithCallerExpression(memberAccessor, doNotPopulateThisValue),
-				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
+				GetMemberText(grammars))
 			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
-				memberGrammars => MemberGrammars<TMember>(memberGrammars, grammars));
+				GetMemberGrammars<TMember>(grammars));
 		return new AndOrResult<T, IThat<T?>>(expectationBuilder, subject);
 	}
 
@@ -66,9 +66,9 @@ public static partial class ThatGeneric
 		expectationBuilder
 			.ForAsyncMember(
 				MemberAccessor<T, Task<TMember>>.FromFuncWithCallerExpression(memberAccessor, doNotPopulateThisValue),
-				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
+				GetMemberText(grammars))
 			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
-				memberGrammars => MemberGrammars<TMember>(memberGrammars, grammars));
+				GetMemberGrammars<TMember>(grammars));
 		return new AndOrResult<T, IThat<T?>>(expectationBuilder, subject);
 	}
 
@@ -99,53 +99,60 @@ public static partial class ThatGeneric
 			.ForAsyncMember(
 				MemberAccessor<T, ValueTask<TMember>>.FromFuncWithCallerExpression(memberAccessor,
 					doNotPopulateThisValue),
-				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
+				GetMemberText(grammars))
 			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
-				memberGrammars => MemberGrammars<TMember>(memberGrammars, grammars));
+				GetMemberGrammars<TMember>(grammars));
 		return new AndOrResult<T, IThat<T?>>(expectationBuilder, subject);
 	}
 
 	/// <summary>
-	///     Appends the text for the <paramref name="member" /> in the form the enclosing
-	///     <paramref name="grammars" /> allow.
+	///     Returns the text for the member in the form the enclosing <paramref name="grammars" /> allow.
 	/// </summary>
 	/// <remarks>
 	///     A connector that already introduced the subject cannot be followed by a second relative pronoun, so the
 	///     member becomes the object of the connector's clause and its expectations are attached with <c>that</c>.
+	///     <para />
+	///     A cached delegate for each form instead of a closure over the <paramref name="grammars" /> keeps every
+	///     expectation on a member smaller.
 	/// </remarks>
-	private static void AppendMember(StringBuilder stringBuilder, ExpectationGrammars grammars, MemberAccessor member)
+	private static Action<MemberAccessor, StringBuilder> GetMemberText(ExpectationGrammars grammars)
 	{
-		if (grammars.IsIntroduced())
+		if (!grammars.IsIntroduced())
 		{
-			stringBuilder.Append(grammars.Verb("has ", "have ")).Append(member).Append("that ");
+			return static (member, stringBuilder) => stringBuilder.Append("whose ").Append(member);
 		}
-		else
-		{
-			stringBuilder.Append("whose ").Append(member);
-		}
+
+		return grammars.IsPlural()
+			? static (member, stringBuilder) => stringBuilder.Append("have ").Append(member).Append("that ")
+			: static (member, stringBuilder) => stringBuilder.Append("has ").Append(member).Append("that ");
 	}
 
 	/// <summary>
-	///     The <paramref name="memberGrammars" /> for the expectations on a member written in the form the
+	///     Returns the grammars for the expectations on a member written in the form the
 	///     <paramref name="enclosingGrammars" /> required.
 	/// </summary>
 	/// <remarks>
 	///     <c>whose Member </c> introduces the member as the subject of the expectations, while the <c>that</c> of the
-	///     other form is dropped again before a nested <c>whose</c>.<br />
+	///     other form is dropped again before a nested <c>whose</c>.
+	///     <para />
+	///     A cached delegate for each form instead of a closure over the <paramref name="enclosingGrammars" /> keeps
+	///     every expectation on a member smaller.
+	/// </remarks>
+	private static Func<ExpectationGrammars, ExpectationGrammars> GetMemberGrammars<TMember>(
+		ExpectationGrammars enclosingGrammars)
+		=> enclosingGrammars.IsIntroduced()
+			? static memberGrammars => MemberGrammars<TMember>(memberGrammars)
+			: static memberGrammars => MemberGrammars<TMember>(memberGrammars) | ExpectationGrammars.Introduced;
+
+	/// <remarks>
 	///     The number of the member follows its static type alone: a collection other than a <see langword="string" />
 	///     or a dictionary is plural (<c>whose Items are</c>), anything else is singular, whatever the number of the
 	///     enclosing subject.
 	/// </remarks>
-	private static ExpectationGrammars MemberGrammars<TMember>(ExpectationGrammars memberGrammars,
-		ExpectationGrammars enclosingGrammars)
-	{
-		memberGrammars = IsCollection(typeof(TMember))
+	private static ExpectationGrammars MemberGrammars<TMember>(ExpectationGrammars memberGrammars)
+		=> IsCollection(typeof(TMember))
 			? memberGrammars | ExpectationGrammars.Plural
 			: memberGrammars & ~ExpectationGrammars.Plural;
-		return enclosingGrammars.IsIntroduced()
-			? memberGrammars
-			: memberGrammars | ExpectationGrammars.Introduced;
-	}
 
 	private static bool IsCollection(Type type)
 	{

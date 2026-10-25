@@ -79,7 +79,6 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
 	{
 		_memberAccessor = memberAccessor;
-		MemberAccessor = memberAccessor;
 		_expectationTextGenerator = expectationTextGenerator;
 	}
 
@@ -90,7 +89,6 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
 	{
 		_asyncMemberAccessor = asyncMemberAccessor;
-		MemberAccessor = asyncMemberAccessor;
 		_expectationTextGenerator = expectationTextGenerator;
 	}
 
@@ -101,12 +99,14 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null)
 	{
 		_asyncMemberAccessor = asyncMemberAccessor;
-		MemberAccessor = asyncMemberAccessor;
 		_expectationTextGenerator = expectationTextGenerator;
 	}
 
 	/// <inheritdoc />
-	public override MemberAccessor MemberAccessor { get; }
+	/// <remarks>
+	///     Read from the typed accessor fields instead of a field of its own, which keeps every node smaller.
+	/// </remarks>
+	public override MemberAccessor MemberAccessor => (MemberAccessor?)_memberAccessor ?? _asyncMemberAccessor!;
 
 	/// <inheritdoc />
 	/// <remarks>
@@ -412,11 +412,11 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		if (combinedResult == null)
 		{
 			return result is MemberResult memberResult
-				? memberResult.PrependMemberText(this, ContextMember)
+				? memberResult.PrependMemberText(this)
 				: result.PrependExpectationText(AppendMemberText, ContextMember, MemberAccessor.PathRoot);
 		}
 
-		return new MappingResult(combinedResult, result, this, ContextMember);
+		return new MappingResult(combinedResult, result, this);
 	}
 
 	/// <summary>
@@ -430,7 +430,6 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	/// </remarks>
 	private abstract class MemberResult : ConstraintResult
 	{
-		private string? _member;
 		private MappingNode? _prefix;
 
 		protected MemberResult(ConstraintResult inner) : base(inner.FurtherProcessingStrategy)
@@ -451,10 +450,9 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 
 		internal override bool IsNegatedAnd => Inner.IsNegatedAnd;
 
-		public MemberResult PrependMemberText(MappingNode prefix, string? member)
+		public MemberResult PrependMemberText(MappingNode prefix)
 		{
 			_prefix = prefix;
-			_member = member;
 			return this;
 		}
 
@@ -476,7 +474,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 			=> Inner.AppendResult(stringBuilder, indentation);
 
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.VisitOptionalMember(_prefix is null ? null : _member, GetContextsResult(),
+			=> contexts.VisitOptionalMember(_prefix?.ContextMember, GetContextsResult(),
 				_prefix?.MemberAccessor.PathRoot);
 
 		public override ConstraintResult Negate()

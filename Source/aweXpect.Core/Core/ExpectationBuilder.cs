@@ -482,7 +482,7 @@ public abstract class ExpectationBuilder
 		MemberAccessor<TSource, TTarget> memberAccessor,
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null,
 		bool replaceIt = true)
-		=> new(this, memberAccessor, null, expectationTextGenerator, replaceIt);
+		=> new(this, memberAccessor, expectationTextGenerator, replaceIt);
 
 	/// <summary>
 	///     Specifies a constraint that applies to the member selected asynchronously
@@ -498,14 +498,14 @@ public abstract class ExpectationBuilder
 		MemberAccessor<TSource, Task<TTarget>> memberAccessor,
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null,
 		bool replaceIt = true)
-		=> new(this, null, memberAccessor, expectationTextGenerator, replaceIt);
+		=> new(this, memberAccessor, expectationTextGenerator, replaceIt);
 
 	/// <inheritdoc cref="ForAsyncMember{TSource, TTarget}(MemberAccessor{TSource, Task{TTarget}}, Action{MemberAccessor, StringBuilder}?, bool)" />
 	public MemberExpectationBuilder<TSource, TTarget> ForAsyncMember<TSource, TTarget>(
 		MemberAccessor<TSource, ValueTask<TTarget>> memberAccessor,
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null,
 		bool replaceIt = true)
-		=> new(this, null, memberAccessor, expectationTextGenerator, replaceIt);
+		=> new(this, memberAccessor, expectationTextGenerator, replaceIt);
 
 	/// <summary>
 	///     Adds the <paramref name="memberNode" /> and the <paramref name="expectations" /> on the member, which receive
@@ -529,7 +529,8 @@ public abstract class ExpectationBuilder
 		Node root = _node;
 		memberNode.Source = (_it, ExpectationGrammars);
 		Node mappingNode = _node.AddMapping(memberNode);
-		_node = new ExpectationNode();
+		// The member node collects the expectations on the member itself, so that most members need no further node.
+		_node = ReferenceEquals(mappingNode, memberNode) ? memberNode : new ExpectationNode();
 		string previousIt = _it;
 		if (replaceIt)
 		{
@@ -555,14 +556,45 @@ public abstract class ExpectationBuilder
 		_pendingWhichNode = outerPendingWhichNode;
 		_pendingWhichRoot = outerPendingWhichRoot;
 		ThrowIfEmpty(_node, nameof(expectations));
-		// The mapping node adds the contexts of the member to its result, unless the expectations went to another node.
-		mappingNode.AddNode(WithSubjectContexts(_node, isOfMember: ReferenceEquals(mappingNode, memberNode)));
+		AttachMemberExpectations(mappingNode, memberNode);
 		_subjectContexts = outerSubjectContexts;
 		MoveReasonsTo(mappingNode, outerReasonCount);
 		_node = root;
 		_it = previousIt;
 
 		return this;
+	}
+
+	/// <summary>
+	///     Attaches the expectations on the member, which were collected in the current node, to the
+	///     <paramref name="mappingNode" />, unless the <paramref name="memberNode" /> collected them itself and needs no
+	///     node for the contexts of the member.
+	/// </summary>
+	private void AttachMemberExpectations(Node mappingNode, MappingNode memberNode)
+	{
+		if (ReferenceEquals(_node, memberNode) && CurrentSubjectContexts is null)
+		{
+			return;
+		}
+
+		MoveMemberExpectationsToNewNode();
+		// The mapping node adds the contexts of the member to its result, unless the expectations went to another node.
+		mappingNode.AddNode(WithSubjectContexts(_node, isOfMember: ReferenceEquals(mappingNode, memberNode)));
+	}
+
+	/// <summary>
+	///     Moves the expectations on a member that its <see cref="MappingNode" /> collected itself to a node of their
+	///     own, before the current node is combined or wrapped.
+	/// </summary>
+	/// <remarks>
+	///     The current node is only a <see cref="MappingNode" /> while it collects the expectations on its member.
+	/// </remarks>
+	private void MoveMemberExpectationsToNewNode()
+	{
+		if (_node is MappingNode memberNode)
+		{
+			_node = memberNode.MoveExpectationsToNewNode();
+		}
 	}
 
 	/// <summary>
@@ -819,6 +851,7 @@ public abstract class ExpectationBuilder
 
 	private ExpectationBuilder AddAndOperand(ExpectationNode operand, string textSeparator)
 	{
+		MoveMemberExpectationsToNewNode();
 		if (_node is AndNode andNode)
 		{
 			andNode.AddNode(operand, textSeparator);
@@ -992,6 +1025,7 @@ public abstract class ExpectationBuilder
 	/// </remarks>
 	private void AddWhichNode<TState>(TState state, Func<TState, Node?, Node> createWhichNode)
 	{
+		MoveMemberExpectationsToNewNode();
 		CompleteWhichNode();
 		if (_subjectContexts is not null)
 		{
@@ -1394,6 +1428,7 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	public ExpectationBuilder Or(string textSeparator = " or ")
 	{
+		MoveMemberExpectationsToNewNode();
 		if (_node is OrNode orNode)
 		{
 			orNode.AddNode(new ExpectationNode(), textSeparator);
@@ -1452,34 +1487,36 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	public class MemberExpectationBuilder<TSource, TMember>
 	{
-		/// <summary>
-		///     The accessor of a member that returns a <see cref="Task{TResult}" /> or a
-		///     <see cref="ValueTask{TResult}" /> of <typeparamref name="TMember" />.
-		/// </summary>
-		private readonly MemberAccessor? _asyncMemberAccessor;
-
 		private readonly ExpectationBuilder _expectationBuilder;
 		private readonly Action<MemberAccessor, StringBuilder>? _expectationTextGenerator;
-		private readonly MemberAccessor<TSource, TMember>? _memberAccessor;
+
+		/// <summary>
+		///     The accessor of the member, which is a <see cref="MemberAccessor{TSource,TTarget}" /> to
+		///     <typeparamref name="TMember" />, or to a <see cref="Task{TResult}" /> or a <see cref="ValueTask{TResult}" />
+		///     of <typeparamref name="TMember" />.
+		/// </summary>
+		/// <remarks>
+		///     One field for all three kinds keeps every expectation on a member smaller. The kinds cannot be confused,
+		///     because a <typeparamref name="TMember" /> is never its own <see cref="Task{TResult}" />.
+		/// </remarks>
+		private readonly MemberAccessor _memberAccessor;
+
 		private readonly bool _replaceIt;
 		private Action<MemberAccessor, StringBuilder>? _negatedAlternativeTextGenerator;
 
 		private Func<string, ExpectationGrammars, IValueConstraint<TSource>>? _sourceConstraintBuilder;
 
 		/// <remarks>
-		///     Exactly one of <paramref name="memberAccessor" /> and <paramref name="asyncMemberAccessor" /> is set. The
-		///     builder holds them itself instead of closures over them, so that adding expectations on a member
-		///     allocates no delegates.
+		///     The builder holds the <paramref name="memberAccessor" /> itself instead of a closure over it, so that adding
+		///     expectations on a member allocates no delegates.
 		/// </remarks>
 		internal MemberExpectationBuilder(ExpectationBuilder expectationBuilder,
-			MemberAccessor<TSource, TMember>? memberAccessor,
-			MemberAccessor? asyncMemberAccessor,
+			MemberAccessor memberAccessor,
 			Action<MemberAccessor, StringBuilder>? expectationTextGenerator,
 			bool replaceIt)
 		{
 			_expectationBuilder = expectationBuilder;
 			_memberAccessor = memberAccessor;
-			_asyncMemberAccessor = asyncMemberAccessor;
 			_expectationTextGenerator = expectationTextGenerator;
 			_replaceIt = replaceIt;
 		}
@@ -1567,18 +1604,18 @@ public abstract class ExpectationBuilder
 		private MappingNode<TSource, TMember, TNarrowed> CreateMappingNode<TNarrowed>()
 		{
 			MappingNode<TSource, TMember, TNarrowed> mappingNode;
-			if (_memberAccessor is not null)
+			if (_memberAccessor is MemberAccessor<TSource, TMember> memberAccessor)
 			{
-				mappingNode = new MappingNode<TSource, TMember, TNarrowed>(_memberAccessor, _expectationTextGenerator);
+				mappingNode = new MappingNode<TSource, TMember, TNarrowed>(memberAccessor, _expectationTextGenerator);
 			}
-			else if (_asyncMemberAccessor is MemberAccessor<TSource, Task<TMember>> taskMemberAccessor)
+			else if (_memberAccessor is MemberAccessor<TSource, Task<TMember>> taskMemberAccessor)
 			{
 				mappingNode = new MappingNode<TSource, TMember, TNarrowed>(taskMemberAccessor, _expectationTextGenerator);
 			}
 			else
 			{
 				mappingNode = new MappingNode<TSource, TMember, TNarrowed>(
-					(MemberAccessor<TSource, ValueTask<TMember>>)_asyncMemberAccessor!, _expectationTextGenerator);
+					(MemberAccessor<TSource, ValueTask<TMember>>)_memberAccessor, _expectationTextGenerator);
 			}
 
 			mappingNode.NegatedAlternativeTextGenerator = _negatedAlternativeTextGenerator;
