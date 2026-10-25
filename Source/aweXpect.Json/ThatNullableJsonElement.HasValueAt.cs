@@ -23,20 +23,6 @@ public static partial class ThatNullableJsonElement
 			subject, target);
 	}
 
-	/// <inheritdoc cref="ThatJsonElement.DoesNotHaveValueAt(IThat{JsonElement}, string)" />
-	[GuaranteesNotNull]
-	public static JsonPropertyResult<JsonElement, IThat<JsonElement?>> DoesNotHaveValueAt(
-		this IThat<JsonElement?> subject,
-		string path)
-	{
-		JsonValueTarget target = JsonValueTarget.ValueAt(path);
-		return new JsonPropertyResult<JsonElement, IThat<JsonElement?>>(
-			subject.Get().ExpectationBuilder.AddConstraint(target,
-				static IValueConstraint<JsonElement?> (target, it, grammars)
-					=> target.CreateConstraint(it, grammars).Invert()),
-			subject, target);
-	}
-
 	/// <inheritdoc cref="ThatJsonElement.HasValueAt(IThat{JsonElement}, string, Action{IThatSubject{JsonElement}})" />
 	[GuaranteesNotNull]
 	public static JsonPropertyResult<JsonElement, IThat<JsonElement?>> HasValueAt(this IThat<JsonElement?> subject,
@@ -50,5 +36,19 @@ public static partial class ThatNullableJsonElement
 			static IValueConstraint<JsonElement?> (target, it, grammars) => target.CreateConstraint(it, grammars));
 		JsonValueExpectations.AddOnTarget(expectationBuilder, target, expectations);
 		return new JsonPropertyResult<JsonElement, IThat<JsonElement?>>(expectationBuilder, subject, target);
+	}
+
+	/// <inheritdoc cref="ThatJsonElement.DoesNotHaveValueAt(IThat{JsonElement}, string)" />
+	[GuaranteesNotNull]
+	public static JsonPropertyResult<JsonElement, IThat<JsonElement?>> DoesNotHaveValueAt(
+		this IThat<JsonElement?> subject,
+		string path)
+	{
+		JsonValueTarget target = JsonValueTarget.ValueAt(path);
+		return new JsonPropertyResult<JsonElement, IThat<JsonElement?>>(
+			subject.Get().ExpectationBuilder.AddConstraint(target,
+				static IValueConstraint<JsonElement?> (target, it, grammars)
+					=> target.CreateConstraint(it, grammars).Invert()),
+			subject, target);
 	}
 }

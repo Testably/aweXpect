@@ -227,7 +227,7 @@ public sealed class ResultContextCollectorTests
 
 		async Task Act()
 			=> await That(subject).Whose(x => x.Inner, inner => inner
-				.WhoseAtPath("$.second", x => x.Second, second => second.MatchesValue("Value", 3)));
+				.WhoseAtPath("$.second", x => x!.Second, second => second.MatchesValue("Value", 3)));
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("*Value (Inner.second):*2").AsWildcard();

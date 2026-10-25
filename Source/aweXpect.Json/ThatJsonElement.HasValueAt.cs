@@ -34,28 +34,6 @@ public static partial class ThatJsonElement
 	}
 
 	/// <summary>
-	///     Verifies that the subject has no value at the <paramref name="path" />.
-	/// </summary>
-	/// <remarks>
-	///     The <paramref name="path" /> has the format of
-	///     <see cref="HasValueAt(IThat{JsonElement}, string)" />. A value on the way that has another kind than the next
-	///     segment requires fails the expectation, as the path cannot be looked up in it, while a missing property or
-	///     index on the way satisfies it. A property with the value <see langword="null" /> exists and fails the
-	///     expectation, unless <see cref="JsonPropertyResult{TType,TThat}.TreatingNullAsAbsent(bool)" /> is set.
-	/// </remarks>
-	public static JsonPropertyResult<JsonElement, IThat<JsonElement>> DoesNotHaveValueAt(
-		this IThat<JsonElement> subject,
-		string path)
-	{
-		JsonValueTarget target = JsonValueTarget.ValueAt(path);
-		return new JsonPropertyResult<JsonElement, IThat<JsonElement>>(
-			subject.Get().ExpectationBuilder.AddConstraint(target,
-				static IValueConstraint<JsonElement> (target, it, grammars)
-					=> target.CreateConstraint(it, grammars).Invert()),
-			subject, target);
-	}
-
-	/// <summary>
 	///     Verifies that the subject has a value at the <paramref name="path" /> which satisfies the
 	///     <paramref name="expectations" />.
 	/// </summary>
@@ -79,5 +57,27 @@ public static partial class ThatJsonElement
 			static IValueConstraint<JsonElement> (target, it, grammars) => target.CreateConstraint(it, grammars));
 		JsonValueExpectations.AddOnTarget(expectationBuilder, target, expectations);
 		return new JsonPropertyResult<JsonElement, IThat<JsonElement>>(expectationBuilder, subject, target);
+	}
+
+	/// <summary>
+	///     Verifies that the subject has no value at the <paramref name="path" />.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="path" /> has the format of
+	///     <see cref="HasValueAt(IThat{JsonElement}, string)" />. A value on the way that has another kind than the next
+	///     segment requires fails the expectation, as the path cannot be looked up in it, while a missing property or
+	///     index on the way satisfies it. A property with the value <see langword="null" /> exists and fails the
+	///     expectation, unless <see cref="JsonPropertyResult{TType,TThat}.TreatingNullAsAbsent(bool)" /> is set.
+	/// </remarks>
+	public static JsonPropertyResult<JsonElement, IThat<JsonElement>> DoesNotHaveValueAt(
+		this IThat<JsonElement> subject,
+		string path)
+	{
+		JsonValueTarget target = JsonValueTarget.ValueAt(path);
+		return new JsonPropertyResult<JsonElement, IThat<JsonElement>>(
+			subject.Get().ExpectationBuilder.AddConstraint(target,
+				static IValueConstraint<JsonElement> (target, it, grammars)
+					=> target.CreateConstraint(it, grammars).Invert()),
+			subject, target);
 	}
 }

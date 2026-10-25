@@ -175,33 +175,37 @@ public sealed class ResultContextCollector
 			int pathStart = 0;
 			foreach (Segment segment in Subject)
 			{
-				if (segment.PathRoot is { } root)
-				{
-					if (root == previousRoot)
-					{
-						sb.Length = pathStart;
-					}
-					else
-					{
-						pathStart = sb.Length;
-					}
-
-					int start = sb.Length == 0 ? 0 : root.Length;
-					sb.Append(segment.Name, start, segment.Name.Length - start);
-				}
-				else if (segment.Name.StartsWith('['))
-				{
-					sb.Append(sb.Length == 0 ? "item " : "").Append(segment.Name);
-				}
-				else
-				{
-					sb.Append(sb.Length == 0 ? "" : ".").Append(segment.Name);
-				}
-
+				AppendSegment(sb, segment, previousRoot, ref pathStart);
 				previousRoot = segment.PathRoot;
 			}
 
 			return sb.ToString();
+		}
+
+		private static void AppendSegment(StringBuilder sb, Segment segment, string? previousRoot, ref int pathStart)
+		{
+			if (segment.PathRoot is { } root)
+			{
+				if (root == previousRoot)
+				{
+					sb.Length = pathStart;
+				}
+				else
+				{
+					pathStart = sb.Length;
+				}
+
+				int start = sb.Length == 0 ? 0 : root.Length;
+				sb.Append(segment.Name, start, segment.Name.Length - start);
+			}
+			else if (segment.Name.StartsWith('['))
+			{
+				sb.Append(sb.Length == 0 ? "item " : "").Append(segment.Name);
+			}
+			else
+			{
+				sb.Append(sb.Length == 0 ? "" : ".").Append(segment.Name);
+			}
 		}
 	}
 

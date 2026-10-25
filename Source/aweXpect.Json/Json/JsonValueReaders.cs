@@ -125,9 +125,9 @@ internal static class JsonValueReaders
 	/// </remarks>
 	private static class NumberReader<TNumber>
 	{
-		public static readonly JsonValueReader<TNumber>? Instance = (JsonValueReader<TNumber>?)Create();
+		public static readonly JsonValueReader<TNumber>? Instance = Create();
 
-		private static object? Create()
+		private static JsonValueReader<TNumber>? Create()
 			=> For<byte>("a byte", static (JsonElement e, out byte v) => e.TryGetByte(out v)) ??
 			   For<sbyte>("an sbyte", static (JsonElement e, out sbyte v) => e.TryGetSByte(out v)) ??
 			   For<short>("a short", static (JsonElement e, out short v) => e.TryGetInt16(out v)) ??
@@ -149,8 +149,10 @@ internal static class JsonValueReaders
 #endif
 			;
 
-		private static object? For<T>(string typeName, JsonValueRead<T> read)
-			=> typeof(TNumber) == typeof(T) ? new JsonValueReader<T>(JsonValueKind.Number, typeName, typeName, read) : null;
+		private static JsonValueReader<TNumber>? For<T>(string typeName, JsonValueRead<T> read)
+			=> typeof(TNumber) == typeof(T)
+				? (JsonValueReader<TNumber>)(object)new JsonValueReader<T>(JsonValueKind.Number, typeName, typeName, read)
+				: null;
 
 		/// <inheritdoc cref="TryGetDouble(JsonElement, out double)" />
 		private static bool TryGetSingle(JsonElement element, out float value)
