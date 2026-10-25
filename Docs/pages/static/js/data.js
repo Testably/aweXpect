@@ -1068,6 +1068,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
         "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
+      },
+      {
+        "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
+        "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
       }
     ],
     "labels": [
@@ -1248,7 +1254,8 @@ window.BENCHMARK_DATA = {
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
-      "3378cc72"
+      "3378cc72",
+      "90516b35"
     ],
     "datasets": [
       {
@@ -1432,7 +1439,8 @@ window.BENCHMARK_DATA = {
           5828.415414537702,
           11188.161548069545,
           10725.838558490459,
-          5346.679335021972
+          5346.679335021972,
+          11657.286630483773
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1612,6 +1620,7 @@ window.BENCHMARK_DATA = {
           2168,
           2168,
           2168,
+          2208,
           2208,
           2208,
           2208,
@@ -1813,7 +1822,8 @@ window.BENCHMARK_DATA = {
           200242.60232979912,
           386225.900390625,
           378791.923828125,
-          169878.25319010418
+          169878.25319010418,
+          387212.33203125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2002,7 +2012,8 @@ window.BENCHMARK_DATA = {
           590288,
           590290,
           590292,
-          590287
+          590287,
+          590291
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2194,7 +2205,8 @@ window.BENCHMARK_DATA = {
           10975.592144557408,
           20083.07002766927,
           19759.197509765625,
-          9732.070493425641
+          9732.070493425641,
+          19443.61545738807
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2206,6 +2218,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -3423,6 +3436,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
         "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
+      },
+      {
+        "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
+        "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
       }
     ],
     "labels": [
@@ -3596,7 +3615,8 @@ window.BENCHMARK_DATA = {
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
-      "3378cc72"
+      "3378cc72",
+      "90516b35"
     ],
     "datasets": [
       {
@@ -3773,7 +3793,8 @@ window.BENCHMARK_DATA = {
           151.56276639302573,
           299.9512793858846,
           310.87667481104535,
-          126.35500013828278
+          126.35500013828278,
+          284.46655626296996
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3862,6 +3883,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -4140,7 +4162,8 @@ window.BENCHMARK_DATA = {
           289.59023223604476,
           531.148554120745,
           499.83627517406757,
-          248.70912674495153
+          248.70912674495153,
+          513.7629313151042
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4152,6 +4175,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -4507,7 +4531,8 @@ window.BENCHMARK_DATA = {
           219.5969561735789,
           397.40638710657754,
           391.1855565071106,
-          190.12586188316345
+          190.12586188316345,
+          406.78698763480554
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4519,6 +4544,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -10349,6 +10375,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
         "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
+      },
+      {
+        "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
+        "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
       }
     ],
     "labels": [
@@ -11292,7 +11324,8 @@ window.BENCHMARK_DATA = {
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
-      "3378cc72"
+      "3378cc72",
+      "90516b35"
     ],
     "datasets": [
       {
@@ -12239,7 +12272,8 @@ window.BENCHMARK_DATA = {
           80.13773941142219,
           156.14635217984517,
           149.51440051623754,
-          71.23183561222893
+          71.23183561222893,
+          155.10538351535797
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13098,6 +13132,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -14146,7 +14181,8 @@ window.BENCHMARK_DATA = {
           157.22749842007954,
           275.9036222139994,
           259.30012407302854,
-          124.19887183507284
+          124.19887183507284,
+          248.81127605438232
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14339,6 +14375,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -15334,7 +15371,8 @@ window.BENCHMARK_DATA = {
           138.89531258174353,
           254.74322485923767,
           244.2840792451586,
-          116.78505226281973
+          116.78505226281973,
+          233.85331770089957
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15346,6 +15384,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -16649,6 +16688,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
         "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
+      },
+      {
+        "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
+        "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
       }
     ],
     "labels": [
@@ -16829,7 +16874,8 @@ window.BENCHMARK_DATA = {
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
-      "3378cc72"
+      "3378cc72",
+      "90516b35"
     ],
     "datasets": [
       {
@@ -17013,7 +17059,8 @@ window.BENCHMARK_DATA = {
           146.08031913212366,
           283.7267198562622,
           286.46409527460736,
-          129.5158381121499
+          129.5158381121499,
+          278.83425542286466
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17193,6 +17240,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          520,
           520,
           520,
           520,
@@ -17394,7 +17442,8 @@ window.BENCHMARK_DATA = {
           305.3505081653595,
           550.3791928609212,
           543.8346082687378,
-          252.30248141288757
+          252.30248141288757,
+          548.1098907910861
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17406,6 +17455,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -17775,7 +17825,8 @@ window.BENCHMARK_DATA = {
           187.64818437894186,
           361.63201774869646,
           351.25829841295877,
-          165.01991299788156
+          165.01991299788156,
+          348.5537882804871
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -17787,6 +17838,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -23624,6 +23676,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
         "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
+      },
+      {
+        "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
+        "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
       }
     ],
     "labels": [
@@ -24567,7 +24625,8 @@ window.BENCHMARK_DATA = {
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
-      "3378cc72"
+      "3378cc72",
+      "90516b35"
     ],
     "datasets": [
       {
@@ -25514,7 +25573,8 @@ window.BENCHMARK_DATA = {
           357.8542076860155,
           697.318991456713,
           705.2051502863566,
-          320.80484645707264
+          320.80484645707264,
+          657.9369446436564
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26373,6 +26433,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -27421,7 +27482,8 @@ window.BENCHMARK_DATA = {
           803.8106863657633,
           1469.8924522399902,
           1411.2454528808594,
-          658.4624439386221
+          658.4624439386221,
+          1458.699312210083
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27614,6 +27676,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -28609,7 +28672,8 @@ window.BENCHMARK_DATA = {
           365.94262766838074,
           683.4718556404114,
           645.8053511301677,
-          333.6246384620666
+          333.6246384620666,
+          692.4176834742228
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28621,6 +28685,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -34502,6 +34567,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
         "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
+      },
+      {
+        "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
+        "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
       }
     ],
     "labels": [
@@ -35445,7 +35516,8 @@ window.BENCHMARK_DATA = {
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
-      "3378cc72"
+      "3378cc72",
+      "90516b35"
     ],
     "datasets": [
       {
@@ -36392,7 +36464,8 @@ window.BENCHMARK_DATA = {
           367.0375752131144,
           686.2884492238362,
           691.6242256898147,
-          321.26442060470583
+          321.26442060470583,
+          674.5422876221793
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37251,6 +37324,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -38299,7 +38373,8 @@ window.BENCHMARK_DATA = {
           11726.311918992262,
           28249.111905924477,
           29200.94760131836,
-          10144.358744303385
+          10144.358744303385,
+          29341.776397705078
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39251,6 +39326,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -39487,7 +39563,8 @@ window.BENCHMARK_DATA = {
           448.0965605735779,
           847.9214347203573,
           787.6263622283935,
-          430.18995097478233
+          430.18995097478233,
+          827.9101918538412
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39499,6 +39576,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -41150,6 +41228,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
         "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
+      },
+      {
+        "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
+        "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
       }
     ],
     "labels": [
@@ -41388,7 +41472,8 @@ window.BENCHMARK_DATA = {
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
-      "3378cc72"
+      "3378cc72",
+      "90516b35"
     ],
     "datasets": [
       {
@@ -41630,7 +41715,8 @@ window.BENCHMARK_DATA = {
           405.56573886871337,
           746.2276570638021,
           721.3546847025553,
-          351.6483565012614
+          351.6483565012614,
+          728.772633043925
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41832,6 +41918,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
+          1688,
           1688,
           1688,
           1688,
@@ -42127,7 +42214,8 @@ window.BENCHMARK_DATA = {
           30253.282244001115,
           85564.43594563802,
           83395.02146559495,
-          27365.753682454426
+          27365.753682454426,
+          83313.64731069711
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42374,7 +42462,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43804,6 +43893,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
         "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
+      },
+      {
+        "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
+        "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
       }
     ],
     "labels": [
@@ -44042,7 +44137,8 @@ window.BENCHMARK_DATA = {
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
-      "3378cc72"
+      "3378cc72",
+      "90516b35"
     ],
     "datasets": [
       {
@@ -44284,7 +44380,8 @@ window.BENCHMARK_DATA = {
           110.20277601480484,
           187.81222772598267,
           183.6666120015658,
-          89.05134416421255
+          89.05134416421255,
+          193.6504811445872
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44438,6 +44535,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -44781,7 +44879,8 @@ window.BENCHMARK_DATA = {
           10906.61905110677,
           33191.11193440755,
           33139.41019548689,
-          9323.684568132672
+          9323.684568132672,
+          32587.550166829427
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45028,7 +45127,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45264,7 +45364,8 @@ window.BENCHMARK_DATA = {
           132.18289993490492,
           256.3050258636475,
           266.16836449305214,
-          117.75027503875586
+          117.75027503875586,
+          250.42945636113484
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -45276,6 +45377,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -46579,6 +46681,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
         "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
+      },
+      {
+        "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
+        "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
       }
     ],
     "labels": [
@@ -46759,7 +46867,8 @@ window.BENCHMARK_DATA = {
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
-      "3378cc72"
+      "3378cc72",
+      "90516b35"
     ],
     "datasets": [
       {
@@ -46943,7 +47052,8 @@ window.BENCHMARK_DATA = {
           202.55006200926644,
           372.30651003973827,
           347.66867358343944,
-          164.32709153493246
+          164.32709153493246,
+          360.85706597108106
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47039,6 +47149,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -47324,7 +47435,8 @@ window.BENCHMARK_DATA = {
           253.1466427530561,
           403.4592960357666,
           395.78185246785483,
-          193.4021841287613
+          193.4021841287613,
+          391.28783893585205
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47336,6 +47448,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -47705,7 +47818,8 @@ window.BENCHMARK_DATA = {
           242.56105035146078,
           433.50025777816774,
           413.7372666676839,
-          195.50226495947157
+          195.50226495947157,
+          419.95599126815796
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47717,6 +47831,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -48976,6 +49091,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
         "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
+      },
+      {
+        "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
+        "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
       }
     ],
     "labels": [
@@ -49156,7 +49277,8 @@ window.BENCHMARK_DATA = {
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
-      "3378cc72"
+      "3378cc72",
+      "90516b35"
     ],
     "datasets": [
       {
@@ -49340,7 +49462,8 @@ window.BENCHMARK_DATA = {
           422.2042633465358,
           819.67055199941,
           810.3135171254476,
-          363.0605041821798
+          363.0605041821798,
+          759.5551412288959
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49520,6 +49643,7 @@ window.BENCHMARK_DATA = {
           1384,
           1384,
           1384,
+          1448,
           1448,
           1448,
           1448,
@@ -49721,7 +49845,8 @@ window.BENCHMARK_DATA = {
           1162.8113864898683,
           2083.255942753383,
           1912.665381749471,
-          923.7328998859113
+          923.7328998859113,
+          1959.2880650838217
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49733,6 +49858,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -50102,7 +50228,8 @@ window.BENCHMARK_DATA = {
           536.0233231272016,
           966.7127560206821,
           982.0366469065349,
-          450.2476945559184
+          450.2476945559184,
+          959.3455130894979
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -50114,6 +50241,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -51373,6 +51501,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
         "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
+      },
+      {
+        "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
+        "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
       }
     ],
     "labels": [
@@ -51553,7 +51687,8 @@ window.BENCHMARK_DATA = {
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
-      "3378cc72"
+      "3378cc72",
+      "90516b35"
     ],
     "datasets": [
       {
@@ -51737,7 +51872,8 @@ window.BENCHMARK_DATA = {
           6000.1758542742045,
           11456.64790725708,
           11660.4072265625,
-          5753.702564239502
+          5753.702564239502,
+          11384.629981994629
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51917,6 +52053,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1608,
           1608,
           1608,
           1608,
@@ -52118,7 +52255,8 @@ window.BENCHMARK_DATA = {
           19260.566722324915,
           41950.07255045573,
           41904.63652155949,
-          17693.158142089844
+          17693.158142089844,
+          40235.74784749349
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52286,6 +52424,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -52499,7 +52638,8 @@ window.BENCHMARK_DATA = {
           5811.060300554548,
           10577.883535531852,
           10920.68641117641,
-          5480.875860595703
+          5480.875860595703,
+          10651.067828838643
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -52511,6 +52651,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -53770,6 +53911,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
         "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
+      },
+      {
+        "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
+        "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
       }
     ],
     "labels": [
@@ -53950,7 +54097,8 @@ window.BENCHMARK_DATA = {
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
-      "3378cc72"
+      "3378cc72",
+      "90516b35"
     ],
     "datasets": [
       {
@@ -54134,7 +54282,8 @@ window.BENCHMARK_DATA = {
           5616.011057535808,
           10979.10561312162,
           11288.625946044922,
-          5436.401277160645
+          5436.401277160645,
+          10905.029526846749
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54314,6 +54463,7 @@ window.BENCHMARK_DATA = {
           2056,
           2056,
           2056,
+          2088,
           2088,
           2088,
           2088,
@@ -54515,7 +54665,8 @@ window.BENCHMARK_DATA = {
           27684.13321861854,
           61654.75865071615,
           60563.74659016927,
-          26565.955466715495
+          26565.955466715495,
+          58261.607814243864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54704,6 +54855,7 @@ window.BENCHMARK_DATA = {
           23553,
           23554,
           23554,
+          23553,
           23553
         ],
         "borderColor": "#FF671B",
@@ -54896,7 +55048,8 @@ window.BENCHMARK_DATA = {
           11421.36048235212,
           21024.556053748496,
           21305.166082763673,
-          11115.603009905133
+          11115.603009905133,
+          21076.299853985125
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -54908,6 +55061,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
