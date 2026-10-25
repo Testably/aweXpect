@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using aweXpect.Core.Extending;
+using aweXpect.Customization;
 
 namespace aweXpect.Snapshots;
 
@@ -14,9 +16,10 @@ namespace aweXpect.Snapshots;
 /// </summary>
 /// <remarks>
 ///     Each recorded value has the form <c>&lt;MappedPath&gt;=&lt;SourceRoot&gt;</c>, where the mapped path is the
-///     source root itself, or the prefix such as <c>/_/</c> that a deterministic build emits instead of it. The loaded
-///     assemblies are searched for the recorded values once, when the first snapshot needs them, and every assembly that
-///     is loaded afterwards adds its own.<br />
+///     source root itself, or the prefix such as <c>/_/</c> that a deterministic build emits instead of it. A module
+///     initializer that the source generator of aweXpect.Core emits into the test project registers the recorded values
+///     in the <see cref="ExtensionRegistry" />. Where the test project cannot compile a module initializer, nothing is
+///     registered, and the loaded assemblies are searched for the recorded values instead.<br />
 ///     The directories of the test projects are recorded as well, so that <see cref="OrphanedSnapshots" /> only lists
 ///     the snapshots of these projects, each with its target framework for <c>.UniqueFor.TargetFramework()</c>.
 /// </remarks>
@@ -28,7 +31,16 @@ internal static class SourceRoots
 
 	private static readonly ConcurrentQueue<Assembly> LoadedAssemblies = new();
 	private static readonly object RecordedLock = new();
+
+	/// <remarks>
+	///     Decided once, when the first snapshot needs the values, which is after the module initializer of the test
+	///     assembly registered its own, as it runs before any code of the test assembly.
+	/// </remarks>
+	private static readonly Lazy<bool> IsRegistered =
+		new(() => ExtensionRegistry.GetValues(ProjectDirectoryKey).Count > 0);
+
 	private static Records? _records;
+	private static RegisteredRecords? _registeredRecords;
 
 	/// <summary>
 	///     The recorded source roots.
@@ -36,10 +48,41 @@ internal static class SourceRoots
 	private static KeyValuePair<string, string>[] Recorded => GetRecords().SourceRoots;
 
 	/// <summary>
+	///     The recorded values, from the <see cref="ExtensionRegistry" /> where the test assembly registers them, or
+	///     else read from the loaded assemblies.
+	/// </summary>
+	private static Records GetRecords()
+		=> IsRegistered.Value ? GetRegisteredRecords() : GetScannedRecords();
+
+	/// <remarks>
+	///     A test assembly that is loaded later registers its values when it is loaded. The registry returns the same
+	///     lists until a value is added, so the records are only built again when one was added.
+	/// </remarks>
+	private static Records GetRegisteredRecords()
+	{
+		IReadOnlyList<string> sourceRoots = ExtensionRegistry.GetValues(MetadataKey);
+		IReadOnlyList<string> projectDirectories = ExtensionRegistry.GetValues(ProjectDirectoryKey);
+		IReadOnlyList<string> targetFrameworks = ExtensionRegistry.GetValues(TargetFrameworkKey);
+		RegisteredRecords? registered = Volatile.Read(ref _registeredRecords);
+		if (registered is null ||
+		    !ReferenceEquals(registered.SourceRoots, sourceRoots) ||
+		    !ReferenceEquals(registered.ProjectDirectories, projectDirectories) ||
+		    !ReferenceEquals(registered.TargetFrameworks, targetFrameworks))
+		{
+			registered = new RegisteredRecords(sourceRoots, projectDirectories, targetFrameworks,
+				Parse(sourceRoots, projectDirectories, targetFrameworks));
+			Volatile.Write(ref _registeredRecords, registered);
+		}
+
+		return registered.Records;
+	}
+
+	/// <summary>
 	///     The recorded values, read from the loaded assemblies on first use and extended by every assembly that is
 	///     loaded afterwards.
 	/// </summary>
 	/// <remarks>
+	///     The assemblies that the <c>ExcludedAssemblyPrefixes</c> of the settings exclude are not read.<br />
 	///     The event is subscribed before the loaded assemblies are read, so that no assembly is missed in between; one
 	///     that is read twice only records the same value twice, which counts as one.<br />
 	///     An assembly loaded afterwards is only queued by the event and read on the next access, as the event of a
@@ -47,7 +90,7 @@ internal static class SourceRoots
 	///     is loaded would cost even when no snapshot needs them. The records are replaced instead of changed, so that
 	///     the common case of nothing new to read needs no lock.
 	/// </remarks>
-	private static Records GetRecords()
+	private static Records GetScannedRecords()
 	{
 		Records? records = Volatile.Read(ref _records);
 		if (records is not null && LoadedAssemblies.IsEmpty)
@@ -307,35 +350,49 @@ internal static class SourceRoots
 	/// </remarks>
 	private static Records Read(IEnumerable<Assembly> assemblies)
 	{
-		AssemblyMetadataAttribute[] attributes = assemblies.SelectMany(GetMetadata).ToArray();
-		return new Records(
-			attributes
-				.Where(attribute => attribute.Key == MetadataKey && attribute.Value?.IndexOf('=') > 0)
-				.Select(attribute => new KeyValuePair<string, string>(
-					attribute.Value!.Substring(0, attribute.Value.IndexOf('=')),
-					attribute.Value.Substring(attribute.Value.IndexOf('=') + 1)))
-				.ToArray(),
-			attributes
-				.Where(attribute => attribute.Key == ProjectDirectoryKey && !string.IsNullOrEmpty(attribute.Value))
-				.Select(attribute => attribute.Value!)
-				.ToArray(),
-			attributes
-				.Where(attribute => attribute.Key == TargetFrameworkKey && attribute.Value?.IndexOf('=') > 0)
-				.Select(attribute => new KeyValuePair<string, string>(
-					attribute.Value!.Substring(attribute.Value.IndexOf('=') + 1),
-					attribute.Value.Substring(0, attribute.Value.IndexOf('='))))
-				.ToArray());
+		IReadOnlyList<string> excludedPrefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
+		AssemblyMetadataAttribute[] attributes = assemblies
+			.SelectMany(assembly => GetMetadata(assembly, excludedPrefixes))
+			.ToArray();
+		return Parse(GetValues(attributes, MetadataKey), GetValues(attributes, ProjectDirectoryKey),
+			GetValues(attributes, TargetFrameworkKey));
 	}
+
+	private static IEnumerable<string> GetValues(AssemblyMetadataAttribute[] attributes, string key)
+		=> attributes
+			.Where(attribute => attribute.Key == key && attribute.Value is not null)
+			.Select(attribute => attribute.Value!);
+
+	private static Records Parse(IEnumerable<string> sourceRoots, IEnumerable<string> projectDirectories,
+		IEnumerable<string> targetFrameworks)
+		=> new(
+			sourceRoots
+				.Where(value => value.IndexOf('=') > 0)
+				.Select(value => new KeyValuePair<string, string>(
+					value.Substring(0, value.IndexOf('=')),
+					value.Substring(value.IndexOf('=') + 1)))
+				.ToArray(),
+			projectDirectories
+				.Where(value => value.Length > 0)
+				.ToArray(),
+			targetFrameworks
+				.Where(value => value.IndexOf('=') > 0)
+				.Select(value => new KeyValuePair<string, string>(
+					value.Substring(value.IndexOf('=') + 1),
+					value.Substring(0, value.IndexOf('='))))
+				.ToArray());
 
 	/// <remarks>
 	///     Reading the attributes of an assembly whose dependencies cannot be loaded throws, but such an assembly is not
 	///     the test assembly, so it is skipped.
 	/// </remarks>
-	private static AssemblyMetadataAttribute[] GetMetadata(Assembly assembly)
+	private static AssemblyMetadataAttribute[] GetMetadata(Assembly assembly, IReadOnlyList<string> excludedPrefixes)
 	{
 		try
 		{
-			return assembly.GetCustomAttributes<AssemblyMetadataAttribute>().ToArray();
+			return AssemblyPrefixes.IsExcluded(assembly.GetName().Name, excludedPrefixes)
+				? []
+				: assembly.GetCustomAttributes<AssemblyMetadataAttribute>().ToArray();
 		}
 		catch (Exception)
 		{
@@ -352,4 +409,13 @@ internal static class SourceRoots
 		KeyValuePair<string, string>[] SourceRoots,
 		string[] ProjectDirectories,
 		KeyValuePair<string, string>[] TargetFrameworks);
+
+	/// <summary>
+	///     The <paramref name="Records" /> built from the lists that the <see cref="ExtensionRegistry" /> returned.
+	/// </summary>
+	private sealed record RegisteredRecords(
+		IReadOnlyList<string> SourceRoots,
+		IReadOnlyList<string> ProjectDirectories,
+		IReadOnlyList<string> TargetFrameworks,
+		Records Records);
 }

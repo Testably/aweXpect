@@ -26,8 +26,9 @@ other options, e.g. the order of the diff tools.
 
 ## Registration
 
-The package registers a [reporter](09-reporters.md) by adding a small file with a module initializer to the test
-project. To register it yourself, e.g. only for some test projects, turn this off in the project file:
+The package registers a [reporter](09-reporters.md) by calling `DiffEngineReporter.Register()` from a module
+initializer that the source generator of aweXpect.Core adds to the test project. To register it yourself, e.g. only
+for some test projects, turn this off in the project file:
 
 ```xml
 <PropertyGroup>
@@ -35,13 +36,13 @@ project. To register it yourself, e.g. only for some test projects, turn this of
 </PropertyGroup>
 ```
 
-A module initializer needs C# 9 and .NET 5 or later, so on .NET Framework and with an older language version the
-reporter is not registered automatically. Register it in an assembly-level setup of the test framework instead, e.g.
-in the constructor of an xunit fixture or a `[SetUpFixture]` of NUnit:
+A module initializer needs C# 9 and the `ModuleInitializerAttribute`, which .NET 5 and later provide, and which a
+project for .NET Framework can declare as an `internal` type itself. Without them, the reporter is not registered
+automatically. Register it in an assembly-level setup of the test framework instead, e.g. in the constructor of an
+xunit fixture or a `[SetUpFixture]` of NUnit:
 
 ```csharp
-Customize.aweXpect.Global.Snapshots().Reporters.Set([
-    .. Customize.aweXpect.Global.Snapshots().Reporters.Get(),
-    new DiffEngineReporter(),
-]);
+DiffEngineReporter.Register();
 ```
+
+`Register` adds the reporter to the reporters that are already set, unless one is added already.

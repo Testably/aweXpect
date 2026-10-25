@@ -15,6 +15,46 @@ public sealed class SourceRootsTests
 {
 	private const string CommittedSnapshot = nameof(WhenTheTestFileExistsUnderOneOfSeveralSourceRoots_ShouldUseIt);
 
+#if NETFRAMEWORK
+	[Test]
+	public async Task WhenAnExcludedAssemblyRecordsASourceRoot_ShouldIgnoreIt()
+	{
+		await That("found").MatchesSnapshot(GetCallerFilePath(), CommittedSnapshot);
+		using TemporarySourceRoot otherSourceRoot = new();
+		otherSourceRoot.CreateFile(RecordedSourceRoots.RelativeTestFile());
+		string subject = "found";
+
+		async Task Act()
+			=> await That(subject).MatchesSnapshot(GetCallerFilePath(), CommittedSnapshot);
+
+		using (Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Set(["MusicStore",]))
+		{
+			RecordedSourceRoots.RecordInAssembly($"MusicStore.SourceRoot{Guid.NewGuid():N}", otherSourceRoot.Path,
+				otherSourceRoot.Path);
+
+			await That(Act).DoesNotThrow()
+				.Because("an assembly excluded by the settings is not read, so the test file exists under one source root only");
+		}
+	}
+#else
+	[Test]
+	public async Task WhenAnotherAssemblyRecordsASourceRoot_ShouldOnlyUseTheRegisteredOnes()
+	{
+		await That("found").MatchesSnapshot(GetCallerFilePath(), CommittedSnapshot);
+		using TemporarySourceRoot otherSourceRoot = new();
+		otherSourceRoot.CreateFile(RecordedSourceRoots.RelativeTestFile());
+		RecordedSourceRoots.RecordInAssembly($"SourceRoot{Guid.NewGuid():N}", otherSourceRoot.Path,
+			otherSourceRoot.Path);
+		string subject = "found";
+
+		async Task Act()
+			=> await That(subject).MatchesSnapshot(GetCallerFilePath(), CommittedSnapshot);
+
+		await That(Act).DoesNotThrow()
+			.Because("the module initializer of this test project registers the values, so the loaded assemblies are not read");
+	}
+#endif
+
 	[Test]
 	public async Task WhenDeterministicBuildsRecordSeveralSourceRoots_ShouldUseTheOneWithTheTestFile()
 	{

@@ -23,7 +23,7 @@ Two NuGet packages are built from `Source/`; the analyzer and generator projects
 | Project | Package | Role |
 | --- | --- | --- |
 | `aweXpect.Core` | `aweXpect.Core` | Engine and extension API: `Expect.That`, `IThat<T>`, `ExpectationBuilder`, constraints, results, formatting, options, customization, equivalency, recording and signaling primitives |
-| `aweXpect.Core.Generators` | in `aweXpect.Core` | Generates expectations from methods marked with `[GenerateExpectation]` (`ExpectationGenerator`); runs in the consumer for the type metadata registrations for trimming and AOT (`TypeMetadataGenerator`), unless an older `aweXpect` without the `aweXpect.TypeMetadataGenerator` assembly metadata ships its own copy |
+| `aweXpect.Core.Generators` | in `aweXpect.Core` | Generates expectations from methods marked with `[GenerateExpectation]` (`ExpectationGenerator`); runs in the consumer for the type metadata registrations for trimming and AOT (`TypeMetadataGenerator`), unless an older `aweXpect` without the `aweXpect.TypeMetadataGenerator` assembly metadata ships its own copy, and for the registration hook of the extensions (`ExtensionRegistrationGenerator`) |
 | `aweXpect` | `aweXpect` | The expectations for users, as extension methods on `IThat<T>` |
 | `aweXpect.Generators` | in `aweXpect` | Runs in the consumer: test framework adapters (`FrameworkGenerator`) |
 | `aweXpect.SourceGenerators` | none | Runs only while building `aweXpect`: generates the overloads of collection expectations (`CollectionExpectationGenerator`) |
@@ -163,7 +163,8 @@ User code picks a source, navigates to a member kind, filters and expects:
 - `Snapshots/` (namespace `aweXpect.Snapshots`): identity and storage (`SnapshotId`, `SnapshotStore`,
   `DiskSnapshotStore` next to the test file); `SourceRoots` reads the source root, project directory and target
   framework that `buildTransitive/aweXpect.Snapshots.targets` records in the test assembly, so that snapshots are found
-  in deterministic builds; the rules (`SnapshotMembers*`, `SnapshotLines*`, `SnapshotText`, ...), whose surface
+  in deterministic builds (from `ExtensionRegistry`, or by scanning the loaded assemblies where the test project cannot
+  compile a module initializer); the rules (`SnapshotMembers*`, `SnapshotLines*`, `SnapshotText`, ...), whose surface
   `SnapshotRule` repeats for all snapshots (`For_ShouldOfferTheSameRulesAsForAllSnapshots` keeps both equal); the
   extension points `SnapshotComparer` and `SnapshotReporter`, abstract classes so that members can get a default;
   `SnapshotAcceptance` and `AcceptEnvironment` (`AWEXPECT_ACCEPT_SNAPSHOTS`, build server detection); and
@@ -174,9 +175,13 @@ User code picks a source, navigates to a member kind, filters and expects:
 - `aweXpect.Snapshots.PublicApi`: `PublicApiDeclarations` reads an assembly with Roslyn from its metadata and writes
   its public API as C# declarations; missing dependencies are resolved from the `deps.json` and the NuGet packages
   folder. Not trimmable.
-- `aweXpect.Snapshots.DiffEngine`: `DiffEngineReporter` opens a diff tool. Its `buildTransitive` targets compile a
-  module initializer that registers the reporter into consuming projects (.NET 5+ and C# 9+), which
+- `aweXpect.Snapshots.DiffEngine`: `DiffEngineReporter` opens a diff tool. Its `buildTransitive` targets let the
+  generated module initializer call `DiffEngineReporter.Register()` in consuming projects, which
   `<AweXpectSnapshotsDiffEngine>false</AweXpectSnapshotsDiffEngine>` turns off.
+- Both use the registration hook of Core: `ExtensionRegistrationGenerator` in `aweXpect.Core.Generators` emits a
+  module initializer into the test project (C# 9 and `ModuleInitializerAttribute`, the rule of the type metadata
+  generator) that registers the `AssemblyMetadataAttribute` values named in `AweXpectRegisteredMetadataKeys` in
+  `ExtensionRegistry` and calls the methods named in `AweXpectModuleInitializers`.
 - The `buildTransitive` targets ship in the packages and affect every consumer build. A project reference does not
   import them, so the test projects import them explicitly.
 

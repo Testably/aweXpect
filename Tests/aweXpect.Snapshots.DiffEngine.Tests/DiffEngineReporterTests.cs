@@ -203,17 +203,23 @@ public sealed class DiffEngineReporterTests
 	}
 
 	[Test]
-	public async Task Registration_ShouldAddTheReporterOnlyWhereModuleInitializersExist()
+	public async Task Register_WhenTheReporterIsRegistered_ShouldNotAddItAgain()
+	{
+		DiffEngineReporter.Register();
+
+		SnapshotReporter[] reporters = Customize.aweXpect.Global.Snapshots().Reporters.Get()
+			.OfType<DiffEngineReporter>().ToArray<SnapshotReporter>();
+		await That(reporters).HasSingle()
+			.Because("the build targets of the package registered the reporter when the test assembly was loaded");
+	}
+
+	[Test]
+	public async Task Registration_ShouldAddTheReporterWhereTheProjectCanCompileAModuleInitializer()
 	{
 		SnapshotReporter[] reporters = Customize.aweXpect.Global.Snapshots().Reporters.Get()
 			.OfType<DiffEngineReporter>().ToArray<SnapshotReporter>();
 
-#if NET5_0_OR_GREATER
 		await That(reporters).HasSingle()
-			.Because("the build targets of the package register the reporter once");
-#else
-		await That(reporters).IsEmpty()
-			.Because(".NET Framework has no module initializers, so the reporter is registered explicitly there");
-#endif
+			.Because("this project declares the ModuleInitializerAttribute for .NET Framework, so the build targets of the package register the reporter on every target framework");
 	}
 }

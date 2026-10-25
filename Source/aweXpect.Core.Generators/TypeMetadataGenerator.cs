@@ -423,7 +423,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	///     The generated file needs nothing newer than C# 9, but a consumer pinned below that could not compile the
 	///     module initializer.
 	/// </remarks>
-	private static bool HasLanguageVersion(Compilation compilation)
+	internal static bool HasLanguageVersion(Compilation compilation)
 		=> compilation is CSharpCompilation { LanguageVersion: >= LanguageVersion.CSharp9, };
 
 	/// <remarks>
@@ -441,7 +441,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	/// <remarks>
 	///     Without <c>ModuleInitializerAttribute</c> the target framework cannot be trimmed or AOT-published anyway.
 	/// </remarks>
-	private static bool HasModuleInitializer(Compilation compilation)
+	internal static bool HasModuleInitializer(Compilation compilation)
 	{
 		INamedTypeSymbol? attribute =
 			compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.ModuleInitializerAttribute");

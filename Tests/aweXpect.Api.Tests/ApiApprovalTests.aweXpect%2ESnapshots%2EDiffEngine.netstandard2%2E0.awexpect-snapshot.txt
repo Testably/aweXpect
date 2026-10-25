@@ -8,6 +8,7 @@ namespace aweXpect.Snapshots
         public DiffEngineReporter() { }
         public override System.Threading.Tasks.ValueTask OnMatchAsync(aweXpect.Snapshots.SnapshotMatch match, System.Threading.CancellationToken cancellationToken) { }
         public override System.Threading.Tasks.ValueTask OnMismatchAsync(aweXpect.Snapshots.SnapshotMismatch mismatch, System.Threading.CancellationToken cancellationToken) { }
+        public static void Register() { }
     }
 }
 

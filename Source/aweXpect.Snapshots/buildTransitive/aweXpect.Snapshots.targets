@@ -1,6 +1,19 @@
 <Project>
 
 	<!--
+	    Registers the recorded values below from a module initializer that the source generator of aweXpect.Core emits
+	    into the test project, so that they are read without scanning the loaded assemblies. Where the project cannot
+	    compile a module initializer, nothing is registered, and the values are read from the loaded assemblies instead.
+	-->
+	<PropertyGroup>
+		<AweXpectRegisteredMetadataKeys>$(AweXpectRegisteredMetadataKeys),aweXpect.Snapshots.SourceRoot,aweXpect.Snapshots.ProjectDirectory,aweXpect.Snapshots.TargetFramework</AweXpectRegisteredMetadataKeys>
+	</PropertyGroup>
+	<ItemGroup>
+		<CompilerVisibleProperty Remove="AweXpectRegisteredMetadataKeys"/>
+		<CompilerVisibleProperty Include="AweXpectRegisteredMetadataKeys"/>
+	</ItemGroup>
+
+	<!--
 	    Records the source root of the project in the test assembly as `<MappedPath>=<SourceRoot>`, so that a snapshot is
 	    identified by the path of its test file relative to the source root, which is the same on every machine. A
 	    deterministic build (e.g. with `ContinuousIntegrationBuild`) emits the mapped path, such as `/_/`, instead of the
