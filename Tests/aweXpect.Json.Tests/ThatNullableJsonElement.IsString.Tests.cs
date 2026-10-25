@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using aweXpect.Core;
+using aweXpect.Json.Results;
 
 namespace aweXpect.Json.Tests;
 
@@ -150,6 +151,119 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is a string which is equal to "foo",
 					             but it was <null>
+					             """);
+			}
+		}
+
+		public sealed class WithOperatorTests
+		{
+			[Test]
+			public async Task WhenJsonIsNoString_ShouldFail()
+			{
+				JsonElement? subject = FromString("42");
+
+				async Task Act()
+					=> await That(subject).IsString().EqualTo("42");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a string equal to "42",
+					             but it was a number
+					             """);
+			}
+
+			[Test]
+			public async Task WhenOperatorIsCalledTwice_ShouldThrowInvalidOperationException()
+			{
+				JsonElement? subject = FromString("\"Let It Be\"");
+
+				async Task Act()
+					=> await That(subject).CompliesWith(it =>
+					{
+						IsStringResult<JsonElement, IThat<JsonElement?>> result = it.IsString();
+						result.EqualTo("Let It Be");
+						result.Containing("e");
+					});
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("IsString() accepts only one comparison, so call only one operator on its result.");
+			}
+
+			[Test]
+			public async Task WhenStringDoesNotMatch_ShouldFail()
+			{
+				JsonElement? subject = FromString("\"Yesterday\"");
+
+				async Task Act()
+					=> await That(subject).IsString().EndingWith("Be");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a string ending with "Be",
+					             but it was "Yesterday", which differs at index 8:
+					                        ↓ (actual)
+					               "Yesterday"
+					                      "Be"
+					                        ↑ (expected suffix)
+					             """);
+			}
+
+			[Test]
+			public async Task WhenStringMatches_ShouldReturnTheNotNullableElement()
+			{
+				JsonElement? subject = FromString("\"Let It Be\"");
+
+				JsonElement result = await That(subject).IsString().Containing("e").AtLeast(2);
+
+				await That(result.GetString()).IsEqualTo("Let It Be");
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsString().StartingWith("Let");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a string starting with "Let",
+					             but it was <null>
+					             """);
+			}
+		}
+
+		public sealed class WithOperatorNegatedTests
+		{
+			[Test]
+			public async Task WhenJsonIsNoString_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("42");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString().EqualTo("42"));
+
+				await That(Act).DoesNotThrow()
+					.Because("a value of another kind is no string equal to the expected value, like for IsString()");
+			}
+
+			[Test]
+			public async Task WhenStringMatches_ShouldFail()
+			{
+				JsonElement? subject = FromString("\"Let It Be\"");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString().EqualTo("let it be").IgnoringCase());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a string equal to "let it be" ignoring case,
+					             but it was "Let It Be"
 					             """);
 			}
 		}

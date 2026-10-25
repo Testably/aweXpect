@@ -5,6 +5,7 @@ using aweXpect.Core;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Json;
+using aweXpect.Json.Results;
 using aweXpect.Options;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -18,14 +19,23 @@ public static partial class ThatJsonNode
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonNode" /> is a <see cref="JsonValueKind.Number" />.
 	/// </summary>
+	/// <remarks>
+	///     The value can be compared as <see langword="double" /> on the result in the same expectation, e.g. with
+	///     <c>GreaterThan(3)</c>, <c>Between(1).And(5)</c> or <c>EqualTo(4.5).Within(0.1)</c>; a number that does not fit
+	///     into a <see langword="double" /> then fails. A value of another kind fails the expectation, but satisfies its
+	///     negation.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNode, IThat<TNode?>> IsNumber<TNode>(this IThat<TNode?> subject)
+	public static IsNumberResult<TNode, IThat<TNode?>> IsNumber<TNode>(this IThat<TNode?> subject)
 		where TNode : JsonNode
-		=> new(
-			subject.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
-				new JsonNodeConstraint<TNode>(
-					new ThatJsonElement.IsValueKindConstraint(it, grammar, JsonValueKind.Number))),
-			subject);
+	{
+		JsonComparisonSlot<JsonNumberComparison> slot = new("IsNumber()");
+		return new IsNumberResult<TNode, IThat<TNode?>>(
+			subject.Get().ExpectationBuilder.AddConstraint(slot, static (slot, it, grammars) =>
+				new JsonNodeConstraint<TNode>(new IsJsonNumberConstraint(it, grammars, slot))),
+			subject,
+			slot);
+	}
 
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonNode" /> is a <see cref="JsonValueKind.Number" /> whose value as

@@ -122,6 +122,10 @@ a virtual time system.
   expected value, e.g. `IsString("Let It Be")`, or with all expectations of aweXpect. Counts and shapes are covered by
   `IsObject().WhoseProperties`,
   `IsArray().WhoseElements` and `Matches`.
+- `IsString()` and `IsNumber()` offer the operators of a property on their result, so that the value is compared in the
+  same sentence, e.g. `IsString().StartingWith("Let").IgnoringCase()` or `IsNumber().EqualTo(4.5).Within(0.1)`. They
+  return `IsStringResult` and `IsNumberResult` from `aweXpect.Json.Results` instead of an `AndOrResult`, which only
+  affects code that names the result type.
 - `Matches` and `IsValidJsonMatching` report additional array elements. Add
   `o => o.IgnoringAdditionalArrayElements()` to allow them.
 - `JsonOptions` is immutable like `XmlOptions` and configured only through its methods.

@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Json;
+using aweXpect.Json.Results;
 using aweXpect.Options;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -70,11 +70,18 @@ public static partial class ThatNullableJsonElement
 			options);
 	}
 
-	[GenerateExpectation("IsNumber", "is {not} a number",
-		Result = nameof(DescribeValueKind),
-		Summary = "Verifies that the subject <see cref=\"JsonElement\" /> is a <see cref=\"JsonValueKind.Number\" />.")]
-	private static bool IsNumberKind([DisallowNull] JsonElement? element)
-		=> element.Value.ValueKind == JsonValueKind.Number;
+	/// <inheritdoc cref="ThatJsonElement.IsNumber(IThat{JsonElement})" />
+	[GuaranteesNotNull]
+	public static IsNumberResult<JsonElement, IThat<JsonElement?>> IsNumber(this IThat<JsonElement?> subject)
+	{
+		JsonComparisonSlot<JsonNumberComparison> slot = new("IsNumber()");
+		return new IsNumberResult<JsonElement, IThat<JsonElement?>>(
+			subject.Get().ExpectationBuilder.AddConstraint(slot,
+				static IAsyncContextConstraint<JsonElement?> (slot, it, grammars)
+					=> new IsJsonNumberConstraint(it, grammars, slot)),
+			subject,
+			slot);
+	}
 
 	private static AndOrResult<JsonElement, IThat<JsonElement?>> IsValue<TValue>(IThat<JsonElement?> subject,
 		JsonValueReader<TValue> reader, Action<IThatSubject<TValue>>? expectations)

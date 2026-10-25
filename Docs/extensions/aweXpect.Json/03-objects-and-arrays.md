@@ -11,8 +11,8 @@ Describes the possible expectations for the kind and the content of a `JsonEleme
 | [`IsObject().WhoseProperties`](#isobject)           |                       | collection expectations on the properties of a JSON object       |
 | [`IsArray`](#isarray)                               |                       | a JSON array                                                     |
 | [`IsArray().WhoseElements`](#isarray)               |                       | collection expectations on the elements of a JSON array          |
-| [`IsString`](#value-kinds)                          |                       | a JSON string, optionally equal to a value or with expectations  |
-| [`IsNumber`](#value-kinds)                          |                       | a JSON number, optionally with expectations on its value         |
+| [`IsString`](#value-kinds)                          |                       | a JSON string, optionally equal to a value, compared with an operator or with expectations |
+| [`IsNumber`](#value-kinds)                          |                       | a JSON number, optionally compared with an operator or with expectations on its value |
 | [`IsNumber<TNumber>`](#numbers)                     |                       | a JSON number that fits into the number type, optionally equal to a value |
 | [`IsBoolean`](#value-kinds)                         |                       | a JSON boolean, i.e. `true` or `false`, optionally equal to a value or with expectations |
 | [`IsNull`](#value-kinds)                            |                       | the JSON value `null`, only for a `JsonElement`                  |
@@ -410,6 +410,36 @@ Actual ($.rating):
 
 Like `IsString()`, a value of another kind fails the expectation, e.g. `IsString("4.5")` on the rating fails with
 `but $.rating was a number`, and satisfies its negation, so it succeeds within `DoesNotComplyWith(…)`.
+
+`IsString()` and `IsNumber()` also offer operators on their result, which compare the value in the same sentence. A
+string offers `EqualTo`, `StartingWith`, `EndingWith` and `Containing`, their negations and `NotContaining`, with the
+string options of aweXpect, e.g. `IgnoringCase()` or `AsWildcard()`, and with a quantifier for `Containing`, e.g.
+`Containing("e").AtLeast(2)`. A number is compared as `double` with `EqualTo`, `GreaterThan`,
+`GreaterThanOrEqualTo`, `LessThan`, `LessThanOrEqualTo`, `Between(…).And(…)` and their negations, and `EqualTo` and
+`NotEqualTo` take a tolerance with `Within(…)`, also relative with `Within(…).Percent()`:
+
+```csharp
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "rating": 4.5}""").RootElement;
+
+await Expect.That(track)
+    .HasProperty("title", t => t.IsString().StartingWith("let").IgnoringCase()).And
+    .HasProperty("rating", r => r.IsNumber().Between(1).And(5));
+```
+
+If the rating was 6, the expectation would fail with:
+
+```text title="Failure message"
+Expected that track
+has property "title" which is a string starting with "let" ignoring case and has property "rating" which is a number between 1.0 and 5.0,
+but $.rating was 6
+```
+
+Only one operator can follow `IsString()` or `IsNumber()`, a second one on the same result throws an
+`InvalidOperationException`; chain further checks with `.And`, e.g.
+`IsString().StartingWith("Let").And.IsString().EndingWith("Be")`. A value of another kind fails the expectation and
+satisfies its negation, like for `IsString()`, and so does a number that does not fit into a `double`, which
+`IsNumber()` alone accepts.
 
 For richer checks, `IsString`, `IsNumber` and `IsBoolean` accept expectations on the value as a `string`, a `double`
 or a `bool`, so that all expectations of aweXpect apply to it:

@@ -5,6 +5,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Json;
+using aweXpect.Json.Results;
 using aweXpect.Options;
 using aweXpect.Results;
 
@@ -44,10 +45,22 @@ public static partial class ThatJsonElement
 			options);
 	}
 
-	[GenerateExpectation("IsString", "is {not} a string",
-		NullableOverload = false,
-		Result = nameof(DescribeValueKind),
-		Summary = "Verifies that the subject <see cref=\"JsonElement\" /> is a <see cref=\"JsonValueKind.String\" />.")]
-	private static bool IsStringKind(JsonElement element)
-		=> element.ValueKind == JsonValueKind.String;
+	/// <summary>
+	///     Verifies that the subject <see cref="JsonElement" /> is a <see cref="JsonValueKind.String" />.
+	/// </summary>
+	/// <remarks>
+	///     The value can be compared on the result in the same expectation, e.g. with <c>StartingWith("Let")</c>,
+	///     <c>EqualTo("Let It Be").IgnoringCase()</c> or <c>Containing("e").AtLeast(2)</c>. A value of another kind fails
+	///     the expectation, but satisfies its negation.
+	/// </remarks>
+	public static IsStringResult<JsonElement, IThat<JsonElement>> IsString(this IThat<JsonElement> subject)
+	{
+		JsonComparisonSlot<StringPropertyComparison> slot = new("IsString()");
+		return new IsStringResult<JsonElement, IThat<JsonElement>>(
+			subject.Get().ExpectationBuilder.AddConstraint(slot,
+				static IAsyncContextConstraint<JsonElement> (slot, it, grammars)
+					=> new IsJsonStringConstraint(it, grammars, slot)),
+			subject,
+			slot);
+	}
 }

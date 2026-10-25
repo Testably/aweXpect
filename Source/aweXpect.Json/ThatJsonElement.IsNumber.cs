@@ -5,6 +5,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Json;
+using aweXpect.Json.Results;
 using aweXpect.Options;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -111,12 +112,25 @@ public static partial class ThatJsonElement
 			options);
 	}
 
-	[GenerateExpectation("IsNumber", "is {not} a number",
-		NullableOverload = false,
-		Result = nameof(DescribeValueKind),
-		Summary = "Verifies that the subject <see cref=\"JsonElement\" /> is a <see cref=\"JsonValueKind.Number\" />.")]
-	private static bool IsNumberKind(JsonElement element)
-		=> element.ValueKind == JsonValueKind.Number;
+	/// <summary>
+	///     Verifies that the subject <see cref="JsonElement" /> is a <see cref="JsonValueKind.Number" />.
+	/// </summary>
+	/// <remarks>
+	///     The value can be compared as <see langword="double" /> on the result in the same expectation, e.g. with
+	///     <c>GreaterThan(3)</c>, <c>Between(1).And(5)</c> or <c>EqualTo(4.5).Within(0.1)</c>; a number that does not fit
+	///     into a <see langword="double" /> then fails. A value of another kind fails the expectation, but satisfies its
+	///     negation.
+	/// </remarks>
+	public static IsNumberResult<JsonElement, IThat<JsonElement>> IsNumber(this IThat<JsonElement> subject)
+	{
+		JsonComparisonSlot<JsonNumberComparison> slot = new("IsNumber()");
+		return new IsNumberResult<JsonElement, IThat<JsonElement>>(
+			subject.Get().ExpectationBuilder.AddConstraint(slot,
+				static IAsyncContextConstraint<JsonElement> (slot, it, grammars)
+					=> new IsJsonNumberConstraint(it, grammars, slot)),
+			subject,
+			slot);
+	}
 
 	private static AndOrResult<JsonElement, IThat<JsonElement>> IsValue<TValue>(IThat<JsonElement> subject,
 		JsonValueReader<TValue> reader, Action<IThatSubject<TValue>>? expectations)
