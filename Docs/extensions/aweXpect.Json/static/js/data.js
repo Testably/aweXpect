@@ -786,6 +786,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
         "message": "feat!: make ReflectionFallback.NotSupported public and move ReflectionFallback to aweXpect.Core.Extending (#2058)"
+      },
+      {
+        "sha": "359002f3dd2200217f79b751b096155f333ee583",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
+        "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
       }
     ],
     "labels": [
@@ -919,7 +925,8 @@ window.BENCHMARK_DATA = {
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
-      "6224bbce"
+      "6224bbce",
+      "359002f3"
     ],
     "datasets": [
       {
@@ -1056,7 +1063,8 @@ window.BENCHMARK_DATA = {
           1103.672924041748,
           2093.287657601493,
           2172.361839566912,
-          1617.308842086792
+          1617.308842086792,
+          2124.301685878209
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1096,6 +1104,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -1343,7 +1352,8 @@ window.BENCHMARK_DATA = {
           6724.722705296108,
           15943.458544921876,
           16624.669163004557,
-          10755.325099400112
+          10755.325099400112,
+          16035.757891845704
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1355,6 +1365,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -2285,6 +2296,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
         "message": "feat!: make ReflectionFallback.NotSupported public and move ReflectionFallback to aweXpect.Core.Extending (#2058)"
+      },
+      {
+        "sha": "359002f3dd2200217f79b751b096155f333ee583",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
+        "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
       }
     ],
     "labels": [
@@ -2418,7 +2435,8 @@ window.BENCHMARK_DATA = {
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
-      "6224bbce"
+      "6224bbce",
+      "359002f3"
     ],
     "datasets": [
       {
@@ -2555,7 +2573,8 @@ window.BENCHMARK_DATA = {
           917.817653465271,
           1761.486618723188,
           1762.4759542025054,
-          1310.178847249349
+          1310.178847249349,
+          1713.9556411743165
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2648,6 +2667,7 @@ window.BENCHMARK_DATA = {
           1200,
           1200,
           1200,
+          1240,
           1240,
           1240,
           1240,
@@ -2842,7 +2862,8 @@ window.BENCHMARK_DATA = {
           6324.184260050456,
           14436.01840464274,
           14979.941702270507,
-          10639.962525503975
+          10639.962525503975,
+          15197.824393136161
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2854,6 +2875,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -3724,6 +3746,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
         "message": "feat!: make ReflectionFallback.NotSupported public and move ReflectionFallback to aweXpect.Core.Extending (#2058)"
+      },
+      {
+        "sha": "359002f3dd2200217f79b751b096155f333ee583",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
+        "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
       }
     ],
     "labels": [
@@ -3847,7 +3875,8 @@ window.BENCHMARK_DATA = {
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
-      "6224bbce"
+      "6224bbce",
+      "359002f3"
     ],
     "datasets": [
       {
@@ -3974,7 +4003,8 @@ window.BENCHMARK_DATA = {
           2853.7479357038223,
           5377.333744594029,
           5256.039864131382,
-          3844.3547744750977
+          3844.3547744750977,
+          5358.448944636753
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4057,6 +4087,7 @@ window.BENCHMARK_DATA = {
           3688,
           3688,
           3688,
+          3736,
           3736,
           3736,
           3736,
@@ -4241,7 +4272,8 @@ window.BENCHMARK_DATA = {
           18374.067997859074,
           48902.76749674479,
           49238.64140625,
-          29797.291642252603
+          29797.291642252603,
+          47922.475830078125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4373,7 +4405,8 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61926,
-          61925
+          61925,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5113,6 +5146,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
         "message": "feat!: make ReflectionFallback.NotSupported public and move ReflectionFallback to aweXpect.Core.Extending (#2058)"
+      },
+      {
+        "sha": "359002f3dd2200217f79b751b096155f333ee583",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
+        "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
       }
     ],
     "labels": [
@@ -5236,7 +5275,8 @@ window.BENCHMARK_DATA = {
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
-      "6224bbce"
+      "6224bbce",
+      "359002f3"
     ],
     "datasets": [
       {
@@ -5363,7 +5403,8 @@ window.BENCHMARK_DATA = {
           4841.236343383789,
           9602.302537184496,
           9667.376525878906,
-          7387.150741068522
+          7387.150741068522,
+          9643.89381612142
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5446,6 +5487,7 @@ window.BENCHMARK_DATA = {
           7024,
           7024,
           7024,
+          7064,
           7064,
           7064,
           7064,
@@ -5630,7 +5672,8 @@ window.BENCHMARK_DATA = {
           131368.40914481026,
           311448.4590820313,
           310739.53193359374,
-          211992.55993652344
+          211992.55993652344,
+          307278.74075520836
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5751,6 +5794,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521542,
+          521594,
           521594,
           521594,
           521594,
@@ -6502,6 +6546,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
         "message": "feat!: make ReflectionFallback.NotSupported public and move ReflectionFallback to aweXpect.Core.Extending (#2058)"
+      },
+      {
+        "sha": "359002f3dd2200217f79b751b096155f333ee583",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
+        "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
       }
     ],
     "labels": [
@@ -6625,7 +6675,8 @@ window.BENCHMARK_DATA = {
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
-      "6224bbce"
+      "6224bbce",
+      "359002f3"
     ],
     "datasets": [
       {
@@ -6752,7 +6803,8 @@ window.BENCHMARK_DATA = {
           1562.8392949785505,
           3059.3099740835337,
           3041.5742636460523,
-          2275.9555803026474
+          2275.9555803026474,
+          2943.7181444803873
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6866,6 +6918,7 @@ window.BENCHMARK_DATA = {
           1328,
           1328,
           1328,
+          1488,
           1488,
           1488,
           1488,
@@ -7019,7 +7072,8 @@ window.BENCHMARK_DATA = {
           1031.3462692260741,
           2002.0239962064302,
           2013.62014948527,
-          1514.097226969401
+          1514.097226969401,
+          1966.188347117106
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7031,6 +7085,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -7891,6 +7946,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
         "message": "feat!: make ReflectionFallback.NotSupported public and move ReflectionFallback to aweXpect.Core.Extending (#2058)"
+      },
+      {
+        "sha": "359002f3dd2200217f79b751b096155f333ee583",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
+        "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
       }
     ],
     "labels": [
@@ -8014,7 +8075,8 @@ window.BENCHMARK_DATA = {
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
-      "6224bbce"
+      "6224bbce",
+      "359002f3"
     ],
     "datasets": [
       {
@@ -8141,7 +8203,8 @@ window.BENCHMARK_DATA = {
           1275.9472116323618,
           2485.8269040425616,
           2576.9180132548013,
-          1907.0646180470785
+          1907.0646180470785,
+          2627.819407599313
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8270,6 +8333,7 @@ window.BENCHMARK_DATA = {
           2864,
           2864,
           2864,
+          2832,
           2832,
           2832,
           2832,
@@ -8408,7 +8472,8 @@ window.BENCHMARK_DATA = {
           872.4195875167846,
           1872.5473669687906,
           1893.6952691759382,
-          1420.7081732432048
+          1420.7081732432048,
+          1814.3473994391304
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8420,6 +8485,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -8578,13 +8644,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
         "message": "feat!: make ReflectionFallback.NotSupported public and move ReflectionFallback to aweXpect.Core.Extending (#2058)"
+      },
+      {
+        "sha": "359002f3dd2200217f79b751b096155f333ee583",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
+        "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
       }
     ],
     "labels": [
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
-      "6224bbce"
+      "6224bbce",
+      "359002f3"
     ],
     "datasets": [
       {
@@ -8594,7 +8667,8 @@ window.BENCHMARK_DATA = {
           1016.2116257803781,
           2014.3003243037633,
           2070.596405029297,
-          1481.0803600311278
+          1481.0803600311278,
+          2012.5685384114583
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8606,6 +8680,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2888,
           2888,
           2888,
           2888,
@@ -8627,7 +8702,8 @@ window.BENCHMARK_DATA = {
           551.5206391994769,
           1257.9757287343343,
           1238.9069358825684,
-          930.3491679600307
+          930.3491679600307,
+          1167.1190333048503
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8639,6 +8715,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -8680,13 +8757,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
         "message": "feat!: make ReflectionFallback.NotSupported public and move ReflectionFallback to aweXpect.Core.Extending (#2058)"
+      },
+      {
+        "sha": "359002f3dd2200217f79b751b096155f333ee583",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
+        "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
       }
     ],
     "labels": [
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
-      "6224bbce"
+      "6224bbce",
+      "359002f3"
     ],
     "datasets": [
       {
@@ -8696,7 +8780,8 @@ window.BENCHMARK_DATA = {
           1435.492509841919,
           2916.472061920166,
           2955.288738505046,
-          2150.8210462842667
+          2150.8210462842667,
+          2736.4124621073406
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8708,6 +8793,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          3768,
           3768,
           3768,
           3768,
@@ -8729,7 +8815,8 @@ window.BENCHMARK_DATA = {
           630.0053898493449,
           1376.41812210083,
           1355.9350490570068,
-          1031.1053128560384
+          1031.1053128560384,
+          1356.9646246592204
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8741,6 +8828,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
