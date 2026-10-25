@@ -68,6 +68,12 @@ a `TimeTolerance`. The hooks for a strategy of your own are named `Set…` and t
 `SetMatchType(matchType, nameof(ByTitle))`, or `SetMatch(match, nameof(AtTrackNumber))` on the
 `CollectionIndexOptions`, so that a second call or a conflicting option throws with that name.
 
+A result that can be stored and continued more than once, e.g. a filter of `aweXpect.Reflection`, must not change when
+a continuation sets an option. Such a result implements `ICopyOnOption<StringEqualityOptions, TSelf>` in addition to
+`IOptionsProvider<StringEqualityOptions>`: the string options then set the option on a copy of its options and pass it
+to `WithOptions(options)`, which returns a new result with them, while the result they were called on stays unchanged.
+The copy carries every option set so far, so a repeated or conflicting option still throws.
+
 In the constraint, compare with the options that `ForEvaluation(context, cancellationToken)` returns for its evaluation,
 so that the match type can use the evaluation and keep what its comparisons found. `MatchWithExplanation(actual,
 expected)` returns a `MatchResult`, which the constraint keeps for its failure message, as the options keep nothing of a

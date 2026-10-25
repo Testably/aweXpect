@@ -10,7 +10,9 @@ namespace aweXpect;
 ///     Extension methods for results that compare <see langword="string" />s with <see cref="StringEqualityOptions" />.
 /// </summary>
 /// <remarks>
-///     Each option can be specified only once, and only one match type, e.g. <c>AsWildcard()</c>, per expectation.
+///     Each option can be specified only once, and only one match type, e.g. <c>AsWildcard()</c>, per expectation.<br />
+///     A result that implements <see cref="ICopyOnOption{TOptions, TResult}" /> stays unchanged: the option is set on
+///     a copy of its options, and the result returns a new one with them.
 /// </remarks>
 public static class StringEqualityOptionsExtensions
 {
@@ -21,6 +23,11 @@ public static class StringEqualityOptionsExtensions
 	public static TResult IgnoringCase<TResult>(this TResult result, bool ignoreCase = true)
 		where TResult : IOptionsProvider<StringEqualityOptions>
 	{
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Copy().IgnoringCase(ignoreCase));
+		}
+
 		result.Options.IgnoringCase(ignoreCase);
 		return result;
 	}
@@ -38,6 +45,11 @@ public static class StringEqualityOptionsExtensions
 	public static TResult IgnoringIndentation<TResult>(this TResult result, bool ignoreIndentation = true)
 		where TResult : IOptionsProvider<StringEqualityOptions>
 	{
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Copy().IgnoringIndentation(ignoreIndentation));
+		}
+
 		result.Options.IgnoringIndentation(ignoreIndentation);
 		return result;
 	}
@@ -53,6 +65,11 @@ public static class StringEqualityOptionsExtensions
 	public static TResult IgnoringNewlineStyle<TResult>(this TResult result, bool ignoreNewlineStyle = true)
 		where TResult : IOptionsProvider<StringEqualityOptions>
 	{
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Copy().IgnoringNewlineStyle(ignoreNewlineStyle));
+		}
+
 		result.Options.IgnoringNewlineStyle(ignoreNewlineStyle);
 		return result;
 	}
@@ -70,6 +87,11 @@ public static class StringEqualityOptionsExtensions
 		bool ignoreLeadingWhiteSpace = true)
 		where TResult : IOptionsProvider<StringEqualityOptions>
 	{
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Copy().IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace));
+		}
+
 		result.Options.IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace);
 		return result;
 	}
@@ -82,6 +104,11 @@ public static class StringEqualityOptionsExtensions
 		bool ignoreTrailingWhiteSpace = true)
 		where TResult : IOptionsProvider<StringEqualityOptions>
 	{
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Copy().IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace));
+		}
+
 		result.Options.IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace);
 		return result;
 	}
@@ -100,6 +127,11 @@ public static class StringEqualityOptionsExtensions
 	public static TResult NormalizingWhiteSpace<TResult>(this TResult result, bool normalizeWhiteSpace = true)
 		where TResult : IOptionsProvider<StringEqualityOptions>
 	{
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Copy().NormalizingWhiteSpace(normalizeWhiteSpace));
+		}
+
 		result.Options.NormalizingWhiteSpace(normalizeWhiteSpace);
 		return result;
 	}
@@ -110,6 +142,11 @@ public static class StringEqualityOptionsExtensions
 	public static TResult Using<TResult>(this TResult result, IEqualityComparer<string> comparer)
 		where TResult : IOptionsProvider<StringEqualityOptions>
 	{
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Copy().Using(comparer));
+		}
+
 		result.Options.Using(comparer);
 		return result;
 	}
@@ -120,6 +157,11 @@ public static class StringEqualityOptionsExtensions
 	public static TResult AsPrefix<TResult>(this TResult result)
 		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Copy().AsPrefix());
+		}
+
 		result.Options.AsPrefix();
 		return result;
 	}
@@ -130,6 +172,11 @@ public static class StringEqualityOptionsExtensions
 	public static TResult AsRegex<TResult>(this TResult result)
 		where TResult : IOptionsProvider<StringEqualityOptions>, IStringPatternMatchTypeOptions
 	{
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Copy().AsRegex());
+		}
+
 		result.Options.AsRegex();
 		return result;
 	}
@@ -141,6 +188,11 @@ public static class StringEqualityOptionsExtensions
 	public static TResult AsRegex<TResult>(this TResult result, RegexOptions regexOptions)
 		where TResult : IOptionsProvider<StringEqualityOptions>, IStringPatternMatchTypeOptions
 	{
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Copy().AsRegex(regexOptions));
+		}
+
 		result.Options.AsRegex(regexOptions);
 		return result;
 	}
@@ -151,6 +203,11 @@ public static class StringEqualityOptionsExtensions
 	public static TResult AsSuffix<TResult>(this TResult result)
 		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Copy().AsSuffix());
+		}
+
 		result.Options.AsSuffix();
 		return result;
 	}
@@ -162,6 +219,11 @@ public static class StringEqualityOptionsExtensions
 	public static TResult AsWildcard<TResult>(this TResult result)
 		where TResult : IOptionsProvider<StringEqualityOptions>, IStringPatternMatchTypeOptions
 	{
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Copy().AsWildcard());
+		}
+
 		result.Options.AsWildcard();
 		return result;
 	}

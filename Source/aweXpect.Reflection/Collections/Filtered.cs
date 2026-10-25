@@ -24,12 +24,8 @@ public static partial class Filtered;
 ///     <c>WhichAre*</c> / <c>With*</c> / <c>Without*</c> extensions that funnel through it) returns a NEW instance via
 ///     <c>CloneWith</c>, so deriving multiple filtered views from the same base collection cannot corrupt each other.
 ///     The options on a filtered result (e.g. <c>OrWith</c>, <c>AtIndex</c> or a quantifier) also return a NEW instance
-///     and leave the one they are called on unchanged.
-///     <para />
-///     Scope boundary: the immutability guarantee covers the collection/filter level. The string equality refinements
-///     (the nested <c>StringEqualityResult</c> classes and the filters for a named parameter or generic argument) still
-///     refine their <c>StringEqualityOptions</c> via in-place mutation; that options object originates from the aweXpect
-///     core library (<c>aweXpect.Options</c>), is mutable by design, and is intentionally left as-is.
+///     and leave the one they are called on unchanged. So do the string options (e.g. <c>IgnoringCase</c>), as the
+///     results with <c>StringEqualityOptions</c> implement <see cref="aweXpect.Core.ICopyOnOption{TOptions, TResult}" />.
 /// </remarks>
 #if NET8_0_OR_GREATER
 public abstract class Filtered<T, TFiltered>

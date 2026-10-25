@@ -2717,7 +2717,7 @@ namespace aweXpect.Reflection
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWith OrWith<TAttribute>() where TAttribute : System.Attribute { }
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWith OrWith<TAttribute>(System.Func<TAttribute, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
         }
-        public class ConstructorsWithNamedParameter<T> : aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+        public class ConstructorsWithNamedParameter<T> : aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T>, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
         {
         }
         public class ConstructorsWithParameter<T> : aweXpect.Reflection.Collections.Filtered.Constructors, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions>
@@ -3011,7 +3011,7 @@ namespace aweXpect.Reflection
             public aweXpect.Reflection.MethodFilters.GenericMethodsWithArgument AtIndex(int index) { }
             public aweXpect.Reflection.MethodFilters.GenericMethodsWithArgument AtIndexFromEnd(int index) { }
         }
-        public class GenericMethodsWithNamedArgument : aweXpect.Reflection.MethodFilters.GenericMethodsWithArgument, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+        public class GenericMethodsWithNamedArgument : aweXpect.Reflection.MethodFilters.GenericMethodsWithArgument, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
         {
         }
         public sealed class InheritanceScopeResult : aweXpect.Reflection.Collections.Filtered.Methods
@@ -3031,7 +3031,7 @@ namespace aweXpect.Reflection
             public aweXpect.Reflection.MethodFilters.MethodsWith OrWith<TAttribute>() where TAttribute : System.Attribute { }
             public aweXpect.Reflection.MethodFilters.MethodsWith OrWith<TAttribute>(System.Func<TAttribute, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
         }
-        public class MethodsWithNamedParameter<T> : aweXpect.Reflection.MethodFilters.MethodsWithParameter<T>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+        public class MethodsWithNamedParameter<T> : aweXpect.Reflection.MethodFilters.MethodsWithParameter<T>, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<T>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
         {
         }
         public class MethodsWithParameter<T> : aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions>
@@ -3299,7 +3299,7 @@ namespace aweXpect.Reflection
                 public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument AtIndex(int index) { }
                 public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument AtIndexFromEnd(int index) { }
             }
-            public class GenericTypesWithNamedArgument : aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+            public class GenericTypesWithNamedArgument : aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
             }
         }
@@ -3388,7 +3388,7 @@ namespace aweXpect.Reflection.Collections
             public aweXpect.Reflection.Collections.Filtered.Types Records() { }
             public aweXpect.Reflection.Collections.Filtered.Types Structs() { }
             public aweXpect.Reflection.Collections.Filtered.Types Types() { }
-            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Assemblies, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Assemblies, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
             }
         }
@@ -3406,7 +3406,7 @@ namespace aweXpect.Reflection.Collections
                 public aweXpect.Reflection.Collections.Filtered.Events.MemberScopeResult IncludingInherited() { }
                 public aweXpect.Reflection.Collections.Filtered.Events.MemberScopeResult IncludingObjectMembers() { }
             }
-            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Events, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Events, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
             }
         }
@@ -3419,7 +3419,7 @@ namespace aweXpect.Reflection.Collections
                 public aweXpect.Reflection.Collections.Filtered.Fields.MemberScopeResult IncludingInherited() { }
                 public aweXpect.Reflection.Collections.Filtered.Fields.MemberScopeResult IncludingObjectMembers() { }
             }
-            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Fields, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Fields, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
             }
         }
@@ -3432,7 +3432,7 @@ namespace aweXpect.Reflection.Collections
                 public aweXpect.Reflection.Collections.Filtered.Methods.MemberScopeResult IncludingInherited() { }
                 public aweXpect.Reflection.Collections.Filtered.Methods.MemberScopeResult IncludingObjectMembers() { }
             }
-            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
             }
         }
@@ -3445,7 +3445,7 @@ namespace aweXpect.Reflection.Collections
                 public aweXpect.Reflection.Collections.Filtered.Properties.MemberScopeResult IncludingInherited() { }
                 public aweXpect.Reflection.Collections.Filtered.Properties.MemberScopeResult IncludingObjectMembers() { }
             }
-            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
             }
         }
@@ -3493,7 +3493,7 @@ namespace aweXpect.Reflection.Collections
                 public aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyOutsideFilterResult OrOn(System.Collections.Generic.IEnumerable<string> namespaces) { }
                 public aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyOutsideFilterResult OrOn(params string[] namespaces) { }
             }
-            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Types, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Types, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
             }
             public sealed class TypeSetDependencyFilterResult : aweXpect.Reflection.Collections.Filtered.Types

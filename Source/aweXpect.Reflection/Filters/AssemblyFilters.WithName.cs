@@ -12,10 +12,9 @@ public static partial class AssemblyFilters
 	/// </summary>
 	public static Filtered.Assemblies.StringEqualityResult WithName(this Filtered.Assemblies @this, string expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
-		return new Filtered.Assemblies.StringEqualityResult(@this.Which(Filter.Suffix<Assembly>(
+		return new Filtered.Assemblies.StringEqualityResult(@this, options => Filter.Suffix<Assembly>(
 				assembly => options.AreConsideredEqual(assembly.GetName().Name, expected),
-				() => $" with name {options.GetExpectation(expected, ExpectationGrammars.None)}")),
-			options);
+				() => $" with name {options.GetExpectation(expected, ExpectationGrammars.None)}"),
+			new StringEqualityOptions(nameof(expected)));
 	}
 }

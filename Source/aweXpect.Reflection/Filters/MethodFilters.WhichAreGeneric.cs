@@ -65,31 +65,33 @@ public static partial class MethodFilters
 		public GenericMethodsWithNamedArgument WithArgument<T>(string expected)
 		{
 			Type argumentType = typeof(T);
-			StringEqualityOptions stringEqualityOptions = new(nameof(expected));
-			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
-				(p, _) => argumentType == p.BaseType,
-				() => $"of type {Formatter.Format(typeof(T))}");
-			genericArgumentFilterOptions.AddPredicate(
-				(p, _) => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 			return new GenericMethodsWithNamedArgument(this,
-				collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions),
-				new CollectionIndexOptions(), stringEqualityOptions);
+				stringEqualityOptions =>
+				{
+					GenericArgumentFilterOptions genericArgumentFilterOptions = new(
+						(p, _) => argumentType == p.BaseType,
+						() => $"of type {Formatter.Format(typeof(T))}");
+					genericArgumentFilterOptions.AddPredicate(
+						(p, _) => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+						() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
+				},
+				new CollectionIndexOptions(), new StringEqualityOptions(nameof(expected)));
 		}
 
 		/// <summary>
 		///     …with a generic argument with the <paramref name="expected" /> name.
 		/// </summary>
 		public GenericMethodsWithNamedArgument WithArgument(string expected)
-		{
-			StringEqualityOptions stringEqualityOptions = new(nameof(expected));
-			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
-				(p, _) => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
-			return new GenericMethodsWithNamedArgument(this,
-				collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions),
-				new CollectionIndexOptions(), stringEqualityOptions);
-		}
+			=> new(this,
+				stringEqualityOptions =>
+				{
+					GenericArgumentFilterOptions genericArgumentFilterOptions = new(
+						(p, _) => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+						() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
+				},
+				new CollectionIndexOptions(), new StringEqualityOptions(nameof(expected)));
 
 		private static IFilter<MethodInfo> WithArgumentFilter(GenericArgumentFilterOptions genericArgumentFilterOptions,
 			CollectionIndexOptions collectionIndexOptions)
@@ -153,21 +155,33 @@ public static partial class MethodFilters
 	public class GenericMethodsWithNamedArgument
 		: GenericMethodsWithArgument,
 			IOptionsProvider<StringEqualityOptions>,
-			IStringMatchTypeOptions
+			IStringMatchTypeOptions,
+			ICopyOnOption<StringEqualityOptions, GenericMethodsWithNamedArgument>
 	{
+		private readonly CollectionIndexOptions _collectionIndexOptions;
+		private readonly Func<StringEqualityOptions, Func<CollectionIndexOptions, IFilter<MethodInfo>>> _createFilter;
 		private readonly StringEqualityOptions _options;
+		private readonly Filtered.Methods _source;
 
 		internal GenericMethodsWithNamedArgument(
 			Filtered.Methods source,
-			Func<CollectionIndexOptions, IFilter<MethodInfo>> createFilter,
+			Func<StringEqualityOptions, Func<CollectionIndexOptions, IFilter<MethodInfo>>> createFilter,
 			CollectionIndexOptions collectionIndexOptions,
 			StringEqualityOptions options)
-			: base(source, createFilter, collectionIndexOptions)
+			: base(source, createFilter(options), collectionIndexOptions)
 		{
+			_source = source;
+			_createFilter = createFilter;
+			_collectionIndexOptions = collectionIndexOptions;
 			_options = options;
 		}
 
 		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
+
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		GenericMethodsWithNamedArgument ICopyOnOption<StringEqualityOptions, GenericMethodsWithNamedArgument>.WithOptions(
+			StringEqualityOptions options)
+			=> new(_source, _createFilter, _collectionIndexOptions, options);
 	}
 }

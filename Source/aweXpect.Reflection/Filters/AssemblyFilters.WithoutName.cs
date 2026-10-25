@@ -13,10 +13,9 @@ public static partial class AssemblyFilters
 	public static Filtered.Assemblies.StringEqualityResult WithoutName(this Filtered.Assemblies @this,
 		string unexpected)
 	{
-		StringEqualityOptions options = new(nameof(unexpected));
-		return new Filtered.Assemblies.StringEqualityResult(@this.Which(Filter.Suffix<Assembly>(
+		return new Filtered.Assemblies.StringEqualityResult(@this, options => Filter.Suffix<Assembly>(
 				async assembly => !await options.AreConsideredEqual(assembly.GetName().Name, unexpected),
-				() => $" without name {options.GetExpectation(unexpected, ExpectationGrammars.None)}")),
-			options);
+				() => $" without name {options.GetExpectation(unexpected, ExpectationGrammars.None)}"),
+			new StringEqualityOptions(nameof(unexpected)));
 	}
 }
