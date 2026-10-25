@@ -19,17 +19,17 @@ public static partial class ThatEventRecording
 		string it,
 		ExpectationGrammars grammars,
 		string eventName,
-		TriggerEventFilter filter,
+		OptionsSlot<TriggerEventFilter> filter,
 		OptionsSlot<Quantifier> quantifier,
 		OptionsSlot<RepeatedCheckOptions> options)
 		: ConstraintResult(grammars),
 			IAsyncContextConstraint<IEventRecording<TSubject>>
 		where TSubject : notnull
 	{
-		private readonly Func<object?[], bool> _isMatch = filter.IsMatch;
 		private IEventRecording<TSubject>? _actual;
 		private Func<IEventRecordingResult, bool>? _areFound;
 		private bool _isNegated;
+		private Func<object?[], bool>? _isMatch;
 		private IEventRecordingResult? _result;
 		private bool _stoppedEarly;
 		private TimeSpan? _waitedTime;
@@ -45,6 +45,7 @@ public static partial class ThatEventRecording
 				return this;
 			}
 
+			_isMatch = filter.Value.IsMatch;
 			long? startTimestamp = options.Value.IsRepeated ? context.GetTimestamp() : null;
 			_result = await actual.StopWhen(_areFound ??= AreFound, options.Value.Timeout, context, cancellationToken);
 			int eventCount = _result.GetEventCount(eventName, _isMatch);
@@ -90,7 +91,7 @@ public static partial class ThatEventRecording
 		}
 
 		private bool AreFound(IEventRecordingResult result)
-			=> quantifier.Value.Check(result.GetEventCount(eventName, _isMatch), false) != null;
+			=> quantifier.Value.Check(result.GetEventCount(eventName, _isMatch!), false) != null;
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{

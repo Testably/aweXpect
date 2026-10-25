@@ -14,9 +14,9 @@ public class RepeatedCheckOptionsTests
 	public async Task CheckEvery_WhenIntervalIsSpecified_ShouldUseTheLastInterval()
 	{
 		RepeatedCheckOptions sut = new();
-		sut.CheckEvery(10.Milliseconds());
+		sut = sut.CheckEvery(10.Milliseconds());
 
-		sut.CheckEvery(20.Milliseconds());
+		sut = sut.CheckEvery(20.Milliseconds());
 
 		await That(sut.Interval).IsEqualTo(20.Milliseconds());
 	}
@@ -27,7 +27,7 @@ public class RepeatedCheckOptionsTests
 		RepeatedCheckOptions sut = new();
 		_ = sut.Interval;
 
-		void Act() => sut.CheckEvery(20.Milliseconds());
+		void Act() => sut = sut.CheckEvery(20.Milliseconds());
 
 		await That(Act).DoesNotThrow()
 			.Because("the customized default interval is not an explicit interval");
@@ -38,7 +38,7 @@ public class RepeatedCheckOptionsTests
 	public async Task CheckRepeatedly_WhenIntervalIsNotPositive_ShouldYieldBetweenChecks()
 	{
 		RepeatedCheckOptions sut = new();
-		sut.Within(Timeout.InfiniteTimeSpan);
+		sut = sut.Within(Timeout.InfiniteTimeSpan);
 		bool isMet = false;
 		ValueTask<Outcome> result;
 		using (((IAwexpectCustomization)Customize.aweXpect).Set("aweXpect.Settings.DefaultCheckInterval",
@@ -92,7 +92,7 @@ public class RepeatedCheckOptionsTests
 	public async Task ToString_WhenTimeoutIsZero_ShouldIncludeTheTimeout()
 	{
 		RepeatedCheckOptions sut = new();
-		sut.Within(TimeSpan.Zero);
+		sut = sut.Within(TimeSpan.Zero);
 
 		string result = sut.ToString();
 
@@ -104,9 +104,9 @@ public class RepeatedCheckOptionsTests
 	public async Task Within_WhenTimeoutIsSpecified_ShouldUseTheLastTimeout()
 	{
 		RepeatedCheckOptions sut = new();
-		sut.Within(1.Seconds());
+		sut = sut.Within(1.Seconds());
 
-		sut.Within(2.Seconds());
+		sut = sut.Within(2.Seconds());
 
 		await That(sut.Timeout).IsEqualTo(2.Seconds());
 		await That(sut.ToString()).IsEqualTo(" within 0:02");

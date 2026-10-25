@@ -9,38 +9,44 @@ namespace aweXpect.Options;
 /// <summary>
 ///     Options for the execution time of a delegate.
 /// </summary>
-public class ExecutionTimeOptions : ITimeoutBound
+/// <remarks>
+///     An immutable value: the option methods return new options, and <see langword="default" /> has no limit, like
+///     <see cref="Default" />.
+/// </remarks>
+public readonly struct ExecutionTimeOptions
 {
-	private Limit? _limit;
-	private string? _limitOption;
-	private ExpectationBuilder? _timeoutBuilder;
-	private TimeSpan? _upperBound;
+	/// <summary>
+	///     The limit, which also names its option and knows its upper bound, so that the value needs no further state.
+	/// </summary>
+	private readonly Limit? _limit;
+
+	private ExecutionTimeOptions(Limit? limit, bool areExceptionsAllowed)
+	{
+		_limit = limit;
+		AreExceptionsAllowed = areExceptionsAllowed;
+	}
+
+	/// <summary>
+	///     The options without a limit.
+	/// </summary>
+	public static ExecutionTimeOptions Default => default;
 
 	/// <summary>
 	///     Flag indicating if a thrown exception leaves the outcome to the measured duration.
 	/// </summary>
-	internal bool AreExceptionsAllowed { get; private set; }
-
-	/// <inheritdoc cref="ITimeoutBound.UpperBound" />
-	TimeSpan? ITimeoutBound.UpperBound => _upperBound;
+	internal bool AreExceptionsAllowed { get; }
 
 	/// <summary>
-	///     Limits the evaluation of the <paramref name="expectationBuilder" /> by the upper bound of the limit, once a
-	///     limit with an upper bound is set.
+	///     The upper bound of the limit, which also limits the evaluation, or <see langword="null" /> if it has none.
 	/// </summary>
-	/// <remarks>
-	///     The builder reads the upper bound when the evaluation starts, so that a later limit replaces the bound of an
-	///     earlier one. It is only added to the builder with the first upper bound, so that a limit without one adds
-	///     nothing to the expectation.
-	/// </remarks>
-	internal void ApplyUpperBoundTo(ExpectationBuilder expectationBuilder) => _timeoutBuilder = expectationBuilder;
+	internal TimeSpan? UpperBound => _limit?.UpperBound;
 
 	/// <summary>
 	///     Allows the delegate to throw an exception without failing the expectation,
 	///     according to the <paramref name="allowExceptions" /> parameter.
 	/// </summary>
-	internal void AllowingExceptions(bool allowExceptions)
-		=> AreExceptionsAllowed = allowExceptions;
+	internal ExecutionTimeOptions AllowingExceptions(bool allowExceptions)
+		=> new(_limit, allowExceptions);
 
 	/// <summary>
 	///     Checks if the <paramref name="exception" /> leaves the outcome to the measured duration.
@@ -75,7 +81,7 @@ public class ExecutionTimeOptions : ITimeoutBound
 	///     limit on its own.
 	/// </remarks>
 	internal bool JudgesLateResult(TimeSpan timeout, TimeSpan duration)
-		=> timeout >= _upperBound || !IsWithinLimit(duration);
+		=> timeout >= UpperBound || !IsWithinLimit(duration);
 
 	/// <summary>
 	///     Appends the failure result text of the <paramref name="actual" /> value to the <paramref name="stringBuilder" />.
@@ -96,9 +102,7 @@ public class ExecutionTimeOptions : ITimeoutBound
 	public ExecutionTimeOptions Within(TimeSpan duration)
 	{
 		ThrowHelper.ThrowIfDurationIsNegative(duration);
-		SetLimit(new MaximumLimit(duration, true), nameof(Within));
-		SetUpperBound(duration);
-		return this;
+		return WithLimit(new MaximumLimit(duration, true));
 	}
 
 	/// <summary>
@@ -108,9 +112,7 @@ public class ExecutionTimeOptions : ITimeoutBound
 	public ExecutionTimeOptions AtMost(TimeSpan maximum)
 	{
 		ThrowHelper.ThrowIfDurationIsNegative(maximum);
-		SetLimit(new MaximumLimit(maximum), nameof(AtMost));
-		SetUpperBound(maximum);
-		return this;
+		return WithLimit(new MaximumLimit(maximum));
 	}
 
 	/// <summary>
@@ -120,8 +122,7 @@ public class ExecutionTimeOptions : ITimeoutBound
 	public ExecutionTimeOptions AtLeast(TimeSpan minimum)
 	{
 		ThrowHelper.ThrowIfDurationIsNegative(minimum);
-		SetLimit(new MinimumLimit(minimum), nameof(AtLeast));
-		return this;
+		return WithLimit(new MinimumLimit(minimum));
 	}
 
 	/// <summary>
@@ -133,11 +134,10 @@ public class ExecutionTimeOptions : ITimeoutBound
 	///     the <paramref name="tolerance" />.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
-	internal void Approximately(TimeSpan expected, TimeSpan tolerance)
+	internal ExecutionTimeOptions Approximately(TimeSpan expected, TimeSpan tolerance)
 	{
 		ToleranceHelpers.ThrowIfInvalid(tolerance);
-		SetLimit(new ApproximatelyLimit(expected, tolerance), nameof(ExecutesInToleranceResult<>.Within));
-		SetUpperBound(tolerance > TimeSpan.MaxValue - expected ? TimeSpan.MaxValue : expected + tolerance);
+		return WithLimit(new ApproximatelyLimit(expected, tolerance));
 	}
 
 	/// <summary>
@@ -149,30 +149,25 @@ public class ExecutionTimeOptions : ITimeoutBound
 		ThrowHelper.ThrowIfDurationIsNegative(minimum);
 		ThrowHelper.ThrowIfDurationIsNegative(maximum);
 		ThrowHelper.ThrowIfMaximumIsBelowMinimum<TimeSpan>(minimum, maximum);
-		SetLimit(new BetweenLimit(minimum, maximum), nameof(Between));
-		SetUpperBound(maximum);
-		return this;
+		return WithLimit(new BetweenLimit(minimum, maximum));
 	}
 
 	/// <summary>
-	///     Replaces the limit of the same <paramref name="option" />, but rejects a limit of another option, because it
-	///     would silently replace the first one.
+	///     Replaces the limit of the same option, but rejects a limit of another option, because it would silently
+	///     replace the first one.
 	/// </summary>
-	private void SetLimit(Limit limit, string option)
+	private ExecutionTimeOptions WithLimit(Limit limit)
 	{
-		ThrowHelper.ThrowIfCompetingOption(_limitOption, option);
-		_limitOption = option;
-		_limit = limit;
-	}
-
-	private void SetUpperBound(TimeSpan upperBound)
-	{
-		_upperBound = upperBound;
-		_timeoutBuilder?.AddTimeoutBound(this);
+		ThrowHelper.ThrowIfCompetingOption(_limit?.Option, limit.Option);
+		return new ExecutionTimeOptions(limit, AreExceptionsAllowed);
 	}
 
 	private abstract record Limit
 	{
+		public abstract string Option { get; }
+
+		public virtual TimeSpan? UpperBound => null;
+
 		public abstract bool IsWithinLimit(TimeSpan actual);
 
 		public virtual void AppendFailureResult(StringBuilder stringBuilder, TimeSpan actual)
@@ -183,6 +178,11 @@ public class ExecutionTimeOptions : ITimeoutBound
 
 	private sealed record ApproximatelyLimit(TimeSpan Expected, TimeSpan Tolerance) : Limit
 	{
+		public override string Option => nameof(ExecutesInToleranceResult<>.Within);
+
+		public override TimeSpan? UpperBound
+			=> Tolerance > TimeSpan.MaxValue - Expected ? TimeSpan.MaxValue : Expected + Tolerance;
+
 		public override bool IsWithinLimit(TimeSpan actual)
 			=> (actual >= Expected ? actual - Expected : Expected - actual) <= Tolerance;
 
@@ -207,6 +207,10 @@ public class ExecutionTimeOptions : ITimeoutBound
 
 	private sealed record BetweenLimit(TimeSpan Minimum, TimeSpan Maximum) : Limit
 	{
+		public override string Option => nameof(Between);
+
+		public override TimeSpan? UpperBound => Maximum;
+
 		public override bool IsWithinLimit(TimeSpan actual)
 			=> actual >= Minimum && actual <= Maximum;
 
@@ -232,6 +236,8 @@ public class ExecutionTimeOptions : ITimeoutBound
 
 	private sealed record MinimumLimit(TimeSpan Minimum) : Limit
 	{
+		public override string Option => nameof(AtLeast);
+
 		public override bool IsWithinLimit(TimeSpan actual)
 			=> actual >= Minimum;
 
@@ -251,6 +257,10 @@ public class ExecutionTimeOptions : ITimeoutBound
 
 	private sealed record MaximumLimit(TimeSpan Maximum, bool IsWithin = false) : Limit
 	{
+		public override string Option => IsWithin ? nameof(Within) : nameof(AtMost);
+
+		public override TimeSpan? UpperBound => Maximum;
+
 		public override bool IsWithinLimit(TimeSpan actual)
 			=> actual <= Maximum;
 

@@ -48,7 +48,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_options.Value.SetPredicate(predicate,
+		_options.Value = _options.Value.SetPredicate(predicate,
 			$" matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new AsyncSingleMatchingItemResult<TCollection, TItem>(ExpectationBuilder, _source.GetAsync<TCollection>);
 	}
@@ -58,7 +58,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	/// </summary>
 	public AsyncSingleMatchingItemResult<TCollection, T> Matching<T>()
 	{
-		_options.Value.SetPredicate(item => item is T,
+		_options.Value = _options.Value.SetPredicate(item => item is T,
 			$" of type {Formatter.Format(typeof(T))}");
 		return Cast<T>(x => (T)(object)x!);
 	}
@@ -71,7 +71,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_options.Value.SetPredicate(item => item is T typed && predicate(typed),
+		_options.Value = _options.Value.SetPredicate(item => item is T typed && predicate(typed),
 			$" of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return Cast<T>(x => (T)(object)x!);
 	}
@@ -82,7 +82,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	public AsyncSingleMatchingItemResult<TCollection, T> MatchingExactly<T>()
 	{
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
-		_options.Value.SetPredicate(item => item is T && item.GetType() == exactType,
+		_options.Value = _options.Value.SetPredicate(item => item is T && item.GetType() == exactType,
 			$" exactly of type {Formatter.Format(typeof(T))}");
 		return Cast<T>(x => (T)(object)x!);
 	}
@@ -96,7 +96,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	{
 		predicate.ThrowIfNull();
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
-		_options.Value.SetPredicate(item => item is T typed && item.GetType() == exactType && predicate(typed),
+		_options.Value = _options.Value.SetPredicate(item => item is T typed && item.GetType() == exactType && predicate(typed),
 			$" exactly of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return Cast<T>(x => (T)(object)x!);
 	}

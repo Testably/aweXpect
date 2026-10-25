@@ -24,7 +24,7 @@ public static partial class ThatSignaler
 		this IThat<Signaler> subject)
 	{
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<SignalerOptions> options = new(new SignalerOptions());
+		OptionsSlot<SignalerOptions> options = new(SignalerOptions.Default);
 		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint(
 				(Quantifier: quantifier, Options: options),
 				static (state, it, grammars)
@@ -42,8 +42,8 @@ public static partial class ThatSignaler
 		this IThat<Signaler<TParameter>> subject)
 	{
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<SignalerOptions> options = new(new SignalerOptions());
-		OptionsSlot<SignalerPredicateOptions<TParameter>> predicates = new(new SignalerPredicateOptions<TParameter>());
+		OptionsSlot<SignalerOptions> options = new(SignalerOptions.Default);
+		OptionsSlot<SignalerPredicateOptions<TParameter>> predicates = new(SignalerPredicateOptions<TParameter>.Default);
 		return new SignalCountWhoseResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint(
 				(Quantifier: quantifier, Options: options, Predicates: predicates),
 				static (state, it, grammars)
@@ -67,7 +67,7 @@ public static partial class ThatSignaler
 		ThrowHelper.ThrowIfTimesIsNotPositive(times);
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		quantifier.AtLeast(times.Value);
-		OptionsSlot<SignalerOptions> options = new(new SignalerOptions());
+		OptionsSlot<SignalerOptions> options = new(SignalerOptions.Default);
 		return new SignaledResult(subject.Get().ExpectationBuilder.AddConstraint(
 				(Quantifier: quantifier, Options: options),
 				static (state, it, grammars)
@@ -88,8 +88,8 @@ public static partial class ThatSignaler
 		ThrowHelper.ThrowIfTimesIsNotPositive(times);
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		quantifier.AtLeast(times.Value);
-		OptionsSlot<SignalerOptions> options = new(new SignalerOptions());
-		OptionsSlot<SignalerPredicateOptions<TParameter>> predicates = new(new SignalerPredicateOptions<TParameter>());
+		OptionsSlot<SignalerOptions> options = new(SignalerOptions.Default);
+		OptionsSlot<SignalerPredicateOptions<TParameter>> predicates = new(SignalerPredicateOptions<TParameter>.Default);
 		return new SignaledWhoseResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint(
 				(Quantifier: quantifier, Options: options, Predicates: predicates),
 				static (state, it, grammars)
@@ -115,7 +115,7 @@ public static partial class ThatSignaler
 		this IThat<Signaler> subject)
 	{
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<SignalerOptions> options = new(new SignalerOptions());
+		OptionsSlot<SignalerOptions> options = new(SignalerOptions.Default);
 		return new DidNotSignalResult(subject.Get().ExpectationBuilder.AddConstraint(
 				(Quantifier: quantifier, Options: options),
 				static (state, it, grammars)
@@ -140,8 +140,8 @@ public static partial class ThatSignaler
 		this IThat<Signaler<TParameter>> subject)
 	{
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<SignalerOptions> options = new(new SignalerOptions());
-		OptionsSlot<SignalerPredicateOptions<TParameter>> predicates = new(new SignalerPredicateOptions<TParameter>());
+		OptionsSlot<SignalerOptions> options = new(SignalerOptions.Default);
+		OptionsSlot<SignalerPredicateOptions<TParameter>> predicates = new(SignalerPredicateOptions<TParameter>.Default);
 		return new DidNotSignalResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint(
 				(Quantifier: quantifier, Options: options, Predicates: predicates),
 				static (state, it, grammars)
@@ -171,7 +171,7 @@ public static partial class ThatSignaler
 		ThrowHelper.ThrowIfTimesIsNotPositive(times);
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		quantifier.AtLeast(times.Value);
-		OptionsSlot<SignalerOptions> options = new(new SignalerOptions());
+		OptionsSlot<SignalerOptions> options = new(SignalerOptions.Default);
 		return new DidNotSignalResult(subject.Get().ExpectationBuilder.AddConstraint(
 				(Quantifier: quantifier, Options: options),
 				static (state, it, grammars)
@@ -201,8 +201,8 @@ public static partial class ThatSignaler
 		ThrowHelper.ThrowIfTimesIsNotPositive(times);
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		quantifier.AtLeast(times.Value);
-		OptionsSlot<SignalerOptions> options = new(new SignalerOptions());
-		OptionsSlot<SignalerPredicateOptions<TParameter>> predicates = new(new SignalerPredicateOptions<TParameter>());
+		OptionsSlot<SignalerOptions> options = new(SignalerOptions.Default);
+		OptionsSlot<SignalerPredicateOptions<TParameter>> predicates = new(SignalerPredicateOptions<TParameter>.Default);
 		return new DidNotSignalResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint(
 				(Quantifier: quantifier, Options: options, Predicates: predicates),
 				static (state, it, grammars)

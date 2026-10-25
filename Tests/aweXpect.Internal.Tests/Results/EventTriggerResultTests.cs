@@ -12,7 +12,7 @@ public sealed class EventTriggerResultTests
 	public async Task ShouldBeOptionsProvider_ForQuantifier()
 	{
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		RepeatedCheckOptions options = new();
+		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		EventTriggerResult<EventTriggerResultTests> sut = CreateSut(new EventTriggerResultTests(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
@@ -23,11 +23,11 @@ public sealed class EventTriggerResultTests
 	public async Task ShouldBeOptionsProvider_ForRepeatedCheckOptions()
 	{
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		RepeatedCheckOptions options = new();
+		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		EventTriggerResult<EventTriggerResultTests> sut = CreateSut(new EventTriggerResultTests(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<RepeatedCheckOptions>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
+			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
 	[Test]
@@ -361,20 +361,19 @@ public sealed class EventTriggerResultTests
 			             """);
 	}
 
-	private static EventTriggerResult<T> CreateSut<T>(T subject, OptionsSlot<Quantifier> quantifier, RepeatedCheckOptions options,
-		TriggerEventFilter? filter = null)
+	private static EventTriggerResult<T> CreateSut<T>(T subject, OptionsSlot<Quantifier> quantifier,
+		OptionsSlot<RepeatedCheckOptions> options)
 		where T : notnull
 	{
 		RecordingFactory<T> recording = new(subject, nameof(subject));
-		filter ??= new TriggerEventFilter();
 #pragma warning disable aweXpect0001
 		IThat<IEventRecording<T>> source = That(recording.Events());
 #pragma warning restore aweXpect0001
 		return new EventTriggerResult<T>(source.Get().ExpectationBuilder,
 			source,
-			filter,
+			new OptionsSlot<TriggerEventFilter>(TriggerEventFilter.Default),
 			quantifier,
-			new OptionsSlot<RepeatedCheckOptions>(options));
+			options);
 	}
 
 	private sealed class CustomEventWithParametersClass<T1>

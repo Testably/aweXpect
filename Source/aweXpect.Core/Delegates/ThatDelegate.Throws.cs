@@ -137,8 +137,7 @@ public abstract partial class ThatDelegate
 				return this;
 			}
 
-			if (options.ExecutionTimeOptions is not null &&
-			    !options.ExecutionTimeOptions.IsWithinLimit(value.Duration))
+			if (options.ExecutionTimeOptions is { } limit && !limit.IsWithinLimit(value.Duration))
 			{
 				_tookTooLong = true;
 				Outcome = Outcome.Failure;

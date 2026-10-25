@@ -178,7 +178,7 @@ public sealed class RepeatedCheckExtensionTests
 	{
 		RepeatedCheckOptions options = new();
 
-		options.Within(TimeSpan.FromMilliseconds(timeoutMilliseconds));
+		options = options.Within(TimeSpan.FromMilliseconds(timeoutMilliseconds));
 
 		await That(options.IsRepeated).IsEqualTo(expected)
 			.Because("a zero timeout leaves no time for another check, and -1 ms is the infinite timeout");

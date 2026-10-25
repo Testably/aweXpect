@@ -16,10 +16,36 @@ namespace aweXpect.Options;
 /// <summary>
 ///     The options for a <see cref="RepeatedCheckResult{TType,TThat}" />.
 /// </summary>
-public class RepeatedCheckOptions
+/// <remarks>
+///     An immutable value: the option methods return new options, and <see langword="default" /> checks once with the
+///     default interval, like <see cref="Default" />.
+/// </remarks>
+public readonly struct RepeatedCheckOptions
 {
-	private TimeSpan? _interval;
-	private bool _isTimeoutSpecified;
+	/// <summary>
+	///     The ticks of the interval, or <c>0</c> for the default interval, which is never a valid interval.
+	/// </summary>
+	private readonly long _interval;
+
+	/// <summary>
+	///     The complement of the ticks of the timeout, or <c>0</c> without a specified timeout.
+	/// </summary>
+	/// <remarks>
+	///     The complement of a valid timeout is never <c>0</c>, as that would be a negative timeout of one tick, so an
+	///     explicit timeout of zero is still named in the expectation.
+	/// </remarks>
+	private readonly long _timeout;
+
+	private RepeatedCheckOptions(long timeout, long interval)
+	{
+		_timeout = timeout;
+		_interval = interval;
+	}
+
+	/// <summary>
+	///     The options that check the condition once.
+	/// </summary>
+	public static RepeatedCheckOptions Default => default;
 
 	/// <summary>
 	///     The interval in which the condition should be checked.
@@ -27,7 +53,9 @@ public class RepeatedCheckOptions
 	/// <remarks>
 	///     Defaults to the current <c>Customize.aweXpect.Settings().DefaultCheckInterval</c> if not specified.
 	/// </remarks>
-	public TimeSpan Interval => _interval ?? Customize.aweXpect.Settings().DefaultCheckInterval.Get();
+	public TimeSpan Interval => _interval == 0
+		? Customize.aweXpect.Settings().DefaultCheckInterval.Get()
+		: new TimeSpan(_interval);
 
 	/// <summary>
 	///     The timeout until the condition must be met.
@@ -35,7 +63,7 @@ public class RepeatedCheckOptions
 	/// <remarks>
 	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> checks the condition again until it is met.
 	/// </remarks>
-	public TimeSpan Timeout { get; private set; } = TimeSpan.Zero;
+	public TimeSpan Timeout => _timeout == 0 ? TimeSpan.Zero : new TimeSpan(~_timeout);
 
 	/// <summary>
 	///     Whether <see cref="CheckRepeatedly" /> checks the condition again after the first check.
@@ -59,9 +87,7 @@ public class RepeatedCheckOptions
 	public RepeatedCheckOptions Within(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		_isTimeoutSpecified = true;
-		Timeout = timeout;
-		return this;
+		return new RepeatedCheckOptions(~timeout.Ticks, _interval);
 	}
 
 	/// <summary>
@@ -79,8 +105,7 @@ public class RepeatedCheckOptions
 			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(interval), "The interval must be positive."));
 		}
 
-		_interval = interval;
-		return this;
+		return new RepeatedCheckOptions(_timeout, interval.Ticks);
 	}
 
 	/// <summary>
@@ -216,7 +241,7 @@ public class RepeatedCheckOptions
 	/// </remarks>
 	public override string ToString()
 	{
-		if (!_isTimeoutSpecified || IsInfinite)
+		if (_timeout == 0 || IsInfinite)
 		{
 			return "";
 		}

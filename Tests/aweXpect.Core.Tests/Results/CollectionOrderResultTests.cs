@@ -10,15 +10,15 @@ public sealed class CollectionOrderResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForCollectionOrderOptions()
 	{
-		CollectionOrderOptions<int> options = new();
+		OptionsSlot<CollectionOrderOptions<int>> options = new(CollectionOrderOptions<int>.Default);
 		CollectionOrderResult<int[], IThat<int[]>, int> sut = CreateSut(Array.Empty<int>(), options);
 
 		await That(sut).Is<IOptionsProvider<CollectionOrderOptions<int>>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
+			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
 	private static CollectionOrderResult<T, IThat<T>, TMember> CreateSut<T, TMember>(T subject,
-		CollectionOrderOptions<TMember> options)
+		OptionsSlot<CollectionOrderOptions<TMember>> options)
 	{
 #pragma warning disable aweXpect0001
 		IThat<T> source = That(subject);
@@ -26,6 +26,6 @@ public sealed class CollectionOrderResultTests
 		return new CollectionOrderResult<T, IThat<T>, TMember>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			new OptionsSlot<CollectionOrderOptions<TMember>>(options));
+			options);
 	}
 }

@@ -12,22 +12,22 @@ public static class MyRepeatedCheckExtensions
 {
 	public static RepeatedCheckResult<Probe, IThat<Probe>> DoesNotReturnPositive(this IThat<Probe> subject)
 	{
-		RepeatedCheckOptions options = new();
+		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new RepeatedCheckResult<Probe, IThat<Probe>>(((IExpectThat<Probe>)subject).ExpectationBuilder
 			.AddConstraint((it, grammars)
 				=> new ReturnsPositiveConstraint(it, grammars, options).Invert()),
 			subject,
-			new OptionsSlot<RepeatedCheckOptions>(options));
+			options);
 	}
 
 	public static RepeatedCheckResult<Probe, IThat<Probe>> ReturnsPositive(this IThat<Probe> subject)
 	{
-		RepeatedCheckOptions options = new();
+		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new RepeatedCheckResult<Probe, IThat<Probe>>(((IExpectThat<Probe>)subject).ExpectationBuilder
 			.AddConstraint((it, grammars)
 				=> new ReturnsPositiveConstraint(it, grammars, options)),
 			subject,
-			new OptionsSlot<RepeatedCheckOptions>(options));
+			options);
 	}
 
 	public sealed class Probe(Func<int> read)
@@ -38,7 +38,7 @@ public static class MyRepeatedCheckExtensions
 	private sealed class ReturnsPositiveConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		RepeatedCheckOptions options)
+		OptionsSlot<RepeatedCheckOptions> options)
 		: ConstraintResult.WithNotNullValue<Probe>(it, grammars),
 			IAsyncContextConstraint<Probe>
 	{
@@ -48,7 +48,7 @@ public static class MyRepeatedCheckExtensions
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome outcome = await options.CheckRepeatedly(_ =>
+			Outcome outcome = await options.Value.CheckRepeatedly(_ =>
 			{
 				_returned = UserCode.Invoke(actual.Read, "the probe");
 				Outcome = _returned > 0 ? Outcome.Success : Outcome.Failure;

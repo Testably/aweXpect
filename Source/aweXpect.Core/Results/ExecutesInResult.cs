@@ -1,5 +1,6 @@
 ﻿using System;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 using aweXpect.Options;
 
 namespace aweXpect.Results;
@@ -7,13 +8,22 @@ namespace aweXpect.Results;
 /// <summary>
 ///     The result of an execution time expectation with no underlying value.
 /// </summary>
+/// <remarks>
+///     An option with an upper bound also limits the evaluation of the <paramref name="expectationBuilder" />: the
+///     result adds itself as timeout bound, which reads the options when the evaluation starts, so that a later option
+///     replaces the bound of an earlier one.
+/// </remarks>
 public class ExecutesInResult<TResult>(
+	ExpectationBuilder expectationBuilder,
 	TResult returnValue,
 	OptionsSlot<ExecutionTimeOptions> options)
-	: IOptionsProvider<ExecutionTimeOptions>
+	: IOptionsProvider<ExecutionTimeOptions>, ITimeoutBound
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	OptionsSlot<ExecutionTimeOptions> IOptionsProvider<ExecutionTimeOptions>.Options => options;
+
+	/// <inheritdoc cref="ITimeoutBound.UpperBound" />
+	TimeSpan? ITimeoutBound.UpperBound => options.Value.UpperBound;
 
 	/// <summary>
 	///     …allowing the delegate to throw an exception, measuring the duration until it did so,
@@ -24,7 +34,7 @@ public class ExecutesInResult<TResult>(
 	/// </remarks>
 	public ExecutesInResult<TResult> AllowingExceptions(bool allowExceptions = true)
 	{
-		options.Value.AllowingExceptions(allowExceptions);
+		options.Value = options.Value.AllowingExceptions(allowExceptions);
 		return this;
 	}
 
@@ -35,6 +45,7 @@ public class ExecutesInResult<TResult>(
 	public TResult AtMost(TimeSpan maximum)
 	{
 		options.AtMost(maximum);
+		expectationBuilder.AddTimeoutBound(this);
 		return returnValue;
 	}
 
@@ -54,6 +65,7 @@ public class ExecutesInResult<TResult>(
 	public BetweenResult<TResult, TimeSpan> Between(TimeSpan minimum) => new(maximum =>
 	{
 		options.Between(minimum, maximum);
+		expectationBuilder.AddTimeoutBound(this);
 		return returnValue;
 	});
 }

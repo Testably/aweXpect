@@ -20,8 +20,8 @@ public static partial class ThatEventRecording
 		where TSubject : INotifyPropertyChanged
 	{
 		OptionsSlot<Options.Quantifier> quantifier = new(new Options.Quantifier());
-		TriggerEventFilter filter = new();
-		OptionsSlot<RepeatedCheckOptions> options = new(new RepeatedCheckOptions());
+		OptionsSlot<TriggerEventFilter> filter = new(TriggerEventFilter.Default);
+		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint((Filter: filter, Quantifier: quantifier, Options: options),
 				static (state, it, grammars)
@@ -49,8 +49,8 @@ public static partial class ThatEventRecording
 		where TSubject : INotifyPropertyChanged
 	{
 		OptionsSlot<Options.Quantifier> quantifier = new(new Options.Quantifier());
-		TriggerEventFilter filter = new();
-		OptionsSlot<RepeatedCheckOptions> options = new(new RepeatedCheckOptions());
+		OptionsSlot<TriggerEventFilter> filter = new(TriggerEventFilter.Default);
+		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint((Filter: filter, Quantifier: quantifier, Options: options),
 				static (state, it, grammars)

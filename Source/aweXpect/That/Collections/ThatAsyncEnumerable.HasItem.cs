@@ -35,7 +35,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
-		OptionsSlot<PredicateOptions<TItem>> options = new(new PredicateOptions<TItem>());
+		OptionsSlot<PredicateOptions<TItem>> options = new(PredicateOptions<TItem>.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemWithConditionResult<IAsyncEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint((Options: options, IndexOptions: indexOptions, Negated: negated),

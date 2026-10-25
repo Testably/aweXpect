@@ -7,9 +7,23 @@ namespace aweXpect.Options;
 /// <summary>
 ///     The options for specifying a <see cref="IComparer{TItem}" /> to use to compare the order of items.
 /// </summary>
-public class CollectionOrderOptions<TItem>
+/// <remarks>
+///     An immutable value: <see cref="SetComparer(IComparer{TItem})" /> returns new options, and
+///     <see langword="default" /> uses the default comparer, like <see cref="Default" />.
+/// </remarks>
+public readonly struct CollectionOrderOptions<TItem>
 {
-	private IComparer<TItem>? _comparer;
+	private readonly IComparer<TItem>? _comparer;
+
+	private CollectionOrderOptions(IComparer<TItem> comparer)
+	{
+		_comparer = comparer;
+	}
+
+	/// <summary>
+	///     The options that compare the order with the default comparer.
+	/// </summary>
+	public static CollectionOrderOptions<TItem> Default => default;
 
 	/// <summary>
 	///     Indicates whether a comparer was specified.
@@ -30,8 +44,7 @@ public class CollectionOrderOptions<TItem>
 	public CollectionOrderOptions<TItem> SetComparer(IComparer<TItem> comparer)
 	{
 		comparer.ThrowIfNull();
-		_comparer = comparer;
-		return this;
+		return new CollectionOrderOptions<TItem>(comparer);
 	}
 
 	private static IComparer<TItem> GetDefaultComparer()

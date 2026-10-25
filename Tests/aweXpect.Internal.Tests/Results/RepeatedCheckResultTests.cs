@@ -10,14 +10,14 @@ public sealed class RepeatedCheckResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForRepeatedCheckOptions()
 	{
-		RepeatedCheckOptions options = new();
+		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		RepeatedCheckResult<int, IThat<int>> sut = CreateSut(2, options);
 
 		await That(sut).Is<IOptionsProvider<RepeatedCheckOptions>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
+			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
-	private static RepeatedCheckResult<T, IThat<T>> CreateSut<T>(T subject, RepeatedCheckOptions options)
+	private static RepeatedCheckResult<T, IThat<T>> CreateSut<T>(T subject, OptionsSlot<RepeatedCheckOptions> options)
 		where T : notnull
 	{
 #pragma warning disable aweXpect0001
@@ -25,6 +25,6 @@ public sealed class RepeatedCheckResultTests
 #pragma warning restore aweXpect0001
 		return new RepeatedCheckResult<T, IThat<T>>(source.Get().ExpectationBuilder,
 			source,
-			new OptionsSlot<RepeatedCheckOptions>(options));
+			options);
 	}
 }

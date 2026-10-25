@@ -34,22 +34,24 @@ public class CollectionOrderOptionsTests
 	}
 
 	[Test]
-	public async Task SetComparer_ShouldReturnTheSameOptions()
+	public async Task SetComparer_ShouldNotChangeTheOriginalOptions()
 	{
-		CollectionOrderOptions<int> sut = new();
+		CollectionOrderOptions<int> sut = CollectionOrderOptions<int>.Default;
 
 		CollectionOrderOptions<int> result = sut.SetComparer(new ReverseComparer<int>());
 
-		await That(result).IsSameAs(sut);
+		await That(result.HasComparer).IsTrue();
+		await That(sut.HasComparer).IsFalse();
+		await That(sut.GetComparer()).IsSameAs(Comparer<int>.Default);
 	}
 
 	[Test]
 	public async Task SetComparer_WhenSpecifiedTwice_ShouldUseTheLastComparer()
 	{
 		CollectionOrderOptions<int> sut = new();
-		sut.SetComparer(new ReverseComparer<int>());
+		sut = sut.SetComparer(new ReverseComparer<int>());
 
-		sut.SetComparer(Comparer<int>.Default);
+		sut = sut.SetComparer(Comparer<int>.Default);
 
 		await That(sut.GetComparer()).IsSameAs(Comparer<int>.Default);
 	}
@@ -70,7 +72,7 @@ public class CollectionOrderOptionsTests
 	public async Task ToString_WithGenericComparer_ShouldFormatTheComparerType()
 	{
 		CollectionOrderOptions<int> sut = new();
-		sut.SetComparer(new ReverseComparer<int>());
+		sut = sut.SetComparer(new ReverseComparer<int>());
 
 		string result = sut.ToString();
 

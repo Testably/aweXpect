@@ -29,9 +29,7 @@ public partial class ThatDelegateThrows<TException>
 			return this;
 		}
 
-		ExecutionTimeOptions options = new();
-		options.Within(timeout);
-		ThrowOptions.ExecutionTimeOptions = options;
+		ThrowOptions.ExecutionTimeOptions = ExecutionTimeOptions.Default.Within(timeout);
 		ExpectationBuilder.AddTimeoutBound(ThrowOptions);
 		return this;
 	}

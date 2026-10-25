@@ -22,7 +22,7 @@ public sealed class SignalerOptionsTests
 		public async Task ToString_WithInfiniteTimeout_ShouldReturnEmptyString()
 		{
 			SignalerOptions sut = new();
-			sut.Within(Timeout.InfiniteTimeSpan);
+			sut = sut.Within(Timeout.InfiniteTimeSpan);
 
 			string result = sut.ToString();
 
@@ -34,7 +34,7 @@ public sealed class SignalerOptionsTests
 		public async Task ToString_WithTimeout_ShouldIncludeTimeout()
 		{
 			SignalerOptions sut = new();
-			sut.Within(5.Seconds());
+			sut = sut.Within(5.Seconds());
 
 			string result = sut.ToString();
 
@@ -42,22 +42,32 @@ public sealed class SignalerOptionsTests
 		}
 
 		[Test]
-		public async Task Within_ShouldReturnTheSameOptions()
+		public async Task Within_ShouldNotChangeTheOriginalOptions()
 		{
-			SignalerOptions sut = new();
+			SignalerOptions sut = SignalerOptions.Default;
 
 			SignalerOptions result = sut.Within(5.Seconds());
 
-			await That(result).IsSameAs(sut);
+			await That(result.Timeout).IsEqualTo(5.Seconds());
+			await That(sut.Timeout).IsNull();
+		}
+
+		[Test]
+		public async Task Within_WhenSpecifiedAsZero_ShouldKeepIt()
+		{
+			SignalerOptions sut = SignalerOptions.Default.Within(TimeSpan.Zero);
+
+			await That(sut.Timeout).IsEqualTo(TimeSpan.Zero);
+			await That(sut.ToString()).IsEqualTo(" within 0:00");
 		}
 
 		[Test]
 		public async Task Within_WhenSpecifiedTwice_ShouldUseTheLastTimeout()
 		{
 			SignalerOptions sut = new();
-			sut.Within(5.Seconds());
+			sut = sut.Within(5.Seconds());
 
-			sut.Within(6.Seconds());
+			sut = sut.Within(6.Seconds());
 
 			await That(sut.Timeout).IsEqualTo(6.Seconds());
 			await That(sut.ToString()).IsEqualTo(" within 0:06");

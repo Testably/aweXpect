@@ -11,20 +11,20 @@ public sealed class SignalCountResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForPredicateOptions()
 	{
-		SignalerOptions options = new();
+		OptionsSlot<SignalerOptions> options = new(SignalerOptions.Default);
 		SignalCountResult sut = CreateSut(options);
 
 		await That(sut).Is<IOptionsProvider<SignalerOptions>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
+			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
-	private static SignalCountResult CreateSut(SignalerOptions options)
+	private static SignalCountResult CreateSut(OptionsSlot<SignalerOptions> options)
 	{
 		Signaler signaler = new();
 #pragma warning disable aweXpect0001
 		IThat<Signaler> source = That(signaler);
 #pragma warning restore aweXpect0001
 		return new SignalCountResult(source.Get().ExpectationBuilder,
-			source, new OptionsSlot<Quantifier>(Quantifier.Default), new OptionsSlot<SignalerOptions>(options));
+			source, new OptionsSlot<Quantifier>(Quantifier.Default), options);
 	}
 }

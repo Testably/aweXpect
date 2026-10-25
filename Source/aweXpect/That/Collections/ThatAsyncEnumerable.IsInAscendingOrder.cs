@@ -136,7 +136,7 @@ public static partial class ThatAsyncEnumerable
 			Func<OptionsSlot<CollectionOrderOptions<TMember>>, Func<Func<TMember, string?>?>>? createIncompatibilityCheck = null)
 	{
 		memberAccessor.ThrowIfNull();
-		OptionsSlot<CollectionOrderOptions<TMember>> options = new(new CollectionOrderOptions<TMember>());
+		OptionsSlot<CollectionOrderOptions<TMember>> options = new(CollectionOrderOptions<TMember>.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionOrderResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TMember>(
 			expectationBuilder.AddConstraint(

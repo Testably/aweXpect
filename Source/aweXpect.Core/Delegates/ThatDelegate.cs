@@ -85,10 +85,10 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 				.Append(Formatter.Format(exceptionType).PrependAOrAn());
 		}
 
-		if (options.ExecutionTimeOptions is not null)
+		if (options.ExecutionTimeOptions is { } executionTimeOptions)
 		{
 			stringBuilder.Append(' ');
-			options.ExecutionTimeOptions.AppendTo(stringBuilder, "in ");
+			executionTimeOptions.AppendTo(stringBuilder, "in ");
 		}
 	}
 
@@ -116,6 +116,6 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 		internal bool IsNegated { get; set; }
 
 		/// <inheritdoc cref="ITimeoutBound.UpperBound" />
-		TimeSpan? ITimeoutBound.UpperBound => ((ITimeoutBound?)ExecutionTimeOptions)?.UpperBound;
+		TimeSpan? ITimeoutBound.UpperBound => ExecutionTimeOptions?.UpperBound;
 	}
 }

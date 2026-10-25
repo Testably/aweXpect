@@ -67,7 +67,7 @@ public class Player
 ```csharp
 public static RepeatedCheckResult<Player, IThat<Player?>> IsPlaying(this IThat<Player?> subject)
 {
-    OptionsSlot<RepeatedCheckOptions> options = new(new RepeatedCheckOptions());
+    OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
     return new RepeatedCheckResult<Player, IThat<Player?>>(subject.Get().ExpectationBuilder
             .AddConstraint((it, grammars) => new IsPlayingConstraint(it, grammars, options)),
         subject,

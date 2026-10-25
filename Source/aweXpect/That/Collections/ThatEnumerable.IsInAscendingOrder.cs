@@ -253,7 +253,7 @@ public static partial class ThatEnumerable
 			Func<OptionsSlot<CollectionOrderOptions<TMember>>, Func<Func<TMember, string?>?>>? createIncompatibilityCheck = null)
 	{
 		memberAccessor.ThrowIfNull();
-		OptionsSlot<CollectionOrderOptions<TMember>> options = new(new CollectionOrderOptions<TMember>());
+		OptionsSlot<CollectionOrderOptions<TMember>> options = new(CollectionOrderOptions<TMember>.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionOrderResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TMember>(
 			expectationBuilder.AddConstraint(
@@ -300,7 +300,7 @@ public static partial class ThatEnumerable
 			bool isNegated)
 	{
 		memberAccessor.ThrowIfNull();
-		OptionsSlot<CollectionOrderOptions<TMember>> options = new(new CollectionOrderOptions<TMember>());
+		OptionsSlot<CollectionOrderOptions<TMember>> options = new(CollectionOrderOptions<TMember>.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionOrderResult<IEnumerable, IThat<IEnumerable?>, TMember>(
 			expectationBuilder.AddConstraint(
@@ -332,7 +332,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable<TItem>
 	{
 		memberAccessor.ThrowIfNull();
-		OptionsSlot<CollectionOrderOptions<TMember>> options = new(new CollectionOrderOptions<TMember>());
+		OptionsSlot<CollectionOrderOptions<TMember>> options = new(CollectionOrderOptions<TMember>.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionOrderResult<TCollection, IThat<TCollection>, TMember>(
 			expectationBuilder.AddConstraint(

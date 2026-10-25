@@ -1694,10 +1694,10 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.CollectionMatchOptions> InAnyOrder(this aweXpect.Core.OptionsSlot<aweXpect.Options.CollectionMatchOptions> slot) { }
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.CollectionMatchOptions> Properly(this aweXpect.Core.OptionsSlot<aweXpect.Options.CollectionMatchOptions> slot) { }
     }
-    public class CollectionOrderOptions<TItem>
+    public readonly struct CollectionOrderOptions<TItem>
     {
-        public CollectionOrderOptions() { }
         public bool HasComparer { get; }
+        public static aweXpect.Options.CollectionOrderOptions<TItem> Default { get; }
         public System.Collections.Generic.IComparer<TItem> GetComparer() { }
         public aweXpect.Options.CollectionOrderOptions<TItem> SetComparer(System.Collections.Generic.IComparer<TItem> comparer) { }
         public override string ToString() { }
@@ -1731,9 +1731,9 @@ namespace aweXpect.Options
             NotMatchingItems = 4,
         }
     }
-    public class ExecutionTimeOptions
+    public readonly struct ExecutionTimeOptions
     {
-        public ExecutionTimeOptions() { }
+        public static aweXpect.Options.ExecutionTimeOptions Default { get; }
         public void AppendFailureResult(System.Text.StringBuilder stringBuilder, System.TimeSpan actual) { }
         public void AppendTo(System.Text.StringBuilder stringBuilder, string prefix) { }
         public aweXpect.Options.ExecutionTimeOptions AtLeast(System.TimeSpan minimum) { }
@@ -1823,12 +1823,12 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> LessThan(this aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> slot, int maximum) { }
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> MoreThan(this aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> slot, int minimum) { }
     }
-    public class RepeatedCheckOptions
+    public readonly struct RepeatedCheckOptions
     {
-        public RepeatedCheckOptions() { }
         public System.TimeSpan Interval { get; }
         public bool IsRepeated { get; }
         public System.TimeSpan Timeout { get; }
+        public static aweXpect.Options.RepeatedCheckOptions Default { get; }
         public aweXpect.Options.RepeatedCheckOptions CheckEvery(System.TimeSpan interval) { }
         public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.Outcome> CheckRepeatedly(System.Func<aweXpect.Core.EvaluationContext.IEvaluationContext, System.Threading.Tasks.ValueTask<bool>> check, aweXpect.Core.EvaluationContext.IEvaluationContext context) { }
         public override string ToString() { }
@@ -1839,10 +1839,10 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.RepeatedCheckOptions> CheckEvery(this aweXpect.Core.OptionsSlot<aweXpect.Options.RepeatedCheckOptions> slot, System.TimeSpan interval) { }
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.RepeatedCheckOptions> Within(this aweXpect.Core.OptionsSlot<aweXpect.Options.RepeatedCheckOptions> slot, System.TimeSpan timeout) { }
     }
-    public class SignalerOptions
+    public readonly struct SignalerOptions
     {
-        public SignalerOptions() { }
         public System.TimeSpan? Timeout { get; }
+        public static aweXpect.Options.SignalerOptions Default { get; }
         public override string ToString() { }
         public aweXpect.Options.SignalerOptions Within(System.TimeSpan timeout) { }
     }
@@ -1850,9 +1850,9 @@ namespace aweXpect.Options
     {
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.SignalerOptions> Within(this aweXpect.Core.OptionsSlot<aweXpect.Options.SignalerOptions> slot, System.TimeSpan timeout) { }
     }
-    public class SignalerPredicateOptions<TParameter>
+    public sealed class SignalerPredicateOptions<TParameter>
     {
-        public SignalerPredicateOptions() { }
+        public static aweXpect.Options.SignalerPredicateOptions<TParameter> Default { get; }
         public bool Matches(TParameter parameter) { }
         public override string ToString() { }
         public aweXpect.Options.SignalerPredicateOptions<TParameter> WithPredicate(System.Func<TParameter, bool> predicate, string predicateExpression) { }
@@ -1927,9 +1927,9 @@ namespace aweXpect.Options
     {
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.TimeTolerance> Within(this aweXpect.Core.OptionsSlot<aweXpect.Options.TimeTolerance> slot, System.TimeSpan tolerance) { }
     }
-    public class TriggerEventFilter
+    public sealed class TriggerEventFilter
     {
-        public TriggerEventFilter() { }
+        public static aweXpect.Options.TriggerEventFilter Default { get; }
         public aweXpect.Options.TriggerEventFilter AddPredicate(System.Func<object?[], bool> predicate, string predicateExpression) { }
         public bool IsMatch(object?[] parameters) { }
         public override string ToString() { }
@@ -2065,7 +2065,7 @@ namespace aweXpect.Results
     }
     public class ExecutesInResult<TResult> : aweXpect.Core.IOptionsProvider<aweXpect.Options.ExecutionTimeOptions>
     {
-        public ExecutesInResult(TResult returnValue, aweXpect.Core.OptionsSlot<aweXpect.Options.ExecutionTimeOptions> options) { }
+        public ExecutesInResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TResult returnValue, aweXpect.Core.OptionsSlot<aweXpect.Options.ExecutionTimeOptions> options) { }
         public aweXpect.Results.ExecutesInResult<TResult> AllowingExceptions(bool allowExceptions = true) { }
         public TResult AtLeast(System.TimeSpan minimum) { }
         public TResult AtMost(System.TimeSpan maximum) { }
@@ -2073,7 +2073,7 @@ namespace aweXpect.Results
     }
     public class ExecutesInToleranceResult<TResult>
     {
-        public ExecutesInToleranceResult(TResult returnValue, aweXpect.Core.OptionsSlot<aweXpect.Options.ExecutionTimeOptions> options, System.TimeSpan expected) { }
+        public ExecutesInToleranceResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TResult returnValue, aweXpect.Core.OptionsSlot<aweXpect.Options.ExecutionTimeOptions> options, System.TimeSpan expected) { }
         public aweXpect.Results.ExecutesInToleranceResult<TResult> AllowingExceptions(bool allowExceptions = true) { }
         public TResult Within(System.TimeSpan tolerance) { }
     }
