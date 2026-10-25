@@ -217,6 +217,55 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task Containing_WhenAnOptionIsAppliedAfterTheRuleWasCreated_ShouldNotChangeTheRule()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				SnapshotLinesContaining<SnapshotRule> live = SnapshotRule.For.Lines().Containing("live");
+				SnapshotRule rule = live.Ignore();
+				live.IgnoringCase();
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([rule,]);
+				string subject = "live at Shea Stadium\nLIVE at Wembley\nHelp!";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but the snapshot did not exist*
+					             """).AsWildcard();
+				await That(store.Mismatches[Id]).IsEqualTo("LIVE at Wembley\nHelp!")
+					.Because("the option returns a new selection and leaves the rule created before it unchanged");
+			}
+
+			[Test]
+			public async Task Containing_WhenTheSelectionIsReusedWithOtherOptions_ShouldKeepTheRulesApart()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				SnapshotLinesContaining<SnapshotRule> live = SnapshotRule.For.Lines().Containing("live");
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					live.IgnoringCase().Mask("<live>"),
+					live.IgnoringCase(false).Ignore(),
+				]);
+				string subject = "live at Shea Stadium\nLIVE at Wembley\nHelp!";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but the snapshot did not exist*
+					             """).AsWildcard();
+				await That(store.Mismatches[Id]).IsEqualTo("<live>\nHelp!")
+					.Because("each rule keeps the options applied to it, and only the second one compares the case");
+			}
+
+			[Test]
 			public async Task Containing_AfterTheAction_ShouldNoLongerOfferTheOptionsOfTheRule()
 			{
 				Type containing = typeof(SnapshotLinesContaining<SnapshotResult<string?, IThat<string?>>>);

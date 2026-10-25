@@ -38,11 +38,8 @@ public class SnapshotValues<TResult, TValue>
 	///     that follow apply to this filter only, like in <see cref="SnapshotMembers{TResult, TValue}.WithName" />.
 	/// </remarks>
 	public SnapshotValuesWithName<TResult, TValue> WithName(string name)
-	{
-		StringEqualityOptions options = new(nameof(name));
-		return new SnapshotValuesWithName<TResult, TValue>(_add,
-			_selection.WithName(RuleArguments.ThrowIfNullOrEmpty(name, nameof(name)), options), options);
-	}
+		=> new(_add, _selection, RuleArguments.ThrowIfNullOrEmpty(name, nameof(name)),
+			new StringEqualityOptions(nameof(name)));
 
 	/// <summary>
 	///     Filters for the values whose path ends with the <paramref name="path" />, e.g. <c>Artist.Id</c> or

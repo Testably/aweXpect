@@ -119,7 +119,7 @@ namespace aweXpect.Snapshots
         public TResult Mask(string template) { }
         public aweXpect.Snapshots.SnapshotLines<TResult> Which(System.Func<string, bool> predicate) { }
     }
-    public sealed class SnapshotLinesContaining<TResult> : aweXpect.Snapshots.SnapshotLines<TResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringPatternMatchTypeOptions
+    public sealed class SnapshotLinesContaining<TResult> : aweXpect.Snapshots.SnapshotLines<TResult>, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Snapshots.SnapshotLinesContaining<TResult>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringPatternMatchTypeOptions
     {
     }
     public sealed class SnapshotMatch
@@ -148,7 +148,7 @@ namespace aweXpect.Snapshots
         public aweXpect.Snapshots.SnapshotMembersOfType<TResult, object> OrOfExactType<T>() { }
         public aweXpect.Snapshots.SnapshotMembersOfType<TResult, object> OrOfType<T>() { }
     }
-    public sealed class SnapshotMembersWithName<TResult, TValue> : aweXpect.Snapshots.SnapshotMembers<TResult, TValue>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+    public sealed class SnapshotMembersWithName<TResult, TValue> : aweXpect.Snapshots.SnapshotMembers<TResult, TValue>, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Snapshots.SnapshotMembersWithName<TResult, TValue>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
     {
     }
     public sealed class SnapshotMismatch
@@ -214,7 +214,7 @@ namespace aweXpect.Snapshots
         public aweXpect.Snapshots.SnapshotValuesOfType<TResult, object> OrOfExactType<T>() { }
         public aweXpect.Snapshots.SnapshotValuesOfType<TResult, object> OrOfType<T>() { }
     }
-    public sealed class SnapshotValuesWithName<TResult, TValue> : aweXpect.Snapshots.SnapshotValues<TResult, TValue>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+    public sealed class SnapshotValuesWithName<TResult, TValue> : aweXpect.Snapshots.SnapshotValues<TResult, TValue>, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Snapshots.SnapshotValuesWithName<TResult, TValue>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
     {
     }
     public static class SnapshotsCustomizationExtensions

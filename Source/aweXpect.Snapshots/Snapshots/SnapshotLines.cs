@@ -38,14 +38,8 @@ public class SnapshotLines<TResult>
 	///     <see cref="ArgumentException" /> at the action, and a pattern that times out fails the expectation.
 	/// </remarks>
 	public SnapshotLinesContaining<TResult> Containing(string text)
-	{
-		RuleArguments.ThrowIfNullOrEmpty(text, nameof(text));
-		StringEqualityOptions options = new(nameof(text));
-		return new SnapshotLinesContaining<TResult>(_add,
-			[.. _filters, line => StringRules.Contains(options, line, text),],
-			[.. _validations, () => options.ValidateExpected(text),],
-			options);
-	}
+		=> new(_add, _filters, _validations, RuleArguments.ThrowIfNullOrEmpty(text, nameof(text)),
+			new StringEqualityOptions(nameof(text)));
 
 	/// <summary>
 	///     Filters for the lines for which the <paramref name="predicate" /> returns <see langword="true" />.

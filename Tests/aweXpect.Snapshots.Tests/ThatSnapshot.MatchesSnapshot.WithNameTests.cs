@@ -160,6 +160,136 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task OnValues_WhenAnOptionIsAppliedAfterTheRuleWasCreated_ShouldNotChangeTheRule()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				SnapshotValuesWithName<SnapshotRule, object> name = SnapshotRule.For.Values().WithName("Pr");
+				SnapshotRule rule = name.Mask("<pr>");
+				name.AsPrefix();
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([rule,]);
+				RuleTrack subject = RuleTrack.ComeTogether();
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but the snapshot did not exist*
+					             """).AsWildcard();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleTrack {
+				                                             Duration = 259,
+				                                             Id = 11,
+				                                             PreviewUrl = "https://example.com/come-together.mp3",
+				                                             Price = 1.29,
+				                                             Title = "Come Together"
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("the option returns a new selection and leaves the rule created before it unchanged");
+			}
+
+			[Test]
+			public async Task OnValues_WhenTheSelectionIsReusedWithOtherOptions_ShouldKeepTheRulesApart()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				SnapshotValuesWithName<SnapshotRule, object> name = SnapshotRule.For.Values().WithName("p");
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					name.IgnoringCase().AsPrefix().Mask("<p>"),
+					name.IgnoringCase().Ignore(),
+				]);
+				RuleTrack subject = RuleTrack.ComeTogether();
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but the snapshot did not exist*
+					             """).AsWildcard();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleTrack {
+				                                             Duration = 259,
+				                                             Id = 11,
+				                                             PreviewUrl = <p>,
+				                                             Price = <p>,
+				                                             Title = "Come Together"
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("each rule keeps the options applied to it, and the second one only ignores a value named exactly \"p\"");
+			}
+
+			[Test]
+			public async Task WhenAnOptionIsAppliedAfterTheRuleWasCreated_ShouldNotChangeTheRule()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				SnapshotMembersWithName<SnapshotRule, object> name = SnapshotRule.For.Members().WithName("Pr");
+				SnapshotRule rule = name.Mask("<pr>");
+				name.AsPrefix();
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([rule,]);
+				RuleTrack subject = RuleTrack.ComeTogether();
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but the snapshot did not exist*
+					             """).AsWildcard();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleTrack {
+				                                             Duration = 259,
+				                                             Id = 11,
+				                                             PreviewUrl = "https://example.com/come-together.mp3",
+				                                             Price = 1.29,
+				                                             Title = "Come Together"
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("the option returns a new selection and leaves the rule created before it unchanged");
+			}
+
+			[Test]
+			public async Task WhenTheSelectionIsReusedWithOtherOptions_ShouldKeepTheRulesApart()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				SnapshotMembersWithName<SnapshotRule, object> name = SnapshotRule.For.Members().WithName("p");
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					name.IgnoringCase().AsPrefix().Mask("<p>"),
+					name.IgnoringCase().Ignore(),
+				]);
+				RuleTrack subject = RuleTrack.ComeTogether();
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but the snapshot did not exist*
+					             """).AsWildcard();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleTrack {
+				                                             Duration = 259,
+				                                             Id = 11,
+				                                             PreviewUrl = <p>,
+				                                             Price = <p>,
+				                                             Title = "Come Together"
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("each rule keeps the options applied to it, and the second one only ignores a member named exactly \"p\"");
+			}
+
+			[Test]
 			public async Task WhenTheRegexIsInvalid_ShouldThrowArgumentExceptionAtTheAction()
 			{
 				SnapshotMembersWithName<SnapshotRule, object> selection =
