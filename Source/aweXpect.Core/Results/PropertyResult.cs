@@ -493,7 +493,7 @@ public static class PropertyResult
 			_value = null;
 			_outcome = default;
 			// An unusable pattern is rejected whichever value the property has, also when it cannot be read.
-			comparison.Options.ValidateExpected(comparison.Expected);
+			comparison.ValidateExpected();
 			try
 			{
 				_value = mapper(actual);
@@ -543,7 +543,7 @@ public static class PropertyResult
 				equalityGrammars &= ~ExpectationGrammars.Negated;
 			}
 
-			comparison.AppendExpectationCore(stringBuilder, equalityGrammars);
+			comparison.AppendExpectation(stringBuilder, equalityGrammars);
 		}
 
 		/// <remarks>
@@ -561,11 +561,11 @@ public static class PropertyResult
 
 			if (Grammars.IsNested() && !Grammars.IsActive())
 			{
-				_outcome.AppendResultCore(stringBuilder, propertyExpression, Grammars, indentation);
+				_outcome.AppendResult(stringBuilder, propertyExpression, Grammars, indentation);
 			}
 			else
 			{
-				_outcome.AppendMemberResultCore(stringBuilder, It, propertyExpression, Grammars, indentation);
+				_outcome.AppendMemberResult(stringBuilder, It, propertyExpression, Grammars, indentation);
 			}
 		}
 
@@ -698,7 +698,7 @@ public static class PropertyResult
 				return;
 			}
 
-			_outcome.AppendResultCore(stringBuilder, propertyExpression, Grammars, indentation);
+			_outcome.AppendResult(stringBuilder, propertyExpression, Grammars, indentation);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

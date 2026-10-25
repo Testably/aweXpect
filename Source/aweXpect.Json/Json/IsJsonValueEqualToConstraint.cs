@@ -46,7 +46,7 @@ internal abstract class IsJsonValueEqualToConstraint<TValue>(
 		if (!reader.Read(actual.Value, out TValue value))
 		{
 			_doesNotFit = true;
-			Outcome = Outcome.Failure;
+			Outcome = reader.DoesNotFitOutcome;
 			return this;
 		}
 

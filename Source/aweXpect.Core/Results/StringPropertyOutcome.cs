@@ -28,16 +28,20 @@ public readonly struct StringPropertyOutcome
 	}
 
 	/// <summary>
-	///     The outcome of the comparison, including the negation of a negated operator, e.g. <c>NotStartingWith(…)</c>.
+	///     The outcome of the comparison, including the negation of a negated operator, e.g. <c>NotStartingWith(…)</c>,
+	///     or <see cref="Outcome.Undecided" /> before an evaluation.
 	/// </summary>
-	public Outcome Outcome => _comparison?.IsNegated == true
-		? OutcomeOfOperator switch
+	public Outcome Outcome => _comparison switch
+	{
+		null => Outcome.Undecided,
+		{ IsNegated: true, } => OutcomeOfOperator switch
 		{
 			Outcome.Success => Outcome.Failure,
 			Outcome.Failure => Outcome.Success,
 			_ => OutcomeOfOperator,
-		}
-		: OutcomeOfOperator;
+		},
+		_ => OutcomeOfOperator,
+	};
 
 	/// <summary>
 	///     The outcome of the comparison without the negation of a negated operator.
@@ -55,27 +59,13 @@ public readonly struct StringPropertyOutcome
 	///     <c>it contained "e" once in "Let It Be"</c>.
 	/// </summary>
 	/// <remarks>
-	///     A <see cref="ExpectationGrammars.Negated" /> flag in the <paramref name="grammars" /> toggles the negation of
-	///     a negated operator, like for <see cref="StringPropertyComparison.AppendExpectation" />. A text over several
-	///     lines indents the lines after the first by the <paramref name="indentation" />.
+	///     Like <see cref="StringPropertyComparison.AppendExpectation" />, the result does not include the negation of a
+	///     negated operator: add the <see cref="ExpectationGrammars.Negated" /> flag to the <paramref name="grammars" />
+	///     when the comparison is <see cref="StringPropertyComparison.IsNegated" />. A text over several lines indents
+	///     the lines after the first by the <paramref name="indentation" />.
 	/// </remarks>
 	public void AppendResult(StringBuilder stringBuilder, string it, ExpectationGrammars grammars,
 		string? indentation = null)
-		=> AppendResultCore(stringBuilder, it, _comparison?.IsNegated == true ? grammars.Negate() : grammars,
-			indentation);
-
-	/// <summary>
-	///     Adds the contexts of the options, e.g. of a custom match type, to the <paramref name="contexts" />.
-	/// </summary>
-	public void AppendContexts(ResultContextCollector contexts)
-		=> EvaluationOptions?.AppendContexts(contexts);
-
-	/// <summary>
-	///     Appends the result like <see cref="AppendResult" />, with the negation of the operator already in the
-	///     <paramref name="grammars" />.
-	/// </summary>
-	internal void AppendResultCore(StringBuilder stringBuilder, string it, ExpectationGrammars grammars,
-		string? indentation)
 	{
 		if (_comparison is null || EvaluationOptions is null)
 		{
@@ -101,11 +91,16 @@ public readonly struct StringPropertyOutcome
 	}
 
 	/// <summary>
-	///     Appends the result for the value of the property <paramref name="member" /> of the subject named
-	///     <paramref name="it" />, e.g. <c>it had message "foo", which differs …</c>, with the negation of the operator
-	///     already in the <paramref name="grammars" />.
+	///     Adds the contexts of the options, e.g. of a custom match type, to the <paramref name="contexts" />.
 	/// </summary>
-	internal void AppendMemberResultCore(StringBuilder stringBuilder, string it, string member,
+	public void AppendContexts(ResultContextCollector contexts)
+		=> EvaluationOptions?.AppendContexts(contexts);
+
+	/// <summary>
+	///     Appends the result for the value of the property <paramref name="member" /> of the subject named
+	///     <paramref name="it" />, e.g. <c>it had message "foo", which differs …</c>.
+	/// </summary>
+	internal void AppendMemberResult(StringBuilder stringBuilder, string it, string member,
 		ExpectationGrammars grammars, string? indentation)
 	{
 		if (_comparison is null || EvaluationOptions is null)

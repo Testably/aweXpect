@@ -2170,10 +2170,12 @@ namespace aweXpect.Results
     }
     public sealed class StringPropertyComparison
     {
+        public bool IsNegated { get; }
         public aweXpect.Options.StringEqualityOptions Options { get; }
         public aweXpect.Options.Quantifier? Quantifier { get; }
         public void AppendExpectation(System.Text.StringBuilder stringBuilder, aweXpect.Core.ExpectationGrammars grammars) { }
         public System.Threading.Tasks.ValueTask<aweXpect.Results.StringPropertyOutcome> Evaluate(string? actual, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
+        public void ValidateExpected() { }
     }
     public readonly struct StringPropertyOutcome
     {

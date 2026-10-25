@@ -14,8 +14,9 @@ namespace aweXpect.Json;
 /// </summary>
 /// <remarks>
 ///     Without a comparison, the value is not read, so that e.g. every number is a number, also one that does not fit
-///     into a <see langword="double" />. A value of another kind, or one that the <paramref name="reader" /> cannot read
-///     for the comparison, fails the expectation and satisfies its negation, like the expectations on the kind.
+///     into a <see langword="double" />. A value of another kind fails the expectation and satisfies its negation, like
+///     the expectations on the kind. A value that the <paramref name="reader" /> cannot read for the comparison fails
+///     both, see <see cref="JsonValueReader{TValue}.DoesNotFitOutcome" />.
 /// </remarks>
 internal abstract class IsJsonValueKindConstraint<TValue>(
 	string it,
@@ -47,6 +48,7 @@ internal abstract class IsJsonValueKindConstraint<TValue>(
 		Actual = actual;
 		IsCompared = false;
 		_doesNotFit = false;
+		ValidateComparison();
 		if (actual is null || !JsonValidation.IsKind(actual.Value.ValueKind, reader.Kind))
 		{
 			Outcome = Outcome.Failure;
@@ -62,13 +64,20 @@ internal abstract class IsJsonValueKindConstraint<TValue>(
 		if (!reader.Read(actual.Value, out TValue value))
 		{
 			_doesNotFit = true;
-			Outcome = Outcome.Failure;
+			Outcome = reader.DoesNotFitOutcome;
 			return this;
 		}
 
 		IsCompared = true;
 		Outcome = await Compare(value, context, cancellationToken);
 		return this;
+	}
+
+	/// <summary>
+	///     Rejects a comparison that cannot be evaluated, before the subject is looked at.
+	/// </summary>
+	protected virtual void ValidateComparison()
+	{
 	}
 
 	/// <summary>

@@ -22,6 +22,8 @@ internal sealed class IsJsonStringConstraint(
 
 	protected override bool HasComparison => slot.Comparison is not null;
 
+	protected override void ValidateComparison() => slot.Comparison?.ValidateExpected();
+
 	protected override async ValueTask<Outcome> Compare(string value, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
@@ -38,8 +40,10 @@ internal sealed class IsJsonStringConstraint(
 	}
 
 	protected override void AppendComparison(StringBuilder stringBuilder)
-		=> slot.Comparison!.AppendExpectation(stringBuilder, ExpectationGrammars.None);
+		=> slot.Comparison!.AppendExpectation(stringBuilder,
+			slot.Comparison.IsNegated ? ExpectationGrammars.Negated : ExpectationGrammars.None);
 
 	protected override void AppendComparedResult(StringBuilder stringBuilder, string? indentation)
-		=> _outcome.AppendResult(stringBuilder, It, Grammars, indentation);
+		=> _outcome.AppendResult(stringBuilder, It, slot.Comparison!.IsNegated ? Grammars.Negate() : Grammars,
+			indentation);
 }

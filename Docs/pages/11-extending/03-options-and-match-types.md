@@ -173,14 +173,18 @@ public class TitleResult(IThat<Track?> subject)
 An expectation that returns this result, e.g. `HasTitle()`, then reads
 `Expect.That(track).HasTitle().StartingWith("let").IgnoringCase()`.
 
-In the constraint, `await comparison.Evaluate(actual, context, cancellationToken)` compares the value with the options
-of the evaluation and returns a `StringPropertyOutcome`, whose `Outcome` already includes the negation of an operator
-like `NotStartingWith`. A `null` value fails a comparison that looks into the value, e.g. a prefix or an occurrence,
-both ways. `comparison.AppendExpectation(stringBuilder, grammars)` writes the comparison with its options, e.g.
-"starting with "let" ignoring case", or "starts with …" with `ExpectationGrammars.Active`; unlike for the other
-property types, the text includes the negation of the operator, e.g. "not starting with …", which a negated grammar
-toggles. `outcome.AppendResult(stringBuilder, "title", Grammars, indentation)` writes the result, e.g. "title was
-"Yesterday", which differs at index 0: …", and `outcome.AppendContexts(contexts)` adds the contexts of the options.
+In the constraint, call `comparison.ValidateExpected()` before you look at the subject, so that an unusable expected
+value, e.g. an invalid regex pattern, throws whichever value the subject has. Then
+`await comparison.Evaluate(actual, context, cancellationToken)` compares the value with the options of the evaluation
+and returns a `StringPropertyOutcome`, whose `Outcome` already includes the negation of an operator like
+`NotStartingWith`. A `null` value fails a comparison that looks into the value, e.g. a prefix or an occurrence, both
+ways. `comparison.AppendExpectation(stringBuilder, grammars)` writes the comparison with its options, e.g.
+"starting with "let" ignoring case", or "starts with …" with `ExpectationGrammars.Active`, and
+`outcome.AppendResult(stringBuilder, "title", grammars, indentation)` writes the result, e.g. "title was "Yesterday",
+which differs at index 0: …". Like for the other property types, neither text includes the negation of the operator,
+so that you can place it where your sentence needs it: for a comparison that `IsNegated`, add
+`ExpectationGrammars.Negated` to the grammars, e.g. `grammars.Negate()`, which writes "not starting with …" or
+"does not start with …". `outcome.AppendContexts(contexts)` adds the contexts of the options.
 
 ## Time tolerances
 

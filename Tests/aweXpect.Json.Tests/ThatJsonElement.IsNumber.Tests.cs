@@ -190,6 +190,23 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Test]
+			public async Task WhenNegatedAndNumberDoesNotFitIntoADouble_ShouldFail()
+			{
+				JsonElement subject = FromString("1e400");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNumber(n => n.IsPositive()));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a number or its value is not positive,
+					             but it was 1e400, which is not a double
+					             """)
+					.Because("a number beyond the range of a double cannot be answered, so it fails both ways");
+			}
+
+			[Test]
 			public async Task WhenNumberDoesNotFitIntoADouble_ShouldFail()
 			{
 				JsonElement subject = FromString("1e400");
@@ -708,6 +725,23 @@ public sealed partial class ThatJsonElement
 
 				await That(Act).DoesNotThrow()
 					.Because("a value of another kind is no number greater than the bound, like for IsNumber()");
+			}
+
+			[Test]
+			public async Task WhenNumberDoesNotFitIntoADouble_ShouldFail()
+			{
+				JsonElement subject = FromString("1e400");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNumber().GreaterThan(3));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a number greater than 3.0,
+					             but it was 1e400, which is not a double
+					             """)
+					.Because("a number beyond the range of a double cannot be answered, so it fails both ways");
 			}
 
 			[Test]

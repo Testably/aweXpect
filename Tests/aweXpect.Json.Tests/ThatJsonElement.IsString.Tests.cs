@@ -347,6 +347,23 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Test]
+			[Arguments("\"Let It Be\"")]
+			[Arguments("42")]
+			[Arguments("null")]
+			public async Task WhenPatternIsInvalid_ShouldThrowArgumentException(string json)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsString().EqualTo("[").AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' regex pattern is invalid: ").AsPrefix()
+					.Because("an invalid pattern is rejected whichever value the subject has");
+			}
+
+			[Test]
 			public async Task WhenStringDiffers_ShouldFailWithTheMessageOfTheValueOverload()
 			{
 				JsonElement subject = FromString("\"Let It Bee\"");

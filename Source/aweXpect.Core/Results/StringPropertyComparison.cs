@@ -53,21 +53,52 @@ public sealed class StringPropertyComparison
 
 	internal string? Expected { get; }
 
-	internal bool IsNegated { get; }
-
 	/// <summary>
-	///     Appends the comparison, e.g. <c>starting with "Let" ignoring case</c> or <c>containing "e" at least twice</c>,
-	///     to the <paramref name="stringBuilder" />.
+	///     Flag indicating that the operator is a negated one, e.g. <c>NotStartingWith(…)</c>.
 	/// </summary>
 	/// <remarks>
-	///     The text includes the negation of a negated operator, e.g. <c>not starting with "Let"</c> for
-	///     <c>NotStartingWith("Let")</c>, which a <see cref="ExpectationGrammars.Negated" /> flag in the
-	///     <paramref name="grammars" /> toggles. Without <see cref="ExpectationGrammars.Active" />, the comparison has no
-	///     subject, e.g. <c>equal to "Let It Be"</c>; with it, it reads like a verb of the property, e.g.
-	///     <c>is equal to "Let It Be"</c> or <c>starts with "Let"</c>.
+	///     <see cref="StringPropertyOutcome.Outcome" /> of <see cref="Evaluate" /> already includes the negation, but
+	///     <see cref="AppendExpectation(StringBuilder, ExpectationGrammars)" /> and
+	///     <see cref="StringPropertyOutcome.AppendResult" /> do not, so that the "not" can be placed where the sentence
+	///     needs it, e.g. "has title not starting with "Let"" or "does not have title starting with "Let"".
+	/// </remarks>
+	public bool IsNegated { get; }
+
+	/// <summary>
+	///     Appends the comparison without its negation, e.g. <c>starting with "Let" ignoring case</c> or
+	///     <c>containing "e" at least twice</c>, to the <paramref name="stringBuilder" />.
+	/// </summary>
+	/// <remarks>
+	///     A <see cref="ExpectationGrammars.Negated" /> flag in the <paramref name="grammars" /> writes the negation into
+	///     the comparison, e.g. <c>not starting with "Let"</c>. Without <see cref="ExpectationGrammars.Active" />, the
+	///     comparison has no subject, e.g. <c>equal to "Let It Be"</c>; with it, it reads like a verb of the property,
+	///     e.g. <c>is equal to "Let It Be"</c> or <c>does not start with "Let"</c>.
 	/// </remarks>
 	public void AppendExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars)
-		=> AppendExpectationCore(stringBuilder, IsNegated ? grammars.Negate() : grammars);
+	{
+		if (Quantifier is null)
+		{
+			stringBuilder.Append(Options.GetExpectation(Expected, grammars));
+			return;
+		}
+
+		bool isActive = grammars.IsActive();
+		AppendOccurrenceExpectation(stringBuilder, grammars.IsNegated(),
+			isActive ? grammars.Verb("contains", "contain") : "containing",
+			isActive ? grammars.Verb("does not contain", "do not contain") : "not containing");
+	}
+
+	/// <summary>
+	///     Verifies that the expected value can be used with the options, e.g. that it is a valid regex pattern.
+	/// </summary>
+	/// <remarks>
+	///     Call it before looking at the subject, so that an unusable expected value is rejected whichever value the
+	///     property has, also when it is not evaluated, e.g. because the subject is <see langword="null" />.
+	/// </remarks>
+	/// <exception cref="System.ArgumentException">
+	///     The expected value cannot be used with the options, e.g. an invalid regex pattern.
+	/// </exception>
+	public void ValidateExpected() => Options.ValidateExpected(Expected);
 
 	/// <summary>
 	///     Evaluates the comparison against the <paramref name="actual" /> value of the property in the
@@ -105,24 +136,6 @@ public sealed class StringPropertyComparison
 				? Outcome.Success
 				: Outcome.Failure;
 		return new StringPropertyOutcome(this, occurrenceOutcome, actual, options, default, occurrences);
-	}
-
-	/// <summary>
-	///     Appends the comparison like <see cref="AppendExpectation(StringBuilder, ExpectationGrammars)" />, with the
-	///     negation of the operator already in the <paramref name="grammars" />.
-	/// </summary>
-	internal void AppendExpectationCore(StringBuilder stringBuilder, ExpectationGrammars grammars)
-	{
-		if (Quantifier is null)
-		{
-			stringBuilder.Append(Options.GetExpectation(Expected, grammars));
-			return;
-		}
-
-		bool isActive = grammars.IsActive();
-		AppendOccurrenceExpectation(stringBuilder, grammars.IsNegated(),
-			isActive ? grammars.Verb("contains", "contain") : "containing",
-			isActive ? grammars.Verb("does not contain", "do not contain") : "not containing");
 	}
 
 	/// <summary>

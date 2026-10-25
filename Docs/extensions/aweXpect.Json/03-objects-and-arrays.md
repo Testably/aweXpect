@@ -438,8 +438,9 @@ but $.rating was 6
 Only one operator can follow `IsString()` or `IsNumber()`, a second one on the same result throws an
 `InvalidOperationException`; chain further checks with `.And`, e.g.
 `IsString().StartingWith("Let").And.IsString().EndingWith("Be")`. A value of another kind fails the expectation and
-satisfies its negation, like for `IsString()`, and so does a number that does not fit into a `double`, which
-`IsNumber()` alone accepts.
+satisfies its negation, like for `IsString()`. A number that does not fit into a `double`, which `IsNumber()` alone
+accepts, fails both the expectation and its negation, as whether it is e.g. greater than 3 cannot be answered; the
+same holds for `IsNumber(n => …)`. An invalid pattern, e.g. of `AsRegex()`, throws whichever value the subject has.
 
 For richer checks, `IsString`, `IsNumber` and `IsBoolean` accept expectations on the value as a `string`, a `double`
 or a `bool`, so that all expectations of aweXpect apply to it:
