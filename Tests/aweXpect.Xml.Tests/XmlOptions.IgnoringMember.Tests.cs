@@ -79,6 +79,26 @@ public sealed partial class XmlOptionsTests
 		}
 
 		[Test]
+		public async Task WhenComparisonFailsWithManyMembersToIgnore_ShouldLimitTheList()
+		{
+			string subject = "<a a=\"1\" b=\"1\" c=\"1\" d=\"1\" e=\"1\" f=\"1\" g=\"1\" h=\"1\" i=\"1\" j=\"1\" k=\"1\" title=\"x\"/>";
+			string expected = "<a a=\"2\" b=\"2\" c=\"2\" d=\"2\" e=\"2\" f=\"2\" g=\"2\" h=\"2\" i=\"2\" j=\"2\" k=\"2\" title=\"y\"/>";
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected)
+					.AsXml(o => o.IgnoringMember("@a").IgnoringMember("@b").IgnoringMember("@c").IgnoringMember("@d")
+						.IgnoringMember("@e").IgnoringMember("@f").IgnoringMember("@g").IgnoringMember("@h")
+						.IgnoringMember("@i").IgnoringMember("@j").IgnoringMember("@k"));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             *XML options:
+				              - ignore members: ["@a", "@b", "@c", "@d", "@e", "@f", "@g", "@h", "@i", "@j", (… and 1 more)]
+				             """).AsWildcard()
+				.Because("the members to ignore are formatted like any other collection");
+		}
+
+		[Test]
 		public async Task WhenNegatedAndOnlyIgnoredMembersDiffer_ShouldFail()
 		{
 			string subject = "<a id=\"1\"/>";

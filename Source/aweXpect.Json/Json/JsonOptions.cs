@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using aweXpect.Core;
+using aweXpect.Core.Extending;
 using aweXpect.Customization;
 
 namespace aweXpect.Json;
@@ -168,13 +169,7 @@ public class JsonOptions
 				sb.Append("   ");
 				Formatter.Format(sb, name);
 				sb.Append(" matched no member");
-				if (suggestion is not null)
-				{
-					sb.Append(" (did you mean ");
-					Formatter.Format(sb, suggestion);
-					sb.Append("?)");
-				}
-
+				ClosestMatch.AppendHint(sb, suggestion);
 				sb.AppendLine();
 			}
 		}

@@ -167,11 +167,7 @@ public record EquivalencyTypeOptions
 		sb.Append(indentation).Append("   ");
 		Formatter.Format(sb, name);
 		sb.Append(" matched no member");
-		if (suggestion is not null)
-		{
-			ClosestMatch.AppendHint(sb, name, [suggestion,]);
-		}
-
+		ClosestMatch.AppendHint(sb, suggestion);
 		sb.AppendLine();
 	}
 }

@@ -104,7 +104,9 @@ in `netstandard2.0` and `net48`. Declare it as an `internal` type in your own pa
   }
   ```
 
-  `ClosestMatch.Find` returns that candidate, or `null`, for your own wording.
+  `ClosestMatch.Find` returns that candidate, or `null`, for your own wording. When you find the suggestion before
+  the message is written, e.g. while the comparison runs, append the same hint for it with
+  `ClosestMatch.AppendHint(stringBuilder, suggestion)`, which appends nothing for `null`.
 
 Some results are written for you:
 

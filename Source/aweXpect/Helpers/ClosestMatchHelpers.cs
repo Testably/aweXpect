@@ -11,8 +11,9 @@ namespace aweXpect.Helpers;
 internal static class ClosestMatchHelpers
 {
 	/// <summary>
-	///     Appends the hint of <see cref="ClosestMatch.AppendHint" /> when the <paramref name="value" /> is a
-	///     <see langword="string" /> and one of the <paramref name="candidates" /> is close to it.
+	///     Appends the hint of <see cref="ClosestMatch.AppendHint(StringBuilder, string, IEnumerable{string})" /> when
+	///     the <paramref name="value" /> is a <see langword="string" /> and one of the <paramref name="candidates" /> is
+	///     close to it.
 	/// </summary>
 	public static void AppendClosestMatchHint<T>(this StringBuilder stringBuilder, T value,
 		IEnumerable<T>? candidates)

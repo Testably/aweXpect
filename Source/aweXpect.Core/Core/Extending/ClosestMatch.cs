@@ -75,10 +75,20 @@ public static class ClosestMatch
 	public static void AppendHint(StringBuilder stringBuilder, string value, IEnumerable<string> candidates)
 	{
 		stringBuilder.ThrowIfNull();
-		if (Find(value, candidates) is { } closest)
+		AppendHint(stringBuilder, Find(value, candidates));
+	}
+
+	/// <summary>
+	///     Appends <c> (did you mean "…"?)</c> for a <paramref name="suggestion" /> that is already known, e.g. from
+	///     <see cref="Find(string, IEnumerable{string})" />, or nothing when it is <see langword="null" />.
+	/// </summary>
+	public static void AppendHint(StringBuilder stringBuilder, string? suggestion)
+	{
+		stringBuilder.ThrowIfNull();
+		if (suggestion is not null)
 		{
 			stringBuilder.Append(" (did you mean ");
-			Formatter.Format(stringBuilder, closest);
+			Formatter.Format(stringBuilder, suggestion);
 			stringBuilder.Append("?)");
 		}
 	}
