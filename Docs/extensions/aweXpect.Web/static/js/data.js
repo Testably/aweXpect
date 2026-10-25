@@ -714,6 +714,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
         "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
+      },
+      {
+        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
+        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
       }
     ],
     "labels": [
@@ -835,7 +841,8 @@ window.BENCHMARK_DATA = {
       "5d7202bd",
       "584ec3ed",
       "e41a7134",
-      "c65f55ef"
+      "c65f55ef",
+      "8a57efc7"
     ],
     "datasets": [
       {
@@ -960,7 +967,8 @@ window.BENCHMARK_DATA = {
           197.09644128481548,
           237.03243230183918,
           429.76682230404447,
-          440.5523522240775
+          440.5523522240775,
+          326.6645091261183
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1084,6 +1092,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          640,
           640,
           640,
           640,
@@ -1223,7 +1232,8 @@ window.BENCHMARK_DATA = {
           465.59640319006786,
           553.4100657871792,
           984.5060651143392,
-          973.8903931209019
+          973.8903931209019,
+          810.7337966918946
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1235,6 +1245,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2081,6 +2092,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
         "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
+      },
+      {
+        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
+        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
       }
     ],
     "labels": [
@@ -2202,7 +2219,8 @@ window.BENCHMARK_DATA = {
       "5d7202bd",
       "584ec3ed",
       "e41a7134",
-      "c65f55ef"
+      "c65f55ef",
+      "8a57efc7"
     ],
     "datasets": [
       {
@@ -2327,7 +2345,8 @@ window.BENCHMARK_DATA = {
           96.77477845350901,
           110.76540613969168,
           198.43584803172521,
-          194.03482491175333
+          194.03482491175333,
+          176.0646018064939
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2375,6 +2394,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -2590,7 +2610,8 @@ window.BENCHMARK_DATA = {
           126.46421005175664,
           138.03799764315286,
           252.69871926307678,
-          249.82760728200276
+          249.82760728200276,
+          244.3281912436852
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2602,6 +2623,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -3388,6 +3410,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
         "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
+      },
+      {
+        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
+        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
       }
     ],
     "labels": [
@@ -3499,7 +3527,8 @@ window.BENCHMARK_DATA = {
       "5d7202bd",
       "584ec3ed",
       "e41a7134",
-      "c65f55ef"
+      "c65f55ef",
+      "8a57efc7"
     ],
     "datasets": [
       {
@@ -3614,7 +3643,8 @@ window.BENCHMARK_DATA = {
           327.20646064098065,
           356.2824078968593,
           654.8516605240958,
-          651.0467678070069
+          651.0467678070069,
+          544.1331988970438
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3728,6 +3758,7 @@ window.BENCHMARK_DATA = {
           976,
           976,
           976,
+          1008,
           1008,
           1008,
           1008,
@@ -3857,7 +3888,8 @@ window.BENCHMARK_DATA = {
           455.71107921600344,
           530.345237323216,
           969.1929264068604,
-          909.9212377548217
+          909.9212377548217,
+          801.9131746927898
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3869,6 +3901,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -4645,6 +4678,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
         "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
+      },
+      {
+        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
+        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
       }
     ],
     "labels": [
@@ -4756,7 +4795,8 @@ window.BENCHMARK_DATA = {
       "5d7202bd",
       "584ec3ed",
       "e41a7134",
-      "c65f55ef"
+      "c65f55ef",
+      "8a57efc7"
     ],
     "datasets": [
       {
@@ -4871,7 +4911,8 @@ window.BENCHMARK_DATA = {
           1008.5420797892979,
           1126.2308639798846,
           1888.6472380501884,
-          1846.7596851348876
+          1846.7596851348876,
+          1206.7550121307372
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4985,6 +5026,7 @@ window.BENCHMARK_DATA = {
           1672,
           1672,
           1672,
+          1688,
           1688,
           1688,
           1688,
@@ -5114,7 +5156,8 @@ window.BENCHMARK_DATA = {
           9075.038046264648,
           10628.155768839519,
           21502.36373087565,
-          20230.873107910156
+          20230.873107910156,
+          12762.1554494222
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5234,7 +5277,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5902,6 +5946,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
         "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
+      },
+      {
+        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
+        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
       }
     ],
     "labels": [
@@ -6013,7 +6063,8 @@ window.BENCHMARK_DATA = {
       "5d7202bd",
       "584ec3ed",
       "e41a7134",
-      "c65f55ef"
+      "c65f55ef",
+      "8a57efc7"
     ],
     "datasets": [
       {
@@ -6128,7 +6179,8 @@ window.BENCHMARK_DATA = {
           408.229736105601,
           405.8385760784149,
           727.1371637071882,
-          681.2953502019246
+          681.2953502019246,
+          510.1289395552415
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6242,6 +6294,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
+          1112,
           1112,
           1112,
           1112,
@@ -6371,7 +6424,8 @@ window.BENCHMARK_DATA = {
           690.7396616617839,
           707.860317843301,
           1399.4681181589763,
-          1297.5526678902763
+          1297.5526678902763,
+          1072.9645801544189
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6383,6 +6437,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -7159,6 +7214,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
         "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
+      },
+      {
+        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
+        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
       }
     ],
     "labels": [
@@ -7270,7 +7331,8 @@ window.BENCHMARK_DATA = {
       "5d7202bd",
       "584ec3ed",
       "e41a7134",
-      "c65f55ef"
+      "c65f55ef",
+      "8a57efc7"
     ],
     "datasets": [
       {
@@ -7385,7 +7447,8 @@ window.BENCHMARK_DATA = {
           625.6795992170062,
           652.1580921581814,
           1146.9811771392822,
-          1091.287643296378
+          1091.287643296378,
+          772.2302356084188
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7499,6 +7562,7 @@ window.BENCHMARK_DATA = {
           1424,
           1424,
           1424,
+          1456,
           1456,
           1456,
           1456,
@@ -7628,7 +7692,8 @@ window.BENCHMARK_DATA = {
           398.45541872297014,
           426.4561672846476,
           796.6422725041707,
-          726.5879685084025
+          726.5879685084025,
+          724.7684989770254
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7640,6 +7705,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
