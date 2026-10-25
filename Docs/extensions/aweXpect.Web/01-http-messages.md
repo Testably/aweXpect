@@ -4,18 +4,19 @@ Describes the possible expectations for `HttpRequestMessage` and `HttpResponseMe
 
 Expectations for [`HttpRequestMessage`](#httprequestmessage):
 
-| Expectation                      | Negated                 | Summary                               |
-|----------------------------------|-------------------------|---------------------------------------|
-| [`HasMethod`](#method)           | `DoesNotHaveMethod`     | has the expected HTTP method          |
-| [`HasRequestUri`](#request-uri)  | `DoesNotHaveRequestUri` | has the expected request URI          |
-| [`HasHeader`](#request-headers)  | `DoesNotHaveHeader`     | has a header, optionally with a value |
-| [`HasContent`](#request-content) | `DoesNotHaveContent`    | has the expected string content       |
+| Expectation                                   | Negated                  | Summary                               |
+|-----------------------------------------------|--------------------------|---------------------------------------|
+| [`HasMethod`](#method)                        | `DoesNotHaveMethod`      | has the expected HTTP method          |
+| [`HasRequestUri`](#request-uri)               | `DoesNotHaveRequestUri`  | has the expected request URI          |
+| [`HasHeader`](#request-headers)               | `DoesNotHaveHeader`      | has a header, optionally with a value |
+| [`HasContentType`](#request-content-type)     | `DoesNotHaveContentType` | has the expected media type           |
+| [`HasContent`](#request-content)              | `DoesNotHaveContent`     | has the expected string content       |
 
 Expectations for [`HttpResponseMessage`](#httpresponsemessage):
 
 | Expectation                                    | Negated                       | Summary                                         |
 |------------------------------------------------|-------------------------------|-------------------------------------------------|
-| [`HasStatusCode`](#status-code)                | `HasStatusCode().NotEqualTo`  | has the expected status code or status category |
+| [`HasStatusCode`](#status-code)                | `DoesNotHaveStatusCode`       | has the expected status code or status category |
 | [`HasHeader`](#response-headers)               | `DoesNotHaveHeader`           | has a header, optionally with a value           |
 | [`HasContentType`](#content-type)              | `DoesNotHaveContentType`      | has the expected media type                     |
 | [`HasContent`](#response-content)              | `DoesNotHaveContent`          | has the expected string content                 |
@@ -121,6 +122,25 @@ HTTP-Request:
     Cache-Control: no-cache
 ```
 
+### Request content type
+
+You can verify the media type in the `Content-Type` header of the `HttpRequestMessage`:
+
+```csharp
+HttpRequestMessage request = new(HttpMethod.Post, "https://music.example.com/tracks")
+{
+    Content = new StringContent("{\"title\": \"Let It Be\"}", Encoding.UTF8, "application/json"),
+};
+
+await Expect.That(request).HasContentType("application/json");
+await Expect.That(request).HasContentType("application/*").AsWildcard();
+await Expect.That(request).DoesNotHaveContentType("text/html");
+```
+
+The media type supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
+[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. A request without
+content or without a `Content-Type` header does not have the unexpected media type.
+
 ### Request content
 
 You can verify that the `HttpRequestMessage` has the expected string content, or that it does not have it:
@@ -151,6 +171,7 @@ You can verify the status code of the `HttpResponseMessage`, either the exact va
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
 
 await Expect.That(response).HasStatusCode(HttpStatusCode.OK);
+await Expect.That(response).DoesNotHaveStatusCode(HttpStatusCode.NotFound);
 await Expect.That(response).HasStatusCode().EqualTo(HttpStatusCode.OK);
 await Expect.That(response).HasStatusCode().NotEqualTo(HttpStatusCode.NotFound);
 await Expect.That(response).HasStatusCode().Success();
