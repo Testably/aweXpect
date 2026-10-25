@@ -62,6 +62,57 @@ public sealed partial class PropertyResultTests
 				.Because("null is equal to null");
 		}
 
+		[Test]
+		public async Task Satisfying_WhenNegatedAndPredicateHolds_ShouldFail()
+		{
+			PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> sut =
+				MyClass.HasDateTimeKindValue(DateTimeKind.Utc, ExpectationGrammars.None);
+
+			async Task Act()
+				=> await Specified(sut, true);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have kind value specified,
+				             but it had kind value Utc
+				             """);
+		}
+
+		[Test]
+		public async Task Satisfying_WhenPredicateDoesNotHold_ShouldFail()
+		{
+			PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> sut =
+				MyClass.HasDateTimeKindValue(DateTimeKind.Unspecified, ExpectationGrammars.None);
+
+			async Task Act()
+				=> await Specified(sut);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             has kind value specified,
+				             but it had kind value Unspecified
+				             """);
+		}
+
+		[Test]
+		public async Task Satisfying_WhenPredicateHolds_ShouldSucceed()
+		{
+			PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> sut =
+				MyClass.HasDateTimeKindValue(DateTimeKind.Local, ExpectationGrammars.None);
+
+			async Task Act()
+				=> await Specified(sut);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		private static TResult Specified<TResult>(IEnumPropertyResult<DateTimeKind, TResult> result,
+			bool isNegated = false)
+			=> result.Compare(PropertyComparison<DateTimeKind>.Satisfying(
+				kind => kind is DateTimeKind.Utc or DateTimeKind.Local, "specified", isNegated));
+
 		public sealed class GrammarTests
 		{
 			[Test]
@@ -82,6 +133,23 @@ public sealed partial class PropertyResultTests
 			}
 
 			[Test]
+			public async Task WhenActive_WithNegatedSatisfying_ShouldPlaceTheNegationBeforeTheExpectation()
+			{
+				PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> sut =
+					MyClass.HasDateTimeKindValue(DateTimeKind.Utc, ExpectationGrammars.Active);
+
+				async Task Act()
+					=> await Specified(sut, true);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             with kind value not specified,
+					             but it had kind value Utc
+					             """);
+			}
+
+			[Test]
 			public async Task WhenNegated_ShouldUseDoesNotHave()
 			{
 				MyClass subject = new();
@@ -94,6 +162,23 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             does not have kind value equal to Unspecified,
+					             but it had kind value Unspecified
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNegated_WithNegatedSatisfying_ShouldExpectThePredicate()
+			{
+				MyClass subject = new();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(s
+						=> Specified(MyClass.DateTimeKindValueOf(s, ExpectationGrammars.None), true));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has kind value specified,
 					             but it had kind value Unspecified
 					             """);
 			}
@@ -128,6 +213,23 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             whose kind value is equal to Local,
+					             but kind value was Utc
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNested_WithNegatedSatisfying_ShouldPlaceTheNegationBeforeTheExpectation()
+			{
+				PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> sut =
+					MyClass.HasDateTimeKindValue(DateTimeKind.Utc, ExpectationGrammars.Nested);
+
+				async Task Act()
+					=> await Specified(sut, true);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose kind value is not specified,
 					             but kind value was Utc
 					             """);
 			}

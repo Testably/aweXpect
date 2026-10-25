@@ -102,8 +102,9 @@ table of `00-index.md`.
 
 - `ThatHttpRequestMessage`, `ThatHttpResponseMessage`, `ThatUri`, `ThatIPAddress`; the base file of each holds shared
   helpers.
-- `Web/Results`: fluent results such as `StatusCodeResult` (`.Success()`), `HasHeaderValueResult`
-  (`.WithValue(...)`, `.WhoseValue(...)`) and `ProblemDetailsResult`.
+- `Web/Results`: fluent results such as `HasHeaderValueResult` (`.WithValue(...)`, `.WhoseValue(...)`) and
+  `ProblemDetailsResult`. `HasStatusCode()` returns the Core enum property result, and the status classes (`.Success()`)
+  are extension methods on it in `HttpStatusCodePropertyResultExtensions`.
 - `Web/ContentProcessors`: `IContentProcessor` and the JSON, string and binary processors that format `HttpContent`;
   `Customize.aweXpect.Web().ContentProcessors` configures them.
 - `Helpers/HttpFormatter` writes the `HTTP-Request:`/`HTTP-Response:` sections appended to failures on requests and

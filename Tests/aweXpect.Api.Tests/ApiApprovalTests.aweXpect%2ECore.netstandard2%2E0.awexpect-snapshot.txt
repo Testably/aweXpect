@@ -2059,6 +2059,7 @@ namespace aweXpect.Results
         public bool IsNegated { get; }
         public void AppendExpectation(System.Text.StringBuilder stringBuilder) { }
         public aweXpect.Core.Constraints.Outcome Evaluate(TProperty? actual) { }
+        public static aweXpect.Results.PropertyComparison<TProperty> Satisfying(System.Func<TProperty?, bool> predicate, string expectation, bool isNegated = false) { }
     }
     public sealed class PropertyEqualityComparison<TNumber> where TNumber : struct, System.IComparable<TNumber>
     {

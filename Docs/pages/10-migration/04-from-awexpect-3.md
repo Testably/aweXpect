@@ -66,7 +66,9 @@ need an update. Among others:
   items`, and a negated JSON kind check names the actual kind.
 - The JSON and XML options are listed in the failure of the comparison itself, not in the failure of an unrelated
   expectation on the same subject.
-- `HasStatusCode().NotEqualTo(404)` reads `does not have status code 404 NotFound`.
+- The status code expectations read like the operators of the other property results, e.g.
+  `DoesNotHaveStatusCode(404)` and `HasStatusCode().NotEqualTo(404)` read `does not have status code equal to 404
+  NotFound`, and `HasStatusCode().Success()` reads `has status code in the success range (2xx)`.
 
 ### Not nullable results
 
@@ -175,6 +177,10 @@ a virtual time system.
   `HasProblemDetailsContent`. This only affects code that names the result type.
 - `HasStatusCode(…)`, `HasStatusCode().EqualTo(…)` and `HasStatusCode().NotEqualTo(…)` take an `HttpStatusCode`
   instead of an `HttpStatusCode?`. A response always has a status code, so `null` never matched.
+- `HasStatusCode()` returns the enum property result of aweXpect.Core, `PropertyResult.Enum<…, HttpStatusCode>`,
+  instead of `StatusCodeResult`, which was removed. `Success()`, `Redirection()`, `ClientError()`, `ServerError()` and
+  `Error()` are extension methods in `HttpStatusCodePropertyResultExtensions`. Calls compile unchanged, but code that
+  names `StatusCodeResult` has to use the new type.
 
 ### Namespaces
 

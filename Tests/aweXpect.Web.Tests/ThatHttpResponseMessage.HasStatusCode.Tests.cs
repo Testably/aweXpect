@@ -31,7 +31,7 @@ public sealed partial class ThatHttpResponseMessage
 							.ComplyWith(item => item.HasStatusCode(HttpStatusCode.NotFound)));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*whose Responses have status code 404 NotFound for all items,*""").AsWildcard()
+					.WithMessage("""*whose Responses have status code equal to 404 NotFound for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
@@ -50,7 +50,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has status code 200 OK,
+					             has status code equal to 200 OK,
 					             but it had status code 400 BadRequest
 
 					             HTTP-Request:
@@ -80,7 +80,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has status code 200 OK,
+					             has status code equal to 200 OK,
 					             but it had status code 400 BadRequest
 
 					             HTTP-Response:
@@ -102,7 +102,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has status code 200 OK,
+					             has status code equal to 200 OK,
 					             but it had status code 400 BadRequest
 
 					             HTTP-Response:
@@ -151,7 +151,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has status code 202 Accepted,
+					             has status code equal to 202 Accepted,
 					             but it was <null>
 					             """);
 			}

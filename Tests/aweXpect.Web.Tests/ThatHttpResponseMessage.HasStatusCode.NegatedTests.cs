@@ -21,7 +21,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a client error status code (4xx),
+					             does not have status code in the client error range (4xx),
 					             but it had status code 404 NotFound
 
 					             HTTP-Response:
@@ -57,7 +57,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have status code 404 NotFound,
+					             does not have status code equal to 404 NotFound,
 					             but it had status code 404 NotFound
 
 					             HTTP-Response:
@@ -79,7 +79,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have an error status code (4xx or 5xx),
+					             does not have status code in the error range (4xx or 5xx),
 					             but it had status code 500 InternalServerError
 
 					             HTTP-Response:
@@ -113,7 +113,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have status code 404 NotFound,
+					             does not have status code equal to 404 NotFound,
 					             but it had status code 404 NotFound
 
 					             HTTP-Response:
@@ -136,7 +136,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has status code 404 NotFound,
+					             has status code equal to 404 NotFound,
 					             but it had status code 200 OK
 
 					             HTTP-Response:
@@ -171,7 +171,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a redirection status code (3xx),
+					             does not have status code in the redirection range (3xx),
 					             but it had status code 304 NotModified
 
 					             HTTP-Response:
@@ -193,7 +193,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a server error status code (5xx),
+					             does not have status code in the server error range (5xx),
 					             but it had status code 502 BadGateway
 
 					             HTTP-Response:
@@ -215,7 +215,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a success status code (2xx),
+					             does not have status code in the success range (2xx),
 					             but it had status code 200 OK
 
 					             HTTP-Response:
@@ -236,7 +236,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a success status code (2xx),
+					             does not have status code in the success range (2xx),
 					             but it was <null>
 					             """)
 					.Because("a null subject has no status code, so the negated expectation fails as well");

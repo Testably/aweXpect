@@ -19,7 +19,7 @@ public sealed partial class ContentProcessor
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that httpResponse
-				             has status code 202 Accepted,
+				             has status code equal to 202 Accepted,
 				             but it had status code 200 OK
 
 				             HTTP-Response:
@@ -52,7 +52,7 @@ public sealed partial class ContentProcessor
 			await That(Act).Throws<FailException>()
 				.WithMessage($$"""
 				               Expected that httpResponse
-				               has status code 202 Accepted,
+				               has status code equal to 202 Accepted,
 				               but it had status code 200 OK
 
 				               HTTP-Response:
