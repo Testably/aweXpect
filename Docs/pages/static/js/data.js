@@ -1002,6 +1002,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
@@ -1171,7 +1177,8 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
@@ -1344,7 +1351,8 @@ window.BENCHMARK_DATA = {
           5078.889336806077,
           7824.886908976237,
           10471.700672694615,
-          7883.2807342529295
+          7883.2807342529295,
+          10726.96032496861
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1440,6 +1448,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -1703,7 +1712,8 @@ window.BENCHMARK_DATA = {
           161030.48922293526,
           249551.8638671875,
           372516.94756610575,
-          250603.68157552084
+          250603.68157552084,
+          372339.96623883926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1881,7 +1891,8 @@ window.BENCHMARK_DATA = {
           590287,
           590288,
           590292,
-          590288
+          590288,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2062,7 +2073,8 @@ window.BENCHMARK_DATA = {
           9513.623324584962,
           14513.059366498675,
           20819.8635798863,
-          14416.20943232945
+          14416.20943232945,
+          20168.41748700823
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2074,6 +2086,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -3214,6 +3227,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
@@ -3376,7 +3395,8 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
@@ -3542,7 +3562,8 @@ window.BENCHMARK_DATA = {
           124.38884867940631,
           194.89204474857874,
           304.0385594367981,
-          219.02708916664125
+          219.02708916664125,
+          284.2009262016841
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3631,6 +3652,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -3887,7 +3909,8 @@ window.BENCHMARK_DATA = {
           238.55547399520873,
           412.49044170379636,
           570.4413057963053,
-          427.451818561554
+          427.451818561554,
+          579.4737151690891
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3899,6 +3922,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -4232,7 +4256,8 @@ window.BENCHMARK_DATA = {
           188.99204208169664,
           292.0856630251958,
           420.2345202990941,
-          310.54682064056396
+          310.54682064056396,
+          413.6101273218791
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4244,6 +4269,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -9997,6 +10023,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
@@ -10929,7 +10961,8 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
@@ -11865,7 +11898,8 @@ window.BENCHMARK_DATA = {
           70.39552328416279,
           117.52057948112488,
           159.693474594752,
-          109.06695826848348
+          109.06695826848348,
+          157.77659374872843
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12724,6 +12758,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -13750,7 +13785,8 @@ window.BENCHMARK_DATA = {
           121.47885853052139,
           201.5055878673281,
           271.3276673634847,
-          203.7553085730626
+          203.7553085730626,
+          284.08864237467446
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13943,6 +13979,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -14916,7 +14953,8 @@ window.BENCHMARK_DATA = {
           114.75882549796786,
           180.40008885065714,
           261.8778910636902,
-          190.15069086211068
+          190.15069086211068,
+          263.00488869349164
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -14928,6 +14966,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -16154,6 +16193,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
@@ -16323,7 +16368,8 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
@@ -16496,7 +16542,8 @@ window.BENCHMARK_DATA = {
           126.63229985237122,
           191.6610468228658,
           279.73423392956073,
-          196.89731652396065
+          196.89731652396065,
+          270.53296925226846
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16592,6 +16639,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -16855,7 +16903,8 @@ window.BENCHMARK_DATA = {
           249.23844356536864,
           404.71654176712036,
           542.0768265357384,
-          431.65493806203204
+          431.65493806203204,
+          524.773886680603
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16867,6 +16916,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -17214,7 +17264,8 @@ window.BENCHMARK_DATA = {
           162.23117941617966,
           240.2580383845738,
           339.01400423049927,
-          267.32144759496055
+          267.32144759496055,
+          366.67675422032676
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -17226,6 +17277,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -22986,6 +23038,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
@@ -23918,7 +23976,8 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
@@ -24854,7 +24913,8 @@ window.BENCHMARK_DATA = {
           293.1118696076529,
           503.54605356852215,
           674.1330249492938,
-          511.5118451436361
+          511.5118451436361,
+          663.1900602976481
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25713,6 +25773,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -26739,7 +26800,8 @@ window.BENCHMARK_DATA = {
           659.2295383453369,
           1100.5304008483886,
           1409.788874689738,
-          1129.048338345119
+          1129.048338345119,
+          1481.6401491800943
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26932,6 +26994,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -27905,7 +27968,8 @@ window.BENCHMARK_DATA = {
           320.3916636246901,
           501.6852457182748,
           660.732204691569,
-          513.0128634770712
+          513.0128634770712,
+          656.6564384869167
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -27917,6 +27981,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -33721,6 +33786,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
@@ -34653,7 +34724,8 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
@@ -35589,7 +35661,8 @@ window.BENCHMARK_DATA = {
           294.1343546254294,
           510.5299039253822,
           667.5195798238118,
-          528.3362816492717
+          528.3362816492717,
+          635.1671815872193
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36448,6 +36521,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -37474,7 +37548,8 @@ window.BENCHMARK_DATA = {
           9563.049904959542,
           15915.09335530599,
           28183.29366847447,
-          16598.047760009766
+          16598.047760009766,
+          27652.79806315104
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38415,6 +38490,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -38640,7 +38716,8 @@ window.BENCHMARK_DATA = {
           379.2264390627543,
           581.4500145594279,
           792.4617305119832,
-          615.3065211613973
+          615.3065211613973,
+          826.2292894363403
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -38652,6 +38729,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -40226,6 +40304,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
@@ -40453,7 +40537,8 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
@@ -40684,7 +40769,8 @@ window.BENCHMARK_DATA = {
           338.90108779271446,
           543.5637660344441,
           726.3473637898763,
-          533.9964230610774
+          533.9964230610774,
+          726.2767291386922
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40886,6 +40972,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
+          1688,
           1688,
           1688,
           1688,
@@ -41159,7 +41246,8 @@ window.BENCHMARK_DATA = {
           27049.814908854165,
           54414.133728027344,
           84649.1812906901,
-          52918.36057332357
+          52918.36057332357,
+          82560.11273662861
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41395,7 +41483,8 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42759,6 +42848,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
@@ -42986,7 +43081,8 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
@@ -43217,7 +43313,8 @@ window.BENCHMARK_DATA = {
           86.83500942162105,
           133.7297604267414,
           191.79289871851603,
-          137.4148799419403
+          137.4148799419403,
+          189.0826095002038
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43371,6 +43468,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -43692,7 +43790,8 @@ window.BENCHMARK_DATA = {
           8940.477222987583,
           14230.761140187582,
           32464.053255208335,
-          15090.024937947592
+          15090.024937947592,
+          32815.663033040364
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43928,7 +44027,8 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44153,7 +44253,8 @@ window.BENCHMARK_DATA = {
           115.55592499460492,
           173.65490992863974,
           261.5955648422241,
-          187.7377277782985
+          187.7377277782985,
+          258.7476766268412
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -44165,6 +44266,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -45391,6 +45493,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
@@ -45560,7 +45668,8 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
@@ -45733,7 +45842,8 @@ window.BENCHMARK_DATA = {
           162.56447323731012,
           262.7723569188799,
           345.07322657108307,
-          263.8556496415819
+          263.8556496415819,
+          377.2938177245004
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45829,6 +45939,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -46092,7 +46203,8 @@ window.BENCHMARK_DATA = {
           189.04190133412678,
           321.27046588488986,
           373.55807403155734,
-          314.6256543159485
+          314.6256543159485,
+          414.64162731170654
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46104,6 +46216,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -46451,7 +46564,8 @@ window.BENCHMARK_DATA = {
           191.30534536497933,
           324.0434519694402,
           404.8696890217917,
-          325.288905437176
+          325.288905437176,
+          427.5015382130941
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -46463,6 +46577,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -47645,6 +47760,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
@@ -47814,7 +47935,8 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
@@ -47987,7 +48109,8 @@ window.BENCHMARK_DATA = {
           330.1563859667097,
           505.6460519937369,
           779.9324968973796,
-          537.1587242762248
+          537.1587242762248,
+          727.6673224131266
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48107,6 +48230,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
+          1384,
           1384,
           1384,
           1384,
@@ -48346,7 +48470,8 @@ window.BENCHMARK_DATA = {
           915.988909403483,
           1443.0639465038594,
           2118.2165496826174,
-          1628.4923898061118
+          1628.4923898061118,
+          2075.547301483154
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48358,6 +48483,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -48705,7 +48831,8 @@ window.BENCHMARK_DATA = {
           434.0485417842865,
           695.5518198746902,
           997.5852329254151,
-          766.6839298248291
+          766.6839298248291,
+          986.2523937225342
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -48717,6 +48844,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -49899,6 +50027,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
@@ -50068,7 +50202,8 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
@@ -50241,7 +50376,8 @@ window.BENCHMARK_DATA = {
           5500.227398173014,
           8153.1631530761715,
           11610.074236043294,
-          8191.281711284931
+          8191.281711284931,
+          11420.452535775992
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50337,6 +50473,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -50600,7 +50737,8 @@ window.BENCHMARK_DATA = {
           17514.174686686198,
           27028.32130940755,
           41368.21552821568,
-          26865.0308980306
+          26865.0308980306,
+          41375.33505045573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50768,6 +50906,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -50959,7 +51098,8 @@ window.BENCHMARK_DATA = {
           5432.378916931152,
           7875.461250305176,
           10748.790852355956,
-          7879.613591875349
+          7879.613591875349,
+          10773.100264485676
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -50971,6 +51111,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -52153,6 +52294,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
@@ -52322,7 +52469,8 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
@@ -52495,7 +52643,8 @@ window.BENCHMARK_DATA = {
           5236.973687308176,
           7704.550889151437,
           11069.231694902692,
-          7740.322445460728
+          7740.322445460728,
+          11116.267636980328
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52591,6 +52740,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -52854,7 +53004,8 @@ window.BENCHMARK_DATA = {
           25318.447432454428,
           37226.76271057129,
           59471.55545247396,
-          38259.374275716145
+          38259.374275716145,
+          59014.5553507487
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53024,6 +53175,7 @@ window.BENCHMARK_DATA = {
           23553,
           23554,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -53213,7 +53365,8 @@ window.BENCHMARK_DATA = {
           10633.54582417806,
           15248.138665771485,
           20748.89307454427,
-          15292.214595540365
+          15292.214595540365,
+          21322.483012608118
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -53225,6 +53378,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
