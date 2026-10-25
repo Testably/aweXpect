@@ -29,6 +29,10 @@ public static partial class ThatJsonString
 	///     Verifies that the subject is a valid JSON string whose root <see cref="JsonElement" /> satisfies the
 	///     <paramref name="expectations" />.
 	/// </summary>
+	/// <remarks>
+	///     A subject that is no valid JSON fails also when negated, as the <paramref name="expectations" /> cannot be
+	///     verified.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<string, IThat<string?>> IsValidJson(
 		this IThat<string?> subject,
@@ -37,7 +41,8 @@ public static partial class ThatJsonString
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		JsonDocumentOptions documentOptions = GetDocumentOptions(options);
-		return new AndOrResult<string, IThat<string?>>(AddIsValidJsonConstraint(subject, documentOptions)
+		return new AndOrResult<string, IThat<string?>>(subject.Get().ExpectationBuilder.AddConstraint(documentOptions,
+					static (o, it, grammar) => new IsValidJsonConstraint(it, grammar, o, true))
 				.ForMember(MemberAccessor<string, JsonElement>.FromFuncWithName(jsonString =>
 					{
 						using JsonDocument jsonDocument = JsonDocument.Parse(jsonString, documentOptions);
@@ -75,7 +80,11 @@ public static partial class ThatJsonString
 		=> subject.Get().ExpectationBuilder.AddConstraint(options,
 			static (o, it, grammar) => new IsValidJsonConstraint(it, grammar, o));
 
-	private sealed class IsValidJsonConstraint(string it, ExpectationGrammars grammars, JsonDocumentOptions options)
+	private sealed class IsValidJsonConstraint(
+		string it,
+		ExpectationGrammars grammars,
+		JsonDocumentOptions options,
+		bool hasExpectations = false)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
 			IValueConstraint<string?>
 	{
@@ -84,6 +93,7 @@ public static partial class ThatJsonString
 		public ConstraintResult IsMetBy(string? actual)
 		{
 			Actual = actual;
+			_deserializationError = null;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -97,7 +107,8 @@ public static partial class ThatJsonString
 			catch (JsonException jsonException)
 			{
 				_deserializationError = jsonException.Message;
-				Outcome = Outcome.Failure;
+				// The expectations on the root element cannot be verified, so their negation cannot be met either.
+				Outcome = hasExpectations ? Outcome.FailureBothWays : Outcome.Failure;
 				return this;
 			}
 
@@ -116,6 +127,12 @@ public static partial class ThatJsonString
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
+			if (_deserializationError is not null)
+			{
+				AppendNormalResult(stringBuilder, indentation);
+				return;
+			}
+
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}

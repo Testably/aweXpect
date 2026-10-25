@@ -212,6 +212,24 @@ public sealed partial class ThatJsonString
 			}
 
 			[Test]
+			public async Task WhenNegatedAndActualIsInvalidJson_ShouldFail()
+			{
+				string subject = "[1, 2";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsValidJson(d => d.Matches([1, 3,])));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not valid JSON which matches [1, 3,],
+					             but it could not be parsed: '2' is an invalid end of a number. Expected a delimiter. LineNumber: 0 | BytePositionInLine: 5. and it did throw a JsonReaderException:
+					               '2' is an invalid end of a number. Expected a delimiter. LineNumber: 0 | BytePositionInLine: 5.
+					             """)
+					.Because("the expectations on the root element cannot be verified on a subject that is no JSON, so the negation must not be met either");
+			}
+
+			[Test]
 			public async Task WhenNegatedAndExpectationFails_ShouldSucceed()
 			{
 				string subject = "[1, 2]";

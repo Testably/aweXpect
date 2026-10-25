@@ -104,18 +104,6 @@ public sealed partial class ThatXmlString
 		public sealed class NegatedTests
 		{
 			[Test]
-			public async Task WhenSubjectIsInvalidXml_ShouldSucceed()
-			{
-				string subject = "<a>";
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsValidXmlMatching("<a/>"));
-
-				await That(Act).DoesNotThrow()
-					.Because("a subject that is no valid XML is not valid XML which matches the expected XML either");
-			}
-
-			[Test]
 			public async Task WhenSubjectAndExpectedAreInvalidXml_ShouldThrowArgumentException()
 			{
 				string subject = "<a><b>";
@@ -125,7 +113,41 @@ public sealed partial class ThatXmlString
 
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage("The expected XML is invalid: *").AsWildcard()
-					.Because("an invalid expected XML would let the negation pass for every subject that is no valid XML");
+					.Because("an invalid expected XML is an error in the test, not a failure of the subject");
+			}
+
+			[Test]
+			public async Task WhenSubjectContainsDtd_ShouldFail()
+			{
+				string subject = "<!DOCTYPE a [<!ENTITY e \"x\">]><a>&e;</a>";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsValidXmlMatching("<b/>"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not valid XML which matches <b/>,
+					             but it contained a document type definition (DTD), which is prohibited for security reasons
+					             """)
+					.Because("a subject that is no valid XML cannot be compared, so the negation must not be met either");
+			}
+
+			[Test]
+			public async Task WhenSubjectIsInvalidXml_ShouldFail()
+			{
+				string subject = "<a><b>";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsValidXmlMatching("<b/>"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not valid XML which matches <b/>,
+					             but it could not be parsed: Unexpected end of file has occurred. The following elements are not closed: b, a. Line 1, position 7.
+					             """)
+					.Because("a subject that is no valid XML cannot be compared, so the negation must not be met either");
 			}
 
 			[Test]
@@ -176,6 +198,27 @@ public sealed partial class ThatXmlString
 					=> await That(subject).IsValidXmlMatchingExactly("<a x=\"1\" y=\"2\"></a>");
 
 				await That(Act).DoesNotThrow();
+			}
+		}
+
+		[UseEnglishMessages]
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task WhenSubjectIsInvalidXml_ShouldFail()
+			{
+				string subject = "<a><b>";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsValidXmlMatchingExactly("<b/>"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not valid XML which matches <b/> exactly,
+					             but it could not be parsed: Unexpected end of file has occurred. The following elements are not closed: b, a. Line 1, position 7.
+					             """)
+					.Because("a subject that is no valid XML cannot be compared, so the negation must not be met either");
 			}
 		}
 	}

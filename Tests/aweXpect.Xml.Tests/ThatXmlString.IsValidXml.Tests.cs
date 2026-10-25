@@ -333,6 +333,40 @@ public sealed partial class ThatXmlString
 			}
 
 			[Test]
+			public async Task WhenNegatedAndActualContainsDtd_ShouldFail()
+			{
+				string subject = "<!DOCTYPE a [<!ENTITY e \"x\">]><a>&e;</a>";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsValidXml(r => r.Satisfies(e => e.Value == "y")));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not valid XML which satisfies e => e.Value == "y",
+					             but it contained a document type definition (DTD), which is prohibited for security reasons
+					             """)
+					.Because("the expectations on the root element cannot be verified on a subject that is no valid XML, so the negation must not be met either");
+			}
+
+			[Test]
+			public async Task WhenNegatedAndActualIsInvalidXml_ShouldFail()
+			{
+				string subject = "<a><b>";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsValidXml(r => r.Satisfies(e => e.Name == "b")));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not valid XML which satisfies e => e.Name == "b",
+					             but it could not be parsed: Unexpected end of file has occurred. The following elements are not closed: b, a. Line 1, position 7.
+					             """)
+					.Because("the expectations on the root element cannot be verified on a subject that is no valid XML, so the negation must not be met either");
+			}
+
+			[Test]
 			public async Task WhenNegatedAndExpectationFails_ShouldSucceed()
 			{
 				string subject = "<a/>";
