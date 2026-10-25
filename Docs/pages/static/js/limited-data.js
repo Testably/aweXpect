@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "67432f46d5711be1dedd68a8033294ecf8e9fb70",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
-        "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
-      },
-      {
         "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
-      "67432f46",
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5438.740982055664,
           10763.331905658428,
           11361.214368547711,
           10880.704213460287,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           5742.750442504883,
           10414.94926554362,
           12171.900592803955,
-          10119.840267726353
+          10119.840267726353,
+          7849.09235055106
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -454,7 +454,7 @@ window.BENCHMARK_DATA = {
           2168,
           2168,
           2168,
-          2168,
+          2208,
           2208,
           2208,
           2208,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          171168.4903564453,
           368104.6346261161,
           381906.66744791664,
           373269.94698660716,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           196223.72384207588,
           357331.13815104164,
           365921.248046875,
-          328636.875390625
+          328636.875390625,
+          237599.55438701922
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590287,
           590292,
           590292,
           590292,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590288,
           590292,
           590292,
-          590292
+          590292,
+          590289
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10280.287642342704,
           19452.899841308594,
           19653.805741373697,
           19562.97007446289,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           11058.37766794058,
           19045.74450465611,
           19554.584747314453,
-          18714.49627075195
+          18714.49627075195,
+          13948.108259934645
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "67432f46d5711be1dedd68a8033294ecf8e9fb70",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
-        "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
-      },
-      {
         "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
-      "67432f46",
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          131.96356910925644,
           307.8254539489746,
           305.7269687016805,
           321.5303252855937,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           147.16616082191467,
           290.1889455135052,
           282.30194034576414,
-          259.0471338589986
+          259.0471338589986,
+          195.29296272595724
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          263.95452427864075,
           522.02847637449,
           536.2102851867676,
           508.16099980672203,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           289.8088395436605,
           477.69547888437904,
           503.9658381779989,
-          527.5884560902913
+          527.5884560902913,
+          415.7268768628438
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          208.53382562001545,
           413.87239166895546,
           428.2126350402832,
           394.13360865910846,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           225.22020754814147,
           383.204605285938,
           385.5321793896811,
-          369.1653074820836
+          369.1653074820836,
+          306.77570050557455
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "67432f46d5711be1dedd68a8033294ecf8e9fb70",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
-        "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
-      },
-      {
         "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
-      "67432f46",
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          73.56691530772618,
           148.81204695701598,
           155.232170019831,
           151.13241923650105,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           85.47432090554919,
           141.14068206718989,
           167.75231730937958,
-          148.92398676872253
+          148.92398676872253,
+          114.15885343721935
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          134.71666740576427,
           266.2779497782389,
           268.1421449979146,
           261.3143316586812,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           148.51800283363886,
           239.07587464650473,
           240.65371881212508,
-          273.32898597717286
+          273.32898597717286,
+          200.0377416060521
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          125.0022577898843,
           253.5050666515644,
           253.734072971344,
           237.09964667047774,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           143.33854581759527,
           240.57192369869776,
           252.11125080926078,
-          224.0618883450826
+          224.0618883450826,
+          177.15317729541235
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "67432f46d5711be1dedd68a8033294ecf8e9fb70",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
-        "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
-      },
-      {
         "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
-      "67432f46",
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          139.46009581429618,
           267.86706886291506,
           273.2257217725118,
           277.589577293396,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           141.84732740265983,
           262.62011426289877,
           291.4481632868449,
-          266.92244720458984
+          266.92244720458984,
+          204.08501519475664
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2653,7 +2653,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
-          488,
+          520,
           520,
           520,
           520,
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          266.4523186683655,
           529.1981568018596,
           551.7504915237427,
           530.23006178538,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           292.5267364297594,
           496.9410206930978,
           503.63861713409426,
-          530.8174298150199
+          530.8174298150199,
+          429.7062110582987
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          181.3638050556183,
           346.1922581036886,
           343.26693221500943,
           342.63841257776534,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           184.61078042250412,
           331.6961406469345,
           333.53010674317676,
-          327.4599034627279
+          327.4599034627279,
+          251.41382446289063
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "67432f46d5711be1dedd68a8033294ecf8e9fb70",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
-        "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
-      },
-      {
         "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
-      "67432f46",
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          352.70454772313434,
           689.2711715017047,
           661.6303016662598,
           651.5949905259268,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           350.5754908493587,
           689.4750436782837,
           679.9040705135891,
-          639.6381138392857
+          639.6381138392857,
+          524.6995246887207
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          775.774098777771,
           1372.5945108958654,
           1362.1996014458794,
           1412.6254435221354,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           752.5631011554173,
           1319.4747709910075,
           1343.189898124108,
-          1402.8030392783028
+          1402.8030392783028,
+          1083.286934035165
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          356.4490525325139,
           665.2836076100667,
           695.2886538823445,
           681.4816160202026,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           374.15041901270547,
           642.4390666668231,
           652.6688043049404,
-          636.4089799880982
+          636.4089799880982,
+          505.06693210601804
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "67432f46d5711be1dedd68a8033294ecf8e9fb70",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
-        "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
-      },
-      {
         "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
-      "67432f46",
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          358.2784534601065,
           658.7635319573538,
           627.8945004781087,
           642.4386880738394,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           363.55233420644487,
           651.8486566543579,
           689.9870349443876,
-          656.8495749791463
+          656.8495749791463,
+          532.7796474456787
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10866.246428353446,
           28518.05124104818,
           27961.20649617513,
           27768.038708496093,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           11203.118533325196,
           26552.577711995444,
           27841.475368245443,
-          20604.764662679037
+          20604.764662679037,
+          16432.802715594953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4223,7 +4223,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4248,6 +4247,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          447.77828108469646,
           825.5862543741862,
           834.5153518040975,
           801.5886325836182,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           437.5614480631692,
           766.7139786084493,
           779.2168462117513,
-          735.6528276443481
+          735.6528276443481,
+          597.1069210597446
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "67432f46d5711be1dedd68a8033294ecf8e9fb70",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
-        "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
-      },
-      {
         "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
-      "67432f46",
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          346.3725249608358,
           761.1003993579319,
           752.9240113576253,
           747.6606897626605,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           420.95696786733777,
           730.8069323131016,
           745.414024080549,
-          690.2766019185384
+          690.2766019185384,
+          502.2363023122152
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28738.300939941408,
           81938.48835100446,
           83764.99350585937,
           83538.80155436198,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           31404.139794921874,
           81400.09467424665,
           82280.2502300556,
-          61003.27227376302
+          61003.27227376302,
+          53294.127884928384
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5256,
           5252,
           5252,
           5252,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "67432f46d5711be1dedd68a8033294ecf8e9fb70",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
-        "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
-      },
       {
         "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
-      "67432f46",
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          93.76304816282712,
           183.7586667060852,
           186.6474791254316,
           184.91294290224712,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           100.11973985036214,
           190.3093117396037,
           194.374275299219,
-          178.95339266459146
+          178.95339266459146,
+          134.72476485570272
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10180.244286170373,
           33364.99719238281,
           32421.829459635417,
           32179.51400756836,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           10753.299132283528,
           31206.736726888023,
           30984.701002854566,
-          17818.827276376578
+          17818.827276376578,
+          14945.825891113282
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5551,7 +5551,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5615,
           5614,
           5614,
           5614,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          124.98722064495087,
           250.2806865618779,
           255.38575887680054,
           251.71015882492065,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           132.08246030126298,
           244.33669372705313,
           271.6677360875266,
-          226.6255455493927
+          226.6255455493927,
+          178.46917902506314
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "67432f46d5711be1dedd68a8033294ecf8e9fb70",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
-        "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
-      },
-      {
         "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
-      "67432f46",
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          191.41836733477456,
           353.37041641871133,
           355.27661596934,
           353.44099651972454,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           192.226740700858,
           347.37930088776807,
           355.153765971844,
-          365.28983460153853
+          365.28983460153853,
+          266.5554261525472
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          207.38212335904439,
           401.18589331309,
           409.6259557723999,
           371.29256102244057,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           230.23854269981385,
           361.29271609442577,
           369.3872904777527,
-          414.6439502398173
+          414.6439502398173,
+          313.0425904273987
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          211.25591054329504,
           405.34118874867755,
           419.0639672915141,
           406.59747381210326,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           232.5296845606395,
           413.96745325968817,
           395.9493246078491,
-          430.72365140914917
+          430.72365140914917,
+          329.1971432765325
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "67432f46d5711be1dedd68a8033294ecf8e9fb70",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
-        "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
-      },
-      {
         "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
-      "67432f46",
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          365.53554512659707,
           689.5380158057579,
           740.1644013722738,
           699.2838003794352,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           397.00257205963135,
           782.1667630672455,
           730.4741318566458,
-          760.4018327713013
+          760.4018327713013,
+          567.7552178064982
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6926,7 +6926,7 @@ window.BENCHMARK_DATA = {
           1384,
           1384,
           1384,
-          1384,
+          1448,
           1448,
           1448,
           1448,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1019.6383450371878,
           1949.5197568620954,
           2135.9847106933594,
           1930.4905815124512,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1087.6161136627197,
           1813.3356904249924,
           1862.8229437510172,
-          1944.8953334263392
+          1944.8953334263392,
+          1495.3220831553142
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          479.40765967735877,
           951.285573550633,
           997.085179011027,
           971.4149433771769,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           509.67051381331225,
           913.1941501177274,
           914.0008220036824,
-          911.3472173055013
+          911.3472173055013,
+          742.2671799341838
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "67432f46d5711be1dedd68a8033294ecf8e9fb70",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
-        "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
-      },
-      {
         "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
-      "67432f46",
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5803.115167890276,
           11320.518356323242,
           11523.987080891928,
           11466.55335529034,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           5971.993724568685,
           11423.851031963643,
           11425.426618135893,
-          10528.99333543044
+          10528.99333543044,
+          8428.034881591797
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7659,7 +7659,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
-          1576,
+          1608,
           1608,
           1608,
           1608,
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          18841.228112357003,
           40509.79100254604,
           41710.570181039664,
           41156.07598440988,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           19500.606201171875,
           39062.76533290318,
           40039.53159005301,
-          34339.85439046224
+          34339.85439046224,
+          26854.37827007587
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          5755.20072072347,
           10481.123935406025,
           10653.409844534737,
           10532.72294834682,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           5817.796899523054,
           10514.956360953194,
           10591.894560677665,
-          10098.338678995768
+          10098.338678995768,
+          8058.124765014649
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "67432f46d5711be1dedd68a8033294ecf8e9fb70",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 21:17:39 2026 \u002B0200",
-        "message": "fix: ship the type metadata generator with aweXpect.Core (#1979)"
-      },
-      {
         "sha": "91cfa9f0221621e80dee7b22db2ffac1145bc140",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:24:16 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
-      "67432f46",
       "91cfa9f0",
       "4eec7318",
       "df357ed3",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5642.8367039998375,
           11112.797286987305,
           11197.149699910482,
           10924.976313999721,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           5826.235971069336,
           10851.507715861002,
           10898.776893028846,
-          9996.684033203124
+          9996.684033203124,
+          7978.944418770926
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8392,7 +8392,7 @@ window.BENCHMARK_DATA = {
           2056,
           2056,
           2056,
-          2056,
+          2088,
           2088,
           2088,
           2088,
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28154.758806501115,
           58533.55694173177,
           59701.42525809152,
           59020.297621506914,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           27895.022925240653,
           57069.74775477818,
           58022.51488788311,
-          49465.1892183744
+          49465.1892183744,
+          38388.614807128906
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8501,7 +8501,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8527,6 +8526,7 @@ window.BENCHMARK_DATA = {
           23553,
           23554,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11718.632803344726,
           20758.081342424666,
           21251.199247087752,
           21003.496161827676,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           11730.387081691197,
           20720.145498422477,
           21064.883119710288,
-          19671.713025774276
+          19671.713025774276,
+          15599.032489483174
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
