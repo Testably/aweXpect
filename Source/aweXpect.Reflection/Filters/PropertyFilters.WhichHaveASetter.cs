@@ -13,4 +13,12 @@ public static partial class PropertyFilters
 		=> @this.Which(Filter.Suffix<PropertyInfo>(
 			property => property.HasSetter(),
 			"with a setter "));
+
+	/// <summary>
+	///     Filters for properties that do not have a (regular, non-init) setter.
+	/// </summary>
+	public static Filtered.Properties WhichDoNotHaveASetter(this Filtered.Properties @this)
+		=> @this.Which(Filter.Suffix<PropertyInfo>(
+			property => !property.HasSetter(),
+			"without a setter "));
 }

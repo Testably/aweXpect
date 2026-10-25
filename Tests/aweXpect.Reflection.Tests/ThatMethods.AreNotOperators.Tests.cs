@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatMethods
 {
-	public sealed class AreNotOperators
+	public sealed partial class AreNotOperators
 	{
 		public sealed class Tests
 		{

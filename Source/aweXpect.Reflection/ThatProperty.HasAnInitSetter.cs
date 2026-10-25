@@ -7,9 +7,11 @@ namespace aweXpect;
 public static partial class ThatProperty
 {
 	[GenerateExpectation("HasAnInitSetter", "has an init setter",
+		NegatedName = "DoesNotHaveAnInitSetter",
 		NegatedExpectationText = "does not have an init setter",
 		Result = nameof(DescribeInitSetter),
-		Summary = "Verifies that the <see cref=\"PropertyInfo\" /> has an init-only setter.")]
+		Summary = "Verifies that the <see cref=\"PropertyInfo\" /> has an init-only setter.",
+		NegatedSummary = "Verifies that the <see cref=\"PropertyInfo\" /> does not have an init-only setter.")]
 	private static bool HasAnInitSetterProperty(PropertyInfo property) => property.HasInitSetter();
 
 	private static string DescribeInitSetter(PropertyInfo property)
