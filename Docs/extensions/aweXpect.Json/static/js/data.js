@@ -690,6 +690,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
@@ -807,7 +813,8 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
@@ -928,7 +935,8 @@ window.BENCHMARK_DATA = {
           1491.6770226614815,
           2138.456617795504,
           2102.60070215861,
-          1088.6847472557654
+          1088.6847472557654,
+          1472.9876525585469
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -968,6 +976,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -1183,7 +1192,8 @@ window.BENCHMARK_DATA = {
           9764.462448120117,
           15829.667034912109,
           15401.899850027901,
-          6748.578261311849
+          6748.578261311849,
+          10540.47040456136
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1195,6 +1205,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -2013,6 +2024,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
@@ -2130,7 +2147,8 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
@@ -2251,7 +2269,8 @@ window.BENCHMARK_DATA = {
           1142.6977142333985,
           1748.8010089056831,
           1703.4892683664957,
-          886.6457416094266
+          886.6457416094266,
+          1171.8054724375406
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2344,6 +2363,7 @@ window.BENCHMARK_DATA = {
           1200,
           1200,
           1200,
+          1240,
           1240,
           1240,
           1240,
@@ -2506,7 +2526,8 @@ window.BENCHMARK_DATA = {
           8952.992305462178,
           14793.3252146403,
           14229.354368082682,
-          6171.036888667515
+          6171.036888667515,
+          9776.572346278599
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2518,6 +2539,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -3276,6 +3298,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
@@ -3383,7 +3411,8 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
@@ -3494,7 +3523,8 @@ window.BENCHMARK_DATA = {
           3289.8828040531703,
           5308.704491751535,
           5248.778239323543,
-          2687.579786300659
+          2687.579786300659,
+          3443.7083849225723
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3577,6 +3607,7 @@ window.BENCHMARK_DATA = {
           3688,
           3688,
           3688,
+          3736,
           3736,
           3736,
           3736,
@@ -3729,7 +3760,8 @@ window.BENCHMARK_DATA = {
           27512.632727989785,
           47993.68871663411,
           45757.73691030649,
-          18712.001591273718
+          18712.001591273718,
+          30671.29571126302
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3845,6 +3877,7 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61926,
+          61925,
           61925
         ],
         "borderColor": "#FF671B",
@@ -4489,6 +4522,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
@@ -4596,7 +4635,8 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
@@ -4707,7 +4747,8 @@ window.BENCHMARK_DATA = {
           6951.238620758057,
           9541.134737141927,
           9670.423076375326,
-          4805.025039164225
+          4805.025039164225,
+          7142.094758169992
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4790,6 +4831,7 @@ window.BENCHMARK_DATA = {
           7024,
           7024,
           7024,
+          7064,
           7064,
           7064,
           7064,
@@ -4942,7 +4984,8 @@ window.BENCHMARK_DATA = {
           188633.06755371095,
           304609.64765625,
           305664.3974609375,
-          126534.18486676898
+          126534.18486676898,
+          201823.12102050782
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5058,7 +5101,8 @@ window.BENCHMARK_DATA = {
           521541,
           521594,
           521594,
-          521594
+          521594,
+          521541
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5702,6 +5746,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
@@ -5809,7 +5859,8 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
@@ -5920,7 +5971,8 @@ window.BENCHMARK_DATA = {
           2186.472573598226,
           2882.0151021321612,
           2904.233473641532,
-          1601.9896074022565
+          1601.9896074022565,
+          2246.103256225586
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6034,6 +6086,7 @@ window.BENCHMARK_DATA = {
           1328,
           1328,
           1328,
+          1488,
           1488,
           1488,
           1488
@@ -6155,7 +6208,8 @@ window.BENCHMARK_DATA = {
           1533.3313273021154,
           1983.8023913065592,
           1989.6868207114082,
-          1015.4289829254151
+          1015.4289829254151,
+          1609.2998401096888
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6167,6 +6221,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -6915,6 +6970,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
@@ -7022,7 +7083,8 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
@@ -7133,7 +7195,8 @@ window.BENCHMARK_DATA = {
           1432.2884834834508,
           2033.3944884708949,
           2033.3821258544922,
-          1107.0907585144043
+          1107.0907585144043,
+          1517.0131739298502
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7216,6 +7279,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2864,
           2864,
           2864,
           2864,
@@ -7368,7 +7432,8 @@ window.BENCHMARK_DATA = {
           1482.4823626200357,
           1901.5678967793783,
           1841.0681457519531,
-          861.3106429760272
+          861.3106429760272,
+          1545.2203555788312
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7380,6 +7445,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
