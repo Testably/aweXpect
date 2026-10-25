@@ -182,7 +182,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		TTarget member;
 		try
 		{
-			member = _memberAccessor!.AccessMember(typedValue);
+			member = _memberAccessor!.AccessMember(typedValue, context, cancellationToken);
 		}
 		catch (Exception exception) when (!MemberExceptionResult.IsCancellationOf(exception, cancellationToken))
 		{
@@ -264,11 +264,11 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		{
 			if (_asyncMemberAccessor is null)
 			{
-				member = _memberAccessor!.AccessMember(typedValue);
+				member = _memberAccessor!.AccessMember(typedValue, context, cancellationToken);
 			}
 			else if (_asyncMemberAccessor is MemberAccessor<TSource, Task<TTarget>> taskMemberAccessor)
 			{
-				memberTask = taskMemberAccessor.AccessMember(typedValue);
+				memberTask = taskMemberAccessor.AccessMember(typedValue, context, cancellationToken);
 				if (memberTask is null)
 				{
 					isNullTask = true;
@@ -281,7 +281,8 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 			else
 			{
 				ValueTask<TTarget> memberValueTask =
-					((MemberAccessor<TSource, ValueTask<TTarget>>)_asyncMemberAccessor).AccessMember(typedValue);
+					((MemberAccessor<TSource, ValueTask<TTarget>>)_asyncMemberAccessor).AccessMember(typedValue,
+						context, cancellationToken);
 				if (memberValueTask.IsCompletedSuccessfully)
 				{
 					member = memberValueTask.Result;

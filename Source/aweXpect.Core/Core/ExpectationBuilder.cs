@@ -999,6 +999,46 @@ public abstract class ExpectationBuilder
 		return ContinueWithMember(subjectName, expectationGrammars);
 	}
 
+	/// <inheritdoc cref="ForAsyncWhich{TSource, TTarget}(Func{TSource, Task{TTarget}}, string?, string?, Func{ExpectationGrammars, ExpectationGrammars}?, bool, string?)" />
+	/// <summary>
+	///     Specifies a mapping to add expectations on the member from the <paramref name="asyncMemberAccessor" />,
+	///     which receives the <see cref="IEvaluationContext" /> and the <see cref="CancellationToken" /> of the
+	///     evaluation. Pass the <see cref="CancellationToken" /> on to its asynchronous calls, so that a canceled
+	///     evaluation or a timeout also stops them.
+	/// </summary>
+	[OverloadResolutionPriority(1)]
+	public ExpectationBuilder ForAsyncWhich<TSource, TTarget>(
+		Func<TSource, IEvaluationContext, CancellationToken, Task<TTarget?>> asyncMemberAccessor,
+		string? separator = null,
+		string? subjectName = null,
+		Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars = null,
+		bool negateMemberOnly = false,
+		string? contextMember = null)
+	{
+		contextMember ??= subjectName == DefaultCurrentSubject ? null : subjectName;
+		AddWhichNode((asyncMemberAccessor, separator, negateMemberOnly, subjectName, contextMember),
+			static (state, parentNode) => new WhichNode<TSource, TTarget>(parentNode, state.asyncMemberAccessor,
+				state.separator, state.negateMemberOnly, state.subjectName, state.contextMember));
+		return ContinueWithMember(subjectName, expectationGrammars);
+	}
+
+	/// <inheritdoc
+	///     cref="ForAsyncWhich{TSource, TTarget}(Func{TSource, IEvaluationContext, CancellationToken, Task{TTarget}}, string?, string?, Func{ExpectationGrammars, ExpectationGrammars}?, bool, string?)" />
+	public ExpectationBuilder ForAsyncWhich<TSource, TTarget>(
+		Func<TSource, IEvaluationContext, CancellationToken, ValueTask<TTarget?>> asyncMemberAccessor,
+		string? separator = null,
+		string? subjectName = null,
+		Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars = null,
+		bool negateMemberOnly = false,
+		string? contextMember = null)
+	{
+		contextMember ??= subjectName == DefaultCurrentSubject ? null : subjectName;
+		AddWhichNode((asyncMemberAccessor, separator, negateMemberOnly, subjectName, contextMember),
+			static (state, parentNode) => new WhichNode<TSource, TTarget>(parentNode, state.asyncMemberAccessor,
+				state.separator, state.negateMemberOnly, state.subjectName, state.contextMember));
+		return ContinueWithMember(subjectName, expectationGrammars);
+	}
+
 	/// <summary>
 	///     Lets the following expectations refer to the member of a which node as <paramref name="subjectName" />, if
 	///     set, with the <paramref name="expectationGrammars" />.

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 
 namespace aweXpect.Core;
@@ -39,9 +41,16 @@ public abstract class MemberAccessor
 /// </summary>
 public class MemberAccessor<TSource, TTarget> : MemberAccessor
 {
-	private readonly Func<TSource, TTarget> _accessor;
+	/// <summary>
+	///     The function of the member, which receives either the source value only or also the evaluation context and
+	///     the cancellation token.
+	/// </summary>
+	/// <remarks>
+	///     One field of either type instead of two keeps every accessor smaller.
+	/// </remarks>
+	private readonly Delegate _accessor;
 
-	private MemberAccessor(Func<TSource, TTarget> accessor, string name) : base(name)
+	private MemberAccessor(Delegate accessor, string name) : base(name)
 	{
 		_accessor = accessor;
 	}
@@ -66,6 +75,20 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 	/// </summary>
 	public static MemberAccessor<TSource, TTarget> FromFuncWithName(
 		Func<TSource, TTarget> func, string name)
+		=> new(func, name);
+
+	/// <summary>
+	///     Creates a member accessor from the given <paramref name="func" />, which receives the
+	///     <see cref="IEvaluationContext" /> and the <see cref="CancellationToken" /> of the evaluation and is
+	///     displayed as the <paramref name="name" /> verbatim.
+	/// </summary>
+	/// <remarks>
+	///     Pass the <see cref="CancellationToken" /> on to the asynchronous calls of the <paramref name="func" />, so
+	///     that a canceled evaluation or a timeout also stops them, and use the <see cref="IEvaluationContext" /> to
+	///     share data with the other expectations of the evaluation, e.g. a value that is expensive to compute.
+	/// </remarks>
+	public static MemberAccessor<TSource, TTarget> FromFuncWithName(
+		Func<TSource, IEvaluationContext, CancellationToken, TTarget> func, string name)
 		=> new(func, name);
 
 	/// <summary>
@@ -490,7 +513,11 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 		return true;
 	}
 
-	internal TTarget AccessMember(TSource value) => _accessor.Invoke(value);
+	internal TTarget AccessMember(TSource value, IEvaluationContext context, CancellationToken cancellationToken)
+		=> _accessor is Func<TSource, TTarget> accessor
+			? accessor.Invoke(value)
+			: ((Func<TSource, IEvaluationContext, CancellationToken, TTarget>)_accessor).Invoke(value, context,
+				cancellationToken);
 
 	/// <summary>
 	///     A member accessor whose name is followed by a space, when it is read for a failure message.

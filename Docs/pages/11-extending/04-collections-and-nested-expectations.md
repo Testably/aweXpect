@@ -172,6 +172,57 @@ Hand out a new subject as `IThatSubject<T>`, both in an `Action<IThatSubject<T>>
 which returns an `IThatSubject<T>`, `Expect.That(bool)` returns a `ThatBoolSubject` that is only an `IThat<bool>`,
 because a type check cannot narrow a `bool`, so write expectations on booleans for `IThat<bool>`.
 
+### Members that need the evaluation
+
+A member that is read asynchronously, e.g. from a stream or a service, should stop when the evaluation is canceled or
+times out. `MemberAccessor<TSource, TMember>.FromFuncWithName` and `ForAsyncWhich` also take a function that receives
+the `IEvaluationContext` and the `CancellationToken` of the evaluation besides the source value. Pass the token on to
+the asynchronous calls, and use the context to share a value that is expensive to load with the other expectations of
+the same evaluation:
+
+```csharp
+public interface ILyricsSource
+{
+    Task<string?> LoadAsync(Track track, CancellationToken cancellationToken);
+}
+
+public static AndOrResult<Track, IThat<Track?>> HasLyrics(
+    this IThat<Track?> subject,
+    ILyricsSource source,
+    Action<IThatSubject<string?>> expectations)
+    => new(subject.Get().ExpectationBuilder
+            .ForAsyncMember(
+                MemberAccessor<Track, Task<string?>>.FromFuncWithName(
+                    (track, context, cancellationToken) => LoadLyrics(source, track, context, cancellationToken),
+                    "lyrics "),
+                (member, stringBuilder) => stringBuilder.Append("has ").Append(member).Append("that "))
+            .AddExpectations(expectations,
+                static (expectations, e) => expectations(new ThatSubject<string?>(e)),
+                grammars => grammars | ExpectationGrammars.Nested),
+        subject);
+
+private static async Task<string?> LoadLyrics(ILyricsSource source, Track track, IEvaluationContext context,
+    CancellationToken cancellationToken)
+{
+    string key = "lyrics:" + track.Title;
+    if (context.TryReceive(key, out string? lyrics))
+    {
+        return lyrics;
+    }
+
+    lyrics = await source.LoadAsync(track, cancellationToken);
+    context.Store(key, lyrics);
+    return lyrics;
+}
+```
+
+- The accessor is called with the context of the expectation that it continues, so a value stored there is received
+  by the other expectations on the same subject, e.g. a second `HasLyrics` after `And`. A value stored while an item
+  of a collection or a member is evaluated is only received by the expectations on that item or member.
+- `ForMember` passes the context and the token as well, if its accessor takes them.
+- A canceled evaluation does not wait for a member that ignores the token, but the member keeps running in the
+  background.
+
 ### Expectations in expected values
 
 An expected value can contain expectations, like `new { Title = It.Is<string>().That.StartsWith("Let") }`. Pass the

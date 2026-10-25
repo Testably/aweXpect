@@ -45,7 +45,7 @@ public static partial class ThatHttpResponseMessage
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.ForAsyncMember(MemberAccessor<HttpResponseMessage, Task<string?>>.FromFuncWithName(
-						async m => await m.Content.ReadAsStringOrEmptyAsync(CancellationToken.None),
+						async (m, _, cancellationToken) => await m.Content.ReadAsStringOrEmptyAsync(cancellationToken),
 						" the string content"),
 					(_, stringBuilder) => stringBuilder.Append("has a string content which "))
 				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?>(e)),
