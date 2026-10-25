@@ -8,7 +8,11 @@ namespace aweXpect.Options;
 
 public partial class StringEqualityOptions
 {
-	private static readonly StringMatchType PrefixMatch = new PrefixMatchType();
+	/// <remarks>
+	///     The match type is only created when it is first used, so that a comparison with another match type does not
+	///     pay for it on its first call.
+	/// </remarks>
+	private static StringMatchType PrefixMatch => PrefixMatchType.Instance;
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> to be a prefix for the actual string.
@@ -25,6 +29,8 @@ public partial class StringEqualityOptions
 			MatchPhrase.Verb("starts with", "start with", "starting with")
 				.WithName(" as prefix")
 				.WithPattern("prefix", "prefix");
+
+		public static readonly PrefixMatchType Instance = new();
 
 		private static int GetIndexOfFirstMatch(string stringWithLeadingWhitespace, string value,
 			IEqualityComparer<string> comparer)

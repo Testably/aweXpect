@@ -7,7 +7,11 @@ namespace aweXpect.Options;
 
 public partial class StringEqualityOptions
 {
-	private static readonly StringMatchType ContainingMatch = new ContainingMatchType();
+	/// <remarks>
+	///     The match type is only created when it is first used, so that a comparison with another match type does not
+	///     pay for it on its first call.
+	/// </remarks>
+	private static StringMatchType ContainingMatch => ContainingMatchType.Instance;
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a substring that must be contained in the actual string.
@@ -23,6 +27,8 @@ public partial class StringEqualityOptions
 		private static readonly MatchPhrase SharedPhrase =
 			MatchPhrase.Verb("contains", "contain", "containing")
 				.WithName(" containing");
+
+		public static readonly ContainingMatchType Instance = new();
 
 		private static bool Contains(string actual, string expected, IEqualityComparer<string> comparer)
 		{

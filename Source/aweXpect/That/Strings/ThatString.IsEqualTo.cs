@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -59,14 +60,36 @@ public static partial class ThatString
 		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, cannot answer for a
 		///     <see langword="null" /> subject, because it has no content.
 		/// </remarks>
-		public async ValueTask<ConstraintResult> IsMetBy(string? actual, IEvaluationContext context,
+		/// <remarks>
+		///     Most comparisons complete synchronously, so the result is returned without a state machine; an exception is
+		///     returned in the task, like from an asynchronous method.
+		/// </remarks>
+		public ValueTask<ConstraintResult> IsMetBy(string? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			Actual = actual;
-			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
+			try
+			{
+				Actual = actual;
+				_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+				ValueTask<MatchResult> match = _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
+				return match.IsCompletedSuccessfully
+					? new ValueTask<ConstraintResult>(Complete(match.Result))
+					: CompleteAsync(match);
+			}
+			catch (Exception exception)
+			{
+				return new ValueTask<ConstraintResult>(Task.FromException<ConstraintResult>(exception));
+			}
+		}
+
+		private async ValueTask<ConstraintResult> CompleteAsync(ValueTask<MatchResult> match)
+			=> Complete(await match);
+
+		private ConstraintResult Complete(MatchResult matchResult)
+		{
+			_matchResult = matchResult;
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
-			if (actual is null && options.Value.InspectsSubject)
+			if (Actual is null && options.Value.InspectsSubject)
 			{
 				Outcome = Outcome.FailureBothWays;
 			}

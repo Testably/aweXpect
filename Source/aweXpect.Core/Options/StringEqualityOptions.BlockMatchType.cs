@@ -9,7 +9,11 @@ namespace aweXpect.Options;
 
 public partial class StringEqualityOptions
 {
-	private static readonly BlockMatchType BlockMatch = new();
+	/// <remarks>
+	///     The match type is only created when it is first used, so that a comparison with another match type does not
+	///     pay for it on its first call.
+	/// </remarks>
+	private static BlockMatchType BlockMatch => BlockMatchType.Instance;
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a block of lines, which may be indented as a whole.
@@ -36,6 +40,8 @@ public partial class StringEqualityOptions
 			MatchPhrase.Verb("matches", "match", "matching")
 				.WithSuffix(" as block")
 				.WithName(" as block");
+
+		public static readonly BlockMatchType Instance = new();
 
 		/// <summary>
 		///     The most lines of the subject times the lines of the block that are compared to find the closest match, so

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -289,7 +290,7 @@ public sealed partial class StringEqualityOptions : IEqualityOptions<string?>, I
 		{
 			result = GetMatcher().Match(actual, expected);
 		}
-		catch (RegexMatchTimeoutException exception)
+		catch (Exception exception) when (IsRegexTimeout(exception))
 		{
 			return new ValueTask<MatchResult>(
 				Task.FromException<MatchResult>(CreateTimeoutException(expected, exception, parameterName)));
@@ -310,7 +311,7 @@ public sealed partial class StringEqualityOptions : IEqualityOptions<string?>, I
 		{
 			return ComparableOrThrow(await result);
 		}
-		catch (RegexMatchTimeoutException exception)
+		catch (Exception exception) when (IsRegexTimeout(exception))
 		{
 			throw CreateTimeoutException(expected, exception, parameterName);
 		}
@@ -378,7 +379,7 @@ public sealed partial class StringEqualityOptions : IEqualityOptions<string?>, I
 		{
 			count = GetMatcher().CountOccurrences(actual, expected, maximum);
 		}
-		catch (RegexMatchTimeoutException exception)
+		catch (Exception exception) when (IsRegexTimeout(exception))
 		{
 			throw CreateTimeoutException(expected, exception, parameterName);
 		}
@@ -1007,6 +1008,17 @@ public sealed partial class StringEqualityOptions : IEqualityOptions<string?>, I
 			"IgnoringCase cannot be combined with a custom comparer; use a case-insensitive comparer instead."));
 
 	/// <summary>
+	///     Whether the <paramref name="exception" /> is the timeout of a regex.
+	/// </summary>
+	/// <remarks>
+	///     A catch clause of the regex timeout loads the regex assembly when the method is compiled, also for the
+	///     match types that use no regex, so the type is only checked here, when an exception occurs.
+	/// </remarks>
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static bool IsRegexTimeout(Exception exception)
+		=> exception is RegexMatchTimeoutException;
+
+	/// <summary>
 	///     Creates the exception for an <paramref name="expected" /> pattern that did not finish matching within the
 	///     timeout.
 	/// </summary>
@@ -1014,13 +1026,14 @@ public sealed partial class StringEqualityOptions : IEqualityOptions<string?>, I
 	///     An <see cref="ArgumentException" /> is not wrapped by the expectation node, so that the pattern which has
 	///     to be simplified stays visible instead of being hidden behind a generic evaluation error.<br />
 	///     The timeout is taken from the <paramref name="innerException" />, because it is the one that applied, also
-	///     for a custom match type with a regex of its own, whose expected value is then called a pattern.
+	///     for a custom match type with a regex of its own, whose expected value is then called a pattern. It is a
+	///     <see cref="RegexMatchTimeoutException" />, see <see cref="IsRegexTimeout(Exception)" />.
 	/// </remarks>
-	private ArgumentException CreateTimeoutException(string? expected, RegexMatchTimeoutException innerException,
+	private ArgumentException CreateTimeoutException(string? expected, Exception innerException,
 		string parameterName)
 		// ReSharper disable once LocalizableElement
 		=> Tracing.WriteException(new ArgumentException(
-			$"The {_matchType.Phrase.PatternNoun ?? "pattern"} {Formatter.Format(expected)} did not complete within {Formatter.Format(innerException.MatchTimeout)}. Simplify the pattern to avoid catastrophic backtracking.",
+			$"The {_matchType.Phrase.PatternNoun ?? "pattern"} {Formatter.Format(expected)} did not complete within {Formatter.Format(((RegexMatchTimeoutException)innerException).MatchTimeout)}. Simplify the pattern to avoid catastrophic backtracking.",
 			parameterName, innerException));
 
 	private static StringComparer UseDefaultComparer(bool ignoreCase)

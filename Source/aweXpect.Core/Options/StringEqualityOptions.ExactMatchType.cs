@@ -8,11 +8,17 @@ namespace aweXpect.Options;
 
 public partial class StringEqualityOptions
 {
-	private static readonly StringMatchType ExactMatch = new ExactMatchType();
+	/// <remarks>
+	///     The match type is only created when it is first used, so that a comparison with another match type does not
+	///     pay for it on its first call.
+	/// </remarks>
+	private static StringMatchType ExactMatch => ExactMatchType.Instance;
 
 	private sealed class ExactMatchType : BuiltInMatchType
 	{
 		private static readonly MatchPhrase SharedPhrase = MatchPhrase.EqualTo;
+
+		public static readonly ExactMatchType Instance = new();
 
 		#region IMatchType Members
 

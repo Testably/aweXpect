@@ -8,7 +8,11 @@ namespace aweXpect.Options;
 
 public partial class StringEqualityOptions
 {
-	private static readonly StringMatchType SuffixMatch = new SuffixMatchType();
+	/// <remarks>
+	///     The match type is only created when it is first used, so that a comparison with another match type does not
+	///     pay for it on its first call.
+	/// </remarks>
+	private static StringMatchType SuffixMatch => SuffixMatchType.Instance;
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> to be a suffix for the actual string.
@@ -25,6 +29,8 @@ public partial class StringEqualityOptions
 			MatchPhrase.Verb("ends with", "end with", "ending with")
 				.WithName(" as suffix")
 				.WithPattern("suffix", "suffix");
+
+		public static readonly SuffixMatchType Instance = new();
 
 		private static int GetIndexOfFirstMatch(string stringWithLeadingWhitespace, string value,
 			IEqualityComparer<string> comparer)
