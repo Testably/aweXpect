@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Reflection.Helpers;
 
@@ -54,16 +52,8 @@ public static class ReflectionCustomizationExtensions
 				new CustomizationValue<Func<Type, IEnumerable<Type>>?>(awexpectCustomization,
 					KeyPrefix + nameof(DependencyResolver), null),
 				TypeHelpers.SignatureDependencies);
-			ExcludedAttributeTypes = new CopyingSetter<string>(new CustomizationValue<IReadOnlyList<string>>(
-				awexpectCustomization, KeyPrefix + nameof(ExcludedAttributeTypes), Array.Empty<string>(),
-				value =>
-				{
-					if (value is null)
-					{
-						throw Tracing.WriteException(
-							new ArgumentNullException(nameof(value), "The 'value' cannot be null."));
-					}
-				}));
+			ExcludedAttributeTypes = new CustomizationListValue<string>(awexpectCustomization,
+				KeyPrefix + nameof(ExcludedAttributeTypes), Array.Empty<string>());
 			IncludedCompilerGeneratedMembers = new CustomizationValue<CompilerGeneratedMembers>(awexpectCustomization,
 				KeyPrefix + nameof(IncludedCompilerGeneratedMembers), CompilerGeneratedMembers.None);
 			IncludedSpecialNameMembers = new CustomizationValue<SpecialNameMembers>(awexpectCustomization,
@@ -114,25 +104,6 @@ public static class ReflectionCustomizationExtensions
 		///     Defaults to <see cref="SpecialNameMembers.None" />, so that all special-name methods are excluded.
 		/// </remarks>
 		public ICustomizationValueSetter<SpecialNameMembers> IncludedSpecialNameMembers { get; }
-
-		/// <summary>
-		///     Stores a read-only copy of the list, as a setting would otherwise change with a mutable list it was set
-		///     from or that was cast from the returned list, which would bypass the scoping of the setting.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> list is passed on unchanged, so that the validation of the
-		///     <paramref name="inner" /> value rejects it.
-		/// </remarks>
-		private sealed class CopyingSetter<TItem>(ICustomizationValueSetter<IReadOnlyList<TItem>> inner)
-			: ICustomizationValueSetter<IReadOnlyList<TItem>>
-		{
-			/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Get()" />
-			public IReadOnlyList<TItem> Get() => inner.Get();
-
-			/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Set(TValue)" />
-			public CustomizationLifetime Set(IReadOnlyList<TItem> value)
-				=> inner.Set(value is null ? value! : Array.AsReadOnly(value.ToArray()));
-		}
 
 		/// <summary>
 		///     Returns the <paramref name="defaultValue" /> for a stored <see langword="null" />, so that setting

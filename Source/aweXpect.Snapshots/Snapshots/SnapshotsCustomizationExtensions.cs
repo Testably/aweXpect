@@ -36,16 +36,12 @@ public static class SnapshotsCustomizationExtensions
 				});
 			Acceptance = new CustomizationValue<SnapshotAcceptance?>(awexpectCustomization,
 				"aweXpect.Snapshots.Acceptance", null);
-			Comparers = new CopyingSetter<SnapshotComparerRegistration>(
-				new CustomizationValue<IReadOnlyList<SnapshotComparerRegistration>>(awexpectCustomization,
-					"aweXpect.Snapshots.Comparers", Array.Empty<SnapshotComparerRegistration>(),
-					ThrowIfNullOrContainsNull));
-			Rules = new CopyingSetter<SnapshotRule>(new CustomizationValue<IReadOnlyList<SnapshotRule>>(
-				awexpectCustomization, "aweXpect.Snapshots.Rules", Array.Empty<SnapshotRule>(),
-				ThrowIfNullOrContainsNull));
-			Reporters = new CopyingSetter<SnapshotReporter>(new CustomizationValue<IReadOnlyList<SnapshotReporter>>(
-				awexpectCustomization, "aweXpect.Snapshots.Reporters", Array.Empty<SnapshotReporter>(),
-				ThrowIfNullOrContainsNull));
+			Comparers = new CustomizationListValue<SnapshotComparerRegistration>(awexpectCustomization,
+				"aweXpect.Snapshots.Comparers", Array.Empty<SnapshotComparerRegistration>(), ThrowIfContainsNull);
+			Rules = new CustomizationListValue<SnapshotRule>(awexpectCustomization,
+				"aweXpect.Snapshots.Rules", Array.Empty<SnapshotRule>(), ThrowIfContainsNull);
+			Reporters = new CustomizationListValue<SnapshotReporter>(awexpectCustomization,
+				"aweXpect.Snapshots.Reporters", Array.Empty<SnapshotReporter>(), ThrowIfContainsNull);
 		}
 
 		/// <summary>
@@ -103,36 +99,13 @@ public static class SnapshotsCustomizationExtensions
 		/// </remarks>
 		public ICustomizationValueSetter<SnapshotStore> Store { get; }
 
-		private static void ThrowIfNullOrContainsNull<TItem>(IReadOnlyList<TItem> value)
+		private static void ThrowIfContainsNull<TItem>(IReadOnlyList<TItem> value)
 		{
-			if (value is null)
-			{
-				throw Tracing.WriteException(
-					new ArgumentNullException(nameof(value), "The 'value' cannot be null."));
-			}
-
 			if (value.Any(item => item is null))
 			{
 				throw Tracing.WriteException(
 					new ArgumentException("The 'value' cannot contain null.", nameof(value)));
 			}
-		}
-
-		/// <summary>
-		///     Stores a read-only copy of the list, as a setting would otherwise change with a mutable list it was set
-		///     from or that was cast from the returned list, which would bypass the scoping of the setting.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> list is passed on unchanged, so that the validation of the
-		///     <paramref name="inner" /> value rejects it.
-		/// </remarks>
-		private sealed class CopyingSetter<TItem>(ICustomizationValueSetter<IReadOnlyList<TItem>> inner)
-			: ICustomizationValueSetter<IReadOnlyList<TItem>>
-		{
-			public IReadOnlyList<TItem> Get() => inner.Get();
-
-			public CustomizationLifetime Set(IReadOnlyList<TItem> value)
-				=> inner.Set(value is null ? value! : Array.AsReadOnly(value.ToArray()));
 		}
 	}
 }
