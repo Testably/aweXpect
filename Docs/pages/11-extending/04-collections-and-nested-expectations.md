@@ -122,8 +122,8 @@ text of `IsEqualTo`, e.g. `it lacked 1 of 2 expected items: "Outro"`, so the cal
 public static StringCollectionMatchResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> HasTitles(
     this IThat<IEnumerable<Track>?> subject, params string[] expected)
 {
-    StringEqualityOptions options = new(nameof(expected));
-    CollectionMatchOptions matchOptions = new();
+    OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+    OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions());
     return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new HasTitlesConstraint(it, grammars, expected, options, matchOptions)),
         subject, options, matchOptions);
@@ -133,8 +133,8 @@ private sealed class HasTitlesConstraint(
     string it,
     ExpectationGrammars grammars,
     string[] expected,
-    StringEqualityOptions options,
-    CollectionMatchOptions matchOptions)
+    IReadOnlyOptionsSlot<StringEqualityOptions> options,
+    IReadOnlyOptionsSlot<CollectionMatchOptions> matchOptions)
     : ConstraintResult.WithNotNullValue<IEnumerable<Track>>(it, grammars),
         IAsyncContextConstraint<IEnumerable<Track>?>
 {
@@ -152,21 +152,21 @@ private sealed class HasTitlesConstraint(
         }
 
         IEnumerable<string?> titles = context.UseMaterializedEnumerable(actual).Select(track => track.Title);
-        (Outcome, _failure) = await matchOptions.GetCollectionMatcher<string?, string?>(expected)
-            .VerifyItems(It, titles, options.ForEvaluation(context, cancellationToken), cancellationToken);
+        (Outcome, _failure) = await matchOptions.Value.GetCollectionMatcher<string?, string?>(expected)
+            .VerifyItems(It, titles, options.Value.ForEvaluation(context, cancellationToken), cancellationToken);
         return this;
     }
 
     protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("has titles that ").Append(matchOptions.GetExpectation(
-            Formatter.Format(expected, FormattingOptions.SingleLine) + options, ExpectationGrammars.Plural));
+        => stringBuilder.Append("has titles that ").Append(matchOptions.Value.GetExpectation(
+            Formatter.Format(expected, FormattingOptions.SingleLine) + options.Value, ExpectationGrammars.Plural));
 
     protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append(_failure);
 
     protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("has titles that ").Append(matchOptions.GetExpectation(
-            Formatter.Format(expected, FormattingOptions.SingleLine) + options,
+        => stringBuilder.Append("has titles that ").Append(matchOptions.Value.GetExpectation(
+            Formatter.Format(expected, FormattingOptions.SingleLine) + options.Value,
             ExpectationGrammars.Plural | ExpectationGrammars.Negated));
 
     protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

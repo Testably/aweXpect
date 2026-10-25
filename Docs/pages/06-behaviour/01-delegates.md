@@ -134,7 +134,7 @@ await Expect.That(Act).Throws<CustomException>().OnlyIf(expectThrownException);
 
 This is especially useful with parameterized tests where it depends on a parameter if an exception is thrown or not.
 
-`OnlyIf` and [`Within`](#time-limit) can each be used once, directly after `Throws…`.
+`OnlyIf` and [`Within`](#time-limit) follow directly after `Throws…`; a repeated one replaces the earlier one.
 
 ### Time limit
 

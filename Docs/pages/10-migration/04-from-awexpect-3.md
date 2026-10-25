@@ -99,6 +99,8 @@ checks of aweXpect.Web offer the quantifiers and match types of `Contains`, e.g.
 - An option set to `false` is the same as not set, so `IgnoringIndentation(false).AsBlock()` no longer throws.
 - A match type that does not support several options already set names all of them, e.g.
   `IgnoringIndentation and IgnoringNewlineStyle cannot be combined with AsBlock.`
+- `WithCancellation(…)`, `WithTimeSystem(…)` and `Allocates(…)`, which apply to the whole chain of expectations, still
+  throw when they are specified more than once.
 
 ### Customization
 
@@ -154,6 +156,9 @@ a virtual time system.
 - The name filters use the string options of aweXpect, so they chain in any order and offer every option, e.g.
   `WithName("x").IgnoringCase().AsPrefix()`.
 - Parameters can be filtered by a predicate with `Matching(p => …)`.
+- The filter options (`TypeFilterOptions`, `AttributeFilterOptions<TMember>`, `ParameterFilterOptions`,
+  `GenericArgumentsFilterOptions` and `GenericArgumentFilterOptions`) are internal, and the results and filters no
+  longer offer them through `IOptionsProvider<…>`.
 - The expectations on all items, such as `AreSealed()`, use the quantifier wording of aweXpect
   (`all are sealed, but only 2 of 5 were`), work with quantifiers (`AtLeast(2).AreSealed()`), and a `null` item fails
   them and their negation.
@@ -214,12 +219,41 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
 - The expectations on quantified items extend the Core interfaces `IEnumerableItems<TItem>`,
   `IAsyncEnumerableItems<TItem>`, `IStructEnumerableItems<TCollection, TItem>` and
   `INonGenericEnumerableItems<TCollection>`, which replace `IEnumerableElements<TItem>` and its siblings.
-- Every method that sets a Core option returns the options object, a repeated option replaces the earlier one, and methods
-  that mirror a user-facing option take its name, e.g. `Within` instead of `SetTolerance`.
-- `IOptionsProvider<TOptions>.Options` returns the `OptionsSlot<TOptions>` of the expectation, which holds the options:
-  create the slot in your expectation, pass it to your constraint and your result, and read `slot.Value` when the
-  constraint evaluates. The option methods are also available on the slot, e.g. `result.Options.AtLeast(2)`. The
-  predicates of a `Signaler<TParameter>` moved from `SignalerOptions<TParameter>` to
+- The options of an expectation are immutable values in one `OptionsSlot<TOptions>`, a reference to the current value.
+  `IOptionsProvider<TOptions>.Options` returns the slot: create it in your expectation, e.g.
+  `new OptionsSlot<Quantifier>(Quantifier.Default)`, pass it to your constraint and your result, and read
+  `slot.Value` when the constraint evaluates. A constraint that only reads the options can take an
+  `IReadOnlyOptionsSlot<TOptions>`. See [Options](../11-extending/03-options-and-match-types.md#options).
+- `Quantifier`, `CollectionMatchOptions`, `CollectionIndexOptions`, `CollectionOrderOptions<TItem>`,
+  `NumberTolerance<TNumber>`, `TimeTolerance`, `SignalerOptions`, `RepeatedCheckOptions` and `ExecutionTimeOptions`
+  are `readonly struct`s, and `StringEqualityOptions` is a sealed immutable class. Start from their `Default`, e.g.
+  `StringEqualityOptions.Default`, instead of a parameterless constructor, and for a date from `TimeTolerance.Days`.
+  A method that sets an option returns a new value, so use the value it returns: a discarded call on a struct, e.g.
+  `options.AtLeast(2);`, compiles and changes nothing. A repeated option replaces the earlier one, and methods that
+  mirror a user-facing option take its name, e.g. `Within` instead of `SetTolerance`.
+- The option methods are also extension methods on the slot in `aweXpect.Options`, which replace the value in the
+  slot, e.g. `result.Options.AtLeast(2)`. Import `aweXpect.Options` where you call them: without it, the compiler
+  finds only the user-facing option of the same name and reports `CS0311`.
+- `ObjectEqualityOptions<TSubject>` and `ObjectEqualityWithToleranceOptions<TSubject, TTolerance>` are removed. Object
+  comparisons keep their `ObjectMatchType<TSubject>` in an `OptionsSlot<ObjectMatchType<TSubject>>`, also with a
+  tolerance, for which `ObjectMatchType<TSubject>.WithTolerance(…)` creates an
+  `ObjectToleranceMatchType<TSubject, TTolerance>`.
+- An `ObjectMatchType<TSubject>` passes the name of its option to its base constructor, and `SetMatchType(matchType)`
+  reads it, so that the same option again replaces the match type and another one throws. A match type without a name
+  is rejected.
+- `IOptionsEquality<TSubject>` is renamed to `IEqualityEvaluator<TSubject>`. The new `IEqualityOptions<TSubject>`
+  returns the evaluator for one evaluation with `ForEvaluation(…)`, and `ObjectMatcher<TSubject>` is such an evaluator.
+- `DayTolerance` is removed; `TimeTolerance.Days` rejects a tolerance that is not a whole number of days.
+  `IRelativeToleranceOptions<T>` is removed as well: `Percent()` calls the new `WithRelativeTolerance(…)` of
+  `IWithinToleranceResult<TResult, TTolerance>`, which a result of your own implements: it makes the tolerance
+  relative and returns the result to continue with.
+- The string options carry no parameter name. The members that can reject the expected value take the name of the
+  parameter instead: `ValidateExpected(expected, parameterName)`, `MatchWithExplanation(actual, expected,
+  parameterName)`, `CountOccurrences(…, parameterName)` and `AreConsideredEqual(actual, expected, parameterName)` on
+  the `StringEqualityOptions`, and `ValidateExpected(expected, parameterName)` of a `StringMatchType`.
+- `CollectionMatchOptions.SetEquivalenceRelation` is removed; pass the relation to the constructor.
+  `ExecutesInResult` and `ExecutesInToleranceResult` take the `ExpectationBuilder` as first constructor argument.
+- The predicates of a `Signaler<TParameter>` moved from `SignalerOptions<TParameter>` to
   `SignalerPredicateOptions<TParameter>`.
 - `ConstraintResult` creates a result that fails both ways with `FailureBothWays` instead of `Fail`.
 - `ExpectationBuilder.WithCancellation` and `WithTimeout` return the builder, and the async `ForWhich` is
