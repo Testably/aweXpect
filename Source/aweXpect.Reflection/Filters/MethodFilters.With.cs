@@ -32,7 +32,7 @@ public static partial class MethodFilters
 	///     attributes declared directly on the method with <see cref="MethodsWith.Directly" />.
 	/// </remarks>
 	public static MethodsWith With<TAttribute>(this Filtered.Methods @this,
-		Func<TAttribute, bool>? predicate,
+		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
@@ -69,7 +69,7 @@ public static partial class MethodFilters
 		///     matches the <paramref name="predicate" />.
 		/// </summary>
 		public MethodsWith OrWith<TAttribute>(
-			Func<TAttribute, bool>? predicate,
+			Func<TAttribute, bool> predicate,
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute

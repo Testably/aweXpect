@@ -10,6 +10,7 @@ public static partial class ThatTypes
 		"are within namespace {expected}",
 		CollectionOverload = true, NegatedName = "AreNotWithinNamespace",
 		Remarks = "Sub-namespaces of the <paramref name=\"expected\" /> namespace are included.")]
-	private static PredicateResult IsWithinNamespaceType(Type? type, string expected)
+	private static PredicateResult IsWithinNamespaceType(Type? type,
+		[NegatedParameterName("unexpected")] string expected)
 		=> type is null ? ItemResults.Null : type.IsWithinNamespace(expected);
 }

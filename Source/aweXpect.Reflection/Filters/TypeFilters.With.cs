@@ -31,7 +31,7 @@ public static partial class TypeFilters
 	///     attributes declared directly on the type with <see cref="TypesWith.Directly" />.
 	/// </remarks>
 	public static TypesWith With<TAttribute>(this Filtered.Types @this,
-		Func<TAttribute, bool>? predicate,
+		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
@@ -68,7 +68,7 @@ public static partial class TypeFilters
 		///     matches the <paramref name="predicate" />.
 		/// </summary>
 		public TypesWith OrWith<TAttribute>(
-			Func<TAttribute, bool>? predicate,
+			Func<TAttribute, bool> predicate,
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute

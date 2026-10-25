@@ -20,17 +20,17 @@ public static partial class TypeFilters
 			() => $"which are within namespace {Formatter.Format(expected)} "));
 
 	/// <summary>
-	///     Filter for types not within the <paramref name="expected" /> namespace (including sub-namespaces).
+	///     Filter for types not within the <paramref name="unexpected" /> namespace (including sub-namespaces).
 	/// </summary>
 	/// <remarks>
 	///     This is the negation of <see cref="WhichAreWithinNamespace(Filtered.Types, string)" />: it matches all types
-	///     that are neither in the <paramref name="expected" /> namespace nor in one of its sub-namespaces. The comparison
+	///     that are neither in the <paramref name="unexpected" /> namespace nor in one of its sub-namespaces. The comparison
 	///     is exact and case-sensitive.
 	/// </remarks>
-	public static Filtered.Types WhichAreNotWithinNamespace(this Filtered.Types @this, string expected)
+	public static Filtered.Types WhichAreNotWithinNamespace(this Filtered.Types @this, string unexpected)
 		=> @this.Which(Filter.Suffix<Type>(
-			type => !type.IsWithinNamespace(expected),
-			() => $"which are not within namespace {Formatter.Format(expected)} "));
+			type => !type.IsWithinNamespace(unexpected),
+			() => $"which are not within namespace {Formatter.Format(unexpected)} "));
 
 	/// <summary>
 	///     The source of <c>In.Namespace</c>, which keeps the shorter "types within namespace" description.

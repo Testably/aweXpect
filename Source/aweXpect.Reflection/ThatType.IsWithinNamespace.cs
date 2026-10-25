@@ -13,10 +13,11 @@ public static partial class ThatType
 		          (including sub-namespaces).
 		          """,
 		NegatedSummary = """
-		                 Verifies that the <see cref="Type" /> is not within the <paramref name="expected" /> namespace
+		                 Verifies that the <see cref="Type" /> is not within the <paramref name="unexpected" /> namespace
 		                 (including sub-namespaces).
 		                 """)]
-	private static bool IsWithinNamespaceType(Type type, string expected) => type.IsWithinNamespace(expected);
+	private static bool IsWithinNamespaceType(Type type, [NegatedParameterName("unexpected")] string expected)
+		=> type.IsWithinNamespace(expected);
 
 	private static string DescribeNamespace(Type type)
 		=> $"was in namespace {Formatter.Format(type.Namespace)}";

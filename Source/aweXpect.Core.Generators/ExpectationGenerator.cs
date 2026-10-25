@@ -18,6 +18,8 @@ public class ExpectationGenerator : IIncrementalGenerator
 	private const string CollectionAttribute = "aweXpect.Core.Extending.GenerateCollectionExpectationAttribute";
 	private const string TokenAttribute = "aweXpect.Core.Extending.EvaluationCancellationTokenAttribute";
 	private const string TokenAttributeName = "EvaluationCancellationToken";
+	private const string NegatedParameterNameAttribute ="aweXpect.Core.Extending.NegatedParameterNameAttribute";
+	private const string NegatedParameterNameAttributeName = "NegatedParameterName";
 	private const string HelpLink = "https://docs.testably.org/aweXpect/analyzers#expectation-generator";
 
 	private static readonly DiagnosticDescriptor InvalidClass = new(
@@ -346,6 +348,11 @@ public class ExpectationGenerator : IIncrementalGenerator
 				$"the parameter '{clash.Name}' would clash with the subject of the expectation");
 		}
 
+		if (GetNegatedParameterNameProblem(signature) is { } negatedParameterNameProblem)
+		{
+			return new Problem(InvalidMethod, location, methodName, negatedParameterNameProblem);
+		}
+
 		if (signature.SignatureParameters.FirstOrDefault(p => GetAccessibility(p.Type) < Accessibility.Internal) is
 		    { } inaccessible)
 		{
@@ -354,6 +361,48 @@ public class ExpectationGenerator : IIncrementalGenerator
 		}
 
 		return null;
+	}
+
+	/// <summary>
+	///     The name that the <c>NegatedParameterNameAttribute</c> gives the <paramref name="parameter" /> in the negated
+	///     expectation, an empty string when the attribute names none, or <see langword="null" /> without the attribute.
+	/// </summary>
+	private static string? GetNegatedParameterName(IParameterSymbol parameter)
+		=> parameter.GetAttributes()
+			.FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == NegatedParameterNameAttribute) is { } attribute
+			? attribute.ConstructorArguments.FirstOrDefault().Value as string ?? ""
+			: null;
+
+	private static string? GetNegatedParameterNameProblem(Signature signature)
+	{
+		foreach (IParameterSymbol parameter in signature.Method.Parameters)
+		{
+			if (GetNegatedParameterName(parameter) is not { } negatedName)
+			{
+				continue;
+			}
+
+			if (parameter.Ordinal == 0)
+			{
+				return $"the subject cannot be marked with [{NegatedParameterNameAttributeName}]";
+			}
+
+			if (!signature.ExpectationParameters.Contains(parameter, SymbolEqualityComparer.Default))
+			{
+				return
+					$"the parameter '{parameter.Name}' is marked with [{TokenAttributeName}] and cannot be marked with [{NegatedParameterNameAttributeName}]";
+			}
+
+			if (!SyntaxFacts.IsValidIdentifier(negatedName))
+			{
+				return $"the negated parameter name '{negatedName}' is not a valid parameter name";
+			}
+		}
+
+		List<string> negatedNames = signature.ExpectationParameters.Select(p => GetNegatedParameterName(p) ?? p.Name).ToList();
+		return negatedNames.FirstOrDefault(n => n == "subject" || negatedNames.Count(x => x == n) > 1) is { } clash
+			? $"the negated parameter name '{clash}' would clash with another parameter of the negated expectation"
+			: null;
 	}
 
 	private static string? GetNameProblem(string name, string? explicitNegatedName, out string positiveName,
@@ -894,7 +943,8 @@ public class ExpectationGenerator : IIncrementalGenerator
 				$"{Class.ToDisplayString()}.{ConstraintPrefix}{hintSuffix}.g.cs",
 				Escape(Method.Name),
 				new EquatableArray<ParameterModel>(ExpectationParameters
-					.Select(p => new ParameterModel(Escape(p.Name), p.Type.ToDisplayString(TypeFormat), p.IsParams,
+					.Select(p => new ParameterModel(Escape(p.Name), Escape(GetNegatedParameterName(p) ?? p.Name),
+						p.Type.ToDisplayString(TypeFormat), p.IsParams,
 						p.Type.IsReferenceType && p.NullableAnnotation == NullableAnnotation.NotAnnotated))
 					.ToImmutableArray()));
 

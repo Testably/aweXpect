@@ -87,12 +87,12 @@ internal static class ExpectationWriter
 		foreach (ParameterModel parameter in model.Parameters.Values)
 		{
 			sb.Append(", ").Append(parameter.IsParams ? "params " : "").Append(parameter.Type).Append(' ')
-				.Append(parameter.Name);
+				.Append(parameter.GetName(negated));
 		}
 
 		sb.AppendLine(")");
 		sb.AppendLine("\t{");
-		AppendNullChecks(sb, model.Parameters);
+		AppendNullChecks(sb, model.Parameters, negated);
 		string arguments = string.Concat(Enumerable.Range(0, model.Parameters.Count)
 			.Select(i => model.Parameters.Count == 1 ? ", __state" : $", __state.Item{i + 1}"));
 		string constraint = $"new {overload.ConstraintName}(__it, __grammars{arguments})";
@@ -103,7 +103,7 @@ internal static class ExpectationWriter
 
 		sb.Append("\t\treturn new ").Append(resultType)
 			.Append("(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint(");
-		AppendConstraintArguments(sb, model, constraint);
+		AppendConstraintArguments(sb, model, constraint, negated);
 		sb.AppendLine("),");
 		sb.AppendLine("\t\t\tsubject);");
 		sb.AppendLine("\t}");
@@ -115,7 +115,7 @@ internal static class ExpectationWriter
 	{
 		sb.AppendLine("\t/// <summary>");
 		AppendDocumentation(sb, (negated ? model.NegatedSummary : model.Summary) ??
-		                        $"Verifies that the subject {ToDocumentation(negated ? model.NegatedText : model.PositiveText, model)}.");
+		                        $"Verifies that the subject {ToDocumentation(negated ? model.NegatedText : model.PositiveText, model, negated)}.");
 		sb.AppendLine("\t/// </summary>");
 		if ((negated ? model.NegatedRemarks : model.Remarks) is { Length: > 0, } remarks)
 		{
@@ -130,9 +130,9 @@ internal static class ExpectationWriter
 		}
 	}
 
-	internal static void AppendNullChecks(StringBuilder sb, EquatableArray<ParameterModel> parameters)
+	internal static void AppendNullChecks(StringBuilder sb, EquatableArray<ParameterModel> parameters, bool negated)
 	{
-		foreach (string name in parameters.Values.Where(p => p.RequiresNotNull).Select(p => p.Name))
+		foreach (string name in parameters.Values.Where(p => p.RequiresNotNull).Select(p => p.GetName(negated)))
 		{
 			string rawName = name.TrimStart('@');
 			sb.Append("\t\tif (").Append(name).AppendLine(" is null)");
@@ -144,7 +144,8 @@ internal static class ExpectationWriter
 		}
 	}
 
-	private static void AppendConstraintArguments(StringBuilder sb, ExpectationModel model, string constraint)
+	private static void AppendConstraintArguments(StringBuilder sb, ExpectationModel model, string constraint,
+		bool negated)
 	{
 		switch (model.Parameters.Count)
 		{
@@ -152,11 +153,11 @@ internal static class ExpectationWriter
 				sb.Append("(__it, __grammars) => ").Append(constraint);
 				break;
 			case 1:
-				sb.Append(model.Parameters.Values[0].Name).Append(", (__state, __it, __grammars) => ")
+				sb.Append(model.Parameters.Values[0].GetName(negated)).Append(", (__state, __it, __grammars) => ")
 					.Append(constraint);
 				break;
 			default:
-				sb.Append('(').Append(string.Join(", ", model.Parameters.Values.Select(p => p.Name)))
+				sb.Append('(').Append(string.Join(", ", model.Parameters.Values.Select(p => p.GetName(negated))))
 					.Append("), (__state, __it, __grammars) => ").Append(constraint);
 				break;
 		}
@@ -377,9 +378,9 @@ internal static class ExpectationWriter
 		};
 	}
 
-	private static string ToDocumentation(EquatableArray<TextPart> parts, ExpectationModel model)
+	private static string ToDocumentation(EquatableArray<TextPart> parts, ExpectationModel model, bool negated)
 		=> string.Concat(parts.Values.Select(part => part.Text is null
-			? $"<paramref name=\"{model.Parameters.Values[part.ParameterIndex].Name.TrimStart('@')}\" />"
+			? $"<paramref name=\"{model.Parameters.Values[part.ParameterIndex].GetName(negated).TrimStart('@')}\" />"
 			: EscapeXml(part.Text)));
 
 	internal static void AppendDocumentation(StringBuilder sb, string text)

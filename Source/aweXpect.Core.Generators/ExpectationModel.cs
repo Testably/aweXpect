@@ -134,7 +134,20 @@ internal readonly record struct TextPart(string? Text, int ParameterIndex);
 /// <summary>
 ///     A parameter of the expectation, after the subject.
 /// </summary>
-internal readonly record struct ParameterModel(string Name, string Type, bool IsParams, bool RequiresNotNull);
+/// <param name="Name">The name of the parameter.</param>
+/// <param name="NegatedName">The name of the parameter in the negated expectation.</param>
+/// <param name="Type">The type of the parameter.</param>
+/// <param name="IsParams">Whether the parameter is a params array.</param>
+/// <param name="RequiresNotNull">Whether a <see langword="null" /> argument throws.</param>
+internal readonly record struct ParameterModel(
+	string Name,
+	string NegatedName,
+	string Type,
+	bool IsParams,
+	bool RequiresNotNull)
+{
+	public string GetName(bool negated) => negated ? NegatedName : Name;
+}
 
 /// <summary>
 ///     One extension method pair on <see cref="ThatType" />, with its own constraint.
