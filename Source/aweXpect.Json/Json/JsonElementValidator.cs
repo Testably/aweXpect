@@ -598,7 +598,7 @@ internal static class JsonElementValidator
 
 		private bool _hasUndescribedDifference;
 
-		public JsonComparisonResult(MemberToIgnore[] membersToIgnore)
+		public JsonComparisonResult(JsonMemberToIgnore[] membersToIgnore)
 			: this(new MembersToIgnoreTracker(membersToIgnore), false)
 		{
 		}

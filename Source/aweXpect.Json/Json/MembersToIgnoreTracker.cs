@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using aweXpect.Core.Extending;
-using aweXpect.Equivalency;
 
 namespace aweXpect.Json;
 
@@ -15,7 +13,7 @@ namespace aweXpect.Json;
 ///     A misspelled name ignores nothing without any notice, so the difference it was meant to hide is reported without
 ///     a reason.
 /// </remarks>
-internal sealed class MembersToIgnoreTracker(MemberToIgnore[] membersToIgnore)
+internal sealed class MembersToIgnoreTracker(JsonMemberToIgnore[] membersToIgnore)
 {
 	/// <summary>
 	///     The number of compared paths that are kept as candidates for a member to ignore that matched none.
@@ -32,7 +30,7 @@ internal sealed class MembersToIgnoreTracker(MemberToIgnore[] membersToIgnore)
 		membersToIgnore.Length == 0 ? Untracked : new HashSet<string>(StringComparer.Ordinal);
 
 	private readonly HashSet<string> _matchedNames =
-		membersToIgnore.Length == 0 ? Untracked : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+		membersToIgnore.Length == 0 ? Untracked : new HashSet<string>(StringComparer.Ordinal);
 
 	public bool HasMembersToIgnore => membersToIgnore.Length > 0;
 
@@ -46,8 +44,8 @@ internal sealed class MembersToIgnoreTracker(MemberToIgnore[] membersToIgnore)
 			return false;
 		}
 
-		MemberToIgnore? memberToIgnore = Find(memberPath);
-		if (memberToIgnore is MemberToIgnore.ByName named)
+		JsonMemberToIgnore? memberToIgnore = Find(memberPath);
+		if (memberToIgnore is JsonMemberToIgnore.ByName named)
 		{
 			_matchedNames.Add(named.MemberName);
 		}
@@ -63,8 +61,8 @@ internal sealed class MembersToIgnoreTracker(MemberToIgnore[] membersToIgnore)
 	///     A separate method, because the closure over the <paramref name="memberPath" /> is allocated when the method is
 	///     entered, also for a comparison without members to ignore.
 	/// </remarks>
-	private MemberToIgnore? Find(string memberPath)
-		=> Array.Find(membersToIgnore, member => member.IgnoreMember(memberPath, typeof(JsonElement)));
+	private JsonMemberToIgnore? Find(string memberPath)
+		=> Array.Find(membersToIgnore, member => member.IsIgnored(memberPath));
 
 	/// <summary>
 	///     Returns each member to ignore by name that matched none of the compared paths, with the compared path it most
@@ -78,7 +76,7 @@ internal sealed class MembersToIgnoreTracker(MemberToIgnore[] membersToIgnore)
 		}
 
 		Dictionary<string, string?>? unmatched = null;
-		foreach (string name in membersToIgnore.OfType<MemberToIgnore.ByName>().Select(named => named.MemberName))
+		foreach (string name in membersToIgnore.OfType<JsonMemberToIgnore.ByName>().Select(named => named.MemberName))
 		{
 			if (_matchedNames.Contains(name))
 			{
@@ -86,7 +84,7 @@ internal sealed class MembersToIgnoreTracker(MemberToIgnore[] membersToIgnore)
 			}
 
 			int segments = name.Count(c => c == '.') + 1;
-			(unmatched ??= new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase))[name] =
+			(unmatched ??= new Dictionary<string, string?>(StringComparer.Ordinal))[name] =
 				ClosestMatch.Find(name, _comparedPaths.Select(path => GetLastSegments(path, segments)).Distinct());
 		}
 

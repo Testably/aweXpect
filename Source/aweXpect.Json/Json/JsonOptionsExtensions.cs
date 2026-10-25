@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Core.Extending;
-using aweXpect.Equivalency;
 using aweXpect.Helpers;
 
 namespace aweXpect.Json;
@@ -131,10 +130,10 @@ public static class JsonOptionsExtensions
 	///     Ignores the <paramref name="memberToIgnore" /> in the comparison.
 	/// </summary>
 	/// <remarks>
-	///     The <paramref name="memberToIgnore" /> must cover whole trailing segments of the JSON path, ignoring the casing:
-	///     <c>"id"</c> ignores <c>$.id</c> and <c>$.items[0].id</c>, but not <c>$.parentId</c>, while <c>"$.id"</c> only
-	///     ignores the property of the root. An ignored value and everything below it is neither compared nor reported as
-	///     missing or unexpected.
+	///     The <paramref name="memberToIgnore" /> must cover whole trailing segments of the JSON path, with the same casing:
+	///     <c>"id"</c> ignores <c>$.id</c> and <c>$.items[0].id</c>, but not <c>$.parentId</c> or <c>$.ID</c>, while
+	///     <c>"$.id"</c> only ignores the property of the root. An ignored value and everything below it is neither compared
+	///     nor reported as missing or unexpected.
 	///     <para />
 	///     With <see cref="IgnoringArrayOrder" />, an index refers to the element of the subject, which is then left out
 	///     of the pairing.
@@ -152,7 +151,7 @@ public static class JsonOptionsExtensions
 
 		return new JsonOptions(@this)
 		{
-			MembersToIgnore = [..@this.MembersToIgnore, new MemberToIgnore.ByName(memberToIgnore),],
+			MembersToIgnore = [..@this.MembersToIgnore, new JsonMemberToIgnore.ByName(memberToIgnore),],
 		};
 	}
 
@@ -177,8 +176,7 @@ public static class JsonOptionsExtensions
 			MembersToIgnore =
 			[
 				..@this.MembersToIgnore,
-				new MemberToIgnore.ByPredicate((memberPath, _) => predicate(memberPath),
-					doNotPopulateThisValue.TrimCommonWhiteSpace()),
+				new JsonMemberToIgnore.ByPredicate(predicate, doNotPopulateThisValue.TrimCommonWhiteSpace()),
 			],
 		};
 	}
