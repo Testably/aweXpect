@@ -113,6 +113,7 @@ an adapter, so a registration in a separate package would never run:
 
 ```csharp
 using System.Runtime.CompilerServices;
+using System.Threading;
 using aweXpect.Core.Adapters;
 
 namespace MyTests
@@ -129,6 +130,26 @@ namespace MyTests
             => throw new MyTestFailedException(message, innerException);
 
         public void Inconclusive(string message) => throw new MyTestInconclusiveException(message);
+
+        public bool TryGetCurrentTest(out TestIdentity? currentTest)
+        {
+            MyTestContext? context = MyTestContext.Current;
+            currentTest = context is null
+                ? null
+                : new TestIdentity(context.ClassName, context.MethodName, context.Arguments,
+                    context.Id, context.DisplayName, context.RetryCount);
+            return currentTest is not null;
+        }
+
+        public bool TryGetCancellationToken(out CancellationToken cancellationToken)
+        {
+            MyTestContext? context = MyTestContext.Current;
+            cancellationToken = context?.CancellationToken ?? CancellationToken.None;
+            return context is not null;
+        }
+
+        // The test framework cannot attach files to the result of a test.
+        public bool TryAddAttachment(string filePath, string? description) => false;
     }
 
     internal static class MyTestFrameworkRegistration
@@ -160,6 +181,55 @@ namespace MyTests
   [aweXpect2002](../08-analyzers.md#test-framework-adapter) points out.
 
 </details>
+
+### The running test
+
+The `TryGetCurrentTest` of an adapter returns the running test as a `TestIdentity` with the full name of the test
+class, the name of the test method and the arguments of the test case, or `false` when its test framework does not
+expose it. When the test framework reports them, it also holds the `Id` and the `DisplayName` of the test case and its
+`RetryAttempt`, which counts the runs of the test before, e.g. by a retry: `0` for the first run. The `Id` is only
+unique within one test run, and the `RetryAttempt` is not part of what identifies the test, so neither belongs in a
+persisted name. An extension reads the running test with `TestFrameworkRegistry.TryGetCurrentTest`, e.g. to tell the
+cases of a parameterized test apart, as `aweXpect.Snapshots` does with `NamedAfterTestArguments`:
+
+```csharp
+using aweXpect.Core.Adapters;
+
+internal static class MyCaseNames
+{
+    internal static string? GetCaseName()
+        => TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest) && currentTest.Arguments.Count > 0
+            ? string.Join("_", currentTest.Arguments)
+            : null;
+}
+```
+
+- It returns `false` when the test framework does not expose the running test, or when no test is running, e.g. in a
+  setup of the whole assembly. Handle that case, as not every test framework exposes the running test.
+- The generated adapters return it for NUnit, TUnit and xUnit v3. MSTest 4 marks its `TestContext.Current` as
+  experimental and MSTest 3 lacks it, and xUnit v2 has no context of the running test, so their adapters return
+  `false`. xUnit v3 has no retries, so its `RetryAttempt` is always `0`, and NUnit also counts the runs of `[Repeat]`.
+
+`TestFrameworkRegistry.TryGetCancellationToken` returns the token with which the test framework cancels the running
+test, which every expectation observes unless `Settings().TestCancellation` replaces it, see
+[time and cancellation](../03-how-it-works/06-time-and-cancellation.md#cancellationtoken).
+`TestFrameworkRegistry.TryAddAttachment(filePath, description)` attaches a file to the result of the running test, as
+`aweXpect.Snapshots` does with a recorded mismatch:
+
+```csharp
+using aweXpect.Core.Adapters;
+
+internal static class MyReports
+{
+    internal static void Attach(string reportFile)
+        => _ = TestFrameworkRegistry.TryAddAttachment(reportFile, "The report of the test");
+}
+```
+
+- Both return `false` when the test framework does not support it or no test is running. The generated adapters
+  support both for TUnit and xUnit v3, and NUnit 4 or later; NUnit 3 only supports attachments.
+- NUnit and TUnit only read the file when the test ends, so it must still exist then. xUnit v3 attaches the content of
+  the file immediately, under its name.
 
 ## Registration from the test project
 

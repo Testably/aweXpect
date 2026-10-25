@@ -22,7 +22,8 @@ internal sealed class SnapshotOptions
 	private string? _variant;
 
 	/// <remarks>
-	///     The snapshot is claimed right away, see <see cref="ClaimedSnapshots" />.
+	///     The snapshot is claimed right away, see <see cref="ClaimedSnapshots" />, with the name of the arguments of the
+	///     running test, see <see cref="SnapshotTestArguments" />.
 	/// </remarks>
 	public SnapshotOptions(string sourceFile, string memberName, string? extension = null)
 	{
@@ -30,6 +31,7 @@ internal sealed class SnapshotOptions
 		_memberName = memberName;
 		_extension = extension ?? SnapshotId.DefaultExtension;
 		_isExtensionSet = extension is not null;
+		_name = SnapshotTestArguments.GetName();
 		ClaimedSnapshots.Claim(Id);
 	}
 

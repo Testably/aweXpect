@@ -114,6 +114,13 @@ checks of aweXpect.Web offer the quantifiers and match types of `Contains`, e.g.
 `WithTimeSystem(…)` is marked experimental with the diagnostic `aweXpect5001`. Suppress it in test projects that use
 a virtual time system.
 
+### Cancellation
+
+Every expectation is canceled together with the running test, when the test framework exposes its `CancellationToken`
+(NUnit 4 or later, TUnit and xUnit v3), so a waiting expectation stops when the test times out or the run is aborted.
+`TestCancellation.FromCancellationToken(…)` replaces that token and `TestCancellation.None()` switches it off, see
+[time and cancellation](../03-how-it-works/06-time-and-cancellation.md#cancellationtoken).
+
 ## New expectations
 
 - **Dates** gain `HasDayOfWeek(…)` on `DateTime`, `DateTimeOffset` and `DateOnly`.
@@ -183,6 +190,8 @@ a virtual time system.
   `ExcludingForwardedTypes`, and needs no extra `using`.
 - `MatchesPublicApiSnapshot` has one overload per subject with an optional `options` parameter instead of one with and
   one without options. Calls compile unchanged, but have to be compiled again.
+- A recorded mismatch is attached to the result of the test, when the test framework supports attachments, and a retry
+  of a test no longer conflicts with the value of its failed attempt.
 
 ### aweXpect.Web
 
@@ -278,3 +287,6 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   `TResult` for the type returned after an option, e.g. `CollectionOrderResult<TType, TThat, TMember>`.
 - `[GenerateCollectionExpectation]` also generates the expectation directly on a collection with `CollectionOverload`
   and `NegatedName`.
+- `ITestFrameworkAdapter` has the new members `TryGetCurrentTest`, `TryGetCancellationToken` and `TryAddAttachment`,
+  so an adapter of your own has to implement them; each returns `false` when the test framework does not support it.
+  See [the running test](../11-extending/08-initialization.md#the-running-test).

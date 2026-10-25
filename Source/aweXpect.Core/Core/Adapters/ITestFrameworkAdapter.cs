@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 
 namespace aweXpect.Core.Adapters;
 
@@ -41,4 +42,25 @@ public interface ITestFrameworkAdapter
 	/// </remarks>
 	[DoesNotReturn]
 	void Inconclusive(string message);
+
+	/// <summary>
+	///     Returns the test that is running in the current execution context, or <see langword="false" /> when the test
+	///     framework does not expose it or no test is running, e.g. in a setup of the whole assembly.
+	/// </summary>
+	bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest);
+
+	/// <summary>
+	///     Returns the token with which the test framework cancels the running test, e.g. when it times out, or
+	///     <see langword="false" /> when the test framework does not expose it or no test is running.
+	/// </summary>
+	bool TryGetCancellationToken(out CancellationToken cancellationToken);
+
+	/// <summary>
+	///     Attaches the file at the <paramref name="filePath" /> to the result of the running test, or returns
+	///     <see langword="false" /> when the test framework does not support attachments or no test is running.
+	/// </summary>
+	/// <remarks>
+	///     Some test frameworks only read the file when the test ends, so it must still exist then.
+	/// </remarks>
+	bool TryAddAttachment(string filePath, string? description);
 }

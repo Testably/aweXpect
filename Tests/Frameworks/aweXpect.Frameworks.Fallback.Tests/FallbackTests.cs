@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using aweXpect.Core.Adapters;
 using NUnit.Framework;
 
 namespace aweXpect.Frameworks.Fallback.Tests;
@@ -46,5 +48,31 @@ public sealed class FallbackTests
 
 		SkipException? exception = Assert.Throws<SkipException>(Act);
 		Assert.That(exception!.Message, Is.EqualTo("my message"));
+	}
+
+	[Test]
+	public void TryAddAttachment_WhenNotSpecifyingAnyTestFramework_ShouldNotAttachTheFile()
+	{
+		bool isAttached = TestFrameworkRegistry.TryAddAttachment("snapshot.txt", "the received snapshot");
+
+		Assert.That(isAttached, Is.False);
+	}
+
+	[Test]
+	public void TryGetCancellationToken_WhenNotSpecifyingAnyTestFramework_ShouldNotFindTheToken()
+	{
+		bool hasToken = TestFrameworkRegistry.TryGetCancellationToken(out CancellationToken cancellationToken);
+
+		Assert.That(hasToken, Is.False);
+		Assert.That(cancellationToken, Is.EqualTo(CancellationToken.None));
+	}
+
+	[Test]
+	public void TryGetCurrentTest_WhenNotSpecifyingAnyTestFramework_ShouldNotFindTheRunningTest()
+	{
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+
+		Assert.That(isRunning, Is.False);
+		Assert.That(currentTest, Is.Null);
 	}
 }

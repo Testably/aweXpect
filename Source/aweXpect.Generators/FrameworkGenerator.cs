@@ -44,7 +44,8 @@ public class FrameworkGenerator : IIncrementalGenerator
 				SupportsAdapterRegistration(c),
 				HasAttribute(c, "System.Runtime.CompilerServices.ModuleInitializerAttribute"),
 				HasModuleInitializerLanguageVersion(c),
-				CoreScansForAdapters(c)));
+				CoreScansForAdapters(c),
+				TestContext(c)));
 
 		context.RegisterSourceOutput(settings, Emit);
 	}
@@ -63,34 +64,41 @@ public class FrameworkGenerator : IIncrementalGenerator
 		}
 
 		List<(string File, string Name, string Declaration)> adapters = [];
+		TestContextSupport testContext = settings.TestContextSupport;
 
 		if (settings.HasMsTest)
 		{
-			adapters.Add(("MsTest", "MsTestAdapter", MsTestAdapter(attributes)));
+			adapters.Add(("MsTest", "MsTestAdapter", MsTestAdapter(attributes,
+				MsTestTestContext(testContext.IsDeclared, testContext.MsTest))));
 		}
 
 		if (settings.HasNunit)
 		{
-			adapters.Add(("Nunit", "NunitAdapter", NunitAdapter(attributes)));
+			adapters.Add(("Nunit", "NunitAdapter", NunitAdapter(attributes,
+				NunitTestContext(testContext.IsDeclared, testContext.Nunit))));
 		}
 
 		if (settings.HasTUnit)
 		{
-			adapters.Add(("TUnit", "TUnitAdapter", TUnitAdapter(attributes, settings.HasTUnitAssertions)));
+			adapters.Add(("TUnit", "TUnitAdapter", TUnitAdapter(attributes, settings.HasTUnitAssertions,
+				TUnitTestContext(testContext.IsDeclared, testContext.TUnit))));
 		}
 
 		if (settings.HasXunit2)
 		{
-			adapters.Add(("Xunit2", "Xunit2Adapter", Xunit2Adapter(attributes)));
+			adapters.Add(("Xunit2", "Xunit2Adapter", Xunit2Adapter(attributes,
+				TestContextMembers(testContext.IsDeclared, null, null, null))));
 		}
 
 		if (settings.HasXunit3Assert)
 		{
-			adapters.Add(("Xunit3", "Xunit3Adapter", Xunit3AssertAdapter(attributes)));
+			adapters.Add(("Xunit3", "Xunit3Adapter", Xunit3AssertAdapter(attributes,
+				Xunit3TestContext(testContext.IsDeclared, testContext.Xunit3))));
 		}
 		else if (settings.HasXunit3Core)
 		{
-			adapters.Add(("Xunit3", "Xunit3Adapter", Xunit3CoreAdapter(attributes)));
+			adapters.Add(("Xunit3", "Xunit3Adapter", Xunit3CoreAdapter(attributes,
+				Xunit3TestContext(testContext.IsDeclared, testContext.Xunit3))));
 		}
 
 		bool isRegistered = RegistersAdapters(context, settings, adapters.Select(x => x.Name));
@@ -210,7 +218,342 @@ public class FrameworkGenerator : IIncrementalGenerator
 		=> string.Join("\n", declaration.Split('\n')
 			.Select(line => line.TrimEnd('\r').Length == 0 ? line : "\t" + line));
 
-	private static string MsTestAdapter(string attributes) =>
+	/// <summary>
+	///     Which test frameworks expose the running test, its cancellation token and attachments with the members that
+	///     the generated adapter uses, when the referenced aweXpect.Core declares them.
+	/// </summary>
+	/// <remarks>
+	///     Each framework is checked for the members themselves, as older versions lack them, e.g. MSTest before 4.2
+	///     has no <c>TestContext.Current</c> and NUnit 3 no <c>CancellationToken</c>, so the adapter of such a version
+	///     returns <see langword="false" /> instead. A member that is marked as experimental, like
+	///     <c>TestContext.Current</c> of MSTest 4, counts as missing, as using it fails the build of the consumer unless
+	///     the diagnostic is suppressed.
+	/// </remarks>
+	private static TestContextSupport TestContext(Compilation c)
+	{
+		if (c.GetTypeByMetadataName("aweXpect.Core.Adapters.ITestFrameworkAdapter")?.GetMembers("TryGetCurrentTest")
+			    .IsEmpty != false ||
+		    c.GetTypeByMetadataName("aweXpect.Core.Adapters.TestIdentity") is null)
+		{
+			return default;
+		}
+
+		bool hasNunitContext = HasProperty(c, "NUnit.Framework.TestContext", "CurrentContext", true) &&
+		                       HasProperty(c, "NUnit.Framework.TestContext", "Test", false);
+		bool hasTUnitContext = HasProperty(c, "TUnit.Core.TestContext", "Current", true);
+		bool hasXunit3Context = HasProperty(c, "Xunit.TestContext", "Current", true);
+		return new TestContextSupport(true,
+			new FrameworkSupport(
+				HasProperty(c, "Microsoft.VisualStudio.TestTools.UnitTesting.TestContext", "Current", true) &&
+				HasProperty(c, "Microsoft.VisualStudio.TestTools.UnitTesting.TestContext", "TestData", false),
+				false, false),
+			new FrameworkSupport(
+				hasNunitContext &&
+				HasProperty(c, "NUnit.Framework.TestContext+TestAdapter", "Arguments", false) &&
+				HasProperty(c, "NUnit.Framework.TestContext+TestAdapter", "ID", false) &&
+				HasProperty(c, "NUnit.Framework.TestContext+TestAdapter", "Name", false) &&
+				HasProperty(c, "NUnit.Framework.TestContext", "CurrentRepeatCount", false),
+				hasNunitContext && HasProperty(c, "NUnit.Framework.TestContext", "CancellationToken", false),
+				hasNunitContext &&
+				HasMethod(c, "NUnit.Framework.TestContext", "AddTestAttachment", true, "string", "string")),
+			new FrameworkSupport(
+				hasTUnitContext &&
+				HasProperty(c, "TUnit.Core.TestContext", "Metadata", false) &&
+				HasProperty(c, "TUnit.Core.TestContext", "Execution", false) &&
+				HasProperty(c, "TUnit.Core.TestDetails", "TestMethodArguments", false) &&
+				HasProperty(c, "TUnit.Core.TestDetails", "TestId", false) &&
+				HasProperty(c, "TUnit.Core.Interfaces.ITestMetadata", "DisplayName", false) &&
+				HasProperty(c, "TUnit.Core.Interfaces.ITestExecution", "CurrentRetryAttempt", false),
+				hasTUnitContext &&
+				HasProperty(c, "TUnit.Core.TestContext", "Execution", false) &&
+				HasProperty(c, "TUnit.Core.Interfaces.ITestExecution", "CancellationToken", false),
+				hasTUnitContext &&
+				HasProperty(c, "TUnit.Core.TestContext", "Output", false) &&
+				HasMethod(c, "TUnit.Core.Interfaces.ITestOutput", "AttachArtifact", false, "string", "string?",
+					"string?")),
+			new FrameworkSupport(
+				hasXunit3Context &&
+				HasProperty(c, "Xunit.v3.IXunitTest", "TestMethodArguments", false) &&
+				HasProperty(c, "Xunit.Sdk.ITestMetadata", "UniqueID", false) &&
+				HasProperty(c, "Xunit.Sdk.ITestMetadata", "TestDisplayName", false),
+				hasXunit3Context && HasProperty(c, "Xunit.ITestContext", "CancellationToken", false),
+				hasXunit3Context &&
+				HasMethod(c, "Xunit.ITestContext", "AddAttachment", false, "string", "byte[]", "string")));
+	}
+
+	private static bool HasProperty(Compilation c, string typeName, string propertyName, bool isStatic)
+		=> c.GetTypeByMetadataName(typeName)?.GetMembers(propertyName).OfType<IPropertySymbol>()
+			.Any(x => x.IsStatic == isStatic && IsUsable(x)) == true;
+
+	/// <remarks>
+	///     The <paramref name="parameterTypes" /> are compared without their nullable annotation, as an older version
+	///     of the test framework may not annotate them.
+	/// </remarks>
+	private static bool HasMethod(Compilation c, string typeName, string methodName, bool isStatic,
+		params string[] parameterTypes)
+		=> c.GetTypeByMetadataName(typeName)?.GetMembers(methodName).OfType<IMethodSymbol>()
+			.Any(x => x.IsStatic == isStatic && IsUsable(x) &&
+			          x.Parameters.Select(p => p.Type.WithNullableAnnotation(NullableAnnotation.None).ToDisplayString())
+				          .SequenceEqual(parameterTypes.Select(t => t.TrimEnd('?')))) == true;
+
+	private static bool IsUsable(ISymbol symbol)
+		=> symbol.DeclaredAccessibility == Accessibility.Public &&
+		   !symbol.GetAttributes().Any(a => a.AttributeClass?.ToDisplayString() ==
+		                                    "System.Diagnostics.CodeAnalysis.ExperimentalAttribute");
+
+	/// <summary>
+	///     The members of an adapter that read the running test, when the referenced aweXpect.Core declares them, each
+	///     returning <see langword="false" /> without the implementation of its test framework.
+	/// </summary>
+	private static string TestContextMembers(bool isDeclared, string? tryGetCurrentTest,
+		string? tryGetCancellationToken, string? tryAddAttachment)
+	{
+		if (!isDeclared)
+		{
+			return string.Empty;
+		}
+
+		return (tryGetCurrentTest ?? """
+
+
+		                             		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryGetCurrentTest(out global::aweXpect.Core.Adapters.TestIdentity)" />
+		                             		public bool TryGetCurrentTest(out global::aweXpect.Core.Adapters.TestIdentity currentTest)
+		                             		{
+		                             			currentTest = null;
+		                             			return false;
+		                             		}
+		                             """) +
+		       (tryGetCancellationToken ?? """
+
+
+		                                   		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryGetCancellationToken(out global::System.Threading.CancellationToken)" />
+		                                   		public bool TryGetCancellationToken(out global::System.Threading.CancellationToken cancellationToken)
+		                                   		{
+		                                   			cancellationToken = global::System.Threading.CancellationToken.None;
+		                                   			return false;
+		                                   		}
+		                                   """) +
+		       (tryAddAttachment ?? """
+
+
+		                            		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryAddAttachment(string, string)" />
+		                            		public bool TryAddAttachment(string filePath, string description)
+		                            			=> false;
+		                            """);
+	}
+
+	private static string MsTestTestContext(bool isDeclared, FrameworkSupport support)
+		=> TestContextMembers(isDeclared, support.CurrentTest
+			? """
+
+
+			  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryGetCurrentTest(out global::aweXpect.Core.Adapters.TestIdentity)" />
+			  		public bool TryGetCurrentTest(out global::aweXpect.Core.Adapters.TestIdentity currentTest)
+			  		{
+			  			global::Microsoft.VisualStudio.TestTools.UnitTesting.TestContext context = global::Microsoft.VisualStudio.TestTools.UnitTesting.TestContext.Current;
+			  			if (context == null || context.FullyQualifiedTestClassName == null || context.TestName == null)
+			  			{
+			  				currentTest = null;
+			  				return false;
+			  			}
+
+			  			currentTest = new global::aweXpect.Core.Adapters.TestIdentity(context.FullyQualifiedTestClassName, context.TestName, context.TestData ?? new object[0]);
+			  			return true;
+			  		}
+			  """
+			: null, null, null);
+
+	/// <remarks>
+	///     Outside of a test, e.g. in a one-time setup, the current context of NUnit describes the fixture, which has no
+	///     method.
+	/// </remarks>
+	private static string NunitTestContext(bool isDeclared, FrameworkSupport support)
+		=> TestContextMembers(isDeclared, support.CurrentTest
+				? """
+
+
+				  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryGetCurrentTest(out global::aweXpect.Core.Adapters.TestIdentity)" />
+				  		public bool TryGetCurrentTest(out global::aweXpect.Core.Adapters.TestIdentity currentTest)
+				  		{
+				  			global::NUnit.Framework.TestContext context = global::NUnit.Framework.TestContext.CurrentContext;
+				  			global::NUnit.Framework.TestContext.TestAdapter test = context == null ? null : context.Test;
+				  			if (test == null || test.ClassName == null || test.MethodName == null)
+				  			{
+				  				currentTest = null;
+				  				return false;
+				  			}
+
+				  			currentTest = new global::aweXpect.Core.Adapters.TestIdentity(test.ClassName, test.MethodName, test.Arguments ?? new object[0], test.ID, test.Name, context.CurrentRepeatCount);
+				  			return true;
+				  		}
+				  """
+				: null,
+			support.CancellationToken
+				? """
+
+
+				  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryGetCancellationToken(out global::System.Threading.CancellationToken)" />
+				  		public bool TryGetCancellationToken(out global::System.Threading.CancellationToken cancellationToken)
+				  		{
+				  			global::NUnit.Framework.TestContext context = global::NUnit.Framework.TestContext.CurrentContext;
+				  			if (context == null || context.Test == null || context.Test.MethodName == null)
+				  			{
+				  				cancellationToken = global::System.Threading.CancellationToken.None;
+				  				return false;
+				  			}
+
+				  			cancellationToken = context.CancellationToken;
+				  			return true;
+				  		}
+				  """
+				: null,
+			support.Attachment
+				? """
+
+
+				  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryAddAttachment(string, string)" />
+				  		public bool TryAddAttachment(string filePath, string description)
+				  		{
+				  			global::NUnit.Framework.TestContext context = global::NUnit.Framework.TestContext.CurrentContext;
+				  			if (context == null || context.Test == null || context.Test.MethodName == null)
+				  			{
+				  				return false;
+				  			}
+
+				  			global::NUnit.Framework.TestContext.AddTestAttachment(filePath, description);
+				  			return true;
+				  		}
+				  """
+				: null);
+
+	/// <remarks>
+	///     The id is the one of the test, not of the <c>TestContext</c>, so that it stays the same when the test is
+	///     retried.
+	/// </remarks>
+	private static string TUnitTestContext(bool isDeclared, FrameworkSupport support)
+		=> TestContextMembers(isDeclared, support.CurrentTest
+				? """
+
+
+				  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryGetCurrentTest(out global::aweXpect.Core.Adapters.TestIdentity)" />
+				  		public bool TryGetCurrentTest(out global::aweXpect.Core.Adapters.TestIdentity currentTest)
+				  		{
+				  			global::TUnit.Core.TestContext context = global::TUnit.Core.TestContext.Current;
+				  			global::TUnit.Core.TestDetails details = context == null || context.Metadata == null ? null : context.Metadata.TestDetails;
+				  			if (details == null || details.ClassType == null || details.MethodName == null)
+				  			{
+				  				currentTest = null;
+				  				return false;
+				  			}
+
+				  			currentTest = new global::aweXpect.Core.Adapters.TestIdentity(details.ClassType.FullName ?? details.ClassType.Name, details.MethodName, details.TestMethodArguments ?? new object[0], details.TestId, context.Metadata.DisplayName, context.Execution == null ? 0 : context.Execution.CurrentRetryAttempt);
+				  			return true;
+				  		}
+				  """
+				: null,
+			support.CancellationToken
+				? """
+
+
+				  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryGetCancellationToken(out global::System.Threading.CancellationToken)" />
+				  		public bool TryGetCancellationToken(out global::System.Threading.CancellationToken cancellationToken)
+				  		{
+				  			global::TUnit.Core.TestContext context = global::TUnit.Core.TestContext.Current;
+				  			if (context == null || context.Execution == null)
+				  			{
+				  				cancellationToken = global::System.Threading.CancellationToken.None;
+				  				return false;
+				  			}
+
+				  			cancellationToken = context.Execution.CancellationToken;
+				  			return true;
+				  		}
+				  """
+				: null,
+			support.Attachment
+				? """
+
+
+				  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryAddAttachment(string, string)" />
+				  		public bool TryAddAttachment(string filePath, string description)
+				  		{
+				  			global::TUnit.Core.TestContext context = global::TUnit.Core.TestContext.Current;
+				  			if (context == null || context.Output == null)
+				  			{
+				  				return false;
+				  			}
+
+				  			context.Output.AttachArtifact(filePath, null, description);
+				  			return true;
+				  		}
+				  """
+				: null);
+
+	/// <remarks>
+	///     The arguments are those of the test, as a theory whose data cannot be enumerated up front runs all its rows in
+	///     one test case. xUnit v3 has no retries and attaches the content instead of the file, so the file is read
+	///     immediately, under its name.
+	/// </remarks>
+	private static string Xunit3TestContext(bool isDeclared, FrameworkSupport support)
+		=> TestContextMembers(isDeclared, support.CurrentTest
+				? """
+
+
+				  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryGetCurrentTest(out global::aweXpect.Core.Adapters.TestIdentity)" />
+				  		public bool TryGetCurrentTest(out global::aweXpect.Core.Adapters.TestIdentity currentTest)
+				  		{
+				  			global::Xunit.ITestContext context = global::Xunit.TestContext.Current;
+				  			global::Xunit.v3.IXunitTest test = context == null ? null : context.Test as global::Xunit.v3.IXunitTest;
+				  			if (test == null || test.TestCase == null || test.TestCase.TestClassName == null || test.TestCase.TestMethodName == null)
+				  			{
+				  				currentTest = null;
+				  				return false;
+				  			}
+
+				  			currentTest = new global::aweXpect.Core.Adapters.TestIdentity(test.TestCase.TestClassName, test.TestCase.TestMethodName, test.TestMethodArguments ?? new object[0], test.UniqueID, test.TestDisplayName, 0);
+				  			return true;
+				  		}
+				  """
+				: null,
+			support.CancellationToken
+				? """
+
+
+				  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryGetCancellationToken(out global::System.Threading.CancellationToken)" />
+				  		public bool TryGetCancellationToken(out global::System.Threading.CancellationToken cancellationToken)
+				  		{
+				  			global::Xunit.ITestContext context = global::Xunit.TestContext.Current;
+				  			if (context == null || context.Test == null)
+				  			{
+				  				cancellationToken = global::System.Threading.CancellationToken.None;
+				  				return false;
+				  			}
+
+				  			cancellationToken = context.CancellationToken;
+				  			return true;
+				  		}
+				  """
+				: null,
+			support.Attachment
+				? """
+
+
+				  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryAddAttachment(string, string)" />
+				  		public bool TryAddAttachment(string filePath, string description)
+				  		{
+				  			global::Xunit.ITestContext context = global::Xunit.TestContext.Current;
+				  			if (context == null || context.Test == null)
+				  			{
+				  				return false;
+				  			}
+
+				  			context.AddAttachment(global::System.IO.Path.GetFileName(filePath), global::System.IO.File.ReadAllBytes(filePath), "application/octet-stream");
+				  			return true;
+				  		}
+				  """
+				: null);
+
+	private static string MsTestAdapter(string attributes, string testContextMembers) =>
 		$$"""
 		  	internal class MsTestAdapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
 		  	{
@@ -231,11 +574,11 @@ public class FrameworkGenerator : IIncrementalGenerator
 
 		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Inconclusive(string)" />
 		  		{{attributes}}public void Inconclusive(string message)
-		  			=> throw new global::Microsoft.VisualStudio.TestTools.UnitTesting.AssertInconclusiveException(message);
+		  			=> throw new global::Microsoft.VisualStudio.TestTools.UnitTesting.AssertInconclusiveException(message);{{testContextMembers}}
 		  	}
 		  """;
 
-	private static string NunitAdapter(string attributes) =>
+	private static string NunitAdapter(string attributes, string testContextMembers) =>
 		$$"""
 		  	internal class NunitAdapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
 		  	{
@@ -256,7 +599,7 @@ public class FrameworkGenerator : IIncrementalGenerator
 
 		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Inconclusive(string)" />
 		  		{{attributes}}public void Inconclusive(string message)
-		  			=> throw new global::NUnit.Framework.InconclusiveException(message);
+		  			=> throw new global::NUnit.Framework.InconclusiveException(message);{{testContextMembers}}
 		  	}
 		  """;
 
@@ -264,7 +607,7 @@ public class FrameworkGenerator : IIncrementalGenerator
 	///     A project that uses aweXpect instead of TUnit's assertions references only TUnit.Core, which is enough to skip
 	///     a test, so a failure then throws the exception of aweXpect.
 	/// </remarks>
-	private static string TUnitAdapter(string attributes, bool hasAssertions)
+	private static string TUnitAdapter(string attributes, bool hasAssertions, string testContextMembers)
 	{
 		string failException = hasAssertions
 			? "global::TUnit.Assertions.Exceptions.AssertionException"
@@ -289,12 +632,12 @@ public class FrameworkGenerator : IIncrementalGenerator
 
 		         		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Inconclusive(string)" />
 		         		{{attributes}}public void Inconclusive(string message)
-		         			=> throw new global::TUnit.Core.Exceptions.InconclusiveTestException(message, null);
+		         			=> throw new global::TUnit.Core.Exceptions.InconclusiveTestException(message, null);{{testContextMembers}}
 		         	}
 		         """;
 	}
 
-	private static string Xunit2Adapter(string attributes) =>
+	private static string Xunit2Adapter(string attributes, string testContextMembers) =>
 		$$"""
 		  	internal class Xunit2Adapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
 		  	{
@@ -315,11 +658,11 @@ public class FrameworkGenerator : IIncrementalGenerator
 
 		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Inconclusive(string)" />
 		  		{{attributes}}public void Inconclusive(string message)
-		  			=> throw new global::aweXpect.InconclusiveException(message);
+		  			=> throw new global::aweXpect.InconclusiveException(message);{{testContextMembers}}
 		  	}
 		  """;
 
-	private static string Xunit3CoreAdapter(string attributes) =>
+	private static string Xunit3CoreAdapter(string attributes, string testContextMembers) =>
 		$$"""
 		  	internal class Xunit3Adapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
 		  	{
@@ -340,7 +683,7 @@ public class FrameworkGenerator : IIncrementalGenerator
 
 		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Inconclusive(string)" />
 		  		{{attributes}}public void Inconclusive(string message)
-		  			=> throw new XunitTimeoutException(message);
+		  			=> throw new XunitTimeoutException(message);{{testContextMembers}}
 
 		  		/// <summary>
 		  		///     Interface is required by xunit v3 to identify an assertion exception.
@@ -367,7 +710,7 @@ public class FrameworkGenerator : IIncrementalGenerator
 		  	}
 		  """;
 
-	private static string Xunit3AssertAdapter(string attributes) =>
+	private static string Xunit3AssertAdapter(string attributes, string testContextMembers) =>
 		$$"""
 		  	internal class Xunit3Adapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
 		  	{
@@ -388,7 +731,7 @@ public class FrameworkGenerator : IIncrementalGenerator
 
 		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Inconclusive(string)" />
 		  		{{attributes}}public void Inconclusive(string message)
-		  			=> throw new XunitTimeoutException(message);
+		  			=> throw new XunitTimeoutException(message);{{testContextMembers}}
 
 		  #pragma warning disable S3871 // Exception types should be "public"
 		  		private sealed class XunitTimeoutException : global::aweXpect.InconclusiveException, ITestTimeoutException
@@ -423,5 +766,22 @@ public class FrameworkGenerator : IIncrementalGenerator
 		bool HasTestFrameworkRegistry,
 		bool HasModuleInitializerAttribute,
 		bool CanCompileModuleInitializer,
-		bool IsAdapterFoundByScan);
+		bool IsAdapterFoundByScan,
+		TestContextSupport TestContextSupport);
+
+	/// <summary>
+	///     Whether aweXpect.Core declares the members of an adapter that read the running test, and what each test
+	///     framework exposes, see <see cref="TestContext(Compilation)" />.
+	/// </summary>
+	private readonly record struct TestContextSupport(
+		bool IsDeclared,
+		FrameworkSupport MsTest,
+		FrameworkSupport Nunit,
+		FrameworkSupport TUnit,
+		FrameworkSupport Xunit3);
+
+	/// <summary>
+	///     Whether a test framework exposes the running test, its cancellation token and attachments.
+	/// </summary>
+	private readonly record struct FrameworkSupport(bool CurrentTest, bool CancellationToken, bool Attachment);
 }

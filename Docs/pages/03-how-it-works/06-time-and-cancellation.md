@@ -41,7 +41,12 @@ left.
 
 ## `CancellationToken`
 
-You can set a global provider for getting a `CancellationToken` that is applied for all expectations:
+By default, every expectation is canceled together with the running test, when the test framework exposes its
+`CancellationToken`: NUnit 4 or later, TUnit and xUnit v3 do. An expectation that waits, e.g. for a task or with
+`Within(…)`, then stops when the test framework cancels the test, because its timeout elapsed or the run was aborted.
+
+You can set a global provider for getting a `CancellationToken` that is applied for all expectations instead, e.g. for
+a test framework whose token aweXpect does not read:
 
 ```csharp
 // Uses the CancellationToken from the test context
@@ -60,11 +65,13 @@ still applies together with a global `CancellationToken`.
 `TestCancellation` is created with one of:
 
 - `TestCancellation.FromTimeout(TimeSpan timeout)`, which cancels the `CancellationToken` that is used internally and
-  forwarded to the [delegates](../06-behaviour/01-delegates.md) after the given timeout.
+  forwarded to the [delegates](../06-behaviour/01-delegates.md) after the given timeout. The token of the running test
+  still applies.
 - `TestCancellation.FromCancellationToken(Func<CancellationToken> cancellationTokenFactory)`, which uses the returned
-  `CancellationToken` internally and also forwards it to the [delegates](../06-behaviour/01-delegates.md).
-- `TestCancellation.None()`, which applies neither a timeout nor a `CancellationToken`, e.g. to switch off a global
-  `TestCancellation` in the current async flow.
+  `CancellationToken` internally, instead of the token of the running test, and also forwards it to the
+  [delegates](../06-behaviour/01-delegates.md).
+- `TestCancellation.None()`, which applies neither a timeout nor a `CancellationToken`, not even the token of the
+  running test, e.g. to switch off a global `TestCancellation` in the current async flow.
 
 You can also apply a `CancellationToken` on individual expectations, using the `WithCancellation(CancellationToken)`
 method:

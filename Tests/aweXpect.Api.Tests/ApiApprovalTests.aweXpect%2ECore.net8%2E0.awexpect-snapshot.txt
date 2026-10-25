@@ -766,10 +766,27 @@ namespace aweXpect.Core.Adapters
         void Inconclusive(string message);
         [System.Diagnostics.CodeAnalysis.DoesNotReturn]
         void Skip(string message);
+        bool TryAddAttachment(string filePath, string? description);
+        bool TryGetCancellationToken(out System.Threading.CancellationToken cancellationToken);
+        bool TryGetCurrentTest([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out aweXpect.Core.Adapters.TestIdentity? currentTest);
     }
     public static class TestFrameworkRegistry
     {
         public static void Register(aweXpect.Core.Adapters.ITestFrameworkAdapter testFrameworkAdapter, bool overwrite = true) { }
+        public static bool TryAddAttachment(string filePath, string? description = null) { }
+        public static bool TryGetCancellationToken(out System.Threading.CancellationToken cancellationToken) { }
+        public static bool TryGetCurrentTest([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out aweXpect.Core.Adapters.TestIdentity? currentTest) { }
+    }
+    public sealed class TestIdentity
+    {
+        public TestIdentity(string className, string methodName, System.Collections.Generic.IReadOnlyList<object?> arguments) { }
+        public TestIdentity(string className, string methodName, System.Collections.Generic.IReadOnlyList<object?> arguments, string? id, string? displayName, int retryAttempt) { }
+        public System.Collections.Generic.IReadOnlyList<object?> Arguments { get; }
+        public string ClassName { get; }
+        public string? DisplayName { get; }
+        public string? Id { get; }
+        public string MethodName { get; }
+        public int RetryAttempt { get; }
     }
 }
 namespace aweXpect.Core.Constraints

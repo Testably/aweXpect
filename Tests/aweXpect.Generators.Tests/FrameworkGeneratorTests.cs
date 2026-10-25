@@ -23,6 +23,13 @@ public sealed class FrameworkGeneratorTests
 		                                                                                      		public AssertFailedException(string message, System.Exception inner) : base(message, inner) { }
 		                                                                                      	}
 		                                                                                      	public class AssertInconclusiveException(string message) : System.Exception(message);
+		                                                                                      	public class TestContext
+		                                                                                      	{
+		                                                                                      		public static TestContext? Current => null;
+		                                                                                      		public string? FullyQualifiedTestClassName => null;
+		                                                                                      		public string? TestName => null;
+		                                                                                      		public object?[]? TestData => null;
+		                                                                                      	}
 		                                                                                      }
 		                                                                                      """),
 		["Microsoft.VisualStudio.TestPlatform.TestFramework"] = GeneratorRunner.CompileToReference(
@@ -47,6 +54,22 @@ public sealed class FrameworkGeneratorTests
 		                                                                            	}
 		                                                                            	public class IgnoreException(string message) : System.Exception(message);
 		                                                                            	public class InconclusiveException(string message) : System.Exception(message);
+		                                                                            	public class TestContext
+		                                                                            	{
+		                                                                            		public static TestContext CurrentContext { get; } = new();
+		                                                                            		public TestAdapter Test { get; } = new();
+		                                                                            		public System.Threading.CancellationToken CancellationToken => default;
+		                                                                            		public int CurrentRepeatCount => 0;
+		                                                                            		public static void AddTestAttachment(string filePath, string? description = null) { }
+		                                                                            		public class TestAdapter
+		                                                                            		{
+		                                                                            			public string? ClassName => null;
+		                                                                            			public string? MethodName => null;
+		                                                                            			public object?[] Arguments => [];
+		                                                                            			public string ID => "";
+		                                                                            			public string Name => "";
+		                                                                            		}
+		                                                                            	}
 		                                                                            }
 		                                                                            """),
 		["TUnit.Core"] = GeneratorRunner.CompileToReference("TUnit.Core", """
@@ -55,6 +78,40 @@ public sealed class FrameworkGeneratorTests
 		                                                                  	public class SkipTestException(string reason) : System.Exception(reason);
 		                                                                  	public class InconclusiveTestException(string message, System.Exception? inner)
 		                                                                  		: System.Exception(message, inner);
+		                                                                  }
+		                                                                  namespace TUnit.Core
+		                                                                  {
+		                                                                  	public class TestContext
+		                                                                  	{
+		                                                                  		public static TestContext? Current => null;
+		                                                                  		public Interfaces.ITestMetadata Metadata => null!;
+		                                                                  		public Interfaces.ITestExecution Execution => null!;
+		                                                                  		public Interfaces.ITestOutput Output => null!;
+		                                                                  	}
+		                                                                  	public class TestDetails
+		                                                                  	{
+		                                                                  		public System.Type ClassType => typeof(object);
+		                                                                  		public string MethodName => "";
+		                                                                  		public object?[] TestMethodArguments => [];
+		                                                                  		public string TestId => "";
+		                                                                  	}
+		                                                                  }
+		                                                                  namespace TUnit.Core.Interfaces
+		                                                                  {
+		                                                                  	public interface ITestMetadata
+		                                                                  	{
+		                                                                  		TUnit.Core.TestDetails TestDetails { get; }
+		                                                                  		string DisplayName { get; }
+		                                                                  	}
+		                                                                  	public interface ITestExecution
+		                                                                  	{
+		                                                                  		System.Threading.CancellationToken CancellationToken { get; }
+		                                                                  		int CurrentRetryAttempt { get; }
+		                                                                  	}
+		                                                                  	public interface ITestOutput
+		                                                                  	{
+		                                                                  		void AttachArtifact(string filePath, string? displayName = null, string? description = null);
+		                                                                  	}
 		                                                                  }
 		                                                                  """),
 		["TUnit.Assertions"] = GeneratorRunner.CompileToReference("TUnit.Assertions", """
@@ -67,9 +124,45 @@ public sealed class FrameworkGeneratorTests
 		                                                                              	}
 		                                                                              }
 		                                                                              """),
-		// The xunit v3 adapters need nothing from xunit.v3.core, and `Xunit.Sdk.XunitException` from xunit.v3.assert
-		// is the same as the one of the xunit v2 assertions.
-		["xunit.v3.core"] = GeneratorRunner.CompileToReference("xunit.v3.core", "namespace Xunit.v3 { }"),
+		// The xunit v3 adapters need only the test context from xunit.v3.core, and `Xunit.Sdk.XunitException` from
+		// xunit.v3.assert is the same as the one of the xunit v2 assertions.
+		["xunit.v3.core"] = GeneratorRunner.CompileToReference("xunit.v3.core", """
+		                                                                        namespace Xunit
+		                                                                        {
+		                                                                        	public interface ITestContext
+		                                                                        	{
+		                                                                        		Xunit.Sdk.ITest? Test { get; }
+		                                                                        		System.Threading.CancellationToken CancellationToken { get; }
+		                                                                        		void AddAttachment(string name, byte[] value, string mediaType = "application/octet-stream");
+		                                                                        	}
+		                                                                        	public class TestContext
+		                                                                        	{
+		                                                                        		public static ITestContext Current => null!;
+		                                                                        	}
+		                                                                        }
+		                                                                        namespace Xunit.Sdk
+		                                                                        {
+		                                                                        	public interface ITestMetadata
+		                                                                        	{
+		                                                                        		string UniqueID { get; }
+		                                                                        		string TestDisplayName { get; }
+		                                                                        	}
+		                                                                        	public interface ITest : ITestMetadata { }
+		                                                                        }
+		                                                                        namespace Xunit.v3
+		                                                                        {
+		                                                                        	public interface IXunitTestCase
+		                                                                        	{
+		                                                                        		string TestClassName { get; }
+		                                                                        		string TestMethodName { get; }
+		                                                                        	}
+		                                                                        	public interface IXunitTest : Xunit.Sdk.ITest
+		                                                                        	{
+		                                                                        		IXunitTestCase TestCase { get; }
+		                                                                        		object?[] TestMethodArguments { get; }
+		                                                                        	}
+		                                                                        }
+		                                                                        """),
 		["xunit.v3.assert"] = GeneratorRunner.CompileToReference("xunit.v3.assert", "namespace Xunit.v3 { }"),
 	};
 
@@ -291,6 +384,26 @@ public sealed class FrameworkGeneratorTests
 	}
 
 	[Test]
+	public async Task WhenCoreDoesNotDeclareTryGetCurrentTest_ShouldNotImplementIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new FrameworkGenerator(),
+		[
+			"""
+			namespace aweXpect.Core.Adapters
+			{
+				public interface ITestFrameworkAdapter { }
+				public sealed class TestIdentity { }
+			}
+			""",
+		], false, LanguageVersion.Latest, References("nunit.framework"));
+
+		await That(result.GeneratorDiagnostics).IsEmpty();
+		await That(result.Generated).Contains("class NunitAdapter ").And
+			.DoesNotContain("TryGetCurrentTest")
+			.Because("an adapter can only implement the members that the referenced aweXpect.Core declares");
+	}
+
+	[Test]
 	public async Task WhenCoreIsNotReferenced_ShouldNotRegisterTheAdapter()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new FrameworkGenerator(),
@@ -300,6 +413,84 @@ public sealed class FrameworkGeneratorTests
 		await That(result.Generated).Contains("class NunitAdapter ").And
 			.DoesNotContain("ModuleInitializer")
 			.Because("there is no registry to register the adapter with");
+	}
+
+	[Test]
+	[Arguments("MsTestAdapter", "Microsoft.VisualStudio.TestPlatform.TestFramework")]
+	[Arguments("Xunit2Adapter", "")]
+	public async Task WhenFrameworkDoesNotExposeTheRunningTest_ShouldNotReturnACurrentTest(string adapter,
+		string frameworks)
+	{
+		GeneratorRunner.GeneratorResult result = Run(frameworks, LanguageVersion.Latest);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains($"class {adapter} ").And
+			.Contains("public bool TryGetCurrentTest(").And
+			.DoesNotContain("new global::aweXpect.Core.Adapters.TestIdentity(")
+			.Because("MSTest 3 and xunit v2 have no ambient context of the running test");
+	}
+
+	[Test]
+	[Arguments("NunitAdapter", "nunit.framework")]
+	[Arguments("TUnitAdapter", "TUnit.Core")]
+	[Arguments("Xunit3Adapter", "xunit.v3.core")]
+	public async Task WhenFrameworkExposesTheCancellationTokenAndAttachments_ShouldUseThem(string adapter,
+		string framework)
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new FrameworkGenerator(),
+			["public class Foo { }",], true, LanguageVersion.Latest, [Frameworks[framework],]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains($"class {adapter} ").And
+			.Contains("cancellationToken = context.").And
+			.DoesNotContain("=> false;")
+			.Because("an adapter only falls back to returning false for what its test framework does not expose");
+	}
+
+	[Test]
+	[Arguments("MsTestAdapter", "MSTest.TestFramework")]
+	[Arguments("NunitAdapter", "nunit.framework")]
+	[Arguments("TUnitAdapter", "TUnit.Core")]
+	[Arguments("Xunit3Adapter", "xunit.v3.core")]
+	[Arguments("Xunit3Adapter", "xunit.v3.core,xunit.v3.assert")]
+	public async Task WhenFrameworkExposesTheRunningTest_ShouldReturnTheCurrentTest(string adapter,
+		string frameworks)
+	{
+		GeneratorRunner.GeneratorResult result = Run(frameworks, LanguageVersion.Latest);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains($"class {adapter} ").And
+			.Contains("new global::aweXpect.Core.Adapters.TestIdentity(");
+	}
+
+	[Test]
+	public async Task WhenRunningTestIsExperimental_ShouldNotReturnACurrentTest()
+	{
+		MetadataReference msTest = GeneratorRunner.CompileToReference("MSTest.TestFramework", """
+		                                                                                      namespace Microsoft.VisualStudio.TestTools.UnitTesting
+		                                                                                      {
+		                                                                                      	public class AssertFailedException : System.Exception
+		                                                                                      	{
+		                                                                                      		public AssertFailedException(string message) : base(message) { }
+		                                                                                      		public AssertFailedException(string message, System.Exception inner) : base(message, inner) { }
+		                                                                                      	}
+		                                                                                      	public class AssertInconclusiveException(string message) : System.Exception(message);
+		                                                                                      	public class TestContext
+		                                                                                      	{
+		                                                                                      		[System.Diagnostics.CodeAnalysis.Experimental("MSTESTEXP")]
+		                                                                                      		public static TestContext? Current => null;
+		                                                                                      		public object?[]? TestData => null;
+		                                                                                      	}
+		                                                                                      }
+		                                                                                      """);
+
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new FrameworkGenerator(),
+			["public class Foo { }",], true, LanguageVersion.Latest, [msTest, Xunit2Assert,]);
+
+		await That(result.Errors).IsEmpty()
+			.Because("using an experimental API fails the build of the consumer unless the diagnostic is suppressed");
+		await That(result.Generated).Contains("class MsTestAdapter ").And
+			.DoesNotContain("new global::aweXpect.Core.Adapters.TestIdentity(");
 	}
 
 	[Test]

@@ -417,6 +417,24 @@ public sealed class CustomizeSettingsTests
 	}
 
 	[Test]
+	public async Task TestCancellation_FromTimeout_ShouldStillUseTheTokenOfTheRunningTest()
+	{
+		CancellationToken receivedToken = CancellationToken.None;
+		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
+			       .Set(TestCancellation.FromTimeout(Timeout.InfiniteTimeSpan)))
+		{
+			await That(cancellationToken =>
+			{
+				receivedToken = cancellationToken;
+				return Task.CompletedTask;
+			}).DoesNotThrow();
+		}
+
+		await That(receivedToken).IsEqualTo(TestContext.Current!.Execution.CancellationToken)
+			.Because("a timeout does not replace the token of the test framework");
+	}
+
+	[Test]
 	public async Task TestCancellation_FromTimeout_WhenInfinite_ShouldBeAccepted()
 	{
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
@@ -486,6 +504,23 @@ public sealed class CustomizeSettingsTests
 	}
 
 	[Test]
+	public async Task TestCancellation_None_ShouldNotUseTheTokenOfTheRunningTest()
+	{
+		CancellationToken receivedToken = new(true);
+		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation.Set(TestCancellation.None()))
+		{
+			await That(cancellationToken =>
+			{
+				receivedToken = cancellationToken;
+				return Task.CompletedTask;
+			}).DoesNotThrow();
+		}
+
+		await That(receivedToken).IsEqualTo(CancellationToken.None)
+			.Because("an explicit test cancellation replaces the token of the test framework");
+	}
+
+	[Test]
 	public async Task TestCancellation_PerDefault_ShouldNotCancel()
 	{
 		VirtualTimeSystem time = new();
@@ -495,6 +530,21 @@ public sealed class CustomizeSettingsTests
 
 		await That(time.Now).IsEqualTo(LowTimeout)
 			.Because("without a test cancellation the subject runs to its end");
+	}
+
+	[Test]
+	public async Task TestCancellation_PerDefault_ShouldUseTheTokenOfTheRunningTest()
+	{
+		CancellationToken receivedToken = CancellationToken.None;
+
+		await That(cancellationToken =>
+		{
+			receivedToken = cancellationToken;
+			return Task.CompletedTask;
+		}).DoesNotThrow();
+
+		await That(receivedToken).IsEqualTo(TestContext.Current!.Execution.CancellationToken)
+			.Because("without a test cancellation the expectation is canceled together with the running test");
 	}
 
 	[Test]

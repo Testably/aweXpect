@@ -1,11 +1,16 @@
 ﻿using System;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
+using aweXpect.Core.Adapters;
 using NUnit.Framework;
 
 namespace aweXpect.Frameworks.NUnit5.Tests;
 
 public sealed class NUnit5TestFrameworkTests
 {
+	private static int _repeatedRuns;
+
 	[Test]
 	public async Task OnFail_WhenUsingNUnit5AsTestFramework_ShouldThrowAssertionException()
 	{
@@ -55,5 +60,73 @@ public sealed class NUnit5TestFrameworkTests
 
 		await Expect.That(version?.Major).IsEqualTo(5)
 			.Because("this project tests the adapter against NUnit 5");
+	}
+
+	[Test]
+	public async Task TryAddAttachment_ShouldAttachTheFile()
+	{
+		string filePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.txt");
+		File.WriteAllText(filePath, "received");
+
+		bool isAttached = TestFrameworkRegistry.TryAddAttachment(filePath, "the received snapshot");
+
+		await Expect.That(isAttached).IsTrue()
+			.Because("NUnit 5 attaches files to the result of the test");
+	}
+
+	[Test]
+	public async Task TryGetCancellationToken_ShouldReturnTheTokenOfTheTest()
+	{
+		bool hasToken = TestFrameworkRegistry.TryGetCancellationToken(out CancellationToken cancellationToken);
+
+		await Expect.That(hasToken).IsTrue();
+		await Expect.That(cancellationToken).IsEqualTo(TestContext.CurrentContext.CancellationToken);
+	}
+
+	[TestCase("Abbey Road", 1969)]
+	[TestCase("Revolver", 1966)]
+	public async Task TryGetCurrentTest_ShouldReturnTheArgumentsOfTheTestCase(string title, int year)
+	{
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+
+		await Expect.That(isRunning).IsTrue()
+			.Because("NUnit 5 exposes the running test");
+		await Expect.That(currentTest!.ClassName).IsEqualTo(typeof(NUnit5TestFrameworkTests).FullName);
+		await Expect.That(currentTest.MethodName).IsEqualTo(nameof(TryGetCurrentTest_ShouldReturnTheArgumentsOfTheTestCase));
+		await Expect.That(currentTest.Arguments).IsEqualTo(new object?[] { title, year, });
+	}
+
+	[Test]
+	public async Task TryGetCurrentTest_ShouldReturnTheIdAndTheDisplayName()
+	{
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+
+		await Expect.That(isRunning).IsTrue();
+		await Expect.That(currentTest!.Id).IsEqualTo(TestContext.CurrentContext.Test.ID);
+		await Expect.That(currentTest.DisplayName).IsEqualTo(TestContext.CurrentContext.Test.Name);
+		await Expect.That(currentTest.RetryAttempt).IsEqualTo(0);
+	}
+
+	[Test]
+	[Repeat(2)]
+	public async Task TryGetCurrentTest_WhenRepeated_ShouldCountTheRuns()
+	{
+		int run = Interlocked.Increment(ref _repeatedRuns) - 1;
+
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+
+		await Expect.That(isRunning).IsTrue();
+		await Expect.That(currentTest!.RetryAttempt).IsEqualTo(run)
+			.Because("NUnit counts the repetitions of a test like its retries");
+	}
+
+	[Test]
+	public async Task TryGetCurrentTest_WithoutParameters_ShouldReturnNoArguments()
+	{
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+
+		await Expect.That(isRunning).IsTrue();
+		await Expect.That(currentTest!.MethodName).IsEqualTo(nameof(TryGetCurrentTest_WithoutParameters_ShouldReturnNoArguments));
+		await Expect.That(currentTest.Arguments).IsEmpty();
 	}
 }

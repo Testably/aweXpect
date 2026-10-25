@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.Adapters;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
@@ -254,7 +255,8 @@ public static partial class ThatSnapshot
 
 	/// <summary>
 	///     The id and the hash code of the first value that each snapshot was used for in this process, by its id
-	///     with the default extension, and the value itself while comparers are set.
+	///     with the default extension, the value itself while comparers are set, and the id and the retry attempt of the
+	///     test that used it, when the test framework exposes them.
 	/// </summary>
 	/// <remarks>
 	///     Only another value, another extension or an id that only differs in case counts as a conflict, so that a test
@@ -263,10 +265,12 @@ public static partial class ThatSnapshot
 	///     file on a file system that ignores the case, but two files on others. The hash code keeps large values out of
 	///     memory; a collision only misses a conflict. A value with another hash code is no conflict either when a
 	///     <see cref="SnapshotComparer" /> considers it equal to the first value, which is only kept for that while a
-	///     comparer is set for the expectation or for all snapshots. An entry is never changed, so that concurrent tests
+	///     comparer is set for the expectation or for all snapshots. An entry is only replaced by a later attempt of the
+	///     same test, as the value of an attempt that failed is no conflict for its retry, so that concurrent tests
 	///     compare with the same first value.
 	/// </remarks>
-	private static readonly ConcurrentDictionary<SnapshotId, (SnapshotId Id, int HashCode, SnapshotContent? Content)>
+	private static readonly ConcurrentDictionary<SnapshotId,
+			(SnapshotId Id, int HashCode, SnapshotContent? Content, string? TestId, int RetryAttempt)>
 		UsedSnapshots = new(ClaimedSnapshots.Comparer);
 
 	/// <summary>
@@ -477,16 +481,29 @@ public static partial class ThatSnapshot
 		/// </summary>
 		/// <remarks>
 		///     Identical bytes are recognized by their hash. A different value is only allowed when a comparer considers
-		///     it equal to the first value of the run, which is only kept while comparers are in use.
+		///     it equal to the first value of the run, which is only kept while comparers are in use, or when the first
+		///     value came from an earlier attempt of the same test, e.g. before a retry.
 		/// </remarks>
 		private async ValueTask<bool> IsFirstUseOfTheSnapshotAsync(SnapshotId id, byte[] content,
 			SnapshotContent actualContent, CancellationToken cancellationToken)
 		{
 			int contentHashCode = GetHashCode(content);
 			bool hasComparers = snapshotOptions.Comparer is not null || settings.Comparers.Count > 0;
-			(SnapshotId firstId, int hashCode, SnapshotContent? firstContent) = UsedSnapshots.GetOrAdd(
-				id with { Extension = SnapshotId.DefaultExtension, },
-				(id, contentHashCode, hasComparers ? actualContent : null));
+			(string? testId, int retryAttempt) = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest)
+				? (currentTest.Id, currentTest.RetryAttempt)
+				: (null, 0);
+			SnapshotId key = id with { Extension = SnapshotId.DefaultExtension, };
+			(SnapshotId, int, SnapshotContent?, string?, int) use =
+				(id, contentHashCode, hasComparers ? actualContent : null, testId, retryAttempt);
+			(SnapshotId Id, int HashCode, SnapshotContent? Content, string? TestId, int RetryAttempt) first =
+				UsedSnapshots.GetOrAdd(key, use);
+			if (testId is not null && first.TestId == testId && first.RetryAttempt < retryAttempt)
+			{
+				UsedSnapshots.TryUpdate(key, use, first);
+				return true;
+			}
+
+			(SnapshotId firstId, int hashCode, SnapshotContent? firstContent, _, _) = first;
 			if (firstId with { Extension = id.Extension, } != id)
 			{
 				_usedIdInAnotherCase = firstId;
@@ -672,9 +689,33 @@ public static partial class ThatSnapshot
 				return;
 			}
 
+			if (settings.Store is IFileSnapshotStore fileStore)
+			{
+				AttachToTheTest(fileStore.GetPendingFile(id));
+			}
+
 			SnapshotContent? snapshotContent = _snapshotContent;
 			await ReportAsync(() => new SnapshotMismatch(id, settings.Store, snapshotContent, actualContent),
 				static (reporter, mismatch, token) => reporter.OnMismatchAsync(mismatch, token), cancellationToken);
+		}
+
+		/// <summary>
+		///     Attaches the recorded mismatch in the <paramref name="pendingFile" /> to the result of the running test, when
+		///     the test framework supports attachments, e.g. so that it can be reviewed after a run on a build server.
+		/// </summary>
+		/// <remarks>
+		///     An exception is traced and otherwise ignored, so that attaching never changes the result of the expectation.
+		/// </remarks>
+		private static void AttachToTheTest(string pendingFile)
+		{
+			try
+			{
+				TestFrameworkRegistry.TryAddAttachment(pendingFile, "The received snapshot");
+			}
+			catch (Exception exception)
+			{
+				Tracing.WriteException(exception);
+			}
 		}
 
 		/// <summary>

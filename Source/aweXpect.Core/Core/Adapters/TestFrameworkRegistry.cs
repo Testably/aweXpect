@@ -1,4 +1,7 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using aweXpect.Core.Initialization;
 
 namespace aweXpect.Core.Adapters;
 
@@ -34,6 +37,49 @@ public static class TestFrameworkRegistry
 	/// </remarks>
 	public static void Register(ITestFrameworkAdapter testFrameworkAdapter, bool overwrite = true)
 		=> Instance.Add(testFrameworkAdapter, overwrite);
+
+	/// <summary>
+	///     Returns the test that is running in the current execution context, from the adapter that reports the test
+	///     results.
+	/// </summary>
+	/// <remarks>
+	///     Returns <see langword="false" /> when no adapter is registered, its test framework does not expose the running
+	///     test, or no test is running, e.g. in a setup of the whole assembly. Like the adapter itself, it is resolved when
+	///     first needed and then cached.
+	/// </remarks>
+	public static bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+		=> AweXpectInitialization.State.Value.TryGetCurrentTest(out currentTest);
+
+	/// <summary>
+	///     Returns the token with which the test framework cancels the running test, from the adapter that reports the
+	///     test results.
+	/// </summary>
+	/// <remarks>
+	///     Returns <see langword="false" /> when no adapter is registered, its test framework does not expose the token,
+	///     or no test is running. Unless <c>Customize.aweXpect.Settings().TestCancellation</c> sets another token or
+	///     <c>TestCancellation.None()</c>, every expectation is canceled with this token.
+	/// </remarks>
+	public static bool TryGetCancellationToken(out CancellationToken cancellationToken)
+		=> AweXpectInitialization.State.Value.TryGetCancellationToken(out cancellationToken);
+
+	/// <summary>
+	///     Attaches the file at the <paramref name="filePath" /> to the result of the running test, with the adapter that
+	///     reports the test results.
+	/// </summary>
+	/// <remarks>
+	///     Returns <see langword="false" /> when no adapter is registered, its test framework does not support
+	///     attachments, or no test is running. Some test frameworks only read the file when the test ends, so it must
+	///     still exist then.
+	/// </remarks>
+	public static bool TryAddAttachment(string filePath, string? description = null)
+	{
+		if (filePath is null)
+		{
+			throw Tracing.WriteException(new ArgumentNullException(nameof(filePath)));
+		}
+
+		return AweXpectInitialization.State.Value.TryAddAttachment(filePath, description);
+	}
 
 	internal sealed class Registration
 	{

@@ -30,7 +30,8 @@ matches the snapshot "/src/Tests/AlbumTests.Describes.awexpect-snapshot.txt",
 but the snapshot was already used for another value in this test run, so name each one with .Named(…) or .NamedAfter(…)
 ```
 
-The same value again is allowed, so that a retried or repeated test still compares with its snapshot.
+The same value again is allowed, so that a retried or repeated test still compares with its snapshot. When the test
+framework reports retries (NUnit and TUnit), a retry may also use another value than its failed attempt.
 
 Names that only differ in case, e.g. `.Named("Live")` and `.Named("live")`, fail as well, also for the same value, as
 they are the same file on Windows and macOS but two files on Linux:
@@ -65,6 +66,58 @@ Each argument is written as `<name>=<value>`, separated by `_`, e.g.
 `AlbumTests.Describes.title=Abbey Road_year=1969.awexpect-snapshot.txt`. A member access is named like `nameof`, so
 `.NamedAfter(album.Title)` gives `Title=Abbey Road`; any other expression is used as written. Values are written in
 the invariant culture, `null` as `null`, and escaped like any other name.
+
+## Naming after the test case
+
+:::note[Experimental]
+This setting is a proposal and off by default, as it changes the snapshot of every parameterized test whose cases
+shared one so far.
+:::
+
+With `NamedAfterTestArguments`, each snapshot of a parameterized test is named after the arguments of the running test
+case, so that its cases are kept apart without `.Named(…)` or `.NamedAfter(…)`:
+
+```csharp
+Customize.aweXpect.Snapshots().NamedAfterTestArguments.Set(true); // for this async flow
+```
+
+```csharp
+[Test]
+[Arguments("Abbey Road", 1969)]
+[Arguments("Let It Be", 1970)]
+public async Task Describes(string title, int year)
+{
+    string description = Describe(new Album(title, year));
+
+    await Expect.That(description).MatchesSnapshot();
+}
+```
+
+The arguments are written in the invariant culture and separated by `_`, e.g.
+`AlbumTests.Describes.Abbey Road_1969.awexpect-snapshot.txt`. Unlike `.NamedAfter(…)`, the name holds only the
+values, so that renaming a parameter keeps the snapshot:
+
+- `null` is written as `null` and an empty string as `""`.
+- A `double` or `float` is written so that it round-trips, the same on .NET Framework and .NET.
+- The items of an array or another collection are written as `[1,2,3]`, any other value by its `ToString()`.
+- A name longer than 64 characters is shortened to 55 characters, followed by `~` and a hash of the whole name, e.g.
+  `Sgt. Pepper's Lonely Hearts Club Band (Remastered Super~e0c652ac`.
+
+A test without parameters keeps its snapshot, and `.Named(…)` or `.NamedAfter(…)` replaces the name. Two cases whose
+arguments are written alike, e.g. two objects without their own `ToString()`, share a snapshot and fail like any
+snapshot that is used for another value.
+
+The running test is only known when the test framework exposes it:
+
+| Test framework | Supported | Reason                                                                     |
+|----------------|-----------|----------------------------------------------------------------------------|
+| NUnit 3 to 5   | yes       | `TestContext.CurrentContext.Test`                                          |
+| TUnit          | yes       | `TestContext.Current`                                                      |
+| xUnit v3       | yes       | `TestContext.Current.Test`                                                 |
+| MSTest         | no        | `TestContext.Current` is experimental in MSTest 4 and missing in MSTest 3 |
+| xUnit v2       | no        | there is no context of the running test                                    |
+
+Without it, the snapshot keeps the name of the test method, as without the setting.
 
 ## Snapshots per environment
 

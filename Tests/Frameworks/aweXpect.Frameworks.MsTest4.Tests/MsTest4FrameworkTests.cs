@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
+using aweXpect.Core.Adapters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [assembly: Parallelize]
@@ -61,5 +63,34 @@ public sealed class MsTestFrameworkTests
 
 		await Expect.That(version).StartsWith("4.")
 			.Because("this project tests the adapter against MSTest 4");
+	}
+
+	[TestMethod]
+	public async Task TryAddAttachment_ShouldNotBeSupported()
+	{
+		bool isAttached = TestFrameworkRegistry.TryAddAttachment("snapshot.txt", "the received snapshot");
+
+		await Expect.That(isAttached).IsFalse()
+			.Because("TestContext.Current of MSTest 4 is experimental (MSTESTEXP), so the generated adapter does not use it");
+	}
+
+	[TestMethod]
+	public async Task TryGetCancellationToken_ShouldNotBeSupported()
+	{
+		bool hasToken = TestFrameworkRegistry.TryGetCancellationToken(out CancellationToken cancellationToken);
+
+		await Expect.That(hasToken).IsFalse()
+			.Because("TestContext.Current of MSTest 4 is experimental (MSTESTEXP), so the generated adapter does not use it");
+		await Expect.That(cancellationToken).IsEqualTo(CancellationToken.None);
+	}
+
+	[TestMethod]
+	public async Task TryGetCurrentTest_ShouldNotFindTheRunningTest()
+	{
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out TestIdentity? currentTest);
+
+		await Expect.That(isRunning).IsFalse()
+			.Because("TestContext.Current of MSTest 4 is experimental (MSTESTEXP), so the generated adapter does not use it");
+		await Expect.That(currentTest).IsNull();
 	}
 }

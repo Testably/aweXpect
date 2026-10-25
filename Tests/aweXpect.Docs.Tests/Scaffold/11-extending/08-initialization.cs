@@ -10,6 +10,19 @@ namespace Snippets
 	internal sealed class MyTestSkippedException(string message) : Exception(message);
 
 	internal sealed class MyTestInconclusiveException(string message) : Exception(message);
+
+	// The context of the running test that the adapter on the page reads.
+	internal sealed class MyTestContext(string className, string methodName, object?[] arguments)
+	{
+		public static MyTestContext? Current => null;
+		public string ClassName { get; } = className;
+		public string MethodName { get; } = methodName;
+		public object?[] Arguments { get; } = arguments;
+		public string? Id => null;
+		public string? DisplayName => null;
+		public int RetryCount => 0;
+		public System.Threading.CancellationToken CancellationToken => default;
+	}
 }
 
 namespace System.Runtime.CompilerServices

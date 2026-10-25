@@ -22,7 +22,8 @@ public class TestCancellation
 	///     Applies the <paramref name="timeout" /> to all tests.
 	/// </summary>
 	/// <remarks>
-	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> imposes no limit.
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> imposes no limit. The token of the running test that
+	///     the test framework exposes still applies.
 	/// </remarks>
 	public static TestCancellation FromTimeout(TimeSpan timeout)
 	{
@@ -31,13 +32,15 @@ public class TestCancellation
 	}
 
 	/// <summary>
-	///     Uses a <see cref="CancellationToken" /> from the <paramref name="cancellationTokenFactory" /> in all tests.
+	///     Uses a <see cref="CancellationToken" /> from the <paramref name="cancellationTokenFactory" /> in all tests,
+	///     instead of the token of the running test that the test framework exposes.
 	/// </summary>
 	public static TestCancellation FromCancellationToken(Func<CancellationToken> cancellationTokenFactory)
 		=> new(null, cancellationTokenFactory);
 
 	/// <summary>
-	///     Do not apply any cancellation of tests.
+	///     Do not apply any cancellation of tests, not even the token of the running test that the test framework
+	///     exposes.
 	/// </summary>
 	public static TestCancellation None()
 		=> new(null, null);

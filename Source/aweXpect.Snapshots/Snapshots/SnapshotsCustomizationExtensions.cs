@@ -36,6 +36,8 @@ public static class SnapshotsCustomizationExtensions
 				});
 			Acceptance = new CustomizationValue<SnapshotAcceptance?>(awexpectCustomization,
 				"aweXpect.Snapshots.Acceptance", null);
+			NamedAfterTestArguments = new CustomizationValue<bool>(awexpectCustomization,
+				"aweXpect.Snapshots.NamedAfterTestArguments", false);
 			Comparers = new CustomizationListValue<SnapshotComparerRegistration>(awexpectCustomization,
 				"aweXpect.Snapshots.Comparers", Array.Empty<SnapshotComparerRegistration>(), ThrowIfContainsNull);
 			Rules = new CustomizationListValue<SnapshotRule>(awexpectCustomization,
@@ -67,6 +69,26 @@ public static class SnapshotsCustomizationExtensions
 		///     setting.
 		/// </remarks>
 		public ICustomizationValueSetter<IReadOnlyList<SnapshotComparerRegistration>> Comparers { get; }
+
+		/// <summary>
+		///     Names each snapshot of a parameterized test after the arguments of the running test case, e.g.
+		///     <c>&lt;Class&gt;.&lt;Method&gt;.Abbey Road_1969.awexpect-snapshot.txt</c>, so that its cases are kept apart
+		///     without <c>.NamedAfter(…)</c>.
+		/// </summary>
+		/// <remarks>
+		///     Defaults to <see langword="false" />, as it changes the snapshot of each parameterized test whose cases
+		///     shared one so far.<br />
+		///     It only applies when the test framework exposes the running test, see
+		///     <see cref="aweXpect.Core.Adapters.TestFrameworkRegistry.TryGetCurrentTest" />, which MSTest and xunit v2 do
+		///     not, and to a test with arguments, so the snapshot of a test without parameters keeps its name. A name set by
+		///     <c>.Named(…)</c> or <c>.NamedAfter(…)</c> replaces it.<br />
+		///     The arguments are written in the invariant culture and separated by <c>_</c>: <see langword="null" /> as
+		///     <c>null</c>, an empty string as <c>""</c>, a <see cref="double" /> or <see cref="float" /> so that it round-trips,
+		///     the items of a collection as <c>[a,b]</c> and any other value by its <see cref="object.ToString()" />. A name
+		///     longer than 64 characters is shortened and ends with <c>~</c> and a hash of the whole name, so that it stays
+		///     unique.
+		/// </remarks>
+		public ICustomizationValueSetter<bool> NamedAfterTestArguments { get; }
 
 		/// <summary>
 		///     The reporters that are told about a recorded mismatch and a match, in this order, e.g. to open a diff tool.

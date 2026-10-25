@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using aweXpect.Core.Adapters;
 using aweXpect.Core.Initialization;
 using aweXpect.Customization;
@@ -164,7 +166,111 @@ public sealed class AweXpectInitializationTests
 
 		await That(Act).Throws<SkipException>().WithMessage("my reason");
 	}
+
+	[Test]
+	public async Task Fallback_TryAddAttachment_ShouldReturnFalse()
+	{
+		ITestFrameworkAdapter fallback = AweXpectInitialization.DetectTestFramework(new TestFrameworkRegistry.Registration());
+
+		bool isAttached = fallback.TryAddAttachment("snapshot.txt", null);
+
+		await That(isAttached).IsFalse();
+	}
+
+	[Test]
+	public async Task Fallback_TryGetCancellationToken_ShouldReturnFalse()
+	{
+		ITestFrameworkAdapter fallback = AweXpectInitialization.DetectTestFramework(new TestFrameworkRegistry.Registration());
+
+		bool hasToken = fallback.TryGetCancellationToken(out CancellationToken cancellationToken);
+
+		await That(hasToken).IsFalse();
+		await That(cancellationToken).IsEqualTo(CancellationToken.None);
+	}
+
+	[Test]
+	public async Task Fallback_TryGetCurrentTest_ShouldReturnFalse()
+	{
+		ITestFrameworkAdapter fallback = AweXpectInitialization.DetectTestFramework(new TestFrameworkRegistry.Registration());
+
+		bool isRunning = fallback.TryGetCurrentTest(out TestIdentity? currentTest);
+
+		await That(isRunning).IsFalse();
+		await That(currentTest).IsNull();
+	}
 #endif
+
+	[Test]
+	public async Task TryAddAttachment_WhenFrameworkDoesNotSupportAttachments_ShouldReturnFalse()
+	{
+		AweXpectInitialization.InitializationState state = new(new RegisteredFrameworkAdapter());
+
+		bool isAttached = state.TryAddAttachment("snapshot.txt", "the received snapshot");
+
+		await That(isAttached).IsFalse();
+	}
+
+	[Test]
+	public async Task TryAddAttachment_WhenFrameworkSupportsAttachments_ShouldAttachTheFile()
+	{
+		TestContextFrameworkAdapter adapter = new(new TestIdentity("MyTests.AlbumTests", "Album", []),
+			CancellationToken.None);
+		AweXpectInitialization.InitializationState state = new(adapter);
+
+		bool isAttached = state.TryAddAttachment("snapshot.txt", "the received snapshot");
+
+		await That(isAttached).IsTrue();
+		await That(adapter.Attachments).IsEqualTo([("snapshot.txt", "the received snapshot"),]);
+	}
+
+	[Test]
+	public async Task TryGetCancellationToken_WhenFrameworkDoesNotExposeIt_ShouldReturnFalse()
+	{
+		AweXpectInitialization.InitializationState state = new(new RegisteredFrameworkAdapter());
+
+		bool hasToken = state.TryGetCancellationToken(out CancellationToken cancellationToken);
+
+		await That(hasToken).IsFalse();
+		await That(cancellationToken).IsEqualTo(CancellationToken.None);
+	}
+
+	[Test]
+	public async Task TryGetCancellationToken_WhenFrameworkExposesIt_ShouldReturnTheToken()
+	{
+		using CancellationTokenSource cts = new();
+		AweXpectInitialization.InitializationState state = new(
+			new TestContextFrameworkAdapter(new TestIdentity("MyTests.AlbumTests", "Album", []), cts.Token));
+
+		bool hasToken = state.TryGetCancellationToken(out CancellationToken cancellationToken);
+
+		await That(hasToken).IsTrue();
+		await That(cancellationToken).IsEqualTo(cts.Token);
+	}
+
+	[Test]
+	public async Task TryGetCurrentTest_WhenFrameworkDoesNotExposeTheRunningTest_ShouldReturnFalse()
+	{
+		AweXpectInitialization.InitializationState state = new(new RegisteredFrameworkAdapter());
+
+		bool isRunning = state.TryGetCurrentTest(out TestIdentity? currentTest);
+
+		await That(isRunning).IsFalse()
+			.Because("an adapter that only reports the results does not know the running test");
+		await That(currentTest).IsNull();
+	}
+
+	[Test]
+	public async Task TryGetCurrentTest_WhenFrameworkExposesTheRunningTest_ShouldReturnItsTest()
+	{
+		TestIdentity runningTest = new("MyTests.AlbumTests", "Album_MatchesSnapshot", ["Abbey Road",]);
+		AweXpectInitialization.InitializationState state = new(
+			new TestContextFrameworkAdapter(runningTest, CancellationToken.None));
+
+		bool isRunning = state.TryGetCurrentTest(out TestIdentity? currentTest);
+
+		await That(isRunning).IsTrue();
+		await That(currentTest).IsSameAs(runningTest);
+	}
 
 #if !NET8_0_OR_GREATER
 	private sealed class UnavailableFrameworkAdapter : ITestFrameworkAdapter
@@ -183,6 +289,20 @@ public sealed class AweXpectInitializationTests
 
 		[DoesNotReturn]
 		public void Skip(string message) => throw new NotSupportedException();
+
+		public bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+		{
+			currentTest = null;
+			return false;
+		}
+
+		public bool TryGetCancellationToken(out CancellationToken cancellationToken)
+		{
+			cancellationToken = CancellationToken.None;
+			return false;
+		}
+
+		public bool TryAddAttachment(string filePath, string? description) => false;
 #pragma warning restore CS0436
 	}
 #endif
@@ -203,6 +323,60 @@ public sealed class AweXpectInitializationTests
 
 		[DoesNotReturn]
 		public void Skip(string message) => throw new NotSupportedException();
+
+		public bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+		{
+			currentTest = null;
+			return false;
+		}
+
+		public bool TryGetCancellationToken(out CancellationToken cancellationToken)
+		{
+			cancellationToken = CancellationToken.None;
+			return false;
+		}
+
+		public bool TryAddAttachment(string filePath, string? description) => false;
+#pragma warning restore CS0436
+	}
+
+	private sealed class TestContextFrameworkAdapter(TestIdentity runningTest, CancellationToken testToken)
+		: ITestFrameworkAdapter
+	{
+		public List<(string FilePath, string? Description)> Attachments { get; } = [];
+
+		public bool IsAvailable => true;
+
+#pragma warning disable CS0436
+		[DoesNotReturn]
+		public void Fail(string message) => throw new NotSupportedException();
+
+		[DoesNotReturn]
+		public void Fail(string message, Exception innerException) => throw new NotSupportedException();
+
+		[DoesNotReturn]
+		public void Inconclusive(string message) => throw new NotSupportedException();
+
+		[DoesNotReturn]
+		public void Skip(string message) => throw new NotSupportedException();
+
+		public bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+		{
+			currentTest = runningTest;
+			return true;
+		}
+
+		public bool TryGetCancellationToken(out CancellationToken cancellationToken)
+		{
+			cancellationToken = testToken;
+			return true;
+		}
+
+		public bool TryAddAttachment(string filePath, string? description)
+		{
+			Attachments.Add((filePath, description));
+			return true;
+		}
 #pragma warning restore CS0436
 	}
 
@@ -223,6 +397,20 @@ public sealed class AweXpectInitializationTests
 
 		[DoesNotReturn]
 		public void Skip(string message) => throw new NotSupportedException();
+
+		public bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+		{
+			currentTest = null;
+			return false;
+		}
+
+		public bool TryGetCancellationToken(out CancellationToken cancellationToken)
+		{
+			cancellationToken = CancellationToken.None;
+			return false;
+		}
+
+		public bool TryAddAttachment(string filePath, string? description) => false;
 #pragma warning restore CS0436
 	}
 #endif

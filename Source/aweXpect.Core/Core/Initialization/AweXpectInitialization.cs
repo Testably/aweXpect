@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using aweXpect.Core.Adapters;
 using aweXpect.Core.Extending;
 using aweXpect.Core.Helpers;
@@ -53,6 +54,24 @@ internal static class AweXpectInitialization
 	internal class InitializationState(ITestFrameworkAdapter testFramework)
 	{
 		public ValueFormatter Formatter { get; } = new();
+
+		/// <summary>
+		///     Returns the running test, when the test framework exposes it.
+		/// </summary>
+		public bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+			=> testFramework.TryGetCurrentTest(out currentTest);
+
+		/// <summary>
+		///     Returns the token that cancels the running test, when the test framework exposes it.
+		/// </summary>
+		public bool TryGetCancellationToken(out CancellationToken cancellationToken)
+			=> testFramework.TryGetCancellationToken(out cancellationToken);
+
+		/// <summary>
+		///     Attaches the file to the result of the running test, when the test framework supports it.
+		/// </summary>
+		public bool TryAddAttachment(string filePath, string? description)
+			=> testFramework.TryAddAttachment(filePath, description);
 
 		/// <summary>
 		///     Throws a framework-specific exception to indicate a skipped unit test.
@@ -146,6 +165,20 @@ internal static class AweXpectInitialization
 		[StackTraceHidden]
 		public void Inconclusive(string message)
 			=> throw new InconclusiveException(message);
+
+		public bool TryGetCurrentTest([NotNullWhen(true)] out TestIdentity? currentTest)
+		{
+			currentTest = null;
+			return false;
+		}
+
+		public bool TryGetCancellationToken(out CancellationToken cancellationToken)
+		{
+			cancellationToken = CancellationToken.None;
+			return false;
+		}
+
+		public bool TryAddAttachment(string filePath, string? description) => false;
 
 		#endregion
 	}
