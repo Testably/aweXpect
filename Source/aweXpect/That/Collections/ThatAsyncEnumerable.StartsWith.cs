@@ -41,7 +41,7 @@ public static partial class ThatAsyncEnumerable
 					Negated: negated),
 				static (state, it, grammars) =>
 				{
-					AsyncStartsWithConstraint<TItem, TItem> constraint = new(it, grammars,
+					AsyncStartsWithConstraint<TItem, TItem> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), state.Options);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -75,7 +75,7 @@ public static partial class ThatAsyncEnumerable
 					Negated: negated),
 				static (state, it, grammars) =>
 				{
-					AsyncStartsWithConstraint<TItem, TItem> constraint = new(it, grammars,
+					AsyncStartsWithConstraint<TItem, TItem> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), state.Options);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -97,7 +97,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint(
@@ -105,7 +105,7 @@ public static partial class ThatAsyncEnumerable
 					Negated: negated),
 				static (state, it, grammars) =>
 				{
-					AsyncStartsWithConstraint<string?, string?> constraint = new(it, grammars,
+					AsyncStartsWithConstraint<string?, string?> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), state.Options);
 					return state.Negated ? constraint.Invert() : constraint;

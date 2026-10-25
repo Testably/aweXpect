@@ -27,7 +27,7 @@ internal sealed class IsJsonStringEqualToConstraint(
 	{
 		_actualValue = value;
 		_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-		_matchResult = await _evaluationOptions.MatchWithExplanation(value, expected);
+		_matchResult = await _evaluationOptions.MatchWithExplanation(value, expected, nameof(expected));
 		return _matchResult.IsMatch;
 	}
 

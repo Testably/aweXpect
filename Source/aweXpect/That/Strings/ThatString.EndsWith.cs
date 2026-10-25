@@ -28,11 +28,11 @@ public static partial class ThatString
 			throw Tracing.WriteException(new ArgumentException("The 'expected' string cannot be empty.", nameof(expected)));
 		}
 
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)).AsSuffix());
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default.AsSuffix());
 		return new StringEqualityResult<string, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (state, it, grammars) =>
-					new EndsWithConstraint(it, grammars, state.Expected, state.Options)),
+					new EndsWithConstraint(it, grammars, state.Expected, "expected", state.Options)),
 			subject,
 			options);
 	}
@@ -52,11 +52,11 @@ public static partial class ThatString
 			throw Tracing.WriteException(new ArgumentException("The 'unexpected' string cannot be empty.", nameof(unexpected)));
 		}
 
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)).AsSuffix());
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default.AsSuffix());
 		return new StringEqualityResult<string, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (state, it, grammars) =>
-					new EndsWithConstraint(it, grammars, state.Unexpected, state.Options).Invert()),
+					new EndsWithConstraint(it, grammars, state.Unexpected, "unexpected", state.Options).Invert()),
 			subject,
 			options);
 	}
@@ -65,6 +65,7 @@ public static partial class ThatString
 		string it,
 		ExpectationGrammars grammars,
 		string? expected,
+		string parameterName,
 		OptionsSlot<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
 			IAsyncContextConstraint<string?>
@@ -77,7 +78,7 @@ public static partial class ThatString
 		{
 			Actual = actual;
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}

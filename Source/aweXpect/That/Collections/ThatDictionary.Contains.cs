@@ -42,7 +42,7 @@ public static partial class ThatDictionary
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars)
-					=> new ContainsConstraint<TCollection, TKey, TValue>(it, grammars,
+					=> new ContainsConstraint<TCollection, TKey, TValue>(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.Expected, state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
@@ -68,7 +68,7 @@ public static partial class ThatDictionary
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>(
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars)
-					=> new ContainsConstraint<TCollection, TKey, TValue>(it, grammars,
+					=> new ContainsConstraint<TCollection, TKey, TValue>(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.Expected, state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
@@ -86,12 +86,12 @@ public static partial class ThatDictionary
 		where TCollection : IEnumerable<KeyValuePair<TKey, string?>>
 	{
 		expected.Key.ThrowIfNull(negated);
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars)
-					=> new ContainsConstraint<TCollection, TKey, string?>(it, grammars,
+					=> new ContainsConstraint<TCollection, TKey, string?>(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.Expected, state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
@@ -100,6 +100,7 @@ public static partial class ThatDictionary
 	private sealed class ContainsConstraint<TDictionary, TKey, TValue>(
 		string it,
 		ExpectationGrammars grammars,
+		string parameterName,
 		KeyValuePair<TKey, TValue> expected,
 		IReadOnlyOptionsSlot<IEqualityOptions<TValue>> options)
 		: ConstraintResult.WithNotNullValue<TDictionary?>(it, grammars),
@@ -118,7 +119,7 @@ public static partial class ThatDictionary
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			options.ValidateExpectedItems([expected.Value,]);
+			options.ValidateExpectedItems([expected.Value,], parameterName);
 			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			if (actual is null)
 			{

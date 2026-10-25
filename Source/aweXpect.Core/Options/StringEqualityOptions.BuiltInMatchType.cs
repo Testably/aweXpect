@@ -12,8 +12,19 @@ public partial class StringEqualityOptions
 	/// </summary>
 	private abstract class BuiltInMatchType : StringMatchType
 	{
-		private BuiltInMatcher? _ignoringCaseMatcher;
-		private BuiltInMatcher? _ordinalMatcher;
+		/// <remarks>
+		///     Created with the match type, so that the shared options and every evaluation get the same matcher, also
+		///     when they are created on several threads.
+		/// </remarks>
+		private readonly BuiltInMatcher _ignoringCaseMatcher;
+
+		private readonly BuiltInMatcher _ordinalMatcher;
+
+		protected BuiltInMatchType()
+		{
+			_ignoringCaseMatcher = new BuiltInMatcher(this, new StringMatchSettings(true, null));
+			_ordinalMatcher = new BuiltInMatcher(this, new StringMatchSettings(false, null));
+		}
 
 		/// <summary>
 		///     Compares the <paramref name="actual" /> with the <paramref name="expected" /> value.
@@ -48,9 +59,7 @@ public partial class StringEqualityOptions
 				return new BuiltInMatcher(this, settings);
 			}
 
-			return settings.IgnoreCase
-				? _ignoringCaseMatcher ??= new BuiltInMatcher(this, settings)
-				: _ordinalMatcher ??= new BuiltInMatcher(this, settings);
+			return settings.IgnoreCase ? _ignoringCaseMatcher : _ordinalMatcher;
 		}
 
 		private sealed class BuiltInMatcher(BuiltInMatchType matchType, StringMatchSettings settings)

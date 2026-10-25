@@ -22,6 +22,7 @@ internal sealed class HasContentTypeConstraint<TMessage>(
 	string it,
 	ExpectationGrammars grammars,
 	string expected,
+	string parameterName,
 	OptionsSlot<StringEqualityOptions> options,
 	Func<TMessage, HttpContent?> getContent)
 	: ConstraintResult.WithNotNullValue<TMessage>(it, grammars),
@@ -49,7 +50,7 @@ internal sealed class HasContentTypeConstraint<TMessage>(
 		}
 
 		_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-		_matchResult = await _evaluationOptions.MatchWithExplanation(_contentType, expected);
+		_matchResult = await _evaluationOptions.MatchWithExplanation(_contentType, expected, parameterName);
 		if (!_matchResult.IsMatch)
 		{
 			Outcome = Outcome.Failure;

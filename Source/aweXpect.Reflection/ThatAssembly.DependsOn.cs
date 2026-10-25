@@ -24,11 +24,11 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> DependsOn(
 		this IThat<Assembly?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Expected: expected, Options: options),
 					static (s, it, grammars)
-					=> new DependsOnConstraint(it, grammars, s.Expected, s.Options)),
+					=> new DependsOnConstraint(it, grammars, s.Expected, "expected", s.Options)),
 			subject,
 			options);
 	}
@@ -37,6 +37,7 @@ public static partial class ThatAssembly
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
+		string parameterName,
 		OptionsSlot<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
 			IAsyncContextConstraint<Assembly?>
@@ -51,7 +52,7 @@ public static partial class ThatAssembly
 			_evaluationOptions = evaluationOptions;
 			Outcome = actual is not null &&
 			          await actual.GetReferencedAssemblyNames()
-				          .AnyAsync(dep => evaluationOptions.AreConsideredEqual(dep.Name, expected))
+				          .AnyAsync(dep => evaluationOptions.AreConsideredEqual(dep.Name, expected, parameterName))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

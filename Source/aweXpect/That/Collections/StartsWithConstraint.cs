@@ -19,6 +19,7 @@ namespace aweXpect;
 internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
+	string parameterName,
 	string? expectedExpression,
 	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
@@ -54,7 +55,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	protected void Start(IEvaluationContext context, CancellationToken cancellationToken)
 	{
 		_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-		options.ValidateExpectedItems(expected);
+		options.ValidateExpectedItems(expected, parameterName);
 		_firstMismatchItem = default;
 		_foundMismatch = false;
 		Count = 0;
@@ -133,12 +134,13 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
+	string parameterName,
 	string? expectedExpression,
 	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
 	IReadOnlyOptionsSlot<IEqualityOptions<TMatch>> options,
 	ISubjectComparing? subjectComparing = null)
-	: StartsWithConstraintBase<TEnumerable, TItem, TMatch>(it, grammars, expectedExpression, expectedValues, expected,
+	: StartsWithConstraintBase<TEnumerable, TItem, TMatch>(it, grammars, parameterName, expectedExpression, expectedValues, expected,
 			options),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
@@ -219,11 +221,12 @@ internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 internal sealed class AsyncStartsWithConstraint<TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
+	string parameterName,
 	string? expectedExpression,
 	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
 	IReadOnlyOptionsSlot<IEqualityOptions<TMatch>> options)
-	: StartsWithConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, expectedExpression,
+	: StartsWithConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, parameterName, expectedExpression,
 			expectedValues, expected, options),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {

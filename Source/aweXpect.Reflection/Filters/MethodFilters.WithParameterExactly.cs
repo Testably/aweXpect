@@ -34,11 +34,11 @@ public static partial class MethodFilters
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 					() => $"of exact type {Formatter.Format(parameterType)}");
-				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected, nameof(expected)),
 					() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
+			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 
 	/// <summary>
@@ -64,10 +64,10 @@ public static partial class MethodFilters
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 					() => $"of exact type {Formatter.Format(parameterType)}");
-				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected, nameof(expected)),
 					() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
+			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

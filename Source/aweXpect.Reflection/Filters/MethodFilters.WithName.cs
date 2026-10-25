@@ -13,8 +13,8 @@ public static partial class MethodFilters
 	public static Filtered.Methods.StringEqualityResult WithName(this Filtered.Methods @this, string expected)
 	{
 		return new Filtered.Methods.StringEqualityResult(@this, options => Filter.Suffix<MethodInfo>(
-				methodInfo => options.AreConsideredEqual(methodInfo.Name, expected),
+				methodInfo => options.AreConsideredEqual(methodInfo.Name, expected, nameof(expected)),
 				() => $"with name {options.GetExpectation(expected, ExpectationGrammars.None)} "),
-			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
+			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

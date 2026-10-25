@@ -40,7 +40,7 @@ public static partial class ThatHttpResponseMessage
 	public static ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String
 		HasProblemDetailsContent(this IThat<HttpResponseMessage?> subject, string? type = null)
 	{
-		OptionsSlot<StringEqualityOptions> typeOptions = new(new StringEqualityOptions(nameof(type)));
+		OptionsSlot<StringEqualityOptions> typeOptions = new(StringEqualityOptions.Default);
 		ProblemDetailsOptions options = new();
 		return new ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String(
 			subject.Get().ExpectationBuilder
@@ -103,7 +103,7 @@ public static partial class ThatHttpResponseMessage
 			}
 			else if (expectedType != null)
 			{
-				MatchResult typeResult = await evaluationTypeOptions.MatchWithExplanation(type, expectedType);
+				MatchResult typeResult = await evaluationTypeOptions.MatchWithExplanation(type, expectedType, "type");
 				if (!typeResult.IsMatch)
 				{
 					_failures.Add(evaluationTypeOptions.GetExtendedMemberFailure(It, "type", Grammars, type,

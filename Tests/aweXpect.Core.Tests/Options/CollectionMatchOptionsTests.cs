@@ -288,7 +288,7 @@ public class CollectionMatchOptionsTests
 			string?[] values = ["a", "b", "c", null,];
 
 			(int met, List<string> disagreements) = await Compare<string?, string?>(1642,
-				random => values[random.Next(values.Length)], new StringEqualityOptions("expected"));
+				random => values[random.Next(values.Length)], StringEqualityOptions.Default);
 
 			await That(disagreements).IsEmpty();
 			await That(met).IsGreaterThan(100);
@@ -297,8 +297,8 @@ public class CollectionMatchOptionsTests
 		[Test]
 		public async Task Strings_WhenCaseIsIgnored_ShouldMatchItemsThatDifferInCase()
 		{
-			StringEqualityOptions options = new("expected");
-			options.IgnoringCase();
+			StringEqualityOptions options = StringEqualityOptions.Default;
+			options = options.IgnoringCase();
 
 			string result = await Describe(["a", "B", null,], [null, "b", "A",], options);
 
@@ -308,7 +308,7 @@ public class CollectionMatchOptionsTests
 		[Test]
 		public async Task Strings_WhenTheFirstItemIsNotExpected_ShouldReportTheIndexOfEachItem()
 		{
-			StringEqualityOptions options = new("expected");
+			StringEqualityOptions options = StringEqualityOptions.Default;
 
 			string result = await Describe<string?, string?>(["a", "b",], ["x", "b", "y", "a",], options);
 
@@ -322,7 +322,7 @@ public class CollectionMatchOptionsTests
 		[Test]
 		public async Task Strings_WhenTheLastItemIsNotExpected_ShouldReportItsIndex()
 		{
-			StringEqualityOptions options = new("expected");
+			StringEqualityOptions options = StringEqualityOptions.Default;
 
 			string result = await Describe<string?, string?>(["a", "b", "c",], ["c", "a", "x",], options);
 

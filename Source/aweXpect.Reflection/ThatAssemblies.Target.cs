@@ -25,7 +25,7 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> Target(
 		this IThat<IEnumerable<Assembly?>?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Assembly?>>((expected, options),
 					static (s, it, grammars)
@@ -43,7 +43,7 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> Target(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((expected, options),
@@ -62,7 +62,7 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> DoNotTarget(
 		this IThat<IEnumerable<Assembly?>?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Assembly?>>((unexpected, options),
 					static (s, it, grammars)
@@ -80,7 +80,7 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> DoNotTarget(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((unexpected, options),
@@ -112,7 +112,7 @@ public static partial class ThatAssemblies
 		{
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetAsyncValue(actual, context,
-				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetTargetFramework(), expected), cancellationToken);
+				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetTargetFramework(), expected, nameof(expected)), cancellationToken);
 		}
 #endif
 
@@ -121,7 +121,7 @@ public static partial class ThatAssemblies
 		{
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetValue(actual, context,
-				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetTargetFramework(), expected), cancellationToken);
+				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetTargetFramework(), expected, nameof(expected)), cancellationToken);
 		}
 
 		/// <inheritdoc />
@@ -176,7 +176,7 @@ public static partial class ThatAssemblies
 		}
 
 		private async ValueTask<bool> DoesNotTarget(Assembly? assembly)
-			=> assembly is not null && !await EvaluationOptions.AreConsideredEqual(assembly.GetTargetFramework(), unexpected);
+			=> assembly is not null && !await EvaluationOptions.AreConsideredEqual(assembly.GetTargetFramework(), unexpected, nameof(unexpected));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all target ").Append(options.Value.GetExpectation(unexpected, Grammars.Negate()));

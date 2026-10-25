@@ -298,27 +298,38 @@ internal sealed class EqualItem<TItem>(IReadOnlyOptionsSlot<ObjectMatchType<TIte
 }
 
 /// <summary>
-///     A string that is equal to the <paramref name="expected" /> one according to the <paramref name="options" />.
+///     A string that is equal to the <paramref name="expected" /> one according to the current options in the
+///     <paramref name="options" /> slot, which reports an unusable pattern against the <paramref name="parameterName" />.
 /// </summary>
-internal sealed class EqualStringItem(StringEqualityOptions options, string? expected)
+/// <remarks>
+///     The options of the evaluation are kept, so that the item compares and explains with them; before an
+///     evaluation, the current options describe the item.
+/// </remarks>
+internal sealed class EqualStringItem(
+	IReadOnlyOptionsSlot<StringEqualityOptions> options,
+	string? expected,
+	string parameterName)
 	: ExpectedItem<string?>(expected)
 {
+	private StringEqualityOptions? _evaluationOptions;
 	private OrdinalStringItem? _ordinalItem;
+
+	private StringEqualityOptions Options => _evaluationOptions ?? options.Value;
 
 	/// <inheritdoc />
 	public override bool UsesDefaultEquality
-		=> Expected is not null && options.ComparesByOrdinalEquality;
+		=> Expected is not null && Options.ComparesByOrdinalEquality;
 
 	/// <inheritdoc />
 	/// <remarks>
 	///     A pattern, e.g. a wildcard or a prefix, is not a value that could have been mistyped.
 	/// </remarks>
 	public override bool SuggestsClosestMatch
-		=> !options.InspectsSubject;
+		=> !Options.InspectsSubject;
 
 	/// <inheritdoc />
 	public override ValueTask<bool> Matches(string? item)
-		=> options.AreConsideredEqual(item, Expected);
+		=> Options.AreConsideredEqual(item, Expected, parameterName);
 
 	/// <inheritdoc />
 	/// <remarks>
@@ -328,9 +339,10 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 	public override ContainedItem<string?> ForEvaluation(IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		options.ValidateExpected(Expected);
-		StringEqualityOptions evaluationOptions = options.ForEvaluation(context, cancellationToken);
-		return ReferenceEquals(evaluationOptions, options) ? this : new EqualStringItem(evaluationOptions, Expected);
+		StringEqualityOptions currentOptions = options.Value;
+		currentOptions.ValidateExpected(Expected, parameterName);
+		_evaluationOptions = currentOptions.ForEvaluation(context, cancellationToken);
+		return this;
 	}
 
 	/// <inheritdoc />
@@ -338,24 +350,27 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 	///     Without an option, the items are compared ordinally, which needs nothing to be awaited.
 	/// </remarks>
 	public override SynchronouslyMatchedItem<string?>? GetSynchronousItem()
-		=> options.ComparesByOrdinalEquality ? _ordinalItem ??= new OrdinalStringItem(this) : null;
+		=> Options.ComparesByOrdinalEquality ? _ordinalItem ??= new OrdinalStringItem(this) : null;
 
 	/// <inheritdoc />
 	/// <remarks>
 	///     A match type other than equality describes the item, so it reads "contains an item matching regex …".
 	/// </remarks>
 	public override string GetItemExpectation()
-		=> options.InspectsSubject
-			? "an item " + options.GetExpectation(Expected, ExpectationGrammars.None)
-			: Formatter.Format(Expected) + options;
+	{
+		StringEqualityOptions currentOptions = Options;
+		return currentOptions.InspectsSubject
+			? "an item " + currentOptions.GetExpectation(Expected, ExpectationGrammars.None)
+			: Formatter.Format(Expected) + currentOptions;
+	}
 
 	/// <inheritdoc />
 	public override string GetHasItemExpectation(ExpectationGrammars grammars)
-		=> options.GetExpectation(Expected, grammars);
+		=> Options.GetExpectation(Expected, grammars);
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> options.AppendContexts(contexts);
+		=> Options.AppendContexts(contexts);
 
 	/// <summary>
 	///     The <paramref name="equalItem" /> compared ordinally, like the options compare it without an option.

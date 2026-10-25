@@ -12,8 +12,8 @@ namespace aweXpect;
 /// <remarks>
 ///     A repeated option replaces the earlier one, and an option set to <see langword="false" /> is the same as not set.<br />
 ///     Only one match type, e.g. <c>AsWildcard()</c>, per expectation; repeating the same match type replaces it.<br />
-///     A result that implements <see cref="ICopyOnOption{TOptions, TResult}" /> stays unchanged: the option is set on
-///     a copy of its options, and the result returns a new one with them.
+///     A result that implements <see cref="ICopyOnOption{TOptions, TResult}" /> stays unchanged: it returns a new one
+///     with the new options.
 /// </remarks>
 public static class StringEqualityOptionsExtensions
 {
@@ -26,7 +26,7 @@ public static class StringEqualityOptionsExtensions
 	{
 		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
 		{
-			return copyOnOption.WithOptions(result.Options.Value.Copy().IgnoringCase(ignoreCase));
+			return copyOnOption.WithOptions(result.Options.Value.IgnoringCase(ignoreCase));
 		}
 
 		result.Options.IgnoringCase(ignoreCase);
@@ -48,7 +48,7 @@ public static class StringEqualityOptionsExtensions
 	{
 		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
 		{
-			return copyOnOption.WithOptions(result.Options.Value.Copy().IgnoringIndentation(ignoreIndentation));
+			return copyOnOption.WithOptions(result.Options.Value.IgnoringIndentation(ignoreIndentation));
 		}
 
 		result.Options.IgnoringIndentation(ignoreIndentation);
@@ -68,7 +68,7 @@ public static class StringEqualityOptionsExtensions
 	{
 		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
 		{
-			return copyOnOption.WithOptions(result.Options.Value.Copy().IgnoringNewlineStyle(ignoreNewlineStyle));
+			return copyOnOption.WithOptions(result.Options.Value.IgnoringNewlineStyle(ignoreNewlineStyle));
 		}
 
 		result.Options.IgnoringNewlineStyle(ignoreNewlineStyle);
@@ -90,7 +90,7 @@ public static class StringEqualityOptionsExtensions
 	{
 		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
 		{
-			return copyOnOption.WithOptions(result.Options.Value.Copy().IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace));
+			return copyOnOption.WithOptions(result.Options.Value.IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace));
 		}
 
 		result.Options.IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace);
@@ -107,7 +107,7 @@ public static class StringEqualityOptionsExtensions
 	{
 		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
 		{
-			return copyOnOption.WithOptions(result.Options.Value.Copy().IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace));
+			return copyOnOption.WithOptions(result.Options.Value.IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace));
 		}
 
 		result.Options.IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace);
@@ -130,7 +130,7 @@ public static class StringEqualityOptionsExtensions
 	{
 		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
 		{
-			return copyOnOption.WithOptions(result.Options.Value.Copy().NormalizingWhiteSpace(normalizeWhiteSpace));
+			return copyOnOption.WithOptions(result.Options.Value.NormalizingWhiteSpace(normalizeWhiteSpace));
 		}
 
 		result.Options.NormalizingWhiteSpace(normalizeWhiteSpace);
@@ -145,7 +145,7 @@ public static class StringEqualityOptionsExtensions
 	{
 		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
 		{
-			return copyOnOption.WithOptions(result.Options.Value.Copy().Using(comparer));
+			return copyOnOption.WithOptions(result.Options.Value.Using(comparer));
 		}
 
 		result.Options.Using(comparer);
@@ -160,7 +160,7 @@ public static class StringEqualityOptionsExtensions
 	{
 		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
 		{
-			return copyOnOption.WithOptions(result.Options.Value.Copy().AsPrefix());
+			return copyOnOption.WithOptions(result.Options.Value.AsPrefix());
 		}
 
 		result.Options.AsPrefix();
@@ -175,7 +175,7 @@ public static class StringEqualityOptionsExtensions
 	{
 		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
 		{
-			return copyOnOption.WithOptions(result.Options.Value.Copy().AsRegex());
+			return copyOnOption.WithOptions(result.Options.Value.AsRegex());
 		}
 
 		result.Options.AsRegex();
@@ -191,7 +191,7 @@ public static class StringEqualityOptionsExtensions
 	{
 		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
 		{
-			return copyOnOption.WithOptions(result.Options.Value.Copy().AsRegex(regexOptions));
+			return copyOnOption.WithOptions(result.Options.Value.AsRegex(regexOptions));
 		}
 
 		result.Options.AsRegex(regexOptions);
@@ -206,7 +206,7 @@ public static class StringEqualityOptionsExtensions
 	{
 		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
 		{
-			return copyOnOption.WithOptions(result.Options.Value.Copy().AsSuffix());
+			return copyOnOption.WithOptions(result.Options.Value.AsSuffix());
 		}
 
 		result.Options.AsSuffix();
@@ -222,7 +222,7 @@ public static class StringEqualityOptionsExtensions
 	{
 		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
 		{
-			return copyOnOption.WithOptions(result.Options.Value.Copy().AsWildcard());
+			return copyOnOption.WithOptions(result.Options.Value.AsWildcard());
 		}
 
 		result.Options.AsWildcard();

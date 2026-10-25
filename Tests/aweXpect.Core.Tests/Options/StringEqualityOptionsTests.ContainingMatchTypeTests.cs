@@ -16,10 +16,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_WhenAComparerIsUsed_ShouldSearchTheSubstringWithIt(
 			string actual, string expected, bool expectMatch)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Containing().Using(StringComparer.Ordinal);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Containing().Using(StringComparer.Ordinal);
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await sut.AreConsideredEqual(actual, expected, "expected");
 
 			await That(result).IsEqualTo(expectMatch);
 		}
@@ -27,10 +27,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenAComparerIsUsed_ShouldUseItForEachCandidate()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Containing().Using(StringComparer.OrdinalIgnoreCase);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Containing().Using(StringComparer.OrdinalIgnoreCase);
 
-			bool result = await sut.AreConsideredEqual("FOOBAR", "oba");
+			bool result = await sut.AreConsideredEqual("FOOBAR", "oba", "expected");
 
 			await That(result).IsTrue()
 				.Because("the comparer decides whether a substring matches, not an ordinal search");
@@ -39,10 +39,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenBothAreNull_ShouldReturnTrue()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Containing();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Containing();
 
-			bool result = await sut.AreConsideredEqual(null, (string?)null);
+			bool result = await sut.AreConsideredEqual(null, (string?)null, "expected");
 
 			await That(result).IsTrue();
 		}
@@ -60,23 +60,24 @@ public sealed partial class StringEqualityOptionsTests
 			AreConsideredEqual_WhenWhiteSpaceIsIgnored_ShouldOnlyIgnoreTheWhiteSpaceOfTheSubstringAtTheEdgesOfTheSubject(
 				string actual, string expected, bool expectMatch)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Containing().IgnoringLeadingWhiteSpace().IgnoringTrailingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Containing().IgnoringLeadingWhiteSpace().IgnoringTrailingWhiteSpace();
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await sut.AreConsideredEqual(actual, expected, "expected");
 
 			await That(result).IsEqualTo(expectMatch)
 				.Because("the whitespace of the substring is only optional where it reaches an edge of the subject");
 		}
 
 		[Test]
-		public async Task Contains_ShouldReturnSameInstance()
+		public async Task Contains_ShouldNotChangeTheOriginalOptions()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			StringEqualityOptions result = sut.Containing();
 
-			await That(result).IsSameAs(sut);
+			await That(result).IsNotSameAs(sut);
+			await That(sut.ComparesByOrdinalEquality).IsTrue();
 		}
 
 		[Test]
@@ -86,8 +87,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(ExpectationGrammars.Negated, "not containing \"foo\"")]
 		public async Task GetExpectation_ShouldDescribeTheSubstring(ExpectationGrammars grammars, string expected)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Containing();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Containing();
 
 			string result = sut.GetExpectation("foo", grammars);
 
@@ -101,8 +102,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetExtendedFailure_WhenSubjectIsEmptyOrAnyValueIsNull_ShouldOnlyStateTheSubject(
 			string? actual, string? expected, string expectedFailure)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Containing();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Containing();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected, MatchResult.NoMatch);
 
@@ -114,8 +115,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(true, " containing ignoring case")]
 		public async Task ToString_ShouldIncludeTheMatchTypeAndTheOptions(bool ignoreCase, string expected)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Containing().IgnoringCase(ignoreCase);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Containing().IgnoringCase(ignoreCase);
 
 			string result = sut.ToString();
 
@@ -125,8 +126,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task ToString_WhenAComparerIsUsed_ShouldNameTheComparer()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Containing().Using(new IgnoreCaseComparer());
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Containing().Using(new IgnoreCaseComparer());
 
 			string result = sut.ToString();
 

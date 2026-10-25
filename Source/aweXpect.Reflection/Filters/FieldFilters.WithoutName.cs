@@ -13,8 +13,8 @@ public static partial class FieldFilters
 	public static Filtered.Fields.StringEqualityResult WithoutName(this Filtered.Fields @this, string unexpected)
 	{
 		return new Filtered.Fields.StringEqualityResult(@this, options => Filter.Suffix<FieldInfo>(
-				async fieldInfo => !await options.AreConsideredEqual(fieldInfo.Name, unexpected),
+				async fieldInfo => !await options.AreConsideredEqual(fieldInfo.Name, unexpected, nameof(unexpected)),
 				() => $"without name {options.GetExpectation(unexpected, ExpectationGrammars.None)} "),
-			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(unexpected))));
+			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

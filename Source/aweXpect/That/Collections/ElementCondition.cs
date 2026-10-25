@@ -200,20 +200,30 @@ internal sealed class ElementEqualTo<TItem, TValue>(
 }
 
 /// <summary>
-///     An item that is equal to the <paramref name="expected" /> string according to the <paramref name="options" />,
-///     or to the comparer of a set subject, when the <paramref name="subjectOptions" /> let it decide.
+///     An item that is equal to the <paramref name="expected" /> string according to the current options in the
+///     <paramref name="options" /> slot, or to the comparer of a set subject, when the <paramref name="subjectOptions" />
+///     let it decide.
 /// </summary>
+/// <remarks>
+///     An unusable pattern is reported against the parameter <c>expected</c>. The options of the evaluation are kept,
+///     so that the item compares and explains with them; before an evaluation, the current options describe the item.
+/// </remarks>
 internal sealed class ElementEqualToString<TItem>(
-	StringEqualityOptions options,
+	IReadOnlyOptionsSlot<StringEqualityOptions> options,
 	string? expected,
 	SubjectEqualityOptions<string?, string?>? subjectOptions = null)
 	: ElementCondition<TItem>
 {
+	private const string ParameterName = "expected";
+	private StringEqualityOptions? _evaluationOptions;
+
+	private StringEqualityOptions Options => _evaluationOptions ?? options.Value;
+
 	/// <inheritdoc />
 	public override ValueTask<bool> IsMetBy(TItem item)
 		=> subjectOptions is { Comparer: not null, }
 			? subjectOptions.AreConsideredEqual((string?)(object?)item, expected)
-			: options.AreConsideredEqual((string?)(object?)item, expected);
+			: Options.AreConsideredEqual((string?)(object?)item, expected, ParameterName);
 
 	/// <inheritdoc />
 	/// <remarks>
@@ -223,16 +233,15 @@ internal sealed class ElementEqualToString<TItem>(
 	public override ElementCondition<TItem> ForEvaluation(IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		options.ValidateExpected(expected);
-		StringEqualityOptions evaluationOptions = options.ForEvaluation(context, cancellationToken);
-		return ReferenceEquals(evaluationOptions, options)
-			? this
-			: new ElementEqualToString<TItem>(evaluationOptions, expected, subjectOptions);
+		StringEqualityOptions currentOptions = options.Value;
+		currentOptions.ValidateExpected(expected, ParameterName);
+		_evaluationOptions = currentOptions.ForEvaluation(context, cancellationToken);
+		return this;
 	}
 
 	/// <inheritdoc />
 	public override string GetExpectation(ExpectationGrammars grammars)
-		=> ElementExpectations.IsEqualToString(grammars, expected, options, subjectOptions);
+		=> ElementExpectations.IsEqualToString(grammars, expected, Options, subjectOptions);
 
 	/// <inheritdoc />
 	public override void UseComparerOf(object subject)
@@ -240,7 +249,7 @@ internal sealed class ElementEqualToString<TItem>(
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> options.AppendContexts(contexts);
+		=> Options.AppendContexts(contexts);
 }
 
 /// <summary>

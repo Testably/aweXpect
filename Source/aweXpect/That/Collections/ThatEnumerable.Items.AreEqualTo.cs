@@ -135,7 +135,7 @@ public static partial class ThatEnumerable
 			IEnumerableItems<string?> items,
 			string? expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((Options: options, Expected: expected, items.Quantifier),
@@ -146,7 +146,7 @@ public static partial class ThatEnumerable
 					return new CollectionConstraint<IEnumerable<string?>?, string?>(
 						it, grammars,
 						state.Quantifier,
-						new ElementEqualToString<string?>(state.Options.Value, state.Expected, itemOptions),
+						new ElementEqualToString<string?>(state.Options, state.Expected, itemOptions),
 						"were");
 				}),
 			items.Subject,
@@ -160,7 +160,7 @@ public static partial class ThatEnumerable
 			string? expected)
 		where TCollection : struct, IEnumerable<string?>
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint((items.Quantifier, Expected: expected, Options: options),
@@ -168,7 +168,7 @@ public static partial class ThatEnumerable
 					=> new CollectionConstraint<TCollection, object?>(
 						it, grammars,
 						state.Quantifier,
-						new ElementEqualToString<object?>(state.Options.Value, state.Expected),
+						new ElementEqualToString<object?>(state.Options, state.Expected),
 						"were")),
 			items.Subject,
 			options);

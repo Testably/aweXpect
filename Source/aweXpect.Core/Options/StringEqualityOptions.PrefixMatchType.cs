@@ -16,8 +16,7 @@ public partial class StringEqualityOptions
 	/// <exception cref="InvalidOperationException">Another match type is already specified.</exception>
 	public StringEqualityOptions AsPrefix()
 	{
-		SetMatchType(PrefixMatch, nameof(AsPrefix));
-		return this;
+		return WithMatchType(PrefixMatch, nameof(AsPrefix), PrefixMatchTypeIndex);
 	}
 
 	private sealed class PrefixMatchType : BuiltInMatchType

@@ -61,7 +61,7 @@ public static partial class ThatAsyncEnumerable
 			IAsyncEnumerableItems<string?> items,
 			string? expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((items.Quantifier, Expected: expected, Options: options),
@@ -69,7 +69,7 @@ public static partial class ThatAsyncEnumerable
 					=> new AsyncCollectionConstraint<string?>(
 						it, grammars,
 						state.Quantifier,
-						new ElementEqualToString<string?>(state.Options.Value, state.Expected),
+						new ElementEqualToString<string?>(state.Options, state.Expected),
 						"were")),
 			items.Subject,
 			options);

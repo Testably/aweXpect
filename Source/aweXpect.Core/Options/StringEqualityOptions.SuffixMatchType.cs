@@ -16,8 +16,7 @@ public partial class StringEqualityOptions
 	/// <exception cref="InvalidOperationException">Another match type is already specified.</exception>
 	public StringEqualityOptions AsSuffix()
 	{
-		SetMatchType(SuffixMatch, nameof(AsSuffix));
-		return this;
+		return WithMatchType(SuffixMatch, nameof(AsSuffix), SuffixMatchTypeIndex);
 	}
 
 	private sealed class SuffixMatchType : BuiltInMatchType

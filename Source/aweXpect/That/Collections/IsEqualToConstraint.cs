@@ -287,6 +287,7 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
+	string parameterName,
 	string? expectedExpression,
 	IEnumerable<TItem>? expected,
 	IReadOnlyOptionsSlot<IEqualityOptions<TMatch>> options,
@@ -321,7 +322,7 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 		_materializedExpected ??= expected as ICollection<TItem>;
 		if (_materializedExpected is not null)
 		{
-			options.ValidateExpectedItems(_materializedExpected);
+			options.ValidateExpectedItems(_materializedExpected, parameterName);
 		}
 	}
 
@@ -339,7 +340,7 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 		if (_materializedExpected is null)
 		{
 			_materializedExpected = expected.ToArray();
-			options.ValidateExpectedItems(_materializedExpected);
+			options.ValidateExpectedItems(_materializedExpected, parameterName);
 		}
 
 		_expectedItems = _materializedExpected;
@@ -408,6 +409,7 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
+	string parameterName,
 	string? expectedExpression,
 	IEnumerable<TItem>? expected,
 	IReadOnlyOptionsSlot<IEqualityOptions<TMatch>> options,
@@ -415,7 +417,7 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 	bool failsForNullSubject = false,
 	bool canUseSubjectComparer = false,
 	IEnumerable? expectedWithDimensions = null)
-	: IsEqualToConstraintBase<TEnumerable?, TItem, TMatch>(it, grammars, expectedExpression,
+	: IsEqualToConstraintBase<TEnumerable?, TItem, TMatch>(it, grammars, parameterName, expectedExpression,
 			expected.NullIfDefaultImmutableArray(), options, matchOptions, failsForNullSubject),
 		IAsyncContextConstraint<TEnumerable?>
 	where TEnumerable : IEnumerable?
@@ -761,12 +763,13 @@ internal sealed class IsEqualToFromPredicateConstraint<TEnumerable, TItem, TMatc
 internal sealed class AsyncIsEqualToConstraint<TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
+	string parameterName,
 	string expectedExpression,
 	IEnumerable<TItem>? expected,
 	IReadOnlyOptionsSlot<IEqualityOptions<TMatch>> options,
 	OptionsSlot<CollectionMatchOptions> matchOptions,
 	bool failsForNullSubject = false)
-	: IsEqualToConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, expectedExpression,
+	: IsEqualToConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, parameterName, expectedExpression,
 			expected.NullIfDefaultImmutableArray(), options, matchOptions, failsForNullSubject),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	where TItem : TMatch

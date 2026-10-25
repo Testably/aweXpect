@@ -25,12 +25,12 @@ public static partial class ThatHttpRequestMessage
 		HasContentType(this IThat<HttpRequestMessage?> subject, string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
 				.AddConstraint((expected, options), static (state, it, grammars) =>
-					new HasContentTypeConstraint<HttpRequestMessage>(it, grammars, state.expected, state.options,
+					new HasContentTypeConstraint<HttpRequestMessage>(it, grammars, state.expected, "expected", state.options,
 						static m => m.Content)),
 			subject,
 			options);
@@ -50,12 +50,12 @@ public static partial class ThatHttpRequestMessage
 		DoesNotHaveContentType(this IThat<HttpRequestMessage?> subject, string unexpected)
 	{
 		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
 				.AddConstraint((unexpected, options), static (state, it, grammars) =>
-					new HasContentTypeConstraint<HttpRequestMessage>(it, grammars, state.unexpected, state.options,
+					new HasContentTypeConstraint<HttpRequestMessage>(it, grammars, state.unexpected, "unexpected", state.options,
 						static m => m.Content).Invert()),
 			subject,
 			options);

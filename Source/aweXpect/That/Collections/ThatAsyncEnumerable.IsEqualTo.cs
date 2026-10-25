@@ -37,7 +37,7 @@ public static partial class ThatAsyncEnumerable
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 				{
-					AsyncIsEqualToConstraint<TItem, TItem> constraint = new(it, grammars,
+					AsyncIsEqualToConstraint<TItem, TItem> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -55,7 +55,7 @@ public static partial class ThatAsyncEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringCollectionMatchResult<IAsyncEnumerable<string?>?, IThat<IAsyncEnumerable<string?>?>>(
@@ -64,7 +64,7 @@ public static partial class ThatAsyncEnumerable
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 				{
-					AsyncIsEqualToConstraint<string?, string?> constraint = new(it, grammars,
+					AsyncIsEqualToConstraint<string?, string?> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -95,7 +95,7 @@ public static partial class ThatAsyncEnumerable
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 				{
-					AsyncIsEqualToConstraint<TItem, TItem> constraint = new(it, grammars,
+					AsyncIsEqualToConstraint<TItem, TItem> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions);
 					return state.Negated ? constraint.Invert() : constraint;

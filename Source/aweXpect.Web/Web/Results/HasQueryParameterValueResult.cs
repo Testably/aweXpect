@@ -47,7 +47,7 @@ public class HasQueryParameterValueResult
 	/// </remarks>
 	public StringEqualityTypeResult<Uri, IThat<Uri?>> WithValue(string? expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		_expectationBuilder.And("").AddConstraint((expected, _name, options),
 			static (state, it, grammars) => new WithValueConstraint(
 				it, grammars, state.expected, state._name, state.options));
@@ -69,7 +69,7 @@ public class HasQueryParameterValueResult
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		string[] expectedValues = expected.ToArray();
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions());
 		_expectationBuilder.And("").AddConstraint((expectedValues, _name, options, matchOptions),
 			static (state, it, grammars) => new WithValuesConstraint(
@@ -152,7 +152,7 @@ public class HasQueryParameterValueResult
 			}
 
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(_value, expected);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(_value, expected, nameof(expected));
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}

@@ -11,7 +11,7 @@ public sealed class StringCountResultTests
 	public async Task ShouldBeOptionsProvider_ForQuantifier()
 	{
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		StringEqualityOptions options = new("expected");
+		StringEqualityOptions options = StringEqualityOptions.Default;
 		StringCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
@@ -22,7 +22,7 @@ public sealed class StringCountResultTests
 	public async Task ShouldBeOptionsProvider_ForStringEqualityOptions()
 	{
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		StringEqualityOptions options = new("expected");
+		StringEqualityOptions options = StringEqualityOptions.Default;
 		StringCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<StringEqualityOptions>>()

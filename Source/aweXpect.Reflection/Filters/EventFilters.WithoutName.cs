@@ -13,8 +13,8 @@ public static partial class EventFilters
 	public static Filtered.Events.StringEqualityResult WithoutName(this Filtered.Events @this, string unexpected)
 	{
 		return new Filtered.Events.StringEqualityResult(@this, options => Filter.Suffix<EventInfo>(
-				async eventInfo => !await options.AreConsideredEqual(eventInfo.Name, unexpected),
+				async eventInfo => !await options.AreConsideredEqual(eventInfo.Name, unexpected, nameof(unexpected)),
 				() => $"without name {options.GetExpectation(unexpected, ExpectationGrammars.None)} "),
-			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(unexpected))));
+			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

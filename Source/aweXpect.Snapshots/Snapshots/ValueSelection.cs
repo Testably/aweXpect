@@ -38,8 +38,8 @@ internal sealed class ValueSelection
 	///     Selects the values with the <paramref name="name" />, compared with the <paramref name="options" />.
 	/// </summary>
 	public ValueSelection WithName(string name, StringEqualityOptions options)
-		=> new(_isMembersOnly, [.. _filters, value => StringRules.IsMatch(options, value.Name, name),],
-			[.. _validations, () => options.ValidateExpected(name),], _types, true);
+		=> new(_isMembersOnly, [.. _filters, value => StringRules.IsMatch(options, value.Name, name, nameof(name)),],
+			[.. _validations, () => options.ValidateExpected(name, nameof(name)),], _types, true);
 
 	public ValueSelection WithPath(string path)
 		=> new(_isMembersOnly, [.. _filters, value => ValueFilters.HasPath(value.Path, path),], _validations,

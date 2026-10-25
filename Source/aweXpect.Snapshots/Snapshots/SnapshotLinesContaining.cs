@@ -30,8 +30,8 @@ public sealed class SnapshotLinesContaining<TResult> : SnapshotLines<TResult>,
 	internal SnapshotLinesContaining(Func<SnapshotRule, TResult> add, Func<string, ValueTask<bool>>[] sourceFilters,
 		Action[] sourceValidations, string text, StringEqualityOptions options)
 		: base(add,
-			[.. sourceFilters, line => StringRules.Contains(options, line, text),],
-			[.. sourceValidations, () => options.ValidateExpected(text),])
+			[.. sourceFilters, line => StringRules.Contains(options, line, text, nameof(text)),],
+			[.. sourceValidations, () => options.ValidateExpected(text, nameof(text)),])
 	{
 		_add = add;
 		_sourceFilters = sourceFilters;

@@ -25,7 +25,7 @@ public static partial class ThatString
 		}
 
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringOccurrenceCountResult<string, IThat<string?>>(
 			Core.Extending.ExpectationBuilderExtensions.AddStringOccurrenceConstraint(
 				subject.Get().ExpectationBuilder, expected, quantifier, options),
@@ -50,7 +50,7 @@ public static partial class ThatString
 		}
 
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringOccurrenceCountResult<string, IThat<string?>>(
 			Core.Extending.ExpectationBuilderExtensions.AddStringOccurrenceConstraint(
 				subject.Get().ExpectationBuilder, unexpected, quantifier, options, isNegated: true),

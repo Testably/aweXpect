@@ -19,6 +19,7 @@ internal sealed class StringOccurrenceConstraint(
 	string it,
 	ExpectationGrammars grammars,
 	string expected,
+	string parameterName,
 	OptionsSlot<Quantifier> quantifier,
 	OptionsSlot<StringEqualityOptions> options)
 	: ConstraintResult(grammars),
@@ -42,7 +43,8 @@ internal sealed class StringOccurrenceConstraint(
 		_actual = actual;
 		_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 		(_actualCount, _isFinished) =
-			await StringOccurrences.Count(_evaluationOptions, actual ?? string.Empty, expected, quantifier.Value);
+			await StringOccurrences.Count(_evaluationOptions, actual ?? string.Empty, expected, quantifier.Value,
+				parameterName);
 		if (actual is null)
 		{
 			Outcome = Outcome.FailureBothWays;

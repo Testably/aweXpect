@@ -42,7 +42,7 @@ public static partial class ThatAssemblies
 		this IThat<IEnumerable<Assembly?>?> subject, IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(string[] Allowed, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Assembly?>>((expected.ToArray(), options),
 					static (s, it, grammars)
@@ -76,7 +76,7 @@ public static partial class ThatAssemblies
 			this IThat<IAsyncEnumerable<Assembly?>?> subject, IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<(string[] Allowed, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((expected.ToArray(), options),

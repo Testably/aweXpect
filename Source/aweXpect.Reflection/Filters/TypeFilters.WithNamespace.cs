@@ -13,9 +13,9 @@ public static partial class TypeFilters
 	public static Filtered.Types.StringEqualityResult WithNamespace(this Filtered.Types @this, string expected)
 	{
 		return new Filtered.Types.StringEqualityResult(@this, options => Filter.Suffix<Type>(
-				type => options.AreConsideredEqual(type.Namespace, expected),
+				type => options.AreConsideredEqual(type.Namespace, expected, nameof(expected)),
 				() => $"with namespace {options.GetExpectation(expected, ExpectationGrammars.None)} "),
-			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
+			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 
 	/// <summary>
@@ -29,8 +29,8 @@ public static partial class TypeFilters
 	public static Filtered.Types.StringEqualityResult WithoutNamespace(this Filtered.Types @this, string unexpected)
 	{
 		return new Filtered.Types.StringEqualityResult(@this, options => Filter.Suffix<Type>(
-				async type => !await options.AreConsideredEqual(type.Namespace, unexpected),
+				async type => !await options.AreConsideredEqual(type.Namespace, unexpected, nameof(unexpected)),
 				() => $"without namespace {options.GetExpectation(unexpected, ExpectationGrammars.None)} "),
-			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(unexpected))));
+			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

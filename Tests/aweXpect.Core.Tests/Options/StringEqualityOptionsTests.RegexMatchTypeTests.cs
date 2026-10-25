@@ -12,10 +12,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenExpectedIsNotAString_ShouldThrowArgumentNullException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			async Task Act() => await sut.AreConsideredEqual("42", 42);
+			async Task Act() => await ((IEqualityEvaluator<string?>)sut).AreConsideredEqual("42", 42);
 
 			await That(Act).Throws<ArgumentNullException>()
 				.WithParamName("expected").And
@@ -26,10 +26,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			async Task Act() => await sut.AreConsideredEqual(new string('a', 30) + "!", "(a+)+$");
+			async Task Act() => await sut.AreConsideredEqual(new string('a', 30) + "!", "(a+)+$", "expected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage(
@@ -42,9 +42,9 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenPatternDoesNotCompleteInTime_ShouldThrowOnlyWhenAwaited()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
-			ValueTask<bool> task = sut.AreConsideredEqual(new string('a', 30) + "!", "(a+)+$");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
+			ValueTask<bool> task = sut.AreConsideredEqual(new string('a', 30) + "!", "(a+)+$", "expected");
 
 			async Task Act() => await task;
 
@@ -56,10 +56,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenPatternIsEmpty_ShouldThrowArgumentException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			async Task Act() => await sut.AreConsideredEqual("foo", "");
+			async Task Act() => await sut.AreConsideredEqual("foo", "", "expected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
@@ -70,13 +70,13 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenPatternIsEmpty_ShouldThrowBeforeTheTaskIsAwaited()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
 #if NET8_0_OR_GREATER
-			void Act() => _ = sut.AreConsideredEqual("foo", "").AsTask();
+			void Act() => _ = sut.AreConsideredEqual("foo", "", "expected").AsTask();
 #else
-			void Act() => _ = sut.AreConsideredEqual("foo", "");
+			void Act() => _ = sut.AreConsideredEqual("foo", "", "expected");
 #endif
 
 			await That(Act).Throws<ArgumentException>()
@@ -90,10 +90,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(null)]
 		public async Task AreConsideredEqual_WhenPatternIsInvalid_ShouldThrowArgumentException(string? actual)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			async Task Act() => await sut.AreConsideredEqual(actual, "a(");
+			async Task Act() => await sut.AreConsideredEqual(actual, "a(", "expected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage($"The 'expected' regex pattern is invalid: {GetParseError("a(")}").AsPrefix().And
@@ -105,10 +105,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenPatternIsNull_ShouldThrowArgumentNullException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			async Task Act() => await sut.AreConsideredEqual("foo", (string?)null);
+			async Task Act() => await sut.AreConsideredEqual("foo", (string?)null, "expected");
 
 			await That(Act).Throws<ArgumentNullException>()
 				.WithParamName("expected").And
@@ -119,13 +119,13 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenPatternIsNull_ShouldThrowBeforeTheTaskIsAwaited()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
 #if NET8_0_OR_GREATER
-			void Act() => _ = sut.AreConsideredEqual("foo", (string?)null).AsTask();
+			void Act() => _ = sut.AreConsideredEqual("foo", (string?)null, "expected").AsTask();
 #else
-			void Act() => _ = sut.AreConsideredEqual("foo", (string?)null);
+			void Act() => _ = sut.AreConsideredEqual("foo", (string?)null, "expected");
 #endif
 
 			await That(Act).Throws<ArgumentNullException>()
@@ -138,14 +138,14 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_WhenTheTimeoutChanges_ShouldNotReuseTheParsedRegex()
 		{
 			string catastrophicSubject = new string('a', 30) + "!";
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
-			StringEqualityOptions otherSut = new("expected");
-			otherSut.AsRegex();
-			bool result = await sut.AreConsideredEqual("aaa", "(a+)+$");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
+			StringEqualityOptions otherSut = StringEqualityOptions.Default;
+			otherSut = otherSut.AsRegex();
+			bool result = await sut.AreConsideredEqual("aaa", "(a+)+$", "expected");
 
-			async Task Act() => await sut.AreConsideredEqual(catastrophicSubject, "(a+)+$");
-			async Task OtherAct() => await otherSut.AreConsideredEqual(catastrophicSubject, "(a+)+$");
+			async Task Act() => await sut.AreConsideredEqual(catastrophicSubject, "(a+)+$", "expected");
+			async Task OtherAct() => await otherSut.AreConsideredEqual(catastrophicSubject, "(a+)+$", "expected");
 
 			await That(result).IsTrue();
 			using (IDisposable __ = Customize.aweXpect.Settings().DefaultRegexTimeout.Set(10.Milliseconds()))
@@ -175,10 +175,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_WhenWhiteSpaceIsIgnored_ShouldOnlyIgnoreTheWhiteSpaceOfThePatternAtTheEdgesOfTheSubject(
 			string actual, bool expectMatch)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex().IgnoringLeadingWhiteSpace().IgnoringTrailingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex().IgnoringLeadingWhiteSpace().IgnoringTrailingWhiteSpace();
 
-			bool result = await sut.AreConsideredEqual(actual, " g.t ");
+			bool result = await sut.AreConsideredEqual(actual, " g.t ", "expected");
 
 			await That(result).IsEqualTo(expectMatch)
 				.Because("the regex may match any part of the subject, so its whitespace is only optional at the edges of the subject");
@@ -187,10 +187,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WithParameterName_WhenPatternDoesNotCompleteInTime_ShouldNameIt()
 		{
-			StringEqualityOptions sut = new("unexpected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			async Task Act() => await sut.AreConsideredEqual(new string('a', 30) + "!", "(a+)+$");
+			async Task Act() => await sut.AreConsideredEqual(new string('a', 30) + "!", "(a+)+$", "unexpected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("""The regex pattern "(a+)+$" did not complete within 0:01.*""").AsWildcard().And
@@ -201,10 +201,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WithParameterName_WhenPatternIsEmpty_ShouldNameIt()
 		{
-			StringEqualityOptions sut = new("unexpected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			async Task Act() => await sut.AreConsideredEqual("foo", "");
+			async Task Act() => await sut.AreConsideredEqual("foo", "", "unexpected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("The 'unexpected' regex pattern cannot be empty.").AsPrefix().And
@@ -215,10 +215,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WithParameterName_WhenPatternIsInvalid_ShouldNameIt()
 		{
-			StringEqualityOptions sut = new("unexpected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			async Task Act() => await sut.AreConsideredEqual("foo", "a(");
+			async Task Act() => await sut.AreConsideredEqual("foo", "a(", "unexpected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage($"The 'unexpected' regex pattern is invalid: {GetParseError("a(")}").AsPrefix().And
@@ -229,10 +229,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WithParameterName_WhenPatternIsNull_ShouldNameIt()
 		{
-			StringEqualityOptions sut = new("unexpected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			async Task Act() => await sut.AreConsideredEqual("foo", (string?)null);
+			async Task Act() => await sut.AreConsideredEqual("foo", (string?)null, "unexpected");
 
 			await That(Act).Throws<ArgumentNullException>()
 				.WithParamName("unexpected").And
@@ -241,13 +241,14 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
-		public async Task AsRegex_ShouldReturnSameInstance()
+		public async Task AsRegex_ShouldNotChangeTheOriginalOptions()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			StringEqualityOptions result = sut.AsRegex();
 
-			await That(result).IsSameAs(sut);
+			await That(result).IsNotSameAs(sut);
+			await That(sut.ComparesByOrdinalEquality).IsTrue();
 		}
 
 		[Test]
@@ -255,7 +256,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(RegexOptions.ECMAScript | RegexOptions.Singleline)]
 		public async Task AsRegex_WithInvalidOptions_ShouldThrowAtTheCall(RegexOptions regexOptions)
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			void Act() => sut.AsRegex(regexOptions);
 
@@ -266,13 +267,14 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
-		public async Task AsRegex_WithOptions_ShouldReturnSameInstance()
+		public async Task AsRegex_WithOptions_ShouldNotChangeTheOriginalOptions()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			StringEqualityOptions result = sut.AsRegex(RegexOptions.Multiline);
 
-			await That(result).IsSameAs(sut);
+			await That(result).IsNotSameAs(sut);
+			await That(sut.ComparesByOrdinalEquality).IsTrue();
 		}
 
 		[Test]
@@ -285,10 +287,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_ShouldCountTheMatchesOfThePattern(string actual, string expected,
 			int expectedCount)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			int result = await sut.CountOccurrences(actual, expected);
+			int result = await sut.CountOccurrences(actual, expected, "expected");
 
 			await That(result).IsEqualTo(expectedCount)
 				.Because("the match can be longer or shorter than the pattern");
@@ -297,10 +299,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenCaseIsIgnored_ShouldIgnoreCase()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex().IgnoringCase();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex().IgnoringCase();
 
-			int result = await sut.CountOccurrences("AxB ayb", "a.b");
+			int result = await sut.CountOccurrences("AxB ayb", "a.b", "expected");
 
 			await That(result).IsEqualTo(2);
 		}
@@ -311,10 +313,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_WhenOptionsAreGiven_ShouldApplyThem(RegexOptions regexOptions,
 			int expectedCount)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex(regexOptions);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex(regexOptions);
 
-			int result = await sut.CountOccurrences("b\nb", "^b");
+			int result = await sut.CountOccurrences("b\nb", "^b", "expected");
 
 			await That(result).IsEqualTo(expectedCount)
 				.Because("without the multiline option '^' only binds to the start of the complete value");
@@ -323,10 +325,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			async Task Act() => await sut.CountOccurrences(new string('a', 30) + "!", "(a+)+$");
+			async Task Act() => await sut.CountOccurrences(new string('a', 30) + "!", "(a+)+$", "expected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage(
@@ -339,10 +341,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenPatternIsEmpty_ShouldThrowArgumentException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			async Task Act() => await sut.CountOccurrences("foo", "");
+			async Task Act() => await sut.CountOccurrences("foo", "", "expected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
@@ -353,10 +355,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenPatternIsInvalid_ShouldThrowArgumentException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			async Task Act() => await sut.CountOccurrences("foo", "[");
+			async Task Act() => await sut.CountOccurrences("foo", "[", "expected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage($"The 'expected' regex pattern is invalid: {GetParseError("[")}").AsPrefix().And
@@ -368,10 +370,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenPatternIsNull_ShouldThrowArgumentNullException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			async Task Act() => await sut.CountOccurrences("foo", null!);
+			async Task Act() => await sut.CountOccurrences("foo", null!, "expected");
 
 			await That(Act).Throws<ArgumentNullException>()
 				.WithParamName("expected").And
@@ -385,10 +387,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_WhenPatternMatchesTheEmptyString_ShouldIgnoreEmptyMatches(string actual,
 			int expectedCount)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			int result = await sut.CountOccurrences(actual, "a*");
+			int result = await sut.CountOccurrences(actual, "a*", "expected");
 
 			await That(result).IsEqualTo(expectedCount)
 				.Because("an empty match does not cover any occurrence, just as an empty expected value never occurs");
@@ -399,8 +401,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(true, "matches regex \"foo\" ignoring case")]
 		public async Task GetExpectation_ShouldRenderTheIgnoreCaseOption(bool ignoreCase, string expected)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex().IgnoringCase(ignoreCase);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex().IgnoringCase(ignoreCase);
 
 			string result = sut.GetExpectation("foo", ExpectationGrammars.Active);
 
@@ -411,8 +413,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExpectation_WhenNegatedAndPassive_ShouldSayNotMatching()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
 			string result = sut.GetExpectation("foo", ExpectationGrammars.Negated);
 
@@ -422,8 +424,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenPatternIsNull_ShouldStateThatItCouldNotCompare()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo", null, MatchResult.NoMatch);
 
@@ -519,8 +521,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task ToString_ShouldNameTheMatchType()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
 			string result = sut.ToString();
 

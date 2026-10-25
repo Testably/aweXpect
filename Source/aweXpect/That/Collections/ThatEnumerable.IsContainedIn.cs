@@ -63,7 +63,7 @@ public static partial class ThatEnumerable
 					Options: options, MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 				{
-					IsEqualToConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(it, grammars,
+					IsEqualToConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
 						true,
@@ -87,7 +87,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		expected.ThrowIfNull(negated);
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.IsContainedIn));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
@@ -95,7 +95,7 @@ public static partial class ThatEnumerable
 					Options: options, MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 				{
-					IsEqualToConstraint<IEnumerable<string?>, string?, string?> constraint = new(it, grammars,
+					IsEqualToConstraint<IEnumerable<string?>, string?, string?> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
 						true,
@@ -131,7 +131,7 @@ public static partial class ThatEnumerable
 					Options: options, MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 				{
-					IsEqualToConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(it, grammars,
+					IsEqualToConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
 						true,
@@ -164,7 +164,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					IsEqualToConstraint<IEnumerable, TItem, TItem> constraint = new(
-						it, grammars,
+						it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
 						true,
@@ -284,7 +284,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					IsEqualToConstraint<TCollection, TItem, TItem> constraint = new(
-						it, grammars,
+						it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
 						true);
@@ -307,7 +307,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable
 	{
 		expected.ThrowIfNull(negated);
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.IsContainedIn));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<TCollection, IThat<TCollection>>(
@@ -316,7 +316,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					IsEqualToConstraint<TCollection, string?, string?> constraint = new(
-						it, grammars,
+						it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
 						true);
@@ -350,7 +350,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					IsEqualToConstraint<TCollection, TItem, TItem> constraint = new(
-						it, grammars,
+						it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
 						true);

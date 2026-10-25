@@ -39,7 +39,7 @@ public class SnapshotValues<TResult, TValue>
 	/// </remarks>
 	public SnapshotValuesWithName<TResult, TValue> WithName(string name)
 		=> new(_add, _selection, RuleArguments.ThrowIfNullOrEmpty(name, nameof(name)),
-			new StringEqualityOptions(nameof(name)));
+			StringEqualityOptions.Default);
 
 	/// <summary>
 	///     Filters for the values whose path ends with the <paramref name="path" />, e.g. <c>Artist.Id</c> or

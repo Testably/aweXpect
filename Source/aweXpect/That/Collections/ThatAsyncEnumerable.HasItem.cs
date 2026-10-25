@@ -129,13 +129,13 @@ public static partial class ThatAsyncEnumerable
 	{
 		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringHasItemResult<IAsyncEnumerable<string?>>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new AsyncHasItemConstraint<string?>(it, grammars,
-						new EqualStringItem(state.Options.Value, state.Expected),
+						new EqualStringItem(state.Options, state.Expected, state.Negated ? "unexpected" : "expected"),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,

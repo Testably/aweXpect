@@ -130,13 +130,13 @@ public static partial class ThatEnumerable
 	{
 		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringHasItemResult<IEnumerable<string?>>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new HasItemConstraint<IEnumerable<string?>?, string?>(it, grammars,
-						new SubjectComparedItem<string?, string?>(new EqualStringItem(state.Options.Value, state.Expected)),
+						new SubjectComparedItem<string?, string?>(new EqualStringItem(state.Options, state.Expected, state.Negated ? "unexpected" : "expected")),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
@@ -322,14 +322,14 @@ public static partial class ThatEnumerable
 	{
 		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringHasItemResult<TCollection>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new HasItemConstraint<TCollection, string?>(
 						it, grammars,
-						new EqualStringItem(state.Options.Value, state.Expected),
+						new EqualStringItem(state.Options, state.Expected, state.Negated ? "unexpected" : "expected"),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,

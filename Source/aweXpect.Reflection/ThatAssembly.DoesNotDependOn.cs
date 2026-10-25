@@ -18,11 +18,11 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> DoesNotDependOn(
 		this IThat<Assembly?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Unexpected: unexpected, Options: options),
 					static (s, it, grammars)
-					=> new DependsOnConstraint(it, grammars, s.Unexpected, s.Options).Invert()),
+					=> new DependsOnConstraint(it, grammars, s.Unexpected, "unexpected", s.Options).Invert()),
 			subject,
 			options);
 	}

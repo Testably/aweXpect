@@ -30,14 +30,14 @@ public static partial class ThatString
 		bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
 					Negated: negated),
 				static (state, it, grammars)
 					=> new IsOneOfConstraint(it, grammars, state.ExpectedValues, state.ExpectedExpression,
-							state.Options)
+							state.Negated ? "unexpected" : "expected", state.Options)
 						.InvertIf(state.Negated)),
 			subject,
 			options);
@@ -48,6 +48,7 @@ public static partial class ThatString
 		ExpectationGrammars grammars,
 		IEnumerable<string?> expectedValues,
 		string? expectedExpression,
+		string parameterName,
 		OptionsSlot<StringEqualityOptions> options)
 		: ConstraintResult.WithValue<string?>(it, grammars),
 			IAsyncContextConstraint<string?>
@@ -73,7 +74,7 @@ public static partial class ThatString
 			foreach (string? value in expectedValues)
 			{
 				if (await stringEqualityOptions
-					    .AreConsideredEqual(actual, value))
+					    .AreConsideredEqual(actual, value, parameterName))
 				{
 					isOneOf = true;
 					if (!comparesAllValues)

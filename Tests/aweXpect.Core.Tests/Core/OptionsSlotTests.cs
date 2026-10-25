@@ -18,7 +18,7 @@ public sealed class OptionsSlotTests
 	[Test]
 	public async Task ToString_ShouldReturnTheTextOfTheValue()
 	{
-		OptionsSlot<StringEqualityOptions> sut = new(new StringEqualityOptions("expected"));
+		OptionsSlot<StringEqualityOptions> sut = new(StringEqualityOptions.Default);
 		sut.IgnoringCase();
 
 		string result = sut.ToString();
@@ -40,7 +40,7 @@ public sealed class OptionsSlotTests
 	[Test]
 	public async Task Value_ShouldBeReadableAsReadOnlySlotOfABaseType()
 	{
-		StringEqualityOptions options = new("expected");
+		StringEqualityOptions options = StringEqualityOptions.Default;
 		OptionsSlot<StringEqualityOptions> sut = new(options);
 
 		IReadOnlyOptionsSlot<object> result = sut;
@@ -100,6 +100,20 @@ public sealed class OptionsSlotTests
 		await That(second.Value.ToString()).IsEqualTo("at least twice");
 		await That(preset.ToString()).IsEqualTo("at least twice");
 		await That(first.Value.ToString()).IsEqualTo("at least 3 times");
+	}
+
+	[Test]
+	public async Task WhenAStringOptionsPresetIsShared_ShouldNotBeChangedByAnotherSlot()
+	{
+		StringEqualityOptions preset = StringEqualityOptions.Default.IgnoringCase();
+		OptionsSlot<StringEqualityOptions> first = new(preset);
+		OptionsSlot<StringEqualityOptions> second = new(preset);
+
+		first.AsPrefix();
+
+		await That(second.Value.ToString()).IsEqualTo(" ignoring case");
+		await That(preset.ToString()).IsEqualTo(" ignoring case");
+		await That(first.Value.ToString()).IsEqualTo(" as prefix ignoring case");
 	}
 
 	[Test]

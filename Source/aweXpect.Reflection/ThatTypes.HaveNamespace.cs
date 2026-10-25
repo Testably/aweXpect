@@ -25,7 +25,7 @@ public static partial class ThatTypes
 	public static StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> HaveNamespace(
 		this IThat<IEnumerable<Type?>?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Type?>>((expected, options),
 					static (s, it, grammars)
@@ -43,7 +43,7 @@ public static partial class ThatTypes
 	public static StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> HaveNamespace(
 		this IThat<IAsyncEnumerable<Type?>?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Type?>>((expected, options),
 					static (s, it, grammars)
@@ -66,7 +66,7 @@ public static partial class ThatTypes
 	public static StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotHaveNamespace(
 		this IThat<IEnumerable<Type?>?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Type?>>((unexpected, options),
 					static (s, it, grammars)
@@ -89,7 +89,7 @@ public static partial class ThatTypes
 	public static StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotHaveNamespace(
 		this IThat<IAsyncEnumerable<Type?>?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Type?>>((unexpected, options),
 					static (s, it, grammars)
@@ -120,7 +120,7 @@ public static partial class ThatTypes
 		{
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetAsyncValue(actual, context,
-				type => EvaluationOptions.AreConsideredEqual(type?.Namespace, expected), cancellationToken);
+				type => EvaluationOptions.AreConsideredEqual(type?.Namespace, expected, nameof(expected)), cancellationToken);
 		}
 #endif
 
@@ -129,7 +129,7 @@ public static partial class ThatTypes
 		{
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetValue(actual, context,
-				type => EvaluationOptions.AreConsideredEqual(type?.Namespace, expected), cancellationToken);
+				type => EvaluationOptions.AreConsideredEqual(type?.Namespace, expected, nameof(expected)), cancellationToken);
 		}
 
 		/// <inheritdoc />
@@ -185,7 +185,7 @@ public static partial class ThatTypes
 		}
 
 		private async ValueTask<bool> DoesNotHaveNamespace(Type? type)
-			=> type is not null && !await EvaluationOptions.AreConsideredEqual(type.Namespace, unexpected);
+			=> type is not null && !await EvaluationOptions.AreConsideredEqual(type.Namespace, unexpected, nameof(unexpected));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have namespace ").Append(options.Value.GetExpectation(unexpected, Grammars.Negate()));

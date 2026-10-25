@@ -24,11 +24,11 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> Targets(
 		this IThat<Assembly?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (s, it, grammars)
-				=> new TargetsConstraint(it, grammars, s.Expected, s.Options)),
+				=> new TargetsConstraint(it, grammars, s.Expected, "expected", s.Options)),
 			subject,
 			options);
 	}
@@ -41,11 +41,11 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> DoesNotTarget(
 		this IThat<Assembly?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (s, it, grammars)
-				=> new TargetsConstraint(it, grammars, s.Unexpected, s.Options).Invert()),
+				=> new TargetsConstraint(it, grammars, s.Unexpected, "unexpected", s.Options).Invert()),
 			subject,
 			options);
 	}
@@ -54,6 +54,7 @@ public static partial class ThatAssembly
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
+		string parameterName,
 		OptionsSlot<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
 			IAsyncContextConstraint<Assembly?>
@@ -66,7 +67,7 @@ public static partial class ThatAssembly
 		{
 			Actual = actual;
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.GetTargetFramework(), expected);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.GetTargetFramework(), expected, parameterName);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}

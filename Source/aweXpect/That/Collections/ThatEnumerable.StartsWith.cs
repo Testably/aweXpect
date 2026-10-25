@@ -55,7 +55,7 @@ public static partial class ThatEnumerable
 				{
 					SubjectEqualityOptions<TItem, TItem> itemOptions =
 						new(state.Options);
-					StartsWithConstraint<IEnumerable<TItem>?, TItem, TItem> constraint = new(it, grammars,
+					StartsWithConstraint<IEnumerable<TItem>?, TItem, TItem> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), itemOptions, itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -77,7 +77,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((Options: options, ExpectedExpression: expectedExpression,
@@ -86,7 +86,7 @@ public static partial class ThatEnumerable
 				{
 					SubjectEqualityOptions<string?, string?> itemOptions =
 						new(state.Options);
-					StartsWithConstraint<IEnumerable<string?>?, string?, string?> constraint = new(it, grammars,
+					StartsWithConstraint<IEnumerable<string?>?, string?, string?> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), itemOptions, itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -118,7 +118,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<TItem, TItem> itemOptions = new(state.Options);
-					StartsWithConstraint<IEnumerable<TItem>?, TItem, TItem> constraint = new(it, grammars,
+					StartsWithConstraint<IEnumerable<TItem>?, TItem, TItem> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), itemOptions, itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -151,7 +151,7 @@ public static partial class ThatEnumerable
 					SubjectEqualityOptions<TItem, TItem> itemOptions =
 						new(state.Options);
 					StartsWithConstraint<IEnumerable?, object?, TItem> constraint = new(
-						it, grammars,
+						it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), itemOptions, itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -194,7 +194,7 @@ public static partial class ThatEnumerable
 					SubjectEqualityOptions<string?, string?> itemOptions =
 						new(state.Options);
 					StartsWithConstraint<IEnumerable?, object?, string?> constraint = new(
-						it, grammars,
+						it, grammars, state.Negated ? "unexpected" : "expected",
 						null, state.ExpectedItems, state.ExpectedItems, itemOptions,
 						itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -224,7 +224,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					StartsWithConstraint<TCollection?, object?, TItem> constraint = new(
-						it, grammars,
+						it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), state.Options);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -246,7 +246,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint((Options: options, ExpectedExpression: expectedExpression,
@@ -254,7 +254,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					StartsWithConstraint<TCollection?, object?, string?> constraint = new(
-						it, grammars,
+						it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), state.Options);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -288,7 +288,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					StartsWithConstraint<TCollection?, object?, TItem> constraint = new(
-						it, grammars,
+						it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), state.Options);
 					return state.Negated ? constraint.Invert() : constraint;

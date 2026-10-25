@@ -23,12 +23,12 @@ public static partial class ThatHttpResponseMessage
 		HasContent(this IThat<HttpResponseMessage?> subject, string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint((expected, options), static (state, it, grammars) =>
-					new HasContentConstraint(it, grammars, state.expected, state.options)),
+					new HasContentConstraint(it, grammars, state.expected, "expected", state.options)),
 			subject,
 			options);
 	}
@@ -61,12 +61,12 @@ public static partial class ThatHttpResponseMessage
 		DoesNotHaveContent(this IThat<HttpResponseMessage?> subject, string unexpected)
 	{
 		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint((unexpected, options), static (state, it, grammars) =>
-					new HasContentConstraint(it, grammars, state.unexpected, state.options).Invert()),
+					new HasContentConstraint(it, grammars, state.unexpected, "unexpected", state.options).Invert()),
 			subject,
 			options);
 	}
@@ -75,6 +75,7 @@ public static partial class ThatHttpResponseMessage
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
+		string parameterName,
 		OptionsSlot<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<HttpResponseMessage>(it, grammars),
 			IAsyncContextConstraint<HttpResponseMessage>
@@ -97,7 +98,7 @@ public static partial class ThatHttpResponseMessage
 
 			_message = await actual.Content.ReadAsStringOrEmptyAsync(cancellationToken);
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(_message, expected);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(_message, expected, parameterName);
 			if (_matchResult.IsMatch)
 			{
 				Outcome = Outcome.Success;

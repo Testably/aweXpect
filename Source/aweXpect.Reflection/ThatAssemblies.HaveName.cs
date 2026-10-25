@@ -27,7 +27,7 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> HaveName(
 		this IThat<IEnumerable<Assembly?>?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Assembly?>>((expected, options),
 					static (s, it, grammars)
@@ -45,7 +45,7 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> HaveName(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((expected, options),
@@ -68,7 +68,7 @@ public static partial class ThatAssemblies
 		string doNotPopulateThisValue = "")
 	{
 		ThrowHelper.ThrowIfNull(expectedNameSelector, nameof(expectedNameSelector));
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expectedNameSelector)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(Func<Assembly?, string> ExpectedNameSelector, string DoNotPopulateThisValue, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Assembly?>>((expectedNameSelector, doNotPopulateThisValue, options),
 					static (s, it, grammars)
@@ -91,7 +91,7 @@ public static partial class ThatAssemblies
 		string doNotPopulateThisValue = "")
 	{
 		ThrowHelper.ThrowIfNull(expectedNameSelector, nameof(expectedNameSelector));
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expectedNameSelector)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<(Func<Assembly?, string> ExpectedNameSelector, string DoNotPopulateThisValue, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((expectedNameSelector, doNotPopulateThisValue, options),
@@ -124,7 +124,7 @@ public static partial class ThatAssemblies
 		{
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetAsyncValue(actual, context,
-				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetName().Name, expected), cancellationToken);
+				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetName().Name, expected, nameof(expected)), cancellationToken);
 		}
 #endif
 
@@ -133,7 +133,7 @@ public static partial class ThatAssemblies
 		{
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetValue(actual, context,
-				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetName().Name, expected), cancellationToken);
+				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetName().Name, expected, nameof(expected)), cancellationToken);
 		}
 
 		/// <inheritdoc />
@@ -179,7 +179,7 @@ public static partial class ThatAssemblies
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetAsyncValue(actual, context,
 				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetName().Name,
-					UserCode.Invoke(expectedNameSelector, assembly, "the name selector")), cancellationToken);
+					UserCode.Invoke(expectedNameSelector, assembly, "the name selector"), nameof(expectedNameSelector)), cancellationToken);
 		}
 #endif
 
@@ -189,7 +189,7 @@ public static partial class ThatAssemblies
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetValue(actual, context,
 				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetName().Name,
-					UserCode.Invoke(expectedNameSelector, assembly, "the name selector")), cancellationToken);
+					UserCode.Invoke(expectedNameSelector, assembly, "the name selector"), nameof(expectedNameSelector)), cancellationToken);
 		}
 
 		/// <inheritdoc />

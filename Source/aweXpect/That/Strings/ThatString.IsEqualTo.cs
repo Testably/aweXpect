@@ -18,11 +18,11 @@ public static partial class ThatString
 		this IThat<string?> subject,
 		string? expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (state, it, grammars) =>
-					new IsEqualToConstraint(it, grammars, state.Expected, state.Options)),
+					new IsEqualToConstraint(it, grammars, state.Expected, "expected", state.Options)),
 			subject,
 			options);
 	}
@@ -34,11 +34,11 @@ public static partial class ThatString
 		this IThat<string?> subject,
 		string? unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (state, it, grammars) =>
-					new IsEqualToConstraint(it, grammars, state.Unexpected, state.Options).Invert()),
+					new IsEqualToConstraint(it, grammars, state.Unexpected, "unexpected", state.Options).Invert()),
 			subject,
 			options);
 	}
@@ -47,6 +47,7 @@ public static partial class ThatString
 		string it,
 		ExpectationGrammars grammars,
 		string? expected,
+		string parameterName,
 		OptionsSlot<StringEqualityOptions> options)
 		: ConstraintResult.WithEqualToValue<string?>(it, grammars, expected is null),
 			IAsyncContextConstraint<string?>
@@ -63,7 +64,7 @@ public static partial class ThatString
 		{
 			Actual = actual;
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			if (actual is null && options.Value.InspectsSubject)
 			{

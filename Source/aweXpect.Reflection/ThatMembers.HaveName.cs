@@ -29,7 +29,7 @@ public static partial class ThatMembers
 		this IThat<IEnumerable<TMember>?> subject, string expected)
 		where TMember : MemberInfo?
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<TMember>>((expected, options),
 					static (s, it, grammars)
@@ -49,7 +49,7 @@ public static partial class ThatMembers
 			this IThat<IAsyncEnumerable<TMember>?> subject, string expected)
 		where TMember : MemberInfo?
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<TMember>>((expected, options),
 					static (s, it, grammars)
@@ -72,7 +72,7 @@ public static partial class ThatMembers
 		where TMember : MemberInfo?
 	{
 		ThrowHelper.ThrowIfNull(expectedNameSelector, nameof(expectedNameSelector));
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expectedNameSelector)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(Func<TMember, string> ExpectedNameSelector, string DoNotPopulateThisValue, OptionsSlot<StringEqualityOptions> Options), IEnumerable<TMember>>((expectedNameSelector, doNotPopulateThisValue, options),
 					static (s, it, grammars)
@@ -97,7 +97,7 @@ public static partial class ThatMembers
 		where TMember : MemberInfo?
 	{
 		ThrowHelper.ThrowIfNull(expectedNameSelector, nameof(expectedNameSelector));
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expectedNameSelector)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(Func<TMember, string> ExpectedNameSelector, string DoNotPopulateThisValue, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<TMember>>((expectedNameSelector, doNotPopulateThisValue, options),
 					static (s, it, grammars)
@@ -130,7 +130,7 @@ public static partial class ThatMembers
 		{
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetAsyncValue(actual, context,
-				memberInfo => EvaluationOptions.AreConsideredEqual(memberInfo?.Name, expected), cancellationToken);
+				memberInfo => EvaluationOptions.AreConsideredEqual(memberInfo?.Name, expected, nameof(expected)), cancellationToken);
 		}
 #endif
 
@@ -139,7 +139,7 @@ public static partial class ThatMembers
 		{
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetValue(actual, context,
-				memberInfo => EvaluationOptions.AreConsideredEqual(memberInfo?.Name, expected), cancellationToken);
+				memberInfo => EvaluationOptions.AreConsideredEqual(memberInfo?.Name, expected, nameof(expected)), cancellationToken);
 		}
 
 		/// <inheritdoc />
@@ -186,7 +186,7 @@ public static partial class ThatMembers
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetAsyncValue(actual, context,
 				memberInfo => EvaluationOptions.AreConsideredEqual(memberInfo?.Name,
-					UserCode.Invoke(expectedNameSelector, memberInfo, "the name selector")), cancellationToken);
+					UserCode.Invoke(expectedNameSelector, memberInfo, "the name selector"), nameof(expectedNameSelector)), cancellationToken);
 		}
 #endif
 
@@ -196,7 +196,7 @@ public static partial class ThatMembers
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetValue(actual, context,
 				memberInfo => EvaluationOptions.AreConsideredEqual(memberInfo?.Name,
-					UserCode.Invoke(expectedNameSelector, memberInfo, "the name selector")), cancellationToken);
+					UserCode.Invoke(expectedNameSelector, memberInfo, "the name selector"), nameof(expectedNameSelector)), cancellationToken);
 		}
 
 		/// <inheritdoc />

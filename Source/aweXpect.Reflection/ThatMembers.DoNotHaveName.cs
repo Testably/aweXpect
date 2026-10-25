@@ -26,7 +26,7 @@ public static partial class ThatMembers
 		this IThat<IEnumerable<TMember>?> subject, string unexpected)
 		where TMember : MemberInfo?
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<TMember>>((unexpected, options),
 					static (s, it, grammars)
@@ -46,7 +46,7 @@ public static partial class ThatMembers
 			this IThat<IAsyncEnumerable<TMember>?> subject, string unexpected)
 		where TMember : MemberInfo?
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<TMember>>((unexpected, options),
 					static (s, it, grammars)
@@ -78,7 +78,7 @@ public static partial class ThatMembers
 		{
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetAsyncValue(actual, context,
-				async memberInfo => !await EvaluationOptions.AreConsideredEqual(memberInfo?.Name, unexpected), cancellationToken);
+				async memberInfo => !await EvaluationOptions.AreConsideredEqual(memberInfo?.Name, unexpected, nameof(unexpected)), cancellationToken);
 		}
 #endif
 
@@ -87,7 +87,7 @@ public static partial class ThatMembers
 		{
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetValue(actual, context,
-				async memberInfo => !await EvaluationOptions.AreConsideredEqual(memberInfo?.Name, unexpected), cancellationToken);
+				async memberInfo => !await EvaluationOptions.AreConsideredEqual(memberInfo?.Name, unexpected, nameof(unexpected)), cancellationToken);
 		}
 
 		/// <inheritdoc />

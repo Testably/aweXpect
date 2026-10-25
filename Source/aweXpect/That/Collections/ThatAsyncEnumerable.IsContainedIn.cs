@@ -54,7 +54,7 @@ public static partial class ThatAsyncEnumerable
 				(ExpectedExpression: expectedExpression, Expected: expected, Options: options,
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
-					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
+					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
@@ -87,7 +87,7 @@ public static partial class ThatAsyncEnumerable
 					(DoNotPopulateThisValue: doNotPopulateThisValue, Expected: expected, Options: options,
 						MatchOptions: matchOptions),
 					static (state, it, grammars) =>
-						new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
+						new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars, "expected",
 							state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 							state.Expected,
 							state.Options,
@@ -114,7 +114,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNull();
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.IsContainedIn));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IAsyncEnumerable<string?>,
@@ -123,7 +123,7 @@ public static partial class ThatAsyncEnumerable
 				(DoNotPopulateThisValue: doNotPopulateThisValue, Expected: expected, Options: options,
 					MatchOptions: matchOptions),
 				static (state, it, grammars) =>
-					new AsyncIsEqualToConstraint<string?, string?>(it, grammars,
+					new AsyncIsEqualToConstraint<string?, string?>(it, grammars, "expected",
 						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 						state.Expected,
 						state.Options,
@@ -221,7 +221,7 @@ public static partial class ThatAsyncEnumerable
 					(DoNotPopulateThisValue: doNotPopulateThisValue, Unexpected: unexpected, Options: options,
 						MatchOptions: matchOptions),
 					static (state, it, grammars) =>
-						new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
+						new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars, "unexpected",
 							state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 							state.Unexpected,
 							state.Options,
@@ -249,7 +249,7 @@ public static partial class ThatAsyncEnumerable
 			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNull();
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.IsContainedIn));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IAsyncEnumerable<string?>,
@@ -258,7 +258,7 @@ public static partial class ThatAsyncEnumerable
 				(DoNotPopulateThisValue: doNotPopulateThisValue, Unexpected: unexpected, Options: options,
 					MatchOptions: matchOptions),
 				static (state, it, grammars) =>
-					new AsyncIsEqualToConstraint<string?, string?>(it, grammars,
+					new AsyncIsEqualToConstraint<string?, string?>(it, grammars, "unexpected",
 						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 						state.Unexpected,
 						state.Options,

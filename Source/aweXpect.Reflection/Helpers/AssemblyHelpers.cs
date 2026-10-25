@@ -122,7 +122,7 @@ internal static class AssemblyHelpers
 				continue;
 			}
 
-			if (!await allowed.AnyAsync(expected => options.AreConsideredEqual(dependency.Name, expected)))
+			if (!await allowed.AnyAsync(expected => options.AreConsideredEqual(dependency.Name, expected, nameof(expected))))
 			{
 				violations.Add(dependency.Name);
 			}

@@ -31,7 +31,8 @@ internal static class EqualityOptionsContextHelpers
 		=> options.ForEvaluation(default(MatchEnvironment).Context, CancellationToken.None);
 
 	/// <summary>
-	///     Rejects the first of the <paramref name="expected" /> items that the match type of string
+	///     Rejects the first of the <paramref name="expected" /> items, which the caller received as
+	///     <paramref name="parameterName" />, that the match type of string
 	///     <paramref name="options" /> cannot use, e.g. an invalid regex pattern.
 	/// </summary>
 	/// <remarks>
@@ -39,7 +40,7 @@ internal static class EqualityOptionsContextHelpers
 	///     this at the start of an evaluation, which rejects the item whichever items the subject has.
 	/// </remarks>
 	public static void ValidateExpectedItems<T, TItem>(this IReadOnlyOptionsSlot<IEqualityOptions<T>> options,
-		IEnumerable<TItem> expected)
+		IEnumerable<TItem> expected, string parameterName)
 		where TItem : T
 	{
 		if (options.Value is not StringEqualityOptions stringOptions || stringOptions.ComparesByOrdinalEquality)
@@ -49,7 +50,7 @@ internal static class EqualityOptionsContextHelpers
 
 		foreach (TItem item in expected)
 		{
-			stringOptions.ValidateExpected(item as string);
+			stringOptions.ValidateExpected(item as string, parameterName);
 		}
 	}
 }

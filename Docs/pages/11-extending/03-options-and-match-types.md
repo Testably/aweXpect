@@ -74,16 +74,17 @@ earlier strategy.
 
 A result that can be stored and continued more than once, e.g. a filter of `aweXpect.Reflection`, must not change when
 a continuation sets an option. Such a result implements `ICopyOnOption<StringEqualityOptions, TSelf>` in addition to
-`IOptionsProvider<StringEqualityOptions>`: the string options then set the option on a copy of its options and pass it
-to `WithOptions(options)`, which returns a new result with them, while the result they were called on stays unchanged.
-The copy carries every option set so far, so a repeated option replaces the earlier one and a conflicting option still
-throws.
+`IOptionsProvider<StringEqualityOptions>`: the string options then pass its options with the new option to
+`WithOptions(options)`, which returns a new result with them, while the result they were called on stays unchanged.
+The new options carry every option set so far, so a repeated option replaces the earlier one and a conflicting option
+still throws.
 
 In the constraint, compare with the options that `ForEvaluation(context, cancellationToken)` returns for its evaluation,
 so that the match type can use the evaluation and keep what its comparisons found. `MatchWithExplanation(actual,
-expected)` returns a `MatchResult`, which the constraint keeps for its failure message, as the options keep nothing of a
-comparison. The `StringEqualityOptions` also write the texts for every match type: `GetExpectation(expected, grammars)`
-the expectation and `GetExtendedFailure(it, grammars, actual, expected, result)` the result, e.g. "it was "Yesterday",
+expected, nameof(expected))` returns a `MatchResult`, which the constraint keeps for its failure message, as the options
+keep nothing of a comparison; an unusable expected value is reported against the parameter name you pass. The
+`StringEqualityOptions` also write the texts for every match type: `GetExpectation(expected, grammars)` the
+expectation and `GetExtendedFailure(it, grammars, actual, expected, result)` the result, e.g. "it was "Yesterday",
 which differs …". When the string is a member of the subject, `GetExtendedMemberFailure(it, "title", grammars, actual,
 expected, result)` names it like the built-in expectations do, e.g. "it had title "Yesterday", which differs …".
 

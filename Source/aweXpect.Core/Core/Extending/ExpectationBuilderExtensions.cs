@@ -67,7 +67,8 @@ public static class ExpectationBuilderExtensions
 	///     Return a <see cref="Results.StringOccurrenceCountResult{TType,TThat}" /> that shares the
 	///     <paramref name="quantifier" /> and the <paramref name="options" />, so that both can be specified on it.<br />
 	///     A <see langword="null" /> subject fails the expectation and its negation. Reject a <see langword="null" /> or
-	///     empty <paramref name="expected" /> value before, as neither can be counted.
+	///     empty <paramref name="expected" /> value before, as neither can be counted. An unusable pattern is reported
+	///     against the parameter <c>expected</c>, or <c>unexpected</c> when <paramref name="isNegated" />.
 	/// </remarks>
 	public static ExpectationBuilder AddStringOccurrenceConstraint(this ExpectationBuilder expectationBuilder,
 		string expected, OptionsSlot<Quantifier> quantifier, OptionsSlot<StringEqualityOptions> options,
@@ -77,7 +78,8 @@ public static class ExpectationBuilderExtensions
 			static (state, it, grammars) =>
 			{
 				StringOccurrenceConstraint constraint =
-					new(it, grammars, state.Expected, state.Quantifier, state.Options);
+					new(it, grammars, state.Expected, state.IsNegated ? "unexpected" : "expected", state.Quantifier,
+						state.Options);
 				return state.IsNegated ? constraint.Invert() : constraint;
 			});
 }

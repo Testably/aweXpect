@@ -26,7 +26,7 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> DependOn(
 		this IThat<IEnumerable<Assembly?>?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Assembly?>>((expected, options),
 					static (s, it, grammars)
@@ -45,7 +45,7 @@ public static partial class ThatAssemblies
 		DependOn(
 			this IThat<IAsyncEnumerable<Assembly?>?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((expected, options),
@@ -79,7 +79,7 @@ public static partial class ThatAssemblies
 			return await SetAsyncValue(actual, context, async assembly =>
 				assembly != null &&
 				await assembly.GetReferencedAssemblyNames().AnyAsync(dep =>
-					EvaluationOptions.AreConsideredEqual(dep.Name, expected)), cancellationToken);
+					EvaluationOptions.AreConsideredEqual(dep.Name, expected, nameof(expected))), cancellationToken);
 		}
 #endif
 
@@ -90,7 +90,7 @@ public static partial class ThatAssemblies
 			return await SetValue(actual, context, async assembly =>
 				assembly != null &&
 				await assembly.GetReferencedAssemblyNames().AnyAsync(dep =>
-					EvaluationOptions.AreConsideredEqual(dep.Name, expected)), cancellationToken);
+					EvaluationOptions.AreConsideredEqual(dep.Name, expected, nameof(expected))), cancellationToken);
 		}
 
 		/// <inheritdoc />

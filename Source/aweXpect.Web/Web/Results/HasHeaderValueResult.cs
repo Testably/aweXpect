@@ -47,7 +47,7 @@ public class HasHeaderValueResult<TType, TThat>
 	/// </remarks>
 	public StringEqualityTypeResult<TType, TThat> WithValue(string? expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		_expectationBuilder.And("").AddConstraint((expected, _headerValueAccessor, options),
 			static (state, it, grammars) => new WithHeaderValueConstraint(
 				it, grammars, state.expected, state._headerValueAccessor, state.options));
@@ -66,7 +66,7 @@ public class HasHeaderValueResult<TType, TThat>
 	public StringCollectionMatchResult<TType, TThat> WithValues(IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions());
 		_expectationBuilder.And("").AddConstraint(
 			(expected: expected.ToArray(), _headerValueAccessor, options, matchOptions),
@@ -148,7 +148,7 @@ public class HasHeaderValueResult<TType, TThat>
 
 			string? headerValue = _headerValues[0];
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(headerValue, expected);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(headerValue, expected, nameof(expected));
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}

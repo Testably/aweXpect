@@ -50,7 +50,7 @@ public static partial class ThatDictionary
 				(ExpectedExpression: expectedExpression, ExpectedEntries: expectedEntries, Options: options,
 					Negated: negated),
 				static (state, it, grammars)
-					=> new IsEqualToConstraint<TCollection, TKey, TValue>(it, grammars,
+					=> new IsEqualToConstraint<TCollection, TKey, TValue>(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(),
 						state.ExpectedEntries,
 						state.Options).InvertIf(state.Negated)),
@@ -79,7 +79,7 @@ public static partial class ThatDictionary
 				(ExpectedExpression: expectedExpression, ExpectedEntries: expectedEntries, Options: options,
 					Negated: negated),
 				static (state, it, grammars)
-					=> new IsEqualToConstraint<TCollection, TKey, TValue>(it, grammars,
+					=> new IsEqualToConstraint<TCollection, TKey, TValue>(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(),
 						state.ExpectedEntries,
 						state.Options).InvertIf(state.Negated)),
@@ -99,14 +99,14 @@ public static partial class ThatDictionary
 	{
 		ICollection<KeyValuePair<TKey, string?>>? expectedEntries =
 			ThrowHelper.EnsureDistinctKeys(expected, negated);
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection?, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint(
 				(ExpectedExpression: expectedExpression, ExpectedEntries: expectedEntries, Options: options,
 					Negated: negated),
 				static (state, it, grammars)
-					=> new IsEqualToConstraint<TCollection, TKey, string?>(it, grammars,
+					=> new IsEqualToConstraint<TCollection, TKey, string?>(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(),
 						state.ExpectedEntries,
 						state.Options).InvertIf(state.Negated)),
@@ -117,6 +117,7 @@ public static partial class ThatDictionary
 	private sealed class IsEqualToConstraint<TDictionary, TKey, TValue>(
 		string it,
 		ExpectationGrammars grammars,
+		string parameterName,
 		string? expectedExpression,
 		IEnumerable<KeyValuePair<TKey, TValue>>? expected,
 		IReadOnlyOptionsSlot<IEqualityOptions<TValue>> options)
@@ -205,7 +206,7 @@ public static partial class ThatDictionary
 		{
 			if (expected is not null)
 			{
-				options.ValidateExpectedItems(expected.Select(pair => pair.Value));
+				options.ValidateExpectedItems(expected.Select(pair => pair.Value), parameterName);
 			}
 		}
 

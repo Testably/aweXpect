@@ -72,11 +72,11 @@ public static partial class MethodFilters
 						(p, _) => argumentType == p.BaseType,
 						() => $"of type {Formatter.Format(typeof(T))}");
 					genericArgumentFilterOptions.AddPredicate(
-						(p, _) => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+						(p, _) => stringEqualityOptions.AreConsideredEqual(p.Name, expected, nameof(expected)),
 						() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
 				},
-				CollectionIndexOptions.Default, new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
+				CollectionIndexOptions.Default, new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
 		}
 
 		/// <summary>
@@ -87,11 +87,11 @@ public static partial class MethodFilters
 				stringEqualityOptions =>
 				{
 					GenericArgumentFilterOptions genericArgumentFilterOptions = new(
-						(p, _) => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+						(p, _) => stringEqualityOptions.AreConsideredEqual(p.Name, expected, nameof(expected)),
 						() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
 				},
-				CollectionIndexOptions.Default, new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
+				CollectionIndexOptions.Default, new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
 
 		private static IFilter<MethodInfo> WithArgumentFilter(GenericArgumentFilterOptions genericArgumentFilterOptions,
 			CollectionIndexOptions collectionIndexOptions)

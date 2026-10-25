@@ -10,7 +10,7 @@ public sealed class StringBlockResultTests
 	[Test]
 	public async Task AsBlock_ShouldInterpretExpectedAsBlock()
 	{
-		StringEqualityOptions options = new("expected");
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		StringEqualityTypeResult<string?, IThat<string?>> sut = CreateSut("foo", options);
 
 		StringBlockResult<string?, IThat<string?>> result = sut.AsBlock();
@@ -52,7 +52,7 @@ public sealed class StringBlockResultTests
 	[Test]
 	public async Task IgnoringCase_ShouldSetOption()
 	{
-		StringEqualityOptions options = new("expected");
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		StringBlockResult<string?, IThat<string?>> sut = CreateSut("foo", options).AsBlock();
 
 		StringBlockResult<string?, IThat<string?>> result = sut.IgnoringCase();
@@ -64,7 +64,7 @@ public sealed class StringBlockResultTests
 	[Test]
 	public async Task Using_ShouldSetComparer()
 	{
-		StringEqualityOptions options = new("expected");
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		StringBlockResult<string?, IThat<string?>> sut = CreateSut("foo", options).AsBlock();
 
 		StringBlockResult<string?, IThat<string?>> result = sut.Using(StringComparer.OrdinalIgnoreCase);
@@ -74,13 +74,13 @@ public sealed class StringBlockResultTests
 	}
 
 	private static StringEqualityTypeResult<string?, IThat<string?>> CreateSut(string? subject,
-		StringEqualityOptions options)
+		OptionsSlot<StringEqualityOptions> options)
 	{
 #pragma warning disable aweXpect0001
 		IThat<string?> source = That(subject);
 #pragma warning restore aweXpect0001
 		return new StringEqualityTypeResult<string?, IThat<string?>>(source.Get().ExpectationBuilder.AddConstraint((it, _) => new DummyConstraint(it)),
 			source,
-			new OptionsSlot<StringEqualityOptions>(options));
+			options);
 	}
 }

@@ -27,8 +27,7 @@ public partial class StringEqualityOptions
 	/// </exception>
 	public StringEqualityOptions AsBlock()
 	{
-		SetMatchType(BlockMatch, nameof(AsBlock));
-		return this;
+		return WithMatchType(BlockMatch, nameof(AsBlock), BlockMatchTypeIndex);
 	}
 
 	private sealed class BlockMatchType : BuiltInMatchType

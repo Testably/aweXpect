@@ -9,7 +9,7 @@ public sealed class StringCollectionMatchResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForCollectionMatchOptions()
 	{
-		StringEqualityOptions options = new("expected");
+		StringEqualityOptions options = StringEqualityOptions.Default;
 		OptionsSlot<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
 		StringCollectionMatchResult<string[], IThat<string[]>> sut =
 			CreateSut(Array.Empty<string>(), options, collectionMatchOptions);
@@ -21,7 +21,7 @@ public sealed class StringCollectionMatchResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForStringEqualityOptions()
 	{
-		StringEqualityOptions options = new("expected");
+		StringEqualityOptions options = StringEqualityOptions.Default;
 		OptionsSlot<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
 		StringCollectionMatchResult<string[], IThat<string[]>> sut =
 			CreateSut(Array.Empty<string>(), options, collectionMatchOptions);

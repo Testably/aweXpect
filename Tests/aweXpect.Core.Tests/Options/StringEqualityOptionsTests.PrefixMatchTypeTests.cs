@@ -15,10 +15,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_ShouldCompareThePrefix(string actual, string expected,
 			bool expectMatch)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix();
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await sut.AreConsideredEqual(actual, expected, "expected");
 
 			await That(result).IsEqualTo(expectMatch);
 		}
@@ -29,10 +29,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_WhenAComparerIsUsed_ShouldCompareThePrefixWithIt(string actual,
 			bool expectMatch)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix().Using(StringComparer.OrdinalIgnoreCase);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix().Using(StringComparer.OrdinalIgnoreCase);
 
-			bool result = await sut.AreConsideredEqual(actual, "FOO");
+			bool result = await sut.AreConsideredEqual(actual, "FOO", "expected");
 
 			await That(result).IsEqualTo(expectMatch)
 				.Because("a subject shorter than the prefix cannot start with it");
@@ -43,10 +43,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(true, true)]
 		public async Task AreConsideredEqual_WhenCaseIsIgnored_ShouldIgnoreCase(bool ignoreCase, bool expectMatch)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix().IgnoringCase(ignoreCase);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix().IgnoringCase(ignoreCase);
 
-			bool result = await sut.AreConsideredEqual("FOObar", "foo");
+			bool result = await sut.AreConsideredEqual("FOObar", "foo", "expected");
 
 			await That(result).IsEqualTo(expectMatch);
 		}
@@ -54,10 +54,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenExpectedIsEmpty_ShouldThrowArgumentException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix();
 
-			async Task Act() => await sut.AreConsideredEqual("foo", "");
+			async Task Act() => await sut.AreConsideredEqual("foo", "", "expected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix().And
@@ -70,10 +70,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(null)]
 		public async Task AreConsideredEqual_WhenExpectedIsNull_ShouldThrowArgumentNullException(string? actual)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix();
 
-			async Task Act() => await sut.AreConsideredEqual(actual, (string?)null);
+			async Task Act() => await sut.AreConsideredEqual(actual, (string?)null, "expected");
 
 			await That(Act).Throws<ArgumentNullException>()
 				.WithParamName("expected").And
@@ -84,13 +84,13 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenExpectedIsOnlyWhiteSpace_ShouldThrowBeforeTheTaskIsAwaited()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix().IgnoringLeadingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix().IgnoringLeadingWhiteSpace();
 
 #if NET8_0_OR_GREATER
-			void Act() => _ = sut.AreConsideredEqual("foo", " ").AsTask();
+			void Act() => _ = sut.AreConsideredEqual("foo", " ", "expected").AsTask();
 #else
-			void Act() => _ = sut.AreConsideredEqual("foo", " ");
+			void Act() => _ = sut.AreConsideredEqual("foo", " ", "expected");
 #endif
 
 			await That(Act).Throws<ArgumentException>()
@@ -102,10 +102,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenExpectedIsOnlyWhiteSpaceThatIsIgnored_ShouldThrowArgumentException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix().IgnoringLeadingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix().IgnoringLeadingWhiteSpace();
 
-			async Task Act() => await sut.AreConsideredEqual(" foo", " ");
+			async Task Act() => await sut.AreConsideredEqual(" foo", " ", "expected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix().And
@@ -116,10 +116,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenExpectedIsOnlyWhiteSpaceThatIsNotIgnored_ShouldCompareIt()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix();
 
-			bool result = await sut.AreConsideredEqual(" foo", " ");
+			bool result = await sut.AreConsideredEqual(" foo", " ", "expected");
 
 			await That(result).IsTrue()
 				.Because("whitespace that is not ignored is a regular prefix");
@@ -128,10 +128,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenIndentationIsIgnored_ShouldIgnoreTheIndentationOfEachLine()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix().IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix().IgnoringIndentation();
 
-			bool result = await sut.AreConsideredEqual("  foo\r\n    bar\nbaz", "foo\n  bar");
+			bool result = await sut.AreConsideredEqual("  foo\r\n    bar\nbaz", "foo\n  bar", "expected");
 
 			await That(result).IsTrue();
 		}
@@ -142,10 +142,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_WhenLeadingWhiteSpaceIsIgnored_ShouldIgnoreIt(
 			bool ignoreLeadingWhiteSpace, bool expectMatch)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix().IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix().IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace);
 
-			bool result = await sut.AreConsideredEqual("  foobar", " foo");
+			bool result = await sut.AreConsideredEqual("  foobar", " foo", "expected");
 
 			await That(result).IsEqualTo(expectMatch);
 		}
@@ -156,10 +156,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_WhenNewlineStyleIsIgnored_ShouldIgnoreIt(
 			bool ignoreNewlineStyle, bool expectMatch)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix().IgnoringNewlineStyle(ignoreNewlineStyle);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix().IgnoringNewlineStyle(ignoreNewlineStyle);
 
-			bool result = await sut.AreConsideredEqual("foo\r\nbar\r\nbaz", "foo\nbar");
+			bool result = await sut.AreConsideredEqual("foo\r\nbar\r\nbaz", "foo\nbar", "expected");
 
 			await That(result).IsEqualTo(expectMatch);
 		}
@@ -167,10 +167,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenSubjectIsNull_ShouldReturnFalse()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix();
 
-			bool result = await sut.AreConsideredEqual(null, "foo");
+			bool result = await sut.AreConsideredEqual(null, "foo", "expected");
 
 			await That(result).IsFalse();
 		}
@@ -181,10 +181,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_WhenTrailingWhiteSpaceIsIgnored_ShouldIgnoreItOnTheExpectedValue(
 			bool ignoreTrailingWhiteSpace, bool expectMatch)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix().IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix().IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace);
 
-			bool result = await sut.AreConsideredEqual("foo", "foo ");
+			bool result = await sut.AreConsideredEqual("foo", "foo ", "expected");
 
 			await That(result).IsEqualTo(expectMatch);
 		}
@@ -201,10 +201,10 @@ public sealed partial class StringEqualityOptionsTests
 			AreConsideredEqual_WhenTrailingWhiteSpaceIsIgnored_ShouldOnlyIgnoreTheWhiteSpaceOfThePrefixAtTheEndOfTheSubject(
 				string actual, string expected, bool expectMatch)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix().IgnoringTrailingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix().IgnoringTrailingWhiteSpace();
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await sut.AreConsideredEqual(actual, expected, "expected");
 
 			await That(result).IsEqualTo(expectMatch)
 				.Because("the whitespace at the end of the prefix is only optional where it reaches the end of the subject");
@@ -213,10 +213,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WithParameterName_WhenExpectedIsEmpty_ShouldNameIt()
 		{
-			StringEqualityOptions sut = new("unexpected");
-			sut.AsPrefix().IgnoringLeadingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix().IgnoringLeadingWhiteSpace();
 
-			async Task Act() => await sut.AreConsideredEqual("foo", " ");
+			async Task Act() => await sut.AreConsideredEqual("foo", " ", "unexpected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("The 'unexpected' prefix cannot be empty.").AsPrefix().And
@@ -227,10 +227,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WithParameterName_WhenExpectedIsNull_ShouldNameIt()
 		{
-			StringEqualityOptions sut = new("unexpected");
-			sut.AsPrefix();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix();
 
-			async Task Act() => await sut.AreConsideredEqual("foo", (string?)null);
+			async Task Act() => await sut.AreConsideredEqual("foo", (string?)null, "unexpected");
 
 			await That(Act).Throws<ArgumentNullException>()
 				.WithParamName("unexpected").And
@@ -239,22 +239,23 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
-		public async Task AsPrefix_ShouldReturnSameInstance()
+		public async Task AsPrefix_ShouldNotChangeTheOriginalOptions()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			StringEqualityOptions result = sut.AsPrefix();
 
-			await That(result).IsSameAs(sut);
+			await That(result).IsNotSameAs(sut);
+			await That(sut.ComparesByOrdinalEquality).IsTrue();
 		}
 
 		[Test]
 		public async Task CountOccurrences_WhenExpectedIsEmptyAfterTheIndentationIsIgnored_ShouldThrowArgumentException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix().IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix().IgnoringIndentation();
 
-			async Task Act() => await sut.CountOccurrences("some text", " ");
+			async Task Act() => await sut.CountOccurrences("some text", " ", "expected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix().And
@@ -269,8 +270,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(ExpectationGrammars.Negated, "not starting with \"foo\"")]
 		public async Task GetExpectation_ShouldDescribeThePrefix(ExpectationGrammars grammars, string expected)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix();
 
 			string result = sut.GetExpectation("foo", grammars);
 
@@ -280,8 +281,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExpectation_ShouldRenderTheOptions()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix().IgnoringCase().IgnoringLeadingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix().IgnoringCase().IgnoringLeadingWhiteSpace();
 
 			string result = sut.GetExpectation("foo", ExpectationGrammars.Active);
 
@@ -292,8 +293,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenSubjectIsShorter_ShouldEscapeTheMissingText()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo", "foo\n\"bar\"", MatchResult.NoMatch);
 
@@ -312,8 +313,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task ToString_ShouldIncludeTheMatchTypeAndTheOptions(bool ignoreCase,
 			bool ignoreLeadingWhiteSpace, string expected)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix().IgnoringCase(ignoreCase).IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix().IgnoringCase(ignoreCase).IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace);
 
 			string result = sut.ToString();
 

@@ -26,7 +26,7 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> DoNotDependOn(
 		this IThat<IEnumerable<Assembly?>?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Assembly?>>((unexpected, options),
 					static (s, it, grammars)
@@ -45,7 +45,7 @@ public static partial class ThatAssemblies
 		DoNotDependOn(
 			this IThat<IAsyncEnumerable<Assembly?>?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((unexpected, options),
@@ -79,7 +79,7 @@ public static partial class ThatAssemblies
 			return await SetAsyncValue(actual, context, async assembly =>
 				assembly == null ||
 				!await assembly.GetReferencedAssemblyNames().AnyAsync(dep =>
-					EvaluationOptions.AreConsideredEqual(dep.Name, unexpected)), cancellationToken);
+					EvaluationOptions.AreConsideredEqual(dep.Name, unexpected, nameof(unexpected))), cancellationToken);
 		}
 #endif
 
@@ -90,7 +90,7 @@ public static partial class ThatAssemblies
 			return await SetValue(actual, context, async assembly =>
 				assembly == null ||
 				!await assembly.GetReferencedAssemblyNames().AnyAsync(dep =>
-					EvaluationOptions.AreConsideredEqual(dep.Name, unexpected)), cancellationToken);
+					EvaluationOptions.AreConsideredEqual(dep.Name, unexpected, nameof(unexpected))), cancellationToken);
 		}
 
 		/// <inheritdoc />

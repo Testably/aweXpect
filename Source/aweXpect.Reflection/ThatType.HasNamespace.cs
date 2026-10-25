@@ -22,10 +22,10 @@ public static partial class ThatType
 	public static StringEqualityTypeResult<Type, IThat<Type?>> HasNamespace(
 		this IThat<Type?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (s, it, grammars)
-				=> new HasNamespaceConstraint(it, grammars, s.Expected, s.Options)),
+				=> new HasNamespaceConstraint(it, grammars, s.Expected, "expected", s.Options)),
 			subject,
 			options);
 	}
@@ -42,10 +42,10 @@ public static partial class ThatType
 	public static StringEqualityTypeResult<Type, IThat<Type?>> DoesNotHaveNamespace(
 		this IThat<Type?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (s, it, grammars)
-				=> new HasNamespaceConstraint(it, grammars, s.Unexpected, s.Options).Invert()),
+				=> new HasNamespaceConstraint(it, grammars, s.Unexpected, "unexpected", s.Options).Invert()),
 			subject,
 			options);
 	}
@@ -54,6 +54,7 @@ public static partial class ThatType
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
+		string parameterName,
 		OptionsSlot<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IAsyncContextConstraint<Type?>
@@ -66,7 +67,7 @@ public static partial class ThatType
 		{
 			Actual = actual;
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.Namespace, expected);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.Namespace, expected, parameterName);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}

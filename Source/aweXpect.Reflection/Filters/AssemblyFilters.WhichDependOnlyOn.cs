@@ -37,6 +37,6 @@ public static partial class AssemblyFilters
 				() => allowed.Length == 0
 					? " which have dependencies only on no assemblies"
 					: $" which have dependencies only on assemblies {string.Join(" or ", allowed.Select(expected => options.GetExpectation(expected, ExpectationGrammars.None)))}"),
-			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
+			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

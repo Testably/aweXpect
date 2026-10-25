@@ -1774,13 +1774,13 @@ namespace aweXpect.Options
     {
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.SignalerPredicateOptions<TParameter>> WithPredicate<TParameter>(this aweXpect.Core.OptionsSlot<aweXpect.Options.SignalerPredicateOptions<TParameter>> slot, System.Func<TParameter, bool> predicate, string predicateExpression) { }
     }
-    public class StringEqualityOptions : aweXpect.Core.IEqualityEvaluator<string?>, aweXpect.Core.IEqualityOptions<string?>
+    public sealed class StringEqualityOptions : aweXpect.Core.IEqualityEvaluator<string?>, aweXpect.Core.IEqualityOptions<string?>
     {
-        public StringEqualityOptions(string parameterName) { }
         public bool ComparesByOrdinalEquality { get; }
         public bool InspectsSubject { get; }
+        public static aweXpect.Options.StringEqualityOptions Default { get; }
         public void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
-        public System.Threading.Tasks.ValueTask<bool> AreConsideredEqual<TExpected>(string? actual, TExpected expected) { }
+        public System.Threading.Tasks.ValueTask<bool> AreConsideredEqual(string? actual, string? expected, string parameterName) { }
         public aweXpect.Options.StringEqualityOptions AsBlock() { }
         public aweXpect.Options.StringEqualityOptions AsPrefix() { }
         public aweXpect.Options.StringEqualityOptions AsRegex() { }
@@ -1788,8 +1788,8 @@ namespace aweXpect.Options
         public aweXpect.Options.StringEqualityOptions AsSuffix() { }
         public aweXpect.Options.StringEqualityOptions AsWildcard() { }
         public aweXpect.Options.StringEqualityOptions Containing() { }
-        public System.Threading.Tasks.ValueTask<int> CountOccurrences(string actual, string expected) { }
-        public System.Threading.Tasks.ValueTask<int> CountOccurrences(string actual, string expected, int maximum) { }
+        public System.Threading.Tasks.ValueTask<int> CountOccurrences(string actual, string expected, int maximum, string parameterName) { }
+        public System.Threading.Tasks.ValueTask<int> CountOccurrences(string actual, string expected, string parameterName) { }
         public aweXpect.Options.StringEqualityOptions ForEvaluation(aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
         public string FormatExpectedItem(string? expected) { }
         public string GetExpectation(string? expected, aweXpect.Core.ExpectationGrammars grammars) { }
@@ -1801,12 +1801,12 @@ namespace aweXpect.Options
         public aweXpect.Options.StringEqualityOptions IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) { }
         public aweXpect.Options.StringEqualityOptions IgnoringNewlineStyle(bool ignoreNewlineStyle = true) { }
         public aweXpect.Options.StringEqualityOptions IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) { }
-        public System.Threading.Tasks.ValueTask<aweXpect.Core.MatchResult> MatchWithExplanation(string? actual, string? expected) { }
+        public System.Threading.Tasks.ValueTask<aweXpect.Core.MatchResult> MatchWithExplanation(string? actual, string? expected, string parameterName) { }
         public aweXpect.Options.StringEqualityOptions NormalizingWhiteSpace(bool normalizeWhiteSpace = true) { }
         public aweXpect.Options.StringEqualityOptions SetMatchType(aweXpect.Core.StringMatchType matchType, string optionName) { }
         public override string ToString() { }
         public aweXpect.Options.StringEqualityOptions Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
-        public void ValidateExpected(string? expected) { }
+        public void ValidateExpected(string? expected, string parameterName) { }
     }
     public static class StringEqualityOptionsSlotExtensions
     {

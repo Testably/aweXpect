@@ -42,12 +42,12 @@ public static partial class ThatHttpRequestMessage
 		HasRequestUri(this IThat<HttpRequestMessage?> subject, Uri expected)
 	{
 		ThatUri.ThrowIfNotAbsolute(expected, nameof(expected));
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
 				.AddConstraint((expected: expected.ToString(), options), static (state, it, grammars) =>
-					new HasRequestUriConstraint(it, grammars, state.expected, state.options)),
+					new HasRequestUriConstraint(it, grammars, state.expected, "expected", state.options)),
 			subject,
 			options);
 	}
@@ -70,12 +70,12 @@ public static partial class ThatHttpRequestMessage
 		DoesNotHaveRequestUri(this IThat<HttpRequestMessage?> subject, Uri unexpected)
 	{
 		ThatUri.ThrowIfNotAbsolute(unexpected, nameof(unexpected));
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
 				.AddConstraint((unexpected: unexpected.ToString(), options), static (state, it, grammars) =>
-					new HasRequestUriConstraint(it, grammars, state.unexpected, state.options).Invert()),
+					new HasRequestUriConstraint(it, grammars, state.unexpected, "unexpected", state.options).Invert()),
 			subject,
 			options);
 	}
@@ -84,6 +84,7 @@ public static partial class ThatHttpRequestMessage
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
+		string parameterName,
 		OptionsSlot<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<HttpRequestMessage>(it, grammars),
 			IAsyncContextConstraint<HttpRequestMessage>
@@ -110,7 +111,7 @@ public static partial class ThatHttpRequestMessage
 				return this;
 			}
 
-			_matchResult = await _evaluationOptions.MatchWithExplanation(_requestUri, expected);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(_requestUri, expected, parameterName);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}

@@ -9,7 +9,7 @@ public sealed class StringEqualityOptionsExtensionsTests
 	[Test]
 	public async Task WhenTheResultCopiesOnOption_ShouldKeepTheMatchTypeSetSoFar()
 	{
-		CopyingResult sut = new(new StringEqualityOptions("expected"));
+		CopyingResult sut = new(StringEqualityOptions.Default);
 
 		void Act() => sut.AsPrefix().AsSuffix();
 
@@ -20,7 +20,7 @@ public sealed class StringEqualityOptionsExtensionsTests
 	[Test]
 	public async Task WhenTheResultCopiesOnOption_ShouldReplaceARepeatedOptionOnTheCopy()
 	{
-		CopyingResult sut = new(new StringEqualityOptions("expected"));
+		CopyingResult sut = new(StringEqualityOptions.Default);
 		CopyingResult ignoringCase = sut.IgnoringCase();
 
 		CopyingResult result = ignoringCase.IgnoringCase(false);
@@ -49,7 +49,7 @@ public sealed class StringEqualityOptionsExtensionsTests
 	[Arguments("Using")]
 	public async Task WhenTheResultCopiesOnOption_ShouldSetTheOptionOnACopy(string option)
 	{
-		CopyingResult sut = new(new StringEqualityOptions("expected"));
+		CopyingResult sut = new(StringEqualityOptions.Default);
 		string unchangedOptions = sut.Options.ToString();
 
 		CopyingResult result = Apply(sut, option);
@@ -76,7 +76,7 @@ public sealed class StringEqualityOptionsExtensionsTests
 	[Arguments("Using")]
 	public async Task WhenTheResultDoesNotCopyOnOption_ShouldSetTheOptionInPlace(string option)
 	{
-		InPlaceResult sut = new(new StringEqualityOptions("expected"));
+		InPlaceResult sut = new(StringEqualityOptions.Default);
 		OptionsSlot<StringEqualityOptions> slot = sut.Options;
 		string unchangedOptions = slot.Value.ToString();
 

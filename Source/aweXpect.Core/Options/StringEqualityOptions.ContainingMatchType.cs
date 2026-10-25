@@ -15,8 +15,7 @@ public partial class StringEqualityOptions
 	/// <exception cref="InvalidOperationException">Another match type is already specified.</exception>
 	public StringEqualityOptions Containing()
 	{
-		SetMatchType(ContainingMatch, nameof(Containing));
-		return this;
+		return WithMatchType(ContainingMatch, nameof(Containing), ContainingMatchTypeIndex);
 	}
 
 	private sealed class ContainingMatchType : BuiltInMatchType

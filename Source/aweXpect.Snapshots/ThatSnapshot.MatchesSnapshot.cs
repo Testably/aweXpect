@@ -828,7 +828,7 @@ public static partial class ThatSnapshot
 		Func<T, Func<FormattedValue, ValueFormatting>?, string> format)
 		: SnapshotConstraint<T>(it, grammars, settings, snapshotOptions)
 	{
-		private readonly StringEqualityOptions _options = new StringEqualityOptions("snapshot").IgnoringNewlineStyle();
+		private readonly StringEqualityOptions _options = StringEqualityOptions.Default.IgnoringNewlineStyle();
 		private InsufficientExecutionStackException? _formatError;
 		private MatchResult _matchResult;
 		private RegexMatchTimeoutException? _ruleTimeout;
@@ -886,7 +886,7 @@ public static partial class ThatSnapshot
 
 		protected override async ValueTask<bool> MatchesByDefaultAsync(byte[] snapshot)
 		{
-			_matchResult = await _options.MatchWithExplanation(_value, SnapshotText);
+			_matchResult = await _options.MatchWithExplanation(_value, SnapshotText, "snapshot");
 			return _matchResult.IsMatch;
 		}
 

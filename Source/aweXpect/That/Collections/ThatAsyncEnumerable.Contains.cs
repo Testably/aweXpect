@@ -101,14 +101,14 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeCountResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, Quantifier: quantifier, Negated: negated),
 				static (state, it, grammars) =>
 					new AsyncContainConstraint<string?>(it, grammars,
-						new EqualStringItem(state.Options.Value, state.Expected),
+						new EqualStringItem(state.Options, state.Expected, state.Negated ? "unexpected" : "expected"),
 						state.Quantifier).InvertIf(state.Negated)),
 			subject,
 			quantifier,
@@ -157,7 +157,7 @@ public static partial class ThatAsyncEnumerable
 				(ExpectedExpression: expectedExpression, ExpectedValues: expectedValues, Options: options,
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
-					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
+					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
 						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
@@ -188,7 +188,7 @@ public static partial class ThatAsyncEnumerable
 				(ExpectedExpression: expectedExpression, ExpectedValues: expectedValues, Options: options,
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
-					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
+					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
 						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
@@ -207,7 +207,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
@@ -215,7 +215,7 @@ public static partial class ThatAsyncEnumerable
 				(ExpectedExpression: expectedExpression, ExpectedValues: expectedValues, Options: options,
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
-					new AsyncIsEqualToConstraint<string?, string?>(it, grammars,
+					new AsyncIsEqualToConstraint<string?, string?>(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
 						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,

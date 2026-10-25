@@ -23,11 +23,11 @@ public static partial class ThatMember
 		this IThat<TMember?> subject, string expected)
 		where TMember : MemberInfo
 	{
-		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<TMember, IThat<TMember?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (s, it, grammars)
-				=> new HasNameConstraint<TMember?>(it, grammars, s.Expected, s.Options)),
+				=> new HasNameConstraint<TMember?>(it, grammars, s.Expected, "expected", s.Options)),
 			subject,
 			options);
 	}
@@ -36,6 +36,7 @@ public static partial class ThatMember
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
+		string parameterName,
 		OptionsSlot<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<TMember>(it, grammars),
 			IAsyncContextConstraint<TMember>
@@ -49,7 +50,7 @@ public static partial class ThatMember
 		{
 			Actual = actual;
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.Name, expected);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.Name, expected, parameterName);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}

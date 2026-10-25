@@ -57,6 +57,11 @@ public sealed class StringPropertyComparison
 	internal string? Expected { get; }
 
 	/// <summary>
+	///     The name of the parameter of the operator that received the <see cref="Expected" /> value.
+	/// </summary>
+	private string ParameterName => IsNegated ? "unexpected" : "expected";
+
+	/// <summary>
 	///     Flag indicating that the operator is a negated one, e.g. <c>NotStartingWith(…)</c>.
 	/// </summary>
 	/// <remarks>
@@ -101,7 +106,7 @@ public sealed class StringPropertyComparison
 	/// <exception cref="System.ArgumentException">
 	///     The expected value cannot be used with the options, e.g. an invalid regex pattern.
 	/// </exception>
-	public void ValidateExpected() => Options.Value.ValidateExpected(Expected);
+	public void ValidateExpected() => Options.Value.ValidateExpected(Expected, ParameterName);
 
 	/// <summary>
 	///     Evaluates the comparison against the <paramref name="actual" /> value of the property in the
@@ -121,7 +126,7 @@ public sealed class StringPropertyComparison
 		StringEqualityOptions options = Options.Value.ForEvaluation(context, cancellationToken);
 		if (Quantifier is null)
 		{
-			MatchResult matchResult = await options.MatchWithExplanation(actual, Expected);
+			MatchResult matchResult = await options.MatchWithExplanation(actual, Expected, ParameterName);
 			Outcome outcome = matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			if (actual is null && Options.Value.InspectsSubject)
 			{
@@ -138,7 +143,7 @@ public sealed class StringPropertyComparison
 		}
 
 		(int Count, bool IsFinished) occurrences =
-			await StringOccurrences.Count(options, actual, Expected!, Quantifier.Value);
+			await StringOccurrences.Count(options, actual, Expected!, Quantifier.Value, ParameterName);
 		Outcome occurrenceOutcome = Quantifier.Value.Check(occurrences.Count, true) == true ? Outcome.Success : Outcome.Failure;
 		return new StringPropertyOutcome(this, occurrenceOutcome, actual, options, default, occurrences);
 	}
