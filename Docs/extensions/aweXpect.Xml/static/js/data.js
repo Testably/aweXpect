@@ -720,6 +720,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
         "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
+      },
+      {
+        "sha": "6b630d2bbfd415c18182973bb88a11e7008fb849",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
+        "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
       }
     ],
     "labels": [
@@ -842,7 +848,8 @@ window.BENCHMARK_DATA = {
       "584ec3ed",
       "e41a7134",
       "c65f55ef",
-      "8a57efc7"
+      "8a57efc7",
+      "6b630d2b"
     ],
     "datasets": [
       {
@@ -968,7 +975,8 @@ window.BENCHMARK_DATA = {
           589.0005138397216,
           388.9891599973043,
           598.1428965159824,
-          757.722552172343
+          757.722552172343,
+          737.5256697972616
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,6 +1100,7 @@ window.BENCHMARK_DATA = {
           1120,
           1120,
           1120,
+          1152,
           1152,
           1152,
           1152,
@@ -1233,7 +1242,8 @@ window.BENCHMARK_DATA = {
           579.7182258605957,
           324.83583952585855,
           579.3780968348185,
-          734.6008099147251
+          734.6008099147251,
+          706.4235350063869
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1245,6 +1255,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2098,6 +2109,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
         "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
+      },
+      {
+        "sha": "6b630d2bbfd415c18182973bb88a11e7008fb849",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
+        "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
       }
     ],
     "labels": [
@@ -2220,7 +2237,8 @@ window.BENCHMARK_DATA = {
       "584ec3ed",
       "e41a7134",
       "c65f55ef",
-      "8a57efc7"
+      "8a57efc7",
+      "6b630d2b"
     ],
     "datasets": [
       {
@@ -2346,7 +2364,8 @@ window.BENCHMARK_DATA = {
           3324.0927320627065,
           2461.9339517446665,
           3305.900071951059,
-          4530.398605053241
+          4530.398605053241,
+          4749.574486796061
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2470,6 +2489,7 @@ window.BENCHMARK_DATA = {
           24119,
           24119,
           24119,
+          24320,
           24320,
           24320,
           24320,
@@ -2611,7 +2631,8 @@ window.BENCHMARK_DATA = {
           4073.7570576985677,
           2665.2546450297036,
           3713.931270345052,
-          5409.940688578287
+          5409.940688578287,
+          5302.561442057292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2623,6 +2644,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -3416,6 +3438,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
         "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
+      },
+      {
+        "sha": "6b630d2bbfd415c18182973bb88a11e7008fb849",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
+        "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
       }
     ],
     "labels": [
@@ -3528,7 +3556,8 @@ window.BENCHMARK_DATA = {
       "584ec3ed",
       "e41a7134",
       "c65f55ef",
-      "8a57efc7"
+      "8a57efc7",
+      "6b630d2b"
     ],
     "datasets": [
       {
@@ -3644,7 +3673,8 @@ window.BENCHMARK_DATA = {
           2054.072447967529,
           1328.896044594901,
           2114.5056076049805,
-          2694.736139043172
+          2694.736139043172,
+          2760.3796997070312
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3765,6 +3795,7 @@ window.BENCHMARK_DATA = {
           12856,
           12780,
           12780,
+          12856,
           12856
         ],
         "borderColor": "#63A2AC",
@@ -3889,7 +3920,8 @@ window.BENCHMARK_DATA = {
           2586.336384993333,
           1799.9712416330974,
           2871.812665666853,
-          3700.7730458577475
+          3700.7730458577475,
+          3626.562834603446
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3901,6 +3933,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -4684,6 +4717,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
         "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
+      },
+      {
+        "sha": "6b630d2bbfd415c18182973bb88a11e7008fb849",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
+        "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
       }
     ],
     "labels": [
@@ -4796,7 +4835,8 @@ window.BENCHMARK_DATA = {
       "584ec3ed",
       "e41a7134",
       "c65f55ef",
-      "8a57efc7"
+      "8a57efc7",
+      "6b630d2b"
     ],
     "datasets": [
       {
@@ -4912,7 +4952,8 @@ window.BENCHMARK_DATA = {
           10148.673551286969,
           7054.474708557129,
           10547.197037833077,
-          13855.930011494955
+          13855.930011494955,
+          14609.016122436524
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5033,6 +5074,7 @@ window.BENCHMARK_DATA = {
           25568,
           25494,
           25494,
+          25568,
           25568
         ],
         "borderColor": "#63A2AC",
@@ -5157,7 +5199,8 @@ window.BENCHMARK_DATA = {
           237144.49591471354,
           158451.8999674479,
           243926.90266927084,
-          379323.70234375
+          379323.70234375,
+          378302.3233468192
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5271,6 +5314,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544329,
+          544335,
           544335,
           544335,
           544335,
