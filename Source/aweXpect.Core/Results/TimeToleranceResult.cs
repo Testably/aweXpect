@@ -12,10 +12,10 @@ namespace aweXpect.Results;
 public class TimeToleranceResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	TimeTolerance options)
+	OptionsSlot<TimeTolerance> options)
 	: AndOrResult<TType, TThat, TimeToleranceResult<TType, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<TimeTolerance>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	TimeTolerance IOptionsProvider<TimeTolerance>.Options => options;
+	OptionsSlot<TimeTolerance> IOptionsProvider<TimeTolerance>.Options => options;
 }

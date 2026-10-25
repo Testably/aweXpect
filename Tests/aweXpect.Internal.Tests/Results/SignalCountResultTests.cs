@@ -15,7 +15,7 @@ public sealed class SignalCountResultTests
 		SignalCountResult sut = CreateSut(options);
 
 		await That(sut).Is<IOptionsProvider<SignalerOptions>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	private static SignalCountResult CreateSut(SignalerOptions options)
@@ -25,6 +25,6 @@ public sealed class SignalCountResultTests
 		IThat<Signaler> source = That(signaler);
 #pragma warning restore aweXpect0001
 		return new SignalCountResult(source.Get().ExpectationBuilder,
-			source, new Quantifier(), options);
+			source, new OptionsSlot<Quantifier>(new Quantifier()), new OptionsSlot<SignalerOptions>(options));
 	}
 }

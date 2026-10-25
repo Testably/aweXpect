@@ -17,7 +17,7 @@ public sealed class NullableNumberToleranceResultTests
 		NullableNumberToleranceResult<int, IThat<int>> sut = CreateSut(2, options);
 
 		await That(sut).Is<IOptionsProvider<NumberTolerance<int>>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	[Test]
@@ -41,7 +41,7 @@ public sealed class NullableNumberToleranceResultTests
 		NullableNumberToleranceResult<int, IThat<int>>.WithinResult result = sut.Within(1);
 
 		await That(result).Is<IOptionsProvider<IRelativeToleranceOptions<int>>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	[Test]
@@ -68,6 +68,6 @@ public sealed class NullableNumberToleranceResultTests
 		return new NullableNumberToleranceResult<T, IThat<T>>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			options);
+			new OptionsSlot<NumberTolerance<T>>(options));
 	}
 }

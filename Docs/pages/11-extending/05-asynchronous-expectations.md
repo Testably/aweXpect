@@ -51,9 +51,9 @@ finish within …", and a cancellation by the caller leaves it inconclusive.
 ## Repeated checks
 
 An expectation that returns a `RepeatedCheckResult<TType, TThat>` lets the caller wait for a condition with
-`.Within(timeout)` and `.CheckEvery(interval)`, like `Satisfies` does. Pass the same `RepeatedCheckOptions` to the
-result and to the constraint, and make the check with `CheckRepeatedly`, which honours the options. For a player that
-starts playing asynchronously:
+`.Within(timeout)` and `.CheckEvery(interval)`, like `Satisfies` does. Pass the same slot of `RepeatedCheckOptions` to
+the result and to the constraint, and make the check with `CheckRepeatedly` of its value, which honours the options. For
+a player that starts playing asynchronously:
 
 ```csharp
 public class Player
@@ -67,7 +67,7 @@ public class Player
 ```csharp
 public static RepeatedCheckResult<Player, IThat<Player?>> IsPlaying(this IThat<Player?> subject)
 {
-    RepeatedCheckOptions options = new();
+    OptionsSlot<RepeatedCheckOptions> options = new(new RepeatedCheckOptions());
     return new RepeatedCheckResult<Player, IThat<Player?>>(subject.Get().ExpectationBuilder
             .AddConstraint((it, grammars) => new IsPlayingConstraint(it, grammars, options)),
         subject,
@@ -77,7 +77,7 @@ public static RepeatedCheckResult<Player, IThat<Player?>> IsPlaying(this IThat<P
 private sealed class IsPlayingConstraint(
     string it,
     ExpectationGrammars grammars,
-    RepeatedCheckOptions options)
+    OptionsSlot<RepeatedCheckOptions> options)
     : ConstraintResult.WithNotNullValue<Player>(it, grammars),
         IAsyncContextConstraint<Player?>
 {
@@ -87,7 +87,7 @@ private sealed class IsPlayingConstraint(
         Actual = actual;
         if (actual is not null)
         {
-            Outcome outcome = await options.CheckRepeatedly(_ =>
+            Outcome outcome = await options.Value.CheckRepeatedly(_ =>
             {
                 bool isPlaying = actual.IsPlaying;
                 Outcome = isPlaying ? Outcome.Success : Outcome.Failure;

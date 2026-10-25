@@ -22,7 +22,7 @@ public static partial class ThatType
 	public static StringEqualityTypeResult<Type, IThat<Type?>> HasNamespace(
 		this IThat<Type?> subject, string expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
 		return new StringEqualityTypeResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (s, it, grammars)
 				=> new HasNamespaceConstraint(it, grammars, s.Expected, s.Options)),
@@ -42,7 +42,7 @@ public static partial class ThatType
 	public static StringEqualityTypeResult<Type, IThat<Type?>> DoesNotHaveNamespace(
 		this IThat<Type?> subject, string unexpected)
 	{
-		StringEqualityOptions options = new(nameof(unexpected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
 		return new StringEqualityTypeResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (s, it, grammars)
 				=> new HasNamespaceConstraint(it, grammars, s.Unexpected, s.Options).Invert()),
@@ -54,7 +54,7 @@ public static partial class ThatType
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		StringEqualityOptions options)
+		OptionsSlot<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IAsyncContextConstraint<Type?>
 	{
@@ -65,7 +65,7 @@ public static partial class ThatType
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.Namespace, expected);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -73,13 +73,13 @@ public static partial class ThatType
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options).AppendContexts(contexts);
+			=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has namespace ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("has namespace ").Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It, "namespace", Grammars,
+			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedMemberFailure(It, "namespace", Grammars,
 				Actual?.Namespace, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

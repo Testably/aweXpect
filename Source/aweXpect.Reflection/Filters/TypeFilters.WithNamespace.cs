@@ -15,7 +15,7 @@ public static partial class TypeFilters
 		return new Filtered.Types.StringEqualityResult(@this, options => Filter.Suffix<Type>(
 				type => options.AreConsideredEqual(type.Namespace, expected),
 				() => $"with namespace {options.GetExpectation(expected, ExpectationGrammars.None)} "),
-			new StringEqualityOptions(nameof(expected)));
+			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
 	}
 
 	/// <summary>
@@ -31,6 +31,6 @@ public static partial class TypeFilters
 		return new Filtered.Types.StringEqualityResult(@this, options => Filter.Suffix<Type>(
 				async type => !await options.AreConsideredEqual(type.Namespace, unexpected),
 				() => $"without namespace {options.GetExpectation(unexpected, ExpectationGrammars.None)} "),
-			new StringEqualityOptions(nameof(unexpected)));
+			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(unexpected))));
 	}
 }

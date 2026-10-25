@@ -20,7 +20,7 @@ public sealed class StringOccurrenceCountResultTests
 		await That(result).IsNot<IOptionsProvider<StringEqualityOptions>>()
 			.Because("a block compares the lines on its own, so it offers only the casing and a comparer");
 		await That(result).Is<IOptionsProvider<Quantifier>>()
-			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(quantifier));
 	}
 
 	[Test]
@@ -54,9 +54,9 @@ public sealed class StringOccurrenceCountResultTests
 		StringOccurrenceCountResult<string, IThat<string>> sut = CreateSut("foo", quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
-			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(quantifier));
 		await That(sut).Is<IOptionsProvider<StringEqualityOptions>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	private static StringOccurrenceCountResult<T, IThat<T>> CreateSut<T>(T subject, Quantifier quantifier,
@@ -68,7 +68,7 @@ public sealed class StringOccurrenceCountResultTests
 		return new StringOccurrenceCountResult<T, IThat<T>>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			quantifier,
-			options);
+			new OptionsSlot<Quantifier>(quantifier),
+			new OptionsSlot<StringEqualityOptions>(options));
 	}
 }

@@ -86,7 +86,7 @@ public static partial class ThatAsyncEnumerable
 		IAsyncEnumerableItems<string?> items,
 		bool expectUnique)
 	{
-		StringEqualityOptions options = new("expected");
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions("expected"));
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint(
@@ -97,7 +97,7 @@ public static partial class ThatAsyncEnumerable
 						state.Quantifier,
 						a => a,
 						null,
-						state.Options,
+						state.Options.Value,
 						state.ExpectUnique)),
 			items.Subject,
 			options);
@@ -108,7 +108,7 @@ public static partial class ThatAsyncEnumerable
 			IAsyncEnumerableItems<TItem> items,
 			bool expectUnique)
 	{
-		ItemEqualityOptions<TItem> options = new();
+		OptionsSlot<Options.ObjectEqualityOptions<TItem>> options = new(new ItemEqualityOptions<TItem>());
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -119,7 +119,7 @@ public static partial class ThatAsyncEnumerable
 						state.Quantifier,
 						a => a,
 						null,
-						state.Options,
+						state.Options.Value,
 						state.ExpectUnique)),
 			items.Subject,
 			options);
@@ -130,7 +130,7 @@ public static partial class ThatAsyncEnumerable
 			Func<TItem, TMember> memberAccessor, string memberAccessorExpression, bool expectUnique)
 	{
 		memberAccessor.ThrowIfNull();
-		ItemEqualityOptions<TMember> options = new();
+		OptionsSlot<Options.ObjectEqualityOptions<TMember>> options = new(new ItemEqualityOptions<TMember>());
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TMember>(
 			expectationBuilder.AddConstraint(
@@ -143,7 +143,7 @@ public static partial class ThatAsyncEnumerable
 						state.Quantifier,
 						state.MemberAccessor,
 						state.MemberAccessorExpression,
-						state.Options,
+						state.Options.Value,
 						state.ExpectUnique)),
 			items.Subject,
 			options);
@@ -154,7 +154,7 @@ public static partial class ThatAsyncEnumerable
 		Func<TItem, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
 	{
 		memberAccessor.ThrowIfNull();
-		StringEqualityOptions options = new("expected");
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions("expected"));
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint(
@@ -167,7 +167,7 @@ public static partial class ThatAsyncEnumerable
 						state.Quantifier,
 						state.MemberAccessor,
 						state.MemberAccessorExpression,
-						state.Options,
+						state.Options.Value,
 						state.ExpectUnique)),
 			items.Subject,
 			options);

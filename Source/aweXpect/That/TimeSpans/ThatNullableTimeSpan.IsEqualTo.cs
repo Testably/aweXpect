@@ -17,7 +17,7 @@ public static partial class ThatNullableTimeSpan
 		this IThat<TimeSpan?> subject,
 		TimeSpan? expected)
 	{
-		TimeTolerance tolerance = new();
+		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -33,7 +33,7 @@ public static partial class ThatNullableTimeSpan
 		this IThat<TimeSpan?> subject,
 		TimeSpan? unexpected)
 	{
-		TimeTolerance tolerance = new();
+		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -46,7 +46,7 @@ public static partial class ThatNullableTimeSpan
 		string it,
 		ExpectationGrammars grammars,
 		TimeSpan? expected,
-		TimeTolerance tolerance)
+		OptionsSlot<TimeTolerance> tolerance)
 		: ConstraintResult.WithEqualToValue<TimeSpan?>(it, grammars, expected is null),
 			IValueConstraint<TimeSpan?>
 	{
@@ -54,7 +54,7 @@ public static partial class ThatNullableTimeSpan
 		{
 			Actual = actual;
 			Outcome = (actual is null && expected is null) ||
-			          IsWithinTolerance(tolerance.Tolerance, actual, expected)
+			          IsWithinTolerance(tolerance.Value.Tolerance, actual, expected)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

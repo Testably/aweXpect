@@ -313,7 +313,7 @@ public sealed class RepeatedCheckOptionsTests
 			.AddConstraint((it, grammars)
 				=> new HasMatchingItemConstraint(it, grammars, predicate, onCheck, options)),
 			subject,
-			options);
+			new OptionsSlot<RepeatedCheckOptions>(options));
 	}
 
 	private sealed class ForeignEvaluationContext(EvaluationCancellation? cancellation = null) : IEvaluationContext

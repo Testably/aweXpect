@@ -21,7 +21,7 @@ internal abstract class IsInOrderConstraintBase<TValue, TItem, TMember>(
 	ExpectationGrammars grammars,
 	Func<TItem, TMember> memberAccessor,
 	SortOrder sortOrder,
-	CollectionOrderOptions<TMember> options,
+	OptionsSlot<CollectionOrderOptions<TMember>> options,
 	string memberExpression,
 	Func<Func<TMember, string?>?>? createIncompatibilityCheck)
 	: OrderingConstraint<TValue>(it, grammars, false)
@@ -40,7 +40,7 @@ internal abstract class IsInOrderConstraintBase<TValue, TItem, TMember>(
 	{
 		_failureText = null;
 		_subjectOrder = subjectOrder;
-		_comparer = subjectOrder ?? options.GetComparer();
+		_comparer = subjectOrder ?? options.Value.GetComparer();
 		_incompatibilityCheck = subjectOrder is null ? createIncompatibilityCheck?.Invoke() : null;
 		_index = 0;
 		_previous = default!;
@@ -90,8 +90,8 @@ internal abstract class IsInOrderConstraintBase<TValue, TItem, TMember>(
 	///     nor a comparer is specified, or <see langword="null" /> otherwise.
 	/// </summary>
 	protected IComparer<TMember>? GetSubjectOrder(object subject)
-		=> memberExpression.Length == 0 && !options.HasComparer
-			? CollectionComparerHelpers.GetSubjectOrder(subject, options.GetComparer())
+		=> memberExpression.Length == 0 && !options.Value.HasComparer
+			? CollectionComparerHelpers.GetSubjectOrder(subject, options.Value.GetComparer())
 			: null;
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -144,7 +144,7 @@ internal sealed class IsInOrderConstraint<TEnumerable, TItem, TMember>(
 	ExpectationGrammars grammars,
 	Func<TItem, TMember> memberAccessor,
 	SortOrder sortOrder,
-	CollectionOrderOptions<TMember> options,
+	OptionsSlot<CollectionOrderOptions<TMember>> options,
 	string memberExpression,
 	Func<Func<TMember, string?>?>? createIncompatibilityCheck = null)
 	: IsInOrderConstraintBase<TEnumerable, TItem, TMember>(it, grammars, memberAccessor, sortOrder, options,
@@ -203,7 +203,7 @@ internal sealed class AsyncIsInOrderConstraint<TItem, TMember>(
 	ExpectationGrammars grammars,
 	Func<TItem, TMember> memberAccessor,
 	SortOrder sortOrder,
-	CollectionOrderOptions<TMember> options,
+	OptionsSlot<CollectionOrderOptions<TMember>> options,
 	string memberExpression,
 	Func<Func<TMember, string?>?>? createIncompatibilityCheck = null)
 	: IsInOrderConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMember>(it, grammars, memberAccessor, sortOrder,

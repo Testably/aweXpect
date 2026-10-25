@@ -594,7 +594,7 @@ public sealed partial class ThatMethod
 				{
 					ParameterCollectionResult<MethodInfo, MethodInfo?, int> result = That(methodInfo).HasParameter<int>();
 					((IOptionsProvider<ParameterFilterOptions>)result).Options
-						.AddPredicate(predicate, () => "");
+						.Value.AddPredicate(predicate, () => "");
 					await result;
 				}
 
@@ -935,7 +935,7 @@ public sealed partial class ThatMethod
 				{
 					await That(methodInfo).DoesNotComplyWith(it
 						=> ((IOptionsProvider<ParameterFilterOptions>)it.HasParameter<int>()).Options
-						.AddPredicate(predicate, () => ""));
+						.Value.AddPredicate(predicate, () => ""));
 				}
 
 				await That(Act).Throws<FailException>()

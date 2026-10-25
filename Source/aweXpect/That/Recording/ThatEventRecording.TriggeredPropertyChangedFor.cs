@@ -36,9 +36,9 @@ public static partial class ThatEventRecording
 		string? propertyName)
 		where TSubject : INotifyPropertyChanged
 	{
-		Options.Quantifier quantifier = new();
+		OptionsSlot<Options.Quantifier> quantifier = new(new Options.Quantifier());
 		TriggerEventFilter filter = new();
-		RepeatedCheckOptions options = new();
+		OptionsSlot<RepeatedCheckOptions> options = new(new RepeatedCheckOptions());
 		filter.AddPredicate(
 			MatchesPropertyName(propertyName),
 			DescribePropertyName(propertyName));
@@ -86,9 +86,9 @@ public static partial class ThatEventRecording
 		string? propertyName)
 		where TSubject : INotifyPropertyChanged
 	{
-		Options.Quantifier quantifier = new();
+		OptionsSlot<Options.Quantifier> quantifier = new(new Options.Quantifier());
 		TriggerEventFilter filter = new();
-		RepeatedCheckOptions options = new();
+		OptionsSlot<RepeatedCheckOptions> options = new(new RepeatedCheckOptions());
 		filter.AddPredicate(
 			MatchesPropertyName(propertyName),
 			DescribePropertyName(propertyName));

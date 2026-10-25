@@ -10,14 +10,14 @@ namespace aweXpect.Results;
 public class RepeatedCheckResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	RepeatedCheckOptions options)
+	OptionsSlot<RepeatedCheckOptions> options)
 	: AndOrResult<TType, TThat>(expectationBuilder, returnValue),
 		IOptionsProvider<RepeatedCheckOptions>
 {
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	RepeatedCheckOptions IOptionsProvider<RepeatedCheckOptions>.Options => options;
+	OptionsSlot<RepeatedCheckOptions> IOptionsProvider<RepeatedCheckOptions>.Options => options;
 
 	/// <summary>
 	///     Allows a <paramref name="timeout" /> until the condition must be met.
@@ -34,7 +34,7 @@ public class RepeatedCheckResult<TType, TThat>(
 	public class WithRepetition(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		RepeatedCheckOptions options)
+		OptionsSlot<RepeatedCheckOptions> options)
 		: AndOrResult<TType, TThat>(expectationBuilder, returnValue)
 	{
 		/// <summary>

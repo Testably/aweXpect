@@ -24,7 +24,11 @@ public sealed class ReturnsResult<TType>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
-	TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => _typeFilterOptions;
+	/// <remarks>
+	///     A new slot around the options that the filter keeps itself.
+	/// </remarks>
+	OptionsSlot<TypeFilterOptions> IOptionsProvider<TypeFilterOptions>.Options
+		=> new(_typeFilterOptions);
 
 	/// <summary>
 	///     Allow an alternative return type <typeparamref name="TReturn" />.

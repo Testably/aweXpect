@@ -14,7 +14,7 @@ public sealed class HasItemResultTests
 		HasItemResult<int[]> sut = CreateSut(Array.Empty<int>(), options);
 
 		await That(sut).Is<IOptionsProvider<CollectionIndexOptions>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	private static HasItemResult<T> CreateSut<T>(T subject, CollectionIndexOptions options)
@@ -25,6 +25,6 @@ public sealed class HasItemResultTests
 		return new HasItemResult<T>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			options);
+			new OptionsSlot<CollectionIndexOptions>(options));
 	}
 }

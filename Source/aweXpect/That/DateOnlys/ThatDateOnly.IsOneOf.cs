@@ -30,7 +30,7 @@ public static partial class ThatDateOnly
 		bool negated)
 	{
 		IEnumerable<DateOnly?> expectedValues = expected.ToNonEmptyValues(negated);
-		TimeTolerance tolerance = new DayTolerance();
+		OptionsSlot<TimeTolerance> tolerance = new(new DayTolerance());
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Tolerance: tolerance,
@@ -58,14 +58,14 @@ public static partial class ThatDateOnly
 		ExpectationGrammars grammars,
 		IEnumerable<DateOnly?> expected,
 		string? expectedExpression,
-		TimeTolerance tolerance)
+		OptionsSlot<TimeTolerance> tolerance)
 		: ConstraintResult.WithValue<DateOnly>(it, grammars),
 			IValueConstraint<DateOnly>
 	{
 		public ConstraintResult IsMetBy(DateOnly actual)
 		{
 			Actual = actual;
-			TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
+			TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
 			foreach (DateOnly? value in expected)
 			{
 				if (value != null && Math.Abs(actual.DayNumber - value.Value.DayNumber) <= (int)timeTolerance.TotalDays)
@@ -87,7 +87,7 @@ public static partial class ThatDateOnly
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
-			stringBuilder.Append(tolerance.ToDayString());
+			stringBuilder.Append(tolerance.Value.ToDayString());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -101,7 +101,7 @@ public static partial class ThatDateOnly
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
-			stringBuilder.Append(tolerance.ToDayString());
+			stringBuilder.Append(tolerance.Value.ToDayString());
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

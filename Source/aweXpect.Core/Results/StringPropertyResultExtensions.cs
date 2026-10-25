@@ -31,8 +31,9 @@ public static class StringPropertyResultExtensions
 		expected.ThrowIfNull();
 		ThrowIfEmpty(expected, nameof(expected));
 		result.Validation?.Invoke(expected, nameof(expected));
-		return result.Compare(new StringPropertyComparison(expected, new StringEqualityOptions(nameof(expected)),
-			new Quantifier()));
+		return result.Compare(new StringPropertyComparison(expected,
+			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))),
+			new OptionsSlot<Quantifier>(new Quantifier())));
 	}
 
 	/// <summary>
@@ -49,7 +50,7 @@ public static class StringPropertyResultExtensions
 		expected.ThrowIfNull();
 		ThrowIfEmpty(expected, nameof(expected));
 		result.Validation?.Invoke(expected, nameof(expected));
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
 		options.AsSuffix();
 		return result.Compare(new StringPropertyComparison(expected, options, false));
 	}
@@ -61,7 +62,7 @@ public static class StringPropertyResultExtensions
 		string? expected)
 	{
 		result.Validation?.Invoke(expected, nameof(expected));
-		return result.Compare(new StringPropertyComparison(expected, new StringEqualityOptions(nameof(expected)),
+		return result.Compare(new StringPropertyComparison(expected, new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))),
 			false));
 	}
 
@@ -79,7 +80,7 @@ public static class StringPropertyResultExtensions
 		unexpected.ThrowIfNull();
 		ThrowIfEmpty(unexpected, nameof(unexpected));
 		result.Validation?.Invoke(unexpected, nameof(unexpected));
-		StringEqualityOptions options = new(nameof(unexpected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
 		options.Containing();
 		return result.Compare(new StringPropertyComparison(unexpected, options, true));
 	}
@@ -98,7 +99,7 @@ public static class StringPropertyResultExtensions
 		unexpected.ThrowIfNull();
 		ThrowIfEmpty(unexpected, nameof(unexpected));
 		result.Validation?.Invoke(unexpected, nameof(unexpected));
-		StringEqualityOptions options = new(nameof(unexpected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
 		options.AsSuffix();
 		return result.Compare(new StringPropertyComparison(unexpected, options, true));
 	}
@@ -110,7 +111,7 @@ public static class StringPropertyResultExtensions
 		string? unexpected)
 	{
 		result.Validation?.Invoke(unexpected, nameof(unexpected));
-		return result.Compare(new StringPropertyComparison(unexpected, new StringEqualityOptions(nameof(unexpected)),
+		return result.Compare(new StringPropertyComparison(unexpected, new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(unexpected))),
 			true));
 	}
 
@@ -128,7 +129,7 @@ public static class StringPropertyResultExtensions
 		unexpected.ThrowIfNull();
 		ThrowIfEmpty(unexpected, nameof(unexpected));
 		result.Validation?.Invoke(unexpected, nameof(unexpected));
-		StringEqualityOptions options = new(nameof(unexpected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
 		options.AsPrefix();
 		return result.Compare(new StringPropertyComparison(unexpected, options, true));
 	}
@@ -147,7 +148,7 @@ public static class StringPropertyResultExtensions
 		expected.ThrowIfNull();
 		ThrowIfEmpty(expected, nameof(expected));
 		result.Validation?.Invoke(expected, nameof(expected));
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
 		options.AsPrefix();
 		return result.Compare(new StringPropertyComparison(expected, options, false));
 	}

@@ -21,7 +21,7 @@ internal sealed class IsJsonNumberEqualToConstraint<TNumber>(
 	ExpectationGrammars grammars,
 	JsonValueReader<TNumber> reader,
 	TNumber expected,
-	NumberTolerance<TNumber> options)
+	OptionsSlot<NumberTolerance<TNumber>> options)
 	: IsJsonValueEqualToConstraint<TNumber>(it, grammars, reader)
 #if NET8_0_OR_GREATER
 	where TNumber : struct, INumber<TNumber>
@@ -31,7 +31,7 @@ internal sealed class IsJsonNumberEqualToConstraint<TNumber>(
 {
 	protected override ValueTask<bool> IsMatch(TNumber value, IEvaluationContext context,
 		CancellationToken cancellationToken)
-		=> new(options.IsWithinTolerance(value, expected));
+		=> new(options.Value.IsWithinTolerance(value, expected));
 
 	protected override void AppendComparison(StringBuilder stringBuilder)
 	{

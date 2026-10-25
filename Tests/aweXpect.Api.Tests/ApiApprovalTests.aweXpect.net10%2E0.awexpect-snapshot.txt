@@ -9127,7 +9127,7 @@ namespace aweXpect.Results
     public class DidNotSignalResult : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult, aweXpect.Core.IThat<aweXpect.Signaling.Signaler>, aweXpect.Results.DidNotSignalResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>
     {
     }
-    public class DidNotSignalResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>>, aweXpect.Results.DidNotSignalResult<TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions<TParameter>>, aweXpect.Results.ISignalerResult<aweXpect.Results.DidNotSignalResult<TParameter>, TParameter>
+    public class DidNotSignalResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>>, aweXpect.Results.DidNotSignalResult<TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerPredicateOptions<TParameter>>, aweXpect.Results.ISignalerResult<aweXpect.Results.DidNotSignalResult<TParameter>, TParameter>
     {
     }
     public class EnumValueResult<TItem> : aweXpect.Results.EnumValueResult<TItem, TItem>
@@ -9232,14 +9232,14 @@ namespace aweXpect.Results
     public class SignalCountResult : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult, aweXpect.Core.IThat<aweXpect.Signaling.Signaler>, aweXpect.Results.SignalCountResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>
     {
     }
-    public class SignalCountWhoseResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>>, aweXpect.Results.SignalCountWhoseResult<TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions<TParameter>>, aweXpect.Results.ISignalerResult<aweXpect.Results.SignalCountWhoseResult<TParameter>, TParameter>
+    public class SignalCountWhoseResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>>, aweXpect.Results.SignalCountWhoseResult<TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerPredicateOptions<TParameter>>, aweXpect.Results.ISignalerResult<aweXpect.Results.SignalCountWhoseResult<TParameter>, TParameter>
     {
         public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TParameter>> WhoseParameters { get; }
     }
     public class SignaledResult : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult, aweXpect.Core.IThat<aweXpect.Signaling.Signaler>, aweXpect.Results.SignaledResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>
     {
     }
-    public class SignaledWhoseResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>>, aweXpect.Results.SignaledWhoseResult<TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions<TParameter>>, aweXpect.Results.ISignalerResult<aweXpect.Results.SignaledWhoseResult<TParameter>, TParameter>
+    public class SignaledWhoseResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>>, aweXpect.Results.SignaledWhoseResult<TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerPredicateOptions<TParameter>>, aweXpect.Results.ISignalerResult<aweXpect.Results.SignaledWhoseResult<TParameter>, TParameter>
     {
         public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TParameter>> WhoseParameters { get; }
     }

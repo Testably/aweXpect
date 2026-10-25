@@ -9,7 +9,8 @@ namespace aweXpect.Results;
 /// </summary>
 /// <remarks>
 ///     The option methods are extension methods that infer <typeparamref name="TParameter" /> from this interface, so a
-///     result has to implement it only once, with itself as <typeparamref name="TSelf" />.
+///     result has to implement it only once, with itself as <typeparamref name="TSelf" />. The timeout is offered
+///     separately through <see cref="IOptionsProvider{TOptions}" /> of <see cref="SignalerOptions" />.
 /// </remarks>
-public interface ISignalerResult<TSelf, TParameter> : IOptionsProvider<SignalerOptions<TParameter>>
+public interface ISignalerResult<TSelf, TParameter> : IOptionsProvider<SignalerPredicateOptions<TParameter>>
 	where TSelf : ISignalerResult<TSelf, TParameter>;

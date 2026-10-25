@@ -14,19 +14,19 @@ public sealed class NamedParameterCollectionResult<TType, TValue, TParameter>
 		IOptionsProvider<StringEqualityOptions>,
 		IStringMatchTypeOptions
 {
-	private readonly StringEqualityOptions _options;
+	private readonly OptionsSlot<StringEqualityOptions> _options;
 
 	internal NamedParameterCollectionResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		CollectionIndexOptions collectionIndexOptions,
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions,
-		StringEqualityOptions options)
+		OptionsSlot<StringEqualityOptions> options)
 		: base(expectationBuilder, subject, collectionIndexOptions, parameterFilterOptions)
 	{
 		_options = options;
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
-	StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
+	OptionsSlot<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 }

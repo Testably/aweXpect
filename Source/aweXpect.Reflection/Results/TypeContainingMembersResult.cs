@@ -13,17 +13,17 @@ public class TypeContainingMembersResult<TType, TValue>
 	: AndOrResult<TType, IThat<TValue>, TypeContainingMembersResult<TType, TValue>>,
 		IOptionsProvider<Quantifier>
 {
-	private readonly Quantifier _quantifier;
+	private readonly OptionsSlot<Quantifier> _quantifier;
 
 	internal TypeContainingMembersResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		Quantifier quantifier)
+		OptionsSlot<Quantifier> quantifier)
 		: base(expectationBuilder, subject)
 	{
 		_quantifier = quantifier;
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{Quantifier}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => _quantifier;
+	OptionsSlot<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
 }

@@ -16,7 +16,7 @@ public sealed class ObjectCountResultTests
 			sut = CreateSut(new ObjectCollectionMatchResultTests(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<ObjectEqualityOptions<string>>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	[Test]
@@ -28,7 +28,7 @@ public sealed class ObjectCountResultTests
 			sut = CreateSut(new ObjectCollectionMatchResultTests(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
-			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(quantifier));
 	}
 
 	private static ObjectCountResult<T, IThat<T>, TElement> CreateSut<T, TElement>(T subject, Quantifier quantifier,
@@ -40,7 +40,7 @@ public sealed class ObjectCountResultTests
 #pragma warning restore aweXpect0001
 		return new ObjectCountResult<T, IThat<T>, TElement>(source.Get().ExpectationBuilder,
 			source,
-			quantifier,
-			options);
+			new OptionsSlot<Quantifier>(quantifier),
+			new OptionsSlot<ObjectEqualityOptions<TElement>>(options));
 	}
 }

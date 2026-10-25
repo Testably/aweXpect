@@ -16,15 +16,15 @@ namespace aweXpect.Results;
 public class HasItemWithConditionResult<TCollection, TItem>
 	: IOptionsProvider<PredicateOptions<TItem>>
 {
-	private readonly CollectionIndexOptions _collectionIndexOptions;
+	private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
 	private readonly ExpectationBuilder _expectationBuilder;
-	private readonly PredicateOptions<TItem> _options;
+	private readonly OptionsSlot<PredicateOptions<TItem>> _options;
 	private readonly IThat<TCollection?> _subject;
 
 	internal HasItemWithConditionResult(ExpectationBuilder expectationBuilder,
 		IThat<TCollection?> subject,
-		CollectionIndexOptions collectionIndexOptions,
-		PredicateOptions<TItem> options)
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
+		OptionsSlot<PredicateOptions<TItem>> options)
 	{
 		_expectationBuilder = expectationBuilder;
 		_subject = subject;
@@ -33,7 +33,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	PredicateOptions<TItem> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;
+	OptionsSlot<PredicateOptions<TItem>> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;
 
 	/// <summary>
 	///     …that satisfies the <paramref name="predicate" />.
@@ -43,7 +43,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_options.SetPredicate(predicate,
+		_options.Value.SetPredicate(predicate,
 			$"matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
@@ -53,7 +53,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	/// </summary>
 	public HasItemResult<TCollection> Matching<T>()
 	{
-		_options.SetPredicate(item => item is T,
+		_options.Value.SetPredicate(item => item is T,
 			$"of type {Formatter.Format(typeof(T))}");
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
@@ -66,7 +66,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_options.SetPredicate(item => item is T typed && predicate(typed),
+		_options.Value.SetPredicate(item => item is T typed && predicate(typed),
 			$"of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
@@ -77,7 +77,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	public HasItemResult<TCollection> MatchingExactly<T>()
 	{
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
-		_options.SetPredicate(item => item is T && item.GetType() == exactType,
+		_options.Value.SetPredicate(item => item is T && item.GetType() == exactType,
 			$"exactly of type {Formatter.Format(typeof(T))}");
 
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
@@ -92,7 +92,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	{
 		predicate.ThrowIfNull();
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
-		_options.SetPredicate(item => item is T typed && item.GetType() == exactType && predicate(typed),
+		_options.Value.SetPredicate(item => item is T typed && item.GetType() == exactType && predicate(typed),
 			$"exactly of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}

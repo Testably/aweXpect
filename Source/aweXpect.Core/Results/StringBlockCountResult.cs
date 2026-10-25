@@ -14,13 +14,13 @@ namespace aweXpect.Results;
 public class StringBlockCountResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	Quantifier quantifier,
-	StringEqualityOptions options)
+	OptionsSlot<Quantifier> quantifier,
+	OptionsSlot<StringEqualityOptions> options)
 	: AndOrResult<TType, TThat, StringBlockCountResult<TType, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<Quantifier>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+	OptionsSlot<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier;
 
 	/// <summary>
 	///     Ignores casing when comparing the <see langword="string" />s.

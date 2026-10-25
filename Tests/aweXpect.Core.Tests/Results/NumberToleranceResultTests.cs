@@ -17,7 +17,7 @@ public sealed class NumberToleranceResultTests
 		NumberToleranceResult<int, IThat<int>> sut = CreateSut(2, options);
 
 		await That(sut).Is<IOptionsProvider<NumberTolerance<int>>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	[Test]
@@ -41,7 +41,7 @@ public sealed class NumberToleranceResultTests
 		NumberToleranceResult<int, IThat<int>>.WithinResult result = sut.Within(1);
 
 		await That(result).Is<IOptionsProvider<IRelativeToleranceOptions<int>>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	[Test]
@@ -62,7 +62,7 @@ public sealed class NumberToleranceResultTests
 		NumberToleranceResult<string, IThat<string>, int> sut = CreateSutWithSubject("foo", options);
 
 		await That(sut).Is<IOptionsProvider<NumberTolerance<int>>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	[Test]
@@ -86,7 +86,7 @@ public sealed class NumberToleranceResultTests
 		NumberToleranceResult<string, IThat<string>, int>.WithinResult result = sut.Within(1);
 
 		await That(result).Is<IOptionsProvider<IRelativeToleranceOptions<int>>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	[Test]
@@ -118,7 +118,7 @@ public sealed class NumberToleranceResultTests
 		return new NumberToleranceResult<T, IThat<T>>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			options);
+			new OptionsSlot<NumberTolerance<T>>(options));
 	}
 
 	private static NumberToleranceResult<TType, IThat<TType>, TNumber> CreateSutWithSubject<TType, TNumber>(
@@ -133,6 +133,6 @@ public sealed class NumberToleranceResultTests
 		return new NumberToleranceResult<TType, IThat<TType>, TNumber>(source.Get().ExpectationBuilder.AddConstraint(
 				(it, _) => new DummyConstraint(it)),
 			source,
-			options);
+			new OptionsSlot<NumberTolerance<TNumber>>(options));
 	}
 }

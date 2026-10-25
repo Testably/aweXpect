@@ -29,7 +29,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintRes
 	protected HasItemThatConstraintBase(string it,
 		ExpectationGrammars grammars,
 		Action<IThatSubject<TItem>> expectations,
-		CollectionIndexOptions options) : base(it, grammars)
+		OptionsSlot<CollectionIndexOptions> options) : base(it, grammars)
 	{
 		Options = options;
 		_itemExpectationBuilder =
@@ -40,7 +40,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintRes
 	/// <summary>
 	///     The options for the index of the item.
 	/// </summary>
-	protected CollectionIndexOptions Options { get; }
+	protected OptionsSlot<CollectionIndexOptions> Options { get; }
 
 	/// <inheritdoc cref="ConstraintResult.FailureCause" />
 	public override Exception? FailureCause => _unansweredItem?.FailureCause;
@@ -73,7 +73,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintRes
 	protected async Task<bool> IsDecidedBy(TItem item, int index, int? count, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		bool? isIndexInRange = Options.MatchesIndex(index, count);
+		bool? isIndexInRange = Options.Value.MatchesIndex(index, count);
 		if (isIndexInRange is null)
 		{
 			return false;
@@ -103,7 +103,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintRes
 		}
 
 		Outcome = isMatch.Outcome;
-		return isMatch.Outcome == Outcome.Success || Options.Match.OnlySingleIndex();
+		return isMatch.Outcome == Outcome.Success || Options.Value.Match.OnlySingleIndex();
 	}
 
 	/// <summary>
@@ -114,7 +114,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintRes
 	/// </remarks>
 	protected void AppendItemContexts(ResultContextCollector contexts)
 	{
-		if (_itemResult is not null && (_unansweredItem is not null || Options.Match.OnlySingleIndex()))
+		if (_itemResult is not null && (_unansweredItem is not null || Options.Value.Match.OnlySingleIndex()))
 		{
 			contexts.VisitItem(_itemIndex, _itemResult);
 		}
@@ -124,7 +124,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintRes
 	{
 		stringBuilder.Append(Grammars.Verb("has an item that ", "have an item that "));
 		_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-		stringBuilder.Append(Options.Match.GetDescription());
+		stringBuilder.Append(Options.Value.Match.GetDescription());
 		_itemExpectationBuilder.AppendReasons(stringBuilder);
 	}
 
@@ -138,20 +138,20 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintRes
 
 		if (_hasIndex)
 		{
-			if (Options.Match.OnlySingleIndex())
+			if (Options.Value.Match.OnlySingleIndex())
 			{
 				stringBuilder.Append(It).Append(" had item ");
 				stringBuilder.Append(Formatter.Format(_actual).Indent(indentation, false));
-				stringBuilder.Append(Options.Match.GetDescription());
+				stringBuilder.Append(Options.Value.Match.GetDescription());
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" had no matching item").Append(Options.Match.GetDescription());
+				stringBuilder.Append(It).Append(" had no matching item").Append(Options.Value.Match.GetDescription());
 			}
 		}
 		else
 		{
-			stringBuilder.Append(It).Append(" had no item").Append(Options.Match.GetDescription());
+			stringBuilder.Append(It).Append(" had no item").Append(Options.Value.Match.GetDescription());
 		}
 	}
 
@@ -159,7 +159,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintRes
 	{
 		stringBuilder.Append(Grammars.Verb("does not have an item that ", "do not have an item that "));
 		_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-		stringBuilder.Append(Options.Match.GetDescription());
+		stringBuilder.Append(Options.Value.Match.GetDescription());
 		_itemExpectationBuilder.AppendReasons(stringBuilder);
 	}
 
@@ -173,7 +173,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintRes
 
 		stringBuilder.Append(It).Append(" had item ");
 		stringBuilder.Append(Formatter.Format(_actual).Indent(indentation, false));
-		stringBuilder.Append(Options.Match.GetDescription());
+		stringBuilder.Append(Options.Value.Match.GetDescription());
 	}
 }
 
@@ -181,7 +181,7 @@ internal sealed class HasItemThatConstraint<TEnumerable, TItem>(
 	string it,
 	ExpectationGrammars grammars,
 	Action<IThatSubject<TItem>> expectations,
-	CollectionIndexOptions options)
+	OptionsSlot<CollectionIndexOptions> options)
 	: HasItemThatConstraintBase<TEnumerable, TItem>(it, grammars, expectations, options),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
@@ -207,7 +207,7 @@ internal sealed class HasItemThatConstraint<TEnumerable, TItem>(
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		materialized.SetContext(ref _collectionContext);
 
-		if (!ThatEnumerable.TryCountForIndex(Options, actual, materialized.Items, cancellationToken,
+		if (!ThatEnumerable.TryCountForIndex(Options.Value, actual, materialized.Items, cancellationToken,
 			    out int? count))
 		{
 			Outcome = Outcome.Undecided;
@@ -245,7 +245,7 @@ internal sealed class AsyncHasItemThatConstraint<TItem>(
 	string it,
 	ExpectationGrammars grammars,
 	Action<IThatSubject<TItem>> expectations,
-	CollectionIndexOptions options)
+	OptionsSlot<CollectionIndexOptions> options)
 	: HasItemThatConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, expectations, options),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
@@ -267,7 +267,7 @@ internal sealed class AsyncHasItemThatConstraint<TItem>(
 		_collectionContext.Set(materialized as IMaterializedAsyncEnumerable<TItem>);
 
 		int? count = null;
-		if (Options.Match is CollectionIndexOptions.IMatchFromEnd)
+		if (Options.Value.Match is CollectionIndexOptions.IMatchFromEnd)
 		{
 			count = (await (materialized as IMaterializedAsyncEnumerable<TItem>)!.MaterializeItems(null)).Count;
 			if (count is null)

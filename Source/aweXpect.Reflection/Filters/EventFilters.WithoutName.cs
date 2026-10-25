@@ -15,6 +15,6 @@ public static partial class EventFilters
 		return new Filtered.Events.StringEqualityResult(@this, options => Filter.Suffix<EventInfo>(
 				async eventInfo => !await options.AreConsideredEqual(eventInfo.Name, unexpected),
 				() => $"without name {options.GetExpectation(unexpected, ExpectationGrammars.None)} "),
-			new StringEqualityOptions(nameof(unexpected)));
+			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(unexpected))));
 	}
 }

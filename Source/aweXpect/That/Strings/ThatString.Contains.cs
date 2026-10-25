@@ -24,8 +24,8 @@ public static partial class ThatString
 			throw Tracing.WriteException(new ArgumentException("The 'expected' string cannot be empty.", nameof(expected)));
 		}
 
-		Quantifier quantifier = new();
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
 		return new StringOccurrenceCountResult<string, IThat<string?>>(
 			Core.Extending.ExpectationBuilderExtensions.AddStringOccurrenceConstraint(
 				subject.Get().ExpectationBuilder, expected, quantifier, options),
@@ -49,8 +49,8 @@ public static partial class ThatString
 			throw Tracing.WriteException(new ArgumentException("The 'unexpected' string cannot be empty.", nameof(unexpected)));
 		}
 
-		Quantifier quantifier = new();
-		StringEqualityOptions options = new(nameof(unexpected));
+		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
 		return new StringOccurrenceCountResult<string, IThat<string?>>(
 			Core.Extending.ExpectationBuilderExtensions.AddStringOccurrenceConstraint(
 				subject.Get().ExpectationBuilder, unexpected, quantifier, options, isNegated: true),

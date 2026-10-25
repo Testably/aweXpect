@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect.Helpers;
@@ -11,11 +12,11 @@ internal static class DateTimeKindHelpers
 	///     earlier value, unless a custom comparer is specified in the <paramref name="options" />.
 	/// </summary>
 	public static Func<Func<DateTime, string?>?> CreateIncompatibleKindCheck(
-		CollectionOrderOptions<DateTime> options)
+		OptionsSlot<CollectionOrderOptions<DateTime>> options)
 		=> () =>
 		{
 			// A custom comparer decides on its own how to handle the kinds, e.g. by converting to UTC.
-			if (!ReferenceEquals(options.GetComparer(), Comparer<DateTime>.Default))
+			if (!ReferenceEquals(options.Value.GetComparer(), Comparer<DateTime>.Default))
 			{
 				return null;
 			}
@@ -24,21 +25,22 @@ internal static class DateTimeKindHelpers
 			return value => check(value);
 		};
 
-	/// <inheritdoc cref="CreateIncompatibleKindCheck(CollectionOrderOptions{DateTime})" />
+	/// <inheritdoc cref="CreateIncompatibleKindCheck(OptionsSlot{CollectionOrderOptions{DateTime}})" />
 	public static Func<Func<DateTime?, string?>?> CreateIncompatibleKindCheck(
-		CollectionOrderOptions<DateTime?> options)
-		=> () => ReferenceEquals(options.GetComparer(), Comparer<DateTime?>.Default) ? CreateCheck() : null;
+		OptionsSlot<CollectionOrderOptions<DateTime?>> options)
+		=> () => ReferenceEquals(options.Value.GetComparer(), Comparer<DateTime?>.Default) ? CreateCheck() : null;
 
 	/// <summary>
-	///     Creates a check like <see cref="CreateIncompatibleKindCheck(CollectionOrderOptions{DateTime})" /> for values
-	///     that are only known to be a <see cref="DateTime" /> at runtime, as in an untyped collection.
+	///     Creates a check like
+	///     <see cref="CreateIncompatibleKindCheck(OptionsSlot{CollectionOrderOptions{DateTime}})" /> for values that are
+	///     only known to be a <see cref="DateTime" /> at runtime, as in an untyped collection.
 	/// </summary>
 	public static Func<Func<TMember, string?>?> CreateIncompatibleRuntimeKindCheck<TMember>(
-		CollectionOrderOptions<TMember> options)
+		OptionsSlot<CollectionOrderOptions<TMember>> options)
 		=> () =>
 		{
 			// Without a comparer, the default of the options is not `Comparer<TMember>.Default` for every `TMember`.
-			if (options.HasComparer &&!ReferenceEquals(options.GetComparer(), Comparer<TMember>.Default))
+			if (options.Value.HasComparer &&!ReferenceEquals(options.Value.GetComparer(), Comparer<TMember>.Default))
 			{
 				return null;
 			}

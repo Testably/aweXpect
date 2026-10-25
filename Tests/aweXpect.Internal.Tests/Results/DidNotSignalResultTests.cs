@@ -11,8 +11,19 @@ public sealed class DidNotSignalResultTests
 	[Test]
 	public async Task Generic_ShouldBeOptionsProvider_ForPredicateOptions()
 	{
-		SignalerOptions<int> options = new();
-		DidNotSignalResult<int> sut = CreateSut(options);
+		OptionsSlot<SignalerPredicateOptions<int>> predicates = new(new SignalerPredicateOptions<int>());
+		DidNotSignalResult<int> sut = CreateSut(new OptionsSlot<SignalerOptions>(new SignalerOptions()), predicates);
+
+		await That(sut).Is<IOptionsProvider<SignalerPredicateOptions<int>>>()
+			.Whose(x => x.Options, it => it.IsSameAs(predicates));
+	}
+
+	[Test]
+	public async Task Generic_ShouldBeOptionsProvider_ForSignalerOptions()
+	{
+		OptionsSlot<SignalerOptions> options = new(new SignalerOptions());
+		DidNotSignalResult<int> sut =
+			CreateSut(options, new OptionsSlot<SignalerPredicateOptions<int>>(new SignalerPredicateOptions<int>()));
 
 		await That(sut).Is<IOptionsProvider<SignalerOptions>>()
 			.Whose(x => x.Options, it => it.IsSameAs(options));
@@ -21,24 +32,25 @@ public sealed class DidNotSignalResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForPredicateOptions()
 	{
-		SignalerOptions options = new();
+		OptionsSlot<SignalerOptions> options = new(new SignalerOptions());
 		DidNotSignalResult sut = CreateSut(options);
 
 		await That(sut).Is<IOptionsProvider<SignalerOptions>>()
 			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
-	private static DidNotSignalResult<TParameter> CreateSut<TParameter>(SignalerOptions<TParameter> options)
+	private static DidNotSignalResult<TParameter> CreateSut<TParameter>(OptionsSlot<SignalerOptions> options,
+		OptionsSlot<SignalerPredicateOptions<TParameter>> predicates)
 	{
 		Signaler<TParameter> signaler = new();
 #pragma warning disable aweXpect0001
 		IThat<Signaler<TParameter>> source = That(signaler);
 #pragma warning restore aweXpect0001
 		return new DidNotSignalResult<TParameter>(source.Get().ExpectationBuilder,
-			source, options);
+			source, options, predicates);
 	}
 
-	private static DidNotSignalResult CreateSut(SignalerOptions options)
+	private static DidNotSignalResult CreateSut(OptionsSlot<SignalerOptions> options)
 	{
 		Signaler signaler = new();
 #pragma warning disable aweXpect0001

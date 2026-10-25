@@ -24,7 +24,7 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> DependsOn(
 		this IThat<Assembly?> subject, string expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Expected: expected, Options: options),
 					static (s, it, grammars)
@@ -37,7 +37,7 @@ public static partial class ThatAssembly
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		StringEqualityOptions options)
+		OptionsSlot<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
 			IAsyncContextConstraint<Assembly?>
 	{
@@ -47,7 +47,7 @@ public static partial class ThatAssembly
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			StringEqualityOptions evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			StringEqualityOptions evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			_evaluationOptions = evaluationOptions;
 			Outcome = actual is not null &&
 			          await actual.GetReferencedAssemblyNames()
@@ -58,14 +58,14 @@ public static partial class ThatAssembly
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has a dependency on assembly ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("has a dependency on assembly ").Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("has no dependency on assembly ")
-				.Append(options.GetExpectation(expected, Grammars.Negate()));
+				.Append(options.Value.GetExpectation(expected, Grammars.Negate()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did");
@@ -79,7 +79,7 @@ public static partial class ThatAssembly
 					Actual.GetReferencedAssemblyNames().Select(dep => dep.Name).ToArray());
 			}
 
-			(_evaluationOptions ?? options).AppendContexts(contexts);
+			(_evaluationOptions ?? options.Value).AppendContexts(contexts);
 		}
 	}
 }

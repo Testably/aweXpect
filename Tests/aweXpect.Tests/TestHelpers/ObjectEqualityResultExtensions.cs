@@ -13,7 +13,7 @@ public static class ObjectEqualityResultExtensions
 		Func<TElement?, int> key)
 		where TSelf : IObjectEqualityResult<TSelf, TElement>
 	{
-		result.Options.SetMatchType(new KeyMatchType<TElement>(key), nameof(ByKey));
+		result.Options.Value.SetMatchType(new KeyMatchType<TElement>(key), nameof(ByKey));
 		return (TSelf)result;
 	}
 

@@ -134,11 +134,12 @@ internal sealed class ItemMatchingPredicate<TItem>(Func<TItem, bool> predicate, 
 /// <remarks>
 ///     Only <c>HasItem</c> specifies the predicate this way.
 /// </remarks>
-internal sealed class ItemMatchingOptions<TItem>(PredicateOptions<TItem> options) : SynchronouslyMatchedItem<TItem>
+internal sealed class ItemMatchingOptions<TItem>(OptionsSlot<PredicateOptions<TItem>> options)
+	: SynchronouslyMatchedItem<TItem>
 {
 	/// <inheritdoc />
 	public override bool IsMatch(TItem item)
-		=> UserCode.Invoke(static values => values.Options.Matches(values.Item), (Options: options, Item: item),
+		=> UserCode.Invoke(static values => values.Options.Matches(values.Item), (Options: options.Value, Item: item),
 			"the predicate");
 
 	/// <inheritdoc />
@@ -147,7 +148,7 @@ internal sealed class ItemMatchingOptions<TItem>(PredicateOptions<TItem> options
 
 	/// <inheritdoc />
 	public override string GetHasItemExpectation(ExpectationGrammars grammars)
-		=> options.GetDescription();
+		=> options.Value.GetDescription();
 }
 
 /// <summary>

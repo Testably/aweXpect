@@ -16,19 +16,19 @@ public class DidNotSignalResult
 	: AndOrResult<SignalerResult, IThat<Signaler>, DidNotSignalResult>,
 		IOptionsProvider<SignalerOptions>
 {
-	private readonly SignalerOptions _options;
+	private readonly OptionsSlot<SignalerOptions> _options;
 
 	internal DidNotSignalResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<Signaler> returnValue,
-		SignalerOptions options)
+		OptionsSlot<SignalerOptions> options)
 		: base(expectationBuilder, returnValue)
 	{
 		_options = options;
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	SignalerOptions IOptionsProvider<SignalerOptions>.Options => _options;
+	OptionsSlot<SignalerOptions> IOptionsProvider<SignalerOptions>.Options => _options;
 }
 
 /// <summary>
@@ -41,19 +41,27 @@ public class DidNotSignalResult
 /// </remarks>
 public class DidNotSignalResult<TParameter>
 	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>, DidNotSignalResult<TParameter>>,
+		IOptionsProvider<SignalerOptions>,
 		ISignalerResult<DidNotSignalResult<TParameter>, TParameter>
 {
-	private readonly SignalerOptions<TParameter> _options;
+	private readonly OptionsSlot<SignalerOptions> _options;
+	private readonly OptionsSlot<SignalerPredicateOptions<TParameter>> _predicates;
 
 	internal DidNotSignalResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<Signaler<TParameter>> returnValue,
-		SignalerOptions<TParameter> options)
+		OptionsSlot<SignalerOptions> options,
+		OptionsSlot<SignalerPredicateOptions<TParameter>> predicates)
 		: base(expectationBuilder, returnValue)
 	{
 		_options = options;
+		_predicates = predicates;
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	SignalerOptions<TParameter> IOptionsProvider<SignalerOptions<TParameter>>.Options => _options;
+	OptionsSlot<SignalerOptions> IOptionsProvider<SignalerOptions>.Options => _options;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	OptionsSlot<SignalerPredicateOptions<TParameter>> IOptionsProvider<SignalerPredicateOptions<TParameter>>.Options
+		=> _predicates;
 }

@@ -46,7 +46,7 @@ public static class DoublePropertyResultExtensions
 	{
 		result.Validation?.Invoke(expected, nameof(expected));
 		return result.CompareEquality(new PropertyEqualityComparison<double>(expected,
-			new NumberTolerance<double>(NumberDifferences.Double), false));
+			new OptionsSlot<NumberTolerance<double>>(new NumberTolerance<double>(NumberDifferences.Double)), false));
 	}
 
 	/// <summary>
@@ -153,7 +153,7 @@ public static class DoublePropertyResultExtensions
 	{
 		result.Validation?.Invoke(unexpected, nameof(unexpected));
 		return result.CompareEquality(new PropertyEqualityComparison<double>(unexpected,
-			new NumberTolerance<double>(NumberDifferences.Double), true));
+			new OptionsSlot<NumberTolerance<double>>(new NumberTolerance<double>(NumberDifferences.Double)), true));
 	}
 
 	/// <summary>

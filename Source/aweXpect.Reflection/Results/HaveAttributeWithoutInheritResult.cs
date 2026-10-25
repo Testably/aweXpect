@@ -27,8 +27,11 @@ public sealed class HaveAttributeWithoutInheritResult<TType, TMember>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{AttributeFilterOptions}.Options" />
-	AttributeFilterOptions<TMember> IOptionsProvider<AttributeFilterOptions<TMember>>.Options
-		=> _attributeFilterOptions;
+	/// <remarks>
+	///     A new slot around the options that the filter keeps itself.
+	/// </remarks>
+	OptionsSlot<AttributeFilterOptions<TMember>> IOptionsProvider<AttributeFilterOptions<TMember>>.Options
+		=> new(_attributeFilterOptions);
 
 	/// <summary>
 	///     Allows an alternative attribute of type <typeparamref name="TAttribute" />.

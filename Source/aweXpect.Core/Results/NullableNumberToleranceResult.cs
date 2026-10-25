@@ -17,7 +17,7 @@ namespace aweXpect.Results;
 public class NullableNumberToleranceResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	NumberTolerance<TType> options)
+	OptionsSlot<NumberTolerance<TType>> options)
 	: AndOrResult<TType?, TThat, NullableNumberToleranceResult<TType, TThat>>(expectationBuilder, returnValue),
 		INumberToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>
 #if NET8_0_OR_GREATER
@@ -29,7 +29,7 @@ public class NullableNumberToleranceResult<TType, TThat>(
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	NumberTolerance<TType> IOptionsProvider<NumberTolerance<TType>>.Options => options;
+	OptionsSlot<NumberTolerance<TType>> IOptionsProvider<NumberTolerance<TType>>.Options => options;
 
 	/// <inheritdoc cref="ToleranceExtensions.Within{TSelf, TNumber}(INumberToleranceResult{TSelf, TNumber}, TNumber)" />
 	public WithinResult Within(TType tolerance)
@@ -45,13 +45,16 @@ public class NullableNumberToleranceResult<TType, TThat>(
 	public sealed class WithinResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		NumberTolerance<TType> options)
+		OptionsSlot<NumberTolerance<TType>> options)
 		: NullableNumberToleranceResult<TType, TThat>(expectationBuilder, returnValue, options),
 			IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>
 	{
 		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-		IRelativeToleranceOptions<TType> IOptionsProvider<IRelativeToleranceOptions<TType>>.Options
-			=> ((IOptionsProvider<NumberTolerance<TType>>)this).Options;
+		/// <remarks>
+		///     A view on the options of the expectation, so that <c>Percent()</c> can change them.
+		/// </remarks>
+		OptionsSlot<IRelativeToleranceOptions<TType>> IOptionsProvider<IRelativeToleranceOptions<TType>>.Options
+			=> new(((IOptionsProvider<NumberTolerance<TType>>)this).Options.Value);
 
 		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.Result" />
 		NullableNumberToleranceResult<TType, TThat> IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>.Result

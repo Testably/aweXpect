@@ -19,7 +19,7 @@ public static partial class MethodFilters
 	public static MethodsWithParameter<T> WithParameter<T>(this Filtered.Methods @this)
 	{
 		Type parameterType = typeof(T);
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new MethodsWithParameter<T>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
@@ -32,7 +32,7 @@ public static partial class MethodFilters
 	public static MethodsWithNamedParameter<T> WithParameter<T>(this Filtered.Methods @this, string expected)
 	{
 		Type parameterType = typeof(T);
-		return new MethodsWithNamedParameter<T>(@this, WithParameterFilter, new CollectionIndexOptions(),
+		return new MethodsWithNamedParameter<T>(@this, WithParameterFilter, new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()),
 			stringEqualityOptions =>
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
@@ -41,7 +41,7 @@ public static partial class MethodFilters
 					() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new StringEqualityOptions(nameof(expected)));
+			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
 	}
 
 	/// <summary>
@@ -49,7 +49,7 @@ public static partial class MethodFilters
 	/// </summary>
 	public static MethodsWithParameter<object?> WithParameter(this Filtered.Methods @this, Type parameterType)
 	{
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new MethodsWithParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
@@ -62,7 +62,7 @@ public static partial class MethodFilters
 	public static MethodsWithNamedParameter<object?> WithParameter(this Filtered.Methods @this, Type parameterType,
 		string expected)
 	{
-		return new MethodsWithNamedParameter<object?>(@this, WithParameterFilter, new CollectionIndexOptions(),
+		return new MethodsWithNamedParameter<object?>(@this, WithParameterFilter, new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()),
 			stringEqualityOptions =>
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
@@ -71,7 +71,7 @@ public static partial class MethodFilters
 					() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new StringEqualityOptions(nameof(expected)));
+			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
 	}
 
 	/// <summary>
@@ -79,11 +79,11 @@ public static partial class MethodFilters
 	/// </summary>
 	public static MethodsWithNamedParameter<object?> WithParameter(this Filtered.Methods @this,
 		string expected)
-		=> new(@this, WithParameterFilter, new CollectionIndexOptions(),
+		=> new(@this, WithParameterFilter, new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()),
 			stringEqualityOptions => new ParameterFilterOptions(
 				p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 				() => $"with name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}"),
-			new StringEqualityOptions(nameof(expected)));
+			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
 
 
 	/// <summary>
@@ -122,7 +122,7 @@ public static partial class MethodFilters
 
 	private static MethodsWithParameter<T> WithoutParameterOfType<T>(Filtered.Methods @this, Type parameterType)
 	{
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new MethodsWithParameter<T>(@this, WithoutParameterFilter, collectionIndexOptions,
@@ -132,7 +132,7 @@ public static partial class MethodFilters
 	private static MethodsWithNamedParameter<T> WithoutNamedParameter<T>(Filtered.Methods @this, Type? parameterType,
 		string unexpected)
 	{
-		return new MethodsWithNamedParameter<T>(@this, WithoutParameterFilter, new CollectionIndexOptions(),
+		return new MethodsWithNamedParameter<T>(@this, WithoutParameterFilter, new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()),
 			stringEqualityOptions =>
 			{
 				if (parameterType is null)
@@ -147,7 +147,7 @@ public static partial class MethodFilters
 					() => $"name {stringEqualityOptions.GetExpectation(unexpected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new StringEqualityOptions(nameof(unexpected)));
+			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(unexpected))));
 	}
 
 	private static MethodsWithParameter<object?> WithParameterOfKind(Filtered.Methods @this,
@@ -155,7 +155,7 @@ public static partial class MethodFilters
 		=> new(@this,
 			(collectionIndexOptions, parameterFilterOptions)
 				=> WithParameterOfKindFilter(kind, collectionIndexOptions, parameterFilterOptions),
-			new CollectionIndexOptions(), new ParameterFilterOptions(predicate));
+			new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()), new ParameterFilterOptions(predicate));
 
 	private static IFilter<MethodInfo> WithParameterFilter(
 		CollectionIndexOptions collectionIndexOptions, ParameterFilterOptions parameterFilterOptions)
@@ -196,7 +196,7 @@ public static partial class MethodFilters
 		: Filtered.Methods,
 			IOptionsProvider<ParameterFilterOptions>
 	{
-		private readonly CollectionIndexOptions _collectionIndexOptions;
+		private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> _createFilter;
 		private readonly ParameterFilterOptions _parameterFilterOptions;
 		private readonly Filtered.Methods _source;
@@ -204,9 +204,9 @@ public static partial class MethodFilters
 		internal MethodsWithParameter(
 			Filtered.Methods source,
 			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> createFilter,
-			CollectionIndexOptions collectionIndexOptions,
+			OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
 			ParameterFilterOptions parameterFiltersOptions)
-			: base(source.Which(createFilter(collectionIndexOptions, parameterFiltersOptions)))
+			: base(source.Which(createFilter(collectionIndexOptions.Value, parameterFiltersOptions)))
 		{
 			_source = source;
 			_createFilter = createFilter;
@@ -215,7 +215,11 @@ public static partial class MethodFilters
 		}
 
 		/// <inheritdoc cref="IOptionsProvider{ParameterFilterOptions}.Options" />
-		ParameterFilterOptions IOptionsProvider<ParameterFilterOptions>.Options => _parameterFilterOptions;
+		/// <remarks>
+		///     A new slot around the options that the filter keeps itself.
+		/// </remarks>
+		OptionsSlot<ParameterFilterOptions> IOptionsProvider<ParameterFilterOptions>.Options
+			=> new(_parameterFilterOptions);
 
 		/// <summary>
 		///     …at the given zero-based <paramref name="index" />.
@@ -297,7 +301,7 @@ public static partial class MethodFilters
 				_parameterFilterOptions.WithPredicate(predicate, description));
 
 		private MethodsWithParameter<T> WithIndex(Action<CollectionIndexOptions> setIndex)
-			=> new(_source, _createFilter, FilterIndexOptions.With(_collectionIndexOptions, setIndex),
+			=> new(_source, _createFilter, new OptionsSlot<CollectionIndexOptions>(FilterIndexOptions.With(_collectionIndexOptions.Value, setIndex)),
 				_parameterFilterOptions);
 	}
 
@@ -310,19 +314,19 @@ public static partial class MethodFilters
 			IStringMatchTypeOptions,
 			ICopyOnOption<StringEqualityOptions, MethodsWithNamedParameter<T>>
 	{
-		private readonly CollectionIndexOptions _collectionIndexOptions;
+		private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> _createFilter;
 		private readonly Func<StringEqualityOptions, ParameterFilterOptions> _createParameterFilterOptions;
-		private readonly StringEqualityOptions _options;
+		private readonly OptionsSlot<StringEqualityOptions> _options;
 		private readonly Filtered.Methods _source;
 
 		internal MethodsWithNamedParameter(
 			Filtered.Methods source,
 			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> createFilter,
-			CollectionIndexOptions collectionIndexOptions,
+			OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
 			Func<StringEqualityOptions, ParameterFilterOptions> createParameterFilterOptions,
-			StringEqualityOptions options)
-			: base(source, createFilter, collectionIndexOptions, createParameterFilterOptions(options))
+			OptionsSlot<StringEqualityOptions> options)
+			: base(source, createFilter, collectionIndexOptions, createParameterFilterOptions(options.Value))
 		{
 			_source = source;
 			_createFilter = createFilter;
@@ -332,12 +336,12 @@ public static partial class MethodFilters
 		}
 
 		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
-		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
+		OptionsSlot<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
 		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
 		MethodsWithNamedParameter<T> ICopyOnOption<StringEqualityOptions, MethodsWithNamedParameter<T>>.WithOptions(
 			StringEqualityOptions options)
-			=> new(_source, _createFilter, _collectionIndexOptions, _createParameterFilterOptions, options);
+			=> new(_source, _createFilter, _collectionIndexOptions, _createParameterFilterOptions, new OptionsSlot<StringEqualityOptions>(options));
 
 		/// <summary>
 		///     Returns a copy with the modifier <paramref name="predicate" /> and <paramref name="description" />.

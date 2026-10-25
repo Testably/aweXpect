@@ -29,7 +29,7 @@ public static partial class ThatNullableTimeSpan
 		bool negated)
 	{
 		IEnumerable<TimeSpan?> expectedValues = expected.ToNonEmptyValues(negated);
-		TimeTolerance tolerance = new();
+		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Tolerance: tolerance,
@@ -57,7 +57,7 @@ public static partial class ThatNullableTimeSpan
 		ExpectationGrammars grammars,
 		IEnumerable<TimeSpan?> expected,
 		string? expectedExpression,
-		TimeTolerance tolerance)
+		OptionsSlot<TimeTolerance> tolerance)
 		: ConstraintResult.WithValue<TimeSpan?>(it, grammars),
 			IValueConstraint<TimeSpan?>
 	{
@@ -71,7 +71,7 @@ public static partial class ThatNullableTimeSpan
 			else
 			{
 				Outcome = expected.Any(value => value != null &&
-				                                IsWithinTolerance(tolerance.Tolerance, actual.Value, value.Value))
+				                                IsWithinTolerance(tolerance.Value.Tolerance, actual.Value, value.Value))
 					? Outcome.Success
 					: Outcome.Failure;
 			}

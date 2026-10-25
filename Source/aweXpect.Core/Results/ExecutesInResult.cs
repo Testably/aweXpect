@@ -9,11 +9,11 @@ namespace aweXpect.Results;
 /// </summary>
 public class ExecutesInResult<TResult>(
 	TResult returnValue,
-	ExecutionTimeOptions options)
+	OptionsSlot<ExecutionTimeOptions> options)
 	: IOptionsProvider<ExecutionTimeOptions>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ExecutionTimeOptions IOptionsProvider<ExecutionTimeOptions>.Options => options;
+	OptionsSlot<ExecutionTimeOptions> IOptionsProvider<ExecutionTimeOptions>.Options => options;
 
 	/// <summary>
 	///     …allowing the delegate to throw an exception, measuring the duration until it did so,
@@ -24,7 +24,7 @@ public class ExecutesInResult<TResult>(
 	/// </remarks>
 	public ExecutesInResult<TResult> AllowingExceptions(bool allowExceptions = true)
 	{
-		options.AllowingExceptions(allowExceptions);
+		options.Value.AllowingExceptions(allowExceptions);
 		return this;
 	}
 

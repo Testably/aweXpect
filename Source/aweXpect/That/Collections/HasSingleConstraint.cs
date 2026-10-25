@@ -59,7 +59,7 @@ internal abstract class HasSingleConstraintBase<TItem>(string it, ExpectationGra
 internal abstract class HasSingleConstraintBase<TValue, TItem>(
 	string it,
 	ExpectationGrammars grammars,
-	PredicateOptions<TItem> options)
+	OptionsSlot<PredicateOptions<TItem>> options)
 	: HasSingleConstraintBase<TItem>(it, grammars)
 {
 	private bool _isEmpty;
@@ -96,7 +96,7 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 	protected bool Record(TItem item)
 	{
 		_isEmpty = false;
-		if (!options.Matches(item))
+		if (!options.Value.Matches(item))
 		{
 			return false;
 		}
@@ -130,7 +130,7 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(Grammars.Verb("has a single item", "have a single item"))
-			.Append(options.GetDescription());
+			.Append(options.Value.GetDescription());
 
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -146,7 +146,7 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 		}
 		else
 		{
-			stringBuilder.Append(It).Append(options.GetDescription().Length == 0
+			stringBuilder.Append(It).Append(options.Value.GetDescription().Length == 0
 				? " had more than one item"
 				: " had more than one matching item");
 		}
@@ -154,7 +154,7 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(Grammars.Verb("does not have a single item", "do not have a single item"))
-			.Append(options.GetDescription());
+			.Append(options.Value.GetDescription());
 
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -164,7 +164,7 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 		}
 		else
 		{
-			stringBuilder.Append(It).Append(options.GetDescription().Length == 0
+			stringBuilder.Append(It).Append(options.Value.GetDescription().Length == 0
 				? " had the single item "
 				: " had the single matching item ");
 			stringBuilder.Append(Formatter.Format(Actual).Indent(indentation, false));
@@ -175,7 +175,7 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 internal sealed class HasSingleConstraint<TEnumerable, TItem>(
 	string it,
 	ExpectationGrammars grammars,
-	PredicateOptions<TItem> options)
+	OptionsSlot<PredicateOptions<TItem>> options)
 	: HasSingleConstraintBase<TEnumerable, TItem>(it, grammars, options),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
@@ -238,7 +238,7 @@ internal sealed class HasSingleConstraint<TEnumerable, TItem>(
 internal sealed class AsyncHasSingleConstraint<TItem>(
 	string it,
 	ExpectationGrammars grammars,
-	PredicateOptions<TItem> options)
+	OptionsSlot<PredicateOptions<TItem>> options)
 	: HasSingleConstraintBase<IAsyncEnumerable<TItem>, TItem>(it, grammars, options),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {

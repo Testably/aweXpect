@@ -15,9 +15,9 @@ public sealed class StringEqualityOptionsTests
 		IOptionsProvider<StringEqualityOptions> optionsProvider = That(actual).IsEqualTo(expected).AsJson();
 #pragma warning restore aweXpect0001
 
-		MatchResult result = await optionsProvider.Options.MatchWithExplanation(actual, expected);
+		MatchResult result = await optionsProvider.Options.Value.MatchWithExplanation(actual, expected);
 		string failure =
-			optionsProvider.Options.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected, result);
+			optionsProvider.Options.Value.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected, result);
 
 		await That(result.IsMatch).IsTrue();
 		await That(failure).IsEmpty();
@@ -31,10 +31,10 @@ public sealed class StringEqualityOptionsTests
 		IOptionsProvider<StringEqualityOptions> optionsProvider = That("").IsEqualTo(expected).AsJson();
 #pragma warning restore aweXpect0001
 
-		await optionsProvider.Options.MatchWithExplanation("{\"foo\":1}", expected);
-		MatchResult result = await optionsProvider.Options.MatchWithExplanation("{\"bar\":1}", expected);
+		await optionsProvider.Options.Value.MatchWithExplanation("{\"foo\":1}", expected);
+		MatchResult result = await optionsProvider.Options.Value.MatchWithExplanation("{\"bar\":1}", expected);
 		string failure =
-			optionsProvider.Options.GetExtendedFailure("it", ExpectationGrammars.None, "{\"bar\":1}", expected, result);
+			optionsProvider.Options.Value.GetExtendedFailure("it", ExpectationGrammars.None, "{\"bar\":1}", expected, result);
 
 		await That(failure).IsEqualTo("it differed as $.bar had unexpected 1")
 			.Because("the differences of the previous subject must not be reported for the next one");
@@ -50,7 +50,7 @@ public sealed class StringEqualityOptionsTests
 #pragma warning restore aweXpect0001
 
 		string failure =
-			optionsProvider.Options.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected, default);
+			optionsProvider.Options.Value.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected, default);
 
 		await That(failure).IsEmpty();
 	}
@@ -116,6 +116,6 @@ public sealed class StringEqualityOptionsTests
 
 	private sealed class StringEqualityResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
-		public StringEqualityOptions Options { get; } = new("expected");
+		public OptionsSlot<StringEqualityOptions> Options { get; } = new(new StringEqualityOptions("expected"));
 	}
 }

@@ -23,7 +23,7 @@ public static partial class ThatNullableTimeSpan
 		this IThat<TimeSpan?> subject,
 		TimeSpan? minimum)
 	{
-		TimeTolerance tolerance = new();
+		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
 		return new BetweenResult<TimeToleranceResult<TimeSpan, IThat<TimeSpan?>>, TimeSpan?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -50,7 +50,7 @@ public static partial class ThatNullableTimeSpan
 		this IThat<TimeSpan?> subject,
 		TimeSpan? minimum)
 	{
-		TimeTolerance tolerance = new();
+		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
 		return new BetweenResult<TimeToleranceResult<TimeSpan, IThat<TimeSpan?>>, TimeSpan?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -69,7 +69,7 @@ public static partial class ThatNullableTimeSpan
 		ExpectationGrammars grammars,
 		TimeSpan? minimum,
 		TimeSpan? maximum,
-		TimeTolerance tolerance)
+		OptionsSlot<TimeTolerance> tolerance)
 		: OrderingConstraint<TimeSpan?>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<TimeSpan?>
 	{
@@ -82,7 +82,7 @@ public static partial class ThatNullableTimeSpan
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
+				TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
 				Outcome = actual.Value.ShiftedTicks(timeTolerance) >= minimum.Value.Ticks &&
 				          actual.Value.ShiftedTicks(timeTolerance.Negate()) <= maximum.Value.Ticks
 					? Outcome.Success

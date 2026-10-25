@@ -21,7 +21,11 @@ public sealed class JsonNumbersWithinOptions
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	IRelativeToleranceOptions<double> IOptionsProvider<IRelativeToleranceOptions<double>>.Options => this;
+	/// <remarks>
+	///     A view on these options, so that <c>Percent()</c> can change them.
+	/// </remarks>
+	OptionsSlot<IRelativeToleranceOptions<double>> IOptionsProvider<IRelativeToleranceOptions<double>>.Options
+		=> new(this);
 
 	/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.Result" />
 	JsonOptions IWithinToleranceResult<JsonOptions, double>.Result => this;

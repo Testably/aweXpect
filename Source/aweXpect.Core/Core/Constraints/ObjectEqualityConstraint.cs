@@ -20,7 +20,7 @@ internal sealed class ObjectEqualityConstraint<TSubject, TExpected>(
 	ExpectationGrammars grammars,
 	TExpected expected,
 	string? expectedExpression,
-	ObjectEqualityOptions<TSubject> options)
+	OptionsSlot<ObjectEqualityOptions<TSubject>> options)
 	: ConstraintResult.WithEqualToValue<TSubject>(it, grammars, expected is null),
 		IAsyncContextConstraint<TSubject>
 {
@@ -31,7 +31,7 @@ internal sealed class ObjectEqualityConstraint<TSubject, TExpected>(
 		CancellationToken cancellationToken)
 	{
 		Actual = actual;
-		_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+		_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 		_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected);
 		Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 		return this;
@@ -39,14 +39,14 @@ internal sealed class ObjectEqualityConstraint<TSubject, TExpected>(
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> (_evaluationOptions ?? options).AppendContexts(contexts);
+		=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> stringBuilder.Append(options.GetExpectation(
+		=> stringBuilder.Append(options.Value.GetExpectation(
 			expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected,
+		=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedFailure(It, Grammars, Actual, expected,
 			_matchResult, indentation));
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

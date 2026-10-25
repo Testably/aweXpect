@@ -28,10 +28,12 @@ internal interface ISubjectComparing
 /// </summary>
 /// <remarks>
 ///     The subject is only known during the evaluation, so <see cref="UseComparerOf" /> has to be called before
-///     comparing, and the text of the options names the comparer only afterwards.
+///     comparing, and the text of the options names the comparer only afterwards.<br />
+///     It offers the wrapped <see cref="Options" /> as a covariant <see cref="IReadOnlyOptionsSlot{TOptions}" />, so
+///     that a failure message of <c>aweXpect.Core</c> can describe the expected items by them.
 /// </remarks>
 internal sealed class SubjectEqualityOptions<TItem, TMatch>
-	: IOptionsEquality<TMatch>, IOptionsProvider<IOptionsEquality<TMatch>>, ISubjectComparing
+	: IOptionsEquality<TMatch>, IReadOnlyOptionsSlot<IOptionsEquality<TMatch>>, ISubjectComparing
 {
 	private readonly bool _canUseSubjectComparer;
 
@@ -69,12 +71,17 @@ internal sealed class SubjectEqualityOptions<TItem, TMatch>
 	public void AppendContexts(ResultContextCollector contexts)
 		=> Options.AppendContexts(contexts);
 
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	/// <summary>
+	///     The wrapped options, which decide whenever the comparer of the subject does not.
+	/// </summary>
 	/// <remarks>
 	///     Lets a failure message describe the expected items by the options that decide whenever the comparer of the
 	///     subject does not.
 	/// </remarks>
 	public IOptionsEquality<TMatch> Options { get; }
+
+	/// <inheritdoc cref="IReadOnlyOptionsSlot{TOptions}.Value" />
+	IOptionsEquality<TMatch> IReadOnlyOptionsSlot<IOptionsEquality<TMatch>>.Value => Options;
 
 	/// <inheritdoc cref="ISubjectComparing.UseComparerOf(object?)" />
 	public bool UseComparerOf(object? subject)

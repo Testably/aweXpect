@@ -1,4 +1,5 @@
 ﻿using System;
+using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect.Results;
@@ -8,7 +9,7 @@ namespace aweXpect.Results;
 /// </summary>
 public class ExecutesInToleranceResult<TResult>(
 	TResult returnValue,
-	ExecutionTimeOptions options,
+	OptionsSlot<ExecutionTimeOptions> options,
 	TimeSpan expected)
 {
 	/// <summary>
@@ -20,7 +21,7 @@ public class ExecutesInToleranceResult<TResult>(
 	/// </remarks>
 	public ExecutesInToleranceResult<TResult> AllowingExceptions(bool allowExceptions = true)
 	{
-		options.AllowingExceptions(allowExceptions);
+		options.Value.AllowingExceptions(allowExceptions);
 		return this;
 	}
 
@@ -30,7 +31,7 @@ public class ExecutesInToleranceResult<TResult>(
 	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
 	public TResult Within(TimeSpan tolerance)
 	{
-		options.Approximately(expected, tolerance);
+		options.Value.Approximately(expected, tolerance);
 		return returnValue;
 	}
 }

@@ -14,7 +14,7 @@ public sealed class CollectionOrderResultTests
 		CollectionOrderResult<int[], IThat<int[]>, int> sut = CreateSut(Array.Empty<int>(), options);
 
 		await That(sut).Is<IOptionsProvider<CollectionOrderOptions<int>>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	private static CollectionOrderResult<T, IThat<T>, TMember> CreateSut<T, TMember>(T subject,
@@ -26,6 +26,6 @@ public sealed class CollectionOrderResultTests
 		return new CollectionOrderResult<T, IThat<T>, TMember>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			options);
+			new OptionsSlot<CollectionOrderOptions<TMember>>(options));
 	}
 }

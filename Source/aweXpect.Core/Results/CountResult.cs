@@ -12,10 +12,10 @@ namespace aweXpect.Results;
 public class CountResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	Quantifier quantifier)
+	OptionsSlot<Quantifier> quantifier)
 	: AndOrResult<TType, TThat, CountResult<TType, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<Quantifier>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+	OptionsSlot<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier;
 }

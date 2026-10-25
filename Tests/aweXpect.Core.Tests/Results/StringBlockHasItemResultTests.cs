@@ -86,7 +86,7 @@ public sealed class StringBlockHasItemResultTests
 #pragma warning restore aweXpect0001
 		return new StringHasItemResult<IEnumerable<string>>(source.Get().ExpectationBuilder.AddConstraint((it, _) => new DummyConstraint(it)),
 			source,
-			new CollectionIndexOptions(),
-			options);
+			new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()),
+			new OptionsSlot<StringEqualityOptions>(options));
 	}
 }

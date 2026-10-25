@@ -76,15 +76,15 @@ public sealed class StringEqualityOptionsExtensionsTests
 	[Arguments("Using")]
 	public async Task WhenTheResultDoesNotCopyOnOption_ShouldSetTheOptionInPlace(string option)
 	{
-		StringEqualityOptions options = new("expected");
-		InPlaceResult sut = new(options);
-		string unchangedOptions = options.ToString();
+		InPlaceResult sut = new(new StringEqualityOptions("expected"));
+		OptionsSlot<StringEqualityOptions> slot = sut.Options;
+		string unchangedOptions = slot.Value.ToString();
 
 		InPlaceResult result = Apply(sut, option);
 
 		await That(result).IsSameAs(sut);
-		await That(result.Options).IsSameAs(options);
-		await That(options.ToString()).IsNotEqualTo(unchangedOptions);
+		await That(result.Options).IsSameAs(slot);
+		await That(slot.Value.ToString()).IsNotEqualTo(unchangedOptions);
 	}
 
 	private static TResult Apply<TResult>(TResult result, string option)
@@ -111,7 +111,7 @@ public sealed class StringEqualityOptionsExtensionsTests
 			IStringMatchTypeOptions,
 			ICopyOnOption<StringEqualityOptions, CopyingResult>
 	{
-		public StringEqualityOptions Options => options;
+		public OptionsSlot<StringEqualityOptions> Options { get; } = new(options);
 
 		public CopyingResult WithOptions(StringEqualityOptions copiedOptions) => new(copiedOptions);
 	}
@@ -120,6 +120,6 @@ public sealed class StringEqualityOptionsExtensionsTests
 		: IOptionsProvider<StringEqualityOptions>,
 			IStringMatchTypeOptions
 	{
-		public StringEqualityOptions Options => options;
+		public OptionsSlot<StringEqualityOptions> Options { get; } = new(options);
 	}
 }

@@ -22,7 +22,7 @@ public static partial class ThatDateTimeOffset
 		this IThat<DateTimeOffset> subject,
 		DateTimeOffset? minimum)
 	{
-		TimeTolerance tolerance = new();
+		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
 		return new BetweenResult<TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>>, DateTimeOffset?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -49,7 +49,7 @@ public static partial class ThatDateTimeOffset
 			this IThat<DateTimeOffset> subject,
 			DateTimeOffset? minimum)
 	{
-		TimeTolerance tolerance = new();
+		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
 		return new BetweenResult<TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>>, DateTimeOffset?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -68,7 +68,7 @@ public static partial class ThatDateTimeOffset
 		ExpectationGrammars grammars,
 		DateTimeOffset? minimum,
 		DateTimeOffset? maximum,
-		TimeTolerance tolerance)
+		OptionsSlot<TimeTolerance> tolerance)
 		: OrderingConstraint<DateTimeOffset>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<DateTimeOffset>
 	{
@@ -81,7 +81,7 @@ public static partial class ThatDateTimeOffset
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
+				TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
 				Outcome = minimum - actual <= timeTolerance && actual - maximum <= timeTolerance
 					? Outcome.Success
 					: Outcome.Failure;

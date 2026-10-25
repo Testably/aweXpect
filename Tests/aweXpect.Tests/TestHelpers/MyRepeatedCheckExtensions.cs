@@ -17,7 +17,7 @@ public static class MyRepeatedCheckExtensions
 			.AddConstraint((it, grammars)
 				=> new ReturnsPositiveConstraint(it, grammars, options).Invert()),
 			subject,
-			options);
+			new OptionsSlot<RepeatedCheckOptions>(options));
 	}
 
 	public static RepeatedCheckResult<Probe, IThat<Probe>> ReturnsPositive(this IThat<Probe> subject)
@@ -27,7 +27,7 @@ public static class MyRepeatedCheckExtensions
 			.AddConstraint((it, grammars)
 				=> new ReturnsPositiveConstraint(it, grammars, options)),
 			subject,
-			options);
+			new OptionsSlot<RepeatedCheckOptions>(options));
 	}
 
 	public sealed class Probe(Func<int> read)

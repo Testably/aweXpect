@@ -4,6 +4,7 @@ using System.Threading;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
+using aweXpect.Options;
 using aweXpect.Results;
 
 namespace aweXpect.Core.Tests.Results;

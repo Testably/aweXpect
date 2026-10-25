@@ -24,7 +24,7 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 	ExpectationGrammars grammars,
 	bool isExpectedNull,
 	bool failsForNullSubject,
-	CollectionMatchOptions matchOptions)
+	OptionsSlot<CollectionMatchOptions> matchOptions)
 	: ConstraintResult.WithEqualToValue<TValue>(it, grammars, isExpectedNull)
 {
 	private const string ExpectedCollectionWasNull = "the expected collection was <null>";
@@ -40,7 +40,7 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 	/// <summary>
 	///     The options for the order and the number of the items.
 	/// </summary>
-	protected CollectionMatchOptions MatchOptions => matchOptions;
+	protected CollectionMatchOptions MatchOptions => matchOptions.Value;
 
 	/// <summary>
 	///     The outcome for a <see langword="null" /> subject.
@@ -259,7 +259,7 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		}
 		else
 		{
-			stringBuilder.Append(It).Append(matchOptions.GetNegatedResultVerb(It, Grammars));
+			stringBuilder.Append(It).Append(matchOptions.Value.GetNegatedResultVerb(It, Grammars));
 		}
 	}
 
@@ -290,7 +290,7 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 	string? expectedExpression,
 	IEnumerable<TItem>? expected,
 	IOptionsEquality<TMatch> options,
-	CollectionMatchOptions matchOptions,
+	OptionsSlot<CollectionMatchOptions> matchOptions,
 	bool failsForNullSubject)
 	: CollectionMatchConstraintBase<TValue>(it, grammars, expected is null, failsForNullSubject, matchOptions)
 	where TItem : TMatch
@@ -404,7 +404,7 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 	string? expectedExpression,
 	IEnumerable<TItem>? expected,
 	IOptionsEquality<TMatch> options,
-	CollectionMatchOptions matchOptions,
+	OptionsSlot<CollectionMatchOptions> matchOptions,
 	bool failsForNullSubject = false,
 	bool canUseSubjectComparer = false,
 	IEnumerable? expectedWithDimensions = null)
@@ -548,7 +548,7 @@ internal abstract class IsEqualToFromExpectationsConstraintBase<TValue, TItem>(
 	ExpectationGrammars grammars,
 	string? expectedExpression,
 	IEnumerable<Action<IThatSubject<TItem>>>? expected,
-	CollectionMatchOptions matchOptions,
+	OptionsSlot<CollectionMatchOptions> matchOptions,
 	bool failsForNullSubject)
 	: CollectionMatchConstraintBase<TValue>(it, grammars, expected is null, failsForNullSubject, matchOptions)
 {
@@ -620,7 +620,7 @@ internal sealed class IsEqualToFromExpectationsConstraint<TEnumerable, TItem, TM
 	ExpectationGrammars grammars,
 	string? expectedExpression,
 	IEnumerable<Action<IThatSubject<TItem>>>? expected,
-	CollectionMatchOptions matchOptions,
+	OptionsSlot<CollectionMatchOptions> matchOptions,
 	bool failsForNullSubject = false)
 	: IsEqualToFromExpectationsConstraintBase<TEnumerable?, TItem>(it, grammars, expectedExpression,
 			expected.NullIfDefaultImmutableArray(), matchOptions, failsForNullSubject),
@@ -663,7 +663,7 @@ internal abstract class IsEqualToFromPredicateConstraintBase<TValue, TItem>(
 	ExpectationGrammars grammars,
 	string? expectedExpression,
 	IEnumerable<Expression<Func<TItem, bool>>>? expected,
-	CollectionMatchOptions matchOptions,
+	OptionsSlot<CollectionMatchOptions> matchOptions,
 	bool failsForNullSubject)
 	: CollectionMatchConstraintBase<TValue>(it, grammars, expected is null, failsForNullSubject, matchOptions)
 {
@@ -715,7 +715,7 @@ internal sealed class IsEqualToFromPredicateConstraint<TEnumerable, TItem, TMatc
 	ExpectationGrammars grammars,
 	string? expectedExpression,
 	IEnumerable<Expression<Func<TItem, bool>>>? expected,
-	CollectionMatchOptions matchOptions,
+	OptionsSlot<CollectionMatchOptions> matchOptions,
 	bool failsForNullSubject = false)
 	: IsEqualToFromPredicateConstraintBase<TEnumerable?, TItem>(it, grammars, expectedExpression,
 			expected.NullIfDefaultImmutableArray(), matchOptions, failsForNullSubject),
@@ -757,7 +757,7 @@ internal sealed class AsyncIsEqualToConstraint<TItem, TMatch>(
 	string expectedExpression,
 	IEnumerable<TItem>? expected,
 	IOptionsEquality<TMatch> options,
-	CollectionMatchOptions matchOptions,
+	OptionsSlot<CollectionMatchOptions> matchOptions,
 	bool failsForNullSubject = false)
 	: IsEqualToConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, expectedExpression,
 			expected.NullIfDefaultImmutableArray(), options, matchOptions, failsForNullSubject),
@@ -792,7 +792,7 @@ internal sealed class AsyncIsEqualToFromExpectationsConstraint<TItem, TMatch>(
 	ExpectationGrammars grammars,
 	string expectedExpression,
 	IEnumerable<Action<IThatSubject<TItem>>>? expected,
-	CollectionMatchOptions matchOptions,
+	OptionsSlot<CollectionMatchOptions> matchOptions,
 	bool failsForNullSubject = false)
 	: IsEqualToFromExpectationsConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, expectedExpression,
 			expected.NullIfDefaultImmutableArray(), matchOptions, failsForNullSubject),
@@ -827,7 +827,7 @@ internal sealed class AsyncIsEqualToFromPredicateConstraint<TItem, TMatch>(
 	ExpectationGrammars grammars,
 	string expectedExpression,
 	IEnumerable<Expression<Func<TItem, bool>>>? expected,
-	CollectionMatchOptions matchOptions,
+	OptionsSlot<CollectionMatchOptions> matchOptions,
 	bool failsForNullSubject = false)
 	: IsEqualToFromPredicateConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, expectedExpression,
 			expected.NullIfDefaultImmutableArray(), matchOptions, failsForNullSubject),

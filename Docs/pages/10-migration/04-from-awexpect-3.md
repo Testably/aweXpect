@@ -216,6 +216,11 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   `INonGenericEnumerableItems<TCollection>`, which replace `IEnumerableElements<TItem>` and its siblings.
 - Every method that sets a Core option returns the options object, a repeated option replaces the earlier one, and methods
   that mirror a user-facing option take its name, e.g. `Within` instead of `SetTolerance`.
+- `IOptionsProvider<TOptions>.Options` returns the `OptionsSlot<TOptions>` of the expectation, which holds the options:
+  create the slot in your expectation, pass it to your constraint and your result, and read `slot.Value` when the
+  constraint evaluates. The option methods are also available on the slot, e.g. `result.Options.AtLeast(2)`. The
+  predicates of a `Signaler<TParameter>` moved from `SignalerOptions<TParameter>` to
+  `SignalerPredicateOptions<TParameter>`.
 - `ConstraintResult` creates a result that fails both ways with `FailureBothWays` instead of `Fail`.
 - `ExpectationBuilder.WithCancellation` and `WithTimeout` return the builder, and the async `ForWhich` is
   `ForAsyncWhich`. `MemberAccessor.FromFunc` and `FromFuncAsMemberAccessor` are `FromFuncWithName` and

@@ -36,7 +36,7 @@ public static partial class ThatJsonElement
 		string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
 		return new StringEqualityTypeResult<JsonElement, IThat<JsonElement>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static IAsyncContextConstraint<JsonElement> (state, it, grammars)

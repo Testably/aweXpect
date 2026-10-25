@@ -14,7 +14,7 @@ public sealed class HasItemWithConditionResultTests
 		HasItemWithConditionResult<int[], int> sut = CreateSut(Array.Empty<int>(), options);
 
 		await That(sut).Is<IOptionsProvider<PredicateOptions<int>>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	private static HasItemWithConditionResult<TCollection, TItem> CreateSut<TCollection, TItem>(TCollection subject,
@@ -24,6 +24,6 @@ public sealed class HasItemWithConditionResultTests
 		IThat<TCollection?> source = That(subject);
 #pragma warning restore aweXpect0001
 		return new HasItemWithConditionResult<TCollection, TItem>(source.Get().ExpectationBuilder,
-			source, new CollectionIndexOptions(), options);
+			source, new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()), new OptionsSlot<PredicateOptions<TItem>>(options));
 	}
 }

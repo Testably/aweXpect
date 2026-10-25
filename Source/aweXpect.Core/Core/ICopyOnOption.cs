@@ -5,8 +5,9 @@ namespace aweXpect.Core;
 ///     <typeparamref name="TOptions" />, from which the result returns a new <typeparamref name="TResult" />.
 /// </summary>
 /// <remarks>
-///     A result usually belongs to a single expectation, so the options of its <see cref="IOptionsProvider{TOptions}" />
-///     are changed in place. A result that can be stored and continued more than once, e.g. a filter in
+///     A result usually belongs to a single expectation, so an option changes the options in the
+///     <see cref="OptionsSlot{TOptions}" /> of its <see cref="IOptionsProvider{TOptions}" />. A result that can be stored
+///     and continued more than once, e.g. a filter in
 ///     <c>aweXpect.Reflection</c>, implements this interface, so that a continuation never changes the result it was
 ///     called on.<br />
 ///     It is only used when an option is applied, never per evaluation.
@@ -20,7 +21,8 @@ public interface ICopyOnOption<in TOptions, out TResult>
 	///     The <paramref name="options" /> are a copy of the options of this result with the new option set, so they
 	///     carry every option set so far: a repeated option replaces the earlier one, and a competing or incompatible
 	///     option throws with the same message as without the copy. The returned result must use them for everything
-	///     its own options were used for, e.g. its matches and its description, and keep the rest of this result.
+	///     its own options were used for, e.g. its matches and its description, and keep the rest of this result; it
+	///     offers them in a new <see cref="OptionsSlot{TOptions}" />, so that the slot of this result stays unchanged.
 	/// </remarks>
 	TResult WithOptions(TOptions options);
 }

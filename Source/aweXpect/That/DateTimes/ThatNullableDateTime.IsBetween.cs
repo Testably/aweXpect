@@ -25,7 +25,7 @@ public static partial class ThatNullableDateTime
 		this IThat<DateTime?> subject,
 		DateTime? minimum)
 	{
-		TimeTolerance tolerance = new();
+		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
 		return new BetweenResult<TimeToleranceResult<DateTime, IThat<DateTime?>>, DateTime?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -54,7 +54,7 @@ public static partial class ThatNullableDateTime
 		this IThat<DateTime?> subject,
 		DateTime? minimum)
 	{
-		TimeTolerance tolerance = new();
+		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
 		return new BetweenResult<TimeToleranceResult<DateTime, IThat<DateTime?>>, DateTime?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -73,7 +73,7 @@ public static partial class ThatNullableDateTime
 		ExpectationGrammars grammars,
 		DateTime? minimum,
 		DateTime? maximum,
-		TimeTolerance tolerance)
+		OptionsSlot<TimeTolerance> tolerance)
 		: OrderingConstraint<DateTime?>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<DateTime?>
 	{
@@ -110,7 +110,7 @@ public static partial class ThatNullableDateTime
 
 		private bool IsWithinRange(DateTime actual, DateTime minimum, DateTime maximum)
 		{
-			TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
+			TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
 			return minimum - actual <= timeTolerance && actual - maximum <= timeTolerance;
 		}
 

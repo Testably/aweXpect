@@ -32,7 +32,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 		string it,
 		ExpectationGrammars grammars,
 		ContainedItem<TItem> item,
-		CollectionIndexOptions options)
+		OptionsSlot<CollectionIndexOptions> options)
 		: base(it, grammars)
 	{
 		_itemGrammars = grammars;
@@ -50,7 +50,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 	/// <summary>
 	///     The options for the index of the item.
 	/// </summary>
-	protected CollectionIndexOptions Options { get; }
+	protected OptionsSlot<CollectionIndexOptions> Options { get; }
 
 	/// <summary>
 	///     Whether the predicate is synchronous, so that the items can be verified without awaiting it.
@@ -90,7 +90,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 	///     later item can be.
 	/// </summary>
 	protected bool? IsAtIndex(int index, int? count)
-		=> Options.MatchesIndex(index, count);
+		=> Options.Value.MatchesIndex(index, count);
 
 	/// <summary>
 	///     Records whether the <paramref name="item" /> at the expected index matches and returns
@@ -101,45 +101,45 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 		_hasIndex = true;
 		_actual = item;
 		Outcome = isMatch ? Outcome.Success : Outcome.Failure;
-		return isMatch || Options.Match.OnlySingleIndex();
+		return isMatch || Options.Value.Match.OnlySingleIndex();
 	}
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item "))
 			.Append(Item.GetHasItemExpectation(_itemGrammars).Indent(indentation, false))
-			.Append(Options.Match.GetDescription());
+			.Append(Options.Value.Match.GetDescription());
 
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 	{
 		if (_hasIndex)
 		{
-			if (Options.Match.OnlySingleIndex())
+			if (Options.Value.Match.OnlySingleIndex())
 			{
 				stringBuilder.Append(It).Append(" had item ");
 				stringBuilder.Append(Formatter.Format(_actual).Indent(indentation, false));
-				stringBuilder.Append(Options.Match.GetDescription());
+				stringBuilder.Append(Options.Value.Match.GetDescription());
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" had no matching item").Append(Options.Match.GetDescription());
+				stringBuilder.Append(It).Append(" had no matching item").Append(Options.Value.Match.GetDescription());
 			}
 		}
 		else
 		{
-			stringBuilder.Append(It).Append(" had no item").Append(Options.Match.GetDescription());
+			stringBuilder.Append(It).Append(" had no item").Append(Options.Value.Match.GetDescription());
 		}
 	}
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(Grammars.Verb("does not have an item ", "do not have an item "))
 			.Append(Item.GetHasItemExpectation(_itemGrammars).Indent(indentation, false))
-			.Append(Options.Match.GetDescription());
+			.Append(Options.Value.Match.GetDescription());
 
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 	{
 		stringBuilder.Append(It).Append(" had item ");
 		stringBuilder.Append(Formatter.Format(_actual).Indent(indentation, false));
-		stringBuilder.Append(Options.Match.GetDescription());
+		stringBuilder.Append(Options.Value.Match.GetDescription());
 	}
 }
 
@@ -147,7 +147,7 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>(
 	string it,
 	ExpectationGrammars grammars,
 	ContainedItem<TItem> containedItem,
-	CollectionIndexOptions options)
+	OptionsSlot<CollectionIndexOptions> options)
 	: HasItemConstraintBase<TEnumerable, TItem>(it, grammars, containedItem, options),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
@@ -174,7 +174,7 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>(
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		materialized.SetContext(ref _collectionContext);
 
-		if (!ThatEnumerable.TryCountForIndex(Options, actual, materialized.Items, cancellationToken,
+		if (!ThatEnumerable.TryCountForIndex(Options.Value, actual, materialized.Items, cancellationToken,
 			    out int? count))
 		{
 			Outcome = Outcome.Undecided;
@@ -243,7 +243,7 @@ internal sealed class AsyncHasItemConstraint<TItem>(
 	string it,
 	ExpectationGrammars grammars,
 	ContainedItem<TItem> containedItem,
-	CollectionIndexOptions options)
+	OptionsSlot<CollectionIndexOptions> options)
 	: HasItemConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, containedItem, options),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
@@ -265,7 +265,7 @@ internal sealed class AsyncHasItemConstraint<TItem>(
 		_collectionContext.Set(materialized as IMaterializedAsyncEnumerable<TItem>);
 
 		int? count = null;
-		if (Options.Match is CollectionIndexOptions.IMatchFromEnd)
+		if (Options.Value.Match is CollectionIndexOptions.IMatchFromEnd)
 		{
 			count = (await (materialized as IMaterializedAsyncEnumerable<TItem>)!.MaterializeItems(null)).Count;
 			if (count is null)

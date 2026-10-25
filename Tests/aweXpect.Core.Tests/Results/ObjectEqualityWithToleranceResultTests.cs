@@ -16,7 +16,7 @@ public sealed class ObjectEqualityWithToleranceResultTests
 		ObjectEqualityWithToleranceResult<int, IThat<int>, int, double> sut = CreateSut(2, options);
 
 		await That(sut).Is<IOptionsProvider<ObjectEqualityOptions<int>>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	[Test]
@@ -26,7 +26,7 @@ public sealed class ObjectEqualityWithToleranceResultTests
 		ObjectEqualityWithToleranceResult<int, IThat<int>, int, double> sut = CreateSut(2, options);
 
 		await That(sut).Is<IOptionsProvider<ObjectEqualityWithToleranceOptions<int, double>>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	[Test]
@@ -50,7 +50,7 @@ public sealed class ObjectEqualityWithToleranceResultTests
 		ObjectEqualityWithToleranceResult<int, IThat<int>, int, double>.WithinResult result = sut.Within(1.0);
 
 		await That(result).Is<IOptionsProvider<IRelativeToleranceOptions<double>>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	[Test]
@@ -75,6 +75,6 @@ public sealed class ObjectEqualityWithToleranceResultTests
 			source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			options);
+			new OptionsSlot<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>(options));
 	}
 }

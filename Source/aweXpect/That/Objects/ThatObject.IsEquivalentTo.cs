@@ -28,7 +28,7 @@ public static partial class ThatObject
 			equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 		}
 
-		ObjectEqualityOptions<TSubject> equalityOptions = new();
+		OptionsSlot<ObjectEqualityOptions<TSubject>> equalityOptions = new(new ObjectEqualityOptions<TSubject>());
 		equalityOptions.Equivalent(equivalencyOptions);
 		return new AndOrResult<TSubject, IThat<TSubject>>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(expectationBuilder, expected,
@@ -66,7 +66,7 @@ public static partial class ThatObject
 			equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 		}
 
-		ObjectEqualityOptions<TSubject> equalityOptions = new();
+		OptionsSlot<ObjectEqualityOptions<TSubject>> equalityOptions = new(new ObjectEqualityOptions<TSubject>());
 		equalityOptions.Equivalent(equivalencyOptions);
 		return new AndOrResult<TSubject, IThat<TSubject>>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(expectationBuilder, unexpected,

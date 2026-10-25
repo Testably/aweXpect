@@ -28,7 +28,7 @@ internal static class EqualityOptionsContextHelpers
 			return evaluationOptions;
 		}
 
-		if (options is IOptionsProvider<IOptionsEquality<T>> { Options: { } wrappedOptions, } &&
+		if (options is IReadOnlyOptionsSlot<IOptionsEquality<T>> { Value: { } wrappedOptions, } &&
 		    !DefaultEquality.IsUsedBy(wrappedOptions))
 		{
 			IOptionsEquality<T>? wrappedEvaluationOptions =
@@ -66,7 +66,7 @@ internal static class EqualityOptionsContextHelpers
 		StringEqualityOptions? stringOptions = options switch
 		{
 			StringEqualityOptions directOptions => directOptions,
-			IOptionsProvider<IOptionsEquality<T>> { Options: StringEqualityOptions wrappedOptions, } => wrappedOptions,
+			IReadOnlyOptionsSlot<IOptionsEquality<T>> { Value: StringEqualityOptions wrappedOptions, } => wrappedOptions,
 			_ => null,
 		};
 		if (stringOptions is null || stringOptions.ComparesByOrdinalEquality)

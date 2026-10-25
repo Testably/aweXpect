@@ -29,13 +29,13 @@ public static partial class ThatDictionary
 			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		ObjectEqualityOptions<TValue> options = ObjectEqualityWithToleranceOptionsFactory.ForValuesOf<TValue>();
+		OptionsSlot<ObjectEqualityOptions<TValue>> options = new(ObjectEqualityWithToleranceOptionsFactory.ForValuesOf<TValue>());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainValueConstraint<TCollection, TKey, TValue>(it, grammars,
-						state.Expected, state.Options).InvertIf(state.Negated)),
+						state.Expected, state.Options.Value).InvertIf(state.Negated)),
 			subject,
 			options);
 	}
@@ -47,16 +47,17 @@ public static partial class ThatDictionary
 		ContainsValueWithToleranceCore<TCollection, TKey, TValue, TTolerance>(
 			IThat<TCollection?> subject,
 			TValue expected,
-			ObjectEqualityWithToleranceOptions<TValue, TTolerance> options,
+			ObjectEqualityWithToleranceOptions<TValue, TTolerance> initialOptions,
 			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
+		OptionsSlot<ObjectEqualityWithToleranceOptions<TValue, TTolerance>> options = new(initialOptions);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>(
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainValueConstraint<TCollection, TKey, TValue>(it, grammars,
-						state.Expected, state.Options).InvertIf(state.Negated)),
+						state.Expected, state.Options.Value).InvertIf(state.Negated)),
 			subject,
 			options);
 	}
@@ -70,13 +71,13 @@ public static partial class ThatDictionary
 			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, string?>>
 	{
-		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainValueConstraint<TCollection, TKey, string?>(it, grammars,
-						state.Expected, state.Options).InvertIf(state.Negated)),
+						state.Expected, state.Options.Value).InvertIf(state.Negated)),
 			subject,
 			options);
 	}

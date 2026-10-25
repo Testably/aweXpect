@@ -1,4 +1,5 @@
 using System;
+using aweXpect.Core;
 using aweXpect.Core.Metadata;
 using aweXpect.Equivalency;
 using aweXpect.Options;
@@ -39,5 +40,13 @@ public static class EquivalencyExtensions
 	{
 		options.SetMatchType(new EquivalencyMatchType<TSubject>(equivalencyOptions), nameof(Equivalent));
 		return options;
+	}
+
+	/// <inheritdoc cref="Equivalent{TSubject}(ObjectEqualityOptions{TSubject}, EquivalencyOptions)" />
+	internal static OptionsSlot<ObjectEqualityOptions<TSubject>> Equivalent<TSubject>(
+		this OptionsSlot<ObjectEqualityOptions<TSubject>> slot, EquivalencyOptions equivalencyOptions)
+	{
+		slot.Value = slot.Value.Equivalent(equivalencyOptions);
+		return slot;
 	}
 }

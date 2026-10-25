@@ -18,14 +18,14 @@ public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
 			TTolerance>
 {
 	private readonly IThat<TCollection?> _collection;
-	private readonly CollectionIndexOptions _collectionIndexOptions;
-	private readonly ObjectEqualityWithToleranceOptions<TItem, TTolerance> _options;
+	private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
+	private readonly OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> _options;
 
 	internal ObjectHasItemWithToleranceResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TCollection?> collection,
-		CollectionIndexOptions collectionIndexOptions,
-		ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
+		OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options)
 		: base(expectationBuilder, collection)
 	{
 		_collection = collection;
@@ -34,14 +34,18 @@ public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => _options;
+	/// <remarks>
+	///     A view on the options of the expectation, so that the options of every object comparison can change them.
+	/// </remarks>
+	OptionsSlot<ObjectEqualityOptions<TItem>> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options
+		=> new(_options.Value);
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ObjectEqualityWithToleranceOptions<TItem, TTolerance>
+	OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>
 		IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
+	OptionsSlot<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 
 	/// <inheritdoc cref="ObjectEqualityOptionsExtensions.Within{TSelf, TElement, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TElement, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
@@ -61,15 +65,18 @@ public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
 		internal WithinResult(
 			ExpectationBuilder expectationBuilder,
 			IThat<TCollection?> collection,
-			CollectionIndexOptions collectionIndexOptions,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+			OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
+			OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options)
 			: base(expectationBuilder, collection, collectionIndexOptions, options)
 		{
 		}
 
 		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-		IRelativeToleranceOptions<TTolerance> IOptionsProvider<IRelativeToleranceOptions<TTolerance>>.Options
-			=> ((IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>)this).Options;
+		/// <remarks>
+		///     A view on the options of the expectation, so that <c>Percent()</c> can change them.
+		/// </remarks>
+		OptionsSlot<IRelativeToleranceOptions<TTolerance>> IOptionsProvider<IRelativeToleranceOptions<TTolerance>>.Options
+			=> new(((IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>)this).Options.Value);
 
 		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.Result" />
 		ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>

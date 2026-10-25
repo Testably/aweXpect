@@ -25,9 +25,9 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> Target(
 		this IThat<IEnumerable<Assembly?>?> subject, string expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Expected, StringEqualityOptions Options), IEnumerable<Assembly?>>((expected, options),
+				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Assembly?>>((expected, options),
 					static (s, it, grammars)
 					=> new TargetConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
@@ -43,10 +43,10 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> Target(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject, string expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
-				.ExpectationBuilder.AddConstraint<(string Expected, StringEqualityOptions Options), IAsyncEnumerable<Assembly?>>((expected, options),
+				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((expected, options),
 					static (s, it, grammars)
 					=> new TargetConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
@@ -62,9 +62,9 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> DoNotTarget(
 		this IThat<IEnumerable<Assembly?>?> subject, string unexpected)
 	{
-		StringEqualityOptions options = new(nameof(unexpected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Unexpected, StringEqualityOptions Options), IEnumerable<Assembly?>>((unexpected, options),
+				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Assembly?>>((unexpected, options),
 					static (s, it, grammars)
 					=> new DoNotTargetConstraint(it, grammars, s.Unexpected, s.Options)),
 			subject,
@@ -80,10 +80,10 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> DoNotTarget(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject, string unexpected)
 	{
-		StringEqualityOptions options = new(nameof(unexpected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
-				.ExpectationBuilder.AddConstraint<(string Unexpected, StringEqualityOptions Options), IAsyncEnumerable<Assembly?>>((unexpected, options),
+				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((unexpected, options),
 					static (s, it, grammars)
 					=> new DoNotTargetConstraint(it, grammars, s.Unexpected, s.Options)),
 			subject,
@@ -95,7 +95,7 @@ public static partial class ThatAssemblies
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		StringEqualityOptions options)
+		OptionsSlot<StringEqualityOptions> options)
 		: CollectionConstraintResult<Assembly?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER
@@ -104,13 +104,13 @@ public static partial class ThatAssemblies
 	{
 		private StringEqualityOptions? _evaluationOptions;
 
-		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options;
+		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options.Value;
 
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetAsyncValue(actual, context,
 				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetTargetFramework(), expected), cancellationToken);
 		}
@@ -119,7 +119,7 @@ public static partial class ThatAssemblies
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetValue(actual, context,
 				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetTargetFramework(), expected), cancellationToken);
 		}
@@ -132,13 +132,13 @@ public static partial class ThatAssemblies
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all target ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("all target ").Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained not matching assemblies");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all target ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("not all target ").Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained matching assemblies");
@@ -148,7 +148,7 @@ public static partial class ThatAssemblies
 		string it,
 		ExpectationGrammars grammars,
 		string unexpected,
-		StringEqualityOptions options)
+		OptionsSlot<StringEqualityOptions> options)
 		: CollectionConstraintResult<Assembly?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER
@@ -157,13 +157,13 @@ public static partial class ThatAssemblies
 	{
 		private StringEqualityOptions? _evaluationOptions;
 
-		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options;
+		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options.Value;
 
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetAsyncValue(actual, context, DoesNotTarget, cancellationToken);
 		}
 #endif
@@ -171,7 +171,7 @@ public static partial class ThatAssemblies
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetValue(actual, context, DoesNotTarget, cancellationToken);
 		}
 
@@ -179,13 +179,13 @@ public static partial class ThatAssemblies
 			=> assembly is not null && !await EvaluationOptions.AreConsideredEqual(assembly.GetTargetFramework(), unexpected);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all target ").Append(options.GetExpectation(unexpected, Grammars.Negate()));
+			=> stringBuilder.Append("all target ").Append(options.Value.GetExpectation(unexpected, Grammars.Negate()));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained not matching assemblies");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all target ").Append(options.GetExpectation(unexpected, Grammars.Negate()));
+			=> stringBuilder.Append("not all target ").Append(options.Value.GetExpectation(unexpected, Grammars.Negate()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained matching assemblies");

@@ -41,7 +41,7 @@ public static partial class ThatDictionary
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		TValue[] values = expected.ToNonEmptyValues(negated).ToArray();
-		ObjectEqualityOptions<TValue> options = ObjectEqualityWithToleranceOptionsFactory.ForValuesOf<TValue>();
+		OptionsSlot<ObjectEqualityOptions<TValue>> options = new(ObjectEqualityWithToleranceOptionsFactory.ForValuesOf<TValue>());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint(
@@ -49,7 +49,7 @@ public static partial class ThatDictionary
 				static (state, it, grammars) =>
 					new ContainValuesConstraint<TCollection, TKey, TValue>(it, grammars,
 							state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Values),
-							state.Values, state.Options, state.Negated)
+							state.Values, state.Options.Value, state.Negated)
 						.InvertIf(state.Negated)),
 			subject,
 			options);
@@ -67,11 +67,12 @@ public static partial class ThatDictionary
 		ContainsValuesWithToleranceCore<TCollection, TKey, TValue, TTolerance>(
 			IThat<TCollection?> subject,
 			IEnumerable<TValue> expected,
-			ObjectEqualityWithToleranceOptions<TValue, TTolerance> options,
+			ObjectEqualityWithToleranceOptions<TValue, TTolerance> initialOptions,
 			string? expectedExpression,
 			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
+		OptionsSlot<ObjectEqualityWithToleranceOptions<TValue, TTolerance>> options = new(initialOptions);
 		TValue[] values = expected.ToNonEmptyValues(negated).ToArray();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>(
@@ -80,7 +81,7 @@ public static partial class ThatDictionary
 				static (state, it, grammars) =>
 					new ContainValuesConstraint<TCollection, TKey, TValue>(it, grammars,
 							state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Values),
-							state.Values, state.Options, state.Negated)
+							state.Values, state.Options.Value, state.Negated)
 						.InvertIf(state.Negated)),
 			subject,
 			options);
@@ -101,7 +102,7 @@ public static partial class ThatDictionary
 		where TCollection : IEnumerable<KeyValuePair<TKey, string?>>
 	{
 		string?[] values = expected.ToNonEmptyValues(negated).ToArray();
-		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint(
@@ -109,7 +110,7 @@ public static partial class ThatDictionary
 				static (state, it, grammars) =>
 					new ContainValuesConstraint<TCollection, TKey, string?>(it, grammars,
 							state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Values),
-							state.Values, state.Options, state.Negated)
+							state.Values, state.Options.Value, state.Negated)
 						.InvertIf(state.Negated)),
 			subject,
 			options);

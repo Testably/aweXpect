@@ -20,7 +20,7 @@ internal static class ParameterModifierHelpers
 		string description)
 		where TResult : IOptionsProvider<ParameterFilterOptions>
 	{
-		result.Options.AddModifier(predicate, () => description);
+		result.Options.Value.AddModifier(predicate, () => description);
 		return result;
 	}
 

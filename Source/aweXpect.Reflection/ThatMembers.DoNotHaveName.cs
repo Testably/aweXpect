@@ -26,9 +26,9 @@ public static partial class ThatMembers
 		this IThat<IEnumerable<TMember>?> subject, string unexpected)
 		where TMember : MemberInfo?
 	{
-		StringEqualityOptions options = new(nameof(unexpected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
 		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Unexpected, StringEqualityOptions Options), IEnumerable<TMember>>((unexpected, options),
+				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<TMember>>((unexpected, options),
 					static (s, it, grammars)
 					=> new DoNotHaveNameConstraint<TMember>(it, grammars, s.Unexpected, s.Options)),
 			subject,
@@ -46,9 +46,9 @@ public static partial class ThatMembers
 			this IThat<IAsyncEnumerable<TMember>?> subject, string unexpected)
 		where TMember : MemberInfo?
 	{
-		StringEqualityOptions options = new(nameof(unexpected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(unexpected)));
 		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Unexpected, StringEqualityOptions Options), IAsyncEnumerable<TMember>>((unexpected, options),
+				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<TMember>>((unexpected, options),
 					static (s, it, grammars)
 					=> new DoNotHaveNameConstraint<TMember>(it, grammars, s.Unexpected, s.Options)),
 			subject,
@@ -60,7 +60,7 @@ public static partial class ThatMembers
 		string it,
 		ExpectationGrammars grammars,
 		string unexpected,
-		StringEqualityOptions options)
+		OptionsSlot<StringEqualityOptions> options)
 		: CollectionConstraintResult<TMember>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<TMember>>
 #if NET8_0_OR_GREATER
@@ -70,13 +70,13 @@ public static partial class ThatMembers
 	{
 		private StringEqualityOptions? _evaluationOptions;
 
-		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options;
+		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options.Value;
 
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetAsyncValue(actual, context,
 				async memberInfo => !await EvaluationOptions.AreConsideredEqual(memberInfo?.Name, unexpected), cancellationToken);
 		}
@@ -85,7 +85,7 @@ public static partial class ThatMembers
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<TMember> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetValue(actual, context,
 				async memberInfo => !await EvaluationOptions.AreConsideredEqual(memberInfo?.Name, unexpected), cancellationToken);
 		}
@@ -98,13 +98,13 @@ public static partial class ThatMembers
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all have name ").Append(options.GetExpectation(unexpected, Grammars.Negate()));
+			=> stringBuilder.Append("all have name ").Append(options.Value.GetExpectation(unexpected, Grammars.Negate()));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained not matching items");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all have name ").Append(options.GetExpectation(unexpected, Grammars.Negate()));
+			=> stringBuilder.Append("not all have name ").Append(options.Value.GetExpectation(unexpected, Grammars.Negate()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained matching items");

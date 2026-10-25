@@ -18,7 +18,7 @@ public sealed class ParameterCollectionResult<TType, TValue, TParameter>
 	internal ParameterCollectionResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		CollectionIndexOptions collectionIndexOptions,
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions)
 		: base(expectationBuilder, subject, collectionIndexOptions, parameterFilterOptions)
 	{
@@ -37,13 +37,13 @@ public class ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 		IOptionsProvider<ParameterFilterOptions>
 	where TSelf : ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 {
-	private readonly CollectionIndexOptions _collectionIndexOptions;
+	private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
 	private readonly ParameterFilterOptions _parameterFilterOptions;
 
 	internal ParameterCollectionResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		CollectionIndexOptions collectionIndexOptions,
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions)
 		: base(expectationBuilder, subject)
 	{
@@ -52,10 +52,14 @@ public class ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
+	OptionsSlot<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 
 	/// <inheritdoc cref="IOptionsProvider{ParameterFilterOptions}.Options" />
-	ParameterFilterOptions IOptionsProvider<ParameterFilterOptions>.Options => _parameterFilterOptions;
+	/// <remarks>
+	///     A new slot around the options that the filter keeps itself.
+	/// </remarks>
+	OptionsSlot<ParameterFilterOptions> IOptionsProvider<ParameterFilterOptions>.Options
+		=> new(_parameterFilterOptions);
 
 	/// <summary>
 	///     …without a default value.

@@ -182,11 +182,11 @@ public static partial class Filtered
 			ICopyOnOption<StringEqualityOptions, StringEqualityResult>
 		{
 			private readonly Func<StringEqualityOptions, IFilter<Assembly>> _createFilter;
-			private readonly StringEqualityOptions _options;
+			private readonly OptionsSlot<StringEqualityOptions> _options;
 			private readonly Assemblies _source;
 
 			internal StringEqualityResult(Assemblies source, Func<StringEqualityOptions, IFilter<Assembly>> createFilter,
-				StringEqualityOptions options) : base(source.Which(createFilter(options)))
+				OptionsSlot<StringEqualityOptions> options) : base(source.Which(createFilter(options.Value)))
 			{
 				_source = source;
 				_createFilter = createFilter;
@@ -194,12 +194,12 @@ public static partial class Filtered
 			}
 
 			/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
-			StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
+			OptionsSlot<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
 			/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
 			StringEqualityResult ICopyOnOption<StringEqualityOptions, StringEqualityResult>.WithOptions(
 				StringEqualityOptions options)
-				=> new(_source, _createFilter, options);
+				=> new(_source, _createFilter, new OptionsSlot<StringEqualityOptions>(options));
 		}
 	}
 }

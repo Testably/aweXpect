@@ -18,11 +18,11 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	: ExpectationResult<TItem, AsyncSingleItemResult<TCollection, TItem>>,
 		IOptionsProvider<PredicateOptions<TItem>>
 {
-	private readonly PredicateOptions<TItem> _options;
+	private readonly OptionsSlot<PredicateOptions<TItem>> _options;
 	private readonly SingleItemSource<TItem> _source;
 
 	internal AsyncSingleItemResult(ExpectationBuilder expectationBuilder,
-		PredicateOptions<TItem> options,
+		OptionsSlot<PredicateOptions<TItem>> options,
 		SingleItemSource<TItem> source)
 		: base(expectationBuilder)
 	{
@@ -38,7 +38,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 			"it", grammars => grammars & ~ExpectationGrammars.Plural));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	PredicateOptions<TItem> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;
+	OptionsSlot<PredicateOptions<TItem>> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;
 
 	/// <summary>
 	///     …that satisfies the <paramref name="predicate" />.
@@ -48,7 +48,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_options.SetPredicate(predicate,
+		_options.Value.SetPredicate(predicate,
 			$" matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new AsyncSingleMatchingItemResult<TCollection, TItem>(ExpectationBuilder, _source.GetAsync<TCollection>);
 	}
@@ -58,7 +58,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	/// </summary>
 	public AsyncSingleMatchingItemResult<TCollection, T> Matching<T>()
 	{
-		_options.SetPredicate(item => item is T,
+		_options.Value.SetPredicate(item => item is T,
 			$" of type {Formatter.Format(typeof(T))}");
 		return Cast<T>(x => (T)(object)x!);
 	}
@@ -71,7 +71,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_options.SetPredicate(item => item is T typed && predicate(typed),
+		_options.Value.SetPredicate(item => item is T typed && predicate(typed),
 			$" of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return Cast<T>(x => (T)(object)x!);
 	}
@@ -82,7 +82,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	public AsyncSingleMatchingItemResult<TCollection, T> MatchingExactly<T>()
 	{
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
-		_options.SetPredicate(item => item is T && item.GetType() == exactType,
+		_options.Value.SetPredicate(item => item is T && item.GetType() == exactType,
 			$" exactly of type {Formatter.Format(typeof(T))}");
 		return Cast<T>(x => (T)(object)x!);
 	}
@@ -96,7 +96,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	{
 		predicate.ThrowIfNull();
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
-		_options.SetPredicate(item => item is T typed && item.GetType() == exactType && predicate(typed),
+		_options.Value.SetPredicate(item => item is T typed && item.GetType() == exactType && predicate(typed),
 			$" exactly of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return Cast<T>(x => (T)(object)x!);
 	}

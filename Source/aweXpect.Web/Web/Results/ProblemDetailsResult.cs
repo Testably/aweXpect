@@ -86,12 +86,12 @@ public class ProblemDetailsResult<TType, TThat>
 		private readonly ExpectationBuilder _expectationBuilder;
 		private readonly ProblemDetailsOptions _options;
 		private readonly TThat _returnValue;
-		private readonly StringEqualityOptions _stringEqualityOptions;
+		private readonly OptionsSlot<StringEqualityOptions> _stringEqualityOptions;
 
 		internal String(
 			ExpectationBuilder expectationBuilder,
 			TThat returnValue,
-			StringEqualityOptions stringEqualityOptions,
+			OptionsSlot<StringEqualityOptions> stringEqualityOptions,
 			ProblemDetailsOptions options)
 			: base(expectationBuilder, returnValue)
 		{
@@ -102,7 +102,7 @@ public class ProblemDetailsResult<TType, TThat>
 		}
 
 		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _stringEqualityOptions;
+		OptionsSlot<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _stringEqualityOptions;
 
 		/// <summary>
 		///     Verify that the title of the problem details object matches the expected <paramref name="title" />.

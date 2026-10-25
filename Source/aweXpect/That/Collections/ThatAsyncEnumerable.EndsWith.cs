@@ -33,7 +33,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
-		ObjectEqualityOptions<TItem> options = new();
+		OptionsSlot<ObjectEqualityOptions<TItem>> options = new(new ObjectEqualityOptions<TItem>());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -43,7 +43,7 @@ public static partial class ThatAsyncEnumerable
 				{
 					AsyncEndsWithConstraint<TItem, TItem> constraint = new(it, grammars,
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
-						state.ExpectedValues.ToArray(), state.Options);
+						state.ExpectedValues.ToArray(), state.Options.Value);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -61,10 +61,11 @@ public static partial class ThatAsyncEnumerable
 		EndsWithWithToleranceCore<TItem, TTolerance>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<TItem> expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> initialOptions,
 			string? expectedExpression,
 			bool negated)
 	{
+		OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options = new(initialOptions);
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
@@ -76,7 +77,7 @@ public static partial class ThatAsyncEnumerable
 				{
 					AsyncEndsWithConstraint<TItem, TItem> constraint = new(it, grammars,
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
-						state.ExpectedValues.ToArray(), state.Options);
+						state.ExpectedValues.ToArray(), state.Options.Value);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -96,7 +97,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint(
@@ -106,7 +107,7 @@ public static partial class ThatAsyncEnumerable
 				{
 					AsyncEndsWithConstraint<string?, string?> constraint = new(it, grammars,
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
-						state.ExpectedValues.ToArray(), state.Options);
+						state.ExpectedValues.ToArray(), state.Options.Value);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,

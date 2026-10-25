@@ -21,7 +21,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					GenericArgumentCollectionResult<Type, Type?> result = That(subject).IsGeneric();
-					((IOptionsProvider<GenericArgumentsFilterOptions>)result).Options.AddFilter(
+					((IOptionsProvider<GenericArgumentsFilterOptions>)result).Options.Value.AddFilter(
 						new GenericArgumentFilterOptions(predicate, () => "matching predicate"), new CollectionIndexOptions());
 					await result;
 				}
@@ -44,7 +44,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					GenericArgumentCollectionResult<Type, Type?> result = That(subject).IsGeneric();
-					((IOptionsProvider<GenericArgumentsFilterOptions>)result).Options.AddPredicate(
+					((IOptionsProvider<GenericArgumentsFilterOptions>)result).Options.Value.AddPredicate(
 						_ => throw new InvalidOperationException("boom"), () => "with arguments matching predicate");
 					await result;
 				}
@@ -119,7 +119,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).DoesNotComplyWith(it
-						=> ((IOptionsProvider<GenericArgumentsFilterOptions>)it.IsGeneric()).Options.AddPredicate(
+						=> ((IOptionsProvider<GenericArgumentsFilterOptions>)it.IsGeneric()).Options.Value.AddPredicate(
 							_ => throw new InvalidOperationException("boom"), () => "with arguments matching predicate"));
 				}
 

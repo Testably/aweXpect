@@ -16,17 +16,17 @@ public class ProperCollectionMatchResult<TType, TThat, TItem>
 		ICollectionContainmentOptions,
 		IProperContainmentOptions
 {
-	private readonly CollectionMatchOptions _collectionMatchOptions;
+	private readonly OptionsSlot<CollectionMatchOptions> _collectionMatchOptions;
 
 	internal ProperCollectionMatchResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		CollectionMatchOptions collectionMatchOptions)
+		OptionsSlot<CollectionMatchOptions> collectionMatchOptions)
 		: base(expectationBuilder, returnValue)
 	{
 		_collectionMatchOptions = collectionMatchOptions;
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	CollectionMatchOptions IOptionsProvider<CollectionMatchOptions>.Options => _collectionMatchOptions;
+	OptionsSlot<CollectionMatchOptions> IOptionsProvider<CollectionMatchOptions>.Options => _collectionMatchOptions;
 }

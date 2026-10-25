@@ -15,7 +15,7 @@ public sealed class ObjectProperCollectionMatchResultTests
 			collectionMatchOptions);
 
 		await That(sut).Is<IOptionsProvider<CollectionMatchOptions>>()
-			.Whose(x => x.Options, it => it.IsSameAs(collectionMatchOptions));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(collectionMatchOptions));
 	}
 
 	[Test]
@@ -26,7 +26,7 @@ public sealed class ObjectProperCollectionMatchResultTests
 			new CollectionMatchOptions());
 
 		await That(sut).Is<IOptionsProvider<ObjectEqualityOptions<int>>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	private static ObjectProperCollectionMatchResult<int[], IThat<int[]?>, int> CreateSut(int[] subject,
@@ -37,7 +37,7 @@ public sealed class ObjectProperCollectionMatchResultTests
 #pragma warning restore aweXpect0001
 		return new ObjectProperCollectionMatchResult<int[], IThat<int[]?>, int>(source.Get().ExpectationBuilder,
 			source,
-			options,
-			collectionMatchOptions);
+			new OptionsSlot<ObjectEqualityOptions<int>>(options),
+			new OptionsSlot<CollectionMatchOptions>(collectionMatchOptions));
 	}
 }

@@ -25,7 +25,7 @@ public static partial class ThatGeneric
 		Action<IThatSubject<T>> expectations)
 	{
 		expectations.ThrowIfNull();
-		RepeatedCheckOptions options = new();
+		OptionsSlot<RepeatedCheckOptions> options = new(new RepeatedCheckOptions());
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Expectations: expectations, Options: options), static (state, _, grammars) =>
 					new CompliesWithConstraint<T>(grammars, state.Expectations, state.Options)),
@@ -44,7 +44,7 @@ public static partial class ThatGeneric
 		Action<IThatSubject<T>> expectations)
 	{
 		expectations.ThrowIfNull();
-		RepeatedCheckOptions options = new();
+		OptionsSlot<RepeatedCheckOptions> options = new(new RepeatedCheckOptions());
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Expectations: expectations, Options: options), static (state, _, grammars) =>
 					new CompliesWithConstraint<T>(grammars, state.Expectations, state.Options).Invert()),
@@ -58,12 +58,12 @@ public static partial class ThatGeneric
 			IExpectationTextConstraint
 	{
 		private readonly ManualExpectationBuilder<T> _itemExpectationBuilder;
-		private readonly RepeatedCheckOptions _options;
+		private readonly OptionsSlot<RepeatedCheckOptions> _options;
 		private bool _isNegated;
 		private ConstraintResult? _negatedResult;
 
 		public CompliesWithConstraint(ExpectationGrammars grammars,
-			Action<IThatSubject<T>> expectations, RepeatedCheckOptions options)
+			Action<IThatSubject<T>> expectations, OptionsSlot<RepeatedCheckOptions> options)
 			: base(grammars)
 		{
 			_options = options;
@@ -77,7 +77,7 @@ public static partial class ThatGeneric
 			CancellationToken cancellationToken)
 		{
 			RevertPreviousNegation();
-			if (!_options.IsRepeated)
+			if (!_options.Value.IsRepeated)
 			{
 				return ToResult(await _itemExpectationBuilder.IsMetBy(actual, context, cancellationToken), actual);
 			}
@@ -91,7 +91,7 @@ public static partial class ThatGeneric
 			CancellationToken cancellationToken)
 		{
 			ConstraintResult? isMatch = null;
-			Outcome outcome = await _options.CheckRepeatedly(async checkContext =>
+			Outcome outcome = await _options.Value.CheckRepeatedly(async checkContext =>
 			{
 				isMatch = await _itemExpectationBuilder.IsMetBy(actual, checkContext, cancellationToken);
 				return IsMet(isMatch);

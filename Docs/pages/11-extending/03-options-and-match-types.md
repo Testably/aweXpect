@@ -17,23 +17,25 @@ using static aweXpect.Formatting.Format;
 
 The options, such as `.AtLeast(2)`, `.IgnoringCase()` or `.InAnyOrder()`, are extension methods in the `aweXpect`
 namespace. They apply to every result that provides the matching options object, so they can be chained in any order.
-A result of your own declares which options it offers by implementing `IOptionsProvider<TOptions>`. Pass it as `TSelf`
-to `AndOrResult<TType, TThat, TSelf>`, so that `Because(…)`, `WithTimeout(…)` and `WithCancellation(…)` also return
-your result and the options can still follow them:
+A result of your own declares which options it offers by implementing `IOptionsProvider<TOptions>`, which returns the
+`OptionsSlot<TOptions>` that holds the options of the expectation. Create the slot in your expectation, e.g.
+`new OptionsSlot<Quantifier>(new Quantifier())`, pass it to your constraint and to your result, and read `slot.Value`
+in the constraint when it evaluates. Pass your result as `TSelf` to `AndOrResult<TType, TThat, TSelf>`, so that
+`Because(…)`, `WithTimeout(…)` and `WithCancellation(…)` also return your result and the options can still follow them:
 
 ```csharp
 public class TrackCountResult<TThat>(
     ExpectationBuilder expectationBuilder,
     TThat returnValue,
-    Quantifier quantifier,
-    StringEqualityOptions options)
+    OptionsSlot<Quantifier> quantifier,
+    OptionsSlot<StringEqualityOptions> options)
     : AndOrResult<IEnumerable<Track>, TThat, TrackCountResult<TThat>>(expectationBuilder, returnValue),
         IOptionsProvider<Quantifier>,
         IOptionsProvider<StringEqualityOptions>
 {
-    Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+    OptionsSlot<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier;
 
-    StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
+    OptionsSlot<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options;
 }
 ```
 
@@ -62,10 +64,10 @@ option replace the earlier one, and throw with `Tracing.WriteException` for a co
 built-in ones, e.g. `AtMost cannot be combined with AtLeast.`. An expectation that
 already sets an option itself, e.g. `StartsWith` the match type, returns a result that does not offer it again.
 
-The options objects of `aweXpect.Core` belong to a single expectation and are changed in place. You can also call
-their methods directly, e.g. in an option of your own: each method that sets an option returns the options object, so
-that calls chain, e.g. `quantifier.AtLeast(2)`, and has the name of the option that the caller writes, e.g. `Within` on
-a `TimeTolerance`. The hooks for a strategy of your own are named `Set…` and take the name of your option, e.g.
+The options of `aweXpect.Core` belong to a single expectation. You can also call their methods directly, e.g. in an
+option of your own: the slot offers each method that sets an option with the name of the option that the caller writes,
+e.g. `result.Options.AtLeast(2)` or `Within` on the slot of a `TimeTolerance`, and returns the slot, so that calls
+chain; the members that only read the options are on `result.Options.Value`. The hooks for a strategy of your own are named `Set…` and take the name of your option, e.g.
 `SetMatchType(matchType, nameof(ByTitle))`, or `SetMatch(match, nameof(AtTrackNumber))` on the
 `CollectionIndexOptions`, so that a conflicting option throws with that name, while the same name again replaces the
 earlier strategy.
@@ -215,8 +217,8 @@ argument once and reuse it, as it is immutable.
 
 ## Time tolerances
 
-A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the `TimeTolerance` options you
-pass to it and to your constraint. For a date without a time of day, such as the release date of an album as a
+A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the slot of the `TimeTolerance` options
+you pass to it and to your constraint. For a date without a time of day, such as the release date of an album as a
 `DateOnly`, pass a `DayTolerance` instead, as the built-in expectations do: it rejects a tolerance that is not a whole
 number of days with an `ArgumentOutOfRangeException`, instead of silently dropping the part below one day.
 
@@ -224,7 +226,7 @@ number of days with an `ArgumentOutOfRangeException`, instead of silently droppi
 public static TimeToleranceResult<DateOnly, IThat<DateOnly>> IsOnSameDayAs(
     this IThat<DateOnly> subject, DateOnly expected)
 {
-    TimeTolerance tolerance = new DayTolerance();
+    OptionsSlot<TimeTolerance> tolerance = new(new DayTolerance());
     return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new IsOnSameDayAsConstraint(it, grammars, expected, tolerance)),
         subject,
@@ -240,7 +242,7 @@ DateOnly releaseDate = new(1969, 9, 26);
 await Expect.That(releaseDate).IsOnSameDayAs(new DateOnly(1969, 9, 27)).Within(TimeSpan.FromDays(1));
 ```
 
-In the constraint, compare with `tolerance.GetToleranceOrDefault()`. Without `.Within(…)`, it returns the
+In the constraint, compare with `tolerance.Value.GetToleranceOrDefault()`. Without `.Within(…)`, it returns the
 `DefaultTimeComparisonTolerance` from `Customize.aweXpect.Settings()`, and for a `DayTolerance` only its whole days,
 like the built-in expectations do. Append the tolerance to the expectation text like any other option, e.g. with
 `stringBuilder.Append(tolerance)`: a `DayTolerance` writes the whole days that apply, e.g. " ± 1 day", and nothing when
@@ -250,14 +252,14 @@ there are none.
 
 An expectation that compares the subject for equality, e.g. an `IsEqualTo` for your own type, adds the equality
 constraint of `IsEqualTo` with `AddEqualityConstraint` from `aweXpect.Core.Extending`. Return an `ObjectEqualityResult`
-that shares its `ObjectEqualityOptions<T>`, so that the caller can choose the comparison, e.g. with `Using(comparer)` or
+that shares the `OptionsSlot<ObjectEqualityOptions<T>>`, so that the caller can choose the comparison, e.g. with `Using(comparer)` or
 a [custom match type](#custom-match-types), and the expectation and the failure read like those of `IsEqualTo`:
 
 ```csharp
 public static ObjectEqualityResult<Track?, IThat<Track?>, Track?> IsEqualTo(
     this IThat<Track?> subject, Track? expected)
 {
-    ObjectEqualityOptions<Track?> options = new();
+    OptionsSlot<ObjectEqualityOptions<Track?>> options = new(new ObjectEqualityOptions<Track?>());
     return new ObjectEqualityResult<Track?, IThat<Track?>, Track?>(
         subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options),
         subject,

@@ -15,6 +15,6 @@ public static partial class AssemblyFilters
 		return new Filtered.Assemblies.StringEqualityResult(@this, options => Filter.Suffix<Assembly>(
 				assembly => options.AreConsideredEqual(assembly.GetName().Name, expected),
 				() => $" with name {options.GetExpectation(expected, ExpectationGrammars.None)}"),
-			new StringEqualityOptions(nameof(expected)));
+			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
 	}
 }

@@ -16,7 +16,7 @@ public sealed class TimeToleranceResultTests
 		TimeToleranceResult<DateTime, IThat<DateTime>> sut = CreateSut(DateTime.Now, options);
 
 		await That(sut).Is<IOptionsProvider<TimeTolerance>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	private static TimeToleranceResult<DateTime, IThat<DateTime>> CreateSut(DateTime subject, TimeTolerance options)
@@ -27,6 +27,6 @@ public sealed class TimeToleranceResultTests
 		return new TimeToleranceResult<DateTime, IThat<DateTime>>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			options);
+			new OptionsSlot<TimeTolerance>(options));
 	}
 }

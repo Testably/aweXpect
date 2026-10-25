@@ -42,9 +42,9 @@ public static partial class ThatAssemblies
 		this IThat<IEnumerable<Assembly?>?> subject, IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string[] Allowed, StringEqualityOptions Options), IEnumerable<Assembly?>>((expected.ToArray(), options),
+				.ExpectationBuilder.AddConstraint<(string[] Allowed, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Assembly?>>((expected.ToArray(), options),
 					static (s, it, grammars)
 					=> new DependOnlyOnConstraint(it, grammars, s.Allowed, s.Options)),
 			subject,
@@ -76,10 +76,10 @@ public static partial class ThatAssemblies
 			this IThat<IAsyncEnumerable<Assembly?>?> subject, IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
-				.ExpectationBuilder.AddConstraint<(string[] Allowed, StringEqualityOptions Options), IAsyncEnumerable<Assembly?>>((expected.ToArray(), options),
+				.ExpectationBuilder.AddConstraint<(string[] Allowed, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((expected.ToArray(), options),
 					static (s, it, grammars)
 					=> new DependOnlyOnConstraint(it, grammars, s.Allowed, s.Options)),
 			subject,
@@ -91,7 +91,7 @@ public static partial class ThatAssemblies
 		string it,
 		ExpectationGrammars grammars,
 		string[] allowed,
-		StringEqualityOptions options)
+		OptionsSlot<StringEqualityOptions> options)
 		: CollectionConstraintResult<Assembly?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER
@@ -100,7 +100,7 @@ public static partial class ThatAssemblies
 	{
 		private StringEqualityOptions? _evaluationOptions;
 
-		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options;
+		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options.Value;
 
 		private readonly Dictionary<Assembly, string?[]> _disallowedDependencies = new();
 
@@ -108,7 +108,7 @@ public static partial class ThatAssemblies
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetAsyncValue(actual, context, DependsOnlyOnAllowed, cancellationToken);
 		}
 #endif
@@ -116,7 +116,7 @@ public static partial class ThatAssemblies
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetValue(actual, context, DependsOnlyOnAllowed, cancellationToken);
 		}
 
@@ -161,6 +161,6 @@ public static partial class ThatAssemblies
 		private string DescribeAllowed()
 			=> allowed.Length == 0
 				? "no assemblies"
-				: $"assemblies {string.Join(" or ", allowed.Select(expected => options.GetExpectation(expected, ExpectationGrammars.None)))}";
+				: $"assemblies {string.Join(" or ", allowed.Select(expected => options.Value.GetExpectation(expected, ExpectationGrammars.None)))}";
 	}
 }

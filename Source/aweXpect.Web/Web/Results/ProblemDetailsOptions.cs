@@ -71,13 +71,13 @@ internal class ProblemDetailsOptions
 	/// <remarks>
 	///     A later title replaces the earlier one together with its options, and keeps its place in the description.
 	/// </remarks>
-	public StringEqualityOptions WithTitle(string title)
+	public OptionsSlot<StringEqualityOptions> WithTitle(string title)
 	{
 		ThrowHelper.ThrowIfNull(title, nameof(title));
 		bool isFirst = Title is null;
 		Title = title;
-		StringEqualityOptions titleOptions = new("title");
-		_titleOptions = titleOptions;
+		OptionsSlot<StringEqualityOptions> titleOptions = new(new StringEqualityOptions("title"));
+		_titleOptions = titleOptions.Value;
 		if (isFirst)
 		{
 			_parts.Add(() => Describe("title", Title!, _titleOptions!));
@@ -108,13 +108,13 @@ internal class ProblemDetailsOptions
 	/// <remarks>
 	///     A later detail replaces the earlier one together with its options, and keeps its place in the description.
 	/// </remarks>
-	public StringEqualityOptions WithDetail(string detail)
+	public OptionsSlot<StringEqualityOptions> WithDetail(string detail)
 	{
 		ThrowHelper.ThrowIfNull(detail, nameof(detail));
 		bool isFirst = Detail is null;
 		Detail = detail;
-		StringEqualityOptions detailOptions = new("detail");
-		_detailOptions = detailOptions;
+		OptionsSlot<StringEqualityOptions> detailOptions = new(new StringEqualityOptions("detail"));
+		_detailOptions = detailOptions.Value;
 		if (isFirst)
 		{
 			_parts.Add(() => Describe("detail", Detail!, _detailOptions!));
@@ -129,13 +129,13 @@ internal class ProblemDetailsOptions
 	/// <remarks>
 	///     A later instance replaces the earlier one together with its options, and keeps its place in the description.
 	/// </remarks>
-	public StringEqualityOptions WithInstance(string instance)
+	public OptionsSlot<StringEqualityOptions> WithInstance(string instance)
 	{
 		ThrowHelper.ThrowIfNull(instance, nameof(instance));
 		bool isFirst = Instance is null;
 		Instance = instance;
-		StringEqualityOptions instanceOptions = new("instance");
-		_instanceOptions = instanceOptions;
+		OptionsSlot<StringEqualityOptions> instanceOptions = new(new StringEqualityOptions("instance"));
+		_instanceOptions = instanceOptions.Value;
 		if (isFirst)
 		{
 			_parts.Add(() => Describe("instance", Instance!, _instanceOptions!));

@@ -64,7 +64,7 @@ static file class CustomResultExtensions
 
 	public static DigitCountResult HasDigits(this IThat<string> subject)
 	{
-		Quantifier quantifier = new();
+		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
 		return new DigitCountResult(((IExpectThat<string>)subject).ExpectationBuilder.AddConstraint((it, grammars)
 			=> new DigitCountConstraint(it, grammars, quantifier)), subject, quantifier);
 	}
@@ -76,11 +76,11 @@ static file class CustomResultExtensions
 	public sealed class DigitCountResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<string> subject,
-		Quantifier quantifier)
+		OptionsSlot<Quantifier> quantifier)
 		: AndOrResult<string, IThat<string>, DigitCountResult>(expectationBuilder, subject),
 			IOptionsProvider<Quantifier>
 	{
-		Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+		OptionsSlot<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier;
 	}
 
 	public sealed class EitherResult(ExpectationBuilder expectationBuilder, IThat<int> subject)
@@ -90,7 +90,7 @@ static file class CustomResultExtensions
 			=> Or.IsNegativeNumber();
 	}
 
-	private sealed class DigitCountConstraint(string it, ExpectationGrammars grammars, Quantifier quantifier)
+	private sealed class DigitCountConstraint(string it, ExpectationGrammars grammars, OptionsSlot<Quantifier> quantifier)
 		: ConstraintResult.WithValue<string>(it, grammars),
 			IValueConstraint<string>
 	{
@@ -100,7 +100,7 @@ static file class CustomResultExtensions
 		{
 			Actual = actual;
 			_count = actual.Count(c => char.IsDigit(c));
-			Outcome = quantifier.Check(_count, true) == true ? Outcome.Success : Outcome.Failure;
+			Outcome = quantifier.Value.Check(_count, true) == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

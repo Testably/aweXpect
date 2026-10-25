@@ -14,19 +14,19 @@ public sealed class GenericArgumentCollectionWithNamedArgumentResult<TType, TVal
 		IOptionsProvider<StringEqualityOptions>,
 		IStringMatchTypeOptions
 {
-	private readonly StringEqualityOptions _options;
+	private readonly OptionsSlot<StringEqualityOptions> _options;
 
 	internal GenericArgumentCollectionWithNamedArgumentResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
 		GenericArgumentsFilterOptions genericArgumentsFilterOptions,
-		CollectionIndexOptions collectionIndexOptions,
-		StringEqualityOptions options)
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
+		OptionsSlot<StringEqualityOptions> options)
 		: base(expectationBuilder, subject, genericArgumentsFilterOptions, collectionIndexOptions)
 	{
 		_options = options;
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
-	StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
+	OptionsSlot<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 }

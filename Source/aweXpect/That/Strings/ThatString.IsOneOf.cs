@@ -30,7 +30,7 @@ public static partial class ThatString
 		bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
@@ -48,7 +48,7 @@ public static partial class ThatString
 		ExpectationGrammars grammars,
 		IEnumerable<string?> expectedValues,
 		string? expectedExpression,
-		StringEqualityOptions options)
+		OptionsSlot<StringEqualityOptions> options)
 		: ConstraintResult.WithValue<string?>(it, grammars),
 			IAsyncContextConstraint<string?>
 	{
@@ -66,9 +66,9 @@ public static partial class ThatString
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			StringEqualityOptions stringEqualityOptions = options.ForEvaluation(context, cancellationToken);
+			StringEqualityOptions stringEqualityOptions = options.Value.ForEvaluation(context, cancellationToken);
 			_evaluationOptions = stringEqualityOptions;
-			bool comparesAllValues = options.InspectsSubject && expectedValues is ICollection<string?>;
+			bool comparesAllValues = options.Value.InspectsSubject && expectedValues is ICollection<string?>;
 			bool isOneOf = false;
 			foreach (string? value in expectedValues)
 			{
@@ -83,7 +83,7 @@ public static partial class ThatString
 				}
 			}
 
-			if (actual is null && options.InspectsSubject)
+			if (actual is null && options.Value.InspectsSubject)
 			{
 				Outcome = Outcome.FailureBothWays;
 			}
@@ -99,7 +99,7 @@ public static partial class ThatString
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			contexts.AddExpectedValuesContext(expectedExpression, expectedValues, Grammars);
-			(_evaluationOptions ?? options).AppendContexts(contexts);
+			(_evaluationOptions ?? options.Value).AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

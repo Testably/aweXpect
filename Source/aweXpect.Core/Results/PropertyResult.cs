@@ -517,7 +517,7 @@ public static class PropertyResult
 				contexts.Add(new ResultContext.Fixed(ToTitle(propertyExpression), _value));
 			}
 
-			(_outcome.EvaluationOptions ?? comparison.Options).AppendContexts(contexts);
+			(_outcome.EvaluationOptions ?? comparison.Options.Value).AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -647,7 +647,7 @@ public static class PropertyResult
 				contexts.AddStringContext("Expected", comparison.Expected, this);
 			}
 
-			(_outcome.EvaluationOptions ?? comparison.Options).AppendContexts(contexts);
+			(_outcome.EvaluationOptions ?? comparison.Options.Value).AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -20,7 +20,7 @@ public sealed class StringBlockCountResultTests
 		await That(result).IsNot<IOptionsProvider<StringEqualityOptions>>()
 			.Because("a block compares the lines on its own, so it offers only the casing and a comparer");
 		await That(result).Is<IOptionsProvider<Quantifier>>()
-			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(quantifier));
 	}
 
 	[Test]
@@ -58,7 +58,7 @@ public sealed class StringBlockCountResultTests
 		return new StringEqualityTypeCountResult<T, IThat<T>>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			quantifier,
-			options);
+			new OptionsSlot<Quantifier>(quantifier),
+			new OptionsSlot<StringEqualityOptions>(options));
 	}
 }

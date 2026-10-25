@@ -15,7 +15,7 @@ public sealed class StringCountResultTests
 		StringCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
-			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(quantifier));
 	}
 
 	[Test]
@@ -26,7 +26,7 @@ public sealed class StringCountResultTests
 		StringCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<StringEqualityOptions>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	private static StringCountResult<T, IThat<T>> CreateSut<T>(T subject, Quantifier quantifier,
@@ -38,7 +38,7 @@ public sealed class StringCountResultTests
 		return new StringCountResult<T, IThat<T>>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			quantifier,
-			options);
+			new OptionsSlot<Quantifier>(quantifier),
+			new OptionsSlot<StringEqualityOptions>(options));
 	}
 }

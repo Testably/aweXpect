@@ -15,6 +15,6 @@ public static partial class MethodFilters
 		return new Filtered.Methods.StringEqualityResult(@this, options => Filter.Suffix<MethodInfo>(
 				methodInfo => options.AreConsideredEqual(methodInfo.Name, expected),
 				() => $"with name {options.GetExpectation(expected, ExpectationGrammars.None)} "),
-			new StringEqualityOptions(nameof(expected)));
+			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
 	}
 }

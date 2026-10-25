@@ -60,7 +60,7 @@ static file class DayToleranceExtensions
 			((IExpectThat<DateOnly>)subject).ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOnSameDayAsConstraint(it, grammars, expected, tolerance)),
 			subject,
-			tolerance);
+			new OptionsSlot<TimeTolerance>(tolerance));
 	}
 
 	private sealed class IsOnSameDayAsConstraint(

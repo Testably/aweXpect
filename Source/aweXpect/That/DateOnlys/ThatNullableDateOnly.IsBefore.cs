@@ -19,7 +19,7 @@ public static partial class ThatNullableDateOnly
 		this IThat<DateOnly?> subject,
 		DateOnly? expected)
 	{
-		TimeTolerance tolerance = new DayTolerance();
+		OptionsSlot<TimeTolerance> tolerance = new(new DayTolerance());
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -36,7 +36,7 @@ public static partial class ThatNullableDateOnly
 		this IThat<DateOnly?> subject,
 		DateOnly? unexpected)
 	{
-		TimeTolerance tolerance = new DayTolerance();
+		OptionsSlot<TimeTolerance> tolerance = new(new DayTolerance());
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -49,7 +49,7 @@ public static partial class ThatNullableDateOnly
 		string it,
 		ExpectationGrammars grammars,
 		DateOnly? expected,
-		TimeTolerance tolerance)
+		OptionsSlot<TimeTolerance> tolerance)
 		: OrderingConstraint<DateOnly?>(it, grammars, expected is null),
 			IValueConstraint<DateOnly?>
 	{
@@ -62,7 +62,7 @@ public static partial class ThatNullableDateOnly
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
+				TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
 				Outcome = expected.Value.DayNumber - actual.Value.DayNumber > -(int)timeTolerance.TotalDays
 					? Outcome.Success
 					: Outcome.Failure;
@@ -75,7 +75,7 @@ public static partial class ThatNullableDateOnly
 		{
 			stringBuilder.Append(Grammars.Verb("is before ", "are before "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(tolerance.ToDayString());
+			stringBuilder.Append(tolerance.Value.ToDayString());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -89,7 +89,7 @@ public static partial class ThatNullableDateOnly
 		{
 			stringBuilder.Append(Grammars.Verb("is not before ", "are not before "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(tolerance.ToDayString());
+			stringBuilder.Append(tolerance.Value.ToDayString());
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

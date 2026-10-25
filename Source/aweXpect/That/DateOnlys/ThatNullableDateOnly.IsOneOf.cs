@@ -30,7 +30,7 @@ public static partial class ThatNullableDateOnly
 		bool negated)
 	{
 		IEnumerable<DateOnly?> expectedValues = expected.ToNonEmptyValues(negated);
-		TimeTolerance tolerance = new DayTolerance();
+		OptionsSlot<TimeTolerance> tolerance = new(new DayTolerance());
 		return new TimeToleranceResult<DateOnly?, IThat<DateOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Tolerance: tolerance,
@@ -58,7 +58,7 @@ public static partial class ThatNullableDateOnly
 		ExpectationGrammars grammars,
 		IEnumerable<DateOnly?> expected,
 		string? expectedExpression,
-		TimeTolerance tolerance)
+		OptionsSlot<TimeTolerance> tolerance)
 		: ConstraintResult.WithValue<DateOnly?>(it, grammars),
 			IValueConstraint<DateOnly?>
 	{
@@ -71,7 +71,7 @@ public static partial class ThatNullableDateOnly
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
+				TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
 				Outcome = expected.Any(value => value != null &&
 				                                Math.Abs(actual.Value.DayNumber - value.Value.DayNumber) <=
 				                                (int)timeTolerance.TotalDays)
@@ -90,7 +90,7 @@ public static partial class ThatNullableDateOnly
 		{
 			stringBuilder.Append(Grammars.Verb("is one of ", "are one of "));
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
-			stringBuilder.Append(tolerance.ToDayString());
+			stringBuilder.Append(tolerance.Value.ToDayString());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -104,7 +104,7 @@ public static partial class ThatNullableDateOnly
 		{
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
-			stringBuilder.Append(tolerance.ToDayString());
+			stringBuilder.Append(tolerance.Value.ToDayString());
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

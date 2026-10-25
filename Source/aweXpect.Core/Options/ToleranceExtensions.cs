@@ -105,7 +105,7 @@ public static class ToleranceExtensions
 	/// </remarks>
 	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, double> result)
 	{
-		result.Options.UseRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100,
+		result.Options.Value.UseRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100,
 			"%");
 		return result.Result;
 	}
@@ -118,7 +118,7 @@ public static class ToleranceExtensions
 	/// </remarks>
 	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, float> result)
 	{
-		result.Options.UseRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100,
+		result.Options.Value.UseRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100,
 			"%");
 		return result.Result;
 	}
@@ -131,7 +131,7 @@ public static class ToleranceExtensions
 	/// </remarks>
 	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, decimal> result)
 	{
-		result.Options.UseRelativeTolerance(RelativeDecimalTolerance, "%");
+		result.Options.Value.UseRelativeTolerance(RelativeDecimalTolerance, "%");
 		return result.Result;
 	}
 
@@ -139,7 +139,7 @@ public static class ToleranceExtensions
 	/// <inheritdoc cref="Percent{TResult}(IWithinToleranceResult{TResult, double})" />
 	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, Half> result)
 	{
-		result.Options.UseRelativeTolerance(
+		result.Options.Value.UseRelativeTolerance(
 			static (tolerance, expected) => (Half)((float)tolerance * Math.Abs((float)expected) / 100), "%");
 		return result.Result;
 	}

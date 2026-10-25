@@ -14,7 +14,7 @@ public sealed class RepeatedCheckResultTests
 		RepeatedCheckResult<int, IThat<int>> sut = CreateSut(2, options);
 
 		await That(sut).Is<IOptionsProvider<RepeatedCheckOptions>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	private static RepeatedCheckResult<T, IThat<T>> CreateSut<T>(T subject, RepeatedCheckOptions options)
@@ -25,6 +25,6 @@ public sealed class RepeatedCheckResultTests
 #pragma warning restore aweXpect0001
 		return new RepeatedCheckResult<T, IThat<T>>(source.Get().ExpectationBuilder,
 			source,
-			options);
+			new OptionsSlot<RepeatedCheckOptions>(options));
 	}
 }

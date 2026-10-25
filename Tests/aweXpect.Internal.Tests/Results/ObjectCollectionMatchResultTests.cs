@@ -16,7 +16,7 @@ public sealed class ObjectCollectionMatchResultTests
 			sut = CreateSut(new ObjectCollectionMatchResultTests(), options, collectionMatchOptions);
 
 		await That(sut).Is<IOptionsProvider<CollectionMatchOptions>>()
-			.Whose(x => x.Options, it => it.IsSameAs(collectionMatchOptions));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(collectionMatchOptions));
 	}
 
 	[Test]
@@ -28,7 +28,7 @@ public sealed class ObjectCollectionMatchResultTests
 			sut = CreateSut(new ObjectCollectionMatchResultTests(), options, collectionMatchOptions);
 
 		await That(sut).Is<IOptionsProvider<ObjectEqualityOptions<string>>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	private static ObjectCollectionMatchResult<T, IThat<T>, TElement> CreateSut<T, TElement>(T subject,
@@ -40,6 +40,6 @@ public sealed class ObjectCollectionMatchResultTests
 #pragma warning restore aweXpect0001
 		return new ObjectCollectionMatchResult<T, IThat<T>, TElement>(source.Get().ExpectationBuilder,
 			source,
-			options, collectionMatchOptions);
+			new OptionsSlot<ObjectEqualityOptions<TElement>>(options), new OptionsSlot<CollectionMatchOptions>(collectionMatchOptions));
 	}
 }

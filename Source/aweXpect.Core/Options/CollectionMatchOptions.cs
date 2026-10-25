@@ -486,11 +486,12 @@ public partial class CollectionMatchOptions(
 	///     A string pattern names its kind, so that it is not mistaken for the value an item had to be equal to.
 	/// </summary>
 	/// <remarks>
-	///     Options that wrap other options, e.g. to let the comparer of the subject decide, provide the wrapped ones.
+	///     Options that wrap other options, e.g. to let the comparer of the subject decide, provide the wrapped ones as
+	///     an <see cref="IReadOnlyOptionsSlot{TOptions}" />.
 	/// </remarks>
 	private static string DescribeExpected(string formattedExpected, object options)
 	{
-		object itemOptions = options is IOptionsProvider<object> provider ? provider.Options : options;
+		object itemOptions = options is IReadOnlyOptionsSlot<object> wrapper ? wrapper.Value : options;
 		return itemOptions is StringEqualityOptions stringEqualityOptions
 			? stringEqualityOptions.WithPatternKind(formattedExpected)
 			: formattedExpected;

@@ -188,6 +188,6 @@ public sealed class ToleranceExtensionsTests
 		return new NumberToleranceResult<T, IThat<T>>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			options);
+			new OptionsSlot<NumberTolerance<T>>(options));
 	}
 }

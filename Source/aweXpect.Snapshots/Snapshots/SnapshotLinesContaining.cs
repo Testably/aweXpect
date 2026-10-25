@@ -22,7 +22,7 @@ public sealed class SnapshotLinesContaining<TResult> : SnapshotLines<TResult>,
 	ICopyOnOption<StringEqualityOptions, SnapshotLinesContaining<TResult>>
 {
 	private readonly Func<SnapshotRule, TResult> _add;
-	private readonly StringEqualityOptions _options;
+	private readonly OptionsSlot<StringEqualityOptions> _options;
 	private readonly Func<string, ValueTask<bool>>[] _sourceFilters;
 	private readonly Action[] _sourceValidations;
 	private readonly string _text;
@@ -37,11 +37,11 @@ public sealed class SnapshotLinesContaining<TResult> : SnapshotLines<TResult>,
 		_sourceFilters = sourceFilters;
 		_sourceValidations = sourceValidations;
 		_text = text;
-		_options = options;
+		_options = new OptionsSlot<StringEqualityOptions>(options);
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
+	OptionsSlot<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
 	/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
 	SnapshotLinesContaining<TResult> ICopyOnOption<StringEqualityOptions, SnapshotLinesContaining<TResult>>.WithOptions(

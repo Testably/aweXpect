@@ -22,7 +22,7 @@ internal static class StringBuilderExtensions
 	public static void AppendExpectedItem<TMatch>(this StringBuilder stringBuilder, TMatch expected,
 		IOptionsEquality<TMatch> options, string? indentation)
 	{
-		object itemOptions = options is IOptionsProvider<object> provider ? provider.Options : options;
+		object itemOptions = options is IReadOnlyOptionsSlot<object> wrapper ? wrapper.Value : options;
 		if (itemOptions is StringEqualityOptions stringEqualityOptions)
 		{
 			stringBuilder.Append(stringEqualityOptions.FormatExpectedItem(expected as string));

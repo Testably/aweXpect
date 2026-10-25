@@ -28,7 +28,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(false);
-		NumberTolerance<TNumber> options = new(CalculateDifference);
+		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((ExpectedValues: expectedValues, Options: options),
 				static (state, it, grammars) =>
@@ -47,7 +47,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(false);
-		NumberTolerance<TNumber> options = new(CalculateDifference);
+		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((ExpectedValues: expectedValues, Options: options),
 				static (state, it, grammars) =>
@@ -67,7 +67,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(false);
-		NumberTolerance<TNumber> options = new(CalculateDifference);
+		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
@@ -88,7 +88,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(false);
-		NumberTolerance<TNumber> options = new(CalculateDifference);
+		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
@@ -109,7 +109,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(false);
-		NumberTolerance<TNumber> options = new(CalculateDifference);
+		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
@@ -130,7 +130,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(false);
-		NumberTolerance<TNumber> options = new(CalculateDifference);
+		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
@@ -150,7 +150,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(true);
-		NumberTolerance<TNumber> options = new(CalculateDifference);
+		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((UnexpectedValues: unexpectedValues, Options: options),
 				static (state, it, grammars) =>
@@ -169,7 +169,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(true);
-		NumberTolerance<TNumber> options = new(CalculateDifference);
+		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((UnexpectedValues: unexpectedValues, Options: options),
 				static (state, it, grammars) =>
@@ -191,7 +191,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber> unexpectedValues = unexpected.ToNonEmptyValues(true);
-		NumberTolerance<TNumber> options = new(CalculateDifference);
+		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(UnexpectedValues: unexpectedValues, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
@@ -214,7 +214,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber> unexpectedValues = unexpected.ToNonEmptyValues(true);
-		NumberTolerance<TNumber> options = new(CalculateDifference);
+		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(UnexpectedValues: unexpectedValues, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
@@ -237,7 +237,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(true);
-		NumberTolerance<TNumber> options = new(CalculateDifference);
+		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(UnexpectedValues: unexpectedValues, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
@@ -260,7 +260,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(true);
-		NumberTolerance<TNumber> options = new(CalculateDifference);
+		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(UnexpectedValues: unexpectedValues, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
@@ -277,7 +277,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber> expected,
 		string? expectedExpression,
-		NumberTolerance<TNumber> options)
+		OptionsSlot<NumberTolerance<TNumber>> options)
 		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
 		where TNumber : struct, INumber<TNumber>
@@ -285,7 +285,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+			Outcome = expected.Any(value => options.Value.IsWithinTolerance(actual, value))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -306,7 +306,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			AppendDifferenceToClosest(stringBuilder, Actual, expected.Select(value => (TNumber?)value), options);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected.Select(value => (TNumber?)value), options.Value);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -325,7 +325,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber> expected,
 		string? expectedExpression,
-		NumberTolerance<TNumber> options)
+		OptionsSlot<NumberTolerance<TNumber>> options)
 		: ConstraintResult.WithValue<TNumber?>(it, grammars),
 			IValueConstraint<TNumber?>
 		where TNumber : struct, INumber<TNumber>
@@ -333,7 +333,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+			Outcome = expected.Any(value => options.Value.IsWithinTolerance(actual, value))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -354,7 +354,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			AppendDifferenceToClosest(stringBuilder, Actual, expected.Select(value => (TNumber?)value), options);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected.Select(value => (TNumber?)value), options.Value);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -373,7 +373,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber?> expected,
 		string? expectedExpression,
-		NumberTolerance<TNumber> options)
+		OptionsSlot<NumberTolerance<TNumber>> options)
 		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
 		where TNumber : struct, INumber<TNumber>
@@ -381,7 +381,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+			Outcome = expected.Any(value => options.Value.IsWithinTolerance(actual, value))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -402,7 +402,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			AppendDifferenceToClosest(stringBuilder, Actual, expected, options);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected, options.Value);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -421,7 +421,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber?> expected,
 		string? expectedExpression,
-		NumberTolerance<TNumber> options)
+		OptionsSlot<NumberTolerance<TNumber>> options)
 		: ConstraintResult.WithValue<TNumber?>(it, grammars),
 			IValueConstraint<TNumber?>
 		where TNumber : struct, INumber<TNumber>
@@ -429,7 +429,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+			Outcome = expected.Any(value => options.Value.IsWithinTolerance(actual, value))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -450,7 +450,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			AppendDifferenceToClosest(stringBuilder, Actual, expected, options);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected, options.Value);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -477,11 +477,12 @@ public static partial class ThatNumber
 	internal static NumberToleranceResult<TNumber, IThat<TNumber>> IsOneOfWithNullableValuesCore<TNumber>(
 		IThat<TNumber> subject,
 		IEnumerable<TNumber?> expected,
-		NumberTolerance<TNumber> options,
+		NumberTolerance<TNumber> initialOptions,
 		string? expectedExpression,
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
+		OptionsSlot<NumberTolerance<TNumber>> options = new(initialOptions);
 		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
@@ -500,11 +501,12 @@ public static partial class ThatNumber
 	internal static NumberToleranceResult<TNumber, IThat<TNumber>> IsOneOfCore<TNumber>(
 		IThat<TNumber> subject,
 		IEnumerable<TNumber> expected,
-		NumberTolerance<TNumber> options,
+		NumberTolerance<TNumber> initialOptions,
 		string? expectedExpression,
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
+		OptionsSlot<NumberTolerance<TNumber>> options = new(initialOptions);
 		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(negated);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
@@ -526,11 +528,12 @@ public static partial class ThatNumber
 		IsOneOfForNullableWithNullableValuesCore<TNumber>(
 			IThat<TNumber?> subject,
 			IEnumerable<TNumber?> expected,
-			NumberTolerance<TNumber> options,
+			NumberTolerance<TNumber> initialOptions,
 			string? expectedExpression,
 			bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
+		OptionsSlot<NumberTolerance<TNumber>> options = new(initialOptions);
 		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
@@ -549,11 +552,12 @@ public static partial class ThatNumber
 	internal static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsOneOfForNullableCore<TNumber>(
 		IThat<TNumber?> subject,
 		IEnumerable<TNumber> expected,
-		NumberTolerance<TNumber> options,
+		NumberTolerance<TNumber> initialOptions,
 		string? expectedExpression,
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
+		OptionsSlot<NumberTolerance<TNumber>> options = new(initialOptions);
 		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(negated);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
@@ -572,7 +576,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber> expected,
 		string? expectedExpression,
-		NumberTolerance<TNumber> options)
+		OptionsSlot<NumberTolerance<TNumber>> options)
 		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
 		where TNumber : struct, IComparable<TNumber>
@@ -584,7 +588,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+			Outcome = expected.Any(value => options.Value.IsWithinTolerance(actual, value))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -602,7 +606,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			AppendDifferenceToClosest(stringBuilder, Actual, expected.Select(value => (TNumber?)value), options);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected.Select(value => (TNumber?)value), options.Value);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -622,7 +626,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber> expected,
 		string? expectedExpression,
-		NumberTolerance<TNumber> options)
+		OptionsSlot<NumberTolerance<TNumber>> options)
 		: ConstraintResult.WithValue<TNumber?>(it, grammars),
 			IValueConstraint<TNumber?>
 		where TNumber : struct, IComparable<TNumber>
@@ -634,7 +638,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+			Outcome = expected.Any(value => options.Value.IsWithinTolerance(actual, value))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -652,7 +656,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			AppendDifferenceToClosest(stringBuilder, Actual, expected.Select(value => (TNumber?)value), options);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected.Select(value => (TNumber?)value), options.Value);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -672,7 +676,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber?> expected,
 		string? expectedExpression,
-		NumberTolerance<TNumber> options)
+		OptionsSlot<NumberTolerance<TNumber>> options)
 		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
 		where TNumber : struct, IComparable<TNumber>
@@ -684,7 +688,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+			Outcome = expected.Any(value => options.Value.IsWithinTolerance(actual, value))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -702,7 +706,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			AppendDifferenceToClosest(stringBuilder, Actual, expected, options);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected, options.Value);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -722,7 +726,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber?> expected,
 		string? expectedExpression,
-		NumberTolerance<TNumber> options)
+		OptionsSlot<NumberTolerance<TNumber>> options)
 		: ConstraintResult.WithValue<TNumber?>(it, grammars),
 			IValueConstraint<TNumber?>
 		where TNumber : struct, IComparable<TNumber>
@@ -734,7 +738,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => options.IsWithinTolerance(actual, value))
+			Outcome = expected.Any(value => options.Value.IsWithinTolerance(actual, value))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -752,7 +756,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			AppendDifferenceToClosest(stringBuilder, Actual, expected, options);
+			AppendDifferenceToClosest(stringBuilder, Actual, expected, options.Value);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

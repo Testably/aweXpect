@@ -1,15 +1,17 @@
 ﻿namespace aweXpect.Core;
 
 /// <summary>
-///     Gives access to the underlying <typeparamref name="TOptions" /> for extension methods.
+///     Offers the <typeparamref name="TOptions" /> of a single expectation to option methods.
 /// </summary>
-public interface IOptionsProvider<out TOptions>
+public interface IOptionsProvider<TOptions>
 {
 	/// <summary>
-	///     The underlying options of type <typeparamref name="TOptions" />.
+	///     The slot that holds the current options of the expectation.
 	/// </summary>
 	/// <remarks>
-	///     This is primarily intended for extension methods.
+	///     This is primarily intended for extension methods. The option methods of the built-in options are also
+	///     available on the slot, e.g. <c>result.Options.AtLeast(2)</c>; members that only read the options are on its
+	///     <see cref="OptionsSlot{TOptions}.Value" />.
 	/// </remarks>
-	TOptions Options { get; }
+	OptionsSlot<TOptions> Options { get; }
 }

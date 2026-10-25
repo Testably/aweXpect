@@ -24,9 +24,9 @@ public static partial class ThatEventRecording
 		where TSubject : notnull
 	{
 		eventName.ThrowIfNull();
-		Options.Quantifier quantifier = new();
+		OptionsSlot<Options.Quantifier> quantifier = new(new Options.Quantifier());
 		TriggerEventFilter filter = new();
-		RepeatedCheckOptions options = new();
+		OptionsSlot<RepeatedCheckOptions> options = new(new RepeatedCheckOptions());
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(EventName: eventName, Filter: filter, Quantifier: quantifier, Options: options),
@@ -56,9 +56,9 @@ public static partial class ThatEventRecording
 		where TSubject : notnull
 	{
 		eventName.ThrowIfNull();
-		Options.Quantifier quantifier = new();
+		OptionsSlot<Options.Quantifier> quantifier = new(new Options.Quantifier());
 		TriggerEventFilter filter = new();
-		RepeatedCheckOptions options = new();
+		OptionsSlot<RepeatedCheckOptions> options = new(new RepeatedCheckOptions());
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(EventName: eventName, Filter: filter, Quantifier: quantifier, Options: options),

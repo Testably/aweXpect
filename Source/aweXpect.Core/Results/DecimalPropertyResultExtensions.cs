@@ -1,4 +1,5 @@
-﻿using aweXpect.Core.Helpers;
+﻿using aweXpect.Core;
+using aweXpect.Core.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
 
@@ -39,7 +40,7 @@ public static class DecimalPropertyResultExtensions
 	{
 		result.Validation?.Invoke(expected, nameof(expected));
 		return result.CompareEquality(new PropertyEqualityComparison<decimal>(expected,
-			new NumberTolerance<decimal>(NumberDifferences.Decimal), false));
+			new OptionsSlot<NumberTolerance<decimal>>(new NumberTolerance<decimal>(NumberDifferences.Decimal)), false));
 	}
 
 	/// <summary>
@@ -124,7 +125,7 @@ public static class DecimalPropertyResultExtensions
 	{
 		result.Validation?.Invoke(unexpected, nameof(unexpected));
 		return result.CompareEquality(new PropertyEqualityComparison<decimal>(unexpected,
-			new NumberTolerance<decimal>(NumberDifferences.Decimal), true));
+			new OptionsSlot<NumberTolerance<decimal>>(new NumberTolerance<decimal>(NumberDifferences.Decimal)), true));
 	}
 
 	/// <summary>

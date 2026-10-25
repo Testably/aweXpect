@@ -12,10 +12,10 @@ namespace aweXpect.Results;
 public class StringEqualityResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	StringEqualityOptions options)
+	OptionsSlot<StringEqualityOptions> options)
 	: AndOrResult<TType, TThat, StringEqualityResult<TType, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<StringEqualityOptions>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
+	OptionsSlot<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options;
 }

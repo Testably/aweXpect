@@ -47,7 +47,7 @@ public class HasQueryParameterValueResult
 	/// </remarks>
 	public StringEqualityTypeResult<Uri, IThat<Uri?>> WithValue(string? expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
 		_expectationBuilder.And("").AddConstraint((expected, _name, options),
 			static (state, it, grammars) => new WithValueConstraint(
 				it, grammars, state.expected, state._name, state.options));
@@ -69,8 +69,8 @@ public class HasQueryParameterValueResult
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		string[] expectedValues = expected.ToArray();
-		StringEqualityOptions options = new(nameof(expected));
-		CollectionMatchOptions matchOptions = new();
+		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
+		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions());
 		_expectationBuilder.And("").AddConstraint((expectedValues, _name, options, matchOptions),
 			static (state, it, grammars) => new WithValuesConstraint(
 				it, grammars, state.expectedValues, state._name, state.options, state.matchOptions));
@@ -123,7 +123,7 @@ public class HasQueryParameterValueResult
 		ExpectationGrammars grammars,
 		string? expected,
 		string name,
-		StringEqualityOptions options)
+		OptionsSlot<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<Uri?>(it, grammars),
 			IAsyncContextConstraint<Uri?>
 	{
@@ -151,7 +151,7 @@ public class HasQueryParameterValueResult
 				return this;
 			}
 
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			_matchResult = await _evaluationOptions.MatchWithExplanation(_value, expected);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -159,7 +159,7 @@ public class HasQueryParameterValueResult
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options).AppendContexts(contexts);
+			=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
 
 		/// <remarks>
 		///     The text continues the one of the query parameter, which carries the negation and the number of the
@@ -168,7 +168,7 @@ public class HasQueryParameterValueResult
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(" whose value ");
-			stringBuilder.Append(options.GetExpectation(expected, ExpectationGrammars.Active));
+			stringBuilder.Append(options.Value.GetExpectation(expected, ExpectationGrammars.Active));
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -191,7 +191,7 @@ public class HasQueryParameterValueResult
 			=> AppendValueFailure(stringBuilder);
 
 		private void AppendValueFailure(StringBuilder stringBuilder)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It,
+			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedMemberFailure(It,
 				"query parameter value", Grammars, _value, expected, _matchResult));
 	}
 
@@ -200,8 +200,8 @@ public class HasQueryParameterValueResult
 		ExpectationGrammars grammars,
 		string[] expected,
 		string name,
-		StringEqualityOptions options,
-		CollectionMatchOptions matchOptions)
+		OptionsSlot<StringEqualityOptions> options,
+		OptionsSlot<CollectionMatchOptions> matchOptions)
 		: ConstraintResult.WithNotNullValue<Uri?>(it, grammars),
 			IAsyncContextConstraint<Uri?>
 	{
@@ -221,28 +221,28 @@ public class HasQueryParameterValueResult
 			}
 
 			_values = actual.GetQueryParameterValues(name);
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			if (_values is null)
 			{
 				Outcome = Outcome.Failure;
 				return this;
 			}
 
-			(Outcome, _failure) = await matchOptions.GetCollectionMatcher<string?, string?>(expected)
+			(Outcome, _failure) = await matchOptions.Value.GetCollectionMatcher<string?, string?>(expected)
 				.VerifyItems(CollectionMatchFailure.Subject, _values, _evaluationOptions, cancellationToken);
 			return this;
 		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options).AppendContexts(contexts);
+			=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
 
 		/// <remarks>
 		///     The text continues the one of the query parameter, which carries the negation and the number of the
 		///     subject, like the member expectations of <c>Whose</c> do.
 		/// </remarks>
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(" whose values ").Append(matchOptions.GetExpectation(
+			=> stringBuilder.Append(" whose values ").Append(matchOptions.Value.GetExpectation(
 				Formatter.Format(expected, FormattingOptions.SingleLine) + options, ExpectationGrammars.Plural));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)

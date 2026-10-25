@@ -22,7 +22,7 @@ public static partial class ThatAsyncEnumerable
 		this IThat<IAsyncEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		expectations.ThrowIfNull();
-		CollectionIndexOptions indexOptions = new();
+		OptionsSlot<CollectionIndexOptions> indexOptions = new(new CollectionIndexOptions());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IAsyncEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
@@ -40,7 +40,7 @@ public static partial class ThatAsyncEnumerable
 		this IThat<IAsyncEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		expectations.ThrowIfNull();
-		CollectionIndexOptions indexOptions = new();
+		OptionsSlot<CollectionIndexOptions> indexOptions = new(new CollectionIndexOptions());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IAsyncEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),

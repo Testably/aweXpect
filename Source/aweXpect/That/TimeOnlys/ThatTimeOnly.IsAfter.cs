@@ -23,7 +23,7 @@ public static partial class ThatTimeOnly
 		this IThat<TimeOnly> subject,
 		TimeOnly? expected)
 	{
-		TimeTolerance tolerance = new();
+		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
 		return new TimeToleranceResult<TimeOnly, IThat<TimeOnly>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -44,7 +44,7 @@ public static partial class ThatTimeOnly
 		this IThat<TimeOnly> subject,
 		TimeOnly? unexpected)
 	{
-		TimeTolerance tolerance = new();
+		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
 		return new TimeToleranceResult<TimeOnly, IThat<TimeOnly>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -57,7 +57,7 @@ public static partial class ThatTimeOnly
 		string it,
 		ExpectationGrammars grammars,
 		TimeOnly? expected,
-		TimeTolerance tolerance)
+		OptionsSlot<TimeTolerance> tolerance)
 		: OrderingConstraint<TimeOnly>(it, grammars, expected is null),
 			IValueConstraint<TimeOnly>
 	{
@@ -70,7 +70,7 @@ public static partial class ThatTimeOnly
 				return this;
 			}
 
-			TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
+			TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
 			Outcome = expected.Value.Ticks - actual.Ticks < timeTolerance.Ticks
 				? Outcome.Success
 				: Outcome.Failure;

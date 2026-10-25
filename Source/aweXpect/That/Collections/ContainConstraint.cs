@@ -34,7 +34,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 		string it,
 		ExpectationGrammars grammars,
 		ContainedItem<TItem> item,
-		Quantifier quantifier) : base(grammars)
+		OptionsSlot<Quantifier> quantifier) : base(grammars)
 	{
 		It = it;
 		Item = item;
@@ -56,7 +56,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	/// <summary>
 	///     The quantifier for the number of matching items.
 	/// </summary>
-	protected Quantifier Quantifier { get; }
+	protected OptionsSlot<Quantifier> Quantifier { get; }
 
 	/// <summary>
 	///     The type of the collection that is served as the value of the result.
@@ -106,7 +106,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 			_firstFoundItem = item;
 		}
 
-		return Quantifier.Check(_count, false, _isNegated) switch
+		return Quantifier.Value.Check(_count, false, _isNegated) switch
 		{
 			true => Outcome.Success,
 			false => Outcome.Failure,
@@ -134,11 +134,11 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	protected void Finish()
 	{
 		_isFinished = true;
-		Outcome = Quantifier.Check(_count, true, _isNegated) ?? _isNegated ? Outcome.Success : Outcome.Failure;
+		Outcome = Quantifier.Value.Check(_count, true, _isNegated) ?? _isNegated ? Outcome.Success : Outcome.Failure;
 	}
 
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> stringBuilder.Append(Item.GetExpectation(Quantifier, Grammars, _isNegated).Indent(indentation, false));
+		=> stringBuilder.Append(Item.GetExpectation(Quantifier.Value, Grammars, _isNegated).Indent(indentation, false));
 
 	public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -220,7 +220,7 @@ internal sealed class ContainConstraint<TEnumerable, TItem>(
 	string it,
 	ExpectationGrammars grammars,
 	ContainedItem<TItem> containedItem,
-	Quantifier quantifier)
+	OptionsSlot<Quantifier> quantifier)
 	: ContainConstraintBase<TItem>(it, grammars, containedItem, quantifier),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
@@ -368,7 +368,7 @@ internal sealed class AsyncContainConstraint<TItem>(
 	string it,
 	ExpectationGrammars grammars,
 	ContainedItem<TItem> containedItem,
-	Quantifier quantifier)
+	OptionsSlot<Quantifier> quantifier)
 	: ContainConstraintBase<TItem>(it, grammars, containedItem, quantifier),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {

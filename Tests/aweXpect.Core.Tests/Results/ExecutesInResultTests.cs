@@ -12,9 +12,9 @@ public sealed class ExecutesInResultTests
 		ExecutesInResult<int[]> sut = CreateSut(Array.Empty<int>(), options);
 
 		await That(sut).Is<IOptionsProvider<ExecutionTimeOptions>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	private static ExecutesInResult<T> CreateSut<T>(T subject, ExecutionTimeOptions options)
-		=> new(subject, options);
+		=> new(subject, new OptionsSlot<ExecutionTimeOptions>(options));
 }

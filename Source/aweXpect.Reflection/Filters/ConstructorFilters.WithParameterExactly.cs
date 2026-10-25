@@ -16,7 +16,7 @@ public static partial class ConstructorFilters
 	public static ConstructorsWithParameter<T> WithParameterExactly<T>(this Filtered.Constructors @this)
 	{
 		Type parameterType = typeof(T);
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		return new ConstructorsWithParameter<T>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
@@ -29,7 +29,7 @@ public static partial class ConstructorFilters
 	public static ConstructorsWithNamedParameter<T> WithParameterExactly<T>(this Filtered.Constructors @this, string expected)
 	{
 		Type parameterType = typeof(T);
-		return new ConstructorsWithNamedParameter<T>(@this, WithParameterFilter, new CollectionIndexOptions(),
+		return new ConstructorsWithNamedParameter<T>(@this, WithParameterFilter, new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()),
 			stringEqualityOptions =>
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
@@ -38,7 +38,7 @@ public static partial class ConstructorFilters
 					() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new StringEqualityOptions(nameof(expected)));
+			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
 	}
 
 	/// <summary>
@@ -47,7 +47,7 @@ public static partial class ConstructorFilters
 	public static ConstructorsWithParameter<object?> WithParameterExactly(this Filtered.Constructors @this,
 		Type parameterType)
 	{
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(new CollectionIndexOptions());
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		return new ConstructorsWithParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
@@ -60,7 +60,7 @@ public static partial class ConstructorFilters
 	public static ConstructorsWithNamedParameter<object?> WithParameterExactly(this Filtered.Constructors @this,
 		Type parameterType, string expected)
 	{
-		return new ConstructorsWithNamedParameter<object?>(@this, WithParameterFilter, new CollectionIndexOptions(),
+		return new ConstructorsWithNamedParameter<object?>(@this, WithParameterFilter, new OptionsSlot<CollectionIndexOptions>(new CollectionIndexOptions()),
 			stringEqualityOptions =>
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
@@ -69,6 +69,6 @@ public static partial class ConstructorFilters
 					() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new StringEqualityOptions(nameof(expected)));
+			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))));
 	}
 }

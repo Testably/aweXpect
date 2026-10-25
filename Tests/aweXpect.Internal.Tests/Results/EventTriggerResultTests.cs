@@ -16,7 +16,7 @@ public sealed class EventTriggerResultTests
 		EventTriggerResult<EventTriggerResultTests> sut = CreateSut(new EventTriggerResultTests(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
-			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(quantifier));
 	}
 
 	[Test]
@@ -27,7 +27,7 @@ public sealed class EventTriggerResultTests
 		EventTriggerResult<EventTriggerResultTests> sut = CreateSut(new EventTriggerResultTests(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<RepeatedCheckOptions>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
 	[Test]
@@ -373,8 +373,8 @@ public sealed class EventTriggerResultTests
 		return new EventTriggerResult<T>(source.Get().ExpectationBuilder,
 			source,
 			filter,
-			quantifier,
-			options);
+			new OptionsSlot<Quantifier>(quantifier),
+			new OptionsSlot<RepeatedCheckOptions>(options));
 	}
 
 	private sealed class CustomEventWithParametersClass<T1>

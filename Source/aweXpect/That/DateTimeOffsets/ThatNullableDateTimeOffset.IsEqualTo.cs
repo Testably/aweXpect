@@ -17,7 +17,7 @@ public static partial class ThatNullableDateTimeOffset
 		this IThat<DateTimeOffset?> subject,
 		DateTimeOffset? expected)
 	{
-		TimeTolerance tolerance = new();
+		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
 		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -33,7 +33,7 @@ public static partial class ThatNullableDateTimeOffset
 		this IThat<DateTimeOffset?> subject,
 		DateTimeOffset? unexpected)
 	{
-		TimeTolerance tolerance = new();
+		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
 		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -46,7 +46,7 @@ public static partial class ThatNullableDateTimeOffset
 		string it,
 		ExpectationGrammars grammars,
 		DateTimeOffset? expected,
-		TimeTolerance tolerance)
+		OptionsSlot<TimeTolerance> tolerance)
 		: ConstraintResult.WithEqualToValue<DateTimeOffset?>(it, grammars, expected is null),
 			IValueConstraint<DateTimeOffset?>
 	{
@@ -63,7 +63,7 @@ public static partial class ThatNullableDateTimeOffset
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
+				TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
 				Outcome = actual.IsConsideredEqualTo(expected, timeTolerance)
 					? Outcome.Success
 					: Outcome.Failure;
