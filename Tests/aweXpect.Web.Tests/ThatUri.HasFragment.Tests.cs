@@ -152,6 +152,99 @@ public sealed partial class ThatUri
 					             but it had fragment "lyrics"
 					             """);
 			}
+
+			[Test]
+			public async Task Shorthand_AsSuffix_WhenSubjectEndsWithTheExpectedValue_ShouldSucceed()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1#section-lyrics");
+
+				async Task Act()
+					=> await That(subject).HasFragment("lyrics").AsSuffix();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Shorthand_IgnoringCase_WhenSubjectDiffersOnlyInCase_ShouldSucceed()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1#Lyrics");
+
+				async Task Act()
+					=> await That(subject).HasFragment("lyrics").IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Shorthand_WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1#lyrics");
+
+				async Task Act()
+					=> await That(subject).HasFragment(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task Shorthand_WhenSubjectDoesNotEqualTheExpectedFragment_ShouldFail()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1#lyrics");
+
+				async Task Act()
+					=> await That(subject).HasFragment("credits");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has fragment equal to "credits",
+					             but it had fragment "lyrics", which differs at index 0:
+					                ↓ (actual)
+					               "lyrics"
+					               "credits"
+					                ↑ (expected)
+					             """);
+			}
+
+			[Test]
+			public async Task Shorthand_WhenSubjectEqualsExpectedFragment_ShouldSucceed()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1#lyrics");
+
+				async Task Act()
+					=> await That(subject).HasFragment("lyrics");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Shorthand_WhenSubjectHasNoFragment_ShouldEqualTheEmptyString()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1");
+
+				async Task Act()
+					=> await That(subject).HasFragment("");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Shorthand_WhenSubjectIsNull_ShouldFail()
+			{
+				Uri? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasFragment("lyrics");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has fragment equal to "lyrics",
+					             but it was <null>
+					             """);
+			}
 		}
 
 		public sealed class NegatedTests
@@ -207,6 +300,33 @@ public sealed partial class ThatUri
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasFragment().EqualTo("lyrics"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have fragment equal to "lyrics",
+					             but it had fragment "lyrics"
+					             """);
+			}
+
+			[Test]
+			public async Task Shorthand_WhenSubjectDoesNotEqualTheExpectedFragment_ShouldSucceed()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1#lyrics");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasFragment("credits"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Shorthand_WhenSubjectEqualsExpectedFragment_ShouldFail()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1#lyrics");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasFragment("lyrics"));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
