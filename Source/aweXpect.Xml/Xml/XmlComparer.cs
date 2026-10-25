@@ -654,7 +654,7 @@ internal static class XmlComparer
 
 				if (count++ >= maximumNumberOfCollectionItems)
 				{
-					sb.AppendLine().Append("   … (")
+					sb.AppendLine().Append("  (… and ")
 						.Append(_errors.Count - maximumNumberOfCollectionItems)
 						.Append(" more)");
 					return sb.ToString();

@@ -168,7 +168,7 @@ public sealed partial class ThatJsonString
 						               $.foo8 had unexpected <null> and
 						               $.foo9 had unexpected <null> and
 						               $.foo10 had unexpected <null> and
-						                … (2 more)
+						               (… and 2 more)
 
 						             Actual:
 						             {
@@ -225,7 +225,7 @@ public sealed partial class ThatJsonString
 						               $.foo1 had unexpected <null> and
 						               $.foo2 had unexpected <null> and
 						               $.foo3 had unexpected <null> and
-						                … (9 more)
+						               (… and 9 more)
 
 						             Actual:
 						             {
