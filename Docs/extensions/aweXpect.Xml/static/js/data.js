@@ -792,6 +792,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
         "message": "feat!: make ReflectionFallback.NotSupported public and move ReflectionFallback to aweXpect.Core.Extending (#2058)"
+      },
+      {
+        "sha": "359002f3dd2200217f79b751b096155f333ee583",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
+        "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
       }
     ],
     "labels": [
@@ -926,7 +932,8 @@ window.BENCHMARK_DATA = {
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
-      "6224bbce"
+      "6224bbce",
+      "359002f3"
     ],
     "datasets": [
       {
@@ -1064,7 +1071,8 @@ window.BENCHMARK_DATA = {
           718.3466386795044,
           733.8927498499553,
           556.6532575167142,
-          409.9796852043697
+          409.9796852043697,
+          726.7930959701538
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1203,6 +1211,7 @@ window.BENCHMARK_DATA = {
           1152,
           1152,
           1152,
+          1080,
           1080,
           1080,
           1080,
@@ -1353,7 +1362,8 @@ window.BENCHMARK_DATA = {
           794.8861404418946,
           783.5919907251994,
           526.1884100987361,
-          377.02296912670135
+          377.02296912670135,
+          760.9886703491211
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1365,6 +1375,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2302,6 +2313,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
         "message": "feat!: make ReflectionFallback.NotSupported public and move ReflectionFallback to aweXpect.Core.Extending (#2058)"
+      },
+      {
+        "sha": "359002f3dd2200217f79b751b096155f333ee583",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
+        "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
       }
     ],
     "labels": [
@@ -2436,7 +2453,8 @@ window.BENCHMARK_DATA = {
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
-      "6224bbce"
+      "6224bbce",
+      "359002f3"
     ],
     "datasets": [
       {
@@ -2574,7 +2592,8 @@ window.BENCHMARK_DATA = {
           5352.313227844238,
           5033.549484761556,
           3335.5453368595668,
-          2987.065302335299
+          2987.065302335299,
+          5165.6495735168455
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2716,6 +2735,7 @@ window.BENCHMARK_DATA = {
           24320,
           24321,
           24321,
+          24320,
           24320,
           24320
         ],
@@ -2863,7 +2883,8 @@ window.BENCHMARK_DATA = {
           5993.469849650065,
           5963.410941060384,
           3740.684619394938,
-          3033.248120625814
+          3033.248120625814,
+          5786.943173726399
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2875,6 +2896,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -3752,6 +3774,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
         "message": "feat!: make ReflectionFallback.NotSupported public and move ReflectionFallback to aweXpect.Core.Extending (#2058)"
+      },
+      {
+        "sha": "359002f3dd2200217f79b751b096155f333ee583",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
+        "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
       }
     ],
     "labels": [
@@ -3876,7 +3904,8 @@ window.BENCHMARK_DATA = {
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
-      "6224bbce"
+      "6224bbce",
+      "359002f3"
     ],
     "datasets": [
       {
@@ -4004,7 +4033,8 @@ window.BENCHMARK_DATA = {
           2927.384025280292,
           3023.9696243286135,
           1866.8709212711879,
-          1601.7549558367048
+          1601.7549558367048,
+          2804.4334988911946
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4137,7 +4167,8 @@ window.BENCHMARK_DATA = {
           12780,
           12856,
           12780,
-          12856
+          12856,
+          12780
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4273,7 +4304,8 @@ window.BENCHMARK_DATA = {
           3936.670391337077,
           3969.5252009073893,
           2530.741511027018,
-          2059.767382558187
+          2059.767382558187,
+          3629.5616887410483
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4285,6 +4317,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -5152,6 +5185,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
         "message": "feat!: make ReflectionFallback.NotSupported public and move ReflectionFallback to aweXpect.Core.Extending (#2058)"
+      },
+      {
+        "sha": "359002f3dd2200217f79b751b096155f333ee583",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
+        "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
       }
     ],
     "labels": [
@@ -5276,7 +5315,8 @@ window.BENCHMARK_DATA = {
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
-      "6224bbce"
+      "6224bbce",
+      "359002f3"
     ],
     "datasets": [
       {
@@ -5404,7 +5444,8 @@ window.BENCHMARK_DATA = {
           14644.65506526402,
           14718.640434773763,
           9840.119656154087,
-          8028.292962646485
+          8028.292962646485,
+          14126.528017316547
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5537,7 +5578,8 @@ window.BENCHMARK_DATA = {
           25494,
           25568,
           25494,
-          25568
+          25568,
+          25494
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5673,7 +5715,8 @@ window.BENCHMARK_DATA = {
           380882.41346153844,
           363687.6955078125,
           237700.49888392858,
-          178568.9136230469
+          178568.9136230469,
+          371800.84294782364
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5803,6 +5846,7 @@ window.BENCHMARK_DATA = {
           544335,
           544268,
           544247,
+          544335,
           544335,
           544335,
           544335,
