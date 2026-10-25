@@ -32,6 +32,13 @@ public sealed partial class ThatXElement
 					             Expected that element
 					             has element "item",
 					             but it did not have element "item"
+
+					             Actual:
+					             <order>
+					               <items>
+					                 <item />
+					               </items>
+					             </order>
 					             """)
 					.Because("only the child elements are looked up, like by XElement.Element");
 			}
@@ -61,6 +68,11 @@ public sealed partial class ThatXElement
 					             Expected that element
 					             has element "item",
 					             but it did not have element "item"
+
+					             Actual:
+					             <order xmlns="urn:shop">
+					               <item />
+					             </order>
 					             """)
 					.Because("the child element inherits the default namespace, so it is not in no namespace");
 			}
@@ -126,6 +138,9 @@ public sealed partial class ThatXElement
 					             Expected that element
 					             has element "item" which has attribute "sku",
 					             but it did not have element "item"
+
+					             Actual:
+					             <order />
 					             """);
 			}
 
@@ -149,6 +164,53 @@ public sealed partial class ThatXElement
 			}
 
 			[Test]
+			public async Task WhenNestedLookupsFailOnTwoLevels_ShouldShowTheElementOfEachLevel()
+			{
+				XElement element = XElement.Parse("<order><customer><address city=\"Liverpool\"/></customer></order>");
+
+				async Task Act()
+					=> await That(element).HasElement("customer", customer => customer
+						.HasAttribute("id").And
+						.HasElement("address", address => address.HasAttribute("zip")));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that element
+					             has element "customer" which has attribute "id" and has element "address" which has attribute "zip",
+					             but element "customer" did not have attribute "id" and element "address" did not have attribute "zip"
+
+					             Actual (element "customer"):
+					             <customer>
+					               <address city="Liverpool" />
+					             </customer>
+
+					             Actual (element "customer".element "address"):
+					             <address city="Liverpool" />
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSeveralLookupsFailOnTheSameElement_ShouldShowItOnce()
+			{
+				XElement element = XElement.Parse("<order><item/></order>");
+
+				async Task Act()
+					=> await That(element).HasAttribute("id").And.HasElement("note");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that element
+					             has attribute "id" and has element "note",
+					             but it did not have attribute "id" and did not have element "note"
+
+					             Actual:
+					             <order>
+					               <item />
+					             </order>
+					             """);
+			}
+
+			[Test]
 			public async Task WhenNegatedAndChildElementSatisfiesTheExpectations_ShouldFail()
 			{
 				XElement element = XElement.Parse("<order><item sku=\"A1\"/></order>");
@@ -161,6 +223,11 @@ public sealed partial class ThatXElement
 					             Expected that element
 					             does not have element "item" which has attribute "sku",
 					             but it did
+
+					             Actual:
+					             <order>
+					               <item sku="A1" />
+					             </order>
 					             """);
 			}
 
@@ -234,6 +301,11 @@ public sealed partial class ThatXElement
 					             Expected that element
 					             does not have element "note",
 					             but it did
+
+					             Actual:
+					             <order>
+					               <note />
+					             </order>
 					             """);
 			}
 

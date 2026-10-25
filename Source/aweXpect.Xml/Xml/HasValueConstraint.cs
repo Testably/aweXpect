@@ -83,6 +83,14 @@ internal sealed class HasValueConstraint<TSubject>(
 		return base.TryGetStoredValue(out value);
 	}
 
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		if (Outcome != Outcome.Success)
+		{
+			HasNodeConstraint.AddActualContext(contexts, _found?.Node);
+		}
+	}
+
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(Grammars.Verb("has a value", "have a value"));
 

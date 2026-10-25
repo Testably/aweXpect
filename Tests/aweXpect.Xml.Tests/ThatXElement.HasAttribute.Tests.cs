@@ -32,6 +32,9 @@ public sealed partial class ThatXElement
 					             Expected that element
 					             has attribute "artist",
 					             but it did not have attribute "artist"
+
+					             Actual:
+					             <track title="Let It Be" />
 					             """);
 			}
 
@@ -48,6 +51,9 @@ public sealed partial class ThatXElement
 					             Expected that element
 					             has attribute "title",
 					             but it did not have attribute "title"
+
+					             Actual:
+					             <track xmlns:m="urn:meta" m:title="Let It Be" />
 					             """)
 					.Because("the attribute is looked up by its namespace and local name, like by XElement.Attribute");
 			}
@@ -79,6 +85,9 @@ public sealed partial class ThatXElement
 					             Expected that element
 					             has attribute "{urn:meta}title",
 					             but it did not have attribute "{urn:meta}title"
+
+					             Actual:
+					             <track />
 					             """);
 			}
 
@@ -123,6 +132,9 @@ public sealed partial class ThatXElement
 					             Expected that element
 					             has attribute "price" whose value is equal to "1.00",
 					             but it did not have attribute "price"
+
+					             Actual:
+					             <item />
 					             """)
 					.Because("the value of a missing attribute is not compared");
 			}
@@ -172,6 +184,9 @@ public sealed partial class ThatXElement
 					             Expected that element
 					             does not have attribute "price" whose value is equal to "1.00",
 					             but it did
+
+					             Actual:
+					             <item price="1.00" />
 					             """);
 			}
 
@@ -270,6 +285,9 @@ public sealed partial class ThatXElement
 					             Expected that element
 					             does not have attribute "title",
 					             but it did
+
+					             Actual:
+					             <track title="Let It Be" />
 					             """);
 			}
 

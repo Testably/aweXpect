@@ -36,7 +36,17 @@ but value of attribute "artist" was "Paul McCartney", which differs at index 0:
 ```
 
 The expectations on the value are only verified when the attribute exists, otherwise the failure states that the
-element did not have the attribute.
+element did not have the attribute. A failed lookup, also a negated one, shows the complete element it ran on as
+`Actual` context. Without a title, `HasAttribute("title")` would fail with:
+
+```text title="Failure message"
+Expected that track
+has attribute "title",
+but it did not have attribute "title"
+
+Actual:
+<track artist="The Beatles" />
+```
 
 ## Child elements
 
@@ -53,7 +63,8 @@ await Expect.That(album).DoesNotHaveElement("bonusTrack");
 
 Only the direct child elements are looked up, and the expectations are verified on the first child element with the
 name, like by [`XElement.Element(name)`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xcontainer.element).
-To verify a whole subtree, combine it with [`Matches`](./02-matching.md):
+A failed lookup within the expectations on a child element shows this child element, labelled with it, e.g.
+`Actual (element "artist"):`, instead of the whole subject. To verify a whole subtree, combine it with [`Matches`](./02-matching.md):
 
 ```csharp
 await Expect.That(album).HasElement("artist", artist => artist.Matches("""<artist><origin /></artist>"""));

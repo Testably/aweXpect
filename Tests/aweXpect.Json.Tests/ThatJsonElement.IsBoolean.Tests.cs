@@ -153,6 +153,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a boolean which is False,
 					             but it was a string
+
+					             Actual:
+					             "false"
 					             """);
 			}
 
@@ -188,6 +191,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a boolean equal to True,
 					             but it was False
+
+					             Actual:
+					             false
 					             """);
 			}
 
@@ -217,6 +223,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a boolean equal to True,
 					             but it was a string
+
+					             Actual:
+					             "true"
 					             """);
 			}
 
@@ -233,6 +242,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has property "explicit" which is a boolean equal to False,
 					             but $.explicit was True
+
+					             Actual ($.explicit):
+					             true
 					             """);
 			}
 		}
@@ -263,6 +275,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is not a boolean equal to True,
 					             but it was True
+
+					             Actual:
+					             true
 					             """);
 			}
 

@@ -153,6 +153,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is a boolean equal to False,
 					             but it was True
+
+					             Actual:
+					             true
 					             """);
 			}
 
@@ -210,6 +213,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is not a boolean equal to False,
 					             but it was False
+
+					             Actual:
+					             false
 					             """);
 			}
 

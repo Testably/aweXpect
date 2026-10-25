@@ -111,7 +111,13 @@ internal sealed class HasJsonValueConstraint(string it, ExpectationGrammars gram
 
 	public override void AppendContexts(ResultContextCollector contexts)
 	{
-		if (target.TreatNullAsAbsent && Outcome != Outcome.Success)
+		if (Outcome == Outcome.Success)
+		{
+			return;
+		}
+
+		ThatJsonElement.AddActualContext(contexts, Actual);
+		if (target.TreatNullAsAbsent)
 		{
 			contexts.Add(new ResultContext.Fixed("JSON options", " - treat null as absent", int.MinValue));
 		}

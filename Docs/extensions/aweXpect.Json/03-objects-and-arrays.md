@@ -43,7 +43,14 @@ but $.title was "Yesterday", which differs at index 0:
   "Yesterday"
   "Let It Be"
    ↑ (expected)
+
+Actual ($.title):
+"Yesterday"
 ```
+
+A failed lookup or value adds the complete JSON that it verified, indented, as `Actual` context, as the failure itself
+shows a value only in a single line and shortened. A nested expectation adds the value it verified, labelled with its
+JSON path, e.g. `Actual ($.title):`, instead of the whole document.
 
 Every failing part of a combined expectation is reported. The expectations on a property are only verified when the
 property exists, otherwise the failure says that it did not exist, e.g. `but property $.title did not exist`. With
@@ -53,6 +60,13 @@ property exists, otherwise the failure says that it did not exist, e.g. `but pro
 Expected that track
 has property "title" and does not have property "artist",
 but it had property "artist" with "The Beatles"
+
+Actual:
+{
+  "title": "Let It Be",
+  "artist": "The Beatles",
+  "durationSeconds": 243
+}
 ```
 
 The name is taken literally, so that names like `"@odata.context"` or `"user.name"` can be addressed. In the JSON path
@@ -68,6 +82,9 @@ when the property does not exist or its value does not satisfy them. Negating
 Expected that track
 does not have property "title" or $.title is not a string equal to "Let It Be",
 but $.title was "Let It Be"
+
+Actual ($.title):
+"Let It Be"
 ```
 
 The same applies to [`HasValueAt`](#values-at-a-path) and [`HasElementAt`](#elements).
@@ -122,6 +139,12 @@ Without the option, the expectation would fail with:
 Expected that track
 does not have property "label",
 but it had property "label" with <null>
+
+Actual:
+{
+  "title": "Let It Be",
+  "label": null
+}
 ```
 
 ## Values at a path
@@ -146,6 +169,16 @@ If the artist had no origin, the expectation would fail with the first segment t
 Expected that album
 has value at "artist.origin.city" which is a string equal to "Liverpool" and has value at "tracks[0].title" which is a string,
 but property $.artist.origin did not exist
+
+Actual:
+{
+  "artist": {},
+  "tracks": [
+    {
+      "title": "Come Together"
+    }
+  ]
+}
 ```
 
 A value on the way that has another kind than the next segment requires fails with e.g.
@@ -187,6 +220,9 @@ but $[0].title was "Yesterday", which differs at index 0:
   "Yesterday"
   "Let"
    ↑ (expected prefix)
+
+Actual ($[0].title):
+"Yesterday"
 ```
 
 An index beyond the end fails with e.g. `but index $[2] did not exist`, without verifying the expectations.
@@ -367,6 +403,9 @@ If the rating was 4.7, the expectation would fail with:
 Expected that track
 has property "title" which is a string starting with "let" ignoring case and has property "rating" which is a double equal to 4.5 ± 0.1 and has property "explicit" which is a boolean equal to False,
 but $.rating was 4.7
+
+Actual ($.rating):
+4.7
 ```
 
 Like `IsString()`, a value of another kind fails the expectation, e.g. `IsString("4.5")` on the rating fails with
@@ -413,6 +452,9 @@ If the duration was `243.5`, `HasProperty("durationSeconds", d => d.IsNumber<int
 Expected that track
 has property "durationSeconds" which is an int,
 but $.durationSeconds was 243.5, which is not an int
+
+Actual ($.durationSeconds):
+243.5
 ```
 
 `IsNumber(expected)` compares the number as the type of the expected value, so `IsNumber(243)` reads it as `int`,
@@ -435,6 +477,9 @@ If the duration was `243.0`, the expectation above would fail with:
 Expected that track
 has property "durationSeconds" which is an int equal to 243 and has property "price" which is a decimal equal to 9.99,
 but $.durationSeconds was 243.0, which is not an int
+
+Actual ($.durationSeconds):
+243.0
 ```
 
 Compare such a number as `double` with `IsNumber(243.0)` or `IsNumber<double>(243)`.

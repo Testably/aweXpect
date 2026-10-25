@@ -82,6 +82,22 @@ internal static class HasNodeConstraint
 		return new AndOrResult<TSubject, IThat<TSubject?>>(expectationBuilder, source);
 	}
 
+	/// <summary>
+	///     Adds the <paramref name="element" /> that a lookup ran on as the "Actual" context, as the failure message only
+	///     names the node that was looked up.
+	/// </summary>
+	/// <remarks>
+	///     The element is written with <see cref="XNode.ToString()" />, which indents nested elements, as the formatter
+	///     would indent the lines after the first one once more.
+	/// </remarks>
+	internal static void AddActualContext(ResultContextCollector contexts, XElement? element)
+	{
+		if (element is not null)
+		{
+			contexts.Add(new ResultContext.SyncCallback("Actual", element.ToString));
+		}
+	}
+
 	private static HasNodeConstraint<TSubject, XAttribute> CreateAttribute<TSubject>(string it,
 		ExpectationGrammars grammars, XName name, Func<TSubject, XElement?> getElement)
 		where TSubject : XNode
@@ -121,12 +137,14 @@ internal sealed class HasNodeConstraint<TSubject, TNode>(
 	where TSubject : XNode
 	where TNode : XObject
 {
+	private XElement? _element;
 	private FoundNode<TNode>? _found;
 	private bool _hasNoElement;
 
 	public ConstraintResult IsMetBy(TSubject? actual)
 	{
 		Actual = actual;
+		_element = null;
 		_found = null;
 		_hasNoElement = false;
 		if (actual is null)
@@ -143,6 +161,7 @@ internal sealed class HasNodeConstraint<TSubject, TNode>(
 			return this;
 		}
 
+		_element = element;
 		TNode? found = find(element, name);
 		_found = found is null ? null : new FoundNode<TNode>(found);
 		Outcome = found is not null ? Outcome.Success : Outcome.Failure;
@@ -161,6 +180,14 @@ internal sealed class HasNodeConstraint<TSubject, TNode>(
 		}
 
 		return base.TryGetStoredValue(out value);
+	}
+
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		if (Outcome != Outcome.Success)
+		{
+			HasNodeConstraint.AddActualContext(contexts, _element);
+		}
 	}
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

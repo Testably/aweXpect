@@ -60,6 +60,14 @@ internal sealed class IsJsonValueConstraint<TValue>(
 		return base.TryGetStoredValue(out value);
 	}
 
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		if (Outcome != Outcome.Success)
+		{
+			ThatJsonElement.AddActualContext(contexts, Actual);
+		}
+	}
+
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> AppendExpected(stringBuilder.Append(Grammars.Verb("is ", "are ")));
 

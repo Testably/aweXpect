@@ -32,7 +32,10 @@ internal sealed class IsJsonStringEqualToConstraint(
 	}
 
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> (_evaluationOptions ?? options).AppendContexts(contexts);
+	{
+		(_evaluationOptions ?? options).AppendContexts(contexts);
+		base.AppendContexts(contexts);
+	}
 
 	protected override void AppendComparison(StringBuilder stringBuilder)
 		=> stringBuilder.Append(options.GetExpectation(expected,

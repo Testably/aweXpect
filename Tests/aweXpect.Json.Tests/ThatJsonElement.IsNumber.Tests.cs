@@ -165,6 +165,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a number which is equal to 4.5,
 					             but it was a string
+
+					             Actual:
+					             "4.5"
 					             """);
 			}
 
@@ -197,6 +200,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a number which is positive,
 					             but it was 1e400, which is not a double
+
+					             Actual:
+					             1e400
 					             """);
 			}
 		}
@@ -219,6 +225,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              is an int,
 					              but it was {kindString}
+
+					              Actual:
+					              {json}
 					              """);
 			}
 
@@ -256,6 +265,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              is {expected},
 					              but it was {json}, which is not {expected}
+
+					              Actual:
+					              {json}
 					              """);
 			}
 
@@ -389,6 +401,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is not an int,
 					             but it was 5
+
+					             Actual:
+					             5
 					             """);
 			}
 		}
@@ -474,6 +489,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has property "durationSeconds" which is an int which is positive,
 					             but $.durationSeconds was 1.5, which is not an int
+
+					             Actual ($.durationSeconds):
+					             1.5
 					             """);
 			}
 
@@ -506,6 +524,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an int equal to 2147483647 ± 1,
 					             but it was -2147483648
+
+					             Actual:
+					             -2147483648
 					             """)
 					.Because("a difference beyond the range of the number type is not within any tolerance");
 			}
@@ -534,6 +555,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an int equal to 42,
 					             but it was 42.0, which is not an int
+
+					             Actual:
+					             42.0
 					             """)
 					.Because("the number type follows the expected value");
 			}
@@ -562,6 +586,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an int equal to 42,
 					             but it was a string
+
+					             Actual:
+					             "42"
 					             """);
 			}
 
@@ -578,6 +605,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a long equal to 9007199254740992,
 					             but it was 9007199254740993
+
+					             Actual:
+					             9007199254740993
 					             """)
 					.Because("a long is compared as long and not as double, which cannot tell these values apart");
 			}
@@ -595,6 +625,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has property "durationSeconds" which is an int equal to 242,
 					             but $.durationSeconds was 243
+
+					             Actual ($.durationSeconds):
+					             243
 					             """);
 			}
 
@@ -611,6 +644,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an int equal to 42,
 					             but it was 43
+
+					             Actual:
+					             43
 					             """);
 			}
 
@@ -627,6 +663,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a byte equal to 42,
 					             but it was 300, which is not a byte
+
+					             Actual:
+					             300
 					             """);
 			}
 
@@ -654,6 +693,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a double equal to 42.0 ± 1.0,
 					             but it was 43.5
+
+					             Actual:
+					             43.5
 					             """);
 			}
 
@@ -822,6 +864,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is not an int equal to 42,
 					             but it was 42
+
+					             Actual:
+					             42
 					             """);
 			}
 
@@ -838,6 +883,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is not an int equal to 42 ± 1,
 					             but it was 43
+
+					             Actual:
+					             43
 					             """);
 			}
 		}

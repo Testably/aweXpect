@@ -21,6 +21,9 @@ public sealed partial class ThatXDocument
 					             Expected that document
 					             has attribute "artist",
 					             but it did not have attribute "artist"
+
+					             Actual:
+					             <track title="Let It Be" />
 					             """);
 			}
 
@@ -138,6 +141,9 @@ public sealed partial class ThatXDocument
 					             Expected that document
 					             does not have attribute "id" whose value is equal to "42",
 					             but it did
+
+					             Actual:
+					             <order id="42" />
 					             """);
 			}
 
@@ -232,6 +238,9 @@ public sealed partial class ThatXDocument
 					             Expected that document
 					             does not have attribute "title",
 					             but it did
+
+					             Actual:
+					             <track title="Let It Be" />
 					             """);
 			}
 
