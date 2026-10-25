@@ -66,9 +66,10 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
-	///     Copies the <paramref name="options" /> for an evaluation that compares with the <paramref name="matcher" />.
+	///     Copies the <paramref name="options" /> for an evaluation that compares with the <paramref name="matcher" />,
+	///     or with a <see langword="null" /> matcher for a copy that is still configured.
 	/// </summary>
-	private StringEqualityOptions(StringEqualityOptions options, StringMatcher matcher)
+	private StringEqualityOptions(StringEqualityOptions options, StringMatcher? matcher)
 	{
 		_parameterName = options._parameterName;
 		_comparer = options._comparer;
@@ -89,6 +90,12 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		_matchTypeOption = options._matchTypeOption;
 		_matcher = matcher;
 	}
+
+	/// <summary>
+	///     Returns a copy of these options with every option set so far, on which further options can be set without
+	///     changing these options.
+	/// </summary>
+	internal StringEqualityOptions Copy() => new(this, null);
 
 	/// <summary>
 	///     The settings that the matcher of an evaluation is created with.

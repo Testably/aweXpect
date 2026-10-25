@@ -358,6 +358,10 @@ namespace aweXpect.Core
         System.Threading.Tasks.ValueTask<(bool IsFailure, string? Failure)> Verify(string it, TItem value, aweXpect.Core.IOptionsEquality<out TMatch> options, int maximumNumber);
         System.Threading.Tasks.ValueTask<(bool IsFailure, string? Failure)> VerifyComplete(string it, aweXpect.Core.IOptionsEquality<out TMatch> options, int maximumNumber);
     }
+    public interface ICopyOnOption<in TOptions, out TResult>
+    {
+        TResult WithOptions(TOptions options);
+    }
     public interface IDescribableSubject
     {
         string GetDescription();

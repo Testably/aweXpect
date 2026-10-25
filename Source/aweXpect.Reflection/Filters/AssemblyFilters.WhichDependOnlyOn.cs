@@ -31,13 +31,12 @@ public static partial class AssemblyFilters
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		string[] allowed = expected.ToArray();
-		StringEqualityOptions options = new(nameof(expected));
-		return new Filtered.Assemblies.StringEqualityResult(@this.Which(Filter.Suffix<Assembly>(
+		return new Filtered.Assemblies.StringEqualityResult(@this, options => Filter.Suffix<Assembly>(
 				async assembly
 					=> (await assembly.GetDisallowedAssemblyDependencies(allowed, options)).Length == 0,
 				() => allowed.Length == 0
 					? " which have dependencies only on no assemblies"
-					: $" which have dependencies only on assemblies {string.Join(" or ", allowed.Select(expected => options.GetExpectation(expected, ExpectationGrammars.None)))}")),
-			options);
+					: $" which have dependencies only on assemblies {string.Join(" or ", allowed.Select(expected => options.GetExpectation(expected, ExpectationGrammars.None)))}"),
+			new StringEqualityOptions(nameof(expected)));
 	}
 }

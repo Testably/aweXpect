@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using aweXpect.Core;
@@ -114,17 +115,28 @@ public static partial class Filtered
 		///     A Container for a filterable collection of <see cref="MethodInfo" />,
 		///     that also allows specifying string equality options via <see cref="StringEqualityOptionsExtensions" />.
 		/// </summary>
-		public class StringEqualityResult : Methods, IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
+		public class StringEqualityResult : Methods, IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions,
+			ICopyOnOption<StringEqualityOptions, StringEqualityResult>
 		{
+			private readonly Func<StringEqualityOptions, IFilter<MethodInfo>> _createFilter;
 			private readonly StringEqualityOptions _options;
+			private readonly Methods _source;
 
-			internal StringEqualityResult(Methods inner, StringEqualityOptions options) : base(inner)
+			internal StringEqualityResult(Methods source, Func<StringEqualityOptions, IFilter<MethodInfo>> createFilter,
+				StringEqualityOptions options) : base(source.Which(createFilter(options)))
 			{
+				_source = source;
+				_createFilter = createFilter;
 				_options = options;
 			}
 
 			/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 			StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
+
+			/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+			StringEqualityResult ICopyOnOption<StringEqualityOptions, StringEqualityResult>.WithOptions(
+				StringEqualityOptions options)
+				=> new(_source, _createFilter, options);
 		}
 
 		/// <summary>

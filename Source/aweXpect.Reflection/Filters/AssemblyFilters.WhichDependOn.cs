@@ -15,11 +15,10 @@ public static partial class AssemblyFilters
 	public static Filtered.Assemblies.StringEqualityResult WhichDependOn(
 		this Filtered.Assemblies @this, string expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
-		return new Filtered.Assemblies.StringEqualityResult(@this.Which(Filter.Suffix<Assembly>(
+		return new Filtered.Assemblies.StringEqualityResult(@this, options => Filter.Suffix<Assembly>(
 				assembly => assembly.GetReferencedAssemblyNames()
 					.AnyAsync(dependency => options.AreConsideredEqual(dependency.Name, expected)),
-				() => $" which have a dependency on assembly {options.GetExpectation(expected, ExpectationGrammars.None)}")),
-			options);
+				() => $" which have a dependency on assembly {options.GetExpectation(expected, ExpectationGrammars.None)}"),
+			new StringEqualityOptions(nameof(expected)));
 	}
 }

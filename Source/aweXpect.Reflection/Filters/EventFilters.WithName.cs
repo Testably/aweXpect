@@ -12,10 +12,9 @@ public static partial class EventFilters
 	/// </summary>
 	public static Filtered.Events.StringEqualityResult WithName(this Filtered.Events @this, string expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
-		return new Filtered.Events.StringEqualityResult(@this.Which(Filter.Suffix<EventInfo>(
+		return new Filtered.Events.StringEqualityResult(@this, options => Filter.Suffix<EventInfo>(
 				eventInfo => options.AreConsideredEqual(eventInfo.Name, expected),
-				() => $"with name {options.GetExpectation(expected, ExpectationGrammars.None)} ")),
-			options);
+				() => $"with name {options.GetExpectation(expected, ExpectationGrammars.None)} "),
+			new StringEqualityOptions(nameof(expected)));
 	}
 }

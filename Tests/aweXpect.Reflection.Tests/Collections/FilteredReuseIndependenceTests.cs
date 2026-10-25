@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using aweXpect.Core;
+using aweXpect.Options;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
 
@@ -43,6 +46,20 @@ public sealed class FilteredReuseIndependenceTests
 		await That(view2).HasCount().GreaterThanOrEqualTo(1);
 		await That(view2).All().Satisfy(c => c.GetParameters().Length == 1);
 		await That(@base).HasCount().GreaterThanOrEqualTo(2);
+	}
+
+	[Test]
+	public async Task ConstructorsWithInParameter_WhenAStringOptionIsAdded_ShouldKeepTheModifier()
+	{
+		ConstructorFilters.ConstructorsWithNamedParameter<object?> stored = In.Type<SampleWithParameters>()
+			.Constructors().WithInParameter("VALUE");
+
+		Filtered.Constructors continuation = stored.IgnoringCase();
+
+		await That(stored).IsEmpty();
+		await That(continuation).IsEqualTo([
+			typeof(SampleWithParameters).GetConstructor([typeof(int).MakeByRefType(),])!,
+		]);
 	}
 
 	[Test]
@@ -127,6 +144,49 @@ public sealed class FilteredReuseIndependenceTests
 	}
 
 	[Test]
+	public async Task MethodsWhichAreGenericWithNamedArgument_WhenAStringOptionIsAdded_ShouldKeepTheMatchesOfTheFilterItWasCalledOn()
+	{
+		MethodFilters.GenericMethodsWithNamedArgument stored = In.Type<SampleGenericMethods>()
+			.Methods().WhichAreGeneric().WithArgument("t2");
+
+		Filtered.Methods continuation = stored.IgnoringCase();
+
+		await That(stored).IsEmpty();
+		await That(continuation).IsEqualTo([
+			typeof(SampleGenericMethods).GetMethod(nameof(SampleGenericMethods.TwoArguments))!,
+		]);
+	}
+
+	[Test]
+	public async Task MethodsWithInParameter_WhenAStringOptionIsAdded_ShouldKeepTheModifier()
+	{
+		MethodFilters.MethodsWithNamedParameter<object?> stored = In.Type<SampleWithParameters>()
+			.Methods().WithInParameter("VALUE");
+
+		Filtered.Methods continuation = stored.IgnoringCase();
+
+		await That(stored).IsEmpty();
+		await That(continuation).IsEqualTo([
+			typeof(SampleWithParameters).GetMethod(nameof(SampleWithParameters.WithInValue))!,
+		]);
+	}
+
+	[Test]
+	public async Task MethodsWithNamedParameter_WhenAStringOptionIsAdded_ShouldKeepTheMatchesOfTheFilterItWasCalledOn()
+	{
+		MethodFilters.MethodsWithNamedParameter<int> stored = In.Type<SampleWithParameters>()
+			.Methods().WithParameter<int>("VALUE");
+
+		Filtered.Methods continuation = stored.IgnoringCase();
+
+		await That(stored).IsEmpty();
+		await That(continuation).IsEqualTo([
+			typeof(SampleWithParameters).GetMethod(nameof(SampleWithParameters.WithInValue))!,
+			typeof(SampleWithParameters).GetMethod(nameof(SampleWithParameters.WithValue))!,
+		]).InAnyOrder();
+	}
+
+	[Test]
 	public async Task Properties_BranchingFromSharedBase_ShouldBeIndependent()
 	{
 		PropertyInfo propertyA = typeof(SampleWithMembers).GetProperty(nameof(SampleWithMembers.PropA))!;
@@ -139,6 +199,56 @@ public sealed class FilteredReuseIndependenceTests
 		await That(view1).IsEqualTo([propertyA,]).InAnyOrder();
 		await That(view2).IsEqualTo([propertyB,]).InAnyOrder();
 		await That(@base).HasCount().GreaterThanOrEqualTo(2);
+	}
+
+	[Test]
+	[MethodDataSource(nameof(StringFilters))]
+	public async Task StringFilter_WhenAStringOptionIsAdded_ShouldNotChangeTheFilterItWasCalledOn(string filter,
+		Func<(IDescribableSubject Stored, Func<IDescribableSubject> AddOption)> create)
+	{
+		(IDescribableSubject stored, Func<IDescribableSubject> addOption) = create();
+		string description = stored.GetDescription();
+
+		IDescribableSubject continuation = addOption();
+
+		await That(stored.GetDescription()).IsEqualTo(description)
+			.Because($"{filter} must keep its options when a continuation adds an option");
+		await That(continuation.GetDescription()).IsNotEqualTo(description);
+	}
+
+	[Test]
+	public async Task StringFilterContinuation_ShouldAllowStringOptionsInAnyOrder()
+	{
+		Filtered.Types.StringEqualityResult stored = In.Types<SampleType1, SampleType2>().WithName("SAMPLE");
+
+		Filtered.Types prefixFirst = stored.AsPrefix().IgnoringCase();
+		Filtered.Types ignoringCaseFirst = stored.IgnoringCase().AsPrefix();
+
+		await That(prefixFirst).IsEqualTo([typeof(SampleType1), typeof(SampleType2),]).InAnyOrder();
+		await That(ignoringCaseFirst).IsEqualTo([typeof(SampleType1), typeof(SampleType2),]).InAnyOrder();
+		await That(stored).IsEmpty();
+	}
+
+	[Test]
+	public async Task StringFilterContinuation_WhenAMatchTypeIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+	{
+		Filtered.Types.StringEqualityResult stored = In.Types<SampleType1, SampleType2>().WithName("Sample");
+
+		void Act() => stored.AsPrefix().AsSuffix();
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("AsSuffix cannot be combined with AsPrefix.");
+	}
+
+	[Test]
+	public async Task StringFilterContinuation_WhenAStringOptionIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+	{
+		Filtered.Types.StringEqualityResult stored = In.Types<SampleType1, SampleType2>().WithName("Sample");
+
+		void Act() => stored.IgnoringCase().IgnoringCase();
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("IgnoringCase cannot be specified more than once.");
 	}
 
 	[Test]
@@ -189,6 +299,91 @@ public sealed class FilteredReuseIndependenceTests
 		await That(widened).Contains(typeof(OnlyLayer2));
 	}
 
+	[Test]
+	public async Task TypesWithName_WhenAStringOptionIsAdded_ShouldKeepTheMatchesOfTheFilterItWasCalledOn()
+	{
+		Filtered.Types.StringEqualityResult stored = In.Types<SampleType1, SampleType2>().WithName("SAMPLETYPE1");
+
+		Filtered.Types continuation = stored.IgnoringCase();
+
+		await That(stored).IsEmpty();
+		await That(continuation).IsEqualTo([typeof(SampleType1),]);
+	}
+
+	public static IEnumerable<(string, Func<(IDescribableSubject, Func<IDescribableSubject>)>)> StringFilters()
+	{
+		Filtered.Assemblies assemblies = In.AssemblyContaining<FilteredReuseIndependenceTests>();
+		Filtered.Types types = In.Types<SampleType1, SampleType2>();
+		Filtered.Constructors constructors = In.Type<SampleWithParameters>().Constructors();
+		Filtered.Methods methods = In.Type<SampleWithParameters>().Methods();
+
+		yield return Case("Assemblies.WhichDependOn", () => assemblies.WhichDependOn("x"));
+		yield return Case("Assemblies.WhichDependOnlyOn", () => assemblies.WhichDependOnlyOn("x"));
+		yield return Case("Assemblies.WhichDoNotDependOn", () => assemblies.WhichDoNotDependOn("x"));
+		yield return Case("Assemblies.WhichDoNotTarget", () => assemblies.WhichDoNotTarget("x"));
+		yield return Case("Assemblies.WhichTarget", () => assemblies.WhichTarget("x"));
+		yield return Case("Assemblies.WithName", () => assemblies.WithName("x"));
+		yield return Case("Assemblies.WithoutName", () => assemblies.WithoutName("x"));
+		yield return Case("Constructors.WithInParameter", () => constructors.WithInParameter("x"));
+		yield return Case("Constructors.WithOptionalParameter", () => constructors.WithOptionalParameter("x"));
+		yield return Case("Constructors.WithOutParameter", () => constructors.WithOutParameter("x"));
+		yield return Case("Constructors.WithParameter", () => constructors.WithParameter("x"));
+		yield return Case("Constructors.WithParameter<T>", () => constructors.WithParameter<int>("x"));
+		yield return Case("Constructors.WithParameter(Type)", () => constructors.WithParameter(typeof(int), "x"));
+		yield return Case("Constructors.WithParameterExactly<T>", () => constructors.WithParameterExactly<int>("x"));
+		yield return Case("Constructors.WithParameterExactly(Type)",
+			() => constructors.WithParameterExactly(typeof(int), "x"));
+		yield return Case("Constructors.WithParamsParameter", () => constructors.WithParamsParameter("x"));
+		yield return Case("Constructors.WithRefParameter", () => constructors.WithRefParameter("x"));
+		yield return Case("Constructors.WithoutParameter", () => constructors.WithoutParameter("x"));
+		yield return Case("Constructors.WithoutParameter<T>", () => constructors.WithoutParameter<int>("x"));
+		yield return Case("Constructors.WithoutParameter(Type)",
+			() => constructors.WithoutParameter(typeof(int), "x"));
+		yield return Case("Events.WithName", () => In.Type<SampleWithMembers>().Events().WithName("x"));
+		yield return Case("Events.WithoutName", () => In.Type<SampleWithMembers>().Events().WithoutName("x"));
+		yield return Case("Fields.WithName", () => In.Type<SampleWithMembers>().Fields().WithName("x"));
+		yield return Case("Fields.WithoutName", () => In.Type<SampleWithMembers>().Fields().WithoutName("x"));
+		yield return Case("Methods.WhichAreGeneric.WithArgument",
+			() => In.Type<SampleGenericMethods>().Methods().WhichAreGeneric().WithArgument("x"));
+		yield return Case("Methods.WhichAreGeneric.WithArgument<T>",
+			() => In.Type<SampleGenericMethods>().Methods().WhichAreGeneric().WithArgument<object>("x"));
+		yield return Case("Methods.WithInParameter", () => methods.WithInParameter("x"));
+		yield return Case("Methods.WithName", () => methods.WithName("x"));
+		yield return Case("Methods.WithOptionalParameter", () => methods.WithOptionalParameter("x"));
+		yield return Case("Methods.WithOutParameter", () => methods.WithOutParameter("x"));
+		yield return Case("Methods.WithParameter", () => methods.WithParameter("x"));
+		yield return Case("Methods.WithParameter<T>", () => methods.WithParameter<int>("x"));
+		yield return Case("Methods.WithParameter(Type)", () => methods.WithParameter(typeof(int), "x"));
+		yield return Case("Methods.WithParameterExactly<T>", () => methods.WithParameterExactly<int>("x"));
+		yield return Case("Methods.WithParameterExactly(Type)", () => methods.WithParameterExactly(typeof(int), "x"));
+		yield return Case("Methods.WithParamsParameter", () => methods.WithParamsParameter("x"));
+		yield return Case("Methods.WithRefParameter", () => methods.WithRefParameter("x"));
+		yield return Case("Methods.WithoutName", () => methods.WithoutName("x"));
+		yield return Case("Methods.WithoutParameter", () => methods.WithoutParameter("x"));
+		yield return Case("Methods.WithoutParameter<T>", () => methods.WithoutParameter<int>("x"));
+		yield return Case("Methods.WithoutParameter(Type)", () => methods.WithoutParameter(typeof(int), "x"));
+		yield return Case("Properties.WithName", () => In.Type<SampleWithMembers>().Properties().WithName("x"));
+		yield return Case("Properties.WithoutName",
+			() => In.Type<SampleWithMembers>().Properties().WithoutName("x"));
+		yield return Case("Types.WhichAreGeneric.WithArgument",
+			() => types.WhichAreGeneric().WithArgument("x"));
+		yield return Case("Types.WhichAreGeneric.WithArgument<T>",
+			() => types.WhichAreGeneric().WithArgument<object>("x"));
+		yield return Case("Types.WithName", () => types.WithName("x"));
+		yield return Case("Types.WithNamespace", () => types.WithNamespace("x"));
+		yield return Case("Types.WithoutName", () => types.WithoutName("x"));
+		yield return Case("Types.WithoutNamespace", () => types.WithoutNamespace("x"));
+	}
+
+	private static (string, Func<(IDescribableSubject, Func<IDescribableSubject>)>) Case<TResult>(string filter,
+		Func<TResult> create)
+		where TResult : IDescribableSubject, IOptionsProvider<StringEqualityOptions>
+		=> (filter, () =>
+		{
+			TResult stored = create();
+			return (stored, () => stored.IgnoringCase());
+		});
+
 	private class BaseA;
 
 	private class BaseB;
@@ -222,6 +417,25 @@ public sealed class FilteredReuseIndependenceTests
 	private class SampleType1;
 
 	private class SampleType2;
+
+	private class SampleWithParameters
+	{
+		public SampleWithParameters(string value)
+		{
+		}
+
+		public SampleWithParameters(in int value)
+		{
+		}
+
+		public static void WithInValue(in int value)
+		{
+		}
+
+		public static void WithValue(int value)
+		{
+		}
+	}
 
 	private class SampleWithMembers
 	{
