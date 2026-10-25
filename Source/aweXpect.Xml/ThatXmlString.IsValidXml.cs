@@ -51,6 +51,20 @@ public static partial class ThatXmlString
 		return new AndOrResult<string, IThat<string?>>(AddIsValidXmlConstraint(subject, expectations), subject);
 	}
 
+	/// <summary>
+	///     Verifies that the subject is not a well-formed XML document.
+	/// </summary>
+	/// <remarks>
+	///     A document with a document type definition (<c>&lt;!DOCTYPE ...&gt;</c>) is not valid, as DTD processing is
+	///     prohibited and external resources are never resolved, so that parsing is not exposed to XML external entity
+	///     (XXE) or entity expansion attacks.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static AndOrResult<string, IThat<string?>> IsNotValidXml(
+		this IThat<string?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			=> new IsValidXmlConstraint(it, grammars).Invert()), subject);
+
 	private static ExpectationBuilder AddIsValidXmlConstraint(IThat<string?> subject)
 		=> subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 			=> new IsValidXmlConstraint(it, grammars));

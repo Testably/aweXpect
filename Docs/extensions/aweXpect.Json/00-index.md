@@ -47,6 +47,7 @@ JSON options:
 |-----------------------------------------------------------------------------|---------------------------|-----------------------------------------------------------------|
 | [`IsEqualTo(…).AsJson()`](./01-strings.md#string-comparison-as-json) | `string`                  | equal to the expected JSON, compared by structure               |
 | [`IsValidJson`](./01-strings.md#validation)                        | `string`                  | can be parsed as JSON, optionally with expectations on its root |
+| [`IsNotValidJson`](./01-strings.md#validation)                     | `string`                  | cannot be parsed as JSON                                        |
 | [`IsValidJsonMatching`](./01-strings.md#validation)                | `string`                  | valid JSON that matches the expected value                      |
 | [`IsValidJsonMatchingExactly`](./01-strings.md#validation)         | `string`                  | valid JSON that matches the expected value exactly              |
 | [`Matches`](./02-matching.md)                                      | `JsonElement`, `JsonNode` | matches the expected value, additional properties allowed       |

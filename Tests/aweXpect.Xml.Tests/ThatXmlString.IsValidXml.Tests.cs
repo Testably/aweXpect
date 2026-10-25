@@ -401,4 +401,139 @@ public sealed partial class ThatXmlString
 			}
 		}
 	}
+
+	public sealed class IsNotValidXml
+	{
+		[UseEnglishMessages]
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenActualContainsDtd_ShouldSucceed()
+			{
+				string subject = "<!DOCTYPE a [<!ENTITY e \"expanded\">]><a>&e;</a>";
+
+				async Task Act()
+					=> await That(subject).IsNotValidXml();
+
+				await That(Act).DoesNotThrow()
+					.Because("a document with a DTD is not valid XML, as DTD processing is prohibited");
+			}
+
+			[Test]
+			[Arguments("")]
+			[Arguments(" \t\r\n")]
+			[Arguments("foo")]
+			[Arguments("<a><b>")]
+			[Arguments("<a></b>")]
+			[Arguments("<a/><b/>")]
+			[Arguments("<a>&foo;</a>")]
+			[Arguments("<x:a/>")]
+			public async Task WhenActualIsInvalidXml_ShouldSucceed(string subject)
+			{
+				async Task Act()
+					=> await That(subject).IsNotValidXml();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			[Arguments("<a/>")]
+			[Arguments("<a></a>")]
+			[Arguments("<?pi data?><!-- comment --><a/>")]
+			[Arguments("<x:a xmlns:x='urn:x'><b/></x:a>")]
+			public async Task WhenActualIsValidXml_ShouldFail(string subject)
+			{
+				async Task Act()
+					=> await That(subject).IsNotValidXml();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not valid XML,
+					              but it was "{subject}"
+					              """);
+			}
+
+			[Test]
+			public async Task WhenCombinedWithAnd_ShouldApplyFollowingExpectationToString()
+			{
+				string subject = "<a>";
+
+				async Task Act()
+					=> await That(subject).IsNotValidXml().And.HasLength().GreaterThan(3);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not valid XML and has length greater than 3,
+					             but it had length 3
+					             """);
+			}
+
+			[Test]
+			public async Task WhenItemsArePlural_ShouldUsePluralVerb()
+			{
+				string subject = "<b>\n<a/>";
+
+				async Task Act()
+					=> await That(subject).HasLines(l => l.All().ComplyWith(it => it.IsNotValidXml()));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has lines of which all are not valid XML,
+					             *
+					             """).AsWildcard()
+					.Because("the lines are the plural subject of the expectation");
+			}
+
+			[Test]
+			public async Task WhenNegatedAndActualIsInvalidXml_ShouldFail()
+			{
+				string subject = "<a><b>";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotValidXml());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid XML,
+					             but it could not be parsed: Unexpected end of file has occurred. The following elements are not closed: b, a. Line 1, position 7.
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNegatedAndSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotValidXml());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid XML,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsNotValidXml();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not valid XML,
+					             but it was <null>
+					             """);
+			}
+		}
+	}
 }

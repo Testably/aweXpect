@@ -104,6 +104,8 @@ namespace aweXpect
     public static class ThatJsonString
     {
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsNotValidJson(this aweXpect.Core.IThat<string?> subject, System.Func<System.Text.Json.JsonDocumentOptions, System.Text.Json.JsonDocumentOptions>? options = null) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsValidJson(this aweXpect.Core.IThat<string?> subject, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations, System.Func<System.Text.Json.JsonDocumentOptions, System.Text.Json.JsonDocumentOptions>? options = null) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsValidJson(this aweXpect.Core.IThat<string?> subject, System.Func<System.Text.Json.JsonDocumentOptions, System.Text.Json.JsonDocumentOptions>? options = null) { }

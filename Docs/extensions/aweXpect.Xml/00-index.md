@@ -38,6 +38,7 @@ but it could not be parsed: Unexpected end of file has occurred. The following e
 |--------------------------------------------------------------------|-------------------------|----------------------------------------------------------------------|
 | [`IsEqualTo(…).AsXml()`](./01-strings.md#string-comparison-as-xml) | `string`                | equal to the expected XML, compared by content                       |
 | [`IsValidXml`](./01-strings.md#validation)                         | `string`                | a well-formed XML document, optionally with expectations on its root |
+| [`IsNotValidXml`](./01-strings.md#validation)                      | `string`                | not a well-formed XML document                                       |
 | [`IsValidXmlMatching`](./01-strings.md#validation)                 | `string`                | valid XML that matches the expected XML                              |
 | [`IsValidXmlMatchingExactly`](./01-strings.md#validation)          | `string`                | valid XML that matches the expected XML exactly                      |
 | [`Matches`](./02-matching.md#elements-and-documents)               | `XElement`, `XDocument` | matches the expected XML, additional nodes allowed                   |

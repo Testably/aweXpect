@@ -85,7 +85,7 @@ table of `00-index.md`.
 
 ### aweXpect.Json
 
-- `ThatJsonString.*`: `IsValidJson`, `IsValidJsonMatching`, `IsValidJsonMatchingExactly` on `string`;
+- `ThatJsonString.*`: `IsValidJson`, `IsNotValidJson`, `IsValidJsonMatching`, `IsValidJsonMatchingExactly` on `string`;
   `JsonExtensions.AsJson()` plugs `JsonMatchType` into `IsEqualTo(...)`.
 - `ThatJsonElement.*`, `ThatNullableJsonElement.*`, `ThatJsonNode.*`: the same expectations for `JsonElement`,
   `JsonElement?` and `JsonNode` (`Matches`, `MatchesExactly`, `IsObject`, `IsArray`, ...); the file without a suffix
@@ -117,7 +117,7 @@ table of `00-index.md`.
 
 ### aweXpect.Xml
 
-- `ThatXmlString.*` (`IsValidXml`, optionally with expectations on the root, `IsValidXmlMatching*`),
+- `ThatXmlString.*` (`IsValidXml`, optionally with expectations on the root, `IsNotValidXml`, `IsValidXmlMatching*`),
   `ThatXElement.*` and `ThatXDocument.*` (`Matches`, `MatchesExactly`, `HasAttribute`, `HasElement` and their
   negations; a document delegates to its root element). `XmlExtensions.AsXml()` sets a `StringMatchType` for `IsEqualTo(...)`.
 - `Xml/XmlComparer` compares by content: names by namespace and local name, attributes in any order, comments and

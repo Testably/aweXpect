@@ -49,6 +49,8 @@ namespace aweXpect
     public static class ThatXmlString
     {
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsNotValidXml(this aweXpect.Core.IThat<string?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsValidXml(this aweXpect.Core.IThat<string?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsValidXml(this aweXpect.Core.IThat<string?> subject, System.Action<aweXpect.Core.IThatSubject<System.Xml.Linq.XElement>> expectations) { }

@@ -5,7 +5,7 @@ Describes the possible expectations for strings that contain JSON.
 | Expectation                                           | Negated                    | Summary                                                         |
 |-------------------------------------------------------|----------------------------|-----------------------------------------------------------------|
 | [`IsEqualTo(…).AsJson()`](#string-comparison-as-json) | `IsNotEqualTo(…).AsJson()` | equal to the expected JSON, compared by structure               |
-| [`IsValidJson`](#validation)                          |                            | can be parsed as JSON, optionally with expectations on its root |
+| [`IsValidJson`](#validation)                          | `IsNotValidJson`           | can be parsed as JSON, optionally with expectations on its root |
 | [`IsValidJsonMatching`](#validation)                  |                            | valid JSON that matches the expected value                      |
 | [`IsValidJsonMatchingExactly`](#validation)           |                            | valid JSON that matches the expected value exactly              |
 
@@ -87,6 +87,31 @@ exceptions. You can also specify the
 string track = """{"title": "Let It Be"}""";
 
 await Expect.That(track).IsValidJson(o => o with { CommentHandling = JsonCommentHandling.Disallow });
+```
+
+You can also verify that a string is not valid JSON:
+
+```csharp
+string track = "Let It Be";
+
+await Expect.That(track).IsNotValidJson();
+```
+
+The `JsonDocumentOptions` are available here as well, e.g. to reject a trailing comma, which is allowed by default:
+
+```csharp
+string track = """{"title": "Let It Be",}""";
+
+await Expect.That(track).IsNotValidJson(o => o with { AllowTrailingCommas = false });
+```
+
+A `null` subject fails like for `IsValidJson`. If the string is valid JSON, e.g. `"[1, 2]"`, the expectation fails
+with:
+
+```text title="Failure message"
+Expected that track
+is not valid JSON,
+but it was "[1, 2]"
 ```
 
 You can add further expectations on the root
