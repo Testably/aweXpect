@@ -32,6 +32,15 @@ but the snapshot was already used for another value in this test run, so name ea
 
 The same value again is allowed, so that a retried or repeated test still compares with its snapshot.
 
+Names that only differ in case, e.g. `.Named("Live")` and `.Named("live")`, fail as well, also for the same value, as
+they are the same file on Windows and macOS but two files on Linux:
+
+```text title="Failure message"
+Expected that description
+matches the snapshot "/src/Tests/AlbumTests.Describes.live.awexpect-snapshot.txt",
+but the snapshot "/src/Tests/AlbumTests.Describes.Live.awexpect-snapshot.txt", whose id only differs in case, was already used in this test run, so give them names that differ in more than the case with .Named(…) or .NamedAfter(…)
+```
+
 The test file and method are set by the compiler through optional parameters, so a name must not be passed as an
 argument: `MatchesSnapshot("login")` throws an `ArgumentException` that points to `.Named(…)`.
 

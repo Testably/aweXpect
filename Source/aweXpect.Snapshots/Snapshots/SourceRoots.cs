@@ -26,10 +26,6 @@ internal static class SourceRoots
 	private const string ProjectDirectoryKey = "aweXpect.Snapshots.ProjectDirectory";
 	private const string TargetFrameworkKey = "aweXpect.Snapshots.TargetFramework";
 
-	private static readonly StringComparison PathComparison = Path.DirectorySeparatorChar == '\\'
-		? StringComparison.OrdinalIgnoreCase
-		: StringComparison.Ordinal;
-
 	private static readonly ConcurrentQueue<Assembly> LoadedAssemblies = new();
 	private static readonly object RecordedLock = new();
 	private static Records? _records;
@@ -95,7 +91,8 @@ internal static class SourceRoots
 		foreach (string projectDirectory in GetRecords().ProjectDirectories)
 		{
 			string normalized = Normalize(projectDirectory);
-			if (!projectDirectories.Any(existing => string.Equals(Normalize(existing), normalized, PathComparison)))
+			if (!projectDirectories.Any(existing
+				    => string.Equals(Normalize(existing), normalized, FileSystemPaths.Comparison)))
 			{
 				projectDirectories.Add(projectDirectory);
 			}
@@ -131,8 +128,8 @@ internal static class SourceRoots
 		string normalizedPath = Normalize(path);
 		(string Directory, string TargetFramework)[] containing = GetRecords().TargetFrameworks
 			.Select(recorded => (Directory: Normalize(recorded.Key), TargetFramework: recorded.Value))
-			.Where(recorded
-				=> normalizedPath.StartsWith(recorded.Directory + Path.DirectorySeparatorChar, PathComparison))
+			.Where(recorded => normalizedPath.StartsWith(recorded.Directory + Path.DirectorySeparatorChar,
+				FileSystemPaths.Comparison))
 			.ToArray();
 		if (containing.Length == 0)
 		{
@@ -154,7 +151,8 @@ internal static class SourceRoots
 		string testFile = Normalize(GetPath(sourceFile));
 		return GetProjectDirectories()
 			.Select(Normalize)
-			.Where(projectDirectory => testFile.StartsWith(projectDirectory + Path.DirectorySeparatorChar, PathComparison))
+			.Where(projectDirectory => testFile.StartsWith(projectDirectory + Path.DirectorySeparatorChar,
+				FileSystemPaths.Comparison))
 			.OrderByDescending(projectDirectory => projectDirectory.Length)
 			.FirstOrDefault();
 	}
@@ -170,7 +168,7 @@ internal static class SourceRoots
 	public static string GetSourceFileOfPath(string path)
 	{
 		string? sourceRoot = Recorded.Select(recorded => recorded.Value)
-			.Where(value => path.StartsWith(value, PathComparison))
+			.Where(value => path.StartsWith(value, FileSystemPaths.Comparison))
 			.OrderByDescending(value => value.Length)
 			.FirstOrDefault();
 		return sourceRoot is null
@@ -189,7 +187,7 @@ internal static class SourceRoots
 	public static string GetSourceFile(string testFilePath)
 	{
 		string? mappedPath = Recorded.Select(recorded => recorded.Key)
-			.Where(key => testFilePath.StartsWith(key, PathComparison))
+			.Where(key => testFilePath.StartsWith(key, FileSystemPaths.Comparison))
 			.OrderByDescending(key => key.Length)
 			.FirstOrDefault();
 		return mappedPath is null
@@ -265,8 +263,8 @@ internal static class SourceRoots
 		=> Path.Combine(sourceRoot, sourceFile.Replace('/', Path.DirectorySeparatorChar));
 
 	/// <remarks>
-	///     A source root that is recorded several times, also with another trailing separator or, on Windows, another
-	///     case of the drive letter, counts as one.
+	///     A source root that is recorded several times, also with another trailing separator or, where the file system
+	///     ignores the case (see <see cref="FileSystemPaths" />), in another case, counts as one.
 	/// </remarks>
 	public static string[] GetDistinctSourceRoots()
 	{
@@ -274,7 +272,7 @@ internal static class SourceRoots
 		foreach (string sourceRoot in Recorded.Select(recorded => recorded.Value))
 		{
 			string normalized = Normalize(sourceRoot);
-			if (!sourceRoots.Any(existing => string.Equals(Normalize(existing), normalized, PathComparison)))
+			if (!sourceRoots.Any(existing => string.Equals(Normalize(existing), normalized, FileSystemPaths.Comparison)))
 			{
 				sourceRoots.Add(sourceRoot);
 			}

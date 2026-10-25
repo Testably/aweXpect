@@ -35,10 +35,6 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 	private const string PendingSuffix = ".awexpect-snapshot.pending";
 	private const string SnapshotSuffix = ".awexpect-snapshot";
 
-	private static readonly StringComparison PathComparison = Path.DirectorySeparatorChar == '\\'
-		? StringComparison.OrdinalIgnoreCase
-		: StringComparison.Ordinal;
-
 	private ConcurrentDictionary<SnapshotId, (string BasePath, string Extension)> _listed =
 		new(ClaimedSnapshots.Comparer);
 
@@ -241,7 +237,7 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 	{
 		List<string> testFiles = files
 			.Where(file => ParseFileName(Path.GetFileName(file)) is null)
-			.Where(file => baseName.StartsWith(Path.GetFileNameWithoutExtension(file) + ".", PathComparison))
+			.Where(file => baseName.StartsWith(Path.GetFileNameWithoutExtension(file) + ".", FileSystemPaths.Comparison))
 			.OrderByDescending(file => Path.GetFileNameWithoutExtension(file).Length)
 			.ToList();
 		int variantStart = baseName.IndexOf(SnapshotEnvironment.Separator);
