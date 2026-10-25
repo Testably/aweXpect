@@ -31,17 +31,26 @@ public sealed class PropertyComparison<TProperty> : IPropertyComparison<TPropert
 		bool isNegated = false,
 		bool isOrderedAgainstNull = false,
 		bool hasMaximum = false,
-		TProperty? maximum = null,
-		bool formatsExpected = true)
+		TProperty? maximum = null)
 	{
 		_expected = expected;
 		_condition = condition;
 		_expectationPrefix = expectationPrefix;
-		_formatsExpected = formatsExpected;
+		_formatsExpected = true;
 		IsNegated = isNegated;
 		_isOrderedAgainstNull = isOrderedAgainstNull;
 		_hasMaximum = hasMaximum;
 		_maximum = maximum;
+	}
+
+	private PropertyComparison(
+		Func<TProperty?, TProperty?, TProperty?, bool> condition,
+		string expectation,
+		bool isNegated)
+	{
+		_condition = condition;
+		_expectationPrefix = expectation;
+		IsNegated = isNegated;
 	}
 
 	/// <summary>
@@ -79,11 +88,10 @@ public sealed class PropertyComparison<TProperty> : IPropertyComparison<TPropert
 	{
 		predicate.ThrowIfNull();
 		expectation.ThrowIfNull();
-		return new PropertyComparison<TProperty>(null,
+		return new PropertyComparison<TProperty>(
 			(actual, _, _) => predicate(actual) != isNegated,
 			expectation,
-			isNegated,
-			formatsExpected: false);
+			isNegated);
 	}
 
 	/// <summary>
