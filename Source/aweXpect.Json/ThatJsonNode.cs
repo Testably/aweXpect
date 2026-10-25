@@ -24,11 +24,19 @@ public static partial class ThatJsonNode
 	///     Converts the <paramref name="node" /> in its current state to a <see cref="JsonElement" />.
 	/// </summary>
 	/// <remarks>
-	///     The node is written instead of serialized, which would require reflection, and the element owns its memory,
-	///     so that it outlives the evaluation, e.g. for the failure message.
+	///     A <see cref="JsonValue" /> that holds a <see cref="JsonElement" />, like every value of parsed JSON, returns
+	///     it as is, as writing and parsing it again would allocate a new document for every evaluation.
+	///     <para />
+	///     Any other node is written instead of serialized, which would require reflection, and the element owns its
+	///     memory, so that it outlives the evaluation, e.g. for the failure message.
 	/// </remarks>
 	private static JsonElement ToJsonElement(JsonNode? node)
 	{
+		if (node is JsonValue value && value.TryGetValue(out JsonElement element))
+		{
+			return element;
+		}
+
 		using MemoryStream stream = new();
 		using (Utf8JsonWriter writer = new(stream))
 		{
@@ -44,6 +52,42 @@ public static partial class ThatJsonNode
 
 		Utf8JsonReader reader = new(new ReadOnlySpan<byte>(stream.GetBuffer(), 0, (int)stream.Length));
 		return JsonElement.ParseValue(ref reader);
+	}
+
+	/// <inheritdoc cref="ToJsonElement(JsonNode?)" />
+	/// <remarks>
+	///     A root object or array is converted once per evaluation in the <paramref name="context" />, as every
+	///     expectation on it, e.g. each <c>HasProperty</c> combined with <c>And</c>, would otherwise write and parse it
+	///     again. A node within another one is mostly the value that an enclosing expectation found, whose nested
+	///     evaluation would allocate more for a stored value than a single conversion costs.
+	/// </remarks>
+	private static JsonElement ToJsonElement(JsonNode? node, IEvaluationContext context)
+	{
+		if (node is not (JsonObject or JsonArray) || node.Parent is not null)
+		{
+			return ToJsonElement(node);
+		}
+
+		if (context.TryReceive(ConvertedNode.Key, out ConvertedNode? converted) &&
+		    ReferenceEquals(converted.Node, node))
+		{
+			return converted.Element;
+		}
+
+		JsonElement element = ToJsonElement(node);
+		context.Store(ConvertedNode.Key, new ConvertedNode(node, element));
+		return element;
+	}
+
+	/// <summary>
+	///     The <paramref name="node" /> that was last converted in an evaluation, with its <paramref name="element" />.
+	/// </summary>
+	private sealed class ConvertedNode(JsonNode node, JsonElement element)
+	{
+		public const string Key = "aweXpect.Json." + nameof(ConvertedNode);
+
+		public JsonNode Node { get; } = node;
+		public JsonElement Element { get; } = element;
 	}
 
 	/// <summary>
@@ -69,7 +113,7 @@ public static partial class ThatJsonNode
 			CancellationToken cancellationToken)
 		{
 			_actual = actual;
-			JsonElement element = ToJsonElement(actual);
+			JsonElement element = ToJsonElement(actual, context);
 			if (inner is IAsyncContextConstraint<JsonElement> asyncConstraint)
 			{
 				await asyncConstraint.IsMetBy(element, context, cancellationToken);
