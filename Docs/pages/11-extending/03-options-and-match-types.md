@@ -219,6 +219,30 @@ like the built-in expectations do. Append the tolerance to the expectation text 
 `stringBuilder.Append(tolerance)`: a `DayTolerance` writes the whole days that apply, e.g. " ± 1 day", and nothing when
 there are none.
 
+## Equality expectations
+
+An expectation that compares the subject for equality, e.g. an `IsEqualTo` for your own type, adds the equality
+constraint of `IsEqualTo` with `AddEqualityConstraint` from `aweXpect.Core.Extending`. Return an `ObjectEqualityResult`
+that shares its `ObjectEqualityOptions<T>`, so that the caller can choose the comparison, e.g. with `Using(comparer)` or
+a [custom match type](#custom-match-types), and the expectation and the failure read like those of `IsEqualTo`:
+
+```csharp
+public static ObjectEqualityResult<Track?, IThat<Track?>, Track?> IsEqualTo(
+    this IThat<Track?> subject, Track? expected)
+{
+    ObjectEqualityOptions<Track?> options = new();
+    return new ObjectEqualityResult<Track?, IThat<Track?>, Track?>(
+        subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options),
+        subject,
+        options);
+}
+```
+
+For `IsNotEqualTo`, pass `isNegated: true`. A `null` subject is never equal to an expected value that is not `null`,
+whatever the comparison. To show the code of the caller instead of the formatted value, e.g. "is equivalent to
+expected" like `IsEquivalentTo`, pass the value of a `[CallerArgumentExpression]` parameter as `expectedExpression`.
+Its common leading whitespace is removed, and an expected `null` is still shown as `<null>`.
+
 ## Custom match types
 
 `IsEqualTo` compares two values with `Equals`, unless the caller chooses another comparison, e.g. with `.Equivalent()`.

@@ -932,6 +932,7 @@ namespace aweXpect.Core.Extending
     }
     public static class ExpectationBuilderExtensions
     {
+        public static aweXpect.Core.ExpectationBuilder AddEqualityConstraint<TSubject, TExpected>(this aweXpect.Core.ExpectationBuilder expectationBuilder, TExpected expected, aweXpect.Options.ObjectEqualityOptions<TSubject> options, bool isNegated = false, string? expectedExpression = null) { }
         public static aweXpect.Core.ExpectationBuilder AddStringOccurrenceConstraint(this aweXpect.Core.ExpectationBuilder expectationBuilder, string expected, aweXpect.Options.Quantifier quantifier, aweXpect.Options.StringEqualityOptions options, bool isNegated = false) { }
     }
     [System.AttributeUsage(System.AttributeTargets.Method)]

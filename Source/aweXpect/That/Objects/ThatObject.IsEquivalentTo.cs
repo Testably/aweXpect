@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Core.Metadata;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
@@ -32,12 +31,8 @@ public static partial class ThatObject
 		ObjectEqualityOptions<TSubject> equalityOptions = new();
 		equalityOptions.Equivalent(equivalencyOptions);
 		return new AndOrResult<TSubject, IThat<TSubject>>(
-			expectationBuilder.AddConstraint((Expected: expected, DoNotPopulateThisValue: doNotPopulateThisValue,
-					EqualityOptions: equalityOptions),
-				static (state, it, grammars)
-					=> new IsEqualToConstraint<TSubject, TExpected>(it, grammars, state.Expected,
-						state.Expected is null ? null : state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
-						state.EqualityOptions)),
+			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(expectationBuilder, expected,
+				equalityOptions, expectedExpression: doNotPopulateThisValue),
 			subject);
 	}
 
@@ -74,12 +69,8 @@ public static partial class ThatObject
 		ObjectEqualityOptions<TSubject> equalityOptions = new();
 		equalityOptions.Equivalent(equivalencyOptions);
 		return new AndOrResult<TSubject, IThat<TSubject>>(
-			expectationBuilder.AddConstraint((Unexpected: unexpected, DoNotPopulateThisValue: doNotPopulateThisValue,
-					EqualityOptions: equalityOptions),
-				static (state, it, grammars)
-					=> new IsEqualToConstraint<TSubject, TExpected>(it, grammars, state.Unexpected,
-						state.Unexpected is null ? null : state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
-						state.EqualityOptions).Invert()),
+			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(expectationBuilder, unexpected,
+				equalityOptions, isNegated: true, expectedExpression: doNotPopulateThisValue),
 			subject);
 	}
 
