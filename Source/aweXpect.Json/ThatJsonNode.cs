@@ -119,13 +119,23 @@ public static partial class ThatJsonNode
 			}
 
 			JsonElement element = ToJsonElement(actual, context);
-			if (inner is IAsyncContextConstraint<JsonElement> asyncConstraint)
+			switch (inner)
 			{
-				await asyncConstraint.IsMetBy(element, context, cancellationToken);
-			}
-			else
-			{
-				((IValueConstraint<JsonElement>)inner).IsMetBy(element);
+				case IValueConstraint<JsonElement> valueConstraint:
+					valueConstraint.IsMetBy(element);
+					break;
+				case IContextConstraint<JsonElement> contextConstraint:
+					contextConstraint.IsMetBy(element, context);
+					break;
+				case IAsyncConstraint<JsonElement> asyncConstraint:
+					await asyncConstraint.IsMetBy(element, cancellationToken);
+					break;
+				case IAsyncContextConstraint<JsonElement> asyncContextConstraint:
+					await asyncContextConstraint.IsMetBy(element, context, cancellationToken);
+					break;
+				default:
+					throw new NotSupportedException(
+						$"The constraint {inner.GetType().Name} does not verify a {nameof(JsonElement)}.");
 			}
 
 			return this;
