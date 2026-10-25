@@ -4,16 +4,16 @@ namespace aweXpect.Snapshots;
 
 /// <summary>
 ///     A kind of text in the written snapshot that a rule applies to, e.g. every <see cref="Guid" />, see
-///     <see cref="SnapshotFor{TReturn}.Guids" />, <see cref="SnapshotFor{TReturn}.Dates" />,
-///     <see cref="SnapshotFor{TReturn}.MachineName" /> and <see cref="SnapshotFor{TReturn}.UserName" />.
+///     <see cref="SnapshotFor{TResult}.Guids" />, <see cref="SnapshotFor{TResult}.Dates" />,
+///     <see cref="SnapshotFor{TResult}.MachineName" /> and <see cref="SnapshotFor{TResult}.UserName" />.
 /// </summary>
-/// <typeparam name="TReturn">What an action returns.</typeparam>
-public sealed class SnapshotKnownText<TReturn>
+/// <typeparam name="TResult">What an action returns.</typeparam>
+public sealed class SnapshotKnownText<TResult>
 {
-	private readonly Func<SnapshotRule, TReturn> _add;
+	private readonly Func<SnapshotRule, TResult> _add;
 	private readonly Func<string?, TextMasking> _createMasking;
 
-	internal SnapshotKnownText(Func<SnapshotRule, TReturn> add, Func<string?, TextMasking> createMasking)
+	internal SnapshotKnownText(Func<SnapshotRule, TResult> add, Func<string?, TextMasking> createMasking)
 	{
 		_add = add;
 		_createMasking = createMasking;
@@ -28,7 +28,7 @@ public sealed class SnapshotKnownText<TReturn>
 	///     <c>Mask("{UserName}")</c>. The numbers are counted per subject in the order of appearance, after the rules that
 	///     come before.
 	/// </remarks>
-	public TReturn Mask()
+	public TResult Mask()
 		=> _add(new SnapshotRule(_createMasking(null)));
 
 	/// <summary>
@@ -38,6 +38,6 @@ public sealed class SnapshotKnownText<TReturn>
 	/// <remarks>
 	///     <c>{0}</c> is replaced as plain text, and every text masked with the same template shares one counter.
 	/// </remarks>
-	public TReturn Mask(string template)
+	public TResult Mask(string template)
 		=> _add(new SnapshotRule(_createMasking(RuleArguments.ThrowIfNull(template, nameof(template)))));
 }

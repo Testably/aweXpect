@@ -16,91 +16,67 @@ namespace aweXpect;
 public static class ThatPublicApi
 {
 	/// <summary>
-	///     Verifies that the public API of the assembly matches the snapshot
-	///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.txt</c> next to the test file.
+	///     Verifies that the public API of the assembly, generated with the optional <paramref name="options" />, matches
+	///     the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.txt</c> next to the test file.
 	/// </summary>
 	/// <remarks>
-	///     The public API is written as C# declarations by <see cref="PublicApiDeclarations.GenerateFrom(Assembly)" />. It usually
-	///     differs between the target frameworks of a library, so keep a snapshot per target framework of the test project
-	///     with <c>.UniqueFor.TargetFramework()</c>; each target framework of the test project loads the matching build of
-	///     the library.<br />
+	///     The public API is written as C# declarations by
+	///     <see cref="PublicApiDeclarations.GenerateFrom(Assembly, Func{PublicApiOptions, PublicApiOptions})" />. It
+	///     usually differs between the target frameworks of a library, so keep a snapshot per target framework of the test
+	///     project with <c>.UniqueFor.TargetFramework()</c>; each target framework of the test project loads the matching
+	///     build of the library.<br />
+	///     The result continues on the generated public API text, not on the assembly, so <c>.And</c> adds expectations on
+	///     that text: the text and line rules of the snapshot only apply to a string subject.<br />
 	///     Otherwise, it behaves like <c>MatchesSnapshot()</c> for strings, e.g. for the files and accepting changes.
 	/// </remarks>
 	/// <param name="subject">The subject.</param>
+	/// <param name="options">
+	///     The options for generating the public API, e.g. <c>o => o.Ignoring.ForwardedTypes()</c>, or
+	///     <see langword="null" /> for the defaults.
+	/// </param>
 	/// <param name="callerFilePath">The path of the test file, which is set by the compiler.</param>
 	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
 	[GuaranteesNotNull]
 	public static SnapshotResult<string?, IThat<string?>> MatchesPublicApiSnapshot(
 		this IThat<Assembly?> subject,
+		Func<PublicApiOptions, PublicApiOptions>? options = null,
 		[CallerFilePath] string callerFilePath = "",
 		[CallerMemberName] string callerMemberName = "")
-		=> AddPublicApiSnapshot(subject, PublicApiDeclarations.GenerateFrom, callerFilePath, callerMemberName);
-
-	/// <summary>
-	///     Verifies that the public API of the assembly, generated with the <paramref name="options" />, matches the
-	///     snapshot <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.txt</c> next to the test file.
-	/// </summary>
-	/// <remarks>
-	///     Otherwise, it behaves like the overload without options.
-	/// </remarks>
-	/// <param name="subject">The subject.</param>
-	/// <param name="options">The options for generating the public API, e.g. <c>o => o.Ignoring.ForwardedTypes()</c>.</param>
-	/// <param name="callerFilePath">The path of the test file, which is set by the compiler.</param>
-	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
-	[GuaranteesNotNull]
-	public static SnapshotResult<string?, IThat<string?>> MatchesPublicApiSnapshot(
-		this IThat<Assembly?> subject,
-		Func<PublicApiOptions, PublicApiOptions> options,
-		[CallerFilePath] string callerFilePath = "",
-		[CallerMemberName] string callerMemberName = "")
-	{
-		ArgumentChecks.ThrowIfNull(options, nameof(options));
-		return AddPublicApiSnapshot(subject, assembly => PublicApiDeclarations.GenerateFrom(assembly, options),
+		=> AddPublicApiSnapshot(subject,
+			assembly => PublicApiDeclarations.GenerateFrom(assembly, options ?? DefaultOptions),
 			callerFilePath, callerMemberName);
-	}
 
 	/// <summary>
-	///     Verifies that the public API of the assembly in the file matches the snapshot
-	///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.txt</c> next to the test file.
+	///     Verifies that the public API of the assembly in the file, generated with the optional
+	///     <paramref name="options" />, matches the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.txt</c>
+	///     next to the test file.
 	/// </summary>
 	/// <remarks>
-	///     The assembly is read without loading it by <see cref="PublicApiDeclarations.GenerateFrom(FileInfo)" />,
+	///     The assembly is read without loading it by
+	///     <see cref="PublicApiDeclarations.GenerateFrom(FileInfo, Func{PublicApiOptions, PublicApiOptions})" />,
 	///     e.g. a build for a target framework that the tests cannot run on or a reference assembly.<br />
+	///     The result continues on the generated public API text, not on the file, so <c>.And</c> adds expectations on
+	///     that text: the text and line rules of the snapshot only apply to a string subject.<br />
 	///     Otherwise, it behaves like the overload for an <see cref="Assembly" />.
 	/// </remarks>
 	/// <param name="subject">The subject.</param>
+	/// <param name="options">
+	///     The options for generating the public API, e.g. <c>o => o.Ignoring.ForwardedTypes()</c>, or
+	///     <see langword="null" /> for the defaults.
+	/// </param>
 	/// <param name="callerFilePath">The path of the test file, which is set by the compiler.</param>
 	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
 	[GuaranteesNotNull]
 	public static SnapshotResult<string?, IThat<string?>> MatchesPublicApiSnapshot(
 		this IThat<FileInfo?> subject,
+		Func<PublicApiOptions, PublicApiOptions>? options = null,
 		[CallerFilePath] string callerFilePath = "",
 		[CallerMemberName] string callerMemberName = "")
-		=> AddPublicApiSnapshot(subject, PublicApiDeclarations.GenerateFrom, callerFilePath,
-			callerMemberName);
-
-	/// <summary>
-	///     Verifies that the public API of the assembly in the file, generated with the <paramref name="options" />,
-	///     matches the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.txt</c> next to the test file.
-	/// </summary>
-	/// <remarks>
-	///     Otherwise, it behaves like the overload without options.
-	/// </remarks>
-	/// <param name="subject">The subject.</param>
-	/// <param name="options">The options for generating the public API, e.g. <c>o => o.Ignoring.ForwardedTypes()</c>.</param>
-	/// <param name="callerFilePath">The path of the test file, which is set by the compiler.</param>
-	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
-	[GuaranteesNotNull]
-	public static SnapshotResult<string?, IThat<string?>> MatchesPublicApiSnapshot(
-		this IThat<FileInfo?> subject,
-		Func<PublicApiOptions, PublicApiOptions> options,
-		[CallerFilePath] string callerFilePath = "",
-		[CallerMemberName] string callerMemberName = "")
-	{
-		ArgumentChecks.ThrowIfNull(options, nameof(options));
-		return AddPublicApiSnapshot(subject, file => PublicApiDeclarations.GenerateFrom(file, options),
+		=> AddPublicApiSnapshot(subject,
+			file => PublicApiDeclarations.GenerateFrom(file, options ?? DefaultOptions),
 			callerFilePath, callerMemberName);
-	}
+
+	private static PublicApiOptions DefaultOptions(PublicApiOptions options) => options;
 
 	/// <remarks>
 	///     The result stays nullable, unlike the one of the string snapshot, as awaiting it does not return the

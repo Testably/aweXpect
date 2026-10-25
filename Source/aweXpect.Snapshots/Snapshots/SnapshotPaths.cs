@@ -3,15 +3,15 @@ using System;
 namespace aweXpect.Snapshots;
 
 /// <summary>
-///     The paths of the environment, see <see cref="SnapshotFor{TReturn}.Paths" />, which are masked by default and can
+///     The paths of the environment, see <see cref="SnapshotFor{TResult}.Paths" />, which are masked by default and can
 ///     only be kept.
 /// </summary>
-/// <typeparam name="TReturn">What an action returns.</typeparam>
-public sealed class SnapshotPaths<TReturn>
+/// <typeparam name="TResult">What an action returns.</typeparam>
+public sealed class SnapshotPaths<TResult>
 {
-	private readonly Func<SnapshotRule, TReturn> _add;
+	private readonly Func<SnapshotRule, TResult> _add;
 
-	internal SnapshotPaths(Func<SnapshotRule, TReturn> add)
+	internal SnapshotPaths(Func<SnapshotRule, TResult> add)
 	{
 		_add = add;
 	}
@@ -24,6 +24,6 @@ public sealed class SnapshotPaths<TReturn>
 	///     snapshot. An expectation cannot mask the paths again while a rule for all snapshots keeps them; set the rules
 	///     without it in a scope instead.
 	/// </remarks>
-	public TReturn Keep()
+	public TResult Keep()
 		=> _add(SnapshotRule.KeepPaths);
 }

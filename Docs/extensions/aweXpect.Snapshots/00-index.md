@@ -68,6 +68,7 @@ the change can be taken over into the snapshot; see [Diff tools](./10-diff-tools
 | [`MatchesSnapshot`](./01-matching-snapshots.md#strings)              | `string` | matches the snapshot stored next to the test            |
 | [`MatchesSnapshot`](./01-matching-snapshots.md#objects) | any `T`  | matches the snapshot of the object, written by aweXpect |
 | [`MatchesPublicApiSnapshot`](./11-public-api.md) | `Assembly` | matches the snapshot of the public API of the assembly |
+| [`MatchesPublicApiSnapshot`](./11-public-api.md) | `FileInfo` | matches the snapshot of the public API of the assembly in the file |
 
 ## Documentation
 

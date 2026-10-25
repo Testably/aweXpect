@@ -158,6 +158,8 @@ a virtual time system.
 - `byte[]`, `Stream` and `FileInfo` subjects are snapshotted as binary files.
 - `MatchesPublicApiSnapshot` selects the API with `Within` and `Ignoring` instead of `ExcludingAttribute` and
   `ExcludingForwardedTypes`, and needs no extra `using`.
+- `MatchesPublicApiSnapshot` has one overload per subject with an optional `options` parameter instead of one with and
+  one without options. Calls compile unchanged, but have to be compiled again.
 
 ### Namespaces
 
