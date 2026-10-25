@@ -199,16 +199,16 @@ await Expect.That(track).MatchesExactly(
 ```
 
 The name is matched against the JSON path, as it is shown in failure messages, and must cover whole trailing segments
-of it, ignoring the casing: `"id"` ignores `$.id` and `$.items[0].id`, but not `$.parentId`, `"meta.createdAt"` only
-ignores `createdAt` within `meta`, and `"$.id"` only ignores the property of the root. `"[0]"` ignores the first
-element of every array; with `IgnoringArrayOrder()`, an index refers to the element of the subject, which is then left
-out of the pairing. Explicit expectations like [`HasProperty("id")`](./03-objects-and-arrays.md#properties),
-`DoesNotHaveProperty("id")` or [`HasElementAt(0, …)`](./03-objects-and-arrays.md#elements) still verify an ignored
-value.
+of it, with the same casing, as JSON property names are case-sensitive: `"id"` ignores `$.id` and `$.items[0].id`, but
+not `$.parentId` or `$.ID`, `"meta.createdAt"` only ignores `createdAt` within `meta`, and `"$.id"` only ignores the
+property of the root. `"[0]"` ignores the first element of every array; with `IgnoringArrayOrder()`, an index refers to
+the element of the subject, which is then left out of the pairing. Explicit expectations like
+[`HasProperty("id")`](./03-objects-and-arrays.md#properties), `DoesNotHaveProperty("id")` or
+[`HasElementAt(0, …)`](./03-objects-and-arrays.md#elements) still verify an ignored value.
 
 The members to ignore are listed in the "JSON options" context. When the comparison fails, each name that matched no
-member is named below them, together with the member it most likely meant, as a misspelled name otherwise silently
-ignores nothing. For a track `{"title": "Let It Be", "createdAt": "2026-10-16"}`,
+member is named below them, together with the member it most likely meant, e.g. one that differs only in casing, as a
+misspelled name otherwise silently ignores nothing. For a track `{"title": "Let It Be", "createdAt": "2026-10-16"}`,
 `MatchesExactly(new { title = "Yesterday", createdAt = "2026-01-01" }, o => o.IgnoringMember("craetedAt"))` would fail
 with:
 

@@ -1534,7 +1534,7 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Test]
-			public async Task WhenNameDiffersInCasing_ShouldIgnoreTheProperty()
+			public async Task WhenNameDiffersInCasing_ShouldNotIgnoreThePropertyButSuggestIt()
 			{
 				JsonElement subject = FromString("{\"Id\": 1}");
 
@@ -1544,8 +1544,65 @@ public sealed partial class ThatJsonElement
 						Id = 2,
 					}, o => o.IgnoringMember("id"));
 
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	Id = 2,
+					             } exactly,
+					             but it differed as $.Id was 1 instead of 2
+
+					             JSON options:
+					              - ignore members: ["id"]
+					                "id" matched no member (did you mean "Id"?)
+					             """)
+					.Because("JSON property names are case-sensitive, so a name in the wrong casing only gets a hint");
+			}
+
+			[Test]
+			public async Task WhenParentNameContainsABracket_ShouldIgnoreTheProperty()
+			{
+				JsonElement subject = FromString("{\"a[b\": {\"id\": 1}}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new Dictionary<string, object>
+					{
+						["a[b"] = new
+						{
+							id = 2,
+						},
+					}, o => o.IgnoringMember("id"));
+
 				await That(Act).DoesNotThrow()
-					.Because("names are matched case-insensitively, like in aweXpect");
+					.Because("a JSON path writes property names after a '.', never between brackets");
+			}
+
+			[Test]
+			public async Task WhenPropertiesDifferOnlyInCasing_ShouldOnlyIgnoreTheMatchingOne()
+			{
+				JsonElement subject = FromString("{\"id\": 1, \"ID\": \"abbey-road\"}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						id = 7,
+						ID = "let-it-be",
+					}, o => o.IgnoringMember("id"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	id = 7,
+					             	ID = "let-it-be",
+					             } exactly,
+					             but it differed as $.ID was "abbey-road" instead of "let-it-be"
+
+					             JSON options:
+					              - ignore members: ["id"]
+					             """);
 			}
 
 			[Test]

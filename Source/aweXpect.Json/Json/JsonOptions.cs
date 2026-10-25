@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Customization;
-using aweXpect.Equivalency;
 
 namespace aweXpect.Json;
 
@@ -91,7 +90,7 @@ public class JsonOptions
 	/// <remarks>
 	///     The array is shared between copies, so it is replaced instead of changed.
 	/// </remarks>
-	internal MemberToIgnore[] MembersToIgnore { get; init; } = [];
+	internal JsonMemberToIgnore[] MembersToIgnore { get; init; } = [];
 
 	/// <summary>
 	///     The tolerance to apply when comparing numbers, or <see langword="null" /> to compare them exactly.
@@ -162,7 +161,7 @@ public class JsonOptions
 			return;
 		}
 
-		foreach (string name in MembersToIgnore.OfType<MemberToIgnore.ByName>().Select(named => named.MemberName))
+		foreach (string name in MembersToIgnore.OfType<JsonMemberToIgnore.ByName>().Select(named => named.MemberName))
 		{
 			if (unmatchedMembersToIgnore.TryGetValue(name, out string? suggestion))
 			{

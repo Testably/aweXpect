@@ -261,6 +261,35 @@ public sealed class JsonOptionsContextTests
 	public sealed class UnmatchedMembersToIgnoreTests
 	{
 		[Test]
+		public async Task WhenNamesDifferOnlyInCasing_ShouldTrackEachSeparately()
+		{
+			JsonElement subject = ThatJsonElement.FromString("{\"id\": 1, \"name\": \"a\"}");
+
+			async Task Act()
+				=> await That(subject).MatchesExactly(new
+				{
+					id = 2,
+					name = "b",
+				}, o => o.IgnoringMember("id").IgnoringMember("ID"));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             matches new
+				             {
+				             	id = 2,
+				             	name = "b",
+				             } exactly,
+				             but it differed as $.name was "a" instead of "b"
+
+				             JSON options:
+				              - ignore members: ["id", "ID"]
+				                "ID" matched no member
+				             """)
+				.Because("\"id\" matching the property does not mean that \"ID\" matched it");
+		}
+
+		[Test]
 		public async Task WhenNameMatchedNoMember_ShouldSuggestTheClosestPath()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"createdAt\": \"today\", \"name\": \"a\"}");
