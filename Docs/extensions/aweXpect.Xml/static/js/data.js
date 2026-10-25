@@ -660,6 +660,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
@@ -772,7 +778,8 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
@@ -888,7 +895,8 @@ window.BENCHMARK_DATA = {
           698.4373151915414,
           728.6357399622599,
           725.3828104019165,
-          576.9377751032512
+          576.9377751032512,
+          717.9345635005405
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -928,6 +936,7 @@ window.BENCHMARK_DATA = {
           1160,
           1160,
           1160,
+          1120,
           1120,
           1120,
           1120,
@@ -1133,7 +1142,8 @@ window.BENCHMARK_DATA = {
           720.4231100718181,
           780.2053071339925,
           676.8344058354695,
-          540.8147049631391
+          540.8147049631391,
+          644.5539443333944
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1145,6 +1155,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -1928,6 +1939,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
@@ -2040,7 +2057,8 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
@@ -2156,7 +2174,8 @@ window.BENCHMARK_DATA = {
           4603.945114135742,
           4566.272168673002,
           4522.426897684733,
-          3408.569298553467
+          3408.569298553467,
+          4235.36406771342
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2228,6 +2247,7 @@ window.BENCHMARK_DATA = {
           24047,
           24114,
           24047,
+          24119,
           24119,
           24119,
           24119,
@@ -2401,7 +2421,8 @@ window.BENCHMARK_DATA = {
           5517.075213623047,
           5320.767340440017,
           5267.551677158901,
-          3750.5558433532715
+          3750.5558433532715,
+          4923.9000595092775
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2413,6 +2434,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -3136,6 +3158,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
@@ -3238,7 +3266,8 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
@@ -3344,7 +3373,8 @@ window.BENCHMARK_DATA = {
           2596.283418782552,
           2729.5530515034993,
           2529.011526997884,
-          1878.1565965505747
+          1878.1565965505747,
+          2504.5167170206705
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3454,6 +3484,7 @@ window.BENCHMARK_DATA = {
           12780,
           12780,
           12856,
+          12780,
           12780,
           12780
         ],
@@ -3569,7 +3600,8 @@ window.BENCHMARK_DATA = {
           3494.024840291341,
           3599.7156947209287,
           3595.802099609375,
-          2605.5368395487467
+          2605.5368395487467,
+          3457.580307824271
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3581,6 +3613,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -4294,6 +4327,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
@@ -4396,7 +4435,8 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
@@ -4502,7 +4542,8 @@ window.BENCHMARK_DATA = {
           14063.342525227865,
           14528.170663452149,
           14636.194083658855,
-          10159.268745422363
+          10159.268745422363,
+          13649.3572038923
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4612,6 +4653,7 @@ window.BENCHMARK_DATA = {
           25494,
           25494,
           25568,
+          25494,
           25494,
           25494
         ],
@@ -4727,7 +4769,8 @@ window.BENCHMARK_DATA = {
           361166.37766927085,
           361280.78285435267,
           350353.17640904017,
-          240230.97789713542
+          240230.97789713542,
+          352688.5303109976
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4838,6 +4881,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544252,
+          544335,
           544335
         ],
         "borderColor": "#FF671B",
