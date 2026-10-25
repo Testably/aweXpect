@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
 using aweXpect.Core;
+using aweXpect.Core.Extending;
 
 namespace aweXpect.Recording;
 

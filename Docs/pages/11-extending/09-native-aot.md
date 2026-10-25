@@ -78,6 +78,17 @@ that it should compare. The other methods cover the other kinds of metadata:
 ## Reflection in an extension
 
 An extension that reflects over a subject itself should guard the reflection with `ReflectionFallback.IsSupported`
-and fail with a message that names the `aweXpect.ReflectionFallback.IsSupported` runtime switch otherwise, so that it
-behaves the same way as the built-in expectations. Take the name of the switch from the constant
-`ReflectionFallback.SwitchName`.
+from the namespace `aweXpect.Core.Extending`, and otherwise throw the exception of `ReflectionFallback.NotSupported`,
+so that it behaves the same way as the built-in expectations. Its message names what cannot be found, an optional
+remedy and the `aweXpect.ReflectionFallback.IsSupported` runtime switch:
+
+```csharp no-compile
+if (!ReflectionFallback.IsSupported)
+{
+	throw ReflectionFallback.NotSupported(
+		$"The tracks of {Formatter.Format(album.GetType())}",
+		"Register the album type.");
+}
+```
+
+The constant `ReflectionFallback.SwitchName` holds the name of the switch.

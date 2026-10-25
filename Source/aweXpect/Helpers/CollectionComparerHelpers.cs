@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using aweXpect.Core;
+using aweXpect.Core.Extending;
 #if NET8_0_OR_GREATER
 using System.Collections.Frozen;
 using System.Collections.Immutable;

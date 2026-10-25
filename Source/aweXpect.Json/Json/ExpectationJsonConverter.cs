@@ -69,7 +69,8 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 
 		if (!ReflectionFallback.IsSupported)
 		{
-			throw Tracing.WriteException(ReflectionFallbackHelpers.SerializationNotSupported("The expected value"));
+			throw Tracing.WriteException(
+				ReflectionFallback.NotSupported("The members to serialize the expected value as JSON"));
 		}
 
 		JsonSerializerOptions options = serializerOptions is null

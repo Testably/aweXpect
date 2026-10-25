@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using aweXpect.Core;
+using aweXpect.Core.Extending;
 
 namespace aweXpect.Reflection.Helpers;
 
@@ -11,7 +12,8 @@ namespace aweXpect.Reflection.Helpers;
 ///     The trimmer can remove the members, interfaces, types and assembly references of a subject, so reflecting
 ///     over them after trimming would silently check less than the expectation claims. Every method that reflects
 ///     over them checks the switch itself, because the trim analyzer does not follow the check into a called method
-///     or a lambda. The wording follows the failure of the built-in expectations, so that both name the same switch.
+///     or a lambda. The message comes from <see cref="ReflectionFallback.NotSupported(string, string?)" />, like the
+///     failure of the built-in expectations.
 /// </remarks>
 internal static class ReflectionFallbackHelpers
 {
@@ -28,6 +30,5 @@ internal static class ReflectionFallbackHelpers
 		=> NotSupported($"The {members} of {Formatter.Format(assembly)}");
 
 	private static NotSupportedException NotSupported(string what)
-		=> Tracing.WriteException(new NotSupportedException(
-			$"{what} cannot be found by reflection, which is switched off when publishing with trimming or Native AOT enabled. Run the expectation without trimming, or set the runtime switch '{ReflectionFallback.SwitchName}' to true to reflect anyway."));
+		=> Tracing.WriteException(ReflectionFallback.NotSupported(what, "Run the expectation without trimming."));
 }

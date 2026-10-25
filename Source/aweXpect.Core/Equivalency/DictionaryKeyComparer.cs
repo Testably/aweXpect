@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Core;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Metadata;
 
 namespace aweXpect.Equivalency;

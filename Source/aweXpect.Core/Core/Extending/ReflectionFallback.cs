@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 #endif
 
-namespace aweXpect.Core;
+namespace aweXpect.Core.Extending;
 
 /// <summary>
 ///     Whether a type without a registration in the <see cref="TypeMetadataRegistry" /> is reflected over.
@@ -17,7 +17,7 @@ namespace aweXpect.Core;
 ///     and the <see cref="SwitchName" /> runtime switch forces it either way.
 ///     <para />
 ///     An extension that reflects over a subject should guard its reflection with <see cref="IsSupported" /> and
-///     fail with a message naming the switch otherwise.
+///     throw the exception of <see cref="NotSupported(string, string?)" /> otherwise.
 /// </remarks>
 public static class ReflectionFallback
 {
@@ -54,11 +54,14 @@ public static class ReflectionFallback
 #endif
 
 	/// <summary>
-	///     The exception for <paramref name="what" /> the fallback cannot provide, naming the <paramref name="remedy" />.
+	///     The exception for <paramref name="what" /> that cannot be found while <see cref="IsSupported" /> is
+	///     <see langword="false" />, naming the <paramref name="remedy" /> and the <see cref="SwitchName" /> runtime switch.
 	/// </summary>
-	internal static NotSupportedException NotSupported(string what, string remedy)
+	/// <param name="what">The subject of the sentence, e.g. <c>"The properties of Album"</c>.</param>
+	/// <param name="remedy">An optional sentence that tells how to avoid reflection, e.g. <c>"Register the type."</c></param>
+	public static NotSupportedException NotSupported(string what, string? remedy = null)
 		=> new(
-			$"{what} cannot be found by reflection, which is switched off when publishing with trimming or Native AOT enabled. {remedy} Alternatively, set the runtime switch '{SwitchName}' to true to reflect anyway.");
+			$"{what} cannot be found by reflection, which is switched off when publishing with trimming or Native AOT enabled. {(remedy is null ? "Set" : $"{remedy} Alternatively, set")} the runtime switch '{SwitchName}' to true to reflect anyway.");
 
 	/// <summary>
 	///     The exception for the <paramref name="members" /> of a <paramref name="type" /> the fallback cannot provide.

@@ -530,11 +530,6 @@ namespace aweXpect.Core
         public override sealed System.Threading.Tasks.ValueTask<aweXpect.Core.MatchResult> MatchWithExplanation<TOther>(TSubject actual, TOther expected) { }
         public virtual System.Threading.Tasks.ValueTask<aweXpect.Core.MatchResult> MatchWithExplanation(TSubject actual, TExpected expected) { }
     }
-    public static class ReflectionFallback
-    {
-        public const string SwitchName = "aweXpect.ReflectionFallback.IsSupported";
-        public static bool IsSupported { get; }
-    }
     public abstract class ResultContext
     {
         protected ResultContext(string title, int priority = 0) { }
@@ -967,6 +962,12 @@ namespace aweXpect.Core.Extending
         protected void Record(TItem item, aweXpect.Core.Constraints.ConstraintResult itemResult) { }
         protected void Record(TItem item, bool isMatch) { }
         protected void StartEvaluation() { }
+    }
+    public static class ReflectionFallback
+    {
+        public const string SwitchName = "aweXpect.ReflectionFallback.IsSupported";
+        public static bool IsSupported { get; }
+        public static System.NotSupportedException NotSupported(string what, string? remedy = null) { }
     }
     public static class StringExtensions
     {

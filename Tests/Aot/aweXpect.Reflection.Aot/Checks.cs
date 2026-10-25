@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using aweXpect.Core;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Aot.Domain;
 using aweXpect.Reflection.Aot.Infrastructure;
 using aweXpect.Reflection.Collections;

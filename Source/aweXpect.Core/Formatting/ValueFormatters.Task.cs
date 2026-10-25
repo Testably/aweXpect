@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using aweXpect.Core;
+using aweXpect.Core.Extending;
 using aweXpect.Equivalency;
 
 namespace aweXpect.Formatting;

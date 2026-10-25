@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using aweXpect.Core.Extending;
 
-namespace aweXpect.Core.Tests.Core;
+namespace aweXpect.Core.Tests.Core.Extending;
 
 public sealed class ReflectionFallbackTests
 {
@@ -30,6 +31,16 @@ public sealed class ReflectionFallbackTests
 		await That(exception.Message).IsEqualTo(
 				"The properties of KeyValuePair<string, int> cannot be found by reflection, which is switched off when publishing with trimming or Native AOT enabled. Register the type, for example with [assembly: GenerateMetadata(typeof(KeyValuePair<string, int>))]. Alternatively, set the runtime switch 'aweXpect.ReflectionFallback.IsSupported' to true to reflect anyway.")
 			.Because("the suggested attribute has to compile, so the type is spelled the way source spells it");
+	}
+
+	[Test]
+	public async Task NotSupported_WhenRemedyIsNull_ShouldOnlyNameTheSwitch()
+	{
+		NotSupportedException exception = ReflectionFallback.NotSupported("The tracks of Album");
+
+		await That(exception.Message).IsEqualTo(
+				"The tracks of Album cannot be found by reflection, which is switched off when publishing with trimming or Native AOT enabled. Set the runtime switch 'aweXpect.ReflectionFallback.IsSupported' to true to reflect anyway.")
+			.Because("without a remedy, the switch is the only way out and no longer an alternative");
 	}
 
 	[Test]

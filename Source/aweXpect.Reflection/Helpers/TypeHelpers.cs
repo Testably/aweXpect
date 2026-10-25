@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using aweXpect.Core;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Helpers;
 using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
