@@ -1,3 +1,4 @@
+using System.Linq;
 using Fallout.Common;
 using Fallout.Common.Tooling;
 using Fallout.Common.Tools.ReportGenerator;
@@ -10,6 +11,12 @@ namespace Build;
 
 partial class Build
 {
+	/// <summary>
+	///     The tests collect coverage only for <see cref="CodeCoverage" />, as no other run uses it and the coverage
+	///     profiler has crashed the test host on macOS.
+	/// </summary>
+	bool CollectCoverage => ScheduledTargets.Any(target => target.Name == nameof(CodeCoverage));
+
 	Target CodeCoverage => _ => _
 		.DependsOn(TestFrameworks)
 		.DependsOn(UnitTests)
