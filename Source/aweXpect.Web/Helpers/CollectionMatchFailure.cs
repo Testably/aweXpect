@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using aweXpect.Core.Extending;
 
 namespace aweXpect.Helpers;
 
