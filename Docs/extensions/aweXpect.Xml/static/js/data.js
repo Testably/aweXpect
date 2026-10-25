@@ -696,6 +696,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
         "message": "feat!: support match types for the string values of dictionaries (#2020)"
+      },
+      {
+        "sha": "584ec3ed5f610f83a91ce06a03695f6cc27cb264",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:11:30 2026 \u002B0200",
+        "message": "refactor!: make the result constructors of aweXpect internal (#2022)"
       }
     ],
     "labels": [
@@ -814,7 +820,8 @@ window.BENCHMARK_DATA = {
       "f9009a09",
       "8b73c040",
       "54813a41",
-      "5d7202bd"
+      "5d7202bd",
+      "584ec3ed"
     ],
     "datasets": [
       {
@@ -936,7 +943,8 @@ window.BENCHMARK_DATA = {
           749.9437569890704,
           613.8147937910898,
           366.93303833007815,
-          381.0898834977831
+          381.0898834977831,
+          589.0005138397216
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1060,6 +1068,7 @@ window.BENCHMARK_DATA = {
           1120,
           1120,
           1120,
+          1152,
           1152,
           1152,
           1152,
@@ -1193,7 +1202,8 @@ window.BENCHMARK_DATA = {
           721.0961449305216,
           543.47695849492,
           332.43461243311566,
-          350.20932901700337
+          350.20932901700337,
+          579.7182258605957
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1205,6 +1215,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2030,6 +2041,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
         "message": "feat!: support match types for the string values of dictionaries (#2020)"
+      },
+      {
+        "sha": "584ec3ed5f610f83a91ce06a03695f6cc27cb264",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:11:30 2026 \u002B0200",
+        "message": "refactor!: make the result constructors of aweXpect internal (#2022)"
       }
     ],
     "labels": [
@@ -2148,7 +2165,8 @@ window.BENCHMARK_DATA = {
       "f9009a09",
       "8b73c040",
       "54813a41",
-      "5d7202bd"
+      "5d7202bd",
+      "584ec3ed"
     ],
     "datasets": [
       {
@@ -2270,7 +2288,8 @@ window.BENCHMARK_DATA = {
           4636.583174024309,
           3446.5765503474645,
           2284.782788594564,
-          2928.841684214274
+          2928.841684214274,
+          3324.0927320627065
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2394,6 +2413,7 @@ window.BENCHMARK_DATA = {
           24119,
           24119,
           24119,
+          24320,
           24320,
           24320,
           24320,
@@ -2527,7 +2547,8 @@ window.BENCHMARK_DATA = {
           5110.06082611084,
           3921.6350898742676,
           2537.695639038086,
-          3162.2600896017893
+          3162.2600896017893,
+          4073.7570576985677
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2539,6 +2560,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -3304,6 +3326,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
         "message": "feat!: support match types for the string values of dictionaries (#2020)"
+      },
+      {
+        "sha": "584ec3ed5f610f83a91ce06a03695f6cc27cb264",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:11:30 2026 \u002B0200",
+        "message": "refactor!: make the result constructors of aweXpect internal (#2022)"
       }
     ],
     "labels": [
@@ -3412,7 +3440,8 @@ window.BENCHMARK_DATA = {
       "f9009a09",
       "8b73c040",
       "54813a41",
-      "5d7202bd"
+      "5d7202bd",
+      "584ec3ed"
     ],
     "datasets": [
       {
@@ -3524,7 +3553,8 @@ window.BENCHMARK_DATA = {
           2542.819254738944,
           1886.245857825646,
           1300.3378804524739,
-          1498.12606552669
+          1498.12606552669,
+          2054.072447967529
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3640,6 +3670,7 @@ window.BENCHMARK_DATA = {
           12780,
           12856,
           12780,
+          12856,
           12856,
           12856
         ],
@@ -3761,7 +3792,8 @@ window.BENCHMARK_DATA = {
           3508.795688120524,
           2678.4281653086346,
           1748.4815519968668,
-          2006.3814785003663
+          2006.3814785003663,
+          2586.336384993333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3773,6 +3805,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -4528,6 +4561,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
         "message": "feat!: support match types for the string values of dictionaries (#2020)"
+      },
+      {
+        "sha": "584ec3ed5f610f83a91ce06a03695f6cc27cb264",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:11:30 2026 \u002B0200",
+        "message": "refactor!: make the result constructors of aweXpect internal (#2022)"
       }
     ],
     "labels": [
@@ -4636,7 +4675,8 @@ window.BENCHMARK_DATA = {
       "f9009a09",
       "8b73c040",
       "54813a41",
-      "5d7202bd"
+      "5d7202bd",
+      "584ec3ed"
     ],
     "datasets": [
       {
@@ -4748,7 +4788,8 @@ window.BENCHMARK_DATA = {
           14138.519918169293,
           10372.206244913737,
           6868.002044677734,
-          8040.834478105818
+          8040.834478105818,
+          10148.673551286969
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4864,6 +4905,7 @@ window.BENCHMARK_DATA = {
           25494,
           25568,
           25494,
+          25568,
           25568,
           25568
         ],
@@ -4985,7 +5027,8 @@ window.BENCHMARK_DATA = {
           363124.762507512,
           239161.95762416295,
           156920.8436453683,
-          189419.08294677734
+          189419.08294677734,
+          237144.49591471354
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5099,6 +5142,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544329,
+          544335,
           544335,
           544335,
           544335,
