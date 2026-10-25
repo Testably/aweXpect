@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
-        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
-      },
-      {
         "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
-      "1945e0a4",
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "f760ae08"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          319.0249760945638,
           410.31975078582764,
           421.28656787872313,
           409.32089284750134,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           240.75925808686478,
           322.12665625980924,
           333.3498914718628,
-          443.284740788596
+          443.284740788596,
+          473.61520971570695
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -448,7 +448,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
-          608,
+          640,
           640,
           640,
           640,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          869.0043994903565,
           944.1509282430013,
           923.4321902138846,
           966.4597745622907,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           532.8542060852051,
           780.0579935709635,
           756.0640653882708,
-          997.437248357137
+          997.437248357137,
+          1040.2071514129639
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
-        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
-      },
-      {
         "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
-      "1945e0a4",
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "f760ae08"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          166.54280826250712,
           198.02909326553345,
           191.61604723930358,
           204.8996229512351,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           105.74926986694337,
           149.8464255809784,
           148.81296792030335,
-          190.5131387252074
+          190.5131387252074,
+          203.5969430287679
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1077,7 +1077,7 @@ window.BENCHMARK_DATA = {
           440,
           440,
           440,
-          440
+          456
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          224.63416498502096,
           243.37135826746623,
           253.7671848297119,
           268.6409015973409,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           146.68700998624166,
           206.60582750638326,
           204.82062886555988,
-          249.86850833892822
+          249.86850833892822,
+          259.0244422594706
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
-        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
-      },
-      {
         "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
-      "1945e0a4",
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "f760ae08"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          537.5697986602784,
           634.0030492373875,
           606.2456460952759,
           665.044859568278,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           352.0112532547542,
           493.0865804036458,
           463.74710944720675,
-          667.5164126668658
+          667.5164126668658,
+          724.1171142714364
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1664,7 +1664,6 @@ window.BENCHMARK_DATA = {
           976,
           976,
           976,
-          976,
           1008,
           1008,
           1008,
@@ -1681,6 +1680,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1016,
           1016,
           1016,
           1016,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          840.2415881474813,
           988.0361700057983,
           989.6869799296061,
           930.6448301587786,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           512.1657770701817,
           704.9904736738938,
           739.8306879679362,
-          972.1975123087565
+          972.1975123087565,
+          1093.818478175572
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
-        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
-      },
-      {
         "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
-      "1945e0a4",
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "f760ae08"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1197.4525799384485,
           1775.927513709435,
           1798.5724258422852,
           1724.9559368133546,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1121.534768471351,
           1441.9847657521566,
           1437.3505348478045,
-          1869.7658073425293
+          1869.7658073425293,
+          1989.6977078755697
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2272,7 +2272,7 @@ window.BENCHMARK_DATA = {
           1672,
           1672,
           1672,
-          1672,
+          1688,
           1688,
           1688,
           1688,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          13405.245967610677,
           20631.42825571696,
           20441.783891950334,
           21102.107744489396,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           10469.239154052735,
           13420.457884568434,
           14281.488869222005,
-          21278.4398050944
+          21278.4398050944,
+          21309.884519449868
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          34712,
           34713,
           34713,
           34713,
@@ -2415,6 +2414,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
-        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
-      },
       {
         "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
-      "1945e0a4",
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "f760ae08"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          512.6089921951294,
           711.735968726022,
           691.8549032892499,
           712.9255067280361,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           422.32369591639593,
           511.7536630630493,
           512.7408947577843,
-          711.0036806106567
+          711.0036806106567,
+          750.0997101238796
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2880,7 +2880,6 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
-          1080,
           1112,
           1112,
           1112,
@@ -2897,6 +2896,7 @@ window.BENCHMARK_DATA = {
           1112,
           1112,
           1112,
+          1120,
           1120,
           1120,
           1120,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1127.2770821889242,
           1259.993591602032,
           1318.0788556507655,
           1297.702448299953,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           678.1237404163068,
           984.3990477244059,
           986.4640602111816,
-          1291.8618924458822
+          1291.8618924458822,
+          1348.3694526672364
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
-        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
-      },
-      {
         "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "f760ae083c45391ef451fe6cd6eca33350763ebb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
+        "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
       }
     ],
     "labels": [
-      "1945e0a4",
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "f760ae08"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          846.7878972371419,
           1072.1992802253137,
           1087.9209363301595,
           1120.2399353299822,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           677.7649213927133,
           862.8791766484578,
           882.310468864441,
-          1166.46011428833
+          1166.46011428833,
+          1235.0842673437935
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3488,7 +3488,6 @@ window.BENCHMARK_DATA = {
           1424,
           1424,
           1424,
-          1424,
           1456,
           1456,
           1456,
@@ -3505,6 +3504,7 @@ window.BENCHMARK_DATA = {
           1456,
           1456,
           1456,
+          1440,
           1440,
           1440,
           1440,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          718.0018542925517,
           732.5534484863281,
           731.3458156585693,
           812.6957330067952,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           417.4714378992716,
           600.7302974065145,
           598.4431247711182,
-          731.105255317688
+          731.105255317688,
+          776.6723345438639
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
