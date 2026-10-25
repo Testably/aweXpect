@@ -738,6 +738,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
         "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
+      },
+      {
+        "sha": "ddec9e0e46062f0fb4681fb49d418b6537df4461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
+        "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
       }
     ],
     "labels": [
@@ -863,7 +869,8 @@ window.BENCHMARK_DATA = {
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
-      "90516b35"
+      "90516b35",
+      "ddec9e0e"
     ],
     "datasets": [
       {
@@ -992,7 +999,8 @@ window.BENCHMARK_DATA = {
           2041.8105615888323,
           1626.2337636947632,
           1128.8846218109131,
-          2015.5475619179863
+          2015.5475619179863,
+          2095.758318094107
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1032,6 +1040,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -1263,7 +1272,8 @@ window.BENCHMARK_DATA = {
           16185.91210530599,
           10654.639459228516,
           6953.832410959097,
-          15270.058053823617
+          15270.058053823617,
+          15445.505216326032
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1275,6 +1285,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -2149,6 +2160,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
         "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
+      },
+      {
+        "sha": "ddec9e0e46062f0fb4681fb49d418b6537df4461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
+        "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
       }
     ],
     "labels": [
@@ -2274,7 +2291,8 @@ window.BENCHMARK_DATA = {
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
-      "90516b35"
+      "90516b35",
+      "ddec9e0e"
     ],
     "datasets": [
       {
@@ -2403,7 +2421,8 @@ window.BENCHMARK_DATA = {
           1715.7299590791974,
           1281.484151204427,
           909.7753084727696,
-          1678.6733999888102
+          1678.6733999888102,
+          1667.1314674104963
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2496,6 +2515,7 @@ window.BENCHMARK_DATA = {
           1200,
           1200,
           1200,
+          1240,
           1240,
           1240,
           1240,
@@ -2674,7 +2694,8 @@ window.BENCHMARK_DATA = {
           14841.715057373047,
           10078.870348103841,
           6247.957277738131,
-          14165.351967947823
+          14165.351967947823,
+          14069.68882115682
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2686,6 +2707,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -3500,6 +3522,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
         "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
+      },
+      {
+        "sha": "ddec9e0e46062f0fb4681fb49d418b6537df4461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
+        "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
       }
     ],
     "labels": [
@@ -3615,7 +3643,8 @@ window.BENCHMARK_DATA = {
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
-      "90516b35"
+      "90516b35",
+      "ddec9e0e"
     ],
     "datasets": [
       {
@@ -3734,7 +3763,8 @@ window.BENCHMARK_DATA = {
           5156.224453226725,
           3856.1664188929967,
           2711.996167500814,
-          5174.126584566557
+          5174.126584566557,
+          5052.092629652757
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3817,6 +3847,7 @@ window.BENCHMARK_DATA = {
           3688,
           3688,
           3688,
+          3736,
           3736,
           3736,
           3736,
@@ -3985,7 +4016,8 @@ window.BENCHMARK_DATA = {
           48341.91689453125,
           29604.76174316406,
           18320.619295392717,
-          45458.21137695313
+          45458.21137695313,
+          46687.58616286058
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4109,6 +4141,7 @@ window.BENCHMARK_DATA = {
           61926,
           61925,
           61925,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -4801,6 +4834,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
         "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
+      },
+      {
+        "sha": "ddec9e0e46062f0fb4681fb49d418b6537df4461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
+        "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
       }
     ],
     "labels": [
@@ -4916,7 +4955,8 @@ window.BENCHMARK_DATA = {
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
-      "90516b35"
+      "90516b35",
+      "ddec9e0e"
     ],
     "datasets": [
       {
@@ -5035,7 +5075,8 @@ window.BENCHMARK_DATA = {
           9717.63136618478,
           7447.75219930013,
           4902.419089762369,
-          9489.248374430339
+          9489.248374430339,
+          9377.79757792155
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5118,6 +5159,7 @@ window.BENCHMARK_DATA = {
           7024,
           7024,
           7024,
+          7064,
           7064,
           7064,
           7064,
@@ -5286,7 +5328,8 @@ window.BENCHMARK_DATA = {
           313009.56178385415,
           210369.08369954428,
           132469.18714192708,
-          288882.9900251116
+          288882.9900251116,
+          292682.9240722656
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5407,6 +5450,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521542,
+          521594,
           521594,
           521594,
           521594,
@@ -6102,6 +6146,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
         "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
+      },
+      {
+        "sha": "ddec9e0e46062f0fb4681fb49d418b6537df4461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
+        "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
       }
     ],
     "labels": [
@@ -6217,7 +6267,8 @@ window.BENCHMARK_DATA = {
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
-      "90516b35"
+      "90516b35",
+      "ddec9e0e"
     ],
     "datasets": [
       {
@@ -6336,7 +6387,8 @@ window.BENCHMARK_DATA = {
           2891.5522695268905,
           2324.492087437556,
           1570.2585129056658,
-          2906.1611902872723
+          2906.1611902872723,
+          2863.0065709431965
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6450,6 +6502,7 @@ window.BENCHMARK_DATA = {
           1328,
           1328,
           1328,
+          1488,
           1488,
           1488,
           1488,
@@ -6587,7 +6640,8 @@ window.BENCHMARK_DATA = {
           2057.5816904703775,
           1573.0983747754779,
           1049.972974650065,
-          1914.6546812791091
+          1914.6546812791091,
+          1871.5238552093506
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6599,6 +6653,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -7403,6 +7458,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
         "message": "refactor!: unify the inheritance options of aweXpect.Reflection (#2027)"
+      },
+      {
+        "sha": "ddec9e0e46062f0fb4681fb49d418b6537df4461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
+        "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
       }
     ],
     "labels": [
@@ -7518,7 +7579,8 @@ window.BENCHMARK_DATA = {
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
-      "90516b35"
+      "90516b35",
+      "ddec9e0e"
     ],
     "datasets": [
       {
@@ -7637,7 +7699,8 @@ window.BENCHMARK_DATA = {
           2083.7518471309118,
           1603.7095394770304,
           1089.7641321818035,
-          1992.710721529447
+          1992.710721529447,
+          1979.0040136484
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7720,6 +7783,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2864,
           2864,
           2864,
           2864,
@@ -7888,7 +7952,8 @@ window.BENCHMARK_DATA = {
           1985.1931248982748,
           1362.0189651761737,
           904.8501657803853,
-          1669.7068514506022
+          1669.7068514506022,
+          1716.9936486562094
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7900,6 +7965,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
