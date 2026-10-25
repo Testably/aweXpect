@@ -36,6 +36,23 @@ public sealed partial class ThatNumber
 			}
 
 			[Test]
+			public async Task ForDouble_WhenExpectedIsInfinite_ShouldFail()
+			{
+				double subject = 42.0;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(double.PositiveInfinity).Within(5.0).Percent();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to +∞ ± 5.0%,
+					             but it was 42.0
+					             """)
+					.Because("an infinite expected value makes the relative tolerance infinite as well, but a finite number still has no finite distance to it");
+			}
+
+			[Test]
 			[Arguments(-105.0)]
 			[Arguments(-95.0)]
 			public async Task ForDouble_WhenExpectedIsNegative_ShouldUseItsMagnitude(double subject)

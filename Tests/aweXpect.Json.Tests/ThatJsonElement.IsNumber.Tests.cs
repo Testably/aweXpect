@@ -805,23 +805,84 @@ public sealed partial class ThatJsonElement
 		public sealed class WithValueTests
 		{
 			[Test]
-			public async Task WhenDifferenceOverflows_ShouldFail()
+			[Arguments("sbyte", "-128", "an sbyte equal to 127 ± 1")]
+			[Arguments("short", "-32768", "a short equal to 32767 ± 1")]
+			[Arguments("int", "-2147483648", "an int equal to 2147483647 ± 1")]
+			[Arguments("long", "-9223372036854775808", "a long equal to 9223372036854775807 ± 1")]
+			[Arguments("decimal", "-79228162514264337593543950335", "a decimal equal to decimal.MaxValue ± 1.0")]
+#if NET8_0_OR_GREATER
+			[Arguments("nint", "-9223372036854775808", "an nint equal to 9223372036854775807 ± 1")]
+			[Arguments("Int128", "-170141183460469231731687303715884105728",
+				"an Int128 equal to 170141183460469231731687303715884105727 ± 1")]
+#endif
+			public async Task WhenDifferenceOverflows_ShouldFail(string type, string minValue, string expectation)
 			{
-				JsonElement subject = FromString("-2147483648");
+				JsonElement subject = FromString(minValue);
 
 				async Task Act()
-					=> await That(subject).IsNumber(int.MaxValue).Within(1);
+					=> await VerifyIsMaxValueWithinOne(subject, type);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is {expectation},
+					              but it was {minValue}
+
+					              Actual:
+					              {minValue}
+					              """)
+					.Because("a difference beyond the range of the number type is not within any tolerance");
+			}
+
+			[Test]
+			public async Task WhenExpectedIsInfiniteAndToleranceIsRelative_ShouldFail()
+			{
+				JsonElement subject = FromString("42");
+
+				async Task Act()
+					=> await That(subject).IsNumber(double.PositiveInfinity).Within(5).Percent();
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             is an int equal to 2147483647 ± 1,
-					             but it was -2147483648
+					             is a double equal to +∞ ± 5.0%,
+					             but it was 42
 
 					             Actual:
-					             -2147483648
+					             42
 					             """)
-					.Because("a difference beyond the range of the number type is not within any tolerance");
+					.Because("an infinite expected value makes the relative tolerance infinite as well, but a finite number still has no finite distance to it");
+			}
+
+			[Test]
+			[Arguments("double", "PositiveInfinity", "a double equal to +∞ ± +∞")]
+			[Arguments("double", "NegativeInfinity", "a double equal to -∞ ± +∞")]
+			[Arguments("double", "NaN", "a double equal to NaN ± +∞")]
+			[Arguments("float", "PositiveInfinity", "a float equal to +∞ ± +∞")]
+			[Arguments("float", "NegativeInfinity", "a float equal to -∞ ± +∞")]
+			[Arguments("float", "NaN", "a float equal to NaN ± +∞")]
+#if NET8_0_OR_GREATER
+			[Arguments("Half", "PositiveInfinity", "a Half equal to +∞ ± +∞")]
+			[Arguments("Half", "NegativeInfinity", "a Half equal to -∞ ± +∞")]
+			[Arguments("Half", "NaN", "a Half equal to NaN ± +∞")]
+#endif
+			public async Task WhenExpectedIsNotFinite_ShouldFail(string type, string value, string expectation)
+			{
+				JsonElement subject = FromString("42");
+
+				async Task Act()
+					=> await VerifyIsNotFiniteWithinInfinity(subject, type, value);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is {expectation},
+					              but it was 42
+
+					              Actual:
+					              42
+					              """)
+					.Because("no tolerance can bridge the distance to a non-finite value, like for the number expectations");
 			}
 
 			[Test]
@@ -1044,6 +1105,69 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<NotSupportedException>()
 					.WithMessage(
 						$"The number type char is not supported. Use {ThatJsonElement.SupportedNumberTypes}.");
+			}
+
+			private static async Task VerifyIsMaxValueWithinOne(JsonElement subject, string type)
+			{
+				switch (type)
+				{
+					case "sbyte":
+						await That(subject).IsNumber(sbyte.MaxValue).Within(1);
+						break;
+					case "short":
+						await That(subject).IsNumber(short.MaxValue).Within(1);
+						break;
+					case "int":
+						await That(subject).IsNumber(int.MaxValue).Within(1);
+						break;
+					case "long":
+						await That(subject).IsNumber(long.MaxValue).Within(1);
+						break;
+#if NET8_0_OR_GREATER
+					case "nint":
+						await That(subject).IsNumber(nint.MaxValue).Within(1);
+						break;
+					case "Int128":
+						await That(subject).IsNumber(Int128.MaxValue).Within(1);
+						break;
+#endif
+					default:
+						await That(subject).IsNumber(decimal.MaxValue).Within(1);
+						break;
+				}
+			}
+
+			private static async Task VerifyIsNotFiniteWithinInfinity(JsonElement subject, string type, string value)
+			{
+				switch (type)
+				{
+					case "float":
+						await That(subject).IsNumber(value switch
+						{
+							"PositiveInfinity" => float.PositiveInfinity,
+							"NegativeInfinity" => float.NegativeInfinity,
+							_ => float.NaN,
+						}).Within(float.PositiveInfinity);
+						break;
+#if NET8_0_OR_GREATER
+					case "Half":
+						await That(subject).IsNumber(value switch
+						{
+							"PositiveInfinity" => Half.PositiveInfinity,
+							"NegativeInfinity" => Half.NegativeInfinity,
+							_ => Half.NaN,
+						}).Within(Half.PositiveInfinity);
+						break;
+#endif
+					default:
+						await That(subject).IsNumber(value switch
+						{
+							"PositiveInfinity" => double.PositiveInfinity,
+							"NegativeInfinity" => double.NegativeInfinity,
+							_ => double.NaN,
+						}).Within(double.PositiveInfinity);
+						break;
+				}
 			}
 
 			private static async Task VerifyIsNumberWithin(JsonElement subject, string type)

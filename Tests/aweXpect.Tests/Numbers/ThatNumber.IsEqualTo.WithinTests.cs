@@ -36,6 +36,23 @@ public sealed partial class ThatNumber
 			}
 
 			[Test]
+			public async Task ForDecimal_WhenDifferenceOverflows_ShouldFail()
+			{
+				decimal subject = decimal.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(decimal.MaxValue).Within(1m);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to decimal.MaxValue ± 1.0,
+					             but it was decimal.MinValue
+					             """)
+					.Because("a difference beyond the range of the number type is not within any tolerance");
+			}
+
+			[Test]
 			[Arguments(12.5, 12.6)]
 			[Arguments(12.5, 12.4)]
 			public async Task ForDecimal_WhenInsideTolerance_ShouldSucceed(
@@ -459,6 +476,23 @@ public sealed partial class ThatNumber
 #endif
 
 			[Test]
+			public async Task ForInt_WhenDifferenceOverflows_ShouldFail()
+			{
+				int subject = int.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(int.MaxValue).Within(1);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 2147483647 ± 1,
+					             but it was -2147483648, which differs by -4294967295
+					             """)
+					.Because("a difference beyond the range of the number type is not within any tolerance");
+			}
+
+			[Test]
 			[Arguments(5, 6)]
 			[Arguments(5, 4)]
 			public async Task ForInt_WhenInsideTolerance_ShouldSucceed(
@@ -499,6 +533,23 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithMessage("*The tolerance must not be negative.*").AsWildcard().And
 					.WithParamName("tolerance");
+			}
+
+			[Test]
+			public async Task ForLong_WhenDifferenceOverflows_ShouldFail()
+			{
+				long subject = long.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(long.MaxValue).Within(1L);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 9223372036854775807 ± 1,
+					             but it was -9223372036854775808, which differs by -18446744073709551615
+					             """)
+					.Because("a difference beyond the range of the number type is not within any tolerance");
 			}
 
 			[Test]

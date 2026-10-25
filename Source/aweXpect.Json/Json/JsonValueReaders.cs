@@ -71,8 +71,9 @@ internal static class JsonValueReaders
 		=> element.TryGetDouble(out value) && !double.IsInfinity(value);
 
 	/// <remarks>
-	///     The difference is written out per type, as the oldest target frameworks have no generic math. An overflow of
-	///     the difference throws, which the <see cref="NumberTolerance{TNumber}" /> treats as not within the tolerance.
+	///     The difference is written out per type, as the oldest target frameworks have no generic math. Like for the
+	///     number expectations of aweXpect, a difference beyond the range of the type or to a non-finite value is
+	///     <see langword="null" />, which is not within any tolerance.
 	/// </remarks>
 	private static class NumberDifference<TNumber>
 #if NET8_0_OR_GREATER
@@ -96,7 +97,20 @@ internal static class JsonValueReaders
 			;
 
 		private static object? For<T>(Func<T, T, T?> difference) where T : struct
-			=> typeof(TNumber) == typeof(T) ? difference : null;
+			=> typeof(TNumber) == typeof(T) ? NullOnOverflow(difference) : null;
+
+		private static Func<T, T, T?> NullOnOverflow<T>(Func<T, T, T?> difference) where T : struct
+			=> (actual, expected) =>
+			{
+				try
+				{
+					return difference(actual, expected);
+				}
+				catch (OverflowException)
+				{
+					return null;
+				}
+			};
 
 		private static byte? Difference(byte a, byte e) => (byte)(a > e ? a - e : e - a);
 		private static sbyte? Difference(sbyte a, sbyte e) => checked((sbyte)(a > e ? a - e : e - a));
@@ -107,16 +121,19 @@ internal static class JsonValueReaders
 		private static long? Difference(long a, long e) => checked(a > e ? a - e : e - a);
 		private static ulong? Difference(ulong a, ulong e) => a > e ? a - e : e - a;
 		private static BigInteger? Difference(BigInteger a, BigInteger e) => BigInteger.Abs(a - e);
-		private static float? Difference(float a, float e) => Math.Abs(a - e);
-		private static double? Difference(double a, double e) => Math.Abs(a - e);
+		private static float? Difference(float a, float e) => IsFinite(a) && IsFinite(e) ? Math.Abs(a - e) : null;
+		private static double? Difference(double a, double e) => IsFinite(a) && IsFinite(e) ? Math.Abs(a - e) : null;
 		private static decimal? Difference(decimal a, decimal e) => a > e ? a - e : e - a;
 #if NET8_0_OR_GREATER
 		private static nint? Difference(nint a, nint e) => checked(a > e ? a - e : e - a);
 		private static nuint? Difference(nuint a, nuint e) => a > e ? a - e : e - a;
 		private static Int128? Difference(Int128 a, Int128 e) => checked(a > e ? a - e : e - a);
 		private static UInt128? Difference(UInt128 a, UInt128 e) => a > e ? a - e : e - a;
-		private static Half? Difference(Half a, Half e) => Half.Abs(a - e);
+		private static Half? Difference(Half a, Half e) => Half.IsFinite(a) && Half.IsFinite(e) ? Half.Abs(a - e) : null;
 #endif
+
+		private static bool IsFinite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
+		private static bool IsFinite(double value) => !double.IsNaN(value) && !double.IsInfinity(value);
 	}
 
 	/// <remarks>
