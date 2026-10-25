@@ -101,6 +101,59 @@ _jsonNode.Should().HaveProperty("durationSeconds").Which.Should().BeNumeric();
 
 </TabItem>
 
+<TabItem value="JsonPropertyChain" label="Combined expectations">
+
+Verifies several expectations on the same `JsonNode`, combined with `And`: it has three properties, has no property `album` and is an object.
+FluentAssertions has no expectation that a node is an object, so it verifies that it is no array instead.
+
+<BenchmarkResult package="aweXpect.Json" name="JsonPropertyChain" />
+
+```csharp title="aweXpect"
+await Expect.That(_jsonNode)
+    .HasProperty("title").And
+    .HasProperty("artist").And
+    .HasProperty("durationSeconds").And
+    .DoesNotHaveProperty("album").And
+    .IsObject();
+```
+
+```csharp title="FluentAssertions"
+_jsonNode.Should().HaveProperty("title");
+_jsonNode.Should().HaveProperty("artist");
+_jsonNode.Should().HaveProperty("durationSeconds");
+_jsonNode.Should().NotHaveProperty("album");
+_jsonNode.Should().NotBeAnArray();
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Json.Benchmarks/HappyCaseBenchmarks.JsonPropertyChain.cs)
+
+</TabItem>
+
+<TabItem value="JsonNestedPropertyChain" label="Nested properties">
+
+Verifies that the object in a property of a `JsonNode` has three properties.
+
+<BenchmarkResult package="aweXpect.Json" name="JsonNestedPropertyChain" />
+
+```csharp title="aweXpect"
+await Expect.That(_nestedJsonNode)
+    .HasProperty("track", track => track
+        .HasProperty("title").And
+        .HasProperty("artist").And
+        .HasProperty("durationSeconds"));
+```
+
+```csharp title="FluentAssertions"
+JsonNode track = _nestedJsonNode.Should().HaveProperty("track").Which;
+track.Should().HaveProperty("title");
+track.Should().HaveProperty("artist");
+track.Should().HaveProperty("durationSeconds");
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Json.Benchmarks/HappyCaseBenchmarks.JsonNestedPropertyChain.cs)
+
+</TabItem>
+
 <TabItem value="JsonArrayElements" label="Array elements">
 
 Verifies that all three elements of a JSON array match an expected object.
