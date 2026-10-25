@@ -1080,6 +1080,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
@@ -1262,7 +1268,8 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
@@ -1448,7 +1455,8 @@ window.BENCHMARK_DATA = {
           10725.838558490459,
           5346.679335021972,
           11657.286630483773,
-          5742.750442504883
+          5742.750442504883,
+          10414.94926554362
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1628,6 +1636,7 @@ window.BENCHMARK_DATA = {
           2168,
           2168,
           2168,
+          2208,
           2208,
           2208,
           2208,
@@ -1833,7 +1842,8 @@ window.BENCHMARK_DATA = {
           378791.923828125,
           169878.25319010418,
           387212.33203125,
-          196223.72384207588
+          196223.72384207588,
+          357331.13815104164
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2024,7 +2034,8 @@ window.BENCHMARK_DATA = {
           590292,
           590287,
           590291,
-          590288
+          590288,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2218,7 +2229,8 @@ window.BENCHMARK_DATA = {
           19759.197509765625,
           9732.070493425641,
           19443.61545738807,
-          11058.37766794058
+          11058.37766794058,
+          19045.74450465611
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2230,6 +2242,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -3461,6 +3474,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
@@ -3636,7 +3655,8 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
@@ -3815,7 +3835,8 @@ window.BENCHMARK_DATA = {
           310.87667481104535,
           126.35500013828278,
           284.46655626296996,
-          147.16616082191467
+          147.16616082191467,
+          290.1889455135052
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3904,6 +3925,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -4186,7 +4208,8 @@ window.BENCHMARK_DATA = {
           499.83627517406757,
           248.70912674495153,
           513.7629313151042,
-          289.8088395436605
+          289.8088395436605,
+          477.69547888437904
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4198,6 +4221,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -4557,7 +4581,8 @@ window.BENCHMARK_DATA = {
           391.1855565071106,
           190.12586188316345,
           406.78698763480554,
-          225.22020754814147
+          225.22020754814147,
+          383.204605285938
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4569,6 +4594,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -10413,6 +10439,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
@@ -11358,7 +11390,8 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
@@ -12307,7 +12340,8 @@ window.BENCHMARK_DATA = {
           149.51440051623754,
           71.23183561222893,
           155.10538351535797,
-          85.47432090554919
+          85.47432090554919,
+          141.14068206718989
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13166,6 +13200,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -14218,7 +14253,8 @@ window.BENCHMARK_DATA = {
           259.30012407302854,
           124.19887183507284,
           248.81127605438232,
-          148.51800283363886
+          148.51800283363886,
+          239.07587464650473
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14411,6 +14447,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -15410,7 +15447,8 @@ window.BENCHMARK_DATA = {
           244.2840792451586,
           116.78505226281973,
           233.85331770089957,
-          143.33854581759527
+          143.33854581759527,
+          240.57192369869776
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15422,6 +15460,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -16739,6 +16778,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
@@ -16921,7 +16966,8 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
@@ -17107,7 +17153,8 @@ window.BENCHMARK_DATA = {
           286.46409527460736,
           129.5158381121499,
           278.83425542286466,
-          141.84732740265983
+          141.84732740265983,
+          262.62011426289877
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17287,6 +17334,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          520,
           520,
           520,
           520,
@@ -17492,7 +17540,8 @@ window.BENCHMARK_DATA = {
           543.8346082687378,
           252.30248141288757,
           548.1098907910861,
-          292.5267364297594
+          292.5267364297594,
+          496.9410206930978
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17504,6 +17553,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -17877,7 +17927,8 @@ window.BENCHMARK_DATA = {
           351.25829841295877,
           165.01991299788156,
           348.5537882804871,
-          184.61078042250412
+          184.61078042250412,
+          331.6961406469345
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -17889,6 +17940,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -23740,6 +23792,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
@@ -24685,7 +24743,8 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
@@ -25634,7 +25693,8 @@ window.BENCHMARK_DATA = {
           705.2051502863566,
           320.80484645707264,
           657.9369446436564,
-          350.5754908493587
+          350.5754908493587,
+          689.4750436782837
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26493,6 +26553,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -27545,7 +27606,8 @@ window.BENCHMARK_DATA = {
           1411.2454528808594,
           658.4624439386221,
           1458.699312210083,
-          752.5631011554173
+          752.5631011554173,
+          1319.4747709910075
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27738,6 +27800,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -28737,7 +28800,8 @@ window.BENCHMARK_DATA = {
           645.8053511301677,
           333.6246384620666,
           692.4176834742228,
-          374.15041901270547
+          374.15041901270547,
+          642.4390666668231
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28749,6 +28813,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -34644,6 +34709,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
@@ -35589,7 +35660,8 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
@@ -36538,7 +36610,8 @@ window.BENCHMARK_DATA = {
           691.6242256898147,
           321.26442060470583,
           674.5422876221793,
-          363.55233420644487
+          363.55233420644487,
+          651.8486566543579
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37397,6 +37470,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -38449,7 +38523,8 @@ window.BENCHMARK_DATA = {
           29200.94760131836,
           10144.358744303385,
           29341.776397705078,
-          11203.118533325196
+          11203.118533325196,
+          26552.577711995444
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39403,6 +39478,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -39641,7 +39717,8 @@ window.BENCHMARK_DATA = {
           787.6263622283935,
           430.18995097478233,
           827.9101918538412,
-          437.5614480631692
+          437.5614480631692,
+          766.7139786084493
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39653,6 +39730,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -41318,6 +41396,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
@@ -41558,7 +41642,8 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
@@ -41802,7 +41887,8 @@ window.BENCHMARK_DATA = {
           721.3546847025553,
           351.6483565012614,
           728.772633043925,
-          420.95696786733777
+          420.95696786733777,
+          730.8069323131016
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42004,6 +42090,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
+          1688,
           1688,
           1688,
           1688,
@@ -42303,7 +42390,8 @@ window.BENCHMARK_DATA = {
           83395.02146559495,
           27365.753682454426,
           83313.64731069711,
-          31404.139794921874
+          31404.139794921874,
+          81400.09467424665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42552,7 +42640,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43994,6 +44083,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
@@ -44234,7 +44329,8 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
@@ -44478,7 +44574,8 @@ window.BENCHMARK_DATA = {
           183.6666120015658,
           89.05134416421255,
           193.6504811445872,
-          100.11973985036214
+          100.11973985036214,
+          190.3093117396037
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44632,6 +44729,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -44979,7 +45077,8 @@ window.BENCHMARK_DATA = {
           33139.41019548689,
           9323.684568132672,
           32587.550166829427,
-          10753.299132283528
+          10753.299132283528,
+          31206.736726888023
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45228,7 +45327,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45466,7 +45566,8 @@ window.BENCHMARK_DATA = {
           266.16836449305214,
           117.75027503875586,
           250.42945636113484,
-          132.08246030126298
+          132.08246030126298,
+          244.33669372705313
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -45478,6 +45579,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -46795,6 +46897,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
@@ -46977,7 +47085,8 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
@@ -47163,7 +47272,8 @@ window.BENCHMARK_DATA = {
           347.66867358343944,
           164.32709153493246,
           360.85706597108106,
-          192.226740700858
+          192.226740700858,
+          347.37930088776807
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47259,6 +47369,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -47548,7 +47659,8 @@ window.BENCHMARK_DATA = {
           395.78185246785483,
           193.4021841287613,
           391.28783893585205,
-          230.23854269981385
+          230.23854269981385,
+          361.29271609442577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47560,6 +47672,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -47933,7 +48046,8 @@ window.BENCHMARK_DATA = {
           413.7372666676839,
           195.50226495947157,
           419.95599126815796,
-          232.5296845606395
+          232.5296845606395,
+          413.96745325968817
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47945,6 +48059,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -49218,6 +49333,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
@@ -49400,7 +49521,8 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
@@ -49586,7 +49708,8 @@ window.BENCHMARK_DATA = {
           810.3135171254476,
           363.0605041821798,
           759.5551412288959,
-          397.00257205963135
+          397.00257205963135,
+          782.1667630672455
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49766,6 +49889,7 @@ window.BENCHMARK_DATA = {
           1384,
           1384,
           1384,
+          1448,
           1448,
           1448,
           1448,
@@ -49971,7 +50095,8 @@ window.BENCHMARK_DATA = {
           1912.665381749471,
           923.7328998859113,
           1959.2880650838217,
-          1087.6161136627197
+          1087.6161136627197,
+          1813.3356904249924
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49983,6 +50108,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -50356,7 +50482,8 @@ window.BENCHMARK_DATA = {
           982.0366469065349,
           450.2476945559184,
           959.3455130894979,
-          509.67051381331225
+          509.67051381331225,
+          913.1941501177274
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -50368,6 +50495,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -51641,6 +51769,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
@@ -51823,7 +51957,8 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
@@ -52009,7 +52144,8 @@ window.BENCHMARK_DATA = {
           11660.4072265625,
           5753.702564239502,
           11384.629981994629,
-          5971.993724568685
+          5971.993724568685,
+          11423.851031963643
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52189,6 +52325,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1608,
           1608,
           1608,
           1608,
@@ -52394,7 +52531,8 @@ window.BENCHMARK_DATA = {
           41904.63652155949,
           17693.158142089844,
           40235.74784749349,
-          19500.606201171875
+          19500.606201171875,
+          39062.76533290318
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52562,6 +52700,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -52779,7 +52918,8 @@ window.BENCHMARK_DATA = {
           10920.68641117641,
           5480.875860595703,
           10651.067828838643,
-          5817.796899523054
+          5817.796899523054,
+          10514.956360953194
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -52791,6 +52931,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -54064,6 +54205,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:34:18 2026 \u002B0200",
         "message": "docs: add a migration guide from aweXpect 3 to 4 (#2030)"
+      },
+      {
+        "sha": "5357eeb15703078a59ba1144194948bff769f953",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
+        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
       }
     ],
     "labels": [
@@ -54246,7 +54393,8 @@ window.BENCHMARK_DATA = {
       "6b630d2b",
       "3378cc72",
       "90516b35",
-      "ddec9e0e"
+      "ddec9e0e",
+      "5357eeb1"
     ],
     "datasets": [
       {
@@ -54432,7 +54580,8 @@ window.BENCHMARK_DATA = {
           11288.625946044922,
           5436.401277160645,
           10905.029526846749,
-          5826.235971069336
+          5826.235971069336,
+          10851.507715861002
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54612,6 +54761,7 @@ window.BENCHMARK_DATA = {
           2056,
           2056,
           2056,
+          2088,
           2088,
           2088,
           2088,
@@ -54817,7 +54967,8 @@ window.BENCHMARK_DATA = {
           60563.74659016927,
           26565.955466715495,
           58261.607814243864,
-          27895.022925240653
+          27895.022925240653,
+          57069.74775477818
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55006,6 +55157,7 @@ window.BENCHMARK_DATA = {
           23553,
           23554,
           23554,
+          23553,
           23553,
           23553,
           23553
@@ -55202,7 +55354,8 @@ window.BENCHMARK_DATA = {
           21305.166082763673,
           11115.603009905133,
           21076.299853985125,
-          11730.387081691197
+          11730.387081691197,
+          20720.145498422477
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -55214,6 +55367,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
