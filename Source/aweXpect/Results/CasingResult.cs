@@ -30,7 +30,6 @@ public class CasingResult<TType, TThat> : AndOrResult<TType, TThat>
 	///     For example, the lower-case letter <c>ß</c> has no single upper-case form, so <c>"STRAßE"</c> is then no
 	///     longer upper-cased, and a titlecase letter like <c>ǅ</c> is then neither upper-cased nor lower-cased.
 	/// </remarks>
-	/// <exception cref="System.InvalidOperationException">The uncased letters are already specified.</exception>
 	public AndOrResult<TType, TThat> IncludingUncasedLetters(bool includeUncasedLetters = true)
 	{
 		_options.IncludingUncasedLetters(includeUncasedLetters);

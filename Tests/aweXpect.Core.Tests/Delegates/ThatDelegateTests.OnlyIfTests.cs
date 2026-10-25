@@ -49,28 +49,31 @@ public sealed partial class ThatDelegateTests
 		[Arguments(true, false)]
 		[Arguments(false, true)]
 		[Arguments(false, false)]
-		public async Task WhenOnlyIfIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool first, bool second)
+		public async Task WhenOnlyIfIsSpecifiedTwice_ShouldUseTheLastCondition(bool first, bool second)
 		{
-			Action action = () => { };
+			Action action = () =>
+			{
+				if (second)
+				{
+					throw new NotSupportedException();
+				}
+			};
 
 			async Task<Exception?> Act()
 				=> await That(action).Throws().OnlyIf(first).OnlyIf(second);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("OnlyIf cannot be specified more than once.")
-				.Because("a second condition would silently replace the first one");
+			await That(Act).DoesNotThrow();
 		}
 
 		[Test]
-		public async Task WhenOnlyIfIsSpecifiedTwice_WithWithinInBetween_ShouldThrowInvalidOperationException()
+		public async Task WhenOnlyIfIsSpecifiedTwice_WithWithinInBetween_ShouldUseTheLastCondition()
 		{
-			Action action = () => { };
+			Action action = () => throw new NotSupportedException();
 
 			async Task<Exception?> Act()
 				=> await That(action).Throws().OnlyIf(false).Within(5.Seconds()).OnlyIf(true);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("OnlyIf cannot be specified more than once.")
+			await That(Act).DoesNotThrow()
 				.Because("the continuation shares the condition of the expectation");
 		}
 	}

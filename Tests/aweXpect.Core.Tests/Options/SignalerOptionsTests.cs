@@ -52,17 +52,15 @@ public sealed class SignalerOptionsTests
 		}
 
 		[Test]
-		public async Task Within_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		public async Task Within_WhenSpecifiedTwice_ShouldUseTheLastTimeout()
 		{
 			SignalerOptions sut = new();
 			sut.Within(5.Seconds());
 
-			void Act() => sut.Within(6.Seconds());
+			sut.Within(6.Seconds());
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("Within cannot be specified more than once.");
-			await That(sut.Timeout).IsEqualTo(5.Seconds())
-				.Because("a rejected timeout must not replace the first one");
+			await That(sut.Timeout).IsEqualTo(6.Seconds());
+			await That(sut.ToString()).IsEqualTo(" within 0:06");
 		}
 	}
 

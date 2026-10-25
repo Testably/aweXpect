@@ -58,9 +58,6 @@ public partial class CollectionMatchOptions(
 	private bool _ignoringDuplicates;
 	private bool _ignoringInterspersedItems;
 	private bool _inAnyOrder;
-	private bool _isIgnoringDuplicatesSpecified;
-	private bool _isIgnoringInterspersedItemsSpecified;
-	private bool _isProperlySpecified;
 
 	/// <summary>
 	///     The option that already specified how the order is matched.
@@ -102,12 +99,11 @@ public partial class CollectionMatchOptions(
 	///     Ignores the order in the subject and expected values.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">
-	///     The order is already specified, e.g. interspersed items are already ignored via
-	///     <see cref="IgnoringInterspersedItems(bool)" />.
+	///     Interspersed items are already ignored via <see cref="IgnoringInterspersedItems(bool)" />.
 	/// </exception>
 	public CollectionMatchOptions InAnyOrder()
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(OrderOption, nameof(InAnyOrder));
+		ThrowHelper.ThrowIfCompetingOption(OrderOption, nameof(InAnyOrder));
 		_inAnyOrder = true;
 		return this;
 	}
@@ -121,11 +117,8 @@ public partial class CollectionMatchOptions(
 	///     item has to match an expected item, as far as the relation requires it, so <c>[1, 1, 2]</c> matches
 	///     <c>[1, 2]</c>.
 	/// </remarks>
-	/// <exception cref="InvalidOperationException">The duplicates are already specified.</exception>
 	public CollectionMatchOptions IgnoringDuplicates(bool ignoreDuplicates = true)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isIgnoringDuplicatesSpecified, nameof(IgnoringDuplicates));
-		_isIgnoringDuplicatesSpecified = true;
 		_ignoringDuplicates = ignoreDuplicates;
 		return this;
 	}
@@ -136,24 +129,23 @@ public partial class CollectionMatchOptions(
 	/// <remarks>
 	///     This turns <see cref="EquivalenceRelations.Contains" /> into <see cref="EquivalenceRelations.ContainsProperly" />
 	///     and <see cref="EquivalenceRelations.IsContainedIn" /> into
-	///     <see cref="EquivalenceRelations.IsContainedInProperly" />.
+	///     <see cref="EquivalenceRelations.IsContainedInProperly" />, and keeps a relation that is already proper.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">
-	///     The option is already specified, or the relation is neither <see cref="EquivalenceRelations.Contains" /> nor
-	///     <see cref="EquivalenceRelations.IsContainedIn" />.
+	///     The relation is not a containment relation.
 	/// </exception>
 	public CollectionMatchOptions Properly()
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isProperlySpecified, nameof(Properly));
 		_equivalenceRelations = _equivalenceRelations switch
 		{
-			EquivalenceRelations.Contains => EquivalenceRelations.ContainsProperly,
-			EquivalenceRelations.IsContainedIn => EquivalenceRelations.IsContainedInProperly,
+			EquivalenceRelations.Contains or EquivalenceRelations.ContainsProperly
+				=> EquivalenceRelations.ContainsProperly,
+			EquivalenceRelations.IsContainedIn or EquivalenceRelations.IsContainedInProperly
+				=> EquivalenceRelations.IsContainedInProperly,
 			// ReSharper disable once LocalizableElement
 			_ => throw Tracing.WriteException(new InvalidOperationException(
 				$"{nameof(Properly)} requires a containment relation, but the relation is {_equivalenceRelations}.")),
 		};
-		_isProperlySpecified = true;
 		return this;
 	}
 
@@ -162,19 +154,15 @@ public partial class CollectionMatchOptions(
 	///     according to the <paramref name="ignoreInterspersedItems" /> parameter.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">
-	///     The interspersed items are already specified, or the order is already ignored via
-	///     <see cref="InAnyOrder()" />.
+	///     The interspersed items are ignored and the order is already ignored via <see cref="InAnyOrder()" />.
 	/// </exception>
 	public CollectionMatchOptions IgnoringInterspersedItems(bool ignoreInterspersedItems = true)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isIgnoringInterspersedItemsSpecified,
-			nameof(IgnoringInterspersedItems));
 		if (ignoreInterspersedItems)
 		{
-			ThrowHelper.ThrowIfOptionIsAlreadySpecified(OrderOption, nameof(IgnoringInterspersedItems));
+			ThrowHelper.ThrowIfCompetingOption(OrderOption, nameof(IgnoringInterspersedItems));
 		}
 
-		_isIgnoringInterspersedItemsSpecified = true;
 		_ignoringInterspersedItems = ignoreInterspersedItems;
 		return this;
 	}

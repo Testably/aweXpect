@@ -10,7 +10,8 @@ namespace aweXpect;
 ///     Extension methods for results that compare <see langword="string" />s with <see cref="StringEqualityOptions" />.
 /// </summary>
 /// <remarks>
-///     Each option can be specified only once, and only one match type, e.g. <c>AsWildcard()</c>, per expectation.<br />
+///     A repeated option replaces the earlier one, and an option set to <see langword="false" /> is the same as not set.<br />
+///     Only one match type, e.g. <c>AsWildcard()</c>, per expectation; repeating the same match type replaces it.<br />
 ///     A result that implements <see cref="ICopyOnOption{TOptions, TResult}" /> stays unchanged: the option is set on
 ///     a copy of its options, and the result returns a new one with them.
 /// </remarks>

@@ -360,29 +360,27 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
-			[Arguments(false)]
-			[Arguments(true)]
-			public async Task WhenComparerIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool negated)
+			public async Task WhenComparerIsSpecifiedTwice_ShouldUseTheLastComparer()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
 
 				async Task Act()
-				{
-					if (negated)
-					{
-						await That(subject).IsNotEqualTo([1, 2, 3,])
-							.Using(new AllEqualComparer()).Using(new AllDifferentComparer());
-					}
-					else
-					{
-						await That(subject).IsEqualTo([1, 2, 3,])
-							.Using(new AllEqualComparer()).Using(new AllDifferentComparer());
-					}
-				}
+					=> await That(subject).IsEqualTo([4, 5, 6,])
+						.Using(new AllDifferentComparer()).Using(new AllEqualComparer());
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Using cannot be specified more than once.")
-					.Because("the second comparer would silently replace the first one");
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenComparerIsSpecifiedTwice_WhenNegated_ShouldUseTheLastComparer()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo([1, 2, 3,])
+						.Using(new AllEqualComparer()).Using(new AllDifferentComparer());
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Test]
@@ -1599,17 +1597,35 @@ public sealed partial class ThatEnumerable
 			[Arguments(true, false)]
 			[Arguments(false, true)]
 			[Arguments(false, false)]
-			public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException(bool first, bool second)
+			public async Task WhenSpecifiedTwice_ShouldUseTheLastValue(bool first, bool second)
 			{
-				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
+				IEnumerable<string> subject = ToEnumerable(["a", "b", "c", "c",]);
 				string[] expected = ["a", "b", "c",];
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).IgnoringDuplicates(first).IgnoringDuplicates(second);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("IgnoringDuplicates cannot be specified more than once.")
-					.Because("the second value would silently replace the first one");
+				await That(Act).Throws<FailException>().OnlyIf(!second)
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it contained item "c" at index 3 that was not expected
+
+					             Collection:
+					             [
+					               "a",
+					               "b",
+					               "c",
+					               "c"
+					             ]
+
+					             Expected:
+					             [
+					               "a",
+					               "b",
+					               "c"
+					             ]
+					             """);
 			}
 
 			[Test]

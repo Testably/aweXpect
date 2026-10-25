@@ -10,7 +10,6 @@ namespace aweXpect.Options;
 /// </summary>
 internal sealed class AllocationOptions
 {
-	private bool _isAllowingExceptionsSpecified;
 	private string? _limitOption;
 	private long _maximum = long.MaxValue;
 	private long _minimum;
@@ -25,20 +24,11 @@ internal sealed class AllocationOptions
 	/// </summary>
 	public bool IsWarmingUp { get; private set; }
 
-	/// <exception cref="InvalidOperationException">The exceptions are already specified.</exception>
 	public void AllowingExceptions(bool allowExceptions)
-	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isAllowingExceptionsSpecified, nameof(AllowingExceptions));
-		_isAllowingExceptionsSpecified = true;
-		AreExceptionsAllowed = allowExceptions;
-	}
+		=> AreExceptionsAllowed = allowExceptions;
 
-	/// <exception cref="InvalidOperationException">The warm-up is already specified.</exception>
 	public void AfterWarmUp()
-	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(IsWarmingUp, nameof(AfterWarmUp));
-		IsWarmingUp = true;
-	}
+		=> IsWarmingUp = true;
 
 	/// <summary>
 	///     Checks if the <paramref name="exception" /> leaves the outcome to the measured allocations.
@@ -49,12 +39,12 @@ internal sealed class AllocationOptions
 	public bool IsWithinLimit(long allocatedBytes)
 		=> allocatedBytes >= _minimum && allocatedBytes <= _maximum;
 
-	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
+	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
 	public void Nothing()
 		=> SetLimit(0, 0, nameof(Nothing));
 
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="maximum" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
+	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
 	public void AtMost(long maximum)
 	{
 		ThrowHelper.ThrowIfBytesAreNegative(maximum);
@@ -62,7 +52,7 @@ internal sealed class AllocationOptions
 	}
 
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="minimum" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
+	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
 	public void AtLeast(long minimum)
 	{
 		ThrowHelper.ThrowIfBytesAreNegative(minimum);
@@ -70,7 +60,7 @@ internal sealed class AllocationOptions
 	}
 
 	/// <exception cref="ArgumentOutOfRangeException">The range is negative or inverted.</exception>
-	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
+	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
 	public void Between(long minimum, long maximum)
 	{
 		ThrowHelper.ThrowIfBytesAreNegative(minimum);
@@ -123,11 +113,12 @@ internal sealed class AllocationOptions
 		=> stringBuilder.Append(bytes).Append(bytes == 1 ? " byte" : " bytes");
 
 	/// <summary>
-	///     Rejects a second limit, because it would silently replace the first one.
+	///     Replaces the limit of the same <paramref name="option" />, but rejects a limit of another option, because it
+	///     would silently replace the first one.
 	/// </summary>
 	private void SetLimit(long minimum, long maximum, string option)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_limitOption, option);
+		ThrowHelper.ThrowIfCompetingOption(_limitOption, option);
 		_limitOption = option;
 		_minimum = minimum;
 		_maximum = maximum;

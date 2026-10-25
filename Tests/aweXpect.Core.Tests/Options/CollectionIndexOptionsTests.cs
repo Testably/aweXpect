@@ -15,6 +15,18 @@ public class CollectionIndexOptionsTests
 	}
 
 	[Test]
+	public async Task AtIndex_WhenAtIndexFromEndIsSpecified_ShouldThrowInvalidOperationException()
+	{
+		CollectionIndexOptions sut = new();
+		sut.AtIndexFromEnd(1);
+
+		void Act() => sut.AtIndex(1);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("AtIndex cannot be combined with AtIndexFromEnd.");
+	}
+
+	[Test]
 	public async Task AtIndex_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		CollectionIndexOptions sut = new();
@@ -27,15 +39,14 @@ public class CollectionIndexOptionsTests
 	}
 
 	[Test]
-	public async Task AtIndex_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+	public async Task AtIndex_WhenSpecifiedTwice_ShouldUseTheLastIndex()
 	{
 		CollectionIndexOptions sut = new();
 		sut.AtIndex(1);
 
-		void Act() => sut.AtIndex(2);
+		sut.AtIndex(2);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("AtIndex cannot be specified more than once.");
+		await That(sut.Match.GetDescription()).IsEqualTo(" at index 2");
 	}
 
 	[Test]
@@ -239,15 +250,15 @@ public class CollectionIndexOptionsTests
 	}
 
 	[Test]
-	public async Task SetMatch_WithOption_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+	public async Task SetMatch_WithOption_WhenSpecifiedTwice_ShouldUseTheLastMatch()
 	{
 		CollectionIndexOptions sut = new();
+		MyMatch lastMatch = new();
 		sut.SetMatch(new MyMatch(), "AtMyIndex");
 
-		void Act() => sut.SetMatch(new MyMatch(), "AtMyIndex");
+		sut.SetMatch(lastMatch, "AtMyIndex");
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("AtMyIndex cannot be specified more than once.");
+		await That(sut.Match).IsSameAs(lastMatch);
 	}
 
 	private sealed class MyMatch : CollectionIndexOptions.IMatch

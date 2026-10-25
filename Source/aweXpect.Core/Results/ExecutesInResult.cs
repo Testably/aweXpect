@@ -22,7 +22,6 @@ public class ExecutesInResult<TResult>(
 	/// <remarks>
 	///     A cancellation still fails the expectation, because it aborts the execution instead of timing it.
 	/// </remarks>
-	/// <exception cref="InvalidOperationException">The exceptions are already specified.</exception>
 	public ExecutesInResult<TResult> AllowingExceptions(bool allowExceptions = true)
 	{
 		options.AllowingExceptions(allowExceptions);
@@ -32,7 +31,7 @@ public class ExecutesInResult<TResult>(
 	/// <summary>
 	///     …at most <paramref name="maximum" /> time.
 	/// </summary>
-	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
+	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
 	public TResult AtMost(TimeSpan maximum)
 	{
 		options.AtMost(maximum);
@@ -42,7 +41,7 @@ public class ExecutesInResult<TResult>(
 	/// <summary>
 	///     …at least <paramref name="minimum" /> time.
 	/// </summary>
-	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
+	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
 	public TResult AtLeast(TimeSpan minimum)
 	{
 		options.AtLeast(minimum);

@@ -1896,15 +1896,14 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Test]
-		public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		public async Task WhenSpecifiedTwice_ShouldNotThrow()
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 			sut.IgnoringInterspersedItems();
 
 			void Act() => sut.IgnoringInterspersedItems();
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("IgnoringInterspersedItems cannot be specified more than once.");
+			await That(Act).DoesNotThrow();
 		}
 
 		[Test]
@@ -1912,16 +1911,17 @@ public class CollectionMatchOptionsTests
 		[Arguments(true, false)]
 		[Arguments(false, true)]
 		[Arguments(false, false)]
-		public async Task WhenSpecifiedTwiceWithAValue_ShouldThrowInvalidOperationException(bool first, bool second)
+		public async Task WhenSpecifiedTwiceWithAValue_ShouldUseTheLastValue(bool first, bool second)
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			CollectionMatchOptions onlySecond = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			onlySecond.IgnoringInterspersedItems(second);
 			sut.IgnoringInterspersedItems(first);
 
-			void Act() => sut.IgnoringInterspersedItems(second);
+			sut.IgnoringInterspersedItems(second);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("IgnoringInterspersedItems cannot be specified more than once.")
-				.Because("the second value would silently replace the first one");
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None))
+				.IsEqualTo(onlySecond.GetExpectation("[1]", ExpectationGrammars.None));
 		}
 
 		[Test]
@@ -2367,15 +2367,14 @@ public class CollectionMatchOptionsTests
 	public class OptionTests
 	{
 		[Test]
-		public async Task IgnoringDuplicates_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		public async Task IgnoringDuplicates_WhenSpecifiedTwice_ShouldNotThrow()
 		{
 			CollectionMatchOptions sut = new();
 			sut.IgnoringDuplicates();
 
 			void Act() => sut.IgnoringDuplicates();
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("IgnoringDuplicates cannot be specified more than once.");
+			await That(Act).DoesNotThrow();
 		}
 
 		[Test]
@@ -2383,17 +2382,18 @@ public class CollectionMatchOptionsTests
 		[Arguments(true, false)]
 		[Arguments(false, true)]
 		[Arguments(false, false)]
-		public async Task IgnoringDuplicates_WhenSpecifiedTwiceWithAValue_ShouldThrowInvalidOperationException(
-			bool first, bool second)
+		public async Task IgnoringDuplicates_WhenSpecifiedTwiceWithAValue_ShouldUseTheLastValue(bool first,
+			bool second)
 		{
 			CollectionMatchOptions sut = new();
+			CollectionMatchOptions onlySecond = new();
+			onlySecond.IgnoringDuplicates(second);
 			sut.IgnoringDuplicates(first);
 
-			void Act() => sut.IgnoringDuplicates(second);
+			sut.IgnoringDuplicates(second);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("IgnoringDuplicates cannot be specified more than once.")
-				.Because("the second value would silently replace the first one");
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None))
+				.IsEqualTo(onlySecond.GetExpectation("[1]", ExpectationGrammars.None));
 		}
 
 		[Test]
@@ -2408,15 +2408,17 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Test]
-		public async Task InAnyOrder_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		public async Task InAnyOrder_WhenSpecifiedTwice_ShouldKeepTheAnyOrderMatch()
 		{
 			CollectionMatchOptions sut = new();
+			CollectionMatchOptions once = new();
+			once.InAnyOrder();
 			sut.InAnyOrder();
 
-			void Act() => sut.InAnyOrder();
+			sut.InAnyOrder();
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("InAnyOrder cannot be specified more than once.");
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None))
+				.IsEqualTo(once.GetExpectation("[1]", ExpectationGrammars.None));
 		}
 
 		[Test]
@@ -2435,15 +2437,19 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Test]
-		public async Task Properly_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains,
+			"contains collection [1] and at least one additional item")]
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
+			"is contained in collection [1] that has at least one additional item")]
+		public async Task Properly_WhenSpecifiedTwice_ShouldKeepTheProperRelation(
+			CollectionMatchOptions.EquivalenceRelations relation, string expectedPrefix)
 		{
-			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			CollectionMatchOptions sut = new(relation);
 			sut.Properly();
 
-			void Act() => sut.Properly();
+			sut.Properly();
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("Properly cannot be specified more than once.");
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None)).StartsWith(expectedPrefix);
 		}
 
 		[Test]

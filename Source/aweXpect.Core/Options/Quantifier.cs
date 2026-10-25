@@ -49,7 +49,7 @@ public class Quantifier
 	///     Verifies that it occurs at least <paramref name="minimum" /> times.
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="minimum" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
+	/// <exception cref="InvalidOperationException">Another quantifier is already specified.</exception>
 	public Quantifier AtLeast(int minimum)
 		=> Set(CountBounds.AtLeast(minimum), nameof(AtLeast));
 
@@ -57,7 +57,7 @@ public class Quantifier
 	///     Verifies that it occurs at most <paramref name="maximum" /> times.
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="maximum" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
+	/// <exception cref="InvalidOperationException">Another quantifier is already specified.</exception>
 	public Quantifier AtMost(int maximum)
 		=> Set(CountBounds.AtMost(maximum), nameof(AtMost));
 
@@ -68,7 +68,7 @@ public class Quantifier
 	///     The <paramref name="minimum" /> or the <paramref name="maximum" /> is negative, or the
 	///     <paramref name="maximum" /> is less than the <paramref name="minimum" />.
 	/// </exception>
-	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
+	/// <exception cref="InvalidOperationException">Another quantifier is already specified.</exception>
 	public Quantifier Between(int minimum, int maximum)
 		=> Set(CountBounds.Between(minimum, maximum), nameof(Between));
 
@@ -76,7 +76,7 @@ public class Quantifier
 	///     Verifies that it occurs fewer than <paramref name="maximum" /> times.
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="maximum" /> is not positive.</exception>
-	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
+	/// <exception cref="InvalidOperationException">Another quantifier is already specified.</exception>
 	public Quantifier LessThan(int maximum)
 		=> Set(CountBounds.LessThan(maximum), nameof(LessThan));
 
@@ -86,7 +86,7 @@ public class Quantifier
 	/// <exception cref="ArgumentOutOfRangeException">
 	///     The <paramref name="minimum" /> is negative or <see cref="int.MaxValue" />.
 	/// </exception>
-	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
+	/// <exception cref="InvalidOperationException">Another quantifier is already specified.</exception>
 	public Quantifier MoreThan(int minimum)
 		=> Set(CountBounds.MoreThan(minimum), nameof(MoreThan));
 
@@ -109,7 +109,7 @@ public class Quantifier
 	///     Verifies that it occurs exactly <paramref name="expected" /> times.
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="expected" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
+	/// <exception cref="InvalidOperationException">Another quantifier is already specified.</exception>
 	public Quantifier Exactly(int expected)
 		=> Exactly(expected, nameof(Exactly));
 
@@ -120,11 +120,12 @@ public class Quantifier
 		=> Set(CountBounds.Exactly(expected), option);
 
 	/// <summary>
-	///     Rejects a second quantifier, because it would silently replace the bounds of the first one.
+	///     Replaces the bounds of the same <paramref name="option" />, but rejects another quantifier, because it would
+	///     silently replace the bounds of the first one.
 	/// </summary>
 	private Quantifier Set(CountBounds bounds, string option)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_specifiedBy, option);
+		ThrowHelper.ThrowIfCompetingOption(_specifiedBy, option);
 		_specifiedBy = option;
 		_bounds = bounds;
 		return this;

@@ -27,19 +27,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	private bool _ignoreLeadingWhiteSpace;
 	private bool _ignoreNewlineStyle;
 	private bool _ignoreTrailingWhiteSpace;
-	private bool _isIgnoreCaseSpecified;
-	private bool _isIgnoreIndentationSpecified;
-	private bool _isIgnoreLeadingWhiteSpaceSpecified;
-	private bool _isIgnoreNewlineStyleSpecified;
-	private bool _isIgnoreTrailingWhiteSpaceSpecified;
-	private bool _isNormalizeWhiteSpaceSpecified;
 	private bool _normalizeWhiteSpace;
-
-	/// <summary>
-	///     The first specified option that changes the whitespace or the lines, which a match type without
-	///     <see cref="StringMatchSettingKinds.WhiteSpace" /> cannot honour.
-	/// </summary>
-	private string? _lineOption;
 
 	/// <summary>
 	///     The matcher of the evaluation for options returned by <see cref="ForEvaluation" />, otherwise the matcher for
@@ -78,14 +66,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		_ignoreLeadingWhiteSpace = options._ignoreLeadingWhiteSpace;
 		_ignoreNewlineStyle = options._ignoreNewlineStyle;
 		_ignoreTrailingWhiteSpace = options._ignoreTrailingWhiteSpace;
-		_isIgnoreCaseSpecified = options._isIgnoreCaseSpecified;
-		_isIgnoreIndentationSpecified = options._isIgnoreIndentationSpecified;
-		_isIgnoreLeadingWhiteSpaceSpecified = options._isIgnoreLeadingWhiteSpaceSpecified;
-		_isIgnoreNewlineStyleSpecified = options._isIgnoreNewlineStyleSpecified;
-		_isIgnoreTrailingWhiteSpaceSpecified = options._isIgnoreTrailingWhiteSpaceSpecified;
-		_isNormalizeWhiteSpaceSpecified = options._isNormalizeWhiteSpaceSpecified;
 		_normalizeWhiteSpace = options._normalizeWhiteSpace;
-		_lineOption = options._lineOption;
 		_matchType = options._matchType;
 		_matchTypeOption = options._matchTypeOption;
 		_matcher = matcher;
@@ -437,28 +418,100 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     <paramref name="optionName" /> in the exception when another match type is already specified.
 	/// </summary>
 	/// <remarks>
-	///     A setting that is already specified and that the <paramref name="matchType" /> does not support, see
-	///     <see cref="StringMatchType.SupportedSettings" />, is rejected, like a setting that is specified afterwards.
+	///     A match type with the same <paramref name="optionName" /> replaces the earlier one.<br />
+	///     The settings that are already specified and that the <paramref name="matchType" /> does not support, see
+	///     <see cref="StringMatchType.SupportedSettings" />, are rejected together in one exception, like a setting that
+	///     is specified afterwards.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">
-	///     A match type is already specified, or a specified setting is not supported by the
+	///     A match type with another name is already specified, or a specified setting is not supported by the
 	///     <paramref name="matchType" />.
 	/// </exception>
 	public StringEqualityOptions SetMatchType(StringMatchType matchType, string optionName)
 	{
 		matchType.ThrowIfNull();
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_matchTypeOption, optionName);
-		StringMatchSettingKinds supportedSettings = matchType.SupportedSettings;
-		ThrowIfNotSupported(supportedSettings, StringMatchSettingKinds.IgnoreCase,
-			_ignoreCase ? nameof(IgnoringCase) : null, optionName);
-		ThrowIfNotSupported(supportedSettings, StringMatchSettingKinds.Comparer,
-			_comparer is null ? null : nameof(Using), optionName);
-		ThrowIfNotSupported(supportedSettings, StringMatchSettingKinds.WhiteSpace, _lineOption, optionName);
+		ThrowHelper.ThrowIfCompetingOption(_matchTypeOption, optionName);
+		ThrowIfSpecifiedSettingsAreNotSupported(matchType.SupportedSettings, optionName);
 		_matchTypeOption = optionName;
 		_matchType = matchType;
 		_matcher = null;
 		return this;
 	}
+
+	/// <summary>
+	///     Rejects every specified setting that the match type of the <paramref name="matchTypeOption" /> does not
+	///     support, named in the order of the option methods, e.g.
+	///     <c>IgnoringIndentation and IgnoringNewlineStyle cannot be combined with AsBlock.</c>
+	/// </summary>
+	private void ThrowIfSpecifiedSettingsAreNotSupported(StringMatchSettingKinds supportedSettings,
+		string matchTypeOption)
+	{
+		if (GetUnsupportedSettings(supportedSettings) is { } options)
+		{
+			string names = options.Count == 1
+				? options[0]
+				: string.Join(", ", options.Take(options.Count - 1)) + " and " + options[^1];
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new InvalidOperationException(
+				$"{names} cannot be combined with {matchTypeOption}."));
+		}
+	}
+
+	/// <summary>
+	///     Returns the names of the specified settings that the <paramref name="supportedSettings" /> do not contain, in
+	///     the order of the option methods, or <see langword="null" /> when they contain all of them.
+	/// </summary>
+	private List<string>? GetUnsupportedSettings(StringMatchSettingKinds supportedSettings)
+	{
+		List<string>? options = null;
+		if (_ignoreCase && (supportedSettings & StringMatchSettingKinds.IgnoreCase) == 0)
+		{
+			AddOption(ref options, nameof(IgnoringCase));
+		}
+
+		if ((supportedSettings & StringMatchSettingKinds.WhiteSpace) == 0)
+		{
+			AddSpecifiedWhiteSpaceSettings(ref options);
+		}
+
+		if (_comparer is not null && (supportedSettings & StringMatchSettingKinds.Comparer) == 0)
+		{
+			AddOption(ref options, nameof(Using));
+		}
+
+		return options;
+	}
+
+	private void AddSpecifiedWhiteSpaceSettings(ref List<string>? options)
+	{
+		if (_ignoreIndentation)
+		{
+			AddOption(ref options, nameof(IgnoringIndentation));
+		}
+
+		if (_ignoreNewlineStyle)
+		{
+			AddOption(ref options, nameof(IgnoringNewlineStyle));
+		}
+
+		if (_ignoreLeadingWhiteSpace)
+		{
+			AddOption(ref options, nameof(IgnoringLeadingWhiteSpace));
+		}
+
+		if (_ignoreTrailingWhiteSpace)
+		{
+			AddOption(ref options, nameof(IgnoringTrailingWhiteSpace));
+		}
+
+		if (_normalizeWhiteSpace)
+		{
+			AddOption(ref options, nameof(NormalizingWhiteSpace));
+		}
+	}
+
+	private static void AddOption(ref List<string>? options, string option)
+		=> (options ??= []).Add(option);
 
 	/// <summary>
 	///     Rejects the specified <paramref name="option" /> of the <paramref name="setting" /> when the match type of
@@ -483,17 +536,12 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		=> GetMatcher().AppendContexts(contexts);
 
 	/// <summary>
-	///     Rejects a second call of the line <paramref name="option" />, and any line option in combination with a match
-	///     type that compares the lines on its own, e.g. <see cref="AsBlock()" />.
+	///     Rejects the line <paramref name="option" /> when it is enabled in combination with a match type that compares
+	///     the lines on its own, e.g. <see cref="AsBlock()" />.
 	/// </summary>
-	private void SpecifyLineOption(ref bool isSpecified, string option)
-	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(isSpecified, option);
-		ThrowIfNotSupported(_matchType.SupportedSettings, StringMatchSettingKinds.WhiteSpace, option,
-			_matchTypeOption);
-		_lineOption ??= option;
-		isSpecified = true;
-	}
+	private void ThrowIfLineOptionIsNotSupported(bool isEnabled, string option)
+		=> ThrowIfNotSupported(_matchType.SupportedSettings, StringMatchSettingKinds.WhiteSpace,
+			isEnabled ? option : null, _matchTypeOption);
 
 	/// <summary>
 	///     Get the expectations text.
@@ -735,13 +783,11 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Ignores casing when comparing the <see langword="string" />s.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">
-	///     The casing is already specified, a custom comparer is already set via
-	///     <see cref="Using(IEqualityComparer{string})" />, or the match type does not support the casing, see
-	///     <see cref="StringMatchType.SupportedSettings" />.
+	///     A custom comparer is already set via <see cref="Using(IEqualityComparer{string})" />, or the match type does
+	///     not support the casing, see <see cref="StringMatchType.SupportedSettings" />.
 	/// </exception>
 	public StringEqualityOptions IgnoringCase(bool ignoreCase = true)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isIgnoreCaseSpecified, nameof(IgnoringCase));
 		if (ignoreCase && _comparer is not null)
 		{
 			throw CaseAndComparerConflict();
@@ -749,7 +795,6 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 		ThrowIfNotSupported(_matchType.SupportedSettings, StringMatchSettingKinds.IgnoreCase,
 			ignoreCase ? nameof(IgnoringCase) : null, _matchTypeOption);
-		_isIgnoreCaseSpecified = true;
 		_ignoreCase = ignoreCase;
 		_matcher = null;
 		return this;
@@ -768,11 +813,11 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     The expected value is transformed as well, which also applies to wildcard and regex patterns.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">
-	///     The indentation is already specified, or the expected value is matched as a block via <see cref="AsBlock()" />.
+	///     The indentation is ignored and the expected value is matched as a block via <see cref="AsBlock()" />.
 	/// </exception>
 	public StringEqualityOptions IgnoringIndentation(bool ignoreIndentation = true)
 	{
-		SpecifyLineOption(ref _isIgnoreIndentationSpecified, nameof(IgnoringIndentation));
+		ThrowIfLineOptionIsNotSupported(ignoreIndentation, nameof(IgnoringIndentation));
 		_ignoreIndentation = ignoreIndentation;
 		return this;
 	}
@@ -785,12 +830,11 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     comparing them.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">
-	///     The newline style is already specified, or the expected value is matched as a block via
-	///     <see cref="AsBlock()" />.
+	///     The newline style is ignored and the expected value is matched as a block via <see cref="AsBlock()" />.
 	/// </exception>
 	public StringEqualityOptions IgnoringNewlineStyle(bool ignoreNewlineStyle = true)
 	{
-		SpecifyLineOption(ref _isIgnoreNewlineStyleSpecified, nameof(IgnoringNewlineStyle));
+		ThrowIfLineOptionIsNotSupported(ignoreNewlineStyle, nameof(IgnoringNewlineStyle));
 		_ignoreNewlineStyle = ignoreNewlineStyle;
 		return this;
 	}
@@ -805,12 +849,11 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     original subject, so it also counts the removed whitespace.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">
-	///     The leading whitespace is already specified, or the expected value is matched as a block via
-	///     <see cref="AsBlock()" />.
+	///     The leading whitespace is ignored and the expected value is matched as a block via <see cref="AsBlock()" />.
 	/// </exception>
 	public StringEqualityOptions IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true)
 	{
-		SpecifyLineOption(ref _isIgnoreLeadingWhiteSpaceSpecified, nameof(IgnoringLeadingWhiteSpace));
+		ThrowIfLineOptionIsNotSupported(ignoreLeadingWhiteSpace, nameof(IgnoringLeadingWhiteSpace));
 		_ignoreLeadingWhiteSpace = ignoreLeadingWhiteSpace;
 		return this;
 	}
@@ -820,12 +863,11 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     according to the <paramref name="ignoreTrailingWhiteSpace" /> parameter.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">
-	///     The trailing whitespace is already specified, or the expected value is matched as a block via
-	///     <see cref="AsBlock()" />.
+	///     The trailing whitespace is ignored and the expected value is matched as a block via <see cref="AsBlock()" />.
 	/// </exception>
 	public StringEqualityOptions IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true)
 	{
-		SpecifyLineOption(ref _isIgnoreTrailingWhiteSpaceSpecified, nameof(IgnoringTrailingWhiteSpace));
+		ThrowIfLineOptionIsNotSupported(ignoreTrailingWhiteSpace, nameof(IgnoringTrailingWhiteSpace));
 		_ignoreTrailingWhiteSpace = ignoreTrailingWhiteSpace;
 		return this;
 	}
@@ -848,12 +890,11 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     refers to them.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">
-	///     The whitespace normalization is already specified, or the expected value is matched as a block via
-	///     <see cref="AsBlock()" />.
+	///     The whitespace is normalized and the expected value is matched as a block via <see cref="AsBlock()" />.
 	/// </exception>
 	public StringEqualityOptions NormalizingWhiteSpace(bool normalizeWhiteSpace = true)
 	{
-		SpecifyLineOption(ref _isNormalizeWhiteSpaceSpecified, nameof(NormalizingWhiteSpace));
+		ThrowIfLineOptionIsNotSupported(normalizeWhiteSpace, nameof(NormalizingWhiteSpace));
 		_normalizeWhiteSpace = normalizeWhiteSpace;
 		return this;
 	}
@@ -866,17 +907,17 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// </summary>
 	/// <remarks>
 	///     Without a comparer, the <see cref="StringComparer.Ordinal" /> or <see cref="StringComparer.OrdinalIgnoreCase" />
-	///     is used depending on whether the casing is ignored.
+	///     is used depending on whether the casing is ignored.<br />
+	///     A later comparer replaces the earlier one.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">
-	///     A comparer is already set, the casing is already ignored via <see cref="IgnoringCase(bool)" />, or the match
-	///     type does not support a comparer, see <see cref="StringMatchType.SupportedSettings" />, e.g. a regex or
-	///     wildcard pattern, which the regex engine matches without a comparer.
+	///     The casing is already ignored via <see cref="IgnoringCase(bool)" />, or the match type does not support a
+	///     comparer, see <see cref="StringMatchType.SupportedSettings" />, e.g. a regex or wildcard pattern, which the
+	///     regex engine matches without a comparer.
 	/// </exception>
 	public StringEqualityOptions Using(IEqualityComparer<string> comparer)
 	{
 		comparer.ThrowIfNull();
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_comparer is not null, nameof(Using));
 		if (_ignoreCase)
 		{
 			throw CaseAndComparerConflict();

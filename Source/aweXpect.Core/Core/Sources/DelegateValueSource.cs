@@ -74,7 +74,7 @@ internal class DelegateValueSource<TValue> : IValueSource<DelegateValue<TValue>>
 	/// <inheritdoc cref="IAllocationMeasuringSource.MeasureAllocations(AllocationOptions)" />
 	public void MeasureAllocations(AllocationOptions options)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_allocationOptions is not null, "Allocates");
+		ThrowHelper.ThrowIfAlreadySpecified(_allocationOptions is not null, "Allocates");
 		_allocationOptions = options;
 	}
 

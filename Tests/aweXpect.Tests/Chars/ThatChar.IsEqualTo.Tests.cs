@@ -30,18 +30,21 @@ public sealed partial class ThatChar
 			[Arguments(true, false)]
 			[Arguments(false, true)]
 			[Arguments(false, false)]
-			public async Task WhenIgnoringCaseIsSpecifiedTwice_ShouldThrowInvalidOperationException(
-				bool first, bool second)
+			public async Task WhenIgnoringCaseIsSpecifiedTwice_ShouldUseTheLastValue(bool first, bool second)
 			{
 				char subject = 'a';
 				CharEqualityResult<char, IThat<char>> sut = That(subject).IsEqualTo('A');
 				_ = sut.IgnoringCase(first);
+				_ = sut.IgnoringCase(second);
 
-				void Act() => sut.IgnoringCase(second);
+				async Task Act() => await sut;
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("IgnoringCase cannot be specified more than once.")
-					.Because("the second value would silently replace the first one");
+				await That(Act).Throws<FailException>().OnlyIf(!second)
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 'A',
+					             but it was 'a'
+					             """);
 			}
 
 			[Test]

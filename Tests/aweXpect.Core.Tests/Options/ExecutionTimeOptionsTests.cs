@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using aweXpect.Chronology;
+using aweXpect.Core.Helpers;
 using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
@@ -8,17 +8,14 @@ namespace aweXpect.Core.Tests.Options;
 public class ExecutionTimeOptionsTests
 {
 	[Test]
-	public async Task AllowingExceptions_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+	public async Task AllowingExceptions_WhenSpecifiedTwice_ShouldUseTheLastValue()
 	{
 		ExecutionTimeOptions sut = new();
 		sut.AllowingExceptions(true);
 
-		void Act() => sut.AllowingExceptions(false);
+		sut.AllowingExceptions(false);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("AllowingExceptions cannot be specified more than once.");
-		await That(sut.AllowsException(new InvalidOperationException())).IsTrue()
-			.Because("the rejected second call must keep the first setting");
+		await That(sut.AllowsException(new InvalidOperationException())).IsFalse();
 	}
 
 	[Test]
@@ -117,16 +114,16 @@ public class ExecutionTimeOptionsTests
 	}
 
 	[Test]
-	public async Task WhenApproximatelyIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+	public async Task WhenApproximatelyIsSpecifiedTwice_ShouldUseTheLastLimit()
 	{
 		ExecutionTimeOptions sut = new();
 		sut.Approximately(1.Seconds(), 1.Seconds());
 
-		void Act() => sut.Approximately(2.Seconds(), 1.Seconds());
+		sut.Approximately(5.Seconds(), 1.Seconds());
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Within cannot be specified more than once.")
-			.Because("the tolerance is specified with Within");
+		await That(sut.IsWithinLimit(1.Seconds())).IsFalse();
+		await That(sut.IsWithinLimit(5.Seconds())).IsTrue();
+		await That(((ITimeoutBound)sut).UpperBound).IsEqualTo(6.Seconds());
 	}
 
 	[Test]
@@ -160,34 +157,42 @@ public class ExecutionTimeOptionsTests
 	}
 
 	[Test]
-	public async Task WhenTheLimitIsRejected_ShouldKeepTheFirstLimitAndNotReportItsUpperBound()
+	public async Task WhenTheLimitIsRejected_ShouldKeepTheFirstLimitAndItsUpperBound()
 	{
-		List<TimeSpan> upperBounds = [];
 		ExecutionTimeOptions sut = new();
-		sut.OnUpperBound(upperBounds.Add);
 		sut.AtMost(1.Seconds());
 
-		void Act() => sut.AtMost(3.Seconds());
+		void Act() => sut.Between(1.Seconds(), 3.Seconds());
 
-		await That(Act).Throws<InvalidOperationException>();
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Between cannot be combined with AtMost.");
 		await That(sut.IsWithinLimit(2.Seconds())).IsFalse();
-		await That(upperBounds).IsEqualTo([1.Seconds(),]);
+		await That(((ITimeoutBound)sut).UpperBound).IsEqualTo(1.Seconds());
 	}
 
 	[Test]
-	[Arguments("AtLeast")]
-	[Arguments("AtMost")]
-	[Arguments("Between")]
-	[Arguments("Within")]
-	public async Task WhenTheSameLimitIsSpecifiedTwice_ShouldThrowInvalidOperationException(string option)
+	[Arguments("AtLeast", "in at least 0:05", null)]
+	[Arguments("AtMost", "in at most 0:05", 5.0)]
+	[Arguments("Between", "in between 0:05 and 0:06", 6.0)]
+	[Arguments("Within", "within 0:05", 5.0)]
+	public async Task WhenTheSameLimitIsSpecifiedTwice_ShouldUseTheLastLimit(string option, string expectedText,
+		double? expectedUpperBoundSeconds)
 	{
 		ExecutionTimeOptions sut = new();
 		Specify(sut, option);
 
-		void Act() => Specify(sut, option);
+		_ = option switch
+		{
+			"AtLeast" => sut.AtLeast(5.Seconds()),
+			"AtMost" => sut.AtMost(5.Seconds()),
+			"Between" => sut.Between(5.Seconds(), 6.Seconds()),
+			_ => sut.Within(5.Seconds()),
+		};
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage($"{option} cannot be specified more than once.");
+		StringBuilder sb = new();
+		sut.AppendTo(sb, "in ");
+		await That(sb.ToString()).IsEqualTo(expectedText);
+		await That(((ITimeoutBound)sut).UpperBound?.TotalSeconds).IsEqualTo(expectedUpperBoundSeconds);
 	}
 
 	private static ExecutionTimeOptions Specify(ExecutionTimeOptions sut, string option)

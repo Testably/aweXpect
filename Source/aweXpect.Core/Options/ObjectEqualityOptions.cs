@@ -245,7 +245,7 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	/// </summary>
 	/// <remarks>
 	///     Only aweXpect.Core sets the match type, so that every option sets it through
-	///     <see cref="SetMatchType(ObjectMatchType{TSubject}, string)" /> and is checked to be specified only once.
+	///     <see cref="SetMatchType(ObjectMatchType{TSubject}, string)" /> and is checked against a competing option.
 	/// </remarks>
 	protected ObjectMatchType<TSubject> MatchType
 	{
@@ -386,8 +386,11 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	///     Specifies the <paramref name="matchType" /> of the option named <paramref name="optionName" /> to use for
 	///     matching two objects.
 	/// </summary>
+	/// <remarks>
+	///     A match type of the same option replaces the earlier one.
+	/// </remarks>
 	/// <exception cref="InvalidOperationException">
-	///     Another option already specified how two objects are compared, or the same option was already specified.
+	///     Another option already specified how two objects are compared.
 	/// </exception>
 	public ObjectEqualityOptions<TSubject> SetMatchType(ObjectMatchType<TSubject> matchType, string optionName)
 	{
@@ -399,11 +402,11 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	}
 
 	/// <summary>
-	///     Rejects the option named <paramref name="optionName" /> when an option already specified how two objects are
-	///     compared, so that a subclass can check this before it validates the value of the option.
+	///     Rejects the option named <paramref name="optionName" /> when another option already specified how two objects
+	///     are compared, so that a subclass can check this before it validates the value of the option.
 	/// </summary>
 	private protected void ThrowIfMatchTypeIsSpecified(string optionName)
-		=> ThrowHelper.ThrowIfOptionIsAlreadySpecified(_matchTypeOption, optionName);
+		=> ThrowHelper.ThrowIfCompetingOption(_matchTypeOption, optionName);
 
 	/// <summary>
 	///     Returns the expectation string, e.g. <c>be equal to {expectedExpression}</c>.

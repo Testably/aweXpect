@@ -40,7 +40,7 @@ public partial class StringEqualityOptions
 	///     Interprets the expected <see langword="string" /> as <see cref="Regex" /> pattern.
 	/// </summary>
 	/// <exception cref="System.InvalidOperationException">
-	///     A custom comparer is already set, which the regex engine cannot honour, or a match type is already specified.
+	///     A custom comparer is already set, which the regex engine cannot honour, or another match type is already specified.
 	/// </exception>
 	public StringEqualityOptions AsRegex()
 	{
@@ -57,7 +57,7 @@ public partial class StringEqualityOptions
 	///     casing is ignored via <see cref="IgnoringCase(bool)" />.
 	/// </remarks>
 	/// <exception cref="System.InvalidOperationException">
-	///     A custom comparer is already set, which the regex engine cannot honour, or a match type is already specified.
+	///     A custom comparer is already set, which the regex engine cannot honour, or another match type is already specified.
 	/// </exception>
 	/// <exception cref="System.ArgumentOutOfRangeException">
 	///     The <paramref name="regexOptions" /> are not a valid combination of <see cref="RegexOptions" />.

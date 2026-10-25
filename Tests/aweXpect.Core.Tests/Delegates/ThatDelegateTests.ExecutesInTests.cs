@@ -1,4 +1,6 @@
 using aweXpect.Chronology;
+using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Delegates;
 using aweXpect.Results;
 
@@ -63,43 +65,50 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Test]
-		public async Task AtMost_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		public async Task AtMost_WhenSpecifiedTwice_ShouldUseTheLastMaximum()
 		{
-			Action @delegate = () => { };
+			VirtualTimeSystem time = new();
+			Action @delegate = () => time.Advance(2.Seconds());
 			ExecutesInResult<AndResult<ThatDelegate.WithoutValue>> sut = That(@delegate).ExecutesIn();
 			_ = sut.AtMost(1.Seconds());
 
-			void Act() => sut.AtMost(2.Seconds());
+			async Task Act() => await sut.AtMost(3.Seconds()).WithTimeSystem(time);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("AtMost cannot be specified more than once.");
+			await That(Act).DoesNotThrow()
+				.Because("the later maximum replaces the earlier one, also as the timeout");
 		}
 
 		[Test]
-		public async Task AtMost_WithValue_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		public async Task AtMost_WithValue_WhenSpecifiedTwice_ShouldUseTheLastMaximum()
 		{
-			Func<int> @delegate = () => 1;
+			VirtualTimeSystem time = new();
+			Func<int> @delegate = () =>
+			{
+				time.Advance(2.Seconds());
+				return 1;
+			};
 			ExecutesInResult<AndResult<ThatDelegate.WithValue<int>>> sut = That(@delegate).ExecutesIn();
 			_ = sut.AtMost(1.Seconds());
 
-			void Act() => sut.AtMost(2.Seconds());
+			async Task Act() => await sut.AtMost(3.Seconds()).WithTimeSystem(time);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("AtMost cannot be specified more than once.");
+			await That(Act).DoesNotThrow()
+				.Because("the later maximum replaces the earlier one, also as the timeout");
 		}
 
 		[Test]
-		public async Task Between_WhenAndIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+		public async Task Between_WhenAndIsSpecifiedTwice_ShouldUseTheLastRange()
 		{
-			Action @delegate = () => { };
+			VirtualTimeSystem time = new();
+			Action @delegate = () => time.Advance(2500.Milliseconds());
 			BetweenResult<AndResult<ThatDelegate.WithoutValue>, TimeSpan> sut =
 				That(@delegate).ExecutesIn().Between(1.Seconds());
 			_ = sut.And(2.Seconds());
 
-			void Act() => sut.And(3.Seconds());
+			async Task Act() => await sut.And(3.Seconds()).WithTimeSystem(time);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("Between cannot be specified more than once.");
+			await That(Act).DoesNotThrow()
+				.Because("the later range replaces the earlier one, also as the timeout");
 		}
 
 		[Test]
@@ -189,17 +198,18 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Test]
-		public async Task Within_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		public async Task Within_WhenSpecifiedTwice_ShouldUseTheLastTolerance()
 		{
-			Action @delegate = () => { };
+			VirtualTimeSystem time = new();
+			Action @delegate = () => time.Advance(3.Seconds());
 			ExecutesInToleranceResult<AndResult<ThatDelegate.WithoutValue>> sut =
 				That(@delegate).ExecutesIn(1.Seconds());
 			_ = sut.Within(1.Seconds());
 
-			void Act() => sut.Within(2.Seconds());
+			async Task Act() => await sut.Within(3.Seconds()).WithTimeSystem(time);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("Within cannot be specified more than once.");
+			await That(Act).DoesNotThrow()
+				.Because("the later tolerance replaces the earlier one, also as the timeout");
 		}
 
 		[Test]

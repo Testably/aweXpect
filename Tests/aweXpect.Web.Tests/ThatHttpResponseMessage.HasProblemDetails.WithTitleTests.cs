@@ -34,32 +34,6 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
-			public async Task WhenTitleIsSpecifiedTwice_ShouldThrowInvalidOperationException()
-			{
-				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
-
-				async Task Act()
-					=> await That(subject).HasProblemDetailsContent().WithTitle("foo").WithTitle("bar");
-
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("WithTitle cannot be specified more than once.")
-					.Because("the second title would silently replace the first one");
-			}
-
-			[Test]
-			public async Task WhenTitleIsSpecifiedTwiceAroundStatus_ShouldThrowInvalidOperationException()
-			{
-				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
-
-				async Task Act()
-					=> await That(subject).HasProblemDetailsContent().WithTitle("foo").WithStatus(500).WithTitle("bar");
-
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("WithTitle cannot be specified more than once.")
-					.Because("the second title would silently replace the first one");
-			}
-
-			[Test]
 			public async Task WhenTitleIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -398,6 +372,46 @@ public sealed partial class ThatHttpResponseMessage
 					                 "type": "my-type"
 					               }
 					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenTitleIsSpecifiedTwice_ShouldUseTheLastTitle()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "title": "baz"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithTitle("foo").WithTitle("bar");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("*has a ProblemDetails content with any type and title \"bar\",*but it had title \"baz\"*")
+					.AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenTitleIsSpecifiedTwiceAroundStatus_ShouldUseTheLastTitleInItsPlace()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "title": "baz",
+					               "status": 500
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithTitle("foo").WithStatus(500).WithTitle("bar");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage(
+						"*has a ProblemDetails content with any type, title \"bar\" and status 500,*but it had title \"baz\"*")
+					.AsWildcard();
 			}
 
 			[Test]

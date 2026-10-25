@@ -4735,7 +4735,7 @@ public sealed partial class ThatEnumerable
 			[Arguments(true, false)]
 			[Arguments(false, true)]
 			[Arguments(false, false)]
-			public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException(bool first, bool second)
+			public async Task WhenSpecifiedTwice_ShouldUseTheLastValue(bool first, bool second)
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
 				int[] expected = [1, 3,];
@@ -4744,9 +4744,18 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).Contains(expected)
 						.IgnoringInterspersedItems(first).IgnoringInterspersedItems(second);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("IgnoringInterspersedItems cannot be specified more than once.")
-					.Because("the second value would silently replace the first one");
+				await That(Act).Throws<FailException>().OnlyIf(!second)
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous,
+					             but it contained item 2 at index 1 instead of 3
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [1, 3]
+					             """);
 			}
 
 			[Test]

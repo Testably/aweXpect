@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using aweXpect.Core.Helpers;
-using aweXpect.Results;
 
 namespace aweXpect.Options;
 
@@ -25,11 +24,12 @@ public class CollectionOrderOptions<TItem>
 	/// <summary>
 	///     Set the comparer to use to compare the order of items.
 	/// </summary>
-	/// <exception cref="InvalidOperationException">A comparer is already set.</exception>
+	/// <remarks>
+	///     A later comparer replaces the earlier one.
+	/// </remarks>
 	public CollectionOrderOptions<TItem> SetComparer(IComparer<TItem> comparer)
 	{
 		comparer.ThrowIfNull();
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_comparer is not null, nameof(CollectionOrderResult<,,>.Using));
 		_comparer = comparer;
 		return this;
 	}

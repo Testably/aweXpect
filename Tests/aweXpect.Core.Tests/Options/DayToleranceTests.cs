@@ -133,29 +133,28 @@ public class DayToleranceTests
 	}
 
 	[Test]
-	public async Task WhenToleranceIsSetTwice_ShouldThrowInvalidOperationException()
+	public async Task WhenToleranceIsSetTwice_ShouldUseTheLastTolerance()
 	{
 		DayTolerance sut = new();
 		sut.Within(1.Days());
 
-		void Act() => sut.Within(2.Days());
+		sut.Within(2.Days());
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Within cannot be specified more than once.")
-			.Because("the second tolerance would silently replace the first one");
+		await That(sut.Tolerance).IsEqualTo(2.Days());
 	}
 
 	[Test]
-	public async Task WhenToleranceIsSetTwice_WithNotWholeDays_ShouldThrowInvalidOperationException()
+	public async Task WhenToleranceIsSetTwice_WithNotWholeDays_ShouldThrowArgumentOutOfRangeException()
 	{
 		DayTolerance sut = new();
 		sut.Within(1.Days());
 
 		void Act() => sut.Within(12.Hours());
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Within cannot be specified more than once.")
-			.Because("the repetition is the misuse, whatever the second tolerance is");
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithMessage("The tolerance must be a whole number of days.").AsPrefix();
+		await That(sut.Tolerance).IsEqualTo(1.Days())
+			.Because("the rejected tolerance must leave the earlier one in place");
 	}
 
 	[Test]

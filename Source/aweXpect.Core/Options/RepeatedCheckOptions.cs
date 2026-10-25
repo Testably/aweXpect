@@ -52,14 +52,13 @@ public class RepeatedCheckOptions
 	///     Allows a <paramref name="timeout" /> until the condition must be met.
 	/// </summary>
 	/// <remarks>
-	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> imposes no limit.
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> imposes no limit.<br />
+	///     A later timeout replaces the earlier one.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
 	public RepeatedCheckOptions Within(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isTimeoutSpecified, nameof(Within));
 		_isTimeoutSpecified = true;
 		Timeout = timeout;
 		return this;
@@ -69,10 +68,10 @@ public class RepeatedCheckOptions
 	///     Sets the interval in which the condition should be checked.
 	/// </summary>
 	/// <remarks>
-	///     Defaults to <c>Customize.aweXpect.Settings().DefaultCheckInterval</c> if not specified.
+	///     Defaults to <c>Customize.aweXpect.Settings().DefaultCheckInterval</c> if not specified.<br />
+	///     A later interval replaces the earlier one.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="interval" /> is not positive.</exception>
-	/// <exception cref="InvalidOperationException">An interval is already set.</exception>
 	public RepeatedCheckOptions CheckEvery(TimeSpan interval)
 	{
 		if (interval <= TimeSpan.Zero)
@@ -80,7 +79,6 @@ public class RepeatedCheckOptions
 			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(interval), "The interval must be positive."));
 		}
 
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_interval is not null, nameof(CheckEvery));
 		_interval = interval;
 		return this;
 	}

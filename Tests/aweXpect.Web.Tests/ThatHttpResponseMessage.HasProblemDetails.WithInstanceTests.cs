@@ -9,32 +9,6 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class WithInstanceTests
 		{
 			[Test]
-			public async Task WhenInstanceIsSpecifiedTwice_ShouldThrowInvalidOperationException()
-			{
-				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
-
-				async Task Act()
-					=> await That(subject).HasProblemDetailsContent().WithInstance("foo").WithInstance("bar");
-
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("WithInstance cannot be specified more than once.")
-					.Because("the second instance would silently replace the first one");
-			}
-
-			[Test]
-			public async Task WhenInstanceIsSpecifiedTwiceAroundStatus_ShouldThrowInvalidOperationException()
-			{
-				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
-
-				async Task Act()
-					=> await That(subject).HasProblemDetailsContent().WithInstance("foo").WithStatus(500).WithInstance("bar");
-
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("WithInstance cannot be specified more than once.")
-					.Because("the second instance would silently replace the first one");
-			}
-
-			[Test]
 			public async Task WhenInstanceIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -58,6 +32,48 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("instance").And
 					.WithMessage("The 'instance' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenInstanceIsSpecifiedTwice_ShouldUseTheLastInstance()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "instance": "baz"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithInstance("foo").WithInstance("bar");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage(
+						"*has a ProblemDetails content with any type and instance \"bar\",*but it had instance \"baz\"*")
+					.AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenInstanceIsSpecifiedTwiceAroundStatus_ShouldUseTheLastInstanceInItsPlace()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "instance": "baz",
+					               "status": 500
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithInstance("foo").WithStatus(500)
+						.WithInstance("bar");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage(
+						"*has a ProblemDetails content with any type, instance \"bar\" and status 500,*but it had instance \"baz\"*")
+					.AsWildcard();
 			}
 
 			[Test]

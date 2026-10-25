@@ -64,15 +64,14 @@ public sealed partial class ThatDelegate
 			}
 
 			[Test]
-			public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+			public async Task WhenSpecifiedTwice_ShouldWarmUpOnlyOnce()
 			{
-				Action @delegate = () => { };
+				int calls = 0;
+				Func<int> @delegate = () => ++calls;
 
-				async Task Act()
-					=> await That(@delegate).Allocates().AfterWarmUp().AfterWarmUp().Nothing();
+				await That(@delegate).Allocates().AfterWarmUp().AfterWarmUp().Nothing();
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("AfterWarmUp cannot be specified more than once.");
+				await That(calls).IsEqualTo(2);
 			}
 
 			[Test]
@@ -271,15 +270,20 @@ public sealed partial class ThatDelegate
 			}
 
 			[Test]
-			public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+			public async Task WhenSpecifiedTwice_ShouldUseTheLastValue()
 			{
-				Action @delegate = () => { };
+				Action @delegate = () => throw new MyException();
 
 				async Task Act()
-					=> await That(@delegate).Allocates().AllowingExceptions().AllowingExceptions().Nothing();
+					=> await That(@delegate).Allocates().AllowingExceptions().AllowingExceptions(false).AtMost(1_000_000);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("AllowingExceptions cannot be specified more than once.");
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that @delegate
+					              allocates at most 1000000 bytes,
+					              but it did throw a MyException:
+					                {nameof(WhenSpecifiedTwice_ShouldUseTheLastValue)}
+					              """);
 			}
 		}
 	}

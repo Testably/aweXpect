@@ -335,17 +335,17 @@ public class ObjectEqualityWithToleranceOptionsTests
 	}
 
 	[Test]
-	public async Task Within_WhenToleranceIsSpecified_ShouldThrowInvalidOperationException()
+	public async Task Within_WhenToleranceIsSpecified_ShouldUseTheLastTolerance()
 	{
-		ObjectEqualityWithToleranceOptions<double, double> sut =
+		ObjectEqualityWithToleranceOptions<int, int> sut =
 			new((a, e, t) => Math.Abs(a - e) <= t);
-		sut.Within(0.1);
+		sut.Within(1).UseRelativeTolerance((t, e) => t * e / 100, "%");
 
-		void Act() => sut.Within(0.2);
+		sut.Within(5);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Within cannot be specified more than once.")
-			.Because("the second tolerance would silently replace the first one");
+		await That(sut.GetExpectation("100", ExpectationGrammars.None)).IsEqualTo("is equal to 100 ± 5")
+			.Because("the later tolerance also replaces the earlier relative tolerance");
+		await That(await sut.AreConsideredEqual(1, 6)).IsTrue();
 	}
 
 	[Test]
@@ -375,7 +375,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 	}
 
 	[Test]
-	public async Task Within_WithToleranceValidation_WhenToleranceIsSpecifiedTwice_ShouldReportTheRepetition()
+	public async Task Within_WithToleranceValidation_WhenToleranceIsSpecifiedTwice_ShouldValidateTheLaterTolerance()
 	{
 		ObjectEqualityWithToleranceOptions<int, int> sut =
 			new ObjectEqualityWithToleranceOptions<int, int>((a, e, t) => Math.Abs(a - e) <= t)
@@ -390,9 +390,10 @@ public class ObjectEqualityWithToleranceOptionsTests
 
 		void Act() => sut.Within(3);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Within cannot be specified more than once.")
-			.Because("the repetition is the misuse, whatever the second tolerance is");
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithMessage("The tolerance must be even.").AsPrefix();
+		await That(await sut.AreConsideredEqual(1, 3)).IsTrue()
+			.Because("the rejected tolerance must leave the earlier one in place");
 	}
 
 	[Test]

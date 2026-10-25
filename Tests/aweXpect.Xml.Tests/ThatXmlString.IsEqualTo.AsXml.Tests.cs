@@ -328,13 +328,13 @@ public sealed partial class ThatXmlString
 				}
 
 				[Test]
-				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+				public async Task WhenSpecifiedTwice_ShouldUseTheLastXmlOptions()
 				{
 					async Task Act()
-						=> await That("<a/>").IsEqualTo("<a/>").AsXml().AsXml();
+						=> await That("<a createdAt=\"1\"/>").IsEqualTo("<a createdAt=\"2\"/>").AsXml()
+							.AsXml(o => o.IgnoringMember("@createdAt"));
 
-					await That(Act).Throws<InvalidOperationException>()
-						.WithMessage("AsXml cannot be specified more than once.");
+					await That(Act).DoesNotThrow();
 				}
 
 				[Test]

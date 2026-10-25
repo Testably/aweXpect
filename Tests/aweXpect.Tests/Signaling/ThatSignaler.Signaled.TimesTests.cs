@@ -1,4 +1,6 @@
 ﻿using aweXpect.Core;
+using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Signaling;
 
 namespace aweXpect.Tests;
@@ -118,15 +120,21 @@ public sealed partial class ThatSignaler
 			}
 
 			[Test]
-			public async Task WhenWithinIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			public async Task WhenWithinIsSpecifiedTwice_ShouldUseTheLastTimeout()
 			{
 				Signaler signaler = new();
+				signaler.Signal();
 
 				async Task Act() =>
-					await That(signaler).Signaled(2.Times()).Within(1.Seconds()).Within(50.Milliseconds());
+					await That(signaler).Signaled(2.Times()).Within(1.Seconds()).Within(50.Milliseconds())
+						.WithTimeSystem(new VirtualTimeSystem());
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Within cannot be specified more than once.");
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has recorded the callback at least twice within 0:00.050,
+					             but it was only recorded once within *
+					             """).AsWildcard();
 			}
 		}
 	}

@@ -126,29 +126,58 @@ public sealed partial class ThatObject
 			}
 
 			[Test]
-			[Arguments(false)]
-			[Arguments(true)]
-			public async Task WhenEquivalentIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool negated)
+			public async Task WhenEquivalentIsSpecifiedTwice_ShouldUseTheLastOptions()
 			{
-				OuterClass subject = new();
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+				MyClass expected = new()
+				{
+					Value = 2,
+				};
 
 				async Task Act()
-				{
-					if (negated)
-					{
-						await That(subject).IsNotEqualTo(subject).Equivalent()
-							.Equivalent(o => o);
-					}
-					else
-					{
-						await That(subject).IsEqualTo(subject).Equivalent()
-							.Equivalent(o => o);
-					}
-				}
+					=> await That(subject).IsEqualTo(expected)
+						.Equivalent(o => o.IgnoringMember("Value"))
+						.Equivalent(o => o.IgnoringMember("PlayCount"));
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Equivalent cannot be specified more than once.")
-					.Because("the second equivalency options would silently replace the first ones");
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to ThatObject.MyClass {
+					                 Value = 2
+					               },
+					             but it was not:
+					               Property Value differed:
+					                   Actual: 1
+					                 Expected: 2
+
+					             Equivalency options:
+					              - include public fields and properties
+					              - ignore members: ["PlayCount"]
+					                "PlayCount" matched no member
+					             """);
+			}
+
+			[Test]
+			public async Task WhenEquivalentIsSpecifiedTwice_WhenTheLastOptionsMatch_ShouldSucceed()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+				MyClass expected = new()
+				{
+					Value = 2,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected)
+						.Equivalent()
+						.Equivalent(o => o.IgnoringMember("Value"));
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Test]

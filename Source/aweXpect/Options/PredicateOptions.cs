@@ -1,6 +1,5 @@
 using System;
 using aweXpect.Core;
-using aweXpect.Helpers;
 
 namespace aweXpect.Options;
 
@@ -14,7 +13,6 @@ internal class PredicateOptions<TItem>
 
 	internal void SetPredicate(Func<TItem, bool> predicate, string predicateDescription)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_predicate is not null, "Matching");
 		_predicate = predicate;
 		_predicateDescription = predicateDescription;
 	}

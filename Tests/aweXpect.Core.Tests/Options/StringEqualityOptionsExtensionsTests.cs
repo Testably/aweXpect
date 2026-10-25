@@ -18,14 +18,20 @@ public sealed class StringEqualityOptionsExtensionsTests
 	}
 
 	[Test]
-	public async Task WhenTheResultCopiesOnOption_ShouldKeepTheOptionsSetSoFar()
+	public async Task WhenTheResultCopiesOnOption_ShouldReplaceARepeatedOptionOnTheCopy()
 	{
 		CopyingResult sut = new(new StringEqualityOptions("expected"));
+		CopyingResult ignoringCase = sut.IgnoringCase();
 
-		void Act() => sut.IgnoringCase().IgnoringCase();
+		CopyingResult result = ignoringCase.IgnoringCase(false);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("IgnoringCase cannot be specified more than once.");
+		await That(result.Options.ToString()).IsEqualTo(sut.Options.ToString());
+		await That(ignoringCase.Options.ToString()).EndsWith(" ignoring case")
+			.Because("the repeated option must be set on a copy of the options");
+		await That(() => ignoringCase.Using(StringComparer.Ordinal)).Throws<InvalidOperationException>()
+			.WithMessage(
+				"IgnoringCase cannot be combined with a custom comparer; use a case-insensitive comparer instead.")
+			.Because("the copy carries the options set so far, so incompatible options still throw");
 	}
 
 	[Test]

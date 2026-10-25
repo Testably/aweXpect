@@ -18,7 +18,6 @@ public class ExecutesInToleranceResult<TResult>(
 	/// <remarks>
 	///     A cancellation still fails the expectation, because it aborts the execution instead of timing it.
 	/// </remarks>
-	/// <exception cref="InvalidOperationException">The exceptions are already specified.</exception>
 	public ExecutesInToleranceResult<TResult> AllowingExceptions(bool allowExceptions = true)
 	{
 		options.AllowingExceptions(allowExceptions);
@@ -28,7 +27,7 @@ public class ExecutesInToleranceResult<TResult>(
 	/// <summary>
 	///     …within the given <paramref name="tolerance" />.
 	/// </summary>
-	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
+	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
 	public TResult Within(TimeSpan tolerance)
 	{
 		options.Approximately(expected, tolerance);

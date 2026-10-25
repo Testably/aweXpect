@@ -783,8 +783,8 @@ In.AllLoadedAssemblies().Properties()
 
 Every filter and expectation that compares a name, a namespace, a target framework or a dependency, including
 the parameter and generic argument names, uses the string matching options of the core aweXpect library (see
-[the docs](https://docs.testably.org/aweXpect/values/string#equality)). The options chain in any order, and each
-option can be specified only once:
+[the docs](https://docs.testably.org/aweXpect/values/string#equality)). The options chain in any order, a repeated
+option replaces the earlier one, and a second match type, e.g. `.AsPrefix().AsSuffix()`, throws:
 
 | Option                                                           | Effect                                            |
 |------------------------------------------------------------------|---------------------------------------------------|

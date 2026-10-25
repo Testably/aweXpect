@@ -5,6 +5,18 @@ namespace aweXpect.Core.Tests.Options;
 public class QuantifierTests
 {
 	[Test]
+	public async Task AtLeast_WhenAMaximumIsSpecified_ShouldThrowInvalidOperationException()
+	{
+		Quantifier sut = new();
+		sut.AtMost(5);
+
+		void Act() => sut.AtLeast(2);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("AtLeast cannot be combined with AtMost.");
+	}
+
+	[Test]
 	[Arguments(-1, true)]
 	[Arguments(0, false)]
 	[Arguments(1, false)]
@@ -256,15 +268,15 @@ public class QuantifierTests
 	}
 
 	[Test]
-	public async Task Exactly_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+	public async Task Exactly_WhenSpecifiedTwice_ShouldUseTheLastBounds()
 	{
 		Quantifier sut = new();
 		sut.Exactly(1);
 
-		void Act() => sut.Exactly(2);
+		sut.Exactly(2);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Exactly cannot be specified more than once.");
+		await That(sut.Check(2, true)).IsTrue();
+		await That(sut.Check(1, true)).IsNull();
 	}
 
 	[Test]

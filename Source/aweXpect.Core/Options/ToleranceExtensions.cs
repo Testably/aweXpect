@@ -12,7 +12,7 @@ namespace aweXpect;
 ///     Extension methods for results that compare numbers or times within a tolerance.
 /// </summary>
 /// <remarks>
-///     The tolerance can be specified only once.
+///     A later tolerance replaces the earlier one.
 /// </remarks>
 public static class ToleranceExtensions
 {

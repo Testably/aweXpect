@@ -28,12 +28,13 @@ public class TimeTolerance
 	/// <summary>
 	///     Sets the tolerance to apply on the time comparisons.
 	/// </summary>
+	/// <remarks>
+	///     A later tolerance replaces the earlier one.
+	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="tolerance" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A tolerance is already set.</exception>
 	public virtual TimeTolerance Within(TimeSpan tolerance)
 	{
 		ToleranceHelpers.ThrowIfInvalid(tolerance);
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Tolerance is not null, nameof(Within));
 		Tolerance = tolerance;
 		return this;
 	}

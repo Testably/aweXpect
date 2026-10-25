@@ -534,83 +534,68 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
-			public async Task WhenSpecifiedTwice_WithExactType_ShouldThrowInvalidOperationException()
+			public async Task WhenSpecifiedTwice_WithExactType_ShouldUseTheLastFilter()
 			{
 				IEnumerable<MyBaseClass> subject =
 					ToEnumerable(new MyClass(1), new MyOtherClass(2), new MyBaseClass(3));
 				SingleItemResult<IEnumerable<MyBaseClass>, MyBaseClass> result = That(subject).HasSingle();
 				_ = result.Matching(_ => true);
 
-				void Act()
-					=> _ = result.MatchingExactly<MyBaseClass>();
+				MyBaseClass item = await result.MatchingExactly<MyBaseClass>();
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Matching cannot be specified more than once.")
-					.Because("a second filter would silently replace the first one");
+				await That(item.Value).IsEqualTo(3);
 			}
 
 			[Test]
-			public async Task WhenSpecifiedTwice_WithExactTypeAndPredicate_ShouldThrowInvalidOperationException()
+			public async Task WhenSpecifiedTwice_WithExactTypeAndPredicate_ShouldUseTheLastFilter()
 			{
 				IEnumerable<MyBaseClass> subject =
 					ToEnumerable(new MyClass(1), new MyOtherClass(2), new MyBaseClass(3));
 				SingleItemResult<IEnumerable<MyBaseClass>, MyBaseClass> result = That(subject).HasSingle();
 				_ = result.Matching(_ => true);
 
-				void Act()
-					=> _ = result.MatchingExactly<MyBaseClass>(_ => true);
+				MyBaseClass item = await result.MatchingExactly<MyBaseClass>(x => x.Value == 3);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Matching cannot be specified more than once.")
-					.Because("a second filter would silently replace the first one");
+				await That(item.Value).IsEqualTo(3);
 			}
 
 			[Test]
-			public async Task WhenSpecifiedTwice_WithPredicate_ShouldThrowInvalidOperationException()
+			public async Task WhenSpecifiedTwice_WithPredicate_ShouldUseTheLastFilter()
 			{
 				IEnumerable<MyBaseClass> subject =
 					ToEnumerable(new MyClass(1), new MyOtherClass(2), new MyBaseClass(3));
 				SingleItemResult<IEnumerable<MyBaseClass>, MyBaseClass> result = That(subject).HasSingle();
 				_ = result.MatchingExactly<MyBaseClass>();
 
-				void Act()
-					=> _ = result.Matching(_ => true);
+				MyBaseClass item = await result.Matching(x => x.Value == 1);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Matching cannot be specified more than once.")
-					.Because("a second filter would silently replace the first one");
+				await That(item.Value).IsEqualTo(1);
 			}
 
 			[Test]
-			public async Task WhenSpecifiedTwice_WithType_ShouldThrowInvalidOperationException()
+			public async Task WhenSpecifiedTwice_WithType_ShouldUseTheLastFilter()
 			{
 				IEnumerable<MyBaseClass> subject =
 					ToEnumerable(new MyClass(1), new MyOtherClass(2), new MyBaseClass(3));
 				SingleItemResult<IEnumerable<MyBaseClass>, MyBaseClass> result = That(subject).HasSingle();
 				_ = result.Matching(_ => true);
 
-				void Act()
-					=> _ = result.Matching<MyOtherClass>();
+				MyOtherClass item = await result.Matching<MyOtherClass>();
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Matching cannot be specified more than once.")
-					.Because("a second filter would silently replace the first one");
+				await That(item.Value).IsEqualTo(2);
 			}
 
 			[Test]
-			public async Task WhenSpecifiedTwice_WithTypeAndPredicate_ShouldThrowInvalidOperationException()
+			public async Task WhenSpecifiedTwice_WithTypeAndPredicate_ShouldUseTheLastFilter()
 			{
 				IEnumerable<MyBaseClass> subject =
 					ToEnumerable(new MyClass(1), new MyOtherClass(2), new MyBaseClass(3));
 				SingleItemResult<IEnumerable<MyBaseClass>, MyBaseClass> result = That(subject).HasSingle();
 				_ = result.Matching(_ => true);
 
-				void Act()
-					=> _ = result.Matching<MyOtherClass>(_ => true);
+				MyOtherClass item = await result.Matching<MyOtherClass>(x => x.Value == 2);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Matching cannot be specified more than once.")
-					.Because("a second filter would silently replace the first one");
+				await That(item.Value).IsEqualTo(2);
 			}
 
 			[Test]

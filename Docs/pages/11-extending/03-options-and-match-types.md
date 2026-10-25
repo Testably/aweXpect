@@ -55,10 +55,11 @@ An expectation that returns this result then offers the count and the string opt
 | `Within` on times                       | `IOptionsProvider<TimeTolerance>`                                         |
 
 The interfaces with `TSelf` let the compiler infer the element type from your result, so pass your result type as
-`TSelf`. Every option can be specified only once, and options that would replace each other, e.g. two match types or
-`AtLeast(2).AtMost(5)`, throw an `InvalidOperationException` at the call. Follow the same rule for the options of your
-own results: throw it with `Tracing.WriteException` at the second call, worded like the built-in ones, e.g.
-`WithTitle cannot be specified more than once.` or `AtMost cannot be combined with AtLeast.`. An expectation that
+`TSelf`. A repeated option replaces the earlier one, and an option set to `false` is the same as not set. Options that
+set the same thing in different ways, e.g. two match types or `AtLeast(2).AtMost(5)`, throw an
+`InvalidOperationException` at the call. Follow the same rule for the options of your own results: let a repeated
+option replace the earlier one, and throw with `Tracing.WriteException` for a competing option, worded like the
+built-in ones, e.g. `AtMost cannot be combined with AtLeast.`. An expectation that
 already sets an option itself, e.g. `StartsWith` the match type, returns a result that does not offer it again.
 
 The options objects of `aweXpect.Core` belong to a single expectation and are changed in place. You can also call
@@ -66,13 +67,15 @@ their methods directly, e.g. in an option of your own: each method that sets an 
 that calls chain, e.g. `quantifier.AtLeast(2)`, and has the name of the option that the caller writes, e.g. `Within` on
 a `TimeTolerance`. The hooks for a strategy of your own are named `Set…` and take the name of your option, e.g.
 `SetMatchType(matchType, nameof(ByTitle))`, or `SetMatch(match, nameof(AtTrackNumber))` on the
-`CollectionIndexOptions`, so that a second call or a conflicting option throws with that name.
+`CollectionIndexOptions`, so that a conflicting option throws with that name, while the same name again replaces the
+earlier strategy.
 
 A result that can be stored and continued more than once, e.g. a filter of `aweXpect.Reflection`, must not change when
 a continuation sets an option. Such a result implements `ICopyOnOption<StringEqualityOptions, TSelf>` in addition to
 `IOptionsProvider<StringEqualityOptions>`: the string options then set the option on a copy of its options and pass it
 to `WithOptions(options)`, which returns a new result with them, while the result they were called on stays unchanged.
-The copy carries every option set so far, so a repeated or conflicting option still throws.
+The copy carries every option set so far, so a repeated option replaces the earlier one and a conflicting option still
+throws.
 
 In the constraint, compare with the options that `ForEvaluation(context, cancellationToken)` returns for its evaluation,
 so that the match type can use the evaluation and keep what its comparisons found. `MatchWithExplanation(actual,

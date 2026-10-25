@@ -319,15 +319,15 @@ public sealed partial class ThatJsonString
 				}
 
 				[Test]
-				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+				public async Task WhenSpecifiedTwice_ShouldUseTheLastJsonOptions()
 				{
-					string subject = "{}";
+					string subject = "{\"foo\": 1, \"bar\": 2}";
 
 					async Task Act()
-						=> await That(subject).IsEqualTo("{}").AsJson().AsJson();
+						=> await That(subject).IsEqualTo("{\"foo\": 1}").AsJson()
+							.AsJson(o => o.IgnoringAdditionalProperties());
 
-					await That(Act).Throws<InvalidOperationException>()
-						.WithMessage("AsJson cannot be specified more than once.");
+					await That(Act).DoesNotThrow();
 				}
 
 				[Test]

@@ -64,10 +64,12 @@ public abstract class StringMatchType
 	///     The settings that the match type honours.
 	/// </summary>
 	/// <remarks>
-	///     Core rejects every other setting with the same message, e.g. <c>IgnoringCase cannot be combined with AsJson.</c>,
-	///     at the call that specifies the conflict, whether the match type or the setting is specified first. The default
-	///     is <see cref="StringMatchSettingKinds.WhiteSpace" />, as Core applies the whitespace options to both values
-	///     before the matcher sees them.
+	///     Core rejects every other enabled setting with the same message, e.g.
+	///     <c>IgnoringCase cannot be combined with AsJson.</c>, at the call that specifies the conflict, whether the match
+	///     type or the setting is specified first; a match type that follows several such settings names all of them,
+	///     e.g. <c>IgnoringCase and IgnoringIndentation cannot be combined with AsJson.</c> The default is
+	///     <see cref="StringMatchSettingKinds.WhiteSpace" />, as Core applies the whitespace options to both values before
+	///     the matcher sees them.
 	/// </remarks>
 	public virtual StringMatchSettingKinds SupportedSettings => StringMatchSettingKinds.WhiteSpace;
 

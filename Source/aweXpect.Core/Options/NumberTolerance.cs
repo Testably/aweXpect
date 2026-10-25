@@ -50,13 +50,16 @@ public class NumberTolerance<TNumber>(
 	/// <summary>
 	///     Sets the tolerance to apply on the number comparisons.
 	/// </summary>
+	/// <remarks>
+	///     A later tolerance replaces the earlier one, including a relative tolerance.
+	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="tolerance" /> is negative or NaN.</exception>
-	/// <exception cref="InvalidOperationException">A tolerance is already set.</exception>
 	public NumberTolerance<TNumber> Within(TNumber tolerance)
 	{
 		ToleranceHelpers.ThrowIfInvalid(tolerance, IsNaN(tolerance));
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Tolerance is not null, nameof(Within));
 		Tolerance = tolerance;
+		_absoluteTolerance = null;
+		_unit = "";
 		return this;
 	}
 

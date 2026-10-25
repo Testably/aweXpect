@@ -13,17 +13,17 @@ public sealed partial class ThatEnumerable
 		public sealed class Tests
 		{
 			[Test]
-			public async Task WhenComparerIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			public async Task WhenComparerIsSpecifiedTwice_ShouldUseTheLastComparer()
 			{
 				IEnumerable<int> subject = ToEnumerable([3, 2, 1,]);
 				CollectionOrderResult<IEnumerable<int>, IThat<IEnumerable<int>?>, int> sut =
 					That(subject).IsInDescendingOrder();
+				_ = sut.Using(Comparer<int>.Create((x, y) => y.CompareTo(x)));
 				_ = sut.Using(Comparer<int>.Default);
 
-				void Act() => sut.Using(Comparer<int>.Default);
+				async Task Act() => await sut;
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Using cannot be specified more than once.");
+				await That(Act).DoesNotThrow();
 			}
 
 			[Test]

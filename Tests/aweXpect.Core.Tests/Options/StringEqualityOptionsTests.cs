@@ -335,16 +335,33 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
 		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
 		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
-		public async Task AsBlock_WhenALineOptionIsSpecified_ShouldThrowInvalidOperationException(string option)
+		public async Task AsBlock_WhenALineOptionIsDisabled_ShouldNotThrow(string option)
 		{
 			StringEqualityOptions sut = new("expected");
 			Change(sut, option, false);
 
 			void Act() => sut.AsBlock();
 
+			await That(Act).DoesNotThrow()
+				.Because("an option set to false is the same as not set");
+		}
+
+		[Test]
+		[Arguments(nameof(StringEqualityOptions.IgnoringIndentation))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
+		public async Task AsBlock_WhenALineOptionIsEnabled_ShouldThrowInvalidOperationException(string option)
+		{
+			StringEqualityOptions sut = new("expected");
+			Change(sut, option, true);
+
+			void Act() => sut.AsBlock();
+
 			await That(Act).Throws<InvalidOperationException>()
 				.WithMessage($"{option} cannot be combined with AsBlock.")
-				.Because("a block compares the lines on its own, and any explicit call counts as specified");
+				.Because("a block compares the lines on its own");
 		}
 
 		[Test]
@@ -1207,6 +1224,23 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
 		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
 		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
+		public async Task IgnoringOption_WhenDisabledAndMatchingAsBlock_ShouldNotThrow(string option)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsBlock();
+
+			void Act() => Change(sut, option, false);
+
+			await That(Act).DoesNotThrow()
+				.Because("an option set to false is the same as not set");
+		}
+
+		[Test]
+		[Arguments(nameof(StringEqualityOptions.IgnoringIndentation))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
 		public async Task IgnoringOption_WhenMatchingAsBlock_ShouldThrowInvalidOperationException(string option)
 		{
 			StringEqualityOptions sut = new("expected");
@@ -1220,22 +1254,28 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
-		[Arguments(nameof(StringEqualityOptions.IgnoringCase))]
-		[Arguments(nameof(StringEqualityOptions.IgnoringIndentation))]
-		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
-		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
-		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
-		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
-		public async Task IgnoringOption_WhenSpecifiedTwice_ShouldThrowInvalidOperationException(string option)
+		[Arguments(nameof(StringEqualityOptions.IgnoringCase), true)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringCase), false)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringIndentation), true)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringIndentation), false)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace), true)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace), false)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle), true)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle), false)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace), true)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace), false)]
+		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace), true)]
+		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace), false)]
+		public async Task IgnoringOption_WhenSpecifiedTwice_ShouldUseTheLastValue(string option, bool last)
 		{
 			StringEqualityOptions sut = new("expected");
-			Change(sut, option, false);
+			StringEqualityOptions onlyLast = new("expected");
+			Change(onlyLast, option, last);
+			Change(sut, option, !last);
 
-			void Act() => Change(sut, option, true);
+			Change(sut, option, last);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage($"{option} cannot be specified more than once.")
-				.Because("any explicit call counts as specified, also with false");
+			await That(sut.ToString()).IsEqualTo(onlyLast.ToString());
 		}
 
 		[Test]
@@ -1329,6 +1369,85 @@ public sealed partial class StringEqualityOptionsTests
 			await That(sut.ToString()).IsEqualTo(optionString);
 			await That(() => sut.SetMatchType(new ValidatingMatchType(), "AsOther")).DoesNotThrow()
 				.Because("the rejected match type must not count as specified");
+		}
+
+		[Test]
+		public async Task SetMatchType_WhenTheOptionsAreDisabled_ShouldNotThrow()
+		{
+			ValidatingMatchType matchType = new(StringMatchSettingKinds.None);
+			StringEqualityOptions sut = new("expected");
+			sut.IgnoringCase(false).IgnoringIndentation(false).IgnoringNewlineStyle(false)
+				.IgnoringLeadingWhiteSpace(false).IgnoringTrailingWhiteSpace(false).NormalizingWhiteSpace(false);
+
+			void Act() => sut.SetMatchType(matchType, "AsCustom");
+
+			await That(Act).DoesNotThrow()
+				.Because("an option set to false is the same as not set");
+		}
+
+		[Test]
+		public async Task SetMatchType_WhenTheSameMatchTypeOptionIsRepeated_ShouldCheckTheSettingsAgain()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.SetMatchType(new ValidatingMatchType(StringMatchSettingKinds.WhiteSpace), "AsCustom");
+			sut.IgnoringIndentation();
+
+			void Act() => sut.SetMatchType(new ValidatingMatchType(StringMatchSettingKinds.None), "AsCustom");
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("IgnoringIndentation cannot be combined with AsCustom.");
+		}
+
+		[Test]
+		public async Task SetMatchType_WhenTheSameMatchTypeOptionIsRepeated_ShouldReplaceTheMatchType()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.SetMatchType(new ValidatingMatchType(), "AsCustom");
+
+			sut.SetMatchType(new CustomMatchType(), "AsCustom");
+
+			await That(() => sut.IgnoringCase()).Throws<InvalidOperationException>()
+				.WithMessage("IgnoringCase cannot be combined with AsCustom.")
+				.Because("the later match type without casing replaced the earlier one with casing");
+		}
+
+		[Test]
+		[Arguments(new[] { "IgnoringTrailingWhiteSpace", "IgnoringIndentation", },
+			"IgnoringIndentation and IgnoringTrailingWhiteSpace cannot be combined with AsCustom.")]
+		[Arguments(new[] { "NormalizingWhiteSpace", "IgnoringLeadingWhiteSpace", "IgnoringCase", },
+			"IgnoringCase, IgnoringLeadingWhiteSpace and NormalizingWhiteSpace cannot be combined with AsCustom.")]
+		[Arguments(new[] { "Using", "IgnoringNewlineStyle", },
+			"IgnoringNewlineStyle and Using cannot be combined with AsCustom.")]
+		[Arguments(new[] { "IgnoringIndentation", "IgnoringNewlineStyle", "IgnoringLeadingWhiteSpace", "IgnoringTrailingWhiteSpace", "NormalizingWhiteSpace", "IgnoringCase", },
+			"IgnoringCase, IgnoringIndentation, IgnoringNewlineStyle, IgnoringLeadingWhiteSpace, IgnoringTrailingWhiteSpace and NormalizingWhiteSpace cannot be combined with AsCustom.")]
+		public async Task SetMatchType_WhenSeveralSpecifiedOptionsAreNotSupported_ShouldNameAllOfThemInDeclarationOrder(
+			string[] options, string expectedMessage)
+		{
+			ValidatingMatchType matchType = new(StringMatchSettingKinds.None);
+			StringEqualityOptions sut = new("expected");
+			foreach (string option in options)
+			{
+				Change(sut, option, true);
+			}
+
+			void Act() => sut.SetMatchType(matchType, "AsCustom");
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage(expectedMessage);
+		}
+
+		[Test]
+		[Arguments(nameof(StringEqualityOptions.AsPrefix), nameof(StringEqualityOptions.AsSuffix))]
+		[Arguments(nameof(StringEqualityOptions.AsSuffix), nameof(StringEqualityOptions.AsPrefix))]
+		public async Task SetMatchType_WithTwoDifferentMatchTypes_ShouldThrowInEitherOrder(string first, string second)
+		{
+			StringEqualityOptions sut = new("expected");
+			Change(sut, first, true);
+
+			void Act() => Change(sut, second, true);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage($"{second} cannot be combined with {first}.");
 		}
 
 		[Test]
@@ -1494,16 +1613,14 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
-		public async Task Using_WhenAComparerIsUsed_ShouldThrowInvalidOperationException()
+		public async Task Using_WhenAComparerIsUsed_ShouldUseTheLastComparer()
 		{
 			StringEqualityOptions sut = new("expected");
 			sut.Using(StringComparer.Ordinal);
 
-			void Act() => sut.Using(StringComparer.OrdinalIgnoreCase);
+			sut.Using(StringComparer.OrdinalIgnoreCase);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("Using cannot be specified more than once.")
-				.Because("the second comparer would silently replace the first one");
+			await That(await sut.AreConsideredEqual("foo", "FOO")).IsTrue();
 		}
 
 		[Test]
@@ -1516,6 +1633,18 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(Act).DoesNotThrow()
 				.Because("the reset flag does not compete with the comparer");
+		}
+
+		[Test]
+		public async Task Using_WhenCaseIsIgnoredAndReset_ShouldNotThrow()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.IgnoringCase().IgnoringCase(false);
+
+			void Act() => sut.Using(StringComparer.Ordinal);
+
+			await That(Act).DoesNotThrow()
+				.Because("the later IgnoringCase(false) replaces the earlier one, so the casing is not ignored");
 		}
 
 		[Test]

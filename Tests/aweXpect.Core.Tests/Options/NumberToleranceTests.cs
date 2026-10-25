@@ -204,16 +204,18 @@ public class NumberToleranceTests
 	}
 
 	[Test]
-	public async Task WhenToleranceIsSetTwice_ShouldThrowInvalidOperationException()
+	public async Task WhenToleranceIsSetTwice_ShouldUseTheLastTolerance()
 	{
 		NumberTolerance<int> sut = new((_, _) => null);
 		sut.Within(1);
+		sut.UseRelativeTolerance((tolerance, expected) => tolerance * expected / 100, "%");
 
-		void Act() => sut.Within(2);
+		sut.Within(2);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Within cannot be specified more than once.")
-			.Because("the second tolerance would silently replace the first one");
+		await That(sut.Tolerance).IsEqualTo(2);
+		await That(sut.ToleranceFor(100)).IsEqualTo(2)
+			.Because("the later tolerance also replaces the earlier relative tolerance");
+		await That(sut.ToString()).DoesNotEndWith("%");
 	}
 
 	[Test]

@@ -16,24 +16,23 @@ public partial class ThatDelegateThrows<TException>
 	///     once it elapsed. The task of an asynchronous delegate is abandoned at that point, even if it ignores the
 	///     cancellation, while a synchronous delegate cannot be interrupted and runs to completion.
 	///     A delegate that is canceled or abandoned by the timeout fails with <c>did not finish within …</c>.
-	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> imposes no limit.
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> imposes no limit.<br />
+	///     A later timeout replaces the earlier one.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
 	public ThatDelegateThrows<TException> Within(TimeSpan timeout)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(ThrowOptions.IsWithinSpecified, nameof(Within));
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		ThrowOptions.IsWithinSpecified = true;
 		if (timeout == Timeout.InfiniteTimeSpan)
 		{
+			ThrowOptions.ExecutionTimeOptions = null;
 			return this;
 		}
 
 		ExecutionTimeOptions options = new();
 		options.Within(timeout);
 		ThrowOptions.ExecutionTimeOptions = options;
-		ExpectationBuilder.WithTimeout(timeout);
+		ExpectationBuilder.AddTimeoutBound(ThrowOptions);
 		return this;
 	}
 }

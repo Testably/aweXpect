@@ -19,7 +19,6 @@ public static class SignalerOptionsExtensions
 	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
 	public static TResult Within<TResult>(this TResult result, TimeSpan timeout)
 		where TResult : IOptionsProvider<SignalerOptions>
 	{

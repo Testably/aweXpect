@@ -9,32 +9,6 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class WithStatusTests
 		{
 			[Test]
-			public async Task WhenStatusIsSpecifiedTwice_ShouldThrowInvalidOperationException()
-			{
-				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
-
-				async Task Act()
-					=> await That(subject).HasProblemDetailsContent().WithStatus(500).WithStatus(501);
-
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("WithStatus cannot be specified more than once.")
-					.Because("the second status would silently replace the first one");
-			}
-
-			[Test]
-			public async Task WhenStatusIsSpecifiedTwiceAroundTitle_ShouldThrowInvalidOperationException()
-			{
-				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
-
-				async Task Act()
-					=> await That(subject).HasProblemDetailsContent().WithStatus(500).WithTitle("foo").WithStatus(501);
-
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("WithStatus cannot be specified more than once.")
-					.Because("the second status would silently replace the first one");
-			}
-
-			[Test]
 			[Arguments(200, 400)]
 			[Arguments(404, 201)]
 			public async Task WhenStatusDoesNotMatch_ShouldFail(int actualStatus, int expectedStatus)
@@ -65,6 +39,46 @@ public sealed partial class ThatHttpResponseMessage
 					                   "status": {{actualStatus}}
 					                 }
 					               """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenStatusIsSpecifiedTwice_ShouldUseTheLastStatus()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "status": 500
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithStatus(500).WithStatus(501);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("*has a ProblemDetails content with any type and status 501,*but it had status 500*")
+					.AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenStatusIsSpecifiedTwiceAroundTitle_ShouldUseTheLastStatusInItsPlace()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "title": "foo",
+					               "status": 500
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithStatus(500).WithTitle("foo").WithStatus(501);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage(
+						"*has a ProblemDetails content with any type, status 501 and title \"foo\",*but it had status 500*")
+					.AsWildcard();
 			}
 
 			[Test]

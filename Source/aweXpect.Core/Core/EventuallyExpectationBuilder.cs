@@ -26,8 +26,10 @@ internal class EventuallyExpectationBuilder<TValue>(
 	/// <summary>
 	///     Sets the <paramref name="interval" /> in which the subject is re-evaluated.
 	/// </summary>
+	/// <remarks>
+	///     A later interval replaces the earlier one.
+	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="interval" /> is not positive.</exception>
-	/// <exception cref="InvalidOperationException">An interval is already set.</exception>
 	public void CheckEvery(TimeSpan interval)
 	{
 		if (interval <= TimeSpan.Zero)
@@ -37,19 +39,19 @@ internal class EventuallyExpectationBuilder<TValue>(
 				new ArgumentOutOfRangeException(nameof(interval), "The interval must be positive."));
 		}
 
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_interval is not null, nameof(CheckEvery));
 		_interval = interval;
 	}
 
 	/// <summary>
 	///     Sets the <paramref name="timeout" /> until the expectations must be met.
 	/// </summary>
+	/// <remarks>
+	///     A later timeout replaces the earlier one.
+	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
 	public void Within(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_retryTimeout is not null, nameof(Within));
 		_retryTimeout = timeout;
 	}
 

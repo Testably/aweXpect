@@ -117,18 +117,24 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Test]
-				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+				public async Task WhenSpecifiedTwice_ShouldUseTheLastFilter()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
 					HasItemWithConditionResult<IAsyncEnumerable<int>, int> result = That(subject).HasItem();
 					_ = result.MatchingExactly<int>();
 
-					void Act()
-						=> _ = result.Matching(_ => true);
+					async Task Act()
+						=> await result.Matching(x => x > 5);
 
-					await That(Act).Throws<InvalidOperationException>()
-						.WithMessage("Matching cannot be specified more than once.")
-						.Because("a second filter would silently replace the first one");
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an item matching x => x > 5,
+						             but it had no matching item
+
+						             Collection:
+						             [0, 1, 2]
+						             """);
 				}
 
 				[Test]
@@ -345,18 +351,16 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Test]
-				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+				public async Task WhenSpecifiedTwice_ShouldUseTheLastFilter()
 				{
 					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));
 					HasItemWithConditionResult<IAsyncEnumerable<MyClass>, MyClass> result = That(subject).HasItem();
-					_ = result.Matching(_ => true);
+					_ = result.Matching(_ => false);
 
-					void Act()
-						=> _ = result.Matching<MyBaseClass>(_ => true);
+					async Task Act()
+						=> await result.Matching<MyBaseClass>(_ => true);
 
-					await That(Act).Throws<InvalidOperationException>()
-						.WithMessage("Matching cannot be specified more than once.")
-						.Because("a second filter would silently replace the first one");
+					await That(Act).DoesNotThrow();
 				}
 
 				[Test]
@@ -588,18 +592,16 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Test]
-				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+				public async Task WhenSpecifiedTwice_ShouldUseTheLastFilter()
 				{
 					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));
 					HasItemWithConditionResult<IAsyncEnumerable<MyClass>, MyClass> result = That(subject).HasItem();
-					_ = result.Matching(_ => true);
+					_ = result.Matching(_ => false);
 
-					void Act()
-						=> _ = result.Matching<MyBaseClass>();
+					async Task Act()
+						=> await result.Matching<MyBaseClass>();
 
-					await That(Act).Throws<InvalidOperationException>()
-						.WithMessage("Matching cannot be specified more than once.")
-						.Because("a second filter would silently replace the first one");
+					await That(Act).DoesNotThrow();
 				}
 
 				[Test]

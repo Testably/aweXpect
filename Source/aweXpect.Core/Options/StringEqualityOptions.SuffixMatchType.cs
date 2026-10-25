@@ -13,7 +13,7 @@ public partial class StringEqualityOptions
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> to be a suffix for the actual string.
 	/// </summary>
-	/// <exception cref="InvalidOperationException">A match type is already specified.</exception>
+	/// <exception cref="InvalidOperationException">Another match type is already specified.</exception>
 	public StringEqualityOptions AsSuffix()
 	{
 		SetMatchType(SuffixMatch, nameof(AsSuffix));

@@ -241,14 +241,16 @@ public sealed class FilteredReuseIndependenceTests
 	}
 
 	[Test]
-	public async Task StringFilterContinuation_WhenAStringOptionIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+	public async Task StringFilterContinuation_WhenAStringOptionIsSpecifiedTwice_ShouldUseTheLastValue()
 	{
-		Filtered.Types.StringEqualityResult stored = In.Types<SampleType1, SampleType2>().WithName("Sample");
+		Filtered.Types.StringEqualityResult stored = In.Types<SampleType1, SampleType2>().WithName("SAMPLE");
 
-		void Act() => stored.IgnoringCase().IgnoringCase();
+		Filtered.Types caseSensitive = stored.AsPrefix().IgnoringCase().IgnoringCase(false);
+		Filtered.Types ignoringCase = stored.AsPrefix().IgnoringCase(false).IgnoringCase();
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("IgnoringCase cannot be specified more than once.");
+		await That(caseSensitive).IsEmpty();
+		await That(ignoringCase).IsEqualTo([typeof(SampleType1), typeof(SampleType2),]).InAnyOrder();
+		await That(stored).IsEmpty();
 	}
 
 	[Test]

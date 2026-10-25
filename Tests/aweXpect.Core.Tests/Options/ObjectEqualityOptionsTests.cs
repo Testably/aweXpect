@@ -258,29 +258,28 @@ public class ObjectEqualityOptionsTests
 	}
 
 	[Test]
-	public async Task SetMatchType_WithOptionName_WhenTheSameOptionIsSpecified_ShouldThrowInvalidOperationException()
+	public async Task SetMatchType_WithOptionName_WhenTheSameOptionIsSpecified_ShouldReplaceTheMatchType()
 	{
 		ObjectEqualityOptions<object> sut = new();
 		sut.SetMatchType(new DummyMatchType(), "Custom");
 
 		void Act() => sut.SetMatchType(new DummyMatchType(), "Custom");
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Custom cannot be specified more than once.")
-			.Because("the second match type would silently replace the first one");
+		await That(Act).DoesNotThrow();
+		await That(() => sut.Using(new AllEqualComparer())).Throws<InvalidOperationException>()
+			.WithMessage("Using cannot be combined with Custom.")
+			.Because("the replaced match type still competes with another option");
 	}
 
 	[Test]
-	public async Task Using_WhenAComparerIsSpecified_ShouldThrowInvalidOperationException()
+	public async Task Using_WhenAComparerIsSpecified_ShouldUseTheLastComparer()
 	{
 		ObjectEqualityOptions<object> sut = new();
 		sut.Using(new AllEqualComparer());
 
-		void Act() => sut.Using(new AllEqualComparer());
+		sut.Using(EqualityComparer<object>.Default);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Using cannot be specified more than once.")
-			.Because("the second comparer would silently replace the first one");
+		await That(await sut.AreConsideredEqual(1, "foo")).IsFalse();
 	}
 
 	[Test]
@@ -319,16 +318,16 @@ public class ObjectEqualityOptionsTests
 	}
 
 	[Test]
-	public async Task Using_WithATypedComparer_WhenAComparerIsSpecified_ShouldThrowInvalidOperationException()
+	public async Task Using_WithATypedComparer_WhenAComparerIsSpecified_ShouldUseTheLastComparer()
 	{
 		ObjectEqualityOptions<int> sut = new();
 		sut.Using(new AllEqualComparer());
 
-		void Act() => sut.Using(new ModuloComparer(10));
+		sut.Using(new ModuloComparer(10));
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Using cannot be specified more than once.")
-			.Because("the second comparer would silently replace the first one");
+		await That(await sut.AreConsideredEqual(1, 2)).IsFalse();
+		await That(await sut.AreConsideredEqual(1, 11)).IsTrue();
+		await That(sut.ToString()).IsEqualTo(" using ObjectEqualityOptionsTests.ModuloComparer");
 	}
 
 	[Test]

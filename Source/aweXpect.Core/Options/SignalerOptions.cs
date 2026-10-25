@@ -23,14 +23,13 @@ public class SignalerOptions
 	///     Specifies the <paramref name="timeout" /> to use for the recording.
 	/// </summary>
 	/// <remarks>
-	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
+	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.<br />
+	///     A later timeout replaces the earlier one.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
 	public SignalerOptions Within(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Timeout is not null, nameof(Within));
 		Timeout = timeout;
 		return this;
 	}

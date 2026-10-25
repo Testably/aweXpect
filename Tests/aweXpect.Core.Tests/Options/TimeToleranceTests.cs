@@ -136,16 +136,14 @@ public class TimeToleranceTests
 	}
 
 	[Test]
-	public async Task WhenToleranceIsSetTwice_ShouldThrowInvalidOperationException()
+	public async Task WhenToleranceIsSetTwice_ShouldUseTheLastTolerance()
 	{
 		TimeTolerance sut = new();
 		sut.Within(1.Seconds());
 
-		void Act() => sut.Within(2.Seconds());
+		sut.Within(2.Seconds());
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Within cannot be specified more than once.")
-			.Because("the second tolerance would silently replace the first one");
+		await That(sut.Tolerance).IsEqualTo(2.Seconds());
 	}
 
 	[Test]

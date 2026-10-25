@@ -180,17 +180,21 @@ public sealed partial class ThatString
 			[Arguments(true, false)]
 			[Arguments(false, true)]
 			[Arguments(false, false)]
-			public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException(bool first, bool second)
+			public async Task WhenSpecifiedTwice_ShouldUseTheLastValue(bool first, bool second)
 			{
-				string subject = "abc";
+				string subject = "𝐀";
 				CasingResult<string, IThat<string?>> sut = That(subject).IsLowerCased();
 				_ = sut.IncludingUncasedLetters(first);
+				_ = sut.IncludingUncasedLetters(second);
 
-				void Act() => sut.IncludingUncasedLetters(second);
+				async Task Act() => await sut;
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("IncludingUncasedLetters cannot be specified more than once.")
-					.Because("the second value would silently replace the first one");
+				await That(Act).Throws<FailException>().OnlyIf(second)
+					.WithMessage("""
+					             Expected that subject
+					             is lower-cased including uncased letters,
+					             but it was "𝐀"
+					             """);
 			}
 		}
 

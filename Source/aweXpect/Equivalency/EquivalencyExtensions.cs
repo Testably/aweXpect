@@ -31,8 +31,8 @@ public static class EquivalencyExtensions
 	///     Use equivalency to compare objects.
 	/// </summary>
 	/// <remarks>
-	///     The options can be specified only once, so that later options can neither replace the ones that the
-	///     failure lists nor be replaced by a custom comparer.
+	///     A later call replaces the options, while another comparison, e.g. a custom comparer, is rejected, so that
+	///     the failure describes the comparison that the expectation reads.
 	/// </remarks>
 	internal static ObjectEqualityOptions<TSubject> Equivalent<TSubject>(this ObjectEqualityOptions<TSubject> options,
 		EquivalencyOptions equivalencyOptions)

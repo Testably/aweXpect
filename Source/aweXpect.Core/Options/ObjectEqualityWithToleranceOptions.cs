@@ -36,8 +36,11 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 	///     Specifies the <paramref name="tolerance" /> within which the actual value is considered equal to the expected
 	///     value.
 	/// </summary>
+	/// <remarks>
+	///     A later tolerance replaces the earlier one, including a relative tolerance.
+	/// </remarks>
 	/// <exception cref="InvalidOperationException">
-	///     Another option already specified how two objects are compared, or a tolerance is already set.
+	///     Another option already specified how two objects are compared.
 	/// </exception>
 	public ObjectEqualityWithToleranceOptions<TSubject, TTolerance> Within(TTolerance tolerance)
 	{

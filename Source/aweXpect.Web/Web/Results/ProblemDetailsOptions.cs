@@ -68,52 +68,79 @@ internal class ProblemDetailsOptions
 	/// <summary>
 	///     Sets the expected <paramref name="title" />.
 	/// </summary>
+	/// <remarks>
+	///     A later title replaces the earlier one together with its options, and keeps its place in the description.
+	/// </remarks>
 	public StringEqualityOptions WithTitle(string title)
 	{
 		ThrowHelper.ThrowIfNull(title, nameof(title));
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Title is not null, nameof(WithTitle));
+		bool isFirst = Title is null;
 		Title = title;
 		StringEqualityOptions titleOptions = new("title");
 		_titleOptions = titleOptions;
-		_parts.Add(() => Describe("title", title, titleOptions));
+		if (isFirst)
+		{
+			_parts.Add(() => Describe("title", Title!, _titleOptions!));
+		}
+
 		return titleOptions;
 	}
 
 	/// <summary>
 	///     Sets the expected <paramref name="status" />.
 	/// </summary>
+	/// <remarks>
+	///     A later status replaces the earlier one, and keeps its place in the description.
+	/// </remarks>
 	public void WithStatus(int status)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Status is not null, nameof(WithStatus));
+		bool isFirst = Status is null;
 		Status = status;
-		_parts.Add(() => $"status {Formatter.Format(status)}");
+		if (isFirst)
+		{
+			_parts.Add(() => $"status {Formatter.Format(Status)}");
+		}
 	}
 
 	/// <summary>
 	///     Sets the expected <paramref name="detail" />.
 	/// </summary>
+	/// <remarks>
+	///     A later detail replaces the earlier one together with its options, and keeps its place in the description.
+	/// </remarks>
 	public StringEqualityOptions WithDetail(string detail)
 	{
 		ThrowHelper.ThrowIfNull(detail, nameof(detail));
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Detail is not null, nameof(WithDetail));
+		bool isFirst = Detail is null;
 		Detail = detail;
 		StringEqualityOptions detailOptions = new("detail");
 		_detailOptions = detailOptions;
-		_parts.Add(() => Describe("detail", detail, detailOptions));
+		if (isFirst)
+		{
+			_parts.Add(() => Describe("detail", Detail!, _detailOptions!));
+		}
+
 		return detailOptions;
 	}
 
 	/// <summary>
 	///     Sets the expected <paramref name="instance" />.
 	/// </summary>
+	/// <remarks>
+	///     A later instance replaces the earlier one together with its options, and keeps its place in the description.
+	/// </remarks>
 	public StringEqualityOptions WithInstance(string instance)
 	{
 		ThrowHelper.ThrowIfNull(instance, nameof(instance));
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Instance is not null, nameof(WithInstance));
+		bool isFirst = Instance is null;
 		Instance = instance;
 		StringEqualityOptions instanceOptions = new("instance");
 		_instanceOptions = instanceOptions;
-		_parts.Add(() => Describe("instance", instance, instanceOptions));
+		if (isFirst)
+		{
+			_parts.Add(() => Describe("instance", Instance!, _instanceOptions!));
+		}
+
 		return instanceOptions;
 	}
 

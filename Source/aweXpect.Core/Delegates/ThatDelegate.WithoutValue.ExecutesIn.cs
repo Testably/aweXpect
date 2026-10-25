@@ -27,7 +27,7 @@ public abstract partial class ThatDelegate
 		public ExecutesInResult<AndResult<WithoutValue>> ExecutesIn()
 		{
 			ExecutionTimeOptions options = new();
-			options.OnUpperBound(timeout => _expectationBuilder.WithTimeout(timeout));
+			options.ApplyUpperBoundTo(_expectationBuilder);
 			return new ExecutesInResult<AndResult<WithoutValue>>(
 				new AndResult<WithoutValue>(_expectationBuilder.AddConstraint(options,
 						static (executionTimeOptions, it, grammars)
@@ -55,7 +55,7 @@ public abstract partial class ThatDelegate
 		{
 			ThrowHelper.ThrowIfDurationIsNegative(expected, "expected duration");
 			ExecutionTimeOptions options = new();
-			options.OnUpperBound(timeout => _expectationBuilder.WithTimeout(timeout));
+			options.ApplyUpperBoundTo(_expectationBuilder);
 			return new ExecutesInToleranceResult<AndResult<WithoutValue>>(
 				new AndResult<WithoutValue>(_expectationBuilder.AddConstraint(options,
 						static (executionTimeOptions, it, grammars)

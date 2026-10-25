@@ -26,12 +26,12 @@ public sealed class DayTolerance : TimeTolerance
 	///     The <paramref name="tolerance" /> is negative or not a whole number of days.
 	/// </exception>
 	/// <remarks>
-	///     A negative or repeated tolerance is left to the base class, so that its exception takes precedence, and a
-	///     rejected tolerance is never stored.
+	///     A negative tolerance is left to the base class, so that its exception takes precedence, and a rejected
+	///     tolerance is never stored.
 	/// </remarks>
 	public override TimeTolerance Within(TimeSpan tolerance)
 	{
-		if (tolerance >= TimeSpan.Zero && Tolerance is null)
+		if (tolerance >= TimeSpan.Zero)
 		{
 			ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance);
 		}

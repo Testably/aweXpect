@@ -91,6 +91,15 @@ checks of aweXpect.Web offer the quantifiers and match types of `Contains`, e.g.
   to `AreEquivalentTo` itself.
 - The items of a collection of strings keep the nullability of the collection, like other items.
 
+### Options
+
+- A repeated option replaces the earlier one instead of throwing, e.g. `IgnoringCase().IgnoringCase(false)` compares
+  case-sensitively and `AtLeast(2).AtLeast(3)` requires three. Options that set the same thing in different ways,
+  e.g. `AsPrefix().AsSuffix()` or `AtLeast(2).AtMost(5)`, still throw.
+- An option set to `false` is the same as not set, so `IgnoringIndentation(false).AsBlock()` no longer throws.
+- A match type that does not support several options already set names all of them, e.g.
+  `IgnoringIndentation and IgnoringNewlineStyle cannot be combined with AsBlock.`
+
 ### Customization
 
 - The collection-valued settings, such as `ExcludedAssemblyPrefixes`, `ExcludedAttributeTypes` and the content
@@ -205,7 +214,7 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
 - The expectations on quantified items extend the Core interfaces `IEnumerableItems<TItem>`,
   `IAsyncEnumerableItems<TItem>`, `IStructEnumerableItems<TCollection, TItem>` and
   `INonGenericEnumerableItems<TCollection>`, which replace `IEnumerableElements<TItem>` and its siblings.
-- Every method that sets a Core option returns the options object, each option can be set only once, and methods
+- Every method that sets a Core option returns the options object, a repeated option replaces the earlier one, and methods
   that mirror a user-facing option take its name, e.g. `Within` instead of `SetTolerance`.
 - `ConstraintResult` creates a result that fails both ways with `FailureBothWays` instead of `Fail`.
 - `ExpectationBuilder.WithCancellation` and `WithTimeout` return the builder, and the async `ForWhich` is

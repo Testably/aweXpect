@@ -81,6 +81,21 @@ public sealed partial class ThatDelegate
 			}
 
 			[Test]
+			public async Task WhenLimitIsSpecifiedTwice_InTheOtherOrder_ShouldThrowInvalidOperationException()
+			{
+				Action @delegate = () => { };
+				AllocatesResult<AndResult<Delegates.ThatDelegate.WithoutValue>> allocates =
+					That(@delegate).Allocates();
+				await allocates.Nothing();
+
+				void Act()
+					=> allocates.AtMost(1);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AtMost cannot be combined with Nothing.");
+			}
+
+			[Test]
 			public async Task WhenLimitIsSpecifiedTwice_ShouldThrowInvalidOperationException()
 			{
 				Action @delegate = () => { };
@@ -113,19 +128,22 @@ public sealed partial class ThatDelegate
 		public sealed class BetweenTests
 		{
 			[Test]
-			public async Task WhenAndIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			public async Task WhenAndIsSpecifiedTwice_ShouldUseTheLastRange()
 			{
-				Action @delegate = () => { };
+				Action @delegate = () => GC.KeepAlive(new byte[1000]);
 				BetweenResult<AndResult<Delegates.ThatDelegate.WithoutValue>, long> sut =
 					That(@delegate).Allocates().Between(1);
-				_ = sut.And(2);
+				_ = sut.And(1_000_000);
 
-				void Act()
-					=> sut.And(3);
+				async Task Act()
+					=> await sut.And(100);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Between cannot be specified more than once.")
-					.Because("the range would silently replace the first one");
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             allocates between 1 and 100 bytes,
+					             but it allocated * bytes
+					             """).AsWildcard();
 			}
 
 			[Test]

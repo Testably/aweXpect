@@ -297,21 +297,18 @@ public sealed partial class MethodFilters
 			}
 
 			[Test]
-			public async Task WithParameterAtIndex_WhenIndexIsAlreadySpecified_ShouldThrowInvalidOperationException()
+			public async Task WithParameterAtIndex_WhenIndexIsAlreadySpecified_ShouldUseTheLastIndex()
 			{
 				Reflection.MethodFilters.MethodsWithParameter<int> atIndex0 = In.Type<TestClassWithMethodParameters>()
 					.Methods().WithParameter<int>().AtIndex(0);
 
-				void Act()
-				{
-					atIndex0.AtIndex(1);
-				}
+				Filtered.Methods atIndex1 = atIndex0.AtIndex(1);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("AtIndex cannot be specified more than once.");
+				await That(atIndex1.GetDescription())
+					.IsEqualTo("methods with parameter of type int at index 1 in").AsPrefix();
 				await That(atIndex0.GetDescription())
 					.IsEqualTo("methods with parameter of type int at index 0 in").AsPrefix()
-					.Because("the rejected index must not change the filter it was called on");
+					.Because("the repeated index must not change the filter it was called on");
 			}
 
 			[Test]

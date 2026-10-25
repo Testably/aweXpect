@@ -11,16 +11,14 @@ namespace aweXpect.Internal.Tests.Options;
 public class RepeatedCheckOptionsTests
 {
 	[Test]
-	public async Task CheckEvery_WhenIntervalIsSpecified_ShouldThrowInvalidOperationException()
+	public async Task CheckEvery_WhenIntervalIsSpecified_ShouldUseTheLastInterval()
 	{
 		RepeatedCheckOptions sut = new();
 		sut.CheckEvery(10.Milliseconds());
 
-		void Act() => sut.CheckEvery(20.Milliseconds());
+		sut.CheckEvery(20.Milliseconds());
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("CheckEvery cannot be specified more than once.")
-			.Because("the second interval would silently replace the first one");
+		await That(sut.Interval).IsEqualTo(20.Milliseconds());
 	}
 
 	[Test]
@@ -103,16 +101,15 @@ public class RepeatedCheckOptionsTests
 	}
 
 	[Test]
-	public async Task Within_WhenTimeoutIsSpecified_ShouldThrowInvalidOperationException()
+	public async Task Within_WhenTimeoutIsSpecified_ShouldUseTheLastTimeout()
 	{
 		RepeatedCheckOptions sut = new();
 		sut.Within(1.Seconds());
 
-		void Act() => sut.Within(2.Seconds());
+		sut.Within(2.Seconds());
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Within cannot be specified more than once.")
-			.Because("the second timeout would silently replace the first one");
+		await That(sut.Timeout).IsEqualTo(2.Seconds());
+		await That(sut.ToString()).IsEqualTo(" within 0:02");
 	}
 
 	private sealed class NoEvaluationContext : IEvaluationContext

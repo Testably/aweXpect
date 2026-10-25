@@ -12,18 +12,15 @@ public sealed partial class MethodFilters
 			public sealed class GenericTests
 			{
 				[Test]
-				public async Task WhenIndexIsAlreadySpecified_ShouldThrowInvalidOperationException()
+				public async Task WhenIndexIsAlreadySpecified_ShouldUseTheLastIndex()
 				{
-					void Act()
-					{
-						In.Type<MyTestClass>()
-							.Methods()
-							.WhichAreGeneric()
-							.WithArgument<ThatMethod.BaseClass>().AtIndexFromEnd(0).AtIndexFromEnd(1);
-					}
+					Filtered.Methods subject = In.Type<MyTestClass>()
+						.Methods()
+						.WhichAreGeneric()
+						.WithArgument<ThatMethod.BaseClass>().AtIndexFromEnd(0).AtIndexFromEnd(1);
 
-					await That(Act).Throws<InvalidOperationException>()
-						.WithMessage("AtIndexFromEnd cannot be specified more than once.");
+					await That(subject.GetDescription())
+						.StartsWith("generic methods with argument of type ThatMethod.BaseClass at index 1 from end in");
 				}
 
 				[Test]

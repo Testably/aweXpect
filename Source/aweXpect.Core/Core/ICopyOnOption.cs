@@ -18,9 +18,9 @@ public interface ICopyOnOption<in TOptions, out TResult>
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="options" /> are a copy of the options of this result with the new option set, so they
-	///     carry every option set so far, and a repeated or conflicting option throws with the same message as without
-	///     the copy. The returned result must use them for everything its own options were used for, e.g. its matches
-	///     and its description, and keep the rest of this result.
+	///     carry every option set so far: a repeated option replaces the earlier one, and a competing or incompatible
+	///     option throws with the same message as without the copy. The returned result must use them for everything
+	///     its own options were used for, e.g. its matches and its description, and keep the rest of this result.
 	/// </remarks>
 	TResult WithOptions(TOptions options);
 }

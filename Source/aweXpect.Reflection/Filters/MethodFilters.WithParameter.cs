@@ -221,7 +221,7 @@ public static partial class MethodFilters
 		///     …at the given zero-based <paramref name="index" />.
 		/// </summary>
 		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
-		/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+		/// <exception cref="InvalidOperationException">An index of another option is already specified.</exception>
 		public MethodsWithParameter<T> AtIndex(int index)
 			=> WithIndex(o => o.AtIndex(index));
 
@@ -229,7 +229,7 @@ public static partial class MethodFilters
 		///     …at the given zero-based <paramref name="index" />, counted from the end of the parameters.
 		/// </summary>
 		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
-		/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+		/// <exception cref="InvalidOperationException">An index of another option is already specified.</exception>
 		public MethodsWithParameter<T> AtIndexFromEnd(int index)
 			=> WithIndex(o => o.AtIndexFromEnd(index));
 
