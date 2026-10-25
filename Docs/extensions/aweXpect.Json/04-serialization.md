@@ -62,15 +62,10 @@ await Expect.That(track).IsJsonSerializable(
     e => e.IgnoringMember(nameof(Track.Artist)));
 ```
 
-You can also specify the type that the subject is deserialized into:
-
-```csharp
-object track = new Track("Let It Be", "The Beatles");
-
-await Expect.That(track).IsJsonSerializable<Track>(
-    new JsonSerializerOptions { IncludeFields = true },
-    e => e.IgnoringMember(nameof(Track.Artist)));
-```
+Without `JsonSerializerOptions`, the subject is serialized with the default options of the
+[customization](./05-customization.md). It is serialized and deserialized as its runtime type, so that the members of
+a derived type survive the round trip as well, and keeps its declared type for further expectations after `.And`. A
+`null` subject fails the expectation.
 
 ## Serialized as JSON
 
@@ -147,6 +142,19 @@ internal partial class TrackContext : JsonSerializerContext;
 
 await Expect.That(track).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2}""",
     TrackContext.Default.Track, o => o.TreatingNullAsAbsent());
+```
+
+`IsJsonSerializable` takes the `JsonTypeInfo<T>` as well, and then serializes and deserializes the subject as `T`. It
+also compares the deserialized object with the subject by
+[equivalency](https://docs.testably.org/aweXpect/how-it-works/native-aot#equivalency), which needs the members of the
+subject type registered. The source generator of aweXpect registers them at the call site, but it cannot see the
+properties that the `System.Text.Json` source generator adds to the context. Pass the type info from a variable of type
+`JsonTypeInfo<T>` instead, or name the type in `[assembly: GenerateMetadata(typeof(Track))]`:
+
+```csharp
+JsonTypeInfo<Track> typeInfo = TrackContext.Default.Track;
+
+await Expect.That(track).IsJsonSerializable(typeInfo);
 ```
 
 Expected values in any expectation, e.g. in `Matches` or `IsValidJsonMatching`, are serialized by reflection as
