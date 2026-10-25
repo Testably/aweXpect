@@ -86,9 +86,6 @@ public static class JsonOptionsExtensions
 	/// <remarks>
 	///     Each expected element is paired with the first unpaired element of the subject that matches it. This greedy
 	///     pairing can fail for overlapping <c>It.Is…</c> expectations, even when another pairing would succeed.
-	///     <para />
-	///     The positional members of <see cref="IJsonArrayResult" /> (<see cref="IJsonArrayResult.At(int)" />,
-	///     <c>WithElements</c>, <c>WithArrays</c> and <c>WithObjects</c>) still verify the element at each index.
 	/// </remarks>
 	public static JsonOptions IgnoringArrayOrder(
 		this JsonOptions @this,
@@ -137,7 +134,7 @@ public static class JsonOptionsExtensions
 	///     The <paramref name="memberToIgnore" /> must cover whole trailing segments of the JSON path, ignoring the casing:
 	///     <c>"id"</c> ignores <c>$.id</c> and <c>$.items[0].id</c>, but not <c>$.parentId</c>, while <c>"$.id"</c> only
 	///     ignores the property of the root. An ignored value and everything below it is neither compared nor reported as
-	///     missing or unexpected, but explicit expectations, e.g. <c>With("id")</c>, still verify it.
+	///     missing or unexpected.
 	///     <para />
 	///     With <see cref="IgnoringArrayOrder" />, an index refers to the element of the subject, which is then left out
 	///     of the pairing.
@@ -164,8 +161,7 @@ public static class JsonOptionsExtensions
 	///     in the comparison.
 	/// </summary>
 	/// <remarks>
-	///     An ignored value and everything below it is neither compared nor reported as missing or unexpected, but
-	///     explicit expectations, e.g. <c>With("id")</c>, still verify it.
+	///     An ignored value and everything below it is neither compared nor reported as missing or unexpected.
 	///     <para />
 	///     With <see cref="IgnoringArrayOrder" />, an index refers to the element of the subject, which is then left out
 	///     of the pairing.

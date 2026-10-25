@@ -323,6 +323,7 @@ namespace aweXpect.Core
             public aweXpect.Core.ExpectationBuilder AddExpectations(System.Action<aweXpect.Core.ExpectationBuilder> expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) { }
             public aweXpect.Core.ExpectationBuilder AddExpectations<TNarrowed>(System.Action<aweXpect.Core.ExpectationBuilder> expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) where TNarrowed : TMember { }
             public aweXpect.Core.ExpectationBuilder AddExpectations<TState>(TState state, System.Action<TState, aweXpect.Core.ExpectationBuilder> expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) { }
+            public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TMember> NegatedAsAlternative(System.Action<aweXpect.Core.MemberAccessor, System.Text.StringBuilder> negatedExpectationTextGenerator) { }
             public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TMember> Validate(System.Func<string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TSource>> constraintBuilder) { }
         }
     }
@@ -490,6 +491,7 @@ namespace aweXpect.Core
         public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromExpression(System.Linq.Expressions.Expression<System.Func<TSource, TTarget>> expression) { }
         public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromFuncWithCallerExpression(System.Func<TSource, TTarget> func, string callerExpression) { }
         public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromFuncWithName(System.Func<TSource, TTarget> func, string name) { }
+        public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromFuncWithPath(System.Func<TSource, TTarget> func, string path, string root) { }
     }
     public abstract class ObjectMatchType<TSubject>
     {
@@ -2026,6 +2028,15 @@ namespace aweXpect.Results
         public sealed class WithinResult : aweXpect.Results.NumberToleranceResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<TType>>, aweXpect.Results.IWithinToleranceResult<aweXpect.Results.NumberToleranceResult<TType, TThat>, TType>
         {
             public WithinResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType> options) { }
+        }
+    }
+    public class NumberToleranceResult<TType, TThat, TNumber> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.NumberToleranceResult<TType, TThat, TNumber>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.NumberTolerance<TNumber>>, aweXpect.Results.INumberToleranceResult<aweXpect.Results.NumberToleranceResult<TType, TThat, TNumber>, TNumber> where TNumber : struct, System.Numerics.INumber<TNumber>
+    {
+        public NumberToleranceResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TNumber> options) { }
+        public aweXpect.Results.NumberToleranceResult<TType, TThat, TNumber>.WithinResult Within(TNumber tolerance) { }
+        public sealed class WithinResult : aweXpect.Results.NumberToleranceResult<TType, TThat, TNumber>, aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<TNumber>>, aweXpect.Results.IWithinToleranceResult<aweXpect.Results.NumberToleranceResult<TType, TThat, TNumber>, TNumber>
+        {
+            public WithinResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TNumber> options) { }
         }
     }
     public class ObjectCountResult<TType, TThat, TItem> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.ObjectCountResult<TType, TThat, TItem>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityOptions<TItem>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Results.IObjectEqualityResult<aweXpect.Results.ObjectCountResult<TType, TThat, TItem>, TItem>

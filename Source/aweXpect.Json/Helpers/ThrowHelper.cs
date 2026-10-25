@@ -12,4 +12,13 @@ internal static class ThrowHelper
 			throw Tracing.WriteException(new ArgumentNullException(paramName, $"The '{paramName}' cannot be null."));
 		}
 	}
+
+	public static void ThrowIfNegative(int value, string paramName)
+	{
+		if (value < 0)
+		{
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(paramName, $"The '{paramName}' must not be negative."));
+		}
+	}
 }

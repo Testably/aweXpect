@@ -182,9 +182,9 @@ public sealed partial class ThatXDocument
 					.WithMessage("""
 					             Expected that document
 					             does not have element "item" which has attribute "sku",
-					             but it could not be verified, because the expectation did not decide its outcome
+					             but it had no root element
 					             """)
-					.Because("aweXpect.Core leaves a negated member expectation undecided when the subject fails both ways");
+					.Because("the expectations on the element are not applied when the document has no root element");
 			}
 
 			[Test]

@@ -116,12 +116,15 @@ a virtual time system.
 
 ### aweXpect.Json
 
-- `Matches`, `IsValidJsonMatching` and the nested expectations of `IsObject` and `IsArray` report additional array
-  elements. Add `o => o.IgnoringAdditionalArrayElements()` to allow them.
-- `IsObject()` offers `WhoseProperties`, like `WhoseElements` on arrays.
+- The nested expectations of `IsObject` and `IsArray` (`With`, `Without`, `At`, `AString`, `ANumber`,
+  `WithElements`, …) are removed. Verify a value with `HasProperty`, `DoesNotHaveProperty`, `HasValueAt` or
+  `HasElementAt`, and its .NET value with `IsString`, `IsNumber`, `IsNumber<TNumber>` or `IsBoolean`, either against an
+  expected value, e.g. `IsString("Let It Be")`, or with all expectations of aweXpect. Counts and shapes are covered by
+  `IsObject().WhoseProperties`,
+  `IsArray().WhoseElements` and `Matches`.
+- `Matches` and `IsValidJsonMatching` report additional array elements. Add
+  `o => o.IgnoringAdditionalArrayElements()` to allow them.
 - `JsonOptions` is immutable like `XmlOptions` and configured only through its methods.
-- The nested expectations of `IsObject` and `IsArray` take an `Action`: a block lambda must drop its `return`
-  statement.
 
 ### aweXpect.Reflection
 

@@ -56,12 +56,12 @@ public sealed partial class ExpectedSerializerOptionsTests
 	}
 
 	[Test]
-	public async Task CustomizedDefault_ShouldSerializeTheExpectedValueOfMatching()
+	public async Task CustomizedDefault_ShouldSerializeTheExpectedValueOfNestedMatches()
 	{
 		JsonElement subject = Parse("{\"track\": {\"title\": \"Let It Be\"}}");
 
 		async Task Act()
-			=> await That(subject).IsObject(o => o.With("track").Matching(new
+			=> await That(subject).HasProperty("track", t => t.Matches(new
 			{
 				Title = "Let It Be",
 			}));
@@ -73,12 +73,12 @@ public sealed partial class ExpectedSerializerOptionsTests
 	}
 
 	[Test]
-	public async Task CustomizedDefault_ShouldSerializeTheExpectedValueOfMatchingAlsoForSimpleValues()
+	public async Task CustomizedDefault_ShouldSerializeTheExpectedValueOfNestedMatchesAlsoForSimpleValues()
 	{
 		JsonElement subject = Parse("{\"rating\": 42}");
 
 		async Task Act()
-			=> await That(subject).IsObject(o => o.With("rating").Matching(42));
+			=> await That(subject).HasProperty("rating", r => r.Matches(42));
 
 		using (Customize.aweXpect.Json().DefaultJsonSerializerOptions.Set(new JsonSerializerOptions
 		       {
@@ -88,10 +88,10 @@ public sealed partial class ExpectedSerializerOptionsTests
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
-				             is an object and $.rating matches 42,
-				             but it differed as $.rating was number 42 instead of "42"
+				             has property "rating" which matches 42,
+				             but $.rating differed as $.rating was number 42 instead of "42"
 
-				             JSON options:
+				             JSON options ($.rating):
 				              - ignore additional properties
 				             """)
 				.Because("the customized options write the expected number as a string, although the property equals it");
@@ -128,16 +128,16 @@ public sealed partial class ExpectedSerializerOptionsTests
 		JsonElement subject = Parse("{\"rating\": 3}");
 
 		async Task Act()
-			=> await That(subject).IsObject(o => o.With("rating").Matching(It.Is<int>().That.IsGreaterThan(4)),
-				o => o.WithSerializerOptions(TrackContext.Default.Options));
+			=> await That(subject).HasProperty("rating", r => r.Matches(It.Is<int>().That.IsGreaterThan(4),
+				o => o.WithSerializerOptions(TrackContext.Default.Options)));
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             is an object and $.rating matches It.Is<int>().That.IsGreaterThan(4),
-			             but it differed as $.rating was 3, which differs by -1
+			             has property "rating" which matches It.Is<int>().That.IsGreaterThan(4),
+			             but $.rating differed as $.rating was 3, which differs by -1
 
-			             JSON options:
+			             JSON options ($.rating):
 			              - ignore additional properties
 			             """);
 	}

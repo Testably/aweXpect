@@ -13,9 +13,9 @@ public partial class HappyCaseBenchmarks
 {
 	[Benchmark]
 	public async Task JsonProperty_aweXpect()
-		=> await Expect.That(_jsonNode).IsObject(o => o
-			.With("title").Matching("Let It Be").And
-			.With("durationSeconds").ANumber());
+		=> await Expect.That(_jsonNode)
+			.HasProperty("title", t => t.IsString("Let It Be")).And
+			.HasProperty("durationSeconds", d => d.IsNumber());
 
 	[Benchmark]
 	public AndConstraint<JsonNodeAssertions<JsonNode>> JsonProperty_FluentAssertions()

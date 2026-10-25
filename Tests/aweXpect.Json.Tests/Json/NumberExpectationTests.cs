@@ -261,12 +261,12 @@ public sealed class NumberExpectationTests
 	}
 
 	[Test]
-	public async Task WithMatching_ShouldReceiveTheNumberAsTheExpectedType()
+	public async Task WithNestedMatches_ShouldReceiveTheNumberAsTheExpectedType()
 	{
 		JsonElement subject = Parse("""{"value": 5}""");
 
 		async Task Act()
-			=> await That(subject).IsObject(o => o.With("value").Matching(It.Is<long>().That.IsEqualTo(5L)));
+			=> await That(subject).HasProperty("value", v => v.Matches(It.Is<long>().That.IsEqualTo(5L)));
 
 		await That(Act).DoesNotThrow();
 	}

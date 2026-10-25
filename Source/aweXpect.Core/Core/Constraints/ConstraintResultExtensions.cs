@@ -40,9 +40,13 @@ public static class ConstraintResultExtensions
 	///     Like <see cref="PrependExpectationText(ConstraintResult, Action{StringBuilder})" />, for the result of the
 	///     expectations on the <paramref name="member" />, whose contexts are labelled with it.
 	/// </summary>
+	/// <remarks>
+	///     The <paramref name="memberPathRoot" /> is the root that the <paramref name="member" /> starts with, when it is a
+	///     path within the subject, see <see cref="MemberAccessor{TSource,TTarget}.FromFuncWithPath" />.
+	/// </remarks>
 	internal static ConstraintResult PrependExpectationText(this ConstraintResult inner, Action<StringBuilder>? prefix,
-		string? member)
-		=> new ConstraintResultExpectationWrapper(inner, prefix, member: member);
+		string? member, string? memberPathRoot = null)
+		=> new ConstraintResultExpectationWrapper(inner, prefix, member: member, memberPathRoot: memberPathRoot);
 
 	/// <summary>
 	///     Creates a new <see cref="ConstraintResult" /> where the expectation is appended with the <paramref name="suffix" />.
@@ -275,15 +279,18 @@ public static class ConstraintResultExtensions
 	{
 		private readonly ConstraintResult _inner;
 		private readonly string? _member;
+		private readonly string? _memberPathRoot;
 		private readonly Action<StringBuilder>? _prefix;
 		private readonly Action<StringBuilder>? _suffix;
 
 		public ConstraintResultExpectationWrapper(ConstraintResult inner,
 			Action<StringBuilder>? prefix = null,
 			Action<StringBuilder>? suffix = null,
-			string? member = null) : base(inner.FurtherProcessingStrategy)
+			string? member = null,
+			string? memberPathRoot = null) : base(inner.FurtherProcessingStrategy)
 		{
 			_member = member;
+			_memberPathRoot = memberPathRoot;
 			_inner = inner;
 			Outcome = _inner.Outcome;
 			_prefix = prefix;
@@ -323,6 +330,6 @@ public static class ConstraintResultExtensions
 			=> _inner.AppendResult(stringBuilder, indentation);
 
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.VisitOptionalMember(_member, _inner);
+			=> contexts.VisitOptionalMember(_member, _inner, _memberPathRoot);
 	}
 }

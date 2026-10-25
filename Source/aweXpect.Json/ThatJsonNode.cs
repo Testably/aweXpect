@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Json;
 
 namespace aweXpect;
 
@@ -95,6 +96,17 @@ public static partial class ThatJsonNode
 			if (_actual is TValue typedValue)
 			{
 				value = typedValue;
+				return true;
+			}
+
+			if (inner is IJsonNodeProjection projection && projection.TryProject(_actual, out value))
+			{
+				return true;
+			}
+
+			if (inner.TryGetStoredValue(out TValue? innerValue) && innerValue is IFoundJsonValue)
+			{
+				value = innerValue;
 				return true;
 			}
 

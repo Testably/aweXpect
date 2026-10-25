@@ -27,12 +27,27 @@ internal static partial class Checks
 				"$.a[1]")),
 		new("an object with the expected structure passes",
 			() => ShouldPass(async () => await That(Parse("{\"a\": [1, 2], \"b\": {}}"))
-				.IsObject(o => o.With(2).Properties()
-					.And.With("a").AnArray(a => a.With(2).Elements())
-					.And.With("b").AnObject()))),
-		new("an array with a differing length fails and names it",
-			() => ShouldFail(async () => await That(Parse("[1, 2]")).IsArray(a => a.With(3).Elements()),
-				"$ had 2 elements")),
+				.HasProperty("a", a => a.IsArray().WhoseElements.HasCount(2))
+				.And.HasProperty("b", b => b.IsObject())
+				.And.DoesNotHaveProperty("c"))),
+		new("a missing property fails and names its path",
+			() => ShouldFail(async () => await That(Parse("{\"a\": {}}")).HasValueAt("a.b", b => b.IsString()),
+				"property $.a.b did not exist")),
+		new("a number is read as the requested type",
+			() => ShouldPass(async () => await That(Parse("{\"a\": 9.5}"))
+				.HasProperty("a", a => a.IsNumber<decimal>(n => n.IsEqualTo(9.5m)))
+				.And.HasProperty("a", a => a.IsNumber(n => n.IsGreaterThan(9))))),
+		new("a number that does not fit the requested type fails and names it",
+			() => ShouldFail(async () => await That(Parse("[1.5]")).HasElementAt(0, e => e.IsNumber<int>()),
+				"$[0] was 1.5, which is not an int")),
+		new("values compared with expected values pass",
+			() => ShouldPass(async () => await That(Parse("{\"a\": \"Let It Be\", \"b\": 9.5, \"c\": true}"))
+				.HasProperty("a", a => a.IsString("let").AsPrefix().IgnoringCase())
+				.And.HasProperty("b", b => b.IsNumber(9.4m).Within(0.1m))
+				.And.HasProperty("c", c => c.IsBoolean(true)))),
+		new("a number compared with an expected value of another type fails and names it",
+			() => ShouldFail(async () => await That(Parse("[1.5]")).HasElementAt(0, e => e.IsNumber(2)),
+				"$[0] was 1.5, which is not an int")),
 		new("the elements of an array fail with their JSON representation",
 			() => ShouldFail(async () => await That(Parse("[\"a\", null]")).IsArray().WhoseElements
 					.All().Satisfy(e => e.ValueKind == JsonValueKind.String),
@@ -75,17 +90,17 @@ internal static partial class Checks
 				.Matches(new JsonObject { ["a"] = new JsonArray(1, 2), }))),
 		new("a property compared with an expected value passes",
 			() => ShouldPass(async () => await That(Parse("{\"a\": 1}"))
-				.IsObject(o => o.With("a").Matching(1)))),
+				.HasProperty("a", a => a.Matches(1)))),
 		new("a property compared with an It.Is expectation fails and names it",
 			() => ShouldFail(async () => await That(Parse("{\"a\": 1}"))
-					.IsObject(o => o.With("a").Matching(It.Is<int>().That.IsGreaterThan(1))),
+					.HasProperty("a", a => a.Matches(It.Is<int>().That.IsGreaterThan(1))),
 				"$.a was 1")),
 		new("array elements compared with expected values pass",
 			() => ShouldPass(async () => await That(Parse("[1, 2]"))
-				.IsArray(a => a.WithElements(1, 2)))),
+				.Matches(new[] { 1, 2, }))),
 		new("a node with the expected structure passes",
 			() => ShouldPass(async () => await That(JsonNode.Parse("{\"a\": [1, 2]}"))
-				.IsObject(o => o.With("a").AnArray(a => a.With(2).Elements())))),
+				.HasProperty("a", a => a.HasElementAt(1, e => e.IsNumber<int>(n => n.IsEqualTo(2)))))),
 		new("a null node fails as the JSON null",
 			() => ShouldFail(async () => await That((JsonNode?)null).IsObject(), "is an object", "but it was null")),
 		new("the elements of a node array fail with their JSON representation",
@@ -127,8 +142,8 @@ internal static partial class Checks
 				"$.Rating was 1")),
 		new("a property compared with a value of source-generated options passes",
 			() => ShouldPass(async () => await That(Parse("{\"a\": {\"Name\": \"a\"}}"))
-				.IsObject(o => o.With("a").Matching(new Dto { Name = "a", }),
-					o => o.WithSerializerOptions(DtoContext.Default.Options)))),
+				.HasProperty("a", a => a.Matches(new Dto { Name = "a", },
+					o => o.WithSerializerOptions(DtoContext.Default.Options))))),
 		new("an expected value missing from the source-generated context names the fix",
 			() => ShouldThrowNotSupported(async () => await That(Parse("{}"))
 					.Matches(new Track { Rating = new Dto[0], }, o => o.WithSerializerOptions(DtoContext.Default.Options)),

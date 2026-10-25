@@ -1,11 +1,35 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
+using aweXpect.Core;
+using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
+using aweXpect.Helpers;
+using aweXpect.Json;
+using aweXpect.Results;
 
 namespace aweXpect;
 
 public static partial class ThatNullableJsonElement
 {
+	/// <inheritdoc cref="ThatJsonElement.IsBoolean(IThat{JsonElement}, Action{IThatSubject{bool}})" />
+	[GuaranteesNotNull]
+	public static AndOrResult<JsonElement, IThat<JsonElement?>> IsBoolean(this IThat<JsonElement?> subject,
+		Action<IThatSubject<bool>> expectations)
+	{
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
+		return IsValue(subject, JsonValueReaders.Boolean, expectations);
+	}
+
+	/// <inheritdoc cref="ThatJsonElement.IsBoolean(IThat{JsonElement}, bool)" />
+	[GuaranteesNotNull]
+	public static AndOrResult<JsonElement, IThat<JsonElement?>> IsBoolean(this IThat<JsonElement?> subject,
+		bool expected)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(expected,
+				static IAsyncContextConstraint<JsonElement?> (expected, it, grammars)
+					=> new IsJsonBooleanEqualToConstraint(it, grammars, expected)),
+			subject);
+
 	[GenerateExpectation("IsBoolean", "is {not} a boolean",
 		Result = nameof(DescribeValueKind),
 		Summary = """

@@ -16,7 +16,7 @@ namespace aweXpect.Core;
 public sealed class ResultContextCollector
 {
 	private List<Entry>? _entries;
-	private List<string>? _subjectPath;
+	private List<Segment>? _subjectPath;
 	private string _titlePrefix = "";
 
 	internal ResultContextCollector()
@@ -45,8 +45,11 @@ public sealed class ResultContextCollector
 	///     contexts are labelled with the <paramref name="member" />, e.g. <c>Collection (Items):</c>.
 	/// </summary>
 	public void VisitMember(string member, ConstraintResult result)
+		=> VisitMember(new Segment(member, null), result);
+
+	private void VisitMember(Segment member, ConstraintResult result)
 	{
-		List<string> subjectPath = _subjectPath ??= [];
+		List<Segment> subjectPath = _subjectPath ??= [];
 		subjectPath.Add(member);
 		try
 		{
@@ -75,7 +78,13 @@ public sealed class ResultContextCollector
 	///     Visits the <paramref name="result" /> of the expectations on the <paramref name="member" />, or as part of the
 	///     current subject when the member has no name.
 	/// </summary>
-	internal void VisitOptionalMember(string? member, ConstraintResult result)
+	/// <param name="member">The name of the member.</param>
+	/// <param name="result">The result of the expectations on the member.</param>
+	/// <param name="pathRoot">
+	///     The root that the <paramref name="member" /> starts with, when it is a path within the subject, see
+	///     <see cref="MemberAccessor{TSource,TTarget}.FromFuncWithPath" />.
+	/// </param>
+	internal void VisitOptionalMember(string? member, ConstraintResult result, string? pathRoot = null)
 	{
 		if (member is null)
 		{
@@ -83,7 +92,7 @@ public sealed class ResultContextCollector
 		}
 		else
 		{
-			VisitMember(member, result);
+			VisitMember(new Segment(member, pathRoot), result);
 		}
 	}
 
@@ -124,7 +133,7 @@ public sealed class ResultContextCollector
 	{
 		foreach (Entry entry in captured)
 		{
-			List<string> subject = [.. _subjectPath ?? [], member,];
+			List<Segment> subject = [.. _subjectPath ?? [], new Segment(member, null),];
 			subject.AddRange(entry.Subject);
 			(_entries ??= []).Add(new Entry(entry.Context, subject.ToArray(), _titlePrefix, true));
 		}
@@ -133,7 +142,7 @@ public sealed class ResultContextCollector
 	/// <summary>
 	///     A collected context with the path of the member it belongs to.
 	/// </summary>
-	internal readonly struct Entry(ResultContext context, string[] subject, string titlePrefix, bool isOfItem)
+	internal readonly struct Entry(ResultContext context, Segment[] subject, string titlePrefix, bool isOfItem)
 	{
 		public ResultContext Context { get; } = context;
 
@@ -142,14 +151,17 @@ public sealed class ResultContextCollector
 		/// </summary>
 		public bool IsOfItem { get; } = isOfItem;
 
-		public string[] Subject { get; } = subject;
+		public Segment[] Subject { get; } = subject;
 		public string TitlePrefix { get; } = titlePrefix;
 
 		/// <summary>
 		///     The member path, e.g. <c>Order.Items</c> or <c>Items[2]</c>, or <see langword="null" /> for the subject.
 		/// </summary>
 		/// <remarks>
-		///     An item index directly follows its collection, and an item of the subject is called <c>item [2]</c>.
+		///     An item index directly follows its collection, and an item of the subject is called <c>item [2]</c>. A path
+		///     within the subject, e.g. <c>$.artist.origin</c>, replaces the label of a directly enclosing path of the same
+		///     root, e.g. <c>$.artist</c>, and otherwise follows the label without its root, e.g.
+		///     <c>elements[1].origin</c>.
 		/// </remarks>
 		public string? GetSubjectLabel()
 		{
@@ -159,19 +171,55 @@ public sealed class ResultContextCollector
 			}
 
 			StringBuilder sb = new();
-			foreach (string segment in Subject)
+			string? previousRoot = null;
+			int pathStart = 0;
+			foreach (Segment segment in Subject)
 			{
-				if (segment.StartsWith('['))
-				{
-					sb.Append(sb.Length == 0 ? "item " : "").Append(segment);
-				}
-				else
-				{
-					sb.Append(sb.Length == 0 ? "" : ".").Append(segment);
-				}
+				AppendSegment(sb, segment, previousRoot, ref pathStart);
+				previousRoot = segment.PathRoot;
 			}
 
 			return sb.ToString();
 		}
+
+		private static void AppendSegment(StringBuilder sb, Segment segment, string? previousRoot, ref int pathStart)
+		{
+			if (segment.PathRoot is { } root)
+			{
+				if (root == previousRoot)
+				{
+					sb.Length = pathStart;
+				}
+				else
+				{
+					pathStart = sb.Length;
+				}
+
+				int start = sb.Length == 0 ? 0 : root.Length;
+				sb.Append(segment.Name, start, segment.Name.Length - start);
+			}
+			else if (segment.Name.StartsWith('['))
+			{
+				sb.Append(sb.Length == 0 ? "item " : "").Append(segment.Name);
+			}
+			else
+			{
+				sb.Append(sb.Length == 0 ? "" : ".").Append(segment.Name);
+			}
+		}
+	}
+
+	/// <summary>
+	///     A segment of the member path of a context, see <see cref="Entry.GetSubjectLabel" />.
+	/// </summary>
+	/// <param name="name">The name of the member.</param>
+	/// <param name="pathRoot">
+	///     The root that the <paramref name="name" /> starts with, when it is a path within the subject, see
+	///     <see cref="MemberAccessor{TSource,TTarget}.FromFuncWithPath" />.
+	/// </param>
+	internal readonly struct Segment(string name, string? pathRoot)
+	{
+		public string Name { get; } = name;
+		public string? PathRoot { get; } = pathRoot;
 	}
 }

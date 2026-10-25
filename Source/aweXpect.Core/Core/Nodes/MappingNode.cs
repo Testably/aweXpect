@@ -32,6 +32,15 @@ internal abstract class MappingNode : ExpectationNode
 	public string? ContextMember { get; set; }
 
 	/// <summary>
+	///     Writes the text that introduces the member as an alternative to the negated expectation on the subject, e.g.
+	///     <c> or $.a </c>, or <see langword="null" /> when a negation keeps the expectations on the member as they are.
+	/// </summary>
+	/// <remarks>
+	///     See <see cref="ExpectationBuilder.MemberExpectationBuilder{TSource,TMember}.NegatedAsAlternative" />.
+	/// </remarks>
+	public Action<MemberAccessor, StringBuilder>? NegatedAlternativeTextGenerator { get; set; }
+
+	/// <summary>
 	///     Combines the <paramref name="result" /> of the expectations on the member with the
 	///     <paramref name="combinedResult" /> of the expectations on the value, if any.
 	/// </summary>
@@ -125,6 +134,9 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	/// <remarks>
 	///     The member is accessed on the value that a met <paramref name="source" /> stores, e.g. after a constraint
 	///     that converts the value, and otherwise on the <paramref name="value" /> itself.
+	///     <para />
+	///     A <see langword="null" /> <paramref name="value" /> for which the <paramref name="source" /> already failed is
+	///     not reported again, as the source can describe it in its own way, e.g. as the JSON value <c>null</c>.
 	/// </remarks>
 	public override ValueTask<ConstraintResult> IsMetByContinuing<TValue>(
 		TValue? value,
@@ -141,6 +153,12 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		    source.TryGetStoredValue(out TSource? storedValue))
 		{
 			return IsMetByValue(storedValue, context, cancellationToken);
+		}
+
+		if (value is null && source is { Outcome: Outcome.Failure or Outcome.FailureBothWays, } &&
+		    context is not ExpectationTextEvaluationContext)
+		{
+			return GetNotApplicableResult(context, cancellationToken);
 		}
 
 		return IsMetByValue(value, context, cancellationToken);
@@ -236,7 +254,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		{
 			// The value only has another type after a failed type check (e.g. `Is<T>()`), which reports the mismatch.
 			ConstraintResult expectationResult = await GetExpectationResult(context, cancellationToken);
-			return new NotApplicableConstraintResult(expectationResult.AppendExpectation);
+			return new NotApplicableConstraintResult(expectationResult);
 		}
 
 		TTarget member = default!;
@@ -370,7 +388,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	{
 		ConstraintResult expectationResult = await base.IsMetBy<TNarrowed>(default,
 			ExpectationTextEvaluationContext.For(context), cancellationToken);
-		return new NotApplicableConstraintResult(expectationResult.AppendExpectation);
+		return new NotApplicableConstraintResult(expectationResult);
 	}
 
 	/// <summary>
@@ -395,7 +413,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		{
 			return result is MemberResult memberResult
 				? memberResult.PrependMemberText(this, ContextMember)
-				: result.PrependExpectationText(AppendMemberText, ContextMember);
+				: result.PrependExpectationText(AppendMemberText, ContextMember, MemberAccessor.PathRoot);
 		}
 
 		return new MappingResult(combinedResult, result, this, ContextMember);
@@ -458,7 +476,8 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 			=> Inner.AppendResult(stringBuilder, indentation);
 
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.VisitOptionalMember(_prefix is null ? null : _member, GetContextsResult());
+			=> contexts.VisitOptionalMember(_prefix is null ? null : _member, GetContextsResult(),
+				_prefix?.MemberAccessor.PathRoot);
 
 		public override ConstraintResult Negate()
 		{

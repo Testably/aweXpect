@@ -58,3 +58,56 @@ public class NumberToleranceResult<TType, TThat>(
 			=> this;
 	}
 }
+
+/// <summary>
+///     The result of an expectation with an underlying value of type <typeparamref name="TType" /> that compares a
+///     <typeparamref name="TNumber" /> of it, e.g. a number in a document.
+///     <para />
+///     In addition to the combinations from <see cref="AndOrResult{TType,TThat}" />, allows specifying a
+///     tolerance via <see cref="ToleranceExtensions" />.
+/// </summary>
+public class NumberToleranceResult<TType, TThat, TNumber>(
+	ExpectationBuilder expectationBuilder,
+	TThat returnValue,
+	NumberTolerance<TNumber> options)
+	: AndOrResult<TType, TThat, NumberToleranceResult<TType, TThat, TNumber>>(expectationBuilder, returnValue),
+		INumberToleranceResult<NumberToleranceResult<TType, TThat, TNumber>, TNumber>
+#if NET8_0_OR_GREATER
+	where TNumber : struct, INumber<TNumber>
+#else
+	where TNumber : struct, IComparable<TNumber>
+#endif
+{
+	private readonly TThat _returnValue = returnValue;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	NumberTolerance<TNumber> IOptionsProvider<NumberTolerance<TNumber>>.Options => options;
+
+	/// <inheritdoc cref="ToleranceExtensions.Within{TSelf, TNumber}(INumberToleranceResult{TSelf, TNumber}, TNumber)" />
+	public WithinResult Within(TNumber tolerance)
+	{
+		options.Within(tolerance);
+		return new WithinResult(ExpectationBuilder, _returnValue, options);
+	}
+
+	/// <summary>
+	///     The result directly after <see cref="NumberToleranceResult{TType,TThat,TNumber}.Within" />, whose tolerance
+	///     can still be made relative to the expected value, e.g. via <c>Percent()</c>.
+	/// </summary>
+	public sealed class WithinResult(
+		ExpectationBuilder expectationBuilder,
+		TThat returnValue,
+		NumberTolerance<TNumber> options)
+		: NumberToleranceResult<TType, TThat, TNumber>(expectationBuilder, returnValue, options),
+			IWithinToleranceResult<NumberToleranceResult<TType, TThat, TNumber>, TNumber>
+	{
+		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+		IRelativeToleranceOptions<TNumber> IOptionsProvider<IRelativeToleranceOptions<TNumber>>.Options
+			=> ((IOptionsProvider<NumberTolerance<TNumber>>)this).Options;
+
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.Result" />
+		NumberToleranceResult<TType, TThat, TNumber>
+			IWithinToleranceResult<NumberToleranceResult<TType, TThat, TNumber>, TNumber>.Result
+			=> this;
+	}
+}

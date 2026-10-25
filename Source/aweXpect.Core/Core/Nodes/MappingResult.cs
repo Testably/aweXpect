@@ -32,6 +32,12 @@ internal sealed class MappingResult : CombinedResult
 	/// </summary>
 	internal ConstraintResult Source => Left;
 
+	/// <summary>
+	///     Whether the negated expectations on the member are rendered as an alternative to the negated expectation on
+	///     the subject, see <see cref="MappingNode.NegatedAlternativeTextGenerator" />.
+	/// </summary>
+	private bool IsNegatedAsAlternative => IsNegated && _mappingNode.NegatedAlternativeTextGenerator is not null;
+
 	/// <inheritdoc />
 	/// <remarks>
 	///     Under negation both parts were met, so the left part explains the failure, unless the member could not be
@@ -39,6 +45,11 @@ internal sealed class MappingResult : CombinedResult
 	/// </remarks>
 	protected override (bool Left, bool Right) GetExplainingParts()
 	{
+		if (IsNegatedAsAlternative && Left.Outcome != Outcome.FailureBothWays && Right.ExplainsOutcomeOf(this))
+		{
+			return (false, true);
+		}
+
 		bool explainsLeft = Left.ExplainsOutcomeOf(this);
 		bool explainsRight = Right.ExplainsOutcomeOf(this) &&
 		                     (!IsNegated || Right.Outcome == Outcome.FailureBothWays || !explainsLeft) &&
@@ -50,6 +61,14 @@ internal sealed class MappingResult : CombinedResult
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
 		Left.AppendExpectation(stringBuilder, indentation);
+		if (IsNegatedAsAlternative)
+		{
+			StringBuilder separator = new();
+			_mappingNode.NegatedAlternativeTextGenerator!(_mappingNode.MemberAccessor, separator);
+			stringBuilder.AppendSeparatedExpectation(separator.ToString(), Right, indentation);
+			return;
+		}
+
 		if (_negatedRightExpectation is not null)
 		{
 			stringBuilder.Append(_negatedRightExpectation);
@@ -91,14 +110,14 @@ internal sealed class MappingResult : CombinedResult
 
 	/// <inheritdoc />
 	protected override void VisitRight(ResultContextCollector contexts)
-		=> contexts.VisitOptionalMember(_member, Right);
+		=> contexts.VisitOptionalMember(_member, Right, _mappingNode.MemberAccessor.PathRoot);
 
 	/// <inheritdoc />
 	public override ConstraintResult Negate()
 	{
 		IsNegated = !IsNegated;
 		Left.Negate();
-		_negatedRightExpectation = IsNegated ? GetRightExpectation() : null;
+		_negatedRightExpectation = IsNegated && !IsNegatedAsAlternative ? GetRightExpectation() : null;
 		Right.Negate();
 		Outcome = CombineOutcomes();
 		return this;

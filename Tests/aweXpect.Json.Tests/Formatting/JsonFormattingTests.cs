@@ -153,15 +153,15 @@ public class JsonFormattingTests
 		JsonElement subject = FromString("{\"foo\": 1}");
 
 		async Task Act()
-			=> await That(subject).DoesNotComplyWith(it => it.IsObject(o => o.With("foo").Matching(1)));
+			=> await That(subject).DoesNotComplyWith(it => it.Matches(new { foo = 1, }));
 
 		using (Customize.aweXpect.Json().DefaultJsonSerializerOptions.Set(new JsonSerializerOptions()))
 		{
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
-				             is not an object or $.foo does not match 1,
-				             but it was
+				             does not match new { foo = 1, },
+				             but it did
 
 				             Actual:
 				             {
@@ -174,8 +174,8 @@ public class JsonFormattingTests
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
-				             is not an object or $.foo does not match 1,
-				             but it was
+				             does not match new { foo = 1, },
+				             but it did
 
 				             Actual:
 				             {

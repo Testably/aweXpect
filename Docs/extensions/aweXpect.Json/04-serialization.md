@@ -149,11 +149,12 @@ await Expect.That(track).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2
     TrackContext.Default.Track, o => o.TreatingNullAsAbsent());
 ```
 
-Expected values in any expectation, e.g. in `Matches` or `With("a").Matching(...)`, are serialized by reflection as
+Expected values in any expectation, e.g. in `Matches` or `IsValidJsonMatching`, are serialized by reflection as
 well, so an anonymous object always needs it. Only values that consist of `null`, strings, characters, booleans,
 numbers, `JsonElement`, `JsonDocument`, `JsonNode` (unless a `JsonValue` wraps another type), `It.Is…` expectations
-and collections of them are written without reflection and work in such an application, e.g.
-`With("count").Matching(2)` or `WithElements(1, 2)`. A named type works when it is registered in a source-generated
+and collections of them are written without reflection and work in such an application, e.g. `Matches(2)` or
+`Matches(new[] { 1, 2 })`. The expectations on properties and values, like `HasProperty("count", c => c.IsNumber<int>())`,
+need no serialization at all. A named type works when it is registered in a source-generated
 context, whose options are passed with [`WithSerializerOptions(…)`](./02-matching.md#serializer-options):
 
 ```csharp
