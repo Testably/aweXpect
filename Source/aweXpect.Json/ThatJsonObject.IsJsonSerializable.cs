@@ -148,10 +148,10 @@ public static partial class ThatJsonObject
 					$"The subject of type {Formatter.Format(type)}"));
 			}
 
-			JsonSerializerOptions options =
+			JsonSerializerOptions jsonSerializerOptions =
 				serializerOptions ?? Customize.aweXpect.Json().DefaultJsonSerializerOptions.Get();
-			string serializedObject = JsonSerializer.Serialize(actual, type, options);
-			return JsonSerializer.Deserialize(serializedObject, type, options);
+			string serializedObject = JsonSerializer.Serialize(actual, type, jsonSerializerOptions);
+			return JsonSerializer.Deserialize(serializedObject, type, jsonSerializerOptions);
 		}
 
 		private static ObjectEqualityOptions<object?> CreateEqualityOptions(EquivalencyOptions options)
