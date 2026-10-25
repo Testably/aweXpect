@@ -55,7 +55,9 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 	/// </summary>
 	internal (TestCancellation? TestCancellation, ITraceWriter? TraceWriter) GetEvaluationSettings()
 	{
-		CustomizationStore? store = _isGlobal ? null : _store.Value;
+		// Reading the async local costs about as much as a simple expectation, so it is skipped until a scoped value
+		// was set at all.
+		CustomizationStore? store = _isGlobal || !_global.HasScopedValues ? null : _store.Value;
 		CustomizationStore? globalStore = _global.Store;
 		if (store is null && globalStore is null)
 		{
@@ -102,6 +104,7 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 		}
 
 		object token = new();
+		_global.HasScopedValues = true;
 		_store.Value = CustomizationStore.With(_store.Value, key, token, value);
 		return new CustomizationLifetime(() => _store.Value = CustomizationStore.Without(_store.Value, key, token));
 	}
@@ -118,7 +121,17 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 	private sealed class GlobalLayer
 	{
 		private readonly object _lock = new();
+		private bool _hasScopedValues;
 		private CustomizationStore? _store;
+
+		/// <summary>
+		///     Whether a scoped value was ever set, which is shared by the scoped and the global customization.
+		/// </summary>
+		public bool HasScopedValues
+		{
+			get => Volatile.Read(ref _hasScopedValues);
+			set => Volatile.Write(ref _hasScopedValues, value);
+		}
 
 		public CustomizationStore? Store => Volatile.Read(ref _store);
 

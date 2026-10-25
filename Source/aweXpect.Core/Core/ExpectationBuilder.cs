@@ -43,6 +43,11 @@ public abstract class ExpectationBuilder
 	private object? _nodeOrConstraint;
 
 	/// <summary>
+	///     The kind of the first constraint, while it is kept in <see cref="_nodeOrConstraint" />.
+	/// </summary>
+	private RightAwayKind _rightAwayKind;
+
+	/// <summary>
 	///     The settings that only few expectations use, or <see langword="null" /> when none was set.
 	/// </summary>
 	/// <remarks>
@@ -245,11 +250,17 @@ public abstract class ExpectationBuilder
 	///     Adds the <paramref name="constraint" /> to the current node, or keeps it without a node, when it is the first
 	///     one on the subject itself.
 	/// </summary>
-	private void AddToNode(IConstraint constraint)
+	/// <remarks>
+	///     The <paramref name="kind" /> of the constraint is kept for the evaluation right away, when the constraint
+	///     verifies values of the type of the subject, as the evaluation can then cast the constraint without probing the
+	///     contravariant constraint interfaces.
+	/// </remarks>
+	private void AddToNode<TValue>(IConstraint constraint, RightAwayKind kind)
 	{
 		if (_nodeOrConstraint is null && _it == DefaultCurrentSubject)
 		{
 			_nodeOrConstraint = constraint;
+			_rightAwayKind = this is ExpectationBuilder<TValue> ? kind : RightAwayKind.Unknown;
 			return;
 		}
 
@@ -267,7 +278,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(_it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(_it, ExpectationGrammars), RightAwayKind.Value);
 		return this;
 	}
 
@@ -282,7 +293,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(this, _it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(this, _it, ExpectationGrammars), RightAwayKind.Value);
 		return this;
 	}
 
@@ -297,7 +308,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(_it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(_it, ExpectationGrammars), RightAwayKind.Context);
 		return this;
 	}
 
@@ -312,7 +323,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(this, _it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(this, _it, ExpectationGrammars), RightAwayKind.Context);
 		return this;
 	}
 
@@ -327,7 +338,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(_it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(_it, ExpectationGrammars), RightAwayKind.Async);
 		return this;
 	}
 
@@ -342,7 +353,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(this, _it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(this, _it, ExpectationGrammars), RightAwayKind.Async);
 		return this;
 	}
 
@@ -357,7 +368,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(_it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(_it, ExpectationGrammars), RightAwayKind.AsyncContext);
 		return this;
 	}
 
@@ -372,7 +383,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(this, _it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(this, _it, ExpectationGrammars), RightAwayKind.AsyncContext);
 		return this;
 	}
 
@@ -390,7 +401,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(state, _it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(state, _it, ExpectationGrammars), RightAwayKind.Value);
 		return this;
 	}
 
@@ -409,7 +420,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(state, this, _it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(state, this, _it, ExpectationGrammars), RightAwayKind.Value);
 		return this;
 	}
 
@@ -427,7 +438,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(state, _it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(state, _it, ExpectationGrammars), RightAwayKind.Context);
 		return this;
 	}
 
@@ -446,7 +457,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(state, this, _it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(state, this, _it, ExpectationGrammars), RightAwayKind.Context);
 		return this;
 	}
 
@@ -464,7 +475,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(state, _it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(state, _it, ExpectationGrammars), RightAwayKind.Async);
 		return this;
 	}
 
@@ -483,7 +494,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(state, this, _it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(state, this, _it, ExpectationGrammars), RightAwayKind.Async);
 		return this;
 	}
 
@@ -501,7 +512,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(state, _it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(state, _it, ExpectationGrammars), RightAwayKind.AsyncContext);
 		return this;
 	}
 
@@ -520,7 +531,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
 	{
-		AddToNode(constraintBuilder(state, this, _it, ExpectationGrammars));
+		AddToNode<TValue>(constraintBuilder(state, this, _it, ExpectationGrammars), RightAwayKind.AsyncContext);
 		return this;
 	}
 
@@ -1352,22 +1363,19 @@ public abstract class ExpectationBuilder
 	private ValueTask<ConstraintResult> Evaluate(bool endsWhenMet, TimeSpan? limit,
 		CancellationToken? combinationToken)
 	{
+		// Without a previous evaluation, there is nothing to end before the evaluation right away.
+		if (_evaluationContext is null && endsWhenMet && limit is null && combinationToken is null &&
+		    _nodeOrConstraint is IConstraint constraint && _rareSettings is null && CanEvaluateRightAway() &&
+		    TryEvaluateRightAway(constraint, _rightAwayKind, out ValueTask<ConstraintResult> isMetRightAway,
+			    out EvaluationContext.EvaluationContext? rightAwayContext))
+		{
+			return CompleteRightAway(isMetRightAway, rightAwayContext);
+		}
+
 		Task previousEvaluation = EndEvaluation();
 		if (previousEvaluation.Status != TaskStatus.RanToCompletion)
 		{
 			return IsMetAfter(previousEvaluation, endsWhenMet, limit, combinationToken);
-		}
-
-		if (endsWhenMet && limit is null && combinationToken is null &&
-		    _nodeOrConstraint is IConstraint constraint && _rareSettings is null && CanEvaluateRightAway())
-		{
-			EvaluationContext.EvaluationContext rightAwayContext = EvaluationContext.EvaluationContext.Rent();
-			if (TryEvaluateRightAway(constraint, rightAwayContext, out ValueTask<ConstraintResult> isMetRightAway))
-			{
-				return CompleteRightAway(isMetRightAway, rightAwayContext);
-			}
-
-			EvaluationContext.EvaluationContext.Return(rightAwayContext);
 		}
 
 		return EvaluateRegularly(endsWhenMet, limit, combinationToken);
@@ -1427,12 +1435,17 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
-	///     Evaluates the single <paramref name="constraint" /> on the subject without a node, when the subject is a value.
+	///     Evaluates the single <paramref name="constraint" /> of the <paramref name="kind" /> on the subject without a
+	///     node, when the subject is a value.
 	/// </summary>
-	internal virtual bool TryEvaluateRightAway(IConstraint constraint, EvaluationContext.EvaluationContext context,
-		out ValueTask<ConstraintResult> isMet)
+	/// <remarks>
+	///     Only a constraint that receives a context gets one, see <see cref="EvaluationContext.EvaluationContext.Rent" />.
+	/// </remarks>
+	private protected virtual bool TryEvaluateRightAway(IConstraint constraint, RightAwayKind kind,
+		out ValueTask<ConstraintResult> isMet, out EvaluationContext.EvaluationContext? context)
 	{
 		isMet = default;
+		context = null;
 		return false;
 	}
 
@@ -1441,7 +1454,7 @@ public abstract class ExpectationBuilder
 	///     result, like the node with this constraint does.
 	/// </summary>
 	private protected virtual ValueTask<ConstraintResult> FromRightAwayException(Exception exception,
-		EvaluationContext.EvaluationContext context)
+		IEvaluationContext context)
 		=> new(Task.FromException<ConstraintResult>(exception));
 
 	/// <summary>
@@ -1450,10 +1463,11 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	/// <remarks>
 	///     A met result that kept nothing in the <paramref name="context" /> returns right away and keeps the context for
-	///     the next evaluation.
+	///     the next evaluation. Otherwise, the evaluation continues with the context, or with a new one for a constraint
+	///     that received none.
 	/// </remarks>
 	private ValueTask<ConstraintResult> CompleteRightAway(ValueTask<ConstraintResult> isMet,
-		EvaluationContext.EvaluationContext context)
+		EvaluationContext.EvaluationContext? context)
 	{
 		if (!isMet.IsCompletedSuccessfully)
 		{
@@ -1461,12 +1475,17 @@ public abstract class ExpectationBuilder
 		}
 
 		ConstraintResult result = isMet.Result;
-		if (result.Outcome == Outcome.Success && context.IsUnused)
+		if (result.Outcome == Outcome.Success && (context is null || context.IsUnused))
 		{
-			EvaluationContext.EvaluationContext.Return(context);
+			if (context is not null)
+			{
+				EvaluationContext.EvaluationContext.Return(context);
+			}
+
 			return new ValueTask<ConstraintResult>(result);
 		}
 
+		context ??= new EvaluationContext.EvaluationContext();
 		_evaluationContext = context;
 		if (result.Outcome != Outcome.Success || context.HasCompletionCallbacks)
 		{
@@ -1480,7 +1499,7 @@ public abstract class ExpectationBuilder
 	}
 
 	private async ValueTask<ConstraintResult> CompleteRightAwayAsync(ValueTask<ConstraintResult> isMet,
-		EvaluationContext.EvaluationContext context)
+		EvaluationContext.EvaluationContext? context)
 	{
 		ConstraintResult result;
 		try
@@ -1489,6 +1508,7 @@ public abstract class ExpectationBuilder
 		}
 		catch (Exception exception)
 		{
+			context ??= new EvaluationContext.EvaluationContext();
 			_evaluationContext = context;
 			return await CompleteEvaluation(FromRightAwayException(exception, context), true);
 		}
@@ -1756,6 +1776,18 @@ public abstract class ExpectationBuilder
 		ThrowHelper.ThrowIfAlreadySpecified(_rareSettings?.TimeSystem is not null,
 			"WithTimeSystem");
 		GetRareSettings().TimeSystem = timeSystem;
+	}
+
+	/// <summary>
+	///     The kind of a constraint that verifies values of the type of the subject.
+	/// </summary>
+	private protected enum RightAwayKind : byte
+	{
+		Unknown,
+		Value,
+		Context,
+		Async,
+		AsyncContext,
 	}
 
 	/// <summary>
@@ -2037,30 +2069,55 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder, IExpectThat<TVal
 #endif
 
 	/// <inheritdoc />
-	internal override bool TryEvaluateRightAway(IConstraint constraint,
-		EvaluationContext.EvaluationContext context, out ValueTask<ConstraintResult> isMet)
+	/// <remarks>
+	///     A constraint of a known <paramref name="kind" /> is cast directly, as probing the contravariant constraint
+	///     interfaces costs more than a simple constraint. An exception of the constraint is turned into the result.
+	/// </remarks>
+	private protected override bool TryEvaluateRightAway(IConstraint constraint, RightAwayKind kind,
+		out ValueTask<ConstraintResult> isMet, out EvaluationContext.EvaluationContext? context)
 	{
 		isMet = default;
+		context = null;
 		if (_subjectSource is not null || _value is DelegateValue)
 		{
 			return false;
 		}
 
+		if (kind == RightAwayKind.Unknown)
+		{
+			kind = constraint switch
+			{
+				IValueConstraint<TValue> => RightAwayKind.Value,
+				IContextConstraint<TValue> => RightAwayKind.Context,
+				IAsyncConstraint<TValue> => RightAwayKind.Async,
+				IAsyncContextConstraint<TValue> => RightAwayKind.AsyncContext,
+				_ => RightAwayKind.Unknown,
+			};
+		}
+
+		if (kind is RightAwayKind.Context or RightAwayKind.AsyncContext)
+		{
+			context = EvaluationContext.EvaluationContext.Rent();
+		}
+
 		try
 		{
-			switch (constraint)
+			switch (kind)
 			{
-				case IValueConstraint<TValue> valueConstraint:
-					isMet = new ValueTask<ConstraintResult>(valueConstraint.IsMetBy(_value));
+				case RightAwayKind.Value:
+					isMet = new ValueTask<ConstraintResult>(As<IValueConstraint<TValue>>(constraint).IsMetBy(_value));
 					return true;
-				case IContextConstraint<TValue> contextConstraint:
-					isMet = new ValueTask<ConstraintResult>(contextConstraint.IsMetBy(_value, context));
+				case RightAwayKind.Context:
+					isMet = new ValueTask<ConstraintResult>(
+						As<IContextConstraint<TValue>>(constraint).IsMetBy(_value, context!));
 					return true;
-				case IAsyncConstraint<TValue> asyncConstraint:
-					isMet = asyncConstraint.IsMetBy(_value, System.Threading.CancellationToken.None);
+				case RightAwayKind.Async:
+					isMet = As<IAsyncConstraint<TValue>>(constraint).IsMetBy(_value,
+						System.Threading.CancellationToken.None);
 					return true;
-				case IAsyncContextConstraint<TValue> asyncContextConstraint:
-					isMet = asyncContextConstraint.IsMetBy(_value, context, System.Threading.CancellationToken.None);
+				case RightAwayKind.AsyncContext:
+					isMet = As<IAsyncContextConstraint<TValue>>(constraint).IsMetBy(_value, context!,
+						System.Threading.CancellationToken.None);
 					return true;
 				default:
 					return false;
@@ -2068,14 +2125,24 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder, IExpectThat<TVal
 		}
 		catch (Exception exception)
 		{
-			isMet = FromRightAwayException(exception, context);
+			isMet = FromRightAwayException(exception, context ??= new EvaluationContext.EvaluationContext());
 			return true;
 		}
 	}
 
+	/// <summary>
+	///     Casts the <paramref name="constraint" />, whose kind is known, without probing the contravariant interfaces.
+	/// </summary>
+	private static TConstraint As<TConstraint>(IConstraint constraint) where TConstraint : class
+#if NET8_0_OR_GREATER
+		=> Unsafe.As<TConstraint>(constraint);
+#else
+		=> (TConstraint)constraint;
+#endif
+
 	/// <inheritdoc />
 	private protected override ValueTask<ConstraintResult> FromRightAwayException(Exception exception,
-		EvaluationContext.EvaluationContext context)
+		IEvaluationContext context)
 		=> ((ExpectationNode)CurrentNode).FromConstraintException(exception, _value, context);
 
 	/// <inheritdoc />
