@@ -667,6 +667,103 @@ public class ExpectationBuilderTests
 	}
 
 	[Test]
+	public async Task ForAsyncMember_WithEvaluationContext_ShouldPassTheContextAndTheCancellationToken()
+	{
+		using CancellationTokenSource cts = new();
+		IEvaluationContext context = new aweXpect.Core.EvaluationContext.EvaluationContext();
+		IEvaluationContext? receivedContext = null;
+		CancellationToken receivedToken = CancellationToken.None;
+		ManualExpectationBuilder<string> sut = new();
+
+		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFuncWithName((x, c, token) =>
+			{
+				receivedContext = c;
+				receivedToken = token;
+				return Task.FromResult(x.Length);
+			}, "length "))
+			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
+				=> new DummyConstraint<int>(v => v == 3, "equal to 3")));
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", context, cts.Token);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Success);
+		await That(receivedContext).IsSameAs(context);
+		await That(receivedToken).IsEqualTo(cts.Token);
+	}
+
+	[Test]
+	public async Task ForAsyncMember_WithEvaluationContext_ShouldShareStoredValuesWithTheOtherExpectations()
+	{
+		int accessCount = 0;
+		MemberAccessor<string, Task<int>> length = MemberAccessor<string, Task<int>>.FromFuncWithName(
+			(x, context, _) =>
+			{
+				if (!context.TryReceive("length", out int value))
+				{
+					accessCount++;
+					value = x.Length;
+					context.Store("length", value);
+				}
+
+				return Task.FromResult(value);
+			}, "length ");
+		ManualExpectationBuilder<string> sut = new();
+
+		sut.ForAsyncMember(length)
+			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
+				=> new DummyConstraint<int>(v => v > 2, "greater than 2")));
+		sut.And();
+		sut.ForAsyncMember(length)
+			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
+				=> new DummyConstraint<int>(v => v < 4, "less than 4")));
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar",
+			new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Success);
+		await That(accessCount).IsEqualTo(1)
+			.Because("the second member receives the value that the first one stored in the evaluation context");
+	}
+
+	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
+	public async Task ForAsyncMember_WithEvaluationContext_WithValueTask_ShouldPassTheContextAndTheCancellationToken(
+		bool completesSynchronously)
+	{
+		using CancellationTokenSource cts = new();
+		IEvaluationContext context = new aweXpect.Core.EvaluationContext.EvaluationContext();
+		IEvaluationContext? receivedContext = null;
+		CancellationToken receivedToken = CancellationToken.None;
+		Func<string, IEvaluationContext, CancellationToken, ValueTask<int>> length = completesSynchronously
+			? (s, c, token) =>
+			{
+				receivedContext = c;
+				receivedToken = token;
+				return new ValueTask<int>(s.Length);
+			}
+			: async (s, c, token) =>
+			{
+				receivedContext = c;
+				receivedToken = token;
+				await Task.Yield();
+				return s.Length;
+			};
+		ManualExpectationBuilder<string> sut = new();
+
+		sut.ForAsyncMember(MemberAccessor<string, ValueTask<int>>.FromFuncWithName(length, "length "))
+			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
+				=> new DummyConstraint<int>(v => v == 2, "equal to 2")));
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", context, cts.Token);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
+		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 2");
+		await That(receivedContext).IsSameAs(context);
+		await That(receivedToken).IsEqualTo(cts.Token);
+	}
+
+	[Test]
 	public async Task ForAsyncMember_WithFailingExpectation_ShouldReturnFailureConstraintResult()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -884,6 +981,105 @@ public class ExpectationBuilderTests
 	}
 
 	[Test]
+	public async Task ForAsyncWhich_WithEvaluationContext_ShouldPassTheContextAndTheCancellationToken()
+	{
+		using CancellationTokenSource cts = new();
+		IEvaluationContext context = new aweXpect.Core.EvaluationContext.EvaluationContext();
+		IEvaluationContext? receivedContext = null;
+		CancellationToken receivedToken = CancellationToken.None;
+		Func<string, IEvaluationContext, CancellationToken, Task<int>> lengthAccessor = (s, c, token) =>
+		{
+			receivedContext = c;
+			receivedToken = token;
+			return Task.FromResult(s.Length);
+		};
+		ManualExpectationBuilder<string> sut = new();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
+		sut.ForAsyncWhich(lengthAccessor, " whose length ");
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 3, "is 3"));
+
+		ConstraintResult result = await sut.IsMetBy("foo", context, cts.Token);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Success);
+		await That(result.GetExpectationText()).IsEqualTo("is foo whose length is 3");
+		await That(receivedContext).IsSameAs(context);
+		await That(receivedToken).IsEqualTo(cts.Token);
+	}
+
+	[Test]
+	public async Task ForAsyncWhich_WithEvaluationContext_WhenTheTaskIsNull_ShouldFailWithoutAnException()
+	{
+		ManualExpectationBuilder<string> sut = new();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
+		sut.ForAsyncWhich<string, int>((_, _, _) => null!, " whose length ");
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 3, "is 3"));
+
+		ConstraintResult result = await sut.IsMetBy("foo",
+			new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
+		await That(result.GetExpectationText()).IsEqualTo("is foo whose length is 3");
+	}
+
+	[Test]
+	public async Task ForAsyncWhich_WithEvaluationContext_WithAsyncLambda_ShouldEvaluateTheAwaitedMember()
+	{
+		ManualExpectationBuilder<string> sut = new();
+		sut.ForAsyncWhich<string, int>(async (s, _, token) =>
+		{
+			await Task.Delay(1, token);
+			return s.Length;
+		}, " whose length ");
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 4, "is 4"));
+
+		ConstraintResult result = await sut.IsMetBy("foo",
+			new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure)
+			.Because("an async lambda resolves to the Task overload instead of being ambiguous");
+		await That(result.GetExpectationText()).IsEqualTo("whose length is 4");
+	}
+
+	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
+	public async Task ForAsyncWhich_WithEvaluationContext_WithValueTask_ShouldPassTheContextAndTheCancellationToken(
+		bool completesSynchronously)
+	{
+		using CancellationTokenSource cts = new();
+		IEvaluationContext context = new aweXpect.Core.EvaluationContext.EvaluationContext();
+		IEvaluationContext? receivedContext = null;
+		CancellationToken receivedToken = CancellationToken.None;
+		Func<string, IEvaluationContext, CancellationToken, ValueTask<int>> lengthAccessor = completesSynchronously
+			? (s, c, token) =>
+			{
+				receivedContext = c;
+				receivedToken = token;
+				return new ValueTask<int>(s.Length);
+			}
+			: async (s, c, token) =>
+			{
+				receivedContext = c;
+				receivedToken = token;
+				await Task.Yield();
+				return s.Length;
+			};
+		ManualExpectationBuilder<string> sut = new();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
+		sut.ForAsyncWhich(lengthAccessor, " whose length ");
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 4, "is 4"));
+
+		ConstraintResult result = await sut.IsMetBy("foo", context, cts.Token);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.GetExpectationText()).IsEqualTo("is foo whose length is 4");
+		await That(result.TryGetValue(out int value)).IsTrue();
+		await That(value).IsEqualTo(3);
+		await That(receivedContext).IsSameAs(context);
+		await That(receivedToken).IsEqualTo(cts.Token);
+	}
+
+	[Test]
 	public async Task ForAsyncWhich_WithSubjectNameAndExpectationGrammars_ShouldApplyThemToTheMember()
 	{
 		Func<string, Task<int>> lengthAccessor = s => Task.FromResult(s.Length);
@@ -1016,6 +1212,31 @@ public class ExpectationBuilderTests
 
 		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
 		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 3 and equal to 2");
+	}
+
+	[Test]
+	public async Task ForMember_WithEvaluationContext_ShouldPassTheContextAndTheCancellationToken()
+	{
+		using CancellationTokenSource cts = new();
+		IEvaluationContext context = new aweXpect.Core.EvaluationContext.EvaluationContext();
+		IEvaluationContext? receivedContext = null;
+		CancellationToken receivedToken = CancellationToken.None;
+		ManualExpectationBuilder<string> sut = new();
+
+		sut.ForMember(MemberAccessor<string, int>.FromFuncWithName((x, c, token) =>
+			{
+				receivedContext = c;
+				receivedToken = token;
+				return x.Length;
+			}, "length "))
+			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
+				=> new DummyConstraint<int>(v => v == 3, "equal to 3")));
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", context, cts.Token);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Success);
+		await That(receivedContext).IsSameAs(context);
+		await That(receivedToken).IsEqualTo(cts.Token);
 	}
 
 	[Test]

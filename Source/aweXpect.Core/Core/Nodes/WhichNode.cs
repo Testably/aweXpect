@@ -14,7 +14,8 @@ internal class WhichNode<TSource, TMember> : Node
 {
 	/// <summary>
 	///     The accessor of a member that returns a <see cref="Task{TResult}" /> or a
-	///     <see cref="ValueTask{TResult}" /> of <typeparamref name="TMember" />.
+	///     <see cref="ValueTask{TResult}" /> of <typeparamref name="TMember" />, and that receives either the source
+	///     value only or also the evaluation context and the cancellation token.
 	/// </summary>
 	private readonly Delegate? _asyncMemberAccessor;
 
@@ -53,6 +54,30 @@ internal class WhichNode<TSource, TMember> : Node
 	public WhichNode(
 		Node? parent,
 		Func<TSource, ValueTask<TMember?>> asyncMemberAccessor,
+		string? separator = null,
+		bool negateMemberOnly = false,
+		string? memberName = null,
+		string? contextMember = null)
+		: this(parent, separator, negateMemberOnly, memberName, contextMember)
+	{
+		_asyncMemberAccessor = asyncMemberAccessor;
+	}
+
+	public WhichNode(
+		Node? parent,
+		Func<TSource, IEvaluationContext, CancellationToken, Task<TMember?>> asyncMemberAccessor,
+		string? separator = null,
+		bool negateMemberOnly = false,
+		string? memberName = null,
+		string? contextMember = null)
+		: this(parent, separator, negateMemberOnly, memberName, contextMember)
+	{
+		_asyncMemberAccessor = asyncMemberAccessor;
+	}
+
+	public WhichNode(
+		Node? parent,
+		Func<TSource, IEvaluationContext, CancellationToken, ValueTask<TMember?>> asyncMemberAccessor,
 		string? separator = null,
 		bool negateMemberOnly = false,
 		string? memberName = null,
@@ -155,7 +180,7 @@ internal class WhichNode<TSource, TMember> : Node
 		(TMember? Value, NullSubjectKind NullKind) matching;
 		try
 		{
-			matching = await ComputeMatchingValueAsync(source, cancellationToken);
+			matching = await ComputeMatchingValueAsync(source, context, cancellationToken);
 		}
 		catch (Exception exception)
 		{
@@ -210,7 +235,7 @@ internal class WhichNode<TSource, TMember> : Node
 	}
 
 	private async ValueTask<(TMember? Value, NullSubjectKind NullKind)> ComputeMatchingValueAsync(TSource? source,
-		CancellationToken cancellationToken)
+		IEvaluationContext context, CancellationToken cancellationToken)
 	{
 #pragma warning disable S2583
 		if (source is null)
@@ -224,22 +249,32 @@ internal class WhichNode<TSource, TMember> : Node
 			return (_memberAccessor(source), NullSubjectKind.None);
 		}
 
-		if (_asyncMemberAccessor is Func<TSource, Task<TMember?>> taskMemberAccessor)
+		Task<TMember?>? task;
+		switch (_asyncMemberAccessor)
 		{
-			Task<TMember?>? task = taskMemberAccessor.Invoke(source);
-			return task is null
-				? (default, NullSubjectKind.NullTaskReturned)
-				: (await task.AbandonOnCancellation(cancellationToken), NullSubjectKind.None);
+			case Func<TSource, Task<TMember?>> taskMemberAccessor:
+				task = taskMemberAccessor.Invoke(source);
+				break;
+			case Func<TSource, IEvaluationContext, CancellationToken, Task<TMember?>> taskMemberAccessor:
+				task = taskMemberAccessor.Invoke(source, context, cancellationToken);
+				break;
+			default:
+				ValueTask<TMember?> valueTask =
+					_asyncMemberAccessor is Func<TSource, ValueTask<TMember?>> valueTaskMemberAccessor
+						? valueTaskMemberAccessor.Invoke(source)
+						: ((Func<TSource, IEvaluationContext, CancellationToken, ValueTask<TMember?>>)
+							_asyncMemberAccessor!).Invoke(source, context, cancellationToken);
+				if (valueTask.IsCompletedSuccessfully)
+				{
+					return (valueTask.Result, NullSubjectKind.None);
+				}
+
+				return (await valueTask.AsTask().AbandonOnCancellation(cancellationToken), NullSubjectKind.None);
 		}
 
-		ValueTask<TMember?> valueTask = ((Func<TSource, ValueTask<TMember?>>)_asyncMemberAccessor!).Invoke(source);
-		if (valueTask.IsCompletedSuccessfully)
-		{
-			return (valueTask.Result, NullSubjectKind.None);
-		}
-
-		Task<TMember?> memberTask = valueTask.AsTask();
-		return (await memberTask.AbandonOnCancellation(cancellationToken), NullSubjectKind.None);
+		return task is null
+			? (default, NullSubjectKind.NullTaskReturned)
+			: (await task.AbandonOnCancellation(cancellationToken), NullSubjectKind.None);
 	}
 
 	/// <inheritdoc cref="object.Equals(object?)" />

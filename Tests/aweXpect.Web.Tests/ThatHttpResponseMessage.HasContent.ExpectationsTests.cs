@@ -1,5 +1,7 @@
 ﻿using System.Net.Http;
+using System.Threading;
 using aweXpect.Core;
+using aweXpect.Web.Tests.TestHelpers;
 
 namespace aweXpect.Tests;
 
@@ -107,6 +109,31 @@ public sealed partial class ThatHttpResponseMessage
 					             but it was <null>
 					             """);
 			}
+
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task WhenTheEvaluationIsCanceledWhileTheContentIsRead_ShouldCancelReadingTheContent()
+			{
+				using CancellationTokenSource cts = new();
+				PendingContent content = new(cts);
+				HttpResponseMessage subject = new()
+				{
+					Content = content,
+				};
+
+				async Task Act()
+					=> await That(subject).HasContent(which => which.IsEmpty()).WithCancellation(cts.Token);
+
+				await That(Act).Throws<TUnit.Core.Exceptions.InconclusiveTestException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a string content which is empty,
+					             but it could not be verified, because the evaluation was already canceled
+					             """);
+				await That(content.ReadToken.IsCancellationRequested).IsTrue()
+					.Because("the cancellation of the evaluation must also stop reading a slow content");
+			}
+#endif
 		}
 	}
 }

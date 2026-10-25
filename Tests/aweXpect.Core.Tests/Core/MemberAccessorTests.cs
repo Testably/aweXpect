@@ -51,7 +51,7 @@ public sealed class MemberAccessorTests
 		MemberAccessor<string, int> subject = MemberAccessor<string, int>
 			.FromExpression(x => x.Length);
 
-		await That(subject.AccessMember("foo")).IsEqualTo(3);
+		await That(subject.AccessMember("foo", null!, CancellationToken.None)).IsEqualTo(3);
 	}
 
 	[Test]
