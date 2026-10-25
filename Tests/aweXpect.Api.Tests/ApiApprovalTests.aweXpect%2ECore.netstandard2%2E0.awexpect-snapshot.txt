@@ -1626,13 +1626,6 @@ namespace aweXpect.Options
     {
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.CollectionOrderOptions<TItem>> SetComparer<TItem>(this aweXpect.Core.OptionsSlot<aweXpect.Options.CollectionOrderOptions<TItem>> slot, System.Collections.Generic.IComparer<TItem> comparer) { }
     }
-    public sealed class DayTolerance : aweXpect.Options.TimeTolerance
-    {
-        public DayTolerance() { }
-        public override System.TimeSpan GetToleranceOrDefault() { }
-        public override string ToString() { }
-        public override aweXpect.Options.TimeTolerance Within(System.TimeSpan tolerance) { }
-    }
     public abstract class EnumerableQuantifier
     {
         public void AppendExpectation(System.Text.StringBuilder stringBuilder, aweXpect.Core.ExpectationGrammars grammars, System.Action<System.Text.StringBuilder, aweXpect.Core.ExpectationGrammars> appendItemExpectation) { }
@@ -1676,11 +1669,7 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.ExecutionTimeOptions> Between(this aweXpect.Core.OptionsSlot<aweXpect.Options.ExecutionTimeOptions> slot, System.TimeSpan minimum, System.TimeSpan maximum) { }
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.ExecutionTimeOptions> Within(this aweXpect.Core.OptionsSlot<aweXpect.Options.ExecutionTimeOptions> slot, System.TimeSpan duration) { }
     }
-    public interface IRelativeToleranceOptions<TTolerance>
-    {
-        void UseRelativeTolerance(System.Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit);
-    }
-    public class NumberTolerance<TNumber> : aweXpect.Options.IRelativeToleranceOptions<TNumber> where TNumber : struct, System.IComparable<TNumber>
+    public readonly struct NumberTolerance<TNumber> where TNumber : struct, System.IComparable<TNumber>
     {
         public NumberTolerance(System.Func<TNumber, TNumber, TNumber?> calculateDifference) { }
         public TNumber? Tolerance { get; }
@@ -1688,7 +1677,7 @@ namespace aweXpect.Options
         public bool IsWithinTolerance(TNumber? actual, TNumber? expected) { }
         public override string ToString() { }
         public TNumber? ToleranceFor(TNumber expected) { }
-        public void UseRelativeTolerance(System.Func<TNumber, TNumber, TNumber> absoluteTolerance, string unit) { }
+        public aweXpect.Options.NumberTolerance<TNumber> WithRelativeTolerance(System.Func<TNumber, TNumber, TNumber> absoluteTolerance, string unit) { }
         public aweXpect.Options.NumberTolerance<TNumber> Within(TNumber tolerance) { }
     }
     public static class NumberToleranceSlotExtensions
@@ -1717,7 +1706,7 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.ObjectEqualityOptions<TSubject>> Using<TSubject>(this aweXpect.Core.OptionsSlot<aweXpect.Options.ObjectEqualityOptions<TSubject>> slot, System.Collections.Generic.IEqualityComparer<TSubject> comparer) { }
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.ObjectEqualityOptions<TSubject>> Using<TSubject>(this aweXpect.Core.OptionsSlot<aweXpect.Options.ObjectEqualityOptions<TSubject>> slot, System.Collections.Generic.IEqualityComparer<object> comparer) { }
     }
-    public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance> : aweXpect.Options.ObjectEqualityOptions<TSubject>, aweXpect.Options.IRelativeToleranceOptions<TTolerance>
+    public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance> : aweXpect.Options.ObjectEqualityOptions<TSubject>
     {
         public ObjectEqualityWithToleranceOptions(System.Func<TSubject, TSubject, TTolerance, bool> isWithinTolerance, System.Func<TTolerance, string>? toString = null) { }
         public void UseRelativeTolerance(System.Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit) { }
@@ -1844,14 +1833,15 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.StringEqualityOptions> SetMatchType(this aweXpect.Core.OptionsSlot<aweXpect.Options.StringEqualityOptions> slot, aweXpect.Core.StringMatchType matchType, string optionName) { }
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.StringEqualityOptions> Using(this aweXpect.Core.OptionsSlot<aweXpect.Options.StringEqualityOptions> slot, System.Collections.Generic.IEqualityComparer<string> comparer) { }
     }
-    public class TimeTolerance
+    public readonly struct TimeTolerance
     {
-        public TimeTolerance() { }
         public System.TimeSpan? Tolerance { get; }
-        public virtual System.TimeSpan GetToleranceOrDefault() { }
+        public static aweXpect.Options.TimeTolerance Days { get; }
+        public static aweXpect.Options.TimeTolerance Default { get; }
+        public System.TimeSpan GetToleranceOrDefault() { }
         public string ToDayString() { }
         public override string ToString() { }
-        public virtual aweXpect.Options.TimeTolerance Within(System.TimeSpan tolerance) { }
+        public aweXpect.Options.TimeTolerance Within(System.TimeSpan tolerance) { }
     }
     public static class TimeToleranceSlotExtensions
     {
@@ -2102,15 +2092,15 @@ namespace aweXpect.Results
         System.Action<System.TimeSpan?, string>? Validation { get; }
         TResult Compare(aweXpect.Results.PropertyComparison<System.TimeSpan> comparison);
     }
-    public interface IWithinToleranceResult<TResult, TTolerance> : aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<TTolerance>>
+    public interface IWithinToleranceResult<TResult, TTolerance>
     {
-        TResult Result { get; }
+        TResult WithRelativeTolerance(System.Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit);
     }
     public class NullableNumberToleranceResult<TType, TThat> : aweXpect.Results.AndOrResult<TType?, TThat, aweXpect.Results.NullableNumberToleranceResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.NumberTolerance<TType>>, aweXpect.Results.INumberToleranceResult<aweXpect.Results.NullableNumberToleranceResult<TType, TThat>, TType> where TType : struct, System.IComparable<TType>
     {
         public NullableNumberToleranceResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Core.OptionsSlot<aweXpect.Options.NumberTolerance<TType>> options) { }
         public aweXpect.Results.NullableNumberToleranceResult<TType, TThat>.WithinResult Within(TType tolerance) { }
-        public sealed class WithinResult : aweXpect.Results.NullableNumberToleranceResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<TType>>, aweXpect.Results.IWithinToleranceResult<aweXpect.Results.NullableNumberToleranceResult<TType, TThat>, TType>
+        public sealed class WithinResult : aweXpect.Results.NullableNumberToleranceResult<TType, TThat>, aweXpect.Results.IWithinToleranceResult<aweXpect.Results.NullableNumberToleranceResult<TType, TThat>, TType>
         {
             public WithinResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Core.OptionsSlot<aweXpect.Options.NumberTolerance<TType>> options) { }
         }
@@ -2119,7 +2109,7 @@ namespace aweXpect.Results
     {
         public NumberToleranceResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Core.OptionsSlot<aweXpect.Options.NumberTolerance<TType>> options) { }
         public aweXpect.Results.NumberToleranceResult<TType, TThat>.WithinResult Within(TType tolerance) { }
-        public sealed class WithinResult : aweXpect.Results.NumberToleranceResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<TType>>, aweXpect.Results.IWithinToleranceResult<aweXpect.Results.NumberToleranceResult<TType, TThat>, TType>
+        public sealed class WithinResult : aweXpect.Results.NumberToleranceResult<TType, TThat>, aweXpect.Results.IWithinToleranceResult<aweXpect.Results.NumberToleranceResult<TType, TThat>, TType>
         {
             public WithinResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Core.OptionsSlot<aweXpect.Options.NumberTolerance<TType>> options) { }
         }
@@ -2128,7 +2118,7 @@ namespace aweXpect.Results
     {
         public NumberToleranceResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Core.OptionsSlot<aweXpect.Options.NumberTolerance<TNumber>> options) { }
         public aweXpect.Results.NumberToleranceResult<TType, TThat, TNumber>.WithinResult Within(TNumber tolerance) { }
-        public sealed class WithinResult : aweXpect.Results.NumberToleranceResult<TType, TThat, TNumber>, aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<TNumber>>, aweXpect.Results.IWithinToleranceResult<aweXpect.Results.NumberToleranceResult<TType, TThat, TNumber>, TNumber>
+        public sealed class WithinResult : aweXpect.Results.NumberToleranceResult<TType, TThat, TNumber>, aweXpect.Results.IWithinToleranceResult<aweXpect.Results.NumberToleranceResult<TType, TThat, TNumber>, TNumber>
         {
             public WithinResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Core.OptionsSlot<aweXpect.Options.NumberTolerance<TNumber>> options) { }
         }
@@ -2145,7 +2135,7 @@ namespace aweXpect.Results
     {
         public ObjectEqualityWithToleranceResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Core.OptionsSlot<aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance>> options) { }
         public aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>.WithinResult Within(TTolerance tolerance) { }
-        public sealed class WithinResult : aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<TTolerance>>, aweXpect.Results.IWithinToleranceResult<aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>
+        public sealed class WithinResult : aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, aweXpect.Results.IWithinToleranceResult<aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>
         {
             public WithinResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Core.OptionsSlot<aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance>> options) { }
         }

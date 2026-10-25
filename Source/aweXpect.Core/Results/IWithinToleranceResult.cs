@@ -1,5 +1,4 @@
-using aweXpect.Core;
-using aweXpect.Options;
+using System;
 
 namespace aweXpect.Results;
 
@@ -9,10 +8,13 @@ namespace aweXpect.Results;
 ///     <c>Percent()</c>.
 /// </summary>
 public interface IWithinToleranceResult<TResult, TTolerance>
-	: IOptionsProvider<IRelativeToleranceOptions<TTolerance>>
 {
 	/// <summary>
-	///     The result to continue with after the tolerance was made relative.
+	///     Interprets the specified tolerance relative to the expected value and returns the result to continue with.
 	/// </summary>
-	TResult Result { get; }
+	/// <param name="absoluteTolerance">
+	///     Calculates the absolute tolerance from the specified tolerance and the expected value.
+	/// </param>
+	/// <param name="unit">The unit appended to the tolerance in the expectation text, e.g. <c>%</c>.</param>
+	TResult WithRelativeTolerance(Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit);
 }

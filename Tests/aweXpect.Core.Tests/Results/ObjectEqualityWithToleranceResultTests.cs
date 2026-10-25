@@ -30,30 +30,6 @@ public sealed class ObjectEqualityWithToleranceResultTests
 	}
 
 	[Test]
-	public async Task Within_ShouldReturnAResultThatExposesItselfAsResult()
-	{
-		ObjectEqualityWithToleranceOptions<int, double> options = new((_, _, _) => true);
-		ObjectEqualityWithToleranceResult<int, IThat<int>, int, double> sut = CreateSut(2, options);
-
-		ObjectEqualityWithToleranceResult<int, IThat<int>, int, double>.WithinResult result = sut.Within(1.0);
-
-		await That(result).Is<IWithinToleranceResult<ObjectEqualityWithToleranceResult<int, IThat<int>, int, double>, double>>()
-			.Whose(x => x.Result, it => it.IsSameAs(result));
-	}
-
-	[Test]
-	public async Task Within_ShouldReturnAResultWithRelativeToleranceOptions()
-	{
-		ObjectEqualityWithToleranceOptions<int, double> options = new((_, _, _) => true);
-		ObjectEqualityWithToleranceResult<int, IThat<int>, int, double> sut = CreateSut(2, options);
-
-		ObjectEqualityWithToleranceResult<int, IThat<int>, int, double>.WithinResult result = sut.Within(1.0);
-
-		await That(result).Is<IOptionsProvider<IRelativeToleranceOptions<double>>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
-	}
-
-	[Test]
 	public async Task Within_ShouldSetTheTolerance()
 	{
 		ObjectEqualityWithToleranceOptions<int, double> options = new((_, _, _) => true);
@@ -62,6 +38,21 @@ public sealed class ObjectEqualityWithToleranceResultTests
 		_ = sut.Within(1.0);
 
 		await That(options.ToString()).IsEqualTo(" ± 1.0");
+	}
+
+	[Test]
+	public async Task Within_WithRelativeTolerance_ShouldMakeTheToleranceRelativeAndReturnTheResult()
+	{
+		ObjectEqualityWithToleranceOptions<int, double> options = new((_, _, _) => true);
+		ObjectEqualityWithToleranceResult<int, IThat<int>, int, double> sut = CreateSut(2, options);
+		IWithinToleranceResult<ObjectEqualityWithToleranceResult<int, IThat<int>, int, double>, double> result =
+			sut.Within(1.0);
+
+		ObjectEqualityWithToleranceResult<int, IThat<int>, int, double> continuation =
+			result.WithRelativeTolerance((tolerance, expected) => tolerance * expected / 100, "%");
+
+		await That(continuation).IsSameAs(result);
+		await That(options.ToString()).IsEqualTo(" ± 1.0%");
 	}
 
 	private static ObjectEqualityWithToleranceResult<TType, IThat<TType>, TElement, TTolerance>

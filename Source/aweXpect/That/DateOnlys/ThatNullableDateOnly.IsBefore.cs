@@ -19,7 +19,7 @@ public static partial class ThatNullableDateOnly
 		this IThat<DateOnly?> subject,
 		DateOnly? expected)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(new DayTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -36,7 +36,7 @@ public static partial class ThatNullableDateOnly
 		this IThat<DateOnly?> subject,
 		DateOnly? unexpected)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(new DayTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
 				static (state, it, grammars) =>

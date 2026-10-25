@@ -23,7 +23,7 @@ public static partial class ThatDateOnly
 		this IThat<DateOnly> subject,
 		DateOnly? minimum)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(new DayTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new BetweenResult<TimeToleranceResult<DateOnly, IThat<DateOnly>>, DateOnly?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -49,7 +49,7 @@ public static partial class ThatDateOnly
 		this IThat<DateOnly> subject,
 		DateOnly? minimum)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(new DayTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new BetweenResult<TimeToleranceResult<DateOnly, IThat<DateOnly>>, DateOnly?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);

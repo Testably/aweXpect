@@ -87,8 +87,8 @@ public static class ToleranceExtensions
 	///     <c>IsNotBetween</c> or <c>IsNotEqualTo</c>, is the exact inverse of its positive form, so the tolerance
 	///     narrows it and it fails within the tolerance of the bound. On a <c>DateOnly</c>,
 	///     a <paramref name="tolerance" /> that is not a whole number of days throws an
-	///     <see cref="ArgumentOutOfRangeException" />; an expectation of an extension gets this check by passing a
-	///     <see cref="DayTolerance" /> as its options.
+	///     <see cref="ArgumentOutOfRangeException" />; an expectation of an extension gets this check by starting from
+	///     <see cref="TimeTolerance.Days" />.
 	/// </remarks>
 	public static TResult Within<TResult>(this TResult result, TimeSpan tolerance)
 		where TResult : IOptionsProvider<TimeTolerance>
@@ -104,11 +104,7 @@ public static class ToleranceExtensions
 	///     On an expected value of zero, only an equal value is within the tolerance.
 	/// </remarks>
 	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, double> result)
-	{
-		result.Options.Value.UseRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100,
-			"%");
-		return result.Result;
-	}
+		=> result.WithRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100, "%");
 
 	/// <summary>
 	///     …interpreting the tolerance as a percentage of the expected value.
@@ -117,11 +113,7 @@ public static class ToleranceExtensions
 	///     On an expected value of zero, only an equal value is within the tolerance.
 	/// </remarks>
 	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, float> result)
-	{
-		result.Options.Value.UseRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100,
-			"%");
-		return result.Result;
-	}
+		=> result.WithRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100, "%");
 
 	/// <summary>
 	///     …interpreting the tolerance as a percentage of the expected value.
@@ -130,19 +122,13 @@ public static class ToleranceExtensions
 	///     On an expected value of zero, only an equal value is within the tolerance.
 	/// </remarks>
 	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, decimal> result)
-	{
-		result.Options.Value.UseRelativeTolerance(RelativeDecimalTolerance, "%");
-		return result.Result;
-	}
+		=> result.WithRelativeTolerance(RelativeDecimalTolerance, "%");
 
 #if NET8_0_OR_GREATER
 	/// <inheritdoc cref="Percent{TResult}(IWithinToleranceResult{TResult, double})" />
 	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, Half> result)
-	{
-		result.Options.Value.UseRelativeTolerance(
+		=> result.WithRelativeTolerance(
 			static (tolerance, expected) => (Half)((float)tolerance * Math.Abs((float)expected) / 100), "%");
-		return result.Result;
-	}
 #endif
 
 	/// <remarks>

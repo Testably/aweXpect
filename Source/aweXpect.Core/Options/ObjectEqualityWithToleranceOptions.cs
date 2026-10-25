@@ -14,12 +14,17 @@ namespace aweXpect.Options;
 public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 	Func<TSubject, TSubject, TTolerance, bool> isWithinTolerance,
 	Func<TTolerance, string>? toString = null)
-	: ObjectEqualityOptions<TSubject>,
-		IRelativeToleranceOptions<TTolerance>
+	: ObjectEqualityOptions<TSubject>
 {
 	private Action<TTolerance>? _validateTolerance;
 
-	/// <inheritdoc cref="IRelativeToleranceOptions{TTolerance}.UseRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
+	/// <summary>
+	///     Interprets the specified tolerance relative to the expected value.
+	/// </summary>
+	/// <param name="absoluteTolerance">
+	///     Calculates the absolute tolerance from the specified tolerance and the expected value.
+	/// </param>
+	/// <param name="unit">The unit appended to the tolerance in the expectation text, e.g. <c>%</c>.</param>
 	/// <remarks>
 	///     Applies to the tolerance specified with <see cref="Within(TTolerance)" />, and only to expected values of type
 	///     <typeparamref name="TTolerance" />.

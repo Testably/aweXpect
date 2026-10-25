@@ -29,7 +29,7 @@ public static partial class ThatNullableTimeSpan
 		bool negated)
 	{
 		IEnumerable<TimeSpan?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Tolerance: tolerance,

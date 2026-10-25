@@ -1,6 +1,4 @@
 ﻿using System;
-using aweXpect.Core;
-using aweXpect.Options;
 using aweXpect.Results;
 
 namespace aweXpect.Json;
@@ -10,7 +8,7 @@ namespace aweXpect.Json;
 ///     tolerance can still be made relative to the expected value, e.g. via <c>Percent()</c>.
 /// </summary>
 public sealed class JsonNumbersWithinOptions
-	: JsonOptions, IWithinToleranceResult<JsonOptions, double>, IRelativeToleranceOptions<double>
+	: JsonOptions, IWithinToleranceResult<JsonOptions, double>
 {
 	private readonly double _tolerance;
 
@@ -20,21 +18,14 @@ public sealed class JsonNumbersWithinOptions
 		NumberTolerance = new JsonNumberTolerance(tolerance);
 	}
 
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
 	/// <remarks>
-	///     A view on these options, so that <c>Percent()</c> can change them.
+	///     Returns new options, so that these options keep their absolute tolerance.
 	/// </remarks>
-	OptionsSlot<IRelativeToleranceOptions<double>> IOptionsProvider<IRelativeToleranceOptions<double>>.Options
-		=> new(this);
-
-	/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.Result" />
-	JsonOptions IWithinToleranceResult<JsonOptions, double>.Result => this;
-
-	/// <inheritdoc cref="IRelativeToleranceOptions{TTolerance}.UseRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
-	/// <remarks>
-	///     Replaces the tolerance instead of changing it, so that the copies of these options keep their tolerance.
-	/// </remarks>
-	void IRelativeToleranceOptions<double>.UseRelativeTolerance(Func<double, double, double> absoluteTolerance,
-		string unit)
-		=> NumberTolerance = new JsonNumberTolerance(_tolerance, absoluteTolerance, unit);
+	JsonOptions IWithinToleranceResult<JsonOptions, double>.WithRelativeTolerance(
+		Func<double, double, double> absoluteTolerance, string unit)
+		=> new(this)
+		{
+			NumberTolerance = new JsonNumberTolerance(_tolerance, absoluteTolerance, unit),
+		};
 }

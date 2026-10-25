@@ -23,7 +23,7 @@ public static partial class ThatNullableDateTime
 		this IThat<DateTime?> subject,
 		DateTime? expected)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<DateTime, IThat<DateTime?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -45,7 +45,7 @@ public static partial class ThatNullableDateTime
 		this IThat<DateTime?> subject,
 		DateTime? unexpected)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<DateTime, IThat<DateTime?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
 				static (state, it, grammars) =>

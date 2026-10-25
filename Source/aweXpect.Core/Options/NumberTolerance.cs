@@ -11,17 +11,38 @@ namespace aweXpect.Options;
 /// <summary>
 ///     Tolerance for number comparisons.
 /// </summary>
-public class NumberTolerance<TNumber>(
-	Func<TNumber, TNumber, TNumber?> calculateDifference)
-	: IRelativeToleranceOptions<TNumber>
+/// <remarks>
+///     An immutable value: the option methods return a new tolerance. The <see langword="default" /> value has no
+///     difference function, so it only considers equal numbers to be within any tolerance.
+/// </remarks>
+public readonly struct NumberTolerance<TNumber>
 #if NET8_0_OR_GREATER
 	where TNumber : struct, INumber<TNumber>
 #else
 	where TNumber : struct, IComparable<TNumber>
 #endif
 {
-	private Func<TNumber, TNumber, TNumber>? _absoluteTolerance;
-	private string _unit = "";
+	private readonly Func<TNumber, TNumber, TNumber?>? _calculateDifference;
+	private readonly Func<TNumber, TNumber, TNumber>? _absoluteTolerance;
+	private readonly string? _unit;
+
+	/// <summary>
+	///     Creates a tolerance without a tolerance value, which compares with the
+	///     <paramref name="calculateDifference" /> once a tolerance is specified.
+	/// </summary>
+	public NumberTolerance(Func<TNumber, TNumber, TNumber?> calculateDifference)
+		: this(calculateDifference, null, null, null)
+	{
+	}
+
+	private NumberTolerance(Func<TNumber, TNumber, TNumber?>? calculateDifference, TNumber? tolerance,
+		Func<TNumber, TNumber, TNumber>? absoluteTolerance, string? unit)
+	{
+		_calculateDifference = calculateDifference;
+		Tolerance = tolerance;
+		_absoluteTolerance = absoluteTolerance;
+		_unit = unit;
+	}
 
 	/// <summary>
 	///     The tolerance to apply on the number comparisons.
@@ -30,14 +51,18 @@ public class NumberTolerance<TNumber>(
 	///     A relative tolerance is not yet applied to an expected value; use <see cref="ToleranceFor(TNumber)" /> for
 	///     the absolute tolerance.
 	/// </remarks>
-	public TNumber? Tolerance { get; private set; }
+	public TNumber? Tolerance { get; }
 
-	/// <inheritdoc cref="IRelativeToleranceOptions{TTolerance}.UseRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
-	public void UseRelativeTolerance(Func<TNumber, TNumber, TNumber> absoluteTolerance, string unit)
-	{
-		_absoluteTolerance = absoluteTolerance;
-		_unit = unit;
-	}
+	/// <summary>
+	///     Interprets the specified tolerance relative to the expected value.
+	/// </summary>
+	/// <param name="absoluteTolerance">
+	///     Calculates the absolute tolerance from the specified tolerance and the expected value.
+	/// </param>
+	/// <param name="unit">The unit appended to the tolerance in the expectation text, e.g. <c>%</c>.</param>
+	public NumberTolerance<TNumber> WithRelativeTolerance(Func<TNumber, TNumber, TNumber> absoluteTolerance,
+		string unit)
+		=> new(_calculateDifference, Tolerance, absoluteTolerance, unit);
 
 	/// <summary>
 	///     Returns the absolute tolerance to apply on a comparison with the <paramref name="expected" /> value.
@@ -57,10 +82,7 @@ public class NumberTolerance<TNumber>(
 	public NumberTolerance<TNumber> Within(TNumber tolerance)
 	{
 		ToleranceHelpers.ThrowIfInvalid(tolerance, IsNaN(tolerance));
-		Tolerance = tolerance;
-		_absoluteTolerance = null;
-		_unit = "";
-		return this;
+		return new NumberTolerance<TNumber>(_calculateDifference, tolerance, null, null);
 	}
 
 #if NET8_0_OR_GREATER
@@ -92,7 +114,7 @@ public class NumberTolerance<TNumber>(
 			return null;
 		}
 
-		return calculateDifference(actual.Value, expected.Value);
+		return Difference(actual.Value, expected.Value);
 	}
 
 	/// <summary>
@@ -112,10 +134,10 @@ public class NumberTolerance<TNumber>(
 					(null, _) => false,
 #if NET8_0_OR_GREATER
 					(_, _) => actual.Value.Equals(expected.Value) ||
-					          calculateDifference(actual.Value, expected.Value) <= ToleranceFor(expected.Value),
+					          Difference(actual.Value, expected.Value) <= ToleranceFor(expected.Value),
 #else
 					(_, _) => EqualityComparer<TNumber>.Default.Equals(actual.Value, expected.Value) ||
-					          calculateDifference(actual.Value, expected.Value)
+					          Difference(actual.Value, expected.Value)
 						          ?.CompareTo(ToleranceFor(expected.Value) ?? default) <= 0,
 #endif
 				};
@@ -126,4 +148,7 @@ public class NumberTolerance<TNumber>(
 			return false;
 		}
 	}
+
+	private TNumber? Difference(TNumber actual, TNumber expected)
+		=> _calculateDifference?.Invoke(actual, expected);
 }

@@ -1,4 +1,5 @@
-﻿using aweXpect.Core;
+﻿using System;
+using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect.Results;
@@ -74,17 +75,15 @@ public class ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem,
 		{
 		}
 
-		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-		/// <remarks>
-		///     A view on the options of the expectation, so that <c>Percent()</c> can change them.
-		/// </remarks>
-		OptionsSlot<IRelativeToleranceOptions<TTolerance>> IOptionsProvider<IRelativeToleranceOptions<TTolerance>>.Options
-			=> new(((IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>)this).Options.Value);
-
-		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.Result" />
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
 		ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>
 			IWithinToleranceResult<ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>,
-				TTolerance>.Result
-			=> this;
+				TTolerance>.WithRelativeTolerance(
+				Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
+		{
+			((IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>)this).Options.Value
+				.UseRelativeTolerance(absoluteTolerance, unit);
+			return this;
+		}
 	}
 }

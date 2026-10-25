@@ -218,15 +218,16 @@ argument once and reuse it, as it is immutable.
 ## Time tolerances
 
 A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the slot of the `TimeTolerance` options
-you pass to it and to your constraint. For a date without a time of day, such as the release date of an album as a
-`DateOnly`, pass a `DayTolerance` instead, as the built-in expectations do: it rejects a tolerance that is not a whole
-number of days with an `ArgumentOutOfRangeException`, instead of silently dropping the part below one day.
+you pass to it and to your constraint; start the slot with `TimeTolerance.Default`. For a date without a time of day,
+such as the release date of an album as a `DateOnly`, start it with `TimeTolerance.Days` instead, as the built-in
+expectations do: it rejects a tolerance that is not a whole number of days with an `ArgumentOutOfRangeException`,
+instead of silently dropping the part below one day.
 
 ```csharp no-compile
 public static TimeToleranceResult<DateOnly, IThat<DateOnly>> IsOnSameDayAs(
     this IThat<DateOnly> subject, DateOnly expected)
 {
-    OptionsSlot<TimeTolerance> tolerance = new(new DayTolerance());
+    OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Days);
     return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new IsOnSameDayAsConstraint(it, grammars, expected, tolerance)),
         subject,
@@ -243,10 +244,10 @@ await Expect.That(releaseDate).IsOnSameDayAs(new DateOnly(1969, 9, 27)).Within(T
 ```
 
 In the constraint, compare with `tolerance.Value.GetToleranceOrDefault()`. Without `.Within(…)`, it returns the
-`DefaultTimeComparisonTolerance` from `Customize.aweXpect.Settings()`, and for a `DayTolerance` only its whole days,
-like the built-in expectations do. Append the tolerance to the expectation text like any other option, e.g. with
-`stringBuilder.Append(tolerance)`: a `DayTolerance` writes the whole days that apply, e.g. " ± 1 day", and nothing when
-there are none.
+`DefaultTimeComparisonTolerance` from `Customize.aweXpect.Settings()`, and for `TimeTolerance.Days` only its whole
+days, like the built-in expectations do. Append the tolerance to the expectation text like any other option, e.g. with
+`stringBuilder.Append(tolerance)`: `TimeTolerance.Days` writes the whole days that apply, e.g. " ± 1 day", and nothing
+when there are none.
 
 ## Equality expectations
 

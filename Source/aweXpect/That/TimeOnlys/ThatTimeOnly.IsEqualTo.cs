@@ -22,7 +22,7 @@ public static partial class ThatTimeOnly
 	public static TimeToleranceResult<TimeOnly, IThat<TimeOnly>> IsEqualTo(this IThat<TimeOnly> subject,
 		TimeOnly? expected)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<TimeOnly, IThat<TimeOnly>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -43,7 +43,7 @@ public static partial class ThatTimeOnly
 		this IThat<TimeOnly> subject,
 		TimeOnly? unexpected)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<TimeOnly, IThat<TimeOnly>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
 				static (state, it, grammars) =>

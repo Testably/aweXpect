@@ -24,7 +24,7 @@ public static partial class ThatNullableTimeOnly
 		this IThat<TimeOnly?> subject,
 		TimeOnly? minimum)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<TimeOnly, IThat<TimeOnly?>>, TimeOnly?>(maximum
 			=> new TimeToleranceResult<TimeOnly, IThat<TimeOnly?>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
@@ -48,7 +48,7 @@ public static partial class ThatNullableTimeOnly
 		this IThat<TimeOnly?> subject,
 		TimeOnly? minimum)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<TimeOnly, IThat<TimeOnly?>>, TimeOnly?>(maximum
 			=> new TimeToleranceResult<TimeOnly, IThat<TimeOnly?>>(
 				subject.Get().ExpectationBuilder.AddConstraint(

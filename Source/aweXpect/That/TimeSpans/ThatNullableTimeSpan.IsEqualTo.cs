@@ -17,7 +17,7 @@ public static partial class ThatNullableTimeSpan
 		this IThat<TimeSpan?> subject,
 		TimeSpan? expected)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -33,7 +33,7 @@ public static partial class ThatNullableTimeSpan
 		this IThat<TimeSpan?> subject,
 		TimeSpan? unexpected)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
 				static (state, it, grammars) =>

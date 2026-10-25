@@ -1,4 +1,5 @@
-﻿using aweXpect.Core;
+﻿using System;
+using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect.Results;
@@ -51,16 +52,14 @@ public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TToleranc
 				options),
 			IWithinToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>
 	{
-		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-		/// <remarks>
-		///     A view on the options of the expectation, so that <c>Percent()</c> can change them.
-		/// </remarks>
-		OptionsSlot<IRelativeToleranceOptions<TTolerance>> IOptionsProvider<IRelativeToleranceOptions<TTolerance>>.Options
-			=> new(((IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>)this).Options.Value);
-
-		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.Result" />
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
 		ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>
-			IWithinToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>.Result
-			=> this;
+			IWithinToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>.WithRelativeTolerance(
+				Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
+		{
+			((IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>)this).Options.Value
+				.UseRelativeTolerance(absoluteTolerance, unit);
+			return this;
+		}
 	}
 }

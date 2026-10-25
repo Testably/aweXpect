@@ -22,7 +22,7 @@ public static class JsonExtensions
 		Func<JsonOptions, JsonOptions>? options = null)
 		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
-		JsonOptions jsonOptions = options?.Invoke(new JsonOptions()) ?? new JsonOptions();
+		JsonOptions jsonOptions = options?.Invoke(JsonOptions.Default) ?? JsonOptions.Default;
 		result.Options.SetMatchType(new JsonMatchType(jsonOptions), nameof(AsJson));
 		return result;
 	}

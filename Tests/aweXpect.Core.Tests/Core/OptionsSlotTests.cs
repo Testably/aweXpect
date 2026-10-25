@@ -75,6 +75,20 @@ public sealed class OptionsSlotTests
 	}
 
 	[Test]
+	public async Task WhenANumberTolerancePresetIsShared_ShouldNotBeChangedByAnotherSlot()
+	{
+		NumberTolerance<int> preset = new NumberTolerance<int>((a, b) => Math.Abs(a - b)).Within(2);
+		OptionsSlot<NumberTolerance<int>> first = new(preset);
+		OptionsSlot<NumberTolerance<int>> second = new(preset);
+
+		first.Within(3);
+
+		await That(second.Value.Tolerance).IsEqualTo(2);
+		await That(preset.Tolerance).IsEqualTo(2);
+		await That(first.Value.Tolerance).IsEqualTo(3);
+	}
+
+	[Test]
 	public async Task WhenAQuantifierPresetIsShared_ShouldNotBeChangedByAnotherSlot()
 	{
 		Quantifier preset = Quantifier.Default.AtLeast(2);
@@ -86,6 +100,20 @@ public sealed class OptionsSlotTests
 		await That(second.Value.ToString()).IsEqualTo("at least twice");
 		await That(preset.ToString()).IsEqualTo("at least twice");
 		await That(first.Value.ToString()).IsEqualTo("at least 3 times");
+	}
+
+	[Test]
+	public async Task WhenATimeTolerancePresetIsShared_ShouldNotBeChangedByAnotherSlot()
+	{
+		TimeTolerance preset = TimeTolerance.Days.Within(TimeSpan.FromDays(2));
+		OptionsSlot<TimeTolerance> first = new(preset);
+		OptionsSlot<TimeTolerance> second = new(preset);
+
+		first.Within(TimeSpan.FromDays(3));
+
+		await That(second.Value.Tolerance).IsEqualTo(TimeSpan.FromDays(2));
+		await That(preset.Tolerance).IsEqualTo(TimeSpan.FromDays(2));
+		await That(first.Value.ToString()).IsEqualTo(" ± 3 days");
 	}
 
 	private sealed class MyMatch : CollectionIndexOptions.IMatch

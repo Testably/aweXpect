@@ -107,7 +107,7 @@ public static partial class ThatJsonObject
 		JsonSerializerOptions? serializerOptions,
 		JsonTypeInfo? typeInfo)
 	{
-		JsonOptions jsonOptions = options?.Invoke(new JsonOptions()) ?? new JsonOptions();
+		JsonOptions jsonOptions = options?.Invoke(JsonOptions.Default) ?? JsonOptions.Default;
 		return AddIsJsonSerializedAs(source,
 			_ => JsonMatchType.ParseExpected(expected, jsonOptions.DocumentOptions),
 			expected, jsonOptions, serializerOptions, typeInfo);
@@ -120,7 +120,7 @@ public static partial class ThatJsonObject
 		Func<JsonOptions, JsonOptions>? options,
 		JsonSerializerOptions? serializerOptions)
 	{
-		JsonOptions jsonOptions = options?.Invoke(new JsonOptions()) ?? new JsonOptions();
+		JsonOptions jsonOptions = options?.Invoke(JsonOptions.Default) ?? JsonOptions.Default;
 		return AddIsJsonSerializedAs(source,
 			converter => converter.ParseExpected(expected, jsonOptions.DocumentOptions, jsonOptions.SerializerOptions),
 			expectedExpression.TrimCommonWhiteSpace(), jsonOptions, serializerOptions, null);

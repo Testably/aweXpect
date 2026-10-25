@@ -8,22 +8,76 @@ namespace aweXpect.Options;
 ///     Tolerance for time comparisons.
 /// </summary>
 /// <remarks>
-///     For date values without a time of day, such as <c>DateOnly</c>, use a <see cref="DayTolerance" /> instead,
-///     which rejects a tolerance that is not a whole number of days.
+///     An immutable value: <see cref="Within(TimeSpan)" /> returns a new tolerance, and <see langword="default" /> is
+///     the <see cref="Default" /> tolerance. For date values without a time of day, such as <c>DateOnly</c>, start
+///     from <see cref="Days" /> instead, which rejects a tolerance that is not a whole number of days.
 /// </remarks>
-public class TimeTolerance
+public readonly struct TimeTolerance
 {
+	private const long UnsetDays = 1;
+	private const long FirstSetDays = 2;
+
+	/// <summary>
+	///     Encodes the kind and the tolerance in one number: <c>0</c> is an unset time tolerance, a negative value the
+	///     complement of the ticks of a set time tolerance, <c>1</c> an unset day tolerance and a larger value the whole
+	///     days of a set day tolerance plus two.
+	/// </summary>
+	/// <remarks>
+	///     The complement covers every tolerance up to <see cref="TimeSpan.MaxValue" />, and a day tolerance is always a
+	///     whole number of days, so that the value is as small as a <see cref="TimeSpan" />.
+	/// </remarks>
+	private readonly long _value;
+
+	private TimeTolerance(long value)
+	{
+		_value = value;
+	}
+
+	/// <summary>
+	///     The tolerance of time values before one is specified, which applies the
+	///     <see cref="AwexpectCustomization.SettingsCustomization.DefaultTimeComparisonTolerance" />.
+	/// </summary>
+	public static TimeTolerance Default => default;
+
+	/// <summary>
+	///     The tolerance of date values without a time of day, such as <c>DateOnly</c>, before one is specified.
+	/// </summary>
+	/// <remarks>
+	///     It rejects a tolerance that is not a whole number of days as soon as it is specified, applies only the whole
+	///     days of the <see cref="AwexpectCustomization.SettingsCustomization.DefaultTimeComparisonTolerance" /> and is
+	///     written in days.
+	/// </remarks>
+	public static TimeTolerance Days => new(UnsetDays);
+
 	/// <summary>
 	///     The tolerance to apply on the time comparisons.
 	/// </summary>
-	public TimeSpan? Tolerance { get; private set; }
+	public TimeSpan? Tolerance => _value switch
+	{
+		< 0 => new TimeSpan(~_value),
+		>= FirstSetDays => new TimeSpan((_value - FirstSetDays) * TimeSpan.TicksPerDay),
+		_ => null,
+	};
+
+	private bool IsDays => _value > 0;
 
 	/// <summary>
 	///     Returns the <see cref="Tolerance" />, or the
 	///     <see cref="AwexpectCustomization.SettingsCustomization.DefaultTimeComparisonTolerance" /> if none is set.
 	/// </summary>
-	public virtual TimeSpan GetToleranceOrDefault()
-		=> Tolerance ?? GetDefaultTolerance();
+	/// <remarks>
+	///     For a tolerance of <see cref="Days" />, only the whole days of the default apply, as a date has no time of day.
+	/// </remarks>
+	public TimeSpan GetToleranceOrDefault()
+	{
+		if (Tolerance is { } tolerance)
+		{
+			return tolerance;
+		}
+
+		TimeSpan defaultTolerance = GetDefaultTolerance();
+		return IsDays ? TimeSpan.FromDays((int)defaultTolerance.TotalDays) : defaultTolerance;
+	}
 
 	/// <summary>
 	///     Sets the tolerance to apply on the time comparisons.
@@ -31,12 +85,20 @@ public class TimeTolerance
 	/// <remarks>
 	///     A later tolerance replaces the earlier one.
 	/// </remarks>
-	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="tolerance" /> is negative.</exception>
-	public virtual TimeTolerance Within(TimeSpan tolerance)
+	/// <exception cref="ArgumentOutOfRangeException">
+	///     The <paramref name="tolerance" /> is negative, or not a whole number of days for a tolerance of
+	///     <see cref="Days" />.
+	/// </exception>
+	public TimeTolerance Within(TimeSpan tolerance)
 	{
 		ToleranceHelpers.ThrowIfInvalid(tolerance);
-		Tolerance = tolerance;
-		return this;
+		if (!IsDays)
+		{
+			return new TimeTolerance(~tolerance.Ticks);
+		}
+
+		ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance);
+		return new TimeTolerance(FirstSetDays + tolerance.Ticks / TimeSpan.TicksPerDay);
 	}
 
 	/// <summary>
@@ -49,13 +111,14 @@ public class TimeTolerance
 	/// </remarks>
 	public string ToDayString()
 	{
-		int days = (int)(Tolerance ?? GetDefaultTolerance()).TotalDays;
-		if (Tolerance is null && days == 0)
+		TimeSpan? tolerance = Tolerance;
+		int days = (int)(tolerance ?? GetDefaultTolerance()).TotalDays;
+		if (tolerance is null && days == 0)
 		{
 			return "";
 		}
 
-		const char plusMinus = '\u00b1';
+		const char plusMinus = '±';
 		return days == 1 ? $" {plusMinus} 1 day" : $" {plusMinus} {days} days";
 	}
 
@@ -63,12 +126,18 @@ public class TimeTolerance
 	/// <remarks>
 	///     Without an explicit <see cref="Tolerance" />, the
 	///     <see cref="AwexpectCustomization.SettingsCustomization.DefaultTimeComparisonTolerance" /> is shown,
-	///     unless it is zero.
+	///     unless it is zero. A tolerance of <see cref="Days" /> is written like <see cref="ToDayString()" />.
 	/// </remarks>
 	public override string ToString()
 	{
-		TimeSpan tolerance = Tolerance ?? GetDefaultTolerance();
-		if (Tolerance is null && tolerance == TimeSpan.Zero)
+		if (IsDays)
+		{
+			return ToDayString();
+		}
+
+		TimeSpan? explicitTolerance = Tolerance;
+		TimeSpan tolerance = explicitTolerance ?? GetDefaultTolerance();
+		if (explicitTolerance is null && tolerance == TimeSpan.Zero)
 		{
 			return "";
 		}

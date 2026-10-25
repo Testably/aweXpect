@@ -24,7 +24,7 @@ public static partial class ThatNullableDateTimeOffset
 			this IThat<DateTimeOffset?> subject,
 			DateTimeOffset? minimum)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset?>>, DateTimeOffset?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -52,7 +52,7 @@ public static partial class ThatNullableDateTimeOffset
 			this IThat<DateTimeOffset?> subject,
 			DateTimeOffset? minimum)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(new TimeTolerance());
+		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset?>>, DateTimeOffset?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);

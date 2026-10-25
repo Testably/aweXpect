@@ -13,8 +13,7 @@ namespace aweXpect.Json;
 /// </remarks>
 internal sealed class JsonNumberTolerance
 {
-	private readonly NumberTolerance<double> _numberTolerance =
-		new(static (actual, expected) => Math.Abs(actual - expected));
+	private readonly NumberTolerance<double> _numberTolerance;
 
 	private readonly string _text;
 
@@ -22,12 +21,11 @@ internal sealed class JsonNumberTolerance
 	public JsonNumberTolerance(double tolerance, Func<double, double, double>? absoluteTolerance = null,
 		string unit = "")
 	{
-		_numberTolerance.Within(tolerance);
-		if (absoluteTolerance is not null)
-		{
-			_numberTolerance.UseRelativeTolerance(absoluteTolerance, unit);
-		}
-
+		NumberTolerance<double> numberTolerance =
+			new NumberTolerance<double>(static (actual, expected) => Math.Abs(actual - expected)).Within(tolerance);
+		_numberTolerance = absoluteTolerance is null
+			? numberTolerance
+			: numberTolerance.WithRelativeTolerance(absoluteTolerance, unit);
 		_text = " ± " + tolerance.ToString("R", CultureInfo.InvariantCulture) + unit;
 	}
 

@@ -142,7 +142,7 @@ internal static class ThrowHelper
 	///     would silently drop it.
 	/// </summary>
 	/// <remarks>
-	///     Mirrors the check of <see cref="Options.DayTolerance" /> in aweXpect.Core; keep the message identical.
+	///     Mirrors the check of <see cref="Options.TimeTolerance.Days" /> in aweXpect.Core; keep the message identical.
 	/// </remarks>
 	public static void ThrowIfToleranceIsNotWholeDays(TimeSpan tolerance)
 	{

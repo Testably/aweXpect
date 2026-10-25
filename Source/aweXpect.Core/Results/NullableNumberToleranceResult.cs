@@ -1,7 +1,6 @@
-﻿#if NET8_0_OR_GREATER
+﻿using System;
+#if NET8_0_OR_GREATER
 using System.Numerics;
-#else
-using System;
 #endif
 using aweXpect.Core;
 using aweXpect.Options;
@@ -49,15 +48,13 @@ public class NullableNumberToleranceResult<TType, TThat>(
 		: NullableNumberToleranceResult<TType, TThat>(expectationBuilder, returnValue, options),
 			IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>
 	{
-		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-		/// <remarks>
-		///     A view on the options of the expectation, so that <c>Percent()</c> can change them.
-		/// </remarks>
-		OptionsSlot<IRelativeToleranceOptions<TType>> IOptionsProvider<IRelativeToleranceOptions<TType>>.Options
-			=> new(((IOptionsProvider<NumberTolerance<TType>>)this).Options.Value);
-
-		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.Result" />
-		NullableNumberToleranceResult<TType, TThat> IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>.Result
-			=> this;
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
+		NullableNumberToleranceResult<TType, TThat> IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>.WithRelativeTolerance(
+			Func<TType, TType, TType> absoluteTolerance, string unit)
+		{
+			OptionsSlot<NumberTolerance<TType>> slot = ((IOptionsProvider<NumberTolerance<TType>>)this).Options;
+			slot.Value = slot.Value.WithRelativeTolerance(absoluteTolerance, unit);
+			return this;
+		}
 	}
 }

@@ -185,7 +185,7 @@ namespace aweXpect.Json
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.Json.JsonElement? value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Text.Json.JsonElement? value, aweXpect.Formatting.FormattingOptions? options = null) { }
     }
-    public sealed class JsonNumbersWithinOptions : aweXpect.Json.JsonOptions, aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<double>>, aweXpect.Options.IRelativeToleranceOptions<double>, aweXpect.Results.IWithinToleranceResult<aweXpect.Json.JsonOptions, double>
+    public sealed class JsonNumbersWithinOptions : aweXpect.Json.JsonOptions, aweXpect.Results.IWithinToleranceResult<aweXpect.Json.JsonOptions, double>
     {
     }
     public class JsonOptions

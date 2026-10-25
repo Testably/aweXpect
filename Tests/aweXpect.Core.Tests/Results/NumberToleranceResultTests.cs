@@ -13,91 +13,73 @@ public sealed class NumberToleranceResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForNumberTolerance()
 	{
-		NumberTolerance<int> options = new((a, b) => a - b);
+		OptionsSlot<NumberTolerance<int>> options = new(new NumberTolerance<int>((a, b) => a - b));
 		NumberToleranceResult<int, IThat<int>> sut = CreateSut(2, options);
 
 		await That(sut).Is<IOptionsProvider<NumberTolerance<int>>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
-	}
-
-	[Test]
-	public async Task Within_ShouldReturnAResultThatExposesItselfAsResult()
-	{
-		NumberTolerance<int> options = new((a, b) => a - b);
-		NumberToleranceResult<int, IThat<int>> sut = CreateSut(2, options);
-
-		NumberToleranceResult<int, IThat<int>>.WithinResult result = sut.Within(1);
-
-		await That(result).Is<IWithinToleranceResult<NumberToleranceResult<int, IThat<int>>, int>>()
-			.Whose(x => x.Result, it => it.IsSameAs(result));
-	}
-
-	[Test]
-	public async Task Within_ShouldReturnAResultWithRelativeToleranceOptions()
-	{
-		NumberTolerance<int> options = new((a, b) => a - b);
-		NumberToleranceResult<int, IThat<int>> sut = CreateSut(2, options);
-
-		NumberToleranceResult<int, IThat<int>>.WithinResult result = sut.Within(1);
-
-		await That(result).Is<IOptionsProvider<IRelativeToleranceOptions<int>>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
+			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
 	[Test]
 	public async Task Within_ShouldSetTheTolerance()
 	{
-		NumberTolerance<int> options = new((a, b) => a - b);
+		OptionsSlot<NumberTolerance<int>> options = new(new NumberTolerance<int>((a, b) => a - b));
 		NumberToleranceResult<int, IThat<int>> sut = CreateSut(2, options);
 
 		_ = sut.Within(1);
 
-		await That(options.Tolerance).IsEqualTo(1);
+		await That(options.Value.Tolerance).IsEqualTo(1);
+	}
+
+	[Test]
+	public async Task Within_WithRelativeTolerance_ShouldReplaceTheToleranceAndReturnTheResult()
+	{
+		OptionsSlot<NumberTolerance<int>> options = new(new NumberTolerance<int>((a, b) => a - b));
+		NumberToleranceResult<int, IThat<int>> sut = CreateSut(2, options);
+		IWithinToleranceResult<NumberToleranceResult<int, IThat<int>>, int> result = sut.Within(1);
+
+		NumberToleranceResult<int, IThat<int>> continuation =
+			result.WithRelativeTolerance((tolerance, expected) => tolerance * expected / 100, "%");
+
+		await That(continuation).IsSameAs(result);
+		await That(options.Value.ToleranceFor(200)).IsEqualTo(2);
+		await That(options.Value.ToString()).IsEqualTo(" ± 1%");
 	}
 
 	[Test]
 	public async Task WithSubject_ShouldBeOptionsProvider_ForNumberTolerance()
 	{
-		NumberTolerance<int> options = new((a, b) => a - b);
+		OptionsSlot<NumberTolerance<int>> options = new(new NumberTolerance<int>((a, b) => a - b));
 		NumberToleranceResult<string, IThat<string>, int> sut = CreateSutWithSubject("foo", options);
 
 		await That(sut).Is<IOptionsProvider<NumberTolerance<int>>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
-	}
-
-	[Test]
-	public async Task WithSubject_Within_ShouldReturnAResultThatExposesItselfAsResult()
-	{
-		NumberTolerance<int> options = new((a, b) => a - b);
-		NumberToleranceResult<string, IThat<string>, int> sut = CreateSutWithSubject("foo", options);
-
-		NumberToleranceResult<string, IThat<string>, int>.WithinResult result = sut.Within(1);
-
-		await That(result).Is<IWithinToleranceResult<NumberToleranceResult<string, IThat<string>, int>, int>>()
-			.Whose(x => x.Result, it => it.IsSameAs(result));
-	}
-
-	[Test]
-	public async Task WithSubject_Within_ShouldReturnAResultWithRelativeToleranceOptions()
-	{
-		NumberTolerance<int> options = new((a, b) => a - b);
-		NumberToleranceResult<string, IThat<string>, int> sut = CreateSutWithSubject("foo", options);
-
-		NumberToleranceResult<string, IThat<string>, int>.WithinResult result = sut.Within(1);
-
-		await That(result).Is<IOptionsProvider<IRelativeToleranceOptions<int>>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
+			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
 	[Test]
 	public async Task WithSubject_Within_ShouldSetTheTolerance()
 	{
-		NumberTolerance<int> options = new((a, b) => a - b);
+		OptionsSlot<NumberTolerance<int>> options = new(new NumberTolerance<int>((a, b) => a - b));
 		NumberToleranceResult<string, IThat<string>, int> sut = CreateSutWithSubject("foo", options);
 
 		_ = sut.Within(1);
 
-		await That(options.Tolerance).IsEqualTo(1);
+		await That(options.Value.Tolerance).IsEqualTo(1);
+	}
+
+	[Test]
+	public async Task WithSubject_Within_WithRelativeTolerance_ShouldReplaceTheToleranceAndReturnTheResult()
+	{
+		OptionsSlot<NumberTolerance<int>> options = new(new NumberTolerance<int>((a, b) => a - b));
+		NumberToleranceResult<string, IThat<string>, int> sut = CreateSutWithSubject("foo", options);
+		IWithinToleranceResult<NumberToleranceResult<string, IThat<string>, int>, int> result = sut.Within(1);
+
+		NumberToleranceResult<string, IThat<string>, int> continuation =
+			result.WithRelativeTolerance((tolerance, expected) => tolerance * expected / 100, "%");
+
+		await That(continuation).IsSameAs(result);
+		await That(options.Value.ToleranceFor(200)).IsEqualTo(2);
+		await That(options.Value.ToString()).IsEqualTo(" ± 1%");
 	}
 
 	private static IThat<T> CreateSource<T>(T subject)
@@ -107,7 +89,7 @@ public sealed class NumberToleranceResultTests
 #pragma warning restore aweXpect0001
 	}
 
-	private static NumberToleranceResult<T, IThat<T>> CreateSut<T>(T subject, NumberTolerance<T> options)
+	private static NumberToleranceResult<T, IThat<T>> CreateSut<T>(T subject, OptionsSlot<NumberTolerance<T>> options)
 #if NET8_0_OR_GREATER
 		where T : struct, INumber<T>
 #else
@@ -118,11 +100,11 @@ public sealed class NumberToleranceResultTests
 		return new NumberToleranceResult<T, IThat<T>>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			new OptionsSlot<NumberTolerance<T>>(options));
+			options);
 	}
 
 	private static NumberToleranceResult<TType, IThat<TType>, TNumber> CreateSutWithSubject<TType, TNumber>(
-		TType subject, NumberTolerance<TNumber> options)
+		TType subject, OptionsSlot<NumberTolerance<TNumber>> options)
 #if NET8_0_OR_GREATER
 		where TNumber : struct, INumber<TNumber>
 #else
@@ -133,6 +115,6 @@ public sealed class NumberToleranceResultTests
 		return new NumberToleranceResult<TType, IThat<TType>, TNumber>(source.Get().ExpectationBuilder.AddConstraint(
 				(it, _) => new DummyConstraint(it)),
 			source,
-			new OptionsSlot<NumberTolerance<TNumber>>(options));
+			options);
 	}
 }
