@@ -169,6 +169,8 @@ a virtual time system.
 - `HasHeader(…).WithValue(…)` and `HasQueryParameter(…).WithValue(…)` return a `StringEqualityTypeResult` and offer
   the match types, e.g. `WithValue("application/*").AsWildcard()`, like the type, title, detail and instance of
   `HasProblemDetailsContent`. This only affects code that names the result type.
+- `HasStatusCode(…)`, `HasStatusCode().EqualTo(…)` and `HasStatusCode().NotEqualTo(…)` take an `HttpStatusCode`
+  instead of an `HttpStatusCode?`. A response always has a status code, so `null` never matched.
 
 ### Namespaces
 

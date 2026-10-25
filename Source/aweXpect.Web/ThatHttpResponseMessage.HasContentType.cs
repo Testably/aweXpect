@@ -1,15 +1,11 @@
-﻿using System;
-using System.Net.Http;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Net.Http;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
+using aweXpect.Web;
 
 namespace aweXpect;
 
@@ -33,7 +29,8 @@ public static partial class ThatHttpResponseMessage
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint((expected, options), static (state, it, grammars) =>
-					new HasContentTypeConstraint(it, grammars, state.expected, state.options)),
+					new HasContentTypeConstraint<HttpResponseMessage>(it, grammars, state.expected, state.options,
+						static m => m.Content)),
 			subject,
 			options);
 	}
@@ -57,77 +54,9 @@ public static partial class ThatHttpResponseMessage
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint((unexpected, options), static (state, it, grammars) =>
-					new HasContentTypeConstraint(it, grammars, state.unexpected, state.options).Invert()),
+					new HasContentTypeConstraint<HttpResponseMessage>(it, grammars, state.unexpected, state.options,
+						static m => m.Content).Invert()),
 			subject,
 			options);
-	}
-
-	private sealed class HasContentTypeConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		string expected,
-		StringEqualityOptions options)
-		: ConstraintResult.WithNotNullValue<HttpResponseMessage>(it, grammars),
-			IAsyncContextConstraint<HttpResponseMessage>
-	{
-		private string? _contentType;
-		private StringEqualityOptions? _evaluationOptions;
-		private MatchResult _matchResult;
-
-		public async ValueTask<ConstraintResult> IsMetBy(HttpResponseMessage? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			Actual = actual;
-			if (actual == null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			if (!actual.Content.TryGetMediaType(out _contentType))
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(_contentType, expected);
-			if (!_matchResult.IsMatch)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			Outcome = Outcome.Success;
-			return this;
-		}
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options).AppendContexts(contexts);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has a `Content-Type` header ", "have a `Content-Type` header "))
-				.Append(options.GetExpectation(expected, Grammars));
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_contentType is null)
-			{
-				stringBuilder.Append(It).Append(" had no `Content-Type` header");
-			}
-			else
-			{
-				stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It, "content type",
-					Grammars, _contentType, expected, _matchResult));
-			}
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("does not have a `Content-Type` header ", "do not have a `Content-Type` header "))
-				.Append(options.GetExpectation(expected, Grammars.Negate()));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" had");
 	}
 }

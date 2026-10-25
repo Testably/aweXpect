@@ -30,7 +30,7 @@ public class StatusCodeResult
 	///     …is equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> EqualTo(
-		HttpStatusCode? expected)
+		HttpStatusCode expected)
 		=> new(_source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint((expected, mapper: _mapper), static (state, it, grammars) =>
@@ -47,7 +47,7 @@ public class StatusCodeResult
 	///     …is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
 	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> NotEqualTo(
-		HttpStatusCode? unexpected)
+		HttpStatusCode unexpected)
 		=> new(_source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint((unexpected, mapper: _mapper), static (state, it, grammars) =>

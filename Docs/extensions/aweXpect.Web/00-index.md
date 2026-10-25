@@ -53,13 +53,14 @@ Expectations for [`HttpRequestMessage`](./01-http-messages.md#httprequestmessage
 | [`HasMethod`](./01-http-messages.md#method)           | `DoesNotHaveMethod`     | has the expected HTTP method          |
 | [`HasRequestUri`](./01-http-messages.md#request-uri)  | `DoesNotHaveRequestUri` | has the expected request URI          |
 | [`HasHeader`](./01-http-messages.md#request-headers)  | `DoesNotHaveHeader`     | has a header, optionally with a value |
+| [`HasContentType`](./01-http-messages.md#request-content-type) | `DoesNotHaveContentType` | has the expected media type |
 | [`HasContent`](./01-http-messages.md#request-content) | `DoesNotHaveContent`    | has the expected string content       |
 
 Expectations for [`HttpResponseMessage`](./01-http-messages.md#httpresponsemessage):
 
 | Expectation                                                                  | Negated                       | Summary                                         |
 |------------------------------------------------------------------------------|-------------------------------|-------------------------------------------------|
-| [`HasStatusCode`](./01-http-messages.md#status-code)                | `HasStatusCode().NotEqualTo`  | has the expected status code or status category |
+| [`HasStatusCode`](./01-http-messages.md#status-code)                | `DoesNotHaveStatusCode`       | has the expected status code or status category |
 | [`HasHeader`](./01-http-messages.md#response-headers)               | `DoesNotHaveHeader`           | has a header, optionally with a value           |
 | [`HasContentType`](./01-http-messages.md#content-type)              | `DoesNotHaveContentType`      | has the expected media type                     |
 | [`HasContent`](./01-http-messages.md#response-content)              | `DoesNotHaveContent`          | has the expected string content                 |
@@ -98,7 +99,7 @@ Expectations for [`IPAddress`](./03-ip-address.md):
 The full documentation is available at
 [docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Web/):
 
-- [HTTP requests and responses](./01-http-messages.md): method, request URI, headers and content of an
+- [HTTP requests and responses](./01-http-messages.md): method, request URI, headers, content type and content of an
   `HttpRequestMessage`, and status code, headers, content type, content, problem details and the request message of
   an `HttpResponseMessage`
 - [URIs](./02-uri.md): kind, port, scheme, host, path, fragment, base URI and query parameters of a `Uri`
