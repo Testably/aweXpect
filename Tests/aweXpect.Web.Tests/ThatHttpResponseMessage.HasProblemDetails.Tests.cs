@@ -183,6 +183,26 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenContentIsNotSet_ShouldFail()
+			{
+				HttpResponseMessage subject = new();
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("foo");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a ProblemDetails content with type "foo",
+					             but it could not be parsed as problem details: The input does not contain any JSON tokens.*
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1*
+					             """).AsWildcard()
+					.Because("a response without content is read as an empty string on every target framework");
+			}
+
+			[Test]
 			[Arguments("type", "42", "was a Number, not a String")]
 			[Arguments("title", "{}", "was an Object, not a String")]
 			[Arguments("detail", "[]", "was an Array, not a String")]
@@ -476,6 +496,26 @@ public sealed partial class ThatHttpResponseMessage
 					               <html>error</html>
 					             """).AsWildcard()
 					.Because("a subject that cannot be inspected fails both ways");
+			}
+
+			[Test]
+			public async Task WhenContentIsNotSet_ShouldFail()
+			{
+				HttpResponseMessage subject = new();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent("foo"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a ProblemDetails content with type "foo",
+					             but it could not be parsed as problem details: The input does not contain any JSON tokens.*
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1*
+					             """).AsWildcard()
+					.Because("a response without content is read as an empty string, which cannot be inspected and fails both ways");
 			}
 
 			[Test]

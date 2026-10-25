@@ -64,6 +64,18 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenContentIsNotSet_ShouldTreatItAsEmpty()
+			{
+				HttpResponseMessage subject = new();
+
+				async Task Act()
+					=> await That(subject).HasContent(which => which.IsEmpty());
+
+				await That(Act).DoesNotThrow()
+					.Because("on .NET Framework the content of a new response is null, but on .NET 5+ it is empty");
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_Negated_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;

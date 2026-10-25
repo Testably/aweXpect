@@ -44,6 +44,18 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenContentIsNotSet_ShouldSucceed()
+			{
+				HttpResponseMessage subject = new();
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveContent("some content");
+
+				await That(Act).DoesNotThrow()
+					.Because("a response without content is read as an empty string on every target framework");
+			}
+
+			[Test]
 			public async Task WhenContentMatchesUnexpectedWithOptions_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
