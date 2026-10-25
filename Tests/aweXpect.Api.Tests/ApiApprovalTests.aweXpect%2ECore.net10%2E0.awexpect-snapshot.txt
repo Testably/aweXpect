@@ -287,6 +287,10 @@ namespace aweXpect
 }
 namespace aweXpect.Core
 {
+    public static class CollectionMatcherExtensions
+    {
+        public static System.Threading.Tasks.ValueTask<(aweXpect.Core.Constraints.Outcome Outcome, string? Failure)> VerifyItems<TItem, TMatch>(this aweXpect.Core.ICollectionMatcher<TItem, TMatch> matcher, string it, System.Collections.Generic.IEnumerable<TItem> items, aweXpect.Core.IOptionsEquality<TMatch> options, System.Threading.CancellationToken cancellationToken) where TItem : TMatch { }
+    }
     [System.Diagnostics.StackTraceHidden]
     public abstract class Expectation
     {

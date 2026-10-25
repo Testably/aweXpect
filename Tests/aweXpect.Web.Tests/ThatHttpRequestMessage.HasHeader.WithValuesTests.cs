@@ -57,7 +57,7 @@ public sealed partial class ThatHttpRequestMessage
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-header" header whose values are equal to collection ["foo", "bar"] in order,
-					             but it had header values ["foo", "bar", "baz"]
+					             but it had header values ["foo", "bar", "baz"], which contained item "baz" at index 2 that was not expected
 
 					             HTTP-Request:
 					               HEAD https://awexpect.com/ HTTP/1.1
@@ -80,7 +80,7 @@ public sealed partial class ThatHttpRequestMessage
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-header" header whose values are equal to collection ["foo", "bar"] in order,
-					             but it had header values ["foo"]
+					             but it had header values ["foo"], which lacked 1 of 2 expected items: "bar"
 
 					             HTTP-Request:
 					               HEAD https://awexpect.com/ HTTP/1.1
@@ -101,7 +101,10 @@ public sealed partial class ThatHttpRequestMessage
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-header" header whose values are equal to collection ["foo", "bar"] in order,
-					             but it had header values ["bar", "foo"]
+					             but it had header values ["bar", "foo"], which
+					               contained item "bar" at index 0 instead of "foo" and
+					               contained item "foo" at index 1 instead of "bar"
+					             (but the items match in a different order)
 
 					             HTTP-Request:
 					               HEAD https://awexpect.com/ HTTP/1.1
@@ -148,7 +151,9 @@ public sealed partial class ThatHttpRequestMessage
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-header" header whose values are equal to collection ["foo", "baz"] ignoring case in any order,
-					             but it had header values ["Bar", "Foo"]
+					             but it had header values ["Bar", "Foo"], which
+					               contained item "Bar" at index 0 that was not expected and
+					               lacked 1 of 2 expected items: "baz"
 
 					             HTTP-Request:
 					               HEAD https://awexpect.com/ HTTP/1.1

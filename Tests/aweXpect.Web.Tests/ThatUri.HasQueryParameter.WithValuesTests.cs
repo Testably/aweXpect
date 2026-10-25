@@ -96,7 +96,10 @@ public sealed partial class ThatUri
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "tag" whose values are equal to collection ["remastered", "live"] in order,
-					             but it had query parameter values ["live", "remastered"]
+					             but it had query parameter values ["live", "remastered"], which
+					               contained item "live" at index 0 instead of "remastered" and
+					               contained item "remastered" at index 1 instead of "live"
+					             (but the items match in a different order)
 					             """)
 					.Because("the values are compared in the order in which they appear in the URI");
 			}
@@ -136,7 +139,9 @@ public sealed partial class ThatUri
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "tag" whose values are equal to collection ["live", "acoustic"] ignoring case in any order,
-					             but it had query parameter values ["Remastered", "Live"]
+					             but it had query parameter values ["Remastered", "Live"], which
+					               contained item "Remastered" at index 0 that was not expected and
+					               lacked 1 of 2 expected items: "acoustic"
 					             """);
 			}
 
@@ -152,7 +157,7 @@ public sealed partial class ThatUri
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "tag" whose values are equal to collection ["live"] in order,
-					             but it had query parameter values ["live", "remastered"]
+					             but it had query parameter values ["live", "remastered"], which contained item "remastered" at index 1 that was not expected
 					             """);
 			}
 
@@ -168,7 +173,7 @@ public sealed partial class ThatUri
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "tag" whose values are equal to collection ["live", "remastered"] in order,
-					             but it had query parameter values ["live"]
+					             but it had query parameter values ["live"], which lacked 1 of 2 expected items: "remastered"
 					             """);
 			}
 

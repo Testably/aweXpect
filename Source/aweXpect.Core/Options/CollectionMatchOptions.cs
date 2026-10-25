@@ -253,7 +253,7 @@ public partial class CollectionMatchOptions(
 		where TItem : TMatch
 	{
 		ExpectationItem<TItem>[] expectations = WithoutNullItems(expected, nameof(expected));
-		return (_inAnyOrder, _ignoringDuplicates) switch
+		ICollectionMatcher<TItem, TMatch> matcher = (_inAnyOrder, _ignoringDuplicates) switch
 		{
 			(true, true) => new AnyOrderIgnoreDuplicatesFromExpectationCollectionMatcher<TItem, TMatch>(
 				_equivalenceRelations, expectations),
@@ -265,6 +265,7 @@ public partial class CollectionMatchOptions(
 				expectations,
 				_ignoringInterspersedItems, AddsInAnyOrderHint),
 		};
+		return new ExpectationItemsMatcher<TItem, TMatch>(matcher, expectations);
 	}
 
 	/// <summary>

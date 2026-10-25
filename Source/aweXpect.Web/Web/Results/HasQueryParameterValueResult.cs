@@ -206,12 +206,14 @@ public class HasQueryParameterValueResult
 			IAsyncContextConstraint<Uri?>
 	{
 		private StringEqualityOptions? _evaluationOptions;
+		private string? _failure;
 		private string[]? _values;
 
 		public async ValueTask<ConstraintResult> IsMetBy(Uri? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_failure = null;
 			if (actual?.IsAbsoluteUri != true)
 			{
 				Outcome = Outcome.Failure;
@@ -220,9 +222,14 @@ public class HasQueryParameterValueResult
 
 			_values = actual.GetQueryParameterValues(name);
 			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			Outcome = _values is not null && await matchOptions.Matches(It, _values, expected, _evaluationOptions)
-				? Outcome.Success
-				: Outcome.Failure;
+			if (_values is null)
+			{
+				Outcome = Outcome.Failure;
+				return this;
+			}
+
+			(Outcome, _failure) = await matchOptions.GetCollectionMatcher<string?, string?>(expected)
+				.VerifyItems(CollectionMatchFailure.Subject, _values, _evaluationOptions, cancellationToken);
 			return this;
 		}
 
@@ -242,6 +249,7 @@ public class HasQueryParameterValueResult
 		{
 			stringBuilder.Append(It).Append(" had query parameter values ");
 			Formatter.Format(stringBuilder, _values);
+			CollectionMatchFailure.AppendTo(stringBuilder, _failure, indentation);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -41,7 +41,7 @@ public sealed partial class Filtered
 						.WithMessage("""
 						             Expected that nested interfaces in all loaded assemblies
 						             all are internal,
-						             but none of * were
+						             but only * of * were
 
 						             Not matching items:
 						             [

@@ -10,8 +10,10 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Equivalency;
+using aweXpect.Formatting;
 using aweXpect.Options;
 using aweXpect.Results;
+using static aweXpect.Formatting.Format;
 ```
 
 </details>
@@ -108,6 +110,86 @@ public ConstraintResult IsMetBy(IEnumerable<Track>? actual, IEvaluationContext c
 
 The subject itself still goes through `UseMaterializedEnumerable`, so that it is shared with the other expectations
 on it, while the expected collection belongs to your constraint alone.
+
+### Matching collections
+
+To compare items with an expected collection like the collection `IsEqualTo` does, get a matcher from
+`CollectionMatchOptions` and let `VerifyItems` run it over the items. It returns the outcome together with the failure
+text of `IsEqualTo`, e.g. `it lacked 1 of 2 expected items: "Outro"`, so the caller's choice of `InAnyOrder()`,
+`IgnoringDuplicates()` or `IgnoringCase()` applies to your expectation as well:
+
+```csharp
+public static StringCollectionMatchResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> HasTitles(
+    this IThat<IEnumerable<Track>?> subject, params string[] expected)
+{
+    StringEqualityOptions options = new(nameof(expected));
+    CollectionMatchOptions matchOptions = new();
+    return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+            => new HasTitlesConstraint(it, grammars, expected, options, matchOptions)),
+        subject, options, matchOptions);
+}
+
+private sealed class HasTitlesConstraint(
+    string it,
+    ExpectationGrammars grammars,
+    string[] expected,
+    StringEqualityOptions options,
+    CollectionMatchOptions matchOptions)
+    : ConstraintResult.WithNotNullValue<IEnumerable<Track>>(it, grammars),
+        IAsyncContextConstraint<IEnumerable<Track>?>
+{
+    private string? _failure;
+
+    public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Track>? actual, IEvaluationContext context,
+        CancellationToken cancellationToken)
+    {
+        Actual = actual;
+        _failure = null;
+        if (actual is null)
+        {
+            Outcome = Outcome.Failure;
+            return this;
+        }
+
+        IEnumerable<string?> titles = context.UseMaterializedEnumerable(actual).Select(track => track.Title);
+        (Outcome, _failure) = await matchOptions.GetCollectionMatcher<string?, string?>(expected)
+            .VerifyItems(It, titles, options.ForEvaluation(context, cancellationToken), cancellationToken);
+        return this;
+    }
+
+    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("has titles that ").Append(matchOptions.GetExpectation(
+            Formatter.Format(expected, FormattingOptions.SingleLine) + options, ExpectationGrammars.Plural));
+
+    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(_failure);
+
+    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("has titles that ").Append(matchOptions.GetExpectation(
+            Formatter.Format(expected, FormattingOptions.SingleLine) + options,
+            ExpectationGrammars.Plural | ExpectationGrammars.Negated));
+
+    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(It).Append(" did");
+}
+```
+
+`await Expect.That(tracks).HasTitles("Intro", "Outro").InAnyOrder()` then fails with e.g.
+`but it contained item "Bonus" at index 1 that was not expected`.
+
+<details>
+<summary>How the items are verified</summary>
+
+- The items are verified one by one until the matcher fails or is determined, e.g. once all expected items of a
+  containment are found, and then completed. While the matcher and the comparison answer synchronously, the result
+  completes synchronously, too.
+- An exception while the items are enumerated fails the expectation like one of the
+  [code of the caller](./02-constraints-and-results.md#code-of-the-caller).
+- The outcome stays `Undecided` when the `CancellationToken` is canceled before all items are read from their source.
+  A collection that is complete in memory, e.g. an array, is verified completely.
+- `VerifyItems` takes an `IEnumerable<T>`, so read the items of an `IAsyncEnumerable<T>` into a list first.
+
+</details>
 
 ## Nested expectations
 

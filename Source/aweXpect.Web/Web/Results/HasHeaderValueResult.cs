@@ -206,12 +206,14 @@ public class HasHeaderValueResult<TType, TThat>
 			IAsyncContextConstraint<TType?>
 	{
 		private StringEqualityOptions? _evaluationOptions;
+		private string? _failure;
 		private string?[]? _headerValues;
 
 		public async ValueTask<ConstraintResult> IsMetBy(TType? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_failure = null;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -220,10 +222,14 @@ public class HasHeaderValueResult<TType, TThat>
 
 			_headerValues = headerValueAccessor(actual);
 			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			Outcome = _headerValues is not null &&
-			          await matchOptions.Matches(It, _headerValues, expected, _evaluationOptions)
-				? Outcome.Success
-				: Outcome.Failure;
+			if (_headerValues is null)
+			{
+				Outcome = Outcome.Failure;
+				return this;
+			}
+
+			(Outcome, _failure) = await matchOptions.GetCollectionMatcher<string?, string?>(expected)
+				.VerifyItems(CollectionMatchFailure.Subject, _headerValues, _evaluationOptions, cancellationToken);
 			return this;
 		}
 
@@ -247,6 +253,7 @@ public class HasHeaderValueResult<TType, TThat>
 			else
 			{
 				AppendValuesFailure(stringBuilder);
+				CollectionMatchFailure.AppendTo(stringBuilder, _failure, indentation);
 			}
 		}
 

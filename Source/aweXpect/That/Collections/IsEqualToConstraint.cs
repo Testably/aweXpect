@@ -74,10 +74,12 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 	/// </summary>
 	protected abstract void AppendExpectedContexts(ResultContextCollector contexts);
 
+#if NET8_0_OR_GREATER
 	/// <summary>
 	///     Whether an item expectation was canceled, so that it did not decide whether an item matches.
 	/// </summary>
 	protected virtual bool IsAnItemExpectationCanceled(CancellationToken cancellationToken) => false;
+#endif
 
 	/// <summary>
 	///     Starts a new evaluation.
@@ -132,53 +134,17 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		CancellationToken cancellationToken)
 		where TItem : TMatch
 	{
-		int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 		// Set before the items are verified, as an item that the matcher cannot answer throws.
 		materialized.SetContext(ref _collectionContext);
-		CollectionItems<TItem>.Enumerator enumerator = materialized.GetEnumerator();
-		bool isHandedOver = false;
-		try
+		ValueTask<(Outcome, string?)> verified =
+			matcher.VerifyItems(It, materialized.Items, itemOptions, cancellationToken);
+		if (!verified.IsCompletedSuccessfully)
 		{
-			while (enumerator.MoveNext())
-			{
-				if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
-				{
-					Outcome = Outcome.Undecided;
-					materialized.SetContext(ref _collectionContext, true);
-					return new ValueTask<ConstraintResult>(this);
-				}
-
-				ValueTask<(bool, string?)> verified =
-					matcher.Verify(It, enumerator.Current, itemOptions, maximumNumber);
-				if (!verified.IsCompletedSuccessfully)
-				{
-					// The continuation enumerates the remaining items, so it disposes the enumerator.
-					isHandedOver = true;
-					return VerifyItemsAsync(verified, enumerator, materialized, matcher, itemOptions, maximumNumber,
-						cancellationToken);
-				}
-
-				(bool result, string? failure) = verified.Result;
-				if (Fails(result, failure, cancellationToken))
-				{
-					return new ValueTask<ConstraintResult>(this);
-				}
-
-				if (matcher.IsDetermined)
-				{
-					break;
-				}
-			}
-		}
-		finally
-		{
-			if (!isHandedOver)
-			{
-				enumerator.Dispose();
-			}
+			return SetVerifiedAsync(verified, materialized, cancellationToken);
 		}
 
-		return Complete(matcher, itemOptions, maximumNumber, cancellationToken);
+		SetVerified(verified.Result, materialized, cancellationToken);
+		return new ValueTask<ConstraintResult>(this);
 	}
 
 #if NET8_0_OR_GREATER
@@ -214,52 +180,23 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 			return this;
 		}
 
-		await Complete(matcher, itemOptions, maximumNumber, cancellationToken);
+		(bool completedResult, string? completedFailure) =
+			await matcher.VerifyComplete(It, itemOptions, maximumNumber);
+		// The final check can evaluate item expectations as well, e.g. to reassign items in any order.
+		if (IsAnItemExpectationCanceled(cancellationToken))
+		{
+			Outcome = Outcome.Undecided;
+		}
+		else if (completedResult)
+		{
+			Fail(completedFailure);
+		}
+		else
+		{
+			Outcome = Outcome.Success;
+		}
+
 		return this;
-	}
-#endif
-
-	/// <summary>
-	///     Verifies the remaining items of the <paramref name="enumerator" />, once the current one is
-	///     <paramref name="verified" />, and disposes it.
-	/// </summary>
-	private async ValueTask<ConstraintResult> VerifyItemsAsync<TItem, TMatch>(ValueTask<(bool, string?)> verified,
-		CollectionItems<TItem>.Enumerator enumerator, CollectionItems<TItem> materialized,
-		ICollectionMatcher<TItem, TMatch> matcher, IOptionsEquality<TMatch> itemOptions, int maximumNumber,
-		CancellationToken cancellationToken)
-		where TItem : TMatch
-	{
-		try
-		{
-			while (true)
-			{
-				(bool result, string? failure) = await verified;
-				if (Fails(result, failure, cancellationToken))
-				{
-					return this;
-				}
-
-				if (matcher.IsDetermined || !enumerator.MoveNext())
-				{
-					break;
-				}
-
-				if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
-				{
-					Outcome = Outcome.Undecided;
-					materialized.SetContext(ref _collectionContext, true);
-					return this;
-				}
-
-				verified = matcher.Verify(It, enumerator.Current, itemOptions, maximumNumber);
-			}
-		}
-		finally
-		{
-			enumerator.Dispose();
-		}
-
-		return await Complete(matcher, itemOptions, maximumNumber, cancellationToken);
 	}
 
 	private bool Fails(bool result, string? failure, CancellationToken cancellationToken)
@@ -273,43 +210,22 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		Fail(failure);
 		return true;
 	}
+#endif
 
-	private ValueTask<ConstraintResult> Complete<TItem, TMatch>(ICollectionMatcher<TItem, TMatch> matcher,
-		IOptionsEquality<TMatch> itemOptions, int maximumNumber, CancellationToken cancellationToken)
-		where TItem : TMatch
+	private async ValueTask<ConstraintResult> SetVerifiedAsync<TItem>(ValueTask<(Outcome, string?)> verified,
+		CollectionItems<TItem> materialized, CancellationToken cancellationToken)
 	{
-		ValueTask<(bool, string?)> completed = matcher.VerifyComplete(It, itemOptions, maximumNumber);
-		if (!completed.IsCompletedSuccessfully)
-		{
-			return CompleteAsync(completed, cancellationToken);
-		}
-
-		SetCompleted(completed.Result, cancellationToken);
-		return new ValueTask<ConstraintResult>(this);
-	}
-
-	private async ValueTask<ConstraintResult> CompleteAsync(ValueTask<(bool, string?)> completed,
-		CancellationToken cancellationToken)
-	{
-		SetCompleted(await completed, cancellationToken);
+		SetVerified(await verified, materialized, cancellationToken);
 		return this;
 	}
 
-	private void SetCompleted((bool, string?) completed, CancellationToken cancellationToken)
+	private void SetVerified<TItem>((Outcome, string?) verified, CollectionItems<TItem> materialized,
+		CancellationToken cancellationToken)
 	{
-		(bool completedResult, string? completedFailure) = completed;
-		// The final check can evaluate item expectations as well, e.g. to reassign items in any order.
-		if (IsAnItemExpectationCanceled(cancellationToken))
+		(Outcome, _failure) = verified;
+		if (Outcome == Outcome.Undecided && materialized.IsCanceledBeforeTheEnd(cancellationToken))
 		{
-			Outcome = Outcome.Undecided;
-		}
-		else if (completedResult)
-		{
-			Fail(completedFailure);
-		}
-		else
-		{
-			Outcome = Outcome.Success;
+			materialized.SetContext(ref _collectionContext, true);
 		}
 	}
 
@@ -544,10 +460,13 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 			return new ValueTask<ConstraintResult>(FailWith($"{It} had {difference}", untypedItems));
 		}
 
+		// The cast items hide from the matcher driver whether they are complete, which only matters for a source that is
+		// still read, as only the items to come from it are left undecided by a cancellation.
 		return VerifyItems(untypedItems,
 			MatchOptions.GetCollectionMatcher<object?, object?>(expectedItems.Cast<object?>(),
 				GetDimensions(untypedItems.Value as Array)),
-			new UntypedOptions(itemOptions), cancellationToken);
+			new UntypedOptions(itemOptions),
+			untypedItems.IsIncomplete() ? cancellationToken : CancellationToken.None);
 	}
 
 	/// <summary>
@@ -674,9 +593,11 @@ internal abstract class IsEqualToFromExpectationsConstraintBase<TValue, TItem>(
 		return _expectations;
 	}
 
+#if NET8_0_OR_GREATER
 	/// <inheritdoc />
 	protected override bool IsAnItemExpectationCanceled(CancellationToken cancellationToken)
 		=> cancellationToken.IsCancellationRequested && _expectations.Any(expectation => expectation.IsUndecided);
+#endif
 
 	/// <inheritdoc />
 	protected override void AppendExpectedContexts(ResultContextCollector contexts)
