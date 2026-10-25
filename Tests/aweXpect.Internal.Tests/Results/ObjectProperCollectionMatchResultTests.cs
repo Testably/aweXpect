@@ -11,7 +11,7 @@ public sealed class ObjectProperCollectionMatchResultTests
 	public async Task ShouldBeOptionsProvider_ForCollectionMatchOptions()
 	{
 		OptionsSlot<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
-		ObjectProperCollectionMatchResult<int[], IThat<int[]?>, int> sut = CreateSut([], new ObjectEqualityOptions<int>(),
+		ObjectProperCollectionMatchResult<int[], IThat<int[]?>, int> sut = CreateSut([], new OptionsSlot<ObjectMatchType<int>>(ObjectMatchType<int>.Default),
 			collectionMatchOptions);
 
 		await That(sut).Is<IOptionsProvider<CollectionMatchOptions>>()
@@ -19,25 +19,25 @@ public sealed class ObjectProperCollectionMatchResultTests
 	}
 
 	[Test]
-	public async Task ShouldBeOptionsProvider_ForObjectEqualityOptions()
+	public async Task ShouldBeOptionsProvider_ForObjectMatchType()
 	{
-		ObjectEqualityOptions<int> options = new();
+		OptionsSlot<ObjectMatchType<int>> options = new(ObjectMatchType<int>.Default);
 		ObjectProperCollectionMatchResult<int[], IThat<int[]?>, int> sut = CreateSut([], options,
 			new OptionsSlot<CollectionMatchOptions>(new CollectionMatchOptions()));
 
-		await That(sut).Is<IOptionsProvider<ObjectEqualityOptions<int>>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
+		await That(sut).Is<IOptionsProvider<ObjectMatchType<int>>>()
+			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
 	private static ObjectProperCollectionMatchResult<int[], IThat<int[]?>, int> CreateSut(int[] subject,
-		ObjectEqualityOptions<int> options, OptionsSlot<CollectionMatchOptions> collectionMatchOptions)
+		OptionsSlot<ObjectMatchType<int>> options, OptionsSlot<CollectionMatchOptions> collectionMatchOptions)
 	{
 #pragma warning disable aweXpect0001
 		IThat<int[]?> source = That(subject);
 #pragma warning restore aweXpect0001
 		return new ObjectProperCollectionMatchResult<int[], IThat<int[]?>, int>(source.Get().ExpectationBuilder,
 			source,
-			new OptionsSlot<ObjectEqualityOptions<int>>(options),
+			options,
 			collectionMatchOptions);
 	}
 }

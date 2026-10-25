@@ -32,7 +32,7 @@ public static partial class ThatAsyncEnumerable
 		"contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.";
 
 	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
 		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
 	internal static ObjectProperCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>,
@@ -40,11 +40,11 @@ public static partial class ThatAsyncEnumerable
 		IsContainedInWithToleranceCore<TItem, TTolerance>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<TItem> expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> initialOptions,
+			ObjectToleranceMatchType<TItem, TTolerance> initialOptions,
 			string expectedExpression,
 			bool negated)
 	{
-		OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options = new(initialOptions);
+		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
 		expected.ThrowIfNull(negated);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.IsContainedIn));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -55,7 +55,7 @@ public static partial class ThatAsyncEnumerable
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
-						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options.Value,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
 			options,
@@ -78,7 +78,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNull();
-		OptionsSlot<ObjectEqualityOptions<TItem>> options = new(new ObjectEqualityOptions<TItem>());
+		OptionsSlot<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.IsContainedIn));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new
@@ -90,7 +90,7 @@ public static partial class ThatAsyncEnumerable
 						new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
 							state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 							state.Expected,
-							state.Options.Value,
+							state.Options,
 							state.MatchOptions, true)),
 				subject,
 				options,
@@ -126,7 +126,7 @@ public static partial class ThatAsyncEnumerable
 					new AsyncIsEqualToConstraint<string?, string?>(it, grammars,
 						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 						state.Expected,
-						state.Options.Value,
+						state.Options,
 						state.MatchOptions, true)),
 			subject,
 			options,
@@ -212,7 +212,7 @@ public static partial class ThatAsyncEnumerable
 			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNull();
-		OptionsSlot<ObjectEqualityOptions<TItem>> options = new(new ObjectEqualityOptions<TItem>());
+		OptionsSlot<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.IsContainedIn));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new
@@ -224,7 +224,7 @@ public static partial class ThatAsyncEnumerable
 						new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
 							state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 							state.Unexpected,
-							state.Options.Value,
+							state.Options,
 							state.MatchOptions, true).Invert()),
 				subject,
 				options,
@@ -261,7 +261,7 @@ public static partial class ThatAsyncEnumerable
 					new AsyncIsEqualToConstraint<string?, string?>(it, grammars,
 						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 						state.Unexpected,
-						state.Options.Value,
+						state.Options,
 						state.MatchOptions, true).Invert()),
 			subject,
 			options,

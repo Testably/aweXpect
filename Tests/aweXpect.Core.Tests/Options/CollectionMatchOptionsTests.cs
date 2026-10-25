@@ -229,7 +229,7 @@ public class CollectionMatchOptionsTests
 			return sut.GetCollectionMatcher<int, int>(expected);
 		}
 
-		private sealed class AsynchronousEquality(string kind) : IOptionsEquality<int>
+		private sealed class AsynchronousEquality(string kind) : IEqualityEvaluator<int>
 		{
 			private readonly ReferenceCaseTests.Equality _equality = new(kind);
 
@@ -256,7 +256,7 @@ public class CollectionMatchOptionsTests
 			double[] values = [0.0, -0.0, double.NaN, 1.0,];
 
 			(int met, List<string> disagreements) = await Compare(1811,
-				random => values[random.Next(values.Length)], new ObjectEqualityOptions<double>());
+				random => values[random.Next(values.Length)], ObjectMatchType<double>.Default.ForEvaluation(default));
 
 			await That(disagreements).IsEmpty();
 			await That(met).IsGreaterThan(100);
@@ -266,7 +266,7 @@ public class CollectionMatchOptionsTests
 		public async Task Numbers_ShouldAgreeWithUnrecognizedOptions()
 		{
 			(int met, List<string> disagreements) = await Compare(1705,
-				random => random.Next(4), new ObjectEqualityOptions<int>());
+				random => random.Next(4), ObjectMatchType<int>.Default.ForEvaluation(default));
 
 			await That(disagreements).IsEmpty();
 			await That(met).IsGreaterThan(100);
@@ -276,7 +276,7 @@ public class CollectionMatchOptionsTests
 		public async Task NumbersComparedAsObjects_ShouldAgreeWithUnrecognizedOptions()
 		{
 			(int met, List<string> disagreements) = await Compare(1529,
-				random => random.Next(4), new ObjectEqualityOptions<object?>());
+				random => random.Next(4), ObjectMatchType<object?>.Default.ForEvaluation(default));
 
 			await That(disagreements).IsEmpty();
 			await That(met).IsGreaterThan(100);
@@ -338,7 +338,7 @@ public class CollectionMatchOptionsTests
 		///     different order, with the <paramref name="options" /> and with the same options behind another type.
 		/// </summary>
 		private static async Task<(int Met, List<string> Disagreements)> Compare<T, T2>(int seed,
-			Func<Random, T> createItem, IOptionsEquality<T2> options)
+			Func<Random, T> createItem, IEqualityEvaluator<T2> options)
 			where T : T2
 		{
 			Random random = new(seed);
@@ -368,7 +368,7 @@ public class CollectionMatchOptionsTests
 			return (met, disagreements);
 		}
 
-		private static async Task<string> Describe<T, T2>(T[] expected, T[] subject, IOptionsEquality<T2> options)
+		private static async Task<string> Describe<T, T2>(T[] expected, T[] subject, IEqualityEvaluator<T2> options)
 			where T : T2
 		{
 			CollectionMatchOptions sut = new();
@@ -387,7 +387,7 @@ public class CollectionMatchOptionsTests
 			return $"{isCompleteFailure}: {completeError}";
 		}
 
-		private sealed class ForwardingEquality<T>(IOptionsEquality<T> options) : IOptionsEquality<T>
+		private sealed class ForwardingEquality<T>(IEqualityEvaluator<T> options) : IEqualityEvaluator<T>
 		{
 			public ValueTask<bool> AreConsideredEqual<TExpected>(T actual, TExpected expected)
 				=> options.AreConsideredEqual(actual, expected);
@@ -530,7 +530,7 @@ public class CollectionMatchOptionsTests
 
 		private static async Task<string> Describe(ICollectionMatcher<int, int> matcher, IEnumerable<int> subject)
 		{
-			ObjectEqualityOptions<int> options = new();
+			IEqualityEvaluator<int> options = ObjectMatchType<int>.Default.ForEvaluation(default);
 			foreach (int item in subject)
 			{
 				(bool isFailure, string? error) = await matcher.Verify("it", item, options, 2);
@@ -2685,7 +2685,7 @@ public class CollectionMatchOptionsTests
 		}
 
 		internal static async Task<string> Describe(ICollectionMatcher<int, int> matcher, IEnumerable<int> subject,
-			IOptionsEquality<int> options)
+			IEqualityEvaluator<int> options)
 		{
 			foreach (int item in subject)
 			{
@@ -2752,7 +2752,7 @@ public class CollectionMatchOptionsTests
 		}
 
 		internal static async Task<bool> Matches(ICollectionMatcher<int, int> matcher, IEnumerable<int> subject,
-			IOptionsEquality<int> options)
+			IEqualityEvaluator<int> options)
 		{
 			foreach (int item in subject)
 			{
@@ -2785,7 +2785,7 @@ public class CollectionMatchOptionsTests
 		/// <summary>
 		///     "div2" merges distinct values like ignoring the casing; "near" is not transitive, like a tolerance.
 		/// </summary>
-		internal sealed class Equality(string kind) : IOptionsEquality<int>
+		internal sealed class Equality(string kind) : IEqualityEvaluator<int>
 		{
 			public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
 				=> new(IsEqual(actual, expected));
@@ -2805,7 +2805,7 @@ public class CollectionMatchOptionsTests
 		/// <summary>
 		///     Compares like <see cref="Equality" />, but every other comparison completes asynchronously.
 		/// </summary>
-		internal sealed class YieldingEquality(string kind) : IOptionsEquality<int>
+		internal sealed class YieldingEquality(string kind) : IEqualityEvaluator<int>
 		{
 			private readonly Equality _equality = new(kind);
 			private int _comparisons;
@@ -3066,7 +3066,7 @@ public class CollectionMatchOptionsTests
 		}
 
 		private static async Task<string> Describe(ICollectionMatcher<int, int> matcher, int[] subject,
-			int maximumNumber, IOptionsEquality<int>? options = null)
+			int maximumNumber, IEqualityEvaluator<int>? options = null)
 		{
 			options ??= new ReferenceCaseTests.Equality("eq");
 			foreach (int item in subject)
@@ -3082,7 +3082,7 @@ public class CollectionMatchOptionsTests
 			return $"{isCompleteFailure}: {completeError}";
 		}
 
-		private sealed class NeverEquality : IOptionsEquality<int>
+		private sealed class NeverEquality : IEqualityEvaluator<int>
 		{
 			public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
 				=> new(false);
@@ -3091,7 +3091,7 @@ public class CollectionMatchOptionsTests
 				=> throw new NotSupportedException();
 		}
 
-		private sealed class ThrowingEquality(Exception exception) : IOptionsEquality<int>
+		private sealed class ThrowingEquality(Exception exception) : IEqualityEvaluator<int>
 		{
 			public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
 				=> throw exception;

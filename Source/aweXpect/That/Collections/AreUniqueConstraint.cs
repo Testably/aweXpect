@@ -27,12 +27,12 @@ internal abstract class AreUniqueConstraintBase<TValue, TItem, TMember>(
 	EnumerableQuantifier quantifier,
 	Func<TItem, TMember> memberAccessor,
 	string? memberAccessorExpression,
-	IOptionsEquality<TMember> options,
+	IReadOnlyOptionsSlot<IEqualityOptions<TMember>> options,
 	object displayedOptions,
 	bool expectUnique)
 	: Core.Extending.QuantifiedCollectionConstraintBase<TValue, TItem>(it, grammars, quantifier)
 {
-	private IOptionsEquality<TMember>? _evaluationOptions;
+	private IEqualityEvaluator<TMember>? _evaluationOptions;
 
 	/// <summary>
 	///     Whether the items are expected to be unique.
@@ -57,7 +57,7 @@ internal abstract class AreUniqueConstraintBase<TValue, TItem, TMember>(
 	public override void AppendContexts(ResultContextCollector contexts)
 	{
 		base.AppendContexts(contexts);
-		(_evaluationOptions ?? options).AppendContexts(contexts);
+		(_evaluationOptions ?? options.WithoutEvaluation()).AppendContexts(contexts);
 	}
 
 	/// <summary>
@@ -76,7 +76,7 @@ internal abstract class AreUniqueConstraintBase<TValue, TItem, TMember>(
 		CancellationToken cancellationToken)
 	{
 		_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-		return new OccurrenceCounter<TMember>(_evaluationOptions, MemberHashing.For(options));
+		return new OccurrenceCounter<TMember>(_evaluationOptions, MemberHashing.For(options.Value));
 	}
 
 	/// <summary>
@@ -112,7 +112,7 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 	EnumerableQuantifier quantifier,
 	Func<TItem, TMember> memberAccessor,
 	string? memberAccessorExpression,
-	IOptionsEquality<TMember> options,
+	IReadOnlyOptionsSlot<IEqualityOptions<TMember>> options,
 	bool expectUnique,
 	ISubjectComparing? subjectComparing = null)
 	: AreUniqueConstraintBase<TEnumerable, TItem, TMember>(it, grammars, quantifier, memberAccessor,
@@ -230,7 +230,7 @@ internal sealed class AsyncAreUniqueConstraint<TItem, TMember>(
 	EnumerableQuantifier quantifier,
 	Func<TItem, TMember> memberAccessor,
 	string? memberAccessorExpression,
-	IOptionsEquality<TMember> options,
+	IReadOnlyOptionsSlot<IEqualityOptions<TMember>> options,
 	bool expectUnique)
 	: AreUniqueConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMember>(it, grammars, quantifier, memberAccessor,
 			memberAccessorExpression, options, options, expectUnique),

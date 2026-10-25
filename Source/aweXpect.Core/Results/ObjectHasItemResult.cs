@@ -14,14 +14,14 @@ public class ObjectHasItemResult<TCollection, TItem>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TCollection?> collection,
 	OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
-	OptionsSlot<ObjectEqualityOptions<TItem>> options)
+	OptionsSlot<ObjectMatchType<TItem>> options)
 	: AndOrResult<TCollection, IThat<TCollection?>, ObjectHasItemResult<TCollection, TItem>>(expectationBuilder,
 			collection),
 		IOptionsProvider<CollectionIndexOptions>,
 		IObjectEqualityResult<ObjectHasItemResult<TCollection, TItem>, TItem>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<ObjectEqualityOptions<TItem>> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => options;
+	OptionsSlot<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	OptionsSlot<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;

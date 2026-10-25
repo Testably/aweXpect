@@ -116,6 +116,20 @@ public sealed class OptionsSlotTests
 		await That(first.Value.ToString()).IsEqualTo(" ± 3 days");
 	}
 
+	[Test]
+	public async Task WhenAnObjectMatchTypePresetIsShared_ShouldNotBeChangedByAnotherSlot()
+	{
+		ObjectMatchType<int> preset = ObjectMatchType<int>.WithTolerance<int>((a, e, t) => Math.Abs(a - e) <= t)
+			.Within(2);
+		OptionsSlot<ObjectMatchType<int>> first = new(preset);
+		OptionsSlot<ObjectMatchType<int>> second = new(preset);
+
+		first.Within(3);
+
+		await That(second.Value).IsSameAs(preset);
+		await That(preset.ToString()).IsEqualTo(" ± 2");
+		await That(first.Value.ToString()).IsEqualTo(" ± 3");
+	}
 	private sealed class MyMatch : CollectionIndexOptions.IMatch
 	{
 		public string GetDescription() => " at my index";

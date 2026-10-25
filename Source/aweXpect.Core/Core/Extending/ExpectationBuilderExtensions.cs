@@ -38,7 +38,7 @@ public static class ExpectationBuilderExtensions
 	/// </remarks>
 	public static ExpectationBuilder AddEqualityConstraint<TSubject, TExpected>(
 		this ExpectationBuilder expectationBuilder,
-		TExpected expected, OptionsSlot<ObjectEqualityOptions<TSubject>> options, bool isNegated = false,
+		TExpected expected, OptionsSlot<ObjectMatchType<TSubject>> options, bool isNegated = false,
 		string? expectedExpression = null)
 		=> expectationBuilder.AddConstraint(
 			(Expected: expected, Options: options, IsNegated: isNegated, ExpectedExpression: expectedExpression),

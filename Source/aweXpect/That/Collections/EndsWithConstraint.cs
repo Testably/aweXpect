@@ -22,10 +22,10 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 	string? expectedExpression,
 	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
-	IOptionsEquality<TMatch> options)
+	IReadOnlyOptionsSlot<IEqualityOptions<TMatch>> options)
 	: ConstraintResult.WithNotNullValue<TValue>(it, grammars)
 {
-	private IOptionsEquality<TMatch>? _evaluationOptions;
+	private IEqualityEvaluator<TMatch>? _evaluationOptions;
 	private string? _expectedText;
 	private TItem? _firstMismatchItem;
 	private bool _foundMismatch;
@@ -41,7 +41,7 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> contexts.AddEqualityOptionsContexts(_evaluationOptions ?? options);
+		=> contexts.AddEqualityOptionsContexts(_evaluationOptions ?? options.WithoutEvaluation());
 
 	/// <summary>
 	///     Starts a new evaluation in the <paramref name="context" />.
@@ -77,7 +77,7 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 
 			TItem item = items[_index + _offset];
 			if (!CollectionItems<TItem>.TryCast(item, out TMatch matchedItem) ||
-			    !await (_evaluationOptions ?? options).AreConsideredEqual(matchedItem, expected[_index]))
+			    !await (_evaluationOptions ?? options.WithoutEvaluation()).AreConsideredEqual(matchedItem, expected[_index]))
 			{
 				_firstMismatchItem = item;
 				_foundMismatch = true;
@@ -141,7 +141,7 @@ internal sealed class EndsWithConstraint<TEnumerable, TItem, TMatch>(
 	string? expectedExpression,
 	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
-	IOptionsEquality<TMatch> options,
+	IReadOnlyOptionsSlot<IEqualityOptions<TMatch>> options,
 	ISubjectComparing? subjectComparing = null)
 	: EndsWithConstraintBase<TEnumerable, TItem, TMatch>(it, grammars, expectedExpression, expectedValues, expected,
 			options),
@@ -230,7 +230,7 @@ internal sealed class AsyncEndsWithConstraint<TItem, TMatch>(
 	string? expectedExpression,
 	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
-	IOptionsEquality<TMatch> options)
+	IReadOnlyOptionsSlot<IEqualityOptions<TMatch>> options)
 	: EndsWithConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, expectedExpression,
 			expectedValues, expected, options),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>

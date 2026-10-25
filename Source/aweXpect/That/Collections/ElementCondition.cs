@@ -28,8 +28,9 @@ internal abstract class ElementCondition<TItem>
 	///     Returns the condition to verify the items with during the evaluation in the <paramref name="context" />.
 	/// </summary>
 	/// <remarks>
-	///     Only a condition whose comparison evaluates expectations of its own returns another condition than itself,
-	///     see <see cref="ObjectEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />.
+	///     A condition that compares by options keeps the evaluator of the evaluation, see
+	///     <see cref="IEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />, or returns
+	///     another condition for it.
 	/// </remarks>
 	public virtual ElementCondition<TItem> ForEvaluation(IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -151,35 +152,33 @@ internal sealed class ElementOfType<TItem>(Type type, bool exactly) : Synchronou
 
 /// <summary>
 ///     An item whose <typeparamref name="TValue" /> is equal to the <paramref name="expected" /> one according to the
-///     <paramref name="options" />.
+///     current <paramref name="options" />.
 /// </summary>
 /// <remarks>
 ///     The <paramref name="options" /> also describe the comparison, so a <see cref="SubjectEqualityOptions{TItem,TMatch}" />
-///     lets the comparer of a set subject decide and names it. Only the <paramref name="contextOptions" /> add contexts.
+///     lets the comparer of a set subject decide and names it. Only when it <paramref name="addsContexts" />, the
+///     evaluator of the evaluation adds contexts.
 /// </remarks>
 internal sealed class ElementEqualTo<TItem, TValue>(
-	IOptionsEquality<TValue> options,
+	IReadOnlyOptionsSlot<IEqualityOptions<TValue>> options,
 	TValue expected,
-	ObjectEqualityOptions<TValue>? contextOptions = null)
+	bool addsContexts = false)
 	: ElementCondition<TItem>
 {
+	private IEqualityEvaluator<TValue>? _evaluator;
+
+	private IEqualityEvaluator<TValue> Evaluator => _evaluator ?? options.WithoutEvaluation();
+
 	/// <inheritdoc />
 	public override ValueTask<bool> IsMetBy(TItem item)
-		=> options.AreConsideredEqual((TValue)(object?)item!, expected);
+		=> Evaluator.AreConsideredEqual((TValue)(object?)item!, expected);
 
 	/// <inheritdoc />
 	public override ElementCondition<TItem> ForEvaluation(IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		IOptionsEquality<TValue> evaluationOptions = options.ForEvaluation(context, cancellationToken);
-		if (ReferenceEquals(evaluationOptions, options))
-		{
-			return this;
-		}
-
-		ObjectEqualityOptions<TValue>? evaluationContextOptions =
-			contextOptions is null ? null : evaluationOptions as ObjectEqualityOptions<TValue>;
-		return new ElementEqualTo<TItem, TValue>(evaluationOptions, expected, evaluationContextOptions);
+		_evaluator = options.ForEvaluation(context, cancellationToken);
+		return this;
 	}
 
 	/// <inheritdoc />
@@ -192,7 +191,12 @@ internal sealed class ElementEqualTo<TItem, TValue>(
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> contextOptions?.AppendContexts(contexts);
+	{
+		if (addsContexts)
+		{
+			Evaluator.AppendContexts(contexts);
+		}
+	}
 }
 
 /// <summary>
@@ -241,26 +245,28 @@ internal sealed class ElementEqualToString<TItem>(
 
 /// <summary>
 ///     An item whose <typeparamref name="TValue" /> is equivalent to the <paramref name="expected" /> one according to
-///     the <paramref name="options" />.
+///     the <paramref name="matchType" />.
 /// </summary>
 internal sealed class ElementEquivalentTo<TItem, TValue, TExpected>(
-	ObjectEqualityOptions<TValue> options,
+	ObjectMatchType<TValue> matchType,
 	TExpected expected,
 	string expectedExpression)
 	: ElementCondition<TItem>
 {
+	private ObjectMatcher<TValue>? _matcher;
+
+	private IEqualityEvaluator<TValue> Matcher => _matcher ?? matchType.ForEvaluation(default);
+
 	/// <inheritdoc />
 	public override ValueTask<bool> IsMetBy(TItem item)
-		=> options.AreConsideredEqual((TValue)(object?)item!, expected);
+		=> Matcher.AreConsideredEqual((TValue)(object?)item!, expected);
 
 	/// <inheritdoc />
 	public override ElementCondition<TItem> ForEvaluation(IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		ObjectEqualityOptions<TValue> evaluationOptions = options.ForEvaluation(context, cancellationToken);
-		return ReferenceEquals(evaluationOptions, options)
-			? this
-			: new ElementEquivalentTo<TItem, TValue, TExpected>(evaluationOptions, expected, expectedExpression);
+		_matcher = matchType.ForEvaluation(new MatchEnvironment(context, cancellationToken));
+		return this;
 	}
 
 	/// <inheritdoc />
@@ -270,5 +276,5 @@ internal sealed class ElementEquivalentTo<TItem, TValue, TExpected>(
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> options.AppendContexts(contexts);
+		=> Matcher.AppendContexts(contexts);
 }

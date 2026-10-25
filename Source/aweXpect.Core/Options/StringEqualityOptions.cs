@@ -16,7 +16,7 @@ namespace aweXpect.Options;
 /// <summary>
 ///     Equality options for <see langword="string" />s.
 /// </summary>
-public partial class StringEqualityOptions : IOptionsEquality<string?>
+public partial class StringEqualityOptions : IEqualityOptions<string?>, IEqualityEvaluator<string?>
 {
 	private const int DefaultMaxLength = 30;
 
@@ -173,6 +173,11 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			? this
 			: new StringEqualityOptions(this, matcher);
 	}
+
+	/// <inheritdoc cref="IEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />
+	IEqualityEvaluator<string?> IEqualityOptions<string?>.ForEvaluation(IEvaluationContext context,
+		CancellationToken cancellationToken)
+		=> ForEvaluation(context, cancellationToken);
 
 	/// <summary>
 	///     Returns the matcher of the evaluation, or for a comparison outside an evaluation, a matcher without one.

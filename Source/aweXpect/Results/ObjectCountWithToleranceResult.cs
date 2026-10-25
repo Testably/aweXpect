@@ -18,7 +18,7 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 		IObjectEqualityWithToleranceResult<ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>,
 			TItem, TTolerance>
 {
-	private readonly OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> _options;
+	private readonly OptionsSlot<ObjectMatchType<TItem>> _options;
 	private readonly OptionsSlot<Quantifier> _quantifier;
 	private readonly TThat _returnValue;
 
@@ -26,7 +26,7 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
 		OptionsSlot<Quantifier> quantifier,
-		OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options)
+		OptionsSlot<ObjectMatchType<TItem>> options)
 		: base(expectationBuilder, returnValue)
 	{
 		_returnValue = returnValue;
@@ -35,15 +35,7 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	/// <remarks>
-	///     A view on the options of the expectation, so that the options of every object comparison can change them.
-	/// </remarks>
-	OptionsSlot<ObjectEqualityOptions<TItem>> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options
-		=> new(_options.Value);
-
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>
-		IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>.Options => _options;
+	OptionsSlot<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	OptionsSlot<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
@@ -67,7 +59,7 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 			ExpectationBuilder expectationBuilder,
 			TThat returnValue,
 			OptionsSlot<Quantifier> quantifier,
-			OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options)
+			OptionsSlot<ObjectMatchType<TItem>> options)
 			: base(expectationBuilder, returnValue, quantifier, options)
 		{
 		}
@@ -77,8 +69,8 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 			IWithinToleranceResult<ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>, TTolerance>.WithRelativeTolerance(
 				Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
 		{
-			((IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>)this).Options.Value
-				.UseRelativeTolerance(absoluteTolerance, unit);
+			((IOptionsProvider<ObjectMatchType<TItem>>)this).Options
+				.WithRelativeTolerance<TItem, TTolerance>(absoluteTolerance, unit);
 			return this;
 		}
 	}

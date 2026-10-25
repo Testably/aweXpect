@@ -19,7 +19,7 @@ public readonly partial struct CollectionMatchOptions
 		where T : T2
 	{
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, T expected,
-			IOptionsEquality<T2> options)
+			IEqualityEvaluator<T2> options)
 			=> options.AreConsideredEqual(value, expected);
 	}
 
@@ -31,7 +31,7 @@ public readonly partial struct CollectionMatchOptions
 		where T : T2
 	{
 		protected override ValueTask<bool>
-			AreConsideredEqual(int index, T value, ExpectationItem<T> expected, IOptionsEquality<T2> options)
+			AreConsideredEqual(int index, T value, ExpectationItem<T> expected, IEqualityEvaluator<T2> options)
 			=> expected.IsMetBy(value, index);
 	}
 
@@ -45,7 +45,7 @@ public readonly partial struct CollectionMatchOptions
 		private readonly CompiledPredicates<T> _predicates = new();
 
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, Expression<Func<T, bool>> expected,
-			IOptionsEquality<T2> options)
+			IEqualityEvaluator<T2> options)
 			=> _predicates.Invoke(expected, value, index);
 	}
 
@@ -145,7 +145,7 @@ public readonly partial struct CollectionMatchOptions
 			   (!_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) || AdditionalItemCount > 0);
 
 		public ValueTask<(bool IsFailure, string? Failure)>
-			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
+			Verify(string it, T value, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			MergesEqualItems(options);
 			if (_missingValues is null)
@@ -171,7 +171,7 @@ public readonly partial struct CollectionMatchOptions
 		}
 
 		private async ValueTask<(bool, string?)>
-			VerifyByComparing(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
+			VerifyByComparing(string it, T value, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			int index = _index++;
 			bool mergesEqualItems = MergesEqualItems(options) || IsIdenticalToEqualValues(value);
@@ -192,7 +192,7 @@ public readonly partial struct CollectionMatchOptions
 		}
 
 		public async ValueTask<(bool IsFailure, string? Failure)>
-			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
+			VerifyComplete(string it, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			MergesEqualItems(options);
 			await CoverTheRemainingMissingItems(options);
@@ -248,7 +248,7 @@ public readonly partial struct CollectionMatchOptions
 		///     <see langword="true" />, when the <paramref name="value" /> matches no expected item and is relevant as an
 		///     additional item.
 		/// </returns>
-		private async ValueTask<bool> IsAdditionalItem(int index, T value, IOptionsEquality<T2> options)
+		private async ValueTask<bool> IsAdditionalItem(int index, T value, IEqualityEvaluator<T2> options)
 		{
 			Exception? unanswered = null;
 			for (int i = 0; i < _missingItems.Count; i++)
@@ -292,7 +292,7 @@ public readonly partial struct CollectionMatchOptions
 		}
 
 		private async ValueTask CoverTheMatchingMissingItemsFrom(int start, int index, T value,
-			IOptionsEquality<T2> options)
+			IEqualityEvaluator<T2> options)
 		{
 			for (int i = start; i < _missingItems.Count;)
 			{
@@ -315,7 +315,7 @@ public readonly partial struct CollectionMatchOptions
 		///     Otherwise only identical items are merged, every other item is compared, and equal additional items are
 		///     only reported once.
 		/// </remarks>
-		private bool MergesEqualItems(IOptionsEquality<T2> options)
+		private bool MergesEqualItems(IEqualityEvaluator<T2> options)
 		{
 			if (_mergesEqualItems is { } mergesEqualItems)
 			{
@@ -383,7 +383,7 @@ public readonly partial struct CollectionMatchOptions
 		///     The search stops once the result no longer depends on it: the proper containment only needs one missing
 		///     item. Values found by their hash code have no such item, as an item only equals the value it covered.
 		/// </remarks>
-		private async ValueTask CoverTheRemainingMissingItems(IOptionsEquality<T2> options)
+		private async ValueTask CoverTheRemainingMissingItems(IEqualityEvaluator<T2> options)
 		{
 			if (_equivalenceRelations == EquivalenceRelations.IsContainedIn || _missingValues is not null)
 			{
@@ -409,7 +409,7 @@ public readonly partial struct CollectionMatchOptions
 		///     expectation on values does.
 		/// </remarks>
 		private ValueTask<(bool IsMatch, Exception? Unanswered)> Compare(int index, T value, T3 expected,
-			IOptionsEquality<T2> options)
+			IEqualityEvaluator<T2> options)
 		{
 			ValueTask<bool> comparison;
 			try
@@ -480,6 +480,6 @@ public readonly partial struct CollectionMatchOptions
 			=> GetItemFormatter(AdditionalItems.Values.Cast<object?>(), MissingItems.Cast<object?>());
 
 		protected abstract ValueTask<bool>
-			AreConsideredEqual(int index, T value, T3 expected, IOptionsEquality<T2> options);
+			AreConsideredEqual(int index, T value, T3 expected, IEqualityEvaluator<T2> options);
 	}
 }

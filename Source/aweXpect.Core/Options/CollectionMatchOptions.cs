@@ -596,8 +596,8 @@ public readonly partial struct CollectionMatchOptions
 	///     <see cref="DateTime" />, as the comparison also checks its kind. Otherwise only equal values that are
 	///     identical can be merged, see <see cref="IsIdenticalToEqualValues{TValue}(TValue)" />.
 	/// </remarks>
-	private static bool CanMergeEqualItems<T, T2>(IOptionsEquality<T2> options)
-		=> options is ObjectEqualityOptions<T2> { UsesEqualsMatch: true, } &&
+	private static bool CanMergeEqualItems<T, T2>(IEqualityEvaluator<T2> options)
+		=> EqualsMatchType<T2>.IsUsedBy(options) &&
 		   !typeof(T).IsAssignableFrom(typeof(DateTime));
 
 	/// <summary>
@@ -611,11 +611,11 @@ public readonly partial struct CollectionMatchOptions
 	///     and calls <see cref="object.Equals(object)" /> and <see cref="object.GetHashCode()" /> of the caller, which
 	///     can throw or disagree with each other.
 	/// </remarks>
-	private static bool ComparesLikeDefaultEquality<T, T2>(IOptionsEquality<T2> options)
+	private static bool ComparesLikeDefaultEquality<T, T2>(IEqualityEvaluator<T2> options)
 		=> options switch
 		{
 			StringEqualityOptions { ComparesByOrdinalEquality: true, } => true,
-			ObjectEqualityOptions<T2> { UsesEqualsMatch: true, }
+			_ when EqualsMatchType<T2>.IsUsedBy(options)
 				=> typeof(T).IsPrimitive || typeof(T).IsEnum || typeof(T) == typeof(decimal) ||
 				   typeof(T) == typeof(Guid) || typeof(T) == typeof(DateTimeOffset) || typeof(T) == typeof(TimeSpan),
 			_ => false,

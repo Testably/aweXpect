@@ -17,10 +17,10 @@ public readonly partial struct CollectionMatchOptions
 		where T : T2
 	{
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, T expected,
-			IOptionsEquality<T2> options)
+			IEqualityEvaluator<T2> options)
 			=> options.AreConsideredEqual(value, expected);
 
-		protected override ExpectedItemCounts<T>? CountExpectedItems(T[] expected, IOptionsEquality<T2> options)
+		protected override ExpectedItemCounts<T>? CountExpectedItems(T[] expected, IEqualityEvaluator<T2> options)
 			=> ComparesLikeDefaultEquality<T, T2>(options) ? new ExpectedItemCounts<T>(expected) : null;
 	}
 
@@ -31,7 +31,7 @@ public readonly partial struct CollectionMatchOptions
 		where T : T2
 	{
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, ExpectationItem<T> expected,
-			IOptionsEquality<T2> options)
+			IEqualityEvaluator<T2> options)
 			=> expected.IsMetBy(value, index);
 	}
 
@@ -44,7 +44,7 @@ public readonly partial struct CollectionMatchOptions
 		private readonly CompiledPredicates<T> _predicates = new();
 
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, Expression<Func<T, bool>> expected,
-			IOptionsEquality<T2> options)
+			IEqualityEvaluator<T2> options)
 			=> _predicates.Invoke(expected, value, index);
 	}
 
@@ -115,7 +115,7 @@ public readonly partial struct CollectionMatchOptions
 		///     were found as well.
 		/// </remarks>
 		public ValueTask<(bool IsFailure, string? Failure)>
-			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
+			Verify(string it, T value, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			if (GetExpectedCounts(options) is not { } expectedCounts)
 			{
@@ -132,7 +132,7 @@ public readonly partial struct CollectionMatchOptions
 		///     met.
 		/// </remarks>
 		public ValueTask<(bool IsFailure, string? Failure)>
-			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
+			VerifyComplete(string it, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			if (GetExpectedCounts(options) is not { } expectedCounts)
 			{
@@ -145,7 +145,7 @@ public readonly partial struct CollectionMatchOptions
 		}
 
 		private async ValueTask<(bool, string?)> MatchAfterTheFoundItems(ExpectedItemCounts<T> expectedCounts,
-			string it, T value, IOptionsEquality<T2> options, int maximumNumber)
+			string it, T value, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			await MatchTheFoundItems(expectedCounts, it, options, maximumNumber);
 			return await Match(it, value, options, maximumNumber);
@@ -159,7 +159,7 @@ public readonly partial struct CollectionMatchOptions
 		///     Each of these items is equal to a distinct expected item, so none of them is a deviation.
 		/// </remarks>
 		private async ValueTask MatchTheFoundItems(ExpectedItemCounts<T> expectedCounts, string it,
-			IOptionsEquality<T2> options, int maximumNumber)
+			IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			// The matching ends the counting, also when no item was found.
 			_ = GetMatching(options);
@@ -177,7 +177,7 @@ public readonly partial struct CollectionMatchOptions
 		///     Only equality requires every item to be found among the expected items and the other way round. The
 		///     options are only known once the items are compared.
 		/// </remarks>
-		private ExpectedItemCounts<T>? GetExpectedCounts(IOptionsEquality<T2> options)
+		private ExpectedItemCounts<T>? GetExpectedCounts(IEqualityEvaluator<T2> options)
 		{
 			if (_matching is not null || _equivalenceRelations.Includes(EquivalenceRelations.Contains) ||
 			    _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
@@ -191,7 +191,7 @@ public readonly partial struct CollectionMatchOptions
 		/// <remarks>
 		///     An item whose comparisons complete synchronously returns without a state machine.
 		/// </remarks>
-		private ValueTask<(bool, string?)> Match(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
+		private ValueTask<(bool, string?)> Match(string it, T value, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			int index = _index++;
 			ItemMatching<T, T3> matching = GetMatching(options);
@@ -243,7 +243,7 @@ public readonly partial struct CollectionMatchOptions
 		}
 
 		private async ValueTask<(bool, string?)> CompleteAfterTheFoundItems(ExpectedItemCounts<T> expectedCounts,
-			string it, IOptionsEquality<T2> options, int maximumNumber)
+			string it, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			await MatchTheFoundItems(expectedCounts, it, options, maximumNumber);
 			return await CompleteTheMatching(it, options, maximumNumber);
@@ -253,10 +253,10 @@ public readonly partial struct CollectionMatchOptions
 		///     Every item resolves the pending items right away, so none is left to resolve here.
 		/// </remarks>
 		private ValueTask<(bool, string?)>
-			CompleteTheMatching(string it, IOptionsEquality<T2> options, int maximumNumber)
+			CompleteTheMatching(string it, IEqualityEvaluator<T2> options, int maximumNumber)
 			=> new(Complete(it, GetMatching(options), options, maximumNumber));
 
-		private (bool, string?) Complete(string it, ItemMatching<T, T3> matching, IOptionsEquality<T2> options,
+		private (bool, string?) Complete(string it, ItemMatching<T, T3> matching, IEqualityEvaluator<T2> options,
 			int maximumNumber)
 		{
 			// When all expected items are matched, none is missing, so only the ones that an aborted item kept are
@@ -322,7 +322,7 @@ public readonly partial struct CollectionMatchOptions
 		/// <summary>
 		///     The options are only known once the items are compared.
 		/// </summary>
-		private ItemMatching<T, T3> GetMatching(IOptionsEquality<T2> options)
+		private ItemMatching<T, T3> GetMatching(IEqualityEvaluator<T2> options)
 			=> _matching ??= new ItemMatching<T, T3>(_expected, (index, value, expected)
 				=> AreConsideredEqual(index, value, expected, options), AdditionalItems);
 
@@ -362,14 +362,14 @@ public readonly partial struct CollectionMatchOptions
 		///     <paramref name="expected" /> item.
 		/// </summary>
 		protected abstract ValueTask<bool>
-			AreConsideredEqual(int index, T value, T3 expected, IOptionsEquality<T2> options);
+			AreConsideredEqual(int index, T value, T3 expected, IEqualityEvaluator<T2> options);
 
 		/// <summary>
 		///     Counts the <paramref name="expected" /> items, when the <paramref name="options" /> compare an item with
 		///     an expected item like <see cref="EqualityComparer{T}.Default" /> does; otherwise
 		///     <see langword="null" />.
 		/// </summary>
-		protected virtual ExpectedItemCounts<T>? CountExpectedItems(T3[] expected, IOptionsEquality<T2> options)
+		protected virtual ExpectedItemCounts<T>? CountExpectedItems(T3[] expected, IEqualityEvaluator<T2> options)
 			=> null;
 	}
 }

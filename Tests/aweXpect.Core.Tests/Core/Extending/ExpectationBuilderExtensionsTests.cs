@@ -212,7 +212,7 @@ public sealed class ExpectationBuilderExtensionsTests
 	private static ObjectEqualityResult<TSubject, IThat<TSubject>, TSubject> IsEqualTo<TSubject, TExpected>(
 		IThat<TSubject> subject, TExpected expected, bool isNegated)
 	{
-		OptionsSlot<ObjectEqualityOptions<TSubject>> options = new(new ObjectEqualityOptions<TSubject>());
+		OptionsSlot<ObjectMatchType<TSubject>> options = new(ObjectMatchType<TSubject>.Default);
 		return new ObjectEqualityResult<TSubject, IThat<TSubject>, TSubject>(
 			subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options, isNegated),
 			subject, options);
@@ -222,7 +222,7 @@ public sealed class ExpectationBuilderExtensionsTests
 		TExpected>(IThat<TSubject> subject, TExpected expected, bool isNegated,
 		[CallerArgumentExpression("expected")] string expectedExpression = "")
 	{
-		OptionsSlot<ObjectEqualityOptions<TSubject>> options = new(new ObjectEqualityOptions<TSubject>());
+		OptionsSlot<ObjectMatchType<TSubject>> options = new(ObjectMatchType<TSubject>.Default);
 		return new ObjectEqualityResult<TSubject, IThat<TSubject>, TSubject>(
 			subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options, isNegated, expectedExpression),
 			subject, options);

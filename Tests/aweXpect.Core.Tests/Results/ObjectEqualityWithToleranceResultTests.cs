@@ -2,37 +2,39 @@
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Options;
 using aweXpect.Results;
-#if NET8_0_OR_GREATER
-#endif
 
 namespace aweXpect.Core.Tests.Results;
 
 public sealed class ObjectEqualityWithToleranceResultTests
 {
 	[Test]
-	public async Task ShouldBeOptionsProvider_ForObjectEqualityOptions()
+	public async Task ShouldBeOptionsProvider_ForObjectMatchType()
 	{
-		ObjectEqualityWithToleranceOptions<int, double> options = new((_, _, _) => true);
+		OptionsSlot<ObjectMatchType<int>> options = new(ObjectMatchType<int>.WithTolerance<double>((_, _, _) => true));
 		ObjectEqualityWithToleranceResult<int, IThat<int>, int, double> sut = CreateSut(2, options);
 
-		await That(sut).Is<IOptionsProvider<ObjectEqualityOptions<int>>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
+		await That(sut).Is<IOptionsProvider<ObjectMatchType<int>>>()
+			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
 	[Test]
-	public async Task ShouldBeOptionsProvider_ForObjectEqualityWithToleranceOptions()
+	public async Task Within_ShouldNotChangeTheStartingValue()
 	{
-		ObjectEqualityWithToleranceOptions<int, double> options = new((_, _, _) => true);
+		ObjectToleranceMatchType<int, double> start = ObjectMatchType<int>.WithTolerance<double>((_, _, _) => true);
+		OptionsSlot<ObjectMatchType<int>> options = new(start);
 		ObjectEqualityWithToleranceResult<int, IThat<int>, int, double> sut = CreateSut(2, options);
 
-		await That(sut).Is<IOptionsProvider<ObjectEqualityWithToleranceOptions<int, double>>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
+		_ = sut.Within(1.0);
+
+		await That(options.Value).IsNotSameAs(start);
+		await That(start.OptionName).IsNull();
+		await That(start.ToString()).IsEmpty();
 	}
 
 	[Test]
 	public async Task Within_ShouldSetTheTolerance()
 	{
-		ObjectEqualityWithToleranceOptions<int, double> options = new((_, _, _) => true);
+		OptionsSlot<ObjectMatchType<int>> options = new(ObjectMatchType<int>.WithTolerance<double>((_, _, _) => true));
 		ObjectEqualityWithToleranceResult<int, IThat<int>, int, double> sut = CreateSut(2, options);
 
 		_ = sut.Within(1.0);
@@ -43,7 +45,7 @@ public sealed class ObjectEqualityWithToleranceResultTests
 	[Test]
 	public async Task Within_WithRelativeTolerance_ShouldMakeTheToleranceRelativeAndReturnTheResult()
 	{
-		ObjectEqualityWithToleranceOptions<int, double> options = new((_, _, _) => true);
+		OptionsSlot<ObjectMatchType<int>> options = new(ObjectMatchType<int>.WithTolerance<double>((_, _, _) => true));
 		ObjectEqualityWithToleranceResult<int, IThat<int>, int, double> sut = CreateSut(2, options);
 		IWithinToleranceResult<ObjectEqualityWithToleranceResult<int, IThat<int>, int, double>, double> result =
 			sut.Within(1.0);
@@ -55,17 +57,16 @@ public sealed class ObjectEqualityWithToleranceResultTests
 		await That(options.ToString()).IsEqualTo(" ± 1.0%");
 	}
 
-	private static ObjectEqualityWithToleranceResult<TType, IThat<TType>, TElement, TTolerance>
-		CreateSut<TType, TElement, TTolerance>(TType subject,
-			ObjectEqualityWithToleranceOptions<TElement, TTolerance> options)
+	private static ObjectEqualityWithToleranceResult<int, IThat<int>, int, double>
+		CreateSut(int subject, OptionsSlot<ObjectMatchType<int>> options)
 	{
 #pragma warning disable aweXpect0001
-		IThat<TType> source = That(subject);
+		IThat<int> source = That(subject);
 #pragma warning restore aweXpect0001
-		return new ObjectEqualityWithToleranceResult<TType, IThat<TType>, TElement, TTolerance>(
+		return new ObjectEqualityWithToleranceResult<int, IThat<int>, int, double>(
 			source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			new OptionsSlot<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>(options));
+			options);
 	}
 }

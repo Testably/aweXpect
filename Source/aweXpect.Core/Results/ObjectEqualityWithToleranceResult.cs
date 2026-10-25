@@ -14,7 +14,7 @@ namespace aweXpect.Results;
 public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsSlot<ObjectEqualityWithToleranceOptions<TElement, TTolerance>> options)
+	OptionsSlot<ObjectMatchType<TElement>> options)
 	: AndOrResult<TType, TThat, ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>>(
 			expectationBuilder, returnValue),
 		IObjectEqualityWithToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>,
@@ -23,15 +23,7 @@ public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TToleranc
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	/// <remarks>
-	///     A view on the options of the expectation, so that the options of every object comparison can change them.
-	/// </remarks>
-	OptionsSlot<ObjectEqualityOptions<TElement>> IOptionsProvider<ObjectEqualityOptions<TElement>>.Options
-		=> new(options.Value);
-
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>
-		IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>.Options => options;
+	OptionsSlot<ObjectMatchType<TElement>> IOptionsProvider<ObjectMatchType<TElement>>.Options => options;
 
 	/// <inheritdoc cref="ObjectEqualityOptionsExtensions.Within{TSelf, TElement, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TElement, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
@@ -47,7 +39,7 @@ public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TToleranc
 	public sealed class WithinResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsSlot<ObjectEqualityWithToleranceOptions<TElement, TTolerance>> options)
+		OptionsSlot<ObjectMatchType<TElement>> options)
 		: ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>(expectationBuilder, returnValue,
 				options),
 			IWithinToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>
@@ -57,8 +49,8 @@ public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TToleranc
 			IWithinToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>.WithRelativeTolerance(
 				Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
 		{
-			((IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>)this).Options.Value
-				.UseRelativeTolerance(absoluteTolerance, unit);
+			((IOptionsProvider<ObjectMatchType<TElement>>)this).Options
+				.WithRelativeTolerance<TElement, TTolerance>(absoluteTolerance, unit);
 			return this;
 		}
 	}

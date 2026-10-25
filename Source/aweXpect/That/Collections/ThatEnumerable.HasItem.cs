@@ -82,13 +82,13 @@ public static partial class ThatEnumerable
 	{
 		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		OptionsSlot<ObjectEqualityOptions<TItem>> options = new(new ItemEqualityOptions<TItem>());
+		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		return new ObjectHasItemResult<IEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
-						new SubjectComparedItem<TItem, TItem>(new EqualItem<TItem>(state.Options.Value, state.Expected)),
+						new SubjectComparedItem<TItem, TItem>(new EqualItem<TItem>(state.Options, state.Expected)),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
@@ -96,16 +96,16 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem, Remarks = SetItemComparerRemarks)]
 	internal static ObjectHasItemWithToleranceResult<IEnumerable<TItem>, TItem, TTolerance>
 		HasTheItemWithToleranceCore<TItem, TTolerance>(
 			IThat<IEnumerable<TItem>?> subject,
 			TItem expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> initialOptions,
+			ObjectToleranceMatchType<TItem, TTolerance> initialOptions,
 			bool negated)
 	{
-		OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options = new(initialOptions);
+		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
 		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectHasItemWithToleranceResult<IEnumerable<TItem>, TItem, TTolerance>(
@@ -113,7 +113,7 @@ public static partial class ThatEnumerable
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
-						new SubjectComparedItem<TItem, TItem>(new EqualItem<TItem>(state.Options.Value, state.Expected)),
+						new SubjectComparedItem<TItem, TItem>(new EqualItem<TItem>(state.Options, state.Expected)),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
@@ -198,14 +198,14 @@ public static partial class ThatEnumerable
 	{
 		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		OptionsSlot<ObjectEqualityOptions<object?>> options = new(new ItemEqualityOptions<object?>());
+		OptionsSlot<ObjectMatchType<object?>> options = new(ItemEqualsMatchType<object?>.Instance);
 		return new ObjectHasItemResult<IEnumerable, object?>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new HasItemConstraint<IEnumerable, object?>(
 						it, grammars,
-						new SubjectComparedItem<object?, object?>(new EqualItem<object?>(state.Options.Value, state.Expected)),
+						new SubjectComparedItem<object?, object?>(new EqualItem<object?>(state.Options, state.Expected)),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
@@ -270,14 +270,14 @@ public static partial class ThatEnumerable
 	{
 		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		OptionsSlot<ObjectEqualityOptions<TItem>> options = new(new ObjectEqualityOptions<TItem>());
+		OptionsSlot<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
 		return new ObjectHasItemResult<TCollection, TItem>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new HasItemConstraint<TCollection, TItem>(
 						it, grammars,
-						new EqualItem<TItem>(state.Options.Value, state.Expected),
+						new EqualItem<TItem>(state.Options, state.Expected),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
@@ -285,17 +285,17 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
 	internal static ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
 		HasTheItemWithToleranceForCollectionCore<TCollection, TItem, TTolerance>(
 			IThat<TCollection> subject,
 			TItem expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> initialOptions,
+			ObjectToleranceMatchType<TItem, TTolerance> initialOptions,
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options = new(initialOptions);
+		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
 		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>(
@@ -304,7 +304,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars)
 					=> new HasItemConstraint<TCollection, TItem>(
 						it, grammars,
-						new EqualItem<TItem>(state.Options.Value, state.Expected),
+						new EqualItem<TItem>(state.Options, state.Expected),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,

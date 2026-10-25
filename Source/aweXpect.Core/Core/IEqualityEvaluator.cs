@@ -3,9 +3,13 @@
 namespace aweXpect.Core;
 
 /// <summary>
-///     Determines if two objects are considered equal.
+///     Determines if two objects are considered equal during one evaluation.
 /// </summary>
-public interface IOptionsEquality<in TSubject>
+/// <remarks>
+///     Returned by <see cref="IEqualityOptions{TSubject}.ForEvaluation" />, e.g. the
+///     <see cref="ObjectMatcher{TSubject}" /> of an <see cref="ObjectMatchType{TSubject}" />.
+/// </remarks>
+public interface IEqualityEvaluator<in TSubject>
 {
 	/// <summary>
 	///     Returns <see langword="true" /> if the two objects <paramref name="actual" /> and <paramref name="expected" /> are
@@ -14,8 +18,8 @@ public interface IOptionsEquality<in TSubject>
 	/// <remarks>
 	///     Only decides, as the items of a collection are never explained one by one. A constraint that explains a
 	///     single comparison keeps the <see cref="MatchResult" /> of <c>MatchWithExplanation</c> on the
-	///     <see cref="aweXpect.Options.StringEqualityOptions" /> or the
-	///     <see cref="aweXpect.Options.ObjectEqualityOptions{TSubject}" /> instead.
+	///     <see cref="aweXpect.Options.StringEqualityOptions" /> or of
+	///     <see cref="ObjectMatcher{TSubject}.CompareWithExplanation{TExpected}(TSubject, TExpected)" /> instead.
 	/// </remarks>
 	ValueTask<bool>
 		AreConsideredEqual<TExpected>(TSubject actual, TExpected expected);

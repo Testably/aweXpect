@@ -17,7 +17,9 @@ namespace aweXpect.Equivalency;
 ///     <c>IsEquivalentTo</c>.
 /// </summary>
 /// <remarks>
-///     Use it via <see cref="ObjectEqualityOptions{TSubject}.SetMatchType(ObjectMatchType{TSubject}, string)" />.<br />
+///     Use it via
+///     <see cref="ObjectMatchTypeSlotExtensions.SetMatchType{TSubject}(OptionsSlot{ObjectMatchType{TSubject}}, ObjectMatchType{TSubject})" />
+///     as the option <c>Equivalent</c>.<br />
 ///     Mark the parameters of the expectation that receive the compared values with the
 ///     <see cref="RequiresMemberMetadataAttribute" />, so that the members of their types are registered for trimming.
 /// </remarks>
@@ -32,7 +34,7 @@ public sealed class EquivalencyMatchType<TSubject> : ObjectMatchType<TSubject>
 	///     Compares with the <paramref name="equivalencyOptions" />.
 	/// </summary>
 	/// <exception cref="ArgumentNullException">The <paramref name="equivalencyOptions" /> are <see langword="null" />.</exception>
-	public EquivalencyMatchType(EquivalencyOptions equivalencyOptions)
+	public EquivalencyMatchType(EquivalencyOptions equivalencyOptions) : base("Equivalent")
 	{
 		equivalencyOptions.ThrowIfNull();
 		_equivalencyOptions = equivalencyOptions;

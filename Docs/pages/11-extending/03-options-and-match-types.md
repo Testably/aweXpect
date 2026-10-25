@@ -253,14 +253,14 @@ when there are none.
 
 An expectation that compares the subject for equality, e.g. an `IsEqualTo` for your own type, adds the equality
 constraint of `IsEqualTo` with `AddEqualityConstraint` from `aweXpect.Core.Extending`. Return an `ObjectEqualityResult`
-that shares the `OptionsSlot<ObjectEqualityOptions<T>>`, so that the caller can choose the comparison, e.g. with `Using(comparer)` or
+that shares the `OptionsSlot<ObjectMatchType<T>>`, so that the caller can choose the comparison, e.g. with `Using(comparer)` or
 a [custom match type](#custom-match-types), and the expectation and the failure read like those of `IsEqualTo`:
 
 ```csharp
 public static ObjectEqualityResult<Track?, IThat<Track?>, Track?> IsEqualTo(
     this IThat<Track?> subject, Track? expected)
 {
-    OptionsSlot<ObjectEqualityOptions<Track?>> options = new(new ObjectEqualityOptions<Track?>());
+    OptionsSlot<ObjectMatchType<Track?>> options = new(ObjectMatchType<Track?>.Default);
     return new ObjectEqualityResult<Track?, IThat<Track?>, Track?>(
         subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options),
         subject,
@@ -276,19 +276,19 @@ Its common leading whitespace is removed, and an expected `null` is still shown 
 ## Custom match types
 
 `IsEqualTo` compares two values with `Equals`, unless the caller chooses another comparison, e.g. with `.Equivalent()`.
-You can offer a comparison of your own: derive from `ObjectMatchType<TSubject>` and set it on the options of the result
-with `SetMatchType`, passing the name of your option, so that combining it with another comparison throws. For example,
-two tracks with the same title can count as equal:
+You can offer a comparison of your own: derive from `ObjectMatchType<TSubject>`, pass the name of your option to its
+base constructor and set it on the options of the result with `SetMatchType`, so that combining it with another
+comparison throws. For example, two tracks with the same title can count as equal:
 
 ```csharp
 public static TSelf ByTitle<TSelf, TElement>(this IObjectEqualityResult<TSelf, TElement> result)
     where TSelf : IObjectEqualityResult<TSelf, TElement>
 {
-    result.Options.SetMatchType(new ByTitleMatchType<TElement>(), nameof(ByTitle));
+    result.Options.SetMatchType(new ByTitleMatchType<TElement>());
     return (TSelf)result;
 }
 
-private sealed class ByTitleMatchType<TSubject> : ObjectMatchType<TSubject>
+private sealed class ByTitleMatchType<TSubject>() : ObjectMatchType<TSubject>("ByTitle")
 {
     private static readonly ByTitleMatcher Matcher = new();
 
@@ -375,10 +375,10 @@ single comparison found in its `MatchExplanation` instead, as a collection compa
 When the result text spans several lines, indent the lines after the first by the `indentation`, e.g. with
 `FormattingOptions.Indented(indentation)` for a formatted value, so that it stays aligned inside `Expect.ThatAll`.
 
-An `ObjectEqualityOptions<T>` compares like `IsEquivalentTo` with
-`SetMatchType(new EquivalencyMatchType<T>(options), "Equivalent")`. A constraint compares with the options that
-`ForEvaluation(context, cancellationToken)` returns for its evaluation, so that the timeout and the cancellation of the
-evaluation also end the expectations of an `It.Is…` in the expected object. It also appends its contexts from these
-options, as only they know what the comparisons found, e.g. a member to ignore that matched no member.
+An `EquivalencyMatchType<T>` compares like `IsEquivalentTo`. A constraint compares with the matcher that
+`ForEvaluation(new MatchEnvironment(context, cancellationToken))` returns for its evaluation, e.g. with
+`CompareWithExplanation(actual, expected)`, so that the timeout and the cancellation of the evaluation also end the
+expectations of an `It.Is…` in the expected object. It also appends its contexts from this matcher, as only it knows
+what the comparisons found, e.g. a member to ignore that matched no member.
 
 </details>

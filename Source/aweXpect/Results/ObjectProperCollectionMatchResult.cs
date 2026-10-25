@@ -19,12 +19,12 @@ public class ObjectProperCollectionMatchResult<TType, TThat, TItem>
 		IObjectEqualityResult<ObjectProperCollectionMatchResult<TType, TThat, TItem>, TItem>
 {
 	private readonly OptionsSlot<CollectionMatchOptions> _collectionMatchOptions;
-	private readonly OptionsSlot<ObjectEqualityOptions<TItem>> _options;
+	private readonly OptionsSlot<ObjectMatchType<TItem>> _options;
 
 	internal ObjectProperCollectionMatchResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsSlot<ObjectEqualityOptions<TItem>> options,
+		OptionsSlot<ObjectMatchType<TItem>> options,
 		OptionsSlot<CollectionMatchOptions> collectionMatchOptions)
 		: base(expectationBuilder, returnValue)
 	{
@@ -33,7 +33,7 @@ public class ObjectProperCollectionMatchResult<TType, TThat, TItem>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<ObjectEqualityOptions<TItem>> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => _options;
+	OptionsSlot<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	OptionsSlot<CollectionMatchOptions> IOptionsProvider<CollectionMatchOptions>.Options => _collectionMatchOptions;

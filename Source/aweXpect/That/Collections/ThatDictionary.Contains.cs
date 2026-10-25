@@ -37,39 +37,39 @@ public static partial class ThatDictionary
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		expected.Key.ThrowIfNull(negated);
-		OptionsSlot<ObjectEqualityOptions<TValue>> options = new(ObjectEqualityWithToleranceOptionsFactory.ForValuesOf<TValue>());
+		OptionsSlot<ObjectMatchType<TValue>> options = new(ObjectToleranceMatchTypeFactory.ForValuesOf<TValue>());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars)
 					=> new ContainsConstraint<TCollection, TKey, TValue>(it, grammars,
-						state.Expected, state.Options.Value).InvertIf(state.Negated)),
+						state.Expected, state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		GuaranteesNotNull = true, Summary = ContainsEntrySummary, NegatedSummary = DoesNotContainEntrySummary)]
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true, KeyAndValue = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		GuaranteesNotNull = true, Summary = ContainsKeyAndValueSummary, NegatedSummary = DoesNotContainKeyAndValueSummary)]
 	internal static ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>
 		ContainsWithToleranceCore<TCollection, TKey, TValue, TTolerance>(
 			IThat<TCollection?> subject,
 			KeyValuePair<TKey, TValue> expected,
-			ObjectEqualityWithToleranceOptions<TValue, TTolerance> initialOptions,
+			ObjectToleranceMatchType<TValue, TTolerance> initialOptions,
 			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		OptionsSlot<ObjectEqualityWithToleranceOptions<TValue, TTolerance>> options = new(initialOptions);
+		OptionsSlot<ObjectMatchType<TValue>> options = new(initialOptions);
 		expected.Key.ThrowIfNull(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>(
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars)
 					=> new ContainsConstraint<TCollection, TKey, TValue>(it, grammars,
-						state.Expected, state.Options.Value).InvertIf(state.Negated)),
+						state.Expected, state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
 	}
@@ -92,7 +92,7 @@ public static partial class ThatDictionary
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars)
 					=> new ContainsConstraint<TCollection, TKey, string?>(it, grammars,
-						state.Expected, state.Options.Value).InvertIf(state.Negated)),
+						state.Expected, state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
 	}
@@ -101,13 +101,13 @@ public static partial class ThatDictionary
 		string it,
 		ExpectationGrammars grammars,
 		KeyValuePair<TKey, TValue> expected,
-		IOptionsEquality<TValue> options)
+		IReadOnlyOptionsSlot<IEqualityOptions<TValue>> options)
 		: ConstraintResult.WithNotNullValue<TDictionary?>(it, grammars),
 			IAsyncContextConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		private TValue? _actualValue;
-		private IOptionsEquality<TValue>? _evaluationOptions;
+		private IEqualityEvaluator<TValue>? _evaluationOptions;
 		private bool _hasKey;
 
 		/// <remarks>
@@ -137,7 +137,7 @@ public static partial class ThatDictionary
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			AddDictionaryContext(contexts, Actual);
-			contexts.AddEqualityOptionsContexts(_evaluationOptions ?? options);
+			contexts.AddEqualityOptionsContexts(_evaluationOptions ?? options.WithoutEvaluation());
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

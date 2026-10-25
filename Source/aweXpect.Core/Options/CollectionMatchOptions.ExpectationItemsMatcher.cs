@@ -44,11 +44,11 @@ public readonly partial struct CollectionMatchOptions
 
 		public bool IsDetermined => matcher.IsDetermined;
 
-		public ValueTask<(bool IsFailure, string? Failure)> Verify(string it, T value, IOptionsEquality<T2> options,
+		public ValueTask<(bool IsFailure, string? Failure)> Verify(string it, T value, IEqualityEvaluator<T2> options,
 			int maximumNumber)
 			=> matcher.Verify(it, value, options, maximumNumber);
 
-		public ValueTask<(bool IsFailure, string? Failure)> VerifyComplete(string it, IOptionsEquality<T2> options,
+		public ValueTask<(bool IsFailure, string? Failure)> VerifyComplete(string it, IEqualityEvaluator<T2> options,
 			int maximumNumber)
 			=> matcher.VerifyComplete(it, options, maximumNumber);
 	}

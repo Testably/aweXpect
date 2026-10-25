@@ -35,18 +35,7 @@ public static class EquivalencyExtensions
 	///     A later call replaces the options, while another comparison, e.g. a custom comparer, is rejected, so that
 	///     the failure describes the comparison that the expectation reads.
 	/// </remarks>
-	internal static ObjectEqualityOptions<TSubject> Equivalent<TSubject>(this ObjectEqualityOptions<TSubject> options,
-		EquivalencyOptions equivalencyOptions)
-	{
-		options.SetMatchType(new EquivalencyMatchType<TSubject>(equivalencyOptions), nameof(Equivalent));
-		return options;
-	}
-
-	/// <inheritdoc cref="Equivalent{TSubject}(ObjectEqualityOptions{TSubject}, EquivalencyOptions)" />
-	internal static OptionsSlot<ObjectEqualityOptions<TSubject>> Equivalent<TSubject>(
-		this OptionsSlot<ObjectEqualityOptions<TSubject>> slot, EquivalencyOptions equivalencyOptions)
-	{
-		slot.Value = slot.Value.Equivalent(equivalencyOptions);
-		return slot;
-	}
+	internal static OptionsSlot<ObjectMatchType<TSubject>> Equivalent<TSubject>(
+		this OptionsSlot<ObjectMatchType<TSubject>> slot, EquivalencyOptions equivalencyOptions)
+		=> slot.SetMatchType(new EquivalencyMatchType<TSubject>(equivalencyOptions));
 }

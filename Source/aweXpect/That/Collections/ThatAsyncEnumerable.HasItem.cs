@@ -81,13 +81,13 @@ public static partial class ThatAsyncEnumerable
 	{
 		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		OptionsSlot<ObjectEqualityOptions<TItem>> options = new(new ObjectEqualityOptions<TItem>());
+		OptionsSlot<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
 		return new ObjectHasItemResult<IAsyncEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new AsyncHasItemConstraint<TItem>(it, grammars,
-						new EqualItem<TItem>(state.Options.Value, state.Expected),
+						new EqualItem<TItem>(state.Options, state.Expected),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
@@ -95,16 +95,16 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
 	internal static ObjectHasItemWithToleranceResult<IAsyncEnumerable<TItem>, TItem, TTolerance>
 		HasTheItemWithToleranceCore<TItem, TTolerance>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
 			TItem expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> initialOptions,
+			ObjectToleranceMatchType<TItem, TTolerance> initialOptions,
 			bool negated)
 	{
-		OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options = new(initialOptions);
+		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
 		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectHasItemWithToleranceResult<IAsyncEnumerable<TItem>, TItem, TTolerance>(
@@ -112,7 +112,7 @@ public static partial class ThatAsyncEnumerable
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new AsyncHasItemConstraint<TItem>(it, grammars,
-						new EqualItem<TItem>(state.Options.Value, state.Expected),
+						new EqualItem<TItem>(state.Options, state.Expected),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,

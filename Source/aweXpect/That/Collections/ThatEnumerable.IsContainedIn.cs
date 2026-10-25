@@ -55,7 +55,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		expected.ThrowIfNull(negated);
-		OptionsSlot<ObjectEqualityOptions<TItem>> options = new(new ItemEqualityOptions<TItem>());
+		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.IsContainedIn));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
@@ -64,7 +64,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					IsEqualToConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(it, grammars,
-						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options.Value,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
 						true,
 						true);
@@ -96,7 +96,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					IsEqualToConstraint<IEnumerable<string?>, string?, string?> constraint = new(it, grammars,
-						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options.Value,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
 						true,
 						true);
@@ -108,7 +108,7 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
 		Remarks = ContainedInRemarks + "\n" + SetComparerRemarks,
 		NegatedRemarks = NotContainedInRemarks + "\n" + SetComparerRemarks)]
@@ -117,11 +117,11 @@ public static partial class ThatEnumerable
 		IsContainedInWithToleranceCore<TItem, TTolerance>(
 			IThat<IEnumerable<TItem>?> subject,
 			IEnumerable<TItem> expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> initialOptions,
+			ObjectToleranceMatchType<TItem, TTolerance> initialOptions,
 			string expectedExpression,
 			bool negated)
 	{
-		OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options = new(initialOptions);
+		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
 		expected.ThrowIfNull(negated);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.IsContainedIn));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -132,7 +132,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					IsEqualToConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(it, grammars,
-						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options.Value,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
 						true,
 						true);
@@ -155,7 +155,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		expected.ThrowIfNull(negated);
-		OptionsSlot<ObjectEqualityOptions<TItem>> options = new(new ItemEqualityOptions<TItem>());
+		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.IsContainedIn));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>(
@@ -165,7 +165,7 @@ public static partial class ThatEnumerable
 				{
 					IsEqualToConstraint<IEnumerable, TItem, TItem> constraint = new(
 						it, grammars,
-						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options.Value,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
 						true,
 						true);
@@ -275,7 +275,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable
 	{
 		expected.ThrowIfNull(negated);
-		OptionsSlot<ObjectEqualityOptions<TItem>> options = new(new ObjectEqualityOptions<TItem>());
+		OptionsSlot<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.IsContainedIn));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
@@ -285,7 +285,7 @@ public static partial class ThatEnumerable
 				{
 					IsEqualToConstraint<TCollection, TItem, TItem> constraint = new(
 						it, grammars,
-						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options.Value,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
 						true);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -317,7 +317,7 @@ public static partial class ThatEnumerable
 				{
 					IsEqualToConstraint<TCollection, string?, string?> constraint = new(
 						it, grammars,
-						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options.Value,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
 						true);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -328,19 +328,19 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateExpectationFamily("Is{Not}ContainedIn", PerSubject = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = ContainedIn, NegatedSummary = NotContainedIn,
 		Remarks = ContainedInRemarks, NegatedRemarks = NotContainedInRemarks)]
 	internal static ObjectProperCollectionMatchWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>
 		IsContainedInWithToleranceForCollectionCore<TCollection, TItem, TTolerance>(
 			IThat<TCollection> subject,
 			IEnumerable<TItem> expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> initialOptions,
+			ObjectToleranceMatchType<TItem, TTolerance> initialOptions,
 			string expectedExpression,
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options = new(initialOptions);
+		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
 		expected.ThrowIfNull(negated);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.IsContainedIn));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -351,7 +351,7 @@ public static partial class ThatEnumerable
 				{
 					IsEqualToConstraint<TCollection, TItem, TItem> constraint = new(
 						it, grammars,
-						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options.Value,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
 						true);
 					return state.Negated ? constraint.Invert() : constraint;

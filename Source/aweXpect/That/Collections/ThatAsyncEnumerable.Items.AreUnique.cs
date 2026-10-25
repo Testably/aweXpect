@@ -97,7 +97,7 @@ public static partial class ThatAsyncEnumerable
 						state.Quantifier,
 						a => a,
 						null,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique)),
 			items.Subject,
 			options);
@@ -108,7 +108,7 @@ public static partial class ThatAsyncEnumerable
 			IAsyncEnumerableItems<TItem> items,
 			bool expectUnique)
 	{
-		OptionsSlot<Options.ObjectEqualityOptions<TItem>> options = new(new ItemEqualityOptions<TItem>());
+		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -119,7 +119,7 @@ public static partial class ThatAsyncEnumerable
 						state.Quantifier,
 						a => a,
 						null,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique)),
 			items.Subject,
 			options);
@@ -130,7 +130,7 @@ public static partial class ThatAsyncEnumerable
 			Func<TItem, TMember> memberAccessor, string memberAccessorExpression, bool expectUnique)
 	{
 		memberAccessor.ThrowIfNull();
-		OptionsSlot<Options.ObjectEqualityOptions<TMember>> options = new(new ItemEqualityOptions<TMember>());
+		OptionsSlot<ObjectMatchType<TMember>> options = new(ItemEqualsMatchType<TMember>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TMember>(
 			expectationBuilder.AddConstraint(
@@ -143,7 +143,7 @@ public static partial class ThatAsyncEnumerable
 						state.Quantifier,
 						state.MemberAccessor,
 						state.MemberAccessorExpression,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique)),
 			items.Subject,
 			options);
@@ -167,7 +167,7 @@ public static partial class ThatAsyncEnumerable
 						state.Quantifier,
 						state.MemberAccessor,
 						state.MemberAccessorExpression,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique)),
 			items.Subject,
 			options);

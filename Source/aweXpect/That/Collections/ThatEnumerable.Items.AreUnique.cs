@@ -259,13 +259,13 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<string?, string?> itemOptions =
-						new(state.Options.Value);
+						new(state.Options);
 					return new AreUniqueConstraint<IEnumerable<string?>?, string?, string?>(
 						it, grammars,
 						state.Quantifier,
 						a => a,
 						null,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique,
 						itemOptions);
 				}),
@@ -277,7 +277,7 @@ public static partial class ThatEnumerable
 		IEnumerableItems<TItem> items,
 		bool expectUnique)
 	{
-		OptionsSlot<Options.ObjectEqualityOptions<TItem>> options = new(new ItemEqualityOptions<TItem>());
+		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -285,13 +285,13 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<TItem, TItem> itemOptions =
-						new(state.Options.Value);
+						new(state.Options);
 					return new AreUniqueConstraint<IEnumerable<TItem>?, TItem, TItem>(
 						it, grammars,
 						state.Quantifier,
 						a => a,
 						null,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique,
 						itemOptions);
 				}),
@@ -305,7 +305,7 @@ public static partial class ThatEnumerable
 			Func<TItem, TMember> memberAccessor, string memberAccessorExpression, bool expectUnique)
 	{
 		memberAccessor.ThrowIfNull();
-		OptionsSlot<Options.ObjectEqualityOptions<TMember>> options = new(new ItemEqualityOptions<TMember>());
+		OptionsSlot<ObjectMatchType<TMember>> options = new(ItemEqualsMatchType<TMember>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TMember>(
 			expectationBuilder.AddConstraint(
@@ -318,7 +318,7 @@ public static partial class ThatEnumerable
 						state.Quantifier,
 						state.MemberAccessor,
 						state.MemberAccessorExpression,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique)),
 			items.Subject,
 			options);
@@ -342,7 +342,7 @@ public static partial class ThatEnumerable
 						state.Quantifier,
 						state.MemberAccessor,
 						state.MemberAccessorExpression,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique)),
 			items.Subject,
 			options);
@@ -352,7 +352,7 @@ public static partial class ThatEnumerable
 		INonGenericEnumerableItems<TCollection> items, bool expectUnique)
 		where TCollection : IEnumerable?
 	{
-		OptionsSlot<Options.ObjectEqualityOptions<object?>> options = new(new ItemEqualityOptions<object?>());
+		OptionsSlot<ObjectMatchType<object?>> options = new(ItemEqualsMatchType<object?>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, object?>(
 			expectationBuilder.AddConstraint(
@@ -360,13 +360,13 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<object?, object?> itemOptions =
-						new(state.Options.Value);
+						new(state.Options);
 					return new AreUniqueConstraint<TCollection, object?, object?>(
 						it, grammars,
 						state.Quantifier,
 						a => a,
 						null,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique,
 						itemOptions);
 				}),
@@ -380,7 +380,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable?
 	{
 		memberAccessor.ThrowIfNull();
-		OptionsSlot<Options.ObjectEqualityOptions<TMember>> options = new(new ItemEqualityOptions<TMember>());
+		OptionsSlot<ObjectMatchType<TMember>> options = new(ItemEqualsMatchType<TMember>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TMember>(
 			expectationBuilder.AddConstraint(
@@ -393,7 +393,7 @@ public static partial class ThatEnumerable
 						state.Quantifier,
 						state.MemberAccessor,
 						state.MemberAccessorExpression,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique)),
 			items.Subject,
 			options);
@@ -418,7 +418,7 @@ public static partial class ThatEnumerable
 						state.Quantifier,
 						state.MemberAccessor,
 						state.MemberAccessorExpression,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique)),
 			items.Subject,
 			options);
@@ -428,7 +428,7 @@ public static partial class ThatEnumerable
 		IStructEnumerableItems<TCollection, TItem> items, bool expectUnique)
 		where TCollection : struct, IEnumerable<TItem>
 	{
-		OptionsSlot<Options.ObjectEqualityOptions<TItem>> options = new(new ItemEqualityOptions<TItem>());
+		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -439,7 +439,7 @@ public static partial class ThatEnumerable
 						state.Quantifier,
 						a => (TItem)a!,
 						null,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique)),
 			items.Subject,
 			options);
@@ -452,7 +452,7 @@ public static partial class ThatEnumerable
 		where TCollection : struct, IEnumerable<TItem>
 	{
 		memberAccessor.ThrowIfNull();
-		OptionsSlot<Options.ObjectEqualityOptions<TMember>> options = new(new ItemEqualityOptions<TMember>());
+		OptionsSlot<ObjectMatchType<TMember>> options = new(ItemEqualsMatchType<TMember>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection>, TMember>(
 			expectationBuilder.AddConstraint(
@@ -465,7 +465,7 @@ public static partial class ThatEnumerable
 						state.Quantifier,
 						a => state.MemberAccessor((TItem)a!),
 						state.MemberAccessorExpression,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique)),
 			items.Subject,
 			options);
@@ -490,7 +490,7 @@ public static partial class ThatEnumerable
 						state.Quantifier,
 						a => state.MemberAccessor((TItem)a!),
 						state.MemberAccessorExpression,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique)),
 			items.Subject,
 			options);
@@ -511,7 +511,7 @@ public static partial class ThatEnumerable
 						state.Quantifier,
 						a => (string?)a,
 						null,
-						state.Options.Value,
+						state.Options,
 						state.ExpectUnique)),
 			items.Subject,
 			options);

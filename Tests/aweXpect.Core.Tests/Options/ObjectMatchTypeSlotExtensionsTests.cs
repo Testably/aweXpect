@@ -1,15 +1,15 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using aweXpect.Core.Helpers;
 using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
 
-public class ObjectEqualityOptionsTests
+public class ObjectMatchTypeSlotExtensionsTests
 {
 	[Test]
 	public async Task AreConsideredEqual_WhenBothAreNull_ShouldReturnTrue()
 	{
-		ObjectEqualityOptions<string?> sut = new();
+		IEqualityEvaluator<string?> sut = DefaultEvaluator<string?>();
 
 		bool result = await sut.AreConsideredEqual(null, (string?)null);
 
@@ -17,34 +17,34 @@ public class ObjectEqualityOptionsTests
 	}
 
 	[Test]
-	public async Task AreConsideredEqual_WhenEqualsThrows_ShouldNameTheEqualsOfTheSubject()
-	{
-		InvalidOperationException exception = new("equals failed");
-		ObjectEqualityOptions<ThrowingEquals> sut = new();
-
-		async Task Act()
-			=> await sut.AreConsideredEqual(new ThrowingEquals(exception), new ThrowingEquals(exception));
-
-		await That(Act).Throws<UserCodeException>()
-			.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
-			.Whose(e => e.Thrower, thrower => thrower.IsEqualTo("Equals of ObjectEqualityOptionsTests.ThrowingEquals")).And
-			.Whose(e => e.Exception, inner => inner.IsSameAs(exception));
-	}
-
-	[Test]
 	public async Task AreConsideredEqual_WhenEqualsThrowsForAnotherType_ShouldNameTheEqualsOfTheSubject()
 	{
 		InvalidOperationException exception = new("equals failed");
-		ObjectEqualityOptions<ThrowingEquals> sut = new();
+		IEqualityEvaluator<ThrowingEquals> sut = DefaultEvaluator<ThrowingEquals>();
 
 		async Task Act()
 			=> await sut.AreConsideredEqual(new ThrowingEquals(exception), "foo");
 
 		await That(Act).Throws<UserCodeException>()
 			.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
-			.Whose(e => e.Thrower, thrower => thrower.IsEqualTo("Equals of ObjectEqualityOptionsTests.ThrowingEquals")).And
+			.Whose(e => e.Thrower, thrower => thrower.IsEqualTo("Equals of ObjectMatchTypeSlotExtensionsTests.ThrowingEquals")).And
 			.Whose(e => e.Exception, inner => inner.IsSameAs(exception))
 			.Because("a value of another type is compared with Equals(object) of the subject");
+	}
+
+	[Test]
+	public async Task AreConsideredEqual_WhenEqualsThrows_ShouldNameTheEqualsOfTheSubject()
+	{
+		InvalidOperationException exception = new("equals failed");
+		IEqualityEvaluator<ThrowingEquals> sut = DefaultEvaluator<ThrowingEquals>();
+
+		async Task Act()
+			=> await sut.AreConsideredEqual(new ThrowingEquals(exception), new ThrowingEquals(exception));
+
+		await That(Act).Throws<UserCodeException>()
+			.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
+			.Whose(e => e.Thrower, thrower => thrower.IsEqualTo("Equals of ObjectMatchTypeSlotExtensionsTests.ThrowingEquals")).And
+			.Whose(e => e.Exception, inner => inner.IsSameAs(exception));
 	}
 
 	[Test]
@@ -52,7 +52,7 @@ public class ObjectEqualityOptionsTests
 	public async Task AreConsideredEqual_WhenNumbersHaveDifferentValues_ShouldReturnFalse(
 		object actual, object expected)
 	{
-		ObjectEqualityOptions<object> sut = new();
+		IEqualityEvaluator<object> sut = DefaultEvaluator<object>();
 
 		bool result = await sut.AreConsideredEqual(actual, expected);
 
@@ -65,7 +65,7 @@ public class ObjectEqualityOptionsTests
 	public async Task AreConsideredEqual_WhenNumbersHaveSameValue_ShouldReturnTrue(
 		object actual, object expected)
 	{
-		ObjectEqualityOptions<object> sut = new();
+		IEqualityEvaluator<object> sut = DefaultEvaluator<object>();
 
 		bool result = await sut.AreConsideredEqual(actual, expected);
 
@@ -77,7 +77,7 @@ public class ObjectEqualityOptionsTests
 	[Arguments("foo", null)]
 	public async Task AreConsideredEqual_WhenOnlyOneIsNull_ShouldReturnFalse(string? actual, string? expected)
 	{
-		ObjectEqualityOptions<string?> sut = new();
+		IEqualityEvaluator<string?> sut = DefaultEvaluator<string?>();
 
 		bool result = await sut.AreConsideredEqual(actual, expected);
 
@@ -90,7 +90,7 @@ public class ObjectEqualityOptionsTests
 	public async Task AreConsideredEqual_WhenTheSubjectIsAValueType_ShouldCompareTheValues(int expectedSeconds,
 		bool expectedResult)
 	{
-		ObjectEqualityOptions<TrackLength> sut = new();
+		IEqualityEvaluator<TrackLength> sut = DefaultEvaluator<TrackLength>();
 
 		bool result = await sut.AreConsideredEqual(new TrackLength(180), new TrackLength(expectedSeconds));
 
@@ -103,7 +103,7 @@ public class ObjectEqualityOptionsTests
 	public async Task AreConsideredEqual_WhenTheSubjectOverridesEquals_ShouldUseIt(string expectedTitle,
 		bool expectedResult)
 	{
-		ObjectEqualityOptions<Track> sut = new();
+		IEqualityEvaluator<Track> sut = DefaultEvaluator<Track>();
 
 		bool result = await sut.AreConsideredEqual(new Track("Something"), new Track(expectedTitle));
 
@@ -112,11 +112,22 @@ public class ObjectEqualityOptionsTests
 	}
 
 	[Test]
+	public async Task Default_ShouldBeSharedAndHaveNoOptionName()
+	{
+		ObjectMatchType<int> first = ObjectMatchType<int>.Default;
+		ObjectMatchType<int> second = ObjectMatchType<int>.Default;
+
+		await That(second).IsSameAs(first);
+		await That(first.OptionName).IsNull();
+		await That(first.ToString()).IsEmpty();
+	}
+
+	[Test]
 	[Arguments(false, "is equal to 3")]
 	[Arguments(true, "is not equal to 3")]
 	public async Task GetExpectation_ShouldDescribeTheEquality(bool isNegated, string expected)
 	{
-		ObjectEqualityOptions<int> sut = new();
+		ObjectMatchType<int> sut = ObjectMatchType<int>.Default;
 
 		string result = sut.GetExpectation("3", isNegated ? ExpectationGrammars.Negated : ExpectationGrammars.None);
 
@@ -124,27 +135,29 @@ public class ObjectEqualityOptionsTests
 	}
 
 	[Test]
-	[Arguments(false, "is equal to 3 using ObjectEqualityOptionsTests.ModuloComparer")]
-	[Arguments(true, "is not equal to 3 using ObjectEqualityOptionsTests.ModuloComparer")]
+	[Arguments(false, "is equal to 3 using ObjectMatchTypeSlotExtensionsTests.ModuloComparer")]
+	[Arguments(true, "is not equal to 3 using ObjectMatchTypeSlotExtensionsTests.ModuloComparer")]
 	public async Task GetExpectation_WithATypedComparer_ShouldNameTheComparer(bool isNegated, string expected)
 	{
-		ObjectEqualityOptions<int> sut = new();
+		OptionsSlot<ObjectMatchType<int>> sut = new(ObjectMatchType<int>.Default);
 		sut.Using(new ModuloComparer(10));
 
-		string result = sut.GetExpectation("3", isNegated ? ExpectationGrammars.Negated : ExpectationGrammars.None);
+		string result =
+			sut.Value.GetExpectation("3", isNegated ? ExpectationGrammars.Negated : ExpectationGrammars.None);
 
 		await That(result).IsEqualTo(expected);
 	}
 
 	[Test]
-	[Arguments(false, "is equal to 3 using ObjectEqualityOptionsTests.AllEqualComparer")]
-	[Arguments(true, "is not equal to 3 using ObjectEqualityOptionsTests.AllEqualComparer")]
+	[Arguments(false, "is equal to 3 using ObjectMatchTypeSlotExtensionsTests.AllEqualComparer")]
+	[Arguments(true, "is not equal to 3 using ObjectMatchTypeSlotExtensionsTests.AllEqualComparer")]
 	public async Task GetExpectation_WithAnUntypedComparer_ShouldNameTheComparer(bool isNegated, string expected)
 	{
-		ObjectEqualityOptions<object> sut = new();
+		OptionsSlot<ObjectMatchType<object>> sut = new(ObjectMatchType<object>.Default);
 		sut.Using(new AllEqualComparer());
 
-		string result = sut.GetExpectation("3", isNegated ? ExpectationGrammars.Negated : ExpectationGrammars.None);
+		string result =
+			sut.Value.GetExpectation("3", isNegated ? ExpectationGrammars.Negated : ExpectationGrammars.None);
 
 		await That(result).IsEqualTo(expected);
 	}
@@ -152,31 +165,31 @@ public class ObjectEqualityOptionsTests
 	[Test]
 	public async Task GetItemExpectation_WithATypedComparer_ShouldNameTheComparer()
 	{
-		ObjectEqualityOptions<int> sut = new();
+		OptionsSlot<ObjectMatchType<int>> sut = new(ObjectMatchType<int>.Default);
 		sut.Using(new ModuloComparer(10));
 
-		string result = sut.GetItemExpectation("3", "an item", "equal to");
+		string result = sut.Value.GetItemExpectation("3", "an item", "equal to");
 
-		await That(result).IsEqualTo("an item equal to 3 using ObjectEqualityOptionsTests.ModuloComparer");
+		await That(result).IsEqualTo("an item equal to 3 using ObjectMatchTypeSlotExtensionsTests.ModuloComparer");
 	}
 
 	[Test]
 	public async Task GetItemExpectation_WithAnUntypedComparer_ShouldNameTheComparer()
 	{
-		ObjectEqualityOptions<object> sut = new();
+		OptionsSlot<ObjectMatchType<object>> sut = new(ObjectMatchType<object>.Default);
 		sut.Using(new AllEqualComparer());
 
-		string result = sut.GetItemExpectation("3", "an item", "equal to");
+		string result = sut.Value.GetItemExpectation("3", "an item", "equal to");
 
-		await That(result).IsEqualTo("an item equal to 3 using ObjectEqualityOptionsTests.AllEqualComparer");
+		await That(result).IsEqualTo("an item equal to 3 using ObjectMatchTypeSlotExtensionsTests.AllEqualComparer");
 	}
 
 	[Test]
 	public async Task MatchWithExplanation_WhenEqual_ShouldReturnAMatch()
 	{
-		ObjectEqualityOptions<int> sut = new();
+		ObjectMatcher<int> sut = ObjectMatchType<int>.Default.ForEvaluation(default);
 
-		MatchResult result = await sut.MatchWithExplanation(1, 1);
+		MatchResult result = await sut.CompareWithExplanation(1, 1);
 
 		await That(result.IsMatch).IsTrue();
 	}
@@ -184,26 +197,26 @@ public class ObjectEqualityOptionsTests
 	[Test]
 	public async Task MatchWithExplanation_WhenNotEqual_ShouldExplainWithTheActualValue()
 	{
-		ObjectEqualityOptions<int> sut = new();
+		ObjectMatcher<int> sut = ObjectMatchType<int>.Default.ForEvaluation(default);
 
-		MatchResult result = await sut.MatchWithExplanation(1, 2);
+		MatchResult result = await sut.CompareWithExplanation(1, 2);
 
 		await That(result.IsMatch).IsFalse();
-		await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, 1, 2, result)).IsEqualTo("it was 1");
+		await That(sut.GetFailure("it", ExpectationGrammars.None, 1, 2, result, null)).IsEqualTo("it was 1");
 	}
 
 	[Test]
 	public async Task MatchWithExplanation_WhenNotEqual_WithIndentation_ShouldIndentTheActualValue()
 	{
-		ObjectEqualityOptions<object> sut = new();
+		ObjectMatcher<object> sut = ObjectMatchType<object>.Default.ForEvaluation(default);
 		object actual = new
 		{
 			Value = 1,
 		};
 
-		MatchResult result = await sut.MatchWithExplanation(actual, 2);
+		MatchResult result = await sut.CompareWithExplanation(actual, 2);
 
-		await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, 2, result, "      "))
+		await That(sut.GetFailure("it", ExpectationGrammars.None, actual, 2, result, "      "))
 			.IsEqualTo($"it was {Formatter.Format(actual, FormattingOptions.Indented("      "))}")
 			.Because("the lines of the value are indented like the result they belong to");
 	}
@@ -214,43 +227,57 @@ public class ObjectEqualityOptionsTests
 	public async Task MatchWithExplanation_WithATypedComparer_ShouldDecideWithIt(int expected,
 		bool expectMatch)
 	{
-		ObjectEqualityOptions<int> sut = new();
-		sut.Using(new ModuloComparer(10));
+		OptionsSlot<ObjectMatchType<int>> slot = new(ObjectMatchType<int>.Default);
+		slot.Using(new ModuloComparer(10));
+		ObjectMatcher<int> sut = slot.Value.ForEvaluation(default);
 
-		MatchResult result = await sut.MatchWithExplanation(1, expected);
+		MatchResult result = await sut.CompareWithExplanation(1, expected);
 
 		await That(result.IsMatch).IsEqualTo(expectMatch);
-		await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, 1, expected, result)).IsEqualTo("it was 1");
+		await That(sut.GetFailure("it", ExpectationGrammars.None, 1, expected, result, null)).IsEqualTo("it was 1");
 	}
 
 	[Test]
 	public async Task MatchWithExplanation_WithAnUntypedComparer_ShouldDecideWithIt()
 	{
-		ObjectEqualityOptions<object> sut = new();
-		sut.Using(new AllEqualComparer());
+		OptionsSlot<ObjectMatchType<object>> slot = new(ObjectMatchType<object>.Default);
+		slot.Using(new AllEqualComparer());
 
-		MatchResult result = await sut.MatchWithExplanation(1, "foo");
+		MatchResult result = await slot.Value.ForEvaluation(default).CompareWithExplanation(1, "foo");
 
 		await That(result.IsMatch).IsTrue();
 	}
 
 	[Test]
-	public async Task SetMatchType_WithOptionName_ShouldReturnTheSameOptions()
+	public async Task SetMatchType_ShouldNotChangeTheMatchTypeThatWasReplaced()
 	{
-		ObjectEqualityOptions<object> sut = new();
+		OptionsSlot<ObjectMatchType<object>> sut = new(ObjectMatchType<object>.Default);
+		ObjectMatchType<object> stored = sut.Value;
 
-		ObjectEqualityOptions<object> result = sut.SetMatchType(new DummyMatchType(), "Custom");
+		sut.SetMatchType(new DummyMatchType());
+
+		await That(stored).IsSameAs(ObjectMatchType<object>.Default);
+		await That(stored.OptionName).IsNull();
+		await That(sut.Value.OptionName).IsEqualTo("Custom");
+	}
+
+	[Test]
+	public async Task SetMatchType_ShouldReturnTheSameSlot()
+	{
+		OptionsSlot<ObjectMatchType<object>> sut = new(ObjectMatchType<object>.Default);
+
+		OptionsSlot<ObjectMatchType<object>> result = sut.SetMatchType(new DummyMatchType());
 
 		await That(result).IsSameAs(sut);
 	}
 
 	[Test]
-	public async Task SetMatchType_WithOptionName_WhenAnotherOptionIsSpecified_ShouldThrowInvalidOperationException()
+	public async Task SetMatchType_WhenAnotherOptionIsSpecified_ShouldThrowInvalidOperationException()
 	{
-		ObjectEqualityOptions<object> sut = new();
+		OptionsSlot<ObjectMatchType<object>> sut = new(ObjectMatchType<object>.Default);
 		sut.Using(new AllEqualComparer());
 
-		void Act() => sut.SetMatchType(new DummyMatchType(), "Custom");
+		void Act() => sut.SetMatchType(new DummyMatchType());
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("Custom cannot be combined with Using.")
@@ -258,35 +285,72 @@ public class ObjectEqualityOptionsTests
 	}
 
 	[Test]
-	public async Task SetMatchType_WithOptionName_WhenTheSameOptionIsSpecified_ShouldReplaceTheMatchType()
+	public async Task SetMatchType_WhenTheSameOptionIsSpecified_ShouldReplaceTheMatchType()
 	{
-		ObjectEqualityOptions<object> sut = new();
-		sut.SetMatchType(new DummyMatchType(), "Custom");
+		OptionsSlot<ObjectMatchType<object>> sut = new(ObjectMatchType<object>.Default);
+		DummyMatchType second = new();
+		sut.SetMatchType(new DummyMatchType());
 
-		void Act() => sut.SetMatchType(new DummyMatchType(), "Custom");
+		void Act() => sut.SetMatchType(second);
 
 		await That(Act).DoesNotThrow();
+		await That(sut.Value).IsSameAs(second);
 		await That(() => sut.Using(new AllEqualComparer())).Throws<InvalidOperationException>()
 			.WithMessage("Using cannot be combined with Custom.")
 			.Because("the replaced match type still competes with another option");
 	}
 
 	[Test]
+	public async Task SetMatchType_WithNull_ShouldThrowArgumentNullException()
+	{
+		OptionsSlot<ObjectMatchType<object>> sut = new(ObjectMatchType<object>.Default);
+
+		void Act() => sut.SetMatchType(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("matchType").And
+			.WithMessage("The 'matchType' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task SetMatchType_WithoutOptionName_ShouldThrowArgumentException()
+	{
+		OptionsSlot<ObjectMatchType<object>> sut = new(ObjectMatchType<object>.Default);
+
+		void Act() => sut.SetMatchType(new UnnamedMatchType());
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("matchType").And
+			.WithMessage("The match type must have an option name.").AsPrefix();
+		await That(sut.Value).IsSameAs(ObjectMatchType<object>.Default);
+	}
+
+	[Test]
+	public async Task Using_ShouldNameTheOption()
+	{
+		OptionsSlot<ObjectMatchType<int>> sut = new(ObjectMatchType<int>.Default);
+
+		sut.Using(new ModuloComparer(10));
+
+		await That(sut.Value.OptionName).IsEqualTo("Using");
+	}
+
+	[Test]
 	public async Task Using_WhenAComparerIsSpecified_ShouldUseTheLastComparer()
 	{
-		ObjectEqualityOptions<object> sut = new();
+		OptionsSlot<ObjectMatchType<object>> sut = new(ObjectMatchType<object>.Default);
 		sut.Using(new AllEqualComparer());
 
 		sut.Using(EqualityComparer<object>.Default);
 
-		await That(await sut.AreConsideredEqual(1, "foo")).IsFalse();
+		await That(await Evaluator(sut).AreConsideredEqual(1, "foo")).IsFalse();
 	}
 
 	[Test]
 	public async Task Using_WhenAnotherOptionIsSpecified_ShouldThrowInvalidOperationException()
 	{
-		ObjectEqualityOptions<object> sut = new();
-		sut.SetMatchType(new DummyMatchType(), "Custom");
+		OptionsSlot<ObjectMatchType<object>> sut = new(ObjectMatchType<object>.Default);
+		sut.SetMatchType(new DummyMatchType());
 
 		void Act() => sut.Using(new AllEqualComparer());
 
@@ -296,12 +360,25 @@ public class ObjectEqualityOptionsTests
 	}
 
 	[Test]
+	public async Task Using_WhenTheDefaultIsShared_ShouldNotChangeAnotherSlot()
+	{
+		OptionsSlot<ObjectMatchType<int>> first = new(ObjectMatchType<int>.Default);
+		OptionsSlot<ObjectMatchType<int>> second = new(ObjectMatchType<int>.Default);
+
+		first.Using(new ModuloComparer(10));
+
+		await That(second.Value).IsSameAs(ObjectMatchType<int>.Default);
+		await That(await Evaluator(second).AreConsideredEqual(1, 11)).IsFalse()
+			.Because("the comparer of one expectation must not reach another one");
+	}
+
+	[Test]
 	public async Task Using_WithATypedComparer_ShouldCompareWithIt()
 	{
-		ObjectEqualityOptions<int> sut = new();
+		OptionsSlot<ObjectMatchType<int>> sut = new(ObjectMatchType<int>.Default);
 		sut.Using(new ModuloComparer(10));
 
-		bool result = await sut.AreConsideredEqual(1, 11);
+		bool result = await Evaluator(sut).AreConsideredEqual(1, 11);
 
 		await That(result).IsTrue();
 	}
@@ -309,34 +386,34 @@ public class ObjectEqualityOptionsTests
 	[Test]
 	public async Task Using_WithATypedComparer_ShouldNameItsType()
 	{
-		ObjectEqualityOptions<int> sut = new();
+		OptionsSlot<ObjectMatchType<int>> sut = new(ObjectMatchType<int>.Default);
 		sut.Using(new ModuloComparer(10));
 
 		string? result = sut.ToString();
 
-		await That(result).IsEqualTo(" using ObjectEqualityOptionsTests.ModuloComparer");
+		await That(result).IsEqualTo(" using ObjectMatchTypeSlotExtensionsTests.ModuloComparer");
 	}
 
 	[Test]
 	public async Task Using_WithATypedComparer_WhenAComparerIsSpecified_ShouldUseTheLastComparer()
 	{
-		ObjectEqualityOptions<int> sut = new();
+		OptionsSlot<ObjectMatchType<int>> sut = new(ObjectMatchType<int>.Default);
 		sut.Using(new AllEqualComparer());
 
 		sut.Using(new ModuloComparer(10));
 
-		await That(await sut.AreConsideredEqual(1, 2)).IsFalse();
-		await That(await sut.AreConsideredEqual(1, 11)).IsTrue();
-		await That(sut.ToString()).IsEqualTo(" using ObjectEqualityOptionsTests.ModuloComparer");
+		await That(await Evaluator(sut).AreConsideredEqual(1, 2)).IsFalse();
+		await That(await Evaluator(sut).AreConsideredEqual(1, 11)).IsTrue();
+		await That(sut.ToString()).IsEqualTo(" using ObjectMatchTypeSlotExtensionsTests.ModuloComparer");
 	}
 
 	[Test]
 	public async Task Using_WithATypedComparer_WhenTheExpectedValueHasAnotherType_ShouldReturnFalse()
 	{
-		ObjectEqualityOptions<int> sut = new();
+		OptionsSlot<ObjectMatchType<int>> sut = new(ObjectMatchType<int>.Default);
 		sut.Using(new ModuloComparer(10));
 
-		bool result = await sut.AreConsideredEqual(1, 11L);
+		bool result = await Evaluator(sut).AreConsideredEqual(1, 11L);
 
 		await That(result).IsFalse()
 			.Because("the comparer can only compare values of its own type");
@@ -345,10 +422,10 @@ public class ObjectEqualityOptionsTests
 	[Test]
 	public async Task Using_WithATypedComparer_WhenTheExpectedValueIsNullForAValueType_ShouldReturnFalse()
 	{
-		ObjectEqualityOptions<int> sut = new();
+		OptionsSlot<ObjectMatchType<int>> sut = new(ObjectMatchType<int>.Default);
 		sut.Using(new ModuloComparer(10));
 
-		bool result = await sut.AreConsideredEqual<object?>(1, null);
+		bool result = await Evaluator(sut).AreConsideredEqual<object?>(1, null);
 
 		await That(result).IsFalse()
 			.Because("null is no value of a value type, so the comparer cannot compare it");
@@ -357,10 +434,10 @@ public class ObjectEqualityOptionsTests
 	[Test]
 	public async Task Using_WithATypedComparer_WhenTheValuesAreNullForAReferenceType_ShouldCompareWithIt()
 	{
-		ObjectEqualityOptions<string?> sut = new();
+		OptionsSlot<ObjectMatchType<string?>> sut = new(ObjectMatchType<string?>.Default);
 		sut.Using(new AllEqualStringComparer());
 
-		bool result = await sut.AreConsideredEqual(null, (string?)null);
+		bool result = await Evaluator(sut).AreConsideredEqual(null, (string?)null);
 
 		await That(result).IsTrue()
 			.Because("null is a valid value of a reference type, so the comparer decides");
@@ -369,7 +446,7 @@ public class ObjectEqualityOptionsTests
 	[Test]
 	public async Task Using_WithATypedComparer_WithNull_ShouldThrowArgumentNullException()
 	{
-		ObjectEqualityOptions<int> sut = new();
+		OptionsSlot<ObjectMatchType<int>> sut = new(ObjectMatchType<int>.Default);
 
 		void Act() => sut.Using((IEqualityComparer<int>)null!);
 
@@ -381,10 +458,10 @@ public class ObjectEqualityOptionsTests
 	[Test]
 	public async Task Using_WithAnUntypedComparer_ShouldCompareWithIt()
 	{
-		ObjectEqualityOptions<object> sut = new();
+		OptionsSlot<ObjectMatchType<object>> sut = new(ObjectMatchType<object>.Default);
 		sut.Using(new AllEqualComparer());
 
-		bool result = await sut.AreConsideredEqual(1, "foo");
+		bool result = await Evaluator(sut).AreConsideredEqual(1, "foo");
 
 		await That(result).IsTrue();
 	}
@@ -392,7 +469,7 @@ public class ObjectEqualityOptionsTests
 	[Test]
 	public async Task Using_WithNull_ShouldThrowArgumentNullException()
 	{
-		ObjectEqualityOptions<object> sut = new();
+		OptionsSlot<ObjectMatchType<object>> sut = new(ObjectMatchType<object>.Default);
 
 		void Act() => sut.Using(null!);
 
@@ -400,7 +477,6 @@ public class ObjectEqualityOptionsTests
 			.WithParamName("comparer").And
 			.WithMessage("The 'comparer' cannot be null.").AsPrefix();
 	}
-
 	public static IEnumerable<(object, object)> DifferentNumbers() =>
 	[
 		(
@@ -539,11 +615,25 @@ public class ObjectEqualityOptionsTests
 		public int Seconds { get; } = seconds;
 	}
 
-	private sealed class DummyMatchType : ObjectMatchType<object>
+	private static IEqualityEvaluator<T> DefaultEvaluator<T>()
+		=> ObjectMatchType<T>.Default.ForEvaluation(default);
+
+	private static IEqualityEvaluator<T> Evaluator<T>(OptionsSlot<ObjectMatchType<T>> sut)
+		=> sut.Value.ForEvaluation(default);
+
+	private sealed class DummyMatchType() : ObjectMatchType<object>("Custom")
 	{
 		public override ObjectMatcher<object> ForEvaluation(MatchEnvironment environment)
 			=> throw new NotSupportedException();
 
 		public override MatchPhrase Phrase { get; } = MatchPhrase.EqualTo.WithName("dummy");
+	}
+
+	private sealed class UnnamedMatchType : ObjectMatchType<object>
+	{
+		public override ObjectMatcher<object> ForEvaluation(MatchEnvironment environment)
+			=> throw new NotSupportedException();
+
+		public override MatchPhrase Phrase { get; } = MatchPhrase.EqualTo.WithName("unnamed");
 	}
 }

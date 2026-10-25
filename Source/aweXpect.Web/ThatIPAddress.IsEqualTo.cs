@@ -22,7 +22,7 @@ public static partial class ThatIPAddress
 		this IThat<IPAddress?> subject,
 		IPAddress? expected)
 	{
-		OptionsSlot<ObjectEqualityOptions<IPAddress?>> options = new(new ObjectEqualityOptions<IPAddress?>());
+		OptionsSlot<ObjectMatchType<IPAddress?>> options = new(ObjectMatchType<IPAddress?>.Default);
 		return new ObjectEqualityResult<IPAddress?, IThat<IPAddress?>, IPAddress?>(
 			subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options),
 			subject,
@@ -41,7 +41,7 @@ public static partial class ThatIPAddress
 		this IThat<IPAddress?> subject,
 		IPAddress? unexpected)
 	{
-		OptionsSlot<ObjectEqualityOptions<IPAddress?>> options = new(new ObjectEqualityOptions<IPAddress?>());
+		OptionsSlot<ObjectMatchType<IPAddress?>> options = new(ObjectMatchType<IPAddress?>.Default);
 		return new ObjectEqualityResult<IPAddress?, IThat<IPAddress?>, IPAddress?>(
 			subject.Get().ExpectationBuilder.AddEqualityConstraint(unexpected, options, isNegated: true),
 			subject,
@@ -60,7 +60,7 @@ public static partial class ThatIPAddress
 	public static TSelf IgnoringIPv4MappedToIPv6<TSelf>(this IObjectEqualityResult<TSelf, IPAddress?> result)
 		where TSelf : IObjectEqualityResult<TSelf, IPAddress?>
 	{
-		result.Options.SetMatchType(IgnoringIPv4MappedToIPv6MatchType.Instance, nameof(IgnoringIPv4MappedToIPv6));
+		result.Options.SetMatchType(IgnoringIPv4MappedToIPv6MatchType.Instance);
 		return (TSelf)result;
 	}
 
@@ -72,6 +72,10 @@ public static partial class ThatIPAddress
 		private static readonly MatchPhrase SharedPhrase = MatchPhrase.EqualTo
 			.WithSuffix(" ignoring IPv4-to-IPv6 mapping")
 			.WithName(" ignoring IPv4-to-IPv6 mapping");
+
+		private IgnoringIPv4MappedToIPv6MatchType() : base(nameof(IgnoringIPv4MappedToIPv6))
+		{
+		}
 
 		public override MatchPhrase Phrase => SharedPhrase;
 

@@ -29,35 +29,35 @@ public static partial class ThatDictionary
 			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		OptionsSlot<ObjectEqualityOptions<TValue>> options = new(ObjectEqualityWithToleranceOptionsFactory.ForValuesOf<TValue>());
+		OptionsSlot<ObjectMatchType<TValue>> options = new(ObjectToleranceMatchTypeFactory.ForValuesOf<TValue>());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainValueConstraint<TCollection, TKey, TValue>(it, grammars,
-						state.Expected, state.Options.Value).InvertIf(state.Negated)),
+						state.Expected, state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
 	}
 
 	[CreateExpectationFamily("ContainsValue", NegatedName = "DoesNotContainValue", PerSubject = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		GuaranteesNotNull = true, Summary = ContainsValueSummary, NegatedSummary = DoesNotContainValueSummary)]
 	internal static ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>
 		ContainsValueWithToleranceCore<TCollection, TKey, TValue, TTolerance>(
 			IThat<TCollection?> subject,
 			TValue expected,
-			ObjectEqualityWithToleranceOptions<TValue, TTolerance> initialOptions,
+			ObjectToleranceMatchType<TValue, TTolerance> initialOptions,
 			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		OptionsSlot<ObjectEqualityWithToleranceOptions<TValue, TTolerance>> options = new(initialOptions);
+		OptionsSlot<ObjectMatchType<TValue>> options = new(initialOptions);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>(
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainValueConstraint<TCollection, TKey, TValue>(it, grammars,
-						state.Expected, state.Options.Value).InvertIf(state.Negated)),
+						state.Expected, state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
 	}
@@ -77,7 +77,7 @@ public static partial class ThatDictionary
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainValueConstraint<TCollection, TKey, string?>(it, grammars,
-						state.Expected, state.Options.Value).InvertIf(state.Negated)),
+						state.Expected, state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
 	}
@@ -86,12 +86,12 @@ public static partial class ThatDictionary
 		string it,
 		ExpectationGrammars grammars,
 		TValue expected,
-		IOptionsEquality<TValue> options)
+		IReadOnlyOptionsSlot<IEqualityOptions<TValue>> options)
 		: ConstraintResult.WithNotNullValue<TDictionary?>(it, grammars),
 			IAsyncContextConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		private IOptionsEquality<TValue>? _evaluationOptions;
+		private IEqualityEvaluator<TValue>? _evaluationOptions;
 
 		/// <remarks>
 		///     The expected value is validated first, so that an unusable pattern is rejected whichever entries the
@@ -113,7 +113,7 @@ public static partial class ThatDictionary
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			AddDictionaryContext(contexts, Actual);
-			contexts.AddEqualityOptionsContexts(_evaluationOptions ?? options);
+			contexts.AddEqualityOptionsContexts(_evaluationOptions ?? options.WithoutEvaluation());
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

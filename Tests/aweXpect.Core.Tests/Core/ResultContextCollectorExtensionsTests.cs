@@ -783,8 +783,7 @@ public sealed class ResultContextCollectorExtensionsTests
 	[Test]
 	public async Task AddEqualityOptionsContexts_ShouldAddTheContextsOfTheMatchType()
 	{
-		ObjectEqualityOptions<int> options = new();
-		options.SetMatchType(new EquivalencyMatchType<int>(new EquivalencyOptions()), "Equivalent");
+		IEqualityEvaluator<int> options = new EquivalencyMatchType<int>(new EquivalencyOptions()).ForEvaluation(default);
 
 		async Task Act()
 			=> await That(1).ShowsContexts((contexts, _, _) => contexts.AddEqualityOptionsContexts(options));
@@ -803,7 +802,7 @@ public sealed class ResultContextCollectorExtensionsTests
 	[Test]
 	public async Task AddEqualityOptionsContexts_WhenTheMatchTypeHasNoContexts_ShouldNotAddAContext()
 	{
-		ObjectEqualityOptions<int> options = new();
+		IEqualityEvaluator<int> options = ObjectMatchType<int>.Default.ForEvaluation(default);
 
 		async Task Act()
 			=> await That(1).ShowsContexts((contexts, _, _) => contexts.AddEqualityOptionsContexts(options));

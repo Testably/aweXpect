@@ -52,14 +52,14 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<ObjectEqualityOptions<TItem>> options = new(new ObjectEqualityOptions<TItem>());
+		OptionsSlot<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, Quantifier: quantifier, Negated: negated),
 				static (state, it, grammars) =>
 					new AsyncContainConstraint<TItem>(it, grammars,
-						new EqualItem<TItem>(state.Options.Value, state.Expected),
+						new EqualItem<TItem>(state.Options, state.Expected),
 						state.Quantifier).InvertIf(state.Negated)),
 			subject,
 			quantifier,
@@ -67,16 +67,16 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = ContainsValue, NegatedSummary = DoesNotContainValue)]
 	internal static ObjectCountWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
 			TTolerance>
 		ContainsItemWithToleranceCore<TItem, TTolerance>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
-			TItem expected, Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance> initialOptions,
+			TItem expected, ObjectToleranceMatchType<TItem, TTolerance> initialOptions,
 			bool negated)
 	{
-		OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options = new(initialOptions);
+		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
 		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
@@ -85,7 +85,7 @@ public static partial class ThatAsyncEnumerable
 				(Options: options, Expected: expected, Quantifier: quantifier, Negated: negated),
 				static (state, it, grammars) =>
 					new AsyncContainConstraint<TItem>(it, grammars,
-						new EqualItem<TItem>(state.Options.Value, state.Expected),
+						new EqualItem<TItem>(state.Options, state.Expected),
 						state.Quantifier).InvertIf(state.Negated)),
 			subject,
 			quantifier,
@@ -149,7 +149,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<ObjectEqualityOptions<TItem>> options = new(new ObjectEqualityOptions<TItem>());
+		OptionsSlot<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -158,7 +158,7 @@ public static partial class ThatAsyncEnumerable
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
-						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options.Value,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
 						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
 			options,
@@ -166,7 +166,7 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,
 		Remarks = ContainsRemarks, NegatedRemarks = DoesNotContainRemarks)]
 	internal static ObjectProperCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>,
@@ -174,11 +174,11 @@ public static partial class ThatAsyncEnumerable
 		ContainsWithToleranceCore<TItem, TTolerance>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<TItem> expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> initialOptions,
+			ObjectToleranceMatchType<TItem, TTolerance> initialOptions,
 			string expectedExpression,
 			bool negated)
 	{
-		OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options = new(initialOptions);
+		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
 		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -189,7 +189,7 @@ public static partial class ThatAsyncEnumerable
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
-						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options.Value,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
 						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
 			options,
@@ -216,7 +216,7 @@ public static partial class ThatAsyncEnumerable
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 					new AsyncIsEqualToConstraint<string?, string?>(it, grammars,
-						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options.Value,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
 						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
 			options,
