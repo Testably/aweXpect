@@ -166,6 +166,22 @@ internal class ExpectationNode : Node
 	}
 
 	/// <summary>
+	///     Turns the <paramref name="exception" /> of the constraint, which was evaluated on the <paramref name="value" />
+	///     without a cancellation, into the result, like <see cref="IsMetBy{TValue}" /> does.
+	/// </summary>
+	internal ValueTask<ConstraintResult> FromConstraintException<TValue>(Exception exception, TValue? value,
+		IEvaluationContext context)
+		=> exception switch
+		{
+			UserCodeException e when !MemberExceptionResult.IsCancellationOf(e.Exception, CancellationToken.None)
+				=> new ValueTask<ConstraintResult>(FromUserCodeException(e, value, context, CancellationToken.None)),
+			UserCodeException e => new ValueTask<ConstraintResult>(Task.FromException<ConstraintResult>(e.Exception)),
+			UnansweredItemException e => new ValueTask<ConstraintResult>(
+				FromUnansweredItemException(e, value, context, CancellationToken.None)),
+			_ => new ValueTask<ConstraintResult>(Task.FromException<ConstraintResult>(exception)),
+		};
+
+	/// <summary>
 	///     Verifies the expectations of the node like <see cref="IsMetBy{TValue}" />, but lets the members continue from
 	///     the value that the <paramref name="source" /> stores, when the node has no constraint of its own.
 	/// </summary>
