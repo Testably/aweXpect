@@ -4,6 +4,14 @@
 [assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v8.0", FrameworkDisplayName = ".NET 8.0")]
 namespace aweXpect
 {
+    public static class HttpStatusCodePropertyResultExtensions
+    {
+        public static TResult ClientError<TResult>(this aweXpect.Results.IEnumPropertyResult<System.Net.HttpStatusCode, TResult> result) { }
+        public static TResult Error<TResult>(this aweXpect.Results.IEnumPropertyResult<System.Net.HttpStatusCode, TResult> result) { }
+        public static TResult Redirection<TResult>(this aweXpect.Results.IEnumPropertyResult<System.Net.HttpStatusCode, TResult> result) { }
+        public static TResult ServerError<TResult>(this aweXpect.Results.IEnumPropertyResult<System.Net.HttpStatusCode, TResult> result) { }
+        public static TResult Success<TResult>(this aweXpect.Results.IEnumPropertyResult<System.Net.HttpStatusCode, TResult> result) { }
+    }
     public static class ThatHttpRequestMessage
     {
         [aweXpect.Core.GuaranteesNotNull]
@@ -58,7 +66,7 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, System.Net.HttpStatusCode expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Web.Results.StatusCodeResult HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject) { }
+        public static aweXpect.Results.PropertyResult.Enum<System.Net.Http.HttpResponseMessage?, System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>, System.Net.HttpStatusCode> HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject) { }
     }
     public static class ThatIPAddress
     {
@@ -202,16 +210,6 @@ namespace aweXpect.Web.Results
             public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat> WithStatus(int status) { }
             public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithTitle(string title) { }
         }
-    }
-    public class StatusCodeResult
-    {
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> ClientError() { }
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> EqualTo(System.Net.HttpStatusCode expected) { }
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Error() { }
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> NotEqualTo(System.Net.HttpStatusCode unexpected) { }
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Redirection() { }
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> ServerError() { }
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Success() { }
     }
 }
 

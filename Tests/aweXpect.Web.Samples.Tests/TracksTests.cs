@@ -23,7 +23,7 @@ public class TracksTests(WebApplicationFactory<Program> factory)
 		await Expect.That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that response
-			             has status code 404 NotFound,
+			             has status code equal to 404 NotFound,
 			             but it had status code 200 OK
 
 			             HTTP-Request:
@@ -87,7 +87,7 @@ public class TracksTests(WebApplicationFactory<Program> factory)
 		await Expect.That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that response
-			             has status code 404 NotFound,
+			             has status code equal to 404 NotFound,
 			             but it had status code 200 OK
 
 			             HTTP-Request:

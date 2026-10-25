@@ -1,11 +1,9 @@
 ﻿using System.Net;
 using System.Net.Http;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Results;
-using aweXpect.Web.Results;
 
 namespace aweXpect;
 
@@ -14,9 +12,17 @@ public static partial class ThatHttpResponseMessage
 	/// <summary>
 	///     Verifies that the status code of the <see cref="HttpResponseMessage" /> subject…
 	/// </summary>
+	/// <remarks>
+	///     Besides the equality operators, the result offers the status code classes, e.g. <c>Success()</c> or
+	///     <c>ClientError()</c>, which are extension methods in <see cref="HttpStatusCodePropertyResultExtensions" />.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static StatusCodeResult HasStatusCode(this IThat<HttpResponseMessage?> subject)
-		=> new(subject, a => a.StatusCode);
+	public static PropertyResult.Enum<HttpResponseMessage?, HttpResponseMessage, IThat<HttpResponseMessage?>,
+		HttpStatusCode> HasStatusCode(this IThat<HttpResponseMessage?> subject)
+	{
+		subject.Get().ExpectationBuilder.AddSubjectContexts(ResultContextExtensions.ResponseContexts);
+		return new(subject, response => response?.StatusCode, "status code");
+	}
 
 	/// <summary>
 	///     Verifies that the status code of the <see cref="HttpResponseMessage" /> subject
@@ -26,16 +32,7 @@ public static partial class ThatHttpResponseMessage
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> HasStatusCode(
 		this IThat<HttpResponseMessage?> subject,
 		HttpStatusCode expected)
-		=> new(subject.Get().ExpectationBuilder
-			.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
-			.AddConstraint(expected, static (expected, it, grammars) =>
-				new StatusCodeResult.PropertyConstraint(
-					it, grammars,
-					expected,
-					m => m.StatusCode,
-					(a, e) => a == e,
-					"status code ",
-					true)), subject);
+		=> subject.HasStatusCode().EqualTo(expected);
 
 	/// <summary>
 	///     Verifies that the status code of the <see cref="HttpResponseMessage" /> subject
@@ -45,14 +42,5 @@ public static partial class ThatHttpResponseMessage
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> DoesNotHaveStatusCode(
 		this IThat<HttpResponseMessage?> subject,
 		HttpStatusCode unexpected)
-		=> new(subject.Get().ExpectationBuilder
-			.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
-			.AddConstraint(unexpected, static (unexpected, it, grammars) =>
-				new StatusCodeResult.PropertyConstraint(
-					it, grammars,
-					unexpected,
-					m => m.StatusCode,
-					(a, e) => a == e,
-					"status code ",
-					true).Invert()), subject);
+		=> subject.HasStatusCode().NotEqualTo(unexpected);
 }

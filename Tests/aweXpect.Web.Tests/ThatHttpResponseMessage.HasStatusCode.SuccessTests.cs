@@ -20,7 +20,7 @@ public sealed partial class ThatHttpResponseMessage
 							.ComplyWith(item => item.HasStatusCode().Success()));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*whose Responses have a success status code (2xx) for all items,*""").AsWildcard()
+					.WithMessage("""*whose Responses have status code in the success range (2xx) for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 			[Test]
@@ -49,7 +49,7 @@ public sealed partial class ThatHttpResponseMessage
 					=> await That(subject).HasStatusCode().Success();
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("*a success status code (2xx)*")
+					.WithMessage("*status code in the success range (2xx)*")
 					.AsWildcard();
 			}
 
@@ -64,7 +64,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a success status code (2xx),
+					             has status code in the success range (2xx),
 					             but it was <null>
 					             """);
 			}

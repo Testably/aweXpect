@@ -26,7 +26,7 @@ returned the track, `HasStatusCode(HttpStatusCode.NotFound)` would fail with:
 
 ```text title="Failure message"
 Expected that response
-has status code 404 NotFound,
+has status code equal to 404 NotFound,
 but it had status code 200 OK
 
 HTTP-Request:

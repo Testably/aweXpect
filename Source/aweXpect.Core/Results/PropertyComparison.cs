@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Results;
 
@@ -18,6 +19,7 @@ public sealed class PropertyComparison<TProperty> : IPropertyComparison<TPropert
 	private readonly Func<TProperty?, TProperty?, TProperty?, bool> _condition;
 	private readonly TProperty? _expected;
 	private readonly string _expectationPrefix;
+	private readonly bool _formatsExpected;
 	private readonly bool _hasMaximum;
 	private readonly bool _isOrderedAgainstNull;
 	private readonly TProperty? _maximum;
@@ -29,11 +31,13 @@ public sealed class PropertyComparison<TProperty> : IPropertyComparison<TPropert
 		bool isNegated = false,
 		bool isOrderedAgainstNull = false,
 		bool hasMaximum = false,
-		TProperty? maximum = null)
+		TProperty? maximum = null,
+		bool formatsExpected = true)
 	{
 		_expected = expected;
 		_condition = condition;
 		_expectationPrefix = expectationPrefix;
+		_formatsExpected = formatsExpected;
 		IsNegated = isNegated;
 		_isOrderedAgainstNull = isOrderedAgainstNull;
 		_hasMaximum = hasMaximum;
@@ -51,12 +55,49 @@ public sealed class PropertyComparison<TProperty> : IPropertyComparison<TPropert
 	public bool IsNegated { get; }
 
 	/// <summary>
+	///     Creates a comparison that is met when the <paramref name="predicate" /> holds for the value of the property, so
+	///     that an extension can add its own operator to a property result, e.g. <c>OnWeekend()</c> on a
+	///     <see cref="DayOfWeek" /> property.
+	/// </summary>
+	/// <param name="predicate">
+	///     The condition on the value of the property, which is <see langword="null" /> when the property is.
+	/// </param>
+	/// <param name="expectation">
+	///     The text of the comparison without its negation, which follows the name of the property, e.g. "on a weekend"
+	///     in "has release day on a weekend" or "whose release day is on a weekend".
+	/// </param>
+	/// <param name="isNegated">
+	///     Flag indicating that the operator is a negated one, e.g. <c>NotOnWeekend()</c>: the comparison is then met when
+	///     the <paramref name="predicate" /> does not hold, and the property result places the "not" where its sentence
+	///     needs it, e.g. "does not have release day on a weekend" or "whose release day is not on a weekend".
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///     The <paramref name="predicate" /> or the <paramref name="expectation" /> is <see langword="null" />.
+	/// </exception>
+	public static PropertyComparison<TProperty> Satisfying(Func<TProperty?, bool> predicate, string expectation,
+		bool isNegated = false)
+	{
+		predicate.ThrowIfNull();
+		expectation.ThrowIfNull();
+		return new PropertyComparison<TProperty>(null,
+			(actual, _, _) => predicate(actual) != isNegated,
+			expectation,
+			isNegated,
+			formatsExpected: false);
+	}
+
+	/// <summary>
 	///     Appends the comparison without its negation, e.g. "greater than 2" or "between 1 and 3", to the
 	///     <paramref name="stringBuilder" />.
 	/// </summary>
 	public void AppendExpectation(StringBuilder stringBuilder)
 	{
 		stringBuilder.Append(_expectationPrefix);
+		if (!_formatsExpected)
+		{
+			return;
+		}
+
 		Formatter.Format(stringBuilder, _expected);
 		if (_hasMaximum)
 		{

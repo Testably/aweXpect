@@ -30,11 +30,49 @@ public sealed class PropertyComparisonTests
 	}
 
 	[Test]
+	public async Task AppendExpectation_ForSatisfying_ShouldWriteOnlyTheExpectation()
+	{
+		PropertyComparison<int> comparison = PropertyComparison<int>.Satisfying(_ => false, "even", true);
+
+		string expectation = Describe(comparison);
+
+		await That(expectation).IsEqualTo("even")
+			.Because("there is no expected value to format and the negation is placed by the implementer");
+		await That(comparison.IsNegated).IsTrue();
+	}
+
+	[Test]
 	[Arguments(2, Outcome.Success)]
 	[Arguments(3, Outcome.Failure)]
 	public async Task Evaluate_ForNegatedOperator_ShouldIncludeTheNegation(int actual, Outcome expectedOutcome)
 	{
 		PropertyComparison<int> comparison = new IntResult().NotGreaterThan(2);
+
+		Outcome outcome = comparison.Evaluate(actual);
+
+		await That(outcome).IsEqualTo(expectedOutcome);
+	}
+
+	[Test]
+	[Arguments(2, Outcome.Failure)]
+	[Arguments(3, Outcome.Success)]
+	[Arguments(null, Outcome.Success)]
+	public async Task Evaluate_ForNegatedSatisfying_ShouldNegateThePredicate(int? actual, Outcome expectedOutcome)
+	{
+		PropertyComparison<int> comparison = PropertyComparison<int>.Satisfying(v => v % 2 == 0, "even", true);
+
+		Outcome outcome = comparison.Evaluate(actual);
+
+		await That(outcome).IsEqualTo(expectedOutcome);
+	}
+
+	[Test]
+	[Arguments(2, Outcome.Success)]
+	[Arguments(3, Outcome.Failure)]
+	[Arguments(null, Outcome.Failure)]
+	public async Task Evaluate_ForSatisfying_ShouldUseThePredicate(int? actual, Outcome expectedOutcome)
+	{
+		PropertyComparison<int> comparison = PropertyComparison<int>.Satisfying(v => v % 2 == 0, "even");
 
 		Outcome outcome = comparison.Evaluate(actual);
 
@@ -50,6 +88,28 @@ public sealed class PropertyComparisonTests
 
 		await That(outcome).IsEqualTo(Outcome.FailureBothWays)
 			.Because("an ordering against null can be answered neither way");
+	}
+
+	[Test]
+	public async Task Satisfying_WhenExpectationIsNull_ShouldThrowArgumentNullException()
+	{
+		void Act()
+			=> _ = PropertyComparison<int>.Satisfying(_ => true, null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("expectation").And
+			.WithMessage("The 'expectation' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task Satisfying_WhenPredicateIsNull_ShouldThrowArgumentNullException()
+	{
+		void Act()
+			=> _ = PropertyComparison<int>.Satisfying(null!, "even");
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("predicate").And
+			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
 	[Test]

@@ -35,7 +35,7 @@ public sealed partial class ThatHttpResponseMessage
 					=> await That(subject).HasStatusCode().Redirection();
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("*has a redirection status code (3xx)*")
+					.WithMessage("*has status code in the redirection range (3xx)*")
 					.AsWildcard();
 			}
 
@@ -50,7 +50,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a redirection status code (3xx),
+					             has status code in the redirection range (3xx),
 					             but it was <null>
 					             """);
 			}

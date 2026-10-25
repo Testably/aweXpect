@@ -186,6 +186,30 @@ so that you can place it where your sentence needs it: for a comparison that `Is
 `ExpectationGrammars.Negated` to the grammars, e.g. `grammars.Negate()`, which writes "not starting with …" or
 "does not start with …". `outcome.AppendContexts(contexts)` adds the contexts of the options.
 
+### Custom operators
+
+An operator of your own for any of these property types, except `string`, passes the comparison that
+`PropertyComparison<T>.Satisfying(predicate, expectation)` creates to `Compare`, like the built-in operators do. It
+works on every result that implements the interface, also on those of aweXpect.Core and of other packages. For
+example, the day of the week on which an album was released can be on a weekend:
+
+```csharp
+public static TResult OnWeekend<TResult>(this IEnumPropertyResult<DayOfWeek, TResult> result)
+    => result.Compare(PropertyComparison<DayOfWeek>.Satisfying(
+        static day => day is DayOfWeek.Saturday or DayOfWeek.Sunday, "on a weekend"));
+
+public static TResult NotOnWeekend<TResult>(this IEnumPropertyResult<DayOfWeek, TResult> result)
+    => result.Compare(PropertyComparison<DayOfWeek>.Satisfying(
+        static day => day is DayOfWeek.Saturday or DayOfWeek.Sunday, "on a weekend", isNegated: true));
+```
+
+The predicate receives the value of the property, which is `null` when the property is. The expectation is the text
+of the comparison without its negation and follows the name of the property, e.g. "has release day on a weekend" or
+"whose release day is on a weekend". For a negated operator pass `isNegated: true` with the same predicate and text:
+the comparison is then met when the predicate does not hold, and the result places the "not", e.g. "does not have
+release day on a weekend" or "whose release day is not on a weekend". Create a comparison that does not depend on an
+argument once and reuse it, as it is immutable.
+
 ## Time tolerances
 
 A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the `TimeTolerance` options you

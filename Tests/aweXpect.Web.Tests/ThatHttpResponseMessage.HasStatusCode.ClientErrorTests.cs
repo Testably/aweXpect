@@ -35,7 +35,7 @@ public sealed partial class ThatHttpResponseMessage
 					=> await That(subject).HasStatusCode().ClientError();
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("*has a client error status code (4xx)*")
+					.WithMessage("*has status code in the client error range (4xx)*")
 					.AsWildcard();
 			}
 
@@ -50,7 +50,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a client error status code (4xx),
+					             has status code in the client error range (4xx),
 					             but it was <null>
 					             """);
 			}
