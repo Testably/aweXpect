@@ -624,6 +624,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
         "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
+      },
+      {
+        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
+        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
       }
     ],
     "labels": [
@@ -730,7 +736,8 @@ window.BENCHMARK_DATA = {
       "b7f4f05b",
       "1785986b",
       "73754c62",
-      "937f5ce0"
+      "937f5ce0",
+      "5c160901"
     ],
     "datasets": [
       {
@@ -840,7 +847,8 @@ window.BENCHMARK_DATA = {
           2093.122287205287,
           1786.4942106882731,
           2082.54341506958,
-          1638.4001864115396
+          1638.4001864115396,
+          2176.7965695307803
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -880,6 +888,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -1073,7 +1082,8 @@ window.BENCHMARK_DATA = {
           15207.722082955497,
           12970.143255615234,
           16095.034516554613,
-          10886.648873901368
+          10886.648873901368,
+          15994.652080829326
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1085,6 +1095,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -1826,6 +1837,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
         "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
+      },
+      {
+        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
+        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
       }
     ],
     "labels": [
@@ -1932,7 +1949,8 @@ window.BENCHMARK_DATA = {
       "b7f4f05b",
       "1785986b",
       "73754c62",
-      "937f5ce0"
+      "937f5ce0",
+      "5c160901"
     ],
     "datasets": [
       {
@@ -2042,7 +2060,8 @@ window.BENCHMARK_DATA = {
           1698.8427904569185,
           1392.230298451015,
           1714.5909866333009,
-          1307.5085592269897
+          1307.5085592269897,
+          1756.8202382496424
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2135,6 +2154,7 @@ window.BENCHMARK_DATA = {
           1200,
           1200,
           1200,
+          1240,
           1240,
           1240,
           1240,
@@ -2275,7 +2295,8 @@ window.BENCHMARK_DATA = {
           13623.88699885777,
           12282.749443562825,
           14967.080297851562,
-          10542.309217180524
+          10542.309217180524,
+          14830.891222635904
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2287,6 +2308,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -2968,6 +2990,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
         "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
+      },
+      {
+        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
+        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
       }
     ],
     "labels": [
@@ -3064,7 +3092,8 @@ window.BENCHMARK_DATA = {
       "b7f4f05b",
       "1785986b",
       "73754c62",
-      "937f5ce0"
+      "937f5ce0",
+      "5c160901"
     ],
     "datasets": [
       {
@@ -3164,7 +3193,8 @@ window.BENCHMARK_DATA = {
           5115.043141291691,
           4164.019689941406,
           5324.959761483328,
-          3945.5726943969726
+          3945.5726943969726,
+          5218.103447547326
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3247,6 +3277,7 @@ window.BENCHMARK_DATA = {
           3688,
           3688,
           3688,
+          3736,
           3736,
           3736,
           3736,
@@ -3377,7 +3408,8 @@ window.BENCHMARK_DATA = {
           46853.86432756697,
           36211.60117885045,
           47738.11770833333,
-          30162.97150878906
+          30162.97150878906,
+          47229.157421875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3482,6 +3514,7 @@ window.BENCHMARK_DATA = {
           61926,
           61925,
           61925,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -4060,6 +4093,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
         "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
+      },
+      {
+        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
+        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
       }
     ],
     "labels": [
@@ -4156,7 +4195,8 @@ window.BENCHMARK_DATA = {
       "b7f4f05b",
       "1785986b",
       "73754c62",
-      "937f5ce0"
+      "937f5ce0",
+      "5c160901"
     ],
     "datasets": [
       {
@@ -4256,7 +4296,8 @@ window.BENCHMARK_DATA = {
           9149.728116548979,
           8519.754654947918,
           9709.989149911064,
-          7665.376858847482
+          7665.376858847482,
+          9512.512535095215
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4339,6 +4380,7 @@ window.BENCHMARK_DATA = {
           7024,
           7024,
           7024,
+          7064,
           7064,
           7064,
           7064,
@@ -4469,7 +4511,8 @@ window.BENCHMARK_DATA = {
           287720.96236746653,
           255799.1060221354,
           303542.803515625,
-          219512.95109049478
+          219512.95109049478,
+          308093.34877929685
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4573,6 +4616,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521541,
+          521594,
           521594,
           521594
         ],
@@ -5152,6 +5196,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
         "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
+      },
+      {
+        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
+        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
       }
     ],
     "labels": [
@@ -5248,7 +5298,8 @@ window.BENCHMARK_DATA = {
       "b7f4f05b",
       "1785986b",
       "73754c62",
-      "937f5ce0"
+      "937f5ce0",
+      "5c160901"
     ],
     "datasets": [
       {
@@ -5348,7 +5399,8 @@ window.BENCHMARK_DATA = {
           2844.144291941325,
           2608.9355915614537,
           2818.6505655141978,
-          2260.7418215615407
+          2260.7418215615407,
+          2870.4714209238687
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5393,6 +5445,7 @@ window.BENCHMARK_DATA = {
           1488,
           1488,
           1488,
+          1328,
           1328,
           1328,
           1328,
@@ -5561,7 +5614,8 @@ window.BENCHMARK_DATA = {
           1940.7319385822002,
           1912.1763672461877,
           1991.461474355062,
-          1600.6378626505534
+          1600.6378626505534,
+          1976.182002766927
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5573,6 +5627,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -6244,6 +6299,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
         "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
+      },
+      {
+        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
+        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
       }
     ],
     "labels": [
@@ -6340,7 +6401,8 @@ window.BENCHMARK_DATA = {
       "b7f4f05b",
       "1785986b",
       "73754c62",
-      "937f5ce0"
+      "937f5ce0",
+      "5c160901"
     ],
     "datasets": [
       {
@@ -6440,7 +6502,8 @@ window.BENCHMARK_DATA = {
           2064.61764553615,
           1825.33505153656,
           2119.3743518829347,
-          1744.1700759615217
+          1744.1700759615217,
+          2051.1081465207612
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6523,6 +6586,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2864,
           2864,
           2864,
           2864,
@@ -6653,7 +6717,8 @@ window.BENCHMARK_DATA = {
           1723.6669108527046,
           2038.7895050048828,
           1897.0544701894125,
-          1539.1395468393962
+          1539.1395468393962,
+          1819.47263768514
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6665,6 +6730,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
