@@ -126,7 +126,10 @@ public static partial class ThatHttpResponseMessage
 
 			if (_failures.Any())
 			{
-				Outcome = Outcome.Failure;
+				Outcome = (expectedType != null && type == null && typeOptions.InspectsSubject) ||
+				          evaluationOptions.InspectsAbsentMember(title, detail, instance)
+					? Outcome.FailureBothWays
+					: Outcome.Failure;
 				return this;
 			}
 
@@ -235,9 +238,7 @@ public static partial class ThatHttpResponseMessage
 			}
 			else
 			{
-				stringBuilder.Append("type ");
-				Formatter.Format(stringBuilder, expectedType);
-				stringBuilder.Append(typeOptions);
+				stringBuilder.Append(ProblemDetailsOptions.Describe("type", expectedType, typeOptions));
 			}
 
 			stringBuilder.Append(options);
@@ -262,9 +263,7 @@ public static partial class ThatHttpResponseMessage
 			stringBuilder.Append(Grammars.Verb("does not have a ProblemDetails content", "do not have a ProblemDetails content"));
 			if (expectedType is not null)
 			{
-				stringBuilder.Append(" with type ");
-				Formatter.Format(stringBuilder, expectedType);
-				stringBuilder.Append(typeOptions);
+				stringBuilder.Append(" with ").Append(ProblemDetailsOptions.Describe("type", expectedType, typeOptions));
 			}
 
 			stringBuilder.Append(options);
@@ -275,6 +274,12 @@ public static partial class ThatHttpResponseMessage
 			if (_parseError is not null)
 			{
 				AppendParseError(stringBuilder);
+				return;
+			}
+
+			if (Outcome == Outcome.FailureBothWays)
+			{
+				stringBuilder.Append(string.Join($"{Environment.NewLine} and ", _failures));
 				return;
 			}
 

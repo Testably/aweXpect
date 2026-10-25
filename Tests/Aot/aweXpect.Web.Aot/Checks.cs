@@ -53,6 +53,9 @@ internal static class Checks
 		new("a present header with the expected value passes",
 			() => ShouldPass(async () => await That(Response(HttpStatusCode.OK, header: "x-track"))
 				.HasHeader("x-track").WithValue("42"))),
+		new("a header value that matches the wildcard passes",
+			() => ShouldPass(async () => await That(Response(HttpStatusCode.OK, header: "x-track"))
+				.HasHeader("x-track").WithValue("4*").AsWildcard())),
 		new("differing header values fail and show the actual values",
 			() => ShouldFail(async () => await That(Response(HttpStatusCode.OK, header: "x-track"))
 					.HasHeader("x-track").WithValues("42", "43"),
@@ -96,6 +99,11 @@ internal static class Checks
 				"has a ProblemDetails content with any type and title \"Bad Request\"",
 				"but it had title \"Not Found\"",
 				"\"title\": \"Not Found\"")),
+		new("a problem details title that does not match the wildcard fails and names the match type",
+			() => ShouldFail(async () => await That(ProblemDetailsResponse())
+					.HasProblemDetailsContent().WithTitle("Bad*").AsWildcard(),
+				"has a ProblemDetails content with any type and title matching \"Bad*\"",
+				"but it had title \"Not Found\", which did not match")),
 		new("problem details on a non-JSON content fail",
 			() => ShouldFail(async () => await That(Response(HttpStatusCode.OK, "foo")).HasProblemDetailsContent(),
 				"has a ProblemDetails content")),

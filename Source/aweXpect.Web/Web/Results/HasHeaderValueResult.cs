@@ -41,13 +41,17 @@ public class HasHeaderValueResult<TType, TThat>
 	/// <summary>
 	///     Verifies that the header has the <paramref name="expected" /> value.
 	/// </summary>
-	public StringEqualityResult<TType, TThat> WithValue(string? expected)
+	/// <remarks>
+	///     The <paramref name="expected" /> value can also be matched as a pattern or as a prefix or suffix, e.g. via
+	///     <c>AsWildcard()</c> or <c>AsPrefix()</c>.
+	/// </remarks>
+	public StringEqualityTypeResult<TType, TThat> WithValue(string? expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		_expectationBuilder.And("").AddConstraint((expected, _headerValueAccessor, options),
 			static (state, it, grammars) => new WithHeaderValueConstraint(
 				it, grammars, state.expected, state._headerValueAccessor, state.options));
-		return new StringEqualityResult<TType, TThat>(_expectationBuilder, _returnValue, options);
+		return new StringEqualityTypeResult<TType, TThat>(_expectationBuilder, _returnValue, options);
 	}
 
 	/// <summary>

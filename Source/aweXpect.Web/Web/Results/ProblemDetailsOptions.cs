@@ -75,7 +75,7 @@ internal class ProblemDetailsOptions
 		Title = title;
 		StringEqualityOptions titleOptions = new("title");
 		_titleOptions = titleOptions;
-		_parts.Add(() => $"title {Formatter.Format(title)}{titleOptions}");
+		_parts.Add(() => Describe("title", title, titleOptions));
 		return titleOptions;
 	}
 
@@ -99,7 +99,7 @@ internal class ProblemDetailsOptions
 		Detail = detail;
 		StringEqualityOptions detailOptions = new("detail");
 		_detailOptions = detailOptions;
-		_parts.Add(() => $"detail {Formatter.Format(detail)}{detailOptions}");
+		_parts.Add(() => Describe("detail", detail, detailOptions));
 		return detailOptions;
 	}
 
@@ -113,9 +113,21 @@ internal class ProblemDetailsOptions
 		Instance = instance;
 		StringEqualityOptions instanceOptions = new("instance");
 		_instanceOptions = instanceOptions;
-		_parts.Add(() => $"instance {Formatter.Format(instance)}{instanceOptions}");
+		_parts.Add(() => Describe("instance", instance, instanceOptions));
 		return instanceOptions;
 	}
+
+	/// <summary>
+	///     Describes the <paramref name="expected" /> value of the <paramref name="member" />, e.g. <c>title "foo"</c>.
+	/// </summary>
+	/// <remarks>
+	///     A match type that inspects the value, e.g. a wildcard or a prefix, is described by its phrase, e.g.
+	///     <c>title matching "foo*"</c>, as the expected value is not the value the member has to be equal to.
+	/// </remarks>
+	internal static string Describe(string member, string expected, StringEqualityOptions options)
+		=> options.InspectsSubject
+			? $"{member} {options.GetExpectation(expected, ExpectationGrammars.None)}"
+			: $"{member} {Formatter.Format(expected)}{options}";
 
 	/// <summary>
 	///     Returns the options to use for the comparisons of the evaluation in the <paramref name="context" />.
@@ -174,6 +186,20 @@ internal class ProblemDetailsOptions
 	/// </remarks>
 	public ValueTask<string?> GetInstanceFailure(string it, ExpectationGrammars grammars, string? instance)
 		=> GetFailure(_instanceOptions, it, "instance", grammars, instance, Instance);
+
+	/// <summary>
+	///     Indicates whether an absent <paramref name="title" />, <paramref name="detail" /> or <paramref name="instance" />
+	///     is expected with a match type that inspects its value.
+	/// </summary>
+	/// <remarks>
+	///     An absent value has no content to inspect, so it fails the expectation and its negation alike.
+	/// </remarks>
+	public bool InspectsAbsentMember(string? title, string? detail, string? instance)
+		=> InspectsAbsentValue(_titleOptions, title) || InspectsAbsentValue(_detailOptions, detail) ||
+		   InspectsAbsentValue(_instanceOptions, instance);
+
+	private static bool InspectsAbsentValue(StringEqualityOptions? options, string? actual)
+		=> actual is null && options?.InspectsSubject == true;
 
 	private static async ValueTask<string?> GetFailure(StringEqualityOptions? options, string it, string member,
 		ExpectationGrammars grammars, string? actual, string? expected)

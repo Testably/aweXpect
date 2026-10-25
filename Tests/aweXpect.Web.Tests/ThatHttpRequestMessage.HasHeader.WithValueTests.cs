@@ -125,6 +125,43 @@ public sealed partial class ThatHttpRequestMessage
 					             but it was <null>
 					             """);
 			}
+
+			[Test]
+			public async Task WhenValueDoesNotMatchWildcard_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeader("x-my-header", "some header");
+
+				async Task Act()
+					=> await That(subject).HasHeader("x-my-header").WithValue("other*").AsWildcard();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an "x-my-header" header whose value matches "other*",
+					             but it had header value "some header", which did not match:
+					               ↓ (actual)
+					               "some header"
+					               "other*"
+					               ↑ (wildcard pattern)
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 x-my-header: some header
+					             """);
+			}
+
+			[Test]
+			public async Task WhenValueMatchesWildcard_ShouldSucceed()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeader("x-my-header", "some header");
+
+				async Task Act()
+					=> await That(subject).HasHeader("x-my-header").WithValue("some*").AsWildcard();
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class NegatedWithValueTests
@@ -162,6 +199,28 @@ public sealed partial class ThatHttpRequestMessage
 					                 x-my-header: some header
 					             """)
 					.Because("the negation applies to the header as a whole, like the negated text of a `Whose`");
+			}
+
+			[Test]
+			public async Task WhenValueMatchesWildcard_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeader("x-my-header", "some header");
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(it => it.HasHeader("x-my-header").WithValue("some*").AsWildcard());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have an "x-my-header" header whose value matches "some*",
+					             but it did contain the "x-my-header" header: ["some header"] and had header value "some header"
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 x-my-header: some header
+					             """);
 			}
 		}
 	}

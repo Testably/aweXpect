@@ -66,11 +66,13 @@ request.Headers.Add("Accept", "application/json");
 
 await Expect.That(request).HasHeader("Accept");
 await Expect.That(request).HasHeader("Accept").WithValue("application/json");
+await Expect.That(request).HasHeader("Accept").WithValue("application/*").AsWildcard();
 await Expect.That(request).DoesNotHaveHeader("Authorization");
 ```
 
 `WithValue` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings.
+[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings, e.g.
+`.WithValue("application").AsPrefix().IgnoringCase()`.
 
 When the header has multiple values, `WithValues` verifies that it has exactly these values in the same order:
 
@@ -204,8 +206,12 @@ HttpResponseMessage response = await httpClient.GetAsync("https://music.example.
 
 await Expect.That(response).HasHeader("Cache-Control");
 await Expect.That(response).HasHeader("Cache-Control").WithValue("must-revalidate, max-age=0, private");
+await Expect.That(response).HasHeader("Cache-Control").WithValue("*max-age=0*").AsWildcard();
 await Expect.That(response).DoesNotHaveHeader("Set-Cookie");
 ```
+
+`WithValue` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
+[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings.
 
 When the header has multiple values, `WithValues` verifies that it has exactly these values in the same order:
 
@@ -321,7 +327,20 @@ await Expect.That(response)
 
 The type, title, detail and instance support the same
 [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings.
+[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. The options apply to
+the value specified right before them:
+
+```csharp
+HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/42");
+
+await Expect.That(response)
+    .HasProblemDetailsContent("*/404").AsWildcard()
+    .WithTitle("track not found").IgnoringCase()
+    .WithInstance("/tracks/").AsPrefix();
+```
+
+A pattern, prefix or suffix fails for an absent member, also with `DoesNotComplyWith`, as there is no value to
+inspect.
 
 There is no dedicated negation. `DoesNotComplyWith` succeeds when the content is a `ProblemDetails` object that differs
 in any of the given parts, and still fails when the content is no valid `ProblemDetails` object:

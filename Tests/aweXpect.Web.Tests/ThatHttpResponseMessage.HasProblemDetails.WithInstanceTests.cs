@@ -131,6 +131,58 @@ public sealed partial class ThatHttpResponseMessage
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Test]
+			public async Task WhenInstanceDoesNotStartWithPrefix_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "instance": "/albums/42"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithInstance("/tracks/").AsPrefix();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a ProblemDetails content with any type and instance starting with "/tracks/",
+					             but it had instance "/albums/42", which differs at index 1:
+					                 ↓ (actual)
+					               "/albums/42"
+					               "/tracks/"
+					                 ↑ (expected prefix)
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: *
+					               {
+					                 "type": "my-type",
+					                 "instance": "/albums/42"
+					               }
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenInstanceStartsWithPrefix_ShouldSucceed()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "instance": "/albums/42"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithInstance("/albums/").AsPrefix();
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 	}
 }

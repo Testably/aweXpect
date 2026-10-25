@@ -115,6 +115,41 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenDetailDoesNotMatchWildcard_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "detail": "The album was not found."
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithDetail("*track*").AsWildcard();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a ProblemDetails content with any type and detail matching "*track*",
+					             but it had detail "The album was not found.", which did not match:
+					               ↓ (actual)
+					               "The album was not found."
+					               "*track*"
+					               ↑ (wildcard pattern)
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: *
+					               {
+					                 "type": "my-type",
+					                 "detail": "The album was not found."
+					               }
+					             """).AsWildcard();
+			}
+
+			[Test]
 			public async Task WhenDetailMatches_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -128,6 +163,23 @@ public sealed partial class ThatHttpResponseMessage
 
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent().WithStatus(200).WithDetail("foo");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenDetailMatchesWildcard_ShouldSucceed()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "detail": "The album was not found."
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithDetail("*album*").AsWildcard();
 
 				await That(Act).DoesNotThrow();
 			}
