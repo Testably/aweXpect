@@ -18,9 +18,9 @@ internal static class ParameterModifierHelpers
 		this TResult result,
 		Func<ParameterInfo, bool> predicate,
 		string description)
-		where TResult : IOptionsProvider<ParameterFilterOptions>
+		where TResult : IParameterFilterOptionsProvider
 	{
-		result.Options.Value.AddModifier(predicate, () => description);
+		result.ParameterFilterOptions.AddModifier(predicate, () => description);
 		return result;
 	}
 

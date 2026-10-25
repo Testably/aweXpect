@@ -13,8 +13,8 @@ public static partial class AssemblyFilters
 	public static Filtered.Assemblies.StringEqualityResult WithName(this Filtered.Assemblies @this, string expected)
 	{
 		return new Filtered.Assemblies.StringEqualityResult(@this, options => Filter.Suffix<Assembly>(
-				assembly => options.AreConsideredEqual(assembly.GetName().Name, expected, nameof(expected)),
-				() => $" with name {options.GetExpectation(expected, ExpectationGrammars.None)}"),
+				assembly => options.Value.AreConsideredEqual(assembly.GetName().Name, expected, nameof(expected)),
+				() => $" with name {options.Value.GetExpectation(expected, ExpectationGrammars.None)}"),
 			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

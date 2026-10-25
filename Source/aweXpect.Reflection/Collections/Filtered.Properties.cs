@@ -86,12 +86,12 @@ public static partial class Filtered
 		public class StringEqualityResult : Properties, IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions,
 			ICopyOnOption<StringEqualityOptions, StringEqualityResult>
 		{
-			private readonly Func<StringEqualityOptions, IFilter<PropertyInfo>> _createFilter;
+			private readonly Func<IReadOnlyOptionsSlot<StringEqualityOptions>, IFilter<PropertyInfo>> _createFilter;
 			private readonly OptionsSlot<StringEqualityOptions> _options;
 			private readonly Properties _source;
 
-			internal StringEqualityResult(Properties source, Func<StringEqualityOptions, IFilter<PropertyInfo>> createFilter,
-				OptionsSlot<StringEqualityOptions> options) : base(source.Which(createFilter(options.Value)))
+			internal StringEqualityResult(Properties source, Func<IReadOnlyOptionsSlot<StringEqualityOptions>, IFilter<PropertyInfo>> createFilter,
+				OptionsSlot<StringEqualityOptions> options) : base(source.Which(createFilter(options)))
 			{
 				_source = source;
 				_createFilter = createFilter;

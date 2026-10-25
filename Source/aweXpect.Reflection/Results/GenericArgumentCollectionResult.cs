@@ -25,8 +25,7 @@ public sealed class GenericArgumentCollectionResult<TType, TValue>
 ///     Additional constraints on a parameter collection with a parameter of a specific type.
 /// </summary>
 public class GenericArgumentCollectionResult<TType, TValue, TSelf>
-	: AndOrResult<TType, IThat<TValue>, TSelf>,
-		IOptionsProvider<GenericArgumentsFilterOptions>
+	: AndOrResult<TType, IThat<TValue>, TSelf>
 	where TSelf : GenericArgumentCollectionResult<TType, TValue, TSelf>
 {
 	private readonly ExpectationBuilder _expectationBuilder;
@@ -43,13 +42,6 @@ public class GenericArgumentCollectionResult<TType, TValue, TSelf>
 		_subject = subject;
 		_genericArgumentsFilterOptions = genericArgumentsFilterOptions;
 	}
-
-	/// <inheritdoc cref="IOptionsProvider{GenericArgumentsFilterOptions}.Options" />
-	/// <remarks>
-	///     A new slot around the options that the filter keeps itself.
-	/// </remarks>
-	OptionsSlot<GenericArgumentsFilterOptions> IOptionsProvider<GenericArgumentsFilterOptions>.Options
-		=> new(_genericArgumentsFilterOptions);
 
 	/// <summary>
 	///     …with the <paramref name="expected" /> number of generic arguments.

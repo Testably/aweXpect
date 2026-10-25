@@ -10,7 +10,7 @@ namespace aweXpect.Reflection.Options;
 /// <summary>
 ///     Options for filtering for a list of alternative types.
 /// </summary>
-public class TypeFilterOptions
+internal class TypeFilterOptions
 {
 	private readonly List<(Type, bool)> _types = [];
 

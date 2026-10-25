@@ -14,8 +14,8 @@ public static partial class AssemblyFilters
 		string unexpected)
 	{
 		return new Filtered.Assemblies.StringEqualityResult(@this, options => Filter.Suffix<Assembly>(
-				async assembly => !await options.AreConsideredEqual(assembly.GetName().Name, unexpected, nameof(unexpected)),
-				() => $" without name {options.GetExpectation(unexpected, ExpectationGrammars.None)}"),
+				async assembly => !await options.Value.AreConsideredEqual(assembly.GetName().Name, unexpected, nameof(unexpected)),
+				() => $" without name {options.Value.GetExpectation(unexpected, ExpectationGrammars.None)}"),
 			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

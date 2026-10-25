@@ -1,8 +1,5 @@
 ﻿using System.IO;
 using System.Reflection;
-using aweXpect.Core;
-using aweXpect.Reflection.Options;
-using aweXpect.Reflection.Results;
 using aweXpect.Reflection.Tests.TestHelpers;
 
 namespace aweXpect.Reflection.Tests;
@@ -592,16 +589,13 @@ public sealed partial class ThatMethod
 
 				async Task Act()
 				{
-					ParameterCollectionResult<MethodInfo, MethodInfo?, int> result = That(methodInfo).HasParameter<int>();
-					((IOptionsProvider<ParameterFilterOptions>)result).Options
-						.Value.AddPredicate(predicate, () => "");
-					await result;
+					await That(methodInfo).HasParameter<int>().Matching(predicate);
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
-					             has parameter of type int,
+					             has parameter of type int matching predicate,
 					             but the predicate did throw an InvalidOperationException:
 					               boom
 					             """)
@@ -934,14 +928,13 @@ public sealed partial class ThatMethod
 				async Task Act()
 				{
 					await That(methodInfo).DoesNotComplyWith(it
-						=> ((IOptionsProvider<ParameterFilterOptions>)it.HasParameter<int>()).Options
-						.Value.AddPredicate(predicate, () => ""));
+						=> it.HasParameter<int>().Matching(predicate));
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
-					             does not have parameter of type int,
+					             does not have parameter of type int matching predicate,
 					             but the predicate did throw an InvalidOperationException:
 					               boom
 					             """)

@@ -72,8 +72,8 @@ public static partial class MethodFilters
 						(p, _) => argumentType == p.BaseType,
 						() => $"of type {Formatter.Format(typeof(T))}");
 					genericArgumentFilterOptions.AddPredicate(
-						(p, _) => stringEqualityOptions.AreConsideredEqual(p.Name, expected, nameof(expected)),
-						() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+						(p, _) => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
+						() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
 				},
 				CollectionIndexOptions.Default, new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
@@ -87,8 +87,8 @@ public static partial class MethodFilters
 				stringEqualityOptions =>
 				{
 					GenericArgumentFilterOptions genericArgumentFilterOptions = new(
-						(p, _) => stringEqualityOptions.AreConsideredEqual(p.Name, expected, nameof(expected)),
-						() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+						(p, _) => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
+						() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
 				},
 				CollectionIndexOptions.Default, new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
@@ -159,16 +159,16 @@ public static partial class MethodFilters
 			ICopyOnOption<StringEqualityOptions, GenericMethodsWithNamedArgument>
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
-		private readonly Func<StringEqualityOptions, Func<CollectionIndexOptions, IFilter<MethodInfo>>> _createFilter;
+		private readonly Func<IReadOnlyOptionsSlot<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<MethodInfo>>> _createFilter;
 		private readonly OptionsSlot<StringEqualityOptions> _options;
 		private readonly Filtered.Methods _source;
 
 		internal GenericMethodsWithNamedArgument(
 			Filtered.Methods source,
-			Func<StringEqualityOptions, Func<CollectionIndexOptions, IFilter<MethodInfo>>> createFilter,
+			Func<IReadOnlyOptionsSlot<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<MethodInfo>>> createFilter,
 			CollectionIndexOptions collectionIndexOptions,
 			OptionsSlot<StringEqualityOptions> options)
-			: base(source, createFilter(options.Value), collectionIndexOptions)
+			: base(source, createFilter(options), collectionIndexOptions)
 		{
 			_source = source;
 			_createFilter = createFilter;

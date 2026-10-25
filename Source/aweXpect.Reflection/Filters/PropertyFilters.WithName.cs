@@ -13,8 +13,8 @@ public static partial class PropertyFilters
 	public static Filtered.Properties.StringEqualityResult WithName(this Filtered.Properties @this, string expected)
 	{
 		return new Filtered.Properties.StringEqualityResult(@this, options => Filter.Suffix<PropertyInfo>(
-				propertyInfo => options.AreConsideredEqual(propertyInfo.Name, expected, nameof(expected)),
-				() => $"with name {options.GetExpectation(expected, ExpectationGrammars.None)} "),
+				propertyInfo => options.Value.AreConsideredEqual(propertyInfo.Name, expected, nameof(expected)),
+				() => $"with name {options.Value.GetExpectation(expected, ExpectationGrammars.None)} "),
 			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

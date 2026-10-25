@@ -2720,7 +2720,7 @@ namespace aweXpect.Reflection
         public class ConstructorsWithNamedParameter<T> : aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T>, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
         {
         }
-        public class ConstructorsWithParameter<T> : aweXpect.Reflection.Collections.Filtered.Constructors, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions>
+        public class ConstructorsWithParameter<T> : aweXpect.Reflection.Collections.Filtered.Constructors
         {
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> AtIndex(int index) { }
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> AtIndexFromEnd(int index) { }
@@ -3034,7 +3034,7 @@ namespace aweXpect.Reflection
         public class MethodsWithNamedParameter<T> : aweXpect.Reflection.MethodFilters.MethodsWithParameter<T>, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<T>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
         {
         }
-        public class MethodsWithParameter<T> : aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions>
+        public class MethodsWithParameter<T> : aweXpect.Reflection.Collections.Filtered.Methods
         {
             public aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> AtIndex(int index) { }
             public aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> AtIndexFromEnd(int index) { }
@@ -3599,52 +3599,6 @@ namespace aweXpect.Reflection.Collections
         }
     }
 }
-namespace aweXpect.Reflection.Options
-{
-    public class AttributeFilterOptions<TMember>
-    {
-        public void AppendDescription(System.Text.StringBuilder stringBuilder, aweXpect.Core.ExpectationGrammars grammar) { }
-        public bool Matches(TMember member) { }
-        public void RegisterAttribute<TAttribute>() where TAttribute : System.Attribute { }
-        public void RegisterAttribute<TAttribute>(System.Func<TAttribute, bool> predicate, string predicateExpression) where TAttribute : System.Attribute { }
-    }
-    public class GenericArgumentFilterOptions
-    {
-        public GenericArgumentFilterOptions(System.Func<System.Type, string?, System.Threading.Tasks.ValueTask<bool>> predicate, System.Func<string> description) { }
-        public GenericArgumentFilterOptions(System.Func<System.Type, string?, bool> predicate, System.Func<string> description) { }
-        public void AddPredicate(System.Func<System.Type, string?, System.Threading.Tasks.ValueTask<bool>> predicate, System.Func<string> description) { }
-        public void AddPredicate(System.Func<System.Type, string?, bool> predicate, System.Func<string> description) { }
-        public string GetDescription() { }
-        public System.Threading.Tasks.ValueTask<bool> Matches(System.Type argument, string? genericArgumentName = null) { }
-    }
-    public class GenericArgumentsFilterOptions
-    {
-        public GenericArgumentsFilterOptions() { }
-        public void AddFilter(aweXpect.Reflection.Options.GenericArgumentFilterOptions filter, aweXpect.Core.OptionsSlot<aweXpect.Options.CollectionIndexOptions> options) { }
-        public void AddPredicate(System.Func<System.Type[], bool> predicate, System.Func<string> description) { }
-        public string GetDescription() { }
-        public System.Threading.Tasks.ValueTask<bool> Matches(System.Reflection.MethodInfo? method) { }
-        public System.Threading.Tasks.ValueTask<bool> Matches(System.Type? type) { }
-    }
-    public class ParameterFilterOptions
-    {
-        public ParameterFilterOptions(System.Func<System.Reflection.ParameterInfo, System.Threading.Tasks.ValueTask<bool>> predicate, System.Func<string> description) { }
-        public ParameterFilterOptions(System.Func<System.Reflection.ParameterInfo, bool> predicate, System.Func<string> description) { }
-        public void AddModifier(System.Func<System.Reflection.ParameterInfo, bool> predicate, System.Func<string> description) { }
-        public void AddPredicate(System.Func<System.Reflection.ParameterInfo, System.Threading.Tasks.ValueTask<bool>> predicate, System.Func<string> description) { }
-        public void AddPredicate(System.Func<System.Reflection.ParameterInfo, bool> predicate, System.Func<string> description) { }
-        public string GetDescription() { }
-        public string GetModifierDescription() { }
-        public System.Threading.Tasks.ValueTask<bool> Matches(System.Reflection.ParameterInfo parameter) { }
-    }
-    public class TypeFilterOptions
-    {
-        public TypeFilterOptions() { }
-        public void AppendDescription(System.Text.StringBuilder stringBuilder, aweXpect.Core.ExpectationGrammars grammar) { }
-        public bool Matches(System.Type? type) { }
-        public void RegisterType(System.Type type, bool exactly) { }
-    }
-}
 namespace aweXpect.Reflection.Results
 {
     public sealed class DependencyCyclesResult<TType> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TType?>, aweXpect.Reflection.Results.DependencyCyclesResult<TType>>
@@ -3654,7 +3608,7 @@ namespace aweXpect.Reflection.Results
     public sealed class GenericArgumentCollectionResult<TType, TValue> : aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TValue, aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TValue>>
     {
     }
-    public class GenericArgumentCollectionResult<TType, TValue, TSelf> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>, TSelf>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.GenericArgumentsFilterOptions> where TSelf : aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TValue, TSelf>
+    public class GenericArgumentCollectionResult<TType, TValue, TSelf> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>, TSelf> where TSelf : aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TValue, TSelf>
     {
         public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TValue> WithArgument<T>() { }
         public aweXpect.Reflection.Results.GenericArgumentCollectionWithNamedArgumentResult<TType, TValue> WithArgument(string expected) { }
@@ -3670,24 +3624,24 @@ namespace aweXpect.Reflection.Results
     public sealed class GenericArgumentCollectionWithNamedArgumentResult<TType, TValue> : aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TValue, aweXpect.Reflection.Results.GenericArgumentCollectionWithNamedArgumentResult<TType, TValue>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
     {
     }
-    public sealed class HasAttributeResult<TType, TMember> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TMember>, aweXpect.Reflection.Results.HasAttributeResult<TType, TMember>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.AttributeFilterOptions<TMember>>
+    public sealed class HasAttributeResult<TType, TMember> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TMember>, aweXpect.Reflection.Results.HasAttributeResult<TType, TMember>>
     {
         public aweXpect.Reflection.Results.HasAttributeResult<TType, TMember> Directly() { }
         public aweXpect.Reflection.Results.HasAttributeResult<TType, TMember> OrHas<TAttribute>() where TAttribute : System.Attribute { }
         public aweXpect.Reflection.Results.HasAttributeResult<TType, TMember> OrHas<TAttribute>(System.Func<TAttribute, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
     }
-    public sealed class HasAttributeWithoutInheritResult<TType, TMember> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TMember>, aweXpect.Reflection.Results.HasAttributeWithoutInheritResult<TType, TMember>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.AttributeFilterOptions<TMember>>
+    public sealed class HasAttributeWithoutInheritResult<TType, TMember> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TMember>, aweXpect.Reflection.Results.HasAttributeWithoutInheritResult<TType, TMember>>
     {
         public aweXpect.Reflection.Results.HasAttributeWithoutInheritResult<TType, TMember> OrHas<TAttribute>() where TAttribute : System.Attribute { }
         public aweXpect.Reflection.Results.HasAttributeWithoutInheritResult<TType, TMember> OrHas<TAttribute>(System.Func<TAttribute, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
     }
-    public sealed class HaveAttributeResult<TType, TMember> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TType?>, aweXpect.Reflection.Results.HaveAttributeResult<TType, TMember>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.AttributeFilterOptions<TMember>>
+    public sealed class HaveAttributeResult<TType, TMember> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TType?>, aweXpect.Reflection.Results.HaveAttributeResult<TType, TMember>>
     {
         public aweXpect.Reflection.Results.HaveAttributeResult<TType, TMember> Directly() { }
         public aweXpect.Reflection.Results.HaveAttributeResult<TType, TMember> OrHave<TAttribute>() where TAttribute : System.Attribute { }
         public aweXpect.Reflection.Results.HaveAttributeResult<TType, TMember> OrHave<TAttribute>(System.Func<TAttribute, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
     }
-    public sealed class HaveAttributeWithoutInheritResult<TType, TMember> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TType?>, aweXpect.Reflection.Results.HaveAttributeWithoutInheritResult<TType, TMember>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.AttributeFilterOptions<TMember>>
+    public sealed class HaveAttributeWithoutInheritResult<TType, TMember> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TType?>, aweXpect.Reflection.Results.HaveAttributeWithoutInheritResult<TType, TMember>>
     {
         public aweXpect.Reflection.Results.HaveAttributeWithoutInheritResult<TType, TMember> OrHave<TAttribute>() where TAttribute : System.Attribute { }
         public aweXpect.Reflection.Results.HaveAttributeWithoutInheritResult<TType, TMember> OrHave<TAttribute>(System.Func<TAttribute, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
@@ -3723,7 +3677,7 @@ namespace aweXpect.Reflection.Results
         public aweXpect.Reflection.Results.NamespaceDependencyResult<TType, TValue> OrOn(System.Collections.Generic.IEnumerable<string> namespaces) { }
         public aweXpect.Reflection.Results.NamespaceDependencyResult<TType, TValue> OrOn(params string[] namespaces) { }
     }
-    public sealed class OfTypeResult<TType> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TType?>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.TypeFilterOptions>
+    public sealed class OfTypeResult<TType> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TType?>>
     {
         public aweXpect.Reflection.Results.OfTypeResult<TType> OrOfExactType(System.Type type) { }
         public aweXpect.Reflection.Results.OfTypeResult<TType> OrOfExactType<T>() { }
@@ -3733,21 +3687,21 @@ namespace aweXpect.Reflection.Results
     public sealed class ParameterCollectionResult<TType, TValue, TParameter> : aweXpect.Reflection.Results.ParameterCollectionResult<TType, TValue, TParameter, aweXpect.Reflection.Results.ParameterCollectionResult<TType, TValue, TParameter>>
     {
     }
-    public class ParameterCollectionResult<TType, TValue, TParameter, TSelf> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>, TSelf>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions> where TSelf : aweXpect.Reflection.Results.ParameterCollectionResult<TType, TValue, TParameter, TSelf>
+    public class ParameterCollectionResult<TType, TValue, TParameter, TSelf> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>, TSelf>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions> where TSelf : aweXpect.Reflection.Results.ParameterCollectionResult<TType, TValue, TParameter, TSelf>
     {
         public TSelf Matching(System.Func<System.Reflection.ParameterInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public TSelf WithDefaultValue() { }
         public TSelf WithDefaultValue<TDefault>(TDefault expected) where TDefault : TParameter { }
         public TSelf WithoutDefaultValue() { }
     }
-    public sealed class ReturnResult<TType> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TType?>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.TypeFilterOptions>
+    public sealed class ReturnResult<TType> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TType?>>
     {
         public aweXpect.Reflection.Results.ReturnResult<TType> OrReturn(System.Type returnType) { }
         public aweXpect.Reflection.Results.ReturnResult<TType> OrReturn<TReturn>() { }
         public aweXpect.Reflection.Results.ReturnResult<TType> OrReturnExactly(System.Type returnType) { }
         public aweXpect.Reflection.Results.ReturnResult<TType> OrReturnExactly<TReturn>() { }
     }
-    public sealed class ReturnsResult<TType> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TType?>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.TypeFilterOptions>
+    public sealed class ReturnsResult<TType> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TType?>>
     {
         public aweXpect.Reflection.Results.ReturnsResult<TType> OrReturns(System.Type returnType) { }
         public aweXpect.Reflection.Results.ReturnsResult<TType> OrReturns<TReturn>() { }

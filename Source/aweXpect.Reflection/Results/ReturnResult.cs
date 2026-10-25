@@ -10,8 +10,7 @@ namespace aweXpect.Reflection.Results;
 ///     return types.
 /// </summary>
 public sealed class ReturnResult<TType>
-	: AndOrResult<TType, IThat<TType?>>,
-		IOptionsProvider<TypeFilterOptions>
+	: AndOrResult<TType, IThat<TType?>>
 {
 	private readonly TypeFilterOptions _typeFilterOptions;
 
@@ -23,13 +22,6 @@ public sealed class ReturnResult<TType>
 	{
 		_typeFilterOptions = typeFilterOptions;
 	}
-
-	/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
-	/// <remarks>
-	///     A new slot around the options that the filter keeps itself.
-	/// </remarks>
-	OptionsSlot<TypeFilterOptions> IOptionsProvider<TypeFilterOptions>.Options
-		=> new(_typeFilterOptions);
 
 	/// <summary>
 	///     Allow an alternative return type <typeparamref name="TReturn" />.

@@ -37,8 +37,8 @@ public static partial class ConstructorFilters
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 					() => $"of type {Formatter.Format(parameterType)}");
-				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected, nameof(expected)),
-					() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
+					() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
 			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
@@ -67,8 +67,8 @@ public static partial class ConstructorFilters
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 					() => $"of type {Formatter.Format(parameterType)}");
-				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected, nameof(expected)),
-					() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
+					() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
 			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
@@ -81,8 +81,8 @@ public static partial class ConstructorFilters
 		string expected)
 		=> new(@this, WithParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions => new ParameterFilterOptions(
-				p => stringEqualityOptions.AreConsideredEqual(p.Name, expected, nameof(expected)),
-				() => $"with name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}"),
+				p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
+				() => $"with name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}"),
 			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
 
 
@@ -140,14 +140,14 @@ public static partial class ConstructorFilters
 			{
 				if (parameterType is null)
 				{
-					return new ParameterFilterOptions(p => stringEqualityOptions.AreConsideredEqual(p.Name, unexpected, nameof(unexpected)),
-						() => $"with name {stringEqualityOptions.GetExpectation(unexpected, ExpectationGrammars.None)}");
+					return new ParameterFilterOptions(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, unexpected, nameof(unexpected)),
+						() => $"with name {stringEqualityOptions.Value.GetExpectation(unexpected, ExpectationGrammars.None)}");
 				}
 
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 					() => $"of type {Formatter.Format(parameterType)}");
-				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, unexpected, nameof(unexpected)),
-					() => $"name {stringEqualityOptions.GetExpectation(unexpected, ExpectationGrammars.None)}");
+				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, unexpected, nameof(unexpected)),
+					() => $"name {stringEqualityOptions.Value.GetExpectation(unexpected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
 			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
@@ -197,8 +197,7 @@ public static partial class ConstructorFilters
 	///     Additional filters on constructors with a parameter of a specific type.
 	/// </summary>
 	public class ConstructorsWithParameter<T>
-		: Filtered.Constructors,
-			IOptionsProvider<ParameterFilterOptions>
+		: Filtered.Constructors
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> _createFilter;
@@ -217,13 +216,6 @@ public static partial class ConstructorFilters
 			_collectionIndexOptions = collectionIndexOptions;
 			_parameterFilterOptions = parameterFilterOptions;
 		}
-
-		/// <inheritdoc cref="IOptionsProvider{ParameterFilterOptions}.Options" />
-		/// <remarks>
-		///     A new slot around the options that the filter keeps itself.
-		/// </remarks>
-		OptionsSlot<ParameterFilterOptions> IOptionsProvider<ParameterFilterOptions>.Options
-			=> new(_parameterFilterOptions);
 
 		/// <summary>
 		///     …at the given zero-based <paramref name="index" />.
@@ -305,6 +297,13 @@ public static partial class ConstructorFilters
 			=> new(_source, _createFilter, _collectionIndexOptions,
 				_parameterFilterOptions.WithPredicate(predicate, description));
 
+		/// <summary>
+		///     Returns a copy with the modifier <paramref name="predicate" /> and <paramref name="description" />.
+		/// </summary>
+		internal ConstructorsWithParameter<T> WithModifier(Func<ParameterInfo, bool> predicate, string description)
+			=> new(_source, _createFilter, _collectionIndexOptions,
+				_parameterFilterOptions.WithModifier(predicate, () => description));
+
 		private ConstructorsWithParameter<T> WithIndex(Func<CollectionIndexOptions, CollectionIndexOptions> setIndex)
 			=> new(_source, _createFilter, setIndex(_collectionIndexOptions),
 				_parameterFilterOptions);
@@ -321,7 +320,7 @@ public static partial class ConstructorFilters
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> _createFilter;
-		private readonly Func<StringEqualityOptions, ParameterFilterOptions> _createParameterFilterOptions;
+		private readonly Func<IReadOnlyOptionsSlot<StringEqualityOptions>, ParameterFilterOptions> _createParameterFilterOptions;
 		private readonly OptionsSlot<StringEqualityOptions> _options;
 		private readonly Filtered.Constructors _source;
 
@@ -329,9 +328,9 @@ public static partial class ConstructorFilters
 			Filtered.Constructors source,
 			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> createFilter,
 			CollectionIndexOptions collectionIndexOptions,
-			Func<StringEqualityOptions, ParameterFilterOptions> createParameterFilterOptions,
+			Func<IReadOnlyOptionsSlot<StringEqualityOptions>, ParameterFilterOptions> createParameterFilterOptions,
 			OptionsSlot<StringEqualityOptions> options)
-			: base(source, createFilter, collectionIndexOptions, createParameterFilterOptions(options.Value))
+			: base(source, createFilter, collectionIndexOptions, createParameterFilterOptions(options))
 		{
 			_source = source;
 			_createFilter = createFilter;
@@ -352,10 +351,10 @@ public static partial class ConstructorFilters
 		///     Returns a copy with the modifier <paramref name="predicate" /> and <paramref name="description" />.
 		/// </summary>
 		/// <remarks>
-		///     Hides the in-place helper for parameter filters, so that the modifier is kept when a string option
+		///     Hides the copy of the base filter, so that the modifier is kept when a string option
 		///     rebuilds the parameter filter options.
 		/// </remarks>
-		internal ConstructorsWithNamedParameter<T> WithModifier(Func<ParameterInfo, bool> predicate, string description)
+		internal new ConstructorsWithNamedParameter<T> WithModifier(Func<ParameterInfo, bool> predicate, string description)
 			=> new(_source, _createFilter, _collectionIndexOptions,
 				options => _createParameterFilterOptions(options).WithModifier(predicate, () => description),
 				_options);

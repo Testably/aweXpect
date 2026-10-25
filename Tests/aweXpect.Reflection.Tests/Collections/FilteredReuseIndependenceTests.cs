@@ -204,9 +204,9 @@ public sealed class FilteredReuseIndependenceTests
 	[Test]
 	[MethodDataSource(nameof(StringFilters))]
 	public async Task StringFilter_WhenAStringOptionIsAdded_ShouldNotChangeTheFilterItWasCalledOn(string filter,
-		Func<(IDescribableSubject Stored, Func<IDescribableSubject> AddOption)> create)
+		Func<(IDescribableSubject Stored, Func<IDescribableSubject> AddOption, Action ChangeSlot)> create)
 	{
-		(IDescribableSubject stored, Func<IDescribableSubject> addOption) = create();
+		(IDescribableSubject stored, Func<IDescribableSubject> addOption, _) = create();
 		string description = stored.GetDescription();
 
 		IDescribableSubject continuation = addOption();
@@ -214,6 +214,20 @@ public sealed class FilteredReuseIndependenceTests
 		await That(stored.GetDescription()).IsEqualTo(description)
 			.Because($"{filter} must keep its options when a continuation adds an option");
 		await That(continuation.GetDescription()).IsNotEqualTo(description);
+	}
+
+	[Test]
+	[MethodDataSource(nameof(StringFilters))]
+	public async Task StringFilter_WhenTheOptionsSlotIsChanged_ShouldUseTheNewOptions(string filter,
+		Func<(IDescribableSubject Stored, Func<IDescribableSubject> AddOption, Action ChangeSlot)> create)
+	{
+		(IDescribableSubject stored, Func<IDescribableSubject> addOption, Action changeSlot) = create();
+		string expected = addOption().GetDescription();
+
+		changeSlot();
+
+		await That(stored.GetDescription()).IsEqualTo(expected)
+			.Because($"{filter} must read its options when it is evaluated, also when an option bypasses the copy hook");
 	}
 
 	[Test]
@@ -312,7 +326,7 @@ public sealed class FilteredReuseIndependenceTests
 		await That(continuation).IsEqualTo([typeof(SampleType1),]);
 	}
 
-	public static IEnumerable<(string, Func<(IDescribableSubject, Func<IDescribableSubject>)>)> StringFilters()
+	public static IEnumerable<(string, Func<(IDescribableSubject, Func<IDescribableSubject>, Action)>)> StringFilters()
 	{
 		Filtered.Assemblies assemblies = In.AssemblyContaining<FilteredReuseIndependenceTests>();
 		Filtered.Types types = In.Types<SampleType1, SampleType2>();
@@ -377,13 +391,13 @@ public sealed class FilteredReuseIndependenceTests
 		yield return Case("Types.WithoutNamespace", () => types.WithoutNamespace("x"));
 	}
 
-	private static (string, Func<(IDescribableSubject, Func<IDescribableSubject>)>) Case<TResult>(string filter,
+	private static (string, Func<(IDescribableSubject, Func<IDescribableSubject>, Action)>) Case<TResult>(string filter,
 		Func<TResult> create)
 		where TResult : IDescribableSubject, IOptionsProvider<StringEqualityOptions>
 		=> (filter, () =>
 		{
 			TResult stored = create();
-			return (stored, () => stored.IgnoringCase());
+			return (stored, () => stored.IgnoringCase(), () => stored.Options.IgnoringCase());
 		});
 
 	private class BaseA;

@@ -13,7 +13,7 @@ namespace aweXpect.Reflection.Options;
 ///     Inherited attributes are considered, unless the result restricts the check to the attributes declared directly
 ///     on the member.
 /// </remarks>
-public class AttributeFilterOptions<TMember>
+internal class AttributeFilterOptions<TMember>
 {
 	private readonly List<Action<StringBuilder>> _descriptions = [];
 	private readonly Func<TMember, Type, Func<Attribute, bool>, bool, bool> _memberHasAttribute;

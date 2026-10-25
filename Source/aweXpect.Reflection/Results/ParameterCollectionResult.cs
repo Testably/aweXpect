@@ -34,7 +34,7 @@ public sealed class ParameterCollectionResult<TType, TValue, TParameter>
 public class ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 	: AndOrResult<TType, IThat<TValue>, TSelf>,
 		IOptionsProvider<CollectionIndexOptions>,
-		IOptionsProvider<ParameterFilterOptions>
+		IParameterFilterOptionsProvider
 	where TSelf : ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 {
 	private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
@@ -54,12 +54,8 @@ public class ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 	/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
 	OptionsSlot<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 
-	/// <inheritdoc cref="IOptionsProvider{ParameterFilterOptions}.Options" />
-	/// <remarks>
-	///     A new slot around the options that the filter keeps itself.
-	/// </remarks>
-	OptionsSlot<ParameterFilterOptions> IOptionsProvider<ParameterFilterOptions>.Options
-		=> new(_parameterFilterOptions);
+	/// <inheritdoc cref="IParameterFilterOptionsProvider.ParameterFilterOptions" />
+	ParameterFilterOptions IParameterFilterOptionsProvider.ParameterFilterOptions => _parameterFilterOptions;
 
 	/// <summary>
 	///     …without a default value.

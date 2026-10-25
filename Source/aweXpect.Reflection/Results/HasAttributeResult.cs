@@ -11,8 +11,7 @@ namespace aweXpect.Reflection.Results;
 ///     Allows chaining of multiple attributes.
 /// </summary>
 public sealed class HasAttributeResult<TType, TMember>
-	: AndOrResult<TType, IThat<TMember>, HasAttributeResult<TType, TMember>>,
-		IOptionsProvider<AttributeFilterOptions<TMember>>
+	: AndOrResult<TType, IThat<TMember>, HasAttributeResult<TType, TMember>>
 {
 	private readonly AttributeFilterOptions<TMember> _attributeFilterOptions;
 
@@ -24,13 +23,6 @@ public sealed class HasAttributeResult<TType, TMember>
 	{
 		_attributeFilterOptions = attributeFilterOptions;
 	}
-
-	/// <inheritdoc cref="IOptionsProvider{AttributeFilterOptions}.Options" />
-	/// <remarks>
-	///     A new slot around the options that the filter keeps itself.
-	/// </remarks>
-	OptionsSlot<AttributeFilterOptions<TMember>> IOptionsProvider<AttributeFilterOptions<TMember>>.Options
-		=> new(_attributeFilterOptions);
 
 	/// <summary>
 	///     Allows an alternative attribute of type <typeparamref name="TAttribute" />.
