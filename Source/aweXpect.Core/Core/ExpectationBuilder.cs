@@ -864,8 +864,16 @@ public abstract class ExpectationBuilder
 	///     Adds a <paramref name="reason" /> to the expectation.
 	/// </summary>
 	internal void AddReason(Task<string?> reason)
-		=> (ReasonList ?? (List<IBecauseReason>)(_reasons = new List<IBecauseReason>()))
-			.Add(new AsyncBecauseReason(reason));
+	{
+		List<IBecauseReason>? reasons = ReasonList;
+		if (reasons is null)
+		{
+			reasons = [];
+			_reasons = reasons;
+		}
+
+		reasons.Add(new AsyncBecauseReason(reason));
+	}
 
 	/// <summary>
 	///     Appends the reasons to the expectation of the <paramref name="result" />.
