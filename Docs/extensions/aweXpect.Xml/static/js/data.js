@@ -768,6 +768,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -898,7 +904,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "f760ae08"
+      "f760ae08",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -1032,7 +1039,8 @@ window.BENCHMARK_DATA = {
           723.0359685604388,
           770.6385414416974,
           774.8481519063314,
-          617.3371315002441
+          617.3371315002441,
+          718.3466386795044
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1171,6 +1179,7 @@ window.BENCHMARK_DATA = {
           1152,
           1152,
           1152,
+          1080,
           1080
         ],
         "borderColor": "#63A2AC",
@@ -1313,7 +1322,8 @@ window.BENCHMARK_DATA = {
           819.3194525792048,
           712.6537930806478,
           793.3384056091309,
-          751.2140968029315
+          751.2140968029315,
+          794.8861404418946
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1325,6 +1335,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2234,6 +2245,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -2364,7 +2381,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "f760ae08"
+      "f760ae08",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -2498,7 +2516,8 @@ window.BENCHMARK_DATA = {
           5287.1284739176435,
           4842.347706134503,
           5088.288535817464,
-          4200.797970835368
+          4200.797970835368,
+          5352.313227844238
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2637,7 +2656,8 @@ window.BENCHMARK_DATA = {
           24320,
           24320,
           24320,
-          24320
+          24320,
+          24321
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2779,7 +2799,8 @@ window.BENCHMARK_DATA = {
           6042.507995605469,
           5509.599374389649,
           5681.303656441824,
-          5345.694017028809
+          5345.694017028809,
+          5993.469849650065
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2791,6 +2812,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -3640,6 +3662,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -3760,7 +3788,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "f760ae08"
+      "f760ae08",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -3884,7 +3913,8 @@ window.BENCHMARK_DATA = {
           2922.6299258640834,
           2742.5520622253416,
           2873.360083516439,
-          2547.1726687295095
+          2547.1726687295095,
+          2927.384025280292
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4013,7 +4043,8 @@ window.BENCHMARK_DATA = {
           12856,
           12780,
           12856,
-          12856
+          12856,
+          12780
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4145,7 +4176,8 @@ window.BENCHMARK_DATA = {
           3858.8307413373673,
           3810.9593646709736,
           3760.2646779378256,
-          3519.164355214437
+          3519.164355214437,
+          3936.670391337077
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4157,6 +4189,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -4996,6 +5029,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -5116,7 +5155,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "f760ae08"
+      "f760ae08",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -5240,7 +5280,8 @@ window.BENCHMARK_DATA = {
           14144.61555480957,
           14272.117397562663,
           14520.231580607096,
-          12620.04585164388
+          12620.04585164388,
+          14644.65506526402
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5369,7 +5410,8 @@ window.BENCHMARK_DATA = {
           25568,
           25494,
           25568,
-          25568
+          25568,
+          25494
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5501,7 +5543,8 @@ window.BENCHMARK_DATA = {
           284605.6375450721,
           360097.71064453124,
           378766.24045973556,
-          256199.9169921875
+          256199.9169921875,
+          380882.41346153844
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5630,7 +5673,8 @@ window.BENCHMARK_DATA = {
           544246,
           544335,
           544268,
-          544247
+          544247,
+          544335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
