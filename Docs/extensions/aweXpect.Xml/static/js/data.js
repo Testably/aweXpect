@@ -672,6 +672,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
         "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
+      },
+      {
+        "sha": "f9009a09c63bfc2fca06623193d928efbd3e7c94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:50:29 2026 \u002B0200",
+        "message": "refactor!: redesign the match types around a matcher per evaluation (#2015)"
       }
     ],
     "labels": [
@@ -786,7 +792,8 @@ window.BENCHMARK_DATA = {
       "cda7e4aa",
       "4bb05046",
       "0eb20dfe",
-      "96ea23be"
+      "96ea23be",
+      "f9009a09"
     ],
     "datasets": [
       {
@@ -904,7 +911,8 @@ window.BENCHMARK_DATA = {
           725.3828104019165,
           576.9377751032512,
           717.9345635005405,
-          750.12114944458
+          750.12114944458,
+          749.9437569890704
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1027,7 +1035,8 @@ window.BENCHMARK_DATA = {
           1120,
           1120,
           1120,
-          1120
+          1120,
+          1152
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1153,7 +1162,8 @@ window.BENCHMARK_DATA = {
           676.8344058354695,
           540.8147049631391,
           644.5539443333944,
-          714.3283373968942
+          714.3283373968942,
+          721.0961449305216
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1165,6 +1175,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -1962,6 +1973,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
         "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
+      },
+      {
+        "sha": "f9009a09c63bfc2fca06623193d928efbd3e7c94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:50:29 2026 \u002B0200",
+        "message": "refactor!: redesign the match types around a matcher per evaluation (#2015)"
       }
     ],
     "labels": [
@@ -2076,7 +2093,8 @@ window.BENCHMARK_DATA = {
       "cda7e4aa",
       "4bb05046",
       "0eb20dfe",
-      "96ea23be"
+      "96ea23be",
+      "f9009a09"
     ],
     "datasets": [
       {
@@ -2194,7 +2212,8 @@ window.BENCHMARK_DATA = {
           4522.426897684733,
           3408.569298553467,
           4235.36406771342,
-          4636.322278849284
+          4636.322278849284,
+          4636.583174024309
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2317,7 +2336,8 @@ window.BENCHMARK_DATA = {
           24119,
           24119,
           24119,
-          24119
+          24119,
+          24320
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2443,7 +2463,8 @@ window.BENCHMARK_DATA = {
           5267.551677158901,
           3750.5558433532715,
           4923.9000595092775,
-          5049.822891235352
+          5049.822891235352,
+          5110.06082611084
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2455,6 +2476,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -3192,6 +3214,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
         "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
+      },
+      {
+        "sha": "f9009a09c63bfc2fca06623193d928efbd3e7c94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:50:29 2026 \u002B0200",
+        "message": "refactor!: redesign the match types around a matcher per evaluation (#2015)"
       }
     ],
     "labels": [
@@ -3296,7 +3324,8 @@ window.BENCHMARK_DATA = {
       "cda7e4aa",
       "4bb05046",
       "0eb20dfe",
-      "96ea23be"
+      "96ea23be",
+      "f9009a09"
     ],
     "datasets": [
       {
@@ -3404,7 +3433,8 @@ window.BENCHMARK_DATA = {
           2529.011526997884,
           1878.1565965505747,
           2504.5167170206705,
-          2557.3446968078615
+          2557.3446968078615,
+          2542.819254738944
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3517,7 +3547,8 @@ window.BENCHMARK_DATA = {
           12780,
           12780,
           12780,
-          12780
+          12780,
+          12856
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3633,7 +3664,8 @@ window.BENCHMARK_DATA = {
           3595.802099609375,
           2605.5368395487467,
           3457.580307824271,
-          3581.567337290446
+          3581.567337290446,
+          3508.795688120524
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3645,6 +3677,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -4372,6 +4405,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
         "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
+      },
+      {
+        "sha": "f9009a09c63bfc2fca06623193d928efbd3e7c94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:50:29 2026 \u002B0200",
+        "message": "refactor!: redesign the match types around a matcher per evaluation (#2015)"
       }
     ],
     "labels": [
@@ -4476,7 +4515,8 @@ window.BENCHMARK_DATA = {
       "cda7e4aa",
       "4bb05046",
       "0eb20dfe",
-      "96ea23be"
+      "96ea23be",
+      "f9009a09"
     ],
     "datasets": [
       {
@@ -4584,7 +4624,8 @@ window.BENCHMARK_DATA = {
           14636.194083658855,
           10159.268745422363,
           13649.3572038923,
-          14160.344940185547
+          14160.344940185547,
+          14138.519918169293
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4697,7 +4738,8 @@ window.BENCHMARK_DATA = {
           25494,
           25494,
           25494,
-          25494
+          25494,
+          25568
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4813,7 +4855,8 @@ window.BENCHMARK_DATA = {
           350353.17640904017,
           240230.97789713542,
           352688.5303109976,
-          379218.6038295201
+          379218.6038295201,
+          363124.762507512
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4926,7 +4969,8 @@ window.BENCHMARK_DATA = {
           544252,
           544335,
           544335,
-          544329
+          544329,
+          544335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
