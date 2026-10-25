@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Helpers;
 using aweXpect.Delegates;
-using aweXpect.Options;
 
 namespace aweXpect.Results;
 
@@ -198,191 +196,68 @@ public static class PropertyResult
 		Action<string?, string>? validation = null,
 		ExpectationGrammars grammars = ExpectationGrammars.None,
 		bool includeValueInContext = false)
+		: IStringEqualityPropertyResult<StringEqualityTypeResult<TType, TThat>>,
+			IStringAffixPropertyResult<StringEqualityResult<TType, TThat>>,
+			IStringOccurrencePropertyResult<StringOccurrenceCountResult<TType, TThat>>
 		where TThat : IThat<TValue>
 	{
-		/// <summary>
-		///     …contains the <paramref name="expected" /> value.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> or empty <paramref name="expected" /> throws, because neither is a substring
-		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
-		///     string always does.
-		///     <para />
-		///     Without a quantifier, the <paramref name="expected" /> value has to occur at least once; specify how often
-		///     it has to occur, e.g. with <c>AtLeast(2)</c> or <c>Never()</c>, and how it is matched, e.g. with
-		///     <c>AsWildcard()</c>, on the result.
-		/// </remarks>
-		public StringOccurrenceCountResult<TType, TThat> Containing(
-			string expected)
-		{
-			ThrowIfNullOrEmpty(expected, nameof(expected));
-			validation?.Invoke(expected, nameof(expected));
-			Quantifier quantifier = new();
-			StringEqualityOptions options = new(nameof(expected));
-			return new StringOccurrenceCountResult<TType, TThat>(
-				subject.Get().ExpectationBuilder
+		/// <inheritdoc cref="IStringEqualityPropertyResult{TResult}.Validation" />
+		Action<string?, string>? IStringEqualityPropertyResult<StringEqualityTypeResult<TType, TThat>>.Validation
+			=> validation;
+
+		/// <inheritdoc cref="IStringAffixPropertyResult{TResult}.Validation" />
+		Action<string?, string>? IStringAffixPropertyResult<StringEqualityResult<TType, TThat>>.Validation
+			=> validation;
+
+		/// <inheritdoc cref="IStringOccurrencePropertyResult{TResult}.Validation" />
+		Action<string?, string>? IStringOccurrencePropertyResult<StringOccurrenceCountResult<TType, TThat>>.Validation
+			=> validation;
+
+		/// <inheritdoc cref="IStringEqualityPropertyResult{TResult}.Compare(StringPropertyComparison)" />
+		StringEqualityTypeResult<TType, TThat> IStringEqualityPropertyResult<StringEqualityTypeResult<TType, TThat>>.
+			Compare(StringPropertyComparison comparison)
+			=> new(Build(comparison), subject, comparison.Options);
+
+		/// <inheritdoc cref="IStringAffixPropertyResult{TResult}.Compare(StringPropertyComparison)" />
+		StringEqualityResult<TType, TThat> IStringAffixPropertyResult<StringEqualityResult<TType, TThat>>.Compare(
+			StringPropertyComparison comparison)
+			=> new(Build(comparison), subject, comparison.Options);
+
+		/// <inheritdoc cref="IStringOccurrencePropertyResult{TResult}.Compare(StringPropertyComparison)" />
+		StringOccurrenceCountResult<TType, TThat>
+			IStringOccurrencePropertyResult<StringOccurrenceCountResult<TType, TThat>>.Compare(
+				StringPropertyComparison comparison)
+			=> new(subject.Get().ExpectationBuilder
 					.AddConstraint(
-						(IncludeValueInContext: includeValueInContext, Grammars: grammars, Expected: expected,
-							Mapper: mapper, PropertyExpression: propertyExpression, Quantifier: quantifier,
-							Options: options),
+						(IncludeValueInContext: includeValueInContext, Grammars: grammars, Mapper: mapper,
+							PropertyExpression: propertyExpression, Comparison: comparison),
 						static (state, it, constraintGrammars) =>
 							new ContainingConstraint<TValue>(
 								state.IncludeValueInContext,
 								it,
 								constraintGrammars | state.Grammars,
-								state.Expected,
 								state.Mapper,
 								state.PropertyExpression,
-								state.Quantifier,
-								state.Options)),
+								state.Comparison)),
 				subject,
-				quantifier,
-				options);
-		}
+				comparison.Quantifier!,
+				comparison.Options);
 
-		/// <summary>
-		///     …ends with the <paramref name="expected" /> value.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> or empty <paramref name="expected" /> throws, because neither is a substring
-		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
-		///     string always does.
-		/// </remarks>
-		public StringEqualityResult<TType, TThat> EndingWith(
-			string expected)
-		{
-			ThrowIfNullOrEmpty(expected, nameof(expected));
-			validation?.Invoke(expected, nameof(expected));
-			StringEqualityOptions options = new(nameof(expected));
-			options.AsSuffix();
-			return new StringEqualityResult<TType, TThat>(Build(expected, options, false), subject, options);
-		}
-
-		/// <summary>
-		///     …is equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public StringEqualityTypeResult<TType, TThat> EqualTo(
-			string? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			StringEqualityOptions options = new(nameof(expected));
-			return new StringEqualityTypeResult<TType, TThat>(Build(expected, options, false), subject, options);
-		}
-
-		/// <summary>
-		///     …does not contain the <paramref name="unexpected" /> value.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> or empty <paramref name="unexpected" /> throws, because neither is a substring
-		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
-		///     string always does.
-		/// </remarks>
-		public StringEqualityResult<TType, TThat> NotContaining(
-			string unexpected)
-		{
-			ThrowIfNullOrEmpty(unexpected, nameof(unexpected));
-			validation?.Invoke(unexpected, nameof(unexpected));
-			StringEqualityOptions options = new(nameof(unexpected));
-			options.Containing();
-			return new StringEqualityResult<TType, TThat>(Build(unexpected, options, true), subject, options);
-		}
-
-		/// <summary>
-		///     …does not end with the <paramref name="unexpected" /> value.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> or empty <paramref name="unexpected" /> throws, because neither is a substring
-		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
-		///     string always does.
-		/// </remarks>
-		public StringEqualityResult<TType, TThat> NotEndingWith(
-			string unexpected)
-		{
-			ThrowIfNullOrEmpty(unexpected, nameof(unexpected));
-			validation?.Invoke(unexpected, nameof(unexpected));
-			StringEqualityOptions options = new(nameof(unexpected));
-			options.AsSuffix();
-			return new StringEqualityResult<TType, TThat>(Build(unexpected, options, true), subject, options);
-		}
-
-		/// <summary>
-		///     …is not equal to the <paramref name="unexpected" /> value.
-		/// </summary>
-		public StringEqualityTypeResult<TType, TThat> NotEqualTo(
-			string? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			StringEqualityOptions options = new(nameof(unexpected));
-			return new StringEqualityTypeResult<TType, TThat>(Build(unexpected, options, true), subject, options);
-		}
-
-		/// <summary>
-		///     …does not start with the <paramref name="unexpected" /> value.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> or empty <paramref name="unexpected" /> throws, because neither is a substring
-		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
-		///     string always does.
-		/// </remarks>
-		public StringEqualityResult<TType, TThat> NotStartingWith(
-			string unexpected)
-		{
-			ThrowIfNullOrEmpty(unexpected, nameof(unexpected));
-			validation?.Invoke(unexpected, nameof(unexpected));
-			StringEqualityOptions options = new(nameof(unexpected));
-			options.AsPrefix();
-			return new StringEqualityResult<TType, TThat>(Build(unexpected, options, true), subject, options);
-		}
-
-		/// <summary>
-		///     …starts with the <paramref name="expected" /> value.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> or empty <paramref name="expected" /> throws, because neither is a substring
-		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
-		///     string always does.
-		/// </remarks>
-		public StringEqualityResult<TType, TThat> StartingWith(
-			string expected)
-		{
-			ThrowIfNullOrEmpty(expected, nameof(expected));
-			validation?.Invoke(expected, nameof(expected));
-			StringEqualityOptions options = new(nameof(expected));
-			options.AsPrefix();
-			return new StringEqualityResult<TType, TThat>(Build(expected, options, false), subject, options);
-		}
-
-		private static void ThrowIfNullOrEmpty(string value, string paramName)
-		{
-#pragma warning disable S3236 // The caller information would name the local parameter instead of the public one it forwards
-			value.ThrowIfNull(paramName);
-#pragma warning restore S3236
-			if (value.Length == 0)
-			{
-				// ReSharper disable once LocalizableElement
-				throw Tracing.WriteException(new ArgumentException($"The '{paramName}' string cannot be empty.", paramName));
-			}
-		}
-
-		private ExpectationBuilder Build(
-			string? expected,
-			StringEqualityOptions options,
-			bool invert)
+		private ExpectationBuilder Build(StringPropertyComparison comparison)
 			=> subject.Get().ExpectationBuilder
 				.AddConstraint(
-					(IncludeValueInContext: includeValueInContext, Grammars: grammars, Expected: expected,
-						Mapper: mapper, PropertyExpression: propertyExpression, Options: options, Invert: invert),
+					(IncludeValueInContext: includeValueInContext, Grammars: grammars, Mapper: mapper,
+						PropertyExpression: propertyExpression, Comparison: comparison),
 					static (state, it, constraintGrammars) =>
 					{
 						StringConstraint<TValue> constraint = new(
 							state.IncludeValueInContext,
 							it,
 							constraintGrammars | state.Grammars,
-							state.Expected,
 							state.Mapper,
 							state.PropertyExpression,
-							state.Options);
-						return state.Invert ? constraint.Invert() : constraint;
+							state.Comparison);
+						return state.Comparison.IsNegated ? constraint.Invert() : constraint;
 					});
 	}
 
@@ -496,15 +371,13 @@ public static class PropertyResult
 		bool includeValueInContext,
 		string it,
 		ExpectationGrammars grammars,
-		string? expected,
 		Func<TItem, string?> mapper,
 		string propertyExpression,
-		StringEqualityOptions options) : ConstraintResult.WithNotNullValue<TItem>(it, grammars),
+		StringPropertyComparison comparison) : ConstraintResult.WithNotNullValue<TItem>(it, grammars),
 		IAsyncContextConstraint<TItem>
 	{
-		private StringEqualityOptions? _evaluationOptions;
 		private Exception? _exception;
-		private MatchResult _matchResult;
+		private StringPropertyOutcome _outcome;
 		private string? _value;
 
 		/// <inheritdoc />
@@ -520,9 +393,9 @@ public static class PropertyResult
 			Actual = actual;
 			_exception = null;
 			_value = null;
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_outcome = default;
 			// An unusable pattern is rejected whichever value the property has, also when it cannot be read.
-			options.ValidateExpected(expected);
+			comparison.Options.ValidateExpected(comparison.Expected);
 			try
 			{
 				_value = mapper(actual);
@@ -534,13 +407,8 @@ public static class PropertyResult
 				return this;
 			}
 
-			_matchResult = await _evaluationOptions.MatchWithExplanation(_value, expected);
-			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
-			if (_value is null && options.InspectsSubject)
-			{
-				Outcome = Outcome.FailureBothWays;
-			}
-
+			_outcome = await comparison.Evaluate(_value, context, cancellationToken);
+			Outcome = _outcome.OutcomeOfOperator;
 			return this;
 		}
 
@@ -551,7 +419,7 @@ public static class PropertyResult
 				contexts.Add(new ResultContext.Fixed(ToTitle(propertyExpression), _value));
 			}
 
-			(_evaluationOptions ?? options).AppendContexts(contexts);
+			(_outcome.EvaluationOptions ?? comparison.Options).AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -577,7 +445,7 @@ public static class PropertyResult
 				equalityGrammars &= ~ExpectationGrammars.Negated;
 			}
 
-			stringBuilder.Append(options.GetExpectation(expected, equalityGrammars));
+			comparison.AppendExpectationCore(stringBuilder, equalityGrammars);
 		}
 
 		/// <remarks>
@@ -593,12 +461,14 @@ public static class PropertyResult
 				return;
 			}
 
-			stringBuilder.Append((Grammars.IsNested() &&
-			                      !Grammars.IsActive()
-					? (_evaluationOptions ?? options).GetExtendedFailure(propertyExpression, Grammars, _value, expected, _matchResult)
-					: (_evaluationOptions ?? options).GetExtendedMemberFailure(It, propertyExpression, Grammars, _value, expected,
-						_matchResult))
-				.Indent(indentation, false));
+			if (Grammars.IsNested() && !Grammars.IsActive())
+			{
+				_outcome.AppendResultCore(stringBuilder, propertyExpression, Grammars, indentation);
+			}
+			else
+			{
+				_outcome.AppendMemberResultCore(stringBuilder, It, propertyExpression, Grammars, indentation);
+			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -622,17 +492,13 @@ public static class PropertyResult
 		bool includeValueInContext,
 		string it,
 		ExpectationGrammars grammars,
-		string expected,
 		Func<TItem, string?> mapper,
 		string propertyExpression,
-		Quantifier quantifier,
-		StringEqualityOptions options) : ConstraintResult.WithNotNullValue<TItem>(it, grammars),
+		StringPropertyComparison comparison) : ConstraintResult.WithNotNullValue<TItem>(it, grammars),
 		IAsyncContextConstraint<TItem>
 	{
-		private int _count;
-		private StringEqualityOptions? _evaluationOptions;
 		private Exception? _exception;
-		private bool _isFinished;
+		private StringPropertyOutcome _outcome;
 		private string? _value;
 
 		/// <inheritdoc />
@@ -649,7 +515,7 @@ public static class PropertyResult
 			Actual = actual;
 			_exception = null;
 			_value = null;
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_outcome = default;
 			if (actual is not null)
 			{
 				try
@@ -662,15 +528,8 @@ public static class PropertyResult
 				}
 			}
 
-			(_count, _isFinished) =
-				await StringOccurrences.Count(_evaluationOptions, _value ?? string.Empty, expected, quantifier);
-			if (_exception is not null || _value is null)
-			{
-				Outcome = Outcome.FailureBothWays;
-				return this;
-			}
-
-			Outcome = quantifier.Check(_count, true) == true ? Outcome.Success : Outcome.Failure;
+			_outcome = await comparison.Evaluate(_value, context, cancellationToken);
+			Outcome = _exception is null ? _outcome.OutcomeOfOperator : Outcome.FailureBothWays;
 			return this;
 		}
 
@@ -687,10 +546,10 @@ public static class PropertyResult
 					contexts.AddStringContext(ToTitle(propertyExpression), _value, this);
 				}
 
-				contexts.AddStringContext("Expected", expected, this);
+				contexts.AddStringContext("Expected", comparison.Expected, this);
 			}
 
-			(_evaluationOptions ?? options).AppendContexts(contexts);
+			(_outcome.EvaluationOptions ?? comparison.Options).AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -713,8 +572,7 @@ public static class PropertyResult
 				negatedVerb = $"{Grammars.Verb("does not have", "do not have")} {propertyExpression} containing";
 			}
 
-			StringOccurrences.AppendExpectation(stringBuilder, quantifier, IsNegated, verb, negatedVerb, expected,
-				options);
+			comparison.AppendOccurrenceExpectation(stringBuilder, IsNegated, verb, negatedVerb);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -742,8 +600,7 @@ public static class PropertyResult
 				return;
 			}
 
-			StringOccurrences.AppendResult(stringBuilder, propertyExpression, expected, _value, (_count, _isFinished),
-				_evaluationOptions ?? options, indentation);
+			_outcome.AppendResultCore(stringBuilder, propertyExpression, Grammars, indentation);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

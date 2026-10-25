@@ -129,9 +129,48 @@ against `null`, and `comparison.AppendExpectation(stringBuilder)` writes the com
 but the text does not, so that you can place the "not" where your sentence needs it, e.g. "has duration not greater
 than …" or "does not have duration greater than …".
 
-A `string` property is not part of this pattern yet. Its operators return results that offer the string options, e.g.
-`IgnoringCase()`, and stay instance methods of `PropertyResult.String<TValue, TType, TThat>` until there is an
-interface for them.
+### String properties
+
+The operators of a `string` property continue with three kinds of results, so they are split over three interfaces,
+each with its own `Validation` and `Compare` method. Implement those whose operators your property offers:
+
+| Interface                                  | Operators                                                      | Usual `TResult`                  |
+|--------------------------------------------|----------------------------------------------------------------|----------------------------------|
+| `IStringEqualityPropertyResult<TResult>`   | `EqualTo`, `NotEqualTo`                                        | `StringEqualityTypeResult<…>`    |
+| `IStringAffixPropertyResult<TResult>`      | `StartingWith`, `EndingWith`, their negations, `NotContaining` | `StringEqualityResult<…>`        |
+| `IStringOccurrencePropertyResult<TResult>` | `Containing`, with a quantifier such as `AtLeast(2)`           | `StringOccurrenceCountResult<…>` |
+
+`Compare` receives a `StringPropertyComparison`. The string options are set on your result after the operator
+returned it, e.g. `.IgnoringCase()`, so pass `comparison.Options`, and for `Containing` also `comparison.Quantifier`,
+to the result you return, and evaluate the comparison only in your constraint:
+
+```csharp no-compile
+public class TitleResult(IThat<Track?> subject)
+    : IStringAffixPropertyResult<StringEqualityResult<Track, IThat<Track?>>>
+{
+    Action<string?, string>? IStringAffixPropertyResult<StringEqualityResult<Track, IThat<Track?>>>.Validation
+        => null;
+
+    StringEqualityResult<Track, IThat<Track?>> IStringAffixPropertyResult<StringEqualityResult<Track, IThat<Track?>>>.Compare(
+        StringPropertyComparison comparison)
+        => new(subject.Get().ExpectationBuilder.AddConstraint(comparison,
+                static (c, it, grammars) => new HasTitleConstraint(it, grammars, c)),
+            subject,
+            comparison.Options);
+}
+```
+
+An expectation that returns this result, e.g. `HasTitle()`, then reads
+`Expect.That(track).HasTitle().StartingWith("let").IgnoringCase()`.
+
+In the constraint, `await comparison.Evaluate(actual, context, cancellationToken)` compares the value with the options
+of the evaluation and returns a `StringPropertyOutcome`, whose `Outcome` already includes the negation of an operator
+like `NotStartingWith`. A `null` value fails a comparison that looks into the value, e.g. a prefix or an occurrence,
+both ways. `comparison.AppendExpectation(stringBuilder, grammars)` writes the comparison with its options, e.g.
+"starting with "let" ignoring case", or "starts with …" with `ExpectationGrammars.Active`; unlike for the other
+property types, the text includes the negation of the operator, e.g. "not starting with …", which a negated grammar
+toggles. `outcome.AppendResult(stringBuilder, "title", Grammars, indentation)` writes the result, e.g. "title was
+"Yesterday", which differs at index 0: …", and `outcome.AppendContexts(contexts)` adds the contexts of the options.
 
 ## Time tolerances
 
