@@ -3,23 +3,23 @@ using System;
 namespace aweXpect.Snapshots;
 
 /// <summary>
-///     The values of a type that a rule applies to, see <see cref="SnapshotValues{TReturn, TValue}.OfType{T}" />, which
+///     The values of a type that a rule applies to, see <see cref="SnapshotValues{TResult, TValue}.OfType{T}" />, which
 ///     also allows alternative types.
 /// </summary>
 /// <remarks>
 ///     A value matches when it matches any of the types. As the selected values are then of different types,
-///     <see cref="SnapshotValues{TReturn, TValue}.Convert{TResult}" /> gets an <see cref="object" /> after an
+///     <see cref="SnapshotValues{TResult, TValue}.Convert{TConverted}" /> gets an <see cref="object" /> after an
 ///     alternative type.
 /// </remarks>
-/// <typeparam name="TReturn">What an action returns.</typeparam>
+/// <typeparam name="TResult">What an action returns.</typeparam>
 /// <typeparam name="TValue">The type of the selected values.</typeparam>
-public sealed class SnapshotValuesOfType<TReturn, TValue> : SnapshotValues<TReturn, TValue>
+public sealed class SnapshotValuesOfType<TResult, TValue> : SnapshotValues<TResult, TValue>
 {
-	private readonly Func<SnapshotRule, TReturn> _add;
+	private readonly Func<SnapshotRule, TResult> _add;
 	private readonly ValueSelection _selectionWithoutType;
 	private readonly TypeFilter[] _types;
 
-	internal SnapshotValuesOfType(Func<SnapshotRule, TReturn> add, ValueSelection selectionWithoutType,
+	internal SnapshotValuesOfType(Func<SnapshotRule, TResult> add, ValueSelection selectionWithoutType,
 		TypeFilter[] types)
 		: base(add, selectionWithoutType.OfType(types))
 	{
@@ -30,15 +30,15 @@ public sealed class SnapshotValuesOfType<TReturn, TValue> : SnapshotValues<TRetu
 
 	/// <summary>
 	///     Also selects the values of the type <typeparamref name="T" />, like
-	///     <see cref="SnapshotValues{TReturn, TValue}.OfType{T}" />.
+	///     <see cref="SnapshotValues{TResult, TValue}.OfType{T}" />.
 	/// </summary>
-	public SnapshotValuesOfType<TReturn, object> OrOfType<T>()
+	public SnapshotValuesOfType<TResult, object> OrOfType<T>()
 		=> new(_add, _selectionWithoutType, [.. _types, new TypeFilter(typeof(T), false),]);
 
 	/// <summary>
 	///     Also selects the values that are exactly of the type <typeparamref name="T" />, like
-	///     <see cref="SnapshotValues{TReturn, TValue}.OfExactType{T}" />.
+	///     <see cref="SnapshotValues{TResult, TValue}.OfExactType{T}" />.
 	/// </summary>
-	public SnapshotValuesOfType<TReturn, object> OrOfExactType<T>()
+	public SnapshotValuesOfType<TResult, object> OrOfExactType<T>()
 		=> new(_add, _selectionWithoutType, [.. _types, new TypeFilter(typeof(T), true),]);
 }

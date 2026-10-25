@@ -6,23 +6,23 @@ using aweXpect.Options;
 namespace aweXpect.Snapshots;
 
 /// <summary>
-///     The values in an object snapshot that a rule applies to, see <see cref="SnapshotFor{TReturn}.Values" />: the
+///     The values in an object snapshot that a rule applies to, see <see cref="SnapshotFor{TResult}.Values" />: the
 ///     members, and the items of tuples, collections and dictionaries.
 /// </summary>
 /// <remarks>
 ///     The filters are combined, so a value has to match all of them.
 /// </remarks>
-/// <typeparam name="TReturn">What an action returns.</typeparam>
+/// <typeparam name="TResult">What an action returns.</typeparam>
 /// <typeparam name="TValue">
 ///     The type of the selected values, which <see cref="OfType{T}" /> and <see cref="OfExactType{T}" /> set, so that
-///     <see cref="Convert{TResult}" /> gets a typed value, or <see cref="object" /> after an alternative type.
+///     <see cref="Convert{TConverted}" /> gets a typed value, or <see cref="object" /> after an alternative type.
 /// </typeparam>
-public class SnapshotValues<TReturn, TValue>
+public class SnapshotValues<TResult, TValue>
 {
-	private readonly Func<SnapshotRule, TReturn> _add;
+	private readonly Func<SnapshotRule, TResult> _add;
 	private readonly ValueSelection _selection;
 
-	internal SnapshotValues(Func<SnapshotRule, TReturn> add, ValueSelection selection)
+	internal SnapshotValues(Func<SnapshotRule, TResult> add, ValueSelection selection)
 	{
 		_add = add;
 		_selection = selection;
@@ -35,12 +35,12 @@ public class SnapshotValues<TReturn, TValue>
 	///     The <paramref name="name" /> is compared exactly and case-sensitive with the <see cref="FormattedValue.Name" />
 	///     of the value itself, not with its path: the name of a member or tuple item (<c>Item1</c>), or the index of a
 	///     collection item (<c>[0]</c>) or the key of a dictionary entry (<c>[Abbey Road]</c>) in brackets. The options
-	///     that follow apply to this filter only, like in <see cref="SnapshotMembers{TReturn, TValue}.WithName" />.
+	///     that follow apply to this filter only, like in <see cref="SnapshotMembers{TResult, TValue}.WithName" />.
 	/// </remarks>
-	public SnapshotValuesWithName<TReturn, TValue> WithName(string name)
+	public SnapshotValuesWithName<TResult, TValue> WithName(string name)
 	{
 		StringEqualityOptions options = new(nameof(name));
-		return new SnapshotValuesWithName<TReturn, TValue>(_add,
+		return new SnapshotValuesWithName<TResult, TValue>(_add,
 			_selection.WithName(RuleArguments.ThrowIfNullOrEmpty(name, nameof(name)), options), options);
 	}
 
@@ -49,9 +49,9 @@ public class SnapshotValues<TReturn, TValue>
 	///     <c>Tracks[0]</c>.
 	/// </summary>
 	/// <remarks>
-	///     The path matches like in <see cref="SnapshotMembers{TReturn, TValue}.WithPath" />.
+	///     The path matches like in <see cref="SnapshotMembers{TResult, TValue}.WithPath" />.
 	/// </remarks>
-	public SnapshotValues<TReturn, TValue> WithPath(string path)
+	public SnapshotValues<TResult, TValue> WithPath(string path)
 		=> new(_add, _selection.WithPath(RuleArguments.ThrowIfNullOrEmpty(path, nameof(path))));
 
 	/// <summary>
@@ -63,7 +63,7 @@ public class SnapshotValues<TReturn, TValue>
 	///     <see cref="object" /> member and the items of a <c>List&lt;Guid&gt;</c>. Alternative types can follow, e.g.
 	///     <c>.OfType&lt;int&gt;().OrOfType&lt;long&gt;()</c>.
 	/// </remarks>
-	public SnapshotValuesOfType<TReturn, T> OfType<T>()
+	public SnapshotValuesOfType<TResult, T> OfType<T>()
 		=> new(_add, _selection, [new TypeFilter(typeof(T), false),]);
 
 	/// <summary>
@@ -74,14 +74,14 @@ public class SnapshotValues<TReturn, TValue>
 	///     <c>Guid?</c> member counts as <see cref="Guid" />. Alternative types can follow, e.g.
 	///     <c>.OfExactType&lt;int&gt;().OrOfExactType&lt;long&gt;()</c>.
 	/// </remarks>
-	public SnapshotValuesOfType<TReturn, T> OfExactType<T>()
+	public SnapshotValuesOfType<TResult, T> OfExactType<T>()
 		=> new(_add, _selection, [new TypeFilter(typeof(T), true),]);
 
 	/// <summary>
 	///     Filters for the values in an object, tuple or collection of the type <typeparamref name="T" /> or of a derived
 	///     type, e.g. <c>.DeclaredIn&lt;Album&gt;()</c> for the members of each album.
 	/// </summary>
-	public SnapshotValues<TReturn, TValue> DeclaredIn<T>()
+	public SnapshotValues<TResult, TValue> DeclaredIn<T>()
 		=> new(_add, _selection.Where(value => typeof(T).IsAssignableFrom(value.DeclaringType)));
 
 	/// <summary>
@@ -94,7 +94,7 @@ public class SnapshotValues<TReturn, TValue>
 	///     when it calls <see cref="FormattedValue.GetValue()" />. An exception of the <paramref name="predicate" /> is
 	///     thrown.
 	/// </remarks>
-	public SnapshotValues<TReturn, TValue> Which(Func<FormattedValue, bool> predicate)
+	public SnapshotValues<TResult, TValue> Which(Func<FormattedValue, bool> predicate)
 		=> new(_add, _selection.Where(RuleArguments.ThrowIfNull(predicate, nameof(predicate))));
 
 	/// <summary>
@@ -103,10 +103,10 @@ public class SnapshotValues<TReturn, TValue>
 	/// <remarks>
 	///     The <paramref name="predicate" /> is asked like in <see cref="Which" />.
 	/// </remarks>
-	public SnapshotValues<TReturn, TValue> Except(Func<FormattedValue, bool> predicate)
+	public SnapshotValues<TResult, TValue> Except(Func<FormattedValue, bool> predicate)
 	{
 		Func<FormattedValue, bool> filter = RuleArguments.ThrowIfNull(predicate, nameof(predicate));
-		return new SnapshotValues<TReturn, TValue>(_add, _selection.Where(value => !filter(value)));
+		return new SnapshotValues<TResult, TValue>(_add, _selection.Where(value => !filter(value)));
 	}
 
 	/// <summary>
@@ -116,9 +116,9 @@ public class SnapshotValues<TReturn, TValue>
 	/// <remarks>
 	///     It wins over every masking and converter. As a left out item changes the collection, e.g. a
 	///     <c>List&lt;DateTime&gt;</c> is written as an empty list by <c>.For.Values().OfType&lt;DateTime&gt;().Ignore()</c>,
-	///     prefer <see cref="SnapshotFor{TReturn}.Members" /> to only leave out members, or mask the items instead.
+	///     prefer <see cref="SnapshotFor{TResult}.Members" /> to only leave out members, or mask the items instead.
 	/// </remarks>
-	public TReturn Ignore()
+	public TResult Ignore()
 		=> Add(ValueRule.Ignore(_selection));
 
 	/// <summary>
@@ -130,10 +130,10 @@ public class SnapshotValues<TReturn, TValue>
 	///     <c>{Guid_1}</c> for <c>.OfType&lt;Guid&gt;()</c>, or with alternative types after the first
 	///     one that the value matches, and otherwise after the member or tuple item, or <c>Item</c>
 	///     for an item of a collection or the value of a dictionary entry. It shares its numbers with the other
-	///     placeholders of that name, e.g. <c>{Guid_1}</c> with <see cref="SnapshotFor{TReturn}.Guids" />. A
+	///     placeholders of that name, e.g. <c>{Guid_1}</c> with <see cref="SnapshotFor{TResult}.Guids" />. A
 	///     <see langword="null" /> value is not masked. The first masking or converter that matches a value wins.
 	/// </remarks>
-	public TReturn Mask()
+	public TResult Mask()
 		=> Add(ValueRule.Mask(_selection));
 
 	/// <summary>
@@ -147,7 +147,7 @@ public class SnapshotValues<TReturn, TValue>
 	///     is the template named after the selection. A <see langword="null" /> value is not masked. The first masking or
 	///     converter that matches a value wins.
 	/// </remarks>
-	public TReturn Mask(string template)
+	public TResult Mask(string template)
 	{
 		RuleArguments.ThrowIfNull(template, nameof(template));
 		return Add(ValueRule.Mask(_selection, _ => template));
@@ -164,7 +164,7 @@ public class SnapshotValues<TReturn, TValue>
 	///     <paramref name="template" /> is thrown. A <see langword="null" /> value is not masked. The first masking or
 	///     converter that matches a value wins.
 	/// </remarks>
-	public TReturn Mask(Func<FormattedValue, string?> template)
+	public TResult Mask(Func<FormattedValue, string?> template)
 	{
 		RuleArguments.ThrowIfNull(template, nameof(template));
 		return Add(ValueRule.Mask(_selection, template));
@@ -175,16 +175,16 @@ public class SnapshotValues<TReturn, TValue>
 	///     of a date, so that the meaningful part of a value that changes from run to run stays visible.
 	/// </summary>
 	/// <remarks>
-	///     The converted value is written like in <see cref="SnapshotMembers{TReturn, TValue}.Convert{TResult}" />.
+	///     The converted value is written like in <see cref="SnapshotMembers{TResult, TValue}.Convert{TConverted}" />.
 	/// </remarks>
-	public TReturn Convert<[RequiresMemberMetadata] TResult>(Func<TValue, TResult> convert)
+	public TResult Convert<[RequiresMemberMetadata] TConverted>(Func<TValue, TConverted> convert)
 	{
 		RuleArguments.ThrowIfNull(convert, nameof(convert));
 		return Add(ValueRule.Convert(_selection,
 			value => value is TValue typedValue ? ValueFormatting.Replace(convert(typedValue)) : null));
 	}
 
-	private TReturn Add(ValueRule rule)
+	private TResult Add(ValueRule rule)
 	{
 		_selection.Validate();
 		return _add(new SnapshotRule(rule));

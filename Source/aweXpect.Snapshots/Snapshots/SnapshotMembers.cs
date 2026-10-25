@@ -6,22 +6,22 @@ using aweXpect.Options;
 namespace aweXpect.Snapshots;
 
 /// <summary>
-///     The members of the objects in an object snapshot that a rule applies to, see <see cref="SnapshotFor{TReturn}.Members" />.
+///     The members of the objects in an object snapshot that a rule applies to, see <see cref="SnapshotFor{TResult}.Members" />.
 /// </summary>
 /// <remarks>
 ///     The filters are combined, so a member has to match all of them.
 /// </remarks>
-/// <typeparam name="TReturn">What an action returns.</typeparam>
+/// <typeparam name="TResult">What an action returns.</typeparam>
 /// <typeparam name="TValue">
 ///     The type of the selected values, which <see cref="OfType{T}" /> and <see cref="OfExactType{T}" /> set, so that
-///     <see cref="Convert{TResult}" /> gets a typed value, or <see cref="object" /> after an alternative type.
+///     <see cref="Convert{TConverted}" /> gets a typed value, or <see cref="object" /> after an alternative type.
 /// </typeparam>
-public class SnapshotMembers<TReturn, TValue>
+public class SnapshotMembers<TResult, TValue>
 {
-	private readonly Func<SnapshotRule, TReturn> _add;
+	private readonly Func<SnapshotRule, TResult> _add;
 	private readonly ValueSelection _selection;
 
-	internal SnapshotMembers(Func<SnapshotRule, TReturn> add, ValueSelection selection)
+	internal SnapshotMembers(Func<SnapshotRule, TResult> add, ValueSelection selection)
 	{
 		_add = add;
 		_selection = selection;
@@ -38,10 +38,10 @@ public class SnapshotMembers<TReturn, TValue>
 	///     <c>Customize.aweXpect.Settings().DefaultRegexTimeout</c>. An invalid pattern throws an
 	///     <see cref="ArgumentException" /> at the action, and a pattern that times out fails the expectation.
 	/// </remarks>
-	public SnapshotMembersWithName<TReturn, TValue> WithName(string name)
+	public SnapshotMembersWithName<TResult, TValue> WithName(string name)
 	{
 		StringEqualityOptions options = new(nameof(name));
-		return new SnapshotMembersWithName<TReturn, TValue>(_add,
+		return new SnapshotMembersWithName<TResult, TValue>(_add,
 			_selection.WithName(RuleArguments.ThrowIfNullOrEmpty(name, nameof(name)), options), options);
 	}
 
@@ -55,7 +55,7 @@ public class SnapshotMembers<TReturn, TValue>
 	///     To match the whole path from the subject, use <see cref="Which" />, e.g.
 	///     <c>.Which(member =&gt; member.Path == "Id")</c>.
 	/// </remarks>
-	public SnapshotMembers<TReturn, TValue> WithPath(string path)
+	public SnapshotMembers<TResult, TValue> WithPath(string path)
 		=> new(_add, _selection.WithPath(RuleArguments.ThrowIfNullOrEmpty(path, nameof(path))));
 
 	/// <summary>
@@ -67,7 +67,7 @@ public class SnapshotMembers<TReturn, TValue>
 	///     <see cref="DateTime" /> in an <see cref="object" /> member. Alternative types can follow, e.g.
 	///     <c>.OfType&lt;int&gt;().OrOfType&lt;long&gt;()</c>.
 	/// </remarks>
-	public SnapshotMembersOfType<TReturn, T> OfType<T>()
+	public SnapshotMembersOfType<TResult, T> OfType<T>()
 		=> new(_add, _selection, [new TypeFilter(typeof(T), false),]);
 
 	/// <summary>
@@ -78,7 +78,7 @@ public class SnapshotMembers<TReturn, TValue>
 	///     where a <c>DateTime?</c> member counts as <see cref="DateTime" />. Alternative types can follow, e.g.
 	///     <c>.OfExactType&lt;int&gt;().OrOfExactType&lt;long&gt;()</c>.
 	/// </remarks>
-	public SnapshotMembersOfType<TReturn, T> OfExactType<T>()
+	public SnapshotMembersOfType<TResult, T> OfExactType<T>()
 		=> new(_add, _selection, [new TypeFilter(typeof(T), true),]);
 
 	/// <summary>
@@ -86,7 +86,7 @@ public class SnapshotMembers<TReturn, TValue>
 	///     <c>.DeclaredIn&lt;Album&gt;().WithName(nameof(Album.Price))</c> for the price of each album, but not of its
 	///     tracks.
 	/// </summary>
-	public SnapshotMembers<TReturn, TValue> DeclaredIn<T>()
+	public SnapshotMembers<TResult, TValue> DeclaredIn<T>()
 		=> new(_add, _selection.Where(value => typeof(T).IsAssignableFrom(value.DeclaringType)));
 
 	/// <summary>
@@ -97,7 +97,7 @@ public class SnapshotMembers<TReturn, TValue>
 	///     know their count are selected: a sequence that does not, like a LINQ query or an iterator, is never
 	///     enumerated here, as it might compute its items or only be enumerable once.
 	/// </remarks>
-	public SnapshotEmptyCollections<TReturn> WhichAreEmptyCollections()
+	public SnapshotEmptyCollections<TResult> WhichAreEmptyCollections()
 		=> new(_add, _selection.Where(ValueFilters.IsEmptyCollection));
 
 	/// <summary>
@@ -109,7 +109,7 @@ public class SnapshotMembers<TReturn, TValue>
 	///     <see cref="FormattedValue.DeclaringType" />; the value itself is only read when it calls
 	///     <see cref="FormattedValue.GetValue()" />. An exception of the <paramref name="predicate" /> is thrown.
 	/// </remarks>
-	public SnapshotMembers<TReturn, TValue> Which(Func<FormattedValue, bool> predicate)
+	public SnapshotMembers<TResult, TValue> Which(Func<FormattedValue, bool> predicate)
 		=> new(_add, _selection.Where(RuleArguments.ThrowIfNull(predicate, nameof(predicate))));
 
 	/// <summary>
@@ -118,10 +118,10 @@ public class SnapshotMembers<TReturn, TValue>
 	/// <remarks>
 	///     The <paramref name="predicate" /> is asked like in <see cref="Which" />.
 	/// </remarks>
-	public SnapshotMembers<TReturn, TValue> Except(Func<FormattedValue, bool> predicate)
+	public SnapshotMembers<TResult, TValue> Except(Func<FormattedValue, bool> predicate)
 	{
 		Func<FormattedValue, bool> filter = RuleArguments.ThrowIfNull(predicate, nameof(predicate));
-		return new SnapshotMembers<TReturn, TValue>(_add, _selection.Where(value => !filter(value)));
+		return new SnapshotMembers<TResult, TValue>(_add, _selection.Where(value => !filter(value)));
 	}
 
 	/// <summary>
@@ -130,7 +130,7 @@ public class SnapshotMembers<TReturn, TValue>
 	/// <remarks>
 	///     It wins over every masking and converter.
 	/// </remarks>
-	public TReturn Ignore()
+	public TResult Ignore()
 		=> Add(ValueRule.Ignore(_selection));
 
 	/// <summary>
@@ -141,10 +141,10 @@ public class SnapshotMembers<TReturn, TValue>
 	///     The placeholder is named after the type of a selection that is filtered by its type, but not by its name or path, e.g.
 	///     <c>{Guid_1}</c> for <c>.OfType&lt;Guid&gt;()</c>, or with alternative types after the first
 	///     one that the value matches, and otherwise after the member. It shares its numbers with
-	///     the other placeholders of that name, e.g. <c>{Guid_1}</c> with <see cref="SnapshotFor{TReturn}.Guids" />. A
+	///     the other placeholders of that name, e.g. <c>{Guid_1}</c> with <see cref="SnapshotFor{TResult}.Guids" />. A
 	///     <see langword="null" /> value is not masked. The first masking or converter that matches a value wins.
 	/// </remarks>
-	public TReturn Mask()
+	public TResult Mask()
 		=> Add(ValueRule.Mask(_selection));
 
 	/// <summary>
@@ -158,7 +158,7 @@ public class SnapshotMembers<TReturn, TValue>
 	///     is the template named after the selection. A <see langword="null" /> value is not masked. The first masking or
 	///     converter that matches a value wins.
 	/// </remarks>
-	public TReturn Mask(string template)
+	public TResult Mask(string template)
 	{
 		RuleArguments.ThrowIfNull(template, nameof(template));
 		return Add(ValueRule.Mask(_selection, _ => template));
@@ -175,7 +175,7 @@ public class SnapshotMembers<TReturn, TValue>
 	///     <paramref name="template" /> is thrown. A <see langword="null" /> value is not masked. The first masking or
 	///     converter that matches a value wins.
 	/// </remarks>
-	public TReturn Mask(Func<FormattedValue, string?> template)
+	public TResult Mask(Func<FormattedValue, string?> template)
 	{
 		RuleArguments.ThrowIfNull(template, nameof(template));
 		return Add(ValueRule.Mask(_selection, template));
@@ -192,17 +192,17 @@ public class SnapshotMembers<TReturn, TValue>
 	///     text rules do; a converted <see langword="null" /> is written as <c>&lt;null&gt;</c>. A
 	///     <see langword="null" /> value, or one that is no <typeparamref name="TValue" />, is not converted. An exception
 	///     of <paramref name="convert" /> is thrown. The first masking or converter that matches a value wins.<br />
-	///     The source generator of aweXpect.Core registers the members of <typeparamref name="TResult" />, so that it is
-	///     also written member-wise in a trimmed or Native AOT build.
+	///     The source generator of aweXpect.Core registers the members of <typeparamref name="TConverted" />, so that it
+	///     is also written member-wise in a trimmed or Native AOT build.
 	/// </remarks>
-	public TReturn Convert<[RequiresMemberMetadata] TResult>(Func<TValue, TResult> convert)
+	public TResult Convert<[RequiresMemberMetadata] TConverted>(Func<TValue, TConverted> convert)
 	{
 		RuleArguments.ThrowIfNull(convert, nameof(convert));
 		return Add(ValueRule.Convert(_selection,
 			value => value is TValue typedValue ? ValueFormatting.Replace(convert(typedValue)) : null));
 	}
 
-	private TReturn Add(ValueRule rule)
+	private TResult Add(ValueRule rule)
 	{
 		_selection.Validate();
 		return _add(new SnapshotRule(rule));
