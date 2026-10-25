@@ -101,7 +101,7 @@ and `Release` on the build server (`--configuration Release`).
 | `Compile` | Restores, calculates the version with GitVersion and builds the solution |
 | `UnitTests` | Runs the unit test projects (`net48` only on Windows), then their slow tests |
 | `TestFrameworks` | Runs the projects under `Tests/Frameworks` |
-| `CodeCoverage` | `UnitTests` and `TestFrameworks` |
+| `CodeCoverage` | `UnitTests` and `TestFrameworks` with coverage, merged into `TestResults/reports`; the tests collect coverage only when this target runs |
 | `ApiChecks` | Runs `aweXpect.Api.Tests` |
 | `AotSmokeTests` | Runs `Tests/Aot` normally and published with Native AOT for the current platform (needs the native toolchain, on Windows the C++ build tools of Visual Studio) |
 | `Pack` | Collects the packages into `Artifacts/Packages` |
@@ -133,7 +133,7 @@ be added to `ProjectsWithSlowTests` in `Pipeline/Build.UnitTest.cs`; a listed pr
 | --- | --- | --- |
 | `ci.yml` | Pull requests to `main` | `UnitTests TestFrameworks` on Ubuntu, Windows and macOS; `ApiChecks`; `AotSmokeTests`; `Benchmarks` per changed package; `CodeAnalysis` |
 | `ci-analysis.yml` | After `CI` completes | Posts a benchmark PR comment per package |
-| `build.yml` | Pushes to `main`, release tags | `CodeCoverage` on three platforms, `ApiChecks`, `AotSmokeTests`, `Benchmarks` per package, `CodeAnalysis`, `Pack`, `ReleaseNotes`; on a tag, pushes all packages to NuGet and creates the GitHub release |
+| `build.yml` | Pushes to `main`, release tags | `UnitTests TestFrameworks` on three platforms, `ApiChecks`, `AotSmokeTests`, `Benchmarks` per package, `CodeAnalysis`, `Pack`, `ReleaseNotes`; on a tag, pushes all packages to NuGet and creates the GitHub release |
 | `nightly.yml` | Daily, when `main` changed | Sliced mutation tests and the Stryker dashboard |
 | `notify-docs-site.yml` | After `Build` on `main` | Triggers the docs site rebuild |
 

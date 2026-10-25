@@ -87,8 +87,8 @@ partial class Build
 	///     The test projects are executables of the Microsoft.Testing.Platform, which <c>dotnet test</c> only runs
 	///     when the whole repository opts into that platform, so they are started with <c>dotnet run</c>.
 	///     <para />
-	///     Every run writes a TRX file and a Cobertura coverage file named after the project, the target framework and
-	///     the step into the <see cref="TestResultsDirectory" />.
+	///     Every run writes a TRX file and, when <see cref="CollectCoverage" />, a Cobertura coverage file named after
+	///     the project, the target framework and the step into the <see cref="TestResultsDirectory" />.
 	/// </remarks>
 	void RunUnitTests(Project[] projects, Func<string, bool> includeFramework)
 	{
@@ -118,14 +118,14 @@ partial class Build
 							testRun.IsSlow
 								? $"{testRun.Project.Name}_{testRun.Framework}_Slow"
 								: $"{testRun.Project.Name}_{testRun.Framework}",
-							testRun.IsSlow, TestResultsDirectory))),
+							testRun.IsSlow, CollectCoverage, TestResultsDirectory))),
 			completeOnFailure: true);
 	}
 
 	/// <summary>
 	///     The arguments for the test application behind <c>dotnet run</c>.
 	/// </summary>
-	static string[] TestArguments(string name, bool isSlow, AbsolutePath resultsDirectory)
+	static string[] TestArguments(string name, bool isSlow, bool collectCoverage, AbsolutePath resultsDirectory)
 	{
 		List<string> arguments = ["--", "--disable-logo", $"--results-directory \"{resultsDirectory}\"",];
 		if (isSlow)
@@ -134,14 +134,16 @@ partial class Build
 			arguments.AddRange([$"--treenode-filter \"{SlowTestsFilter}\"", "--minimum-expected-tests 1",]);
 		}
 
-		arguments.AddRange(
-		[
-			"--report-trx",
-			$"--report-trx-filename {name}.trx",
-			"--coverage",
-			"--coverage-output-format cobertura",
-			$"--coverage-output {name}.cobertura.xml",
-		]);
+		arguments.AddRange(["--report-trx", $"--report-trx-filename {name}.trx",]);
+		if (collectCoverage)
+		{
+			arguments.AddRange(
+			[
+				"--coverage",
+				"--coverage-output-format cobertura",
+				$"--coverage-output {name}.cobertura.xml",
+			]);
+		}
 
 		return arguments.ToArray();
 	}

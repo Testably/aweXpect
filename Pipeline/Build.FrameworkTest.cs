@@ -44,21 +44,29 @@ partial class Build
 					framework,
 				};
 
-			DotNetTest(s => s
-				.SetConfiguration(Configuration)
-				.SetProcessEnvironmentVariable("DOTNET_CLI_UI_LANGUAGE", "en-US")
-				.EnableNoBuild()
-				.SetDataCollector("XPlat Code Coverage")
-				.SetResultsDirectory(TestResultsDirectory)
-				.AddRunSetting(
-					"DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.DoesNotReturnAttribute",
-					"DoesNotReturnAttribute")
-				.CombineWith(
+			DotNetTest(s =>
+			{
+				s = s
+					.SetConfiguration(Configuration)
+					.SetProcessEnvironmentVariable("DOTNET_CLI_UI_LANGUAGE", "en-US")
+					.EnableNoBuild()
+					.SetResultsDirectory(TestResultsDirectory);
+				if (CollectCoverage)
+				{
+					s = s
+						.SetDataCollector("XPlat Code Coverage")
+						.AddRunSetting(
+							"DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.DoesNotReturnAttribute",
+							"DoesNotReturnAttribute");
+				}
+
+				return s.CombineWith(
 					testCombinations,
 					(settings, v) => settings
 						.SetProjectFile(v.project)
 						.SetFramework(v.framework)
-						.AddLoggers($"trx;LogFileName={v.project.Name}_{v.framework}.trx")), completeOnFailure: true);
+						.AddLoggers($"trx;LogFileName={v.project.Name}_{v.framework}.trx"));
+			}, completeOnFailure: true);
 		});
 
 	Target TestingPlatformFrameworks => _ => _
@@ -92,13 +100,16 @@ partial class Build
 						.SetProjectFile(v.project)
 						.SetFramework(v.framework)
 						.SetProcessAdditionalArguments(
-							"--",
-							"--coverage",
-							"--disable-logo",
-							"--coverage-output-format \"cobertura\"",
-							"--report-trx",
-							$"--report-trx-filename {v.project.Name}_{v.framework}.trx",
-							$"--results-directory {TestResultsDirectory}"
+							[
+								"--",
+								"--disable-logo",
+								"--report-trx",
+								$"--report-trx-filename {v.project.Name}_{v.framework}.trx",
+								$"--results-directory {TestResultsDirectory}",
+								..CollectCoverage
+									? (string[])["--coverage", "--coverage-output-format \"cobertura\"",]
+									: [],
+							]
 						)
 				)
 			);
