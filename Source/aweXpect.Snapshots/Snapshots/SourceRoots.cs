@@ -366,21 +366,26 @@ internal static class SourceRoots
 	private static Records Parse(IEnumerable<string> sourceRoots, IEnumerable<string> projectDirectories,
 		IEnumerable<string> targetFrameworks)
 		=> new(
-			sourceRoots
-				.Where(value => value.IndexOf('=') > 0)
-				.Select(value => new KeyValuePair<string, string>(
-					value.Substring(0, value.IndexOf('=')),
-					value.Substring(value.IndexOf('=') + 1)))
+			SplitAtSeparator(sourceRoots)
 				.ToArray(),
 			projectDirectories
 				.Where(value => value.Length > 0)
 				.ToArray(),
-			targetFrameworks
-				.Where(value => value.IndexOf('=') > 0)
-				.Select(value => new KeyValuePair<string, string>(
-					value.Substring(value.IndexOf('=') + 1),
-					value.Substring(0, value.IndexOf('='))))
+			SplitAtSeparator(targetFrameworks)
+				.Select(pair => new KeyValuePair<string, string>(pair.Value, pair.Key))
 				.ToArray());
+
+	/// <remarks>
+	///     A value without a key before the first <c>=</c> is skipped, as an empty mapped path or target framework is
+	///     never recorded.
+	/// </remarks>
+	private static IEnumerable<KeyValuePair<string, string>> SplitAtSeparator(IEnumerable<string> values)
+		=> values
+			.Select(value => (Value: value, Separator: value.IndexOf('=')))
+			.Where(item => item.Separator > 0)
+			.Select(item => new KeyValuePair<string, string>(
+				item.Value.Substring(0, item.Separator),
+				item.Value.Substring(item.Separator + 1)));
 
 	/// <remarks>
 	///     Reading the attributes of an assembly whose dependencies cannot be loaded throws, but such an assembly is not
