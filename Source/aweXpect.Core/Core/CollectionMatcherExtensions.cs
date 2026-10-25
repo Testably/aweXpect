@@ -54,7 +54,7 @@ public static class CollectionMatcherExtensions
 		{
 			while (enumerator.MoveNext())
 			{
-				if (IsCanceledBeforeTheEnd(items, cancellationToken))
+				if (enumerator.IsCanceledBeforeTheEnd(cancellationToken))
 				{
 					return new ValueTask<(Outcome, string?)>((Outcome.Undecided, null));
 				}
@@ -64,7 +64,7 @@ public static class CollectionMatcherExtensions
 				{
 					// The continuation enumerates the remaining items, so it disposes the enumerator.
 					isHandedOver = true;
-					return VerifyItemsAsync(verified, enumerator, matcher, it, items, options, maximumNumber,
+					return VerifyItemsAsync(verified, enumerator, matcher, it, options, maximumNumber,
 						cancellationToken);
 				}
 
@@ -96,8 +96,8 @@ public static class CollectionMatcherExtensions
 	/// </summary>
 	private static async ValueTask<(Outcome, string?)> VerifyItemsAsync<TItem, TMatch>(
 		ValueTask<(bool, string?)> verified, ItemEnumerator<TItem> enumerator,
-		ICollectionMatcher<TItem, TMatch> matcher, string it, IEnumerable<TItem> items,
-		IOptionsEquality<TMatch> options, int maximumNumber, CancellationToken cancellationToken)
+		ICollectionMatcher<TItem, TMatch> matcher, string it, IOptionsEquality<TMatch> options, int maximumNumber,
+		CancellationToken cancellationToken)
 		where TItem : TMatch
 	{
 		try
@@ -114,7 +114,7 @@ public static class CollectionMatcherExtensions
 					break;
 				}
 
-				if (IsCanceledBeforeTheEnd(items, cancellationToken))
+				if (enumerator.IsCanceledBeforeTheEnd(cancellationToken))
 				{
 					return (Outcome.Undecided, null);
 				}
@@ -197,19 +197,6 @@ public static class CollectionMatcherExtensions
 		   matcher is CollectionMatchOptions.IExpectationItemsMatcher { HasUndecidedExpectation: true, };
 
 	/// <summary>
-	///     Whether the <paramref name="cancellationToken" /> is canceled before all <paramref name="items" /> are
-	///     available.
-	/// </summary>
-	/// <remarks>
-	///     A cancellation only stops reading the items that still have to come from the source, so that a collection
-	///     which is already complete in memory is judged like any other value.
-	/// </remarks>
-	private static bool IsCanceledBeforeTheEnd<TItem>(IEnumerable<TItem> items, CancellationToken cancellationToken)
-		=> cancellationToken.IsCancellationRequested &&
-		   items is not (ICollection<TItem> or IReadOnlyCollection<TItem> or ICollection) &&
-		   items is not ICountable { Count: not null, };
-
-	/// <summary>
 	///     Enumerates the items without allocating an enumerator for an array, a <see cref="List{T}" /> or a sequence
 	///     from <see cref="EvaluationContextExtensions.UseMaterializedEnumerable{TItem}(IEvaluationContext, IEnumerable{TItem})" />,
 	///     as most subjects are one.
@@ -224,12 +211,14 @@ public static class CollectionMatcherExtensions
 		private readonly TItem[]? _array;
 		private readonly IEnumerator<TItem>? _enumerator;
 		private readonly bool _isList;
+		private readonly IEnumerable<TItem> _items;
 		private readonly MaterializingEnumerable<TItem>? _materialized;
 		private List<TItem>.Enumerator _listEnumerator;
 		private int _index;
 
 		public ItemEnumerator(IEnumerable<TItem> items)
 		{
+			_items = items;
 			_array = null;
 			_enumerator = null;
 			_isList = false;
@@ -257,6 +246,18 @@ public static class CollectionMatcherExtensions
 		}
 
 		public TItem Current { get; private set; }
+
+		/// <summary>
+		///     Whether the <paramref name="cancellationToken" /> is canceled before all items are available.
+		/// </summary>
+		/// <remarks>
+		///     A cancellation only stops reading the items that still have to come from the source, so that a collection
+		///     which is already complete in memory is judged like any other value.
+		/// </remarks>
+		public bool IsCanceledBeforeTheEnd(CancellationToken cancellationToken)
+			=> cancellationToken.IsCancellationRequested &&
+			   _items is not (ICollection<TItem> or IReadOnlyCollection<TItem> or ICollection) &&
+			   _items is not ICountable { Count: not null, };
 
 		public bool MoveNext()
 		{

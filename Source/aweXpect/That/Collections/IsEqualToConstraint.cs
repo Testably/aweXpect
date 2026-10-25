@@ -147,23 +147,6 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		return new ValueTask<ConstraintResult>(this);
 	}
 
-	private async ValueTask<ConstraintResult> SetVerifiedAsync<TItem>(ValueTask<(Outcome, string?)> verified,
-		CollectionItems<TItem> materialized, CancellationToken cancellationToken)
-	{
-		SetVerified(await verified, materialized, cancellationToken);
-		return this;
-	}
-
-	private void SetVerified<TItem>((Outcome, string?) verified, CollectionItems<TItem> materialized,
-		CancellationToken cancellationToken)
-	{
-		(Outcome, _failure) = verified;
-		if (Outcome == Outcome.Undecided && materialized.IsCanceledBeforeTheEnd(cancellationToken))
-		{
-			materialized.SetContext(ref _collectionContext, true);
-		}
-	}
-
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies the <paramref name="materialized" /> items by the <paramref name="matcher" />.
@@ -228,6 +211,23 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		return true;
 	}
 #endif
+
+	private async ValueTask<ConstraintResult> SetVerifiedAsync<TItem>(ValueTask<(Outcome, string?)> verified,
+		CollectionItems<TItem> materialized, CancellationToken cancellationToken)
+	{
+		SetVerified(await verified, materialized, cancellationToken);
+		return this;
+	}
+
+	private void SetVerified<TItem>((Outcome, string?) verified, CollectionItems<TItem> materialized,
+		CancellationToken cancellationToken)
+	{
+		(Outcome, _failure) = verified;
+		if (Outcome == Outcome.Undecided && materialized.IsCanceledBeforeTheEnd(cancellationToken))
+		{
+			materialized.SetContext(ref _collectionContext, true);
+		}
+	}
 
 	private void Fail(string? failure)
 	{
