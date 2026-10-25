@@ -68,6 +68,26 @@ public sealed partial class ThatJsonNode
 			}
 
 			[Test]
+			public async Task WhenIntermediateValueHoldsAnObject_ShouldPassTheValue()
+			{
+				JsonObject subject = new()
+				{
+					["album"] = JsonValue.Create(new
+					{
+						artist = new
+						{
+							name = "The Beatles",
+						},
+					}),
+				};
+
+				async Task Act()
+					=> await That(subject).HasValueAt("album.artist.name", n => n.IsString("The Beatles"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				JsonNode? subject = null;
@@ -94,6 +114,17 @@ public sealed partial class ThatJsonNode
 
 				async Task Act()
 					=> await That(subject).HasValueAt("album.tracks[0]", t => t.IsSameAs(track));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenValueIsInAnArray_ShouldPassTheValue()
+			{
+				JsonNode? subject = FromString("{\"tracks\": [{\"title\": \"Something\"}, {\"title\": \"Come Together\"}]}");
+
+				async Task Act()
+					=> await That(subject).HasValueAt("tracks[1].title", t => t.IsString("Come Together"));
 
 				await That(Act).DoesNotThrow();
 			}
@@ -169,6 +200,38 @@ public sealed partial class ThatJsonNode
 	{
 		public sealed class Tests
 		{
+			[Test]
+			public async Task WhenIntermediateIndexDoesNotExist_ShouldSucceed()
+			{
+				JsonNode? subject = FromString("{\"tracks\": [{\"title\": \"Something\"}]}");
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveValueAt("tracks[1].title");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenIntermediateValueIsNoObject_ShouldFail()
+			{
+				JsonNode? subject = FromString("{\"artist\": \"The Beatles\"}");
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveValueAt("artist.name");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value at "artist.name",
+					             but $.artist was a string instead of an object
+
+					             Actual:
+					             {
+					               "artist": "The Beatles"
+					             }
+					             """);
+			}
+
 			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{

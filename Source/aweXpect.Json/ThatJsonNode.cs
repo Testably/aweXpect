@@ -30,7 +30,7 @@ public static partial class ThatJsonNode
 	///     Any other node is written instead of serialized, which would require reflection, and the element owns its
 	///     memory, so that it outlives the evaluation, e.g. for the failure message.
 	/// </remarks>
-	private static JsonElement ToJsonElement(JsonNode? node)
+	internal static JsonElement ToJsonElement(JsonNode? node)
 	{
 		if (node is JsonValue value && value.TryGetValue(out JsonElement element))
 		{
@@ -113,6 +113,11 @@ public static partial class ThatJsonNode
 			CancellationToken cancellationToken)
 		{
 			_actual = actual;
+			if (inner is HasJsonValueConstraint lookup && lookup.TryIsMetBy(actual))
+			{
+				return this;
+			}
+
 			JsonElement element = ToJsonElement(actual, context);
 			if (inner is IAsyncContextConstraint<JsonElement> asyncConstraint)
 			{
