@@ -762,6 +762,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -891,7 +897,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -1024,7 +1031,8 @@ window.BENCHMARK_DATA = {
           2095.758318094107,
           2130.3487486158097,
           2079.9536314744214,
-          1214.7723749796548
+          1214.7723749796548,
+          1103.672924041748
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1064,6 +1072,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -1303,7 +1312,8 @@ window.BENCHMARK_DATA = {
           15445.505216326032,
           16095.8956644694,
           15385.720705159505,
-          7476.793487548828
+          7476.793487548828,
+          6724.722705296108
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1315,6 +1325,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -2217,6 +2228,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -2346,7 +2363,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -2479,7 +2497,8 @@ window.BENCHMARK_DATA = {
           1667.1314674104963,
           1740.445757929484,
           1764.505627187093,
-          997.4567373820713
+          997.4567373820713,
+          917.817653465271
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2572,6 +2591,7 @@ window.BENCHMARK_DATA = {
           1200,
           1200,
           1200,
+          1240,
           1240,
           1240,
           1240,
@@ -2758,7 +2778,8 @@ window.BENCHMARK_DATA = {
           14069.68882115682,
           14802.000891549247,
           14399.515367635091,
-          7300.230937703451
+          7300.230937703451,
+          6324.184260050456
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2770,6 +2791,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -3612,6 +3634,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -3731,7 +3759,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -3854,7 +3883,8 @@ window.BENCHMARK_DATA = {
           5052.092629652757,
           5188.7337361653645,
           5127.418573107038,
-          2909.503671646118
+          2909.503671646118,
+          2853.7479357038223
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3937,6 +3967,7 @@ window.BENCHMARK_DATA = {
           3688,
           3688,
           3688,
+          3736,
           3736,
           3736,
           3736,
@@ -4113,7 +4144,8 @@ window.BENCHMARK_DATA = {
           46687.58616286058,
           47712.36237444197,
           46519.18549804688,
-          20591.213616507393
+          20591.213616507393,
+          18374.067997859074
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4241,6 +4273,7 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
+          61925,
           61925
         ],
         "borderColor": "#FF671B",
@@ -4957,6 +4990,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -5076,7 +5115,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -5199,7 +5239,8 @@ window.BENCHMARK_DATA = {
           9377.79757792155,
           9560.09695317195,
           9427.50972856794,
-          5098.741732788086
+          5098.741732788086,
+          4841.236343383789
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5282,6 +5323,7 @@ window.BENCHMARK_DATA = {
           7024,
           7024,
           7024,
+          7064,
           7064,
           7064,
           7064,
@@ -5458,7 +5500,8 @@ window.BENCHMARK_DATA = {
           292682.9240722656,
           302597.05927734374,
           296948.88609095983,
-          151974.20401436943
+          151974.20401436943,
+          131368.40914481026
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5579,6 +5622,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521542,
+          521594,
           521594,
           521594,
           521594,
@@ -6302,6 +6346,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -6421,7 +6471,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -6544,7 +6595,8 @@ window.BENCHMARK_DATA = {
           2863.0065709431965,
           2909.4557448795863,
           2921.7957257588705,
-          1650.9289124806721
+          1650.9289124806721,
+          1562.8392949785505
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6658,6 +6710,7 @@ window.BENCHMARK_DATA = {
           1328,
           1328,
           1328,
+          1488,
           1488,
           1488,
           1488,
@@ -6803,7 +6856,8 @@ window.BENCHMARK_DATA = {
           1871.5238552093506,
           1940.4303471883138,
           1905.7743681498937,
-          1117.079008102417
+          1117.079008102417,
+          1031.3462692260741
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6815,6 +6869,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -7647,6 +7702,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -7766,7 +7827,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -7889,7 +7951,8 @@ window.BENCHMARK_DATA = {
           1979.0040136484,
           2024.8508847554524,
           2123.1150545392716,
-          1196.1520142873128
+          1196.1520142873128,
+          1275.9472116323618
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8017,7 +8080,8 @@ window.BENCHMARK_DATA = {
           2864,
           2864,
           2864,
-          2864
+          2864,
+          2832
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8148,7 +8212,8 @@ window.BENCHMARK_DATA = {
           1716.9936486562094,
           1822.2458597819011,
           1847.6963158925375,
-          941.7298893610637
+          941.7298893610637,
+          872.4195875167846
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8276,7 +8341,146 @@ window.BENCHMARK_DATA = {
           6224,
           6224,
           6224,
+          6224,
           6224
+        ],
+        "borderColor": "#FF671B",
+        "backgroundColor": "#FF671B",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      }
+    ]
+  },
+  "JsonNestedPropertyChain": {
+    "commits": [
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      }
+    ],
+    "labels": [
+      "b7024c3c"
+    ],
+    "datasets": [
+      {
+        "label": "aweXpect time",
+        "unit": "ns",
+        "data": [
+          1016.2116257803781
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "aweXpect memory",
+        "unit": "b",
+        "data": [
+          2888
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      },
+      {
+        "label": "FluentAssertions time",
+        "unit": "ns",
+        "data": [
+          551.5206391994769
+        ],
+        "borderColor": "#FF671B",
+        "backgroundColor": "#FF671B",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "FluentAssertions memory",
+        "unit": "b",
+        "data": [
+          5152
+        ],
+        "borderColor": "#FF671B",
+        "backgroundColor": "#FF671B",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      }
+    ]
+  },
+  "JsonPropertyChain": {
+    "commits": [
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      }
+    ],
+    "labels": [
+      "b7024c3c"
+    ],
+    "datasets": [
+      {
+        "label": "aweXpect time",
+        "unit": "ns",
+        "data": [
+          1435.492509841919
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "aweXpect memory",
+        "unit": "b",
+        "data": [
+          3768
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      },
+      {
+        "label": "FluentAssertions time",
+        "unit": "ns",
+        "data": [
+          630.0053898493449
+        ],
+        "borderColor": "#FF671B",
+        "backgroundColor": "#FF671B",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "FluentAssertions memory",
+        "unit": "b",
+        "data": [
+          5960
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
