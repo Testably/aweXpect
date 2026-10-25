@@ -630,6 +630,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
@@ -737,7 +743,8 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
@@ -848,7 +855,8 @@ window.BENCHMARK_DATA = {
           731.249979019165,
           702.8027448018391,
           732.3990701675415,
-          728.2026928583781
+          728.2026928583781,
+          578.1799637930734
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -888,6 +896,7 @@ window.BENCHMARK_DATA = {
           1160,
           1160,
           1160,
+          1120,
           1120,
           1120,
           1120,
@@ -1083,7 +1092,8 @@ window.BENCHMARK_DATA = {
           719.4932577269418,
           656.9789915084839,
           765.3655389639048,
-          698.8283843994141
+          698.8283843994141,
+          651.7095802852085
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1095,6 +1105,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -1843,6 +1854,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
@@ -1950,7 +1967,8 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
@@ -2061,7 +2079,8 @@ window.BENCHMARK_DATA = {
           4570.851923116048,
           4285.288005065918,
           4498.160395304362,
-          4879.691349283854
+          4879.691349283854,
+          3705.27317276001
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2133,6 +2152,7 @@ window.BENCHMARK_DATA = {
           24047,
           24114,
           24047,
+          24119,
           24119,
           24119,
           24119,
@@ -2296,7 +2316,8 @@ window.BENCHMARK_DATA = {
           5039.726876478929,
           4984.661358759953,
           5136.364515686035,
-          5714.791927882603
+          5714.791927882603,
+          4723.881534322103
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2308,6 +2329,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -2996,6 +3018,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
@@ -3093,7 +3121,8 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
@@ -3194,7 +3223,8 @@ window.BENCHMARK_DATA = {
           2549.827014287313,
           2515.5329533894856,
           2719.1371014912925,
-          2753.4488794962567
+          2753.4488794962567,
+          2024.1622179667154
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3300,6 +3330,7 @@ window.BENCHMARK_DATA = {
           12856,
           12780,
           12856,
+          12780,
           12780
         ],
         "borderColor": "#63A2AC",
@@ -3409,7 +3440,8 @@ window.BENCHMARK_DATA = {
           3502.4739283243816,
           3426.906172434489,
           3636.96946182251,
-          3779.000532023112
+          3779.000532023112,
+          2839.600579670497
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3421,6 +3453,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -4099,6 +4132,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
@@ -4196,7 +4235,8 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
@@ -4297,7 +4337,8 @@ window.BENCHMARK_DATA = {
           14672.612016296387,
           13498.833627973285,
           14464.016329956055,
-          14394.753705705914
+          14394.753705705914,
+          12250.260505167644
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4403,6 +4444,7 @@ window.BENCHMARK_DATA = {
           25568,
           25494,
           25568,
+          25494,
           25494
         ],
         "borderColor": "#63A2AC",
@@ -4512,7 +4554,8 @@ window.BENCHMARK_DATA = {
           356325.2330403646,
           350264.6721028646,
           358374.4989885603,
-          362973.3230143229
+          362973.3230143229,
+          246043.58990885416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4618,7 +4661,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544335
+          544335,
+          544246
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
