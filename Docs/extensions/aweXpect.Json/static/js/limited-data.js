@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "16d46b226e57f21b7bde1b6e05a0b91058d53353",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
-        "message": "feat!: add WhoseProperties to IsObject (#1951)"
-      },
-      {
         "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
         "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
+      },
+      {
+        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
+        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
       }
     ],
     "labels": [
-      "16d46b22",
       "3009dddd",
       "ce12e858",
       "25ca35b1",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "b7f4f05b",
       "1785986b",
       "73754c62",
-      "937f5ce0"
+      "937f5ce0",
+      "5c160901"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1578.9626701899938,
           2124.670256101168,
           1754.33740568161,
           1251.4201052529472,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           2093.122287205287,
           1786.4942106882731,
           2082.54341506958,
-          1638.4001864115396
+          1638.4001864115396,
+          2176.7965695307803
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          11173.423699951172,
           15688.78132832845,
           12852.56512778146,
           9660.473304748535,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           15207.722082955497,
           12970.143255615234,
           16095.034516554613,
-          10886.648873901368
+          10886.648873901368,
+          15994.652080829326
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "16d46b226e57f21b7bde1b6e05a0b91058d53353",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
-        "message": "feat!: add WhoseProperties to IsObject (#1951)"
-      },
-      {
         "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
         "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
+      },
+      {
+        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
+        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
       }
     ],
     "labels": [
-      "16d46b22",
       "3009dddd",
       "ce12e858",
       "25ca35b1",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "b7f4f05b",
       "1785986b",
       "73754c62",
-      "937f5ce0"
+      "937f5ce0",
+      "5c160901"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1128.5401138578143,
           1559.2521649769374,
           1255.9764409746442,
           907.3025187174479,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1698.8427904569185,
           1392.230298451015,
           1714.5909866333009,
-          1307.5085592269897
+          1307.5085592269897,
+          1756.8202382496424
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1054,7 +1054,7 @@ window.BENCHMARK_DATA = {
           1200,
           1200,
           1200,
-          1200,
+          1240,
           1240,
           1240,
           1240,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10421.98610534668,
           14407.920305379232,
           11978.919964130107,
           8744.883320399693,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           13623.88699885777,
           12282.749443562825,
           14967.080297851562,
-          10542.309217180524
+          10542.309217180524,
+          14830.891222635904
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "16d46b226e57f21b7bde1b6e05a0b91058d53353",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
-        "message": "feat!: add WhoseProperties to IsObject (#1951)"
-      },
-      {
         "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
         "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
+      },
+      {
+        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
+        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
       }
     ],
     "labels": [
-      "16d46b22",
       "3009dddd",
       "ce12e858",
       "25ca35b1",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "b7f4f05b",
       "1785986b",
       "73754c62",
-      "937f5ce0"
+      "937f5ce0",
+      "5c160901"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3622.1291872660317,
           4849.86417225429,
           3769.022092183431,
           2662.538125038147,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           5115.043141291691,
           4164.019689941406,
           5324.959761483328,
-          3945.5726943969726
+          3945.5726943969726,
+          5218.103447547326
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1657,12 +1657,12 @@ window.BENCHMARK_DATA = {
           3472,
           3472,
           3472,
-          3472,
           3688,
           3688,
           3688,
           3688,
           3688,
+          3736,
           3736,
           3736,
           3736,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          31321.70557454427,
           45718.44614955357,
           35363.37002999442,
           26776.701154436385,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           46853.86432756697,
           36211.60117885045,
           47738.11770833333,
-          30162.97150878906
+          30162.97150878906,
+          47229.157421875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61926,
           61925,
           61925,
           61925,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61926,
           61925,
           61925,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "16d46b226e57f21b7bde1b6e05a0b91058d53353",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
-        "message": "feat!: add WhoseProperties to IsObject (#1951)"
-      },
       {
         "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
         "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
+      },
+      {
+        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
+        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
       }
     ],
     "labels": [
-      "16d46b22",
       "3009dddd",
       "ce12e858",
       "25ca35b1",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "b7f4f05b",
       "1785986b",
       "73754c62",
-      "937f5ce0"
+      "937f5ce0",
+      "5c160901"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7529.41606257512,
           9496.338644761305,
           8025.135244516226,
           5847.5187316894535,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           9149.728116548979,
           8519.754654947918,
           9709.989149911064,
-          7665.376858847482
+          7665.376858847482,
+          9512.512535095215
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2270,7 +2270,7 @@ window.BENCHMARK_DATA = {
           7024,
           7024,
           7024,
-          7024,
+          7064,
           7064,
           7064,
           7064,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          229010.78647460937,
           286696.0564528245,
           250377.7802734375,
           193501.2425443209,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           287720.96236746653,
           255799.1060221354,
           303542.803515625,
-          219512.95109049478
+          219512.95109049478,
+          308093.34877929685
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521541,
           521542,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521541,
           521594,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "16d46b226e57f21b7bde1b6e05a0b91058d53353",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
-        "message": "feat!: add WhoseProperties to IsObject (#1951)"
-      },
       {
         "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
         "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
+      },
+      {
+        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
+        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
       }
     ],
     "labels": [
-      "16d46b22",
       "3009dddd",
       "ce12e858",
       "25ca35b1",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "b7f4f05b",
       "1785986b",
       "73754c62",
-      "937f5ce0"
+      "937f5ce0",
+      "5c160901"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2218.777467580942,
           2826.972456418551,
           2582.982987812587,
           1864.1091051737467,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2844.144291941325,
           2608.9355915614537,
           2818.6505655141978,
-          2260.7418215615407
+          2260.7418215615407,
+          2870.4714209238687
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1608.089585240682,
           1881.944551740374,
           1911.7904545920235,
           1404.3055129732404,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1940.7319385822002,
           1912.1763672461877,
           1991.461474355062,
-          1600.6378626505534
+          1600.6378626505534,
+          1976.182002766927
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "16d46b226e57f21b7bde1b6e05a0b91058d53353",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
-        "message": "feat!: add WhoseProperties to IsObject (#1951)"
-      },
-      {
         "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
         "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
+      },
+      {
+        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
+        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
       }
     ],
     "labels": [
-      "16d46b22",
       "3009dddd",
       "ce12e858",
       "25ca35b1",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "b7f4f05b",
       "1785986b",
       "73754c62",
-      "937f5ce0"
+      "937f5ce0",
+      "5c160901"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1664.0862977164131,
           2012.7444405188928,
           1818.4324710845947,
           1321.8187351226807,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2064.61764553615,
           1825.33505153656,
           2119.3743518829347,
-          1744.1700759615217
+          1744.1700759615217,
+          2051.1081465207612
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3486,7 +3486,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
-          2856,
+          2864,
           2864,
           2864,
           2864,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1514.8275981267293,
           1741.6331929426926,
           2071.698751068115,
           1569.901516841008,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1723.6669108527046,
           2038.7895050048828,
           1897.0544701894125,
-          1539.1395468393962
+          1539.1395468393962,
+          1819.47263768514
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
