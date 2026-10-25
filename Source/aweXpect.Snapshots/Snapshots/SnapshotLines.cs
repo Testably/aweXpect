@@ -6,19 +6,19 @@ namespace aweXpect.Snapshots;
 
 /// <summary>
 ///     The lines of a <see cref="string" /> snapshot that a rule applies to, see
-///     <see cref="SnapshotFor{TReturn}.Lines" />.
+///     <see cref="SnapshotFor{TResult}.Lines" />.
 /// </summary>
 /// <remarks>
 ///     The filters are combined, so a line has to match all of them. Without a filter, the rule applies to every line.
 /// </remarks>
-/// <typeparam name="TReturn">What an action returns.</typeparam>
-public class SnapshotLines<TReturn>
+/// <typeparam name="TResult">What an action returns.</typeparam>
+public class SnapshotLines<TResult>
 {
-	private readonly Func<SnapshotRule, TReturn> _add;
+	private readonly Func<SnapshotRule, TResult> _add;
 	private readonly Func<string, ValueTask<bool>>[] _filters;
 	private readonly Action[] _validations;
 
-	internal SnapshotLines(Func<SnapshotRule, TReturn> add, Func<string, ValueTask<bool>>[] filters,
+	internal SnapshotLines(Func<SnapshotRule, TResult> add, Func<string, ValueTask<bool>>[] filters,
 		Action[]? validations = null)
 	{
 		_add = add;
@@ -37,11 +37,11 @@ public class SnapshotLines<TReturn>
 	///     <c>Customize.aweXpect.Settings().DefaultRegexTimeout</c>. An invalid pattern throws an
 	///     <see cref="ArgumentException" /> at the action, and a pattern that times out fails the expectation.
 	/// </remarks>
-	public SnapshotLinesContaining<TReturn> Containing(string text)
+	public SnapshotLinesContaining<TResult> Containing(string text)
 	{
 		RuleArguments.ThrowIfNullOrEmpty(text, nameof(text));
 		StringEqualityOptions options = new(nameof(text));
-		return new SnapshotLinesContaining<TReturn>(_add,
+		return new SnapshotLinesContaining<TResult>(_add,
 			[.. _filters, line => StringRules.Contains(options, line, text),],
 			[.. _validations, () => options.ValidateExpected(text),],
 			options);
@@ -54,10 +54,10 @@ public class SnapshotLines<TReturn>
 	///     The <paramref name="predicate" /> gets each line without its line break. An exception of the
 	///     <paramref name="predicate" /> is thrown.
 	/// </remarks>
-	public SnapshotLines<TReturn> Which(Func<string, bool> predicate)
+	public SnapshotLines<TResult> Which(Func<string, bool> predicate)
 	{
 		RuleArguments.ThrowIfNull(predicate, nameof(predicate));
-		return new SnapshotLines<TReturn>(_add, [.. _filters, line => new ValueTask<bool>(predicate(line)),],
+		return new SnapshotLines<TResult>(_add, [.. _filters, line => new ValueTask<bool>(predicate(line)),],
 			_validations);
 	}
 
@@ -67,10 +67,10 @@ public class SnapshotLines<TReturn>
 	/// <remarks>
 	///     The <paramref name="predicate" /> is asked like in <see cref="Which" />.
 	/// </remarks>
-	public SnapshotLines<TReturn> Except(Func<string, bool> predicate)
+	public SnapshotLines<TResult> Except(Func<string, bool> predicate)
 	{
 		RuleArguments.ThrowIfNull(predicate, nameof(predicate));
-		return new SnapshotLines<TReturn>(_add, [.. _filters, line => new ValueTask<bool>(!predicate(line)),],
+		return new SnapshotLines<TResult>(_add, [.. _filters, line => new ValueTask<bool>(!predicate(line)),],
 			_validations);
 	}
 
@@ -81,7 +81,7 @@ public class SnapshotLines<TReturn>
 	///     A removed line takes its line break with it, and removing the last line also removes the line break before it;
 	///     the other lines keep theirs. It wins over every masking and converter of lines.
 	/// </remarks>
-	public TReturn Ignore()
+	public TResult Ignore()
 		=> Add(LineRule.Ignore(_filters));
 
 	/// <summary>
@@ -93,7 +93,7 @@ public class SnapshotLines<TReturn>
 	///     <c>{0}</c> is replaced as plain text, and every text masked with the same template shares one counter. The line
 	///     keeps its line break. The first masking or converter that matches a line wins.
 	/// </remarks>
-	public TReturn Mask(string template)
+	public TResult Mask(string template)
 		=> Add(LineRule.Mask(_filters, RuleArguments.ThrowIfNull(template, nameof(template))));
 
 	/// <summary>
@@ -104,10 +104,10 @@ public class SnapshotLines<TReturn>
 	///     The <paramref name="convert" /> gets the line without its line break, and the result keeps the line break. An
 	///     exception of <paramref name="convert" /> is thrown. The first masking or converter that matches a line wins.
 	/// </remarks>
-	public TReturn Convert(Func<string, string?> convert)
+	public TResult Convert(Func<string, string?> convert)
 		=> Add(LineRule.Convert(_filters, RuleArguments.ThrowIfNull(convert, nameof(convert))));
 
-	private TReturn Add(LineRule rule)
+	private TResult Add(LineRule rule)
 	{
 		Array.ForEach(_validations, validate => validate());
 		return _add(new SnapshotRule(rule));

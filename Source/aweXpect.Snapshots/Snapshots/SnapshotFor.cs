@@ -14,14 +14,14 @@ namespace aweXpect.Snapshots;
 ///     <see cref="Members" /> and <see cref="Values" /> apply while an object is written, <see cref="Lines" /> to a
 ///     <see cref="string" /> subject, and the other selections to the written text of every subject.
 /// </remarks>
-/// <typeparam name="TReturn">
+/// <typeparam name="TResult">
 ///     What an action returns: the result of the expectation, or the <see cref="SnapshotRule" /> for all snapshots.
 /// </typeparam>
-public sealed class SnapshotFor<TReturn>
+public sealed class SnapshotFor<TResult>
 {
-	private readonly Func<SnapshotRule, TReturn> _add;
+	private readonly Func<SnapshotRule, TResult> _add;
 
-	internal SnapshotFor(Func<SnapshotRule, TReturn> add)
+	internal SnapshotFor(Func<SnapshotRule, TResult> add)
 	{
 		_add = add;
 	}
@@ -36,7 +36,7 @@ public sealed class SnapshotFor<TReturn>
 	///     Only for snapshots of objects: on a <see cref="string" /> subject, which is compared as raw text, the action
 	///     throws an <see cref="InvalidOperationException" />.
 	/// </remarks>
-	public SnapshotMembers<TReturn, object> Members()
+	public SnapshotMembers<TResult, object> Members()
 		=> new(_add, ValueSelection.Members);
 
 	/// <summary>
@@ -46,7 +46,7 @@ public sealed class SnapshotFor<TReturn>
 	///     Only for snapshots of objects: on a <see cref="string" /> subject, which is compared as raw text, the action
 	///     throws an <see cref="InvalidOperationException" />.
 	/// </remarks>
-	public SnapshotValues<TReturn, object> Values()
+	public SnapshotValues<TResult, object> Values()
 		=> new(_add, ValueSelection.Values);
 
 	/// <summary>
@@ -58,7 +58,7 @@ public sealed class SnapshotFor<TReturn>
 	///     Only for snapshots of a <see cref="string" />: an object is written by the formatter, so on any other subject
 	///     the action throws an <see cref="InvalidOperationException" />.
 	/// </remarks>
-	public SnapshotLines<TReturn> Lines()
+	public SnapshotLines<TResult> Lines()
 		=> new(_add, []);
 
 	/// <summary>
@@ -69,21 +69,21 @@ public sealed class SnapshotFor<TReturn>
 	///     The <paramref name="text" /> is compared ordinally, unless <c>.IgnoringCase()</c>, <c>.AsWildcard()</c> or
 	///     <c>.AsRegex()</c> follow.
 	/// </remarks>
-	public SnapshotText<TReturn> Text(string text)
+	public SnapshotText<TResult> Text(string text)
 		=> new(_add, RuleArguments.ThrowIfNullOrEmpty(text, nameof(text)));
 
 	/// <summary>
 	///     Selects each match of the <paramref name="pattern" /> in the written snapshot, with its options and timeout,
 	///     e.g. a static or generated <see cref="System.Text.RegularExpressions.Regex" />.
 	/// </summary>
-	public SnapshotPattern<TReturn> Regex(Regex pattern)
+	public SnapshotPattern<TResult> Regex(Regex pattern)
 	{
 		if (pattern is null)
 		{
 			throw Tracing.WriteException(new ArgumentNullException(nameof(pattern), "The 'pattern' cannot be null."));
 		}
 
-		return new SnapshotPattern<TReturn>(_add, replacement => TextMasking.Pattern(pattern, replacement));
+		return new SnapshotPattern<TResult>(_add, replacement => TextMasking.Pattern(pattern, replacement));
 	}
 
 	/// <summary>
@@ -97,7 +97,7 @@ public sealed class SnapshotFor<TReturn>
 	///     <see cref="Guid" /> keeps the same number, also when it was masked as a value, e.g. by
 	///     <c>.For.Values().OfType&lt;Guid&gt;().Mask()</c>.
 	/// </remarks>
-	public SnapshotKnownText<TReturn> Guids()
+	public SnapshotKnownText<TResult> Guids()
 		=> new(_add, TextMasking.Guids);
 
 	/// <summary>
@@ -112,7 +112,7 @@ public sealed class SnapshotFor<TReturn>
 	///     <c>.Mask()</c> numbers the placeholders, <c>{Date_1}</c>, <c>{Date_2}</c> and so on, where the same text keeps
 	///     the same number.
 	/// </remarks>
-	public SnapshotKnownText<TReturn> Dates()
+	public SnapshotKnownText<TResult> Dates()
 		=> new(_add, TextMasking.Dates);
 
 	/// <summary>
@@ -123,7 +123,7 @@ public sealed class SnapshotFor<TReturn>
 	///     replaces it with <c>{MachineName}</c>. Like the paths of the environment, it is masked before the other text
 	///     rules, so that they see the placeholder.
 	/// </remarks>
-	public SnapshotKnownText<TReturn> MachineName()
+	public SnapshotKnownText<TResult> MachineName()
 		=> new(_add, TextMasking.MachineName);
 
 	/// <summary>
@@ -135,7 +135,7 @@ public sealed class SnapshotFor<TReturn>
 	///     text rules, so that they see the placeholder; a path in the user profile therefore becomes
 	///     <c>{UserProfile}</c>, unless the paths are kept.
 	/// </remarks>
-	public SnapshotKnownText<TReturn> UserName()
+	public SnapshotKnownText<TResult> UserName()
 		=> new(_add, TextMasking.UserName);
 
 	/// <summary>
@@ -153,6 +153,6 @@ public sealed class SnapshotFor<TReturn>
 	///     root of the file system, such as <c>C:\</c> or <c>/</c>, is never masked. The paths are replaced before the
 	///     other text rules, so that they see the placeholders.
 	/// </remarks>
-	public SnapshotPaths<TReturn> Paths()
+	public SnapshotPaths<TResult> Paths()
 		=> new(_add);
 }

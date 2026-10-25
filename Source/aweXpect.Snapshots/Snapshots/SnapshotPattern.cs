@@ -3,16 +3,16 @@ using System;
 namespace aweXpect.Snapshots;
 
 /// <summary>
-///     The matches of a regex in the written snapshot, see <see cref="SnapshotFor{TReturn}.Regex" />, which can only
+///     The matches of a regex in the written snapshot, see <see cref="SnapshotFor{TResult}.Regex" />, which can only
 ///     be masked.
 /// </summary>
-/// <typeparam name="TReturn">What an action returns.</typeparam>
-public class SnapshotPattern<TReturn>
+/// <typeparam name="TResult">What an action returns.</typeparam>
+public class SnapshotPattern<TResult>
 {
-	private readonly Func<SnapshotRule, TReturn> _add;
+	private readonly Func<SnapshotRule, TResult> _add;
 	private readonly Func<string, TextMasking>? _createMasking;
 
-	internal SnapshotPattern(Func<SnapshotRule, TReturn> add, Func<string, TextMasking>? createMasking)
+	internal SnapshotPattern(Func<SnapshotRule, TResult> add, Func<string, TextMasking>? createMasking)
 	{
 		_add = add;
 		_createMasking = createMasking;
@@ -31,7 +31,7 @@ public class SnapshotPattern<TReturn>
 	///     The text rules are applied in the order in which they are added, those of the expectation before those for all
 	///     snapshots, so put a specific rule before a general one.
 	/// </remarks>
-	public TReturn Mask(string template)
+	public TResult Mask(string template)
 		=> _add(new SnapshotRule(CreateMasking(RuleArguments.ThrowIfNull(template, nameof(template)))));
 
 	private protected virtual TextMasking CreateMasking(string template)

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace aweXpect.Snapshots;
 
 /// <summary>
-///     The occurrences of a text in the written snapshot, see <see cref="SnapshotFor{TReturn}.Text" />, which also
+///     The occurrences of a text in the written snapshot, see <see cref="SnapshotFor{TResult}.Text" />, which also
 ///     allows setting how the text is matched.
 /// </summary>
 /// <remarks>
@@ -12,14 +12,14 @@ namespace aweXpect.Snapshots;
 ///     <see cref="AsRegex" /> follow. A pattern uses the timeout of
 ///     <c>Customize.aweXpect.Settings().DefaultRegexTimeout</c>, and a pattern that times out fails the expectation.
 /// </remarks>
-/// <typeparam name="TReturn">What an action returns.</typeparam>
-public sealed class SnapshotText<TReturn> : SnapshotPattern<TReturn>
+/// <typeparam name="TResult">What an action returns.</typeparam>
+public sealed class SnapshotText<TResult> : SnapshotPattern<TResult>
 {
 	private readonly string _text;
 	private bool _ignoreCase;
 	private Kind _kind;
 
-	internal SnapshotText(Func<SnapshotRule, TReturn> add, string text)
+	internal SnapshotText(Func<SnapshotRule, TResult> add, string text)
 		: base(add, null)
 	{
 		_text = text;
@@ -31,9 +31,9 @@ public sealed class SnapshotText<TReturn> : SnapshotPattern<TReturn>
 	/// </summary>
 	/// <remarks>
 	///     An invalid pattern throws an <see cref="ArgumentException" /> at the action. For options or a timeout of its
-	///     own, use <see cref="SnapshotFor{TReturn}.Regex" /> instead.
+	///     own, use <see cref="SnapshotFor{TResult}.Regex" /> instead.
 	/// </remarks>
-	public SnapshotText<TReturn> AsRegex()
+	public SnapshotText<TResult> AsRegex()
 	{
 		_kind = Kind.Regex;
 		return this;
@@ -47,7 +47,7 @@ public sealed class SnapshotText<TReturn> : SnapshotPattern<TReturn>
 	///     Unlike in aweXpect's string comparison, a wildcard does not match a line break, so that <c>*</c> cannot mask
 	///     the rest of the snapshot.
 	/// </remarks>
-	public SnapshotText<TReturn> AsWildcard()
+	public SnapshotText<TResult> AsWildcard()
 	{
 		_kind = Kind.Wildcard;
 		return this;
@@ -56,7 +56,7 @@ public sealed class SnapshotText<TReturn> : SnapshotPattern<TReturn>
 	/// <summary>
 	///     Ignores the case of the text when <paramref name="ignoreCase" /> is <see langword="true" />.
 	/// </summary>
-	public SnapshotText<TReturn> IgnoringCase(bool ignoreCase = true)
+	public SnapshotText<TResult> IgnoringCase(bool ignoreCase = true)
 	{
 		_ignoreCase = ignoreCase;
 		return this;
