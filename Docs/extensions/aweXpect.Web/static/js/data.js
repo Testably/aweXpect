@@ -684,6 +684,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
         "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
+      },
+      {
+        "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
+        "message": "refactor: continue the element expectations on a non-null collection (#2019)"
       }
     ],
     "labels": [
@@ -800,7 +806,8 @@ window.BENCHMARK_DATA = {
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
-      "8b73c040"
+      "8b73c040",
+      "54813a41"
     ],
     "datasets": [
       {
@@ -920,7 +927,8 @@ window.BENCHMARK_DATA = {
           413.00836950937907,
           424.2572179158529,
           426.2960466657366,
-          427.04913772855485
+          427.04913772855485,
+          441.7383098602295
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1044,6 +1052,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          640,
           640,
           640
         ],
@@ -1173,7 +1182,8 @@ window.BENCHMARK_DATA = {
           1021.4141195933024,
           936.3163841792515,
           981.3541013081868,
-          1095.1248126711164
+          1095.1248126711164,
+          1051.4852393014091
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1185,6 +1195,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1996,6 +2007,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
         "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
+      },
+      {
+        "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
+        "message": "refactor: continue the element expectations on a non-null collection (#2019)"
       }
     ],
     "labels": [
@@ -2112,7 +2129,8 @@ window.BENCHMARK_DATA = {
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
-      "8b73c040"
+      "8b73c040",
+      "54813a41"
     ],
     "datasets": [
       {
@@ -2232,7 +2250,8 @@ window.BENCHMARK_DATA = {
           200.69366776943207,
           192.6895055600575,
           195.48415873845417,
-          217.8148368358612
+          217.8148368358612,
+          195.56705468041557
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2280,6 +2299,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -2485,7 +2505,8 @@ window.BENCHMARK_DATA = {
           275.68809226353966,
           263.06128409703575,
           260.24160139901295,
-          300.6612787564596
+          300.6612787564596,
+          253.9131111462911
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2497,6 +2518,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -3248,6 +3270,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
         "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
+      },
+      {
+        "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
+        "message": "refactor: continue the element expectations on a non-null collection (#2019)"
       }
     ],
     "labels": [
@@ -3354,7 +3382,8 @@ window.BENCHMARK_DATA = {
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
-      "8b73c040"
+      "8b73c040",
+      "54813a41"
     ],
     "datasets": [
       {
@@ -3464,7 +3493,8 @@ window.BENCHMARK_DATA = {
           629.4959992726643,
           636.4707757509672,
           655.3696940104167,
-          679.1501848856608
+          679.1501848856608,
+          696.585135714213
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3578,6 +3608,7 @@ window.BENCHMARK_DATA = {
           976,
           976,
           976,
+          1008,
           1008,
           1008
         ],
@@ -3697,7 +3728,8 @@ window.BENCHMARK_DATA = {
           1034.941997909546,
           927.3686203956604,
           935.862289873759,
-          1045.7701305976282
+          1045.7701305976282,
+          918.3562835546641
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3709,6 +3741,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -4450,6 +4483,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
         "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
+      },
+      {
+        "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
+        "message": "refactor: continue the element expectations on a non-null collection (#2019)"
       }
     ],
     "labels": [
@@ -4556,7 +4595,8 @@ window.BENCHMARK_DATA = {
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
-      "8b73c040"
+      "8b73c040",
+      "54813a41"
     ],
     "datasets": [
       {
@@ -4666,7 +4706,8 @@ window.BENCHMARK_DATA = {
           1702.1969706217449,
           1671.7610326913687,
           1860.007182257516,
-          1656.950244631086
+          1656.950244631086,
+          1869.5108689626059
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4780,6 +4821,7 @@ window.BENCHMARK_DATA = {
           1672,
           1672,
           1672,
+          1688,
           1688,
           1688
         ],
@@ -4899,7 +4941,8 @@ window.BENCHMARK_DATA = {
           20814.329875401087,
           20584.56134033203,
           21808.57382405599,
-          16767.260748291017
+          16767.260748291017,
+          21194.11416407994
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5014,7 +5057,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5652,6 +5696,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
         "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
+      },
+      {
+        "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
+        "message": "refactor: continue the element expectations on a non-null collection (#2019)"
       }
     ],
     "labels": [
@@ -5758,7 +5808,8 @@ window.BENCHMARK_DATA = {
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
-      "8b73c040"
+      "8b73c040",
+      "54813a41"
     ],
     "datasets": [
       {
@@ -5868,7 +5919,8 @@ window.BENCHMARK_DATA = {
           667.3069162368774,
           668.0425653457642,
           739.6203336079915,
-          688.7043160711016
+          688.7043160711016,
+          698.3473978678386
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5982,6 +6034,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
+          1112,
           1112,
           1112
         ],
@@ -6101,7 +6154,8 @@ window.BENCHMARK_DATA = {
           1365.7199434916179,
           1305.6555359704155,
           1342.726389058431,
-          1439.0487446418176
+          1439.0487446418176,
+          1304.6153146107993
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6113,6 +6167,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -6854,6 +6909,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
         "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
+      },
+      {
+        "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
+        "message": "refactor: continue the element expectations on a non-null collection (#2019)"
       }
     ],
     "labels": [
@@ -6960,7 +7021,8 @@ window.BENCHMARK_DATA = {
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
-      "8b73c040"
+      "8b73c040",
+      "54813a41"
     ],
     "datasets": [
       {
@@ -7070,7 +7132,8 @@ window.BENCHMARK_DATA = {
           1135.4991828918457,
           1135.0656660520112,
           1145.3483588878926,
-          1019.5895253499349
+          1019.5895253499349,
+          1127.406762940543
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7184,6 +7247,7 @@ window.BENCHMARK_DATA = {
           1424,
           1424,
           1424,
+          1456,
           1456,
           1456
         ],
@@ -7303,7 +7367,8 @@ window.BENCHMARK_DATA = {
           756.2503906885782,
           725.1468660990397,
           797.2667322840009,
-          878.1836088725498
+          878.1836088725498,
+          741.7094178199768
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7315,6 +7380,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
