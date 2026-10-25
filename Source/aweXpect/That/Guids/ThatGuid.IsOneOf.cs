@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Results;
 using aweXpect.SourceGenerators;
@@ -65,7 +66,7 @@ public static partial class ThatGuid
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

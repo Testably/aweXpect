@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using aweXpect.Core;
-using aweXpect.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Options;
 using aweXpect.Results;
 

@@ -1,6 +1,6 @@
 ﻿#if NET8_0_OR_GREATER
 using aweXpect.Core;
-using aweXpect.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Results;
 
 namespace aweXpect.Internal.Tests.Results;

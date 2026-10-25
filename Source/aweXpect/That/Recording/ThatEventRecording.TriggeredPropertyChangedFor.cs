@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Recording;
 using aweXpect.Results;
