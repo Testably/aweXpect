@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
-        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
-      },
-      {
         "sha": "f61481d24351c8600bb221b9e05b98a015fe6827",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
-      "8e844194",
       "f61481d2",
       "77ca8a7f",
       "3aaf6f00",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          763.3657395044962,
           566.8905967565684,
           746.7735031672886,
           667.7494714736938,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           728.6357399622599,
           725.3828104019165,
           576.9377751032512,
-          717.9345635005405
+          717.9345635005405,
+          750.12114944458
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          670.555643081665,
           531.6242552484784,
           721.3274405797323,
           820.527603490012,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           780.2053071339925,
           676.8344058354695,
           540.8147049631391,
-          644.5539443333944
+          644.5539443333944,
+          714.3283373968942
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
-        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
-      },
-      {
         "sha": "f61481d24351c8600bb221b9e05b98a015fe6827",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
-      "8e844194",
       "f61481d2",
       "77ca8a7f",
       "3aaf6f00",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4440.676731872559,
           3149.798821857997,
           4333.669052124023,
           4874.746316528321,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           4566.272168673002,
           4522.426897684733,
           3408.569298553467,
-          4235.36406771342
+          4235.36406771342,
+          4636.322278849284
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5176.993950435093,
           3722.7052426656087,
           5305.1337615966795,
           5886.065127054851,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           5320.767340440017,
           5267.551677158901,
           3750.5558433532715,
-          4923.9000595092775
+          4923.9000595092775,
+          5049.822891235352
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
-        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
-      },
-      {
         "sha": "f61481d24351c8600bb221b9e05b98a015fe6827",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
-      "8e844194",
       "f61481d2",
       "77ca8a7f",
       "3aaf6f00",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2641.9207446758564,
           1843.1538543701172,
           2644.533563741048,
           2815.9245038350423,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2729.5530515034993,
           2529.011526997884,
           1878.1565965505747,
-          2504.5167170206705
+          2504.5167170206705,
+          2557.3446968078615
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1650,7 +1650,6 @@ window.BENCHMARK_DATA = {
           12856,
           12856,
           12856,
-          12856,
           12780,
           12856,
           12780,
@@ -1683,6 +1682,7 @@ window.BENCHMARK_DATA = {
           12780,
           12780,
           12856,
+          12780,
           12780,
           12780,
           12780
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3470.4209904988606,
           2574.2702530452184,
           3382.5859687805178,
           3755.7000070299423,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3599.7156947209287,
           3595.802099609375,
           2605.5368395487467,
-          3457.580307824271
+          3457.580307824271,
+          3581.567337290446
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
-        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
-      },
-      {
         "sha": "f61481d24351c8600bb221b9e05b98a015fe6827",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
         "message": "docs: make the longest examples easier to read (#2014)"
+      },
+      {
+        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
+        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
       }
     ],
     "labels": [
-      "8e844194",
       "f61481d2",
       "77ca8a7f",
       "3aaf6f00",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "996e0f28",
       "cda7e4aa",
       "4bb05046",
-      "0eb20dfe"
+      "0eb20dfe",
+      "96ea23be"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          14011.69986114502,
           10204.238045912523,
           14043.771023050944,
           14130.402861022949,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           14528.170663452149,
           14636.194083658855,
           10159.268745422363,
-          13649.3572038923
+          13649.3572038923,
+          14160.344940185547
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2258,7 +2258,6 @@ window.BENCHMARK_DATA = {
           25568,
           25568,
           25568,
-          25568,
           25494,
           25568,
           25494,
@@ -2291,6 +2290,7 @@ window.BENCHMARK_DATA = {
           25494,
           25494,
           25568,
+          25494,
           25494,
           25494,
           25494
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          350064.4822126116,
           236714.88746861048,
           348619.84995814733,
           287723.87322126114,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           361280.78285435267,
           350353.17640904017,
           240230.97789713542,
-          352688.5303109976
+          352688.5303109976,
+          379218.6038295201
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544246,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           544335,
           544252,
           544335,
-          544335
+          544335,
+          544329
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
