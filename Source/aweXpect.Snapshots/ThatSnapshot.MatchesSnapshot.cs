@@ -253,19 +253,21 @@ public static partial class ThatSnapshot
 	};
 
 	/// <summary>
-	///     The extension and the hash code of the first value that each snapshot was used for in this process, by its id
+	///     The id and the hash code of the first value that each snapshot was used for in this process, by its id
 	///     with the default extension, and the value itself while comparers are set.
 	/// </summary>
 	/// <remarks>
-	///     Only another value or another extension counts as a conflict, so that a test which is retried or repeated, or
-	///     run again by a test runner that keeps its process, still compares with its snapshot. The hash code keeps large
-	///     values out of memory; a collision only misses a conflict. A value with another hash code is no conflict either
-	///     when a <see cref="SnapshotComparer" /> considers it equal to the first value, which is only kept for that while
-	///     a comparer is set for the expectation or for all snapshots. An entry is never changed, so that concurrent tests
+	///     Only another value, another extension or an id that only differs in case counts as a conflict, so that a test
+	///     which is retried or repeated, or run again by a test runner that keeps its process, still compares with its
+	///     snapshot. The ids are compared ignoring the case like <see cref="ClaimedSnapshots" />, as they are the same
+	///     file on a file system that ignores the case, but two files on others. The hash code keeps large values out of
+	///     memory; a collision only misses a conflict. A value with another hash code is no conflict either when a
+	///     <see cref="SnapshotComparer" /> considers it equal to the first value, which is only kept for that while a
+	///     comparer is set for the expectation or for all snapshots. An entry is never changed, so that concurrent tests
 	///     compare with the same first value.
 	/// </remarks>
-	private static readonly ConcurrentDictionary<SnapshotId, (string Extension, int HashCode, SnapshotContent? Content)>
-		UsedSnapshots = new();
+	private static readonly ConcurrentDictionary<SnapshotId, (SnapshotId Id, int HashCode, SnapshotContent? Content)>
+		UsedSnapshots = new(ClaimedSnapshots.Comparer);
 
 	/// <summary>
 	///     Returns the test file relative to the source root, see <see cref="SnapshotId.SourceFile" />.
@@ -347,6 +349,7 @@ public static partial class ThatSnapshot
 		private Exception? _readError;
 		private SnapshotContent? _snapshotContent;
 		private string? _usedExtension;
+		private SnapshotId? _usedIdInAnotherCase;
 		private string? _writeError;
 
 		/// <inheritdoc />
@@ -463,12 +466,14 @@ public static partial class ThatSnapshot
 			_isUsedForAnotherValue = false;
 			_snapshotContent = null;
 			_usedExtension = null;
+			_usedIdInAnotherCase = null;
 			_writeError = null;
 			_readError = null;
 		}
 
 		/// <summary>
-		///     Whether the snapshot was not yet used in this test run for another value, or another extension.
+		///     Whether the snapshot was not yet used in this test run for another value, another extension, or with an
+		///     id that only differs in case.
 		/// </summary>
 		/// <remarks>
 		///     Identical bytes are recognized by their hash. A different value is only allowed when a comparer considers
@@ -479,12 +484,18 @@ public static partial class ThatSnapshot
 		{
 			int contentHashCode = GetHashCode(content);
 			bool hasComparers = snapshotOptions.Comparer is not null || settings.Comparers.Count > 0;
-			(string extension, int hashCode, SnapshotContent? firstContent) = UsedSnapshots.GetOrAdd(
+			(SnapshotId firstId, int hashCode, SnapshotContent? firstContent) = UsedSnapshots.GetOrAdd(
 				id with { Extension = SnapshotId.DefaultExtension, },
-				(id.Extension, contentHashCode, hasComparers ? actualContent : null));
-			if (extension != id.Extension)
+				(id, contentHashCode, hasComparers ? actualContent : null));
+			if (firstId with { Extension = id.Extension, } != id)
 			{
-				_usedExtension = extension;
+				_usedIdInAnotherCase = firstId;
+				return false;
+			}
+
+			if (firstId.Extension != id.Extension)
+			{
+				_usedExtension = firstId.Extension;
 				return false;
 			}
 
@@ -715,7 +726,7 @@ public static partial class ThatSnapshot
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			if (_actualContent is null || _isMatch || _isUsedForAnotherValue || _usedExtension is not null ||
-			    _readError is not null || _compareError is not null || IsNegated)
+			    _usedIdInAnotherCase is not null || _readError is not null || _compareError is not null || IsNegated)
 			{
 				return;
 			}
@@ -754,6 +765,12 @@ public static partial class ThatSnapshot
 			if (_hasSubjectError)
 			{
 				AppendSubjectError(stringBuilder);
+			}
+			else if (_usedIdInAnotherCase is not null)
+			{
+				stringBuilder.Append("the snapshot \"").Append(settings.Store.Describe(_usedIdInAnotherCase))
+					.Append(
+						"\", whose id only differs in case, was already used in this test run, so give them names that differ in more than the case with .Named(…) or .NamedAfter(…)");
 			}
 			else if (_usedExtension is not null)
 			{

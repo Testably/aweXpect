@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
 namespace aweXpect.Snapshots;
@@ -38,9 +37,7 @@ internal static class EnvironmentMaskings
 	private static readonly ConcurrentDictionary<(string Placeholder, string Path), TextMasking> Maskings = new();
 
 	public static readonly RegexOptions PathOptions =
-		RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-			? RegexOptions.IgnoreCase
-			: RegexOptions.None;
+		FileSystemPaths.IgnoresCase ? RegexOptions.IgnoreCase : RegexOptions.None;
 
 	/// <summary>
 	///     Returns the maskings of the paths of the environment for a snapshot of the test file

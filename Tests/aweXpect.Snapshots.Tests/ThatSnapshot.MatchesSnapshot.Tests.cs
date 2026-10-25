@@ -544,6 +544,49 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task WhenSnapshotIsUsedForATestNameInAnotherCase_ShouldFail()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "foo";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "foo";
+				await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, "mytest");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.mytest",
+					             but the snapshot "MyTests.MyTest", whose id only differs in case, was already used in this test run, so give them names that differ in more than the case with .Named(…) or .NamedAfter(…)
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSnapshotIsUsedWithANameInAnotherCase_ShouldFailWithoutReadingIt()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id with { Name = "Live", }] = "foo";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "foo";
+				await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Named("Live");
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Named("live");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest.live",
+					             but the snapshot "MyTests.MyTest.Live", whose id only differs in case, was already used in this test run, so give them names that differ in more than the case with .Named(…) or .NamedAfter(…)
+					             """)
+					.Because("both ids are the same file on a file system that ignores the case, but two files on others");
+				await That(store.Matches).IsEqualTo(new[] { Id with { Name = "Live", }, })
+					.Because("the conflicting snapshot is not read");
+			}
+
+			[Test]
 			public async Task WhenSnapshotsAreNamedDifferently_ShouldKeepThemApart()
 			{
 				InMemorySnapshotStore store = new();

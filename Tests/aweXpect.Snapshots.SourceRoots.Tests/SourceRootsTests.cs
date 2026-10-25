@@ -1,5 +1,7 @@
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using aweXpect.Customization;
 using aweXpect.Snapshots.SourceRoots.Tests.TestHelpers;
 
@@ -73,11 +75,11 @@ public sealed class SourceRootsTests
 	public async Task WhenTheSameSourceRootIsRecordedTwice_ShouldCountItOnce()
 	{
 		string sourceRoot = RecordedSourceRoots.Own.SourceRoot.TrimEnd(Path.DirectorySeparatorChar);
-		if (Path.DirectorySeparatorChar == '\\')
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 		{
-			sourceRoot = (char.IsUpper(sourceRoot[0])
-				? char.ToLowerInvariant(sourceRoot[0])
-				: char.ToUpperInvariant(sourceRoot[0])) + sourceRoot.Substring(1);
+			sourceRoot = new string(sourceRoot.Select(character => char.IsUpper(character)
+				? char.ToLowerInvariant(character)
+				: char.ToUpperInvariant(character)).ToArray());
 		}
 
 		RecordedSourceRoots.Record(sourceRoot, sourceRoot);
@@ -87,7 +89,8 @@ public sealed class SourceRootsTests
 			=> await That(subject).MatchesSnapshot(GetCallerFilePath(), CommittedSnapshot);
 
 		await That(Act).DoesNotThrow()
-			.Because("a source root with another trailing separator or case of the drive letter is the same directory");
+			.Because(
+				"a source root with another trailing separator, or in another case on Windows and macOS, whose file systems ignore the case by default, is the same directory");
 	}
 
 	[Test]
