@@ -20,7 +20,7 @@ public static partial class TypeFilters
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		ContainedMembersFilter<TMember, TFiltered> containedMembersFilter =
-			new(navigate, filter, new OptionsSlot<Quantifier>(new Quantifier()), MemberScopes.None);
+			new(navigate, filter, new OptionsSlot<Quantifier>(Quantifier.Default), MemberScopes.None);
 		return new TypesContainingMembers(@this, containedMembersFilter, containedMembersFilter.WithQuantifier);
 	}
 
@@ -33,7 +33,7 @@ public static partial class TypeFilters
 		return new TypesContainingMembersScopeResult(@this, memberScope =>
 		{
 			ContainedMembersFilter<TMember, TFiltered> containedMembersFilter =
-				new(types => navigate(types, memberScope), filter, new OptionsSlot<Quantifier>(new Quantifier()), memberScope);
+				new(types => navigate(types, memberScope), filter, new OptionsSlot<Quantifier>(Quantifier.Default), memberScope);
 			return (containedMembersFilter, containedMembersFilter.WithQuantifier);
 		}, MemberScopes.None);
 	}
@@ -147,7 +147,7 @@ public static partial class TypeFilters
 
 		private Filtered.Types Quantify(Action<OptionsSlot<Quantifier>> specify)
 		{
-			OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+			OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 			specify(quantifier);
 			return _source.Which(_withQuantifier(quantifier));
 		}

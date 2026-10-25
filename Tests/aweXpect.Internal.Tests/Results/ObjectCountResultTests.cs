@@ -11,7 +11,7 @@ public sealed class ObjectCountResultTests
 	public async Task ShouldBeOptionsProvider_ForObjectEqualityOptions()
 	{
 		ObjectEqualityOptions<string> options = new();
-		Quantifier quantifier = new();
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		ObjectCountResult<ObjectCollectionMatchResultTests, IThat<ObjectCollectionMatchResultTests>, string>
 			sut = CreateSut(new ObjectCollectionMatchResultTests(), quantifier, options);
 
@@ -23,15 +23,15 @@ public sealed class ObjectCountResultTests
 	public async Task ShouldBeOptionsProvider_ForQuantifier()
 	{
 		ObjectEqualityOptions<string> options = new();
-		Quantifier quantifier = new();
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		ObjectCountResult<ObjectCollectionMatchResultTests, IThat<ObjectCollectionMatchResultTests>, string>
 			sut = CreateSut(new ObjectCollectionMatchResultTests(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(quantifier));
+			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
 	}
 
-	private static ObjectCountResult<T, IThat<T>, TElement> CreateSut<T, TElement>(T subject, Quantifier quantifier,
+	private static ObjectCountResult<T, IThat<T>, TElement> CreateSut<T, TElement>(T subject, OptionsSlot<Quantifier> quantifier,
 		ObjectEqualityOptions<TElement> options)
 		where T : notnull
 	{
@@ -40,7 +40,7 @@ public sealed class ObjectCountResultTests
 #pragma warning restore aweXpect0001
 		return new ObjectCountResult<T, IThat<T>, TElement>(source.Get().ExpectationBuilder,
 			source,
-			new OptionsSlot<Quantifier>(quantifier),
+			quantifier,
 			new OptionsSlot<ObjectEqualityOptions<TElement>>(options));
 	}
 }

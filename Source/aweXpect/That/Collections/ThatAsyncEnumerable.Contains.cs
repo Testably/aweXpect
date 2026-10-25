@@ -51,7 +51,7 @@ public static partial class ThatAsyncEnumerable
 			TItem expected,
 			bool negated)
 	{
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		OptionsSlot<ObjectEqualityOptions<TItem>> options = new(new ObjectEqualityOptions<TItem>());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -77,7 +77,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options = new(initialOptions);
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
 			TTolerance>(
@@ -100,7 +100,7 @@ public static partial class ThatAsyncEnumerable
 			string? expected,
 			bool negated)
 	{
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeCountResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
@@ -124,7 +124,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		predicate.ThrowIfNull();
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint(

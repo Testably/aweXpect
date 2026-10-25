@@ -10,14 +10,14 @@ public sealed class CountResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForQuantifier()
 	{
-		Quantifier quantifier = new();
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		CountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), quantifier);
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(quantifier));
+			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
 	}
 
-	private static CountResult<T, IThat<T>> CreateSut<T>(T subject, Quantifier quantifier)
+	private static CountResult<T, IThat<T>> CreateSut<T>(T subject, OptionsSlot<Quantifier> quantifier)
 	{
 #pragma warning disable aweXpect0001
 		IThat<T> source = That(subject);
@@ -25,6 +25,6 @@ public sealed class CountResultTests
 		return new CountResult<T, IThat<T>>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			new OptionsSlot<Quantifier>(quantifier));
+			quantifier);
 	}
 }

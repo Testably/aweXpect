@@ -33,7 +33,7 @@ public static class StringPropertyResultExtensions
 		result.Validation?.Invoke(expected, nameof(expected));
 		return result.Compare(new StringPropertyComparison(expected,
 			new OptionsSlot<StringEqualityOptions>(new StringEqualityOptions(nameof(expected))),
-			new OptionsSlot<Quantifier>(new Quantifier())));
+			new OptionsSlot<Quantifier>(Quantifier.Default)));
 	}
 
 	/// <summary>

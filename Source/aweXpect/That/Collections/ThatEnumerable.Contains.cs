@@ -112,7 +112,7 @@ public static partial class ThatEnumerable
 			TItem expected,
 			bool negated)
 	{
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		OptionsSlot<ObjectEqualityOptions<TItem>> options = new(new ItemEqualityOptions<TItem>());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
@@ -136,7 +136,7 @@ public static partial class ThatEnumerable
 			string? expected,
 			bool negated)
 	{
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeCountResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
@@ -161,7 +161,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options = new(initialOptions);
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint(
@@ -184,7 +184,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		predicate.ThrowIfNull();
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint(
@@ -227,7 +227,7 @@ public static partial class ThatEnumerable
 			object? expected,
 			bool negated)
 	{
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		OptionsSlot<ObjectEqualityOptions<object?>> options = new(new ItemEqualityOptions<object?>());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<IEnumerable, IThat<IEnumerable?>, object?>(
@@ -252,7 +252,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		predicate.ThrowIfNull();
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CountResult<IEnumerable, IThat<IEnumerable?>>(
 			expectationBuilder.AddConstraint(
@@ -275,7 +275,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		OptionsSlot<ObjectEqualityOptions<TItem>> options = new(new ItemEqualityOptions<TItem>());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<TCollection, IThat<TCollection>, TItem>(
@@ -299,7 +299,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(negated ? "unexpected" : "expected"));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeCountResult<TCollection, IThat<TCollection>>(
@@ -325,7 +325,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable
 	{
 		OptionsSlot<ObjectEqualityWithToleranceOptions<TItem, TTolerance>> options = new(initialOptions);
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint(
@@ -349,7 +349,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable
 	{
 		predicate.ThrowIfNull();
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CountResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint(

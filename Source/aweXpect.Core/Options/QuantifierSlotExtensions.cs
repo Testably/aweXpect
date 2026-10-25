@@ -35,8 +35,9 @@ public static class QuantifierSlotExtensions
 		return slot;
 	}
 
-	/// <inheritdoc cref="Quantifier.Exactly(int, string)" />
-	internal static OptionsSlot<Quantifier> Exactly(this OptionsSlot<Quantifier> slot, int expected, string option)
+	/// <inheritdoc cref="Quantifier.Exactly(int, QuantifierOption)" />
+	internal static OptionsSlot<Quantifier> Exactly(this OptionsSlot<Quantifier> slot, int expected,
+		QuantifierOption option)
 	{
 		slot.Value = slot.Value.Exactly(expected, option);
 		return slot;

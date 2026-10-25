@@ -119,7 +119,6 @@ public class CountBoundsTests
 	[MethodDataSource(nameof(Bounds))]
 	public async Task EnumerableQuantifier_ShouldDecideLikeQuantifier(string method, int value)
 	{
-		Quantifier quantifier = new();
 		EnumerableQuantifier sut = method switch
 		{
 			"AtLeast" => EnumerableQuantifier.AtLeast(value),
@@ -129,16 +128,15 @@ public class CountBoundsTests
 			"LessThan" => EnumerableQuantifier.LessThan(value),
 			_ => EnumerableQuantifier.MoreThan(value),
 		};
-		Action configure = method switch
+		Quantifier quantifier = method switch
 		{
-			"AtLeast" => () => quantifier.AtLeast(value),
-			"AtMost" => () => quantifier.AtMost(value),
-			"Between" => () => quantifier.Between(value, value + 2),
-			"Exactly" => () => quantifier.Exactly(value),
-			"LessThan" => () => quantifier.LessThan(value),
-			_ => () => quantifier.MoreThan(value),
+			"AtLeast" => Quantifier.Default.AtLeast(value),
+			"AtMost" => Quantifier.Default.AtMost(value),
+			"Between" => Quantifier.Default.Between(value, value + 2),
+			"Exactly" => Quantifier.Default.Exactly(value),
+			"LessThan" => Quantifier.Default.LessThan(value),
+			_ => Quantifier.Default.MoreThan(value),
 		};
-		configure();
 
 		for (int amount = 0; amount <= 5; amount++)
 		{

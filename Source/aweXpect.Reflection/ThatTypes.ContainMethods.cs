@@ -68,7 +68,7 @@ public static partial class ThatTypes
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		ScopeOptions scope = new();
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(
 			AddContainConstraint<TMember, TFiltered>(subject, types => navigate(types, scope.MemberScope), filter,
 				quantifier, scope),
@@ -86,7 +86,7 @@ public static partial class ThatTypes
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		ScopeOptions scope = new();
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(
 			AddContainConstraint<TMember, TFiltered>(subject, types => navigate(types, scope.MemberScope), filter,
 				quantifier, scope),
@@ -102,7 +102,7 @@ public static partial class ThatTypes
 		Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersResult<IEnumerable<Type?>, IEnumerable<Type?>?>(
 			AddContainConstraint<TMember, TFiltered>(subject, navigate, filter, quantifier, null),
 			subject,
@@ -117,7 +117,7 @@ public static partial class ThatTypes
 			Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(
 			AddContainConstraint<TMember, TFiltered>(subject, navigate, filter, quantifier, null),
 			subject,

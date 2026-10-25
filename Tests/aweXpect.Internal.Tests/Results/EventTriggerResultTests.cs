@@ -11,18 +11,18 @@ public sealed class EventTriggerResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForQuantifier()
 	{
-		Quantifier quantifier = new();
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		RepeatedCheckOptions options = new();
 		EventTriggerResult<EventTriggerResultTests> sut = CreateSut(new EventTriggerResultTests(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(quantifier));
+			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
 	}
 
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForRepeatedCheckOptions()
 	{
-		Quantifier quantifier = new();
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		RepeatedCheckOptions options = new();
 		EventTriggerResult<EventTriggerResultTests> sut = CreateSut(new EventTriggerResultTests(), quantifier, options);
 
@@ -361,7 +361,7 @@ public sealed class EventTriggerResultTests
 			             """);
 	}
 
-	private static EventTriggerResult<T> CreateSut<T>(T subject, Quantifier quantifier, RepeatedCheckOptions options,
+	private static EventTriggerResult<T> CreateSut<T>(T subject, OptionsSlot<Quantifier> quantifier, RepeatedCheckOptions options,
 		TriggerEventFilter? filter = null)
 		where T : notnull
 	{
@@ -373,7 +373,7 @@ public sealed class EventTriggerResultTests
 		return new EventTriggerResult<T>(source.Get().ExpectationBuilder,
 			source,
 			filter,
-			new OptionsSlot<Quantifier>(quantifier),
+			quantifier,
 			new OptionsSlot<RepeatedCheckOptions>(options));
 	}
 

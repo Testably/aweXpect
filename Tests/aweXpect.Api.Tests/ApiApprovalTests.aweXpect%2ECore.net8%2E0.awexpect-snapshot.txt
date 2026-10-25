@@ -1810,10 +1810,10 @@ namespace aweXpect.Options
     {
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance>> Within<TSubject, TTolerance>(this aweXpect.Core.OptionsSlot<aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance>> slot, TTolerance tolerance) { }
     }
-    public class Quantifier
+    public readonly struct Quantifier
     {
-        public Quantifier() { }
         public int DeterminableAmount { get; }
+        public static aweXpect.Options.Quantifier Default { get; }
         public aweXpect.Options.Quantifier AtLeast(int minimum) { }
         public aweXpect.Options.Quantifier AtMost(int maximum) { }
         public aweXpect.Options.Quantifier Between(int minimum, int maximum) { }

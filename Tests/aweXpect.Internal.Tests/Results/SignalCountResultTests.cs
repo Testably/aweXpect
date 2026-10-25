@@ -25,6 +25,6 @@ public sealed class SignalCountResultTests
 		IThat<Signaler> source = That(signaler);
 #pragma warning restore aweXpect0001
 		return new SignalCountResult(source.Get().ExpectationBuilder,
-			source, new OptionsSlot<Quantifier>(new Quantifier()), new OptionsSlot<SignalerOptions>(options));
+			source, new OptionsSlot<Quantifier>(Quantifier.Default), new OptionsSlot<SignalerOptions>(options));
 	}
 }

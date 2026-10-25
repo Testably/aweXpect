@@ -10,7 +10,7 @@ public sealed class StringBlockCountResultTests
 	[Test]
 	public async Task AsBlock_ShouldInterpretExpectedAsBlock()
 	{
-		Quantifier quantifier = new();
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		StringEqualityOptions options = new("expected");
 		StringEqualityTypeCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), quantifier, options);
 
@@ -20,14 +20,14 @@ public sealed class StringBlockCountResultTests
 		await That(result).IsNot<IOptionsProvider<StringEqualityOptions>>()
 			.Because("a block compares the lines on its own, so it offers only the casing and a comparer");
 		await That(result).Is<IOptionsProvider<Quantifier>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(quantifier));
+			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
 	}
 
 	[Test]
 	public async Task IgnoringCase_ShouldSetOption()
 	{
 		StringEqualityOptions options = new("expected");
-		StringBlockCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), new Quantifier(), options)
+		StringBlockCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), new OptionsSlot<Quantifier>(Quantifier.Default), options)
 			.AsBlock();
 
 		StringBlockCountResult<int[], IThat<int[]>> result = sut.IgnoringCase();
@@ -40,7 +40,7 @@ public sealed class StringBlockCountResultTests
 	public async Task Using_ShouldSetComparer()
 	{
 		StringEqualityOptions options = new("expected");
-		StringBlockCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), new Quantifier(), options)
+		StringBlockCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), new OptionsSlot<Quantifier>(Quantifier.Default), options)
 			.AsBlock();
 
 		StringBlockCountResult<int[], IThat<int[]>> result = sut.Using(StringComparer.OrdinalIgnoreCase);
@@ -49,7 +49,7 @@ public sealed class StringBlockCountResultTests
 		await That(options.ToString()).StartsWith(" as block using ");
 	}
 
-	private static StringEqualityTypeCountResult<T, IThat<T>> CreateSut<T>(T subject, Quantifier quantifier,
+	private static StringEqualityTypeCountResult<T, IThat<T>> CreateSut<T>(T subject, OptionsSlot<Quantifier> quantifier,
 		StringEqualityOptions options)
 	{
 #pragma warning disable aweXpect0001
@@ -58,7 +58,7 @@ public sealed class StringBlockCountResultTests
 		return new StringEqualityTypeCountResult<T, IThat<T>>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			new OptionsSlot<Quantifier>(quantifier),
+			quantifier,
 			new OptionsSlot<StringEqualityOptions>(options));
 	}
 }

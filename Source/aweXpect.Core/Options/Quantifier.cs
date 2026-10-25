@@ -8,13 +8,40 @@ namespace aweXpect.Options;
 ///     Quantifies an occurrence.
 /// </summary>
 /// <remarks>
+///     An immutable value: the option methods return a new quantifier, and <see langword="default" /> means
+///     <c>at least once</c>, like <see cref="Default" />.<br />
 ///     The quantifier carries no negation, as several evaluations can share it; a negated expectation passes its
 ///     negation to <see cref="Check(int, bool, bool)" />, <see cref="IsNever" /> and <see cref="ToString(bool)" />.
 /// </remarks>
-public class Quantifier
+public readonly struct Quantifier
 {
-	private CountBounds _bounds = CountBounds.Default;
-	private string? _specifiedBy;
+	private static readonly string?[] OptionNames =
+	[
+		null,
+		nameof(AtLeast),
+		nameof(AtMost),
+		nameof(Between),
+		nameof(LessThan),
+		nameof(MoreThan),
+		nameof(Exactly),
+		nameof(QuantifierExtensions.Never),
+		nameof(QuantifierExtensions.Once),
+		nameof(QuantifierExtensions.Twice),
+	];
+
+	private readonly CountBounds _bounds;
+	private readonly QuantifierOption _option;
+
+	private Quantifier(CountBounds bounds, QuantifierOption option)
+	{
+		_bounds = bounds;
+		_option = option;
+	}
+
+	/// <summary>
+	///     The quantifier of an unspecified occurrence: at least once.
+	/// </summary>
+	public static Quantifier Default => default;
 
 	/// <summary>
 	///     The amount at which <see cref="Check(int, bool, bool)" /> becomes determinable without knowing whether more
@@ -24,7 +51,13 @@ public class Quantifier
 	///     Callers that observe occurrences over time can stop as soon as this many occurred; below it they have to
 	///     wait for their timeout to expire, because only then is the amount final.
 	/// </remarks>
-	public int DeterminableAmount => _bounds.DeterminableAmount;
+	public int DeterminableAmount => Bounds.DeterminableAmount;
+
+	/// <summary>
+	///     The bounds, which are <c>at least once</c> as long as no option is specified, so that
+	///     <see langword="default" /> is a valid quantifier.
+	/// </summary>
+	private CountBounds Bounds => _option == QuantifierOption.None ? CountBounds.Default : _bounds;
 
 	/// <summary>
 	///     Returns <see langword="true" /> if the quantifier, or its negation when <paramref name="isNegated" />, is only
@@ -32,18 +65,14 @@ public class Quantifier
 	/// </summary>
 	public bool IsNever(bool isNegated)
 		=> isNegated
-			? _bounds.Complement() is { IsNever: true, }
-			: _bounds.IsNever;
+			? Bounds.Complement() is { IsNever: true, }
+			: Bounds.IsNever;
 
 	/// <summary>
 	///     A quantifier for exactly zero items.
 	/// </summary>
 	public static Quantifier Never()
-	{
-		Quantifier quantifier = new();
-		quantifier.Exactly(0);
-		return quantifier;
-	}
+		=> Default.Exactly(0);
 
 	/// <summary>
 	///     Verifies that it occurs at least <paramref name="minimum" /> times.
@@ -51,7 +80,7 @@ public class Quantifier
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="minimum" /> is negative.</exception>
 	/// <exception cref="InvalidOperationException">Another quantifier is already specified.</exception>
 	public Quantifier AtLeast(int minimum)
-		=> Set(CountBounds.AtLeast(minimum), nameof(AtLeast));
+		=> With(CountBounds.AtLeast(minimum), QuantifierOption.AtLeast);
 
 	/// <summary>
 	///     Verifies that it occurs at most <paramref name="maximum" /> times.
@@ -59,7 +88,7 @@ public class Quantifier
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="maximum" /> is negative.</exception>
 	/// <exception cref="InvalidOperationException">Another quantifier is already specified.</exception>
 	public Quantifier AtMost(int maximum)
-		=> Set(CountBounds.AtMost(maximum), nameof(AtMost));
+		=> With(CountBounds.AtMost(maximum), QuantifierOption.AtMost);
 
 	/// <summary>
 	///     Verifies that it occurs between <paramref name="minimum" /> and <paramref name="maximum" /> times.
@@ -70,7 +99,7 @@ public class Quantifier
 	/// </exception>
 	/// <exception cref="InvalidOperationException">Another quantifier is already specified.</exception>
 	public Quantifier Between(int minimum, int maximum)
-		=> Set(CountBounds.Between(minimum, maximum), nameof(Between));
+		=> With(CountBounds.Between(minimum, maximum), QuantifierOption.Between);
 
 	/// <summary>
 	///     Verifies that it occurs fewer than <paramref name="maximum" /> times.
@@ -78,7 +107,7 @@ public class Quantifier
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="maximum" /> is not positive.</exception>
 	/// <exception cref="InvalidOperationException">Another quantifier is already specified.</exception>
 	public Quantifier LessThan(int maximum)
-		=> Set(CountBounds.LessThan(maximum), nameof(LessThan));
+		=> With(CountBounds.LessThan(maximum), QuantifierOption.LessThan);
 
 	/// <summary>
 	///     Verifies that it occurs more than <paramref name="minimum" /> times.
@@ -88,7 +117,7 @@ public class Quantifier
 	/// </exception>
 	/// <exception cref="InvalidOperationException">Another quantifier is already specified.</exception>
 	public Quantifier MoreThan(int minimum)
-		=> Set(CountBounds.MoreThan(minimum), nameof(MoreThan));
+		=> With(CountBounds.MoreThan(minimum), QuantifierOption.MoreThan);
 
 	/// <summary>
 	///     Verifies the amount against the conditions, or against their negation when <paramref name="isNegated" />.
@@ -103,7 +132,7 @@ public class Quantifier
 	///     their negation is.
 	/// </remarks>
 	public bool? Check(int amount, bool isLast, bool isNegated = false)
-		=> _bounds.Check(amount, isLast) is { } isMet ? isMet != isNegated : null;
+		=> Bounds.Check(amount, isLast) is { } isMet ? isMet != isNegated : null;
 
 	/// <summary>
 	///     Verifies that it occurs exactly <paramref name="expected" /> times.
@@ -111,24 +140,22 @@ public class Quantifier
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="expected" /> is negative.</exception>
 	/// <exception cref="InvalidOperationException">Another quantifier is already specified.</exception>
 	public Quantifier Exactly(int expected)
-		=> Exactly(expected, nameof(Exactly));
+		=> Exactly(expected, QuantifierOption.Exactly);
 
 	/// <summary>
 	///     Verifies that it occurs exactly <paramref name="expected" /> times, as specified by the <paramref name="option" />.
 	/// </summary>
-	internal Quantifier Exactly(int expected, string option)
-		=> Set(CountBounds.Exactly(expected), option);
+	internal Quantifier Exactly(int expected, QuantifierOption option)
+		=> With(CountBounds.Exactly(expected), option);
 
 	/// <summary>
-	///     Replaces the bounds of the same <paramref name="option" />, but rejects another quantifier, because it would
-	///     silently replace the bounds of the first one.
+	///     Returns a quantifier with the <paramref name="bounds" /> of the <paramref name="option" />, which replaces the
+	///     same option, but rejects another one, because it would silently replace the bounds of the first one.
 	/// </summary>
-	private Quantifier Set(CountBounds bounds, string option)
+	private Quantifier With(CountBounds bounds, QuantifierOption option)
 	{
-		ThrowHelper.ThrowIfCompetingOption(_specifiedBy, option);
-		_specifiedBy = option;
-		_bounds = bounds;
-		return this;
+		ThrowHelper.ThrowIfCompetingOption(OptionNames[(int)_option], OptionNames[(int)option]!);
+		return new Quantifier(bounds, option);
 	}
 
 	/// <inheritdoc />
@@ -142,7 +169,7 @@ public class Quantifier
 	public string ToString(bool isNegated)
 	{
 		StringBuilder stringBuilder = new();
-		_bounds.AppendTimes(stringBuilder, isNegated);
+		Bounds.AppendTimes(stringBuilder, isNegated);
 		return stringBuilder.ToString();
 	}
 }

@@ -64,7 +64,7 @@ static file class CustomResultExtensions
 
 	public static DigitCountResult HasDigits(this IThat<string> subject)
 	{
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		return new DigitCountResult(((IExpectThat<string>)subject).ExpectationBuilder.AddConstraint((it, grammars)
 			=> new DigitCountConstraint(it, grammars, quantifier)), subject, quantifier);
 	}

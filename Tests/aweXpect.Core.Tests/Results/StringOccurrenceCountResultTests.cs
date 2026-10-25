@@ -10,7 +10,7 @@ public sealed class StringOccurrenceCountResultTests
 	[Test]
 	public async Task AsBlock_ShouldInterpretExpectedAsBlock()
 	{
-		Quantifier quantifier = new();
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		StringEqualityOptions options = new("expected");
 		StringOccurrenceCountResult<string, IThat<string>> sut = CreateSut("foo", quantifier, options);
 
@@ -20,14 +20,14 @@ public sealed class StringOccurrenceCountResultTests
 		await That(result).IsNot<IOptionsProvider<StringEqualityOptions>>()
 			.Because("a block compares the lines on its own, so it offers only the casing and a comparer");
 		await That(result).Is<IOptionsProvider<Quantifier>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(quantifier));
+			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
 	}
 
 	[Test]
 	public async Task ShouldNotOfferPrefixAndSuffixMatchTypes()
 	{
 		StringOccurrenceCountResult<string, IThat<string>> sut =
-			CreateSut("foo", new Quantifier(), new StringEqualityOptions("expected"));
+			CreateSut("foo", new OptionsSlot<Quantifier>(Quantifier.Default), new StringEqualityOptions("expected"));
 
 		await That(sut).IsNot<IStringMatchTypeOptions>()
 			.Because("an occurrence can be anywhere in the string, so AsPrefix() and AsSuffix() must not compile");
@@ -37,7 +37,7 @@ public sealed class StringOccurrenceCountResultTests
 	public async Task ShouldOfferPatternMatchTypes()
 	{
 		StringEqualityOptions options = new("expected");
-		StringOccurrenceCountResult<string, IThat<string>> sut = CreateSut("foo", new Quantifier(), options);
+		StringOccurrenceCountResult<string, IThat<string>> sut = CreateSut("foo", new OptionsSlot<Quantifier>(Quantifier.Default), options);
 
 		StringOccurrenceCountResult<string, IThat<string>> result = sut.AsWildcard();
 
@@ -49,17 +49,17 @@ public sealed class StringOccurrenceCountResultTests
 	[Test]
 	public async Task ShouldProvideTheQuantifierAndTheStringOptions()
 	{
-		Quantifier quantifier = new();
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		StringEqualityOptions options = new("expected");
 		StringOccurrenceCountResult<string, IThat<string>> sut = CreateSut("foo", quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(quantifier));
+			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
 		await That(sut).Is<IOptionsProvider<StringEqualityOptions>>()
 			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
-	private static StringOccurrenceCountResult<T, IThat<T>> CreateSut<T>(T subject, Quantifier quantifier,
+	private static StringOccurrenceCountResult<T, IThat<T>> CreateSut<T>(T subject, OptionsSlot<Quantifier> quantifier,
 		StringEqualityOptions options)
 	{
 #pragma warning disable aweXpect0001
@@ -68,7 +68,7 @@ public sealed class StringOccurrenceCountResultTests
 		return new StringOccurrenceCountResult<T, IThat<T>>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			new OptionsSlot<Quantifier>(quantifier),
+			quantifier,
 			new OptionsSlot<StringEqualityOptions>(options));
 	}
 }

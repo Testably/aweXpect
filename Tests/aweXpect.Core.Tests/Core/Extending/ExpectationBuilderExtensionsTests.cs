@@ -233,7 +233,7 @@ public sealed class ExpectationBuilderExtensionsTests
 	private static StringOccurrenceCountResult<string, IThat<string>> ContainsOccurrences(IThat<string> subject,
 		string expected, bool isNegated)
 	{
-		OptionsSlot<Quantifier> quantifier = new(new Quantifier());
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		OptionsSlot<StringEqualityOptions> options = new(new StringEqualityOptions(nameof(expected)));
 		return new StringOccurrenceCountResult<string, IThat<string>>(
 			subject.Get().ExpectationBuilder.AddStringOccurrenceConstraint(expected, quantifier, options, isNegated),

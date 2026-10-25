@@ -7,8 +7,7 @@ public class QuantifierTests
 	[Test]
 	public async Task AtLeast_WhenAMaximumIsSpecified_ShouldThrowInvalidOperationException()
 	{
-		Quantifier sut = new();
-		sut.AtMost(5);
+		Quantifier sut = Quantifier.Default.AtMost(5);
 
 		void Act() => sut.AtLeast(2);
 
@@ -23,7 +22,7 @@ public class QuantifierTests
 	public async Task AtLeast_WhenMinimumIsNegative_ShouldThrowArgumentOutOfRangeException(
 		int minimum, bool expectThrow)
 	{
-		Quantifier sut = new();
+		Quantifier sut = Quantifier.Default;
 
 		void Act() => sut.AtLeast(minimum);
 
@@ -32,10 +31,19 @@ public class QuantifierTests
 	}
 
 	[Test]
+	public async Task AtLeast_WhenSpecifiedTwice_ShouldUseTheLastBounds()
+	{
+		Quantifier sut = Quantifier.Default.AtLeast(2);
+
+		Quantifier result = sut.AtLeast(3);
+
+		await That(result.ToString()).IsEqualTo("at least 3 times");
+	}
+
+	[Test]
 	public async Task AtMost_WhenAMinimumIsSpecified_ShouldThrowInvalidOperationException()
 	{
-		Quantifier sut = new();
-		sut.AtLeast(2);
+		Quantifier sut = Quantifier.Default.AtLeast(2);
 
 		void Act() => sut.AtMost(5);
 
@@ -51,7 +59,7 @@ public class QuantifierTests
 	public async Task AtMost_WhenMaximumIsNegative_ShouldThrowArgumentOutOfRangeException(
 		int maximum, bool expectThrow)
 	{
-		Quantifier sut = new();
+		Quantifier sut = Quantifier.Default;
 
 		void Act() => sut.AtMost(maximum);
 
@@ -66,7 +74,7 @@ public class QuantifierTests
 	public async Task Between_WhenMaximumIsLessThanMinimum_ShouldThrowArgumentOutOfRangeException(
 		int minimum, int maximum, bool expectThrow)
 	{
-		Quantifier sut = new();
+		Quantifier sut = Quantifier.Default;
 
 		void Act() => sut.Between(minimum, maximum);
 
@@ -82,7 +90,7 @@ public class QuantifierTests
 	public async Task Between_WhenMaximumIsNegative_ShouldThrowArgumentOutOfRangeException(
 		int maximum, bool expectThrow)
 	{
-		Quantifier sut = new();
+		Quantifier sut = Quantifier.Default;
 
 		void Act() => sut.Between(0, maximum);
 
@@ -97,7 +105,7 @@ public class QuantifierTests
 	public async Task Between_WhenMinimumIsNegative_ShouldThrowArgumentOutOfRangeException(
 		int minimum, bool expectThrow)
 	{
-		Quantifier sut = new();
+		Quantifier sut = Quantifier.Default;
 
 		void Act() => sut.Between(minimum, 1);
 
@@ -116,7 +124,7 @@ public class QuantifierTests
 	[Arguments(3, true, true)]
 	public async Task Check_ShouldInvertTheDecisionWhenNegated(int amount, bool isNegated, bool expected)
 	{
-		Quantifier sut = Configure(q => q.Between(1, 2));
+		Quantifier sut = Quantifier.Default.Between(1, 2);
 
 		bool? result = sut.Check(amount, true, isNegated);
 
@@ -126,7 +134,7 @@ public class QuantifierTests
 	[Test]
 	public async Task Check_ShouldNotChangeTheQuantifier()
 	{
-		Quantifier sut = Configure(q => q.AtLeast(2));
+		Quantifier sut = Quantifier.Default.AtLeast(2);
 
 		bool? negated = sut.Check(2, true, true);
 		bool? notNegated = sut.Check(2, true);
@@ -136,13 +144,23 @@ public class QuantifierTests
 	}
 
 	[Test]
+	public async Task Default_ShouldBeAtLeastOnce()
+	{
+		Quantifier sut = default;
+
+		await That(sut.ToString()).IsEqualTo("at least once");
+		await That(Quantifier.Default.ToString()).IsEqualTo("at least once");
+		await That(sut.Check(0, true)).IsNull();
+		await That(sut.Check(1, false)).IsTrue();
+	}
+
+	[Test]
 	[Arguments(0, 0)]
 	[Arguments(1, 1)]
 	[Arguments(3, 3)]
 	public async Task DeterminableAmount_AtLeast_ShouldBeTheMinimum(int minimum, int expected)
 	{
-		Quantifier sut = new();
-		sut.AtLeast(minimum);
+		Quantifier sut = Quantifier.Default.AtLeast(minimum);
 
 		await That(sut.DeterminableAmount).IsEqualTo(expected);
 	}
@@ -152,8 +170,7 @@ public class QuantifierTests
 	[Arguments(3, 4)]
 	public async Task DeterminableAmount_AtMost_ShouldBeOneAboveTheMaximum(int maximum, int expected)
 	{
-		Quantifier sut = new();
-		sut.AtMost(maximum);
+		Quantifier sut = Quantifier.Default.AtMost(maximum);
 
 		await That(sut.DeterminableAmount).IsEqualTo(expected);
 	}
@@ -163,8 +180,7 @@ public class QuantifierTests
 	[Arguments(0, 0, 1)]
 	public async Task DeterminableAmount_Between_ShouldBeOneAboveTheMaximum(int minimum, int maximum, int expected)
 	{
-		Quantifier sut = new();
-		sut.Between(minimum, maximum);
+		Quantifier sut = Quantifier.Default.Between(minimum, maximum);
 
 		await That(sut.DeterminableAmount).IsEqualTo(expected);
 	}
@@ -174,8 +190,7 @@ public class QuantifierTests
 	[Arguments(2, 3)]
 	public async Task DeterminableAmount_Exactly_ShouldBeOneAboveTheExpected(int expectedOccurrences, int expected)
 	{
-		Quantifier sut = new();
-		sut.Exactly(expectedOccurrences);
+		Quantifier sut = Quantifier.Default.Exactly(expectedOccurrences);
 
 		await That(sut.DeterminableAmount).IsEqualTo(expected);
 	}
@@ -185,8 +200,7 @@ public class QuantifierTests
 	[Arguments(3, 3)]
 	public async Task DeterminableAmount_LessThan_ShouldBeTheMaximum(int maximum, int expected)
 	{
-		Quantifier sut = new();
-		sut.LessThan(maximum);
+		Quantifier sut = Quantifier.Default.LessThan(maximum);
 
 		await That(sut.DeterminableAmount).IsEqualTo(expected);
 	}
@@ -196,8 +210,7 @@ public class QuantifierTests
 	[Arguments(2, 3)]
 	public async Task DeterminableAmount_MoreThan_ShouldBeOneAboveTheMinimum(int minimum, int expected)
 	{
-		Quantifier sut = new();
-		sut.MoreThan(minimum);
+		Quantifier sut = Quantifier.Default.MoreThan(minimum);
 
 		await That(sut.DeterminableAmount).IsEqualTo(expected);
 	}
@@ -207,13 +220,13 @@ public class QuantifierTests
 	{
 		Quantifier[] quantifiers =
 		[
-			new(),
-			Configure(q => q.AtLeast(3)),
-			Configure(q => q.AtMost(3)),
-			Configure(q => q.Between(2, 4)),
-			Configure(q => q.Exactly(2)),
-			Configure(q => q.LessThan(3)),
-			Configure(q => q.MoreThan(2)),
+			Quantifier.Default,
+			Quantifier.Default.AtLeast(3),
+			Quantifier.Default.AtMost(3),
+			Quantifier.Default.Between(2, 4),
+			Quantifier.Default.Exactly(2),
+			Quantifier.Default.LessThan(3),
+			Quantifier.Default.MoreThan(2),
 			Quantifier.Never(),
 		];
 
@@ -235,7 +248,7 @@ public class QuantifierTests
 	[Test]
 	public async Task DeterminableAmount_WhenNotSpecified_ShouldBeOne()
 	{
-		Quantifier sut = new();
+		Quantifier sut = Quantifier.Default;
 
 		await That(sut.DeterminableAmount).IsEqualTo(1);
 	}
@@ -243,13 +256,26 @@ public class QuantifierTests
 	[Test]
 	public async Task DeterminableAmount_WhenTheBoundIsTheLargestValue_ShouldNotOverflow()
 	{
-		Quantifier atMost = new();
-		atMost.AtMost(int.MaxValue);
-		Quantifier moreThan = new();
-		moreThan.MoreThan(int.MaxValue - 1);
+		Quantifier atMost = Quantifier.Default.AtMost(int.MaxValue);
+		Quantifier moreThan = Quantifier.Default.MoreThan(int.MaxValue - 1);
 
 		await That(atMost.DeterminableAmount).IsEqualTo(int.MaxValue);
 		await That(moreThan.DeterminableAmount).IsEqualTo(int.MaxValue);
+	}
+
+	[Test]
+	[Arguments("Never", "Exactly cannot be combined with Never.")]
+	[Arguments("Once", "Exactly cannot be combined with Once.")]
+	[Arguments("Twice", "Exactly cannot be combined with Twice.")]
+	public async Task Exactly_WhenAnotherExactOptionIsSpecified_ShouldNameIt(string option, string expectedMessage)
+	{
+		QuantifierOption earlierOption = (QuantifierOption)Enum.Parse(typeof(QuantifierOption), option);
+		Quantifier sut = Quantifier.Default.Exactly(1, earlierOption);
+
+		void Act() => sut.Exactly(1);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage(expectedMessage);
 	}
 
 	[Test]
@@ -259,7 +285,7 @@ public class QuantifierTests
 	public async Task Exactly_WhenExpectedIsNegative_ShouldThrowArgumentOutOfRangeException(
 		int expected, bool expectThrow)
 	{
-		Quantifier sut = new();
+		Quantifier sut = Quantifier.Default;
 
 		void Act() => sut.Exactly(expected);
 
@@ -270,13 +296,12 @@ public class QuantifierTests
 	[Test]
 	public async Task Exactly_WhenSpecifiedTwice_ShouldUseTheLastBounds()
 	{
-		Quantifier sut = new();
-		sut.Exactly(1);
+		Quantifier sut = Quantifier.Default.Exactly(1);
 
-		sut.Exactly(2);
+		Quantifier result = sut.Exactly(2);
 
-		await That(sut.Check(2, true)).IsTrue();
-		await That(sut.Check(1, true)).IsNull();
+		await That(result.Check(2, true)).IsTrue();
+		await That(result.Check(1, true)).IsNull();
 	}
 
 	[Test]
@@ -315,7 +340,7 @@ public class QuantifierTests
 	[Test]
 	public async Task LessThan_WhenMaximumIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
-		Quantifier sut = new();
+		Quantifier sut = Quantifier.Default;
 
 		void Act() => sut.LessThan(-1);
 
@@ -327,7 +352,7 @@ public class QuantifierTests
 	[Test]
 	public async Task LessThan_WhenMaximumIsZero_ShouldThrowArgumentOutOfRangeException()
 	{
-		Quantifier sut = new();
+		Quantifier sut = Quantifier.Default;
 
 		void Act() => sut.LessThan(0);
 
@@ -340,7 +365,7 @@ public class QuantifierTests
 	[Test]
 	public async Task MoreThan_WhenMinimumIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
-		Quantifier sut = new();
+		Quantifier sut = Quantifier.Default;
 
 		void Act() => sut.MoreThan(-1);
 
@@ -352,7 +377,7 @@ public class QuantifierTests
 	[Test]
 	public async Task MoreThan_WhenMinimumIsTheLargestValue_ShouldThrowArgumentOutOfRangeException()
 	{
-		Quantifier sut = new();
+		Quantifier sut = Quantifier.Default;
 
 		void Act() => sut.MoreThan(int.MaxValue);
 
@@ -363,27 +388,41 @@ public class QuantifierTests
 	}
 
 	[Test]
-	[Arguments("AtLeast")]
-	[Arguments("AtMost")]
-	[Arguments("Between")]
-	[Arguments("Exactly")]
-	[Arguments("LessThan")]
-	[Arguments("MoreThan")]
-	public async Task Setter_ShouldReturnTheSameQuantifier(string method)
+	public async Task Never_ShouldBeExactlyZero()
 	{
-		Quantifier sut = new();
+		Quantifier sut = Quantifier.Never();
+
+		void Act() => sut.AtLeast(1);
+
+		await That(sut.ToString()).IsEqualTo("never");
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("AtLeast cannot be combined with Exactly.");
+	}
+
+	[Test]
+	[Arguments("AtLeast", "at least once")]
+	[Arguments("AtMost", "at most once")]
+	[Arguments("Between", "between 1 and 5 times")]
+	[Arguments("Exactly", "exactly once")]
+	[Arguments("LessThan", "never")]
+	[Arguments("MoreThan", "more than once")]
+	public async Task Setter_ShouldNotChangeTheOriginalQuantifier(string method, string expected)
+	{
+		Quantifier sut = Configure(method, 1);
 
 		Quantifier result = method switch
 		{
-			"AtLeast" => sut.AtLeast(1),
-			"AtMost" => sut.AtMost(1),
-			"Between" => sut.Between(1, 2),
-			"Exactly" => sut.Exactly(1),
-			"LessThan" => sut.LessThan(1),
-			_ => sut.MoreThan(1),
+			"AtLeast" => sut.AtLeast(2),
+			"AtMost" => sut.AtMost(2),
+			"Between" => sut.Between(2, 3),
+			"Exactly" => sut.Exactly(2),
+			"LessThan" => sut.LessThan(2),
+			_ => sut.MoreThan(2),
 		};
 
-		await That(result).IsSameAs(sut);
+		await That(sut.ToString()).IsEqualTo(expected)
+			.Because("a quantifier is an immutable value that can be shared");
+		await That(result.ToString()).IsNotEqualTo(expected);
 	}
 
 	[Test]
@@ -391,7 +430,7 @@ public class QuantifierTests
 	[Arguments(3, "fewer than 3 times")]
 	public async Task ToString_LessThan_ShouldSayFewerThan(int maximum, string expected)
 	{
-		Quantifier sut = Configure(q => q.LessThan(maximum));
+		Quantifier sut = Quantifier.Default.LessThan(maximum);
 
 		await That(sut.ToString()).IsEqualTo(expected);
 	}
@@ -428,7 +467,7 @@ public class QuantifierTests
 	[Test]
 	public async Task ToString_WhenNegatedDefault_ShouldBeNever()
 	{
-		Quantifier sut = new();
+		Quantifier sut = Quantifier.Default;
 
 		string result = sut.ToString(true);
 
@@ -446,21 +485,14 @@ public class QuantifierTests
 		await That(sut.ToString()).IsEqualTo("never");
 	}
 
-	private static Quantifier Configure(Action<Quantifier> configure)
-	{
-		Quantifier quantifier = new();
-		configure(quantifier);
-		return quantifier;
-	}
-
 	private static Quantifier Configure(string method, int value)
-		=> Configure(method switch
+		=> method switch
 		{
-			"AtLeast" => q => q.AtLeast(value),
-			"AtMost" => q => q.AtMost(value),
-			"Between" => q => q.Between(value, 5),
-			"Exactly" => q => q.Exactly(value),
-			"LessThan" => q => q.LessThan(value),
-			_ => q => q.MoreThan(value),
-		});
+			"AtLeast" => Quantifier.Default.AtLeast(value),
+			"AtMost" => Quantifier.Default.AtMost(value),
+			"Between" => Quantifier.Default.Between(value, 5),
+			"Exactly" => Quantifier.Default.Exactly(value),
+			"LessThan" => Quantifier.Default.LessThan(value),
+			_ => Quantifier.Default.MoreThan(value),
+		};
 }

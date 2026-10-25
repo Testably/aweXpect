@@ -10,18 +10,18 @@ public sealed class StringCountResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForQuantifier()
 	{
-		Quantifier quantifier = new();
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		StringEqualityOptions options = new("expected");
 		StringCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(quantifier));
+			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
 	}
 
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForStringEqualityOptions()
 	{
-		Quantifier quantifier = new();
+		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
 		StringEqualityOptions options = new("expected");
 		StringCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), quantifier, options);
 
@@ -29,7 +29,7 @@ public sealed class StringCountResultTests
 			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
-	private static StringCountResult<T, IThat<T>> CreateSut<T>(T subject, Quantifier quantifier,
+	private static StringCountResult<T, IThat<T>> CreateSut<T>(T subject, OptionsSlot<Quantifier> quantifier,
 		StringEqualityOptions options)
 	{
 #pragma warning disable aweXpect0001
@@ -38,7 +38,7 @@ public sealed class StringCountResultTests
 		return new StringCountResult<T, IThat<T>>(source.Get().ExpectationBuilder.AddConstraint((it, _)
 				=> new DummyConstraint(it)),
 			source,
-			new OptionsSlot<Quantifier>(quantifier),
+			quantifier,
 			new OptionsSlot<StringEqualityOptions>(options));
 	}
 }

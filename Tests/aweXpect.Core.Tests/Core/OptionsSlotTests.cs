@@ -51,12 +51,26 @@ public sealed class OptionsSlotTests
 	[Test]
 	public async Task Value_WhenReplaced_ShouldReturnTheNewValue()
 	{
-		OptionsSlot<Quantifier> sut = new(new Quantifier());
-		Quantifier replacement = new();
+		OptionsSlot<Quantifier> sut = new(Quantifier.Default);
+		Quantifier replacement = Quantifier.Default.AtLeast(3);
 
 		sut.Value = replacement;
 
-		await That(sut.Value).IsSameAs(replacement);
+		await That(sut.Value.ToString()).IsEqualTo("at least 3 times");
+	}
+
+	[Test]
+	public async Task WhenAQuantifierPresetIsShared_ShouldNotBeChangedByAnotherSlot()
+	{
+		Quantifier preset = Quantifier.Default.AtLeast(2);
+		OptionsSlot<Quantifier> first = new(preset);
+		OptionsSlot<Quantifier> second = new(preset);
+
+		first.AtLeast(3);
+
+		await That(second.Value.ToString()).IsEqualTo("at least twice");
+		await That(preset.ToString()).IsEqualTo("at least twice");
+		await That(first.Value.ToString()).IsEqualTo("at least 3 times");
 	}
 
 	private sealed class MyMatch : CollectionIndexOptions.IMatch
