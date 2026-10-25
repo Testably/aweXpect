@@ -618,6 +618,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
         "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
+      },
+      {
+        "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
+        "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
       }
     ],
     "labels": [
@@ -723,7 +729,8 @@ window.BENCHMARK_DATA = {
       "5d9a56d9",
       "b7f4f05b",
       "1785986b",
-      "73754c62"
+      "73754c62",
+      "937f5ce0"
     ],
     "datasets": [
       {
@@ -832,7 +839,8 @@ window.BENCHMARK_DATA = {
           2043.5405117915227,
           2093.122287205287,
           1786.4942106882731,
-          2082.54341506958
+          2082.54341506958,
+          1638.4001864115396
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -872,6 +880,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -1063,7 +1072,8 @@ window.BENCHMARK_DATA = {
           16242.11040242513,
           15207.722082955497,
           12970.143255615234,
-          16095.034516554613
+          16095.034516554613,
+          10886.648873901368
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1075,6 +1085,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -1809,6 +1820,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
         "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
+      },
+      {
+        "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
+        "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
       }
     ],
     "labels": [
@@ -1914,7 +1931,8 @@ window.BENCHMARK_DATA = {
       "5d9a56d9",
       "b7f4f05b",
       "1785986b",
-      "73754c62"
+      "73754c62",
+      "937f5ce0"
     ],
     "datasets": [
       {
@@ -2023,7 +2041,8 @@ window.BENCHMARK_DATA = {
           1771.8533543178014,
           1698.8427904569185,
           1392.230298451015,
-          1714.5909866333009
+          1714.5909866333009,
+          1307.5085592269897
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2116,6 +2135,7 @@ window.BENCHMARK_DATA = {
           1200,
           1200,
           1200,
+          1240,
           1240,
           1240,
           1240,
@@ -2254,7 +2274,8 @@ window.BENCHMARK_DATA = {
           15140.182056681315,
           13623.88699885777,
           12282.749443562825,
-          14967.080297851562
+          14967.080297851562,
+          10542.309217180524
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2266,6 +2287,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -2940,6 +2962,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
         "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
+      },
+      {
+        "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
+        "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
       }
     ],
     "labels": [
@@ -3035,7 +3063,8 @@ window.BENCHMARK_DATA = {
       "5d9a56d9",
       "b7f4f05b",
       "1785986b",
-      "73754c62"
+      "73754c62",
+      "937f5ce0"
     ],
     "datasets": [
       {
@@ -3134,7 +3163,8 @@ window.BENCHMARK_DATA = {
           5207.0996897379555,
           5115.043141291691,
           4164.019689941406,
-          5324.959761483328
+          5324.959761483328,
+          3945.5726943969726
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3217,6 +3247,7 @@ window.BENCHMARK_DATA = {
           3688,
           3688,
           3688,
+          3736,
           3736,
           3736,
           3736,
@@ -3345,7 +3376,8 @@ window.BENCHMARK_DATA = {
           45587.53950195313,
           46853.86432756697,
           36211.60117885045,
-          47738.11770833333
+          47738.11770833333,
+          30162.97150878906
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3449,7 +3481,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61925,
-          61925
+          61925,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4021,6 +4054,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
         "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
+      },
+      {
+        "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
+        "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
       }
     ],
     "labels": [
@@ -4116,7 +4155,8 @@ window.BENCHMARK_DATA = {
       "5d9a56d9",
       "b7f4f05b",
       "1785986b",
-      "73754c62"
+      "73754c62",
+      "937f5ce0"
     ],
     "datasets": [
       {
@@ -4215,7 +4255,8 @@ window.BENCHMARK_DATA = {
           9468.506856645856,
           9149.728116548979,
           8519.754654947918,
-          9709.989149911064
+          9709.989149911064,
+          7665.376858847482
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4298,6 +4339,7 @@ window.BENCHMARK_DATA = {
           7024,
           7024,
           7024,
+          7064,
           7064,
           7064,
           7064,
@@ -4426,7 +4468,8 @@ window.BENCHMARK_DATA = {
           289248.92626953125,
           287720.96236746653,
           255799.1060221354,
-          303542.803515625
+          303542.803515625,
+          219512.95109049478
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4530,6 +4573,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521541,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -5102,6 +5146,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
         "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
+      },
+      {
+        "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
+        "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
       }
     ],
     "labels": [
@@ -5197,7 +5247,8 @@ window.BENCHMARK_DATA = {
       "5d9a56d9",
       "b7f4f05b",
       "1785986b",
-      "73754c62"
+      "73754c62",
+      "937f5ce0"
     ],
     "datasets": [
       {
@@ -5296,7 +5347,8 @@ window.BENCHMARK_DATA = {
           2819.9463176727295,
           2844.144291941325,
           2608.9355915614537,
-          2818.6505655141978
+          2818.6505655141978,
+          2260.7418215615407
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5341,6 +5393,7 @@ window.BENCHMARK_DATA = {
           1488,
           1488,
           1488,
+          1328,
           1328,
           1328,
           1328,
@@ -5507,7 +5560,8 @@ window.BENCHMARK_DATA = {
           1952.1838048299153,
           1940.7319385822002,
           1912.1763672461877,
-          1991.461474355062
+          1991.461474355062,
+          1600.6378626505534
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5519,6 +5573,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -6183,6 +6238,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
         "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
+      },
+      {
+        "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
+        "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
       }
     ],
     "labels": [
@@ -6278,7 +6339,8 @@ window.BENCHMARK_DATA = {
       "5d9a56d9",
       "b7f4f05b",
       "1785986b",
-      "73754c62"
+      "73754c62",
+      "937f5ce0"
     ],
     "datasets": [
       {
@@ -6377,7 +6439,8 @@ window.BENCHMARK_DATA = {
           2035.3208287556965,
           2064.61764553615,
           1825.33505153656,
-          2119.3743518829347
+          2119.3743518829347,
+          1744.1700759615217
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6460,6 +6523,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2864,
           2864,
           2864,
           2864,
@@ -6588,7 +6652,8 @@ window.BENCHMARK_DATA = {
           1714.6503540919377,
           1723.6669108527046,
           2038.7895050048828,
-          1897.0544701894125
+          1897.0544701894125,
+          1539.1395468393962
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6600,6 +6665,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
