@@ -168,7 +168,10 @@ internal readonly struct CollectionItems<TItem>
 	public bool IsCanceledBeforeTheEnd(CancellationToken cancellationToken)
 		=> cancellationToken.IsCancellationRequested && IsIncomplete();
 
-	private bool IsIncomplete()
+	/// <summary>
+	///     Whether items can still have to come from the source.
+	/// </summary>
+	public bool IsIncomplete()
 		=> _typed is not null ? IsIncomplete(_typed) : CollectionHelpers.IsIncomplete(_untyped);
 
 	/// <summary>
