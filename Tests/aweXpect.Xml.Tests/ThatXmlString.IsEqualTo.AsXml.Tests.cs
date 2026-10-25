@@ -190,7 +190,7 @@ public sealed partial class ThatXmlString
 						             but it differed as
 						               /a/@b was unexpected and
 						               /a/@c was unexpected and
-						                … (2 more)
+						               (… and 2 more)
 
 						             Actual:
 						             <a b="1" c="1" d="1" e="1"/>
