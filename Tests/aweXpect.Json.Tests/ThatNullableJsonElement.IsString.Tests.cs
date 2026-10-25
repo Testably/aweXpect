@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using aweXpect.Core;
 
 namespace aweXpect.Json.Tests;
 
@@ -130,7 +131,7 @@ public sealed partial class ThatNullableJsonElement
 				JsonElement? subject = FromString("\"foo\"");
 
 				async Task Act()
-					=> await That(subject).IsString(null!);
+					=> await That(subject).IsString((Action<IThatSubject<string>>)null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
@@ -150,6 +151,127 @@ public sealed partial class ThatNullableJsonElement
 					             is a string which is equal to "foo",
 					             but it was <null>
 					             """);
+			}
+		}
+
+		public sealed class WithValueTests
+		{
+			[Test]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				JsonElement? subject = FromString("\"foo\"");
+
+				async Task Act()
+					=> await That(subject).IsString((string)null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithMessage("The 'expected' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenStringDoesNotEndWithTheExpectedSuffix_AsSuffix_ShouldFail()
+			{
+				JsonElement? subject = FromString("\"Let It Be\"");
+
+				async Task Act()
+					=> await That(subject).IsString("Yesterday").AsSuffix();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a string ending with "Yesterday",
+					             but it was "Let It Be", which differs at index 8:
+					                        ↓ (actual)
+					               "Let It Be"
+					               "Yesterday"
+					                        ↑ (expected suffix)
+					             """);
+			}
+
+			[Test]
+			public async Task WhenStringIsEqual_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("\"foo\"");
+
+				async Task Act()
+					=> await That(subject).IsString("foo");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsString("foo");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a string equal to "foo",
+					             but it was <null>
+					             """);
+			}
+		}
+
+		public sealed class WithValueNegatedTests
+		{
+			[Test]
+			public async Task WhenJsonIsNoString_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("true");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString("true"));
+
+				await That(Act).DoesNotThrow()
+					.Because("a value of another kind is no string equal to the expected value, like for IsString()");
+			}
+
+			[Test]
+			public async Task WhenStringDiffers_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("\"foo\"");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString("bar"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenStringIsEqual_ShouldFail()
+			{
+				JsonElement? subject = FromString("\"foo\"");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString("foo"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a string equal to "foo",
+					             but it was "foo"
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString("foo"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a string equal to "foo",
+					             but it was <null>
+					             """)
+					.Because("a null subject fails both ways");
 			}
 		}
 	}

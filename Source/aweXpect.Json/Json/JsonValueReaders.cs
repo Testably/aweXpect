@@ -1,5 +1,10 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 using aweXpect.Core;
+using aweXpect.Options;
+#if NET8_0_OR_GREATER
+using System.Numerics;
+#endif
 
 namespace aweXpect.Json;
 
@@ -36,11 +41,100 @@ internal static class JsonValueReaders
 		=> NumberReader<TNumber>.Instance ?? throw Tracing.WriteException(new System.NotSupportedException(
 			$"The number type {Formatter.Format(typeof(TNumber))} is not supported. Use byte, sbyte, short, ushort, int, uint, long, ulong, float, double or decimal."));
 
+	/// <summary>
+	///     Creates the tolerance of a comparison of <typeparamref name="TNumber" /> values.
+	/// </summary>
+	/// <remarks>
+	///     Call it only for a <typeparamref name="TNumber" /> that <see cref="GetNumber{TNumber}" /> supports.
+	/// </remarks>
+	public static NumberTolerance<TNumber> CreateNumberTolerance<TNumber>()
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
+		=> new(NumberDifference<TNumber>.Calculate);
+
 	/// <remarks>
 	///     Newer versions of <c>System.Text.Json</c> read a number beyond the range as infinity, which does not fit either.
 	/// </remarks>
 	private static bool TryGetDouble(JsonElement element, out double value)
 		=> element.TryGetDouble(out value) && !double.IsInfinity(value);
+
+	/// <remarks>
+	///     The difference is written out per type, as the oldest target frameworks have no generic math. An overflow of
+	///     the difference throws, which the <see cref="NumberTolerance{TNumber}" /> treats as not within the tolerance.
+	/// </remarks>
+	private static class NumberDifference<TNumber>
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
+	{
+		public static readonly Func<TNumber, TNumber, TNumber?> Calculate =
+			(Func<TNumber, TNumber, TNumber?>)Create()!;
+
+		private static object? Create()
+		{
+			if (typeof(TNumber) == typeof(byte))
+			{
+				return new Func<byte, byte, byte?>(static (a, e) => (byte)(a > e ? a - e : e - a));
+			}
+
+			if (typeof(TNumber) == typeof(sbyte))
+			{
+				return new Func<sbyte, sbyte, sbyte?>(static (a, e) => checked((sbyte)(a > e ? a - e : e - a)));
+			}
+
+			if (typeof(TNumber) == typeof(short))
+			{
+				return new Func<short, short, short?>(static (a, e) => checked((short)(a > e ? a - e : e - a)));
+			}
+
+			if (typeof(TNumber) == typeof(ushort))
+			{
+				return new Func<ushort, ushort, ushort?>(static (a, e) => (ushort)(a > e ? a - e : e - a));
+			}
+
+			if (typeof(TNumber) == typeof(int))
+			{
+				return new Func<int, int, int?>(static (a, e) => checked(a > e ? a - e : e - a));
+			}
+
+			if (typeof(TNumber) == typeof(uint))
+			{
+				return new Func<uint, uint, uint?>(static (a, e) => a > e ? a - e : e - a);
+			}
+
+			if (typeof(TNumber) == typeof(long))
+			{
+				return new Func<long, long, long?>(static (a, e) => checked(a > e ? a - e : e - a));
+			}
+
+			if (typeof(TNumber) == typeof(ulong))
+			{
+				return new Func<ulong, ulong, ulong?>(static (a, e) => a > e ? a - e : e - a);
+			}
+
+			if (typeof(TNumber) == typeof(float))
+			{
+				return new Func<float, float, float?>(static (a, e) => Math.Abs(a - e));
+			}
+
+			if (typeof(TNumber) == typeof(double))
+			{
+				return new Func<double, double, double?>(static (a, e) => Math.Abs(a - e));
+			}
+
+			if (typeof(TNumber) == typeof(decimal))
+			{
+				return new Func<decimal, decimal, decimal?>(static (a, e) => a > e ? a - e : e - a);
+			}
+
+			return null;
+		}
+	}
 
 	/// <remarks>
 	///     The comparisons with <see langword="typeof" /> are resolved when the type is instantiated, so that no reader is

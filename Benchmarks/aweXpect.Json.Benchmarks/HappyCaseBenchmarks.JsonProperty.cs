@@ -14,7 +14,7 @@ public partial class HappyCaseBenchmarks
 	[Benchmark]
 	public async Task JsonProperty_aweXpect()
 		=> await Expect.That(_jsonNode)
-			.HasProperty("title", t => t.IsString(s => s.IsEqualTo("Let It Be"))).And
+			.HasProperty("title", t => t.IsString("Let It Be")).And
 			.HasProperty("durationSeconds", d => d.IsNumber());
 
 	[Benchmark]

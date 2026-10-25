@@ -88,7 +88,7 @@ Verifies single properties of a `JsonNode`: the title has the expected value and
 
 ```csharp title="aweXpect"
 await Expect.That(_jsonNode)
-    .HasProperty("title", t => t.IsString(s => s.IsEqualTo("Let It Be"))).And
+    .HasProperty("title", t => t.IsString("Let It Be")).And
     .HasProperty("durationSeconds", d => d.IsNumber());
 ```
 

@@ -20,7 +20,7 @@ await Expect.That(json).IsValidJsonMatching(new { title = "Let It Be" });
 // verify single values of a JsonElement or JsonNode
 JsonElement track = JsonDocument.Parse(json).RootElement;
 await Expect.That(track)
-    .HasProperty("title", t => t.IsString(s => s.StartsWith("Let"))).And
+    .HasProperty("title", t => t.IsString("Let It Be")).And
     .HasProperty("durationSeconds", d => d.IsNumber<int>()).And
     .DoesNotHaveProperty("password");
 
@@ -59,10 +59,10 @@ JSON options:
 | [`IsObject().WhoseProperties`](./03-objects-and-arrays.md#isobject) | `JsonElement`, `JsonNode` | collection expectations on the properties of a JSON object      |
 | [`IsArray`](./03-objects-and-arrays.md#isarray)                    | `JsonElement`, `JsonNode` | a JSON array                                                    |
 | [`IsArray().WhoseElements`](./03-objects-and-arrays.md#isarray)    | `JsonElement`, `JsonNode` | collection expectations on the elements of a JSON array         |
-| [`IsString`](./03-objects-and-arrays.md#value-kinds)               | `JsonElement`, `JsonNode` | a JSON string, optionally with expectations on its value        |
+| [`IsString`](./03-objects-and-arrays.md#value-kinds)               | `JsonElement`, `JsonNode` | a JSON string, optionally equal to a value or with expectations |
 | [`IsNumber`](./03-objects-and-arrays.md#value-kinds)               | `JsonElement`, `JsonNode` | a JSON number, optionally with expectations on its value        |
-| [`IsNumber<TNumber>`](./03-objects-and-arrays.md#numbers)          | `JsonElement`, `JsonNode` | a JSON number that fits into the number type, e.g. an `int`     |
-| [`IsBoolean`](./03-objects-and-arrays.md#value-kinds)              | `JsonElement`, `JsonNode` | a JSON boolean, i.e. `true` or `false`, optionally with its value |
+| [`IsNumber<TNumber>`](./03-objects-and-arrays.md#numbers)          | `JsonElement`, `JsonNode` | a JSON number that fits into the number type, e.g. an `int`, optionally equal to a value |
+| [`IsBoolean`](./03-objects-and-arrays.md#value-kinds)              | `JsonElement`, `JsonNode` | a JSON boolean, i.e. `true` or `false`, optionally equal to a value or with expectations |
 | [`IsNull`](./03-objects-and-arrays.md#value-kinds)                 | `JsonElement`             | the JSON value `null`                                           |
 | [`IsJsonSerializable`](./04-serialization.md#json-serializable)    | `object`                  | survives a round trip through the JSON serializer               |
 | [`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json)   | `object`                  | serialized by the JSON serializer as the expected JSON          |

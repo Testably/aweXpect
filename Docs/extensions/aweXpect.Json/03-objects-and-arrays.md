@@ -11,10 +11,10 @@ Describes the possible expectations for the kind and the content of a `JsonEleme
 | [`IsObject().WhoseProperties`](#isobject)           |                       | collection expectations on the properties of a JSON object       |
 | [`IsArray`](#isarray)                               |                       | a JSON array                                                     |
 | [`IsArray().WhoseElements`](#isarray)               |                       | collection expectations on the elements of a JSON array          |
-| [`IsString`](#value-kinds)                          |                       | a JSON string, optionally with expectations on its value         |
+| [`IsString`](#value-kinds)                          |                       | a JSON string, optionally equal to a value or with expectations  |
 | [`IsNumber`](#value-kinds)                          |                       | a JSON number, optionally with expectations on its value         |
-| [`IsNumber<TNumber>`](#numbers)                     |                       | a JSON number that fits into the number type                     |
-| [`IsBoolean`](#value-kinds)                         |                       | a JSON boolean, i.e. `true` or `false`, optionally with its value |
+| [`IsNumber<TNumber>`](#numbers)                     |                       | a JSON number that fits into the number type, optionally equal to a value |
+| [`IsBoolean`](#value-kinds)                         |                       | a JSON boolean, i.e. `true` or `false`, optionally equal to a value or with expectations |
 | [`IsNull`](#value-kinds)                            |                       | the JSON value `null`, only for a `JsonElement`                  |
 
 ## Properties
@@ -28,7 +28,7 @@ JsonElement track = JsonDocument.Parse(
     """{"title": "Let It Be", "artist": "The Beatles", "durationSeconds": 243}""").RootElement;
 
 await Expect.That(track)
-    .HasProperty("title", t => t.IsString(s => s.StartsWith("Let"))).And
+    .HasProperty("title", t => t.IsString("Let It Be")).And
     .HasProperty("durationSeconds", d => d.IsNumber<int>(n => n.IsBetween(120).And(600))).And
     .DoesNotHaveProperty("password");
 ```
@@ -37,12 +37,12 @@ The failure names the value by its JSON path. If the title was "Yesterday", the 
 
 ```text title="Failure message"
 Expected that track
-has property "title" which is a string which starts with "Let" and has property "durationSeconds" which is an int which is between 120 and 600 and does not have property "password",
+has property "title" which is a string equal to "Let It Be" and has property "durationSeconds" which is an int which is between 120 and 600 and does not have property "password",
 but $.title was "Yesterday", which differs at index 0:
    ↓ (actual)
   "Yesterday"
-  "Let"
-   ↑ (expected prefix)
+  "Let It Be"
+   ↑ (expected)
 ```
 
 Every failing part of a combined expectation is reported. The expectations on a property are only verified when the
@@ -122,7 +122,7 @@ JsonElement album = JsonDocument.Parse(
     """{"artist": {"origin": {"city": "Liverpool"}}, "tracks": [{"title": "Come Together"}]}""").RootElement;
 
 await Expect.That(album)
-    .HasValueAt("artist.origin.city", c => c.IsString(s => s.IsEqualTo("Liverpool"))).And
+    .HasValueAt("artist.origin.city", c => c.IsString("Liverpool")).And
     .HasValueAt("tracks[0].title", t => t.IsString());
 ```
 
@@ -130,7 +130,7 @@ If the artist had no origin, the expectation would fail with the first segment t
 
 ```text title="Failure message"
 Expected that album
-has value at "artist.origin.city" which is a string which is equal to "Liverpool" and has value at "tracks[0].title" which is a string,
+has value at "artist.origin.city" which is a string equal to "Liverpool" and has value at "tracks[0].title" which is a string,
 but property $.artist.origin did not exist
 ```
 
@@ -145,14 +145,14 @@ You can verify the element at a zero-based index of a JSON array:
 ```csharp
 JsonElement tracks = JsonDocument.Parse("""[{"title": "Let It Be"}, {"title": "Yesterday"}]""").RootElement;
 
-await Expect.That(tracks).HasElementAt(0, t => t.HasProperty("title", p => p.IsString(s => s.StartsWith("Let"))));
+await Expect.That(tracks).HasElementAt(0, t => t.HasProperty("title", p => p.IsString("Let").AsPrefix()));
 ```
 
 If the first track was "Yesterday", the expectation would fail with:
 
 ```text title="Failure message"
 Expected that tracks
-has element at index 0 which has property "title" which is a string which starts with "Let",
+has element at index 0 which has property "title" which is a string starting with "Let",
 but $[0].title was "Yesterday", which differs at index 0:
    ↓ (actual)
   "Yesterday"
@@ -316,25 +316,43 @@ is a number,
 but it was a string
 ```
 
-`IsString`, `IsNumber` and `IsBoolean` also accept expectations on the value as a `string`, a `double` or a `bool`, so
-that all expectations of aweXpect apply to it, e.g. string options or numeric tolerances:
+`IsString`, `IsNumber` and `IsBoolean` also accept an expected value. `IsString(…)` compares the string exactly and
+takes the string options of aweXpect, e.g. `AsPrefix()`, `AsWildcard()`, `AsRegex()` or `IgnoringCase()`, and
+`IsNumber(…)` takes a tolerance of the type of the expected value with `Within(…)`, also relative to the expected value
+with `Within(…).Percent()`:
 
 ```csharp
 JsonElement track = JsonDocument.Parse(
     """{"title": "Let It Be", "rating": 4.5, "explicit": false}""").RootElement;
 
 await Expect.That(track)
-    .HasProperty("title", t => t.IsString(s => s.StartsWith("let").IgnoringCase())).And
-    .HasProperty("rating", r => r.IsNumber(n => n.IsEqualTo(4.5).Within(0.1))).And
-    .HasProperty("explicit", e => e.IsBoolean(b => b.IsFalse()));
+    .HasProperty("title", t => t.IsString("let").AsPrefix().IgnoringCase()).And
+    .HasProperty("rating", r => r.IsNumber(4.5).Within(0.1)).And
+    .HasProperty("explicit", e => e.IsBoolean(false));
 ```
 
 If the rating was 4.7, the expectation would fail with:
 
 ```text title="Failure message"
 Expected that track
-has property "title" which is a string which starts with "let" ignoring case and has property "rating" which is a number which is equal to 4.5 ± 0.1 and has property "explicit" which is a boolean which is False,
-but $.rating was 4.7, which differs by 0.2
+has property "title" which is a string starting with "let" ignoring case and has property "rating" which is a double equal to 4.5 ± 0.1 and has property "explicit" which is a boolean equal to False,
+but $.rating was 4.7
+```
+
+Like `IsString()`, a value of another kind fails the expectation, e.g. `IsString("4.5")` on the rating fails with
+`but $.rating was a number`, and satisfies its negation, so it succeeds within `DoesNotComplyWith(…)`.
+
+For richer checks, `IsString`, `IsNumber` and `IsBoolean` accept expectations on the value as a `string`, a `double`
+or a `bool`, so that all expectations of aweXpect apply to it:
+
+```csharp
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "rating": 4.5, "explicit": false}""").RootElement;
+
+await Expect.That(track)
+    .HasProperty("title", t => t.IsString(s => s.StartsWith("Let").And.HasLength(9))).And
+    .HasProperty("rating", r => r.IsNumber(n => n.IsBetween(1).And(5))).And
+    .HasProperty("explicit", e => e.IsBoolean(b => b.IsFalse()));
 ```
 
 :::note
@@ -365,6 +383,31 @@ has property "durationSeconds" which is an int,
 but $.durationSeconds was 243.5, which is not an int
 ```
 
+`IsNumber(expected)` compares the number as the type of the expected value, so `IsNumber(243)` reads it as `int`,
+`IsNumber(9.99m)` as `decimal` and `IsNumber(4.5)` as `double`. A `long` or a `decimal` is thereby compared exactly,
+without the rounding of a `double`:
+
+```csharp
+JsonElement track = JsonDocument.Parse("""{"durationSeconds": 243, "price": 9.99}""").RootElement;
+
+await Expect.That(track)
+    .HasProperty("durationSeconds", d => d.IsNumber(243)).And
+    .HasProperty("price", p => p.IsNumber(9.99m));
+```
+
+:::warning
+A number that does not fit into the type of the expected value fails the expectation, like for `IsNumber<TNumber>()`.
+If the duration was `243.0`, the expectation above would fail with:
+
+```text title="Failure message"
+Expected that track
+has property "durationSeconds" which is an int equal to 243 and has property "price" which is a decimal equal to 9.99,
+but $.durationSeconds was 243.0, which is not an int
+```
+
+Compare such a number as `double` with `IsNumber(243.0)` or `IsNumber<double>(243)`.
+:::
+
 ## `JsonNode`
 
 A [`JsonNode`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonnode) and its subtypes
@@ -377,7 +420,7 @@ same options and failure messages:
 JsonNode? track = JsonNode.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""");
 
 await Expect.That(track).Matches(new { title = "Let It Be" });
-await Expect.That(track).HasProperty("artist", a => a.IsString(s => s.IsEqualTo("The Beatles")));
+await Expect.That(track).HasProperty("artist", a => a.IsString("The Beatles"));
 
 JsonArray titles = new("Let It Be", "Yesterday");
 

@@ -5,7 +5,11 @@ using aweXpect.Core;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Json;
+using aweXpect.Options;
 using aweXpect.Results;
+#if NET8_0_OR_GREATER
+using System.Numerics;
+#endif
 
 namespace aweXpect;
 
@@ -74,6 +78,44 @@ public static partial class ThatJsonNode
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		return IsValue(subject, JsonValueReaders.GetNumber<TNumber>(), expectations);
+	}
+
+	/// <summary>
+	///     Verifies that the subject <see cref="JsonNode" /> is a <see cref="JsonValueKind.Number" /> that fits into a
+	///     <typeparamref name="TNumber" /> and is equal to the <paramref name="expected" /> value.
+	/// </summary>
+	/// <remarks>
+	///     The number type follows the <paramref name="expected" /> value, so <c>IsNumber(42)</c> reads the number as
+	///     <see langword="int" /> and fails for <c>42.5</c> or <c>42.0</c>, while <c>IsNumber(42.0)</c> or
+	///     <c>IsNumber&lt;double&gt;(42)</c> compare it as <see langword="double" />. A tolerance is specified on the
+	///     result, e.g. <c>Within(0.5)</c>. A value of another kind, or a number that does not fit into a
+	///     <typeparamref name="TNumber" />, fails the expectation, but satisfies its negation.
+	///     <para />
+	///     The supported number types are <see langword="byte" />, <see langword="sbyte" />, <see langword="short" />,
+	///     <see langword="ushort" />, <see langword="int" />, <see langword="uint" />, <see langword="long" />,
+	///     <see langword="ulong" />, <see langword="float" />, <see langword="double" /> and <see langword="decimal" />.
+	///     <para />
+	///     The subject is a <see cref="JsonNode" /> of any type, so that the number type is the only type argument.
+	/// </remarks>
+	/// <exception cref="NotSupportedException">The <typeparamref name="TNumber" /> is not supported.</exception>
+	[GuaranteesNotNull]
+	public static NumberToleranceResult<JsonNode, IThat<JsonNode?>, TNumber> IsNumber<TNumber>(
+		this IThat<JsonNode?> subject, TNumber expected)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
+	{
+		JsonValueReader<TNumber> reader = JsonValueReaders.GetNumber<TNumber>();
+		NumberTolerance<TNumber> options = JsonValueReaders.CreateNumberTolerance<TNumber>();
+		return new NumberToleranceResult<JsonNode, IThat<JsonNode?>, TNumber>(
+			subject.Get().ExpectationBuilder.AddConstraint((Reader: reader, Expected: expected, Options: options),
+				static (state, it, grammars) => new JsonNodeConstraint<JsonNode>(
+					new IsJsonNumberEqualToConstraint<TNumber>(it, grammars, state.Reader, state.Expected,
+						state.Options))),
+			subject,
+			options);
 	}
 
 	/// <remarks>

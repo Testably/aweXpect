@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Numerics;
+using System.Text.Json;
 
 namespace aweXpect.Json.Tests;
 
@@ -221,6 +222,128 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).Throws<NotSupportedException>()
 					.WithMessage(
 						"The number type char is not supported. Use byte, sbyte, short, ushort, int, uint, long, ulong, float, double or decimal.");
+			}
+		}
+
+		public sealed class WithValueTests
+		{
+			[Test]
+			public async Task WhenNumberDoesNotFit_ShouldFail()
+			{
+				JsonElement? subject = FromString("1.5");
+
+				async Task Act()
+					=> await That(subject).IsNumber(2);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an int equal to 2,
+					             but it was 1.5, which is not an int
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNumberIsOutsideTheTolerance_ShouldFail()
+			{
+				JsonElement? subject = FromString("1.5");
+
+				async Task Act()
+					=> await That(subject).IsNumber(2.0).Within(0.25);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a double equal to 2.0 ± 0.25,
+					             but it was 1.5
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNumberIsWithinTheTolerance_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("1.5");
+
+				async Task Act()
+					=> await That(subject).IsNumber(2.0).Within(0.5);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsNumber(1);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an int equal to 1,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenTypeIsNotSupported_ShouldThrowNotSupportedException()
+			{
+				JsonElement? subject = FromString("1");
+
+				async Task Act()
+					=> await That(subject).IsNumber(new BigInteger(1));
+
+				await That(Act).Throws<NotSupportedException>()
+					.WithMessage(
+						"The number type BigInteger is not supported. Use byte, sbyte, short, ushort, int, uint, long, ulong, float, double or decimal.");
+			}
+		}
+
+		public sealed class WithValueNegatedTests
+		{
+			[Test]
+			public async Task WhenNumberDiffers_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("1");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNumber(2));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNumberIsEqual_ShouldFail()
+			{
+				JsonElement? subject = FromString("1");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNumber(1));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an int equal to 1,
+					             but it was 1
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNumber(1));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an int equal to 1,
+					             but it was <null>
+					             """)
+					.Because("a null subject fails both ways");
 			}
 		}
 	}

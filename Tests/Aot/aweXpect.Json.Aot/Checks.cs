@@ -40,6 +40,14 @@ internal static partial class Checks
 		new("a number that does not fit the requested type fails and names it",
 			() => ShouldFail(async () => await That(Parse("[1.5]")).HasElementAt(0, e => e.IsNumber<int>()),
 				"$[0] was 1.5, which is not an int")),
+		new("values compared with expected values pass",
+			() => ShouldPass(async () => await That(Parse("{\"a\": \"Let It Be\", \"b\": 9.5, \"c\": true}"))
+				.HasProperty("a", a => a.IsString("let").AsPrefix().IgnoringCase())
+				.And.HasProperty("b", b => b.IsNumber(9.4m).Within(0.1m))
+				.And.HasProperty("c", c => c.IsBoolean(true)))),
+		new("a number compared with an expected value of another type fails and names it",
+			() => ShouldFail(async () => await That(Parse("[1.5]")).HasElementAt(0, e => e.IsNumber(2)),
+				"$[0] was 1.5, which is not an int")),
 		new("the elements of an array fail with their JSON representation",
 			() => ShouldFail(async () => await That(Parse("[\"a\", null]")).IsArray().WhoseElements
 					.All().Satisfy(e => e.ValueKind == JsonValueKind.String),

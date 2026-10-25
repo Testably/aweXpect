@@ -36,4 +36,19 @@ public static partial class ThatJsonNode
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		return IsValue(subject, JsonValueReaders.Boolean, expectations);
 	}
+
+	/// <summary>
+	///     Verifies that the subject <see cref="JsonNode" /> is a boolean, i.e. <see cref="JsonValueKind.True" /> or
+	///     <see cref="JsonValueKind.False" />, equal to the <paramref name="expected" /> value.
+	/// </summary>
+	/// <remarks>
+	///     A value of another kind fails the expectation, but satisfies its negation.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static AndOrResult<TNode, IThat<TNode?>> IsBoolean<TNode>(this IThat<TNode?> subject, bool expected)
+		where TNode : JsonNode
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(expected,
+				static (expected, it, grammars) => new JsonNodeConstraint<TNode>(
+					new IsJsonBooleanEqualToConstraint(it, grammars, expected))),
+			subject);
 }

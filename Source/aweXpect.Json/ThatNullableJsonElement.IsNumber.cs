@@ -6,7 +6,11 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Json;
+using aweXpect.Options;
 using aweXpect.Results;
+#if NET8_0_OR_GREATER
+using System.Numerics;
+#endif
 
 namespace aweXpect;
 
@@ -33,6 +37,27 @@ public static partial class ThatNullableJsonElement
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		return IsValue(subject, JsonValueReaders.GetNumber<TNumber>(), expectations);
+	}
+
+	/// <inheritdoc cref="ThatJsonElement.IsNumber{TNumber}(IThat{JsonElement}, TNumber)" />
+	[GuaranteesNotNull]
+	public static NumberToleranceResult<JsonElement, IThat<JsonElement?>, TNumber> IsNumber<TNumber>(
+		this IThat<JsonElement?> subject, TNumber expected)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
+	{
+		JsonValueReader<TNumber> reader = JsonValueReaders.GetNumber<TNumber>();
+		NumberTolerance<TNumber> options = JsonValueReaders.CreateNumberTolerance<TNumber>();
+		return new NumberToleranceResult<JsonElement, IThat<JsonElement?>, TNumber>(
+			subject.Get().ExpectationBuilder.AddConstraint((Reader: reader, Expected: expected, Options: options),
+				static IAsyncContextConstraint<JsonElement?> (state, it, grammars)
+					=> new IsJsonNumberEqualToConstraint<TNumber>(it, grammars, state.Reader, state.Expected,
+						state.Options)),
+			subject,
+			options);
 	}
 
 	[GenerateExpectation("IsNumber", "is {not} a number",

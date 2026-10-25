@@ -118,8 +118,9 @@ a virtual time system.
 
 - The nested expectations of `IsObject` and `IsArray` (`With`, `Without`, `At`, `AString`, `ANumber`,
   `WithElements`, …) are removed. Verify a value with `HasProperty`, `DoesNotHaveProperty`, `HasValueAt` or
-  `HasElementAt`, and its .NET value with `IsString`, `IsNumber`, `IsNumber<TNumber>` or `IsBoolean`, which offer all
-  expectations of aweXpect. Counts and shapes are covered by `IsObject().WhoseProperties`,
+  `HasElementAt`, and its .NET value with `IsString`, `IsNumber`, `IsNumber<TNumber>` or `IsBoolean`, either against an
+  expected value, e.g. `IsString("Let It Be")`, or with all expectations of aweXpect. Counts and shapes are covered by
+  `IsObject().WhoseProperties`,
   `IsArray().WhoseElements` and `Matches`.
 - `Matches` and `IsValidJsonMatching` report additional array elements. Add
   `o => o.IgnoringAdditionalArrayElements()` to allow them.

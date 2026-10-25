@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using aweXpect.Core;
 
 namespace aweXpect.Json.Tests;
 
@@ -137,7 +138,7 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString("\"foo\"");
 
 				async Task Act()
-					=> await That(subject).IsString(null!);
+					=> await That(subject).IsString((Action<IThatSubject<string>>)null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
@@ -172,6 +173,208 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is not a string which starts with "Let",
 					             but it was a string
+					             """);
+			}
+		}
+
+		public sealed class WithValueTests
+		{
+			[Test]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				JsonElement subject = FromString("\"foo\"");
+
+				async Task Act()
+					=> await That(subject).IsString((string)null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithMessage("The 'expected' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenJsonIsNoString_ShouldFail()
+			{
+				JsonElement subject = FromString("42");
+
+				async Task Act()
+					=> await That(subject).IsString("42");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a string equal to "42",
+					             but it was a number
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNestedInHasProperty_ShouldNameThePathOfTheProperty()
+			{
+				JsonElement subject = FromString("{\"title\": \"Yesterday\"}");
+
+				async Task Act()
+					=> await That(subject).HasProperty("title", t => t.IsString("Let It Be"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has property "title" which is a string equal to "Let It Be",
+					             but $.title was "Yesterday", which differs at index 0:
+					                ↓ (actual)
+					               "Yesterday"
+					               "Let It Be"
+					                ↑ (expected)
+					             """);
+			}
+
+			[Test]
+			public async Task WhenStringDiffers_ShouldFail()
+			{
+				JsonElement subject = FromString("\"Let It Bee\"");
+
+				async Task Act()
+					=> await That(subject).IsString("Let It Be");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a string equal to "Let It Be",
+					             but it was "Let It Bee" with a length of 10, which is longer than the expected length of 9 and has superfluous:
+					               "e"
+					             """);
+			}
+
+			[Test]
+			public async Task WhenStringDiffersOnlyInCase_IgnoringCase_ShouldSucceed()
+			{
+				JsonElement subject = FromString("\"Let It Be\"");
+
+				async Task Act()
+					=> await That(subject).IsString("LET IT BE").IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenStringDoesNotStartWithTheExpectedPrefix_AsPrefix_ShouldFail()
+			{
+				JsonElement subject = FromString("\"Yesterday\"");
+
+				async Task Act()
+					=> await That(subject).IsString("Let").AsPrefix();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a string starting with "Let",
+					             but it was "Yesterday", which differs at index 0:
+					                ↓ (actual)
+					               "Yesterday"
+					               "Let"
+					                ↑ (expected prefix)
+					             """);
+			}
+
+			[Test]
+			public async Task WhenStringIsEqual_ShouldSucceed()
+			{
+				JsonElement subject = FromString("\"Let It Be\"");
+
+				async Task Act()
+					=> await That(subject).IsString("Let It Be");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenStringMatchesTheWildcardPattern_AsWildcard_ShouldSucceed()
+			{
+				JsonElement subject = FromString("\"Let It Be\"");
+
+				async Task Act()
+					=> await That(subject).IsString("Let*").AsWildcard();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenStringStartsWithTheExpectedPrefix_AsPrefix_ShouldSucceed()
+			{
+				JsonElement subject = FromString("\"Let It Be\"");
+
+				async Task Act()
+					=> await That(subject).IsString("Let").AsPrefix();
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class WithValueNegatedTests
+		{
+			[Test]
+			public async Task WhenJsonIsNoString_ShouldSucceed()
+			{
+				JsonElement subject = FromString("42");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString("42"));
+
+				await That(Act).DoesNotThrow()
+					.Because("a value of another kind is no string equal to the expected value, like for IsString()");
+			}
+
+			[Test]
+			public async Task WhenNestedInHasPropertyAndValueIsNoString_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"rating\": 4.5}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasProperty("rating", r => r.IsString("4.5")));
+
+				await That(Act).DoesNotThrow()
+					.Because("the property exists, but is no string equal to the expected value");
+			}
+
+			[Test]
+			public async Task WhenStringDiffers_ShouldSucceed()
+			{
+				JsonElement subject = FromString("\"Yesterday\"");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString("Let It Be"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenStringIsEqual_ShouldFail()
+			{
+				JsonElement subject = FromString("\"Let It Be\"");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString("Let It Be"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a string equal to "Let It Be",
+					             but it was "Let It Be"
+					             """);
+			}
+
+			[Test]
+			public async Task WhenStringStartsWithTheUnexpectedPrefix_AsPrefix_ShouldFail()
+			{
+				JsonElement subject = FromString("\"Let It Be\"");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsString("Let").AsPrefix());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a string starting with "Let",
+					             but it was "Let It Be"
 					             """);
 			}
 		}

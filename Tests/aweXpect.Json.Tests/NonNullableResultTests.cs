@@ -5,8 +5,6 @@ namespace aweXpect.Json.Tests;
 
 public sealed class NonNullableResultTests
 {
-	private const string Reason = "the awaited result is the verified subject, which cannot be null";
-
 	[Test]
 	public async Task JsonNodeDoesNotHaveProperty_ShouldReturnNonNullableNode()
 	{
@@ -14,7 +12,7 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).DoesNotHaveProperty("foo");
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -24,7 +22,7 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).HasElementAt(0, e => e.IsNumber());
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -34,7 +32,7 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).HasProperty("foo");
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -44,7 +42,7 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).HasProperty("foo", p => p.IsArray());
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -54,7 +52,7 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).HasValueAt("foo[0]", v => v.IsNumber());
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -64,7 +62,7 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).IsArray();
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -74,7 +72,7 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).IsBoolean();
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -84,7 +82,17 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).IsBoolean(b => b.IsTrue());
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
+	}
+
+	[Test]
+	public async Task JsonNodeIsBooleanWithValue_ShouldReturnNonNullableNode()
+	{
+		JsonNode? subject = JsonValue.Create(true);
+
+		JsonNode result = await That(subject).IsBoolean(true);
+
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -94,7 +102,7 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).IsNumber();
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -104,7 +112,7 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).IsNumber<int>();
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -114,7 +122,7 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).IsNumber<int>(n => n.IsEqualTo(1));
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -124,7 +132,17 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).IsNumber(n => n.IsEqualTo(1));
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
+	}
+
+	[Test]
+	public async Task JsonNodeIsNumberWithValue_ShouldReturnNonNullableNode()
+	{
+		JsonNode? subject = JsonValue.Create(1);
+
+		JsonNode result = await That(subject).IsNumber(1).Within(0);
+
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -134,7 +152,7 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).IsObject();
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -144,7 +162,7 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).IsString();
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -154,7 +172,17 @@ public sealed class NonNullableResultTests
 
 		JsonNode result = await That(subject).IsString(s => s.IsEqualTo("foo"));
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
+	}
+
+	[Test]
+	public async Task JsonNodeIsStringWithValue_ShouldReturnNonNullableNode()
+	{
+		JsonNode? subject = JsonValue.Create("foo");
+
+		JsonNode result = await That(subject).IsString("foo");
+
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -164,7 +192,7 @@ public sealed class NonNullableResultTests
 
 		object result = await That(subject).IsJsonSerializable();
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -174,7 +202,7 @@ public sealed class NonNullableResultTests
 
 		object result = await That(subject).IsJsonSerializable<Poco>();
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -184,7 +212,7 @@ public sealed class NonNullableResultTests
 
 		object result = await That(subject).IsJsonSerializable<Poco>(new JsonSerializerOptions());
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -194,7 +222,7 @@ public sealed class NonNullableResultTests
 
 		object result = await That(subject).IsJsonSerializable(new JsonSerializerOptions());
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -204,7 +232,7 @@ public sealed class NonNullableResultTests
 
 		string result = await That(subject).IsValidJsonMatching(new { foo = 1, });
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -214,7 +242,7 @@ public sealed class NonNullableResultTests
 
 		string result = await That(subject).IsValidJsonMatching([1, 2,]);
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -224,7 +252,7 @@ public sealed class NonNullableResultTests
 
 		string result = await That(subject).IsValidJsonMatchingExactly(new { foo = 1, });
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
@@ -234,7 +262,7 @@ public sealed class NonNullableResultTests
 
 		string result = await That(subject).IsValidJsonMatchingExactly([1, 2,]);
 
-		await That(result).IsSameAs(subject).Because(Reason);
+		await That(result).IsSameAs(subject);
 	}
 
 	private sealed class Poco
