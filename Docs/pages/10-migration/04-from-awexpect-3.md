@@ -212,6 +212,10 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   `ObjectEqualityWithToleranceResult` and `StringCollectionMatchResult` moved to Core.
 - The quantified collection constraints moved to `aweXpect.Core.Extending`, and the occurrence count of `Contains`
   is available there as `AddStringOccurrenceConstraint`.
+- `ReflectionFallback` moved from `aweXpect.Core` to `aweXpect.Core.Extending`, and its `NotSupported(what, remedy)`
+  is public, so that an extension throws the same error as the built-in expectations when reflection is switched off.
+  aweXpect.Json and aweXpect.Reflection use it too, so their wording of this error changed slightly. The runtime switch
+  `aweXpect.ReflectionFallback.IsSupported` and the `AweXpectReflectionFallback` property keep their names.
 - The type parameters of results follow one scheme: `TType` for the subject, `TThat` for the subject wrapper, and
   `TResult` for the type returned after an option, e.g. `CollectionOrderResult<TType, TThat, TMember>`.
 - `[GenerateCollectionExpectation]` also generates the expectation directly on a collection with `CollectionOverload`

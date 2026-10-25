@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
-using aweXpect.Core;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Metadata;
 
 namespace aweXpect.Equivalency;

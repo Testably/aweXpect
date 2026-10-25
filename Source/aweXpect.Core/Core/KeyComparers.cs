@@ -11,6 +11,7 @@ using System.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using aweXpect.Core.Extending;
 
 namespace aweXpect.Core;
 

@@ -208,7 +208,7 @@ internal static class CollectionHelpers
 	///     A generic collection that is no <see cref="ICollection" />, e.g. a <see cref="HashSet{T}" />, converts to
 	///     <see cref="IReadOnlyCollection{T}" /> of <see langword="object" /> by variance only for reference type items, so
 	///     for value type items its count is read by reflection, which is only attempted while the
-	///     <see cref="ReflectionFallback" /> is supported.
+	///     <see cref="Core.Extending.ReflectionFallback" /> is supported.
 	/// </remarks>
 	internal static int? GetUntypedCount(this IEnumerable? value)
 		=> value switch
@@ -216,7 +216,7 @@ internal static class CollectionHelpers
 			null => null,
 			ICollection collection => UserCode.Invoke(static subject => subject.Count, collection),
 			IReadOnlyCollection<object?> collection => UserCode.Invoke(static subject => subject.Count, collection),
-			_ => ReflectionFallback.IsSupported ? ReadGenericCount(value) : null,
+			_ => Core.Extending.ReflectionFallback.IsSupported ? ReadGenericCount(value) : null,
 		};
 
 #if NET8_0_OR_GREATER

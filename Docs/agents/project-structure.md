@@ -63,8 +63,8 @@ projects in this repository that need the generator reference `aweXpect.Core.Gen
 - `Source/aweXpect/{Equivalency,Helpers,Options,Results}`: shared implementation of the expectations.
 - `Source/aweXpect.Core/Core`: the evaluation engine. `ExpectationBuilder` collects constraints into a tree of
   `Nodes`; `Constraints` holds `ConstraintResult`; `Sources` wraps values and delegates; `Adapters` maps failures to
-  the test framework; `Extending` holds the attributes for generated expectations; `Metadata` holds the registry and
-  attributes for generated type metadata; `ReflectionFallback.cs` guards all reflection; `Internal` holds unstable
+  the test framework; `Extending` holds the attributes for generated expectations and `ReflectionFallback.cs`, which
+  guards all reflection; `Metadata` holds the registry and attributes for generated type metadata; `Internal` holds unstable
   API such as `WithTimeSystem`; `Polyfills` holds polyfills for the older targets (some are linked into `aweXpect`).
 - `Source/aweXpect.Core/{Formatting,Options,Results,Customization,Equivalency,Recording,Signaling,Delegates,Collections}`:
   value formatting, comparison options, result types, the customization API and the corresponding primitives.

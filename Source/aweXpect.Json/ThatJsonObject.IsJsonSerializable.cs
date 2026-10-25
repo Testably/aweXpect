@@ -144,8 +144,8 @@ public static partial class ThatJsonObject
 			Type type = actual.GetType();
 			if (!ReflectionFallback.IsSupported)
 			{
-				throw Tracing.WriteException(ReflectionFallbackHelpers.SerializationNotSupported(
-					$"The subject of type {Formatter.Format(type)}"));
+				throw Tracing.WriteException(ReflectionFallback.NotSupported(
+					$"The members to serialize the subject of type {Formatter.Format(type)} as JSON"));
 			}
 
 			JsonSerializerOptions jsonSerializerOptions =

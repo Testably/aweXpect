@@ -10,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using aweXpect.Core;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Helpers;
 using aweXpect.Customization;
 

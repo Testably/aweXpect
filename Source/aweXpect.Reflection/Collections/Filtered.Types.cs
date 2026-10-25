@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
+using aweXpect.Core.Extending;
 using aweXpect.Customization;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
