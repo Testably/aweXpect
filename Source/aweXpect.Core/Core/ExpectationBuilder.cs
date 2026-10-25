@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -32,41 +33,33 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	private string _it = DefaultCurrentSubject;
 
-	private Node _node = new ExpectationNode();
+	/// <summary>
+	///     The current node, or the first constraint until a node is needed.
+	/// </summary>
+	/// <remarks>
+	///     Most expectations consist of a single constraint, which is evaluated without a node, see
+	///     <see cref="TryEvaluateRightAway" />. Keeping it in the same field as the node keeps the builder small.
+	/// </remarks>
+	private object? _nodeOrConstraint;
 
 	/// <summary>
 	///     The settings that only few expectations use, or <see langword="null" /> when none was set.
 	/// </summary>
 	/// <remarks>
 	///     Every expectation allocates a builder, so keeping these settings in an object of their own, which is only
-	///     allocated when one is set, keeps every expectation 32 bytes smaller.
+	///     allocated when one is set, keeps every expectation 56 bytes smaller. An expectation without them can be
+	///     evaluated right away, see <see cref="TryEvaluateRightAway" />.
 	/// </remarks>
 	private RareSettings? _rareSettings;
 
 	/// <summary>
-	///     The which node that still waits for the expectations on its member, or <see langword="null" />.
+	///     The reasons of the expectation: <see langword="null" />, the text of a single reason, or the list of reasons.
 	/// </summary>
 	/// <remarks>
-	///     Two fields instead of a nullable tuple keep every expectation smaller.
+	///     Most expectations have at most one reason, which is kept as its text until the reasons are needed as a list,
+	///     see <see cref="ReasonList" />.
 	/// </remarks>
-	private Node? _pendingWhichNode;
-
-	/// <summary>
-	///     The root node that contains the <see cref="_pendingWhichNode" />.
-	/// </summary>
-	private Node? _pendingWhichRoot;
-
-	private List<IBecauseReason>? _reasons;
-
-	/// <summary>
-	///     The subject contexts of the current subject, or <see langword="null" /> when none were added.
-	/// </summary>
-	/// <remarks>
-	///     Only while a which node is pending and the subject that it continues has subject contexts, they are held
-	///     together with those of the current subject in <see cref="SubjectContextScopes" />, so that the common case
-	///     allocates no further object.
-	/// </remarks>
-	private object? _subjectContexts;
+	private object? _reasons;
 
 	private readonly string _subjectExpression;
 
@@ -144,7 +137,121 @@ public abstract class ExpectationBuilder
 	/// <summary>
 	///     The reasons of the expectation.
 	/// </summary>
-	private protected IEnumerable<IBecauseReason> Reasons => _reasons ?? [];
+	private protected IEnumerable<IBecauseReason> Reasons => ReasonList ?? [];
+
+	/// <summary>
+	///     The current node, which is created with the first constraint when it is first needed.
+	/// </summary>
+	private protected Node CurrentNode
+	{
+		get
+		{
+			if (_nodeOrConstraint is Node node)
+			{
+				return node;
+			}
+
+			ExpectationNode expectationNode = new();
+			if (_nodeOrConstraint is IConstraint constraint)
+			{
+				expectationNode.AddConstraint(constraint, DefaultCurrentSubject);
+			}
+
+			_nodeOrConstraint = expectationNode;
+			return expectationNode;
+		}
+		set => _nodeOrConstraint = value;
+	}
+
+	/// <summary>
+	///     The reasons of the expectation as a list, or <see langword="null" /> when there are none.
+	/// </summary>
+	/// <remarks>
+	///     A single reason that is kept as its text is turned into the list on first access.
+	/// </remarks>
+	private List<IBecauseReason>? ReasonList
+	{
+		get
+		{
+			if (_reasons is string reason)
+			{
+				List<IBecauseReason> reasons = [new BecauseReason(reason),];
+				_reasons = reasons;
+				return reasons;
+			}
+
+			return (List<IBecauseReason>?)_reasons;
+		}
+	}
+
+	/// <summary>
+	///     The which node that still waits for the expectations on its member, or <see langword="null" />.
+	/// </summary>
+	/// <remarks>
+	///     Kept in the <see cref="RareSettings" />, like the other state that only few expectations use, so that every
+	///     expectation stays smaller.
+	/// </remarks>
+	private Node? PendingWhichNode
+	{
+		get => _rareSettings?.PendingWhichNode;
+		set
+		{
+			if (value is not null || _rareSettings is not null)
+			{
+				GetRareSettings().PendingWhichNode = value;
+			}
+		}
+	}
+
+	/// <summary>
+	///     The root node that contains the <see cref="PendingWhichNode" />.
+	/// </summary>
+	private Node? PendingWhichRoot
+	{
+		get => _rareSettings?.PendingWhichRoot;
+		set
+		{
+			if (value is not null || _rareSettings is not null)
+			{
+				GetRareSettings().PendingWhichRoot = value;
+			}
+		}
+	}
+
+	/// <summary>
+	///     The subject contexts of the current subject, or <see langword="null" /> when none were added.
+	/// </summary>
+	/// <remarks>
+	///     Only while a which node is pending and the subject that it continues has subject contexts, they are held
+	///     together with those of the current subject in <see cref="SubjectContextScopes" />, so that the common case
+	///     allocates no further object.
+	/// </remarks>
+	private object? SubjectContexts
+	{
+		get => _rareSettings?.SubjectContexts;
+		set
+		{
+			if (value is not null || _rareSettings is not null)
+			{
+				GetRareSettings().SubjectContexts = value;
+			}
+		}
+	}
+
+	/// <summary>
+	///     Adds the <paramref name="constraint" /> to the current node, or keeps it without a node, when it is the first
+	///     one on the subject itself.
+	/// </summary>
+	private void AddToNode(IConstraint constraint)
+	{
+		if (_nodeOrConstraint is null && _it == DefaultCurrentSubject)
+		{
+			_nodeOrConstraint = constraint;
+			return;
+		}
+
+		CurrentNode.AddConstraint(constraint, _it);
+	}
 
 	/// <summary>
 	///     Adds the <see cref="IValueConstraint{TValue}" /> from the <paramref name="constraintBuilder" /> which verifies the
@@ -157,7 +264,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(_it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(_it, ExpectationGrammars));
 		return this;
 	}
 
@@ -172,7 +279,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(this, _it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(this, _it, ExpectationGrammars));
 		return this;
 	}
 
@@ -187,7 +294,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(_it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(_it, ExpectationGrammars));
 		return this;
 	}
 
@@ -202,7 +309,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(this, _it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(this, _it, ExpectationGrammars));
 		return this;
 	}
 
@@ -217,7 +324,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(_it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(_it, ExpectationGrammars));
 		return this;
 	}
 
@@ -232,7 +339,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(this, _it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(this, _it, ExpectationGrammars));
 		return this;
 	}
 
@@ -247,7 +354,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(_it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(_it, ExpectationGrammars));
 		return this;
 	}
 
@@ -262,7 +369,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(this, _it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(this, _it, ExpectationGrammars));
 		return this;
 	}
 
@@ -280,7 +387,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(state, _it, ExpectationGrammars));
 		return this;
 	}
 
@@ -299,7 +406,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(state, this, _it, ExpectationGrammars));
 		return this;
 	}
 
@@ -317,7 +424,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(state, _it, ExpectationGrammars));
 		return this;
 	}
 
@@ -336,7 +443,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(state, this, _it, ExpectationGrammars));
 		return this;
 	}
 
@@ -354,7 +461,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(state, _it, ExpectationGrammars));
 		return this;
 	}
 
@@ -373,7 +480,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(state, this, _it, ExpectationGrammars));
 		return this;
 	}
 
@@ -391,7 +498,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(state, _it, ExpectationGrammars));
 		return this;
 	}
 
@@ -410,7 +517,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars), _it);
+		AddToNode(constraintBuilder(state, this, _it, ExpectationGrammars));
 		return this;
 	}
 
@@ -450,20 +557,20 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
-	///     The subject contexts of the current subject, see <see cref="_subjectContexts" />.
+	///     The subject contexts of the current subject, see <see cref="SubjectContexts" />.
 	/// </summary>
 	private SubjectContext? CurrentSubjectContexts
 	{
-		get => _subjectContexts is SubjectContextScopes scopes ? scopes.Current : (SubjectContext?)_subjectContexts;
+		get => SubjectContexts is SubjectContextScopes scopes ? scopes.Current : (SubjectContext?)SubjectContexts;
 		set
 		{
-			if (_subjectContexts is SubjectContextScopes scopes)
+			if (SubjectContexts is SubjectContextScopes scopes)
 			{
 				scopes.Current = value;
 			}
 			else
 			{
-				_subjectContexts = value;
+				SubjectContexts = value;
 			}
 		}
 	}
@@ -523,14 +630,14 @@ public abstract class ExpectationBuilder
 		if (sourceConstraint is not null)
 		{
 			IValueConstraint<TSource> constraint = sourceConstraint.Invoke(_it, ExpectationGrammars);
-			_node.AddConstraint(constraint, _it);
+			CurrentNode.AddConstraint(constraint, _it);
 		}
 
-		Node root = _node;
+		Node root = CurrentNode;
 		memberNode.Source = (_it, ExpectationGrammars);
-		Node mappingNode = _node.AddMapping(memberNode);
+		Node mappingNode = CurrentNode.AddMapping(memberNode);
 		// The member node collects the expectations on the member itself, so that most members need no further node.
-		_node = ReferenceEquals(mappingNode, memberNode) ? memberNode : new ExpectationNode();
+		CurrentNode = ReferenceEquals(mappingNode, memberNode) ? memberNode : new ExpectationNode();
 		string previousIt = _it;
 		if (replaceIt)
 		{
@@ -538,28 +645,28 @@ public abstract class ExpectationBuilder
 			memberNode.ContextMember = _it;
 		}
 
-		Node? outerPendingWhichNode = _pendingWhichNode;
-		Node? outerPendingWhichRoot = _pendingWhichRoot;
-		_pendingWhichNode = null;
-		_pendingWhichRoot = null;
-		object? outerSubjectContexts = _subjectContexts;
-		_subjectContexts = null;
+		Node? outerPendingWhichNode = PendingWhichNode;
+		Node? outerPendingWhichRoot = PendingWhichRoot;
+		PendingWhichNode = null;
+		PendingWhichRoot = null;
+		object? outerSubjectContexts = SubjectContexts;
+		SubjectContexts = null;
 
 		ExpectationGrammars previousGrammars = ExpectationGrammars;
 		ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
 		ExpectationGrammars = expectationGrammars?.Invoke(memberGrammars) ?? memberGrammars;
-		int outerReasonCount = _reasons?.Count ?? 0;
+		int outerReasonCount = ReasonList?.Count ?? 0;
 		expectations.Invoke(state, this);
 		ExpectationGrammars = previousGrammars;
 
 		CompleteWhichNode();
-		_pendingWhichNode = outerPendingWhichNode;
-		_pendingWhichRoot = outerPendingWhichRoot;
-		ThrowIfEmpty(_node, nameof(expectations));
+		PendingWhichNode = outerPendingWhichNode;
+		PendingWhichRoot = outerPendingWhichRoot;
+		ThrowIfEmpty(CurrentNode, nameof(expectations));
 		AttachMemberExpectations(mappingNode, memberNode);
-		_subjectContexts = outerSubjectContexts;
+		SubjectContexts = outerSubjectContexts;
 		MoveReasonsTo(mappingNode, outerReasonCount);
-		_node = root;
+		CurrentNode = root;
 		_it = previousIt;
 
 		return this;
@@ -572,14 +679,14 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	private void AttachMemberExpectations(Node mappingNode, MappingNode memberNode)
 	{
-		if (ReferenceEquals(_node, memberNode) && CurrentSubjectContexts is null)
+		if (ReferenceEquals(CurrentNode, memberNode) && CurrentSubjectContexts is null)
 		{
 			return;
 		}
 
 		MoveMemberExpectationsToNewNode();
 		// The mapping node adds the contexts of the member to its result, unless the expectations went to another node.
-		mappingNode.AddNode(WithSubjectContexts(_node, isOfMember: ReferenceEquals(mappingNode, memberNode)));
+		mappingNode.AddNode(WithSubjectContexts(CurrentNode, isOfMember: ReferenceEquals(mappingNode, memberNode)));
 	}
 
 	/// <summary>
@@ -591,9 +698,9 @@ public abstract class ExpectationBuilder
 	/// </remarks>
 	private void MoveMemberExpectationsToNewNode()
 	{
-		if (_node is MappingNode memberNode)
+		if (CurrentNode is MappingNode memberNode)
 		{
-			_node = memberNode.MoveExpectationsToNewNode();
+			CurrentNode = memberNode.MoveExpectationsToNewNode();
 		}
 	}
 
@@ -604,15 +711,15 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	private void MoveReasonsTo(Node mappingNode, int outerReasonCount)
 	{
-		if (_reasons is null || _reasons.Count == outerReasonCount ||
+		if (ReasonList is not { } reasons || reasons.Count == outerReasonCount ||
 		    mappingNode is not ExpectationNode expectationNode)
 		{
 			return;
 		}
 
-		int count = _reasons.Count - outerReasonCount;
-		expectationNode.AddReasons(_reasons.GetRange(outerReasonCount, count));
-		_reasons.RemoveRange(outerReasonCount, count);
+		int count = reasons.Count - outerReasonCount;
+		expectationNode.AddReasons(reasons.GetRange(outerReasonCount, count));
+		reasons.RemoveRange(outerReasonCount, count);
 	}
 
 	// An empty member node cannot be evaluated, and silently skipping it would hide a forgotten expectation.
@@ -743,13 +850,30 @@ public abstract class ExpectationBuilder
 	///     Adds a <paramref name="reason" /> to the expectation.
 	/// </summary>
 	internal void AddReason(string reason)
-		=> (_reasons ??= []).Add(new BecauseReason(reason));
+	{
+		if (_reasons is null)
+		{
+			_reasons = reason;
+			return;
+		}
+
+		ReasonList!.Add(new BecauseReason(reason));
+	}
 
 	/// <summary>
 	///     Adds a <paramref name="reason" /> to the expectation.
 	/// </summary>
 	internal void AddReason(Task<string?> reason)
-		=> (_reasons ??= []).Add(new AsyncBecauseReason(reason));
+	{
+		List<IBecauseReason>? reasons = ReasonList;
+		if (reasons is null)
+		{
+			reasons = [];
+			_reasons = reasons;
+		}
+
+		reasons.Add(new AsyncBecauseReason(reason));
+	}
 
 	/// <summary>
 	///     Appends the reasons to the expectation of the <paramref name="result" />.
@@ -769,7 +893,7 @@ public abstract class ExpectationBuilder
 	{
 		if (_reasons is not null)
 		{
-			foreach (IBecauseReason reason in _reasons)
+			foreach (IBecauseReason reason in ReasonList!)
 			{
 				result = evaluation is not null && reason is AsyncBecauseReason asyncReason
 					? asyncReason.ApplyPending(result, evaluation)
@@ -807,7 +931,7 @@ public abstract class ExpectationBuilder
 	/// </remarks>
 	internal async Task ResolveReasons(CancellationToken cancellationToken)
 	{
-		foreach (AsyncBecauseReason reason in _reasons?.OfType<AsyncBecauseReason>() ?? [])
+		foreach (AsyncBecauseReason reason in ReasonList?.OfType<AsyncBecauseReason>() ?? [])
 		{
 			await reason.Resolve(cancellationToken);
 		}
@@ -824,7 +948,7 @@ public abstract class ExpectationBuilder
 			return;
 		}
 
-		foreach (IBecauseReason reason in _reasons)
+		foreach (IBecauseReason reason in ReasonList!)
 		{
 			if (reason is AsyncBecauseReason asyncReason)
 			{
@@ -852,16 +976,16 @@ public abstract class ExpectationBuilder
 	private ExpectationBuilder AddAndOperand(ExpectationNode operand, string textSeparator)
 	{
 		MoveMemberExpectationsToNewNode();
-		if (_node is AndNode andNode)
+		if (CurrentNode is AndNode andNode)
 		{
 			andNode.AddNode(operand, textSeparator);
 		}
-		else if (_node is OrNode { Current: AndNode currentAndNode, })
+		else if (CurrentNode is OrNode { Current: AndNode currentAndNode, })
 		{
 			// A single node evaluates the whole `And` chain, as only it skips the operands after a failed guard.
 			currentAndNode.AddNode(operand, textSeparator);
 		}
-		else if (_node is OrNode orNode)
+		else if (CurrentNode is OrNode orNode)
 		{
 			AndNode newNode = new(orNode.Current);
 			newNode.AddNode(operand, textSeparator);
@@ -869,9 +993,9 @@ public abstract class ExpectationBuilder
 		}
 		else
 		{
-			AndNode newNode = new(_node);
+			AndNode newNode = new(CurrentNode);
 			newNode.AddNode(operand, textSeparator);
-			_node = newNode;
+			CurrentNode = newNode;
 		}
 
 		return this;
@@ -1067,22 +1191,22 @@ public abstract class ExpectationBuilder
 	{
 		MoveMemberExpectationsToNewNode();
 		CompleteWhichNode();
-		if (_subjectContexts is not null)
+		if (SubjectContexts is not null)
 		{
-			_subjectContexts = new SubjectContextScopes
+			SubjectContexts = new SubjectContextScopes
 			{
-				OfPendingWhichRoot = (SubjectContext)_subjectContexts,
+				OfPendingWhichRoot = (SubjectContext)SubjectContexts,
 			};
 		}
 
-		_pendingWhichRoot = _node.ReplaceRightMostOperand((Builder: this, State: state, Create: createWhichNode),
+		PendingWhichRoot = CurrentNode.ReplaceRightMostOperand((Builder: this, State: state, Create: createWhichNode),
 			static (s, operand) =>
 			{
 				Node whichNode = s.Create(s.State, operand is ExpectationNode e && e.IsEmpty() ? null : operand);
-				s.Builder._pendingWhichNode = whichNode;
+				s.Builder.PendingWhichNode = whichNode;
 				return whichNode;
 			});
-		_node = new ExpectationNode();
+		CurrentNode = new ExpectationNode();
 	}
 
 	/// <summary>
@@ -1157,7 +1281,7 @@ public abstract class ExpectationBuilder
 	internal Node GetRootNode(bool wrapsMetResult = true)
 	{
 		CompleteWhichNode();
-		return WithSubjectContexts(_node, wrapsMetResult);
+		return WithSubjectContexts(CurrentNode, wrapsMetResult);
 	}
 
 	/// <summary>
@@ -1175,14 +1299,14 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	private void CompleteWhichNode()
 	{
-		if (_pendingWhichNode is not null)
+		if (PendingWhichNode is not null)
 		{
-			_pendingWhichNode.AddNode(WithSubjectContexts(_node));
-			_node = _pendingWhichRoot!;
-			_pendingWhichNode = null;
-			_pendingWhichRoot = null;
+			PendingWhichNode.AddNode(WithSubjectContexts(CurrentNode));
+			CurrentNode = PendingWhichRoot!;
+			PendingWhichNode = null;
+			PendingWhichRoot = null;
 			// The subject contexts that were added for the member belong to the which node.
-			_subjectContexts = (_subjectContexts as SubjectContextScopes)?.OfPendingWhichRoot;
+			SubjectContexts = (SubjectContexts as SubjectContextScopes)?.OfPendingWhichRoot;
 		}
 	}
 
@@ -1231,6 +1355,27 @@ public abstract class ExpectationBuilder
 			return IsMetAfter(previousEvaluation, endsWhenMet, limit, combinationToken);
 		}
 
+		if (endsWhenMet && limit is null && combinationToken is null &&
+		    _nodeOrConstraint is IConstraint constraint && _rareSettings is null && CanEvaluateRightAway())
+		{
+			EvaluationContext.EvaluationContext rightAwayContext = EvaluationContext.EvaluationContext.Rent();
+			if (TryEvaluateRightAway(constraint, rightAwayContext, out ValueTask<ConstraintResult> isMetRightAway))
+			{
+				return CompleteRightAway(isMetRightAway, rightAwayContext);
+			}
+
+			EvaluationContext.EvaluationContext.Return(rightAwayContext);
+		}
+
+		return EvaluateRegularly(endsWhenMet, limit, combinationToken);
+	}
+
+	/// <summary>
+	///     Evaluates the expectation through its nodes, see <see cref="IsMet(bool, TimeSpan?, CancellationToken?)" />.
+	/// </summary>
+	private ValueTask<ConstraintResult> EvaluateRegularly(bool endsWhenMet, TimeSpan? limit,
+		CancellationToken? combinationToken)
+	{
 		ResetOtherExceptions();
 		EvaluationContext.EvaluationContext context = new();
 		_evaluationContext = context;
@@ -1256,6 +1401,96 @@ public abstract class ExpectationBuilder
 		return endEvaluation.Status == TaskStatus.RanToCompletion
 			? new ValueTask<ConstraintResult>(result)
 			: ReturnAfter(endEvaluation, result);
+	}
+
+	/// <summary>
+	///     Whether a single constraint can be evaluated right away, see <see cref="TryEvaluateRightAway" />.
+	/// </summary>
+	/// <remarks>
+	///     Without a test cancellation and a trace writer, the regular evaluation of a single constraint on a value
+	///     subject passes the result of the constraint on unchanged, and a met result needs no reasons that must be
+	///     awaited.
+	/// </remarks>
+	private bool CanEvaluateRightAway()
+	{
+		(TestCancellation? testCancellation, ITraceWriter? traceWriter) = Customize.aweXpect.GetEvaluationSettings();
+		if (testCancellation is not null || traceWriter is not null)
+		{
+			return false;
+		}
+
+		IsTracing = false;
+		return _reasons is null || CanSkipReasonsOfMetResult(true);
+	}
+
+	/// <summary>
+	///     Evaluates the single <paramref name="constraint" /> on the subject without a node, when the subject is a value.
+	/// </summary>
+	internal virtual bool TryEvaluateRightAway(IConstraint constraint, EvaluationContext.EvaluationContext context,
+		out ValueTask<ConstraintResult> isMet)
+	{
+		isMet = default;
+		return false;
+	}
+
+	/// <summary>
+	///     Turns the <paramref name="exception" /> of the single constraint, which was evaluated right away, into the
+	///     result, like the node with this constraint does.
+	/// </summary>
+	private protected virtual ValueTask<ConstraintResult> FromRightAwayException(Exception exception,
+		EvaluationContext.EvaluationContext context)
+		=> new(Task.FromException<ConstraintResult>(exception));
+
+	/// <summary>
+	///     Completes the evaluation of a single constraint right away, like <see cref="EvaluateRegularly" /> completes
+	///     the evaluation of the node with this constraint.
+	/// </summary>
+	/// <remarks>
+	///     A met result that kept nothing in the <paramref name="context" /> returns right away and keeps the context for
+	///     the next evaluation.
+	/// </remarks>
+	private ValueTask<ConstraintResult> CompleteRightAway(ValueTask<ConstraintResult> isMet,
+		EvaluationContext.EvaluationContext context)
+	{
+		if (!isMet.IsCompletedSuccessfully)
+		{
+			return CompleteRightAwayAsync(isMet, context);
+		}
+
+		ConstraintResult result = isMet.Result;
+		if (result.Outcome == Outcome.Success && context.IsUnused)
+		{
+			EvaluationContext.EvaluationContext.Return(context);
+			return new ValueTask<ConstraintResult>(result);
+		}
+
+		_evaluationContext = context;
+		if (result.Outcome != Outcome.Success || context.HasCompletionCallbacks)
+		{
+			return CompleteEvaluation(new ValueTask<ConstraintResult>(result), true);
+		}
+
+		Task endEvaluation = EndEvaluation();
+		return endEvaluation.Status == TaskStatus.RanToCompletion
+			? new ValueTask<ConstraintResult>(result)
+			: ReturnAfter(endEvaluation, result);
+	}
+
+	private async ValueTask<ConstraintResult> CompleteRightAwayAsync(ValueTask<ConstraintResult> isMet,
+		EvaluationContext.EvaluationContext context)
+	{
+		ConstraintResult result;
+		try
+		{
+			result = await isMet;
+		}
+		catch (Exception exception)
+		{
+			_evaluationContext = context;
+			return await CompleteEvaluation(FromRightAwayException(exception, context), true);
+		}
+
+		return await CompleteRightAway(new ValueTask<ConstraintResult>(result), context);
 	}
 
 	/// <summary>
@@ -1303,9 +1538,15 @@ public abstract class ExpectationBuilder
 			return false;
 		}
 
-		for (int i = 0; i < _reasons!.Count; i++)
+		if (_reasons is string)
 		{
-			if (_reasons[i] is not BecauseReason)
+			return true;
+		}
+
+		List<IBecauseReason> reasons = ReasonList!;
+		for (int i = 0; i < reasons.Count; i++)
+		{
+			if (reasons[i] is not BecauseReason)
 			{
 				return false;
 			}
@@ -1344,7 +1585,7 @@ public abstract class ExpectationBuilder
 			// Nothing negates the result of the whole expectation, and a combination only reads the contexts of a
 			// failed member.
 			Node rootNode = GetRootNode(false);
-			if (IsTrueWithoutExpectations && _node is ExpectationNode expectationNode && expectationNode.IsEmpty())
+			if (IsTrueWithoutExpectations && CurrentNode is ExpectationNode expectationNode && expectationNode.IsEmpty())
 			{
 				rootNode.AddConstraint(new ThatBoolSubject.IsTrueConstraint(ExpectationGrammars));
 			}
@@ -1469,15 +1710,15 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder Or(string textSeparator = " or ")
 	{
 		MoveMemberExpectationsToNewNode();
-		if (_node is OrNode orNode)
+		if (CurrentNode is OrNode orNode)
 		{
 			orNode.AddNode(new ExpectationNode(), textSeparator);
 			return this;
 		}
 
-		OrNode newNode = new(_node);
+		OrNode newNode = new(CurrentNode);
 		newNode.AddNode(new ExpectationNode(), textSeparator);
-		_node = newNode;
+		CurrentNode = newNode;
 		return this;
 	}
 
@@ -1505,6 +1746,9 @@ public abstract class ExpectationBuilder
 		public Exception[]? OtherExceptions { get; set; }
 
 		public IValueFormatter[]? Formatters { get; set; }
+		public Node? PendingWhichNode { get; set; }
+		public Node? PendingWhichRoot { get; set; }
+		public object? SubjectContexts { get; set; }
 		public TimeSpan? Timeout { get; set; }
 		public ITimeSystem? TimeSystem { get; set; }
 	}
@@ -1514,7 +1758,7 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	/// <remarks>
 	///     Only allocated while a which node is pending on a subject with subject contexts, see
-	///     <see cref="_subjectContexts" />.
+	///     <see cref="SubjectContexts" />.
 	/// </remarks>
 	private sealed class SubjectContextScopes
 	{
@@ -1727,6 +1971,48 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder, IExpectThat<TVal
 		return true;
 	}
 #endif
+
+	/// <inheritdoc />
+	internal override bool TryEvaluateRightAway(IConstraint constraint,
+		EvaluationContext.EvaluationContext context, out ValueTask<ConstraintResult> isMet)
+	{
+		isMet = default;
+		if (_subjectSource is not null || _value is DelegateValue)
+		{
+			return false;
+		}
+
+		try
+		{
+			switch (constraint)
+			{
+				case IValueConstraint<TValue> valueConstraint:
+					isMet = new ValueTask<ConstraintResult>(valueConstraint.IsMetBy(_value));
+					return true;
+				case IContextConstraint<TValue> contextConstraint:
+					isMet = new ValueTask<ConstraintResult>(contextConstraint.IsMetBy(_value, context));
+					return true;
+				case IAsyncConstraint<TValue> asyncConstraint:
+					isMet = asyncConstraint.IsMetBy(_value, System.Threading.CancellationToken.None);
+					return true;
+				case IAsyncContextConstraint<TValue> asyncContextConstraint:
+					isMet = asyncContextConstraint.IsMetBy(_value, context, System.Threading.CancellationToken.None);
+					return true;
+				default:
+					return false;
+			}
+		}
+		catch (Exception exception)
+		{
+			isMet = FromRightAwayException(exception, context);
+			return true;
+		}
+	}
+
+	/// <inheritdoc />
+	private protected override ValueTask<ConstraintResult> FromRightAwayException(Exception exception,
+		EvaluationContext.EvaluationContext context)
+		=> ((ExpectationNode)CurrentNode).FromConstraintException(exception, _value, context);
 
 	/// <inheritdoc />
 	/// <remarks>

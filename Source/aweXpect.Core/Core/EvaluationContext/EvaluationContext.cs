@@ -12,6 +12,11 @@ namespace aweXpect.Core.EvaluationContext;
 
 internal class EvaluationContext : IEvaluationContext
 {
+	/// <summary>
+	///     A context of this thread that is not in use and kept nothing, see <see cref="Rent" />.
+	/// </summary>
+	[ThreadStatic] private static EvaluationContext? _unused;
+
 	private Extras? _extras;
 	private int _nestingDepth;
 
@@ -42,6 +47,41 @@ internal class EvaluationContext : IEvaluationContext
 			{
 				GetExtras().TimeSystem = value;
 			}
+		}
+	}
+
+	/// <summary>
+	///     Whether nothing was stored or registered in the context, so that nothing refers to it after the evaluation.
+	/// </summary>
+	public bool IsUnused => _extras is null && _storeCount == 0 && _nestingDepth == 0;
+
+	/// <summary>
+	///     Returns an unused context for an evaluation that most likely completes right away.
+	/// </summary>
+	/// <remarks>
+	///     Pass it to <see cref="Return" /> when the evaluation is done, so that the next one need not allocate it.
+	/// </remarks>
+	public static EvaluationContext Rent()
+	{
+		EvaluationContext? context = _unused;
+		if (context is null)
+		{
+			return new EvaluationContext();
+		}
+
+		_unused = null;
+		return context;
+	}
+
+	/// <summary>
+	///     Keeps the <paramref name="context" /> for the next <see cref="Rent" />, when it is still unused.
+	/// </summary>
+	public static void Return(EvaluationContext context)
+	{
+		if (context.IsUnused)
+		{
+			context.Cancellation = EvaluationCancellation.None;
+			_unused = context;
 		}
 	}
 

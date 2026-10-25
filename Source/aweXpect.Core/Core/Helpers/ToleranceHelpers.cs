@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace aweXpect.Core.Helpers;
@@ -32,8 +33,9 @@ internal static class ToleranceHelpers
 				new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must not be NaN."));
 		}
 
-		if (default(TTolerance) is { } zero && tolerance is IComparable<TTolerance> comparable &&
-		    comparable.CompareTo(zero) < 0)
+		// The comparer compares value types without boxing them, unlike a call through the interface.
+		if (typeof(TTolerance).IsValueType && tolerance is IComparable<TTolerance> &&
+		    Comparer<TTolerance>.Default.Compare(tolerance, default!) < 0)
 		{
 			// ReSharper disable once LocalizableElement
 			throw Tracing.WriteException(
