@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
-        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
-      },
-      {
         "sha": "df357ed35457a8c4de5f369b77c871f05352eb04",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
         "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      },
+      {
+        "sha": "9f98f729b2f7ed3e71e158e36027b21fec647962",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
+        "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
       }
     ],
     "labels": [
-      "4eec7318",
       "df357ed3",
       "c010bba3",
       "5bc15a41",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "d5b93f89",
       "44ad4465",
       "9dc4e7bb",
-      "b7024c3c"
+      "b7024c3c",
+      "9f98f729"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          202.58517438570658,
           312.5136297225952,
           226.31324475152152,
           414.86984654835294,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           443.32357464517867,
           344.2021641364464,
           455.8983209133148,
-          415.3881736823491
+          415.3881736823491,
+          240.75925808686478
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -452,7 +452,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
-          608,
+          640,
           640,
           640,
           640,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          509.61538991928103,
           764.2756281534831,
           536.072971534729,
           970.2753125508626,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           1042.5549468358358,
           809.4281631878445,
           1071.424160385132,
-          1092.5431903839112
+          1092.5431903839112,
+          532.8542060852051
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
-        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
-      },
-      {
         "sha": "df357ed35457a8c4de5f369b77c871f05352eb04",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
         "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      },
+      {
+        "sha": "9f98f729b2f7ed3e71e158e36027b21fec647962",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
+        "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
       }
     ],
     "labels": [
-      "4eec7318",
       "df357ed3",
       "c010bba3",
       "5bc15a41",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "d5b93f89",
       "44ad4465",
       "9dc4e7bb",
-      "b7024c3c"
+      "b7024c3c",
+      "9f98f729"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          99.80279644046512,
           153.01855700016023,
           99.99071205513818,
           194.592351214091,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           207.6552509466807,
           158.13208064011164,
           201.2619744737943,
-          223.16101603507997
+          223.16101603507997,
+          105.74926986694337
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          134.35186891555787,
           206.85194873809814,
           128.6137250491551,
           253.18679602940878,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           272.7280724525452,
           210.02251165253776,
           259.7179159096309,
-          307.55919194221497
+          307.55919194221497,
+          146.68700998624166
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
-        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
-      },
-      {
         "sha": "df357ed35457a8c4de5f369b77c871f05352eb04",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
         "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      },
+      {
+        "sha": "9f98f729b2f7ed3e71e158e36027b21fec647962",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
+        "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
       }
     ],
     "labels": [
-      "4eec7318",
       "df357ed3",
       "c010bba3",
       "5bc15a41",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "d5b93f89",
       "44ad4465",
       "9dc4e7bb",
-      "b7024c3c"
+      "b7024c3c",
+      "9f98f729"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          342.4811784585317,
           452.43272294998167,
           341.25137255986533,
           614.4018684795925,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           656.834012667338,
           518.2152183396475,
           652.5665302276611,
-          687.8335020882743
+          687.8335020882743,
+          352.0112532547542
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1668,7 +1668,6 @@ window.BENCHMARK_DATA = {
           976,
           976,
           976,
-          976,
           1008,
           1008,
           1008,
@@ -1685,6 +1684,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1016,
           1016
         ],
         "borderColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          493.76175855000815,
           725.0246744155884,
           495.3376374925886,
           965.9930225372315,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1055.6800371805828,
           748.4247174629799,
           1003.1172813415527,
-          1064.2823979513985
+          1064.2823979513985,
+          512.1657770701817
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
-        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
-      },
-      {
         "sha": "df357ed35457a8c4de5f369b77c871f05352eb04",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
         "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      },
+      {
+        "sha": "9f98f729b2f7ed3e71e158e36027b21fec647962",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
+        "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
       }
     ],
     "labels": [
-      "4eec7318",
       "df357ed3",
       "c010bba3",
       "5bc15a41",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "d5b93f89",
       "44ad4465",
       "9dc4e7bb",
-      "b7024c3c"
+      "b7024c3c",
+      "9f98f729"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          988.8901557922363,
           1329.9361852918353,
           992.5125962893168,
           1677.1769700050354,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1932.4807571411134,
           1450.3247194925943,
           1874.5765302022298,
-          1658.81057917277
+          1658.81057917277,
+          1121.534768471351
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2276,7 +2276,7 @@ window.BENCHMARK_DATA = {
           1672,
           1672,
           1672,
-          1672,
+          1688,
           1688,
           1688,
           1688,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9444.673855121318,
           13931.69404296875,
           9646.317310587565,
           20968.100540161133,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           22519.038431020883,
           14781.99289449056,
           22242.81704305013,
-          16976.80018179757
+          16976.80018179757,
+          10469.239154052735
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2372,7 +2372,6 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34713,
           34713,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
-        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
-      },
       {
         "sha": "df357ed35457a8c4de5f369b77c871f05352eb04",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
         "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      },
+      {
+        "sha": "9f98f729b2f7ed3e71e158e36027b21fec647962",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
+        "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
       }
     ],
     "labels": [
-      "4eec7318",
       "df357ed3",
       "c010bba3",
       "5bc15a41",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "d5b93f89",
       "44ad4465",
       "9dc4e7bb",
-      "b7024c3c"
+      "b7024c3c",
+      "9f98f729"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          359.8475132306417,
           489.4575740269252,
           365.026276077543,
           686.1853793144226,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           740.1206101008823,
           532.6241367340087,
           764.156905907851,
-          696.7899199265701
+          696.7899199265701,
+          422.32369591639593
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2884,7 +2884,6 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
-          1080,
           1112,
           1112,
           1112,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1112,
           1112,
           1112,
+          1120,
           1120
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          635.7478855450948,
           1004.3303532233605,
           657.6701698303223,
           1343.359947340829,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1413.3773554484048,
           1039.9940446217854,
           1282.3451031904954,
-          1449.4355227606636
+          1449.4355227606636,
+          678.1237404163068
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "4eec7318d983e897cdb76742340bb396569a0c4b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 05:24:54 2026 \u002B0200",
-        "message": "chore: remove the unused string member failure helper of aweXpect.Web (#1981)"
-      },
-      {
         "sha": "df357ed35457a8c4de5f369b77c871f05352eb04",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 05:27:05 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
         "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      },
+      {
+        "sha": "9f98f729b2f7ed3e71e158e36027b21fec647962",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
+        "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
       }
     ],
     "labels": [
-      "4eec7318",
       "df357ed3",
       "c010bba3",
       "5bc15a41",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "d5b93f89",
       "44ad4465",
       "9dc4e7bb",
-      "b7024c3c"
+      "b7024c3c",
+      "9f98f729"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          621.6783431598118,
           827.5620208104451,
           634.790694173177,
           1130.3970631917318,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1139.8622458140055,
           884.6531737872532,
           1158.7658834457397,
-          1053.7610294342041
+          1053.7610294342041,
+          677.7649213927133
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3492,7 +3492,6 @@ window.BENCHMARK_DATA = {
           1424,
           1424,
           1424,
-          1424,
           1456,
           1456,
           1456,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           1456,
           1456,
           1456,
+          1440,
           1440
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          383.1417550359453,
           620.9934958049229,
           408.295764986674,
           761.956848526001,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           809.9563345591228,
           605.2539518356323,
           788.990642956325,
-          903.622575214931
+          903.622575214931,
+          417.4714378992716
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
