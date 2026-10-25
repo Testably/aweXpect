@@ -13,6 +13,10 @@
 		<ProjectReference Include="..\aweXpect.Core.Generators\aweXpect.Core.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
 	</ItemGroup>
 
+	<ItemGroup>
+		<Compile Include="..\aweXpect.Core\Core\Polyfills\CallerArgumentExpressionAttribute.cs" Link="Polyfills\CallerArgumentExpressionAttribute.cs"/>
+	</ItemGroup>
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
 		<PackageReference Include="System.Text.Json"/>
 	</ItemGroup>

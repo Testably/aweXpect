@@ -14,6 +14,7 @@
 
 	<ItemGroup>
 		<Compile Include="..\aweXpect.Core\Core\Helpers\AssemblyNameExtensions.cs" Link="Helpers\AssemblyNameExtensions.cs"/>
+		<Compile Include="..\aweXpect.Core\Core\Polyfills\CallerArgumentExpressionAttribute.cs" Link="Polyfills\CallerArgumentExpressionAttribute.cs"/>
 	</ItemGroup>
 
 	<ItemGroup>

@@ -15,6 +15,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Include="..\aweXpect.Core\Core\Polyfills\CallerArgumentExpressionAttribute.cs" Link="Polyfills\CallerArgumentExpressionAttribute.cs"/>
+		<Compile Include="..\aweXpect.Core\Core\Polyfills\OverloadResolutionPriorityAttribute.cs" Link="Polyfills\OverloadResolutionPriorityAttribute.cs"/>
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Include="buildTransitive/aweXpect.Snapshots.targets" Pack="true" PackagePath="buildTransitive/"/>
 	</ItemGroup>
 
