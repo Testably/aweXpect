@@ -18,7 +18,7 @@ public static partial class Filtered
 	/// </summary>
 	public class Methods : Filtered<MethodInfo, Methods>, IDescribableSubject
 	{
-		private readonly string _description;
+		private readonly Func<string> _description;
 		private readonly bool _includeOperators;
 		private readonly MemberScopes _memberScope;
 		private readonly Types? _types;
@@ -27,11 +27,11 @@ public static partial class Filtered
 		///     Container for a filterable collection of <see cref="MethodInfo" />.
 		/// </summary>
 		internal Methods(Types types, string description, MemberScopes memberScope)
-			: this(types, description, memberScope, false)
+			: this(types, () => description, memberScope, false)
 		{
 		}
 
-		private Methods(Types types, string description, MemberScopes memberScope, bool includeOperators)
+		private Methods(Types types, Func<string> description, MemberScopes memberScope, bool includeOperators)
 			: base(types.SelectMany(type => type.GetDeclaredMethods(memberScope, includeOperators)))
 		{
 			_types = types;
@@ -43,7 +43,7 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of the given <paramref name="methods" />.
 		/// </summary>
-		internal Methods(IEnumerable<MethodInfo?> methods, string description)
+		internal Methods(IEnumerable<MethodInfo?> methods, Func<string> description)
 			: base(methods.WhereNotNull())
 		{
 			_description = description;
@@ -67,7 +67,7 @@ public static partial class Filtered
 		/// <inheritdoc />
 		public string GetDescription()
 		{
-			string description = _description;
+			string description = _description();
 			foreach (IFilter<MethodInfo> filter in Filters)
 			{
 				description = filter.Describes(description);

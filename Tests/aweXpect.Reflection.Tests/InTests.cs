@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 
@@ -16,6 +17,20 @@ public sealed class InTests
 		await That(sut).HasCount().GreaterThanOrEqualTo(4);
 		await That(sut).All().Satisfy(x => !x.FullName!.StartsWith("System."));
 		await That(sut.GetDescription()).IsEqualTo("in all loaded assemblies");
+	}
+
+	[Test]
+	public async Task AllLoadedAssemblies_WhenCustomizationScopeStartsAfterCreation_ShouldApplyIt()
+	{
+		Filtered.Assemblies sut = In.AllLoadedAssemblies();
+
+		using (Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Set(["aweXpect.Reflection",]))
+		{
+			await That(sut).DoesNotContain(typeof(In).Assembly)
+				.Because("the excluded prefixes are read when the source is enumerated, not when it is created");
+		}
+
+		await That(sut).Contains(typeof(In).Assembly);
 	}
 
 	[Test]
@@ -243,6 +258,27 @@ public sealed class InTests
 		Filtered.Types sut = In.Types(types);
 
 		await That(sut).IsEqualTo([typeof(InTests), typeof(InternalClass),]).InAnyOrder();
+	}
+
+	[Test]
+	public async Task Types_WithLazyEnumerable_ShouldEnumerateItOncePerEvaluation()
+	{
+		int enumerations = 0;
+
+		IEnumerable<Type> CountedTypes()
+		{
+			enumerations++;
+			yield return typeof(InTests);
+		}
+
+		Filtered.Types sut = In.Types(CountedTypes());
+
+		await That(enumerations).IsEqualTo(0).Because("creating the source must not enumerate the types");
+
+		await That(sut).AreSealed();
+
+		await That(enumerations).IsEqualTo(1)
+			.Because("a successful evaluation enumerates the types once and needs no description");
 	}
 
 	[Test]

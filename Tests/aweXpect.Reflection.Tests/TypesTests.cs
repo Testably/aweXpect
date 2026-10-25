@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope;
 using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope.Nested;
@@ -167,6 +168,20 @@ public sealed class TypesTests
 			               *
 			             ]
 			             """).AsWildcard();
+	}
+
+	[Test]
+	public async Task InNamespace_WhenCustomizationScopeStartsAfterCreation_ShouldApplyIt()
+	{
+		Filtered.Types sut = Types.InNamespace(NamespaceScope);
+
+		using (Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Set(["aweXpect.Reflection.Tests",]))
+		{
+			await That(sut).IsEmpty()
+				.Because("a stored layer reads the loaded assemblies and excluded prefixes when it is enumerated");
+		}
+
+		await That(sut).Contains(typeof(ClassInNamespaceScope));
 	}
 
 	[Test]

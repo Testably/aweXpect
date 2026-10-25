@@ -28,15 +28,12 @@ public static class In
 	///     <see cref="AwexpectCustomization.SettingsCustomization.ExcludedAssemblyPrefixes" /> are skipped, with the
 	///     same matching as the dependency assertions and the test framework detection, so one customization value has
 	///     one meaning everywhere.
+	///     <para />
+	///     The assemblies and the excluded prefixes are read each time the collection is enumerated, so a stored
+	///     collection also sees assemblies loaded later and the customization active at that time.
 	/// </remarks>
 	public static Filtered.Assemblies AllLoadedAssemblies()
-	{
-		IEnumerable<Assembly> assemblies = AppDomain.CurrentDomain.GetAssemblies();
-		IReadOnlyList<string> prefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
-		assemblies = assemblies.Where(assembly => !assembly.GetName().Name.IsExcludedAssemblyName(prefixes));
-
-		return new Filtered.Assemblies(assemblies, "in all loaded assemblies");
-	}
+		=> new(LoadedAssemblies(), static () => "in all loaded assemblies");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="assemblies" />.
@@ -48,7 +45,7 @@ public static class In
 	///     Defines expectations on the given <paramref name="assemblies" />.
 	/// </summary>
 	public static Filtered.Assemblies Assemblies(IEnumerable<Assembly?> assemblies)
-		=> new(assemblies, $"in the assemblies {Formatter.Format(assemblies)}");
+		=> new(assemblies, () => $"in the assemblies {Formatter.Format(assemblies)}");
 
 	/// <summary>
 	///     Defines expectations on the assembly that contains the <typeparamref name="TType" />.
@@ -66,20 +63,20 @@ public static class In
 	///     Defines expectations on the type <typeparamref name="TType" />.
 	/// </summary>
 	public static Filtered.Types Type<TType>()
-		=> new([typeof(TType),], $"in type {Formatter.Format(typeof(TType))}");
+		=> new([typeof(TType),], static () => $"in type {Formatter.Format(typeof(TType))}");
 
 	/// <summary>
 	///     Defines expectations on the type <paramref name="type" />
 	/// </summary>
 	public static Filtered.Types Type(Type type)
-		=> new([type,], $"in type {Formatter.Format(type)}");
+		=> new([type,], () => $"in type {Formatter.Format(type)}");
 
 	/// <summary>
 	///     Defines expectations on the types <typeparamref name="TType1" /> and <typeparamref name="TType2" />.
 	/// </summary>
 	public static Filtered.Types Types<TType1, TType2>()
 		=> new([typeof(TType1), typeof(TType2),],
-			$"in types {Formatter.Format(typeof(TType1))} and {Formatter.Format(typeof(TType2))}");
+			static () => $"in types {Formatter.Format(typeof(TType1))} and {Formatter.Format(typeof(TType2))}");
 
 	/// <summary>
 	///     Defines expectations on the types <typeparamref name="TType1" />, <typeparamref name="TType2" /> and
@@ -87,7 +84,7 @@ public static class In
 	/// </summary>
 	public static Filtered.Types Types<TType1, TType2, TType3>()
 		=> new([typeof(TType1), typeof(TType2), typeof(TType3),],
-			$"in types {Formatter.Format(typeof(TType1))}, {Formatter.Format(typeof(TType2))} and {Formatter.Format(typeof(TType3))}");
+			static () => $"in types {Formatter.Format(typeof(TType1))}, {Formatter.Format(typeof(TType2))} and {Formatter.Format(typeof(TType3))}");
 
 	/// <summary>
 	///     Defines expectations on the types <paramref name="types" />
@@ -99,7 +96,7 @@ public static class In
 	///     Defines expectations on the types <paramref name="types" />
 	/// </summary>
 	public static Filtered.Types Types(IEnumerable<Type?> types)
-		=> new(types, $"in types {Formatter.Format(types)}");
+		=> new(types, () => $"in types {Formatter.Format(types)}");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="constructors" />.
@@ -111,7 +108,7 @@ public static class In
 	///     Defines expectations on the given <paramref name="constructors" />.
 	/// </summary>
 	public static Filtered.Constructors Constructors(IEnumerable<ConstructorInfo?> constructors)
-		=> new(constructors, $"in the constructors {Formatter.Format(FormattableMember.FromAll(constructors))}");
+		=> new(constructors, () => $"in the constructors {Formatter.Format(FormattableMember.FromAll(constructors))}");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="events" />.
@@ -123,7 +120,7 @@ public static class In
 	///     Defines expectations on the given <paramref name="events" />.
 	/// </summary>
 	public static Filtered.Events Events(IEnumerable<EventInfo?> events)
-		=> new(events, $"in the events {Formatter.Format(FormattableMember.FromAll(events))}");
+		=> new(events, () => $"in the events {Formatter.Format(FormattableMember.FromAll(events))}");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="fields" />.
@@ -135,7 +132,7 @@ public static class In
 	///     Defines expectations on the given <paramref name="fields" />.
 	/// </summary>
 	public static Filtered.Fields Fields(IEnumerable<FieldInfo?> fields)
-		=> new(fields, $"in the fields {Formatter.Format(FormattableMember.FromAll(fields))}");
+		=> new(fields, () => $"in the fields {Formatter.Format(FormattableMember.FromAll(fields))}");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="methods" />.
@@ -147,7 +144,7 @@ public static class In
 	///     Defines expectations on the given <paramref name="methods" />.
 	/// </summary>
 	public static Filtered.Methods Methods(IEnumerable<MethodInfo?> methods)
-		=> new(methods, $"in the methods {Formatter.Format(FormattableMember.FromAll(methods))}");
+		=> new(methods, () => $"in the methods {Formatter.Format(FormattableMember.FromAll(methods))}");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="properties" />.
@@ -159,5 +156,17 @@ public static class In
 	///     Defines expectations on the given <paramref name="properties" />.
 	/// </summary>
 	public static Filtered.Properties Properties(IEnumerable<PropertyInfo?> properties)
-		=> new(properties, $"in the properties {Formatter.Format(FormattableMember.FromAll(properties))}");
+		=> new(properties, () => $"in the properties {Formatter.Format(FormattableMember.FromAll(properties))}");
+
+	private static IEnumerable<Assembly> LoadedAssemblies()
+	{
+		IReadOnlyList<string> prefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
+		foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+		{
+			if (!assembly.GetName().Name.IsExcludedAssemblyName(prefixes))
+			{
+				yield return assembly;
+			}
+		}
+	}
 }

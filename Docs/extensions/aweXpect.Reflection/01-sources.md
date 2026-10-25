@@ -7,7 +7,10 @@ and [navigating](#navigating-to-members) between assemblies, types and members.
 ## Sources: the `In` helper
 
 `In` builds the collection of reflection objects you want to reason about. Every source returns a lazily
-evaluated collection that you can navigate and filter further.
+evaluated collection that you can navigate and filter further. It is read each time an expectation enumerates
+it, not when it is created: a source stored in a field also sees assemblies loaded later and the
+[assembly exclusions](./04-configuration.md#assembly-exclusions) customized at that time, and a collection you
+pass in is enumerated again on every evaluation.
 
 | Source                                                                                        | Returns                                                                                                   |
 |-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|

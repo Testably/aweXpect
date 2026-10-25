@@ -24,14 +24,6 @@ public static partial class Filtered
 		private readonly IEnumerable<Assembly?>? _unfilteredSource;
 
 		/// <summary>
-		///     Container for a filterable collection of <see cref="Assembly" />.
-		/// </summary>
-		internal Assemblies(IEnumerable<Assembly?> source, string description)
-			: this(source, () => description)
-		{
-		}
-
-		/// <summary>
 		///     Container for a filterable collection of <see cref="Assembly" />, whose <paramref name="description" /> is
 		///     only created for a failure, as formatting it is a large part of a successful expectation.
 		/// </summary>
@@ -44,11 +36,14 @@ public static partial class Filtered
 		/// </summary>
 		internal Assemblies(Types types) : base(types.Select(type => type.Assembly).Distinct())
 		{
-			string description = "assemblies containing " + types.GetDescription();
-			_description = () => description;
+			_description = () => "assemblies containing " + types.GetDescription();
 		}
 
-		private Assemblies(IEnumerable<Assembly?> source, Func<string> description)
+		/// <summary>
+		///     Container for a filterable collection of <see cref="Assembly" />, whose <paramref name="description" /> is
+		///     only created for a failure, as formatting it is a large part of a successful expectation.
+		/// </summary>
+		internal Assemblies(IEnumerable<Assembly?> source, Func<string> description)
 			: base(source.WhereNotNull())
 		{
 			_description = description;
