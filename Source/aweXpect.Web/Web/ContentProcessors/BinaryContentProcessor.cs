@@ -44,5 +44,5 @@ public class BinaryContentProcessor : IContentProcessor
 		=> mediaType.StartsWith("audio/", StringComparison.OrdinalIgnoreCase) ||
 		   mediaType.StartsWith("image/", StringComparison.OrdinalIgnoreCase) ||
 		   mediaType.StartsWith("video/", StringComparison.OrdinalIgnoreCase) ||
-		   mediaType.IndexOf("pdf", StringComparison.OrdinalIgnoreCase) >= 0;
+		   mediaType.Contains("pdf", StringComparison.OrdinalIgnoreCase);
 }
