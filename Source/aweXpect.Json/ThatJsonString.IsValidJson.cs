@@ -49,6 +49,17 @@ public static partial class ThatJsonString
 			subject);
 	}
 
+	/// <summary>
+	///     Verifies that the subject is not a valid JSON string.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<string, IThat<string?>> IsNotValidJson(
+		this IThat<string?> subject,
+		Func<JsonDocumentOptions, JsonDocumentOptions>? options = null)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(GetDocumentOptions(options),
+				static (o, it, grammar) => new IsValidJsonConstraint(it, grammar, o).Invert()),
+			subject);
+
 	private static JsonDocumentOptions GetDocumentOptions(Func<JsonDocumentOptions, JsonDocumentOptions>? options)
 	{
 		JsonDocumentOptions defaultOptions = Customize.aweXpect.Json().DefaultJsonDocumentOptions.Get();

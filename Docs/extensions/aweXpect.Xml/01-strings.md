@@ -5,7 +5,7 @@ Describes the possible expectations for strings that contain XML.
 | Expectation                                         | Negated                   | Summary                                                              |
 |-----------------------------------------------------|---------------------------|----------------------------------------------------------------------|
 | [`IsEqualTo(…).AsXml()`](#string-comparison-as-xml) | `IsNotEqualTo(…).AsXml()` | equal to the expected XML, compared by content                       |
-| [`IsValidXml`](#validation)                         |                           | a well-formed XML document, optionally with expectations on its root |
+| [`IsValidXml`](#validation)                         | `IsNotValidXml`           | a well-formed XML document, optionally with expectations on its root |
 | [`IsValidXmlMatching`](#validation)                 |                           | valid XML that matches the expected XML                              |
 | [`IsValidXmlMatchingExactly`](#validation)          |                           | valid XML that matches the expected XML exactly                      |
 
@@ -169,5 +169,14 @@ You can also verify that a string is not valid XML:
 ```csharp
 string track = "Let It Be";
 
-await Expect.That(track).DoesNotComplyWith(it => it.IsValidXml());
+await Expect.That(track).IsNotValidXml();
+```
+
+The negation also succeeds for a document with a document type definition, but fails for a `null` subject like
+`IsValidXml`. If the string is valid XML, e.g. `<track title="Let It Be" />`, the expectation fails with:
+
+```text title="Failure message"
+Expected that track
+is not valid XML,
+but it was "<track title=\"Let It Be\" />"
 ```

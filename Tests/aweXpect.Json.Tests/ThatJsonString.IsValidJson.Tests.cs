@@ -373,4 +373,149 @@ public sealed partial class ThatJsonString
 			}
 		}
 	}
+
+	public sealed class IsNotValidJson
+	{
+		public sealed class Tests
+		{
+			[Test]
+			[Arguments("")]
+			[Arguments(" \t\r\n")]
+			[Arguments("True")]
+			[Arguments("{\"foo\":1}}")]
+			[Arguments("{}{\"foo\":1}")]
+			[Arguments("[")]
+			[Arguments("[1, 2")]
+			[Arguments("{\"foo\" 1}")]
+			public async Task WhenActualIsInvalidJson_ShouldSucceed(string subject)
+			{
+				async Task Act()
+					=> await That(subject).IsNotValidJson();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			[Arguments("42")]
+			[Arguments("true")]
+			[Arguments("null")]
+			[Arguments("[]")]
+			[Arguments("[1, 2]")]
+			[Arguments("{}")]
+			public async Task WhenActualIsValidJson_ShouldFail(string subject)
+			{
+				async Task Act()
+					=> await That(subject).IsNotValidJson();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not valid JSON,
+					              but it was "{subject}"
+					              """);
+			}
+
+			[Test]
+			public async Task WhenCombinedWithAnd_ShouldApplyFollowingExpectationToString()
+			{
+				string subject = "[1, 2";
+
+				async Task Act()
+					=> await That(subject).IsNotValidJson().And.HasLength().GreaterThan(5);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not valid JSON and has length greater than 5,
+					             but it had length 5
+					             """);
+			}
+
+			[Test]
+			public async Task WhenItemsArePlural_ShouldUsePluralVerb()
+			{
+				string subject = "{\n[1]";
+
+				async Task Act()
+					=> await That(subject).HasLines(l => l.All().ComplyWith(it => it.IsNotValidJson()));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has lines of which all are not valid JSON,
+					             *
+					             """).AsWildcard()
+					.Because("the lines are the plural subject of the expectation");
+			}
+
+			[Test]
+			public async Task WhenNegatedAndActualIsInvalidJson_ShouldFail()
+			{
+				string subject = "";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotValidJson());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON,
+					             but it could not be parsed: The input does not contain any JSON tokens.*
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenNegatedAndSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotValidJson());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
+			public async Task WhenOptionsAreProvided_ShouldParseWithThem(bool allowTrailingCommas)
+			{
+				string subject = "[1, 2,]";
+
+				async Task Act()
+					=> await That(subject).IsNotValidJson(o => o with
+					{
+						AllowTrailingCommas = allowTrailingCommas,
+					});
+
+				await That(Act).Throws<FailException>().OnlyIf(allowTrailingCommas)
+					.WithMessage("""
+					             Expected that subject
+					             is not valid JSON,
+					             but it was "[1, 2,]"
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsNotValidJson();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not valid JSON,
+					             but it was <null>
+					             """);
+			}
+		}
+	}
 }

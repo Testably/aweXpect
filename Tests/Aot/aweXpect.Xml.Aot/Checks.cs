@@ -13,6 +13,8 @@ internal static class Checks
 			() => ShouldPass(async () => await That("<a><b c=\"1\"/></a>").IsValidXml())),
 		new("an invalid XML string fails and names the parse error",
 			() => ShouldFail(async () => await That("<a><b>").IsValidXml(), "is valid XML", "could not be parsed")),
+		new("a valid XML string fails the negation and names the subject",
+			() => ShouldFail(async () => await That("<a/>").IsNotValidXml(), "is not valid XML", "but it was \"<a/>\"")),
 		new("an XML string with a DTD fails",
 			() => ShouldFail(async () => await That("<!DOCTYPE a [<!ENTITY e \"x\">]><a>&e;</a>").IsValidXml(),
 				"is valid XML", "contained a document type definition (DTD)")),
