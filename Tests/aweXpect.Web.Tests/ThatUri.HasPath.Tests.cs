@@ -140,6 +140,109 @@ public sealed partial class ThatUri
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Test]
+			public async Task Shorthand_AsWildcard_WhenSubjectMatchesThePattern_ShouldSucceed()
+			{
+				Uri subject = new("https://music.example.com/tracks/1");
+
+				async Task Act()
+					=> await That(subject).HasPath("/tracks/*").AsWildcard();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Shorthand_IgnoringCase_WhenSubjectDiffersOnlyInCase_ShouldSucceed()
+			{
+				Uri subject = new("https://music.example.com/Tracks/1");
+
+				async Task Act()
+					=> await That(subject).HasPath("/tracks/1").IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Shorthand_WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				Uri subject = new("https://music.example.com/tracks/1");
+
+				async Task Act()
+					=> await That(subject).HasPath(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task Shorthand_WhenSubjectDiffersOnlyInCase_ShouldFail()
+			{
+				Uri subject = new("https://music.example.com/Tracks/1");
+
+				async Task Act()
+					=> await That(subject).HasPath("/tracks/1");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has path equal to "/tracks/1",
+					             but it had path "/Tracks/1", which differs at index 1:
+					                 ↓ (actual)
+					               "/Tracks/1"
+					               "/tracks/1"
+					                 ↑ (expected)
+					             """)
+					.Because("URI paths are case-sensitive");
+			}
+
+			[Test]
+			public async Task Shorthand_WhenSubjectDoesNotEqualTheExpectedPath_ShouldFail()
+			{
+				Uri subject = new("https://music.example.com/tracks/1");
+
+				async Task Act()
+					=> await That(subject).HasPath("/tracks/2");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has path equal to "/tracks/2",
+					             but it had path "/tracks/1", which differs at index 8:
+					                        ↓ (actual)
+					               "/tracks/1"
+					               "/tracks/2"
+					                        ↑ (expected)
+					             """);
+			}
+
+			[Test]
+			public async Task Shorthand_WhenSubjectEqualsExpectedPath_ShouldSucceed()
+			{
+				Uri subject = new("https://music.example.com/tracks/1?page=2#lyrics");
+
+				async Task Act()
+					=> await That(subject).HasPath("/tracks/1");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Shorthand_WhenSubjectIsNull_ShouldFail()
+			{
+				Uri? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasPath("/tracks/1");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has path equal to "/tracks/1",
+					             but it was <null>
+					             """);
+			}
 		}
 
 		public sealed class NegatedTests
@@ -213,6 +316,33 @@ public sealed partial class ThatUri
 					=> await That(subject).DoesNotComplyWith(it => it.HasPath().NotEqualTo("/tracks/1"));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Shorthand_WhenSubjectDoesNotEqualTheExpectedPath_ShouldSucceed()
+			{
+				Uri subject = new("https://music.example.com/tracks/1");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasPath("/tracks/2"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Shorthand_WhenSubjectEqualsExpectedPath_ShouldFail()
+			{
+				Uri subject = new("https://music.example.com/tracks/1");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasPath("/tracks/1"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have path equal to "/tracks/1",
+					             but it had path "/tracks/1"
+					             """);
 			}
 		}
 	}

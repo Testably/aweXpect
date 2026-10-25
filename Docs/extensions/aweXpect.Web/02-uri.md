@@ -74,9 +74,11 @@ You can verify the scheme of the `Uri`:
 ```csharp
 Uri uri = new("https://music.example.com/tracks/1");
 
-await Expect.That(uri).HasScheme().EqualTo("https");
+await Expect.That(uri).HasScheme("https");
 await Expect.That(uri).HasScheme().NotEqualTo("http");
 ```
+
+The scheme is compared as `Uri.Scheme` returns it, which is always lower case.
 
 ## Host
 
@@ -85,9 +87,12 @@ You can verify the host of the `Uri`:
 ```csharp
 Uri uri = new("https://music.example.com/tracks/1");
 
-await Expect.That(uri).HasHost().EqualTo("music.example.com");
+await Expect.That(uri).HasHost("music.example.com");
+await Expect.That(uri).HasHost("*.example.com").AsWildcard();
 await Expect.That(uri).HasHost().EndingWith(".example.com");
 ```
+
+The host is compared as `Uri.Host` returns it, which is lower case for registered names.
 
 ## Path
 
@@ -96,10 +101,15 @@ You can verify the URL-decoded path of the `Uri`:
 ```csharp
 Uri uri = new("https://music.example.com/tracks/1");
 
-await Expect.That(uri).HasPath().EqualTo("/tracks/1");
+await Expect.That(uri).HasPath("/tracks/1");
 await Expect.That(uri).HasPath().StartingWith("/tracks/");
-await Expect.That(new Uri("https://music.example.com/my%20song")).HasPath().EqualTo("/my song");
+await Expect.That(new Uri("https://music.example.com/my%20song")).HasPath("/my song");
 ```
+
+`HasScheme`, `HasHost`, `HasPath` and `HasFragment` with an expected value support the same
+[string options](https://docs.testably.org/aweXpect/values/string#string-options) and
+[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings, e.g.
+`IgnoringCase()` or `AsWildcard()`. Without an expected value, they offer further comparisons on the property.
 
 `Containing` on the scheme, host, path or fragment counts the occurrences like `Contains` on a string, so it also
 accepts a quantifier and a match type:
@@ -118,7 +128,7 @@ You can verify the URL-decoded fragment of the `Uri`, without the leading `#`:
 ```csharp
 Uri uri = new("https://music.example.com/tracks/1#lyrics");
 
-await Expect.That(uri).HasFragment().EqualTo("lyrics");
+await Expect.That(uri).HasFragment("lyrics");
 await Expect.That(uri).HasFragment().NotEqualTo("credits");
 ```
 
