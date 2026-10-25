@@ -6,7 +6,6 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Extending;
-using aweXpect.Core.Helpers;
 using aweXpect.Customization;
 using aweXpect.Options;
 
@@ -118,7 +117,7 @@ internal static class AssemblyHelpers
 		List<string?> violations = [];
 		foreach (AssemblyName dependency in assembly.GetReferencedAssemblyNames())
 		{
-			if (dependency.Name.IsExcludedAssemblyName(prefixes))
+			if (AssemblyPrefixes.IsExcluded(dependency.Name, prefixes))
 			{
 				continue;
 			}

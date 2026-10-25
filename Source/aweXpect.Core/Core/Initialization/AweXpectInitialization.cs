@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using aweXpect.Core.Adapters;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Helpers;
 using aweXpect.Customization;
 
@@ -227,6 +228,6 @@ internal static class AweXpectInitialization
 	/// </remarks>
 	internal static bool IsAssemblyNameIncluded(string? assemblyName)
 		=> !string.IsNullOrEmpty(assemblyName) &&
-		   !assemblyName.IsExcludedAssemblyName(Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get());
+		   !AssemblyPrefixes.IsExcluded(assemblyName);
 #endif
 }

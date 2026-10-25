@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Runtime.Versioning;
-using aweXpect.Core.Helpers;
 using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Internal.Tests.Helpers;
@@ -31,44 +30,6 @@ public class AssemblyHelpersTests
 
 		await That(result1).IsTrue();
 		await That(result2).IsFalse();
-	}
-
-	[Test]
-	[Arguments("System", "System", true)]
-	[Arguments("System.Text.Json", "System", true)]
-	[Arguments("SystemsBiology.Core", "System", false)]
-	[Arguments("SystemsBiology", "System", false)]
-	// A customized prefix written with a trailing dot is boundary-safe by construction.
-	[Arguments("MyCompany.Domain", "MyCompany.", true)]
-	[Arguments("MyCompany.", "MyCompany.", true)]
-	[Arguments("MyCompany", "MyCompany.", false)]
-	[Arguments("MyCompanyOther", "MyCompany.", false)]
-	public async Task IsExcludedAssemblyName_ShouldMatchAtNameSegmentBoundary(
-		string assemblyName, string prefix, bool expected)
-	{
-		bool result = assemblyName.IsExcludedAssemblyName([prefix,]);
-
-		await That(result).IsEqualTo(expected);
-	}
-
-	[Test]
-	public async Task IsExcludedAssemblyName_WhenAssemblyNameIsNull_ShouldReturnFalse()
-	{
-		string? assemblyName = null;
-
-		bool result = assemblyName.IsExcludedAssemblyName(["System",]);
-
-		await That(result).IsFalse();
-	}
-
-	[Test]
-	public async Task IsExcludedAssemblyName_WhenPrefixIsEmpty_ShouldBeIgnored()
-	{
-		// An empty prefix cannot identify an assembly; it must neither exclude everything
-		// (the old StartsWith behavior) nor be silently evaluated against the boundary check.
-		bool result = "AnyAssembly".IsExcludedAssemblyName(["",]);
-
-		await That(result).IsFalse();
 	}
 
 	[Test]
