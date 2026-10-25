@@ -660,6 +660,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
@@ -772,7 +778,8 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
@@ -888,7 +895,8 @@ window.BENCHMARK_DATA = {
           702.9045920005211,
           523.9744510014851,
           585.2675365447998,
-          736.7444679896037
+          736.7444679896037,
+          519.6880308151245
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -933,6 +941,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -1133,7 +1142,8 @@ window.BENCHMARK_DATA = {
           888.2711006800333,
           664.5000408612765,
           712.6849231038775,
-          901.4829276629856
+          901.4829276629856,
+          660.6132397284874
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1145,6 +1155,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -1928,6 +1939,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
@@ -2040,7 +2057,8 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
@@ -2156,7 +2174,8 @@ window.BENCHMARK_DATA = {
           147.79191240242548,
           110.71786344051361,
           112.96168963909149,
-          139.30876177151998
+          139.30876177151998,
+          104.12400930661421
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2196,6 +2215,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -2401,7 +2421,8 @@ window.BENCHMARK_DATA = {
           196.56416403452556,
           179.7002329996654,
           175.37350044250488,
-          194.39784560203552
+          194.39784560203552,
+          164.96594918568928
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2413,6 +2434,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -3196,6 +3218,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
@@ -3308,7 +3336,8 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
@@ -3424,7 +3453,8 @@ window.BENCHMARK_DATA = {
           1998.551789855957,
           1454.2874706813268,
           1534.144944000244,
-          1951.5286012377057
+          1951.5286012377057,
+          1334.691889444987
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3544,6 +3574,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          1808,
           1808,
           1808
         ],
@@ -3669,7 +3700,8 @@ window.BENCHMARK_DATA = {
           1408.4938002268473,
           1088.7299631754556,
           1102.1448869069418,
-          1452.2957077026367
+          1452.2957077026367,
+          1062.8135817391533
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3790,6 +3822,7 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1864,
+          1953,
           1953
         ],
         "borderColor": "#FF671B",
@@ -4404,6 +4437,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
@@ -4506,7 +4545,8 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
@@ -4612,7 +4652,8 @@ window.BENCHMARK_DATA = {
           2796.8367080688477,
           2052.416298421224,
           2095.9885210673015,
-          2735.8743779500323
+          2735.8743779500323,
+          1919.6713752746582
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4723,7 +4764,8 @@ window.BENCHMARK_DATA = {
           2936,
           2880,
           2824,
-          2824
+          2824,
+          2768
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4837,7 +4879,8 @@ window.BENCHMARK_DATA = {
           3658.6835243225096,
           2907.7391612713154,
           3029.199822352483,
-          3795.3635801587784
+          3795.3635801587784,
+          2891.8952625819616
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4948,6 +4991,7 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3981,
+          3980,
           3980
         ],
         "borderColor": "#FF671B",
@@ -5562,6 +5606,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
@@ -5664,7 +5714,8 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
@@ -5770,7 +5821,8 @@ window.BENCHMARK_DATA = {
           360.2464572833135,
           264.36933238689716,
           290.6129109700521,
-          395.9380305153983
+          395.9380305153983,
+          261.4538548151652
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5800,6 +5852,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -5995,7 +6048,8 @@ window.BENCHMARK_DATA = {
           2239.3735463460284,
           1702.366202867948,
           1777.5863883972168,
-          2267.8875484466553
+          2267.8875484466553,
+          1657.539863722665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6007,6 +6061,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -6720,6 +6775,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
@@ -6822,7 +6883,8 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
@@ -6928,7 +6990,8 @@ window.BENCHMARK_DATA = {
           2866.4456748962402,
           2211.7991191319056,
           2290.7733661106654,
-          3051.710837772914
+          3051.710837772914,
+          2183.200074332101
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7038,6 +7101,7 @@ window.BENCHMARK_DATA = {
           2912,
           2912,
           2912,
+          3232,
           3232,
           3232
         ],
@@ -7153,7 +7217,8 @@ window.BENCHMARK_DATA = {
           277583.88309151784,
           237419.90673828125,
           240756.74508463542,
-          277354.3671526228
+          277354.3671526228,
+          239737.84615384616
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7261,6 +7326,7 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17574,
+          17577,
           17577,
           17577,
           17577,
