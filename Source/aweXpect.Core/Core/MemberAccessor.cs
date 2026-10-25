@@ -28,11 +28,18 @@ public abstract class MemberAccessor
 		_name = name;
 	}
 
-	private protected MemberAccessor(string name, bool appendsSpace)
+	private protected MemberAccessor(string name, bool appendsSpace, string? pathRoot = null)
 	{
 		_name = name;
 		_appendsSpace = appendsSpace;
+		PathRoot = pathRoot;
 	}
+
+	/// <summary>
+	///     The root that the name starts with, when the name is a path within the subject, e.g. <c>$</c> for a JSON
+	///     path, or <see langword="null" /> otherwise.
+	/// </summary>
+	internal string? PathRoot { get; }
 
 	/// <inheritdoc />
 	public override string ToString()
@@ -51,8 +58,9 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 {
 	private readonly Func<TSource, TTarget> _accessor;
 
-	private MemberAccessor(Func<TSource, TTarget> accessor, string name, bool appendsSpace = false) :
-		base(name, appendsSpace)
+	private MemberAccessor(Func<TSource, TTarget> accessor, string name, bool appendsSpace = false,
+		string? pathRoot = null) :
+		base(name, appendsSpace, pathRoot)
 	{
 		_accessor = accessor;
 	}
@@ -80,6 +88,29 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 	public static MemberAccessor<TSource, TTarget> FromFuncWithName(
 		Func<TSource, TTarget> func, string name)
 		=> new(func, name);
+
+	/// <summary>
+	///     Creates a member accessor from the given <paramref name="func" />, which is displayed as the
+	///     <paramref name="path" /> verbatim, a path within the subject that starts with the <paramref name="root" />,
+	///     e.g. <c>$.artist.origin</c> with the root <c>$</c>.
+	/// </summary>
+	/// <remarks>
+	///     The contexts of the member are labelled with the <paramref name="path" />. Within a member with a path of the
+	///     same root, which the <paramref name="path" /> continues, it replaces the label of that member, and within any
+	///     other member, its part after the <paramref name="root" /> follows the label, e.g. <c>elements[1].origin</c>.
+	/// </remarks>
+	/// <exception cref="ArgumentException">The <paramref name="path" /> does not start with the <paramref name="root" />.</exception>
+	public static MemberAccessor<TSource, TTarget> FromFuncWithPath(
+		Func<TSource, TTarget> func, string path, string root)
+	{
+		if (root.Length == 0 || !path.StartsWith(root, StringComparison.Ordinal))
+		{
+			throw Tracing.WriteException(new ArgumentException(
+				$"The path '{path}' must start with the root '{root}'.", nameof(path)));
+		}
+
+		return new MemberAccessor<TSource, TTarget>(func, path, pathRoot: root);
+	}
 
 	/// <summary>
 	///     Creates a member accessor from the given <paramref name="func" />, which treats the

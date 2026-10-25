@@ -91,7 +91,7 @@ internal sealed class MappingResult : CombinedResult
 
 	/// <inheritdoc />
 	protected override void VisitRight(ResultContextCollector contexts)
-		=> contexts.VisitOptionalMember(_member, Right);
+		=> contexts.VisitOptionalMember(_member, Right, _mappingNode.MemberAccessor.PathRoot);
 
 	/// <inheritdoc />
 	public override ConstraintResult Negate()

@@ -53,8 +53,9 @@ JSON options:
 | [`MatchesExactly`](./02-matching.md)                               | `JsonElement`, `JsonNode` | matches the expected value exactly                              |
 | [`HasProperty`](./03-objects-and-arrays.md#properties)             | `JsonElement`, `JsonNode` | a JSON object with the property, optionally with expectations   |
 | [`DoesNotHaveProperty`](./03-objects-and-arrays.md#properties)     | `JsonElement`, `JsonNode` | a JSON object without the property                              |
-| [`HasValueAt`](./03-objects-and-arrays.md#values-at-a-path)        | `JsonElement`, `JsonNode` | a value at a path, which satisfies the expectations             |
-| [`HasElementAt`](./03-objects-and-arrays.md#elements)              | `JsonElement`, `JsonNode` | a JSON array with an element at the index, which satisfies them |
+| [`HasValueAt`](./03-objects-and-arrays.md#values-at-a-path)        | `JsonElement`, `JsonNode` | a value at a path, optionally with expectations                 |
+| [`DoesNotHaveValueAt`](./03-objects-and-arrays.md#values-at-a-path) | `JsonElement`, `JsonNode` | no value at a path                                             |
+| [`HasElementAt`](./03-objects-and-arrays.md#elements)              | `JsonElement`, `JsonNode` | a JSON array with an element at the index, optionally with expectations |
 | [`IsObject`](./03-objects-and-arrays.md#isobject)                  | `JsonElement`, `JsonNode` | a JSON object                                                   |
 | [`IsObject().WhoseProperties`](./03-objects-and-arrays.md#isobject) | `JsonElement`, `JsonNode` | collection expectations on the properties of a JSON object      |
 | [`IsArray`](./03-objects-and-arrays.md#isarray)                    | `JsonElement`, `JsonNode` | a JSON array                                                    |

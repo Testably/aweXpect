@@ -214,6 +214,30 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Test]
+			[Arguments("a.b", "$['a.b'].c")]
+			[Arguments("track[1]", "$['track[1]'].c")]
+			[Arguments("it's", @"$['it\'s'].c")]
+			[Arguments(@"back\slash", @"$['back\\slash'].c")]
+			[Arguments("user-id", "$['user-id'].c")]
+			[Arguments("1st", "$['1st'].c")]
+			[Arguments("", "$[''].c")]
+			[Arguments("_privé1", "$._privé1.c")]
+			public async Task WhenNameIsNoIdentifier_ShouldUseTheBracketNotationInThePath(string name,
+				string expectedPath)
+			{
+				string jsonName = name.Replace(@"\", @"\\");
+				JsonElement subject = FromString(
+					"{\"" + jsonName + "\": {\"c\": 1}, \"a\": {\"b\": {\"c\": 2}}}");
+
+				async Task Act()
+					=> await That(subject).HasProperty(name, x => x.HasProperty("c", c => c.IsNumber(5)));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"*but {expectedPath} was 1").AsWildcard()
+					.Because("a name with '.', '[' or ']' would otherwise read as several segments");
+			}
+
+			[Test]
 			public async Task WhenNested_ShouldContinueThePath()
 			{
 				JsonElement subject = FromString("{\"artist\": {\"origin\": {\"city\": \"London\"}}}");
@@ -233,6 +257,26 @@ public sealed partial class ThatJsonElement
 					               "Liverpool"
 					                 ↑ (expected)
 					             """);
+			}
+
+			[Test]
+			public async Task WhenNestedInTheElementsOfAnArray_ShouldLabelTheContextAfterTheElement()
+			{
+				JsonElement subject = FromString(
+					"[{\"origin\": {\"city\": \"Liverpool\"}}, {\"origin\": {\"city\": \"London\"}}]");
+
+				async Task Act()
+					=> await That(subject).IsArray().WhoseElements.All()
+						.ComplyWith(t => t.HasProperty("origin", o => o.Matches(new { city = "Liverpool", })));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             *
+
+					             JSON options (elements[1].origin):
+					              - ignore additional properties
+					             """).AsWildcard()
+					.Because("the JSON path within the element follows the label of the element without its root");
 			}
 
 			[Test]

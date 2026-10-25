@@ -284,6 +284,29 @@ public sealed class MemberAccessorTests
 	}
 
 	[Test]
+	public async Task FromFuncWithPath_ShouldKeepPathUnchanged()
+	{
+		MemberAccessor<string, int> subject = MemberAccessor<string, int>
+			.FromFuncWithPath(x => x.Length, "$.foo['bar baz']", "$");
+
+		await That(subject.ToString()).IsEqualTo("$.foo['bar baz']");
+	}
+
+	[Test]
+	[Arguments("foo.bar", "$")]
+	[Arguments("$.foo", "")]
+	public async Task FromFuncWithPath_WhenPathDoesNotStartWithTheRoot_ShouldThrowArgumentException(string path,
+		string root)
+	{
+		void Act()
+			=> MemberAccessor<string, int>.FromFuncWithPath(x => x.Length, path, root);
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("path").And
+			.WithMessage($"The path '{path}' must start with the root '{root}'.").AsPrefix();
+	}
+
+	[Test]
 	public async Task GetHashCode_DifferentConstraint_ShouldNotBeEqual()
 	{
 		MemberAccessor<string, int> sut1 = MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "foo");

@@ -404,7 +404,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		{
 			return result is MemberResult memberResult
 				? memberResult.PrependMemberText(this, ContextMember)
-				: result.PrependExpectationText(AppendMemberText, ContextMember);
+				: result.PrependExpectationText(AppendMemberText, ContextMember, MemberAccessor.PathRoot);
 		}
 
 		return new MappingResult(combinedResult, result, this, ContextMember);
@@ -467,7 +467,8 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 			=> Inner.AppendResult(stringBuilder, indentation);
 
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.VisitOptionalMember(_prefix is null ? null : _member, GetContextsResult());
+			=> contexts.VisitOptionalMember(_prefix is null ? null : _member, GetContextsResult(),
+				_prefix?.MemberAccessor.PathRoot);
 
 		public override ConstraintResult Negate()
 		{

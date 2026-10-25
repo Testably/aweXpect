@@ -462,6 +462,7 @@ namespace aweXpect.Core
         public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromExpression(System.Linq.Expressions.Expression<System.Func<TSource, TTarget>> expression) { }
         public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromFuncWithCallerExpression(System.Func<TSource, TTarget> func, string callerExpression) { }
         public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromFuncWithName(System.Func<TSource, TTarget> func, string name) { }
+        public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromFuncWithPath(System.Func<TSource, TTarget> func, string path, string root) { }
     }
     public abstract class ObjectMatchType<TSubject>
     {

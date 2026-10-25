@@ -76,64 +76,25 @@ internal static class JsonValueReaders
 			(Func<TNumber, TNumber, TNumber?>)Create()!;
 
 		private static object? Create()
-		{
-			if (typeof(TNumber) == typeof(byte))
-			{
-				return new Func<byte, byte, byte?>(static (a, e) => (byte)(a > e ? a - e : e - a));
-			}
+			=> For<byte>(Difference) ?? For<sbyte>(Difference) ?? For<short>(Difference) ??
+			   For<ushort>(Difference) ?? For<int>(Difference) ?? For<uint>(Difference) ??
+			   For<long>(Difference) ?? For<ulong>(Difference) ?? For<float>(Difference) ??
+			   For<double>(Difference) ?? For<decimal>(Difference);
 
-			if (typeof(TNumber) == typeof(sbyte))
-			{
-				return new Func<sbyte, sbyte, sbyte?>(static (a, e) => checked((sbyte)(a > e ? a - e : e - a)));
-			}
+		private static object? For<T>(Func<T, T, T?> difference) where T : struct
+			=> typeof(TNumber) == typeof(T) ? difference : null;
 
-			if (typeof(TNumber) == typeof(short))
-			{
-				return new Func<short, short, short?>(static (a, e) => checked((short)(a > e ? a - e : e - a)));
-			}
-
-			if (typeof(TNumber) == typeof(ushort))
-			{
-				return new Func<ushort, ushort, ushort?>(static (a, e) => (ushort)(a > e ? a - e : e - a));
-			}
-
-			if (typeof(TNumber) == typeof(int))
-			{
-				return new Func<int, int, int?>(static (a, e) => checked(a > e ? a - e : e - a));
-			}
-
-			if (typeof(TNumber) == typeof(uint))
-			{
-				return new Func<uint, uint, uint?>(static (a, e) => a > e ? a - e : e - a);
-			}
-
-			if (typeof(TNumber) == typeof(long))
-			{
-				return new Func<long, long, long?>(static (a, e) => checked(a > e ? a - e : e - a));
-			}
-
-			if (typeof(TNumber) == typeof(ulong))
-			{
-				return new Func<ulong, ulong, ulong?>(static (a, e) => a > e ? a - e : e - a);
-			}
-
-			if (typeof(TNumber) == typeof(float))
-			{
-				return new Func<float, float, float?>(static (a, e) => Math.Abs(a - e));
-			}
-
-			if (typeof(TNumber) == typeof(double))
-			{
-				return new Func<double, double, double?>(static (a, e) => Math.Abs(a - e));
-			}
-
-			if (typeof(TNumber) == typeof(decimal))
-			{
-				return new Func<decimal, decimal, decimal?>(static (a, e) => a > e ? a - e : e - a);
-			}
-
-			return null;
-		}
+		private static byte? Difference(byte a, byte e) => (byte)(a > e ? a - e : e - a);
+		private static sbyte? Difference(sbyte a, sbyte e) => checked((sbyte)(a > e ? a - e : e - a));
+		private static short? Difference(short a, short e) => checked((short)(a > e ? a - e : e - a));
+		private static ushort? Difference(ushort a, ushort e) => (ushort)(a > e ? a - e : e - a);
+		private static int? Difference(int a, int e) => checked(a > e ? a - e : e - a);
+		private static uint? Difference(uint a, uint e) => a > e ? a - e : e - a;
+		private static long? Difference(long a, long e) => checked(a > e ? a - e : e - a);
+		private static ulong? Difference(ulong a, ulong e) => a > e ? a - e : e - a;
+		private static float? Difference(float a, float e) => Math.Abs(a - e);
+		private static double? Difference(double a, double e) => Math.Abs(a - e);
+		private static decimal? Difference(decimal a, decimal e) => a > e ? a - e : e - a;
 	}
 
 	/// <remarks>

@@ -5,8 +5,8 @@ Describes the possible expectations for the kind and the content of a `JsonEleme
 | Expectation                                         | Negated               | Summary                                                          |
 |-----------------------------------------------------|-----------------------|------------------------------------------------------------------|
 | [`HasProperty`](#properties)                        | `DoesNotHaveProperty` | a JSON object with the property, optionally with expectations    |
-| [`HasValueAt`](#values-at-a-path)                   |                       | a value at a path, which satisfies the expectations              |
-| [`HasElementAt`](#elements)                         |                       | a JSON array with an element at the index, which satisfies them  |
+| [`HasValueAt`](#values-at-a-path)                   | `DoesNotHaveValueAt`  | a value at a path, optionally with expectations                  |
+| [`HasElementAt`](#elements)                         |                       | a JSON array with an element at the index, optionally with expectations |
 | [`IsObject`](#isobject)                             |                       | a JSON object                                                    |
 | [`IsObject().WhoseProperties`](#isobject)           |                       | collection expectations on the properties of a JSON object       |
 | [`IsArray`](#isarray)                               |                       | a JSON array                                                     |
@@ -55,8 +55,10 @@ has property "title" and does not have property "artist",
 but it had property "artist" with "The Beatles"
 ```
 
-The name is taken literally, so that names like `"@odata.context"` or `"user.name"` can be addressed. A subject that is
-no JSON object fails `HasProperty` and `DoesNotHaveProperty` alike, e.g. with `but it was an array`.
+The name is taken literally, so that names like `"@odata.context"` or `"user.name"` can be addressed. In the JSON path
+of a failure, a name that is no plain identifier is written in brackets, e.g. `$['@odata.context']`, so that it cannot
+be read as several segments. A subject that is no JSON object fails `HasProperty` and `DoesNotHaveProperty` alike, e.g.
+with `but it was an array`.
 
 The expectations can be nested, and the JSON path in the failure continues with each level:
 
@@ -138,6 +140,21 @@ A value on the way that has another kind than the next segment requires fails wi
 `but $.artist was a string instead of an object`. `TreatingNullAsAbsent()` is available like for
 [`HasProperty`](#null-and-missing-properties).
 
+Without expectations, `HasValueAt` only verifies that the value exists, and `DoesNotHaveValueAt` that it does not:
+
+```csharp
+JsonElement album = JsonDocument.Parse(
+    """{"artist": {"origin": {"city": "Liverpool"}}, "tracks": [{"title": "Come Together"}]}""").RootElement;
+
+await Expect.That(album)
+    .HasValueAt("tracks[0].title").And
+    .DoesNotHaveValueAt("artist.origin.country").And
+    .DoesNotHaveValueAt("tracks[1].title");
+```
+
+A missing property or index on the way satisfies `DoesNotHaveValueAt`, while a value of another kind on the way fails
+it like `HasValueAt`, as the path cannot be looked up in it.
+
 ## Elements
 
 You can verify the element at a zero-based index of a JSON array:
@@ -160,7 +177,8 @@ but $[0].title was "Yesterday", which differs at index 0:
    ↑ (expected prefix)
 ```
 
-An index beyond the end fails with e.g. `but index $[2] did not exist`, without verifying the expectations. To verify
+An index beyond the end fails with e.g. `but index $[2] did not exist`, without verifying the expectations.
+`HasElementAt(2)` without expectations only verifies that the element exists. To verify
 the number of elements or the elements regardless of their position, use [`WhoseElements`](#isarray), and to match
 the elements directly, use [`Matches`](./02-matching.md) with an expected array, e.g.
 `Matches(new[] { "Let It Be", "Yesterday" })`.
@@ -412,8 +430,8 @@ Compare such a number as `double` with `IsNumber(243.0)` or `IsNumber<double>(24
 
 A [`JsonNode`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonnode) and its subtypes
 `JsonObject`, `JsonArray` and `JsonValue`, nullable or not, have the same expectations as a `JsonElement`:
-[`Matches`, `MatchesExactly`](./02-matching.md), `HasProperty`, `DoesNotHaveProperty`, `HasValueAt`, `HasElementAt`,
-`IsObject` (with `WhoseProperties`), `IsArray` (with `WhoseElements`), `IsString`, `IsNumber` and `IsBoolean`, with the
+[`Matches`, `MatchesExactly`](./02-matching.md), `HasProperty`, `DoesNotHaveProperty`, `HasValueAt`,
+`DoesNotHaveValueAt`, `HasElementAt`, `IsObject` (with `WhoseProperties`), `IsArray` (with `WhoseElements`), `IsString`, `IsNumber` and `IsBoolean`, with the
 same options and failure messages:
 
 ```csharp

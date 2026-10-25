@@ -96,5 +96,111 @@ public sealed partial class ThatJsonNode
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class WithoutExpectationsTests
+		{
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonNode? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasValueAt("foo");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value at "foo",
+					             but it was null
+					             """);
+			}
+
+			[Test]
+			public async Task WhenValueDoesNotExist_ShouldFail()
+			{
+				JsonObject subject = new() { ["tracks"] = new JsonArray(), };
+
+				async Task Act()
+					=> await That(subject).HasValueAt("tracks[0].title");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value at "tracks[0].title",
+					             but index $.tracks[0] did not exist
+					             """);
+			}
+
+			[Test]
+			public async Task WhenValueExists_ShouldSucceed()
+			{
+				JsonObject subject = new() { ["tracks"] = new JsonArray(new JsonObject { ["title"] = "Something", }), };
+
+				async Task Act()
+					=> await That(subject).HasValueAt("tracks[0].title");
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+	}
+
+	public sealed class DoesNotHaveValueAt
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonNode? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveValueAt("foo");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value at "foo",
+					             but it was null
+					             """);
+			}
+
+			[Test]
+			public async Task WhenValueDoesNotExist_ShouldSucceed()
+			{
+				JsonObject subject = new() { ["artist"] = new JsonObject(), };
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveValueAt("artist.name");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenValueExists_ShouldFail()
+			{
+				JsonObject subject = new() { ["artist"] = new JsonObject { ["name"] = "The Beatles", }, };
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveValueAt("artist.name");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value at "artist.name",
+					             but it had value at "artist.name" with "The Beatles"
+					             """);
+			}
+
+			[Test]
+			public async Task WhenValueIsNull_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonNode? subject = FromString("{\"artist\": {\"name\": null}}");
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveValueAt("artist.name").TreatingNullAsAbsent();
+
+				await That(Act).DoesNotThrow();
+			}
+		}
 	}
 }

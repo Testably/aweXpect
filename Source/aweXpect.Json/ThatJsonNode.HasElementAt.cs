@@ -13,6 +13,23 @@ public static partial class ThatJsonNode
 {
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonNode" /> is an <see cref="JsonValueKind.Array" /> with an element at
+	///     the zero-based <paramref name="index" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<TNode, IThat<TNode?>> HasElementAt<TNode>(this IThat<TNode?> subject,
+		int index)
+		where TNode : JsonNode
+	{
+		ThrowHelper.ThrowIfNegative(index, nameof(index));
+		JsonValueTarget target = JsonValueTarget.ElementAt(index);
+		return new AndOrResult<TNode, IThat<TNode?>>(
+			subject.Get().ExpectationBuilder.AddConstraint(target,
+				static (target, it, grammars) => new JsonNodeConstraint<TNode>(target.CreateConstraint(it, grammars))),
+			subject);
+	}
+
+	/// <summary>
+	///     Verifies that the subject <see cref="JsonNode" /> is an <see cref="JsonValueKind.Array" /> with an element at
 	///     the zero-based <paramref name="index" /> which satisfies the <paramref name="expectations" />.
 	/// </summary>
 	/// <remarks>

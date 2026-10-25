@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using aweXpect.Core;
 using aweXpect.Helpers;
 
@@ -13,10 +14,13 @@ internal sealed class JsonPathSegment
 {
 	private static readonly char[] Delimiters = ['.', '[', ']',];
 
+	private readonly string _text;
+
 	private JsonPathSegment(string? propertyName, int index)
 	{
 		PropertyName = propertyName;
 		Index = index;
+		_text = propertyName is null ? $"[{index}]" : FormatPropertyName(propertyName);
 	}
 
 	/// <summary>
@@ -30,8 +34,12 @@ internal sealed class JsonPathSegment
 	public int Index { get; }
 
 	/// <inheritdoc cref="object.ToString()" />
-	public override string ToString()
-		=> PropertyName is null ? $"[{Index}]" : $".{PropertyName}";
+	/// <remarks>
+	///     A property name is written like in a normalized path of RFC 9535 when it is no plain identifier, e.g.
+	///     <c>['@odata.context']</c>, so that a name with <c>.</c>, <c>[</c> or <c>]</c> cannot be read as several
+	///     segments.
+	/// </remarks>
+	public override string ToString() => _text;
 
 	/// <summary>
 	///     A segment for the property with the literal <paramref name="name" />, which is not parsed as a path.
@@ -137,6 +145,58 @@ internal sealed class JsonPathSegment
 
 		position = end + 1;
 		return new JsonPathSegment(null, value);
+	}
+
+	private static string FormatPropertyName(string name)
+	{
+		if (IsShorthandName(name))
+		{
+			return "." + name;
+		}
+
+		StringBuilder sb = new("['");
+		foreach (char c in name)
+		{
+			switch (c)
+			{
+				case '\'':
+					sb.Append("\\'");
+					break;
+				case '\\':
+					sb.Append(@"\\");
+					break;
+				case < ' ':
+					sb.Append("\\u").Append(((int)c).ToString("x4", CultureInfo.InvariantCulture));
+					break;
+				default:
+					sb.Append(c);
+					break;
+			}
+		}
+
+		return sb.Append("']").ToString();
+	}
+
+	/// <remarks>
+	///     The member-name-shorthand of RFC 9535: an ASCII letter, <c>_</c> or a non-ASCII character, followed by any of
+	///     these or ASCII digits.
+	/// </remarks>
+	private static bool IsShorthandName(string name)
+	{
+		if (name.Length == 0 || name[0] is >= '0' and <= '9')
+		{
+			return false;
+		}
+
+		foreach (char c in name)
+		{
+			if (c is not ((>= 'a' and <= 'z') or (>= 'A' and <= 'Z') or (>= '0' and <= '9') or '_' or >= '\u0080'))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	private static ArgumentException Invalid(string path, string reason)

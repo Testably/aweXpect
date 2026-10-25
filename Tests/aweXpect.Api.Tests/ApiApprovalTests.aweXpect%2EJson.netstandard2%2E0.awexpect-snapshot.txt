@@ -9,9 +9,12 @@ namespace aweXpect
     public static class ThatJsonElement
     {
         public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> DoesNotHaveProperty(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string name) { }
+        public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> DoesNotHaveValueAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string path) { }
+        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> HasElementAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, int index) { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> HasElementAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, int index, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
         public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> HasProperty(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string name) { }
         public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> HasProperty(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string name, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
+        public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> HasValueAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string path) { }
         public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> HasValueAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string path, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
         public static aweXpect.Json.Results.IsArrayResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsBoolean(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
@@ -37,11 +40,17 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Json.Results.JsonPropertyResult<TNode, aweXpect.Core.IThat<TNode?>> DoesNotHaveProperty<TNode>(this aweXpect.Core.IThat<TNode?> subject, string name) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Json.Results.JsonPropertyResult<TNode, aweXpect.Core.IThat<TNode?>> DoesNotHaveValueAt<TNode>(this aweXpect.Core.IThat<TNode?> subject, string path) where TNode : System.Text.Json.Nodes.JsonNode { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<TNode, aweXpect.Core.IThat<TNode?>> HasElementAt<TNode>(this aweXpect.Core.IThat<TNode?> subject, int index) where TNode : System.Text.Json.Nodes.JsonNode { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TNode, aweXpect.Core.IThat<TNode?>> HasElementAt<TNode>(this aweXpect.Core.IThat<TNode?> subject, int index, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.Nodes.JsonNode?>> expectations) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Json.Results.JsonPropertyResult<TNode, aweXpect.Core.IThat<TNode?>> HasProperty<TNode>(this aweXpect.Core.IThat<TNode?> subject, string name) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Json.Results.JsonPropertyResult<TNode, aweXpect.Core.IThat<TNode?>> HasProperty<TNode>(this aweXpect.Core.IThat<TNode?> subject, string name, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.Nodes.JsonNode?>> expectations) where TNode : System.Text.Json.Nodes.JsonNode { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Json.Results.JsonPropertyResult<TNode, aweXpect.Core.IThat<TNode?>> HasValueAt<TNode>(this aweXpect.Core.IThat<TNode?> subject, string path) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Json.Results.JsonPropertyResult<TNode, aweXpect.Core.IThat<TNode?>> HasValueAt<TNode>(this aweXpect.Core.IThat<TNode?> subject, string path, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.Nodes.JsonNode?>> expectations) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -111,11 +120,17 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> DoesNotHaveProperty(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, string name) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> DoesNotHaveValueAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, string path) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> HasElementAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, int index) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> HasElementAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, int index, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> HasProperty(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, string name) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> HasProperty(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, string name, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> HasValueAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, string path) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> HasValueAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, string path, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]

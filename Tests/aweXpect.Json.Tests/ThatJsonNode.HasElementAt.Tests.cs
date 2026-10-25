@@ -105,5 +105,47 @@ public sealed partial class ThatJsonNode
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class WithoutExpectationsTests
+		{
+			[Test]
+			public async Task WhenElementExists_ShouldSucceed()
+			{
+				JsonArray subject = new(1, null);
+
+				async Task Act()
+					=> await That(subject).HasElementAt(1);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+			{
+				JsonNode? subject = FromString("[]");
+
+				async Task Act()
+					=> await That(subject).HasElementAt(-1);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithMessage("The 'index' must not be negative.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenIndexIsOutOfRange_ShouldFail()
+			{
+				JsonArray subject = new(1);
+
+				async Task Act()
+					=> await That(subject).HasElementAt(1);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has element at index 1,
+					             but index $[1] did not exist
+					             """);
+			}
+		}
 	}
 }

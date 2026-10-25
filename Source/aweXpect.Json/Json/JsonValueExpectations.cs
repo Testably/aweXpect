@@ -17,8 +17,8 @@ internal static class JsonValueExpectations
 	{
 		JsonFormatting.AddValueFormatters(expectationBuilder);
 		expectationBuilder
-			.ForMember(MemberAccessor<FoundJsonValue<TValue>, TValue>.FromFuncWithName(
-					static found => found.Value, target.Path),
+			.ForMember(MemberAccessor<FoundJsonValue<TValue>, TValue>.FromFuncWithPath(
+					static found => found.Value, target.Path, "$"),
 				static (_, stringBuilder) => stringBuilder.Append(" which "))
 			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TValue>(e)),
 				Singular);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json.Nodes;
 using aweXpect.Core;
+using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Json;
@@ -10,6 +11,51 @@ namespace aweXpect;
 
 public static partial class ThatJsonNode
 {
+	/// <summary>
+	///     Verifies that the subject <see cref="JsonNode" /> has a value at the <paramref name="path" />.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="path" /> has the format of
+	///     <see cref="ThatJsonElement.HasValueAt(IThat{System.Text.Json.JsonElement}, string)" />. Only the first segment
+	///     that cannot be reached is reported. A property with the value <see langword="null" /> exists, unless
+	///     <see cref="JsonPropertyResult{TType,TThat}.TreatingNullAsAbsent(bool)" /> is set.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static JsonPropertyResult<TNode, IThat<TNode?>> HasValueAt<TNode>(this IThat<TNode?> subject,
+		string path)
+		where TNode : JsonNode
+	{
+		JsonValueTarget target = JsonValueTarget.ValueAt(path);
+		return new JsonPropertyResult<TNode, IThat<TNode?>>(
+			subject.Get().ExpectationBuilder.AddConstraint(target,
+				static (target, it, grammars) => new JsonNodeConstraint<TNode>(target.CreateConstraint(it, grammars))),
+			subject, target);
+	}
+
+	/// <summary>
+	///     Verifies that the subject <see cref="JsonNode" /> has no value at the <paramref name="path" />.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="path" /> has the format of
+	///     <see cref="ThatJsonElement.HasValueAt(IThat{System.Text.Json.JsonElement}, string)" />. A value on the way that
+	///     has another kind than the next segment requires fails the expectation, as the path cannot be looked up in it,
+	///     while a missing property or index on the way satisfies it. A property with the value <see langword="null" />
+	///     exists and fails the expectation, unless
+	///     <see cref="JsonPropertyResult{TType,TThat}.TreatingNullAsAbsent(bool)" /> is set.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static JsonPropertyResult<TNode, IThat<TNode?>> DoesNotHaveValueAt<TNode>(this IThat<TNode?> subject,
+		string path)
+		where TNode : JsonNode
+	{
+		JsonValueTarget target = JsonValueTarget.ValueAt(path);
+		return new JsonPropertyResult<TNode, IThat<TNode?>>(
+			subject.Get().ExpectationBuilder.AddConstraint(target,
+				static (target, it, grammars)
+					=> new JsonNodeConstraint<TNode>(target.CreateConstraint(it, grammars).Invert())),
+			subject, target);
+	}
+
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonNode" /> has a value at the <paramref name="path" /> which satisfies
 	///     the <paramref name="expectations" />.

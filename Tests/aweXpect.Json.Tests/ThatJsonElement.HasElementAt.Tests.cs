@@ -145,5 +145,84 @@ public sealed partial class ThatJsonElement
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class WithoutExpectationsTests
+		{
+			[Test]
+			public async Task ShouldReturnTheSubject()
+			{
+				JsonElement subject = FromString("[1, 2]");
+
+				JsonElement result = await That(subject).HasElementAt(1);
+
+				await That(result.GetRawText()).IsEqualTo(subject.GetRawText());
+			}
+
+			[Test]
+			public async Task WhenElementExists_ShouldSucceed()
+			{
+				JsonElement subject = FromString("[1, null]");
+
+				async Task Act()
+					=> await That(subject).HasElementAt(1);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+			{
+				JsonElement subject = FromString("[]");
+
+				async Task Act()
+					=> await That(subject).HasElementAt(-1);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithMessage("The 'index' must not be negative.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenIndexIsOutOfRange_ShouldFail()
+			{
+				JsonElement subject = FromString("[1, 2]");
+
+				async Task Act()
+					=> await That(subject).HasElementAt(2);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has element at index 2,
+					             but index $[2] did not exist
+					             """);
+			}
+
+			[Test]
+			public async Task WhenJsonIsNoArray_ShouldFail()
+			{
+				JsonElement subject = FromString("{}");
+
+				async Task Act()
+					=> await That(subject).HasElementAt(0);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has element at index 0,
+					             but it was an object
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNegatedAndIndexIsOutOfRange_ShouldSucceed()
+			{
+				JsonElement subject = FromString("[1, 2]");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasElementAt(2));
+
+				await That(Act).DoesNotThrow();
+			}
+		}
 	}
 }

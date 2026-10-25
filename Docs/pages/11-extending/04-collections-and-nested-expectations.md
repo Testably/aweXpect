@@ -132,6 +132,10 @@ public static AndOrResult<Track, IThat<Track?>> HasTitle(
 
 - The second argument of `ForMember` writes the text in front of the nested expectations.
 - The name of the member replaces `it` in their result texts ("title was …"), unless you pass `replaceIt: false`.
+- A member named by a path within the subject, like the JSON path `$.artist.origin`, uses
+  `MemberAccessor<TSource, TMember>.FromFuncWithPath(…, path, "$")`, so that the contexts of a nested path replace the
+  label of the enclosing one instead of repeating it, and follow the label of another member without the root, e.g.
+  `elements[1].origin`.
 - `AddExpectations` hands the caller's `expectations` to the `static` lambda, so that adding them allocates neither a
   closure nor a delegate. An overload without this state takes a lambda that captures what it needs.
 - The function passed to `AddExpectations` sets the grammars of the nested expectations.
