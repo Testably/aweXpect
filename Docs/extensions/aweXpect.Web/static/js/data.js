@@ -768,6 +768,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
         "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -898,7 +904,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "9dc4e7bb"
+      "9dc4e7bb",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -1032,7 +1039,8 @@ window.BENCHMARK_DATA = {
           224.25309686660768,
           443.32357464517867,
           344.2021641364464,
-          455.8983209133148
+          455.8983209133148,
+          415.3881736823491
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1156,6 +1164,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          640,
           640,
           640,
           640,
@@ -1313,7 +1322,8 @@ window.BENCHMARK_DATA = {
           541.2572590192159,
           1042.5549468358358,
           809.4281631878445,
-          1071.424160385132
+          1071.424160385132,
+          1092.5431903839112
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1325,6 +1335,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2234,6 +2245,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
         "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -2364,7 +2381,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "9dc4e7bb"
+      "9dc4e7bb",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -2498,7 +2516,8 @@ window.BENCHMARK_DATA = {
           98.38461604485146,
           207.6552509466807,
           158.13208064011164,
-          201.2619744737943
+          201.2619744737943,
+          223.16101603507997
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2546,6 +2565,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -2779,7 +2799,8 @@ window.BENCHMARK_DATA = {
           128.47140565285315,
           272.7280724525452,
           210.02251165253776,
-          259.7179159096309
+          259.7179159096309,
+          307.55919194221497
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2791,6 +2812,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -3640,6 +3662,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
         "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -3760,7 +3788,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "9dc4e7bb"
+      "9dc4e7bb",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -3884,7 +3913,8 @@ window.BENCHMARK_DATA = {
           343.43377952575685,
           656.834012667338,
           518.2152183396475,
-          652.5665302276611
+          652.5665302276611,
+          687.8335020882743
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4013,7 +4043,8 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
-          1008
+          1008,
+          1016
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4145,7 +4176,8 @@ window.BENCHMARK_DATA = {
           540.798643175761,
           1055.6800371805828,
           748.4247174629799,
-          1003.1172813415527
+          1003.1172813415527,
+          1064.2823979513985
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4157,6 +4189,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -4996,6 +5029,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
         "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -5116,7 +5155,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "9dc4e7bb"
+      "9dc4e7bb",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -5240,7 +5280,8 @@ window.BENCHMARK_DATA = {
           1132.7578959147136,
           1932.4807571411134,
           1450.3247194925943,
-          1874.5765302022298
+          1874.5765302022298,
+          1658.81057917277
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5354,6 +5395,7 @@ window.BENCHMARK_DATA = {
           1672,
           1672,
           1672,
+          1688,
           1688,
           1688,
           1688,
@@ -5501,7 +5543,8 @@ window.BENCHMARK_DATA = {
           10550.635846964518,
           22519.038431020883,
           14781.99289449056,
-          22242.81704305013
+          22242.81704305013,
+          16976.80018179757
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5630,7 +5673,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6352,6 +6396,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
         "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -6472,7 +6522,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "9dc4e7bb"
+      "9dc4e7bb",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -6596,7 +6647,8 @@ window.BENCHMARK_DATA = {
           373.5467294546274,
           740.1206101008823,
           532.6241367340087,
-          764.156905907851
+          764.156905907851,
+          696.7899199265701
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6725,7 +6777,8 @@ window.BENCHMARK_DATA = {
           1112,
           1112,
           1112,
-          1112
+          1112,
+          1120
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6857,7 +6910,8 @@ window.BENCHMARK_DATA = {
           682.034325327192,
           1413.3773554484048,
           1039.9940446217854,
-          1282.3451031904954
+          1282.3451031904954,
+          1449.4355227606636
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6869,6 +6923,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -7708,6 +7763,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
         "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
+      },
+      {
+        "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
+        "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
       }
     ],
     "labels": [
@@ -7828,7 +7889,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "9dc4e7bb"
+      "9dc4e7bb",
+      "b7024c3c"
     ],
     "datasets": [
       {
@@ -7952,7 +8014,8 @@ window.BENCHMARK_DATA = {
           614.9718951543172,
           1139.8622458140055,
           884.6531737872532,
-          1158.7658834457397
+          1158.7658834457397,
+          1053.7610294342041
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8081,7 +8144,8 @@ window.BENCHMARK_DATA = {
           1456,
           1456,
           1456,
-          1456
+          1456,
+          1440
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8213,7 +8277,8 @@ window.BENCHMARK_DATA = {
           406.72581369536266,
           809.9563345591228,
           605.2539518356323,
-          788.990642956325
+          788.990642956325,
+          903.622575214931
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8225,6 +8290,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
