@@ -762,6 +762,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
@@ -891,7 +897,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
@@ -1024,7 +1031,8 @@ window.BENCHMARK_DATA = {
           454.754906018575,
           224.25309686660768,
           443.32357464517867,
-          344.2021641364464
+          344.2021641364464,
+          455.8983209133148
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1148,6 +1156,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          640,
           640,
           640,
           640,
@@ -1303,7 +1312,8 @@ window.BENCHMARK_DATA = {
           1065.7194045384724,
           541.2572590192159,
           1042.5549468358358,
-          809.4281631878445
+          809.4281631878445,
+          1071.424160385132
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1315,6 +1325,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2217,6 +2228,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
@@ -2346,7 +2363,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
@@ -2479,7 +2497,8 @@ window.BENCHMARK_DATA = {
           191.45686779022216,
           98.38461604485146,
           207.6552509466807,
-          158.13208064011164
+          158.13208064011164,
+          201.2619744737943
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2527,6 +2546,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -2758,7 +2778,8 @@ window.BENCHMARK_DATA = {
           263.6513395468394,
           128.47140565285315,
           272.7280724525452,
-          210.02251165253776
+          210.02251165253776,
+          259.7179159096309
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2770,6 +2791,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -3612,6 +3634,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
@@ -3731,7 +3759,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
@@ -3854,7 +3883,8 @@ window.BENCHMARK_DATA = {
           618.4765843073527,
           343.43377952575685,
           656.834012667338,
-          518.2152183396475
+          518.2152183396475,
+          652.5665302276611
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3968,6 +3998,7 @@ window.BENCHMARK_DATA = {
           976,
           976,
           976,
+          1008,
           1008,
           1008,
           1008,
@@ -4113,7 +4144,8 @@ window.BENCHMARK_DATA = {
           958.8835691724505,
           540.798643175761,
           1055.6800371805828,
-          748.4247174629799
+          748.4247174629799,
+          1003.1172813415527
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4125,6 +4157,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -4957,6 +4990,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
@@ -5076,7 +5115,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
@@ -5199,7 +5239,8 @@ window.BENCHMARK_DATA = {
           1879.7531851359777,
           1132.7578959147136,
           1932.4807571411134,
-          1450.3247194925943
+          1450.3247194925943,
+          1874.5765302022298
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5313,6 +5354,7 @@ window.BENCHMARK_DATA = {
           1672,
           1672,
           1672,
+          1688,
           1688,
           1688,
           1688,
@@ -5458,7 +5500,8 @@ window.BENCHMARK_DATA = {
           18633.3041469029,
           10550.635846964518,
           22519.038431020883,
-          14781.99289449056
+          14781.99289449056,
+          22242.81704305013
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5581,6 +5624,7 @@ window.BENCHMARK_DATA = {
           34713,
           34712,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -6302,6 +6346,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
@@ -6421,7 +6471,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
@@ -6544,7 +6595,8 @@ window.BENCHMARK_DATA = {
           698.1976768493653,
           373.5467294546274,
           740.1206101008823,
-          532.6241367340087
+          532.6241367340087,
+          764.156905907851
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6658,6 +6710,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
+          1112,
           1112,
           1112,
           1112,
@@ -6803,7 +6856,8 @@ window.BENCHMARK_DATA = {
           1289.7364835739136,
           682.034325327192,
           1413.3773554484048,
-          1039.9940446217854
+          1039.9940446217854,
+          1282.3451031904954
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6815,6 +6869,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -7647,6 +7702,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
         "message": "feat: verify that types depend on a runtime type (#2031)"
+      },
+      {
+        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
+        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
       }
     ],
     "labels": [
@@ -7766,7 +7827,8 @@ window.BENCHMARK_DATA = {
       "ddec9e0e",
       "5357eeb1",
       "d5b93f89",
-      "44ad4465"
+      "44ad4465",
+      "9dc4e7bb"
     ],
     "datasets": [
       {
@@ -7889,7 +7951,8 @@ window.BENCHMARK_DATA = {
           1148.2905727113996,
           614.9718951543172,
           1139.8622458140055,
-          884.6531737872532
+          884.6531737872532,
+          1158.7658834457397
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8003,6 +8066,7 @@ window.BENCHMARK_DATA = {
           1424,
           1424,
           1424,
+          1456,
           1456,
           1456,
           1456,
@@ -8148,7 +8212,8 @@ window.BENCHMARK_DATA = {
           779.4692347844442,
           406.72581369536266,
           809.9563345591228,
-          605.2539518356323
+          605.2539518356323,
+          788.990642956325
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8160,6 +8225,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
