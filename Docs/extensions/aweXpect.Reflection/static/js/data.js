@@ -750,6 +750,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
         "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
+      },
+      {
+        "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
+        "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
       }
     ],
     "labels": [
@@ -877,7 +883,8 @@ window.BENCHMARK_DATA = {
       "3378cc72",
       "90516b35",
       "ddec9e0e",
-      "5357eeb1"
+      "5357eeb1",
+      "d5b93f89"
     ],
     "datasets": [
       {
@@ -1008,7 +1015,8 @@ window.BENCHMARK_DATA = {
           547.543568611145,
           698.6567604201181,
           526.9677281012902,
-          714.9220267023359
+          714.9220267023359,
+          746.7190970738728
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1142,6 +1150,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          592,
           592,
           592,
           592
@@ -1283,7 +1292,8 @@ window.BENCHMARK_DATA = {
           713.0279911041259,
           867.1128482500712,
           674.6214303289141,
-          957.8845546722412
+          957.8845546722412,
+          788.5508148829142
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1295,6 +1305,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -2183,6 +2194,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
         "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
+      },
+      {
+        "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
+        "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
       }
     ],
     "labels": [
@@ -2310,7 +2327,8 @@ window.BENCHMARK_DATA = {
       "3378cc72",
       "90516b35",
       "ddec9e0e",
-      "5357eeb1"
+      "5357eeb1",
+      "d5b93f89"
     ],
     "datasets": [
       {
@@ -2441,7 +2459,8 @@ window.BENCHMARK_DATA = {
           111.37152926127116,
           134.05891900062562,
           99.89562849487577,
-          132.5581403096517
+          132.5581403096517,
+          123.90383372306823
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2481,6 +2500,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -2716,7 +2736,8 @@ window.BENCHMARK_DATA = {
           178.66626567045847,
           236.91705253918965,
           167.4991902938256,
-          235.21566251118978
+          235.21566251118978,
+          231.91033798853556
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2728,6 +2749,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -3616,6 +3638,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
         "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
+      },
+      {
+        "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
+        "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
       }
     ],
     "labels": [
@@ -3743,7 +3771,8 @@ window.BENCHMARK_DATA = {
       "3378cc72",
       "90516b35",
       "ddec9e0e",
-      "5357eeb1"
+      "5357eeb1",
+      "d5b93f89"
     ],
     "datasets": [
       {
@@ -3874,7 +3903,8 @@ window.BENCHMARK_DATA = {
           1573.4939260482788,
           1741.3658753712973,
           1402.2073993682861,
-          1748.7016973495483
+          1748.7016973495483,
+          1429.9315237681071
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3994,6 +4024,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          1808,
           1808,
           1808,
           1808,
@@ -4149,7 +4180,8 @@ window.BENCHMARK_DATA = {
           1144.722375869751,
           1391.031954574585,
           1102.9672130584718,
-          1472.8300985972087
+          1472.8300985972087,
+          1309.8940413157145
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4285,6 +4317,7 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1864,
+          1952,
           1952
         ],
         "borderColor": "#FF671B",
@@ -4989,6 +5022,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
         "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
+      },
+      {
+        "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
+        "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
       }
     ],
     "labels": [
@@ -5106,7 +5145,8 @@ window.BENCHMARK_DATA = {
       "3378cc72",
       "90516b35",
       "ddec9e0e",
-      "5357eeb1"
+      "5357eeb1",
+      "d5b93f89"
     ],
     "datasets": [
       {
@@ -5227,7 +5267,8 @@ window.BENCHMARK_DATA = {
           2136.797777909499,
           2537.0834714253742,
           2123.4495955247144,
-          2614.70609664917
+          2614.70609664917,
+          2162.605546569824
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5351,6 +5392,7 @@ window.BENCHMARK_DATA = {
           2768,
           2824,
           2824,
+          3016,
           3016,
           3016,
           3016
@@ -5482,7 +5524,8 @@ window.BENCHMARK_DATA = {
           3087.4135325295583,
           3868.2142426627024,
           2869.041006633214,
-          3842.4609038035073
+          3842.4609038035073,
+          3305.869152886527
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5608,7 +5651,8 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3981,
-          3978
+          3978,
+          3977
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6312,6 +6356,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
         "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
+      },
+      {
+        "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
+        "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
       }
     ],
     "labels": [
@@ -6429,7 +6479,8 @@ window.BENCHMARK_DATA = {
       "3378cc72",
       "90516b35",
       "ddec9e0e",
-      "5357eeb1"
+      "5357eeb1",
+      "d5b93f89"
     ],
     "datasets": [
       {
@@ -6550,7 +6601,8 @@ window.BENCHMARK_DATA = {
           291.96210692723594,
           405.5110895792643,
           323.82798153559366,
-          429.20907908219556
+          429.20907908219556,
+          363.8067895253499
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6674,6 +6726,7 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
+          696,
           696,
           696,
           696
@@ -6805,7 +6858,8 @@ window.BENCHMARK_DATA = {
           1810.6032690320696,
           2228.1548685709636,
           1695.596395111084,
-          2483.5134607950845
+          2483.5134607950845,
+          1967.2917420523506
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6817,6 +6871,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -7635,6 +7690,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
         "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
+      },
+      {
+        "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
+        "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
       }
     ],
     "labels": [
@@ -7752,7 +7813,8 @@ window.BENCHMARK_DATA = {
       "3378cc72",
       "90516b35",
       "ddec9e0e",
-      "5357eeb1"
+      "5357eeb1",
+      "d5b93f89"
     ],
     "datasets": [
       {
@@ -7873,7 +7935,8 @@ window.BENCHMARK_DATA = {
           2379.497585296631,
           2858.762821451823,
           2139.9507591247557,
-          2761.6953326633998
+          2761.6953326633998,
+          2295.696427858793
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7983,6 +8046,7 @@ window.BENCHMARK_DATA = {
           2912,
           2912,
           2912,
+          3232,
           3232,
           3232,
           3232,
@@ -8128,7 +8192,8 @@ window.BENCHMARK_DATA = {
           243798.26583426338,
           300848.6583333333,
           239866.4568359375,
-          277684.5263997396
+          277684.5263997396,
+          261935.75100911458
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8254,7 +8319,8 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17577,
-          17558
+          17558,
+          17528
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
