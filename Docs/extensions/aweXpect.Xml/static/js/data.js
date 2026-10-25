@@ -708,6 +708,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
         "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
+      },
+      {
+        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
+        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
       }
     ],
     "labels": [
@@ -828,7 +834,8 @@ window.BENCHMARK_DATA = {
       "54813a41",
       "5d7202bd",
       "584ec3ed",
-      "e41a7134"
+      "e41a7134",
+      "c65f55ef"
     ],
     "datasets": [
       {
@@ -952,7 +959,8 @@ window.BENCHMARK_DATA = {
           366.93303833007815,
           381.0898834977831,
           589.0005138397216,
-          388.9891599973043
+          388.9891599973043,
+          598.1428965159824
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1076,6 +1084,7 @@ window.BENCHMARK_DATA = {
           1120,
           1120,
           1120,
+          1152,
           1152,
           1152,
           1152,
@@ -1213,7 +1222,8 @@ window.BENCHMARK_DATA = {
           332.43461243311566,
           350.20932901700337,
           579.7182258605957,
-          324.83583952585855
+          324.83583952585855,
+          579.3780968348185
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1225,6 +1235,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2064,6 +2075,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
         "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
+      },
+      {
+        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
+        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
       }
     ],
     "labels": [
@@ -2184,7 +2201,8 @@ window.BENCHMARK_DATA = {
       "54813a41",
       "5d7202bd",
       "584ec3ed",
-      "e41a7134"
+      "e41a7134",
+      "c65f55ef"
     ],
     "datasets": [
       {
@@ -2308,7 +2326,8 @@ window.BENCHMARK_DATA = {
           2284.782788594564,
           2928.841684214274,
           3324.0927320627065,
-          2461.9339517446665
+          2461.9339517446665,
+          3305.900071951059
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2432,6 +2451,7 @@ window.BENCHMARK_DATA = {
           24119,
           24119,
           24119,
+          24320,
           24320,
           24320,
           24320,
@@ -2569,7 +2589,8 @@ window.BENCHMARK_DATA = {
           2537.695639038086,
           3162.2600896017893,
           4073.7570576985677,
-          2665.2546450297036
+          2665.2546450297036,
+          3713.931270345052
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2581,6 +2602,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -3360,6 +3382,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
         "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
+      },
+      {
+        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
+        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
       }
     ],
     "labels": [
@@ -3470,7 +3498,8 @@ window.BENCHMARK_DATA = {
       "54813a41",
       "5d7202bd",
       "584ec3ed",
-      "e41a7134"
+      "e41a7134",
+      "c65f55ef"
     ],
     "datasets": [
       {
@@ -3584,7 +3613,8 @@ window.BENCHMARK_DATA = {
           1300.3378804524739,
           1498.12606552669,
           2054.072447967529,
-          1328.896044594901
+          1328.896044594901,
+          2114.5056076049805
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3703,6 +3733,7 @@ window.BENCHMARK_DATA = {
           12856,
           12856,
           12856,
+          12780,
           12780
         ],
         "borderColor": "#63A2AC",
@@ -3825,7 +3856,8 @@ window.BENCHMARK_DATA = {
           1748.4815519968668,
           2006.3814785003663,
           2586.336384993333,
-          1799.9712416330974
+          1799.9712416330974,
+          2871.812665666853
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3837,6 +3869,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -4606,6 +4639,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
         "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
+      },
+      {
+        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
+        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
       }
     ],
     "labels": [
@@ -4716,7 +4755,8 @@ window.BENCHMARK_DATA = {
       "54813a41",
       "5d7202bd",
       "584ec3ed",
-      "e41a7134"
+      "e41a7134",
+      "c65f55ef"
     ],
     "datasets": [
       {
@@ -4830,7 +4870,8 @@ window.BENCHMARK_DATA = {
           6868.002044677734,
           8040.834478105818,
           10148.673551286969,
-          7054.474708557129
+          7054.474708557129,
+          10547.197037833077
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4949,6 +4990,7 @@ window.BENCHMARK_DATA = {
           25568,
           25568,
           25568,
+          25494,
           25494
         ],
         "borderColor": "#63A2AC",
@@ -5071,7 +5113,8 @@ window.BENCHMARK_DATA = {
           156920.8436453683,
           189419.08294677734,
           237144.49591471354,
-          158451.8999674479
+          158451.8999674479,
+          243926.90266927084
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5185,6 +5228,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544329,
+          544335,
           544335,
           544335,
           544335,
