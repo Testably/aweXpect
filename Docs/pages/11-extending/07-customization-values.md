@@ -54,6 +54,24 @@ _ = Customize.aweXpect.MyCustomization().Get();
 You can also use this mechanism for complex objects like classes, but then they can only be changed as a whole and not
 property by property.
 
+## Add a list-valued customization value
+
+For a list, use `CustomizationListValue<TItem>` instead of a `CustomizationValue<IReadOnlyList<TItem>>`:
+
+```csharp
+public static class MyListCustomizationExtensions
+{
+    public static ICustomizationValueSetter<IReadOnlyList<string>> MyIgnoredNames(
+        this AwexpectCustomization awexpectCustomization)
+        => new CustomizationListValue<string>(awexpectCustomization, "MyExtension.MyIgnoredNames",
+            Array.AsReadOnly<string>(["foo", "bar"]));
+}
+```
+
+`Set` stores a read-only copy of the list and rejects `null`. Otherwise a caller who keeps the list they set, or who
+casts the returned list to a mutable one, could change the value outside its scope. The default value is returned as
+it is, so pass a read-only list. A `validate` callback receives the copy, e.g. to reject `null` items.
+
 ## Add a customization group
 
 To offer several related values, add a group: a class that exposes one `ICustomizationValueSetter<TValue>` per value.

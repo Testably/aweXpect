@@ -1147,6 +1147,12 @@ namespace aweXpect.Customization
         public CustomizationLifetime(System.Action callback) { }
         public void Dispose() { }
     }
+    public sealed class CustomizationListValue<TItem> : aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<TItem>>
+    {
+        public CustomizationListValue(aweXpect.Customization.IAwexpectCustomization customization, string key, System.Collections.Generic.IReadOnlyList<TItem> defaultValue, System.Action<System.Collections.Generic.IReadOnlyList<TItem>>? validate = null) { }
+        public System.Collections.Generic.IReadOnlyList<TItem> Get() { }
+        public aweXpect.Customization.CustomizationLifetime Set(System.Collections.Generic.IReadOnlyList<TItem> value) { }
+    }
     public sealed class CustomizationValue<TValue> : aweXpect.Customization.ICustomizationValueSetter<TValue>
     {
         public CustomizationValue(aweXpect.Customization.IAwexpectCustomization customization, string key, TValue defaultValue, System.Action<TValue>? validate = null) { }

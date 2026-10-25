@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
@@ -83,8 +82,7 @@ public partial class AwexpectCustomization
 							new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must not be negative."));
 					}
 				});
-			ExcludedAssemblyPrefixes = new CopyingSetter<string>(new CustomizationValue<IReadOnlyList<string>>(
-				awexpectCustomization,
+			ExcludedAssemblyPrefixes = new CustomizationListValue<string>(awexpectCustomization,
 				KeyPrefix + nameof(ExcludedAssemblyPrefixes),
 				Array.AsReadOnly<string>([
 					"mscorlib",
@@ -97,8 +95,7 @@ public partial class AwexpectCustomization
 					"TUnit",
 					"Castle",
 					"DynamicProxyGenAssembly2",
-				]),
-				prefixes => prefixes.ThrowIfNull()));
+				]));
 			TestCancellation = new CustomizationValue<TestCancellation?>(awexpectCustomization,
 				TestCancellationKey, null);
 		}
@@ -204,24 +201,5 @@ public partial class AwexpectCustomization
 		/// <inheritdoc cref="IAwexpectCustomization.Set{TValue}(string, TValue)" />
 		CustomizationLifetime IAwexpectCustomization.Set<TValue>(string key, TValue value)
 			=> _awexpectCustomization.Set(key, value);
-
-		/// <summary>
-		///     Stores a read-only copy of the list, as a setting would otherwise change with a mutable list it was set
-		///     from or that was cast from the returned list, which would bypass the scoping of the setting.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> list is passed on unchanged, so that the validation of the
-		///     <paramref name="inner" /> value rejects it.
-		/// </remarks>
-		private sealed class CopyingSetter<TItem>(ICustomizationValueSetter<IReadOnlyList<TItem>> inner)
-			: ICustomizationValueSetter<IReadOnlyList<TItem>>
-		{
-			/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Get()" />
-			public IReadOnlyList<TItem> Get() => inner.Get();
-
-			/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Set(TValue)" />
-			public CustomizationLifetime Set(IReadOnlyList<TItem> value)
-				=> inner.Set(value is null ? value! : Array.AsReadOnly(value.ToArray()));
-		}
 	}
 }

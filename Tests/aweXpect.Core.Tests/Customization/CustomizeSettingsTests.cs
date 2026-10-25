@@ -321,8 +321,8 @@ public sealed class CustomizeSettingsTests
 		void Act() => Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Set(null!);
 
 		await That(Act).Throws<ArgumentNullException>()
-			.WithParamName("prefixes").And
-			.WithMessage("The 'prefixes' cannot be null.").AsPrefix()
+			.WithParamName("value").And
+			.WithMessage("The 'value' cannot be null.").AsPrefix()
 			.Because("a stored null would be returned as null instead of the default prefixes");
 	}
 
