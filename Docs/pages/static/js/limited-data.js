@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
-        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
-      },
-      {
         "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
-      "3009dddd",
       "ce12e858",
       "25ca35b1",
       "012afc61",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5145.994079589844,
           10697.089312039889,
           7999.5514048258465,
           7742.476958211263,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           10910.83150775616,
           5053.62136777242,
           10944.374071393695,
-          7763.195296151297
+          7763.195296151297,
+          5614.616979326521
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          161290.56471354168,
           384140.58841145836,
           302087.4689592634,
           300924.51510416664,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           355007.5724051339,
           161249.7178780692,
           366798.72293526784,
-          271294.98756510415
+          271294.98756510415,
+          188284.87465122767
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590287,
           590292,
           590225,
           590226,
@@ -594,6 +593,7 @@ window.BENCHMARK_DATA = {
           590290,
           590287,
           590291,
+          590288,
           590288
         ],
         "borderColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10095.689301045735,
           20074.98917061942,
           18065.067188807898,
           17909.513950602213,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           19846.692822265624,
           9386.836663382393,
           19949.059804280598,
-          14725.056330754207
+          14725.056330754207,
+          11026.765371050153
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
-        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
-      },
-      {
         "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
-      "3009dddd",
       "ce12e858",
       "25ca35b1",
       "012afc61",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          132.47893340247018,
           322.6525573730469,
           273.9837770802634,
           268.5749477999551,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           309.07959547042844,
           126.73873751958212,
           263.1078281769386,
-          199.24392375946044
+          199.24392375946044,
+          143.58414921393762
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          260.43213081359863,
           515.0361580530803,
           608.8601038614909,
           590.109141476949,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           505.0891153335571,
           244.2520772298177,
           473.1157041696402,
-          411.22677221298215
+          411.22677221298215,
+          280.8949717839559
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          186.86871829399695,
           401.1061988194784,
           416.59318628311155,
           415.7524501596178,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           386.6035411516825,
           189.65586798007672,
           370.4077088991801,
-          293.0990936074938
+          293.0990936074938,
+          213.91787498337882
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
-        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
-      },
-      {
         "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
-      "3009dddd",
       "ce12e858",
       "25ca35b1",
       "012afc61",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          64.55654364426931,
           144.55811697642008,
           151.66829425948006,
           151.41221645673116,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           143.76623986562092,
           67.98332713331494,
           140.66863526616777,
-          119.97874874335069
+          119.97874874335069,
+          76.38351354002953
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          121.46104904810588,
           259.9817698918856,
           326.9361922899882,
           313.2394310406276,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           252.17327394485474,
           120.82234115259988,
           250.28053794588362,
-          200.04688407977423
+          200.04688407977423,
+          137.11428833007812
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          115.60350522824696,
           253.5283507347107,
           243.30304209391275,
           237.49920315742492,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           252.39129244486492,
           113.25102055072784,
           234.06766257967269,
-          194.4366041024526
+          194.4366041024526,
+          131.16713561330522
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
-        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
-      },
-      {
         "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
-      "3009dddd",
       "ce12e858",
       "25ca35b1",
       "012afc61",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          126.15319045384724,
           257.9934313774109,
           252.03252874101912,
           241.04713221958704,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           257.66481419404346,
           127.67586382230122,
           263.510370572408,
-          208.5073845545451
+          208.5073845545451,
+          141.33981466293335
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          251.28869821230572,
           537.7937030156453,
           662.1523787634713,
           640.4373806544712,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           492.1018944422404,
           246.11900498072308,
           496.6465157190959,
-          409.18389762242634
+          409.18389762242634,
+          263.46397005594696
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          165.87069220542907,
           339.82704010009763,
           351.3542137512794,
           351.05339755330766,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           335.8325977643331,
           166.73054394355188,
           323.33989610671995,
-          260.6202277796609
+          260.6202277796609,
+          179.23963437080383
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
-        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
-      },
-      {
         "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
-      "3009dddd",
       "ce12e858",
       "25ca35b1",
       "012afc61",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          323.66008571216037,
           666.2331348146711,
           573.9394465764364,
           560.1261488369533,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           640.0723020008633,
           311.31280282827527,
           635.5010402543204,
-          491.9993329048157
+          491.9993329048157,
+          328.9394359588623
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          640.5755175862994,
           1437.4247745513917,
           1552.5757722218832,
           1528.468043899536,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1401.5896479288738,
           629.3383340835571,
           1306.5851324626378,
-          1107.5523514066424
+          1107.5523514066424,
+          720.5356556256612
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          331.0907334940774,
           693.8161659240723,
           643.9477735928127,
           641.3820680777231,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           706.41517162323,
           310.45724616731917,
           644.46709387643,
-          516.7370228767395
+          516.7370228767395,
+          329.6800695199233
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
-        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
-      },
-      {
         "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
-      "3009dddd",
       "ce12e858",
       "25ca35b1",
       "012afc61",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          294.8128121239798,
           641.4998718897501,
           580.2161086627415,
           582.0692969640096,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           671.5735786301749,
           306.343235874176,
           673.6206095377604,
-          505.6408305849348
+          505.6408305849348,
+          315.10517069271634
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9816.010982806865,
           28001.67866734096,
           18253.817936488562,
           18028.941225324357,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           28968.595120943508,
           9665.264728001186,
           27571.156652832033,
-          15879.54232788086
+          15879.54232788086,
+          10216.295717366536
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33465,
           33465,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          391.12323812338025,
           830.5997231801351,
           757.1983052571615,
           777.056998693026,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           809.150712966919,
           385.42870752628033,
           758.332157941965,
-          610.4796997070313
+          610.4796997070313,
+          412.1527011871338
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
-        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
-      },
-      {
         "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
-      "3009dddd",
       "ce12e858",
       "25ca35b1",
       "012afc61",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          342.0495410283407,
           733.3101908365885,
           706.4060881296793,
           691.7548534393311,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           677.8308525085449,
           327.27256182523877,
           691.5789725439889,
-          575.7757198627179
+          575.7757198627179,
+          388.5761793576754
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4838,7 +4838,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
-          1680,
+          1688,
           1688,
           1688,
           1688,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27421.826108492336,
           83982.65583683894,
           34963.166076660156,
           34370.29956490653,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           83281.71494838169,
           26083.840297154016,
           82217.2092023577,
-          53972.28064982096
+          53972.28064982096,
+          30140.164213053384
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5256,
           5252,
           5256,
           5256,
@@ -4992,6 +4991,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
+          5256,
           5256
         ],
         "borderColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
-        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
-      },
       {
         "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
-      "3009dddd",
       "ce12e858",
       "25ca35b1",
       "012afc61",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          84.86785351313077,
           197.68659586172836,
           187.8523447880378,
           192.3838214079539,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           200.84096678665705,
           93.48704391717911,
           184.98689225741796,
-          133.95587449807388
+          133.95587449807388,
+          101.01011949380239
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9418.380696614584,
           32326.37315586635,
           17580.579520670573,
           16781.729989188058,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           33072.02576904297,
           9118.87947998047,
           31858.780828857423,
-          16223.888257344564
+          16223.888257344564,
+          10449.41760144915
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5551,7 +5551,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5615,
           5614,
           5614,
           5614,
@@ -5600,6 +5599,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
+          5615,
           5615
         ],
         "borderColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          116.01052769025166,
           250.5384820620219,
           241.94896602630615,
           240.8125906308492,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           250.13719367980957,
           114.74391627311707,
           235.00628077983856,
-          186.66816171577997
+          186.66816171577997,
+          129.68310817082724
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
-        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
-      },
-      {
         "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
-      "3009dddd",
       "ce12e858",
       "25ca35b1",
       "012afc61",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          164.99766865798406,
           406.6041113308498,
           342.5799726486206,
           339.8047703229464,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           350.18670660654703,
           165.2740936108998,
           354.5388611157735,
-          288.4528980936323
+          288.4528980936323,
+          187.89194345474243
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          190.17301377228327,
           397.38704807417736,
           484.6903467859541,
           468.92224655832564,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           361.62693147659303,
           183.90481077829998,
           389.2151554107666,
-          360.9839335169111
+          360.9839335169111,
+          212.56554043293
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          195.42194975217183,
           417.41266069412234,
           401.1071700731913,
           405.95541184743246,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           406.13322085600635,
           198.61529209063605,
           415.7192570368449,
-          354.4219741480691
+          354.4219741480691,
+          227.0691647529602
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
-        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
-      },
-      {
         "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
-      "3009dddd",
       "ce12e858",
       "25ca35b1",
       "012afc61",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          323.26542986356293,
           684.3803238187518,
           663.1652751650129,
           657.6112369696299,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           711.0751499811809,
           326.253500978152,
           665.6346352259318,
-          515.2550433703831
+          515.2550433703831,
+          379.08641811517566
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          978.0236087526594,
           1948.3768693483794,
           2210.3121805826822,
           2136.0983006795245,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1976.0144137064615,
           993.2838106791179,
           1813.5620873769124,
-          1511.2887837546211
+          1511.2887837546211,
+          1064.6654143015544
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          448.36756478037154,
           949.1311612810407,
           930.5131092071533,
           914.684546025594,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           966.6547949864314,
           452.28819794654845,
           902.4230692936824,
-          718.4539357503255
+          718.4539357503255,
+          508.45363146918163
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
-        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
-      },
-      {
         "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
-      "3009dddd",
       "ce12e858",
       "25ca35b1",
       "012afc61",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5556.290245056152,
           11393.8872657189,
           9329.90028146597,
           9115.95382792155,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           11645.786562093099,
           5466.891509501139,
           11327.60829271589,
-          8148.074982863206
+          8148.074982863206,
+          5893.465245564778
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          17806.672297159832,
           41440.198856898714,
           32441.060227614184,
           31469.59187098912,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           42174.426538085936,
           17203.229110717773,
           40153.78831787109,
-          27004.539052327473
+          27004.539052327473,
+          18938.612404959542
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          5504.403658185686,
           10748.008057730538,
           9121.985211885893,
           8871.124907430012,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           10606.527669270834,
           5337.7669993809295,
           10519.490973336357,
-          7864.630380483774
+          7864.630380483774,
+          5648.265865325928
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
-        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
-      },
-      {
         "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
-      "3009dddd",
       "ce12e858",
       "25ca35b1",
       "012afc61",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5351.609930772048,
           10953.876988002232,
           8855.295495169503,
           8578.56080862192,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           11443.748285566058,
           5194.05392397367,
           10886.762962341309,
-          7665.67815844218
+          7665.67815844218,
+          5514.562854766846
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          25856.064980643136,
           59159.49271647135,
           45861.9401198167,
           44937.93971470424,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           60971.03026471819,
           25127.185221354168,
           57345.93426005045,
-          38740.25252278646
+          38740.25252278646,
+          27468.550713172324
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8483,7 +8483,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          23553,
           23554,
           23553,
           23553,
@@ -8530,6 +8529,7 @@ window.BENCHMARK_DATA = {
           23553,
           23554,
           23554,
+          23553,
           23553,
           23553,
           23553
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10806.609595743816,
           21121.498502291164,
           17923.596638997395,
           17332.538838704426,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           21150.895552571616,
           10499.018555704753,
           20930.719658484824,
-          15355.418544514974
+          15355.418544514974,
+          11144.415619913738
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
