@@ -337,6 +337,42 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenTypeDoesNotMatchWildcard_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "https://awexpect.com/problems/not-found",
+					               "title": "Not Found"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("*/conflict").AsWildcard()
+						.WithTitle("Not*").AsWildcard();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a ProblemDetails content with type matching "*/conflict" and title matching "Not*",
+					             but it had type "https://awexpect.com/problems/…", which did not match:
+					               ↓ (actual)
+					               "https://awexpect.com/problems/not-found"
+					               "*/conflict"
+					               ↑ (wildcard pattern)
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: *
+					               {
+					                 "type": "https://awexpect.com/problems/not-found",
+					                 "title": "Not Found"
+					               }
+					             """).AsWildcard();
+			}
+
+			[Test]
 			public async Task WhenTypeMatches_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -348,6 +384,22 @@ public sealed partial class ThatHttpResponseMessage
 
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent("foo");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenTypeMatchesWildcard_ShouldSucceed()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "https://awexpect.com/problems/not-found"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("*/not-found").AsWildcard();
 
 				await That(Act).DoesNotThrow();
 			}
@@ -479,6 +531,36 @@ public sealed partial class ThatHttpResponseMessage
 					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent(expectedType));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenTypeIsAbsentAndMatchedAsWildcard_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "title": "Not Found"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent("*").AsWildcard());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a ProblemDetails content with type matching "*",
+					             but it did not match the expected format because no 'type' property existed
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: *
+					               {
+					                 "title": "Not Found"
+					               }
+					             """).AsWildcard()
+					.Because("an absent type has no content to inspect, so it fails the expectation and its negation alike");
 			}
 
 			[Test]

@@ -41,13 +41,17 @@ public class HasQueryParameterValueResult
 	///     Verifies that the query parameter has exactly one value which is equal to the <paramref name="expected" />
 	///     value.
 	/// </summary>
-	public StringEqualityResult<Uri, IThat<Uri?>> WithValue(string? expected)
+	/// <remarks>
+	///     The <paramref name="expected" /> value can also be matched as a pattern or as a prefix or suffix, e.g. via
+	///     <c>AsWildcard()</c> or <c>AsPrefix()</c>.
+	/// </remarks>
+	public StringEqualityTypeResult<Uri, IThat<Uri?>> WithValue(string? expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		_expectationBuilder.And("").AddConstraint((expected, _name, options),
 			static (state, it, grammars) => new WithValueConstraint(
 				it, grammars, state.expected, state._name, state.options));
-		return new StringEqualityResult<Uri, IThat<Uri?>>(_expectationBuilder, _returnValue, options);
+		return new StringEqualityTypeResult<Uri, IThat<Uri?>>(_expectationBuilder, _returnValue, options);
 	}
 
 	/// <summary>

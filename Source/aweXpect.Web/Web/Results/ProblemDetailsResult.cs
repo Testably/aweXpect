@@ -75,11 +75,13 @@ public class ProblemDetailsResult<TType, TThat>
 
 
 	/// <summary>
-	///     In addition to a <see cref="ProblemDetailsResult{TType,TThat}" /> allows specifying string equality settings.
+	///     In addition to a <see cref="ProblemDetailsResult{TType,TThat}" /> allows specifying string equality settings
+	///     and the match type, e.g. via <c>AsWildcard()</c>, for the last specified string value.
 	/// </summary>
 	public class String
 		: AndOrResult<TType, TThat, String>,
-			IOptionsProvider<StringEqualityOptions>
+			IOptionsProvider<StringEqualityOptions>,
+			IStringMatchTypeOptions
 	{
 		private readonly ExpectationBuilder _expectationBuilder;
 		private readonly ProblemDetailsOptions _options;

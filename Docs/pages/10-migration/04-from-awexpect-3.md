@@ -159,6 +159,12 @@ a virtual time system.
 - `MatchesPublicApiSnapshot` selects the API with `Within` and `Ignoring` instead of `ExcludingAttribute` and
   `ExcludingForwardedTypes`, and needs no extra `using`.
 
+### aweXpect.Web
+
+- `HasHeader(…).WithValue(…)` and `HasQueryParameter(…).WithValue(…)` return a `StringEqualityTypeResult` and offer
+  the match types, e.g. `WithValue("application/*").AsWildcard()`, like the type, title, detail and instance of
+  `HasProblemDetailsContent`. This only affects code that names the result type.
+
 ### Namespaces
 
 Results of the extension packages are in `aweXpect.<Package>.Results` and their other public types in

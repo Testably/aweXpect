@@ -148,6 +148,7 @@ Uri uri = new("https://music.example.com/tracks?page=2&genre=Jazz");
 await Expect.That(uri).HasQueryParameter("page");
 await Expect.That(uri).HasQueryParameter("page").WithValue("2");
 await Expect.That(uri).HasQueryParameter("genre").WithValue("jazz").IgnoringCase();
+await Expect.That(uri).HasQueryParameter("genre").WithValue("J*").AsWildcard();
 await Expect.That(uri).DoesNotHaveQueryParameter("token");
 ```
 
