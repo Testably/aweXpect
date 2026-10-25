@@ -34,23 +34,6 @@ public static partial class ThatMembers
 			subject);
 
 	/// <summary>
-	///     Verifies that no items have the given <paramref name="accessModifier" />.
-	/// </summary>
-	/// <remarks>
-	///     Combined flags, e.g. <c>AccessModifiers.Public | AccessModifiers.Internal</c>, are met by any of them.
-	/// </remarks>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<TMember?>, IThat<IEnumerable<TMember?>?>> AreNot<TMember>(
-		this IThat<IEnumerable<TMember?>?> subject,
-		AccessModifiers accessModifier)
-		where TMember : MemberInfo
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(accessModifier,
-				static (accessModifier, it, grammars)
-					=> new AreConstraint<IEnumerable<TMember?>?, TMember>(it, grammars,
-						EnumerableQuantifier.None(ExpectationGrammars.Nested), true, accessModifier)),
-			subject);
-
-	/// <summary>
 	///     …have the given <paramref name="accessModifier" />.
 	/// </summary>
 	/// <remarks>
@@ -102,6 +85,41 @@ public static partial class ThatMembers
 			subject);
 
 	/// <summary>
+	///     …have the given <paramref name="accessModifier" />.
+	/// </summary>
+	/// <remarks>
+	///     Combined flags, e.g. <c>AccessModifiers.Public | AccessModifiers.Internal</c>, are met by any of them.
+	/// </remarks>
+	public static AndOrResult<IAsyncEnumerable<TMember?>, IThat<IAsyncEnumerable<TMember?>?>> Are<TMember>(
+		this IAsyncEnumerableItems<TMember?> items,
+		AccessModifiers accessModifier)
+		where TMember : MemberInfo
+		=> new(items.Subject.Get().ExpectationBuilder.AddConstraint((items.Quantifier, accessModifier),
+				static (state, it, grammars)
+					=> new AreAsyncConstraint<TMember>(it, grammars,
+						state.Quantifier, false, state.accessModifier)),
+			items.Subject);
+#endif
+
+	/// <summary>
+	///     Verifies that no items have the given <paramref name="accessModifier" />.
+	/// </summary>
+	/// <remarks>
+	///     Combined flags, e.g. <c>AccessModifiers.Public | AccessModifiers.Internal</c>, are met by any of them.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<TMember?>, IThat<IEnumerable<TMember?>?>> AreNot<TMember>(
+		this IThat<IEnumerable<TMember?>?> subject,
+		AccessModifiers accessModifier)
+		where TMember : MemberInfo
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(accessModifier,
+				static (accessModifier, it, grammars)
+					=> new AreConstraint<IEnumerable<TMember?>?, TMember>(it, grammars,
+						EnumerableQuantifier.None(ExpectationGrammars.Nested), true, accessModifier)),
+			subject);
+
+#if NET8_0_OR_GREATER
+	/// <summary>
 	///     Verifies that no items have the given <paramref name="accessModifier" />.
 	/// </summary>
 	/// <remarks>
@@ -117,22 +135,6 @@ public static partial class ThatMembers
 					=> new AreAsyncConstraint<TMember>(it, grammars,
 						EnumerableQuantifier.None(ExpectationGrammars.Nested), true, accessModifier)),
 			subject);
-
-	/// <summary>
-	///     …have the given <paramref name="accessModifier" />.
-	/// </summary>
-	/// <remarks>
-	///     Combined flags, e.g. <c>AccessModifiers.Public | AccessModifiers.Internal</c>, are met by any of them.
-	/// </remarks>
-	public static AndOrResult<IAsyncEnumerable<TMember?>, IThat<IAsyncEnumerable<TMember?>?>> Are<TMember>(
-		this IAsyncEnumerableItems<TMember?> items,
-		AccessModifiers accessModifier)
-		where TMember : MemberInfo
-		=> new(items.Subject.Get().ExpectationBuilder.AddConstraint((items.Quantifier, accessModifier),
-				static (state, it, grammars)
-					=> new AreAsyncConstraint<TMember>(it, grammars,
-						state.Quantifier, false, state.accessModifier)),
-			items.Subject);
 #endif
 
 	private static PredicateResult HasAccessModifierMember<TMember>(TMember? member, AccessModifiers accessModifier)
