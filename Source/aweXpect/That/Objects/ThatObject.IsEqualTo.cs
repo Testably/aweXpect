@@ -1,9 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -21,9 +17,8 @@ public static partial class ThatObject
 	{
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
-				static (state, it, grammars)
-					=> new IsEqualToConstraint<object?, object?>(it, grammars, state.Expected, null, state.Options)),
+			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
+				subject.Get().ExpectationBuilder, expected, options),
 			subject,
 			options);
 	}
@@ -39,9 +34,8 @@ public static partial class ThatObject
 	{
 		ObjectEqualityOptions<T?> options = new();
 		return new ObjectEqualityResult<T?, IThat<T?>, T?>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
-				static (state, it, grammars)
-					=> new NullableIsEqualToConstraint<T>(it, grammars, state.Expected, state.Options)),
+			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
+				subject.Get().ExpectationBuilder, expected, options),
 			subject,
 			options);
 	}
@@ -57,9 +51,8 @@ public static partial class ThatObject
 	{
 		ObjectEqualityOptions<T> options = new();
 		return new ObjectEqualityResult<T, IThat<T>, T>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
-				static (state, it, grammars)
-					=> new IsEqualToConstraint<T>(it, grammars, state.Expected, state.Options)),
+			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
+				subject.Get().ExpectationBuilder, expected, options),
 			subject,
 			options);
 	}
@@ -73,10 +66,8 @@ public static partial class ThatObject
 	{
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
-			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
-				static (state, it, grammars)
-					=> new IsEqualToConstraint<object?, object?>(it, grammars, state.Unexpected, null, state.Options)
-						.Invert()),
+			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
+				subject.Get().ExpectationBuilder, unexpected, options, isNegated: true),
 			subject,
 			options);
 	}
@@ -93,9 +84,8 @@ public static partial class ThatObject
 	{
 		ObjectEqualityOptions<T?> options = new();
 		return new ObjectEqualityResult<T?, IThat<T?>, T?>(
-			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
-				static (state, it, grammars)
-					=> new NullableIsEqualToConstraint<T>(it, grammars, state.Unexpected, state.Options).Invert()),
+			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
+				subject.Get().ExpectationBuilder, unexpected, options, isNegated: true),
 			subject,
 			options);
 	}
@@ -112,133 +102,9 @@ public static partial class ThatObject
 	{
 		ObjectEqualityOptions<T> options = new();
 		return new ObjectEqualityResult<T, IThat<T>, T>(
-			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
-				static (state, it, grammars)
-					=> new IsEqualToConstraint<T>(it, grammars, state.Unexpected, state.Options).Invert()),
+			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
+				subject.Get().ExpectationBuilder, unexpected, options, isNegated: true),
 			subject,
 			options);
-	}
-
-	private sealed class IsEqualToConstraint<TSubject, TExpected>(
-		string it,
-		ExpectationGrammars grammars,
-		TExpected expected,
-		string? expectedExpression,
-		ObjectEqualityOptions<TSubject> options)
-		: ConstraintResult.WithEqualToValue<TSubject>(it, grammars, expected is null),
-			IAsyncContextConstraint<TSubject>
-	{
-		private ObjectEqualityOptions<TSubject>? _evaluationOptions;
-		private MatchResult _matchResult;
-
-		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			Actual = actual;
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected);
-			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options).AppendContexts(contexts);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExpectation(
-				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExpectation(
-				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
-	}
-
-	private sealed class IsEqualToConstraint<T>(
-		string it,
-		ExpectationGrammars grammars,
-		T? expected,
-		ObjectEqualityOptions<T> options)
-		: ConstraintResult.WithValue<T>(it, grammars),
-			IAsyncContextConstraint<T>
-		where T : struct
-	{
-		private ObjectEqualityOptions<T>? _evaluationOptions;
-		private MatchResult _matchResult;
-
-		public async ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			Actual = actual;
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected);
-			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options).AppendContexts(contexts);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExpectation(
-				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExpectation(
-				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
-	}
-
-	private sealed class NullableIsEqualToConstraint<T>(
-		string it,
-		ExpectationGrammars grammars,
-		T? expected,
-		ObjectEqualityOptions<T?> options)
-		: ConstraintResult.WithEqualToValue<T?>(it, grammars, expected is null),
-			IAsyncContextConstraint<T?>
-		where T : struct
-	{
-		private ObjectEqualityOptions<T?>? _evaluationOptions;
-		private MatchResult _matchResult;
-
-		public async ValueTask<ConstraintResult> IsMetBy(T? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			Actual = actual;
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected);
-			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options).AppendContexts(contexts);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExpectation(
-				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExpectation(
-				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
 	}
 }

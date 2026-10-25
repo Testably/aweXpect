@@ -13,6 +13,44 @@ namespace aweXpect.Core.Extending;
 public static class ExpectationBuilderExtensions
 {
 	/// <summary>
+	///     Adds a constraint that verifies that the subject is equal to the <paramref name="expected" /> value, e.g.
+	///     <c>is equal to 42</c>, or, when <paramref name="isNegated" />, that it is not equal to it, e.g.
+	///     <c>is not equal to 42</c>.
+	/// </summary>
+	/// <param name="expectationBuilder">The expectation builder of the subject.</param>
+	/// <param name="expected">The value that the subject is compared with.</param>
+	/// <param name="options">How the subject is compared with the <paramref name="expected" /> value.</param>
+	/// <param name="isNegated">Whether the constraint is negated.</param>
+	/// <param name="expectedExpression">
+	///     The code of the caller for the <paramref name="expected" /> value, e.g. from a
+	///     <see cref="System.Runtime.CompilerServices.CallerArgumentExpressionAttribute" />, which the expectation text
+	///     shows instead of the formatted value, e.g. <c>is equal to expected</c>. Its common leading whitespace is
+	///     removed with <see cref="StringExtensions.TrimCommonWhiteSpace(string)" />. It is ignored when the
+	///     <paramref name="expected" /> value is <see langword="null" />, which is always shown as <c>&lt;null&gt;</c>.
+	/// </param>
+	/// <returns>The <paramref name="expectationBuilder" />, e.g. for an <see cref="Results.ObjectEqualityResult{TType,TThat,TElement}" />.</returns>
+	/// <remarks>
+	///     Return an <see cref="Results.ObjectEqualityResult{TType,TThat,TElement}" /> that shares the
+	///     <paramref name="options" />, so that the comparison can be specified on it, e.g. with <c>Using(comparer)</c>
+	///     or a match type of your own.<br />
+	///     A <see langword="null" /> subject is never equal to an <paramref name="expected" /> value that is not
+	///     <see langword="null" />, whatever the comparison.
+	/// </remarks>
+	public static ExpectationBuilder AddEqualityConstraint<TSubject, TExpected>(
+		this ExpectationBuilder expectationBuilder,
+		TExpected expected, ObjectEqualityOptions<TSubject> options, bool isNegated = false,
+		string? expectedExpression = null)
+		=> expectationBuilder.AddConstraint(
+			(Expected: expected, Options: options, IsNegated: isNegated, ExpectedExpression: expectedExpression),
+			static (state, it, grammars) =>
+			{
+				ObjectEqualityConstraint<TSubject, TExpected> constraint =
+					new(it, grammars, state.Expected,
+						state.Expected is null ? null : state.ExpectedExpression?.TrimCommonWhiteSpace(), state.Options);
+				return state.IsNegated ? constraint.Invert() : constraint;
+			});
+
+	/// <summary>
 	///     Adds a constraint that verifies how often the <paramref name="expected" /> <see langword="string" /> occurs in
 	///     the <see langword="string" /> subject, e.g. <c>contains "a" at least twice</c>, or, when
 	///     <paramref name="isNegated" />, that it does not occur that often, e.g. <c>does not contain "a"</c>.

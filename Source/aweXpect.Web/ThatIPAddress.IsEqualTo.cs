@@ -1,10 +1,6 @@
 ﻿using System.Net;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -28,9 +24,7 @@ public static partial class ThatIPAddress
 	{
 		ObjectEqualityOptions<IPAddress?> options = new();
 		return new ObjectEqualityResult<IPAddress?, IThat<IPAddress?>, IPAddress?>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
-				static (state, it, grammars)
-					=> new IsEqualToConstraint(it, grammars, state.Expected, state.Options)),
+			subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options),
 			subject,
 			options);
 	}
@@ -49,9 +43,7 @@ public static partial class ThatIPAddress
 	{
 		ObjectEqualityOptions<IPAddress?> options = new();
 		return new ObjectEqualityResult<IPAddress?, IThat<IPAddress?>, IPAddress?>(
-			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
-				static (state, it, grammars)
-					=> new IsEqualToConstraint(it, grammars, state.Unexpected, state.Options).Invert()),
+			subject.Get().ExpectationBuilder.AddEqualityConstraint(unexpected, options, isNegated: true),
 			subject,
 			options);
 	}
@@ -70,49 +62,6 @@ public static partial class ThatIPAddress
 	{
 		result.Options.SetMatchType(IgnoringIPv4MappedToIPv6MatchType.Instance, nameof(IgnoringIPv4MappedToIPv6));
 		return (TSelf)result;
-	}
-
-	/// <remarks>
-	///     Mirrors the equality constraint of aweXpect, which is not public, so that all options of
-	///     <see cref="ObjectEqualityOptions{TSubject}" /> keep working.
-	/// </remarks>
-	private sealed class IsEqualToConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		IPAddress? expected,
-		ObjectEqualityOptions<IPAddress?> options)
-		: ConstraintResult.WithEqualToValue<IPAddress?>(it, grammars, expected is null),
-			IAsyncContextConstraint<IPAddress?>
-	{
-		private ObjectEqualityOptions<IPAddress?>? _evaluationOptions;
-		private MatchResult _matchResult;
-
-		public async ValueTask<ConstraintResult> IsMetBy(IPAddress? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			Actual = actual;
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected);
-			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options).AppendContexts(contexts);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExpectation(
-				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected,
-				_matchResult, indentation));
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalExpectation(stringBuilder, indentation);
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class IgnoringIPv4MappedToIPv6MatchType : ObjectMatchType<IPAddress?>
