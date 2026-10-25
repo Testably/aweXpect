@@ -202,6 +202,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is not a number or its value is not positive,
 					             but it was 1e400, which is not a double
+
+					             Actual:
+					             1e400
 					             """)
 					.Because("a number beyond the range of a double cannot be answered, so it fails both ways");
 			}
