@@ -7,7 +7,7 @@ using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
-public partial class CollectionMatchOptions
+public readonly partial struct CollectionMatchOptions
 {
 	/// <summary>
 	///     A maximum one-to-one matching between the subject items and the expected items, which grows with each subject

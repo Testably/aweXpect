@@ -11,19 +11,19 @@ public sealed class ObjectCollectionMatchResultTests
 	public async Task ShouldBeOptionsProvider_ForCollectionMatchOptions()
 	{
 		ObjectEqualityOptions<string> options = new();
-		CollectionMatchOptions collectionMatchOptions = new();
+		OptionsSlot<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
 		ObjectCollectionMatchResult<ObjectCollectionMatchResultTests, IThat<ObjectCollectionMatchResultTests>, string>
 			sut = CreateSut(new ObjectCollectionMatchResultTests(), options, collectionMatchOptions);
 
 		await That(sut).Is<IOptionsProvider<CollectionMatchOptions>>()
-			.Whose(x => x.Options.Value, it => it.IsSameAs(collectionMatchOptions));
+			.Whose(x => x.Options, it => it.IsSameAs(collectionMatchOptions));
 	}
 
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForObjectEqualityOptions()
 	{
 		ObjectEqualityOptions<string> options = new();
-		CollectionMatchOptions collectionMatchOptions = new();
+		OptionsSlot<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
 		ObjectCollectionMatchResult<ObjectCollectionMatchResultTests, IThat<ObjectCollectionMatchResultTests>, string>
 			sut = CreateSut(new ObjectCollectionMatchResultTests(), options, collectionMatchOptions);
 
@@ -32,7 +32,7 @@ public sealed class ObjectCollectionMatchResultTests
 	}
 
 	private static ObjectCollectionMatchResult<T, IThat<T>, TElement> CreateSut<T, TElement>(T subject,
-		ObjectEqualityOptions<TElement> options, CollectionMatchOptions collectionMatchOptions)
+		ObjectEqualityOptions<TElement> options, OptionsSlot<CollectionMatchOptions> collectionMatchOptions)
 		where T : notnull
 	{
 #pragma warning disable aweXpect0001
@@ -40,6 +40,6 @@ public sealed class ObjectCollectionMatchResultTests
 #pragma warning restore aweXpect0001
 		return new ObjectCollectionMatchResult<T, IThat<T>, TElement>(source.Get().ExpectationBuilder,
 			source,
-			new OptionsSlot<ObjectEqualityOptions<TElement>>(options), new OptionsSlot<CollectionMatchOptions>(collectionMatchOptions));
+			new OptionsSlot<ObjectEqualityOptions<TElement>>(options), collectionMatchOptions);
 	}
 }

@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace aweXpect.Options;
 
-public partial class CollectionMatchOptions
+public readonly partial struct CollectionMatchOptions
 {
 	/// <summary>
 	///     Counts how often each expected item is still to be found, for items that are compared like

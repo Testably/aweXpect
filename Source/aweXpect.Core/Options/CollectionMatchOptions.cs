@@ -15,9 +15,11 @@ namespace aweXpect.Options;
 /// <summary>
 ///     Options for matching a collection.
 /// </summary>
-public partial class CollectionMatchOptions(
-	CollectionMatchOptions.EquivalenceRelations equivalenceRelations
-		= CollectionMatchOptions.EquivalenceRelations.Equivalent)
+/// <remarks>
+///     An immutable value: the option methods return new options, and <see langword="default" /> matches an
+///     <see cref="EquivalenceRelations.Equivalent" /> collection in order.
+/// </remarks>
+public readonly partial struct CollectionMatchOptions
 {
 #pragma warning disable S4070 // Non-flags enums should not be marked with "FlagsAttribute"
 	/// <summary>
@@ -54,10 +56,34 @@ public partial class CollectionMatchOptions(
 #pragma warning restore S4070
 
 	private const string ItemsMatchInADifferentOrderHint = "(but the items match in a different order)";
-	private EquivalenceRelations _equivalenceRelations = equivalenceRelations;
-	private bool _ignoringDuplicates;
-	private bool _ignoringInterspersedItems;
-	private bool _inAnyOrder;
+	private readonly EquivalenceRelations _equivalenceRelations;
+	private readonly bool _ignoringDuplicates;
+	private readonly bool _ignoringInterspersedItems;
+	private readonly bool _inAnyOrder;
+
+	/// <summary>
+	///     Options for matching a collection with the <paramref name="equivalenceRelations" />.
+	/// </summary>
+	public CollectionMatchOptions(EquivalenceRelations equivalenceRelations = EquivalenceRelations.Equivalent)
+		: this(equivalenceRelations, false, false, false)
+	{
+	}
+
+	private CollectionMatchOptions(EquivalenceRelations equivalenceRelations, bool inAnyOrder,
+		bool ignoringDuplicates, bool ignoringInterspersedItems)
+	{
+		_equivalenceRelations = equivalenceRelations;
+		_inAnyOrder = inAnyOrder;
+		_ignoringDuplicates = ignoringDuplicates;
+		_ignoringInterspersedItems = ignoringInterspersedItems;
+	}
+
+	/// <summary>
+	///     The equivalence relation between subject and expected, which is <see cref="EquivalenceRelations.Equivalent" />
+	///     for <see langword="default" /> options.
+	/// </summary>
+	private EquivalenceRelations EquivalenceRelation
+		=> _equivalenceRelations == 0 ? EquivalenceRelations.Equivalent : _equivalenceRelations;
 
 	/// <summary>
 	///     The option that already specified how the order is matched.
@@ -84,16 +110,7 @@ public partial class CollectionMatchOptions(
 	///     Ignoring duplicates, the in-order matcher knows whether the items match in any order, so it adds the hint
 	///     itself.
 	/// </remarks>
-	private bool AddsInAnyOrderHint => _equivalenceRelations == EquivalenceRelations.Equivalent;
-
-	/// <summary>
-	///     Specifies the equivalence relation between subject and expected.
-	/// </summary>
-	public CollectionMatchOptions SetEquivalenceRelation(EquivalenceRelations equivalenceRelation)
-	{
-		_equivalenceRelations = equivalenceRelation;
-		return this;
-	}
+	private bool AddsInAnyOrderHint => EquivalenceRelation == EquivalenceRelations.Equivalent;
 
 	/// <summary>
 	///     Ignores the order in the subject and expected values.
@@ -104,8 +121,8 @@ public partial class CollectionMatchOptions(
 	public CollectionMatchOptions InAnyOrder()
 	{
 		ThrowHelper.ThrowIfCompetingOption(OrderOption, nameof(InAnyOrder));
-		_inAnyOrder = true;
-		return this;
+		return new CollectionMatchOptions(_equivalenceRelations, true, _ignoringDuplicates,
+			_ignoringInterspersedItems);
 	}
 
 	/// <summary>
@@ -118,10 +135,7 @@ public partial class CollectionMatchOptions(
 	///     <c>[1, 2]</c>.
 	/// </remarks>
 	public CollectionMatchOptions IgnoringDuplicates(bool ignoreDuplicates = true)
-	{
-		_ignoringDuplicates = ignoreDuplicates;
-		return this;
-	}
+		=> new(_equivalenceRelations, _inAnyOrder, ignoreDuplicates, _ignoringInterspersedItems);
 
 	/// <summary>
 	///     Verifies that the two collections differ by at least one additional item.
@@ -136,7 +150,7 @@ public partial class CollectionMatchOptions(
 	/// </exception>
 	public CollectionMatchOptions Properly()
 	{
-		_equivalenceRelations = _equivalenceRelations switch
+		EquivalenceRelations equivalenceRelation = EquivalenceRelation switch
 		{
 			EquivalenceRelations.Contains or EquivalenceRelations.ContainsProperly
 				=> EquivalenceRelations.ContainsProperly,
@@ -144,9 +158,10 @@ public partial class CollectionMatchOptions(
 				=> EquivalenceRelations.IsContainedInProperly,
 			// ReSharper disable once LocalizableElement
 			_ => throw Tracing.WriteException(new InvalidOperationException(
-				$"{nameof(Properly)} requires a containment relation, but the relation is {_equivalenceRelations}.")),
+				$"{nameof(Properly)} requires a containment relation, but the relation is {EquivalenceRelation}.")),
 		};
-		return this;
+		return new CollectionMatchOptions(equivalenceRelation, _inAnyOrder, _ignoringDuplicates,
+			_ignoringInterspersedItems);
 	}
 
 	/// <summary>
@@ -163,8 +178,8 @@ public partial class CollectionMatchOptions(
 			ThrowHelper.ThrowIfCompetingOption(OrderOption, nameof(IgnoringInterspersedItems));
 		}
 
-		_ignoringInterspersedItems = ignoreInterspersedItems;
-		return this;
+		return new CollectionMatchOptions(_equivalenceRelations, _inAnyOrder, _ignoringDuplicates,
+			ignoreInterspersedItems);
 	}
 
 	/// <summary>
@@ -195,12 +210,12 @@ public partial class CollectionMatchOptions(
 
 		return (_inAnyOrder, _ignoringDuplicates) switch
 		{
-			(true, true) => new AnyOrderIgnoreDuplicatesCollectionMatcher<TItem, TMatch>(_equivalenceRelations, expected,
+			(true, true) => new AnyOrderIgnoreDuplicatesCollectionMatcher<TItem, TMatch>(EquivalenceRelation, expected,
 				dimensions),
-			(true, false) => new AnyOrderCollectionMatcher<TItem, TMatch>(_equivalenceRelations, expected, dimensions),
-			(false, true) => new SameOrderIgnoreDuplicatesCollectionMatcher<TItem, TMatch>(_equivalenceRelations,
+			(true, false) => new AnyOrderCollectionMatcher<TItem, TMatch>(EquivalenceRelation, expected, dimensions),
+			(false, true) => new SameOrderIgnoreDuplicatesCollectionMatcher<TItem, TMatch>(EquivalenceRelation,
 				expected, _ignoringInterspersedItems, dimensions),
-			(false, false) => new SameOrderCollectionMatcher<TItem, TMatch>(_equivalenceRelations, expected,
+			(false, false) => new SameOrderCollectionMatcher<TItem, TMatch>(EquivalenceRelation, expected,
 				_ignoringInterspersedItems, AddsInAnyOrderHint, dimensions),
 		};
 	}
@@ -219,12 +234,12 @@ public partial class CollectionMatchOptions(
 		return (_inAnyOrder, _ignoringDuplicates) switch
 		{
 			(true, true) => new AnyOrderIgnoreDuplicatesFromPredicateCollectionMatcher<TItem, TMatch>(
-				_equivalenceRelations, predicates),
-			(true, false) => new AnyOrderFromPredicateCollectionMatcher<TItem, TMatch>(_equivalenceRelations,
+				EquivalenceRelation, predicates),
+			(true, false) => new AnyOrderFromPredicateCollectionMatcher<TItem, TMatch>(EquivalenceRelation,
 				predicates),
 			(false, true) => new SameOrderIgnoreDuplicatesFromPredicateCollectionMatcher<TItem, TMatch>(
-				_equivalenceRelations, predicates, _ignoringInterspersedItems),
-			(false, false) => new SameOrderFromPredicateCollectionMatcher<TItem, TMatch>(_equivalenceRelations,
+				EquivalenceRelation, predicates, _ignoringInterspersedItems),
+			(false, false) => new SameOrderFromPredicateCollectionMatcher<TItem, TMatch>(EquivalenceRelation,
 				predicates,
 				_ignoringInterspersedItems, AddsInAnyOrderHint),
 		};
@@ -244,12 +259,12 @@ public partial class CollectionMatchOptions(
 		ICollectionMatcher<TItem, TMatch> matcher = (_inAnyOrder, _ignoringDuplicates) switch
 		{
 			(true, true) => new AnyOrderIgnoreDuplicatesFromExpectationCollectionMatcher<TItem, TMatch>(
-				_equivalenceRelations, expectations),
-			(true, false) => new AnyOrderFromExpectationCollectionMatcher<TItem, TMatch>(_equivalenceRelations,
+				EquivalenceRelation, expectations),
+			(true, false) => new AnyOrderFromExpectationCollectionMatcher<TItem, TMatch>(EquivalenceRelation,
 				expectations),
 			(false, true) => new SameOrderIgnoreDuplicatesFromExpectationCollectionMatcher<TItem, TMatch>(
-				_equivalenceRelations, expectations, _ignoringInterspersedItems),
-			(false, false) => new SameOrderFromExpectationCollectionMatcher<TItem, TMatch>(_equivalenceRelations,
+				EquivalenceRelation, expectations, _ignoringInterspersedItems),
+			(false, false) => new SameOrderFromExpectationCollectionMatcher<TItem, TMatch>(EquivalenceRelation,
 				expectations,
 				_ignoringInterspersedItems, AddsInAnyOrderHint),
 		};
@@ -281,16 +296,16 @@ public partial class CollectionMatchOptions(
 	public string GetExpectation(string expectedExpression, ExpectationGrammars grammars)
 		=> (_inAnyOrder, _ignoringDuplicates, _ignoringInterspersedItems) switch
 		{
-			(true, true, _) => GetString(_equivalenceRelations, expectedExpression, grammars) +
+			(true, true, _) => GetString(EquivalenceRelation, expectedExpression, grammars) +
 			                   " in any order ignoring duplicates",
-			(true, false, _) => GetString(_equivalenceRelations, expectedExpression, grammars) + " in any order",
-			(false, true, false) => GetString(_equivalenceRelations, expectedExpression, grammars) +
+			(true, false, _) => GetString(EquivalenceRelation, expectedExpression, grammars) + " in any order",
+			(false, true, false) => GetString(EquivalenceRelation, expectedExpression, grammars) +
 			                        " in order" + ContiguousSuffix() + " ignoring duplicates",
-			(false, false, false) => GetString(_equivalenceRelations, expectedExpression, grammars) + " in order" +
+			(false, false, false) => GetString(EquivalenceRelation, expectedExpression, grammars) + " in order" +
 			                         ContiguousSuffix(),
-			(false, true, true) => GetString(_equivalenceRelations, expectedExpression, grammars) +
+			(false, true, true) => GetString(EquivalenceRelation, expectedExpression, grammars) +
 			                       " in order ignoring duplicates and interspersed items",
-			(false, false, true) => GetString(_equivalenceRelations, expectedExpression, grammars) +
+			(false, false, true) => GetString(EquivalenceRelation, expectedExpression, grammars) +
 			                        " in order ignoring interspersed items",
 		};
 
@@ -303,7 +318,7 @@ public partial class CollectionMatchOptions(
 	///     read "is not" and are answered with "was".
 	/// </remarks>
 	public string GetNegatedResultVerb(string it, ExpectationGrammars grammars)
-		=> _equivalenceRelations.Includes(EquivalenceRelations.Contains)
+		=> EquivalenceRelation.Includes(EquivalenceRelations.Contains)
 			? " did"
 			: grammars.SubjectVerb(it, " was", " were");
 
@@ -312,8 +327,8 @@ public partial class CollectionMatchOptions(
 	///     contiguity anyway.
 	/// </summary>
 	private string ContiguousSuffix()
-		=> _equivalenceRelations.Includes(EquivalenceRelations.Contains) ||
-		   _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn)
+		=> EquivalenceRelation.Includes(EquivalenceRelations.Contains) ||
+		   EquivalenceRelation.Includes(EquivalenceRelations.IsContainedIn)
 			? " and contiguous"
 			: "";
 

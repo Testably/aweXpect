@@ -3,7 +3,7 @@ using aweXpect.Core;
 
 namespace aweXpect.Options;
 
-public partial class CollectionMatchOptions
+public readonly partial struct CollectionMatchOptions
 {
 	/// <summary>
 	///     A collection matcher of <see cref="ExpectationItem{TItem}" /> items, whose expectations can stay undecided.

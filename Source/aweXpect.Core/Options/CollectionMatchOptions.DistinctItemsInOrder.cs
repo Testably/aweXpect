@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace aweXpect.Options;
 
-public partial class CollectionMatchOptions
+public readonly partial struct CollectionMatchOptions
 {
 	private enum OrderMatch
 	{

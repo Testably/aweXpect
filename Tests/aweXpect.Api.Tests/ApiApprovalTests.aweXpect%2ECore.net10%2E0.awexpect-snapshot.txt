@@ -1655,7 +1655,7 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.CollectionIndexOptions> AtIndexFromEnd(this aweXpect.Core.OptionsSlot<aweXpect.Options.CollectionIndexOptions> slot, int index) { }
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.CollectionIndexOptions> SetMatch(this aweXpect.Core.OptionsSlot<aweXpect.Options.CollectionIndexOptions> slot, aweXpect.Options.CollectionIndexOptions.IMatch match, string optionName) { }
     }
-    public class CollectionMatchOptions
+    public readonly struct CollectionMatchOptions
     {
         public CollectionMatchOptions(aweXpect.Options.CollectionMatchOptions.EquivalenceRelations equivalenceRelations = aweXpect.Options.CollectionMatchOptions.EquivalenceRelations.Equivalent) { }
         public aweXpect.Core.ICollectionMatcher<TItem, TMatch> GetCollectionMatcher<TItem, TMatch>(System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<TItem, bool>>> expected) where TItem : TMatch { }
@@ -1668,7 +1668,6 @@ namespace aweXpect.Options
         public aweXpect.Options.CollectionMatchOptions IgnoringInterspersedItems(bool ignoreInterspersedItems = true) { }
         public aweXpect.Options.CollectionMatchOptions InAnyOrder() { }
         public aweXpect.Options.CollectionMatchOptions Properly() { }
-        public aweXpect.Options.CollectionMatchOptions SetEquivalenceRelation(aweXpect.Options.CollectionMatchOptions.EquivalenceRelations equivalenceRelation) { }
         [System.Flags]
         public enum EquivalenceRelations
         {

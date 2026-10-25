@@ -6,7 +6,7 @@ using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
-public partial class CollectionMatchOptions
+public readonly partial struct CollectionMatchOptions
 {
 	/// <summary>
 	///     Searches the first index that matches, starting next to <paramref name="start" /> and moving away in both

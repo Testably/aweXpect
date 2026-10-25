@@ -60,6 +60,21 @@ public sealed class OptionsSlotTests
 	}
 
 	[Test]
+	public async Task WhenACollectionMatchOptionsPresetIsShared_ShouldNotBeChangedByAnotherSlot()
+	{
+		CollectionMatchOptions preset = new CollectionMatchOptions().IgnoringDuplicates();
+		OptionsSlot<CollectionMatchOptions> first = new(preset);
+		OptionsSlot<CollectionMatchOptions> second = new(preset);
+
+		first.InAnyOrder();
+
+		await That(second.Value.GetExpectation("[1]", ExpectationGrammars.None))
+			.IsEqualTo("is equal to collection [1] in order ignoring duplicates");
+		await That(first.Value.GetExpectation("[1]", ExpectationGrammars.None))
+			.IsEqualTo("is equal to collection [1] in any order ignoring duplicates");
+	}
+
+	[Test]
 	public async Task WhenAQuantifierPresetIsShared_ShouldNotBeChangedByAnotherSlot()
 	{
 		Quantifier preset = Quantifier.Default.AtLeast(2);

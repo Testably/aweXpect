@@ -7,7 +7,7 @@ using aweXpect.Core;
 
 namespace aweXpect.Options;
 
-public partial class CollectionMatchOptions
+public readonly partial struct CollectionMatchOptions
 {
 	private sealed class SameOrderCollectionMatcher<T, T2>(
 		EquivalenceRelations equivalenceRelation,
