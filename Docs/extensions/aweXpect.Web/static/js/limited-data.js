@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
-        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
-      },
-      {
         "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
-      "87616222",
       "8e844194",
       "f61481d2",
       "77ca8a7f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          400.99758071899413,
           385.2232416016715,
           217.3671327488763,
           402.32251596450806,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           430.45553966930936,
           319.49599704742434,
           388.8703674719884,
-          406.4779588063558
+          406.4779588063558,
+          413.00836950937907
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          959.1408219019572,
           924.8450303395589,
           530.030105150663,
           995.0454494476319,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           1067.702608517238,
           743.1075038228716,
           953.4641242980957,
-          966.5307211875916
+          966.5307211875916,
+          1021.4141195933024
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
-        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
-      },
-      {
         "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
-      "87616222",
       "8e844194",
       "f61481d2",
       "77ca8a7f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          194.02887625353677,
           187.44728185580328,
           96.11130692277636,
           197.58253553708394,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           207.31884090717023,
           151.0462215287345,
           191.88393333980017,
-          190.9830601533254
+          190.9830601533254,
+          200.69366776943207
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          242.76017599105836,
           247.34392620722454,
           132.6707933108012,
           244.83706684112548,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           253.89268129212516,
           202.54263632638114,
           238.79780387878418,
-          262.9670210202535
+          262.9670210202535,
+          275.68809226353966
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
-        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
-      },
-      {
         "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
-      "87616222",
       "8e844194",
       "f61481d2",
       "77ca8a7f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          599.7900969187418,
           602.1934854067289,
           341.3482527051653,
           625.7590847015381,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           661.5239128385272,
           441.12032457987465,
           600.1823513031006,
-          568.7372217178345
+          568.7372217178345,
+          629.4959992726643
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          947.0174641291301,
           956.0332482655843,
           530.0992883273533,
           999.7033538818359,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1095.1692711966377,
           704.8076385089329,
           916.6427883420672,
-          917.9858008531423
+          917.9858008531423,
+          1034.941997909546
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
-        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
-      },
-      {
         "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
-      "87616222",
       "8e844194",
       "f61481d2",
       "77ca8a7f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1668.7563257217407,
           1622.5042104085287,
           1051.4486563364665,
           1695.4907952626547,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1766.1332702636719,
           1316.935558827718,
           1701.087031809489,
-          1688.343087387085
+          1688.343087387085,
+          1702.1969706217449
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          21331.699829101562,
           20726.420553354117,
           10970.197644042968,
           21423.790985107422,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           21791.218760172527,
           13628.172399902343,
           20224.627244059244,
-          17748.76021931966
+          17748.76021931966,
+          20814.329875401087
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2374,7 +2374,6 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34713,
           34712,
@@ -2415,6 +2414,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
-        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
-      },
       {
         "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
-      "87616222",
       "8e844194",
       "f61481d2",
       "77ca8a7f",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          746.2055660247803,
           663.7999758720398,
           346.90728549957277,
           648.9808201423058,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           797.3725770314535,
           498.9809914271037,
           647.372589747111,
-          630.6622560501098
+          630.6622560501098,
+          667.3069162368774
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1277.677527364095,
           1261.8099765777588,
           671.4879900387356,
           1347.2984526316325,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1364.90220413208,
           977.5212942759196,
           1290.4777698516846,
-          1271.2093032690195
+          1271.2093032690195,
+          1365.7199434916179
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
-        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
-      },
-      {
         "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
         "message": "refactor!: offer the property result operators through interfaces (#2009)"
+      },
+      {
+        "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
+        "message": "docs: make the longest examples easier to read (#2014)"
       }
     ],
     "labels": [
-      "87616222",
       "8e844194",
       "f61481d2",
       "77ca8a7f",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "64f45253",
       "996e0f28",
       "cda7e4aa",
-      "4bb05046"
+      "4bb05046",
+      "0eb20dfe"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1049.9375457763672,
           1013.8914910829984,
           625.5892867247263,
           1079.0714861551921,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1140.1723847707112,
           820.1638487407139,
           1114.4624626159668,
-          1056.830520248413
+          1056.830520248413,
+          1135.4991828918457
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          744.7693740208944,
           717.8653307596843,
           430.48086945215863,
           778.9012372153146,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           758.9285321235657,
           594.7244026819865,
           762.9887119439932,
-          758.6388153711955
+          758.6388153711955,
+          756.2503906885782
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
