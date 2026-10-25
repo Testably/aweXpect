@@ -175,6 +175,12 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is a string starting with "[",
 					             but it was an array
+
+					             Actual:
+					             [
+					               1,
+					               2
+					             ]
 					             """);
 			}
 
@@ -208,6 +214,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is a string not containing "It",
 					             but it was "Let It Be"
+
+					             Actual:
+					             "Let It Be"
 					             """);
 			}
 
@@ -249,6 +258,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is not a string starting with "Let",
 					             but it was "Let It Be"
+
+					             Actual:
+					             "Let It Be"
 					             """);
 			}
 		}

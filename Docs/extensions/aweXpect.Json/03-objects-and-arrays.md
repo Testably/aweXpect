@@ -433,6 +433,9 @@ If the rating was 6, the expectation would fail with:
 Expected that track
 has property "title" which is a string starting with "let" ignoring case and has property "rating" which is a number between 1.0 and 5.0,
 but $.rating was 6
+
+Actual ($.rating):
+6
 ```
 
 Only one operator can follow `IsString()` or `IsNumber()`, a second one on the same result throws an

@@ -244,6 +244,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is a number greater than or equal to 0.0,
 					             but it was an object
+
+					             Actual:
+					             {}
 					             """);
 			}
 
@@ -260,6 +263,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is a number equal to 100.0 ± 1.0%,
 					             but it was 98
+
+					             Actual:
+					             98
 					             """);
 			}
 
@@ -318,6 +324,9 @@ public sealed partial class ThatJsonNode
 					             Expected that subject
 					             is not a number not greater than or equal to 4.0,
 					             but it was 3
+
+					             Actual:
+					             3
 					             """);
 			}
 		}

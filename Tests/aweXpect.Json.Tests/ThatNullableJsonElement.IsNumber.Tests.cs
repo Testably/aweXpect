@@ -245,6 +245,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is a number equal to 4.5,
 					             but it was a string
+
+					             Actual:
+					             "4.5"
 					             """);
 			}
 
@@ -261,6 +264,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is a number between 1.0 and 5.0,
 					             but it was 6
+
+					             Actual:
+					             6
 					             """);
 			}
 
@@ -335,6 +341,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is not a number not equal to 4.0,
 					             but it was 4.5
+
+					             Actual:
+					             4.5
 					             """);
 			}
 		}

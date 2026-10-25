@@ -73,6 +73,18 @@ internal abstract class IsJsonValueKindConstraint<TValue>(
 		return this;
 	}
 
+	/// <remarks>
+	///     Like the value overloads, e.g. <c>IsNumber(4.5)</c>, a failed comparison shows the verified JSON, but the
+	///     expectation on the kind alone does not.
+	/// </remarks>
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		if (HasComparison && Outcome != Outcome.Success)
+		{
+			ThatJsonElement.AddActualContext(contexts, Actual);
+		}
+	}
+
 	/// <summary>
 	///     Rejects a comparison that cannot be evaluated, before the subject is looked at.
 	/// </summary>

@@ -559,6 +559,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              is a number equal to 100.0 ± 1.0%,
 					              but it was {json}
+
+					              Actual:
+					              98
 					              """);
 			}
 
@@ -577,6 +580,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              is a number equal to 4.5 ± 0.1,
 					              but it was {json}
+
+					              Actual:
+					              4.65
 					              """);
 			}
 
@@ -606,6 +612,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a number greater than 3.0,
 					             but it was 2
+
+					             Actual:
+					             2
 					             """);
 			}
 
@@ -625,6 +634,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              is a number greater than 1.0,
 					              but it was {kindString}
+
+					              Actual:
+					              {json}
 					              """);
 			}
 
@@ -641,6 +653,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             has property "rating" which is a number greater than 4.0,
 					             but $.rating was 3.5
+
+					             Actual ($.rating):
+					             3.5
 					             """);
 			}
 
@@ -657,6 +672,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a number not greater than 3.0,
 					             but it was 5
+
+					             Actual:
+					             5
 					             """);
 			}
 
@@ -673,6 +691,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a number greater than 1.0,
 					             but it was 1e400, which is not a double
+
+					             Actual:
+					             1e400
 					             """);
 			}
 
@@ -743,6 +764,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is not a number greater than 3.0,
 					             but it was 1e400, which is not a double
+
+					             Actual:
+					             1e400
 					             """)
 					.Because("a number beyond the range of a double cannot be answered, so it fails both ways");
 			}
@@ -771,6 +795,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is not a number greater than 3.0,
 					             but it was 5
+
+					             Actual:
+					             5
 					             """);
 			}
 		}

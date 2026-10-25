@@ -170,6 +170,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is a string equal to "42",
 					             but it was a number
+
+					             Actual:
+					             42
 					             """);
 			}
 
@@ -207,6 +210,9 @@ public sealed partial class ThatNullableJsonElement
 					               "Yesterday"
 					                      "Be"
 					                        ↑ (expected suffix)
+
+					             Actual:
+					             "Yesterday"
 					             """);
 			}
 
@@ -264,6 +270,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is not a string equal to "let it be" ignoring case,
 					             but it was "Let It Be"
+
+					             Actual:
+					             "Let It Be"
 					             """);
 			}
 		}

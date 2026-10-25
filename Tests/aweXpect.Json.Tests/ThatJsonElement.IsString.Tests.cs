@@ -236,6 +236,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a string containing "e" at least 3 times,
 					             but it contained "e" twice in "Let It Be"
+
+					             Actual:
+					             "Let It Be"
 					             """);
 			}
 
@@ -290,6 +293,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              is a string starting with "4",
 					              but it was {kindString}
+
+					              Actual:
+					              {json}
 					              """);
 			}
 
@@ -310,6 +316,9 @@ public sealed partial class ThatJsonElement
 					               "Yesterday"
 					               "Let"
 					                ↑ (expected prefix)
+
+					             Actual ($.title):
+					             "Yesterday"
 					             """);
 			}
 
@@ -326,6 +335,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is a string not starting with "Let",
 					             but it was "Let It Be"
+
+					             Actual:
+					             "Let It Be"
 					             """);
 			}
 
@@ -377,6 +389,9 @@ public sealed partial class ThatJsonElement
 					             is a string equal to "Let It Be",
 					             but it was "Let It Bee" with a length of 10, which is longer than the expected length of 9 and has superfluous:
 					               "e"
+
+					             Actual:
+					             "Let It Bee"
 					             """);
 			}
 
@@ -422,6 +437,9 @@ public sealed partial class ThatJsonElement
 					               "Yesterday"
 					               "Let"
 					                ↑ (expected prefix)
+
+					             Actual:
+					             "Yesterday"
 					             """);
 			}
 
@@ -449,6 +467,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is not a string containing "e" at least twice,
 					             but it contained "e" at least twice in "Let It Be"
+
+					             Actual:
+					             "Let It Be"
 					             """);
 			}
 		}

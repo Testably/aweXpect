@@ -37,6 +37,8 @@ internal sealed class IsJsonStringConstraint(
 		{
 			_outcome.AppendContexts(contexts);
 		}
+
+		base.AppendContexts(contexts);
 	}
 
 	protected override void AppendComparison(StringBuilder stringBuilder)
