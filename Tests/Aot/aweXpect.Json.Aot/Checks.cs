@@ -2,6 +2,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
 using aweXpect.Equivalency;
 using aweXpect.Formatting;
@@ -133,8 +134,18 @@ internal static partial class Checks
 			() => ShouldFailLoudly(async () => await That((object)new Dto { Name = "a", })
 				.IsJsonSerializable())),
 		new("a serializable object fails loudly under negation",
-			() => ShouldFailLoudly(async () => await That((object)new Dto { Name = "a", })
-				.DoesNotComplyWith(it => it.IsJsonSerializable<Dto>()))),
+			() => ShouldFailLoudly(async () => await That(new Dto { Name = "a", })
+				.DoesNotComplyWith(it => it.IsJsonSerializable()))),
+		new("an object round-tripped with its source-generated type info passes",
+			() => ShouldPass(async () => await That(new Dto { Name = "a", })
+				.IsJsonSerializable(DtoContext.Default.Dto))),
+		new("an object losing a member in a round trip with its source-generated type info fails and names it",
+			() => ShouldFail(async () =>
+				{
+					JsonTypeInfo<DtoWithIgnoredMember> typeInfo = DtoContext.Default.DtoWithIgnoredMember;
+					await That(new DtoWithIgnoredMember { Name = "a", Secret = "b", }).IsJsonSerializable(typeInfo);
+				},
+				"is serializable as JSON", "Property Secret differed")),
 		new("an object serialized with its source-generated type info passes",
 			() => ShouldPass(async () => await That(new Dto { Name = "a", })
 				.IsJsonSerializedAs("{\"Name\": \"a\"}", DtoContext.Default.Dto))),
@@ -253,9 +264,15 @@ internal static partial class Checks
 		return "did not throw";
 	}
 
-	private sealed class Dto
+	internal sealed class Dto
 	{
 		public string? Name { get; set; }
+	}
+
+	internal sealed class DtoWithIgnoredMember
+	{
+		public string? Name { get; set; }
+		[JsonIgnore] public string? Secret { get; set; }
 	}
 
 	private sealed class Track
@@ -265,6 +282,7 @@ internal static partial class Checks
 	}
 
 	[JsonSerializable(typeof(Dto))]
+	[JsonSerializable(typeof(DtoWithIgnoredMember))]
 	[JsonSerializable(typeof(Track))]
 	[JsonSerializable(typeof(int))]
 	private sealed partial class DtoContext : JsonSerializerContext;

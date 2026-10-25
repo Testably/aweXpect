@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
+using aweXpect.Core.Metadata;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
 using aweXpect.Helpers;
+using aweXpect.Json;
 using aweXpect.Options;
 using aweXpect.Results;
 
@@ -23,57 +26,52 @@ public static partial class ThatJsonObject
 	/// <summary>
 	///     Verifies that the subject can be serialized as JSON.
 	/// </summary>
+	/// <remarks>
+	///     The subject is serialized as its runtime type with the customizable default <see cref="JsonSerializerOptions" />.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<object, IThat<object?>> IsJsonSerializable(
-		this IThat<object?> subject,
+	public static AndOrResult<T, IThat<T?>> IsJsonSerializable<[RequiresMemberMetadata] T>(
+		this IThat<T?> subject,
 		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions = null)
-		=> new(
-			subject.Get().ExpectationBuilder.AddConstraint(equivalencyOptions, static (callback, it, grammar)
-				=> new IsJsonSerializableConstraint<object>(it, grammar, new JsonSerializerOptions(),
-					FromCallback(callback))),
-			subject);
+		=> AddIsJsonSerializable(subject, null, null, equivalencyOptions);
 
 	/// <summary>
-	///     Verifies that the subject can be serialized as JSON.
+	///     Verifies that the subject can be serialized as JSON with the <paramref name="serializerOptions" />.
 	/// </summary>
+	/// <remarks>
+	///     The subject is serialized as its runtime type.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<object, IThat<object?>> IsJsonSerializable(
-		this IThat<object?> subject,
+	public static AndOrResult<T, IThat<T?>> IsJsonSerializable<[RequiresMemberMetadata] T>(
+		this IThat<T?> subject,
 		JsonSerializerOptions serializerOptions,
 		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions = null)
-		=> new(
-			subject.Get().ExpectationBuilder.AddConstraint(
-				(SerializerOptions: serializerOptions, EquivalencyOptions: equivalencyOptions),
-				static (s, it, grammar) => new IsJsonSerializableConstraint<object>(it, grammar, s.SerializerOptions,
-					FromCallback(s.EquivalencyOptions))),
-			subject);
+		=> AddIsJsonSerializable(subject, serializerOptions, null, equivalencyOptions);
 
 	/// <summary>
-	///     Verifies that the subject can be serialized as JSON of type <typeparamref name="T" />.
+	///     Verifies that the subject can be serialized as JSON with the <paramref name="typeInfo" />.
 	/// </summary>
+	/// <remarks>
+	///     Unlike the other overloads, it requires no reflection to serialize the subject, so that it can be used with
+	///     trimming and Native AOT.
+	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<object, IThat<object?>> IsJsonSerializable<T>(
-		this IThat<object?> subject,
+	public static AndOrResult<T, IThat<T?>> IsJsonSerializable<[RequiresMemberMetadata] T>(
+		this IThat<T?> subject,
+		JsonTypeInfo<T> typeInfo,
 		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions = null)
-		=> new(
-			subject.Get().ExpectationBuilder.AddConstraint(equivalencyOptions, static (callback, it, grammar)
-				=> new IsJsonSerializableConstraint<T>(it, grammar, new JsonSerializerOptions(),
-					FromCallback(callback))),
-			subject);
+		=> AddIsJsonSerializable(subject, null, typeInfo, equivalencyOptions);
 
-	/// <summary>
-	///     Verifies that the subject can be serialized as JSON of type <typeparamref name="T" />.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<object, IThat<object?>> IsJsonSerializable<T>(
-		this IThat<object?> subject,
-		JsonSerializerOptions serializerOptions,
-		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions = null)
+	private static AndOrResult<T, IThat<T?>> AddIsJsonSerializable<T>(
+		IThat<T?> subject,
+		JsonSerializerOptions? serializerOptions,
+		JsonTypeInfo<T>? typeInfo,
+		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions)
 		=> new(
 			subject.Get().ExpectationBuilder.AddConstraint(
-				(SerializerOptions: serializerOptions, EquivalencyOptions: equivalencyOptions),
+				(SerializerOptions: serializerOptions, TypeInfo: typeInfo, EquivalencyOptions: equivalencyOptions),
 				static (s, it, grammar) => new IsJsonSerializableConstraint<T>(it, grammar, s.SerializerOptions,
-					FromCallback(s.EquivalencyOptions))),
+					s.TypeInfo, FromCallback(s.EquivalencyOptions))),
 			subject);
 
 	/// <summary>
@@ -95,10 +93,11 @@ public static partial class ThatJsonObject
 	private sealed class IsJsonSerializableConstraint<T>(
 		string it,
 		ExpectationGrammars grammars,
-		JsonSerializerOptions serializerOptions,
+		JsonSerializerOptions? serializerOptions,
+		JsonTypeInfo<T>? typeInfo,
 		EquivalencyOptions options)
-		: ConstraintResult.WithNotNullValue<object?>(it, grammars),
-			IAsyncContextConstraint<object?>
+		: ConstraintResult.WithNotNullValue<T>(it, grammars),
+			IAsyncContextConstraint<T>
 	{
 		private readonly ObjectEqualityOptions<object?> _equalityOptions = CreateEqualityOptions(options);
 		private string? _deserializationError;
@@ -106,29 +105,23 @@ public static partial class ThatJsonObject
 		private ObjectEqualityOptions<object?>? _evaluationOptions;
 		private MatchResult _matchResult;
 
-		public async ValueTask<ConstraintResult> IsMetBy(object? actual, IEvaluationContext context,
+		public async ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (actual is not T)
+			if (actual is null)
 			{
-				Outcome = Outcome.Failure;
 				return this;
-			}
-
-			if (!ReflectionFallback.IsSupported)
-			{
-				throw Tracing.WriteException(ReflectionFallbackHelpers.SerializationNotSupported(
-					$"The subject of type {Formatter.Format(actual.GetType())}"));
 			}
 
 			object? deserializedObject;
 			try
 			{
-				string serializedObject = JsonSerializer.Serialize(actual, serializerOptions);
-				deserializedObject = JsonSerializer.Deserialize(serializedObject, actual.GetType(), serializerOptions);
+				deserializedObject = typeInfo is null
+					? RoundTripByReflection(actual)
+					: JsonSerializer.Deserialize(JsonSerializer.SerializeToUtf8Bytes(actual, typeInfo), typeInfo);
 			}
-			catch (Exception e)
+			catch (Exception e) when (typeInfo is not null || ReflectionFallback.IsSupported)
 			{
 				_deserializationError = e.Message;
 				Outcome = Outcome.Failure;
@@ -142,6 +135,25 @@ public static partial class ThatJsonObject
 			return this;
 		}
 
+		/// <remarks>
+		///     Uses the runtime type instead of <typeparamref name="T" />, so that the members of a derived type are
+		///     serialized and deserialized as well.
+		/// </remarks>
+		private object? RoundTripByReflection(object actual)
+		{
+			Type type = actual.GetType();
+			if (!ReflectionFallback.IsSupported)
+			{
+				throw Tracing.WriteException(ReflectionFallbackHelpers.SerializationNotSupported(
+					$"The subject of type {Formatter.Format(type)}"));
+			}
+
+			JsonSerializerOptions jsonSerializerOptions =
+				serializerOptions ?? Customize.aweXpect.Json().DefaultJsonSerializerOptions.Get();
+			string serializedObject = JsonSerializer.Serialize(actual, type, jsonSerializerOptions);
+			return JsonSerializer.Deserialize(serializedObject, type, jsonSerializerOptions);
+		}
+
 		private static ObjectEqualityOptions<object?> CreateEqualityOptions(EquivalencyOptions options)
 			=> new ObjectEqualityOptions<object?>().SetMatchType(new EquivalencyMatchType<object?>(options), "Equivalent");
 
@@ -149,26 +161,11 @@ public static partial class ThatJsonObject
 			=> _evaluationOptions?.AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("is serializable as ", "are serializable as "));
-			if (typeof(T) != typeof(object))
-			{
-				Formatter.Format(stringBuilder, typeof(T));
-				stringBuilder.Append(' ');
-			}
-
-			stringBuilder.Append("JSON");
-		}
+			=> stringBuilder.Append(Grammars.Verb("is serializable as JSON", "are serializable as JSON"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is not T)
-			{
-				stringBuilder.Append(It)
-					.Append(Grammars.SubjectVerb(It, " was not assignable to ", " were not assignable to "));
-				Formatter.Format(stringBuilder, typeof(T));
-			}
-			else if (_deserializationError is not null)
+			if (_deserializationError is not null)
 			{
 				stringBuilder.Append(It).Append(" could not be deserialized: ").Append(_deserializationError);
 			}
@@ -180,16 +177,7 @@ public static partial class ThatJsonObject
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("is not serializable as ", "are not serializable as "));
-			if (typeof(T) != typeof(object))
-			{
-				Formatter.Format(stringBuilder, typeof(T));
-				stringBuilder.Append(' ');
-			}
-
-			stringBuilder.Append("JSON");
-		}
+			=> stringBuilder.Append(Grammars.Verb("is not serializable as JSON", "are not serializable as JSON"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -197,19 +185,6 @@ public static partial class ThatJsonObject
 			{
 				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
 			}
-		}
-
-		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
-		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
-		{
-			if (Actual is TValue typedValue)
-			{
-				value = typedValue;
-				return true;
-			}
-
-			value = default;
-			return typeof(TValue).IsAssignableFrom(typeof(T));
 		}
 	}
 }

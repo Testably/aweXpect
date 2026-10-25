@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization.Metadata;
 
 namespace aweXpect.Json.Tests;
 
@@ -196,21 +197,21 @@ public sealed class NonNullableResultTests
 	}
 
 	[Test]
-	public async Task ObjectIsJsonSerializableOfType_ShouldReturnNonNullableObject()
+	public async Task ObjectIsJsonSerializableOfTypedSubject_ShouldReturnNonNullableSubjectType()
 	{
-		object? subject = new Poco { Value = 1, };
+		Poco? subject = new() { Value = 1, };
 
-		object result = await That(subject).IsJsonSerializable<Poco>();
+		Poco result = await That(subject).IsJsonSerializable();
 
 		await That(result).IsSameAs(subject);
 	}
 
 	[Test]
-	public async Task ObjectIsJsonSerializableOfTypeWithSerializerOptions_ShouldReturnNonNullableObject()
+	public async Task ObjectIsJsonSerializableOfTypedSubjectWithSerializerOptions_ShouldReturnNonNullableSubjectType()
 	{
-		object? subject = new Poco { Value = 1, };
+		Poco? subject = new() { Value = 1, };
 
-		object result = await That(subject).IsJsonSerializable<Poco>(new JsonSerializerOptions());
+		Poco result = await That(subject).IsJsonSerializable(new JsonSerializerOptions());
 
 		await That(result).IsSameAs(subject);
 	}
@@ -221,6 +222,20 @@ public sealed class NonNullableResultTests
 		object? subject = new Poco { Value = 1, };
 
 		object result = await That(subject).IsJsonSerializable(new JsonSerializerOptions());
+
+		await That(result).IsSameAs(subject);
+	}
+
+	[Test]
+	public async Task ObjectIsJsonSerializableWithTypeInfo_ShouldReturnNonNullableSubjectType()
+	{
+		Poco? subject = new() { Value = 1, };
+		JsonSerializerOptions options = new()
+		{
+			TypeInfoResolver = new DefaultJsonTypeInfoResolver(),
+		};
+
+		Poco result = await That(subject).IsJsonSerializable((JsonTypeInfo<Poco>)options.GetTypeInfo(typeof(Poco)));
 
 		await That(result).IsSameAs(subject);
 	}
