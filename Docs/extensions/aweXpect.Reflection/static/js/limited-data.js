@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "4713c904ff5ba8601af149a47bae78d68e28a568",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:54:34 2026 \u002B0200",
-        "message": "fix: keep aweXpect.Reflection filters unchanged when an option is applied (#1969)"
-      },
-      {
         "sha": "906ecb34a7d9be2fb907029d2f9f2c8664f37115",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 18:54:54 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
         "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
+      },
+      {
+        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
+        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
       }
     ],
     "labels": [
-      "4713c904",
       "906ecb34",
       "cba28a96",
       "bb3fba51",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "5d7202bd",
       "584ec3ed",
       "e41a7134",
-      "c65f55ef"
+      "c65f55ef",
+      "8a57efc7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          733.3402072361538,
           754.8669413248698,
           748.7007006963094,
           721.5072188695272,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           724.6757629939488,
           681.0702638626099,
           739.8541546549116,
-          743.0528873034885
+          743.0528873034885,
+          415.20387336186
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          922.6551093419392,
           939.92330493927,
           944.9550553162893,
           910.5551670074462,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           896.9833610534668,
           667.9102134068806,
           890.5868989626566,
-          932.1874217351277
+          932.1874217351277,
+          537.4325718561809
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "4713c904ff5ba8601af149a47bae78d68e28a568",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:54:34 2026 \u002B0200",
-        "message": "fix: keep aweXpect.Reflection filters unchanged when an option is applied (#1969)"
-      },
-      {
         "sha": "906ecb34a7d9be2fb907029d2f9f2c8664f37115",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 18:54:54 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
         "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
+      },
+      {
+        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
+        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
       }
     ],
     "labels": [
-      "4713c904",
       "906ecb34",
       "cba28a96",
       "bb3fba51",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "5d7202bd",
       "584ec3ed",
       "e41a7134",
-      "c65f55ef"
+      "c65f55ef",
+      "8a57efc7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          131.84668143590292,
           148.02381912867227,
           156.5667028767722,
           131.647757879893,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           162.03579138120014,
           104.89481114489692,
           143.36667246477944,
-          171.62481066385905
+          171.62481066385905,
+          67.90990020547595
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          207.43221095630102,
           221.21391172409056,
           225.90051326751708,
           207.46092021465302,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           200.70078878743308,
           183.32425815264384,
           201.1293888250987,
-          219.1583413441976
+          219.1583413441976,
+          121.73796608050664
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "4713c904ff5ba8601af149a47bae78d68e28a568",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:54:34 2026 \u002B0200",
-        "message": "fix: keep aweXpect.Reflection filters unchanged when an option is applied (#1969)"
-      },
-      {
         "sha": "906ecb34a7d9be2fb907029d2f9f2c8664f37115",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 18:54:54 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
         "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
+      },
+      {
+        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
+        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
       }
     ],
     "labels": [
-      "4713c904",
       "906ecb34",
       "cba28a96",
       "bb3fba51",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "5d7202bd",
       "584ec3ed",
       "e41a7134",
-      "c65f55ef"
+      "c65f55ef",
+      "8a57efc7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2032.680750165667,
           1999.9580086299352,
           2035.330158506121,
           1953.0666931152343,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1886.4784037272136,
           1315.030059369405,
           2166.6300537109373,
-          1974.0607580457415
+          1974.0607580457415,
+          1052.0314263661703
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1656,7 +1656,6 @@ window.BENCHMARK_DATA = {
           2080,
           2080,
           2080,
-          2080,
           2008,
           2008,
           2008,
@@ -1675,6 +1674,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          1808,
           1808,
           1808,
           1808,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1467.797415460859,
           1478.588497543335,
           1491.4739665985107,
           1407.1039803368706,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1461.971507136027,
           1176.10807278951,
           1451.2853006998698,
-          1504.4944512503487
+          1504.4944512503487,
+          894.5072598775228
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1864,
           1864,
           1953,
           1864,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           1953,
           1952,
           1953,
-          1953
+          1953,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "4713c904ff5ba8601af149a47bae78d68e28a568",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:54:34 2026 \u002B0200",
-        "message": "fix: keep aweXpect.Reflection filters unchanged when an option is applied (#1969)"
-      },
       {
         "sha": "906ecb34a7d9be2fb907029d2f9f2c8664f37115",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
         "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
+      },
+      {
+        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
+        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
       }
     ],
     "labels": [
-      "4713c904",
       "906ecb34",
       "cba28a96",
       "bb3fba51",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "5d7202bd",
       "584ec3ed",
       "e41a7134",
-      "c65f55ef"
+      "c65f55ef",
+      "8a57efc7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2894.4048311869306,
           2700.60916595459,
           2841.2351455688477,
           2699.980168269231,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2691.9894585242637,
           2008.2949114481607,
           2691.219662475586,
-          2780.962777455648
+          2780.962777455648,
+          1474.5852530343193
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3048,
           2992,
           3048,
           3048,
@@ -2293,6 +2292,7 @@ window.BENCHMARK_DATA = {
           2768,
           2824,
           2824,
+          2768,
           2768
         ],
         "borderColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3840.424236551921,
           3904.213607788086,
           3882.7802217923677,
           3753.3340249742782,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3749.761471381554,
           2953.5956083025253,
           3764.286297934396,
-          3836.22427544227
+          3836.22427544227,
+          2308.254963175456
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3981,
           3980,
           3981,
           3981,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           3980,
           3977,
           3981,
+          3980,
           3980
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "4713c904ff5ba8601af149a47bae78d68e28a568",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:54:34 2026 \u002B0200",
-        "message": "fix: keep aweXpect.Reflection filters unchanged when an option is applied (#1969)"
-      },
       {
         "sha": "906ecb34a7d9be2fb907029d2f9f2c8664f37115",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
         "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
+      },
+      {
+        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
+        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
       }
     ],
     "labels": [
-      "4713c904",
       "906ecb34",
       "cba28a96",
       "bb3fba51",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "5d7202bd",
       "584ec3ed",
       "e41a7134",
-      "c65f55ef"
+      "c65f55ef",
+      "8a57efc7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          395.43357407251995,
           398.6452196756999,
           402.75188032786053,
           370.98606038093567,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           392.01805084092274,
           288.5475122769674,
           401.38670914967855,
-          398.6255480448405
+          398.6255480448405,
+          186.4191400527954
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2362.3399047851562,
           2381.634467569987,
           2397.220523579915,
           2264.880638376872,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2248.3572935376847,
           1728.468440422645,
           2236.5516668047226,
-          2338.1965494791666
+          2338.1965494791666,
+          1361.1415935243879
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "4713c904ff5ba8601af149a47bae78d68e28a568",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:54:34 2026 \u002B0200",
-        "message": "fix: keep aweXpect.Reflection filters unchanged when an option is applied (#1969)"
-      },
-      {
         "sha": "906ecb34a7d9be2fb907029d2f9f2c8664f37115",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 18:54:54 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
         "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
+      },
+      {
+        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
+        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
       }
     ],
     "labels": [
-      "4713c904",
       "906ecb34",
       "cba28a96",
       "bb3fba51",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "5d7202bd",
       "584ec3ed",
       "e41a7134",
-      "c65f55ef"
+      "c65f55ef",
+      "8a57efc7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3747.312799307016,
           3564.82501373291,
           3702.555071904109,
           3644.9878232320148,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2896.658423360189,
           2095.126081085205,
           3004.8462643941243,
-          3006.249505179269
+          3006.249505179269,
+          1666.5236518859863
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3473,7 +3473,6 @@ window.BENCHMARK_DATA = {
           3705,
           3705,
           3705,
-          3705,
           3704,
           3705,
           3705,
@@ -3499,6 +3498,7 @@ window.BENCHMARK_DATA = {
           2912,
           2912,
           2912,
+          3232,
           3232,
           3232,
           3232,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          281596.45872395835,
           283300.4671349159,
           282648.2638811384,
           277855.8449707031,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           279419.9275390625,
           244595.53065708705,
           277387.8791155134,
-          282476.14630998886
+          282476.14630998886,
+          179066.13724459134
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17577,
           17577,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17577,
           17528,
           17577,
-          17577
+          17577,
+          17574
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
