@@ -164,6 +164,10 @@ XML options (it):
  - ignore additional nodes
 ```
 
+With expectations on the root element and with `IsValidXmlMatching` or `IsValidXmlMatchingExactly`, a string that is
+not valid XML fails also when the expectation is negated, e.g. within `DoesNotComplyWith(…)`, as there is no root
+element to verify. Only the negation of `IsValidXml()` without expectations is met by a string that is not valid XML.
+
 You can also verify that a string is not valid XML:
 
 ```csharp

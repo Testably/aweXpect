@@ -144,3 +144,7 @@ but it differed as $.title was "Let It Be" instead of "Yesterday"
 JSON options:
  - ignore additional properties
 ```
+
+With expectations on the root element and with `IsValidJsonMatching` or `IsValidJsonMatchingExactly`, a string that
+is not valid JSON fails also when the expectation is negated, e.g. within `DoesNotComplyWith(…)`, as there is no root
+element to verify. Only the negation of `IsValidJson()` without expectations is met by a string that is not valid JSON.

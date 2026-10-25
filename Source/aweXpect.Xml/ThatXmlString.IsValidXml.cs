@@ -36,6 +36,8 @@ public static partial class ThatXmlString
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="expectations" /> are only verified, when the <see langword="string" /> is valid XML.
+	///     A subject that is no valid XML fails also when negated, as the <paramref name="expectations" /> cannot be
+	///     verified.
 	///     Insignificant whitespace is dropped, like by <see cref="XDocument.Parse(string)" />.
 	///     <para />
 	///     A document with a document type definition (<c>&lt;!DOCTYPE ...&gt;</c>) is not valid, as DTD processing is
@@ -71,13 +73,14 @@ public static partial class ThatXmlString
 
 	private static ExpectationBuilder AddIsValidXmlConstraint(IThat<string?> subject,
 		Action<IThatSubject<XElement>> expectations)
-		=> AddIsValidXmlConstraint(subject)
+		=> subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new IsValidXmlConstraint(it, grammars, true))
 			.ForMember(MemberAccessor<XDocument, XElement>.FromFuncWithName(document => document.Root!, "it"),
 				(_, stringBuilder) => stringBuilder.Append(" which "))
 			.AddExpectations(expectations,
 				static (expectations, e) => expectations(new ThatSubject<XElement>(e)));
 
-	private sealed class IsValidXmlConstraint(string it, ExpectationGrammars grammars)
+	private sealed class IsValidXmlConstraint(string it, ExpectationGrammars grammars, bool hasExpectations = false)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
 			IValueConstraint<string?>
 	{
@@ -88,6 +91,8 @@ public static partial class ThatXmlString
 		public ConstraintResult IsMetBy(string? actual)
 		{
 			Actual = actual;
+			_containsDtd = false;
+			_parseError = null;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -102,7 +107,8 @@ public static partial class ThatXmlString
 			{
 				_containsDtd = SecureXml.IsCausedByDtd(actual, xmlException);
 				_parseError = xmlException.Message;
-				Outcome = Outcome.Failure;
+				// The expectations on the root element cannot be verified, so their negation cannot be met either.
+				Outcome = hasExpectations ? Outcome.FailureBothWays : Outcome.Failure;
 				return this;
 			}
 
@@ -144,6 +150,12 @@ public static partial class ThatXmlString
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
+			if (_parseError is not null)
+			{
+				AppendNormalResult(stringBuilder, indentation);
+				return;
+			}
+
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
