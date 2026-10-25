@@ -173,7 +173,8 @@ public partial class AwexpectCustomization
 		///     A prefix excludes the assembly with exactly this name and all assemblies whose name continues with a
 		///     <c>.</c> after it, so <c>System</c> excludes <c>System.Net.Http</c>, but not <c>Systemics</c>. A prefix
 		///     that ends with a <c>.</c>, e.g. <c>MyCompany.</c>, excludes all assemblies whose name starts with it, and
-		///     an empty prefix excludes nothing.<br />
+		///     an empty prefix excludes nothing. <see cref="Core.Extending.AssemblyPrefixes" /> matches an assembly name with
+		///     this rule.<br />
 		///     Defaults to<br />
 		///     - mscorlib<br />
 		///     - System<br />

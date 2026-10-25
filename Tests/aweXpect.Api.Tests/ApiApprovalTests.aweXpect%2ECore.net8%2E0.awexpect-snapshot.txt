@@ -912,6 +912,11 @@ namespace aweXpect.Core.EvaluationContext
 }
 namespace aweXpect.Core.Extending
 {
+    public static class AssemblyPrefixes
+    {
+        public static bool IsExcluded(string? assemblyName) { }
+        public static bool IsExcluded(string? assemblyName, System.Collections.Generic.IReadOnlyList<string> excludedPrefixes) { }
+    }
     public static class ClosestMatch
     {
         public static void AppendHint(System.Text.StringBuilder stringBuilder, string value, System.Collections.Generic.IEnumerable<string> candidates) { }

@@ -8,7 +8,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Extending;
-using aweXpect.Core.Helpers;
 using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Options;
@@ -1089,7 +1088,7 @@ internal static class TypeHelpers
 	/// <summary>
 	///     Determines whether the <paramref name="type" /> belongs to a framework assembly, i.e. its assembly name
 	///     matches one of the <paramref name="excludedPrefixes" /> at a name-segment boundary
-	///     (see <see cref="AssemblyNameExtensions.IsExcludedAssemblyName" />).
+	///     (see <see cref="AssemblyPrefixes.IsExcluded(string?, IReadOnlyList{string})" />).
 	/// </summary>
 	private static bool IsFrameworkDependency(this Type type, IReadOnlyList<string> excludedPrefixes)
 	{
@@ -1103,7 +1102,7 @@ internal static class TypeHelpers
 			return false;
 		}
 
-		return assemblyName.IsExcludedAssemblyName(excludedPrefixes);
+		return AssemblyPrefixes.IsExcluded(assemblyName, excludedPrefixes);
 	}
 
 	/// <summary>

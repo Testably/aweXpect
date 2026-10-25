@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using aweXpect.Core.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Formatting;
@@ -163,7 +163,7 @@ public static class In
 		IReadOnlyList<string> prefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
 		foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
 		{
-			if (!assembly.GetName().Name.IsExcludedAssemblyName(prefixes))
+			if (!AssemblyPrefixes.IsExcluded(assembly.GetName().Name, prefixes))
 			{
 				yield return assembly;
 			}

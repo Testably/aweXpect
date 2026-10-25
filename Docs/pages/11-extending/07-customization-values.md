@@ -7,8 +7,10 @@ class by adding extension methods.
 <summary>Namespaces used on this page</summary>
 
 ```csharp
+using System.Reflection;
 using System.Text.Json;
 using aweXpect.Core;
+using aweXpect.Core.Extending;
 using aweXpect.Customization;
 ```
 
@@ -154,3 +156,24 @@ public static class MySettingsCustomizationExtensions
 Users then find the value next to the built-in ones, e.g. `Customize.aweXpect.Settings().ExcludedTypePrefixes()`. A
 group stores its values in the customization it was taken from, so
 `Customize.aweXpect.Global.Settings().ExcludedTypePrefixes().Set(…)` stores the value for all async flows.
+
+## Exclude the framework assemblies
+
+If your extension scans assemblies, skip the ones that the user excluded with
+[`ExcludedAssemblyPrefixes`](../03-how-it-works/07-configuration.md#settings). `AssemblyPrefixes.IsExcluded` from
+`aweXpect.Core.Extending` matches an assembly name with the same rule as aweXpect, at a segment boundary of the name:
+
+```csharp
+public static class MyAssemblyScanner
+{
+    public static IEnumerable<Assembly> ScannedAssemblies()
+    {
+        IReadOnlyList<string> prefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
+        return AppDomain.CurrentDomain.GetAssemblies()
+            .Where(assembly => !AssemblyPrefixes.IsExcluded(assembly.GetName().Name, prefixes));
+    }
+}
+```
+
+The overload without prefixes, e.g. `AssemblyPrefixes.IsExcluded("System.Text")`, reads the current setting on each
+call, so read the prefixes once when you check many names.

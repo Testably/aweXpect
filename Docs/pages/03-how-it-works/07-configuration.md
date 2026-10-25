@@ -138,7 +138,9 @@ a `DefaultTimeComparisonTolerance` of about 15 ms avoids brittle comparisons of 
 `xunit`, `TUnit`, `Castle` and `DynamicProxyGenAssembly2`. A prefix matches at a segment boundary of the assembly name,
 so `System` excludes `System.Net.Http`, but not an assembly named `Systemics`. A prefix that ends with a `.`, e.g.
 `MyCompany.`, excludes all assemblies whose name starts with it, and an empty prefix excludes nothing. Extensions such
-as aweXpect.Reflection use the same prefixes with the same matching.
+as aweXpect.Reflection use the same prefixes with the same matching, which
+[`AssemblyPrefixes.IsExcluded`](../11-extending/07-customization-values.md#exclude-the-framework-assemblies) offers to
+your own extension.
 
 :::note
 The loaded assemblies are only scanned for a test framework adapter below .NET 8, e.g. on .NET Framework. On .NET 8 or
