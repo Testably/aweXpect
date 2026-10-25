@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "9077e206565ce542aa9212fd403656e3d8374a29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:53:11 2026 \u002B0200",
-        "message": "fix: pass JSON numbers to It.Is\u003CT\u003E() as the expected numeric type (#1967)"
-      },
-      {
         "sha": "4713c904ff5ba8601af149a47bae78d68e28a568",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:54:34 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
         "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
+      },
+      {
+        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
+        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
       }
     ],
     "labels": [
-      "9077e206",
       "4713c904",
       "906ecb34",
       "cba28a96",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "54813a41",
       "5d7202bd",
       "584ec3ed",
-      "e41a7134"
+      "e41a7134",
+      "c65f55ef"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          366.67571754455565,
           388.4548445769719,
           200.23015294075012,
           384.57425727844236,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           441.7383098602295,
           197.09644128481548,
           237.03243230183918,
-          429.76682230404447
+          429.76682230404447,
+          440.5523522240775
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -463,7 +463,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
-          608,
+          640,
           640,
           640,
           640,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1024.1380373636882,
           996.1316584178379,
           518.3544442653656,
           967.0257820129394,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           1051.4852393014091,
           465.59640319006786,
           553.4100657871792,
-          984.5060651143392
+          984.5060651143392,
+          973.8903931209019
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "9077e206565ce542aa9212fd403656e3d8374a29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:53:11 2026 \u002B0200",
-        "message": "fix: pass JSON numbers to It.Is\u003CT\u003E() as the expected numeric type (#1967)"
-      },
-      {
         "sha": "4713c904ff5ba8601af149a47bae78d68e28a568",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:54:34 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
         "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
+      },
+      {
+        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
+        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
       }
     ],
     "labels": [
-      "9077e206",
       "4713c904",
       "906ecb34",
       "cba28a96",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "54813a41",
       "5d7202bd",
       "584ec3ed",
-      "e41a7134"
+      "e41a7134",
+      "c65f55ef"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          199.73049473762512,
           188.97816782731277,
           97.69687722410474,
           197.47144654818945,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           195.56705468041557,
           96.77477845350901,
           110.76540613969168,
-          198.43584803172521
+          198.43584803172521,
+          194.03482491175333
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          283.2892374038696,
           239.7529261793409,
           127.71110326449076,
           262.25118817601884,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           253.9131111462911,
           126.46421005175664,
           138.03799764315286,
-          252.69871926307678
+          252.69871926307678,
+          249.82760728200276
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "9077e206565ce542aa9212fd403656e3d8374a29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:53:11 2026 \u002B0200",
-        "message": "fix: pass JSON numbers to It.Is\u003CT\u003E() as the expected numeric type (#1967)"
-      },
-      {
         "sha": "4713c904ff5ba8601af149a47bae78d68e28a568",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:54:34 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
         "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
+      },
+      {
+        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
+        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
       }
     ],
     "labels": [
-      "9077e206",
       "4713c904",
       "906ecb34",
       "cba28a96",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "54813a41",
       "5d7202bd",
       "584ec3ed",
-      "e41a7134"
+      "e41a7134",
+      "c65f55ef"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          597.3025952852689,
           610.3273275375366,
           319.1982346262251,
           656.6291298548381,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           696.585135714213,
           327.20646064098065,
           356.2824078968593,
-          654.8516605240958
+          654.8516605240958,
+          651.0467678070069
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1679,7 +1679,7 @@ window.BENCHMARK_DATA = {
           976,
           976,
           976,
-          976,
+          1008,
           1008,
           1008,
           1008,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          992.0628306525094,
           947.5516492207845,
           526.2295643488566,
           977.9620162963868,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           918.3562835546641,
           455.71107921600344,
           530.345237323216,
-          969.1929264068604
+          969.1929264068604,
+          909.9212377548217
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "9077e206565ce542aa9212fd403656e3d8374a29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:53:11 2026 \u002B0200",
-        "message": "fix: pass JSON numbers to It.Is\u003CT\u003E() as the expected numeric type (#1967)"
-      },
-      {
         "sha": "4713c904ff5ba8601af149a47bae78d68e28a568",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:54:34 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
         "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
+      },
+      {
+        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
+        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
       }
     ],
     "labels": [
-      "9077e206",
       "4713c904",
       "906ecb34",
       "cba28a96",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "54813a41",
       "5d7202bd",
       "584ec3ed",
-      "e41a7134"
+      "e41a7134",
+      "c65f55ef"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1402.9950939178466,
           1696.4904258728027,
           1008.981315612793,
           1731.6900789896647,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1869.5108689626059,
           1008.5420797892979,
           1126.2308639798846,
-          1888.6472380501884
+          1888.6472380501884,
+          1846.7596851348876
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2287,7 +2287,7 @@ window.BENCHMARK_DATA = {
           1672,
           1672,
           1672,
-          1672,
+          1688,
           1688,
           1688,
           1688,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15991.098974609375,
           21753.95571899414,
           9690.10424601237,
           20998.26385904948,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           21194.11416407994,
           9075.038046264648,
           10628.155768839519,
-          21502.36373087565
+          21502.36373087565,
+          20230.873107910156
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          34712,
           34713,
           34713,
           34713,
@@ -2415,6 +2414,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "9077e206565ce542aa9212fd403656e3d8374a29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:53:11 2026 \u002B0200",
-        "message": "fix: pass JSON numbers to It.Is\u003CT\u003E() as the expected numeric type (#1967)"
-      },
       {
         "sha": "4713c904ff5ba8601af149a47bae78d68e28a568",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
         "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
+      },
+      {
+        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
+        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
       }
     ],
     "labels": [
-      "9077e206",
       "4713c904",
       "906ecb34",
       "cba28a96",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "54813a41",
       "5d7202bd",
       "584ec3ed",
-      "e41a7134"
+      "e41a7134",
+      "c65f55ef"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          601.0401885986328,
           661.7120940526327,
           334.3014140469687,
           767.1537151972453,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           698.3473978678386,
           408.229736105601,
           405.8385760784149,
-          727.1371637071882
+          727.1371637071882,
+          681.2953502019246
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2895,7 +2895,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
-          1080,
+          1112,
           1112,
           1112,
           1112,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1391.5811150868733,
           1318.8082169850668,
           692.6456676210676,
           1391.395280710856,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1304.6153146107993,
           690.7396616617839,
           707.860317843301,
-          1399.4681181589763
+          1399.4681181589763,
+          1297.5526678902763
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "9077e206565ce542aa9212fd403656e3d8374a29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:53:11 2026 \u002B0200",
-        "message": "fix: pass JSON numbers to It.Is\u003CT\u003E() as the expected numeric type (#1967)"
-      },
-      {
         "sha": "4713c904ff5ba8601af149a47bae78d68e28a568",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:54:34 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
         "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
+      },
+      {
+        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
+        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
       }
     ],
     "labels": [
-      "9077e206",
       "4713c904",
       "906ecb34",
       "cba28a96",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "54813a41",
       "5d7202bd",
       "584ec3ed",
-      "e41a7134"
+      "e41a7134",
+      "c65f55ef"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          934.7572992869785,
           1008.1398048400879,
           624.3500148909433,
           1136.4157549540203,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1127.406762940543,
           625.6795992170062,
           652.1580921581814,
-          1146.9811771392822
+          1146.9811771392822,
+          1091.287643296378
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3503,7 +3503,7 @@ window.BENCHMARK_DATA = {
           1424,
           1424,
           1424,
-          1424,
+          1456,
           1456,
           1456,
           1456,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          828.1725108464559,
           740.4327473322551,
           415.74057227770487,
           790.8081305185954,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           741.7094178199768,
           398.45541872297014,
           426.4561672846476,
-          796.6422725041707
+          796.6422725041707,
+          726.5879685084025
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
