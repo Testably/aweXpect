@@ -260,7 +260,7 @@ public abstract class ExpectationBuilder
 		if (_nodeOrConstraint is null && _it == DefaultCurrentSubject)
 		{
 			_nodeOrConstraint = constraint;
-			_rightAwayKind = this is ExpectationBuilder<TValue> ? kind : RightAwayKind.Unknown;
+			_rightAwayKind = IsSubjectOfType(typeof(TValue)) ? kind : RightAwayKind.Unknown;
 			return;
 		}
 
@@ -1450,6 +1450,13 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
+	///     Whether the subject is a value of the <paramref name="type" />, so that a constraint on it can be evaluated right
+	///     away, see <see cref="TryEvaluateRightAway" />.
+	/// </summary>
+	private protected virtual bool IsSubjectOfType(Type type)
+		=> false;
+
+	/// <summary>
 	///     Turns the <paramref name="exception" /> of the single constraint, which was evaluated right away, into the
 	///     result, like the node with this constraint does.
 	/// </summary>
@@ -2067,6 +2074,10 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder, IExpectThat<TVal
 		return true;
 	}
 #endif
+
+	/// <inheritdoc />
+	private protected override bool IsSubjectOfType(Type type)
+		=> type == typeof(TValue);
 
 	/// <inheritdoc />
 	/// <remarks>
