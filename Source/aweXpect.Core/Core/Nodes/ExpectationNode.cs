@@ -142,35 +142,47 @@ internal class ExpectationNode : Node
 
 		if (_inner is null && _reasons is null && context is not ExpectationTextEvaluationContext)
 		{
-			try
+			return IsSingleConstraintMetBy(value, context, cancellationToken);
+		}
+
+		return IsMetByAsync(value, null, context, cancellationToken);
+	}
+
+	/// <summary>
+	///     Evaluates the single constraint of a node without reasons and nested expectations, see
+	///     <see cref="IsMetBy{TValue}" />.
+	/// </summary>
+	private ValueTask<ConstraintResult> IsSingleConstraintMetBy<TValue>(TValue? value, IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		try
+		{
+			switch (_constraint)
 			{
-				switch (_constraint)
-				{
-					case IValueConstraint<TValue?> valueConstraint:
-						return new ValueTask<ConstraintResult>(valueConstraint.IsMetBy(value));
-					case IContextConstraint<TValue?> contextConstraint:
-						return new ValueTask<ConstraintResult>(contextConstraint.IsMetBy(value, context));
-					case IAsyncConstraint<TValue?> asyncConstraint:
-						return CompletedOrAwaited(asyncConstraint.IsMetBy(value, cancellationToken), value, context,
-							cancellationToken);
-					case IAsyncContextConstraint<TValue?> asyncContextConstraint:
-						return CompletedOrAwaited(asyncContextConstraint.IsMetBy(value, context, cancellationToken),
-							value, context, cancellationToken);
-				}
+				case IValueConstraint<TValue?> valueConstraint:
+					return new ValueTask<ConstraintResult>(valueConstraint.IsMetBy(value));
+				case IContextConstraint<TValue?> contextConstraint:
+					return new ValueTask<ConstraintResult>(contextConstraint.IsMetBy(value, context));
+				case IAsyncConstraint<TValue?> asyncConstraint:
+					return CompletedOrAwaited(asyncConstraint.IsMetBy(value, cancellationToken), value, context,
+						cancellationToken);
+				case IAsyncContextConstraint<TValue?> asyncContextConstraint:
+					return CompletedOrAwaited(asyncContextConstraint.IsMetBy(value, context, cancellationToken),
+						value, context, cancellationToken);
 			}
-			catch (UserCodeException e) when (!MemberExceptionResult.IsCancellationOf(e.Exception, cancellationToken))
-			{
-				return new ValueTask<ConstraintResult>(FromUserCodeException(e, value, context, cancellationToken));
-			}
-			catch (UserCodeException e)
-			{
-				ExceptionDispatchInfo.Capture(e.Exception).Throw();
-			}
-			catch (UnansweredItemException e)
-			{
-				return new ValueTask<ConstraintResult>(
-					FromUnansweredItemException(e, value, context, cancellationToken));
-			}
+		}
+		catch (UserCodeException e) when (!MemberExceptionResult.IsCancellationOf(e.Exception, cancellationToken))
+		{
+			return new ValueTask<ConstraintResult>(FromUserCodeException(e, value, context, cancellationToken));
+		}
+		catch (UserCodeException e)
+		{
+			ExceptionDispatchInfo.Capture(e.Exception).Throw();
+		}
+		catch (UnansweredItemException e)
+		{
+			return new ValueTask<ConstraintResult>(
+				FromUnansweredItemException(e, value, context, cancellationToken));
 		}
 
 		return IsMetByAsync(value, null, context, cancellationToken);
