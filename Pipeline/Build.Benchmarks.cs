@@ -30,6 +30,31 @@ partial class Build
 {
 	private const string BenchmarkBranch = "benchmarks";
 
+	/// <remarks>
+	///     It differs from the heading of the former comments, one per package, so that they are not updated.
+	/// </remarks>
+	const string BenchmarkCommentHeading = "## :rocket: Benchmarks";
+
+	/// <summary>
+	///     The number of runs on <c>main</c> whose median is the baseline of the time, as a single run on a shared
+	///     runner is too noisy.
+	/// </summary>
+	const int BaselineRuns = 10;
+
+	const double RelativeChangeThreshold = 0.15;
+
+	/// <summary>
+	///     Leaves room for the summaries within the limit of a GitHub comment.
+	/// </summary>
+	const int MaxRawResultsLength = 45000;
+
+	const string StrongWorse = "🔴";
+	const string StrongBetter = "🟢";
+	const string WeakWorse = "🔸";
+	const string WeakBetter = "🔹";
+
+	static readonly string[] ComparedLibraries = ["FluentAssertions", "TUnit",];
+
 	[Parameter("The package whose benchmarks run - when unset, the benchmarks of all packages run")]
 	readonly string BenchmarkPackage;
 
@@ -115,30 +140,44 @@ partial class Build
 			Log.Information($"Found {comments.Count} comments");
 
 			// Only the reports of known packages are read, as the artifact is untrusted.
+			List<BenchmarkCommentSection> sections = new();
 			foreach ((string package, Project project, string[] _measured) in BenchmarkProjects)
 			{
 				AbsolutePath report = GetBenchmarkReport(package, project);
 				if (!report.FileExists())
 				{
-					Log.Information("Skip the comment for {Package}, as the workflow run produced no report.",
+					Log.Information("Skip the benchmarks of {Package}, as the workflow run produced no report.",
 						package);
 					continue;
 				}
 
-				// The package in parentheses keeps one heading from being the prefix of another.
-				string heading = $"## :rocket: Benchmark Results ({package})";
-				string body = CreateBenchmarkCommentBody(heading, package, project).AsUntrustedCommentContent();
-				IssueComment existingComment = comments.LastOrDefault(comment => comment.IsPipelineComment(heading));
-				if (existingComment == null)
-				{
-					Log.Information($"Create comment:\n{body}");
-					await gitHubClient.Issue.Comment.Create("Testably", "aweXpect", prId.Value, body);
-				}
-				else
-				{
-					Log.Information($"Update comment:\n{body}");
-					await gitHubClient.Issue.Comment.Update("Testably", "aweXpect", existingComment.Id, body);
-				}
+				Dictionary<string, BenchmarkMeasurement> measurements = ReadBenchmarkMeasurements(
+					report.Parent / $"{project.Name}.HappyCaseBenchmarks-report-full-compressed.json");
+				BenchmarkFile baselineFile =
+					await DownloadBenchmarkFile(GetBenchmarkDataDirectory(package), "limited-data.js");
+				sections.Add(new BenchmarkCommentSection(package,
+					CreateBenchmarkSummary(package, measurements, ReadBenchmarkBaseline(baselineFile?.Content)),
+					CreateRawBenchmarkResults(report, measurements)));
+			}
+
+			if (sections.Count == 0)
+			{
+				Log.Information("Skip writing a comment, as the workflow run produced no report.");
+				return;
+			}
+
+			string body = CreateBenchmarkCommentBody(sections).AsUntrustedCommentContent();
+			IssueComment existingComment =
+				comments.LastOrDefault(comment => comment.IsPipelineComment(BenchmarkCommentHeading));
+			if (existingComment == null)
+			{
+				Log.Information($"Create comment:\n{body}");
+				await gitHubClient.Issue.Comment.Create("Testably", "aweXpect", prId.Value, body);
+			}
+			else
+			{
+				Log.Information($"Update comment:\n{body}");
+				await gitHubClient.Issue.Comment.Update("Testably", "aweXpect", existingComment.Id, body);
 			}
 		});
 
@@ -366,18 +405,285 @@ partial class Build
 		return Encoding.UTF8.GetString(base64EncodedBytes);
 	}
 
-	string CreateBenchmarkCommentBody(string heading, string package, Project project)
+	static string CreateBenchmarkCommentBody(List<BenchmarkCommentSection> sections)
 	{
-		AbsolutePath report = GetBenchmarkReport(package, project);
+		StringBuilder sb = new();
+		sb.AppendLine(BenchmarkCommentHeading);
+		sb.AppendLine(
+			$"Compared to `main`: memory to the latest run, time to the median of the last {BaselineRuns} runs, as the runners differ in speed. " +
+			$"A relative change marks when aweXpect gets more than {FormatPercent(RelativeChangeThreshold).TrimStart('+')} faster or slower relative to " +
+			$"{string.Join(" and ", ComparedLibraries)}: {StrongWorse} / {StrongBetter} against both of them, " +
+			$"{WeakWorse} / {WeakBetter} against only one.");
+		sb.AppendLine();
+		int rawResultsLength = 0;
+		foreach (BenchmarkCommentSection section in sections)
+		{
+			sb.Append(section.Summary);
+			// The summaries take precedence over the raw results when the comment would get too long.
+			rawResultsLength += section.RawResults.Length;
+			sb.AppendLine(rawResultsLength <= MaxRawResultsLength
+				? section.RawResults
+				: $"_The raw results do not fit into this comment, see the artifact `Benchmarks-{section.Package}` of the workflow run._");
+			sb.AppendLine();
+		}
+
+		return sb.ToString();
+	}
+
+	static string CreateBenchmarkSummary(string package, Dictionary<string, BenchmarkMeasurement> measurements,
+		BenchmarkBaseline baseline)
+	{
+		StringBuilder sb = new();
+		sb.AppendLine($"### {package}");
+		if (baseline == null)
+		{
+			sb.AppendLine("_There are no results of `main` to compare to._");
+			return sb.ToString();
+		}
+
+		string[] benchmarks = measurements.Keys
+			.Where(method => method.EndsWith("_aweXpect", StringComparison.Ordinal))
+			.Select(method => method.Substring(0, method.Length - "_aweXpect".Length))
+			.Order(StringComparer.Ordinal)
+			.ToArray();
+		// The extension packages are only compared with some of the libraries.
+		string[] libraries = ComparedLibraries
+			.Where(library => measurements.Keys.Any(method => method.EndsWith($"_{library}", StringComparison.Ordinal)))
+			.ToArray();
+		string[] newBenchmarks = benchmarks.Where(name => !baseline.Benchmarks.ContainsKey(name)).ToArray();
+		string[] removedBenchmarks = baseline.Benchmarks.Keys.Except(benchmarks).Order(StringComparer.Ordinal).ToArray();
+		List<string> memoryRows = new();
+		List<string> relativeRows = new();
+		List<string> allRows = new();
+		foreach (string name in benchmarks.Except(newBenchmarks))
+		{
+			BenchmarkMeasurement current = measurements[$"{name}_aweXpect"];
+			BaselineBenchmark main = baseline.Benchmarks[name];
+			string[] relativeCells =
+				CompareRelativePerformance(measurements, name, main, libraries, out bool relativeChanged);
+			if (current.Allocated != main.Allocated)
+			{
+				memoryRows.Add(
+					$"| `{name}` | {FormatBytes(main.Allocated)} | {FormatBytes(current.Allocated)} | {FormatMemoryChange(main.Allocated, current.Allocated)} |");
+			}
+
+			if (relativeChanged)
+			{
+				relativeRows.Add($"| `{name}` | {string.Join(" | ", relativeCells)} |");
+			}
+
+			allRows.Add(
+				$"| `{name}` | {FormatTime(main.Mean)} → {FormatTime(current.Mean)} ({FormatPercent(current.Mean / main.Mean - 1)}) | " +
+				$"{FormatBytes(main.Allocated)} → {FormatBytes(current.Allocated)} | {string.Join(" | ", relativeCells)} |");
+		}
+
+		sb.AppendLine($"Compared to `main` @ `{baseline.Sha.Substring(0, 8)}`");
+		sb.AppendLine();
+		if (memoryRows.Count == 0 && relativeRows.Count == 0)
+		{
+			sb.AppendLine($"✅ No changes in memory or relative performance ({allRows.Count} benchmarks)");
+			sb.AppendLine();
+		}
+
+		if (memoryRows.Count > 0)
+		{
+			sb.AppendLine("**Memory**");
+			sb.AppendLine();
+			sb.AppendLine("| Benchmark | main | PR | Δ |");
+			sb.AppendLine("|---|--:|--:|--:|");
+			memoryRows.ForEach(row => sb.AppendLine(row));
+			sb.AppendLine();
+		}
+
+		if (relativeRows.Count > 0)
+		{
+			sb.AppendLine("**Relative performance** (how many times as long the other library takes as aweXpect, main → PR)");
+			sb.AppendLine();
+			sb.AppendLine($"| Benchmark | {string.Join(" | ", libraries.Select(library => $"vs {library}"))} |");
+			sb.AppendLine($"|---|{string.Concat(libraries.Select(_ => "--:|"))}");
+			relativeRows.ForEach(row => sb.AppendLine(row));
+			sb.AppendLine();
+		}
+
+		if (newBenchmarks.Length > 0)
+		{
+			sb.AppendLine($"New, without results on `main`: {string.Join(", ", newBenchmarks.Select(name => $"`{name}`"))}");
+			sb.AppendLine();
+		}
+
+		if (removedBenchmarks.Length > 0)
+		{
+			sb.AppendLine($"Removed: {string.Join(", ", removedBenchmarks.Select(name => $"`{name}`"))}");
+			sb.AppendLine();
+		}
+
+		sb.AppendLine("<details>");
+		sb.AppendLine("<summary>All benchmarks compared to main</summary>");
+		sb.AppendLine();
+		sb.AppendLine(
+			$"| Benchmark | Time | Memory | {string.Join(" | ", libraries.Select(library => $"vs {library}"))} |");
+		sb.AppendLine($"|---|--:|--:|{string.Concat(libraries.Select(_ => "--:|"))}");
+		allRows.ForEach(row => sb.AppendLine(row));
+		sb.AppendLine();
+		sb.AppendLine("</details>");
+		sb.AppendLine();
+		return sb.ToString();
+	}
+
+	/// <summary>
+	///     Compares the time of aweXpect relative to each of the <paramref name="libraries" /> with <c>main</c>.
+	/// </summary>
+	/// <remarks>
+	///     The ratio of two benchmarks of the same run does not depend on the speed of the runner. A change against
+	///     several libraries in the same direction is most likely caused by aweXpect and gets a stronger marker.
+	/// </remarks>
+	static string[] CompareRelativePerformance(Dictionary<string, BenchmarkMeasurement> measurements, string name,
+		BaselineBenchmark main, string[] libraries, out bool changed)
+	{
+		BenchmarkMeasurement aweXpect = measurements[$"{name}_aweXpect"];
+		double?[] ratios = libraries
+			.Select(library => measurements.TryGetValue($"{name}_{library}", out BenchmarkMeasurement other)
+				? aweXpect.Mean / other.Mean
+				: (double?)null)
+			.ToArray();
+		double?[] relativeChanges = libraries
+			.Select((library, index) => main.Ratios.TryGetValue(library, out double mainRatio) && ratios[index] != null
+				? ratios[index] / mainRatio - 1
+				: null)
+			.ToArray();
+		bool[] exceeds = relativeChanges
+			.Select(relativeChange => relativeChange != null && Math.Abs(relativeChange.Value) > RelativeChangeThreshold)
+			.ToArray();
+		bool allAgree = libraries.Length > 1 && exceeds.All(x => x) &&
+		                relativeChanges.Select(relativeChange => Math.Sign(relativeChange!.Value)).Distinct().Count() == 1;
+		changed = exceeds.Any(x => x);
+		return libraries.Select((library, index) =>
+		{
+			if (ratios[index] == null)
+			{
+				return "";
+			}
+
+			string cell = main.Ratios.TryGetValue(library, out double mainRatio)
+				? $"{FormatRatio(mainRatio)} → {FormatRatio(ratios[index].Value)}"
+				: $"→ {FormatRatio(ratios[index].Value)}";
+			if (exceeds[index])
+			{
+				double relativeChange = relativeChanges[index]!.Value;
+				string marker = (relativeChange > 0, allAgree) switch
+				{
+					(true, true) => StrongWorse,
+					(true, false) => WeakWorse,
+					(false, true) => StrongBetter,
+					(false, false) => WeakBetter,
+				};
+				cell += $" {marker} {FormatPercent(relativeChange)}";
+			}
+
+			return cell;
+		}).ToArray();
+	}
+
+	/// <summary>
+	///     Reads the results of <c>main</c> from the benchmark data that the docs site shows.
+	/// </summary>
+	/// <remarks>
+	///     A benchmark that was removed from <c>main</c> is ignored, as its last result belongs to an older commit than
+	///     the latest one.
+	/// </remarks>
+	static BenchmarkBaseline ReadBenchmarkBaseline(string content)
+	{
+		const string prefix = "window.BENCHMARK_DATA = ";
+		if (content?.StartsWith(prefix, StringComparison.Ordinal) != true)
+		{
+			return null;
+		}
+
+		using JsonDocument document = JsonDocument.Parse(content.Substring(prefix.Length));
+		List<(string Sha, string Name, BaselineBenchmark Benchmark)> benchmarks = new();
+		foreach (JsonProperty benchmark in document.RootElement.EnumerateObject())
+		{
+			JsonElement[] commits = benchmark.Value.GetProperty("commits").EnumerateArray().ToArray();
+			Dictionary<string, double[]> datasets = benchmark.Value.GetProperty("datasets").EnumerateArray().ToDictionary(
+				dataset => dataset.GetProperty("label").GetString(),
+				dataset => dataset.GetProperty("data").EnumerateArray().Select(value => value.GetDouble()).ToArray());
+			if (commits.Length == 0 ||
+			    !datasets.TryGetValue("aweXpect time", out double[] times) || times.Length == 0 ||
+			    !datasets.TryGetValue("aweXpect memory", out double[] allocated) || allocated.Length == 0)
+			{
+				continue;
+			}
+
+			Dictionary<string, double> ratios = new();
+			foreach (string library in ComparedLibraries)
+			{
+				if (datasets.TryGetValue($"{library} time", out double[] otherTimes) && otherTimes.Length > 0)
+				{
+					// The libraries of a run are appended together, so the datasets align at their end.
+					ratios[library] = Median(times.Reverse().Zip(otherTimes.Reverse(), (a, o) => a / o)
+						.Take(BaselineRuns));
+				}
+			}
+
+			benchmarks.Add((commits[^1].GetProperty("sha").GetString(), benchmark.Name,
+				new BaselineBenchmark(Median(times.TakeLast(BaselineRuns)), allocated[^1], ratios)));
+		}
+
+		if (benchmarks.Count == 0)
+		{
+			return null;
+		}
+
+		string latestSha = benchmarks.GroupBy(benchmark => benchmark.Sha).MaxBy(group => group.Count())!.Key;
+		return new BenchmarkBaseline(latestSha, benchmarks
+			.Where(benchmark => benchmark.Sha == latestSha)
+			.ToDictionary(benchmark => benchmark.Name, benchmark => benchmark.Benchmark));
+	}
+
+	static double Median(IEnumerable<double> values)
+	{
+		double[] sorted = values.Order().ToArray();
+		int middle = sorted.Length / 2;
+		return sorted.Length % 2 == 0 ? (sorted[middle - 1] + sorted[middle]) / 2 : sorted[middle];
+	}
+
+	static string FormatPercent(double relativeChange)
+		=> (relativeChange * 100).ToString("+0;-0;±0", CultureInfo.InvariantCulture) + "%";
+
+	/// <summary>
+	///     Formats the <paramref name="ratio" /> of aweXpect to another library as the factor of the other library, as
+	///     the docs site does, which keeps its precision when aweXpect is much faster.
+	/// </summary>
+	static string FormatRatio(double ratio)
+		=> (1 / ratio).ToString(ratio > 0.1 ? "0.00" : "0.0", CultureInfo.InvariantCulture) + "×";
+
+	static string FormatBytes(double bytes)
+		=> bytes.ToString("N0", CultureInfo.InvariantCulture) + " B";
+
+	static string FormatMemoryChange(double main, double current)
+	{
+		double difference = current - main;
+		string change = $"{(difference > 0 ? StrongWorse : StrongBetter)} {difference.ToString("+#,0;-#,0", CultureInfo.InvariantCulture)} B";
+		return main == 0 ? change : $"{change} ({FormatPercent(current / main - 1)})";
+	}
+
+	static string FormatTime(double nanoseconds)
+		=> nanoseconds switch
+		{
+			< 1_000 => nanoseconds.ToString("0.0", CultureInfo.InvariantCulture) + " ns",
+			< 1_000_000 => (nanoseconds / 1_000).ToString("0.00", CultureInfo.InvariantCulture) + " μs",
+			_ => (nanoseconds / 1_000_000).ToString("0.00", CultureInfo.InvariantCulture) + " ms",
+		};
+
+	static string CreateRawBenchmarkResults(AbsolutePath report, Dictionary<string, BenchmarkMeasurement> measurements)
+	{
 		string[] fileContent = File.ReadAllLines(report);
-		Dictionary<string, BenchmarkMeasurement> measurements = ReadBenchmarkMeasurements(
-			report.Parent / $"{project.Name}.HappyCaseBenchmarks-report-full-compressed.json");
 		int meanColumn = -1;
 		int allocatedColumn = -1;
 		StringBuilder sb = new();
-		sb.AppendLine(heading);
 		sb.AppendLine("<details>");
-		sb.AppendLine("<summary>Details</summary>");
+		sb.AppendLine("<summary>Raw results</summary>");
+		sb.AppendLine();
 		int count = 0;
 		foreach (string line in fileContent)
 		{
@@ -391,7 +697,6 @@ partial class Build
 				else if (count == 2)
 				{
 					sb.AppendLine("</pre>");
-					sb.AppendLine("</details>");
 					sb.AppendLine();
 				}
 
@@ -430,8 +735,9 @@ partial class Build
 			sb.AppendLine(line);
 		}
 
-		string body = sb.ToString();
-		return body;
+		sb.AppendLine();
+		sb.AppendLine("</details>");
+		return sb.ToString();
 	}
 
 	static Dictionary<string, BenchmarkMeasurement> ReadBenchmarkMeasurements(string path)
@@ -459,8 +765,7 @@ partial class Build
 			return "";
 		}
 
-		double percent = ((selector(measurement) / selector(aweXpect)) - 1) * 100;
-		return percent.ToString("+0;-0;±0", CultureInfo.InvariantCulture) + "%";
+		return FormatPercent((selector(measurement) / selector(aweXpect)) - 1);
 	}
 
 	static void AppendTableRow(StringBuilder sb, List<string> cells, bool bold)
@@ -485,4 +790,10 @@ partial class Build
 	private record BenchmarkFile(string Content, string Sha);
 
 	private record BenchmarkMeasurement(double Mean, double Allocated);
+
+	private record BaselineBenchmark(double Mean, double Allocated, Dictionary<string, double> Ratios);
+
+	private record BenchmarkBaseline(string Sha, Dictionary<string, BaselineBenchmark> Benchmarks);
+
+	private record BenchmarkCommentSection(string Package, string Summary, string RawResults);
 }
