@@ -165,6 +165,104 @@ public static class PropertyResult
 	}
 
 	/// <summary>
+	///     Result for a <see langword="double" /> property that continues on the <see cref="IThat{TItem}" /> subject.
+	/// </summary>
+	public class Double<TItem>(
+		IThat<TItem> subject,
+		Func<TItem, double?> mapper,
+		string propertyExpression,
+		Action<double?, string>? validation = null)
+		: Double<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation);
+
+	/// <summary>
+	///     Result for a <see langword="double" /> property of a <typeparamref name="TValue" /> which continues on
+	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
+	/// </summary>
+	/// <remarks>
+	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in <see cref="DoublePropertyResultExtensions" />.
+	///     <para />
+	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
+	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
+	/// </remarks>
+	public class Double<TValue, TType, TThat>(
+		TThat subject,
+		Func<TValue, double?> mapper,
+		string propertyExpression,
+		Action<double?, string>? validation = null,
+		ExpectationGrammars grammars = ExpectationGrammars.None)
+		: IDoublePropertyResult<AndOrResult<TType, TThat>, NumberToleranceResult<TType, TThat, double>>
+		where TThat : IThat<TValue>
+	{
+		/// <inheritdoc cref="IDoublePropertyResult{TResult, TToleranceResult}.Validation" />
+		Action<double?, string>?
+			IDoublePropertyResult<AndOrResult<TType, TThat>, NumberToleranceResult<TType, TThat, double>>.Validation
+			=> validation;
+
+		/// <inheritdoc cref="IDoublePropertyResult{TResult, TToleranceResult}.Compare(PropertyComparison{double})" />
+		AndOrResult<TType, TThat>
+			IDoublePropertyResult<AndOrResult<TType, TThat>, NumberToleranceResult<TType, TThat, double>>.Compare(
+				PropertyComparison<double> comparison)
+			=> new(AddStructConstraint(subject, grammars, mapper, propertyExpression, comparison), subject);
+
+		/// <inheritdoc
+		///     cref="IDoublePropertyResult{TResult, TToleranceResult}.CompareEquality(PropertyEqualityComparison{double})" />
+		NumberToleranceResult<TType, TThat, double>
+			IDoublePropertyResult<AndOrResult<TType, TThat>, NumberToleranceResult<TType, TThat, double>>.
+			CompareEquality(PropertyEqualityComparison<double> comparison)
+			=> new(AddStructConstraint(subject, grammars, mapper, propertyExpression, comparison), subject,
+				comparison.Options);
+	}
+
+	/// <summary>
+	///     Result for a <see langword="decimal" /> property that continues on the <see cref="IThat{TItem}" /> subject.
+	/// </summary>
+	public class Decimal<TItem>(
+		IThat<TItem> subject,
+		Func<TItem, decimal?> mapper,
+		string propertyExpression,
+		Action<decimal?, string>? validation = null)
+		: Decimal<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation);
+
+	/// <summary>
+	///     Result for a <see langword="decimal" /> property of a <typeparamref name="TValue" /> which continues on
+	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
+	/// </summary>
+	/// <remarks>
+	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in <see cref="DecimalPropertyResultExtensions" />.
+	///     <para />
+	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
+	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
+	/// </remarks>
+	public class Decimal<TValue, TType, TThat>(
+		TThat subject,
+		Func<TValue, decimal?> mapper,
+		string propertyExpression,
+		Action<decimal?, string>? validation = null,
+		ExpectationGrammars grammars = ExpectationGrammars.None)
+		: IDecimalPropertyResult<AndOrResult<TType, TThat>, NumberToleranceResult<TType, TThat, decimal>>
+		where TThat : IThat<TValue>
+	{
+		/// <inheritdoc cref="IDecimalPropertyResult{TResult, TToleranceResult}.Validation" />
+		Action<decimal?, string>?
+			IDecimalPropertyResult<AndOrResult<TType, TThat>, NumberToleranceResult<TType, TThat, decimal>>.Validation
+			=> validation;
+
+		/// <inheritdoc cref="IDecimalPropertyResult{TResult, TToleranceResult}.Compare(PropertyComparison{decimal})" />
+		AndOrResult<TType, TThat>
+			IDecimalPropertyResult<AndOrResult<TType, TThat>, NumberToleranceResult<TType, TThat, decimal>>.Compare(
+				PropertyComparison<decimal> comparison)
+			=> new(AddStructConstraint(subject, grammars, mapper, propertyExpression, comparison), subject);
+
+		/// <inheritdoc
+		///     cref="IDecimalPropertyResult{TResult, TToleranceResult}.CompareEquality(PropertyEqualityComparison{decimal})" />
+		NumberToleranceResult<TType, TThat, decimal>
+			IDecimalPropertyResult<AndOrResult<TType, TThat>, NumberToleranceResult<TType, TThat, decimal>>.
+			CompareEquality(PropertyEqualityComparison<decimal> comparison)
+			=> new(AddStructConstraint(subject, grammars, mapper, propertyExpression, comparison), subject,
+				comparison.Options);
+	}
+
+	/// <summary>
 	///     Result for a <see langword="string" /> property that continues on the <see cref="IThat{TItem}" /> subject.
 	/// </summary>
 	public class String<TItem>(
@@ -266,7 +364,7 @@ public static class PropertyResult
 		ExpectationGrammars grammars,
 		Func<TValue, TProperty?> mapper,
 		string propertyExpression,
-		PropertyComparison<TProperty> comparison)
+		IPropertyComparison<TProperty> comparison)
 		where TProperty : struct
 		=> subject.Get().ExpectationBuilder
 			.AddConstraint(
@@ -283,7 +381,7 @@ public static class PropertyResult
 		ExpectationGrammars grammars,
 		Func<TItem, TProperty?> mapper,
 		string propertyExpression,
-		PropertyComparison<TProperty> comparison)
+		IPropertyComparison<TProperty> comparison)
 		: ConstraintResult.WithNotNullValue<TItem>(it, grammars),
 			IValueConstraint<TItem>
 		where TProperty : struct

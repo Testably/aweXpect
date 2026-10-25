@@ -186,7 +186,9 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   `IObjectMatchType`. See [Options](../11-extending/03-options-and-match-types.md).
 - The operators of property results are extension methods on one interface per property type, such as
   `IIntPropertyResult<TResult>` or `IEnumPropertyResult<TEnum, TResult>`, so a result of your own gets them by
-  implementing the interface. The `string` operators are split over `IStringEqualityPropertyResult<TResult>`,
+  implementing the interface. `IDoublePropertyResult<TResult, TToleranceResult>` and
+  `IDecimalPropertyResult<TResult, TToleranceResult>` with `PropertyResult.Double` and `PropertyResult.Decimal` are new,
+  and their `EqualTo` offers a tolerance, e.g. `EqualTo(4.5).Within(0.1)`. The `string` operators are split over `IStringEqualityPropertyResult<TResult>`,
   `IStringAffixPropertyResult<TResult>` and `IStringOccurrencePropertyResult<TResult>`, which
   `PropertyResult.String<TValue, TType, TThat>` implements instead of offering them as instance methods. Calls such as
   `HasMessage().EqualTo(…)` compile unchanged, but have to be compiled again.

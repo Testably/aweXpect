@@ -12,7 +12,7 @@ namespace aweXpect.Results;
 ///     It is immutable, so a result can store it and evaluate it later, also several times. The expectation text is only
 ///     formatted when a message needs it, as most expectations are met.
 /// </remarks>
-public sealed class PropertyComparison<TProperty>
+public sealed class PropertyComparison<TProperty> : IPropertyComparison<TProperty>
 	where TProperty : struct
 {
 	private readonly Func<TProperty?, TProperty?, TProperty?, bool> _condition;

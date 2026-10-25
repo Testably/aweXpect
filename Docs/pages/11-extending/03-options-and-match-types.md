@@ -93,12 +93,15 @@ operators as the built-in property expectations like `HasLength()`: `EqualTo`, `
 their `Not…` counterparts, with the same argument checks and texts. Implement the interface for the type of the
 property:
 
-| Property type | Interface                             | Operators                                                    |
-|---------------|---------------------------------------|--------------------------------------------------------------|
-| `int`         | `IIntPropertyResult<TResult>`         | equality, ordering, `Between` and their negations            |
-| `long`        | `ILongPropertyResult<TResult>`        | equality, ordering, `Between` and their negations            |
-| `TimeSpan`    | `ITimeSpanPropertyResult<TResult>`    | equality, ordering, `Between` and their negations            |
-| an enum       | `IEnumPropertyResult<TEnum, TResult>` | `EqualTo`, `NotEqualTo`                                      |
+| Property type | Interface                                            | Operators                                         |
+|---------------|------------------------------------------------------|---------------------------------------------------|
+| `int`         | `IIntPropertyResult<TResult>`                        | equality, ordering, `Between` and their negations |
+| `long`        | `ILongPropertyResult<TResult>`                       | equality, ordering, `Between` and their negations |
+| `double`      | `IDoublePropertyResult<TResult, TToleranceResult>`   | equality, ordering, `Between` and their negations |
+| `decimal`     | `IDecimalPropertyResult<TResult, TToleranceResult>`  | equality, ordering, `Between` and their negations |
+| `TimeSpan`    | `ITimeSpanPropertyResult<TResult>`                   | equality, ordering, `Between` and their negations |
+| an enum       | `IEnumPropertyResult<TEnum, TResult>`                | `EqualTo`, `NotEqualTo`                           |
+| `string`      | see [String properties](#string-properties)          |                                                   |
 
 The operators are extension methods in the `aweXpect` namespace. They check the arguments with your `Validation`, which
 receives the value and the name of its parameter, e.g. `minimum`, and pass a `PropertyComparison<T>` to your `Compare`
@@ -128,6 +131,13 @@ against `null`, and `comparison.AppendExpectation(stringBuilder)` writes the com
 `IsNegated` tells that the operator is a negated one, e.g. `NotGreaterThan`: the outcome already includes the negation,
 but the text does not, so that you can place the "not" where your sentence needs it, e.g. "has duration not greater
 than …" or "does not have duration greater than …".
+
+The equality operators of a `double` or `decimal` property, `EqualTo` and `NotEqualTo`, pass a
+`PropertyEqualityComparison<T>` to `CompareEquality` instead, which returns `TToleranceResult`. The tolerance is set
+after the operator returned, e.g. `.EqualTo(4.5).Within(0.1)` or `.Within(1).Percent()`, so pass
+`comparison.Options` to the result you return, e.g. a `NumberToleranceResult<TType, TThat, TNumber>`, which offers
+`Within`. The comparison compares like `IsEqualTo(…).Within(…)`, e.g. `NaN` is equal to `NaN`, and its text
+includes the tolerance, e.g. "equal to 4.5 ± 0.1". The ordering operators reject a `NaN` bound.
 
 ### String properties
 
