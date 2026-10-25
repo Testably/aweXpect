@@ -35,8 +35,7 @@ internal sealed class ValueSelection
 		=> new(_isMembersOnly, [.. _filters, filter,], _validations, _types, _isNamed);
 
 	/// <summary>
-	///     Selects the values with the <paramref name="name" />, compared with the <paramref name="options" />, which can
-	///     still change until the rule is created.
+	///     Selects the values with the <paramref name="name" />, compared with the <paramref name="options" />.
 	/// </summary>
 	public ValueSelection WithName(string name, StringEqualityOptions options)
 		=> new(_isMembersOnly, [.. _filters, value => StringRules.IsMatch(options, value.Name, name),],

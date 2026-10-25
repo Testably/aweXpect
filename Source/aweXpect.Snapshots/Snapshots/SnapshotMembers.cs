@@ -39,11 +39,8 @@ public class SnapshotMembers<TResult, TValue>
 	///     <see cref="ArgumentException" /> at the action, and a pattern that times out fails the expectation.
 	/// </remarks>
 	public SnapshotMembersWithName<TResult, TValue> WithName(string name)
-	{
-		StringEqualityOptions options = new(nameof(name));
-		return new SnapshotMembersWithName<TResult, TValue>(_add,
-			_selection.WithName(RuleArguments.ThrowIfNullOrEmpty(name, nameof(name)), options), options);
-	}
+		=> new(_add, _selection, RuleArguments.ThrowIfNullOrEmpty(name, nameof(name)),
+			new StringEqualityOptions(nameof(name)));
 
 	/// <summary>
 	///     Filters for the members whose path ends with the <paramref name="path" />, e.g. <c>Artist.Id</c>.
