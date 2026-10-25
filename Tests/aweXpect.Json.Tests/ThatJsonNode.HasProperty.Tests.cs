@@ -72,6 +72,31 @@ public sealed partial class ThatJsonNode
 			}
 
 			[Test]
+			public async Task WhenNameIsDuplicated_ShouldSucceed()
+			{
+				JsonNode? subject = FromString("{\"title\": \"Let It Be\", \"title\": \"Yesterday\"}");
+
+				async Task Act()
+					=> await That(subject).HasProperty("title");
+
+				await That(Act).DoesNotThrow()
+					.Because("the property is looked up like in the JsonElement, which keeps duplicate names");
+			}
+
+			[Test]
+			public async Task WhenNameIsDuplicated_WithExpectations_ShouldThrowArgumentException()
+			{
+				JsonNode? subject = FromString("{\"title\": \"Let It Be\", \"title\": \"Yesterday\"}");
+
+				async Task Act()
+					=> await That(subject).HasProperty("title", t => t.IsString());
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("An item with the same key has already been added. Key: title*").AsWildcard()
+					.Because("the JsonObject rejects duplicate names when it reads the property for the expectations");
+			}
+
+			[Test]
 			public async Task WhenNameIsNull_ShouldThrowArgumentNullException()
 			{
 				JsonNode? subject = FromString("{}");
@@ -113,6 +138,29 @@ public sealed partial class ThatJsonNode
 					             }
 					             """)
 					.Because("each level shows the node it looked up the property in, not the whole document");
+			}
+
+			[Test]
+			public async Task WhenNodeIgnoresTheCaseOfNames_ShouldCompareNamesCaseSensitively()
+			{
+				JsonNode? subject = JsonNode.Parse("{\"Title\": \"Let It Be\"}",
+					new JsonNodeOptions { PropertyNameCaseInsensitive = true, });
+
+				async Task Act()
+					=> await That(subject).HasProperty("title");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has property "title",
+					             but property $.title did not exist
+
+					             Actual:
+					             {
+					               "Title": "Let It Be"
+					             }
+					             """)
+					.Because("the property is looked up like in the JsonElement, regardless of the options of the node");
 			}
 
 			[Test]
@@ -310,6 +358,29 @@ public sealed partial class ThatJsonNode
 			}
 
 			[Test]
+			public async Task WhenPropertyIsAnObject_ShouldFailWithTheObject()
+			{
+				JsonObject subject = new() { ["artist"] = new JsonObject { ["name"] = "The Beatles", }, };
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasProperty("artist"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have property "artist",
+					             but it had property "artist" with {"name":"The Beatles"}
+
+					             Actual:
+					             {
+					               "artist": {
+					                 "name": "The Beatles"
+					               }
+					             }
+					             """);
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				JsonNode? subject = null;
@@ -344,6 +415,41 @@ public sealed partial class ThatJsonNode
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithMessage("The 'name' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenNameIsDuplicated_ShouldFail()
+			{
+				JsonNode? subject = FromString("{\"title\": \"Let It Be\", \"title\": \"Yesterday\"}");
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveProperty("title");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have property "title",
+					             but it had property "title" with "Yesterday"
+
+					             Actual:
+					             {
+					               "title": "Let It Be",
+					               "title": "Yesterday"
+					             }
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNodeIgnoresTheCaseOfNames_ShouldSucceed()
+			{
+				JsonNode? subject = JsonNode.Parse("{\"Title\": \"Let It Be\"}",
+					new JsonNodeOptions { PropertyNameCaseInsensitive = true, });
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveProperty("title");
+
+				await That(Act).DoesNotThrow()
+					.Because("the property is looked up like in the JsonElement, regardless of the options of the node");
 			}
 
 			[Test]
