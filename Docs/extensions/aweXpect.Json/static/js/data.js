@@ -768,6 +768,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
         "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      },
+      {
+        "sha": "9f98f729b2f7ed3e71e158e36027b21fec647962",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
+        "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
       }
     ],
     "labels": [
@@ -898,7 +904,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "b7024c3c"
+      "b7024c3c",
+      "9f98f729"
     ],
     "datasets": [
       {
@@ -1032,7 +1039,8 @@ window.BENCHMARK_DATA = {
           2130.3487486158097,
           2079.9536314744214,
           1214.7723749796548,
-          1103.672924041748
+          1103.672924041748,
+          2093.287657601493
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1072,6 +1080,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -1313,7 +1322,8 @@ window.BENCHMARK_DATA = {
           16095.8956644694,
           15385.720705159505,
           7476.793487548828,
-          6724.722705296108
+          6724.722705296108,
+          15943.458544921876
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1325,6 +1335,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -2234,6 +2245,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
         "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      },
+      {
+        "sha": "9f98f729b2f7ed3e71e158e36027b21fec647962",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
+        "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
       }
     ],
     "labels": [
@@ -2364,7 +2381,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "b7024c3c"
+      "b7024c3c",
+      "9f98f729"
     ],
     "datasets": [
       {
@@ -2498,7 +2516,8 @@ window.BENCHMARK_DATA = {
           1740.445757929484,
           1764.505627187093,
           997.4567373820713,
-          917.817653465271
+          917.817653465271,
+          1761.486618723188
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2591,6 +2610,7 @@ window.BENCHMARK_DATA = {
           1200,
           1200,
           1200,
+          1240,
           1240,
           1240,
           1240,
@@ -2779,7 +2799,8 @@ window.BENCHMARK_DATA = {
           14802.000891549247,
           14399.515367635091,
           7300.230937703451,
-          6324.184260050456
+          6324.184260050456,
+          14436.01840464274
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2791,6 +2812,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -3640,6 +3662,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
         "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      },
+      {
+        "sha": "9f98f729b2f7ed3e71e158e36027b21fec647962",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
+        "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
       }
     ],
     "labels": [
@@ -3760,7 +3788,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "b7024c3c"
+      "b7024c3c",
+      "9f98f729"
     ],
     "datasets": [
       {
@@ -3884,7 +3913,8 @@ window.BENCHMARK_DATA = {
           5188.7337361653645,
           5127.418573107038,
           2909.503671646118,
-          2853.7479357038223
+          2853.7479357038223,
+          5377.333744594029
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3967,6 +3997,7 @@ window.BENCHMARK_DATA = {
           3688,
           3688,
           3688,
+          3736,
           3736,
           3736,
           3736,
@@ -4145,7 +4176,8 @@ window.BENCHMARK_DATA = {
           47712.36237444197,
           46519.18549804688,
           20591.213616507393,
-          18374.067997859074
+          18374.067997859074,
+          48902.76749674479
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4274,7 +4306,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61925,
-          61925
+          61925,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4996,6 +5029,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
         "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      },
+      {
+        "sha": "9f98f729b2f7ed3e71e158e36027b21fec647962",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
+        "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
       }
     ],
     "labels": [
@@ -5116,7 +5155,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "b7024c3c"
+      "b7024c3c",
+      "9f98f729"
     ],
     "datasets": [
       {
@@ -5240,7 +5280,8 @@ window.BENCHMARK_DATA = {
           9560.09695317195,
           9427.50972856794,
           5098.741732788086,
-          4841.236343383789
+          4841.236343383789,
+          9602.302537184496
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5323,6 +5364,7 @@ window.BENCHMARK_DATA = {
           7024,
           7024,
           7024,
+          7064,
           7064,
           7064,
           7064,
@@ -5501,7 +5543,8 @@ window.BENCHMARK_DATA = {
           302597.05927734374,
           296948.88609095983,
           151974.20401436943,
-          131368.40914481026
+          131368.40914481026,
+          311448.4590820313
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5622,6 +5665,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521542,
+          521594,
           521594,
           521594,
           521594,
@@ -6352,6 +6396,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
         "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      },
+      {
+        "sha": "9f98f729b2f7ed3e71e158e36027b21fec647962",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
+        "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
       }
     ],
     "labels": [
@@ -6472,7 +6522,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "b7024c3c"
+      "b7024c3c",
+      "9f98f729"
     ],
     "datasets": [
       {
@@ -6596,7 +6647,8 @@ window.BENCHMARK_DATA = {
           2909.4557448795863,
           2921.7957257588705,
           1650.9289124806721,
-          1562.8392949785505
+          1562.8392949785505,
+          3059.3099740835337
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6710,6 +6762,7 @@ window.BENCHMARK_DATA = {
           1328,
           1328,
           1328,
+          1488,
           1488,
           1488,
           1488,
@@ -6857,7 +6910,8 @@ window.BENCHMARK_DATA = {
           1940.4303471883138,
           1905.7743681498937,
           1117.079008102417,
-          1031.3462692260741
+          1031.3462692260741,
+          2002.0239962064302
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6869,6 +6923,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -7708,6 +7763,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
         "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      },
+      {
+        "sha": "9f98f729b2f7ed3e71e158e36027b21fec647962",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
+        "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
       }
     ],
     "labels": [
@@ -7828,7 +7889,8 @@ window.BENCHMARK_DATA = {
       "5357eeb1",
       "d5b93f89",
       "44ad4465",
-      "b7024c3c"
+      "b7024c3c",
+      "9f98f729"
     ],
     "datasets": [
       {
@@ -7952,7 +8014,8 @@ window.BENCHMARK_DATA = {
           2024.8508847554524,
           2123.1150545392716,
           1196.1520142873128,
-          1275.9472116323618
+          1275.9472116323618,
+          2485.8269040425616
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8081,6 +8144,7 @@ window.BENCHMARK_DATA = {
           2864,
           2864,
           2864,
+          2832,
           2832
         ],
         "borderColor": "#63A2AC",
@@ -8213,7 +8277,8 @@ window.BENCHMARK_DATA = {
           1822.2458597819011,
           1847.6963158925375,
           941.7298893610637,
-          872.4195875167846
+          872.4195875167846,
+          1872.5473669687906
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8225,6 +8290,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -8362,17 +8428,25 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
         "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      },
+      {
+        "sha": "9f98f729b2f7ed3e71e158e36027b21fec647962",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
+        "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
       }
     ],
     "labels": [
-      "b7024c3c"
+      "b7024c3c",
+      "9f98f729"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1016.2116257803781
+          1016.2116257803781,
+          2014.3003243037633
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8384,6 +8458,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2888,
           2888
         ],
         "borderColor": "#63A2AC",
@@ -8399,7 +8474,8 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          551.5206391994769
+          551.5206391994769,
+          1257.9757287343343
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8411,6 +8487,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152
         ],
         "borderColor": "#FF671B",
@@ -8431,17 +8508,25 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
         "message": "fix: align the number differences of aweXpect.Json with aweXpect for non-finite values and overflow (#2066)"
+      },
+      {
+        "sha": "9f98f729b2f7ed3e71e158e36027b21fec647962",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
+        "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
       }
     ],
     "labels": [
-      "b7024c3c"
+      "b7024c3c",
+      "9f98f729"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1435.492509841919
+          1435.492509841919,
+          2916.472061920166
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8453,6 +8538,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          3768,
           3768
         ],
         "borderColor": "#63A2AC",
@@ -8468,7 +8554,8 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          630.0053898493449
+          630.0053898493449,
+          1376.41812210083
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8480,6 +8567,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960
         ],
         "borderColor": "#FF671B",
