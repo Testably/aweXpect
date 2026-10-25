@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
-        "message": "docs: use the music theme in the remaining examples (#1970)"
-      },
-      {
         "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
-      "01684f30",
       "eeb6f10c",
       "d795bb44",
       "9077e206",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10842.12903050014,
           10644.62382725307,
           10655.608216505785,
           11294.257846287319,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           10726.96032496861,
           11226.156964983258,
           10819.993436686198,
-          7850.708253043039
+          7850.708253043039,
+          10935.875943697416
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -466,7 +466,7 @@ window.BENCHMARK_DATA = {
           2168,
           2168,
           2168,
-          2168,
+          2208,
           2208,
           2208,
           2208
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          351770.4485677083,
           372431.77486979164,
           353592.93798828125,
           370327.11448317306,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           372339.96623883926,
           374156.088671875,
           376904.3015625,
-          285624.6185546875
+          285624.6185546875,
+          368869.8690011161
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590292,
           590292,
           590292,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590292,
-          590225
+          590225,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19290.753479003906,
           19069.42475237165,
           18363.66853215144,
           19574.414636230467,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           20168.41748700823,
           19906.730529785156,
           19675.743173217772,
-          17103.925648280554
+          17103.925648280554,
+          18918.340416541465
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
-        "message": "docs: use the music theme in the remaining examples (#1970)"
-      },
-      {
         "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
-      "01684f30",
       "eeb6f10c",
       "d795bb44",
       "9077e206",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          274.4226979573568,
           296.9209286371867,
           326.0530081431071,
           299.731326897939,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           284.2009262016841,
           342.79275210698444,
           269.6310506184896,
-          281.51181885174344
+          281.51181885174344,
+          337.30064961115517
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          480.7976947784424,
           519.0669069290161,
           484.7204107871422,
           505.6845942815145,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           579.4737151690891,
           544.0969489415487,
           531.9543848718915,
-          595.7835202534993
+          595.7835202534993,
+          531.6792983327593
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          378.24313160351346,
           409.84933703286305,
           388.6183862319359,
           392.86149946848553,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           413.6101273218791,
           383.0323572476705,
           384.20419179476227,
-          412.538426228932
+          412.538426228932,
+          404.2638649622599
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
-        "message": "docs: use the music theme in the remaining examples (#1970)"
-      },
-      {
         "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
-      "01684f30",
       "eeb6f10c",
       "d795bb44",
       "9077e206",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          134.19642715454103,
           169.19236764907836,
           134.53082269032797,
           144.99675059318542,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           157.77659374872843,
           145.63156564419086,
           154.01753026644388,
-          160.18989767347063
+          160.18989767347063,
+          146.76250166893004
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          240.1511081627437,
           257.34040257136024,
           246.09090054829915,
           252.28660790125528,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           284.08864237467446,
           265.0319761276245,
           248.53880775891818,
-          317.75524735450745
+          317.75524735450745,
+          254.01669887396005
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          235.21167820294698,
           248.52879826227823,
           234.5600435256958,
           243.76641082763672,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           263.00488869349164,
           237.35564533869425,
           242.16973872184752,
-          240.29952802658082
+          240.29952802658082,
+          245.06869980494182
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
-        "message": "docs: use the music theme in the remaining examples (#1970)"
-      },
-      {
         "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
-      "01684f30",
       "eeb6f10c",
       "d795bb44",
       "9077e206",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          265.1340541203817,
           277.7954093492948,
           252.2517923627581,
           261.8659492810567,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           270.53296925226846,
           263.0214028040568,
           273.1392585833867,
-          273.57603366034374
+          273.57603366034374,
+          272.68647687775746
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2665,7 +2665,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
-          488,
+          520,
           520,
           520,
           520
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          493.3832867940267,
           567.0256370544433,
           502.69649645487465,
           537.7703490938459,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           524.773886680603,
           512.0153384889875,
           541.2379095713297,
-          639.1399256161282
+          639.1399256161282,
+          527.8042952855428
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          327.07709350585935,
           358.60125052134197,
           339.7113444010417,
           355.8748586177826,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           366.67675422032676,
           334.889275932312,
           327.6180678049723,
-          333.1519235542842
+          333.1519235542842,
+          360.419606367747
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
-        "message": "docs: use the music theme in the remaining examples (#1970)"
-      },
-      {
         "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
-      "01684f30",
       "eeb6f10c",
       "d795bb44",
       "9077e206",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          620.6516637166341,
           701.9339325978206,
           638.6538064663226,
           648.8201124668121,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           663.1900602976481,
           726.0838155065264,
           663.5414233888898,
-          562.2961301167805
+          562.2961301167805,
+          736.5180493672689
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1334.753176498413,
           1476.695693529569,
           1279.4411012331645,
           1352.2703198024205,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1481.6401491800943,
           1417.011052195231,
           1369.853746287028,
-          1458.4457029978435
+          1458.4457029978435,
+          1382.1063294410706
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          642.9768479420588,
           701.296114285787,
           662.2974954446157,
           675.9775168736776,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           656.6564384869167,
           660.8231710025242,
           651.5242075602214,
-          628.7224450747173
+          628.7224450747173,
+          683.7318405738243
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
-        "message": "docs: use the music theme in the remaining examples (#1970)"
-      },
-      {
         "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
-      "01684f30",
       "eeb6f10c",
       "d795bb44",
       "9077e206",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          610.1148905754089,
           661.3322264597966,
           634.2373107910156,
           639.1666205724081,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           635.1671815872193,
           718.0910964693342,
           655.5912373860677,
-          583.329655793997
+          583.329655793997,
+          762.2530645370483
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26900.411435808455,
           28630.714290073938,
           28166.560806274414,
           28469.383884684245,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           27652.79806315104,
           28832.875782557898,
           27804.928094046456,
-          17776.075563703263
+          17776.075563703263,
+          28040.494338989258
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4218,7 +4218,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4259,7 +4258,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          758.4810165677752,
           878.3443952287946,
           831.4491189956665,
           807.1138083140055,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           826.2292894363403,
           811.0172728810992,
           773.9134428841727,
-          777.8966722488403
+          777.8966722488403,
+          798.0264763465294
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
-        "message": "docs: use the music theme in the remaining examples (#1970)"
-      },
-      {
         "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
-      "01684f30",
       "eeb6f10c",
       "d795bb44",
       "9077e206",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          655.3172894795736,
           757.4091510772705,
           687.7051982146043,
           744.0201104482015,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           726.2767291386922,
           683.7304436365763,
           760.545000893729,
-          675.2924857457479
+          675.2924857457479,
+          683.789671643575
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4828,7 +4828,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
-          1680,
+          1688,
           1688,
           1688,
           1688,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          82821.41476876395,
           82528.82529122489,
           83562.14417375837,
           84766.97943522135,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           82560.11273662861,
           83891.97416804387,
           84509.61543782552,
-          32144.485799153645
+          32144.485799153645,
+          84359.80682779948
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4950,7 +4950,6 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5252,
           5256,
           5256,
           5256,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
-        "message": "docs: use the music theme in the remaining examples (#1970)"
-      },
       {
         "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
-      "01684f30",
       "eeb6f10c",
       "d795bb44",
       "9077e206",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          170.7372176329295,
           187.23855980237326,
           174.73539664064134,
           175.50807390213012,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           189.0826095002038,
           177.2108586629232,
           192.95799272400993,
-          212.19009349896356
+          212.19009349896356,
+          190.57390955516271
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          31470.864709472655,
           32837.49276029147,
           32152.40342610677,
           32138.381099446615,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           32815.663033040364,
           32578.33106994629,
           32253.267848423548,
-          16514.752351888023
+          16514.752351888023,
+          31970.51017979213
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5560,7 +5560,6 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614,
           5615,
           5615,
           5615,
@@ -5597,6 +5596,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5615,
+          5614,
           5614,
           5614,
           5614,
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          240.7283726472121,
           269.22244380315146,
           233.9040969689687,
           244.40696750368392,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           258.7476766268412,
           246.48392464319866,
           256.09153067270915,
-          240.53950812021893
+          240.53950812021893,
+          250.23788868586223
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
-        "message": "docs: use the music theme in the remaining examples (#1970)"
-      },
-      {
         "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
-      "01684f30",
       "eeb6f10c",
       "d795bb44",
       "9077e206",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          352.11096508162365,
           354.604190603892,
           343.3708644594465,
           366.06473425456454,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           377.2938177245004,
           349.2337150255839,
           418.20421228408816,
-          344.6028942108154
+          344.6028942108154,
+          347.2625845028804
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          363.766654253006,
           398.4865779558817,
           365.9025834083557,
           427.9511961301168,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           414.64162731170654,
           392.01793203353884,
           380.51365480422976,
-          476.26176540668195
+          476.26176540668195,
+          380.05393174978406
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          395.9505586942037,
           402.8437966664632,
           411.89645239512123,
           416.8494748433431,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           427.5015382130941,
           405.9355000813802,
           420.9128182729085,
-          397.31449949741364
+          397.31449949741364,
+          430.54265243666515
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
-        "message": "docs: use the music theme in the remaining examples (#1970)"
-      },
-      {
         "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
-      "01684f30",
       "eeb6f10c",
       "d795bb44",
       "9077e206",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          699.962429523468,
           729.2720116933186,
           649.5519371032715,
           699.9543645565326,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           727.6673224131266,
           735.2975146611532,
           749.2389082590739,
-          702.1195759455363
+          702.1195759455363,
+          746.8102166493734
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6938,7 +6938,7 @@ window.BENCHMARK_DATA = {
           1384,
           1384,
           1384,
-          1384,
+          1448,
           1448,
           1448,
           1448
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1799.258850831252,
           2017.5649477640789,
           1838.3021304266792,
           1980.393330891927,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           2075.547301483154,
           1884.8854400634766,
           1937.3687474177434,
-          2155.702299118042
+          2155.702299118042,
+          1976.6210983276367
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          887.5522660527911,
           987.1092966715495,
           904.9124195575714,
           914.7488256454468,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           986.2523937225342,
           935.7853084972927,
           942.9916570027669,
-          911.1171915054322
+          911.1171915054322,
+          980.0802248441256
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
-        "message": "docs: use the music theme in the remaining examples (#1970)"
-      },
-      {
         "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
-      "01684f30",
       "eeb6f10c",
       "d795bb44",
       "9077e206",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11304.708456420898,
           11605.905371529716,
           11624.618366495768,
           11616.042337690082,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           11420.452535775992,
           11405.730972290039,
           11432.820071880635,
-          8920.967366536459
+          8920.967366536459,
+          11581.712854657855
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7671,7 +7671,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
-          1576,
+          1608,
           1608,
           1608,
           1608
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          40249.380990164624,
           40460.09979684012,
           41278.06832885742,
           41182.09033203125,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           41375.33505045573,
           40917.92230631511,
           40837.57575770787,
-          30859.240657552084
+          30859.240657552084,
+          40334.57229614258
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18394,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10502.093832833427,
           10729.992994035993,
           10637.99095916748,
           10595.299794514975,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           10773.100264485676,
           10605.444701058525,
           10677.911750284831,
-          8690.192250569662
+          8690.192250569662,
+          10707.274149968074
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
-        "message": "docs: use the music theme in the remaining examples (#1970)"
-      },
-      {
         "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
         "message": "refactor: continue the element expectations on a non-null collection (#2019)"
+      },
+      {
+        "sha": "5d7202bd80b0c73f7f0ca2b2da8116f1d331af8a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:52:36 2026 \u002B0200",
+        "message": "feat!: support match types for the string values of dictionaries (#2020)"
       }
     ],
     "labels": [
-      "01684f30",
       "eeb6f10c",
       "d795bb44",
       "9077e206",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "96ea23be",
       "f9009a09",
       "8b73c040",
-      "54813a41"
+      "54813a41",
+      "5d7202bd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10998.720021174504,
           11042.314670269307,
           10866.89433179583,
           10858.944662911552,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           11116.267636980328,
           10928.378729248047,
           11135.929899949293,
-          8490.381401062012
+          8490.381401062012,
+          11204.479612077985
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8404,7 +8404,7 @@ window.BENCHMARK_DATA = {
           2056,
           2056,
           2056,
-          2056,
+          2088,
           2088,
           2088,
           2088
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          57618.63860212053,
           60465.65646565755,
           58020.683532714844,
           59419.02055140904,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           59014.5553507487,
           58656.36049241286,
           58555.70687866211,
-          43501.072692871094
+          43501.072692871094,
+          58444.683414713545
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8513,13 +8513,13 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
           23553,
           23554,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          20711.268111008863,
           21324.209862342246,
           20946.647967998797,
           21019.899772135417,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           21322.483012608118,
           20876.48696899414,
           21066.284143066405,
-          16626.454798380535
+          16626.454798380535,
+          21058.878653893105
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
