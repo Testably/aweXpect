@@ -630,6 +630,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
@@ -737,7 +743,8 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
@@ -848,7 +855,8 @@ window.BENCHMARK_DATA = {
           1786.4942106882731,
           2082.54341506958,
           1638.4001864115396,
-          2176.7965695307803
+          2176.7965695307803,
+          1487.1613461812337
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -888,6 +896,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -1083,7 +1092,8 @@ window.BENCHMARK_DATA = {
           12970.143255615234,
           16095.034516554613,
           10886.648873901368,
-          15994.652080829326
+          15994.652080829326,
+          9670.001746041435
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1095,6 +1105,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -1843,6 +1854,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
@@ -1950,7 +1967,8 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
@@ -2061,7 +2079,8 @@ window.BENCHMARK_DATA = {
           1392.230298451015,
           1714.5909866333009,
           1307.5085592269897,
-          1756.8202382496424
+          1756.8202382496424,
+          1108.6923746381487
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2154,6 +2173,7 @@ window.BENCHMARK_DATA = {
           1200,
           1200,
           1200,
+          1240,
           1240,
           1240,
           1240,
@@ -2296,7 +2316,8 @@ window.BENCHMARK_DATA = {
           12282.749443562825,
           14967.080297851562,
           10542.309217180524,
-          14830.891222635904
+          14830.891222635904,
+          8916.316970825195
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2308,6 +2329,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -2996,6 +3018,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
@@ -3093,7 +3121,8 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
@@ -3194,7 +3223,8 @@ window.BENCHMARK_DATA = {
           4164.019689941406,
           5324.959761483328,
           3945.5726943969726,
-          5218.103447547326
+          5218.103447547326,
+          3371.4532132466634
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3277,6 +3307,7 @@ window.BENCHMARK_DATA = {
           3688,
           3688,
           3688,
+          3736,
           3736,
           3736,
           3736,
@@ -3409,7 +3440,8 @@ window.BENCHMARK_DATA = {
           36211.60117885045,
           47738.11770833333,
           30162.97150878906,
-          47229.157421875
+          47229.157421875,
+          28370.980021158855
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3515,7 +3547,8 @@ window.BENCHMARK_DATA = {
           61925,
           61925,
           61926,
-          61926
+          61926,
+          61925
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4099,6 +4132,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
@@ -4196,7 +4235,8 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
@@ -4297,7 +4337,8 @@ window.BENCHMARK_DATA = {
           8519.754654947918,
           9709.989149911064,
           7665.376858847482,
-          9512.512535095215
+          9512.512535095215,
+          6978.022907511393
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4380,6 +4421,7 @@ window.BENCHMARK_DATA = {
           7024,
           7024,
           7024,
+          7064,
           7064,
           7064,
           7064,
@@ -4512,7 +4554,8 @@ window.BENCHMARK_DATA = {
           255799.1060221354,
           303542.803515625,
           219512.95109049478,
-          308093.34877929685
+          308093.34877929685,
+          186873.35874720983
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4618,7 +4661,8 @@ window.BENCHMARK_DATA = {
           521541,
           521594,
           521594,
-          521594
+          521594,
+          521541
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5202,6 +5246,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
@@ -5299,7 +5349,8 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
@@ -5400,7 +5451,8 @@ window.BENCHMARK_DATA = {
           2608.9355915614537,
           2818.6505655141978,
           2260.7418215615407,
-          2870.4714209238687
+          2870.4714209238687,
+          2170.48557917277
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5445,6 +5497,7 @@ window.BENCHMARK_DATA = {
           1488,
           1488,
           1488,
+          1328,
           1328,
           1328,
           1328,
@@ -5615,7 +5668,8 @@ window.BENCHMARK_DATA = {
           1912.1763672461877,
           1991.461474355062,
           1600.6378626505534,
-          1976.182002766927
+          1976.182002766927,
+          1486.5311923027039
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5627,6 +5681,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -6305,6 +6360,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
         "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
+      },
+      {
+        "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
+        "message": "refactor!: make the \u0060ExpectationBuilder\u0060 surface for extension authors consistent (#1996)"
       }
     ],
     "labels": [
@@ -6402,7 +6463,8 @@ window.BENCHMARK_DATA = {
       "1785986b",
       "73754c62",
       "937f5ce0",
-      "5c160901"
+      "5c160901",
+      "4f69216a"
     ],
     "datasets": [
       {
@@ -6503,7 +6565,8 @@ window.BENCHMARK_DATA = {
           1825.33505153656,
           2119.3743518829347,
           1744.1700759615217,
-          2051.1081465207612
+          2051.1081465207612,
+          1438.4370535441808
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6586,6 +6649,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2864,
           2864,
           2864,
           2864,
@@ -6718,7 +6782,8 @@ window.BENCHMARK_DATA = {
           2038.7895050048828,
           1897.0544701894125,
           1539.1395468393962,
-          1819.47263768514
+          1819.47263768514,
+          1453.1506287711006
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6730,6 +6795,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
