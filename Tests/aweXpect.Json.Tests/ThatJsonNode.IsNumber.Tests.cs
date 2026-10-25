@@ -40,6 +40,23 @@ public sealed partial class ThatJsonNode
 					              but it was {kindString}
 					              """);
 			}
+
+			[Test]
+			public async Task WhenNodeTypeIsGivenExplicitly_ShouldVerifyTheKind()
+			{
+				JsonNode? subject = FromString("\"1\"");
+
+				async Task Act()
+					=> await That(subject).IsNumber<JsonNode>();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a number,
+					             but it was a string
+					             """)
+					.Because("a node type is no number type, so that the overload for the kind of the node applies");
+			}
 		}
 
 		public sealed class NegatedTests
@@ -193,11 +210,11 @@ public sealed partial class ThatJsonNode
 				JsonValue subject = JsonValue.Create(1);
 
 				async Task Act()
-					=> await That(subject).IsNumber<bool>();
+					=> await That(subject).IsNumber<char>();
 
 				await That(Act).Throws<NotSupportedException>()
 					.WithMessage(
-						"The number type bool is not supported. Use byte, sbyte, short, ushort, int, uint, long, ulong, float, double or decimal.");
+						$"The number type char is not supported. Use {ThatJsonElement.SupportedNumberTypes}.");
 			}
 		}
 
@@ -285,11 +302,11 @@ public sealed partial class ThatJsonNode
 				JsonValue subject = JsonValue.Create(1);
 
 				async Task Act()
-					=> await That(subject).IsNumber(new BigInteger(1));
+					=> await That(subject).IsNumber('a');
 
 				await That(Act).Throws<NotSupportedException>()
 					.WithMessage(
-						"The number type BigInteger is not supported. Use byte, sbyte, short, ushort, int, uint, long, ulong, float, double or decimal.");
+						$"The number type char is not supported. Use {ThatJsonElement.SupportedNumberTypes}.");
 			}
 		}
 

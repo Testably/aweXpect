@@ -129,8 +129,8 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have element at index 1 which is a number,
-					             but it had element at index 1 with 2
+					             does not have element at index 1 or $[1] is not a number,
+					             but $[1] was a number
 					             """);
 			}
 

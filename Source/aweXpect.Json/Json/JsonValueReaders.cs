@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Globalization;
+using System.Numerics;
 using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Options;
-#if NET8_0_OR_GREATER
-using System.Numerics;
-#endif
 
 namespace aweXpect.Json;
 
@@ -12,11 +11,21 @@ namespace aweXpect.Json;
 ///     The readers of the typed JSON values.
 /// </summary>
 /// <remarks>
-///     The values are read with the methods of <see cref="JsonElement" /> instead of by reflection, so that they are
-///     trimming and AOT friendly.
+///     The values are read with the methods of <see cref="JsonElement" /> or parsed from the JSON text instead of by
+///     reflection, so that they are trimming and AOT friendly.
 /// </remarks>
 internal static class JsonValueReaders
 {
+	/// <summary>
+	///     The number types that <see cref="GetNumber{TNumber}" /> supports, for the message of an unsupported one.
+	/// </summary>
+	private const string SupportedNumberTypes =
+#if NET8_0_OR_GREATER
+		"byte, sbyte, short, ushort, int, uint, long, ulong, nint, nuint, Int128, UInt128, BigInteger, Half, float, double or decimal";
+#else
+		"byte, sbyte, short, ushort, int, uint, long, ulong, BigInteger, float, double or decimal";
+#endif
+
 	public static readonly JsonValueReader<string> String = new(JsonValueKind.String, null, "a string",
 		static (JsonElement element, out string value) =>
 		{
@@ -39,7 +48,7 @@ internal static class JsonValueReaders
 	/// <exception cref="System.NotSupportedException">The <typeparamref name="TNumber" /> is not supported.</exception>
 	public static JsonValueReader<TNumber> GetNumber<TNumber>()
 		=> NumberReader<TNumber>.Instance ?? throw Tracing.WriteException(new System.NotSupportedException(
-			$"The number type {Formatter.Format(typeof(TNumber))} is not supported. Use byte, sbyte, short, ushort, int, uint, long, ulong, float, double or decimal."));
+			$"The number type {Formatter.Format(typeof(TNumber))} is not supported. Use {SupportedNumberTypes}."));
 
 	/// <summary>
 	///     Creates the tolerance of a comparison of <typeparamref name="TNumber" /> values.
@@ -78,8 +87,13 @@ internal static class JsonValueReaders
 		private static object? Create()
 			=> For<byte>(Difference) ?? For<sbyte>(Difference) ?? For<short>(Difference) ??
 			   For<ushort>(Difference) ?? For<int>(Difference) ?? For<uint>(Difference) ??
-			   For<long>(Difference) ?? For<ulong>(Difference) ?? For<float>(Difference) ??
-			   For<double>(Difference) ?? For<decimal>(Difference);
+			   For<long>(Difference) ?? For<ulong>(Difference) ?? For<BigInteger>(Difference) ??
+			   For<float>(Difference) ?? For<double>(Difference) ?? For<decimal>(Difference)
+#if NET8_0_OR_GREATER
+			   ?? For<nint>(Difference) ?? For<nuint>(Difference) ?? For<Int128>(Difference) ??
+			   For<UInt128>(Difference) ?? For<Half>(Difference)
+#endif
+			;
 
 		private static object? For<T>(Func<T, T, T?> difference) where T : struct
 			=> typeof(TNumber) == typeof(T) ? difference : null;
@@ -92,9 +106,17 @@ internal static class JsonValueReaders
 		private static uint? Difference(uint a, uint e) => a > e ? a - e : e - a;
 		private static long? Difference(long a, long e) => checked(a > e ? a - e : e - a);
 		private static ulong? Difference(ulong a, ulong e) => a > e ? a - e : e - a;
+		private static BigInteger? Difference(BigInteger a, BigInteger e) => BigInteger.Abs(a - e);
 		private static float? Difference(float a, float e) => Math.Abs(a - e);
 		private static double? Difference(double a, double e) => Math.Abs(a - e);
 		private static decimal? Difference(decimal a, decimal e) => a > e ? a - e : e - a;
+#if NET8_0_OR_GREATER
+		private static nint? Difference(nint a, nint e) => checked(a > e ? a - e : e - a);
+		private static nuint? Difference(nuint a, nuint e) => a > e ? a - e : e - a;
+		private static Int128? Difference(Int128 a, Int128 e) => checked(a > e ? a - e : e - a);
+		private static UInt128? Difference(UInt128 a, UInt128 e) => a > e ? a - e : e - a;
+		private static Half? Difference(Half a, Half e) => Half.Abs(a - e);
+#endif
 	}
 
 	/// <remarks>
@@ -106,70 +128,51 @@ internal static class JsonValueReaders
 		public static readonly JsonValueReader<TNumber>? Instance = (JsonValueReader<TNumber>?)Create();
 
 		private static object? Create()
-		{
-			if (typeof(TNumber) == typeof(byte))
-			{
-				return CreateNumber("a byte", static (JsonElement e, out byte v) => e.TryGetByte(out v));
-			}
+			=> For<byte>("a byte", static (JsonElement e, out byte v) => e.TryGetByte(out v)) ??
+			   For<sbyte>("an sbyte", static (JsonElement e, out sbyte v) => e.TryGetSByte(out v)) ??
+			   For<short>("a short", static (JsonElement e, out short v) => e.TryGetInt16(out v)) ??
+			   For<ushort>("a ushort", static (JsonElement e, out ushort v) => e.TryGetUInt16(out v)) ??
+			   For<int>("an int", static (JsonElement e, out int v) => e.TryGetInt32(out v)) ??
+			   For<uint>("a uint", static (JsonElement e, out uint v) => e.TryGetUInt32(out v)) ??
+			   For<long>("a long", static (JsonElement e, out long v) => e.TryGetInt64(out v)) ??
+			   For<ulong>("a ulong", static (JsonElement e, out ulong v) => e.TryGetUInt64(out v)) ??
+			   For<BigInteger>("a BigInteger", TryGetBigInteger) ??
+			   For<float>("a float", TryGetSingle) ??
+			   For<double>("a double", TryGetDouble) ??
+			   For<decimal>("a decimal", static (JsonElement e, out decimal v) => e.TryGetDecimal(out v))
+#if NET8_0_OR_GREATER
+			   ?? For<nint>("an nint", TryParseInteger) ??
+			   For<nuint>("an nuint", TryParseInteger) ??
+			   For<Int128>("an Int128", TryParseInteger) ??
+			   For<UInt128>("a UInt128", TryParseInteger) ??
+			   For<Half>("a Half", TryGetHalf)
+#endif
+			;
 
-			if (typeof(TNumber) == typeof(sbyte))
-			{
-				return CreateNumber("an sbyte", static (JsonElement e, out sbyte v) => e.TryGetSByte(out v));
-			}
-
-			if (typeof(TNumber) == typeof(short))
-			{
-				return CreateNumber("a short", static (JsonElement e, out short v) => e.TryGetInt16(out v));
-			}
-
-			if (typeof(TNumber) == typeof(ushort))
-			{
-				return CreateNumber("a ushort", static (JsonElement e, out ushort v) => e.TryGetUInt16(out v));
-			}
-
-			if (typeof(TNumber) == typeof(int))
-			{
-				return CreateNumber("an int", static (JsonElement e, out int v) => e.TryGetInt32(out v));
-			}
-
-			if (typeof(TNumber) == typeof(uint))
-			{
-				return CreateNumber("a uint", static (JsonElement e, out uint v) => e.TryGetUInt32(out v));
-			}
-
-			if (typeof(TNumber) == typeof(long))
-			{
-				return CreateNumber("a long", static (JsonElement e, out long v) => e.TryGetInt64(out v));
-			}
-
-			if (typeof(TNumber) == typeof(ulong))
-			{
-				return CreateNumber("a ulong", static (JsonElement e, out ulong v) => e.TryGetUInt64(out v));
-			}
-
-			if (typeof(TNumber) == typeof(float))
-			{
-				return CreateNumber<float>("a float", TryGetSingle);
-			}
-
-			if (typeof(TNumber) == typeof(double))
-			{
-				return CreateNumber<double>("a double", TryGetDouble);
-			}
-
-			if (typeof(TNumber) == typeof(decimal))
-			{
-				return CreateNumber("a decimal", static (JsonElement e, out decimal v) => e.TryGetDecimal(out v));
-			}
-
-			return null;
-		}
-
-		private static JsonValueReader<T> CreateNumber<T>(string typeName, JsonValueRead<T> read)
-			=> new(JsonValueKind.Number, typeName, typeName, read);
+		private static object? For<T>(string typeName, JsonValueRead<T> read)
+			=> typeof(TNumber) == typeof(T) ? new JsonValueReader<T>(JsonValueKind.Number, typeName, typeName, read) : null;
 
 		/// <inheritdoc cref="TryGetDouble(JsonElement, out double)" />
 		private static bool TryGetSingle(JsonElement element, out float value)
 			=> element.TryGetSingle(out value) && !float.IsInfinity(value);
+
+		/// <remarks>
+		///     Like the methods of <see cref="JsonElement" /> for the integer types, a number with a fraction or an exponent
+		///     does not fit.
+		/// </remarks>
+		private static bool TryGetBigInteger(JsonElement element, out BigInteger value)
+			=> BigInteger.TryParse(element.GetRawText(), NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture,
+				out value);
+
+#if NET8_0_OR_GREATER
+		/// <inheritdoc cref="TryGetBigInteger(JsonElement, out BigInteger)" />
+		private static bool TryParseInteger<T>(JsonElement element, out T value) where T : IBinaryInteger<T>
+			=> T.TryParse(element.GetRawText(), NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out value!);
+
+		/// <inheritdoc cref="TryGetDouble(JsonElement, out double)" />
+		private static bool TryGetHalf(JsonElement element, out Half value)
+			=> Half.TryParse(element.GetRawText(), NumberStyles.Float, CultureInfo.InvariantCulture, out value) &&
+			   !Half.IsInfinity(value);
+#endif
 	}
 }

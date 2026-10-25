@@ -429,8 +429,8 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have property "title" which is a string,
-					             but it had property "title" with "Let It Be"
+					             does not have property "title" or $.title is not a string,
+					             but $.title was a string
 					             """);
 			}
 
@@ -443,6 +443,39 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).DoesNotComplyWith(it => it.HasProperty("title", p => p.IsNumber()));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenPropertyHasTheExpectedValue_ShouldReportTheValue()
+			{
+				JsonElement subject = FromString("{\"rating\": 4}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasProperty("rating", r => r.IsNumber(4)));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have property "rating" or $.rating is not an int equal to 4,
+					             but $.rating was 4
+					             """);
+			}
+
+			[Test]
+			public async Task WhenPropertyIsNested_ShouldNameEveryAlternative()
+			{
+				JsonElement subject = FromString("{\"artist\": {\"name\": \"The Beatles\"}}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.HasProperty("artist", a => a.HasProperty("name", n => n.IsString("The Beatles"))));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have property "artist" or $.artist does not have property "name" or $.artist.name is not a string equal to "The Beatles",
+					             but $.artist.name was "The Beatles"
+					             """);
 			}
 
 			[Test]

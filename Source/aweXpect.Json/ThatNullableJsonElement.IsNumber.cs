@@ -28,12 +28,22 @@ public static partial class ThatNullableJsonElement
 	/// <inheritdoc cref="ThatJsonElement.IsNumber{TNumber}(IThat{JsonElement})" />
 	[GuaranteesNotNull]
 	public static AndOrResult<JsonElement, IThat<JsonElement?>> IsNumber<TNumber>(this IThat<JsonElement?> subject)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
 		=> IsValue(subject, JsonValueReaders.GetNumber<TNumber>(), null);
 
 	/// <inheritdoc cref="ThatJsonElement.IsNumber{TNumber}(IThat{JsonElement}, Action{IThatSubject{TNumber}})" />
 	[GuaranteesNotNull]
 	public static AndOrResult<JsonElement, IThat<JsonElement?>> IsNumber<TNumber>(this IThat<JsonElement?> subject,
 		Action<IThatSubject<TNumber>> expectations)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		return IsValue(subject, JsonValueReaders.GetNumber<TNumber>(), expectations);

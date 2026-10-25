@@ -136,6 +136,9 @@ public static AndOrResult<Track, IThat<Track?>> HasTitle(
   `MemberAccessor<TSource, TMember>.FromFuncWithPath(…, path, "$")`, so that the contexts of a nested path replace the
   label of the enclosing one instead of repeating it, and follow the label of another member without the root, e.g.
   `elements[1].origin`.
+- When the constraint from `Validate(…)` finds the member, e.g. a property that may be missing, `NegatedAsAlternative(…)`
+  writes the negation as an alternative, e.g. `does not have property "a" or $.a is not equal to 1`, and the result
+  of the member then explains a failed negation.
 - `AddExpectations` hands the caller's `expectations` to the `static` lambda, so that adding them allocates neither a
   closure nor a delegate. An overload without this state takes a lambda that captures what it needs.
 - The function passed to `AddExpectations` sets the grammars of the nested expectations.

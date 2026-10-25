@@ -1462,6 +1462,7 @@ public abstract class ExpectationBuilder
 		private readonly Action<MemberAccessor, StringBuilder>? _expectationTextGenerator;
 		private readonly MemberAccessor<TSource, TMember>? _memberAccessor;
 		private readonly bool _replaceIt;
+		private Action<MemberAccessor, StringBuilder>? _negatedAlternativeTextGenerator;
 
 		private Func<string, ExpectationGrammars, IValueConstraint<TSource>>? _sourceConstraintBuilder;
 
@@ -1543,22 +1544,45 @@ public abstract class ExpectationBuilder
 		}
 
 		/// <summary>
+		///     Under negation, renders the expectations on the member as an alternative to the negated expectation on
+		///     the subject, introduced by the <paramref name="negatedExpectationTextGenerator" />, e.g.
+		///     <c>does not have property "a" or $.a is not equal to 1</c>.
+		/// </summary>
+		/// <remarks>
+		///     Use it when the expectation on the subject finds the member, e.g. a property that may be missing, so that
+		///     its negation is met when the member is missing or does not satisfy the expectations on it. A failed
+		///     negation is then explained by the result of the expectations on the member, unless the expectation on the
+		///     subject fails both ways.
+		/// </remarks>
+		public MemberExpectationBuilder<TSource, TMember> NegatedAsAlternative(
+			Action<MemberAccessor, StringBuilder> negatedExpectationTextGenerator)
+		{
+			_negatedAlternativeTextGenerator = negatedExpectationTextGenerator;
+			return this;
+		}
+
+		/// <summary>
 		///     Creates the mapping node whose expectations are typed at <typeparamref name="TNarrowed" />.
 		/// </summary>
 		private MappingNode<TSource, TMember, TNarrowed> CreateMappingNode<TNarrowed>()
 		{
+			MappingNode<TSource, TMember, TNarrowed> mappingNode;
 			if (_memberAccessor is not null)
 			{
-				return new MappingNode<TSource, TMember, TNarrowed>(_memberAccessor, _expectationTextGenerator);
+				mappingNode = new MappingNode<TSource, TMember, TNarrowed>(_memberAccessor, _expectationTextGenerator);
 			}
-
-			if (_asyncMemberAccessor is MemberAccessor<TSource, Task<TMember>> taskMemberAccessor)
+			else if (_asyncMemberAccessor is MemberAccessor<TSource, Task<TMember>> taskMemberAccessor)
 			{
-				return new MappingNode<TSource, TMember, TNarrowed>(taskMemberAccessor, _expectationTextGenerator);
+				mappingNode = new MappingNode<TSource, TMember, TNarrowed>(taskMemberAccessor, _expectationTextGenerator);
+			}
+			else
+			{
+				mappingNode = new MappingNode<TSource, TMember, TNarrowed>(
+					(MemberAccessor<TSource, ValueTask<TMember>>)_asyncMemberAccessor!, _expectationTextGenerator);
 			}
 
-			return new MappingNode<TSource, TMember, TNarrowed>(
-				(MemberAccessor<TSource, ValueTask<TMember>>)_asyncMemberAccessor!, _expectationTextGenerator);
+			mappingNode.NegatedAlternativeTextGenerator = _negatedAlternativeTextGenerator;
+			return mappingNode;
 		}
 	}
 }

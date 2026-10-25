@@ -32,6 +32,15 @@ internal abstract class MappingNode : ExpectationNode
 	public string? ContextMember { get; set; }
 
 	/// <summary>
+	///     Writes the text that introduces the member as an alternative to the negated expectation on the subject, e.g.
+	///     <c> or $.a </c>, or <see langword="null" /> when a negation keeps the expectations on the member as they are.
+	/// </summary>
+	/// <remarks>
+	///     See <see cref="ExpectationBuilder.MemberExpectationBuilder{TSource,TMember}.NegatedAsAlternative" />.
+	/// </remarks>
+	public Action<MemberAccessor, StringBuilder>? NegatedAlternativeTextGenerator { get; set; }
+
+	/// <summary>
 	///     Combines the <paramref name="result" /> of the expectations on the member with the
 	///     <paramref name="combinedResult" /> of the expectations on the value, if any.
 	/// </summary>
@@ -245,7 +254,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		{
 			// The value only has another type after a failed type check (e.g. `Is<T>()`), which reports the mismatch.
 			ConstraintResult expectationResult = await GetExpectationResult(context, cancellationToken);
-			return new NotApplicableConstraintResult(expectationResult.AppendExpectation);
+			return new NotApplicableConstraintResult(expectationResult);
 		}
 
 		TTarget member = default!;
@@ -379,7 +388,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	{
 		ConstraintResult expectationResult = await base.IsMetBy<TNarrowed>(default,
 			ExpectationTextEvaluationContext.For(context), cancellationToken);
-		return new NotApplicableConstraintResult(expectationResult.AppendExpectation);
+		return new NotApplicableConstraintResult(expectationResult);
 	}
 
 	/// <summary>

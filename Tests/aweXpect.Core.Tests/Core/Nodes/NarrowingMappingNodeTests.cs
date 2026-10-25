@@ -125,9 +125,21 @@ public class NarrowingMappingNodeTests
 	}
 
 	[Test]
+	public async Task NotApplicableResult_Negate_ShouldNegateTheExpectations()
+	{
+		DummyConstraintResult expectations = new(Outcome.Success, "foo");
+		NotApplicableConstraintResult result = new(expectations);
+
+		result.Negate();
+
+		await That(expectations.Outcome).IsEqualTo(Outcome.Failure)
+			.Because("the expectation text of the expectations that were not applied follows a negation");
+	}
+
+	[Test]
 	public async Task NotApplicableResult_Negate_ShouldStayUndecided()
 	{
-		NotApplicableConstraintResult result = new((sb, _) => sb.Append("foo"));
+		NotApplicableConstraintResult result = new(new DummyConstraintResult(Outcome.Success, "foo"));
 
 		ConstraintResult negatedResult = result.Negate();
 
@@ -137,7 +149,7 @@ public class NarrowingMappingNodeTests
 	[Test]
 	public async Task NotApplicableResult_TryGetValue_ShouldReturnFalse()
 	{
-		NotApplicableConstraintResult constraintResult = new((sb, _) => sb.Append("foo"));
+		NotApplicableConstraintResult constraintResult = new(new DummyConstraintResult(Outcome.Success, "foo"));
 
 		bool result = constraintResult.TryGetValue(out object? value);
 

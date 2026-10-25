@@ -60,6 +60,18 @@ of a failure, a name that is no plain identifier is written in brackets, e.g. `$
 be read as several segments. A subject that is no JSON object fails `HasProperty` and `DoesNotHaveProperty` alike, e.g.
 with `but it was an array`.
 
+Negated, e.g. within `DoesNotComplyWith(…)`, the expectations on a property are an alternative: the negation is met
+when the property does not exist or its value does not satisfy them. Negating
+`HasProperty("title", t => t.IsString("Let It Be"))` would fail for the track with:
+
+```text title="Failure message"
+Expected that track
+does not have property "title" or $.title is not a string equal to "Let It Be",
+but $.title was "Let It Be"
+```
+
+The same applies to [`HasValueAt`](#values-at-a-path) and [`HasElementAt`](#elements).
+
 The expectations can be nested, and the JSON path in the failure continues with each level:
 
 ```csharp
@@ -382,8 +394,10 @@ is `null`, so `IsString()`, `IsNumber()` and `IsBoolean()` are available, but no
 
 `IsNumber<TNumber>()` verifies that a number fits into the number type, e.g. that it is an integer within the range of
 an `int`, and `IsNumber<TNumber>(n => …)` verifies the value as this type. The supported types are `byte`, `sbyte`,
-`short`, `ushort`, `int`, `uint`, `long`, `ulong`, `float`, `double` and `decimal`; any other type throws a
-`NotSupportedException`. `IsNumber(n => …)` without a type argument verifies the number as `double`:
+`short`, `ushort`, `int`, `uint`, `long`, `ulong`, `BigInteger`, `float`, `double` and `decimal`, and on .NET 8 or
+later also `nint`, `nuint`, `Int128`, `UInt128` and `Half`. A type that is no number does not compile, and any other
+number type, e.g. `char`, throws a `NotSupportedException`. `IsNumber(n => …)` without a type argument verifies the
+number as `double`:
 
 ```csharp
 JsonElement track = JsonDocument.Parse("""{"durationSeconds": 243, "price": 9.99}""").RootElement;

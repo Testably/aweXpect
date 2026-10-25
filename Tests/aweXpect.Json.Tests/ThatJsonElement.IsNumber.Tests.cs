@@ -218,6 +218,16 @@ public sealed partial class ThatJsonElement
 			[Arguments("1e39", "float", "a float")]
 			[Arguments("1e400", "double", "a double")]
 			[Arguments("1e30", "decimal", "a decimal")]
+			[Arguments("1.5", "BigInteger", "a BigInteger")]
+			[Arguments("1e2", "BigInteger", "a BigInteger")]
+#if NET8_0_OR_GREATER
+			[Arguments("9223372036854775808", "nint", "an nint")]
+			[Arguments("-1", "nuint", "an nuint")]
+			[Arguments("170141183460469231731687303715884105728", "Int128", "an Int128")]
+			[Arguments("-1", "UInt128", "a UInt128")]
+			[Arguments("1.5", "Int128", "an Int128")]
+			[Arguments("1e5", "Half", "a Half")]
+#endif
 			public async Task WhenNumberDoesNotFit_ShouldFail(string json, string type, string expected)
 			{
 				JsonElement subject = FromString(json);
@@ -245,6 +255,14 @@ public sealed partial class ThatJsonElement
 			[Arguments("1.5", "float")]
 			[Arguments("1.5e300", "double")]
 			[Arguments("79228162514264337593543950335", "decimal")]
+			[Arguments("-123456789012345678901234567890123456789012345678901234567890", "BigInteger")]
+#if NET8_0_OR_GREATER
+			[Arguments("-9223372036854775808", "nint")]
+			[Arguments("18446744073709551615", "nuint")]
+			[Arguments("-170141183460469231731687303715884105728", "Int128")]
+			[Arguments("340282366920938463463374607431768211455", "UInt128")]
+			[Arguments("1.5e4", "Half")]
+#endif
 			public async Task WhenNumberFits_ShouldSucceed(string json, string type)
 			{
 				JsonElement subject = FromString(json);
@@ -261,11 +279,11 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString("1");
 
 				async Task Act()
-					=> await That(subject).IsNumber<string>();
+					=> await That(subject).IsNumber<char>();
 
 				await That(Act).Throws<NotSupportedException>()
 					.WithMessage(
-						"The number type string is not supported. Use byte, sbyte, short, ushort, int, uint, long, ulong, float, double or decimal.");
+						$"The number type char is not supported. Use {ThatJsonElement.SupportedNumberTypes}.");
 			}
 
 			private static async Task VerifyIsNumberOfType(JsonElement subject, string type)
@@ -302,6 +320,26 @@ public sealed partial class ThatJsonElement
 					case "double":
 						await That(subject).IsNumber<double>();
 						break;
+					case "BigInteger":
+						await That(subject).IsNumber<BigInteger>();
+						break;
+#if NET8_0_OR_GREATER
+					case "nint":
+						await That(subject).IsNumber<nint>();
+						break;
+					case "nuint":
+						await That(subject).IsNumber<nuint>();
+						break;
+					case "Int128":
+						await That(subject).IsNumber<Int128>();
+						break;
+					case "UInt128":
+						await That(subject).IsNumber<UInt128>();
+						break;
+					case "Half":
+						await That(subject).IsNumber<Half>();
+						break;
+#endif
 					default:
 						await That(subject).IsNumber<decimal>();
 						break;
@@ -402,11 +440,11 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString("1");
 
 				async Task Act()
-					=> await That(subject).IsNumber<object>(n => n.IsNotNull());
+					=> await That(subject).IsNumber<char>(n => n.IsEqualTo('a'));
 
 				await That(Act).Throws<NotSupportedException>()
 					.WithMessage(
-						"The number type object is not supported. Use byte, sbyte, short, ushort, int, uint, long, ulong, float, double or decimal.");
+						$"The number type char is not supported. Use {ThatJsonElement.SupportedNumberTypes}.");
 			}
 		}
 
@@ -599,6 +637,14 @@ public sealed partial class ThatJsonElement
 			[Arguments("float")]
 			[Arguments("double")]
 			[Arguments("decimal")]
+			[Arguments("BigInteger")]
+#if NET8_0_OR_GREATER
+			[Arguments("nint")]
+			[Arguments("nuint")]
+			[Arguments("Int128")]
+			[Arguments("UInt128")]
+			[Arguments("Half")]
+#endif
 			public async Task WhenNumberIsWithinTheTolerance_ShouldSucceed(string type)
 			{
 				JsonElement subject = FromString("43");
@@ -615,11 +661,11 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString("1");
 
 				async Task Act()
-					=> await That(subject).IsNumber(new BigInteger(1));
+					=> await That(subject).IsNumber('a');
 
 				await That(Act).Throws<NotSupportedException>()
 					.WithMessage(
-						"The number type BigInteger is not supported. Use byte, sbyte, short, ushort, int, uint, long, ulong, float, double or decimal.");
+						$"The number type char is not supported. Use {ThatJsonElement.SupportedNumberTypes}.");
 			}
 
 			private static async Task VerifyIsNumberWithin(JsonElement subject, string type)
@@ -656,6 +702,26 @@ public sealed partial class ThatJsonElement
 					case "double":
 						await That(subject).IsNumber(42.0).Within(1);
 						break;
+					case "BigInteger":
+						await That(subject).IsNumber(new BigInteger(42)).Within(1);
+						break;
+#if NET8_0_OR_GREATER
+					case "nint":
+						await That(subject).IsNumber((nint)42).Within(1);
+						break;
+					case "nuint":
+						await That(subject).IsNumber((nuint)42).Within(1);
+						break;
+					case "Int128":
+						await That(subject).IsNumber((Int128)42).Within(1);
+						break;
+					case "UInt128":
+						await That(subject).IsNumber((UInt128)42).Within(1);
+						break;
+					case "Half":
+						await That(subject).IsNumber((Half)42).Within((Half)1);
+						break;
+#endif
 					default:
 						await That(subject).IsNumber(42M).Within(1);
 						break;

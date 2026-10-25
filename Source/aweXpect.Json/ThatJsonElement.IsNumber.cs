@@ -37,10 +37,17 @@ public static partial class ThatJsonElement
 	/// <remarks>
 	///     The supported number types are <see langword="byte" />, <see langword="sbyte" />, <see langword="short" />,
 	///     <see langword="ushort" />, <see langword="int" />, <see langword="uint" />, <see langword="long" />,
-	///     <see langword="ulong" />, <see langword="float" />, <see langword="double" /> and <see langword="decimal" />.
+	///     <see langword="ulong" />, <see cref="System.Numerics.BigInteger" />, <see langword="float" />,
+	///     <see langword="double" /> and <see langword="decimal" />, and on .NET 8 or later also <see langword="nint" />,
+	///     <see langword="nuint" />, <c>Int128</c>, <c>UInt128</c> and <c>Half</c>.
 	/// </remarks>
 	/// <exception cref="NotSupportedException">The <typeparamref name="TNumber" /> is not supported.</exception>
 	public static AndOrResult<JsonElement, IThat<JsonElement>> IsNumber<TNumber>(this IThat<JsonElement> subject)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
 		=> IsValue(subject, JsonValueReaders.GetNumber<TNumber>(), null);
 
 	/// <summary>
@@ -50,11 +57,18 @@ public static partial class ThatJsonElement
 	/// <remarks>
 	///     The supported number types are <see langword="byte" />, <see langword="sbyte" />, <see langword="short" />,
 	///     <see langword="ushort" />, <see langword="int" />, <see langword="uint" />, <see langword="long" />,
-	///     <see langword="ulong" />, <see langword="float" />, <see langword="double" /> and <see langword="decimal" />.
+	///     <see langword="ulong" />, <see cref="System.Numerics.BigInteger" />, <see langword="float" />,
+	///     <see langword="double" /> and <see langword="decimal" />, and on .NET 8 or later also <see langword="nint" />,
+	///     <see langword="nuint" />, <c>Int128</c>, <c>UInt128</c> and <c>Half</c>.
 	/// </remarks>
 	/// <exception cref="NotSupportedException">The <typeparamref name="TNumber" /> is not supported.</exception>
 	public static AndOrResult<JsonElement, IThat<JsonElement>> IsNumber<TNumber>(this IThat<JsonElement> subject,
 		Action<IThatSubject<TNumber>> expectations)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		return IsValue(subject, JsonValueReaders.GetNumber<TNumber>(), expectations);
@@ -73,7 +87,9 @@ public static partial class ThatJsonElement
 	///     <para />
 	///     The supported number types are <see langword="byte" />, <see langword="sbyte" />, <see langword="short" />,
 	///     <see langword="ushort" />, <see langword="int" />, <see langword="uint" />, <see langword="long" />,
-	///     <see langword="ulong" />, <see langword="float" />, <see langword="double" /> and <see langword="decimal" />.
+	///     <see langword="ulong" />, <see cref="System.Numerics.BigInteger" />, <see langword="float" />,
+	///     <see langword="double" /> and <see langword="decimal" />, and on .NET 8 or later also <see langword="nint" />,
+	///     <see langword="nuint" />, <c>Int128</c>, <c>UInt128</c> and <c>Half</c>.
 	/// </remarks>
 	/// <exception cref="NotSupportedException">The <typeparamref name="TNumber" /> is not supported.</exception>
 	public static NumberToleranceResult<JsonElement, IThat<JsonElement>, TNumber> IsNumber<TNumber>(

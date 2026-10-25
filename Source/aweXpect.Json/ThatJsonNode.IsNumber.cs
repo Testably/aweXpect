@@ -51,13 +51,20 @@ public static partial class ThatJsonNode
 	/// <remarks>
 	///     The supported number types are <see langword="byte" />, <see langword="sbyte" />, <see langword="short" />,
 	///     <see langword="ushort" />, <see langword="int" />, <see langword="uint" />, <see langword="long" />,
-	///     <see langword="ulong" />, <see langword="float" />, <see langword="double" /> and <see langword="decimal" />.
+	///     <see langword="ulong" />, <see cref="System.Numerics.BigInteger" />, <see langword="float" />,
+	///     <see langword="double" /> and <see langword="decimal" />, and on .NET 8 or later also <see langword="nint" />,
+	///     <see langword="nuint" />, <c>Int128</c>, <c>UInt128</c> and <c>Half</c>.
 	///     <para />
 	///     The subject is a <see cref="JsonNode" /> of any type, so that the number type is the only type argument.
 	/// </remarks>
 	/// <exception cref="NotSupportedException">The <typeparamref name="TNumber" /> is not supported.</exception>
 	[GuaranteesNotNull]
 	public static AndOrResult<JsonNode, IThat<JsonNode?>> IsNumber<TNumber>(this IThat<JsonNode?> subject)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
 		=> IsValue(subject, JsonValueReaders.GetNumber<TNumber>(), null);
 
 	/// <summary>
@@ -67,7 +74,9 @@ public static partial class ThatJsonNode
 	/// <remarks>
 	///     The supported number types are <see langword="byte" />, <see langword="sbyte" />, <see langword="short" />,
 	///     <see langword="ushort" />, <see langword="int" />, <see langword="uint" />, <see langword="long" />,
-	///     <see langword="ulong" />, <see langword="float" />, <see langword="double" /> and <see langword="decimal" />.
+	///     <see langword="ulong" />, <see cref="System.Numerics.BigInteger" />, <see langword="float" />,
+	///     <see langword="double" /> and <see langword="decimal" />, and on .NET 8 or later also <see langword="nint" />,
+	///     <see langword="nuint" />, <c>Int128</c>, <c>UInt128</c> and <c>Half</c>.
 	///     <para />
 	///     The subject is a <see cref="JsonNode" /> of any type, so that the number type is the only type argument.
 	/// </remarks>
@@ -75,6 +84,11 @@ public static partial class ThatJsonNode
 	[GuaranteesNotNull]
 	public static AndOrResult<JsonNode, IThat<JsonNode?>> IsNumber<TNumber>(this IThat<JsonNode?> subject,
 		Action<IThatSubject<TNumber>> expectations)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		return IsValue(subject, JsonValueReaders.GetNumber<TNumber>(), expectations);
@@ -93,7 +107,9 @@ public static partial class ThatJsonNode
 	///     <para />
 	///     The supported number types are <see langword="byte" />, <see langword="sbyte" />, <see langword="short" />,
 	///     <see langword="ushort" />, <see langword="int" />, <see langword="uint" />, <see langword="long" />,
-	///     <see langword="ulong" />, <see langword="float" />, <see langword="double" /> and <see langword="decimal" />.
+	///     <see langword="ulong" />, <see cref="System.Numerics.BigInteger" />, <see langword="float" />,
+	///     <see langword="double" /> and <see langword="decimal" />, and on .NET 8 or later also <see langword="nint" />,
+	///     <see langword="nuint" />, <c>Int128</c>, <c>UInt128</c> and <c>Half</c>.
 	///     <para />
 	///     The subject is a <see cref="JsonNode" /> of any type, so that the number type is the only type argument.
 	/// </remarks>

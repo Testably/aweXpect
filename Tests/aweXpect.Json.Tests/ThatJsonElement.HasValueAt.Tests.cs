@@ -305,7 +305,7 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have value at "artist.name" which is a string,
+					             does not have value at "artist.name" or $.artist.name is not a string,
 					             but $.artist was a number instead of an object
 					             """)
 					.Because("the value cannot be looked up in a value of another kind");
@@ -333,8 +333,8 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have value at "tracks[0].title" which is a string,
-					             but it had value at "tracks[0].title" with "Something"
+					             does not have value at "tracks[0].title" or $.tracks[0].title is not a string,
+					             but $.tracks[0].title was a string
 					             """);
 			}
 		}

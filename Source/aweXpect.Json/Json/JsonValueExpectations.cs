@@ -20,6 +20,7 @@ internal static class JsonValueExpectations
 			.ForMember(MemberAccessor<FoundJsonValue<TValue>, TValue>.FromFuncWithPath(
 					static found => found.Value, target.Path, "$"),
 				static (_, stringBuilder) => stringBuilder.Append(" which "))
+			.NegatedAsAlternative(static (member, stringBuilder) => stringBuilder.Append(" or ").Append(member).Append(' '))
 			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TValue>(e)),
 				Singular);
 	}

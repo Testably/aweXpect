@@ -221,7 +221,7 @@ public sealed partial class ThatNullableJsonElement
 
 				await That(Act).Throws<NotSupportedException>()
 					.WithMessage(
-						"The number type char is not supported. Use byte, sbyte, short, ushort, int, uint, long, ulong, float, double or decimal.");
+						$"The number type char is not supported. Use {ThatJsonElement.SupportedNumberTypes}.");
 			}
 		}
 
@@ -292,11 +292,11 @@ public sealed partial class ThatNullableJsonElement
 				JsonElement? subject = FromString("1");
 
 				async Task Act()
-					=> await That(subject).IsNumber(new BigInteger(1));
+					=> await That(subject).IsNumber('a');
 
 				await That(Act).Throws<NotSupportedException>()
 					.WithMessage(
-						"The number type BigInteger is not supported. Use byte, sbyte, short, ushort, int, uint, long, ulong, float, double or decimal.");
+						$"The number type char is not supported. Use {ThatJsonElement.SupportedNumberTypes}.");
 			}
 		}
 

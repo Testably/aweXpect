@@ -323,6 +323,7 @@ namespace aweXpect.Core
             public aweXpect.Core.ExpectationBuilder AddExpectations(System.Action<aweXpect.Core.ExpectationBuilder> expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) { }
             public aweXpect.Core.ExpectationBuilder AddExpectations<TNarrowed>(System.Action<aweXpect.Core.ExpectationBuilder> expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) where TNarrowed : TMember { }
             public aweXpect.Core.ExpectationBuilder AddExpectations<TState>(TState state, System.Action<TState, aweXpect.Core.ExpectationBuilder> expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) { }
+            public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TMember> NegatedAsAlternative(System.Action<aweXpect.Core.MemberAccessor, System.Text.StringBuilder> negatedExpectationTextGenerator) { }
             public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TMember> Validate(System.Func<string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TSource>> constraintBuilder) { }
         }
     }
