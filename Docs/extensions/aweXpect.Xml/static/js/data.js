@@ -684,6 +684,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
         "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
+      },
+      {
+        "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
+        "message": "refactor: continue the element expectations on a non-null collection (#2019)"
       }
     ],
     "labels": [
@@ -800,7 +806,8 @@ window.BENCHMARK_DATA = {
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
-      "8b73c040"
+      "8b73c040",
+      "54813a41"
     ],
     "datasets": [
       {
@@ -920,7 +927,8 @@ window.BENCHMARK_DATA = {
           717.9345635005405,
           750.12114944458,
           749.9437569890704,
-          613.8147937910898
+          613.8147937910898,
+          366.93303833007815
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1044,6 +1052,7 @@ window.BENCHMARK_DATA = {
           1120,
           1120,
           1120,
+          1152,
           1152,
           1152
         ],
@@ -1173,7 +1182,8 @@ window.BENCHMARK_DATA = {
           644.5539443333944,
           714.3283373968942,
           721.0961449305216,
-          543.47695849492
+          543.47695849492,
+          332.43461243311566
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1185,6 +1195,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -1996,6 +2007,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
         "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
+      },
+      {
+        "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
+        "message": "refactor: continue the element expectations on a non-null collection (#2019)"
       }
     ],
     "labels": [
@@ -2112,7 +2129,8 @@ window.BENCHMARK_DATA = {
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
-      "8b73c040"
+      "8b73c040",
+      "54813a41"
     ],
     "datasets": [
       {
@@ -2232,7 +2250,8 @@ window.BENCHMARK_DATA = {
           4235.36406771342,
           4636.322278849284,
           4636.583174024309,
-          3446.5765503474645
+          3446.5765503474645,
+          2284.782788594564
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2356,6 +2375,7 @@ window.BENCHMARK_DATA = {
           24119,
           24119,
           24119,
+          24320,
           24320,
           24320
         ],
@@ -2485,7 +2505,8 @@ window.BENCHMARK_DATA = {
           4923.9000595092775,
           5049.822891235352,
           5110.06082611084,
-          3921.6350898742676
+          3921.6350898742676,
+          2537.695639038086
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2497,6 +2518,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -3248,6 +3270,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
         "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
+      },
+      {
+        "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
+        "message": "refactor: continue the element expectations on a non-null collection (#2019)"
       }
     ],
     "labels": [
@@ -3354,7 +3382,8 @@ window.BENCHMARK_DATA = {
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
-      "8b73c040"
+      "8b73c040",
+      "54813a41"
     ],
     "datasets": [
       {
@@ -3464,7 +3493,8 @@ window.BENCHMARK_DATA = {
           2504.5167170206705,
           2557.3446968078615,
           2542.819254738944,
-          1886.245857825646
+          1886.245857825646,
+          1300.3378804524739
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3579,7 +3609,8 @@ window.BENCHMARK_DATA = {
           12780,
           12780,
           12856,
-          12780
+          12780,
+          12856
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3697,7 +3728,8 @@ window.BENCHMARK_DATA = {
           3457.580307824271,
           3581.567337290446,
           3508.795688120524,
-          2678.4281653086346
+          2678.4281653086346,
+          1748.4815519968668
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3709,6 +3741,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -4450,6 +4483,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
         "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
+      },
+      {
+        "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
+        "message": "refactor: continue the element expectations on a non-null collection (#2019)"
       }
     ],
     "labels": [
@@ -4556,7 +4595,8 @@ window.BENCHMARK_DATA = {
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
-      "8b73c040"
+      "8b73c040",
+      "54813a41"
     ],
     "datasets": [
       {
@@ -4666,7 +4706,8 @@ window.BENCHMARK_DATA = {
           13649.3572038923,
           14160.344940185547,
           14138.519918169293,
-          10372.206244913737
+          10372.206244913737,
+          6868.002044677734
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4781,7 +4822,8 @@ window.BENCHMARK_DATA = {
           25494,
           25494,
           25568,
-          25494
+          25494,
+          25568
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4899,7 +4941,8 @@ window.BENCHMARK_DATA = {
           352688.5303109976,
           379218.6038295201,
           363124.762507512,
-          239161.95762416295
+          239161.95762416295,
+          156920.8436453683
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5013,6 +5056,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544329,
+          544335,
           544335,
           544335
         ],
