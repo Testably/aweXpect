@@ -780,6 +780,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
         "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
+      },
+      {
+        "sha": "7d0dbd4c723b7254b9dc7c970552922fc70788a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:32:31 2026 \u002B0100",
+        "message": "fix: use the collection \u0022more\u0022 marker in the JSON and XML difference lists (#2061)"
       }
     ],
     "labels": [
@@ -912,7 +918,8 @@ window.BENCHMARK_DATA = {
       "44ad4465",
       "9dc4e7bb",
       "b7024c3c",
-      "9f98f729"
+      "9f98f729",
+      "7d0dbd4c"
     ],
     "datasets": [
       {
@@ -1048,7 +1055,8 @@ window.BENCHMARK_DATA = {
           676.1633385022482,
           696.8964576721191,
           390.2847415850713,
-          414.9462034702301
+          414.9462034702301,
+          741.3719130198161
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1182,6 +1190,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          592,
           592,
           592,
           592,
@@ -1333,7 +1342,8 @@ window.BENCHMARK_DATA = {
           880.3888893127441,
           918.6337985311236,
           535.3275960922241,
-          535.7304812944852
+          535.7304812944852,
+          939.1226808003017
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1345,6 +1355,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -2268,6 +2279,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
         "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
+      },
+      {
+        "sha": "7d0dbd4c723b7254b9dc7c970552922fc70788a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:32:31 2026 \u002B0100",
+        "message": "fix: use the collection \u0022more\u0022 marker in the JSON and XML difference lists (#2061)"
       }
     ],
     "labels": [
@@ -2400,7 +2417,8 @@ window.BENCHMARK_DATA = {
       "44ad4465",
       "9dc4e7bb",
       "b7024c3c",
-      "9f98f729"
+      "9f98f729",
+      "7d0dbd4c"
     ],
     "datasets": [
       {
@@ -2536,7 +2554,8 @@ window.BENCHMARK_DATA = {
           141.197344149862,
           148.9260809788337,
           74.94456945146833,
-          80.29966062307358
+          80.29966062307358,
+          156.31375538508098
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2576,6 +2595,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -2821,7 +2841,8 @@ window.BENCHMARK_DATA = {
           214.1556692490211,
           209.3827139230875,
           133.6875028292338,
-          130.46587387720743
+          130.46587387720743,
+          220.10515964825947
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2833,6 +2854,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -3756,6 +3778,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
         "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
+      },
+      {
+        "sha": "7d0dbd4c723b7254b9dc7c970552922fc70788a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:32:31 2026 \u002B0100",
+        "message": "fix: use the collection \u0022more\u0022 marker in the JSON and XML difference lists (#2061)"
       }
     ],
     "labels": [
@@ -3888,7 +3916,8 @@ window.BENCHMARK_DATA = {
       "44ad4465",
       "9dc4e7bb",
       "b7024c3c",
-      "9f98f729"
+      "9f98f729",
+      "7d0dbd4c"
     ],
     "datasets": [
       {
@@ -4024,7 +4053,8 @@ window.BENCHMARK_DATA = {
           1910.8503578186035,
           1820.626187769572,
           1041.751329421997,
-          995.7361735026042
+          995.7361735026042,
+          1952.0222222464424
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4164,6 +4194,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1800,
+          1888,
           1888,
           1888
         ],
@@ -4309,7 +4340,8 @@ window.BENCHMARK_DATA = {
           1366.0192668621357,
           1438.6167323248726,
           835.3079631169637,
-          834.8698577245076
+          834.8698577245076,
+          1483.188051478068
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4450,6 +4482,7 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1953,
+          1864,
           1864
         ],
         "borderColor": "#FF671B",
@@ -5184,6 +5217,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
         "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
+      },
+      {
+        "sha": "7d0dbd4c723b7254b9dc7c970552922fc70788a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:32:31 2026 \u002B0100",
+        "message": "fix: use the collection \u0022more\u0022 marker in the JSON and XML difference lists (#2061)"
       }
     ],
     "labels": [
@@ -5306,7 +5345,8 @@ window.BENCHMARK_DATA = {
       "44ad4465",
       "9dc4e7bb",
       "b7024c3c",
-      "9f98f729"
+      "9f98f729",
+      "7d0dbd4c"
     ],
     "datasets": [
       {
@@ -5432,7 +5472,8 @@ window.BENCHMARK_DATA = {
           2761.2615197988657,
           2665.9691129831167,
           1518.6339042370137,
-          1468.103524017334
+          1468.103524017334,
+          2848.43616027832
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5562,6 +5603,7 @@ window.BENCHMARK_DATA = {
           3016,
           3016,
           3008,
+          3184,
           3184,
           3184
         ],
@@ -5697,7 +5739,8 @@ window.BENCHMARK_DATA = {
           3767.3582730611165,
           3713.240572520665,
           2235.4746020180837,
-          2315.7253766377767
+          2315.7253766377767,
+          3904.8881650652206
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5828,6 +5871,7 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3981,
+          3980,
           3980
         ],
         "borderColor": "#FF671B",
@@ -6562,6 +6606,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
         "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
+      },
+      {
+        "sha": "7d0dbd4c723b7254b9dc7c970552922fc70788a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:32:31 2026 \u002B0100",
+        "message": "fix: use the collection \u0022more\u0022 marker in the JSON and XML difference lists (#2061)"
       }
     ],
     "labels": [
@@ -6684,7 +6734,8 @@ window.BENCHMARK_DATA = {
       "44ad4465",
       "9dc4e7bb",
       "b7024c3c",
-      "9f98f729"
+      "9f98f729",
+      "7d0dbd4c"
     ],
     "datasets": [
       {
@@ -6810,7 +6861,8 @@ window.BENCHMARK_DATA = {
           386.2103663512639,
           395.25831361917346,
           225.76909025510153,
-          217.1549676014827
+          217.1549676014827,
+          463.555238978068
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6934,6 +6986,7 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
+          696,
           696,
           696,
           696,
@@ -7075,7 +7128,8 @@ window.BENCHMARK_DATA = {
           2217.5441766466415,
           2296.1132569994247,
           1362.5206458227974,
-          1409.5500555038452
+          1409.5500555038452,
+          2373.0495864323207
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7087,6 +7141,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -7940,6 +7995,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:28:11 2026 \u002B0100",
         "message": "feat: pass the evaluation context and cancellation token to member accessors (#2065)"
+      },
+      {
+        "sha": "7d0dbd4c723b7254b9dc7c970552922fc70788a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 17:32:31 2026 \u002B0100",
+        "message": "fix: use the collection \u0022more\u0022 marker in the JSON and XML difference lists (#2061)"
       }
     ],
     "labels": [
@@ -8062,7 +8123,8 @@ window.BENCHMARK_DATA = {
       "44ad4465",
       "9dc4e7bb",
       "b7024c3c",
-      "9f98f729"
+      "9f98f729",
+      "7d0dbd4c"
     ],
     "datasets": [
       {
@@ -8188,7 +8250,8 @@ window.BENCHMARK_DATA = {
           2883.9860046931676,
           2870.9504817326865,
           1638.7766861234393,
-          1623.9279898234777
+          1623.9279898234777,
+          3046.3959538777667
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8318,6 +8381,7 @@ window.BENCHMARK_DATA = {
           3232,
           3232,
           3224,
+          3312,
           3312,
           3312
         ],
@@ -8453,7 +8517,8 @@ window.BENCHMARK_DATA = {
           302448.46456473216,
           276975.9881310096,
           165553.58056640625,
-          172382.05252278646
+          172382.05252278646,
+          280915.2075846354
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8584,7 +8649,8 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17574,
-          17576
+          17576,
+          17577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
