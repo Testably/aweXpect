@@ -2,6 +2,7 @@
 using System.Linq;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Results;
 using aweXpect.SourceGenerators;

@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Customization;
-using aweXpect.Helpers;
 using aweXpect.Options;
 #if NET8_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;

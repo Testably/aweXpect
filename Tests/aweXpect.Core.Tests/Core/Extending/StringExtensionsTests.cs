@@ -104,6 +104,13 @@ public class StringExtensionsTests
 		[Arguments("Update", "an Update")]
 		[Arguments("H", "an H")]
 		[Arguments("U", "a U")]
+		[Arguments("egg", "an egg")]
+		[Arguments("ice", "an ice")]
+		[Arguments("Item", "an Item")]
+		[Arguments("Owl", "an Owl")]
+		[Arguments("umbrella", "an umbrella")]
+		[Arguments("Utopia", "a Utopia")]
+		[Arguments("Uganda", "a Uganda")]
 		[Arguments("Int32", "an Int32")]
 		[Arguments("Object", "an Object")]
 		[Arguments("orange", "an orange")]
@@ -157,6 +164,28 @@ public class StringExtensionsTests
 			string result = input.TrimCommonWhiteSpace();
 
 			await That(result).IsEqualTo(input);
+		}
+
+		[Test]
+		public async Task WhenBlankLinesAreLongerThanCommonWhiteSpace_ShouldTrimThem()
+		{
+			string input = """
+			               foo
+			                     bar
+			                    
+			                   baz
+			                 bay
+			               """;
+
+			string result = input.TrimCommonWhiteSpace();
+
+			await That(result).IsEqualTo("""
+			                             foo
+			                                 bar
+			                                
+			                               baz
+			                             bay
+			                             """);
 		}
 
 		[Test]

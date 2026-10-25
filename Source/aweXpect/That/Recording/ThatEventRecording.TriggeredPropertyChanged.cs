@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Recording;
 using aweXpect.Results;
 using RepeatedCheckOptions = aweXpect.Options.RepeatedCheckOptions;

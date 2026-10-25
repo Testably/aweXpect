@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 #if NET8_0_OR_GREATER
 using System.Threading;

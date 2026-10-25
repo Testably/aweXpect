@@ -2,6 +2,7 @@
 using System.Linq;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -292,7 +293,7 @@ public static partial class ThatNumber
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -340,7 +341,7 @@ public static partial class ThatNumber
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -388,7 +389,7 @@ public static partial class ThatNumber
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -436,7 +437,7 @@ public static partial class ThatNumber
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -578,7 +579,7 @@ public static partial class ThatNumber
 	{
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars);
 
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
@@ -628,7 +629,7 @@ public static partial class ThatNumber
 	{
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars);
 
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
@@ -678,7 +679,7 @@ public static partial class ThatNumber
 	{
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars);
 
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
@@ -728,7 +729,7 @@ public static partial class ThatNumber
 	{
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars);
 
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{

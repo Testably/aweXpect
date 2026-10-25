@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
