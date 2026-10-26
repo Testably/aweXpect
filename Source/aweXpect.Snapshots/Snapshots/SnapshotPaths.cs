@@ -3,7 +3,7 @@ using System;
 namespace aweXpect.Snapshots;
 
 /// <summary>
-///     The paths of the environment, see <see cref="SnapshotFor{TResult}.Paths" />, which are masked by default and can
+///     The paths of the environment, see <see cref="SnapshotTextFor{TResult}.Paths" />, which are masked by default and can
 ///     only be kept.
 /// </summary>
 /// <typeparam name="TResult">What an action returns.</typeparam>

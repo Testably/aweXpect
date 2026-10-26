@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Customization;
@@ -284,7 +285,7 @@ public sealed partial class ThatSnapshot
 			[Test]
 			public async Task Containing_AfterTheAction_ShouldNoLongerOfferTheOptionsOfTheRule()
 			{
-				Type containing = typeof(SnapshotLinesContaining<SnapshotResult<string?, IThat<string?>>>);
+				Type containing = typeof(SnapshotLinesContaining<StringSnapshotResult<string?, IThat<string?>>>);
 				Type afterAction = containing.GetMethod(nameof(SnapshotLines<SnapshotRule>.Ignore))!.ReturnType;
 
 				await That(typeof(IOptionsProvider<StringEqualityOptions>).IsAssignableFrom(containing)).IsTrue();
@@ -747,51 +748,15 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
-			public async Task WhenSubjectIsAnObject_IgnoringLines_ShouldThrowInvalidOperationException()
+			public async Task WhenSubjectIsAnObject_ShouldOfferNoLineRules()
 			{
-				RuleNote subject = new()
-				{
-					Text = "Abbey Road",
-				};
+				string[] selections = typeof(ObjectSnapshotResult<RuleNote, IThat<RuleNote>>)
+					.GetProperty(nameof(ObjectSnapshotResult<RuleNote, IThat<RuleNote>>.For))!.PropertyType
+					.GetMethods().Select(method => method.Name).ToArray();
 
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Lines().Which(_ => true).Ignore();
-
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("A line rule only applies to a snapshot of a string, but an object is written by the formatter.*")
-					.AsWildcard();
-			}
-
-			[Test]
-			public async Task WhenSubjectIsAnObject_MaskingLines_ShouldThrowInvalidOperationException()
-			{
-				RuleNote subject = new()
-				{
-					Text = "Abbey Road",
-				};
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.For.Lines().Containing("Abbey").Mask("<album>");
-
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("A line rule only applies to a snapshot of a string*").AsWildcard();
-			}
-
-			[Test]
-			public async Task WhenSubjectIsAnObject_ConvertingLines_ShouldThrowInvalidOperationException()
-			{
-				RuleNote subject = new()
-				{
-					Text = "Abbey Road",
-				};
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.For.Lines().Convert(line => line);
-
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("A line rule only applies to a snapshot of a string*").AsWildcard();
+				await That(selections).Contains(nameof(ObjectSnapshotFor<SnapshotRule>.Members));
+				await That(selections).DoesNotContain(nameof(StringSnapshotFor<SnapshotRule>.Lines))
+					.Because("an object is written by the formatter, so line rules are rejected at compile time");
 			}
 
 			[Test]

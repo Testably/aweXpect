@@ -3,7 +3,7 @@ using System;
 namespace aweXpect.Snapshots;
 
 /// <summary>
-///     The matches of a regex in the written snapshot, see <see cref="SnapshotFor{TResult}.Regex" />, which can only
+///     The matches of a regex in the written snapshot, see <see cref="SnapshotTextFor{TResult}.Regex" />, which can only
 ///     be masked.
 /// </summary>
 /// <typeparam name="TResult">What an action returns.</typeparam>

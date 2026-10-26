@@ -312,16 +312,16 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
-			public async Task WhenSubjectIsAString_ShouldThrowInvalidOperationException()
+			public async Task WhenSubjectIsAGenericString_ShouldThrowInvalidOperationException()
 			{
 				string subject = "foo";
 
 				async Task IgnoringAct()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+					=> await That(subject).MatchesSnapshot<string?>(Id.SourceFile, Id.MemberName)
 						.For.Members().DeclaredIn<RuleAlbum>().WithName(nameof(RuleAlbum.Price)).Ignore();
 
 				async Task MaskingAct()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+					=> await That(subject).MatchesSnapshot<string?>(Id.SourceFile, Id.MemberName)
 						.For.Members().DeclaredIn<RuleAlbum>().WithName(nameof(RuleAlbum.Id)).Mask();
 
 				await That(IgnoringAct).Throws<InvalidOperationException>()

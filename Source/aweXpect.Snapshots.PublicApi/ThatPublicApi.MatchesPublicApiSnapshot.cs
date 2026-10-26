@@ -37,7 +37,7 @@ public static class ThatPublicApi
 	/// <param name="callerFilePath">The path of the test file, which is set by the compiler.</param>
 	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
 	[GuaranteesNotNull]
-	public static SnapshotResult<string?, IThat<string?>> MatchesPublicApiSnapshot(
+	public static StringSnapshotResult<string?, IThat<string?>> MatchesPublicApiSnapshot(
 		this IThat<Assembly?> subject,
 		Func<PublicApiOptions, PublicApiOptions>? options = null,
 		[CallerFilePath] string callerFilePath = "",
@@ -67,7 +67,7 @@ public static class ThatPublicApi
 	/// <param name="callerFilePath">The path of the test file, which is set by the compiler.</param>
 	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
 	[GuaranteesNotNull]
-	public static SnapshotResult<string?, IThat<string?>> MatchesPublicApiSnapshot(
+	public static StringSnapshotResult<string?, IThat<string?>> MatchesPublicApiSnapshot(
 		this IThat<FileInfo?> subject,
 		Func<PublicApiOptions, PublicApiOptions>? options = null,
 		[CallerFilePath] string callerFilePath = "",
@@ -82,14 +82,14 @@ public static class ThatPublicApi
 	/// </remarks>
 	[SuppressMessage("Minor Code Smell", "S3236:Caller information arguments should not be provided explicitly",
 		Justification = "The snapshot is named after the test that calls the public API expectation.")]
-	private static SnapshotResult<string?, IThat<string?>> AddPublicApiSnapshot<TSubject>(
+	private static StringSnapshotResult<string?, IThat<string?>> AddPublicApiSnapshot<TSubject>(
 		IThat<TSubject?> subject,
 		Func<TSubject, string> write,
 		string callerFilePath,
 		string callerMemberName)
 		where TSubject : class
 	{
-		SnapshotResult<string?, IThat<string?>>? result = null;
+		StringSnapshotResult<string?, IThat<string?>>? result = null;
 		subject.Get().ExpectationBuilder
 			.ForMember(MemberAccessor<TSubject?, string?>.FromFuncWithName(
 					value => value is null ? null : write(value), "public API"),

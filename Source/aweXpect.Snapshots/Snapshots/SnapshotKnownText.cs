@@ -4,8 +4,8 @@ namespace aweXpect.Snapshots;
 
 /// <summary>
 ///     A kind of text in the written snapshot that a rule applies to, e.g. every <see cref="Guid" />, see
-///     <see cref="SnapshotFor{TResult}.Guids" />, <see cref="SnapshotFor{TResult}.Dates" />,
-///     <see cref="SnapshotFor{TResult}.MachineName" /> and <see cref="SnapshotFor{TResult}.UserName" />.
+///     <see cref="SnapshotTextFor{TResult}.Guids" />, <see cref="SnapshotTextFor{TResult}.Dates" />,
+///     <see cref="SnapshotTextFor{TResult}.MachineName" /> and <see cref="SnapshotTextFor{TResult}.UserName" />.
 /// </summary>
 /// <typeparam name="TResult">What an action returns.</typeparam>
 public sealed class SnapshotKnownText<TResult>

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace aweXpect.Snapshots;
 
 /// <summary>
-///     The occurrences of a text in the written snapshot, see <see cref="SnapshotFor{TResult}.Text" />, which also
+///     The occurrences of a text in the written snapshot, see <see cref="SnapshotTextFor{TResult}.Text" />, which also
 ///     allows setting how the text is matched.
 /// </summary>
 /// <remarks>
@@ -31,7 +31,7 @@ public sealed class SnapshotText<TResult> : SnapshotPattern<TResult>
 	/// </summary>
 	/// <remarks>
 	///     An invalid pattern throws an <see cref="ArgumentException" /> at the action. For options or a timeout of its
-	///     own, use <see cref="SnapshotFor{TResult}.Regex" /> instead.
+	///     own, use <see cref="SnapshotTextFor{TResult}.Regex" /> instead.
 	/// </remarks>
 	public SnapshotText<TResult> AsRegex()
 	{

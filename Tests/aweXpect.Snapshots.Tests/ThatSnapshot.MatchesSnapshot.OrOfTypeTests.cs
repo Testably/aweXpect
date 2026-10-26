@@ -294,9 +294,9 @@ public sealed partial class ThatSnapshot
 			public async Task OrOfType_ShouldOnlyFollowATypeFilter()
 			{
 				string[] surface = ApiParity.GetSurface(
-					typeof(SnapshotResult<object, IThat<object>>)
-						.GetProperty(nameof(SnapshotResult<object, IThat<object>>.For))!.PropertyType,
-					typeof(SnapshotResult<object, IThat<object>>));
+					typeof(ObjectSnapshotResult<object, IThat<object>>)
+						.GetProperty(nameof(ObjectSnapshotResult<object, IThat<object>>.For))!.PropertyType,
+					typeof(ObjectSnapshotResult<object, IThat<object>>));
 
 				string[] alternatives = surface
 					.Where(signature => signature.Contains(".OrOfType`1(") || signature.Contains(".OrOfExactType`1("))

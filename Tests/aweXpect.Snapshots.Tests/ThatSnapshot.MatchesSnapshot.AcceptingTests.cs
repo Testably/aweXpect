@@ -679,7 +679,7 @@ public sealed partial class ThatSnapshot
 				{
 					async Task Act()
 					{
-						SnapshotResult<string, IThat<string?>> result =
+						StringSnapshotResult<string, IThat<string?>> result =
 							That("Abbey Road").MatchesSnapshot(id.SourceFile, id.MemberName);
 						if (expectation is null)
 						{

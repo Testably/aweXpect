@@ -340,7 +340,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			private async Task ShouldBeNamed(string name,
-				Func<SnapshotResult<string, IThat<string?>>, SnapshotResult<string, IThat<string?>>> nameSnapshot,
+				Func<StringSnapshotResult<string, IThat<string?>>, StringSnapshotResult<string, IThat<string?>>> nameSnapshot,
 				string because)
 			{
 				InMemorySnapshotStore store = new();

@@ -757,30 +757,44 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
-			public async Task WhenSubjectIsAString_MemberRule_ShouldThrowInvalidOperationException()
+			public async Task WhenSubjectIsAGenericString_MemberRule_ShouldThrowInvalidOperationException()
 			{
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+					=> await That(subject).MatchesSnapshot<string?>(Id.SourceFile, Id.MemberName)
 						.For.Members().WithName("Id").Ignore();
 
 				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("A member or value rule only applies to a snapshot of an object, but a string is compared as raw text.*")
-					.AsWildcard();
+					.WithMessage(
+						"A member or value rule only applies to a snapshot of an object, but the subject is a string. Select its text with '.For.Text(…)' instead.")
+					.Because("a generic subject chooses the snapshot of an object, also when its type argument is a string");
 			}
 
 			[Test]
-			public async Task WhenSubjectIsAString_ValueRule_ShouldThrowInvalidOperationException()
+			public async Task WhenSubjectIsAGenericString_ValueRule_ShouldThrowInvalidOperationException()
 			{
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+					=> await That(subject).MatchesSnapshot<string?>(Id.SourceFile, Id.MemberName)
 						.For.Values().OfType<Guid>().Mask();
 
 				await That(Act).Throws<InvalidOperationException>()
 					.WithMessage("A member or value rule only applies to a snapshot of an object*").AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsAString_ShouldOfferNoMemberOrValueRules()
+			{
+				string[] selections = typeof(StringSnapshotResult<string, IThat<string?>>)
+					.GetProperty(nameof(StringSnapshotResult<string, IThat<string?>>.For))!.PropertyType
+					.GetMethods().Select(method => method.Name).ToArray();
+
+				await That(selections).Contains(nameof(StringSnapshotFor<SnapshotRule>.Lines));
+				await That(selections).DoesNotContain(nameof(ObjectSnapshotFor<SnapshotRule>.Members))
+					.And.DoesNotContain(nameof(ObjectSnapshotFor<SnapshotRule>.Values))
+					.Because("a string is compared as raw text, so member and value rules are rejected at compile time");
 			}
 
 #if NET8_0_OR_GREATER
@@ -856,13 +870,18 @@ public sealed partial class ThatSnapshot
 			{
 				string[] global = ApiParity.GetSurface(
 					typeof(SnapshotRule).GetProperty(nameof(SnapshotRule.For))!.PropertyType, typeof(SnapshotRule));
-				string[] expectation = ApiParity.GetSurface(
-					typeof(SnapshotResult<object, IThat<object>>)
-						.GetProperty(nameof(SnapshotResult<object, IThat<object>>.For))!.PropertyType,
-					typeof(SnapshotResult<object, IThat<object>>));
+				string[] ofObjects = ApiParity.GetSurface(
+					typeof(ObjectSnapshotResult<object, IThat<object>>)
+						.GetProperty(nameof(ObjectSnapshotResult<object, IThat<object>>.For))!.PropertyType,
+					typeof(ObjectSnapshotResult<object, IThat<object>>));
+				string[] ofStrings = ApiParity.GetSurface(
+					typeof(StringSnapshotResult<string, IThat<string?>>)
+						.GetProperty(nameof(StringSnapshotResult<string, IThat<string?>>.For))!.PropertyType,
+					typeof(StringSnapshotResult<string, IThat<string?>>));
 
-				await That(expectation).IsEqualTo(global)
-					.Because("every selection, filter and action of the expectation exists for all snapshots, and vice versa");
+				await That(ofObjects.Union(ofStrings).OrderBy(signature => signature, StringComparer.Ordinal))
+					.IsEqualTo(global)
+					.Because("every selection, filter and action of the expectations exists for all snapshots, and vice versa");
 				await That(global.Any(signature => signature.Contains(".Convert`1(")) &&
 				           global.Any(signature => signature.Contains(".Keep`0()")) &&
 				           global.Any(signature => signature.Contains(".OrOfType`1("))).IsTrue()
