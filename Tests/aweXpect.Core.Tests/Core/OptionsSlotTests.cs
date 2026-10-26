@@ -43,9 +43,9 @@ public sealed class OptionsSlotTests
 		StringEqualityOptions options = StringEqualityOptions.Default;
 		OptionsSlot<StringEqualityOptions> sut = new(options);
 
-		IReadOnlyOptionsSlot<object> result = sut;
+		object? result = ReadAsBaseType(sut);
 
-		await That(result.Value).IsSameAs(options);
+		await That(result).IsSameAs(options);
 	}
 
 	[Test]
@@ -144,6 +144,8 @@ public sealed class OptionsSlotTests
 		await That(preset.ToString()).IsEqualTo(" ± 2");
 		await That(first.Value.ToString()).IsEqualTo(" ± 3");
 	}
+	private static object? ReadAsBaseType(IReadOnlyOptionsSlot<object> slot) => slot.Value;
+
 	private sealed class MyMatch : CollectionIndexOptions.IMatch
 	{
 		public string GetDescription() => " at my index";

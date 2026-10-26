@@ -26,11 +26,6 @@ public class JsonOptions
 	}
 
 	/// <summary>
-	///     The options without any active option, shared by every expectation that starts from them.
-	/// </summary>
-	internal static JsonOptions Default { get; } = new();
-
-	/// <summary>
 	///     Copies the <paramref name="options" />, so that an extension method only has to set what it changes.
 	/// </summary>
 	/// <remarks>
@@ -47,6 +42,11 @@ public class JsonOptions
 		MembersToIgnore = options.MembersToIgnore;
 		NumberTolerance = options.NumberTolerance;
 	}
+
+	/// <summary>
+	///     The options without any active option, shared by every expectation that starts from them.
+	/// </summary>
+	internal static JsonOptions Default { get; } = new();
 
 	/// <summary>
 	///     The current <see cref="JsonDocumentOptions" /> to use when interpreting a <see langword="string" /> as JSON.

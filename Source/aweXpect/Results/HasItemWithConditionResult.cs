@@ -43,7 +43,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_options.Value = _options.Value.SetPredicate(predicate,
+		_options.Value = new PredicateOptions<TItem>(predicate,
 			$"matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
@@ -53,7 +53,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	/// </summary>
 	public HasItemResult<TCollection> Matching<T>()
 	{
-		_options.Value = _options.Value.SetPredicate(item => item is T,
+		_options.Value = new PredicateOptions<TItem>(item => item is T,
 			$"of type {Formatter.Format(typeof(T))}");
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
@@ -66,7 +66,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_options.Value = _options.Value.SetPredicate(item => item is T typed && predicate(typed),
+		_options.Value = new PredicateOptions<TItem>(item => item is T typed && predicate(typed),
 			$"of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
@@ -77,7 +77,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	public HasItemResult<TCollection> MatchingExactly<T>()
 	{
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
-		_options.Value = _options.Value.SetPredicate(item => item is T && item.GetType() == exactType,
+		_options.Value = new PredicateOptions<TItem>(item => item is T && item.GetType() == exactType,
 			$"exactly of type {Formatter.Format(typeof(T))}");
 
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
@@ -92,7 +92,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	{
 		predicate.ThrowIfNull();
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
-		_options.Value = _options.Value.SetPredicate(item => item is T typed && item.GetType() == exactType && predicate(typed),
+		_options.Value = new PredicateOptions<TItem>(item => item is T typed && item.GetType() == exactType && predicate(typed),
 			$"exactly of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}

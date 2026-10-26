@@ -86,7 +86,7 @@ public sealed partial class StringEqualityOptions : IEqualityOptions<string?>, I
 	///     Options without a comparer and with a built-in match type that takes no arguments are shared values, so that
 	///     setting such an option allocates nothing.
 	/// </remarks>
-	public static StringEqualityOptions Default => SharedValues.Default;
+	public static StringEqualityOptions Default => SharedValues.ExactOptions;
 
 	/// <summary>
 	///     The settings that the matcher of an evaluation is created with.
@@ -1363,7 +1363,7 @@ public sealed partial class StringEqualityOptions : IEqualityOptions<string?>, I
 		private static readonly StringEqualityOptions?[] Values =
 			new StringEqualityOptions?[MatchTypes.Length << MatchTypeShift];
 
-		public static StringEqualityOptions Default { get; } = Get(ExactMatchTypeIndex << MatchTypeShift);
+		public static StringEqualityOptions ExactOptions { get; } = Get(ExactMatchTypeIndex << MatchTypeShift);
 
 		/// <summary>
 		///     Returns the shared options of the <paramref name="flags" />, which name a built-in match type.

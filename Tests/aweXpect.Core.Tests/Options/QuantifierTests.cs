@@ -269,7 +269,12 @@ public class QuantifierTests
 	[Arguments("Twice", "Exactly cannot be combined with Twice.")]
 	public async Task Exactly_WhenAnotherExactOptionIsSpecified_ShouldNameIt(string option, string expectedMessage)
 	{
-		QuantifierOption earlierOption = (QuantifierOption)Enum.Parse(typeof(QuantifierOption), option);
+		QuantifierOption earlierOption = option switch
+		{
+			"Never" => QuantifierOption.Never,
+			"Once" => QuantifierOption.Once,
+			_ => QuantifierOption.Twice,
+		};
 		Quantifier sut = Quantifier.Default.Exactly(1, earlierOption);
 
 		void Act() => sut.Exactly(1);

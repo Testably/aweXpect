@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 
@@ -12,19 +13,8 @@ public partial class StringEqualityOptions
 	/// </summary>
 	private abstract class BuiltInMatchType : StringMatchType
 	{
-		/// <remarks>
-		///     Created with the match type, so that the shared options and every evaluation get the same matcher, also
-		///     when they are created on several threads.
-		/// </remarks>
-		private readonly BuiltInMatcher _ignoringCaseMatcher;
-
-		private readonly BuiltInMatcher _ordinalMatcher;
-
-		protected BuiltInMatchType()
-		{
-			_ignoringCaseMatcher = new BuiltInMatcher(this, new StringMatchSettings(true, null));
-			_ordinalMatcher = new BuiltInMatcher(this, new StringMatchSettings(false, null));
-		}
+		private BuiltInMatcher? _ignoringCaseMatcher;
+		private BuiltInMatcher? _ordinalMatcher;
 
 		/// <summary>
 		///     Compares the <paramref name="actual" /> with the <paramref name="expected" /> value.
@@ -59,8 +49,20 @@ public partial class StringEqualityOptions
 				return new BuiltInMatcher(this, settings);
 			}
 
-			return settings.IgnoreCase ? _ignoringCaseMatcher : _ordinalMatcher;
+			return settings.IgnoreCase
+				? GetSharedMatcher(ref _ignoringCaseMatcher, true)
+				: GetSharedMatcher(ref _ordinalMatcher, false);
 		}
+
+		/// <remarks>
+		///     Published only once, so that the shared options and every evaluation get the same matcher, also when
+		///     they are created on several threads.
+		/// </remarks>
+		private BuiltInMatcher GetSharedMatcher(ref BuiltInMatcher? matcher, bool ignoreCase)
+			=> Volatile.Read(ref matcher)
+			   ?? Interlocked.CompareExchange(ref matcher,
+				   new BuiltInMatcher(this, new StringMatchSettings(ignoreCase, null)), null)
+			   ?? matcher!;
 
 		private sealed class BuiltInMatcher(BuiltInMatchType matchType, StringMatchSettings settings)
 			: StringMatcher
