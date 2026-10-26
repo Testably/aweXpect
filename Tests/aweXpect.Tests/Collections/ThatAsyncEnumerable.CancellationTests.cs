@@ -886,25 +886,28 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenSourceObservesTheToken_ShouldCancelTheSource()
 		{
+			VirtualTimeSystem time = new();
 			CancellationToken sourceToken = CancellationToken.None;
 
 			async IAsyncEnumerable<int> Numbers([EnumeratorCancellation] CancellationToken cancellationToken = default)
 			{
 				sourceToken = cancellationToken;
-				await Task.Delay(30.Seconds(), cancellationToken);
+				Task delay = Task.Delay(30.Seconds(), cancellationToken);
+				time.Advance(1.Seconds());
+				await delay;
 				yield return 1;
 			}
 
 			IAsyncEnumerable<int> subject = Numbers();
 
 			async Task Act()
-				=> await That(subject).Contains(1).WithTimeout(50.Milliseconds());
+				=> await That(subject).Contains(1).WithTimeout(1.Seconds()).WithTimeSystem(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 1 at least once,
-				             but it did not finish within 0:00.050
+				             but it did not finish within 0:01
 
 				             Collection:
 				             []
@@ -1020,10 +1023,12 @@ public sealed partial class ThatAsyncEnumerable
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		private static async Task AbandonSourceThatFaultsLater(Exception exception)
 		{
+			VirtualTimeSystem time = new();
 			TaskCompletionSource tcs = new();
 
 			async IAsyncEnumerable<int> Numbers()
 			{
+				time.Advance(1.Seconds());
 				await tcs.Task;
 				yield return 1;
 			}
@@ -1031,13 +1036,13 @@ public sealed partial class ThatAsyncEnumerable
 			IAsyncEnumerable<int> subject = Numbers();
 
 			async Task Act()
-				=> await That(subject).Contains(1).WithTimeout(50.Milliseconds());
+				=> await That(subject).Contains(1).WithTimeout(1.Seconds()).WithTimeSystem(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 1 at least once,
-				             but it did not finish within 0:00.050
+				             but it did not finish within 0:01
 
 				             Collection:
 				             []
