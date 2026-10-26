@@ -864,6 +864,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
         "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
+      },
+      {
+        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
+        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
       }
     ],
     "labels": [
@@ -1010,7 +1016,8 @@ window.BENCHMARK_DATA = {
       "7294afca",
       "20357097",
       "1dc71bae",
-      "5520582a"
+      "5520582a",
+      "a2e430d0"
     ],
     "datasets": [
       {
@@ -1160,7 +1167,8 @@ window.BENCHMARK_DATA = {
           656.0633188247681,
           356.174617099762,
           704.3644876480103,
-          535.3990122721746
+          535.3990122721746,
+          606.8000283922468
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1315,7 +1323,8 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
-          464
+          464,
+          368
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1473,7 +1482,8 @@ window.BENCHMARK_DATA = {
           888.5572644869486,
           536.8183043162028,
           926.7215559823172,
-          599.25021387736
+          599.25021387736,
+          897.3135285059611
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1485,6 +1495,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -2506,6 +2517,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
         "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
+      },
+      {
+        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
+        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
       }
     ],
     "labels": [
@@ -2652,7 +2669,8 @@ window.BENCHMARK_DATA = {
       "7294afca",
       "20357097",
       "1dc71bae",
-      "5520582a"
+      "5520582a",
+      "a2e430d0"
     ],
     "datasets": [
       {
@@ -2802,7 +2820,8 @@ window.BENCHMARK_DATA = {
           114.66328901510973,
           58.143421300819945,
           104.04969412088394,
-          76.7723245529028
+          76.7723245529028,
+          109.94119653531483
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2949,6 +2968,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -3115,7 +3135,8 @@ window.BENCHMARK_DATA = {
           215.35406255722046,
           122.15644100734166,
           215.77363429750716,
-          208.96221241950988
+          208.96221241950988,
+          214.08026609970972
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3127,6 +3148,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -4148,6 +4170,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
         "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
+      },
+      {
+        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
+        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
       }
     ],
     "labels": [
@@ -4294,7 +4322,8 @@ window.BENCHMARK_DATA = {
       "7294afca",
       "20357097",
       "1dc71bae",
-      "5520582a"
+      "5520582a",
+      "a2e430d0"
     ],
     "datasets": [
       {
@@ -4444,7 +4473,8 @@ window.BENCHMARK_DATA = {
           1838.6320939745221,
           877.4776200612386,
           1863.7854092461723,
-          1032.0853875967173
+          1032.0853875967173,
+          1913.7210534413655
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4591,6 +4621,7 @@ window.BENCHMARK_DATA = {
           1888,
           1888,
           1888,
+          1808,
           1808,
           1808,
           1808,
@@ -4757,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1354.369742711385,
           790.3319710413615,
           1452.0054513386317,
-          948.3869262422834
+          948.3869262422834,
+          1417.8631495067052
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4909,6 +4941,7 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1952,
+          1864,
           1864,
           1864,
           1864,
@@ -5730,6 +5763,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
         "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
+      },
+      {
+        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
+        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
       }
     ],
     "labels": [
@@ -5866,7 +5905,8 @@ window.BENCHMARK_DATA = {
       "7294afca",
       "20357097",
       "1dc71bae",
-      "5520582a"
+      "5520582a",
+      "a2e430d0"
     ],
     "datasets": [
       {
@@ -6006,7 +6046,8 @@ window.BENCHMARK_DATA = {
           2642.3334612165177,
           1403.0971938451132,
           2742.6894027165004,
-          1625.616120147705
+          1625.616120147705,
+          2683.3756768362864
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6143,6 +6184,7 @@ window.BENCHMARK_DATA = {
           3184,
           3184,
           3184,
+          3104,
           3104,
           3104,
           3104,
@@ -6299,7 +6341,8 @@ window.BENCHMARK_DATA = {
           3859.4906572614395,
           2185.3293940226235,
           3875.937665499174,
-          2474.9843826293945
+          2474.9843826293945,
+          3703.219406568087
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6444,7 +6487,8 @@ window.BENCHMARK_DATA = {
           3980,
           3981,
           3981,
-          3977
+          3977,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7262,6 +7306,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
         "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
+      },
+      {
+        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
+        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
       }
     ],
     "labels": [
@@ -7398,7 +7448,8 @@ window.BENCHMARK_DATA = {
       "7294afca",
       "20357097",
       "1dc71bae",
-      "5520582a"
+      "5520582a",
+      "a2e430d0"
     ],
     "datasets": [
       {
@@ -7538,7 +7589,8 @@ window.BENCHMARK_DATA = {
           339.7191134770711,
           186.8432778040568,
           397.83714217406055,
-          258.73817995616366
+          258.73817995616366,
+          355.00933027267456
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7675,6 +7727,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -7831,7 +7884,8 @@ window.BENCHMARK_DATA = {
           2213.8134574890137,
           1231.1973390579224,
           2321.012066432408,
-          1513.0686894734702
+          1513.0686894734702,
+          2207.5948312123614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7843,6 +7897,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -8794,6 +8849,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
         "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
+      },
+      {
+        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
+        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
       }
     ],
     "labels": [
@@ -8930,7 +8991,8 @@ window.BENCHMARK_DATA = {
       "7294afca",
       "20357097",
       "1dc71bae",
-      "5520582a"
+      "5520582a",
+      "a2e430d0"
     ],
     "datasets": [
       {
@@ -9070,7 +9132,8 @@ window.BENCHMARK_DATA = {
           2930.2676840562085,
           1460.6088209885818,
           2941.172984568278,
-          1744.8773065294538
+          1744.8773065294538,
+          2959.1051738445576
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9215,7 +9278,8 @@ window.BENCHMARK_DATA = {
           3232,
           3232,
           3232,
-          3232
+          3232,
+          3200
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9363,7 +9427,8 @@ window.BENCHMARK_DATA = {
           298482.9997907366,
           169174.7233561198,
           283718.9447265625,
-          184646.6104561942
+          184646.6104561942,
+          303895.9719935826
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9508,7 +9573,8 @@ window.BENCHMARK_DATA = {
           17577,
           17576,
           17577,
-          17528
+          17528,
+          17577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
