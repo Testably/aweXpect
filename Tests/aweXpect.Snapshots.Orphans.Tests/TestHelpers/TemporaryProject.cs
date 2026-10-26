@@ -1,14 +1,14 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Runtime.InteropServices;
+using aweXpect.Core.Extending;
 
 namespace aweXpect.Snapshots.Orphans.Tests.TestHelpers;
 
 /// <summary>
-///     A test project in a temporary source root, which is recorded in the process the way the build targets record it
-///     in another test assembly, and deleted again afterwards.
+///     A test project in a temporary source root, which is registered in the process the way the module initializer of
+///     another test assembly registers it, and deleted again afterwards.
 /// </summary>
 /// <remarks>
 ///     The records stay in the process, but the deleted directory is no longer listed. The project directory has a unique
@@ -88,11 +88,5 @@ internal sealed class TemporaryProject : IDisposable
 		=> System.IO.Path.Combine(Path, relativePath.Replace('/', System.IO.Path.DirectorySeparatorChar));
 
 	private static void Record(string key, string value)
-		=> AssemblyBuilder.DefineDynamicAssembly(
-			new AssemblyName($"Orphans{Guid.NewGuid():N}"), AssemblyBuilderAccess.Run,
-			[
-				new CustomAttributeBuilder(
-					typeof(AssemblyMetadataAttribute).GetConstructor([typeof(string), typeof(string),])!,
-					[key, value,]),
-			]);
+		=> ExtensionRegistry.Register(key, value);
 }

@@ -2,12 +2,17 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+using aweXpect.Core.Extending;
 
 namespace aweXpect.Snapshots.SourceRoots.Tests.TestHelpers;
 
 /// <summary>
 ///     Records further source roots in the process, the way another test assembly from a different source root would.
 /// </summary>
+/// <remarks>
+///     On .NET Framework, the build of this project registers nothing, so another test assembly is loaded that records
+///     the values; elsewhere, the values are registered like the module initializer of another test assembly does.
+/// </remarks>
 internal static class RecordedSourceRoots
 {
 	private const string MetadataKey = "aweXpect.Snapshots.SourceRoot";
@@ -27,22 +32,43 @@ internal static class RecordedSourceRoots
 	}
 
 	/// <summary>
-	///     Loads a dynamic assembly that records the <paramref name="sourceRoot" /> for the
-	///     <paramref name="mappedPath" />.
+	///     Records the <paramref name="sourceRoot" /> for the <paramref name="mappedPath" />.
 	/// </summary>
 	public static void Record(string mappedPath, string sourceRoot)
 		=> RecordMetadata(MetadataKey, $"{mappedPath}={sourceRoot}");
 
 	/// <summary>
-	///     Loads a dynamic assembly that records the <paramref name="targetFramework" /> for the test project in the
-	///     <paramref name="projectDirectory" />.
+	///     Loads a dynamic assembly with the <paramref name="assemblyName" /> that records the
+	///     <paramref name="sourceRoot" /> for the <paramref name="mappedPath" />, on every target framework.
+	/// </summary>
+	public static void RecordInAssembly(string assemblyName, string mappedPath, string sourceRoot)
+		=> LoadAssembly(assemblyName, MetadataKey, $"{mappedPath}={sourceRoot}");
+
+	/// <summary>
+	///     Registers the <paramref name="assemblyName" /> like the module initializer of a test assembly does, which
+	///     registers its values.
+	/// </summary>
+	public static void RegisterAssembly(string assemblyName)
+		=> ExtensionRegistry.Register("aweXpect.Snapshots.Assembly", assemblyName);
+
+	/// <summary>
+	///     Records the <paramref name="targetFramework" /> for the test project in the <paramref name="projectDirectory" />.
 	/// </summary>
 	public static void RecordTargetFramework(string targetFramework, string projectDirectory)
 		=> RecordMetadata("aweXpect.Snapshots.TargetFramework", $"{targetFramework}={projectDirectory}");
 
 	private static void RecordMetadata(string key, string value)
+	{
+#if NETFRAMEWORK
+		LoadAssembly($"SourceRoot{Guid.NewGuid():N}", key, value);
+#else
+		ExtensionRegistry.Register(key, value);
+#endif
+	}
+
+	private static void LoadAssembly(string assemblyName, string key, string value)
 		=> AssemblyBuilder.DefineDynamicAssembly(
-			new AssemblyName($"SourceRoot{Guid.NewGuid():N}"), AssemblyBuilderAccess.Run,
+			new AssemblyName(assemblyName), AssemblyBuilderAccess.Run,
 			[
 				new CustomAttributeBuilder(
 					typeof(AssemblyMetadataAttribute).GetConstructor([typeof(string), typeof(string),])!,

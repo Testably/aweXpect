@@ -160,3 +160,78 @@ namespace MyTests
   [aweXpect2002](../08-analyzers.md#test-framework-adapter) points out.
 
 </details>
+
+## Registration from the test project
+
+Some extensions need values that the build of the test project records, e.g. its directory, or have to run code
+before the first test, e.g. to add a reporter, although no test uses their assembly before. Instead of scanning the
+loaded assemblies, let the source generator of `aweXpect.Core` emit a module initializer into the test project. The
+build targets of your package (in its `buildTransitive` folder) only pass names to it, in two MSBuild properties:
+
+- `AweXpectRegisteredMetadataKeys`: the keys of the `AssemblyMetadataAttribute`s of the test project whose values
+  are registered in `ExtensionRegistry`.
+- `AweXpectModuleInitializers`: the static methods without parameters, accessible from the test project, that are
+  called afterwards, so that they can already read the registered values.
+
+Both are lists separated by `,` or `;`. Append your names to the value that other packages set, and make the property
+visible to the generator:
+
+```xml
+<Project>
+
+    <PropertyGroup>
+        <AweXpectRegisteredMetadataKeys>$(AweXpectRegisteredMetadataKeys),MusicStore.Catalog</AweXpectRegisteredMetadataKeys>
+        <AweXpectModuleInitializers>$(AweXpectModuleInitializers),MusicStore.MusicStoreSetup.Initialize</AweXpectModuleInitializers>
+    </PropertyGroup>
+    <ItemGroup>
+        <CompilerVisibleProperty Remove="AweXpectRegisteredMetadataKeys"/>
+        <CompilerVisibleProperty Include="AweXpectRegisteredMetadataKeys"/>
+        <CompilerVisibleProperty Remove="AweXpectModuleInitializers"/>
+        <CompilerVisibleProperty Include="AweXpectModuleInitializers"/>
+        <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+            <_Parameter1>MusicStore.Catalog</_Parameter1>
+            <_Parameter2>$(MSBuildProjectDirectory)</_Parameter2>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+</Project>
+```
+
+`ExtensionRegistry.GetValues` returns the values that are registered under a key, from every test assembly in the
+process, in the order of their registration:
+
+```csharp
+using aweXpect.Core.Extending;
+
+namespace MusicStore
+{
+    public static class MusicStoreSetup
+    {
+        internal static List<string> Catalogs { get; } = new();
+
+        public static void Initialize()
+            => Catalogs.AddRange(ExtensionRegistry.GetValues("MusicStore.Catalog"));
+    }
+}
+```
+
+A name in `AweXpectModuleInitializers` that names no accessible `static` method without parameters is reported as the
+error [`aweXpect4005`](../08-analyzers.md#registration-generator).
+
+<details>
+<summary>Projects without module initializers</summary>
+
+- The generator runs under the same conditions as the one for the [type metadata](./09-native-aot.md): the project
+  gets the analyzers of `aweXpect.Core`, is compiled with C# 9 or later and has the `ModuleInitializerAttribute`
+  (.NET 5 or later, or an own `internal` declaration).
+- Otherwise, e.g. on .NET Framework with C# 7.3, or for a test project in F# or Visual Basic, nothing is registered
+  and no initializer is called. Tell your users to call the initializer themselves, e.g. in an assembly-level setup of
+  the test framework, and read the values from the loaded assemblies as a fallback, but only from those that
+  [`AssemblyPrefixes.IsExcluded`](./07-customization-values.md#exclude-the-framework-assemblies) does not exclude.
+- One process can load assemblies of both kinds, e.g. an F# test project that calls a helper library in C#. Decide for
+  each assembly whether it registered its values: let your build targets also record the assembly name, e.g. as
+  `$(AssemblyName)`, register it with the values, and skip the assemblies with a registered name in the fallback.
+- The registered values stay for the lifetime of the process. The list that `GetValues` returns does not change, and
+  it is the same instance until another value is registered under the key, so you can keep what you derived from it.
+
+</details>

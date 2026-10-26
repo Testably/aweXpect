@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using aweXpect.Core.Extending;
+using aweXpect.Customization;
 
 namespace aweXpect.Snapshots;
 
@@ -14,9 +16,11 @@ namespace aweXpect.Snapshots;
 /// </summary>
 /// <remarks>
 ///     Each recorded value has the form <c>&lt;MappedPath&gt;=&lt;SourceRoot&gt;</c>, where the mapped path is the
-///     source root itself, or the prefix such as <c>/_/</c> that a deterministic build emits instead of it. The loaded
-///     assemblies are searched for the recorded values once, when the first snapshot needs them, and every assembly that
-///     is loaded afterwards adds its own.<br />
+///     source root itself, or the prefix such as <c>/_/</c> that a deterministic build emits instead of it. A module
+///     initializer that the source generator of aweXpect.Core emits into the test project registers the recorded values
+///     in the <see cref="ExtensionRegistry" />, together with the name of the assembly. Where a project cannot compile a
+///     module initializer, nothing is registered, so the loaded assemblies that registered nothing are searched for the
+///     recorded values as well.<br />
 ///     The directories of the test projects are recorded as well, so that <see cref="OrphanedSnapshots" /> only lists
 ///     the snapshots of these projects, each with its target framework for <c>.UniqueFor.TargetFramework()</c>.
 /// </remarks>
@@ -25,10 +29,13 @@ internal static class SourceRoots
 	private const string MetadataKey = "aweXpect.Snapshots.SourceRoot";
 	private const string ProjectDirectoryKey = "aweXpect.Snapshots.ProjectDirectory";
 	private const string TargetFrameworkKey = "aweXpect.Snapshots.TargetFramework";
+	private const string AssemblyKey = "aweXpect.Snapshots.Assembly";
 
 	private static readonly ConcurrentQueue<Assembly> LoadedAssemblies = new();
 	private static readonly object RecordedLock = new();
-	private static Records? _records;
+
+	private static ScannedAssembly[]? _scanned;
+	private static CombinedRecords? _combinedRecords;
 
 	/// <summary>
 	///     The recorded source roots.
@@ -36,31 +43,80 @@ internal static class SourceRoots
 	private static KeyValuePair<string, string>[] Recorded => GetRecords().SourceRoots;
 
 	/// <summary>
-	///     The recorded values, read from the loaded assemblies on first use and extended by every assembly that is
-	///     loaded afterwards.
+	///     The recorded values, from the <see cref="ExtensionRegistry" /> and from the loaded assemblies that registered
+	///     nothing and that the <c>ExcludedAssemblyPrefixes</c> of the settings do not exclude.
+	/// </summary>
+	/// <remarks>
+	///     Each assembly is decided on its own, as the assemblies of one process can differ, e.g. a test project in F# or
+	///     for .NET Framework with C# 7.3 that calls a helper library in C# 9, which registers its values.<br />
+	///     The assemblies are decided on each access, not when they are read, as the settings can differ between tests
+	///     and an assembly can be read before its module initializer registered its values.<br />
+	///     The registry and the settings return the same lists until they change, so the records are only built again
+	///     when one changed or an assembly was read.
+	/// </remarks>
+	private static Records GetRecords()
+	{
+		IReadOnlyList<string> sourceRoots = ExtensionRegistry.GetValues(MetadataKey);
+		IReadOnlyList<string> projectDirectories = ExtensionRegistry.GetValues(ProjectDirectoryKey);
+		IReadOnlyList<string> targetFrameworks = ExtensionRegistry.GetValues(TargetFrameworkKey);
+		IReadOnlyList<string> registeredAssemblies = ExtensionRegistry.GetValues(AssemblyKey);
+		IReadOnlyList<string> excludedPrefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
+		ScannedAssembly[] scanned = GetScannedAssemblies();
+		CombinedRecords? combined = Volatile.Read(ref _combinedRecords);
+		if (combined is null ||
+		    !ReferenceEquals(combined.SourceRoots, sourceRoots) ||
+		    !ReferenceEquals(combined.ProjectDirectories, projectDirectories) ||
+		    !ReferenceEquals(combined.TargetFrameworks, targetFrameworks) ||
+		    !ReferenceEquals(combined.RegisteredAssemblies, registeredAssemblies) ||
+		    !ReferenceEquals(combined.ExcludedPrefixes, excludedPrefixes) ||
+		    !ReferenceEquals(combined.Scanned, scanned))
+		{
+			Records[] records =
+			[
+				Parse(sourceRoots, projectDirectories, targetFrameworks),
+				.. scanned
+					.Where(assembly => !registeredAssemblies.Contains(assembly.Name) &&
+					                   !AssemblyPrefixes.IsExcluded(assembly.Name, excludedPrefixes))
+					.Select(assembly => assembly.Records),
+			];
+			combined = new CombinedRecords(sourceRoots, projectDirectories, targetFrameworks, registeredAssemblies,
+				excludedPrefixes, scanned,
+				new Records(
+					records.SelectMany(record => record.SourceRoots).ToArray(),
+					records.SelectMany(record => record.ProjectDirectories).ToArray(),
+					records.SelectMany(record => record.TargetFrameworks).ToArray()));
+			Volatile.Write(ref _combinedRecords, combined);
+		}
+
+		return combined.Records;
+	}
+
+	/// <summary>
+	///     The loaded assemblies that record values, read on first use and extended by every assembly that is loaded
+	///     afterwards.
 	/// </summary>
 	/// <remarks>
 	///     The event is subscribed before the loaded assemblies are read, so that no assembly is missed in between; one
 	///     that is read twice only records the same value twice, which counts as one.<br />
 	///     An assembly loaded afterwards is only queued by the event and read on the next access, as the event of a
 	///     dynamic assembly is raised before its attributes exist, and as reading the attributes of every assembly that
-	///     is loaded would cost even when no snapshot needs them. The records are replaced instead of changed, so that
-	///     the common case of nothing new to read needs no lock.
+	///     is loaded would cost even when no snapshot needs them. The array is replaced instead of changed, so that the
+	///     common case of nothing new to read needs no lock.
 	/// </remarks>
-	private static Records GetRecords()
+	private static ScannedAssembly[] GetScannedAssemblies()
 	{
-		Records? records = Volatile.Read(ref _records);
-		if (records is not null && LoadedAssemblies.IsEmpty)
+		ScannedAssembly[]? scanned = Volatile.Read(ref _scanned);
+		if (scanned is not null && LoadedAssemblies.IsEmpty)
 		{
-			return records;
+			return scanned;
 		}
 
 		lock (RecordedLock)
 		{
-			if (_records is null)
+			if (_scanned is null)
 			{
 				AppDomain.CurrentDomain.AssemblyLoad += (_, args) => LoadedAssemblies.Enqueue(args.LoadedAssembly);
-				Volatile.Write(ref _records, Read(AppDomain.CurrentDomain.GetAssemblies()));
+				Volatile.Write(ref _scanned, Read(AppDomain.CurrentDomain.GetAssemblies()));
 			}
 
 			List<Assembly> loadedAssemblies = new();
@@ -71,14 +127,10 @@ internal static class SourceRoots
 
 			if (loadedAssemblies.Count > 0)
 			{
-				Records loaded = Read(loadedAssemblies);
-				Volatile.Write(ref _records, new Records(
-					[.. _records!.SourceRoots, .. loaded.SourceRoots,],
-					[.. _records.ProjectDirectories, .. loaded.ProjectDirectories,],
-					[.. _records.TargetFrameworks, .. loaded.TargetFrameworks,]));
+				Volatile.Write(ref _scanned, [.. _scanned!, .. Read(loadedAssemblies),]);
 			}
 
-			return _records!;
+			return _scanned!;
 		}
 	}
 
@@ -230,14 +282,18 @@ internal static class SourceRoots
 	///     A path that a deterministic build emitted, e.g. <c>/_/Tests/MyTests.cs</c>, only remains when its source root
 	///     was not recorded. A relative path is ambiguous when several source roots are recorded and the test file exists
 	///     under none or more than one of them. The test file is checked instead of its directory, as a directory like
-	///     <c>Tests</c> commonly exists in several repositories, and a test file always exists where it was compiled.
+	///     <c>Tests</c> commonly exists in several repositories, and a test file always exists where it was compiled.<br />
+	///     A test assembly whose name matches one of the <c>ExcludedAssemblyPrefixes</c>, e.g. <c>Microsoft.MyApp.Tests</c>,
+	///     is not read when it cannot register its values, which the message then names.
 	/// </remarks>
 	public static void ThrowIfUnresolvable(string sourceFile)
 	{
 		if (IsDeterministic(sourceFile))
 		{
-			throw new DirectoryNotFoundException(
-				$"The path \"{sourceFile}\" comes from a deterministic build, but the test assembly records no source root for it, which the build targets of aweXpect.Snapshots add.");
+			string[] excludedAssemblies = GetExcludedAssembliesRecording(sourceFile);
+			throw new DirectoryNotFoundException(excludedAssemblies.Length > 0
+				? $"The path \"{sourceFile}\" comes from a deterministic build, but the ExcludedAssemblyPrefixes of the settings exclude the assemblies that record a source root for it: {string.Join(", ", excludedAssemblies.Select(name => $"\"{name}\""))}. Remove the prefix that matches them from Customize.aweXpect.Settings().ExcludedAssemblyPrefixes."
+				: $"The path \"{sourceFile}\" comes from a deterministic build, but the test assembly records no source root for it, which the build targets of aweXpect.Snapshots add.");
 		}
 
 		if (Path.IsPathRooted(sourceFile))
@@ -305,27 +361,65 @@ internal static class SourceRoots
 	///     A mapped path never contains <c>=</c>, so the first one separates it from the source root. The same holds for
 	///     a target framework, which is recorded as <c>&lt;TargetFramework&gt;=&lt;ProjectDirectory&gt;</c>.
 	/// </remarks>
-	private static Records Read(IEnumerable<Assembly> assemblies)
+	private static ScannedAssembly[] Read(IEnumerable<Assembly> assemblies)
+		=> assemblies
+			.Select(assembly =>
+			{
+				AssemblyMetadataAttribute[] attributes = GetMetadata(assembly);
+				return new ScannedAssembly(assembly.GetName().Name, Parse(GetValues(attributes, MetadataKey),
+					GetValues(attributes, ProjectDirectoryKey), GetValues(attributes, TargetFrameworkKey)));
+			})
+			.Where(scanned => scanned.Records.SourceRoots.Length > 0 ||
+			                  scanned.Records.ProjectDirectories.Length > 0 ||
+			                  scanned.Records.TargetFrameworks.Length > 0)
+			.ToArray();
+
+	/// <summary>
+	///     Returns the name of each loaded assembly that the <c>ExcludedAssemblyPrefixes</c> of the settings exclude, and
+	///     that records a source root whose mapped path the <paramref name="sourceFile" /> starts with.
+	/// </summary>
+	private static string[] GetExcludedAssembliesRecording(string sourceFile)
 	{
-		AssemblyMetadataAttribute[] attributes = assemblies.SelectMany(GetMetadata).ToArray();
-		return new Records(
-			attributes
-				.Where(attribute => attribute.Key == MetadataKey && attribute.Value?.IndexOf('=') > 0)
-				.Select(attribute => new KeyValuePair<string, string>(
-					attribute.Value!.Substring(0, attribute.Value.IndexOf('=')),
-					attribute.Value.Substring(attribute.Value.IndexOf('=') + 1)))
-				.ToArray(),
-			attributes
-				.Where(attribute => attribute.Key == ProjectDirectoryKey && !string.IsNullOrEmpty(attribute.Value))
-				.Select(attribute => attribute.Value!)
-				.ToArray(),
-			attributes
-				.Where(attribute => attribute.Key == TargetFrameworkKey && attribute.Value?.IndexOf('=') > 0)
-				.Select(attribute => new KeyValuePair<string, string>(
-					attribute.Value!.Substring(attribute.Value.IndexOf('=') + 1),
-					attribute.Value.Substring(0, attribute.Value.IndexOf('='))))
-				.ToArray());
+		IReadOnlyList<string> excludedPrefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
+		IReadOnlyList<string> registeredAssemblies = ExtensionRegistry.GetValues(AssemblyKey);
+		return GetScannedAssemblies()
+			.Where(assembly => !registeredAssemblies.Contains(assembly.Name) &&
+			                   AssemblyPrefixes.IsExcluded(assembly.Name, excludedPrefixes) &&
+			                   assembly.Records.SourceRoots.Any(recorded
+				                   => sourceFile.StartsWith(recorded.Key, FileSystemPaths.Comparison)))
+			.Select(assembly => assembly.Name!)
+			.Distinct(StringComparer.Ordinal)
+			.ToArray();
 	}
+
+	private static IEnumerable<string> GetValues(AssemblyMetadataAttribute[] attributes, string key)
+		=> attributes
+			.Where(attribute => attribute.Key == key && attribute.Value is not null)
+			.Select(attribute => attribute.Value!);
+
+	private static Records Parse(IEnumerable<string> sourceRoots, IEnumerable<string> projectDirectories,
+		IEnumerable<string> targetFrameworks)
+		=> new(
+			SplitAtSeparator(sourceRoots)
+				.ToArray(),
+			projectDirectories
+				.Where(value => value.Length > 0)
+				.ToArray(),
+			SplitAtSeparator(targetFrameworks)
+				.Select(pair => new KeyValuePair<string, string>(pair.Value, pair.Key))
+				.ToArray());
+
+	/// <remarks>
+	///     A value without a key before the first <c>=</c> is skipped, as an empty mapped path or target framework is
+	///     never recorded.
+	/// </remarks>
+	private static IEnumerable<KeyValuePair<string, string>> SplitAtSeparator(IEnumerable<string> values)
+		=> values
+			.Select(value => (Value: value, Separator: value.IndexOf('=')))
+			.Where(item => item.Separator > 0)
+			.Select(item => new KeyValuePair<string, string>(
+				item.Value.Substring(0, item.Separator),
+				item.Value.Substring(item.Separator + 1)));
 
 	/// <remarks>
 	///     Reading the attributes of an assembly whose dependencies cannot be loaded throws, but such an assembly is not
@@ -352,4 +446,22 @@ internal static class SourceRoots
 		KeyValuePair<string, string>[] SourceRoots,
 		string[] ProjectDirectories,
 		KeyValuePair<string, string>[] TargetFrameworks);
+
+	/// <summary>
+	///     The values that the assembly with the <paramref name="Name" /> records.
+	/// </summary>
+	private sealed record ScannedAssembly(string? Name, Records Records);
+
+	/// <summary>
+	///     The <paramref name="Records" /> built from the lists that the <see cref="ExtensionRegistry" /> and the settings
+	///     returned and from the <paramref name="Scanned" /> assemblies.
+	/// </summary>
+	private sealed record CombinedRecords(
+		IReadOnlyList<string> SourceRoots,
+		IReadOnlyList<string> ProjectDirectories,
+		IReadOnlyList<string> TargetFrameworks,
+		IReadOnlyList<string> RegisteredAssemblies,
+		IReadOnlyList<string> ExcludedPrefixes,
+		ScannedAssembly[] Scanned,
+		Records Records);
 }

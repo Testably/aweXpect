@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using aweXpect.Customization;
 
 namespace aweXpect.Snapshots;
 
@@ -17,13 +20,15 @@ namespace aweXpect.Snapshots;
 ///     both files.<br />
 ///     For any other store, the value and the snapshot are written to temporary files in
 ///     <c>&lt;temp&gt;/aweXpect.Snapshots</c> for a review only, which are deleted again once the snapshot matches.<br />
-///     Referencing the package registers it for every snapshot in a project for .NET 5 or later, unless the MSBuild
-///     property <c>AweXpectSnapshotsDiffEngine</c> is <c>false</c>; otherwise add it to
-///     <c>Customize.aweXpect.Snapshots().Reporters</c>. It respects the opt-outs of DiffEngine, e.g. the
-///     environment variable <c>DiffEngine_Disabled</c>, and like every reporter it is never called on a build server.
+///     Referencing the package registers it for every snapshot (see <see cref="Register" />) in a project that can
+///     compile a module initializer, unless the MSBuild property <c>AweXpectSnapshotsDiffEngine</c> is <c>false</c>. It
+///     respects the opt-outs of DiffEngine, e.g. the environment variable <c>DiffEngine_Disabled</c>, and like every
+///     reporter it is never called on a build server.
 /// </remarks>
 public sealed class DiffEngineReporter : SnapshotReporter
 {
+	private static readonly object RegisterLock = new();
+
 	private readonly IDiffRunner _diffRunner;
 
 	/// <summary>
@@ -36,6 +41,30 @@ public sealed class DiffEngineReporter : SnapshotReporter
 	internal DiffEngineReporter(IDiffRunner diffRunner)
 	{
 		_diffRunner = diffRunner;
+	}
+
+	/// <summary>
+	///     Adds a <see cref="DiffEngineReporter" /> to the reporters of every snapshot, unless one is added already.
+	/// </summary>
+	/// <remarks>
+	///     The build targets of the package call it when the test assembly is loaded, where the test project can compile
+	///     a module initializer. Otherwise, call it before the first snapshot, e.g. in an assembly-level setup of the test
+	///     framework.
+	/// </remarks>
+	public static void Register()
+	{
+		ICustomizationValueSetter<IReadOnlyList<SnapshotReporter>> reporters =
+			Customize.aweXpect.Global.Snapshots().Reporters;
+		lock (RegisterLock)
+		{
+			IReadOnlyList<SnapshotReporter> registered = reporters.Get();
+			if (registered.Any(reporter => reporter is DiffEngineReporter))
+			{
+				return;
+			}
+
+			reporters.Set([.. registered, new DiffEngineReporter(),]);
+		}
 	}
 
 	/// <summary>

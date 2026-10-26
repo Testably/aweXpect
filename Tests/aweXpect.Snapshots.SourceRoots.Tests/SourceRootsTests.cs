@@ -16,6 +16,120 @@ public sealed class SourceRootsTests
 	private const string CommittedSnapshot = nameof(WhenTheTestFileExistsUnderOneOfSeveralSourceRoots_ShouldUseIt);
 
 	[Test]
+	public async Task WhenAnAssemblyRecordsASourceRootWithoutRegisteringIt_ShouldReadIt()
+	{
+		await That("found").MatchesSnapshot(GetCallerFilePath(), CommittedSnapshot);
+		using TemporarySourceRoot otherSourceRoot = new();
+		string relativeTestFile = RecordedSourceRoots.RelativeTestFile();
+		otherSourceRoot.CreateFile(relativeTestFile);
+		RecordedSourceRoots.RecordInAssembly($"SourceRoot{Guid.NewGuid():N}", otherSourceRoot.Path,
+			otherSourceRoot.Path);
+		string subject = "foo";
+
+		async Task Act()
+			=> await That(subject).MatchesSnapshot();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage($"""
+			              Expected that subject
+			              matches the snapshot "*",
+			              but the snapshot could not be read: The test file "{relativeTestFile}" exists under more than one of the source roots *"{otherSourceRoot.Path}"*, which test assemblies from different source roots in this process record. Run them in separate processes.
+			              """).AsWildcard()
+			.Because("an assembly that cannot compile a module initializer is read, also when this test project registered its own values");
+	}
+
+	[Test]
+	public async Task WhenAnAssemblyRegisteredItsValues_ShouldNotReadThemFromItAgain()
+	{
+		await That("found").MatchesSnapshot(GetCallerFilePath(), CommittedSnapshot);
+		using TemporarySourceRoot otherSourceRoot = new();
+		otherSourceRoot.CreateFile(RecordedSourceRoots.RelativeTestFile());
+		string assemblyName = $"SourceRoot{Guid.NewGuid():N}";
+		RecordedSourceRoots.RegisterAssembly(assemblyName);
+		RecordedSourceRoots.RecordInAssembly(assemblyName, otherSourceRoot.Path, otherSourceRoot.Path);
+		string subject = "found";
+
+		async Task Act()
+			=> await That(subject).MatchesSnapshot(GetCallerFilePath(), CommittedSnapshot);
+
+		await That(Act).DoesNotThrow()
+			.Because("the values of an assembly that registered them are taken from the registry only, where this one registered no source root");
+	}
+
+	[Test]
+	public async Task WhenAnExcludedAssemblyIsNoLongerExcluded_ShouldReadIt()
+	{
+		await That("found").MatchesSnapshot(GetCallerFilePath(), CommittedSnapshot);
+		using TemporarySourceRoot otherSourceRoot = new();
+		string relativeTestFile = RecordedSourceRoots.RelativeTestFile();
+		otherSourceRoot.CreateFile(relativeTestFile);
+		string subject = "found";
+
+		async Task Act()
+			=> await That(subject).MatchesSnapshot(GetCallerFilePath(), CommittedSnapshot);
+
+		using (Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Set(["MusicStore",]))
+		{
+			RecordedSourceRoots.RecordInAssembly($"MusicStore.SourceRoot{Guid.NewGuid():N}", otherSourceRoot.Path,
+				otherSourceRoot.Path);
+			await That(Act).DoesNotThrow();
+		}
+
+		await That(Act).Throws<FailException>()
+			.WithMessage($"""
+			              Expected that subject
+			              matches the snapshot "*",
+			              but the snapshot could not be read: The test file "{relativeTestFile}" exists under more than one of the source roots *"{otherSourceRoot.Path}"*, which test assemblies from different source roots in this process record. Run them in separate processes.
+			              """).AsWildcard()
+			.Because("the settings of each snapshot decide which assemblies are excluded, not those of the snapshot that first read the assembly");
+	}
+
+	[Test]
+	public async Task WhenAnExcludedAssemblyRecordsASourceRoot_ShouldIgnoreIt()
+	{
+		await That("found").MatchesSnapshot(GetCallerFilePath(), CommittedSnapshot);
+		using TemporarySourceRoot otherSourceRoot = new();
+		otherSourceRoot.CreateFile(RecordedSourceRoots.RelativeTestFile());
+		string subject = "found";
+
+		async Task Act()
+			=> await That(subject).MatchesSnapshot(GetCallerFilePath(), CommittedSnapshot);
+
+		using (Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Set(["MusicStore",]))
+		{
+			RecordedSourceRoots.RecordInAssembly($"MusicStore.SourceRoot{Guid.NewGuid():N}", otherSourceRoot.Path,
+				otherSourceRoot.Path);
+
+			await That(Act).DoesNotThrow()
+				.Because("an assembly excluded by the settings is not read, so the test file exists under one source root only");
+		}
+	}
+
+	[Test]
+	public async Task WhenAnExcludedAssemblyRecordsTheSourceRootOfADeterministicPath_ShouldNameIt()
+	{
+		using TemporarySourceRoot otherSourceRoot = new();
+		string assemblyName = $"MusicStore.Tests{Guid.NewGuid():N}";
+		string subject = "foo";
+
+		async Task Act()
+			=> await That(subject).MatchesSnapshot("/_4711/Tests/MusicStoreTests.cs", "MyTest");
+
+		using (Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Set(["MusicStore",]))
+		{
+			RecordedSourceRoots.RecordInAssembly(assemblyName, "/_4711/", otherSourceRoot.Path);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage($"""
+				              Expected that subject
+				              matches the snapshot "*",
+				              but the snapshot could not be read: The path "/_4711/Tests/MusicStoreTests.cs" comes from a deterministic build, but the ExcludedAssemblyPrefixes of the settings exclude the assemblies that record a source root for it: "{assemblyName}". Remove the prefix that matches them from Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.
+				              """).AsWildcard()
+				.Because("a test project whose name matches an excluded prefix would otherwise fail without a hint");
+		}
+	}
+
+	[Test]
 	public async Task WhenDeterministicBuildsRecordSeveralSourceRoots_ShouldUseTheOneWithTheTestFile()
 	{
 		using TemporarySourceRoot otherSourceRoot = new();
