@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
-        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
-      },
-      {
         "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "2035709788e314afef5721e8499327ca998ac367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
+        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
       }
     ],
     "labels": [
-      "46bf8489",
       "411dfe77",
       "053d3134",
       "22b71d85",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "20357097"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          209.29368393237775,
           190.08521599428994,
           415.74522270475114,
           402.1544209162394,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           466.92680530548097,
           471.2498177119664,
           451.5183933258057,
-          446.6067923545837
+          446.6067923545837,
+          476.62060131345476
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -440,7 +440,6 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
-          608,
           640,
           640,
           640,
@@ -466,6 +465,7 @@ window.BENCHMARK_DATA = {
           640,
           712,
           712,
+          664,
           664,
           664,
           664,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          508.6536352975028,
           496.8043264609117,
           980.2075965881347,
           1091.177738870893,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           1035.8629913330078,
           1068.1593735558647,
           946.2378022120549,
-          973.9919999929575
+          973.9919999929575,
+          1040.2450190226236
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
-        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
-      },
-      {
         "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "2035709788e314afef5721e8499327ca998ac367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
+        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
       }
     ],
     "labels": [
-      "46bf8489",
       "411dfe77",
       "053d3134",
       "22b71d85",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "20357097"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          114.82823797861735,
           94.19032332726887,
           196.60169038772582,
           212.97980640331903,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           253.95046892166138,
           268.7785805922288,
           214.4095104376475,
-          249.3118230819702
+          249.3118230819702,
+          254.19710245132447
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1069,9 +1069,9 @@ window.BENCHMARK_DATA = {
           440,
           440,
           440,
-          440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          134.90528260866802,
           121.7067118883133,
           249.69177545819963,
           306.43442421693067,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           262.26263230641683,
           276.06841046469555,
           260.7723628452846,
-          249.41070439020794
+          249.41070439020794,
+          253.95475301742553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
-        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
-      },
-      {
         "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "2035709788e314afef5721e8499327ca998ac367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
+        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
       }
     ],
     "labels": [
-      "46bf8489",
       "411dfe77",
       "053d3134",
       "22b71d85",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "20357097"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          355.3106013933818,
           299.2932434082031,
           630.90242597035,
           647.6727969305856,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           729.624892616272,
           788.2864138285319,
           668.1025075276692,
-          771.3073598997934
+          771.3073598997934,
+          749.3013362248738
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1656,7 +1656,6 @@ window.BENCHMARK_DATA = {
           976,
           976,
           976,
-          976,
           1008,
           1008,
           1008,
@@ -1682,6 +1681,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          505.6420774459839,
           436.1283644676208,
           927.8510630289713,
           1055.9124389375959,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           955.65826365153,
           1042.3638690948487,
           905.5831069946289,
-          929.9089051564534
+          929.9089051564534,
+          975.6534481048584
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
-        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
-      },
-      {
         "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "2035709788e314afef5721e8499327ca998ac367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
+        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
       }
     ],
     "labels": [
-      "46bf8489",
       "411dfe77",
       "053d3134",
       "22b71d85",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "20357097"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1074.1256467183432,
           950.6582899093628,
           1703.5985194614955,
           1516.55678024292,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1845.8018004099529,
           1964.9316997528076,
           1925.049166752742,
-          1842.5138240227332
+          1842.5138240227332,
+          1900.1002059664045
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2264,7 +2264,6 @@ window.BENCHMARK_DATA = {
           1672,
           1672,
           1672,
-          1672,
           1688,
           1688,
           1688,
@@ -2290,6 +2289,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10391.593965802875,
           10325.057322910854,
           21162.549704996745,
           16670.08055419922,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           21650.66208089193,
           22129.781467982702,
           17848.629412841798,
-          20983.919543457032
+          20983.919543457032,
+          21228.796875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2371,7 +2371,6 @@ window.BENCHMARK_DATA = {
         "data": [
           34713,
           34713,
-          34713,
           34712,
           34713,
           34713,
@@ -2407,6 +2406,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
-        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
-      },
       {
         "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "2035709788e314afef5721e8499327ca998ac367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
+        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
       }
     ],
     "labels": [
-      "46bf8489",
       "411dfe77",
       "053d3134",
       "22b71d85",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "20357097"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          383.1473029576815,
           332.8823712666829,
           653.8054423014323,
           653.676644484202,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           851.7625869115194,
           808.4831566810608,
           705.1771821294512,
-          765.41995375497
+          765.41995375497,
+          795.979282506307
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2872,7 +2872,6 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
-          1080,
           1112,
           1112,
           1112,
@@ -2898,6 +2897,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          720.5601240158081,
           645.5856139500936,
           1320.345009613037,
           1411.2693641662597,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1401.0271640777587,
           1456.255123011271,
           1265.2470620228694,
-          1293.543425486638
+          1293.543425486638,
+          1356.6411356244769
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
-        "message": "refactor!: make the Core option types consistent for extension authors (#1998)"
-      },
-      {
         "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "2035709788e314afef5721e8499327ca998ac367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
+        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
       }
     ],
     "labels": [
-      "46bf8489",
       "411dfe77",
       "053d3134",
       "22b71d85",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "20357097"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          703.7574090276446,
           571.6579988919772,
           1082.3052084786552,
           981.1785614831107,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1287.0904276711601,
           1415.3086838355432,
           1233.8007663999285,
-          1254.384162012736
+          1254.384162012736,
+          1321.079565556844
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3480,7 +3480,6 @@ window.BENCHMARK_DATA = {
           1424,
           1424,
           1424,
-          1424,
           1456,
           1456,
           1456,
@@ -3506,6 +3505,7 @@ window.BENCHMARK_DATA = {
           1440,
           1512,
           1512,
+          1464,
           1464,
           1464,
           1464,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          440.42451333999634,
           380.09171823660535,
           751.4006300608318,
           879.2709095818656,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           791.2830004374187,
           856.0742458615985,
           750.9815040588379,
-          730.2304495297946
+          730.2304495297946,
+          775.6313112258911
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
