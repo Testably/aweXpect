@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
-        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
-      },
-      {
         "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
         "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
+      },
+      {
+        "sha": "7190426271a7a65605d916dca260291afbe20ce8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
+        "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
       }
     ],
     "labels": [
-      "73754c62",
       "937f5ce0",
       "5c160901",
       "4f69216a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "f34312fa",
       "37b17490",
       "faf8259e",
-      "95843406"
+      "95843406",
+      "71904262"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2082.54341506958,
           1638.4001864115396,
           2176.7965695307803,
           1487.1613461812337,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           2029.8344958378718,
           1162.7327873523418,
           1554.1834622896636,
-          1144.1937400272914
+          1144.1937400272914,
+          2011.9457617539626
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -451,7 +451,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
-          1264,
+          1136,
           1136,
           1136,
           1136,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16095.034516554613,
           10886.648873901368,
           15994.652080829326,
           9670.001746041435,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           17098.636165073938,
           7173.664085388184,
           11210.02507425944,
-          7508.065033503941
+          7508.065033503941,
+          15612.89904315655
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
-        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
-      },
-      {
         "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
         "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
+      },
+      {
+        "sha": "7190426271a7a65605d916dca260291afbe20ce8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
+        "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
       }
     ],
     "labels": [
-      "73754c62",
       "937f5ce0",
       "5c160901",
       "4f69216a",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "f34312fa",
       "37b17490",
       "faf8259e",
-      "95843406"
+      "95843406",
+      "71904262"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1714.5909866333009,
           1307.5085592269897,
           1756.8202382496424,
           1108.6923746381487,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1701.3032452901205,
           938.9290584836688,
           1279.644205229623,
-          928.3882946014404
+          928.3882946014404,
+          1619.191248212542
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1059,7 +1059,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
-          1240,
+          1112,
           1112,
           1112,
           1112,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14967.080297851562,
           10542.309217180524,
           14830.891222635904,
           8916.316970825195,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           15620.978842599052,
           7090.131292070661,
           10279.51811327253,
-          7132.92980855306
+          7132.92980855306,
+          14227.382204691568
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
-        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
-      },
-      {
         "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
         "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
+      },
+      {
+        "sha": "7190426271a7a65605d916dca260291afbe20ce8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
+        "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
       }
     ],
     "labels": [
-      "73754c62",
       "937f5ce0",
       "5c160901",
       "4f69216a",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "f34312fa",
       "37b17490",
       "faf8259e",
-      "95843406"
+      "95843406",
+      "71904262"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5324.959761483328,
           3945.5726943969726,
           5218.103447547326,
           3371.4532132466634,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           5705.320902506511,
           3097.190896987915,
           4027.3860271998815,
-          3071.7376703534806
+          3071.7376703534806,
+          5399.504783630371
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1667,7 +1667,7 @@ window.BENCHMARK_DATA = {
           3736,
           3736,
           3736,
-          3736,
+          3712,
           3712,
           3712,
           3712,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          47738.11770833333,
           30162.97150878906,
           47229.157421875,
           28370.980021158855,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           51222.60506184896,
           21019.843021647135,
           31477.846778282754,
-          21102.357454427085
+          21102.357454427085,
+          45954.73359026228
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61925,
           61926,
           61926,
           61925,
@@ -1808,6 +1807,7 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61925,
+          61926,
           61926,
           61926,
           61926
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
-        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
-      },
       {
         "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
         "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
+      },
+      {
+        "sha": "7190426271a7a65605d916dca260291afbe20ce8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
+        "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
       }
     ],
     "labels": [
-      "73754c62",
       "937f5ce0",
       "5c160901",
       "4f69216a",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "f34312fa",
       "37b17490",
       "faf8259e",
-      "95843406"
+      "95843406",
+      "71904262"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9709.989149911064,
           7665.376858847482,
           9512.512535095215,
           6978.022907511393,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           9824.152210235596,
           5025.389504568918,
           7524.578917870154,
-          5151.186249287924
+          5151.186249287924,
+          9231.71848473182
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2275,7 +2275,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
-          7064,
+          6936,
           6936,
           6936,
           6936,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          303542.803515625,
           219512.95109049478,
           308093.34877929685,
           186873.35874720983,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           326901.14983258926,
           140179.92766462054,
           225797.5104654948,
-          145854.58447265625
+          145854.58447265625,
+          289229.61485877406
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521594,
           521541,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
-        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
-      },
       {
         "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
         "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
+      },
+      {
+        "sha": "7190426271a7a65605d916dca260291afbe20ce8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
+        "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
       }
     ],
     "labels": [
-      "73754c62",
       "937f5ce0",
       "5c160901",
       "4f69216a",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "f34312fa",
       "37b17490",
       "faf8259e",
-      "95843406"
+      "95843406",
+      "71904262"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2818.6505655141978,
           2260.7418215615407,
           2870.4714209238687,
           2170.48557917277,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2894.8428377787272,
           1616.964059448242,
           2278.927075606126,
-          1627.391671694242
+          1627.391671694242,
+          2792.736383756002
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2861,7 +2861,6 @@ window.BENCHMARK_DATA = {
           1328,
           1328,
           1328,
-          1328,
           1488,
           1488,
           1488,
@@ -2886,6 +2885,7 @@ window.BENCHMARK_DATA = {
           1488,
           1360,
           1360,
+          1288,
           1288,
           1288,
           1288,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1991.461474355062,
           1600.6378626505534,
           1976.182002766927,
           1486.5311923027039,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2055.877102661133,
           1094.2227733318623,
           1568.4732554299492,
-          1101.4330151875813
+          1101.4330151875813,
+          1917.0464908599854
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "73754c6225ae39cb74cabb19202d2133b920f636",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:09:08 2026 \u002B0200",
-        "message": "refactor!: rename Fail to FailureBothWays on ConstraintResult (#2004)"
-      },
-      {
         "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
         "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
+      },
+      {
+        "sha": "7190426271a7a65605d916dca260291afbe20ce8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
+        "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
       }
     ],
     "labels": [
-      "73754c62",
       "937f5ce0",
       "5c160901",
       "4f69216a",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "f34312fa",
       "37b17490",
       "faf8259e",
-      "95843406"
+      "95843406",
+      "71904262"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2119.3743518829347,
           1744.1700759615217,
           2051.1081465207612,
           1438.4370535441808,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2790.3694689824033,
           1429.1129812876384,
           2168.5853563944497,
-          1508.834768976484
+          1508.834768976484,
+          2664.107189178467
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3484,7 +3484,6 @@ window.BENCHMARK_DATA = {
           2864,
           2864,
           2864,
-          2864,
           2832,
           2832,
           2832,
@@ -3494,6 +3493,7 @@ window.BENCHMARK_DATA = {
           2832,
           2832,
           2832,
+          2776,
           2776,
           2776,
           2776,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1897.0544701894125,
           1539.1395468393962,
           1819.47263768514,
           1453.1506287711006,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           2025.3757642110188,
           925.4155009587606,
           1553.0216890062604,
-          947.3740917205811
+          947.3740917205811,
+          1715.4762353897095
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3798,6 +3798,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
         "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
+      },
+      {
+        "sha": "7190426271a7a65605d916dca260291afbe20ce8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
+        "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
       }
     ],
     "labels": [
@@ -3825,7 +3831,8 @@ window.BENCHMARK_DATA = {
       "f34312fa",
       "37b17490",
       "faf8259e",
-      "95843406"
+      "95843406",
+      "71904262"
     ],
     "datasets": [
       {
@@ -3856,7 +3863,8 @@ window.BENCHMARK_DATA = {
           2219.809844970703,
           1193.3022445678712,
           1679.1431387583414,
-          1202.221165384565
+          1202.221165384565,
+          2127.1996359143936
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3868,6 +3876,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2888,
           2888,
           2888,
           2888,
@@ -3931,7 +3940,8 @@ window.BENCHMARK_DATA = {
           1275.9561710357666,
           594.5914199829101,
           1015.3559288024902,
-          626.0237678381113
+          626.0237678381113,
+          1104.2046455383302
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3943,6 +3953,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -4131,6 +4142,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
         "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
+      },
+      {
+        "sha": "7190426271a7a65605d916dca260291afbe20ce8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
+        "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
       }
     ],
     "labels": [
@@ -4158,7 +4175,8 @@ window.BENCHMARK_DATA = {
       "f34312fa",
       "37b17490",
       "faf8259e",
-      "95843406"
+      "95843406",
+      "71904262"
     ],
     "datasets": [
       {
@@ -4189,7 +4207,8 @@ window.BENCHMARK_DATA = {
           3019.3669785719653,
           1588.1253022413987,
           2360.8571137019567,
-          1648.4648790359497
+          1648.4648790359497,
+          2904.959517615182
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4208,6 +4227,7 @@ window.BENCHMARK_DATA = {
           3768,
           3768,
           3768,
+          3744,
           3744,
           3744,
           3744,
@@ -4264,7 +4284,8 @@ window.BENCHMARK_DATA = {
           1393.1339780171713,
           675.8455649784634,
           1105.7281152180262,
-          666.6912180582682
+          666.6912180582682,
+          1264.4452566782634
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4276,6 +4297,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
