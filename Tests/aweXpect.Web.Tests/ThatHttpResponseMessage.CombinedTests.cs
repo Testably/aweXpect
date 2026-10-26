@@ -197,7 +197,7 @@ public sealed partial class ThatHttpResponseMessage
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
-				             has status code in the success range (2xx) and has a `Content-Type` header equal to "application/json",
+				             has status code in the success range (2xx) and has a `Content-Type` header equal to "application/json" ignoring case,
 				             but it had status code 404 NotFound and had content type "text/plain", which differs at index 0:
 				                ↓ (actual)
 				               "text/plain"

@@ -38,6 +38,8 @@ public sealed partial class ContentProcessor
 		[Arguments("image/gif")]
 		[Arguments("image/webp")]
 		[Arguments("application/pdf")]
+		[Arguments("Application/PDF")]
+		[Arguments("IMAGE/PNG")]
 		public async Task WhenContentTypeIsInterpretedAsBinaryContent_ShouldIncludeContentTypeAndLengthInFailureMessage(
 			string contentType)
 		{

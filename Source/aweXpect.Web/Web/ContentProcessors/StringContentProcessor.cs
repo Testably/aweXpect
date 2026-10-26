@@ -43,7 +43,7 @@ public class StringContentProcessor : IContentProcessor
 
 	private static bool IsSupportedMediaType(string mediaType)
 		=> mediaType.StartsWith("text/", StringComparison.OrdinalIgnoreCase) ||
-		   mediaType.Contains("xml") ||
-		   mediaType.Contains("json") ||
-		   mediaType.Contains("html");
+		   mediaType.Contains("xml", StringComparison.OrdinalIgnoreCase) ||
+		   mediaType.Contains("json", StringComparison.OrdinalIgnoreCase) ||
+		   mediaType.Contains("html", StringComparison.OrdinalIgnoreCase);
 }

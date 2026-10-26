@@ -35,6 +35,45 @@ public sealed partial class ThatHttpRequestMessage
 			}
 
 			[Test]
+			public async Task WhenContentTypeDiffersOnlyInCaseFromUnexpected_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithContent("some content")
+					.WithContentType("Text/Plain");
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveContentType("text/plain");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a `Content-Type` header equal to "text/plain" ignoring case,
+					             but it had
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 Content-Type: Text/Plain
+					                 Content-Length: 12
+					               some content
+					             """)
+					.Because("RFC 9110 defines the type and subtype of a media type as case-insensitive");
+			}
+
+			[Test]
+			public async Task WhenContentTypeDiffersOnlyInCaseFromUnexpected_WithoutIgnoringCase_ShouldSucceed()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithContent("some content")
+					.WithContentType("Text/Plain");
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveContentType("text/plain").IgnoringCase(false);
+
+				await That(Act).DoesNotThrow()
+					.Because("IgnoringCase(false) compares the media type case-sensitively again");
+			}
+
+			[Test]
 			public async Task WhenContentTypeEqualsUnexpected_ShouldFail()
 			{
 				HttpRequestMessage subject = RequestBuilder
@@ -47,7 +86,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a `Content-Type` header equal to "text/plain",
+					             does not have a `Content-Type` header equal to "text/plain" ignoring case,
 					             but it had
 
 					             HTTP-Request:
@@ -107,7 +146,7 @@ public sealed partial class ThatHttpRequestMessage
 							.ComplyWith(item => item.DoesNotHaveContentType("application/json")));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*whose Requests do not have a `Content-Type` header equal to "application/json" for all items,*""").AsWildcard()
+					.WithMessage("""*whose Requests do not have a `Content-Type` header equal to "application/json" ignoring case for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
@@ -134,7 +173,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a `Content-Type` header equal to "text/plain",
+					             does not have a `Content-Type` header equal to "text/plain" ignoring case,
 					             but it was <null>
 					             """);
 			}
@@ -168,7 +207,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `Content-Type` header equal to "text/content-type",
+					             has a `Content-Type` header equal to "text/content-type" ignoring case,
 					             but it had content type "text/other-content-type", which differs at index 5:
 					                     ↓ (actual)
 					               "text/other-content-type"
@@ -207,7 +246,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `Content-Type` header equal to "text/plain",
+					             has a `Content-Type` header equal to "text/plain" ignoring case,
 					             but it had no `Content-Type` header
 
 					             HTTP-Request:
@@ -226,7 +265,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `Content-Type` header equal to "text/plain",
+					             has a `Content-Type` header equal to "text/plain" ignoring case,
 					             but it was <null>
 					             """);
 			}

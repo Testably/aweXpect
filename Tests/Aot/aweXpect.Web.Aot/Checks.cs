@@ -83,7 +83,9 @@ internal static class Checks
 				.And.DoesNotHaveMethod(HttpMethod.Get))),
 		new("an unexpected content type fails and is named",
 			() => ShouldFail(async () => await That(Response(HttpStatusCode.OK, Json)).DoesNotHaveContentType("application/json"),
-				"does not have a `Content-Type` header equal to \"application/json\"")),
+				"does not have a `Content-Type` header equal to \"application/json\" ignoring case")),
+		new("a content type that differs only in case passes",
+			() => ShouldPass(async () => await That(Response(HttpStatusCode.OK, Json)).HasContentType("Application/JSON"))),
 		new("a request with the expected content type and without the unexpected one passes",
 			() => ShouldPass(async () => await That(Request(Json)).HasContentType("application/json")
 				.And.DoesNotHaveContentType("text/plain"))),

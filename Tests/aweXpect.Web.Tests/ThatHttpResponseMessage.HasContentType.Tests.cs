@@ -20,7 +20,7 @@ public sealed partial class ThatHttpResponseMessage
 							.ComplyWith(item => item.HasContentType("application/json")));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*whose Responses have a `Content-Type` header equal to "application/json" for all items,*""").AsWildcard()
+					.WithMessage("""*whose Responses have a `Content-Type` header equal to "application/json" ignoring case for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
@@ -51,7 +51,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `Content-Type` header equal to "text/content-type",
+					             has a `Content-Type` header equal to "text/content-type" ignoring case,
 					             but it had content type "text/other-content-type", which differs at index 5:
 					                     ↓ (actual)
 					               "text/other-content-type"
@@ -64,6 +64,63 @@ public sealed partial class ThatHttpResponseMessage
 					                 Content-Length: 12
 					               some content
 					             """);
+			}
+
+			[Test]
+			public async Task WhenContentTypeDiffersOnlyInCase_ShouldSucceed()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContentType("Text/Plain")
+					.WithContent("some content");
+
+				async Task Act()
+					=> await That(subject).HasContentType("text/plain");
+
+				await That(Act).DoesNotThrow()
+					.Because("RFC 9110 defines the type and subtype of a media type as case-insensitive");
+			}
+
+			[Test]
+			public async Task WhenContentTypeDiffersOnlyInCase_WithIgnoringCase_ShouldSucceed()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContentType("Text/Plain")
+					.WithContent("some content");
+
+				async Task Act()
+					=> await That(subject).HasContentType("text/plain").IgnoringCase();
+
+				await That(Act).DoesNotThrow()
+					.Because("a repeated IgnoringCase replaces the default");
+			}
+
+			[Test]
+			public async Task WhenContentTypeDiffersOnlyInCase_WithoutIgnoringCase_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContentType("Text/Plain")
+					.WithContent("some content");
+
+				async Task Act()
+					=> await That(subject).HasContentType("text/plain").IgnoringCase(false);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a `Content-Type` header equal to "text/plain",
+					             but it had content type "Text/Plain", which differs at index 0:
+					                ↓ (actual)
+					               "Text/Plain"
+					               "text/plain"
+					                ↑ (expected)
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: Text/Plain
+					                 Content-Length: 12
+					               some content
+					             """)
+					.Because("IgnoringCase(false) compares the media type case-sensitively again");
 			}
 
 			[Test]
@@ -92,7 +149,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `Content-Type` header equal to "text/content-type",
+					             has a `Content-Type` header equal to "text/content-type" ignoring case,
 					             but it had no `Content-Type` header
 
 					             HTTP-Response:
@@ -116,6 +173,34 @@ public sealed partial class ThatHttpResponseMessage
 					             has a `Content-Type` header equal to "some content" ignoring case,
 					             but it was <null>
 					             """);
+			}
+
+			[Test]
+			public async Task WhenUsingAComparerAfterIgnoringCaseFalse_ShouldUseTheComparer()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContentType("Text/Plain")
+					.WithContent("some content");
+
+				async Task Act()
+					=> await That(subject).HasContentType("text/plain").IgnoringCase(false)
+						.Using(StringComparer.OrdinalIgnoreCase);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenUsingAComparer_ShouldThrowInvalidOperationException()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContentType("text/plain");
+
+				async Task Act()
+					=> await That(subject).HasContentType("text/plain").Using(StringComparer.Ordinal);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("IgnoringCase cannot be combined with a custom comparer; use a case-insensitive comparer instead.")
+					.Because("the media type is compared ignoring case by default, which a comparer cannot honour");
 			}
 		}
 
@@ -148,7 +233,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a `Content-Type` header equal to "some/content-type",
+					             does not have a `Content-Type` header equal to "some/content-type" ignoring case,
 					             but it had
 
 					             HTTP-Response:

@@ -23,6 +23,45 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenContentTypeDiffersOnlyInCaseFromUnexpected_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContentType("Text/Plain")
+					.WithContent("some content");
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveContentType("text/plain");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a `Content-Type` header equal to "text/plain" ignoring case,
+					             but it had
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: Text/Plain
+					                 Content-Length: 12
+					               some content
+					             """)
+					.Because("RFC 9110 defines the type and subtype of a media type as case-insensitive");
+			}
+
+			[Test]
+			public async Task WhenContentTypeDiffersOnlyInCaseFromUnexpected_WithoutIgnoringCase_ShouldSucceed()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContentType("Text/Plain")
+					.WithContent("some content");
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveContentType("text/plain").IgnoringCase(false);
+
+				await That(Act).DoesNotThrow()
+					.Because("IgnoringCase(false) compares the media type case-sensitively again");
+			}
+
+			[Test]
 			public async Task WhenContentTypeEqualsUnexpected_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -34,7 +73,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a `Content-Type` header equal to "some/content-type",
+					             does not have a `Content-Type` header equal to "some/content-type" ignoring case,
 					             but it had
 
 					             HTTP-Response:
@@ -93,7 +132,7 @@ public sealed partial class ThatHttpResponseMessage
 							.ComplyWith(item => item.DoesNotHaveContentType("application/json")));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*whose Responses do not have a `Content-Type` header equal to "application/json" for all items,*""").AsWildcard()
+					.WithMessage("""*whose Responses do not have a `Content-Type` header equal to "application/json" ignoring case for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
@@ -108,7 +147,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a `Content-Type` header equal to "some/content-type",
+					             does not have a `Content-Type` header equal to "some/content-type" ignoring case,
 					             but it was <null>
 					             """);
 			}
@@ -142,7 +181,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `Content-Type` header equal to "text/content-type",
+					             has a `Content-Type` header equal to "text/content-type" ignoring case,
 					             but it had content type "text/other-content-type", which differs at index 5:
 					                     ↓ (actual)
 					               "text/other-content-type"
@@ -181,7 +220,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `Content-Type` header equal to "text/content-type",
+					             has a `Content-Type` header equal to "text/content-type" ignoring case,
 					             but it had no `Content-Type` header
 
 					             HTTP-Response:
