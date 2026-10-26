@@ -31,7 +31,7 @@ public class CoverTests(WebApplicationFactory<Program> factory)
 		await Expect.That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that response
-			             has a `Content-Type` header equal to "image/jpg",
+			             has a `Content-Type` header equal to "image/jpg" ignoring case,
 			             but it had content type "image/png", which differs at index 6:
 			                      ↓ (actual)
 			               "image/png"

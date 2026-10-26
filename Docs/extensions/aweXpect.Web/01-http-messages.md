@@ -138,8 +138,11 @@ await Expect.That(request).DoesNotHaveContentType("text/html");
 ```
 
 The media type supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. A request without
-content or without a `Content-Type` header does not have the unexpected media type.
+[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. As
+[RFC 9110](https://www.rfc-editor.org/rfc/rfc9110#section-8.3.1) defines the media type as case-insensitive, it is
+compared ignoring case by default, also with a match type; add `.IgnoringCase(false)` to compare it case-sensitively,
+also before `.Using(comparer)` or a match type of your own that does not support the casing.
+A request without content or without a `Content-Type` header does not have the unexpected media type.
 
 ### Request content
 
@@ -270,7 +273,9 @@ await Expect.That(response).HasContentType("application/*").AsWildcard();
 await Expect.That(response).DoesNotHaveContentType("text/html");
 ```
 
-A response without a `Content-Type` header does not have the unexpected media type.
+As for a request, the media type is compared ignoring case by default, also with a match type; add
+`.IgnoringCase(false)` to compare it case-sensitively. A response without a `Content-Type` header does not have the
+unexpected media type.
 
 For example, expecting plain text from an endpoint that returns JSON
 
@@ -284,7 +289,7 @@ fails with the difference, the request and the response:
 
 ```text title="Failure message"
 Expected that response
-has a `Content-Type` header equal to "text/plain",
+has a `Content-Type` header equal to "text/plain" ignoring case,
 but it had content type "application/json", which differs at index 0:
    ↓ (actual)
   "application/json"

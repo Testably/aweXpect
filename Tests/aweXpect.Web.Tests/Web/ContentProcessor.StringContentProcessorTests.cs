@@ -14,6 +14,8 @@ public sealed partial class ContentProcessor
 		[Test]
 		[Arguments("application/json")]
 		[Arguments("application/problem+json")]
+		[Arguments("Application/JSON")]
+		[Arguments("application/vnd.api+JSON")]
 		public async Task JsonString_WithoutJsonProcessor_ShouldIncludeTextContentInFailureMessage(
 			string contentType)
 		{
@@ -75,7 +77,11 @@ public sealed partial class ContentProcessor
 		[Test]
 		[Arguments("application/xml")]
 		[Arguments("application/html")]
+		[Arguments("Application/XML")]
+		[Arguments("Application/XHTML+XML")]
+		[Arguments("APPLICATION/HTML")]
 		[Arguments("text/plain")]
+		[Arguments("TEXT/PLAIN")]
 		[Arguments("text/csv")]
 		[Arguments("text/html")]
 		public async Task WhenContentTypeIsInterpretedAsStringContent_ShouldIncludeTextContentInFailureMessage(

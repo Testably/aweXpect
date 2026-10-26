@@ -16,6 +16,8 @@ public static partial class ThatHttpResponseMessage
 	/// </summary>
 	/// <remarks>
 	///     This compares the <paramref name="expected" /> value against the media type in the <c>Content-Type</c> header.
+	///     The media type is compared ignoring case by default, as RFC 9110 defines it case-insensitively;
+	///     <c>IgnoringCase(false)</c> compares it case-sensitively.
 	///     <br />
 	///     <seealso href="https://www.iana.org/assignments/media-types/media-types.xhtml" />
 	/// </remarks>
@@ -24,7 +26,7 @@ public static partial class ThatHttpResponseMessage
 		HasContentType(this IThat<HttpResponseMessage?> subject, string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default.IgnoringCase());
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
@@ -41,6 +43,8 @@ public static partial class ThatHttpResponseMessage
 	/// <remarks>
 	///     This compares the <paramref name="unexpected" /> value against the media type in the <c>Content-Type</c> header,
 	///     so a response without a <c>Content-Type</c> header succeeds.
+	///     The media type is compared ignoring case by default, as RFC 9110 defines it case-insensitively;
+	///     <c>IgnoringCase(false)</c> compares it case-sensitively.
 	///     <br />
 	///     <seealso href="https://www.iana.org/assignments/media-types/media-types.xhtml" />
 	/// </remarks>
@@ -49,7 +53,7 @@ public static partial class ThatHttpResponseMessage
 		DoesNotHaveContentType(this IThat<HttpResponseMessage?> subject, string unexpected)
 	{
 		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default.IgnoringCase());
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
