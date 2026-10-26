@@ -200,7 +200,9 @@ public static partial class ConstructorFilters
 	///     Every method returns a new filter, so that a stored filter stays unchanged. Extensions add their own
 	///     predicates with <see cref="Matching(Func{ParameterInfo, bool}, string)" />.
 	/// </remarks>
-	public class ConstructorsWithParameter<T> : Filtered.Constructors
+	public class ConstructorsWithParameter<T> : Filtered.Constructors,
+		IOptionsProvider<CollectionIndexOptions>,
+		ICopyOnOption<CollectionIndexOptions, ConstructorsWithParameter<T>>
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> _createFilter;
@@ -219,22 +221,6 @@ public static partial class ConstructorFilters
 			_collectionIndexOptions = collectionIndexOptions;
 			_parameterFilterOptions = parameterFilterOptions;
 		}
-
-		/// <summary>
-		///     …at the given zero-based <paramref name="index" />.
-		/// </summary>
-		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
-		/// <exception cref="InvalidOperationException">An index of another option is already specified.</exception>
-		public ConstructorsWithParameter<T> AtIndex(int index)
-			=> WithIndex(o => o.AtIndex(index));
-
-		/// <summary>
-		///     …at the given zero-based <paramref name="index" />, counted from the end of the parameters.
-		/// </summary>
-		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
-		/// <exception cref="InvalidOperationException">An index of another option is already specified.</exception>
-		public ConstructorsWithParameter<T> AtIndexFromEnd(int index)
-			=> WithIndex(o => o.AtIndexFromEnd(index));
 
 		/// <summary>
 		///     …without a default value.
@@ -307,9 +293,14 @@ public static partial class ConstructorFilters
 			=> new(_source, _createFilter, _collectionIndexOptions,
 				_parameterFilterOptions.WithModifier(predicate, () => description));
 
-		private ConstructorsWithParameter<T> WithIndex(Func<CollectionIndexOptions, CollectionIndexOptions> setIndex)
-			=> new(_source, _createFilter, setIndex(_collectionIndexOptions),
-				_parameterFilterOptions);
+		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
+		OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options
+			=> new(_collectionIndexOptions);
+
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		ConstructorsWithParameter<T> ICopyOnOption<CollectionIndexOptions, ConstructorsWithParameter<T>>.WithOptions(
+			CollectionIndexOptions options)
+			=> new(_source, _createFilter, options, _parameterFilterOptions);
 	}
 
 	/// <summary>
@@ -319,7 +310,8 @@ public static partial class ConstructorFilters
 		: ConstructorsWithParameter<T>,
 			IOptionsProvider<StringEqualityOptions>,
 			IStringMatchTypeOptions,
-			ICopyOnOption<StringEqualityOptions, ConstructorsWithNamedParameter<T>>
+			ICopyOnOption<StringEqualityOptions, ConstructorsWithNamedParameter<T>>,
+			ICopyOnOption<CollectionIndexOptions, ConstructorsWithNamedParameter<T>>
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> _createFilter;
@@ -344,6 +336,11 @@ public static partial class ConstructorFilters
 
 		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 		OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
+
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		ConstructorsWithNamedParameter<T> ICopyOnOption<CollectionIndexOptions, ConstructorsWithNamedParameter<T>>.WithOptions(
+			CollectionIndexOptions options)
+			=> new(_source, _createFilter, options, _createParameterFilterOptions, new OptionsHolder<StringEqualityOptions>(_options.Value));
 
 		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
 		ConstructorsWithNamedParameter<T> ICopyOnOption<StringEqualityOptions, ConstructorsWithNamedParameter<T>>.

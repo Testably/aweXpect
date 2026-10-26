@@ -409,6 +409,40 @@ public sealed partial class MethodFilters
 				}
 
 				[Test]
+				public async Task WhenAStoredFilterIsContinuedTwice_ShouldKeepTheOptionsApart()
+				{
+					Reflection.MethodFilters.GenericMethodsWithNamedArgument stored = In.Type<MyTestClass>()
+						.Methods()
+						.WhichAreGeneric()
+						.WithArgument("T").AsPrefix();
+
+					Reflection.MethodFilters.GenericMethodsWithNamedArgument atIndex1 = stored.AtIndex(1);
+					Reflection.MethodFilters.GenericMethodsWithNamedArgument fromEnd1 = stored.AtIndexFromEnd(1);
+
+					await That(stored).HasCount(2)
+						.Because("AtIndex and AtIndexFromEnd must return a new filter instead of changing the one they were called on");
+					await That(atIndex1).HasCount(1);
+					await That(atIndex1.GetDescription())
+						.StartsWith("generic methods with argument name starting with \"T\" at index 1 in");
+					await That(fromEnd1).HasCount(1);
+					await That(fromEnd1.GetDescription())
+						.StartsWith("generic methods with argument name starting with \"T\" at index 1 from end in");
+				}
+
+				[Test]
+				public async Task WhenIndexIsSetBeforeAStringOption_ShouldKeepBoth()
+				{
+					Filtered.Methods subject = In.Type<MyTestClass>()
+						.Methods()
+						.WhichAreGeneric()
+						.WithArgument("t2").AtIndex(1).IgnoringCase();
+
+					await That(subject).HasCount(1);
+					await That(subject.GetDescription())
+						.StartsWith("generic methods with argument name equal to \"t2\" ignoring case at index 1 in");
+				}
+
+				[Test]
 				public async Task WhenMethodDoesNotMatchTheName_ShouldNotBeIncluded()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()

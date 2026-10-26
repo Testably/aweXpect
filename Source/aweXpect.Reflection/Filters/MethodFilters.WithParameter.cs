@@ -196,7 +196,9 @@ public static partial class MethodFilters
 	///     Every method returns a new filter, so that a stored filter stays unchanged. Extensions add their own
 	///     predicates with <see cref="Matching(Func{ParameterInfo, bool}, string)" />.
 	/// </remarks>
-	public class MethodsWithParameter<T> : Filtered.Methods
+	public class MethodsWithParameter<T> : Filtered.Methods,
+		IOptionsProvider<CollectionIndexOptions>,
+		ICopyOnOption<CollectionIndexOptions, MethodsWithParameter<T>>
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> _createFilter;
@@ -215,22 +217,6 @@ public static partial class MethodFilters
 			_collectionIndexOptions = collectionIndexOptions;
 			_parameterFilterOptions = parameterFiltersOptions;
 		}
-
-		/// <summary>
-		///     …at the given zero-based <paramref name="index" />.
-		/// </summary>
-		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
-		/// <exception cref="InvalidOperationException">An index of another option is already specified.</exception>
-		public MethodsWithParameter<T> AtIndex(int index)
-			=> WithIndex(o => o.AtIndex(index));
-
-		/// <summary>
-		///     …at the given zero-based <paramref name="index" />, counted from the end of the parameters.
-		/// </summary>
-		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
-		/// <exception cref="InvalidOperationException">An index of another option is already specified.</exception>
-		public MethodsWithParameter<T> AtIndexFromEnd(int index)
-			=> WithIndex(o => o.AtIndexFromEnd(index));
 
 		/// <summary>
 		///     …without a default value.
@@ -302,9 +288,14 @@ public static partial class MethodFilters
 			=> new(_source, _createFilter, _collectionIndexOptions,
 				_parameterFilterOptions.WithModifier(predicate, () => description));
 
-		private MethodsWithParameter<T> WithIndex(Func<CollectionIndexOptions, CollectionIndexOptions> setIndex)
-			=> new(_source, _createFilter, setIndex(_collectionIndexOptions),
-				_parameterFilterOptions);
+		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
+		OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options
+			=> new(_collectionIndexOptions);
+
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		MethodsWithParameter<T> ICopyOnOption<CollectionIndexOptions, MethodsWithParameter<T>>.WithOptions(
+			CollectionIndexOptions options)
+			=> new(_source, _createFilter, options, _parameterFilterOptions);
 	}
 
 	/// <summary>
@@ -314,7 +305,8 @@ public static partial class MethodFilters
 		: MethodsWithParameter<T>,
 			IOptionsProvider<StringEqualityOptions>,
 			IStringMatchTypeOptions,
-			ICopyOnOption<StringEqualityOptions, MethodsWithNamedParameter<T>>
+			ICopyOnOption<StringEqualityOptions, MethodsWithNamedParameter<T>>,
+			ICopyOnOption<CollectionIndexOptions, MethodsWithNamedParameter<T>>
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> _createFilter;
@@ -339,6 +331,11 @@ public static partial class MethodFilters
 
 		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 		OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
+
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		MethodsWithNamedParameter<T> ICopyOnOption<CollectionIndexOptions, MethodsWithNamedParameter<T>>.WithOptions(
+			CollectionIndexOptions options)
+			=> new(_source, _createFilter, options, _createParameterFilterOptions, new OptionsHolder<StringEqualityOptions>(_options.Value));
 
 		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
 		MethodsWithNamedParameter<T> ICopyOnOption<StringEqualityOptions, MethodsWithNamedParameter<T>>.WithOptions(

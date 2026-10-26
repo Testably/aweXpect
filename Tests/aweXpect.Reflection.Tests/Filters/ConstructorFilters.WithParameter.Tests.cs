@@ -396,6 +396,42 @@ public sealed partial class ConstructorFilters
 			}
 
 			[Test]
+			public async Task WithParameterName_WhenAStoredFilterIsContinuedTwice_ShouldKeepTheOptionsApart()
+			{
+				Reflection.ConstructorFilters.ConstructorsWithNamedParameter<object?> stored =
+					In.Type<TestClassWithConstructorParameters>().Constructors().WithParameter("NAME").IgnoringCase();
+
+				Reflection.ConstructorFilters.ConstructorsWithNamedParameter<object?> atIndex0 = stored.AtIndex(0);
+				Reflection.ConstructorFilters.ConstructorsWithNamedParameter<object?> atIndex1 = stored.AtIndex(1);
+
+				await That(stored).IsEqualTo([
+					typeof(TestClassWithConstructorParameters).GetConstructor([typeof(string),])!,
+					typeof(TestClassWithConstructorParameters).GetConstructor([typeof(int), typeof(string),])!,
+				]).InAnyOrder().Because("AtIndex must return a new filter instead of changing the one it was called on");
+				await That(atIndex0).IsEqualTo([
+					typeof(TestClassWithConstructorParameters).GetConstructor([typeof(string),])!,
+				]);
+				await That(atIndex1).IsEqualTo([
+					typeof(TestClassWithConstructorParameters).GetConstructor([typeof(int), typeof(string),])!,
+				]);
+			}
+
+			[Test]
+			public async Task WithParameterName_WhenIndexIsSetBeforeAStringOption_ShouldKeepBoth()
+			{
+				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
+					.Constructors().WithParameter("NAME").AtIndexFromEnd(0).IgnoringCase();
+
+				await That(constructors).IsEqualTo([
+					typeof(TestClassWithConstructorParameters).GetConstructor([typeof(string),])!,
+					typeof(TestClassWithConstructorParameters).GetConstructor([typeof(int), typeof(string),])!,
+				]).InAnyOrder();
+				await That(constructors.GetDescription())
+					.IsEqualTo("constructors with parameter with name equal to \"NAME\" ignoring case at index 0 from end in")
+					.AsPrefix();
+			}
+
+			[Test]
 			public async Task WithParameterOfType_ShouldFilterForConstructorsWithParameterOfSpecificType()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()

@@ -7,7 +7,9 @@ namespace aweXpect;
 ///     Extension methods for results that limit the index of an item with <see cref="CollectionIndexOptions" />.
 /// </summary>
 /// <remarks>
-///     Only one index can be specified.
+///     Only one index can be specified.<br />
+///     A result that implements <see cref="ICopyOnOption{TOptions, TResult}" /> stays unchanged: it returns a new one
+///     with the new index.
 /// </remarks>
 public static class CollectionIndexOptionsExtensions
 {
@@ -17,6 +19,11 @@ public static class CollectionIndexOptionsExtensions
 	public static TResult AtIndex<TResult>(this TResult result, int index)
 		where TResult : IOptionsProvider<CollectionIndexOptions>
 	{
+		if (result is ICopyOnOption<CollectionIndexOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Value.AtIndex(index));
+		}
+
 		result.Options.AtIndex(index);
 		return result;
 	}
@@ -27,6 +34,11 @@ public static class CollectionIndexOptionsExtensions
 	public static TResult AtIndexFromEnd<TResult>(this TResult result, int index)
 		where TResult : IOptionsProvider<CollectionIndexOptions>
 	{
+		if (result is ICopyOnOption<CollectionIndexOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Value.AtIndexFromEnd(index));
+		}
+
 		result.Options.AtIndexFromEnd(index);
 		return result;
 	}

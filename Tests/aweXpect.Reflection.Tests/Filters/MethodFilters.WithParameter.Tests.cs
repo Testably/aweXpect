@@ -532,6 +532,70 @@ public sealed partial class MethodFilters
 			}
 
 			[Test]
+			public async Task WithParameterName_WhenAStoredFilterIsContinuedTwice_ShouldKeepTheOptionsApart()
+			{
+				Reflection.MethodFilters.MethodsWithNamedParameter<object?> stored =
+					In.Type<TestClassWithMethodParameters>().Methods().WithParameter("NAME").IgnoringCase();
+
+				Reflection.MethodFilters.MethodsWithNamedParameter<object?> atIndex0 = stored.AtIndex(0);
+				Reflection.MethodFilters.MethodsWithNamedParameter<object?> atIndex1 = stored.AtIndex(1);
+
+				await That(stored).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method1),
+						[typeof(string),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+				]).InAnyOrder().Because("AtIndex must return a new filter instead of changing the one it was called on");
+				await That(atIndex0).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method1),
+						[typeof(string),])!,
+				]);
+				await That(atIndex1).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+				]);
+			}
+
+			[Test]
+			public async Task WithParameterName_WhenIndexIsSetBeforeAStringOption_ShouldKeepBoth()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter("NAME").AtIndexFromEnd(0).IgnoringCase();
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method1),
+						[typeof(string),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter with name equal to \"NAME\" ignoring case at index 0 from end in")
+					.AsPrefix();
+			}
+
+			[Test]
+			public async Task WithParameterName_WhenStoredAsTheBaseFilter_ShouldKeepTheStringOptionsOnAtIndex()
+			{
+				Reflection.MethodFilters.MethodsWithParameter<object?> stored =
+					In.Type<TestClassWithMethodParameters>().Methods().WithParameter("NAME").IgnoringCase();
+
+				Reflection.MethodFilters.MethodsWithParameter<object?> atIndex1 = stored.AtIndex(1);
+
+				await That(stored).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method1),
+						[typeof(string),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+				]).InAnyOrder().Because("AtIndex must return a new filter instead of changing the one it was called on");
+				await That(atIndex1).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+				]);
+				await That(atIndex1.GetDescription())
+					.IsEqualTo("methods with parameter with name equal to \"NAME\" ignoring case at index 1 in").AsPrefix();
+			}
+
+			[Test]
 			public async Task WithParameterOfType_ShouldFilterForMethodsWithParameterOfSpecificType()
 			{
 				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
