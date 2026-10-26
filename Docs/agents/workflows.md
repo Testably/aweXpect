@@ -93,7 +93,7 @@ Stryker.NET mutates `aweXpect` (`MutationTestsMain`, tested by `aweXpect.Tests` 
 ## Pipeline targets
 
 `./build.ps1 --help` lists the targets. Running the script without a target runs the defaults (`Pack`, `ApiChecks`,
-`Benchmarks`, `CodeAnalysis`), which is rarely what you want locally. The configuration defaults to `Debug` locally
+`DocsTests`, `Benchmarks`, `CodeAnalysis`), which is rarely what you want locally. The configuration defaults to `Debug` locally
 and `Release` on the build server (`--configuration Release`).
 
 | Target | What it does |
@@ -103,6 +103,7 @@ and `Release` on the build server (`--configuration Release`).
 | `TestFrameworks` | Runs the projects under `Tests/Frameworks` |
 | `CodeCoverage` | `UnitTests` and `TestFrameworks` with coverage, merged into `TestResults/reports`; the tests collect coverage only when this target runs |
 | `ApiChecks` | Runs `aweXpect.Api.Tests` |
+| `DocsTests` | Runs `aweXpect.Docs.Tests` (`net48` only on Windows), then its slow tests |
 | `AotSmokeTests` | Runs `Tests/Aot` normally and published with Native AOT for the current platform (needs the native toolchain, on Windows the C++ build tools of Visual Studio) |
 | `Pack` | Collects the packages into `Artifacts/Packages` |
 | `ReleaseNotes` | Writes the changes of each package since the last stable release into `Artifacts/ReleaseNotes.md` |
@@ -131,10 +132,10 @@ be added to `ProjectsWithSlowTests` in `Pipeline/Build.UnitTest.cs`; a listed pr
 
 | Workflow | Trigger | Jobs |
 | --- | --- | --- |
-| `ci.yml` | Pull requests to `main` | `UnitTests TestFrameworks` on Ubuntu, Windows and macOS; `ApiChecks`; `AotSmokeTests`; `Benchmarks` per changed package; `CodeAnalysis` |
+| `ci.yml` | Pull requests to `main` | `UnitTests TestFrameworks` on Ubuntu, Windows and macOS; `ApiChecks DocsTests`; `AotSmokeTests`; `Benchmarks` per changed package; `CodeAnalysis` |
 | `ci-analysis.yml` | After `CI` completes | Posts a benchmark PR comment per package |
-| `build.yml` | Pushes to `main`, release tags | `UnitTests TestFrameworks` on three platforms, `ApiChecks`, `AotSmokeTests`, `Benchmarks` per package, `CodeAnalysis`, `Pack`, `ReleaseNotes`; on a tag, pushes all packages to NuGet and creates the GitHub release |
+| `build.yml` | Pushes to `main`, release tags | `UnitTests TestFrameworks` on three platforms, `ApiChecks DocsTests`, `AotSmokeTests`, `Benchmarks` per package, `CodeAnalysis`, `Pack`, `ReleaseNotes`; on a tag, pushes all packages to NuGet and creates the GitHub release |
 | `nightly.yml` | Daily, when `main` changed | Sliced mutation tests and the Stryker dashboard |
 | `notify-docs-site.yml` | After `Build` on `main` | Triggers the docs site rebuild |
 
-Dependabot opens weekly `chore:` PRs; Mergify squash-merges them once the unit and API tests pass.
+Dependabot opens weekly `chore:` PRs; Mergify squash-merges them once the unit tests and the API and Docs tests pass.

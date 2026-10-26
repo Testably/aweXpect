@@ -6,7 +6,7 @@ pull_request_rules:
       - check-success = Unit tests (ubuntu-latest)
       - check-success = Unit tests (windows-latest)
       - check-success = Unit tests (macos-latest)
-      - check-success = API tests
+      - check-success = API and Docs tests
     actions:
       merge:
         method: squash
