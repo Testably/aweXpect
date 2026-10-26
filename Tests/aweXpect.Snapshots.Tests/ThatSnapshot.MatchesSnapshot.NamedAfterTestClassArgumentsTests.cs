@@ -52,7 +52,7 @@ public sealed partial class ThatSnapshot
 
 		public sealed class Playlist : IEnumerable<string>
 		{
-			public string Name => "Beatles";
+			public string Name { get; } = "Beatles";
 
 			public IEnumerator<string> GetEnumerator()
 				=> throw new InvalidOperationException("The playlist is not loaded yet.");
