@@ -7,7 +7,8 @@ namespace aweXpect;
 public static partial class ThatTypes
 {
 	[GenerateCollectionExpectation("AreDelegates", "is a delegate", "are delegates",
-		CollectionOverload = true, NegatedName = "AreNotDelegates")]
-	private static PredicateResult IsADelegateType(Type? type)
-		=> type is null ? ItemResults.Null : type.IsDelegate();
+		CollectionOverload = true, NegatedName = "AreNotDelegates",
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsADelegateType(Type type)
+		=> type.IsDelegate();
 }

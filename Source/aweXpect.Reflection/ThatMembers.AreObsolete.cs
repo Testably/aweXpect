@@ -7,8 +7,9 @@ namespace aweXpect;
 public static partial class ThatMembers
 {
 	[GenerateCollectionExpectation("AreObsolete", "is obsolete", "are obsolete",
-		CollectionOverload = true, NegatedName = "AreNotObsolete", FormattedItem = nameof(Formattable))]
-	private static PredicateResult IsObsoleteMember<TMember>(TMember? member)
+		CollectionOverload = true, NegatedName = "AreNotObsolete", FormattedItem = nameof(Formattable),
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsObsoleteMember<TMember>(TMember member)
 		where TMember : MemberInfo
-		=> member is null ? ItemResults.Null : member.IsObsolete();
+		=> member.IsObsolete();
 }

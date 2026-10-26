@@ -8,12 +8,14 @@ namespace aweXpect;
 public static partial class ThatMethods
 {
 	[GenerateCollectionExpectation("AreOperators", "is an operator", "are operators",
-		CollectionOverload = true, NegatedName = "AreNotOperators", FormattedItem = nameof(Formattable))]
-	private static PredicateResult IsAnOperatorMethod(MethodInfo? method)
-		=> method is null ? ItemResults.Null : method.IsOperator();
+		CollectionOverload = true, NegatedName = "AreNotOperators", FormattedItem = nameof(Formattable),
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsAnOperatorMethod(MethodInfo method)
+		=> method.IsOperator();
 
 	[GenerateCollectionExpectation("AreOperators", "is the operator {operator}", "are the operator {operator}",
-		CollectionOverload = true, NegatedName = "AreNotOperators", FormattedItem = nameof(Formattable))]
-	private static PredicateResult IsTheOperatorMethod(MethodInfo? method, Operator @operator)
-		=> method is null ? ItemResults.Null : method.IsOperator(@operator);
+		CollectionOverload = true, NegatedName = "AreNotOperators", FormattedItem = nameof(Formattable),
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsTheOperatorMethod(MethodInfo method, Operator @operator)
+		=> method.IsOperator(@operator);
 }

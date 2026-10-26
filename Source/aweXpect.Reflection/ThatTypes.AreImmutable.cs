@@ -12,7 +12,8 @@ public static partial class ThatTypes
 		          A type is considered immutable when all instance fields (including inherited ones) are
 		          <see langword="readonly" /> and all instance properties (including inherited ones) have no setter
 		          or an init-only setter.
-		          """)]
-	private static PredicateResult IsImmutableType(Type? type)
-		=> type is null ? ItemResults.Null : type.IsImmutable();
+		          """,
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsImmutableType(Type type)
+		=> type.IsImmutable();
 }

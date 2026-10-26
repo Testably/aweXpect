@@ -162,6 +162,7 @@ public sealed class GenerateCollectionExpectationAttributeTests
 		GenerateCollectionExpectationAttribute subject = new("AreLucky", "is lucky", "are lucky")
 		{
 			NullableOverload = false,
+			NullItemFailsBothWays = true,
 			CollectionOverload = true,
 			NegatedName = "AreUnlucky",
 			FormattedItem = "ToBadge",
@@ -173,6 +174,7 @@ public sealed class GenerateCollectionExpectationAttributeTests
 		await That(subject.ExpectationText).IsEqualTo("is lucky");
 		await That(subject.PluralExpectationText).IsEqualTo("are lucky");
 		await That(subject.NullableOverload).IsFalse();
+		await That(subject.NullItemFailsBothWays).IsTrue();
 		await That(subject.CollectionOverload).IsTrue();
 		await That(subject.NegatedName).IsEqualTo("AreUnlucky");
 		await That(subject.FormattedItem).IsEqualTo("ToBadge");
@@ -190,6 +192,7 @@ public sealed class GenerateCollectionExpectationAttributeTests
 			.Because("the generator takes the text of [GenerateExpectation] on the same method");
 		await That(subject.PluralExpectationText).IsEqualTo("are lucky");
 		await That(subject.NullableOverload).IsTrue();
+		await That(subject.NullItemFailsBothWays).IsFalse();
 		await That(subject.CollectionOverload).IsFalse();
 		await That(subject.NegatedName).IsNull();
 		await That(subject.FormattedItem).IsNull();
@@ -716,6 +719,70 @@ public sealed class GenerateCollectionExpectationAttributeTests
 			               <null>
 			             ]
 			             """);
+	}
+
+	[Test]
+	public async Task NullItemFailsBothWays_NullableOverload_WhenItemIsNull_ShouldFail()
+	{
+		int?[] subject = [2, null,];
+
+		async Task Act()
+			=> await That(subject).All().ArePrime();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is prime for all items,
+			             but for the item at index 1, it was <null>
+
+			             Collection:
+			             [2, <null>]
+			             """);
+	}
+
+	[Test]
+	public async Task NullItemFailsBothWays_WhenItemIsNull_ShouldFail()
+	{
+		Account?[] subject = [new("Alice", 0), null,];
+
+		async Task Act()
+			=> await That(subject).All().AreSuspended();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is suspended for all items,
+			             but for the item at index 1, it was <null>
+
+			             Collection:
+			             [
+			               Alice,
+			               <null>
+			             ]
+			             """);
+	}
+
+	[Test]
+	public async Task NullItemFailsBothWays_WhenItemIsNullAndNegated_ShouldAlsoFail()
+	{
+		Account?[] subject = [new("Alice", 1), null,];
+
+		async Task Act()
+			=> await That(subject).None().AreSuspended();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is suspended for no items,
+			             but for the item at index 1, it was <null>
+
+			             Collection:
+			             [
+			               Alice,
+			               <null>
+			             ]
+			             """)
+			.Because("a null item cannot be answered, so it fails the negation as well");
 	}
 
 	[Test]

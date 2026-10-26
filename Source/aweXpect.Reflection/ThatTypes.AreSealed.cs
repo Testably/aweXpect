@@ -11,7 +11,8 @@ public static partial class ThatTypes
 		Remarks = """
 		          Static types are not considered sealed, even though they
 		          have <see cref="Type.IsSealed" /> set to <see langword="true" />.
-		          """)]
-	private static PredicateResult IsSealedType(Type? type)
-		=> type is null ? ItemResults.Null : type.IsReallySealed();
+		          """,
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsSealedType(Type type)
+		=> type.IsReallySealed();
 }

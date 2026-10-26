@@ -10,7 +10,8 @@ public static partial class ThatTypes
 		CollectionOverload = true, NegatedName = "AreNotInstantiable",
 		Remarks = """
 		          Abstract types, static types, interfaces and open generic type definitions are not considered instantiable.
-		          """)]
-	private static PredicateResult IsInstantiableType(Type? type)
-		=> type is null ? ItemResults.Null : type.IsReallyInstantiable();
+		          """,
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsInstantiableType(Type type)
+		=> type.IsReallyInstantiable();
 }
