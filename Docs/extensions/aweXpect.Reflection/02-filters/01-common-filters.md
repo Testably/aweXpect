@@ -73,7 +73,7 @@ await Expect.That(type).Has<ObsoleteAttribute>(a => a.Message == "Use NewClass i
 await Expect.That(methods).Have<FactAttribute>();
 ```
 
-## Obsolete
+### Obsolete
 
 Shared by all types and members: a self-documenting shorthand for the `ObsoleteAttribute` (so that
 `.WhichAreObsolete()` reads better than `.With<ObsoleteAttribute>()` in architecture rules).
