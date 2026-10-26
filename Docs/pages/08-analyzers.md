@@ -6,6 +6,24 @@ build, warnings point at code that compiles but probably does not do what you me
 The analyzers and the source generators need Roslyn 4.8 or later, which ships with the .NET 8 SDK and Visual Studio
 2022 17.8. An older compiler skips them with warning `CS8032`.
 
+| Rule                                                        | Severity    | Reported when                                                     |
+|-------------------------------------------------------------|-------------|-------------------------------------------------------------------|
+| [`aweXpect0001`](#awexpect0001)                             | Error       | an expectation is neither awaited nor verified                    |
+| [`aweXpect0002`](#awexpect0002)                             | Error       | `Equals` is called on an expectation                              |
+| [`aweXpect0003`](#awexpect0003)                             | Warning     | a `Has…` expectation directly follows `Throws`                    |
+| [`aweXpect0004`](#awexpect0004)                             | Error       | an expectation for an object is applied to a delegate             |
+| [`aweXpect0005`](#awexpect0005)                             | Warning     | an expectation is awaited in an `async void` method or lambda     |
+| [`aweXpect0006`](#awexpect0006)                             | Warning     | a collection without a defined order is compared by position      |
+| [`aweXpect0007`](#awexpect0007)                             | Error       | a delegate returns a `ValueTask` on a target without its overload |
+| [`aweXpect0008`](#awexpect0008)                             | Warning     | the value of an `.Or` combination is used                         |
+| [`aweXpect0009`](#awexpect0009)                             | Warning     | the result of an option method is discarded                       |
+| [`aweXpect1001` to `aweXpect1004`](#nullability-suppressor) | Suppression | nullability warnings after e.g. `IsNotNull()`                     |
+| [`aweXpect2001`](#metadata-generator)                       | Warning     | a type in `[assembly: GenerateMetadata(…)]` gets no registration  |
+| [`aweXpect2002`](#test-framework-adapter)                   | Warning     | a test project on .NET 8 or later sets `<LangVersion>` below 9    |
+| [`aweXpect4001` to `aweXpect4004`](#expectation-generator)  | Error       | a method cannot be turned into a generated expectation            |
+| [`aweXpect4005`](#registration-generator)                   | Error       | a module initializer of an extension cannot be called             |
+| [`aweXpect5001`](#experimental-apis)                        | Error       | the experimental `WithTimeSystem(…)` is used                      |
+
 ## aweXpect0001
 
 :::danger[Error]
@@ -224,25 +242,6 @@ The source generator warns with `aweXpect2001` when a type named in
 `[assembly: GenerateMetadata(typeof(…))]` yields no registration and stays on the reflection path. See
 [Native AOT and trimming](./08-setup/04-native-aot.md#equivalency).
 
-## Expectation generator
-
-The source generator in `aweXpect.Core` reports an error for a method marked with `[GenerateExpectation]` or
-`[GenerateCollectionExpectation]` that it cannot turn into an expectation, see [generated expectations](./11-extending/01-generated-expectations.md):
-
-| Rule           | Reported when                                                                                             |
-|----------------|-----------------------------------------------------------------------------------------------------------|
-| `aweXpect4001` | the class of the method is not a top-level, non-generic, `static partial` class or is `file`-local        |
-| `aweXpect4002` | the method, its parameters, the name or the expectation text are not supported, with the reason           |
-| `aweXpect4003` | the `Result` names no `static` method that returns a `string` and takes the subject                       |
-| `aweXpect4004` | the `FormattedItem` names no `static` method that returns a value and takes the item                      |
-
-## Registration generator
-
-The source generator in `aweXpect.Core` reports the error `aweXpect4005` when a name in the MSBuild property
-`AweXpectModuleInitializers` names no accessible `static` method without parameters, and leaves the call out of the
-module initializer. The build targets of an extension set this property, see
-[registration from the test project](./11-extending/09-initialization.md#registration-from-the-test-project).
-
 ## Test framework adapter
 
 The source generator warns with `aweXpect2002` when a test project on .NET 8 or later sets `<LangVersion>` below 9.
@@ -266,3 +265,26 @@ real time, e.g. with a time system of a mocking library. It is marked as experim
   <NoWarn>$(NoWarn);aweXpect5001</NoWarn>
 </PropertyGroup>
 ```
+
+## For extension authors
+
+These rules are reported while you build an extension package on `aweXpect.Core`.
+
+### Expectation generator
+
+The source generator in `aweXpect.Core` reports an error for a method marked with `[GenerateExpectation]` or
+`[GenerateCollectionExpectation]` that it cannot turn into an expectation, see [generated expectations](./11-extending/01-generated-expectations.md):
+
+| Rule           | Reported when                                                                                             |
+|----------------|-----------------------------------------------------------------------------------------------------------|
+| `aweXpect4001` | the class of the method is not a top-level, non-generic, `static partial` class or is `file`-local        |
+| `aweXpect4002` | the method, its parameters, the name or the expectation text are not supported, with the reason           |
+| `aweXpect4003` | the `Result` names no `static` method that returns a `string` and takes the subject                       |
+| `aweXpect4004` | the `FormattedItem` names no `static` method that returns a value and takes the item                      |
+
+### Registration generator
+
+The source generator in `aweXpect.Core` reports the error `aweXpect4005` when a name in the MSBuild property
+`AweXpectModuleInitializers` names no accessible `static` method without parameters, and leaves the call out of the
+module initializer. The build targets of an extension set this property, see
+[registration from the test project](./11-extending/09-initialization.md#registration-from-the-test-project).
