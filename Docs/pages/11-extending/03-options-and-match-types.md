@@ -75,7 +75,7 @@ does not offer it again.
 You can also set the options of `aweXpect.Core` in your own code, e.g. in an option of your own. Each method of an
 options value that sets an option returns a new value with the option set, e.g. `Quantifier.Default.AtLeast(2)`, and
 the same methods are extension methods on the holder in the `aweXpect.Options` namespace, which replace the value in
-the holder and return the holder, so that calls chain, e.g. `result.Options.AtLeast(2).AtMost(5)`. The members that only
+the holder and return the holder, so that calls chain, e.g. `result.Options.IgnoringCase().AsPrefix()`. The members that only
 read the options are on `result.Options.Value`.
 
 :::warning
