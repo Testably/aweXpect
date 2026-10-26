@@ -2,15 +2,15 @@
 
 Describes the possible expectations for dictionaries.
 
-| Expectation                          | Negated                | Summary                                              |
-|--------------------------------------|------------------------|------------------------------------------------------|
-| [`IsEqualTo`](#equality)             | `IsNotEqualTo`         | has the same entries as the expected dictionary      |
-| [`Contains`](#entry)                 | `DoesNotContain`       | contains the expected entry                          |
-| [`ContainsKey`](#keys)               | `DoesNotContainKey`    | contains the expected key                            |
-| [`ContainsKeys`](#keys)              | `DoesNotContainKeys`   | contains all expected keys (negated: none of them)   |
-| [`ContainsValue`](#values)           | `DoesNotContainValue`  | contains the expected value                          |
-| [`ContainsValues`](#values)          | `DoesNotContainValues` | contains all expected values (negated: none of them) |
-| [`Keys`, `Values`](#keys-and-values) |                        | continue with the keys or values as a collection     |
+| Expectation                           | Negated                | Summary                                              |
+|---------------------------------------|------------------------|------------------------------------------------------|
+| [`IsEqualTo`](#equality)              | `IsNotEqualTo`         | has the same entries as the expected dictionary      |
+| [`Contains`](#entry)                  | `DoesNotContain`       | contains the expected entry                          |
+| [`ContainsKey`](#contained)           | `DoesNotContainKey`    | contains the expected key                            |
+| [`ContainsKeys`](#contained)          | `DoesNotContainKeys`   | contains all expected keys (negated: none of them)   |
+| [`ContainsValue`](#contained)         | `DoesNotContainValue`  | contains the expected value                          |
+| [`ContainsValues`](#contained)        | `DoesNotContainValues` | contains all expected values (negated: none of them) |
+| [`Keys`, `Values`](#as-collections)   |                        | continue with the keys or values as a collection     |
 
 The samples on this page use the following dictionary:
 
@@ -38,6 +38,16 @@ Dictionary<string, int> ratings = new(StringComparer.OrdinalIgnoreCase) { { "Let
 await Expect.That(ratings).IsEqualTo(new Dictionary<string, int> { { "LET IT BE", 5 } });
 ```
 
+To compare the entries in their enumeration order instead, compare them as a collection of
+`KeyValuePair<TKey, TValue>`:
+
+```csharp
+SortedDictionary<string, int> sorted = new() { { "Let It Be", 42 }, { "Yesterday", 7 } };
+KeyValuePair<string, int>[] expected = [new("Let It Be", 42), new("Yesterday", 7)];
+
+await Expect.That(sorted.AsEnumerable()).IsEqualTo(expected);
+```
+
 <details>
 <summary>Which key comparers are read</summary>
 
@@ -49,16 +59,6 @@ expectation, even when the comparer considers it the same as one.
 
 </details>
 
-To compare the entries in their enumeration order instead, compare them as a collection of
-`KeyValuePair<TKey, TValue>`:
-
-```csharp
-SortedDictionary<string, int> sorted = new() { { "Let It Be", 42 }, { "Yesterday", 7 } };
-KeyValuePair<string, int>[] expected = [new("Let It Be", 42), new("Yesterday", 7)];
-
-await Expect.That(sorted.AsEnumerable()).IsEqualTo(expected);
-```
-
 ## Entry
 
 You can verify that a dictionary contains the `expected` entry, which is looked up by its key, too:
@@ -69,19 +69,27 @@ await Expect.That(playCounts).Contains(new KeyValuePair<string, int>("Yesterday"
 await Expect.That(playCounts).DoesNotContain("Let It Be", 7);
 ```
 
-## Keys
+## Keys and values
 
-You can verify that a dictionary contains the `expected` key(s):
+### Contained
+
+You can verify that a dictionary contains the `expected` key(s) or value(s). Several keys or values can also be given
+as a collection:
 
 ```csharp
 await Expect.That(playCounts).ContainsKey("Let It Be");
 await Expect.That(playCounts).ContainsKeys("Let It Be", "Yesterday");
 await Expect.That(playCounts).DoesNotContainKey("Help!");
 await Expect.That(playCounts).DoesNotContainKeys("Help!", "Something");
+await Expect.That(playCounts).ContainsValue(42);
+await Expect.That(playCounts).ContainsValues(42, 7);
+await Expect.That(playCounts).DoesNotContainValue(0);
+await Expect.That(playCounts).DoesNotContainValues(0, 1);
+await Expect.That(playCounts).ContainsKeys(new List<string> { "Let It Be", "Yesterday" });
 ```
 
-You can add additional expectations on the corresponding value(s). `WhoseValues` is a collection of the values
-for the expected keys, so all collection expectations are available:
+After `ContainsKey` or `ContainsKeys`, you can add expectations on the corresponding value(s). `WhoseValues` is a
+collection of the values for the expected keys, so all collection expectations are available:
 
 ```csharp
 await Expect.That(playCounts).ContainsKey("Let It Be").WhoseValue.IsEqualTo(42);
@@ -90,30 +98,17 @@ await Expect.That(playCounts).ContainsKeys("Let It Be", "Yesterday")
   .WhoseValues.All().ComplyWith(v => v.IsPositive());
 ```
 
-## Values
-
-You can verify that a dictionary contains the `expected` value(s):
-
-```csharp
-await Expect.That(playCounts).ContainsValue(42);
-await Expect.That(playCounts).ContainsValues(42, 7);
-await Expect.That(playCounts).DoesNotContainValue(0);
-await Expect.That(playCounts).DoesNotContainValues(0, 1);
-```
-
-The values are compared with the same options as the items of a collection, e.g. `IgnoringCase()` for strings or a
-[tolerance](./index.md#tolerance) with `Within`. The expected keys or values can also be given as a collection:
+The values, also the value of an [entry](#entry), are compared with the same options as the items of a collection,
+e.g. `IgnoringCase()` for strings or a [tolerance](./01-equality.md#tolerance) with `Within`:
 
 ```csharp
 Dictionary<int, string> titles = new() { { 1, "Let It Be" }, { 2, "Yesterday" } };
 Dictionary<string, double> durations = new() { { "Let It Be", 3.85 }, { "Yesterday", 2.07 } };
-string[] expected = ["LET IT BE", "YESTERDAY"];
 
 await Expect.That(titles).ContainsValue("let it be").IgnoringCase();
-await Expect.That(titles).ContainsValues(expected).IgnoringCase();
+await Expect.That(titles).ContainsValues("LET IT BE", "YESTERDAY").IgnoringCase();
 await Expect.That(titles).Contains(1, "LET IT BE").IgnoringCase();
 await Expect.That(durations).Contains("Yesterday", 2.0).Within(0.1);
-await Expect.That(titles).ContainsKeys(new List<int> { 1, 2 });
 ```
 
 `DoesNotContainKeys` and `DoesNotContainValues` mean "none of": they fail as soon as the dictionary contains one of
@@ -127,7 +122,7 @@ await Expect.That(playCounts).DoesNotContainKeys("Help!", "Something")
   .Because("none of the keys is contained, while adding \"Let It Be\" would fail");
 ```
 
-## Keys and values
+### As collections
 
 :::info[C# 14 or later]
 `Keys` and `Values` are extension properties, which need C# 14 or later, the default only for .NET 10 and later. With
@@ -143,9 +138,15 @@ await Expect.That(playCounts).Values.All().AreUnique();
 ```
 
 The keys keep the key comparer of the dictionary, so e.g. `Keys.Contains("LET IT BE")` succeeds for a key
-`"Let It Be"` in a dictionary created with `StringComparer.OrdinalIgnoreCase`. On
-[.NET Framework](../02-getting-started.md#target-frameworks), the comparer of a `ConcurrentDictionary<TKey, TValue>`
-is not read.
+`"Let It Be"` in a dictionary created with `StringComparer.OrdinalIgnoreCase`.
 
 The keys of a dictionary are unique by design, so its entries are unique as well. To verify that its values are unique,
 use `Values.All().AreUnique()`.
+
+<details>
+<summary>`ConcurrentDictionary` on .NET Framework</summary>
+
+On [.NET Framework](../08-setup/02-target-frameworks.md), the comparer of a
+`ConcurrentDictionary<TKey, TValue>` is not read.
+
+</details>

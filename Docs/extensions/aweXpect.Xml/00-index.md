@@ -4,6 +4,16 @@
 
 [aweXpect.Xml](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Xml) contains expectations for XML strings and `System.Xml.Linq`.
 
+## Installation
+
+```ps
+dotnet add package aweXpect.Xml
+```
+
+The package brings `Expect.That` with it, but not the expectations for strings, numbers or collections, so reference
+[`aweXpect`](https://www.nuget.org/packages/aweXpect) as well, e.g. for the `IsEqualTo` of `IsEqualTo(…).AsXml()`.
+The expectations live in the namespace `aweXpect`, so `using aweXpect;` is all you need.
+
 ## At a glance
 
 ```csharp
@@ -34,20 +44,24 @@ but it could not be parsed: Unexpected end of file has occurred. The following e
 
 ## Overview
 
-| Expectation                                                        | Subject                 | Summary                                                              |
-|--------------------------------------------------------------------|-------------------------|----------------------------------------------------------------------|
-| [`IsEqualTo(…).AsXml()`](./01-strings.md#string-comparison-as-xml) | `string`                | equal to the expected XML, compared by content                       |
-| [`IsValidXml`](./01-strings.md#validation)                         | `string`                | a well-formed XML document, optionally with expectations on its root |
-| [`IsNotValidXml`](./01-strings.md#validation)                      | `string`                | not a well-formed XML document                                       |
-| [`IsValidXmlMatching`](./01-strings.md#validation)                 | `string`                | valid XML that matches the expected XML                              |
-| [`IsValidXmlMatchingExactly`](./01-strings.md#validation)          | `string`                | valid XML that matches the expected XML exactly                      |
-| [`Matches`](./02-matching.md#elements-and-documents)               | `XElement`, `XDocument` | matches the expected XML, additional nodes allowed                   |
-| [`MatchesExactly`](./02-matching.md#elements-and-documents)        | `XElement`, `XDocument` | matches the expected XML exactly                                     |
-| [`HasAttribute`](./03-navigation.md#attributes)                    | `XElement`, `XDocument` | has the attribute, optionally with expectations on its value         |
-| [`DoesNotHaveAttribute`](./03-navigation.md#attributes)            | `XElement`, `XDocument` | does not have the attribute                                          |
-| [`HasElement`](./03-navigation.md#child-elements)                  | `XElement`, `XDocument` | has the child element, optionally with expectations on it            |
-| [`DoesNotHaveElement`](./03-navigation.md#child-elements)          | `XElement`, `XDocument` | does not have the child element                                      |
-| [`HasValue`](./03-navigation.md#values)                            | `XElement`, `XDocument` | the value satisfies the expectations                                 |
+Expectations for [`string`](./01-strings.md):
+
+| Expectation                                                        | Negated                   | Summary                                                              |
+|--------------------------------------------------------------------|---------------------------|----------------------------------------------------------------------|
+| [`IsEqualTo(…).AsXml()`](./01-strings.md#string-comparison-as-xml) | `IsNotEqualTo(…).AsXml()` | equal to the expected XML, compared by content                       |
+| [`IsValidXml`](./01-strings.md#validation)                         | `IsNotValidXml`           | a well-formed XML document, optionally with expectations on its root |
+| [`IsValidXmlMatching`](./01-strings.md#validation)                 |                           | valid XML that matches the expected XML                              |
+| [`IsValidXmlMatchingExactly`](./01-strings.md#validation)          |                           | valid XML that matches the expected XML exactly                      |
+
+Expectations for `XElement` and `XDocument`:
+
+| Expectation                                                 | Negated                | Summary                                                      |
+|-------------------------------------------------------------|------------------------|--------------------------------------------------------------|
+| [`Matches`](./02-matching.md#elements-and-documents)        |                        | matches the expected XML, additional nodes allowed           |
+| [`MatchesExactly`](./02-matching.md#elements-and-documents) |                        | matches the expected XML exactly                             |
+| [`HasAttribute`](./03-navigation.md#attributes)             | `DoesNotHaveAttribute` | has the attribute, optionally with expectations on its value |
+| [`HasElement`](./03-navigation.md#child-elements)           | `DoesNotHaveElement`   | has the child element, optionally with expectations on it    |
+| [`HasValue`](./03-navigation.md#values)                     |                        | the value satisfies the expectations                         |
 
 The comparisons can be relaxed with the options `IgnoringAdditionalNodes()`, `IgnoringElementOrder()` and
 `IgnoringMember(path)` or `Ignoring(path => …)`, see [Matching XML](./02-matching.md#options).

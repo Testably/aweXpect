@@ -48,21 +48,6 @@ await Expect.That(Genre.Jazz).HasValue().GreaterThan(2);
 
 <PropertyComparisons example="HasValue(1)" />
 
-<details>
-<summary>Values above `long.MaxValue`</summary>
-
-Every backing type from `sbyte` to `ulong` is covered. Each comparison takes a `long` or a `ulong`, so a member of
-a `ulong`-backed `enum` above `long.MaxValue` can be named as well:
-
-```csharp
-enum Big : ulong { Max = ulong.MaxValue }
-
-await Expect.That(Big.Max).HasValue(ulong.MaxValue);
-await Expect.That(Big.Max).HasValue().GreaterThan(0);
-```
-
-</details>
-
 ## Defined
 
 You can verify that the `enum` has a defined value or not:

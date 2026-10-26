@@ -1,5 +1,8 @@
 # Constraints and results
 
+A constraint decides whether the subject meets the expectation, and its result writes the failure message. This page
+shows the kinds of constraints and results, and the rules they follow for negation, `null` subjects and side effects.
+
 <details>
 <summary>Namespaces used on this page</summary>
 
@@ -22,15 +25,14 @@ using static aweXpect.Formatting.Format;
 The basis for expectations are constraints. You can add different constraints to the `ExpectationBuilder` that is
 available for the `IThat<T>`. They differ in the input and output parameters for the `IsMetBy` method:
 
-| Constraint                                            | `IsMetBy` receives                         | Use it                                          |
-|-------------------------------------------------------|--------------------------------------------|-------------------------------------------------|
-| `IValueConstraint<T>`                                 | the actual value                           | for a synchronous check                         |
-| `IAsyncConstraint<T>`                                 | the actual value and a `CancellationToken` | for asynchronous work or to observe the timeout |
-| `IContextConstraint<T>`, `IAsyncContextConstraint<T>` | additionally an `IEvaluationContext`       | to share data between constraints               |
+| Constraint                                            | `IsMetBy` receives                         | Use it                                                                                                                   |
+|-------------------------------------------------------|--------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| `IValueConstraint<T>`                                 | the actual value                           | for a synchronous check                                                                                                  |
+| `IAsyncConstraint<T>`                                 | the actual value and a `CancellationToken` | for asynchronous work or to observe the timeout                                                                          |
+| `IContextConstraint<T>`, `IAsyncContextConstraint<T>` | additionally an `IEvaluationContext`       | to share data, to read a [collection](./07-collections.md#collection-subjects) once or for [side effects](#side-effects) |
 
 `IsMetBy` returns a `ConstraintResult`, which decides the outcome and writes the expectation and the result texts of
-the failure message. The `IEvaluationContext` shares data between the constraints of an evaluation, e.g. a
-[materialized collection](./04-collections-and-nested-expectations.md#collection-subjects).
+the failure message.
 
 <details>
 <summary>The evaluation context</summary>
@@ -45,17 +47,39 @@ registers a callback that runs when the whole expectation is decided, see [side 
 
 </details>
 
-The factory passed to `AddConstraint` usually captures the arguments of the expectation, which allocates a closure and a
-delegate for every expectation. To avoid that, pass the arguments as state to a `static` lambda:
+### Asynchronous constraints
 
-```csharp
-public static AndOrResult<Track, IThat<Track?>> IsShorterThan(this IThat<Track?> subject, TimeSpan maximum)
-    => new(subject.Get().ExpectationBuilder.AddConstraint(maximum,
-            static (max, it, grammars) => new IsShorterThanConstraint(it, grammars, max)),
-        subject);
+An `IAsyncConstraint<T>` receives the `CancellationToken` of the expectation, which is canceled when the timeout
+(`WithTimeout`) elapses or the caller cancels (`WithCancellation`). Pass it on to the asynchronous work:
+
+```csharp no-compile
+public async ValueTask<ConstraintResult> IsMetBy(Track? actual, CancellationToken cancellationToken)
+{
+    Actual = actual;
+    if (actual is not null)
+    {
+        Outcome = await IsInCatalogAsync(actual, cancellationToken) ? Outcome.Success : Outcome.Failure;
+    }
+
+    return this;
+}
 ```
 
-For several arguments, pass a tuple as the state.
+An `OperationCanceledException` from that token needs no handling: a timeout fails the expectation with "did not
+finish within …", and a cancellation by the caller leaves it inconclusive.
+
+<details>
+<summary>Stopping without an exception</summary>
+
+- A constraint that stops at the cancellation without throwing leaves its `Outcome` undecided. A timeout then fails the
+  expectation in the same way. After a cancellation, the helper classes write the result text with
+  `AppendUndecidedResult`, which you can override. By default it writes "it could not be verified, because the
+  evaluation was already canceled".
+- Leave the `Outcome` undecided only for a cancellation. An expectation whose outcome stays undecided although nothing
+  was canceled, e.g. because one branch of `IsMetBy` does not set it or a collection constraint does not call
+  `Complete()`, fails with "it could not be verified, because the expectation did not decide its outcome".
+
+</details>
 
 ## Results
 
@@ -74,45 +98,11 @@ inherited `It` property. You set the `Actual` property in the `IsMetBy` method a
 and `AppendNegatedExpectation` as well as `AppendNormalResult` and `AppendNegatedResult`. `WithEqualToValue<T>`
 additionally takes a flag indicating if the expected value is `null`.
 
-The constraint for the `IsRadioFriendly` expectation from [Extending aweXpect](./index.md) then reads:
+The `IsRadioFriendlyConstraint` of [your first expectation](./index.md#the-constraint) derives from
+`ConstraintResult.WithNotNullValue<Track>`, as it inspects the subject.
 
-```csharp
-private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars grammars)
-    : ConstraintResult.WithNotNullValue<Track>(it, grammars),
-        IValueConstraint<Track?>
-{
-    public ConstraintResult IsMetBy(Track? actual)
-    {
-        Actual = actual;
-        Outcome = actual?.Duration <= TimeSpan.FromMinutes(3) ? Outcome.Success : Outcome.Failure;
-        return this;
-    }
-
-    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("is radio friendly");
-
-    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-    {
-        stringBuilder.Append(It).Append(" was ");
-        Formatter.Format(stringBuilder, Actual?.Duration);
-        stringBuilder.Append(" long");
-    }
-
-    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("is not radio friendly");
-
-    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-    {
-        stringBuilder.Append(It).Append(" was ");
-        Formatter.Format(stringBuilder, Actual?.Duration);
-        stringBuilder.Append(" long");
-    }
-}
-```
-
-Pass `it` to the base class and use the inherited `It` property: capturing the parameter as well stores it twice,
-which the compiler warns about (CS9107). The helper classes also let `.And` combine the result texts like the built-in
-expectations, e.g. "it was 2 and was not even" instead of "it was 2 and it was not even".
+The helper classes let `.And` combine the result texts like the built-in expectations, e.g. "it was 2 and was not
+even" instead of "it was 2 and it was not even". Pass `it` to the base class and use the inherited `It` property.
 
 <details>
 <summary>Deriving from ConstraintResult directly</summary>
@@ -171,6 +161,25 @@ To combine the result texts with `.And` like the helper classes, override `Leadi
 
 </details>
 
+## Negated expectations
+
+A constraint that supports the negated case also allows you to write an explicit negated expectation with the
+`.Invert()` method:
+
+```csharp
+/// <summary>
+///     Verifies that the <paramref name="subject"/> is not radio friendly.
+/// </summary>
+public static AndOrResult<Track, IThat<Track?>> IsNotRadioFriendly(
+    this IThat<Track?> subject)
+    => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+            => new IsRadioFriendlyConstraint(it, grammars).Invert()),
+        subject);
+```
+
+`.InvertIf(isNegated)` negates the constraint only when `isNegated` is `true`, so that an expectation and its negation
+can share one implementation.
+
 ## `null` subjects
 
 Which of the three helper classes to pick is decided by how your expectation treats a `null` subject, and that follows
@@ -227,151 +236,11 @@ subject, so the suppressor ignores the expectations after it.
 
 </details>
 
-## Failing both ways
-
-Some expectations cannot be answered at all, e.g. because the subject is `null`, the values are not comparable or code
-of the caller threw. Negating such an expectation does not make it true, so it fails the expectation and its negation
-alike. Set `Outcome.FailureBothWays` in `IsMetBy` to say so:
-
-```csharp no-compile
-catch (Exception exception)
-{
-    _exception = exception;
-    Outcome = Outcome.FailureBothWays;
-}
-```
-
-- `Outcome.FailureBothWays` fails the expectation like `Outcome.Failure`, but a negation keeps it.
-  `WithNotNullValue<T>` reports it for a `null` subject.
-- When you derive from `ConstraintResult` directly, swap only `Success` and `Failure` in your `NegateInPlace()` and keep
-  `FailureBothWays`.
-- Code that reads an outcome treats `Outcome.Failure` and `Outcome.FailureBothWays` alike as a failed expectation. An
-  expectation that evaluates nested expectations, e.g. on the items of a collection, checks for
-  `Outcome.FailureBothWays` to find out whether an item was answered.
-
-## Negated expectations
-
-A constraint that supports the negated case also allows you to write an explicit negated expectation with the
-`.Invert()` method:
-
-```csharp
-/// <summary>
-///     Verifies that the <paramref name="subject"/> is not radio friendly.
-/// </summary>
-public static AndOrResult<Track, IThat<Track?>> IsNotRadioFriendly(
-    this IThat<Track?> subject)
-    => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new IsRadioFriendlyConstraint(it, grammars).Invert()),
-        subject);
-```
-
-`.InvertIf(isNegated)` negates the constraint only when `isNegated` is `true`, so that an expectation and its negation
-can share one implementation.
-
-## Side effects
-
-A constraint that changes something outside the evaluation, e.g. writes a file, must not do so in `IsMetBy`: at that
-point it cannot know whether it is negated, e.g. by `DoesNotComplyWith`, or whether another branch of an `Or` decides
-the expectation. Register a callback with `IEvaluationContext.OnCompleted` instead. It runs after the whole expectation
-is decided and every negation is applied, before a failure is thrown:
-
-```csharp
-public interface ITrackArchive
-{
-    bool Contains(Track track);
-    Task AddAsync(Track track, CancellationToken cancellationToken);
-}
-
-private sealed class IsArchivedConstraint(string it, ExpectationGrammars grammars, ITrackArchive archive)
-    : ConstraintResult.WithNotNullValue<Track>(it, grammars),
-        IContextConstraint<Track?>
-{
-    public ConstraintResult IsMetBy(Track? actual, IEvaluationContext context)
-    {
-        Actual = actual;
-        Outcome = actual is not null && archive.Contains(actual) ? Outcome.Success : Outcome.Failure;
-        context.OnCompleted(ArchiveAsync);
-        return this;
-    }
-
-    private async ValueTask ArchiveAsync(CompletedEvaluation evaluation, CancellationToken cancellationToken)
-    {
-        if (evaluation.Outcome == Outcome.Failure && Outcome == Outcome.Failure
-            && !IsNegated && Actual is not null)
-        {
-            await archive.AddAsync(Actual, cancellationToken);
-        }
-    }
-
-    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("is archived");
-
-    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append(It).Append(" was not");
-
-    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("is not archived");
-
-    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append(It).Append(" was");
-}
-```
-
-- The `CompletedEvaluation` has the `Outcome` of the whole expectation: `Success`, `Failure` (also after a timeout)
-  or `Undecided`, when the evaluation was canceled. The constraint itself knows its own `Outcome`, which already
-  includes the negation, and whether it `IsNegated`.
-- A constraint that derives from `ConstraintResult` directly tracks its negation by overriding `NegateInPlace()`, which
-  is called for every negation that applies to it, also within `.And`, `.Or`, `Whose` and `Which`:
-  ```csharp no-compile
-  protected override void NegateInPlace()
-  {
-      _isNegated = !_isNegated;
-      Outcome = Outcome switch
-      {
-          Outcome.Success => Outcome.Failure,
-          Outcome.Failure => Outcome.Success,
-          _ => Outcome,
-      };
-  }
-  ```
-- Each delegate runs once, even when the constraint is evaluated several times, e.g. for each item of a collection or
-  each check of `Eventually()` or `Within(…)`, so register a method of the constraint, as above. Its state is then the
-  one of the last evaluation.
-- The callbacks run in the order in which they were registered first. An exception they throw is thrown by the
-  expectation.
-- They receive the cancellation token of the caller, which a timeout of the expectation does not cancel.
-
-<details>
-<summary>Constraints that do not negate the items</summary>
-
-A quantifier, e.g. in `All().ComplyWith(…)`, counts the items that meet the item expectations without negating them,
-so a constraint on the items is never negated, not even in `DoesNotComplyWith(c => c.All().ComplyWith(…))` or for
-`None()`. Decide on the `Outcome` of the whole expectation there.
-
-</details>
-
-## Code of the caller
-
-When a constraint calls code of the caller while it is evaluated, e.g. a predicate, a member selector or a comparer,
-call it through `UserCode.Invoke`. An exception it throws then fails the expectation and its negation alike, with the
-exception as inner exception, instead of aborting the evaluation:
-
-```csharp no-compile
-Outcome = UserCode.Invoke(predicate, actual, "the predicate") ? Outcome.Success : Outcome.Failure;
-```
-
-The optional last argument names the code in the failure message, e.g. "the predicate did throw an
-InvalidOperationException"; without it, the subject is named ("it did throw …"). For an asynchronous predicate, use
-`UserCode.InvokeAsync(() => predicate(actual), "the predicate", cancellationToken)`, which throws an
-`OperationCanceledException` unchanged while the `cancellationToken` is canceled.
-
-An exception that your constraint throws itself, e.g. to reject an invalid argument, is still thrown as it is.
-
 ## Argument validation
 
 Check the arguments in the extension method itself, so that a wrong argument fails right where the caller passes it.
 Use the wording of the built-in expectations: a missing argument reads "The 'title' cannot be null.", and any other
-invalid argument is described in a complete sentence, as the [message conventions](./06-message-conventions.md#exceptions)
+invalid argument is described in a complete sentence, as the [message conventions](./03-message-conventions.md#exceptions)
 explain. Throw the exception via `Tracing.WriteException`, which also hands it to the trace writer that users enable
 with `Customize.aweXpect.EnableTracing(…)`. Core has no public helper for this, so add a small one to your extension:
 
@@ -430,4 +299,146 @@ was met. `TryGetValue<TValue>` builds on it and only returns `true` for a value 
 
 A result of your own that derives from `AndOrResult<TType, TThat>` reaches the `ExpectationBuilder` through the
 protected property of the same name, e.g. to continue with `ExpectationBuilder.And()` or `ExpectationBuilder.Or()`.
-For the options a result offers, see [options and match types](./03-options-and-match-types.md).
+For the options a result offers, see [options](./05-options.md).
+
+## Code of the caller
+
+When a constraint calls code of the caller while it is evaluated, e.g. a predicate, a member selector or a comparer,
+call it through `UserCode.Invoke`. An exception it throws then fails the expectation and its negation alike, with the
+exception as inner exception, instead of aborting the evaluation:
+
+```csharp no-compile
+Outcome = UserCode.Invoke(predicate, actual, "the predicate") ? Outcome.Success : Outcome.Failure;
+```
+
+The optional last argument names the code in the failure message, e.g. "the predicate did throw an
+InvalidOperationException"; without it, the subject is named ("it did throw …"). For an asynchronous predicate, use
+`UserCode.InvokeAsync(() => predicate(actual), "the predicate", cancellationToken)`, which throws an
+`OperationCanceledException` unchanged while the `cancellationToken` is canceled.
+
+An exception that your constraint throws itself, e.g. to reject an invalid argument, is still thrown as it is.
+
+## Failing both ways
+
+Some expectations cannot be answered at all, e.g. because the subject is `null`, the values are not comparable or code
+of the caller threw. Negating such an expectation does not make it true, so it fails the expectation and its negation
+alike. Set `Outcome.FailureBothWays` in `IsMetBy` to say so:
+
+```csharp no-compile
+catch (Exception exception)
+{
+    _exception = exception;
+    Outcome = Outcome.FailureBothWays;
+}
+```
+
+- `Outcome.FailureBothWays` fails the expectation like `Outcome.Failure`, but a negation keeps it.
+  `WithNotNullValue<T>` reports it for a `null` subject.
+- When you derive from `ConstraintResult` directly, swap only `Success` and `Failure` in your `NegateInPlace()` and keep
+  `FailureBothWays`.
+
+<details>
+<summary>Reading an outcome</summary>
+
+Code that reads an outcome treats `Outcome.Failure` and `Outcome.FailureBothWays` alike as a failed expectation. An
+expectation that evaluates nested expectations, e.g. on the items of a collection, checks for
+`Outcome.FailureBothWays` to find out whether an item was answered.
+
+</details>
+
+## Side effects
+
+A constraint that changes something outside the evaluation, e.g. writes a file, must not do so in `IsMetBy`: at that
+point it cannot know whether it is negated, e.g. by `DoesNotComplyWith`, or whether another branch of an `Or` decides
+the expectation. Register a callback with `IEvaluationContext.OnCompleted` instead. It runs after the whole expectation
+is decided and every negation is applied, before a failure is thrown:
+
+```csharp
+public interface ITrackArchive
+{
+    bool Contains(Track track);
+    Task AddAsync(Track track, CancellationToken cancellationToken);
+}
+
+private sealed class IsArchivedConstraint(string it, ExpectationGrammars grammars, ITrackArchive archive)
+    : ConstraintResult.WithNotNullValue<Track>(it, grammars),
+        IContextConstraint<Track?>
+{
+    public ConstraintResult IsMetBy(Track? actual, IEvaluationContext context)
+    {
+        Actual = actual;
+        Outcome = actual is not null && archive.Contains(actual) ? Outcome.Success : Outcome.Failure;
+        context.OnCompleted(ArchiveAsync);
+        return this;
+    }
+
+    private async ValueTask ArchiveAsync(CompletedEvaluation evaluation, CancellationToken cancellationToken)
+    {
+        if (evaluation.Outcome == Outcome.Failure && Outcome == Outcome.Failure
+            && !IsNegated && Actual is not null)
+        {
+            await archive.AddAsync(Actual, cancellationToken);
+        }
+    }
+
+    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("is archived");
+
+    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(It).Append(" was not");
+
+    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("is not archived");
+
+    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(It).Append(" was");
+}
+```
+
+- The `CompletedEvaluation` has the `Outcome` of the whole expectation: `Success`, `Failure` (also after a timeout)
+  or `Undecided`, when the evaluation was canceled. The constraint itself knows its own `Outcome`, which already
+  includes the negation, and whether it `IsNegated`.
+- Each delegate runs once, even when the constraint is evaluated several times, e.g. for each item of a collection or
+  each check of `Eventually()` or `Within(…)`, so register a method of the constraint, as above. Its state is then the
+  one of the last evaluation.
+
+<details>
+<summary>Negation in a constraint of your own, order and cancellation of the callbacks</summary>
+
+- A constraint that derives from `ConstraintResult` directly tracks its negation by overriding `NegateInPlace()`, which
+  is called for every negation that applies to it, also within `.And`, `.Or`, `Whose` and `Which`:
+  ```csharp no-compile
+  protected override void NegateInPlace()
+  {
+      _isNegated = !_isNegated;
+      Outcome = Outcome switch
+      {
+          Outcome.Success => Outcome.Failure,
+          Outcome.Failure => Outcome.Success,
+          _ => Outcome,
+      };
+  }
+  ```
+- The callbacks run in the order in which they were registered first. An exception they throw is thrown by the
+  expectation.
+- They receive the cancellation token of the caller, which a timeout of the expectation does not cancel.
+
+A quantifier, e.g. in `All().ComplyWith(…)`, counts the items that meet the item expectations without negating them,
+so a constraint on the items is never negated, not even in `DoesNotComplyWith(c => c.All().ComplyWith(…))` or for
+`None()`. Decide on the `Outcome` of the whole expectation there.
+
+</details>
+
+## Constraints without closures
+
+The factory passed to `AddConstraint` usually captures the arguments of the expectation, which allocates a closure and a
+delegate for every expectation. To avoid that, pass the arguments as state to a `static` lambda:
+
+```csharp
+public static AndOrResult<Track, IThat<Track?>> IsShorterThan(this IThat<Track?> subject, TimeSpan maximum)
+    => new(subject.Get().ExpectationBuilder.AddConstraint(maximum,
+            static (max, it, grammars) => new IsShorterThanConstraint(it, grammars, max)),
+        subject);
+```
+
+For several arguments, pass a tuple as the state.

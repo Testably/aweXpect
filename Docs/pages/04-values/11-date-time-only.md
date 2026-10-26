@@ -135,8 +135,8 @@ await Expect.That(startTime).IsNotBetween(new TimeOnly(18, 0)).And(new TimeOnly(
 </TabItem>
 </Tabs>
 
-Both bounds are included. For a `DateOnly`, a maximum below the minimum throws an `ArgumentOutOfRangeException` as soon
-as it is specified. For a `TimeOnly`, such a range runs across midnight instead, see [clock face](#clock-face).
+Both bounds are included. For a `TimeOnly`, a maximum below the minimum runs across midnight, see
+[clock face](#clock-face).
 
 ## Tolerance
 
@@ -168,9 +168,14 @@ await Expect.That(startTime).IsOneOf([new TimeOnly(14, 15, 17)]).Within(TimeSpan
 </TabItem>
 </Tabs>
 
-A `DateOnly` tolerance must be a whole number of days, otherwise `Within` throws an `ArgumentOutOfRangeException`. Of
-the [default tolerance](./10-datetime-offset.md#default-tolerance) only the whole days apply, so a default below one
-day has no effect on a `DateOnly`.
+<details>
+<summary>Tolerance for a `DateOnly`</summary>
+
+A `DateOnly` tolerance is a whole number of days. Of the
+[default tolerance](../03-how-it-works/05-options.md#default-tolerance) only the whole days apply, so a default below
+one day has no effect on a `DateOnly`.
+
+</details>
 
 ## Clock face
 
@@ -232,4 +237,4 @@ await Expect.That(startTime).HasMillisecond(189);
 
 <PropertyComparisons example="HasYear(1969)" />
 
-`HasDayOfWeek()` only supports `EqualTo` and `NotEqualTo`.
+`HasDayOfWeek` only offers `EqualTo` and `NotEqualTo`.

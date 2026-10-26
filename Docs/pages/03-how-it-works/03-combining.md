@@ -157,7 +157,7 @@ but
 Where awaiting is impossible, a combination can be [verified synchronously](./index.md#when-you-cannot-await) like a
 single expectation.
 
-A combination offers the same `Because`, `WithTimeout` and `WithCancellation` as a single expectation, in any order:
+A combination offers the same `Because`, `WithTimeout` and `WithCancellation` as a single expectation:
 
 ```csharp
 using aweXpect.Chronology; // from the aweXpect.Chronology package
@@ -175,13 +175,19 @@ await Expect.ThatAll(
 - `Because(reason)` adds the reason to the first line of the failure message, e.g.
   `Expected all of the following to succeed, because the playlist starts with this song:`. The combined expectations
   keep their own reasons.
-- `WithTimeout(timeout)` limits the whole combination. The expectations are evaluated one after another, so each one
-  only gets the time that is left of the timeout. Once it elapsed, an expectation that does not wait is still verified,
-  while one that would wait fails with "did not finish within …". The tighter timeout wins, as for a
-  [single expectation](./06-time-and-cancellation.md#timeout): a combined expectation keeps a shorter timeout of its
-  own.
-- `WithCancellation(cancellationToken)` is passed to every combined expectation. One with a `CancellationToken` of its
-  own observes both tokens.
+- `WithTimeout(timeout)` limits the whole combination.
+- `WithCancellation(cancellationToken)` is passed to every combined expectation.
+
+<details>
+<summary>How the timeout and the cancellation apply to the combined expectations</summary>
+
+The expectations are evaluated one after another, so each one only gets the time that is left of the timeout. Once it
+elapsed, an expectation that does not wait is still verified, while one that would wait fails with "did not finish
+within …". The tighter timeout wins, as for a [single expectation](./06-time-and-cancellation.md#timeout): a combined
+expectation keeps a shorter timeout of its own. A combined expectation with a `CancellationToken` of its own observes
+both tokens.
+
+</details>
 
 ## Using the result
 

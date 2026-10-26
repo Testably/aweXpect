@@ -4,6 +4,18 @@
 
 [aweXpect.Reflection](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Reflection) contains expectations for reflection types.
 
+## Installation
+
+```ps
+dotnet add package aweXpect.Reflection
+```
+
+The package brings `Expect.That` with it, but not the expectations for strings, numbers or collections, so reference
+[`aweXpect`](https://www.nuget.org/packages/aweXpect) as well. The expectations live in the namespace `aweXpect`; the
+sources `In` and `Types`, their filters and the [customization](./04-customization.md) need
+`using aweXpect.Reflection;`, and a stored selection like `Filtered.Types` needs
+`using aweXpect.Reflection.Collections;`.
+
 ## At a glance
 
 Write architecture and convention tests as plain, readable expectations: **select** the assemblies, types
@@ -79,30 +91,32 @@ await Expect.That(In.AllLoadedAssemblies()
 Each filter narrows a selection and its expectation counterpart verifies it, e.g. `.WhichArePublic()` and
 `.IsPublic()` (`.ArePublic()` for collections):
 
-| Topic                                                                 | Applies to                    | Filters / expectations                                                                                               |
-|-----------------------------------------------------------------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| [Inheritance](./02-filters.md#inheritance)                   | types and members             | `Directly`, `IncludingInherited`, `IncludingObjectMembers`                                                           |
-| [Access modifiers](./02-filters.md#access-modifiers)         | types and members             | `WhichArePublic` / `IsPublic`, `WhichAre(AccessModifiers)` / `Is(AccessModifiers)`, …                                |
-| [Attributes](./02-filters.md#attributes)                     | types, members and assemblies | `With<TAttribute>` / `Has<TAttribute>`, `Without<TAttribute>` / `DoesNotHave<TAttribute>`                            |
-| [Obsolete](./02-filters.md#obsolete)                         | types and members             | `WhichAreObsolete` / `IsObsolete`, `WhichAreNotObsolete` / `IsNotObsolete`                                           |
-| [Names and namespaces](./02-filters.md#names-and-namespaces) | types and members             | `WithName` / `HasName`, `WithNamespace` / `HasNamespace`, `WhichAreWithinNamespace` / `IsWithinNamespace`            |
-| [Types](./02-filters.md#types)                               | types                         | `WhichAreClasses` / `IsAClass`, `WhichInheritFrom<T>` / `InheritsFrom<T>`, `WhichContainMethods` / `ContainsMethods` |
-| [Methods](./02-filters.md#methods)                           | methods                       | `WhichAreAsync` / `IsAsync`, `WhichReturn<T>` / `Returns<T>`, `WithParameter<T>` / `HasParameter<T>`                 |
-| [Operators](./02-filters.md#operators)                       | methods and types             | `WhichAreOperators` / `IsAnOperator`, `HasOperator`, `HasImplicitConversionOperator`                                 |
-| [Properties & Fields](./02-filters.md#properties--fields)    | properties and fields         | `OfType<T>` / `IsOfType<T>`, `WhichAreNullable` / `IsNullable`, `WhichAreRequired` / `IsRequired`                    |
-| [Events](./02-filters.md#events)                             | events                        | `OfType<T>` / `IsOfType<T>`, `WhichAreStatic` / `IsStatic`, `WhichAreNullable` / `IsNullable`                        |
-| [Constructors](./02-filters.md#constructors)                 | constructors                  | `WithoutParameters` / `HasNoParameters`, `WithParameter<T>` / `HasParameter<T>`                                      |
-| [Assemblies](./02-filters.md#assemblies)                     | assemblies                    | `WhichTarget` / `Targets`, `WithVersion` / `HasVersion`, `WhichDependOn` / `DependsOn`                               |
+- [Common filters](./02-filters/01-common-filters.md): access modifiers, attributes, the obsolete marker, names and
+  namespaces of types and members, e.g. `WhichArePublic` / `IsPublic` or `With<TAttribute>` / `Has<TAttribute>`
+- [Assemblies](./02-filters/02-assemblies.md): name, target framework, version, strong name and dependencies, e.g.
+  `WhichTarget` / `Targets` or `WhichDependOn` / `DependsOn`
+- [Types and inheritance](./02-filters/03-types.md): kinds of types, base classes, interfaces and contained members,
+  e.g. `WhichAreClasses` / `IsAClass` or `WhichInheritFrom<T>` / `InheritsFrom<T>`, and how inherited members count
+- [Methods, operators and constructors](./02-filters/04-methods.md): return types and parameters, e.g.
+  `WhichAreAsync` / `IsAsync`, `WhichReturn<T>` / `Returns<T>` or `WithParameter<T>` / `HasParameter<T>`
+- [Properties, fields and events](./02-filters/05-properties-fields-and-events.md): member types, nullability and
+  accessors, e.g. `OfType<T>` / `IsOfType<T>` or `WhichAreRequired` / `IsRequired`
+
+The [overview](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters#overview) lists all topics,
+including combined filters, custom predicates (`Which` / `Satisfies`, `Except`) and quantifiers.
 
 Each filter and expectation has its negation where it makes sense, e.g. `WithoutName` / `DoesNotHaveName`,
 `WithoutNamespace` / `DoesNotHaveNamespace`, `NotOfType<T>` / `IsNotOfType<T>`, `WhichDoNotReturn<T>` /
 `DoesNotReturn<T>`, `WithoutParameter<T>` / `DoesNotHaveParameter<T>` or `WhichDoNotTarget` / `DoesNotTarget`.
 On a collection, a negated expectation (`DoNotReturn<T>`, `AreNotOfType<T>`, …) verifies that *none* of the items
-match.
+match. The tables in
+[Filters and expectations](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters#how-to-read-the-tables) list every negation in
+a **Negated** column.
 
 The name filters and expectations accept the
-[string matching options](./02-filters.md#string-matching-options) like `AsPrefix()`, `AsSuffix()` or
-`AsWildcard()`. [Filters and expectations](./02-filters.md) documents the complete vocabulary.
+[string matching options](./02-filters/01-common-filters.md#string-matching-options) like `AsPrefix()`,
+`AsSuffix()` or `AsWildcard()`. [Filters and expectations](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters)
+documents the complete vocabulary.
 
 ## Architecture rules
 
@@ -151,6 +165,21 @@ The dependency rules (`DependOn` / `DependOnlyOn` / `HaveDependenciesOutside`), 
 (`HaveNoDependencyCycles`) and exemptions (`Except`) are documented in
 [Architecture rules](./03-architecture-rules.md).
 
+## Customization
+
+Set a value under `Customize.aweXpect.Reflection()` for the current
+[async flow](https://docs.testably.org/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
+`Customize.aweXpect.Global.Reflection()` for
+[all tests](https://docs.testably.org/aweXpect/how-it-works/configuration#global-defaults).
+
+| Value                                                                                  | Default                           | Summary                                                                         |
+|----------------------------------------------------------------------------------------|-----------------------------------|---------------------------------------------------------------------------------|
+| [`Settings().ExcludedAssemblyPrefixes`](./04-customization.md#assembly-exclusions)     | `System`, `Microsoft`, …          | assemblies excluded from `In.AllLoadedAssemblies()` and from `DependOnlyOn`     |
+| [`IncludedCompilerGeneratedMembers`](./04-customization.md#compiler-generated-members) | `CompilerGeneratedMembers.None`   | the compiler-generated types and members included in the navigations            |
+| [`IncludedSpecialNameMembers`](./04-customization.md#compiler-generated-members)       | `SpecialNameMembers.None`         | the operators and accessors included in `.Methods()`                            |
+| [`DependencyResolver`](./04-customization.md#dependency-resolver)                      | built-in signature-level resolver | how the type-level dependency expectations determine the dependencies of a type |
+| [`ExcludedAttributeTypes`](./03-architecture-rules.md#type-dependencies)               | none                              | additional compiler-emitted attributes that never count as dependencies         |
+
 ## Documentation
 
 The full documentation is available at
@@ -158,11 +187,11 @@ The full documentation is available at
 
 - [Selecting types and members](./01-sources.md): the `In` and `Types` sources and navigating
   between assemblies, types and members
-- [Filters and expectations](./02-filters.md): the complete reference for all subject kinds,
-  string matching options and quantifiers
+- [Filters and expectations](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters): the complete reference for
+  all subject kinds, string matching options and quantifiers
 - [Architecture rules](./03-architecture-rules.md): type dependencies, dependency cycles and
   layers as type selections
-- [Configuration](./04-configuration.md): assembly exclusions, compiler-generated members and
+- [Customization](./04-customization.md): assembly exclusions, compiler-generated members and
   the dependency resolver
 - Comparisons: feature maps against
   [FluentAssertions](./comparison/01-fluentassertions-comparison.mdx) and against

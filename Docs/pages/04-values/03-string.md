@@ -53,9 +53,16 @@ Differences:
   +      7    log = console
 ```
 
-Tabs and other invisible characters are shown as escape sequences. Lines that only differ in what the [string options](#string-options) ignore are not listed. At most
+Tabs and other invisible characters are shown as escape sequences.
+
+<details>
+<summary>Which differences are listed</summary>
+
+Lines that only differ in what the [string options](#string-options) ignore are not listed. At most
 `MaximumNumberOfCollectionItems` differences are listed (see [formatting](../03-how-it-works/07-configuration.md#formatting)).
 With a custom comparer (`Using(…)`), which compares whole values, no differences are listed.
+
+</details>
 
 ## String options
 
@@ -70,6 +77,7 @@ The expectations that compare the `string` with an expected string (`IsEqualTo`,
 | `IgnoringLeadingWhiteSpace()`  | ignores whitespace at the start of the strings                             |
 | `IgnoringTrailingWhiteSpace()` | ignores whitespace at the end of the strings                               |
 | `NormalizingWhiteSpace()`      | collapses whitespace runs to a space and trims (see [below](#whitespace))  |
+| `AsBlock()`                    | matches an indented block of lines (see [below](#blocks))                  |
 | `Using(comparer)`              | compares with a custom `IEqualityComparer<string>`                         |
 
 ```csharp
@@ -97,7 +105,7 @@ await Expect.That(title).DoesNotEndWith("ROAD")
 ```
 
 <details>
-<summary>Whitespace at the inner end and combining `IgnoringCase` with `Using`</summary>
+<summary>Whitespace at the inner end and ignoring the case with `Using`</summary>
 
 The whitespace options only ignore whitespace at the start or the end of the subject. A prefix, suffix or substring
 keeps the whitespace at its inner end, unless that end reaches the corresponding end of the subject:
@@ -107,8 +115,8 @@ await Expect.That("Abbey").StartsWith("Abbey ").IgnoringTrailingWhiteSpace();
 await Expect.That("AbbeyRoad").DoesNotStartWith("Abbey ").IgnoringTrailingWhiteSpace();
 ```
 
-`IgnoringCase()` and `Using(…)` can't be combined: the second one throws an `InvalidOperationException`, whichever
-order they are specified in. Use a case-insensitive comparer such as `StringComparer.OrdinalIgnoreCase` instead.
+To ignore the case with `Using(…)`, pass a case-insensitive comparer such as `StringComparer.OrdinalIgnoreCase`
+instead of adding `IgnoringCase()`.
 
 </details>
 
@@ -172,6 +180,64 @@ counts, e.g. also a non-breaking space.
 
 </details>
 
+### Blocks
+
+While `IgnoringIndentation` removes the leading whitespace from every line, `AsBlock` keeps the relative
+indentation within the expected block and only allows the block as a whole to be indented in the subject.
+This is stricter, as a line that is indented differently from the rest of the block does not match:
+
+```csharp
+string code = """
+              public class Beatles
+              {
+                  public string Album
+                  {
+                      get;
+                  }
+              }
+              """;
+
+await Expect.That(code).Contains("""
+                                 public string Album
+                                 {
+                                     get;
+                                 }
+                                 """).AsBlock();
+```
+
+The block must start and end at line boundaries, and all its lines must share the same whitespace prefix in the
+subject.
+
+`AsBlock` also works with `IsEqualTo`, where the whole text has to be the block, e.g. for an XML element that keeps
+the indentation of the document it was taken from, and with the expectations on a collection of strings, such as
+`HasItem`:
+
+```csharp
+string album = """
+                   <album>
+                     <title>Abbey Road</title>
+                     <length>47:03</length>
+                   </album>
+               """;
+
+await Expect.That(album).IsEqualTo("""
+                                   <album>
+                                     <title>Abbey Road</title>
+                                     <length>47:03</length>
+                                   </album>
+                                   """).AsBlock();
+```
+
+<details>
+<summary>Whitespace lines, newlines and other options in a block</summary>
+
+A line that consists only of whitespace matches any line that consists only of whitespace. The newline style is always
+ignored, and a single trailing line terminator does not start a new line, so `"a\nb\n"` has the same two lines as
+`"a\nb"` (as for [lines](#lines)). `AsBlock` can be combined with `IgnoringCase`, `Using` and the count quantifiers;
+the whitespace, newline and indentation options throw an `InvalidOperationException` after it.
+
+</details>
+
 ## Match types
 
 Instead of comparing for equality, `IsEqualTo` can match the subject against a pattern, a prefix or a suffix. The
@@ -216,9 +282,6 @@ string lyrics = "Come together\nRight now";
 await Expect.That(lyrics).IsEqualTo("^Right now$").AsRegex(RegexOptions.Multiline);
 ```
 
-A wildcard or regex pattern is matched by the regex engine, which can't use a custom comparer, so combining `Using(…)`
-with `AsWildcard()` or `AsRegex()`, in either order, throws an `InvalidOperationException`.
-
 ### Prefix / Suffix
 
 ```csharp
@@ -229,20 +292,14 @@ await Expect.That(title).IsEqualTo("Road").AsSuffix();
 ```
 
 <details>
-<summary>Patterns that are rejected</summary>
+<summary>Regex engine, timeout and corner cases</summary>
 
-- A `null` pattern, prefix or suffix throws an `ArgumentNullException`.
-- An empty regex, prefix or suffix throws an `ArgumentException`, because it would match every subject. An empty
-  wildcard pattern is allowed and matches only an empty subject.
-- An invalid regex throws an `ArgumentException` that carries the parse error as its inner exception.
+- A wildcard or regex pattern is matched by the regex engine, which can't use a custom comparer, so combining
+  `Using(…)` with `AsWildcard()` or `AsRegex()` throws an `InvalidOperationException`.
 - Matching a pattern is limited to the
   [`DefaultRegexTimeout`](../03-how-it-works/07-configuration.md#settings), one second by default. A pattern that
   takes longer, e.g. because of catastrophic backtracking, throws an `ArgumentException` that names the timeout and
   asks you to simplify the pattern.
-
-A pattern is validated whichever subject it is matched against, and so is every expected
-string item of a [collection expectation](../05-collections/index.md) or of `IsOneOf`. Only a lazily evaluated sequence
-of expected items is validated as far as it is enumerated.
 
 In a regex, `^` and `$` bind to the start and the end of the subject and not to every line, but `$` also matches before
 a trailing newline. The regex engine applies its own case folding, which can differ from the other expectations for a
@@ -348,9 +405,6 @@ await Expect.That(title).DoesNotStartWith("Road");
 await Expect.That(title).DoesNotEndWith("Abbey");
 ```
 
-A `null` expected string throws an `ArgumentNullException` and an empty one an `ArgumentException`, also for
-`Contains` and `DoesNotContain`.
-
 ## Contains
 
 You can verify that the `string` contains a given substring, or that it does not, with the same
@@ -386,57 +440,6 @@ await Expect.That(lyrics).Contains("get").Between(1).And(6)
 await Expect.That(lyrics).Contains("help").Never();
 await Expect.That(lyrics).Contains("where").Once();
 await Expect.That(lyrics).Contains("back").AtLeast().Twice();
-```
-
-### Blocks
-
-While `IgnoringIndentation` removes the leading whitespace from every line, `AsBlock` keeps the relative
-indentation within the expected block and only allows the block as a whole to be indented in the subject.
-This is stricter, as a line that is indented differently from the rest of the block does not match:
-
-```csharp
-string code = """
-              public class Beatles
-              {
-                  public string Album
-                  {
-                      get;
-                  }
-              }
-              """;
-
-await Expect.That(code).Contains("""
-                                 public string Album
-                                 {
-                                     get;
-                                 }
-                                 """).AsBlock();
-```
-
-The block must start and end at line boundaries, and all its lines must share the same whitespace prefix in the
-subject. A line that consists only of whitespace matches any line that consists only of whitespace. The newline style
-is always ignored, and a single trailing line terminator does not start a new line, so `"a\nb\n"` has the same two
-lines as `"a\nb"` (as for [lines](#lines)). `AsBlock` can be combined with `IgnoringCase`, `Using` and the count
-quantifiers; the whitespace, newline and indentation options throw an `InvalidOperationException` after it.
-
-`AsBlock` also works with `IsEqualTo`, where the whole text has to be the block, e.g. for an XML element that keeps
-the indentation of the document it was taken from, and with the expectations on a collection of strings, such as
-`HasItem`:
-
-```csharp
-string album = """
-                   <album>
-                     <title>Abbey Road</title>
-                     <length>47:03</length>
-                   </album>
-               """;
-
-await Expect.That(album).IsEqualTo("""
-                                   <album>
-                                     <title>Abbey Road</title>
-                                     <length>47:03</length>
-                                   </album>
-                                   """).AsBlock();
 ```
 
 ## Character casing

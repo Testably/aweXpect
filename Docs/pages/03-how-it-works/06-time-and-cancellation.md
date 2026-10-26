@@ -30,14 +30,19 @@ await Expect.That(playlist).All().Satisfy(track => track.PlayCount > 0)
 
 :::note
 The tighter timeout wins. A local timeout that is longer than the global one, or than the limit of the expectation
-itself (e.g. `ExecutesIn().AtMost(…)` or `Throws().Within(…)`), does not loosen it, and calling `WithTimeout` more
-than once applies the shortest timeout. `Timeout.InfiniteTimeSpan` imposes no limit, and a negative timeout is
-rejected when the expectation is built.
+itself (e.g. `ExecutesIn().AtMost(…)` or `Throws().Within(…)`), does not loosen it.
 :::
 
-On a [combination](./03-combining.md#on-different-subjects) of `Expect.ThatAll` or `Expect.ThatAny`, `WithTimeout`
-limits the whole combination: its expectations are evaluated one after another and each one only gets the time that is
-left.
+How `WithTimeout` applies to `Expect.ThatAll` and `Expect.ThatAny` is described in
+[combining expectations](./03-combining.md#on-different-subjects).
+
+<details>
+<summary>Repeated and infinite timeouts</summary>
+
+Unlike other options, calling `WithTimeout` more than once applies the shortest timeout. `Timeout.InfiniteTimeSpan`
+imposes no limit.
+
+</details>
 
 ## `CancellationToken`
 
@@ -81,11 +86,58 @@ A local `CancellationToken` replaces the global one instead of being applied add
 [linked cancellation token](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtokensource.createlinkedtokensource).
 :::
 
-On a [combination](./03-combining.md#on-different-subjects), `WithCancellation` passes the `CancellationToken` to every
-combined expectation; one with a `CancellationToken` of its own observes both.
+How `WithCancellation` applies to `Expect.ThatAll` and `Expect.ThatAny` is described in
+[combining expectations](./03-combining.md#on-different-subjects).
 
 The timeout and the `CancellationToken` are also forwarded to a [delegate](../06-behaviour/01-delegates.md) that
 accepts a `CancellationToken` parameter.
+
+## Outcome
+
+A timeout and a cancellation are reported the same way by every expectation, whether it awaits a `Task<T>` subject, an
+asynchronous `Whose` member or delegate, enumerates an `IAsyncEnumerable<T>`, waits for a `Signaler` or for recorded
+events, or retries with `Within(…)` or [`Eventually()`](#eventually):
+
+- When a **timeout** elapses (`WithTimeout` or `TestCancellation.FromTimeout`), the expectation fails with "did not
+  finish within …" and a `TimeoutException` as inner exception.
+- When the **`CancellationToken`** is canceled (`WithCancellation` or `TestCancellation.FromCancellationToken`), the
+  expectation is inconclusive: "could not be verified, because the evaluation was already canceled". It neither passes
+  nor throws the `OperationCanceledException`, so e.g. `DidNotSignal()` does not pass because the cancellation ended the
+  wait.
+
+An inconclusive expectation throws the exception that your test framework uses for this outcome, see
+[inconclusive](../08-setup/01-test-frameworks.md#inconclusive).
+
+<details>
+<summary>Awaited tasks, async enumerables and cancellations from the delegate itself</summary>
+
+A timeout or a cancellation also stops waiting for a task that the expectation awaits, such as a `Task<T>` subject or
+the task returned by an asynchronous delegate, even if it ignores the `CancellationToken`. A synchronous delegate
+cannot be abandoned and runs to completion. The outcome is the same whether the task was abandoned or reacted to the
+cancellation itself. With [`Eventually()`](#eventually), the timeout bounds each evaluation in the same way.
+
+The `CancellationToken` of the expectation, which includes the timeout, is passed to an `IAsyncEnumerable<T>` subject,
+and the expectation stops waiting for the next item once it is canceled, even if the enumerable ignores the token.
+After that, the enumerable is not advanced any further.
+
+An expectation that needs an item after the cancellation never reads the cancellation as the end of the enumerable,
+regardless of whether it occurs while waiting for an item or between two items. Expectations like `HasCount` or
+`IsEmpty` list the items received so far.
+
+The enumerator is disposed when the expectation ends. A timeout or a cancellation also stops waiting for a
+`DisposeAsync` that does not complete. The outcome is already decided at that point and does not change: a met
+expectation stays met, and a failure is reported as it is.
+
+A timeout or a cancellation only stops reading the items that still have to come from a collection, e.g. from a lazily
+evaluated `IEnumerable<T>`. A collection that is already complete in memory, such as an array or a `List<T>`, is
+evaluated completely like any other value, even when the timeout elapsed while a delegate created it. The same applies
+to a collection whose items an earlier expectation on the same subject has already read to the end.
+
+An `OperationCanceledException` that a delegate throws for its own reasons, while neither the timeout elapsed nor the
+`CancellationToken` was canceled, is an ordinary exception: e.g. `DoesNotThrow()` fails with "did throw an
+OperationCanceledException".
+
+</details>
 
 ## Waiting
 
@@ -100,8 +152,10 @@ follows:
 | [`Signaled()`](#callbacks)                                            | waits until the callback is signaled, at most `DefaultSignalerTimeout` (30 s)     |
 | [`DidNotSignal()`](#callbacks)                                        | waits the full `DefaultSignalerTimeout` (30 s), unless the callback is signaled   |
 
-Both defaults can be changed in the [settings](./07-configuration.md#settings). When a default applied, the failure
-message names the wait, e.g. `has never recorded the callback within 0:30` or `eventually is equal to 2 within 0:30`.
+Both defaults can be changed in the [settings](./07-configuration.md#settings). When a default applied, the
+failure message names the wait, e.g. `has never recorded the callback within 0:30` or `eventually is equal to 2 within
+0:30`.
+
 
 ### A condition
 
@@ -120,8 +174,8 @@ await Expect.That(track).Satisfies(x => x.IsPlayed).Within(2.Seconds());
 await Expect.That(playlist).CompliesWith(x => x.HasCount().GreaterThanOrEqualTo(4)).Within(2.Seconds());
 ```
 
-The condition is checked again every [`DefaultCheckInterval`](./07-configuration.md#settings) (defaults to `100ms`).
-Append `CheckEvery(…)` after `Within(…)` to change the interval for a single expectation:
+The condition is checked again every [`DefaultCheckInterval`](./07-configuration.md#settings) (defaults to
+`100ms`). Append `CheckEvery(…)` after `Within(…)` to change the interval for a single expectation:
 
 ```csharp
 using aweXpect.Chronology; // from the aweXpect.Chronology package
@@ -131,10 +185,13 @@ Track track = new();
 await Expect.That(track).Satisfies(x => x.IsPlayed).Within(2.Seconds()).CheckEvery(50.Milliseconds());
 ```
 
-The interval must be positive, and a later `Within` or `CheckEvery` replaces the earlier one.
+<details>
+<summary>Timeouts and cancellation while checking</summary>
 
 As for [`Eventually()`](#eventually), a shorter `WithTimeout` or global timeout ends the checks with "did not finish
 within …", and a cancellation makes the expectation inconclusive.
+
+</details>
 
 ### Eventually
 
@@ -151,10 +208,10 @@ await Expect.That(() => track.PlayCount).Eventually().IsGreaterThan(5);
 await Expect.That(() => track.Title).Eventually().IsNotNull().And.StartsWith("Let");
 ```
 
-The delegate is re-evaluated every [`DefaultCheckInterval`](./07-configuration.md#settings) (defaults to `100ms`)
-until the timeout configured in [`DefaultEventuallyTimeout`](./07-configuration.md#settings) (defaults to `30s`)
-expires. You can overwrite the timeout per expectation with `Within` and the interval with `CheckEvery`, in either
-order:
+The delegate is re-evaluated every [`DefaultCheckInterval`](./07-configuration.md#settings) (defaults to
+`100ms`) until the timeout configured in [`DefaultEventuallyTimeout`](./07-configuration.md#settings)
+(defaults to `30s`) expires. You can overwrite the timeout per expectation with `Within` and the interval with
+`CheckEvery`:
 
 ```csharp
 using aweXpect.Chronology; // from the aweXpect.Chronology package
@@ -168,11 +225,20 @@ await Expect.That(() => track.PlayCount).Eventually().Within(5.Seconds()).CheckE
 
 When the play count never exceeds 3, the retries end after 2 seconds, because the timeout is shorter than `Within`.
 
-`Within(Timeout.InfiniteTimeSpan)` retries until the expectations are met or the expectation is canceled. A negative
-timeout or an interval that is not positive is rejected, and a later `Within` or `CheckEvery` replaces the earlier one.
+`Within(Timeout.InfiniteTimeSpan)` retries until the expectations are met or the expectation is canceled.
 
 An exception thrown by the delegate counts as an unmet expectation and is retried. When the timeout expires while the
 delegate is still throwing, the expectation fails and the last exception is reported as the cause of the failure.
+
+In addition to `Func<T>`, the asynchronous variant `Func<Task<T>>` is supported, and
+[on .NET 8 or later](../08-setup/02-target-frameworks.md) also `Func<ValueTask<T>>`; each of them also accepts a
+`CancellationToken` (see the [delegates](../06-behaviour/01-delegates.md) page):
+
+```csharp
+Func<Task<int>> loadPlayCountAsync = () => Task.FromResult(6);
+
+await Expect.That(() => loadPlayCountAsync()).Eventually().IsGreaterThan(5);
+```
 
 <details>
 <summary>How timeouts bound the retries</summary>
@@ -194,17 +260,6 @@ interrupted, so an evaluation that returns after that point fails the same way, 
 delegate alike; a `WithTimeout` or a global timeout still does.
 
 </details>
-
-In addition to `Func<T>`, the asynchronous variant `Func<Task<T>>` is supported, and
-[on .NET 8 or later](../02-getting-started.md#target-frameworks) also `Func<ValueTask<T>>`; each of them also accepts a
-`CancellationToken`. Returning the task directly also works with a
-language version older than C# 13 (see the [delegates](../06-behaviour/01-delegates.md) page):
-
-```csharp
-Func<Task<int>> loadPlayCountAsync = () => Task.FromResult(6);
-
-await Expect.That(() => loadPlayCountAsync()).Eventually().IsGreaterThan(5);
-```
 
 ### Events
 
@@ -232,6 +287,8 @@ Expectations with an upper bound (`DidNotTrigger`, `Never()`, `AtMost(…)`, `Ex
 and only return early when one event too many is recorded:
 
 ```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
 IEventRecording<Player> recording = player.Record().Events();
 
 // Waits for 3 seconds and expects that no TrackStarted event is triggered in that time
@@ -256,6 +313,26 @@ Expectations with an upper bound, including `DidNotSignal()`, wait out the whole
 signal too many is received. A canceled `CancellationToken` makes the expectation [inconclusive](#outcome), so use
 `Within(…)` to limit how long to wait.
 
+### On a virtual clock
+
+`WithTimeSystem(timeSystem)` lets an expectation wait, time out and measure on a virtual clock instead of in real
+time, so that a test of a long wait does not take long. Pass an `ITimeSystem` from `aweXpect.Core.Internal`, e.g. an
+adapter to the virtual clock of a mocking library:
+
+```csharp no-compile
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+using aweXpect.Core.Internal; // experimental, see aweXpect5001
+
+ITimeSystem timeSystem = new MyVirtualTimeSystem();
+
+await Expect.That(track).Satisfies(x => x.IsPlayed).Within(2.Seconds())
+  .WithTimeSystem(timeSystem);
+```
+
+It applies to the waits, timeouts and measured durations of the expectation, also to all expectations combined in
+`Expect.ThatAll` or `Expect.ThatAny`, but not to code that waits outside of it, e.g. in the subject. The API is
+[experimental](../08-analyzers.md#experimental-apis) and may change in any version.
+
 ## Execution time
 
 [`ExecutesIn()`](../06-behaviour/01-delegates.md#execution-time) applies its upper bound as timeout: the maximum of
@@ -274,55 +351,5 @@ accept a `CancellationToken`, and the expectation fails the same way. A synchron
 runs to completion, however long that takes; neither `WithTimeout` nor `WithCancellation` changes that. If it returns
 after the timeout elapsed, the expectation fails the same way. `ExecutesIn()` and `Throws().Within(…)` report the
 duration it took instead, when the timeout is their own upper bound or the duration also violates their limit.
-
-</details>
-
-## Outcome
-
-A timeout and a cancellation are reported the same way by every expectation, whether it awaits a `Task<T>` subject, an
-asynchronous `Whose` member or delegate, enumerates an `IAsyncEnumerable<T>`, waits for a `Signaler` or for recorded
-events, or retries with `Within(…)` or [`Eventually()`](#eventually):
-
-- When a **timeout** elapses (`WithTimeout` or `TestCancellation.FromTimeout`), the expectation fails with "did not
-  finish within …" and a `TimeoutException` as inner exception.
-- When the **`CancellationToken`** is canceled (`WithCancellation` or `TestCancellation.FromCancellationToken`), the
-  expectation is inconclusive: "could not be verified, because the evaluation was already canceled". It neither passes
-  nor throws the `OperationCanceledException`, so e.g. `DidNotSignal()` does not pass because the cancellation ended the
-  wait.
-- An `OperationCanceledException` that a delegate throws for its own reasons, while neither the timeout elapsed nor the
-  `CancellationToken` was canceled, is an ordinary exception: e.g. `DoesNotThrow()` fails with "did throw an
-  OperationCanceledException".
-
-An inconclusive expectation throws the exception that your test framework uses for this outcome, see
-[inconclusive](./09-test-frameworks.md#inconclusive).
-
-## Awaited tasks
-
-A timeout or a cancellation also stops waiting for a task that the expectation awaits, such as a `Task<T>` subject or
-the task returned by an asynchronous delegate, even if it ignores the `CancellationToken`. A synchronous delegate
-cannot be abandoned and runs to completion. The outcome is the same whether the task was abandoned or reacted to the
-cancellation itself. With [`Eventually()`](#eventually), the timeout bounds each evaluation in the same way.
-
-## Async enumerables
-
-The `CancellationToken` of the expectation, which includes the timeout, is passed to an `IAsyncEnumerable<T>` subject,
-and the expectation stops waiting for the next item once it is canceled, even if the enumerable ignores the token.
-After that, the enumerable is not advanced any further.
-
-<details>
-<summary>Partial enumerations, disposal and complete collections</summary>
-
-An expectation that needs an item after the cancellation never reads the cancellation as the end of the enumerable,
-regardless of whether it occurs while waiting for an item or between two items. Expectations like `HasCount` or
-`IsEmpty` list the items received so far.
-
-The enumerator is disposed when the expectation ends. A timeout or a cancellation also stops waiting for a
-`DisposeAsync` that does not complete. The outcome is already decided at that point and does not change: a met
-expectation stays met, and a failure is reported as it is.
-
-A timeout or a cancellation only stops reading the items that still have to come from a collection, e.g. from a lazily
-evaluated `IEnumerable<T>`. A collection that is already complete in memory, such as an array or a `List<T>`, is
-evaluated completely like any other value, even when the timeout elapsed while a delegate created it. The same applies
-to a collection whose items an earlier expectation on the same subject has already read to the end.
 
 </details>

@@ -2,14 +2,14 @@
 
 Describes the possible expectations for working with callbacks.
 
-| Expectation             | Negated        | Summary                                       |
-|-------------------------|----------------|-----------------------------------------------|
-| [`Signaled`](#signaler) | `DidNotSignal` | the callback was signaled (a number of times) |
+| Expectation                                                          | Negated        | Summary                                            |
+|----------------------------------------------------------------------|----------------|----------------------------------------------------|
+| [`Signaled`](#signaler)                                              | `DidNotSignal` | the callback was signaled (a number of times)      |
+| [`Wait`, `WaitAsync`, `IsSignaled`](#waiting-without-an-expectation) |                | waits for or checks signals without an expectation |
 
 ## Signaler
 
-First, you have to start recording callback signals using the `Signaler` class. This class is available in the
-`aweXpect.Signaling` namespace:
+You can verify that a callback was called. Create a `Signaler` from the `aweXpect.Signaling` namespace:
 
 ```csharp
 using aweXpect.Signaling;
@@ -20,7 +20,7 @@ Signaler<string> titleSignaler = new();
 // ↑ Counts signals from callbacks with a string parameter
 ```
 
-Then, you can signal the callback on the recording:
+Call `Signal` from the callback:
 
 ```csharp
 class Player
@@ -34,45 +34,44 @@ class Player
 player.Play("Let It Be", title => titleSignaler.Signal(title));
 ```
 
-At last, you can wait for the callback to be signaled:
+Then verify that the callback was signaled, and limit with `Within(…)` how long to wait for it:
 
 ```csharp
-await Expect.That(titleSignaler).Signaled();
+await Expect.That(titleSignaler).Signaled().Within(TimeSpan.FromSeconds(5));
 ```
 
-You can also verify that the callback will not be signaled:
+You can also verify that the callback was not signaled within the given time:
 
 ```csharp
-await Expect.That(titleSignaler).DidNotSignal();
+await Expect.That(titleSignaler).DidNotSignal().Within(TimeSpan.FromSeconds(1));
 ```
 
-:::note
+:::warning[Without `Within(…)`, a test can wait 30 seconds]
 Without `Within(…)`, a signaler expectation waits up to the
-[`DefaultSignalerTimeout`](../03-how-it-works/07-configuration.md#settings) (30 s). `DidNotSignal()` always waits the
-full timeout to succeed, see [waiting for callbacks](../03-how-it-works/06-time-and-cancellation.md#callbacks).
+[`DefaultSignalerTimeout`](../03-how-it-works/07-configuration.md#settings) (30 s). `DidNotSignal()` and a count with
+an upper bound, such as `AtMost(3)` or `Never()`, always wait the full timeout to succeed, and a count that is not
+reached waits the full timeout before it fails, see
+[waiting for callbacks](../03-how-it-works/06-time-and-cancellation.md#callbacks).
 :::
 
 ### Amount
 
-You can specify how often a callback must be signaled:
+You can verify that a callback was signaled a number of times:
 
 ```csharp
-using aweXpect.Core; // for `Times()`
-
-await Expect.That(signaler).Signaled().AtLeast(3.Times());
-await Expect.That(signaler).Signaled().Exactly(3.Times());
-await Expect.That(signaler).Signaled().AtMost(3.Times());
-await Expect.That(signaler).Signaled().MoreThan(2.Times());
-await Expect.That(signaler).Signaled().LessThan(3.Times());
-await Expect.That(signaler).Signaled().Between(2).And(4.Times());
+await Expect.That(signaler).Signaled().AtLeast(3);
+await Expect.That(signaler).Signaled().Exactly(3);
+await Expect.That(signaler).Signaled().AtMost(3);
+await Expect.That(signaler).Signaled().MoreThan(2);
+await Expect.That(signaler).Signaled().LessThan(3);
+await Expect.That(signaler).Signaled().Between(2).And(4);
 await Expect.That(signaler).Signaled().Once();
 await Expect.That(signaler).Signaled().Twice();
 await Expect.That(signaler).Signaled().Never();
 ```
 
-`Signaled(3.Times())` is the shorthand for `Signaled().AtLeast(3.Times())` and allows no further quantifier, and
-`DidNotSignal(3.Times())` expects the callback to be signaled fewer than three times. `DidNotSignal(times)` requires
-at least one time, because no callback can be signaled fewer than zero times.
+`Signaled(3)` is the shorthand for `Signaled().AtLeast(3)`, and `DidNotSignal(3)` expects the callback to be
+signaled fewer than three times.
 
 ### Parameters
 
@@ -85,10 +84,10 @@ signaler.Signal("Yesterday");
 signaler.Signal("Let It Be");
 signaler.Signal("Yesterday");
 
-await Expect.That(signaler).Signaled().AtLeast(2.Times()).With(p => p == "Yesterday");
+await Expect.That(signaler).Signaled().AtLeast(2).With(p => p == "Yesterday");
 ```
 
-`WhoseParameters` continues with expectations on the collection of recorded parameters that match the filter from
+`WhoseParameters` continues with expectations on the collection of received parameters that match the filter from
 `With`:
 
 ```csharp
@@ -97,10 +96,10 @@ Signaler<string> signaler = new();
 signaler.Signal("Yesterday");
 signaler.Signal("Let It Be");
 
-await Expect.That(signaler).Signaled().AtLeast(2.Times()).WhoseParameters.Contains("Let It Be");
+await Expect.That(signaler).Signaled().AtLeast(2).WhoseParameters.Contains("Let It Be");
 ```
 
-A failure message lists the recorded parameters.
+A failure message lists the received parameters.
 
 ## Waiting without an expectation
 
@@ -122,27 +121,25 @@ Fail.Unless(result.IsSuccess, $"only {result.Count} tracks completed: {completed
 ```csharp
 Signaler<string> signaler = new();
 
-bool isSignaled = signaler.IsSignaled(2.Times());
-SignalerResult<string> result = signaler.Wait(2.Times(), title => title.StartsWith("Let"));
+bool isSignaled = signaler.IsSignaled(2);
+SignalerResult<string> result = signaler.Wait(2, title => title.StartsWith("Let"));
 ```
 
 All parameters are optional and have the same meaning for `Wait` and `WaitAsync`:
 
-| Parameter           | Without it                                                                                               |
-|---------------------|----------------------------------------------------------------------------------------------------------|
-| `amount`            | waits for one signal; `IsSignaled` checks for at least one signal                                        |
-| `predicate`         | counts every signal; only a `Signaler<T>` has it, to count the signals that match                        |
+| Parameter           | Without it                                                                                        |
+|---------------------|---------------------------------------------------------------------------------------------------|
+| `amount`            | waits for one signal; `IsSignaled` checks for at least one signal                                 |
+| `predicate`         | counts every signal; only a `Signaler<T>` has it, to count the signals that match                 |
 | `timeout`           | waits for at most the [`DefaultSignalerTimeout`](../03-how-it-works/07-configuration.md#settings) (30 s) |
-| `cancellationToken` | only the timeout ends the wait                                                                           |
+| `cancellationToken` | only the timeout ends the wait                                                                    |
 
 Signals that were received before the wait count as well, so a callback that was already signaled is not missed.
 
 <details>
 <summary>Details of waiting</summary>
 
-- The `amount` of a wait must be greater than zero and the `timeout` must not be negative, otherwise an
-  `ArgumentOutOfRangeException` is thrown. `TimeSpan.Zero` does not wait at all, and `Timeout.InfiniteTimeSpan` waits
-  without a limit.
+- A `timeout` of `TimeSpan.Zero` does not wait at all, and `Timeout.InfiniteTimeSpan` waits without a limit.
 - When the timeout expires or the `CancellationToken` is canceled, the wait returns without throwing an exception.
 - An exception of the `predicate` ends the wait and is thrown by `Wait` or `WaitAsync`, also when the predicate ran
   on the thread that signaled.

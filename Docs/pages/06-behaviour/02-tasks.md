@@ -22,7 +22,7 @@ await Expect.That(Task.FromException(new CustomException("Yesterday"))).Throws<C
 ```
 
 The task is already running, so `ExecutesIn` only measures the remaining time and a timeout only stops waiting for it,
-see [awaited tasks](../03-how-it-works/06-time-and-cancellation.md#awaited-tasks). Pass a delegate
+see [outcome](../03-how-it-works/06-time-and-cancellation.md#outcome). Pass a delegate
 (`Expect.That(() => ImportAlbumAsync("Abbey Road"))`) to measure or cancel the whole execution.
 
 A `ValueTask` is consumed by `Expect.That`, so it must not be awaited anywhere else.

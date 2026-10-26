@@ -96,7 +96,7 @@ Legend: ✅ built-in · ⚠️ partial or via a general mechanism · ❌ not ava
 | Member-level rules (methods, properties, fields) | ❌                      | ✅                                              | ✅ plus events, constructors, parameter modifiers, async, extension methods, operators, required / nullable members |
 | Immutability / nullability rules                 | ✅                      | ⚠️ immutability                                | ✅ type- and member-level                                                                                           |
 | Dependency rules (on / not on / only on)         | ✅                      | ✅                                              | ✅                                                                                                                  |
-| Body-level (IL) dependency detection             | ✅                      | ✅                                              | ⚠️ signature-level default, IL via [custom resolver](../04-configuration.md#dependency-resolver)                   |
+| Body-level (IL) dependency detection             | ✅                      | ✅                                              | ⚠️ signature-level default, IL via [custom resolver](../04-customization.md#dependency-resolver)                   |
 | Dependency cycle detection                       | ❌                      | ✅ via slices                                   | ✅ via namespaces / [slice roots](../03-architecture-rules.md#dependency-cycles)                                    |
 | Failure messages explain the violation           | ❌ failing types only   | ✅                                              | ✅ all violations, grouped per rule                                                                                 |
 | Combine rules in one verification                | ✅ policies             | ✅ `And`/`Or`                                   | ✅ `Expect.ThatAll`                                                                                                 |
@@ -115,7 +115,7 @@ aweXpect.Reflection's default resolver works on **reflection metadata** and sees
 signatures** (base type, interfaces, member/parameter/return types, attributes; see
 [type dependencies](../03-architecture-rules.md#type-dependencies)). Body-only references are invisible to
 it unless you plug in an IL-level
-[custom dependency resolver](../04-configuration.md#dependency-resolver), e.g. backed by Mono.Cecil.
+[custom dependency resolver](../04-customization.md#dependency-resolver), e.g. backed by Mono.Cecil.
 :::
 
 In return, the signature-level default needs no assembly file on disk, never diverges from the runtime
@@ -219,7 +219,7 @@ with output.
 
 NetArchTest stops at types, and ArchUnitNET's member rules cover names, visibility and a few modifiers.
 Convention tests over *member details* are where aweXpect.Reflection's
-[filter and expectation vocabulary](../02-filters.md) goes further; the same fluent style covers e.g.:
+[filter and expectation vocabulary](../02-filters/index.md) goes further; the same fluent style covers e.g.:
 
 ```csharp
 // All async methods end in "Async"
@@ -235,5 +235,5 @@ await Expect.That(In.AssemblyContaining<AlbumController>()
 // Serializable types have exactly one parameterless constructor
 await Expect.That(In.AllLoadedAssemblies()
         .Types().With<SerializableAttribute>())
-    .ContainConstructors(c => c.WithoutParameters()).Exactly(1.Times());
+    .ContainConstructors(c => c.WithoutParameters()).Exactly(1);
 ```

@@ -41,21 +41,16 @@ XML options:
 
 The elements are compared by their content like by [`AsXml()`](./01-strings.md#string-comparison-as-xml): attributes
 regardless of their order, elements and attributes by their namespace and local name instead of their prefix, and
-without comments and processing instructions. Whitespace-only text between elements is ignored, also when the subject
-was loaded with `LoadOptions.PreserveWhitespace`, unless `xml:space="preserve"` on the subject or one of its ancestors
-keeps it. The paths of the differences start at the subject, also when it is nested in a document.
+without comments and processing instructions. Whitespace-only text between elements is ignored.
 
 For an [`XDocument`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xdocument), its root element is
-compared, so that a document without a root element fails, also when the expectation is negated:
+compared:
 
 ```csharp
 XDocument document = XDocument.Parse("""<?xml version="1.0"?><track title="Let It Be" />""");
 
 await Expect.That(document).Matches("""<track title="Let It Be" />""");
 ```
-
-The expected string must be valid XML without a document type definition (DTD), otherwise an `ArgumentException` is
-thrown when the expectation is specified.
 
 You can also verify that an element does not match an expected XML:
 
@@ -65,12 +60,21 @@ XElement track = XElement.Parse("""<track title="Let It Be" />""");
 await Expect.That(track).DoesNotComplyWith(it => it.Matches("""<track title="Yesterday" />"""));
 ```
 
+<details>
+<summary>Whitespace, paths and documents without a root element</summary>
+
+Whitespace-only text between elements is ignored also when the subject was loaded with
+`LoadOptions.PreserveWhitespace`, unless `xml:space="preserve"` on the subject or one of its ancestors keeps it. The
+paths of the differences start at the subject, also when it is nested in a document. A document without a root element
+fails, also when the expectation is negated.
+
+</details>
+
 ## Options
 
 The options are available wherever `XmlOptions` are accepted, i.e. `Matches`, `MatchesExactly`, `IsValidXmlMatching`,
-`IsValidXmlMatchingExactly` and [`AsXml(o => …)`](./01-strings.md#string-comparison-as-xml). Like the
-[options of aweXpect](https://docs.testably.org/aweXpect/how-it-works/options), an option that switches something on
-takes an optional `bool`:
+`IsValidXmlMatchingExactly` and [`AsXml(o => …)`](./01-strings.md#string-comparison-as-xml). They work like the
+[options of aweXpect](https://docs.testably.org/aweXpect/how-it-works/options):
 
 | Option                                                             | Configures                                                   |
 |--------------------------------------------------------------------|--------------------------------------------------------------|
@@ -144,9 +148,14 @@ XML options:
    "@createdat" matched no member (did you mean "@createdAt"?)
 ```
 
+<details>
+<summary>Members that only occur in the subject</summary>
+
 As [additional nodes](#additional-nodes) of the subject are not compared when they are ignored, e.g. by `Matches`, a
 member to ignore that only occurs in the subject matches no compared path either, and is named as well, although it
 is not needed.
+
+</details>
 
 ### Element order
 
@@ -169,6 +178,12 @@ await Expect.That(album).MatchesExactly("""
     o => o.IgnoringElementOrder());
 ```
 
+The texts are paired like the elements, so that the order of the texts in mixed content, e.g. `<p>a<b/>c</p>`, is
+ignored as well.
+
+<details>
+<summary>How the children are paired</summary>
+
 Each expected child is paired with the first unpaired child of the subject with the same name that matches it. The
 remaining children of the same name are paired in their order, so that their differences are reported, e.g.
 `/album/track[1]/@title was "Here Comes the Sun" instead of "Come Together"`, and the children that are still
@@ -176,8 +191,7 @@ unpaired are reported as missing or unexpected. This greedy pairing can fail whe
 are ignored, e.g. by `Matches`, and an expected child matches several children of the subject, even if another pairing
 would succeed.
 
-The texts are paired like the elements, so that the order of the texts in mixed content, e.g. `<p>a<b/>c</p>`, is
-ignored as well.
-
 As the children are no longer paired by their position, a position in a [member to ignore](#ignoring-members), e.g.
 `track[2]`, refers to the child at this position in each document.
+
+</details>

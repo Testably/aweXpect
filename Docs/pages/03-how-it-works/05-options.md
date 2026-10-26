@@ -1,10 +1,15 @@
 # Options
 
-Many expectations share the same options. An option is appended to the expectation it configures. Options can be
-chained in any order, and a repeated option replaces the earlier one, e.g. `IgnoringCase().IgnoringCase(false)`
-compares case-sensitively. Options that set the same thing in different ways, e.g. `AsPrefix().AsSuffix()`, throw. An
-option that switches something on, such as `IgnoringCase()`, takes an optional `bool`; with `false` it behaves as if it
-was not specified. The reference pages describe the details:
+Many expectations share the same options. An option is appended to the expectation it configures. These rules apply
+to all options:
+
+- Options can be chained in any order.
+- A repeated option replaces the earlier one, e.g. `IgnoringCase().IgnoringCase(false)` compares case-sensitively.
+- An option that switches something on, such as `IgnoringCase()`, takes an optional `bool`; with `false` it behaves as
+  if it was not specified.
+- Options that set the same thing in different ways, e.g. `AsPrefix().AsSuffix()`, throw.
+
+The reference pages describe the details:
 
 | Option                                                                | Configures                                      | Details                                                             |
 |-----------------------------------------------------------------------|-------------------------------------------------|---------------------------------------------------------------------|
@@ -14,7 +19,7 @@ was not specified. The reference pages describe the details:
 | [`Equivalent()`](#equivalency)                                        | a comparison by equivalency instead of equality | [Equivalency](../04-values/13-equivalency.md)                       |
 | [`Within(tolerance)`](#tolerance)                                     | a tolerance for numbers and times               | [Number](../04-values/02-number.md#tolerance)                       |
 | [`InAnyOrder()`, `IgnoringDuplicates()`, …](#collection-options)      | how collections are compared                    | [Collections](../05-collections/01-equality.md)                     |
-| `Once()`, `Never()`, `AtLeast(2.Times())`, `AtLeast().Twice()`, …     | how often an item must occur                    | [Contained items](../05-collections/01-equality.md#contained-items) |
+| `Once()`, `Never()`, `AtLeast(2)`, `AtLeast().Twice()`, …             | how often an item must occur                    | [Contained items](../05-collections/01-equality.md#contained-items) |
 | [`Within(timeout)`, `WithTimeout(…)`, `WithCancellation(…)`](#time)   | how long an expectation may take or wait        | [Time and cancellation](./06-time-and-cancellation.md)              |
 
 ## Because
@@ -27,8 +32,8 @@ string title = "Let It Be";
 await Expect.That(title).IsEqualTo("Let It Be").Because("it is the title of the last album");
 ```
 
-On a [combination](./03-combining.md#on-different-subjects) of `Expect.ThatAll` or `Expect.ThatAny`, the reason is
-added to the first line of the failure message.
+How `Because` applies to `Expect.ThatAll` and `Expect.ThatAny` is described in
+[combining expectations](./03-combining.md#on-different-subjects).
 
 ## String options
 
@@ -76,7 +81,7 @@ await Expect.That(albums).Contains(new Album("Let It Be")).Equivalent();
 
 `Within(tolerance)` accepts a value that differs from the expected one by at most the tolerance. It is available for
 numbers, `TimeSpan`, `DateTime`, `DateTimeOffset`, `DateOnly` and `TimeOnly` (the latter two
-[on .NET 8 or later](../02-getting-started.md#target-frameworks)), and for the items of a collection of
+[on .NET 8 or later](../08-setup/02-target-frameworks.md)), and for the items of a collection of
 them:
 
 ```csharp
@@ -88,7 +93,42 @@ await Expect.That(releaseDate).IsEqualTo(new DateTime(1970, 5, 8)).Within(TimeSp
 await Expect.That([3.98, 4.01]).All().AreEqualTo(4.0).Within(0.05);
 ```
 
-For the time types, a [default tolerance](../04-values/10-datetime-offset.md#default-tolerance) can be configured.
+### Default tolerance
+
+On Windows the `DateTime` resolution is [about 10 to 15 milliseconds](https://stackoverflow.com/q/3140826/4003370), so
+comparing them as exact values might result in brittle tests. Therefore, it is possible to specify a default tolerance
+that is used when a `DateTime`, `DateTimeOffset`, `DateOnly`, `TimeOnly` or `TimeSpan` subject is compared directly
+(e.g. with `IsEqualTo`, `IsOneOf`, `IsBefore` or `IsBetween`) and no explicit tolerance is given:
+
+```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+using aweXpect.Customization;
+
+using IDisposable lifetime = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
+```
+
+It also applies to the items of a collection of these types. An explicit `Within` always replaces the default
+tolerance. The applied default tolerance is part of the failure message, for example
+`is equal to 2024-12-24T13:15:00.0000000 ± 0:00.015`, unless it is zero. For a `DateOnly`, see
+[tolerance](../04-values/11-date-time-only.md#tolerance).
+
+<details>
+<summary>Where the default tolerance applies</summary>
+
+It applies to the items of a collection of `DateTime`, `DateTimeOffset`, `DateOnly`, `TimeOnly` or `TimeSpan` values
+(or their nullable counterparts) in every expectation that compares them with expected items, e.g. `IsEqualTo`,
+`Contains`, `IsContainedIn`, `StartsWith`, `EndsWith`, `HasItem` or `All().AreEqualTo`, and in their negations. The same
+holds for the values of a dictionary in `Contains(key, value)`, `ContainsValue`, `ContainsValues` and `IsEqualTo`, and in
+their negations.
+
+The default tolerance is not used for:
+- property verifications like `HasOffset()`
+- collection expectations that don't compare items with expected items, like `IsInAscendingOrder` or `AreUnique`
+- the keys of a dictionary, which are looked up through its key comparer, e.g. in `ContainsKey`
+- values and members compared by `IsEquivalentTo`
+- values compared as `object`
+
+</details>
 
 ## Collection options
 

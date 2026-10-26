@@ -18,8 +18,6 @@ Describes the possible expectations for `Version`.
 | [`HasBuild`](#components)                            | negated comparison          | has the expected build component              |
 | [`HasRevision`](#components)                         | negated comparison          | has the expected revision component           |
 
-Reference equality and `null` checks come from the [object expectations](./12-object.md).
-
 ## Equality
 
 You can verify that the `Version` is equal to another one or not:

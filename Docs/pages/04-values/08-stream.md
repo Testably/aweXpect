@@ -46,6 +46,8 @@ await Expect.That(playlist).HasLength(4);
 await Expect.That(playlist).HasLength().Between(3).And(5);
 ```
 
+<PropertyComparisons example="HasLength(3)" />
+
 ## Position
 
 You can verify the position of the `Stream`:
@@ -72,7 +74,3 @@ using BufferedStream playlist = new(new MemoryStream("Help"u8.ToArray()), 2);
 await Expect.That(playlist).HasBufferSize(2);
 await Expect.That(playlist).HasBufferSize().NotEqualTo(3);
 ```
-
-## Comparisons
-
-<PropertyComparisons example="HasLength(3)" />

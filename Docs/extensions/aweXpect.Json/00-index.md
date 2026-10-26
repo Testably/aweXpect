@@ -5,6 +5,17 @@
 [aweXpect.Json](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Json) contains expectations for JSON strings, `JsonElement`,
 `JsonNode` and the JSON serialization of objects with `System.Text.Json`.
 
+## Installation
+
+```ps
+dotnet add package aweXpect.Json
+```
+
+The package brings `Expect.That` with it, but not the expectations for strings, numbers or collections, so reference
+[`aweXpect`](https://www.nuget.org/packages/aweXpect) as well, e.g. for the `IsEqualTo` of `IsEqualTo(…).AsJson()`.
+The expectations live in the namespace `aweXpect`, so `using aweXpect;` is all you need; only the
+[customization](./06-customization.md) lives in `aweXpect.Json`.
+
 ## At a glance
 
 ```csharp
@@ -43,36 +54,57 @@ JSON options:
 
 ## Overview
 
-| Expectation                                                                 | Subject                   | Summary                                                         |
-|-----------------------------------------------------------------------------|---------------------------|-----------------------------------------------------------------|
-| [`IsEqualTo(…).AsJson()`](./01-strings.md#string-comparison-as-json) | `string`                  | equal to the expected JSON, compared by structure               |
-| [`IsValidJson`](./01-strings.md#validation)                        | `string`                  | can be parsed as JSON, optionally with expectations on its root |
-| [`IsNotValidJson`](./01-strings.md#validation)                     | `string`                  | cannot be parsed as JSON                                        |
-| [`IsValidJsonMatching`](./01-strings.md#validation)                | `string`                  | valid JSON that matches the expected value                      |
-| [`IsValidJsonMatchingExactly`](./01-strings.md#validation)         | `string`                  | valid JSON that matches the expected value exactly              |
-| [`Matches`](./02-matching.md)                                      | `JsonElement`, `JsonNode` | matches the expected value, additional properties allowed       |
-| [`MatchesExactly`](./02-matching.md)                               | `JsonElement`, `JsonNode` | matches the expected value exactly                              |
-| [`HasProperty`](./03-objects-and-arrays.md#properties)             | `JsonElement`, `JsonNode` | a JSON object with the property, optionally with expectations   |
-| [`DoesNotHaveProperty`](./03-objects-and-arrays.md#properties)     | `JsonElement`, `JsonNode` | a JSON object without the property                              |
-| [`HasValueAt`](./03-objects-and-arrays.md#values-at-a-path)        | `JsonElement`, `JsonNode` | a value at a path, optionally with expectations                 |
-| [`DoesNotHaveValueAt`](./03-objects-and-arrays.md#values-at-a-path) | `JsonElement`, `JsonNode` | no value at a path                                             |
-| [`HasElementAt`](./03-objects-and-arrays.md#elements)              | `JsonElement`, `JsonNode` | a JSON array with an element at the index, optionally with expectations |
-| [`IsObject`](./03-objects-and-arrays.md#isobject)                  | `JsonElement`, `JsonNode` | a JSON object                                                   |
-| [`IsObject().WhoseProperties`](./03-objects-and-arrays.md#isobject) | `JsonElement`, `JsonNode` | collection expectations on the properties of a JSON object      |
-| [`IsArray`](./03-objects-and-arrays.md#isarray)                    | `JsonElement`, `JsonNode` | a JSON array                                                    |
-| [`IsArray().WhoseElements`](./03-objects-and-arrays.md#isarray)    | `JsonElement`, `JsonNode` | collection expectations on the elements of a JSON array         |
-| [`IsString`](./03-objects-and-arrays.md#value-kinds)               | `JsonElement`, `JsonNode` | a JSON string, optionally equal to a value or with expectations |
-| [`IsNumber`](./03-objects-and-arrays.md#value-kinds)               | `JsonElement`, `JsonNode` | a JSON number, optionally with expectations on its value        |
-| [`IsString().StartingWith(…)`, …](./03-objects-and-arrays.md#value-kinds) | `JsonElement`, `JsonNode` | a JSON string compared with a string operator, e.g. `EqualTo`, `EndingWith` or `Containing(…).AtLeast(2)` |
-| [`IsNumber().GreaterThan(…)`, …](./03-objects-and-arrays.md#value-kinds) | `JsonElement`, `JsonNode` | a JSON number compared as `double` with a number operator, e.g. `Between(…).And(…)` or `EqualTo(…).Within(…)` |
-| [`IsNumber<TNumber>`](./03-objects-and-arrays.md#numbers)          | `JsonElement`, `JsonNode` | a JSON number that fits into the number type, e.g. an `int`, optionally equal to a value |
-| [`IsBoolean`](./03-objects-and-arrays.md#value-kinds)              | `JsonElement`, `JsonNode` | a JSON boolean, i.e. `true` or `false`, optionally equal to a value or with expectations |
-| [`IsNull`](./03-objects-and-arrays.md#value-kinds)                 | `JsonElement`             | the JSON value `null`                                           |
-| [`IsJsonSerializable`](./04-serialization.md#json-serializable)    | `object`                  | survives a round trip through the JSON serializer               |
-| [`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json)   | `object`                  | serialized by the JSON serializer as the expected JSON          |
+Expectations for [`string`](./01-strings.md):
+
+| Expectation                                                          | Negated                    | Summary                                                         |
+|----------------------------------------------------------------------|----------------------------|-----------------------------------------------------------------|
+| [`IsEqualTo(…).AsJson()`](./01-strings.md#string-comparison-as-json) | `IsNotEqualTo(…).AsJson()` | equal to the expected JSON, compared by structure               |
+| [`IsValidJson`](./01-strings.md#validation)                          | `IsNotValidJson`           | can be parsed as JSON, optionally with expectations on its root |
+| [`IsValidJsonMatching`](./01-strings.md#validation)                  |                            | valid JSON that matches the expected value                      |
+| [`IsValidJsonMatchingExactly`](./01-strings.md#validation)           |                            | valid JSON that matches the expected value exactly              |
+
+Expectations for `JsonElement` and [`JsonNode`](./04-json-nodes.md):
+
+| Expectation                                                               | Negated               | Summary                                                                                                      |
+|---------------------------------------------------------------------------|-----------------------|--------------------------------------------------------------------------------------------------------------|
+| [`Matches`](./02-matching.md)                                             |                       | matches the expected value, additional properties allowed                                                    |
+| [`MatchesExactly`](./02-matching.md)                                      |                       | matches the expected value exactly                                                                           |
+| [`HasProperty`](./03-objects-and-arrays.md#properties)                    | `DoesNotHaveProperty` | a JSON object with the property, optionally with expectations                                                |
+| [`HasValueAt`](./03-objects-and-arrays.md#values-at-a-path)               | `DoesNotHaveValueAt`  | a value at a path, optionally with expectations                                                              |
+| [`HasElementAt`](./03-objects-and-arrays.md#elements)                     |                       | a JSON array with an element at the index, optionally with expectations                                      |
+| [`IsObject`](./03-objects-and-arrays.md#isobject)                         |                       | a JSON object                                                                                                |
+| [`IsObject().WhoseProperties`](./03-objects-and-arrays.md#isobject)       |                       | collection expectations on the properties of a JSON object                                                   |
+| [`IsArray`](./03-objects-and-arrays.md#isarray)                           |                       | a JSON array                                                                                                 |
+| [`IsArray().WhoseElements`](./03-objects-and-arrays.md#isarray)           |                       | collection expectations on the elements of a JSON array                                                      |
+| [`IsString`](./03-objects-and-arrays.md#value-kinds)                      |                       | a JSON string, optionally equal to a value or with expectations                                              |
+| [`IsNumber`](./03-objects-and-arrays.md#value-kinds)                      |                       | a JSON number, optionally with expectations on its value                                                     |
+| [`IsString().StartingWith(…)`, …](./03-objects-and-arrays.md#value-kinds) |                       | a JSON string compared with a string operator, e.g. `EqualTo`, `EndingWith` or `Containing(…).AtLeast(2)`    |
+| [`IsNumber().GreaterThan(…)`, …](./03-objects-and-arrays.md#value-kinds)  |                       | a JSON number compared as `double` with a number operator, e.g. `Between(…).And(…)` or `EqualTo(…).Within(…)` |
+| [`IsNumber<TNumber>`](./03-objects-and-arrays.md#numbers)                 |                       | a JSON number that fits into the number type, e.g. an `int`, optionally equal to a value                     |
+| [`IsBoolean`](./03-objects-and-arrays.md#value-kinds)                     |                       | a JSON boolean, i.e. `true` or `false`, optionally equal to a value or with expectations                     |
+| [`IsNull`](./03-objects-and-arrays.md#value-kinds)                        |                       | the JSON value `null`, only for a `JsonElement`                                                              |
+
+Expectations for any `object`, serialized with `System.Text.Json`:
+
+| Expectation                                                      | Negated | Summary                                                |
+|------------------------------------------------------------------|---------|--------------------------------------------------------|
+| [`IsJsonSerializable`](./05-serialization.md#json-serializable)  |         | survives a round trip through the JSON serializer      |
+| [`IsJsonSerializedAs`](./05-serialization.md#serialized-as-json) |         | serialized by the JSON serializer as the expected JSON |
 
 The comparisons can be relaxed with options like `TreatingNullAsAbsent()`, `IgnoringArrayOrder()`,
 `IgnoringMember(name)` or `ComparingNumbersWithin(tolerance)`, see [Matching JSON](./02-matching.md).
+
+## Customization
+
+Set a value under `Customize.aweXpect.Json()` for the current
+[async flow](https://docs.testably.org/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
+`Customize.aweXpect.Global.Json()` for
+[all tests](https://docs.testably.org/aweXpect/how-it-works/configuration#global-defaults).
+
+| Value                                                   | Default                      | Summary                                         |
+|---------------------------------------------------------|------------------------------|-------------------------------------------------|
+| [`DefaultJsonDocumentOptions`](./06-customization.md)   | `AllowTrailingCommas = true` | the options to parse JSON strings               |
+| [`DefaultJsonSerializerOptions`](./06-customization.md) | `AllowTrailingCommas = true` | the options to format and serialize JSON values |
 
 ## Documentation
 
@@ -82,6 +114,7 @@ The full documentation is available at
 - [JSON strings](./01-strings.md): comparing strings as JSON and validating them
 - [Matching JSON](./02-matching.md): `Matches` and `MatchesExactly`, and the options to relax the comparison
 - [Objects, arrays and value kinds](./03-objects-and-arrays.md): `HasProperty`, `HasValueAt`, `HasElementAt`,
-  `IsObject`, `WhoseProperties`, `IsArray`, `WhoseElements`, the value kinds and `JsonNode` subjects
-- [Serialization](./04-serialization.md): `IsJsonSerializable` and `IsJsonSerializedAs`
-- [Customization](./05-customization.md): the default `JsonDocumentOptions` and `JsonSerializerOptions`
+  `IsObject`, `WhoseProperties`, `IsArray`, `WhoseElements` and the value kinds
+- [`JsonNode`](./04-json-nodes.md): the same expectations for a `JsonNode` and its subtypes
+- [Serialization](./05-serialization.md): `IsJsonSerializable` and `IsJsonSerializedAs`
+- [Customization](./06-customization.md): the default `JsonDocumentOptions` and `JsonSerializerOptions`

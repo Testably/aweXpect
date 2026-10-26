@@ -207,7 +207,7 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
 
 - Match types have one lifecycle: `StringMatchType` and `ObjectMatchType<TSubject>` create a matcher per evaluation
   (`StringMatcher`, `ObjectMatcher<TSubject>`) that returns a `MatchResult`. They replace `IStringMatchType` and
-  `IObjectMatchType`. See [Options](../11-extending/03-options-and-match-types.md).
+  `IObjectMatchType`. See [Custom match types](../11-extending/06-comparisons.md#custom-match-types).
 - The operators of property results are extension methods on one interface per property type, such as
   `IIntPropertyResult<TResult>` or `IEnumPropertyResult<TEnum, TResult>`, so a result of your own gets them by
   implementing the interface. `IDoublePropertyResult<TResult, TToleranceResult>` and
@@ -223,7 +223,7 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   `IOptionsProvider<TOptions>.Options` returns the holder: create it in your expectation, e.g.
   `new OptionsHolder<Quantifier>(Quantifier.Default)`, pass it to your constraint and your result, and read
   `holder.Value` when the constraint evaluates. A constraint that only reads the options can take an
-  `IReadOnlyOptionsHolder<TOptions>`. See [Options](../11-extending/03-options-and-match-types.md#options).
+  `IReadOnlyOptionsHolder<TOptions>`. See [Options](../11-extending/05-options.md).
 - `Quantifier`, `CollectionMatchOptions`, `CollectionIndexOptions`, `CollectionOrderOptions<TItem>`,
   `NumberTolerance<TNumber>`, `TimeTolerance`, `SignalerOptions`, `RepeatedCheckOptions` and `ExecutionTimeOptions`
   are `readonly struct`s, and `StringEqualityOptions` is a sealed immutable class. Start from their `Default`, e.g.
@@ -284,4 +284,4 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   and `NegatedName`.
 - `ITestFrameworkAdapter` has the new members `TryGetCurrentTest`, `TryGetCancellationToken` and `TryAddAttachment`,
   so an adapter of your own has to implement them; each returns `false` when the test framework does not support it.
-  See [the running test](../11-extending/08-initialization.md#the-running-test).
+  See [the running test](../11-extending/11-initialization.md#the-running-test).

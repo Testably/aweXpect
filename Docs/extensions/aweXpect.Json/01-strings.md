@@ -48,8 +48,7 @@ Expected:
 }
 ```
 
-The expected string must be valid JSON, otherwise an `ArgumentException` is thrown. As JSON is compared by its
-structure, `AsJson()` cannot be combined with the
+As JSON is compared by its structure, `AsJson()` cannot be combined with the
 [string options](https://docs.testably.org/aweXpect/values/string#string-options) `IgnoringCase()` or
 `Using(comparer)`. Instead, `AsJson(o => …)` accepts the [JSON options](./02-matching.md#options) to relax the
 comparison.
@@ -105,8 +104,7 @@ string track = """{"title": "Let It Be",}""";
 await Expect.That(track).IsNotValidJson(o => o with { AllowTrailingCommas = false });
 ```
 
-A `null` subject fails like for `IsValidJson`. If the string is valid JSON, e.g. `"[1, 2]"`, the expectation fails
-with:
+If the string is valid JSON, e.g. `"[1, 2]"`, the expectation fails with:
 
 ```text title="Failure message"
 Expected that track
@@ -145,6 +143,13 @@ JSON options:
  - ignore additional properties
 ```
 
+<details>
+<summary>`null` subjects and negation</summary>
+
+A `null` subject fails `IsValidJson` and `IsNotValidJson` alike.
+
 With expectations on the root element and with `IsValidJsonMatching` or `IsValidJsonMatchingExactly`, a string that
 is not valid JSON fails also when the expectation is negated, e.g. within `DoesNotComplyWith(…)`, as there is no root
 element to verify. Only the negation of `IsValidJson()` without expectations is met by a string that is not valid JSON.
+
+</details>

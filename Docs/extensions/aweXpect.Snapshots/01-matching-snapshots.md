@@ -1,5 +1,15 @@
 # Matching snapshots
 
+Describes the possible expectations for comparing strings, objects, exceptions, binary data and files with a snapshot.
+
+| Expectation                                 | Negated | Summary                                                  |
+|---------------------------------------------|---------|----------------------------------------------------------|
+| [`MatchesSnapshot`](#strings)               |         | a string matches the snapshot stored next to the test    |
+| [`MatchesSnapshot`](#objects)               |         | an object matches its snapshot, written by aweXpect      |
+| [`MatchesSnapshot`](#exceptions)            |         | an exception matches its snapshot, written member-wise   |
+| [`MatchesSnapshot`](#binary-data-and-files) |         | a `byte[]` or `Stream` matches its snapshot byte by byte |
+| [`MatchesSnapshot`](#binary-data-and-files) |         | a `FileInfo` matches its snapshot byte by byte           |
+
 ## Strings
 
 You can verify that a string matches the snapshot that is stored next to the test:
@@ -7,7 +17,7 @@ You can verify that a string matches the snapshot that is stored next to the tes
 ```csharp
 public class AlbumTests
 {
-    [Fact]
+    [Test]
     public async Task Describes()
     {
         string description = Describe(new Album("Abbey Road"));
@@ -68,10 +78,8 @@ await Expect.That(json).MatchesSnapshot().WithExtension("json");
 The extension replaces `txt` in both files, e.g. `AlbumTests.Describes.awexpect-snapshot.json` and
 `AlbumTests.Describes.awexpect-snapshot.pending.json`, also together with a name or an environment, e.g.
 `AlbumTests.Describes.Abbey Road@net8.0.awexpect-snapshot.html` for
-`.Named("Abbey Road").UniqueFor.TargetFramework().WithExtension("html")`. It is kept as given and passed without the
-leading dot: it cannot be empty, contain a `.`, whitespace, control characters or any of `< > : " / \ | ? * % @`, or be
-`pending`; otherwise `WithExtension` throws an `ArgumentException`. Objects are always stored as `.txt`, so
-`WithExtension` is only offered for strings and [binary data](#binary-data-and-files).
+`.Named("Abbey Road").UniqueFor.TargetFramework().WithExtension("html")`. It is passed without the leading dot. Objects
+are always stored as `.txt`.
 
 A snapshot that was already used with another extension in the same test run fails, as the two files would otherwise
 drift apart:
@@ -122,10 +130,15 @@ Album {
   sorted by their written text, and the entries of a `ConcurrentDictionary`, `ImmutableDictionary`, `FrozenDictionary`
   or `Hashtable` by their key. A `Dictionary<TKey, TValue>` keeps its insertion order.
 - Text rules apply to the written text, e.g. `.For.Guids().Mask()` for a `Guid` member; member and value rules, e.g.
-  `.For.Members().WithName("Id").Ignore()`, apply while the object is written, see [rules](04-masking-values.md).
+  `.For.Members().WithName("Id").Ignore()`, apply while the object is written, see [rules](05-masking-values.md).
+
+<details>
+<summary>Trimming and Native AOT</summary>
 
 In a trimmed application or under Native AOT, the members of the subject's type are only known when the source
 generator of aweXpect.Core registers them for the call site, which it does for `MatchesSnapshot()`.
+
+</details>
 
 ### Exceptions
 
@@ -167,9 +180,9 @@ ArgumentOutOfRangeException {
   assemblies, are left out, as they differ between builds, runtimes, machines and Native AOT.
 - The message of a framework exception can differ between the runtimes, operating systems and cultures: the message
   above names the actual value on a line of its own, with the line break of the operating system, and .NET Framework
-  words it differently. Leave out or mask such members with the [member rules](04-masking-values.md#members-and-values),
+  words it differently. Leave out or mask such members with the [member rules](05-masking-values.md#members-and-values),
   or keep a snapshot per target framework and operating system with
-  [`.UniqueFor`](03-naming-snapshots.md#snapshots-per-environment):
+  [`.UniqueFor`](04-naming-snapshots.md#snapshots-per-environment):
 
   ```csharp
   await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>()
@@ -178,12 +191,18 @@ ArgumentOutOfRangeException {
       .For.Members().WithName("ActualValue").Mask();
   ```
 
-- In a trimmed application or under Native AOT, the own members of a custom exception, e.g. a `Side` property of a
-  `RecordPlayerException`, are left out: the source generator of aweXpect.Core registers no type derived from
-  `Exception`, because its `TargetSite` requires unreferenced code. The message, data and inner exceptions are still
-  written, and so are the `ParamName`, `ActualValue`, `ObjectName` and `FileName` of the framework exceptions, which are
-  read without reflection.
 - A failure message still writes an exception as its type and message.
+
+<details>
+<summary>Custom exceptions under trimming and Native AOT</summary>
+
+In a trimmed application or under Native AOT, the own members of a custom exception, e.g. a `Side` property of a
+`RecordPlayerException`, are left out: the source generator of aweXpect.Core registers no type derived from
+`Exception`, because its `TargetSite` requires unreferenced code. The message, data and inner exceptions are still
+written, and so are the `ParamName`, `ActualValue`, `ObjectName` and `FileName` of the framework exceptions, which are
+read without reflection.
+
+</details>
 
 ## Binary data and files
 
@@ -196,9 +215,8 @@ await Expect.That(linerNotesStream).MatchesSnapshot().WithExtension("pdf");
 ```
 
 The snapshot is `AlbumTests.Cover.awexpect-snapshot.png` and a mismatch is written to
-`AlbumTests.Cover.awexpect-snapshot.pending.png`, so both open in an image viewer. Without `.WithExtension(…)` the
-expectation cannot be awaited, so a missing extension does not compile. A `Stream` is read from its current position
-to the end; it does not need to be seekable and is neither reset nor disposed.
+`AlbumTests.Cover.awexpect-snapshot.pending.png`, so both open in an image viewer. A `Stream` is read from its current
+position to the end; it does not need to be seekable and is neither reset nor disposed.
 
 A `FileInfo` is stored with the extension of the file, here `pdf`:
 
@@ -206,8 +224,8 @@ A `FileInfo` is stored with the extension of the file, here `pdf`:
 await Expect.That(new FileInfo("liner-notes.pdf")).MatchesSnapshot();
 ```
 
-`.WithExtension(…)` sets another one, e.g. for a file without an extension like `LICENSE`, which fails otherwise, as
-does an extension that a snapshot cannot have, e.g. `pending`. A file that does not exist fails like a `null` subject.
+`.WithExtension(…)` sets another one, e.g. for a file without an extension like `LICENSE`, which fails otherwise. A file
+that does not exist fails like a `null` subject.
 
 The failure never shows the bytes, but the first byte that differs, counted from 0, and the lengths:
 
@@ -221,39 +239,42 @@ Pending snapshot:
 ```
 
 - The bytes are stored unchanged: no encoding, no additional final line break, and the newline style is not ignored.
-- Rules do not apply to binary data: `.For` is not offered, and the [rules for all snapshots](04-masking-values.md) are
-  ignored.
-- Names, `.UniqueFor`, accepting changes and the [check for orphaned snapshots](05-orphaned-snapshots.md) work as for
+- Rules do not apply to binary data: the [rules for all snapshots](05-masking-values.md) are ignored.
+- Names, `.UniqueFor`, accepting changes and the [check for orphaned snapshots](06-orphaned-snapshots.md) work as for
   any other snapshot.
 - A `byte[]` is compared as binary data, not written by the formatter like other collections. As for a string, the
   static type decides, so a `byte[]` in an `object` subject is still written by the formatter.
-- A [comparer](08-comparers.md) can compare it instead, e.g. tolerating small differences of single pixels.
+- A [comparer](advanced/02-comparers.md) can compare it instead, e.g. tolerating small differences of single pixels.
 - Version control must not change the line breaks in a binary snapshot, so mark its extension as binary in
   `.gitattributes`, e.g. `*.png binary`, unless Git already detects it as binary.
-- A type derived from `Stream`, e.g. a `MemoryStream`, needs C# 13 or later to choose the overload for streams; before,
-  `MatchesSnapshot()` throws an `InvalidOperationException` that asks to declare the subject as a `Stream`, e.g.
-  `Expect.That<Stream>(stream)`.
 
-## Files
+<details>
+<summary>A `MemoryStream` with C# 12 or older</summary>
+
+A type derived from `Stream`, e.g. a `MemoryStream`, needs C# 13 or later to choose the overload for streams; before,
+`MatchesSnapshot()` throws an `InvalidOperationException` that asks to declare the subject as a `Stream`, e.g.
+`Expect.That<Stream>(stream)`.
+
+</details>
+
+## Encoding and line breaks
 
 The text of a string or an object is stored encoded as UTF-8. The pending file ends with an additional line break, which
 is removed again when the snapshot is read, so that an editor which adds a final line break does not change the
 snapshot.
 
 The newline style of a text snapshot is ignored when comparing, because version control can change it when the snapshot
-is checked out. A [comparer](08-comparers.md) can compare it in another way.
+is checked out. A [comparer](advanced/02-comparers.md) can compare it in another way.
+
+<details>
+<summary>Files that cannot be read or written, and negation</summary>
 
 A snapshot that cannot be read, e.g. because another process locks it, fails the expectation with the reason. A pending
 file that cannot be written is named as such in the failure, and a leftover pending file that cannot be deleted does not
 fail a matching snapshot.
 
-To review a mismatch after a run on a build server, attach its pending file to the result of the test, when the test
-framework supports attachments (NUnit, TUnit, xUnit v3, and MSTest 4 with `AweXpectExperimentalMSTest`):
-
-```csharp
-Customize.aweXpect.Snapshots().AttachPendingFiles.Set(true); // for this async flow
-```
-
 A snapshot cannot be negated: `DoesNotComplyWith(it => it.MatchesSnapshot())` always fails, as accepting the pending
 snapshot would turn any success into a failure. Nothing is written for a negated snapshot, also not while accepting
 changes.
+
+</details>

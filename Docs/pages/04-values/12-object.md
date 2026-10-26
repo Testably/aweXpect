@@ -15,6 +15,7 @@ Describes the possible expectations for any object.
 | [`Satisfies`](#condition)                                               | `DoesNotSatisfy`    | satisfies a predicate                                 |
 | [`CompliesWith`](#nested-expectation)                                   | `DoesNotComplyWith` | meets a nested expectation                            |
 | [`Whose`](../03-how-it-works/03-combining.md#on-members-of-the-subject) |                     | a member meets a nested expectation                   |
+| [`IsCollected`](#garbage-collection)                                    | `IsNotCollected`    | the target of a `WeakReference` is garbage collected  |
 
 ## Equality
 
@@ -36,7 +37,7 @@ This uses the `object.Equals(object?, object?)` method.
 A number typed as `object` also equals a number of another numeric type with the same value (e.g. `1` and `1L`)
 in equality (`IsEqualTo`, `IsOneOf`, `Contains`, `ContainsValue`), but not in
 [equivalency](./13-equivalency.md). For `Half`, `Int128` and `UInt128` this only applies
-[on .NET 8 or later](../02-getting-started.md#target-frameworks).
+[on .NET 8 or later](../08-setup/02-target-frameworks.md).
 
 </details>
 
@@ -99,6 +100,11 @@ await Expect.That(album).IsEquivalentTo(new Album("Abbey Road"));
 await Expect.That(album).IsNotEquivalentTo(new Album("Revolver"));
 ```
 
+Use `IsEqualTo` when the type defines what equal means, e.g. a record or a type that overrides `Equals`. Use
+`IsEquivalentTo` when it does not, e.g. for a class that only has reference equality, or when some members should be
+ignored. `.Equivalent()` switches an expectation that compares with `Equals`, e.g. `Contains` or `All().AreEqualTo` on
+a collection, to the same [equivalency](./13-equivalency.md#as-a-modifier-of-equality).
+
 ## One of
 
 You can verify that the `object` is one of many alternatives:
@@ -137,7 +143,7 @@ await Expect.That(album).IsNotExactly(typeof(Track));
 
 ## Null
 
-You can verify if the `object` is `null` or not:
+You can verify that the `object` is `null` or not:
 
 ```csharp
 object? album = null;
@@ -174,6 +180,14 @@ await Expect.That(tracks).DoesNotComplyWith(x => x.HasCount().GreaterThan(0));
 `DoesNotComplyWith` succeeds when the nested expectation fails. Like `Satisfies`, `CompliesWith` can
 [wait for the object](../03-how-it-works/06-time-and-cancellation.md#a-condition) with `Within(…)`.
 
+Which one to use:
+
+- `Satisfies` for a quick check with a predicate; a failure only shows the predicate and the object.
+- `CompliesWith` to reuse other expectations, e.g. `IsEmpty()` or a string option; a failure explains what the nested
+  expectation found.
+- [`Whose`](../03-how-it-works/03-combining.md#on-members-of-the-subject) to verify a member of the object; a failure
+  names the member and its value.
+
 ## Garbage collection
 
 You can verify that the target of a `WeakReference` or `WeakReference<T>` is garbage collected or not:
@@ -195,9 +209,6 @@ static WeakReference CreateReleasedReference()
   => new(new Album("Abbey Road"));
 ```
 
-Both force full blocking garbage collections before they check the target, and repeat them a few times, as
-finalizers can release further objects.
-
 :::warning[A reference held by the test keeps the target alive]
 A strong reference that the test itself still holds keeps the target alive, e.g. a local variable or the temporary
 object in `new WeakReference(new Album(…))`, which a Debug build keeps until the end of the method, even when it is no
@@ -206,3 +217,11 @@ creates itself, use
 [`IsCollectedAfter`](../06-behaviour/01-delegates.md#memory-leaks) instead, which creates the object where no
 reference to it remains.
 :::
+
+<details>
+<summary>How the garbage collection is triggered</summary>
+
+Both force full blocking garbage collections before they check the target, and repeat them a few times, as
+finalizers can release further objects.
+
+</details>

@@ -1,17 +1,18 @@
-# How aweXpect works
+# Concepts
 
-Describes the concepts that all expectations share.
+Describes the concepts that all expectations share: how they are built, evaluated, negated, combined, configured and
+limited in time, and how to change their defaults. How aweXpect fits into your test project, e.g. its test frameworks
+and target frameworks, is described in [setup and integration](../08-setup/index.md).
 
-| Page                                                   | Topics                                                             |
-|--------------------------------------------------------|--------------------------------------------------------------------|
-| [Negation](./02-negation.md)                           | negated counterparts of expectations                               |
-| [Combining expectations](./03-combining.md)            | `And`, `Or`, members, new and different subjects, using the result |
-| [`null` subjects](./04-null-subjects.md)               | how expectations and their negations treat a `null` subject        |
-| [Options](./05-options.md)                             | `Because`, string options, comparers, equivalency, tolerance       |
-| [Time and cancellation](./06-time-and-cancellation.md) | timeouts, cancellation, waiting, execution time                    |
-| [Configuration](./07-configuration.md)                 | customization lifetimes, global defaults, formatting, settings     |
-| [Native AOT and trimming](./08-native-aot.md)          | equivalency and events under Native AOT and trimming               |
-| [Test frameworks](./09-test-frameworks.md)             | `Fail`, `Skip`, the exceptions per test framework                  |
+| Page                                                    | Topics                                                             |
+|---------------------------------------------------------|--------------------------------------------------------------------|
+| [Anatomy of an expectation](#anatomy-of-an-expectation) | `Expect.That`, failure messages, awaiting, synchronous evaluation  |
+| [Negation](./02-negation.md)                            | negated counterparts of expectations                               |
+| [Combining expectations](./03-combining.md)             | `And`, `Or`, members, new and different subjects, using the result |
+| [`null` subjects](./04-null-subjects.md)                | how expectations and their negations treat a `null` subject        |
+| [Options](./05-options.md)                              | `Because`, string options, comparers, equivalency, tolerance       |
+| [Time and cancellation](./06-time-and-cancellation.md)  | timeouts, cancellation, waiting, execution time                    |
+| [Configuration](./07-configuration.md)                  | customization lifetimes, global defaults, formatting, settings     |
 
 ## Anatomy of an expectation
 
@@ -20,16 +21,16 @@ Every expectation starts with `Expect.That(subject)`, continues with what you ex
 ```csharp
 string title = "Let It Be";
 
-await Expect.That(title).StartsWith("Abbey").Because("it is the album title");
+await Expect.That(title).StartsWith("Abbey").Because("the playlist starts with Abbey Road");
 ```
 
 A failure throws an exception that fails the test, usually the
-[assertion exception of your test framework](./09-test-frameworks.md#failed-expectations), with a message that reads
-like a sentence. The expectation above fails with:
+[assertion exception of your test framework](../08-setup/01-test-frameworks.md#failed-expectations), with a message
+that reads like a sentence. The expectation above fails with:
 
 ```text title="Failure message"
 Expected that title
-starts with "Abbey", because it is the album title,
+starts with "Abbey", because the playlist starts with Abbey Road,
 but it was "Let It Be", which differs at index 0:
    ↓ (actual)
   "Let It Be"

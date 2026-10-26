@@ -6,6 +6,24 @@ build, warnings point at code that compiles but probably does not do what you me
 The analyzers and the source generators need Roslyn 4.8 or later, which ships with the .NET 8 SDK and Visual Studio
 2022 17.8. An older compiler skips them with warning `CS8032`.
 
+| Rule                                                        | Severity    | Reported when                                                     |
+|-------------------------------------------------------------|-------------|-------------------------------------------------------------------|
+| [`aweXpect0001`](#awexpect0001)                             | Error       | an expectation is neither awaited nor verified                    |
+| [`aweXpect0002`](#awexpect0002)                             | Error       | `Equals` is called on an expectation                              |
+| [`aweXpect0003`](#awexpect0003)                             | Warning     | a `Has…` expectation directly follows `Throws`                    |
+| [`aweXpect0004`](#awexpect0004)                             | Error       | an expectation for an object is applied to a delegate             |
+| [`aweXpect0005`](#awexpect0005)                             | Warning     | an expectation is awaited in an `async void` method or lambda     |
+| [`aweXpect0006`](#awexpect0006)                             | Warning     | a collection without a defined order is compared by position      |
+| [`aweXpect0007`](#awexpect0007)                             | Error       | a delegate returns a `ValueTask` on a target without its overload |
+| [`aweXpect0008`](#awexpect0008)                             | Warning     | the value of an `.Or` combination is used                         |
+| [`aweXpect0009`](#awexpect0009)                             | Warning     | the result of an option method is discarded                       |
+| [`aweXpect1001` to `aweXpect1004`](#nullability-suppressor) | Suppression | nullability warnings after e.g. `IsNotNull()`                     |
+| [`aweXpect2001`](#metadata-generator)                       | Warning     | a type in `[assembly: GenerateMetadata(…)]` gets no registration  |
+| [`aweXpect2002`](#test-framework-adapter)                   | Warning     | a test project on .NET 8 or later sets `<LangVersion>` below 9    |
+| [`aweXpect4001` to `aweXpect4004`](#expectation-generator)  | Error       | a method cannot be turned into a generated expectation            |
+| [`aweXpect4005`](#registration-generator)                   | Error       | a module initializer of an extension cannot be called             |
+| [`aweXpect5001`](#experimental-apis)                        | Error       | the experimental `WithTimeSystem(…)` or `ITimeSystem` is used     |
+
 ## aweXpect0001
 
 :::danger[Error]
@@ -67,7 +85,7 @@ await Expect.That(Act).Throws<InvalidOperationException>().WithMessage("Yesterda
 ```
 
 The `Has…` vocabulary belongs after `.Which`. See
-[Delegates](./06-behaviour/01-delegates.md#with-after-throws-has-on-the-exception).
+[Delegates](./06-behaviour/01-delegates.md#exception-details).
 
 ## aweXpect0004
 
@@ -120,7 +138,7 @@ await Expect.That(values).IsEqualTo([1, 2, 3]).InAnyOrder();     // fixed
 `IsEqualTo`, `Contains` and `IsContainedIn` compare by position unless `.InAnyOrder()` is appended, which the code fix
 does. `StartsWith`, `EndsWith` and `IgnoringInterspersedItems()` are about the order itself and have no meaning for
 such a collection, so `.InAnyOrder()` does not help there. Sorted collections are not reported. See
-[Collections](./05-collections/index.md#sets).
+[Collections](./05-collections/01-equality.md#sets).
 
 ## aweXpect0007
 
@@ -136,11 +154,17 @@ await Expect.That(() => Act()).DoesNotThrow();            // reported on targets
 await Expect.That(() => Act().AsTask()).DoesNotThrow();   // fixed
 ```
 
-These older targets are affected because they use the .NET Standard 2.0 build of aweXpect. On any target, the rule
-also reports a delegate whose `ValueTask` is given explicitly as the type argument, as in
+On any target, the rule also reports a delegate whose `ValueTask` is given explicitly as the type argument, as in
 `Expect.That<ValueTask>(() => Act())`. An explicit `Task` type argument has the same effect and is reported as well,
 as in `Expect.That<Task>(() => ActAsync())`: remove the type argument, so that the task is awaited. See
 [Delegates](./06-behaviour/01-delegates.md).
+
+<details>
+<summary>Why targets before .NET 8 are affected</summary>
+
+These older targets use the .NET Standard 2.0 build of aweXpect, which has no `ValueTask` delegate overloads.
+
+</details>
 
 ## aweXpect0008
 
@@ -182,7 +206,7 @@ quantifier.AtLeast(2);                             // fixed: the option method o
 The options are immutable values, so an option method returns new options and leaves the ones it is called on
 unchanged. A call that is the whole body of a lambda or local function written with `=>` is not reported, as it is
 usually there to check that the option throws. This mostly concerns the authors of extensions, see
-[Options](./11-extending/03-options-and-match-types.md#options).
+[Options](./11-extending/05-options.md).
 
 ## Nullability suppressor
 
@@ -216,26 +240,7 @@ suppressed; the null state of the compiler is unchanged.
 
 The source generator warns with `aweXpect2001` when a type named in
 `[assembly: GenerateMetadata(typeof(…))]` yields no registration and stays on the reflection path. See
-[Native AOT and trimming](./03-how-it-works/08-native-aot.md#equivalency).
-
-## Expectation generator
-
-The source generator in `aweXpect.Core` reports an error for a method marked with `[GenerateExpectation]` or
-`[GenerateCollectionExpectation]` that it cannot turn into an expectation, see [generated expectations](./11-extending/01-generated-expectations.md):
-
-| Rule           | Reported when                                                                                             |
-|----------------|-----------------------------------------------------------------------------------------------------------|
-| `aweXpect4001` | the class of the method is not a top-level, non-generic, `static partial` class or is `file`-local        |
-| `aweXpect4002` | the method, its parameters, the name or the expectation text are not supported, with the reason           |
-| `aweXpect4003` | the `Result` names no `static` method that returns a `string` and takes the subject                       |
-| `aweXpect4004` | the `FormattedItem` names no `static` method that returns a value and takes the item                      |
-
-## Registration generator
-
-The source generator in `aweXpect.Core` reports the error `aweXpect4005` when a name in the MSBuild property
-`AweXpectModuleInitializers` names no accessible `static` method without parameters, and leaves the call out of the
-module initializer. The build targets of an extension set this property, see
-[registration from the test project](./11-extending/08-initialization.md#registration-from-the-test-project).
+[Native AOT and trimming](./08-setup/03-native-aot.md#equivalency).
 
 ## Test framework adapter
 
@@ -243,8 +248,45 @@ The source generator warns with `aweXpect2002` when a test project on .NET 8 or 
 The generated test framework adapter registers itself with a module initializer, which needs C# 9, and on .NET 8 or
 later the loaded assemblies are not scanned for it. Without the adapter, aweXpect throws its own exceptions, so a
 skipped or inconclusive test is reported as failed. Set `<LangVersion>` to 9 or later, or register the adapter before
-the first expectation, see [initialization](./11-extending/08-initialization.md).
+the first expectation, see [test framework adapter](./11-extending/11-initialization.md#test-framework-adapter).
 
 ```csharp no-compile
 TestFrameworkRegistry.Register(new aweXpect.Frameworks.NunitAdapter());
 ```
+
+## Experimental APIs
+
+`WithTimeSystem(…)` and the `ITimeSystem` it takes, both in `aweXpect.Core.Internal`, let an expectation wait and
+measure on a virtual clock instead of in real time, see
+[on a virtual clock](./03-how-it-works/06-time-and-cancellation.md#on-a-virtual-clock). They are marked as
+experimental with the diagnostic `aweXpect5001`, as they may change in any version. Suppress it in a test project
+that uses a virtual time system:
+
+```xml
+<PropertyGroup>
+  <NoWarn>$(NoWarn);aweXpect5001</NoWarn>
+</PropertyGroup>
+```
+
+## For extension authors
+
+These rules are reported while you build an extension package on `aweXpect.Core`.
+
+### Expectation generator
+
+The source generator in `aweXpect.Core` reports an error for a method marked with `[GenerateExpectation]` or
+`[GenerateCollectionExpectation]` that it cannot turn into an expectation, see [generated expectations](./11-extending/01-generated-expectations.md):
+
+| Rule           | Reported when                                                                                      |
+|----------------|----------------------------------------------------------------------------------------------------|
+| `aweXpect4001` | the class of the method is not a top-level, non-generic, `static partial` class or is `file`-local |
+| `aweXpect4002` | the method, its parameters, the name or the expectation text are not supported, with the reason    |
+| `aweXpect4003` | the `Result` names no `static` method that returns a `string` and takes the subject                |
+| `aweXpect4004` | the `FormattedItem` names no `static` method that returns a value and takes the item               |
+
+### Registration generator
+
+The source generator in `aweXpect.Core` reports the error `aweXpect4005` when a name in the MSBuild property
+`AweXpectModuleInitializers` names no accessible `static` method without parameters, and leaves the call out of the
+module initializer. The build targets of an extension set this property, see
+[registration from the test project](./11-extending/11-initialization.md#registration-from-the-test-project).

@@ -1,10 +1,12 @@
+// The page marks its test with the `[Test]` attribute of TUnit.
+global using TUnit.Core;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 
 namespace Snippets
 {
-	// The constraint is written on the "Constraints and results" page.
+	// The page declares the constraint privately in a sample of its own, and uses it from the expectation.
 	internal sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<Track>(it, grammars),
 			IValueConstraint<Track?>

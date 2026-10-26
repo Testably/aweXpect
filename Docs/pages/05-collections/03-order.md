@@ -9,11 +9,14 @@ Describes how to verify that the items of a collection are sorted.
 
 ## Ascending / descending
 
-You can verify if a collection is (or is not) sorted in ascending or descending order:
+You can verify that a collection is (or is not) sorted in ascending or descending order:
 
 ```csharp
-await Expect.That([1, 2, 3]).IsInAscendingOrder();
-await Expect.That([1, 3, 2]).IsNotInAscendingOrder();
+IEnumerable<int> trackNumbers = [1, 2, 3];
+IEnumerable<int> shuffledTrackNumbers = [1, 3, 2];
+
+await Expect.That(trackNumbers).IsInAscendingOrder();
+await Expect.That(shuffledTrackNumbers).IsNotInAscendingOrder();
 await Expect.That(["Let It Be", "Help!", "Abbey Road"]).IsInDescendingOrder();
 await Expect.That(["Help!", "Abbey Road", "Let It Be"]).IsNotInDescendingOrder();
 ```
@@ -36,11 +39,10 @@ await Expect.That(albums).IsInAscendingOrder(x => x.Title);
 Strings are compared ordinally by default, also in an untyped collection. A `SortedSet<T>` or `ImmutableSortedSet<T>`,
 and the keys of a sorted dictionary, are ordered by their own comparer, unless a comparer or a member is specified.
 
-A `DateTime` sequence that mixes `Utc` and `Local` values fails, also when negated, unless a custom comparer is used.
-
 <details>
 <summary>Mixed `DateTimeKind` values</summary>
 
+A `DateTime` sequence that mixes `Utc` and `Local` values fails, also when negated, unless a custom comparer is used.
 The order of `Utc` and `Local` values depends on the time zone, so such a sequence fails the check in both forms. This
 also applies to a `DateTime` member and to an untyped collection. Values with `DateTimeKind.Unspecified` are
 compatible with both kinds.

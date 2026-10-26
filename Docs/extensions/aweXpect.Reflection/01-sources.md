@@ -7,19 +7,25 @@ and [navigating](#navigating-to-members) between assemblies, types and members.
 ## Sources: the `In` helper
 
 `In` builds the collection of reflection objects you want to reason about. Every source returns a lazily
-evaluated collection that you can navigate and filter further. It is read each time an expectation enumerates
-it, not when it is created: a source stored in a field also sees assemblies loaded later and the
-[assembly exclusions](./04-configuration.md#assembly-exclusions) customized at that time, and a collection you
-pass in is enumerated again on every evaluation.
+evaluated collection that you can navigate and filter further.
 
 | Source                                                                                        | Returns                                                                                                   |
 |-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
-| `In.AllLoadedAssemblies()`                                                                    | all currently loaded assemblies (system assemblies [excluded](./04-configuration.md#assembly-exclusions)) |
+| `In.AllLoadedAssemblies()`                                                                    | all currently loaded assemblies (system assemblies [excluded](./04-customization.md#assembly-exclusions)) |
 | `In.Assemblies(a1, a2, …)` / `In.Assemblies(collection)`                                      | the given assemblies                                                                                      |
 | `In.AssemblyContaining<T>()` / `In.AssemblyContaining(typeof(T))`                             | the assembly that declares `T`                                                                            |
 | `In.Type<T>()` / `In.Type(typeof(T))`                                                         | a single type                                                                                             |
 | `In.Types<T1, T2>()` / `In.Types<T1, T2, T3>()` / `In.Types(t1, t2, …)`                       | the given types                                                                                           |
 | `In.Constructors(…)` / `In.Events(…)` / `In.Fields(…)` / `In.Methods(…)` / `In.Properties(…)` | the given members                                                                                         |
+
+<details>
+<summary>When a source is evaluated</summary>
+
+A source is read each time an expectation enumerates it, not when it is created: a source stored in a field also
+sees assemblies loaded later and the [assembly exclusions](./04-customization.md#assembly-exclusions) customized at
+that time, and a collection you pass in is enumerated again on every evaluation.
+
+</details>
 
 ## Sources: the `Types` helper
 
@@ -34,7 +40,7 @@ point for architecture rules:
 | `Types.InAssemblyContaining<T>()` / `…(typeof(T))` | all types in the assembly that declares `T`                                    |
 
 `Types.InNamespace(…)` searches all loaded assemblies by default; chain one of the same `In*` methods directly
-after it to clarify the assembly source (it can only be specified once, before any further filters):
+after it to clarify the assembly source:
 
 ```csharp
 // Defaults to all loaded assemblies

@@ -87,6 +87,7 @@ Correctness is a must. The other goals are strong defaults and win in this order
 - [Design goals](Docs/agents/design-goals.md): the goals and code rules for every change, the checks before a commit and the goals of this repository.
 - [Workflows](Docs/agents/workflows.md): build, test, benchmark, mutation and docs commands, pipeline targets, CI.
 - [Testing](Docs/agents/testing.md): test projects, filters, snapshots, docs snippets, conventions.
+- [Documentation](Docs/agents/documentation.md): audience, what to show, hide or remove, page conventions, samples and links of the user docs.
 - [Project structure](Docs/agents/project-structure.md): projects, source layout, architecture.
 - [CONTRIBUTING.md](CONTRIBUTING.md) and the user docs in [Docs/pages](Docs/pages) (published to
   https://docs.testably.org/aweXpect).

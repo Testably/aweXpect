@@ -1,7 +1,7 @@
 # Matching JSON
 
 Describes the possible expectations for matching a `JsonElement` or a
-[`JsonNode`](./03-objects-and-arrays.md#jsonnode) with an expected value, and the [options](#options) to relax the
+[`JsonNode`](./04-json-nodes.md) with an expected value, and the [options](#options) to relax the
 comparison.
 
 | Expectation                  | Negated | Summary                                                   |
@@ -65,9 +65,16 @@ await Expect.That(JsonDocument.Parse("null").RootElement).Matches(null);
 ```
 
 Any expected value, also a nested one, can be an `It.Is<T>()` expectation instead, e.g.
-`Matches(new { duration = It.Is<long>().That.IsGreaterThan(200) })`. A JSON number meets it as a `T` when
-System.Text.Json can read it as that numeric type, so `It.Is<long>()`, `It.Is<double>()` and `It.Is<decimal>()` all
-accept `243`, while an integer type does not accept a number with a fraction or an exponent, e.g. `2.5` or `1e3`.
+`Matches(new { duration = It.Is<long>().That.IsGreaterThan(200) })`.
+
+<details>
+<summary>Numbers in `It.Is<T>()`</summary>
+
+A JSON number meets `It.Is<T>()` as a `T` when System.Text.Json can read it as that numeric type, so `It.Is<long>()`,
+`It.Is<double>()` and `It.Is<decimal>()` all accept `243`, while an integer type does not accept a number with a
+fraction or an exponent, e.g. `2.5` or `1e3`.
+
+</details>
 
 ## Expected JSON
 
@@ -93,9 +100,8 @@ but it differed as $.artist had unexpected "The Beatles"
 
 The options are available wherever `JsonOptions` are accepted, e.g. `Matches`, `MatchesExactly`,
 `IsEqualTo(expected).AsJson(o => …)`, `IsValidJsonMatching` and
-[`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json).
-Like the [options of aweXpect](https://docs.testably.org/aweXpect/how-it-works/options), an option that switches
-something on takes an optional `bool`:
+[`IsJsonSerializedAs`](./05-serialization.md#serialized-as-json).
+They work like the [options of aweXpect](https://docs.testably.org/aweXpect/how-it-works/options):
 
 | Option                                                             | Configures                                             |
 |--------------------------------------------------------------------|--------------------------------------------------------|
@@ -105,7 +111,7 @@ something on takes an optional `bool`:
 | [`IgnoringArrayOrder()`](#array-order)                             | the elements of arrays can be in any order             |
 | [`IgnoringMember(name)`, `Ignoring(path => …)`](#ignoring-members) | leaves values out of the comparison                    |
 | [`ComparingNumbersWithin(tolerance)`](#numbers-within-a-tolerance) | numbers match within an absolute or relative tolerance |
-| [`WithDocumentOptions(…)`](./05-customization.md)                  | the `JsonDocumentOptions` used to parse JSON strings   |
+| [`WithDocumentOptions(…)`](./06-customization.md)                  | the `JsonDocumentOptions` used to parse JSON strings   |
 | [`WithSerializerOptions(…)`](#serializer-options)                  | the `JsonSerializerOptions` for the expected value     |
 
 ### Treating `null` as absent
@@ -156,10 +162,8 @@ await Expect.That(titles).MatchesExactly(["Hey Jude", "Let It Be", "Yesterday"],
     o => o.IgnoringArrayOrder());
 ```
 
-Each expected element is paired with the first matching element of the subject that is not paired yet. The expected
-elements that could not be paired are reported as missing on the array, the remaining elements of the subject as
-unexpected at their index. `MatchesExactly(["Hey Jude", "Something", "Help!"], o => o.IgnoringArrayOrder())` would
-fail with:
+Combined with `IgnoringAdditionalArrayElements()`, the expected elements only have to be contained in the subject in
+any order. `MatchesExactly(["Hey Jude", "Something", "Help!"], o => o.IgnoringArrayOrder())` would fail with:
 
 ```text title="Failure message"
 Expected that titles
@@ -174,14 +178,18 @@ JSON options:
  - ignore array order
 ```
 
-When exactly one element remains unpaired on each side, they are compared with each other instead, e.g.
-`$[1] was "Yesterday" instead of "Something"`. Combined with `IgnoringAdditionalArrayElements()`, the expected
-elements only have to be contained in the subject in any order.
+<details>
+<summary>How the elements are paired</summary>
+
+Each expected element is paired with the first matching element of the subject that is not paired yet. The expected
+elements that could not be paired are reported as missing on the array, the remaining elements of the subject as
+unexpected at their index. When exactly one element remains unpaired on each side, they are compared with each other
+instead, e.g. `$[1] was "Yesterday" instead of "Something"`.
 [`HasElementAt`](./03-objects-and-arrays.md#elements) still verifies the element at its index.
 
-:::warning
 The pairing is greedy, so overlapping `It.Is…` expectations can fail, although another pairing would succeed.
-:::
+
+</details>
 
 ### Ignoring members
 
@@ -201,10 +209,7 @@ await Expect.That(track).MatchesExactly(
 The name is matched against the JSON path, as it is shown in failure messages, and must cover whole trailing segments
 of it, with the same casing, as JSON property names are case-sensitive: `"id"` ignores `$.id` and `$.items[0].id`, but
 not `$.parentId` or `$.ID`, `"meta.createdAt"` only ignores `createdAt` within `meta`, and `"$.id"` only ignores the
-property of the root. `"[0]"` ignores the first element of every array; with `IgnoringArrayOrder()`, an index refers to
-the element of the subject, which is then left out of the pairing. Explicit expectations like
-[`HasProperty("id")`](./03-objects-and-arrays.md#properties), `DoesNotHaveProperty("id")` or
-[`HasElementAt(0, …)`](./03-objects-and-arrays.md#elements) still verify an ignored value.
+property of the root. `"[0]"` ignores the first element of every array.
 
 The members to ignore are listed in the "JSON options" context. When the comparison fails, each name that matched no
 member is named below them, together with the member it most likely meant, e.g. one that differs only in casing, as a
@@ -224,6 +229,15 @@ JSON options:
    "craetedAt" matched no member (did you mean "createdAt"?)
 ```
 
+<details>
+<summary>Ignored indices and explicit expectations</summary>
+
+With `IgnoringArrayOrder()`, an index refers to the element of the subject, which is then left out of the pairing.
+Explicit expectations like [`HasProperty("id")`](./03-objects-and-arrays.md#properties), `DoesNotHaveProperty("id")`
+or [`HasElementAt(0, …)`](./03-objects-and-arrays.md#elements) still verify an ignored value.
+
+</details>
+
 ### Numbers within a tolerance
 
 Calculated numbers rarely match an expected literal exactly. With `ComparingNumbersWithin(tolerance)`, a number matches
@@ -240,10 +254,8 @@ await Expect.That(album).MatchesExactly(new { rating = 4.6m },
     o => o.ComparingNumbersWithin(1).Percent().IgnoringAdditionalProperties());
 ```
 
-The tolerance applies to every number in the compared JSON, also to integers such as ids or counts. Like the
-[tolerance in aweXpect](https://docs.testably.org/aweXpect/values/number#tolerance), a relative tolerance only matches
-an equal number when the expected number is `0`. The numbers are compared as `double`, so numbers outside its range are
-compared by their text. For a track `{"title": "Hey Jude", "durationSeconds": 431}`,
+The tolerance applies to every number in the compared JSON, also to integers such as ids or counts. For a track
+`{"title": "Hey Jude", "durationSeconds": 431}`,
 `MatchesExactly(new { title = "Hey Jude", durationSeconds = 400 }, o => o.ComparingNumbersWithin(5).Percent())` would
 fail with:
 
@@ -255,6 +267,15 @@ but it differed as $.durationSeconds was 431 instead of 400 ± 5%
 JSON options:
  - compare numbers within ± 5%
 ```
+
+<details>
+<summary>Zero and very large numbers</summary>
+
+Like the [tolerance in aweXpect](https://docs.testably.org/aweXpect/values/number#tolerance), a relative tolerance
+only matches an equal number when the expected number is `0`. The numbers are compared as `double`, so numbers outside
+its range are compared by their text.
+
+</details>
 
 ### Serializer options
 
@@ -273,14 +294,22 @@ await Expect.That(track).MatchesExactly(new { Title = "Let It Be", Artist = "The
 ```
 
 The comparison itself stays strict: only the JSON of the expected value changes. Without the option, the expected value
-is serialized with the `DefaultJsonSerializerOptions` of the [customization](./05-customization.md) when they are
-customized, except in [`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json). `It.Is…` expectations keep
+is serialized with the `DefaultJsonSerializerOptions` of the [customization](./06-customization.md) when they are
+customized, except in [`IsJsonSerializedAs`](./05-serialization.md#serialized-as-json). `It.Is…` expectations keep
 working with any options.
 
-Options with a `TypeInfoResolver`, e.g. those of a source-generated `JsonSerializerContext`, serialize the expected value
-without reflection, also with trimming or [Native AOT](./04-serialization.md#serialized-as-json). Each type of the
-expected value, also the runtime type of a value in an `object` property, must then be registered in the context;
-otherwise a `NotSupportedException` names the missing `[JsonSerializable(typeof(…))]` attribute.
+Pass the options of a source-generated `JsonSerializerContext` to use it with trimming or
+[Native AOT](./05-serialization.md#serialized-as-json).
+
+<details>
+<summary>Source-generated serializer contexts</summary>
+
+Options with a `TypeInfoResolver`, e.g. those of a source-generated `JsonSerializerContext`, serialize the expected
+value without reflection. Each type of the expected value, also the runtime type of a value in an `object` property,
+must then be registered in the context; otherwise a `NotSupportedException` names the missing
+`[JsonSerializable(typeof(…))]` attribute.
+
+</details>
 
 ### Options in failure messages
 

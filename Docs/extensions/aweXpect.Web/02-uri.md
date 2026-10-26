@@ -2,20 +2,20 @@
 
 Describes the possible expectations for `Uri`.
 
-| Expectation                              | Negated                     | Summary                                        |
-|------------------------------------------|-----------------------------|------------------------------------------------|
-| [`IsAbsolute`](#kind)                    | `IsNotAbsolute`             | an absolute URI                                |
-| [`IsFile`](#kind)                        | `IsNotFile`                 | a file URI                                     |
-| [`IsLoopback`](#kind)                    | `IsNotLoopback`             | references the local host                      |
-| [`IsUnc`](#kind)                         | `IsNotUnc`                  | a UNC path                                     |
-| [`HasDefaultPort`](#default-port)        | `DoesNotHaveDefaultPort`    | uses the default port of its scheme            |
-| [`HasPort`](#port)                       | negated comparison          | has the expected port                          |
-| [`HasScheme`](#scheme)                   | negated comparison          | has the expected scheme                        |
-| [`HasHost`](#host)                       | negated comparison          | has the expected host                          |
-| [`HasPath`](#path)                       | negated comparison          | has the expected path                          |
-| [`HasFragment`](#fragment)               | negated comparison          | has the expected fragment                      |
-| [`IsBaseOf`](#base-uri)                  | `IsNotBaseOf`               | a base URI of the expected URI                 |
-| [`HasQueryParameter`](#query-parameters) | `DoesNotHaveQueryParameter` | has a query parameter, optionally with a value |
+| Expectation                              | Negated                           | Summary                                        |
+|------------------------------------------|-----------------------------------|------------------------------------------------|
+| [`IsAbsolute`](#kind)                    | `IsNotAbsolute`                   | an absolute URI                                |
+| [`IsFile`](#kind)                        | `IsNotFile`                       | a file URI                                     |
+| [`IsLoopback`](#kind)                    | `IsNotLoopback`                   | references the local host                      |
+| [`IsUnc`](#kind)                         | `IsNotUnc`                        | a UNC path                                     |
+| [`HasDefaultPort`](#default-port)        | `DoesNotHaveDefaultPort`          | uses the default port of its scheme            |
+| [`HasPort`](#port)                       | use `HasPort().NotEqualTo(…)`     | has the expected port                          |
+| [`HasScheme`](#scheme)                   | use `HasScheme().NotEqualTo(…)`   | has the expected scheme                        |
+| [`HasHost`](#host)                       | use `HasHost().NotEqualTo(…)`     | has the expected host                          |
+| [`HasPath`](#path)                       | use `HasPath().NotEqualTo(…)`     | has the expected path                          |
+| [`HasFragment`](#fragment)               | use `HasFragment().NotEqualTo(…)` | has the expected fragment                      |
+| [`IsBaseOf`](#base-uri)                  | `IsNotBaseOf`                     | a base URI of the expected URI                 |
+| [`HasQueryParameter`](#query-parameters) | `DoesNotHaveQueryParameter`       | has a query parameter, optionally with a value |
 
 ## Kind
 
