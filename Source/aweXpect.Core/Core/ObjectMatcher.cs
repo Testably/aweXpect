@@ -38,6 +38,8 @@ public abstract class ObjectMatcher<TSubject> : IEqualityEvaluator<TSubject>
 	///     <see cref="GetFailure{TExpected}(string, ExpectationGrammars, TSubject, TExpected, MatchResult, string?)" />.
 	/// </summary>
 	/// <remarks>
+	///     This is the entry point that constraints call, so it cannot be overridden; a matcher overrides the
+	///     <c>Match…</c> methods instead.<br />
 	///     Compares with <see cref="MatchWithExplanation{TExpected}(TSubject, TExpected)" />. Unlike it, a subject that the
 	///     matcher cannot compare throws, so that the expectation fails in both polarities.
 	/// </remarks>
