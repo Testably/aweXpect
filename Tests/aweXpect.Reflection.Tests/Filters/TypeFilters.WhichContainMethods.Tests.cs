@@ -100,6 +100,19 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
+			public async Task CompetingQuantifiers_ShouldThrowInvalidOperationException()
+			{
+				void Act()
+				{
+					In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
+						.WhichContainMethods(methods => methods.With<MarkerAttribute>()).Once().Twice();
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Twice cannot be combined with Once.");
+			}
+
+			[Test]
 			public async Task Exactly_ShouldFilterForTypesWithTheExactCount()
 			{
 				Filtered.Types types = In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
@@ -172,6 +185,37 @@ public sealed partial class TypeFilters
 					.IsEqualTo(
 						"types which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute exactly 3 times ")
 					.AsPrefix();
+			}
+
+			[Test]
+			public async Task Quantifiers_WhenAStoredFilterIsContinuedTwice_ShouldKeepThemApart()
+			{
+				Reflection.TypeFilters.TypesContainingMembersScopeResult stored =
+					In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
+						.WhichContainMethods(methods => methods.With<MarkerAttribute>());
+
+				Reflection.TypeFilters.TypesContainingMembersScopeResult once = stored.Once();
+				Reflection.TypeFilters.TypesContainingMembersScopeResult never = stored.Never();
+
+				await That(stored).IsEqualTo([typeof(TaggedClass), typeof(TwiceTaggedClass),]).InAnyOrder()
+					.Because("a quantifier must return a new filter instead of changing the one it was called on");
+				await That(once).IsEqualTo([typeof(TaggedClass),]);
+				await That(once.GetDescription())
+					.Contains("which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute exactly once ");
+				await That(never).IsEqualTo([typeof(UntaggedClass),]);
+				await That(never.GetDescription())
+					.Contains("which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute never ");
+			}
+
+			[Test]
+			public async Task RepeatedQuantifier_ShouldReplaceTheEarlierOne()
+			{
+				Filtered.Types types = In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).AtLeast(1).AtLeast(2);
+
+				await That(types).IsEqualTo([typeof(TwiceTaggedClass),]);
+				await That(types.GetDescription())
+					.Contains("which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute at least twice ");
 			}
 
 			[Test]
@@ -253,6 +297,17 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
+			public async Task WhenDirectly_AfterAQuantifier_ShouldKeepTheQuantifier()
+			{
+				Reflection.TypeFilters.TypesContainingMembers types = In.Type<DerivedClassWithInheritedMarkedMethod>()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).Never().Directly();
+
+				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedMethod),]);
+				await That(types.GetDescription())
+					.Contains("which declare methods with TypeFilters.WhichContainMethods.MarkerAttribute never ");
+			}
+
+			[Test]
 			public async Task WhenDirectly_ShouldApplyToTheQuantifier()
 			{
 				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedMethod>()
@@ -280,6 +335,17 @@ public sealed partial class TypeFilters
 					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).Directly();
 
 				await That(types).IsEmpty();
+			}
+
+			[Test]
+			public async Task WhenIncludingObjectMembers_AfterAQuantifier_ShouldKeepTheQuantifier()
+			{
+				Reflection.TypeFilters.TypesContainingMembers types = In.Type<StructWithMembers>()
+					.WhichContainMethods(methods => methods.WithName(nameof(Equals))).Never().IncludingObjectMembers();
+
+				await That(types).IsEmpty();
+				await That(types.GetDescription())
+					.Contains("which contain methods with name equal to \"Equals\" including object members never ");
 			}
 
 			[Test]

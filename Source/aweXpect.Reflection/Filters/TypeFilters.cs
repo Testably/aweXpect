@@ -5,7 +5,6 @@ using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
 
 namespace aweXpect.Reflection;
 
@@ -19,9 +18,10 @@ public static partial class TypeFilters
 		Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		ContainedMembersFilter<TMember, TFiltered> containedMembersFilter =
-			new(navigate, filter, new OptionsHolder<Quantifier>(Quantifier.Default), MemberScopes.None);
-		return new TypesContainingMembers(@this, containedMembersFilter, containedMembersFilter.WithQuantifier);
+			new(navigate, filter, quantifier, MemberScopes.None);
+		return new TypesContainingMembers(@this, containedMembersFilter.WithQuantifier, quantifier);
 	}
 
 	private static TypesContainingMembersScopeResult ContainingMembers<TMember, TFiltered>(
@@ -31,11 +31,9 @@ public static partial class TypeFilters
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		return new TypesContainingMembersScopeResult(@this, memberScope =>
-		{
-			ContainedMembersFilter<TMember, TFiltered> containedMembersFilter =
-				new(types => navigate(types, memberScope), filter, new OptionsHolder<Quantifier>(Quantifier.Default), memberScope);
-			return (containedMembersFilter, containedMembersFilter.WithQuantifier);
-		}, MemberScopes.None);
+			new ContainedMembersFilter<TMember, TFiltered>(types => navigate(types, memberScope), filter,
+				new OptionsHolder<Quantifier>(Quantifier.Default), memberScope).WithQuantifier,
+			MemberScopes.None, new OptionsHolder<Quantifier>(Quantifier.Default));
 	}
 
 	/// <summary>
@@ -54,103 +52,34 @@ public static partial class TypeFilters
 	///     A filterable collection of <see cref="Type" /> that contain matching members, allowing to specify a quantifier
 	///     for the number of matching members.
 	/// </summary>
-	public class TypesContainingMembers : Filtered.Types
+	/// <remarks>
+	///     The quantifiers are the methods of <see cref="QuantifierExtensions" />, e.g. <c>Once()</c>. Each returns a new
+	///     filter, so that a stored filter stays unchanged; a repeated quantifier replaces the earlier one.
+	/// </remarks>
+	public class TypesContainingMembers : Filtered.Types,
+		IOptionsProvider<Quantifier>,
+		ICopyOnOption<Quantifier, TypesContainingMembers>
 	{
+		private readonly OptionsHolder<Quantifier> _quantifier;
 		private readonly Filtered.Types _source;
 		private readonly Func<OptionsHolder<Quantifier>, IFilter<Type>> _withQuantifier;
 
-		internal TypesContainingMembers(Filtered.Types source, IFilter<Type> filter,
-			Func<OptionsHolder<Quantifier>, IFilter<Type>> withQuantifier)
-			: base(source.Which(filter))
+		internal TypesContainingMembers(Filtered.Types source,
+			Func<OptionsHolder<Quantifier>, IFilter<Type>> withQuantifier,
+			OptionsHolder<Quantifier> quantifier)
+			: base(source.Which(withQuantifier(quantifier)))
 		{
 			_source = source;
 			_withQuantifier = withQuantifier;
+			_quantifier = quantifier;
 		}
 
-		/// <summary>
-		///     Verifies, that the matching members occur at least…
-		/// </summary>
-		public CountTimesResult<Filtered.Types> AtLeast()
-			=> new(value => Quantify(quantifier => quantifier.AtLeast(value)));
+		/// <inheritdoc cref="IOptionsProvider{Quantifier}.Options" />
+		OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
 
-		/// <summary>
-		///     Verifies, that the matching members occur at least <paramref name="minimum" /> times.
-		/// </summary>
-		public Filtered.Types AtLeast(Times minimum)
-			=> Quantify(quantifier => quantifier.AtLeast(minimum.Value));
-
-		/// <summary>
-		///     Verifies, that the matching members occur at most…
-		/// </summary>
-		public CountTimesResult<Filtered.Types> AtMost()
-			=> new(value => Quantify(quantifier => quantifier.AtMost(value)));
-
-		/// <summary>
-		///     Verifies, that the matching members occur at most <paramref name="maximum" /> times.
-		/// </summary>
-		public Filtered.Types AtMost(Times maximum)
-			=> Quantify(quantifier => quantifier.AtMost(maximum.Value));
-
-		/// <summary>
-		///     Verifies, that the matching members occur between <paramref name="minimum" />…
-		/// </summary>
-		public BetweenResult<Filtered.Types, Times> Between(int minimum)
-			=> new(maximum => Quantify(quantifier => quantifier.Between(minimum, maximum)));
-
-		/// <summary>
-		///     Verifies, that the matching members occur exactly <paramref name="expected" /> times.
-		/// </summary>
-		public Filtered.Types Exactly(Times expected)
-			=> Quantify(quantifier => quantifier.Exactly(expected.Value));
-
-		/// <summary>
-		///     Verifies, that the matching members occur less than…
-		/// </summary>
-		public CountTimesResult<Filtered.Types> LessThan()
-			=> new(value => Quantify(quantifier => quantifier.LessThan(value)));
-
-		/// <summary>
-		///     Verifies, that the matching members occur less than <paramref name="maximum" /> times.
-		/// </summary>
-		public Filtered.Types LessThan(Times maximum)
-			=> Quantify(quantifier => quantifier.LessThan(maximum.Value));
-
-		/// <summary>
-		///     Verifies, that the matching members occur more than…
-		/// </summary>
-		public CountTimesResult<Filtered.Types> MoreThan()
-			=> new(value => Quantify(quantifier => quantifier.MoreThan(value)));
-
-		/// <summary>
-		///     Verifies, that the matching members occur more than <paramref name="minimum" /> times.
-		/// </summary>
-		public Filtered.Types MoreThan(Times minimum)
-			=> Quantify(quantifier => quantifier.MoreThan(minimum.Value));
-
-		/// <summary>
-		///     Verifies, that no member matches the filter.
-		/// </summary>
-		public Filtered.Types Never()
-			=> Quantify(quantifier => quantifier.Exactly(0));
-
-		/// <summary>
-		///     Verifies, that exactly one member matches the filter.
-		/// </summary>
-		public Filtered.Types Once()
-			=> Quantify(quantifier => quantifier.Exactly(1));
-
-		/// <summary>
-		///     Verifies, that exactly two members match the filter.
-		/// </summary>
-		public Filtered.Types Twice()
-			=> Quantify(quantifier => quantifier.Exactly(2));
-
-		private Filtered.Types Quantify(Action<OptionsHolder<Quantifier>> specify)
-		{
-			OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
-			specify(quantifier);
-			return _source.Which(_withQuantifier(quantifier));
-		}
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		TypesContainingMembers ICopyOnOption<Quantifier, TypesContainingMembers>.WithOptions(Quantifier options)
+			=> new(_source, _withQuantifier, new OptionsHolder<Quantifier>(options));
 	}
 
 	/// <summary>
@@ -161,43 +90,58 @@ public static partial class TypeFilters
 	/// <remarks>
 	///     By default the inherited members are included, but neither those declared on <see cref="object" />,
 	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. The two options exclude each
-	///     other and are set before the quantifier, which ends the filter.
+	///     other and keep a quantifier that was set before them.
 	/// </remarks>
-	public sealed class TypesContainingMembersScopeResult : TypesContainingMembers
+	public sealed class TypesContainingMembersScopeResult : TypesContainingMembers,
+		ICopyOnOption<Quantifier, TypesContainingMembersScopeResult>
 	{
-		private readonly
-			Func<MemberScopes, (IFilter<Type> Filter, Func<OptionsHolder<Quantifier>, IFilter<Type>> WithQuantifier)> _create;
-
+		private readonly Func<MemberScopes, Func<OptionsHolder<Quantifier>, IFilter<Type>>> _create;
+		private readonly MemberScopes _memberScope;
+		private readonly OptionsHolder<Quantifier> _quantifier;
 		private readonly Filtered.Types _scopeSource;
+		private readonly Func<OptionsHolder<Quantifier>, IFilter<Type>> _withQuantifier;
 
 		internal TypesContainingMembersScopeResult(Filtered.Types source,
-			Func<MemberScopes, (IFilter<Type> Filter, Func<OptionsHolder<Quantifier>, IFilter<Type>> WithQuantifier)> create,
-			MemberScopes memberScope)
-			: this(source, create, create(memberScope))
+			Func<MemberScopes, Func<OptionsHolder<Quantifier>, IFilter<Type>>> create,
+			MemberScopes memberScope,
+			OptionsHolder<Quantifier> quantifier)
+			: this(source, create, memberScope, create(memberScope), quantifier)
 		{
 		}
 
 		private TypesContainingMembersScopeResult(Filtered.Types source,
-			Func<MemberScopes, (IFilter<Type> Filter, Func<OptionsHolder<Quantifier>, IFilter<Type>> WithQuantifier)> create,
-			(IFilter<Type> Filter, Func<OptionsHolder<Quantifier>, IFilter<Type>> WithQuantifier) filters)
-			: base(source, filters.Filter, filters.WithQuantifier)
+			Func<MemberScopes, Func<OptionsHolder<Quantifier>, IFilter<Type>>> create,
+			MemberScopes memberScope,
+			Func<OptionsHolder<Quantifier>, IFilter<Type>> withQuantifier,
+			OptionsHolder<Quantifier> quantifier)
+			: base(source, withQuantifier, quantifier)
 		{
 			_scopeSource = source;
 			_create = create;
+			_memberScope = memberScope;
+			_withQuantifier = withQuantifier;
+			_quantifier = quantifier;
 		}
+
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		TypesContainingMembersScopeResult ICopyOnOption<Quantifier, TypesContainingMembersScopeResult>.WithOptions(
+			Quantifier options)
+			=> new(_scopeSource, _create, _memberScope, _withQuantifier, new OptionsHolder<Quantifier>(options));
 
 		/// <summary>
 		///     Only considers the members declared directly on the types.
 		/// </summary>
 		public TypesContainingMembers Directly()
-			=> new TypesContainingMembersScopeResult(_scopeSource, _create, MemberScopes.DeclaredOnly);
+			=> new TypesContainingMembersScopeResult(_scopeSource, _create, MemberScopes.DeclaredOnly,
+				new OptionsHolder<Quantifier>(_quantifier.Value));
 
 		/// <summary>
 		///     Also considers the inherited members declared on <see cref="object" />, <see cref="ValueType" /> and
 		///     <see cref="Enum" />.
 		/// </summary>
 		public TypesContainingMembers IncludingObjectMembers()
-			=> new TypesContainingMembersScopeResult(_scopeSource, _create, MemberScopes.IncludingObjectMembers);
+			=> new TypesContainingMembersScopeResult(_scopeSource, _create, MemberScopes.IncludingObjectMembers,
+				new OptionsHolder<Quantifier>(_quantifier.Value));
 	}
 
 	private sealed class ContainedMembersFilter<TMember, TFiltered> : IContainedMembersFilter

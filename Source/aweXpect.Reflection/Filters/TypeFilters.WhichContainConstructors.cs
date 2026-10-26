@@ -12,7 +12,7 @@ public static partial class TypeFilters
 	/// </summary>
 	/// <remarks>
 	///     By default a type passes when it contains at least one matching constructor. Append a quantifier
-	///     (e.g. <see cref="TypesContainingMembers.Exactly(Times)" />) to require a specific count.
+	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.
 	/// </remarks>
 	public static TypesContainingMembers WhichContainConstructors(this Filtered.Types @this,
 		Func<Filtered.Constructors, Filtered.Constructors> filter)

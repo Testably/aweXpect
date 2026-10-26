@@ -74,7 +74,7 @@ await Expect.That(In.AssemblyContaining<Album>().Types().Methods().IncludingObje
 
 On a member check, `.Directly()` and `.IncludingObjectMembers()` exclude each other, so only one of them can be set.
 The options apply to the whole result, e.g. to all attributes of `.With<T1>().OrWith<T2>().Directly()`. On the
-`WhichContain…` filters, set them before the quantifier, which ends the filter. On a member listing, set them directly
+`WhichContain…` filters, set them before or after the quantifier. On a member listing, set them directly
 after selecting the members, e.g. `Types().Methods().IncludingInherited().WhichArePublic()`, as a filter returns a
 plain listing. Inside a member check, `.Directly()` on an attribute filter only restricts the attributes: in
 `ContainsMethods(m => m.With<FactAttribute>().Directly())` the method may still be inherited. Only the

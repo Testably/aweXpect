@@ -23,9 +23,10 @@ public static partial class Filtered;
 ///     captured at construction are never mutated afterwards. Every filtering operation (<see cref="Which" /> and the
 ///     <c>WhichAre*</c> / <c>With*</c> / <c>Without*</c> extensions that funnel through it) returns a NEW instance via
 ///     <c>CloneWith</c>, so deriving multiple filtered views from the same base collection cannot corrupt each other.
-///     The options on a filtered result (e.g. <c>OrWith</c>, <c>AtIndex</c> or a quantifier) also return a NEW instance
-///     and leave the one they are called on unchanged. So do the string options (e.g. <c>IgnoringCase</c>), as the
-///     results with <c>StringEqualityOptions</c> implement <see cref="aweXpect.Core.ICopyOnOption{TOptions, TResult}" />.
+///     The options on a filtered result (e.g. <c>OrWith</c>) also return a NEW instance
+///     and leave the one they are called on unchanged. So do the options of aweXpect that they use, e.g.
+///     <c>IgnoringCase</c>, <c>AtIndex</c> or <c>Once</c>, as these results implement
+///     <see cref="aweXpect.Core.ICopyOnOption{TOptions, TResult}" />.
 /// </remarks>
 #if NET8_0_OR_GREATER
 public abstract class Filtered<T, TFiltered>

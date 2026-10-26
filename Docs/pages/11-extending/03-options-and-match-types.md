@@ -177,7 +177,9 @@ a continuation sets an option. Such a result implements `ICopyOnOption<StringEqu
 `IOptionsProvider<StringEqualityOptions>`: the string options then pass its options with the new option to
 `WithOptions(options)`, which returns a new result with them in a new holder, while the result they were called on stays
 unchanged. The new options carry every option set so far, so a repeated option replaces the earlier one and a
-competing option still throws. A string option of your own, e.g. a preset of several options, does the same, so
+competing option still throws. The quantifiers, e.g. `Once()`, and the index options `AtIndex(…)` and
+`AtIndexFromEnd(…)` do the same for a result that implements `ICopyOnOption<Quantifier, TSelf>` or
+`ICopyOnOption<CollectionIndexOptions, TSelf>`. A string option of your own, e.g. a preset of several options, does the same, so
 that it keeps a stored result unchanged as well:
 
 ```csharp

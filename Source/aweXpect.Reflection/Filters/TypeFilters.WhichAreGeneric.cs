@@ -110,7 +110,9 @@ public static partial class TypeFilters
 		/// <summary>
 		///     Additional filters on types with a generic argument of a specific type.
 		/// </summary>
-		public class GenericTypesWithArgument : GenericTypes
+		public class GenericTypesWithArgument : GenericTypes,
+			IOptionsProvider<CollectionIndexOptions>,
+			ICopyOnOption<CollectionIndexOptions, GenericTypesWithArgument>
 		{
 			private readonly CollectionIndexOptions _collectionIndexOptions;
 			private readonly Func<CollectionIndexOptions, IFilter<Type>> _createFilter;
@@ -127,24 +129,14 @@ public static partial class TypeFilters
 				_collectionIndexOptions = collectionIndexOptions;
 			}
 
-			/// <summary>
-			///     …at the given zero-based <paramref name="index" />.
-			/// </summary>
-			/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
-			/// <exception cref="InvalidOperationException">An index of another option is already specified.</exception>
-			public GenericTypesWithArgument AtIndex(int index)
-				=> WithIndex(o => o.AtIndex(index));
+			/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
+			OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options
+				=> new(_collectionIndexOptions);
 
-			/// <summary>
-			///     …at the given zero-based <paramref name="index" />, counted from the end of the generic arguments.
-			/// </summary>
-			/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
-			/// <exception cref="InvalidOperationException">An index of another option is already specified.</exception>
-			public GenericTypesWithArgument AtIndexFromEnd(int index)
-				=> WithIndex(o => o.AtIndexFromEnd(index));
-
-			private GenericTypesWithArgument WithIndex(Func<CollectionIndexOptions, CollectionIndexOptions> setIndex)
-				=> new(_source, _createFilter, setIndex(_collectionIndexOptions));
+			/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+			GenericTypesWithArgument ICopyOnOption<CollectionIndexOptions, GenericTypesWithArgument>.WithOptions(
+				CollectionIndexOptions options)
+				=> new(_source, _createFilter, options);
 		}
 
 		/// <summary>
@@ -154,7 +146,8 @@ public static partial class TypeFilters
 			: GenericTypesWithArgument,
 				IOptionsProvider<StringEqualityOptions>,
 				IStringMatchTypeOptions,
-				ICopyOnOption<StringEqualityOptions, GenericTypesWithNamedArgument>
+				ICopyOnOption<StringEqualityOptions, GenericTypesWithNamedArgument>,
+				ICopyOnOption<CollectionIndexOptions, GenericTypesWithNamedArgument>
 		{
 			private readonly CollectionIndexOptions _collectionIndexOptions;
 			private readonly Func<IReadOnlyOptionsHolder<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<Type>>> _createFilter;
@@ -176,6 +169,11 @@ public static partial class TypeFilters
 
 			/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 			OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
+
+			/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+			GenericTypesWithNamedArgument ICopyOnOption<CollectionIndexOptions, GenericTypesWithNamedArgument>.WithOptions(
+				CollectionIndexOptions options)
+				=> new(_source, _createFilter, options, new OptionsHolder<StringEqualityOptions>(_options.Value));
 
 			/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
 			GenericTypesWithNamedArgument ICopyOnOption<StringEqualityOptions, GenericTypesWithNamedArgument>.WithOptions(

@@ -428,6 +428,40 @@ public sealed partial class TypeFilters
 				}
 
 				[Test]
+				public async Task WhenAStoredFilterIsContinuedTwice_ShouldKeepTheOptionsApart()
+				{
+					Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument stored = In
+						.AssemblyContaining<WhichAreGeneric>()
+						.Types().WithName("MyGenericTestClass").AsPrefix()
+						.WhichAreGeneric()
+						.WithArgument("T").AsPrefix();
+
+					Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument atIndex1 = stored.AtIndex(1);
+					Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument fromEnd1 = stored.AtIndexFromEnd(1);
+
+					await That(stored).HasCount(2)
+						.Because("AtIndex and AtIndexFromEnd must return a new filter instead of changing the one they were called on");
+					await That(atIndex1).HasCount(1);
+					await That(atIndex1.GetDescription()).Contains("with argument name starting with \"T\" at index 1 in");
+					await That(fromEnd1).HasCount(1);
+					await That(fromEnd1.GetDescription()).Contains("with argument name starting with \"T\" at index 1 from end in");
+				}
+
+				[Test]
+				public async Task WhenIndexIsSetBeforeAStringOption_ShouldKeepBoth()
+				{
+					Filtered.Types subject = In
+						.AssemblyContaining<WhichAreGeneric>()
+						.Types().WithName("MyGenericTestClass").AsPrefix()
+						.WhichAreGeneric()
+						.WithArgument("t2").AtIndex(1).IgnoringCase();
+
+					await That(subject).HasCount(1);
+					await That(subject.GetDescription())
+						.Contains("with argument name equal to \"t2\" ignoring case at index 1 in");
+				}
+
+				[Test]
 				public async Task WhenTypeDoesNotMatchTheName_ShouldNotBeIncluded()
 				{
 					Filtered.Types subject = In
