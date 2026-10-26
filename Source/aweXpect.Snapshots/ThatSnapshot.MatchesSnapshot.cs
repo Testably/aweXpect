@@ -51,7 +51,7 @@ public static partial class ThatSnapshot
 	///     tool, is told about the recorded mismatch and a match, see <c>Customize.aweXpect.Snapshots().Reporters</c>.<br />
 	///     The newline style is ignored, because version control can change it when the snapshot is checked out. Another
 	///     <see cref="SnapshotComparer" />, e.g. one that ignores the order of JSON properties, is set with
-	///     <c>.ComparedWith(…)</c> or, for all snapshots, <c>Customize.aweXpect.Snapshots().Comparers</c>.<br />
+	///     <c>.Using(…)</c> or, for all snapshots, <c>Customize.aweXpect.Snapshots().Comparers</c>.<br />
 	///     Values that change from run to run can be replaced before comparing, and lines that are irrelevant for the test
 	///     left out, see <c>.For</c>, e.g. <c>.For.Guids().Mask()</c> or <c>.For.Lines().Containing("elapsed").Ignore()</c>,
 	///     and, for all snapshots, <c>Customize.aweXpect.Snapshots().Rules</c>. Paths of the environment, e.g. of the

@@ -16,293 +16,6 @@ public sealed partial class ThatSnapshot
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
 			[Test]
-			public async Task ComparedWith_WhenComparerConsidersEqual_ShouldSucceedAndKeepTheSnapshot()
-			{
-				InMemorySnapshotStore store = new();
-				store.Snapshots[Id] = "Abbey Road";
-				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				string subject = "ABBEY ROAD";
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.ComparedWith(IgnoringCase());
-
-				await That(Act).DoesNotThrow();
-				await That(store.Matches).IsEqualTo([Id,])
-					.Because("an equal result records a match, which deletes a leftover pending snapshot");
-				await That(store.Mismatches).IsEmpty();
-				await That(store.Snapshots[Id]).IsEqualTo("Abbey Road");
-			}
-
-			[Test]
-			public async Task ComparedWith_WhenComparerConsidersEqual_AndAcceptingAll_ShouldNotRewriteTheSnapshot()
-			{
-				InMemorySnapshotStore store = new();
-				store.Snapshots[Id] = "Abbey Road";
-				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				string subject = "ABBEY ROAD";
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.ComparedWith(IgnoringCase())
-						.Accepting(SnapshotAcceptance.All);
-
-				await That(Act).DoesNotThrow();
-				await That(store.Accepted).IsEmpty()
-					.Because("an equal result keeps the old snapshot");
-				await That(store.Snapshots[Id]).IsEqualTo("Abbey Road");
-			}
-
-			[Test]
-			public async Task ComparedWith_WhenComparerReportsDifference_ShouldFailWithTheDescription()
-			{
-				InMemorySnapshotStore store = new();
-				store.Snapshots[Id] = "Abbey Road";
-				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				string subject = "Abbey Road";
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.ComparedWith(FakeSnapshotComparer.Different("the tempo changed"));
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             matches the snapshot "MyTests.MyTest",
-					             but it differed: the tempo changed
-
-					             Actual:
-					             Abbey Road
-
-					             Snapshot:
-					             Abbey Road
-					             """)
-					.Because("the description of the comparer replaces the built-in difference");
-				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>
-				{
-					[Id] = "Abbey Road",
-				}).Because("a difference is recorded for review like any other");
-			}
-
-			[Test]
-			public async Task ComparedWith_WhenDescriptionHasSeveralLines_ShouldShowThemAll()
-			{
-				InMemorySnapshotStore store = new();
-				store.Snapshots[Id] = "Abbey Road";
-				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				string subject = "Abbey Road";
-				string newLine = Environment.NewLine;
-
-				async Task Act()
-					=> await That(subject).IsNotEmpty().And.MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.ComparedWith(FakeSnapshotComparer.Different(
-							$"2 tracks differ:{newLine}- Something{newLine}- Because"));
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not empty and matches the snapshot "MyTests.MyTest",
-					             but it differed: 2 tracks differ:
-					             - Something
-					             - Because
-
-					             Actual:
-					             Abbey Road
-
-					             Snapshot:
-					             Abbey Road
-					             """);
-			}
-
-			[Test]
-			public async Task ComparedWith_WhenSnapshotIsMissing_ShouldNotCallTheComparer()
-			{
-				InMemorySnapshotStore store = new();
-				FakeSnapshotComparer comparer = FakeSnapshotComparer.Equal();
-				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				string subject = "Abbey Road";
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(comparer);
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("*but the snapshot did not exist*").AsWildcard();
-				await That(comparer.Contexts).IsEmpty()
-					.Because("there is nothing to compare with");
-				await That(store.Mismatches.Keys).IsEqualTo([Id,]);
-			}
-
-			[Test]
-			public async Task ComparedWith_ShouldGetTheIdTheSnapshotAndTheSubjectAfterTheRules()
-			{
-				SnapshotId id = Id with
-				{
-					Extension = "json",
-				};
-				InMemorySnapshotStore store = new();
-				store.Snapshots[id] = "id {Guid_1}";
-				FakeSnapshotComparer comparer = FakeSnapshotComparer.Equal();
-				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				string subject = "id 2c1b7a3e-4a2f-4d4e-9a63-0e2b1b9d6f11";
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("json")
-						.For.Guids().Mask()
-						.ComparedWith(comparer);
-
-				await That(Act).DoesNotThrow();
-				SnapshotComparisonContext context = await That(comparer.Contexts).HasSingle();
-				await That(context.Id).IsEqualTo(id);
-				await That(context.Snapshot.Text).IsEqualTo("id {Guid_1}");
-				await That(context.Snapshot.Bytes).IsSameAs(store.SnapshotBytes[id]);
-				await That(context.Actual.Text).IsEqualTo("id {Guid_1}")
-					.Because("the rules are applied before the comparer");
-				await That(context.Actual.IsText).IsTrue();
-			}
-
-			[Test]
-			public async Task ComparedWith_OnAnObject_ShouldCompareTheWrittenText()
-			{
-				InMemorySnapshotStore store = new();
-				store.Snapshots[Id] = "something else";
-				FakeSnapshotComparer comparer = FakeSnapshotComparer.Equal();
-				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				int[] subject = [1, 2,];
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(comparer);
-
-				await That(Act).DoesNotThrow();
-				SnapshotComparisonContext context = await That(comparer.Contexts).HasSingle();
-				await That(context.Actual.Text).IsEqualTo($"[{Environment.NewLine}  1,{Environment.NewLine}  2{Environment.NewLine}]");
-			}
-
-			[Test]
-			public async Task ComparedWith_OnBinaryData_WhenComparerConsidersEqual_ShouldSucceed()
-			{
-				SnapshotId id = Id with
-				{
-					Extension = "png",
-				};
-				InMemorySnapshotStore store = new();
-				store.SnapshotBytes[id] = [1, 2, 3,];
-				FakeSnapshotComparer comparer = FakeSnapshotComparer.Equal();
-				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				byte[] subject = [1, 2, 4,];
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png")
-						.ComparedWith(comparer);
-
-				await That(Act).DoesNotThrow();
-				SnapshotComparisonContext context = await That(comparer.Contexts).HasSingle();
-				await That(context.Actual.IsText).IsFalse();
-				await That(context.Actual.Bytes).IsEqualTo([1, 2, 4,]);
-				await That(context.Snapshot.IsText).IsFalse();
-				await That(context.Snapshot.Bytes).IsEqualTo([1, 2, 3,]);
-				await That(store.Matches).IsEqualTo([id,]);
-			}
-
-			[Test]
-			public async Task ComparedWith_OnBinaryData_WhenComparerReportsDifference_ShouldFailWithTheDescription()
-			{
-				SnapshotId id = Id with
-				{
-					Extension = "png",
-				};
-				InMemorySnapshotStore store = new();
-				store.SnapshotBytes[id] = [1, 2, 3,];
-				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				byte[] subject = [1, 2, 3,];
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png")
-						.ComparedWith(FakeSnapshotComparer.Different("2.3 % of the pixels differ"));
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             matches the snapshot "MyTests.MyTest",
-					             but it differed: 2.3 % of the pixels differ
-					             """);
-				await That(store.MismatchBytes[id]).IsEqualTo([1, 2, 3,]);
-			}
-
-			[Test]
-			public async Task ComparedWith_OnAFile_ShouldUseTheComparer()
-			{
-				using SnapshotDirectory directory = new();
-				string file = Path.Combine(directory.Path, "Cover.PNG");
-				File.WriteAllBytes(file, [1, 2, 4,]);
-				SnapshotId id = Id with
-				{
-					Extension = "PNG",
-				};
-				InMemorySnapshotStore store = new();
-				store.SnapshotBytes[id] = [1, 2, 3,];
-				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Comparers.Set([
-					SnapshotComparer.ForExtension("png", FakeSnapshotComparer.Equal()),
-				]);
-
-				async Task Act()
-					=> await That(new FileInfo(file)).MatchesSnapshot(Id.SourceFile, Id.MemberName);
-
-				await That(Act).DoesNotThrow()
-					.Because("the extension of the file is compared ignoring its case");
-			}
-
-			[Test]
-			public async Task ComparedWith_ShouldGoBeforeTheComparersForAllSnapshots()
-			{
-				InMemorySnapshotStore store = new();
-				store.Snapshots[Id] = "Abbey Road";
-				FakeSnapshotComparer global = FakeSnapshotComparer.Different("global");
-				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Comparers.Set([
-					SnapshotComparer.When(_ => true, global),
-				]);
-				string subject = "Abbey Road";
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.ComparedWith(FakeSnapshotComparer.Different("expectation"));
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("*but it differed: expectation*").AsWildcard();
-				await That(global.Contexts).IsEmpty();
-			}
-
-			[Test]
-			public async Task ComparedWith_WhenSetTwice_ShouldUseTheLastOne()
-			{
-				InMemorySnapshotStore store = new();
-				store.Snapshots[Id] = "Abbey Road";
-				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				string subject = "Abbey Road";
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.ComparedWith(FakeSnapshotComparer.Different("first"))
-						.ComparedWith(FakeSnapshotComparer.Different("second"));
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("*but it differed: second*").AsWildcard();
-			}
-
-			[Test]
-			public async Task ComparedWith_WhenNull_ShouldThrowArgumentNullException()
-			{
-				string subject = "Abbey Road";
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(null!);
-
-				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("comparer");
-			}
-
-			[Test]
 			public async Task Comparers_ShouldUseTheFirstMatchingComparerInListOrder()
 			{
 				InMemorySnapshotStore store = new();
@@ -570,6 +283,293 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task Using_OnAFile_ShouldUseTheComparer()
+			{
+				using SnapshotDirectory directory = new();
+				string file = Path.Combine(directory.Path, "Cover.PNG");
+				File.WriteAllBytes(file, [1, 2, 4,]);
+				SnapshotId id = Id with
+				{
+					Extension = "PNG",
+				};
+				InMemorySnapshotStore store = new();
+				store.SnapshotBytes[id] = [1, 2, 3,];
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Comparers.Set([
+					SnapshotComparer.ForExtension("png", FakeSnapshotComparer.Equal()),
+				]);
+
+				async Task Act()
+					=> await That(new FileInfo(file)).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				await That(Act).DoesNotThrow()
+					.Because("the extension of the file is compared ignoring its case");
+			}
+
+			[Test]
+			public async Task Using_OnAnObject_ShouldCompareTheWrittenText()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "something else";
+				FakeSnapshotComparer comparer = FakeSnapshotComparer.Equal();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				int[] subject = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Using(comparer);
+
+				await That(Act).DoesNotThrow();
+				SnapshotComparisonContext context = await That(comparer.Contexts).HasSingle();
+				await That(context.Actual.Text).IsEqualTo($"[{Environment.NewLine}  1,{Environment.NewLine}  2{Environment.NewLine}]");
+			}
+
+			[Test]
+			public async Task Using_OnBinaryData_WhenComparerConsidersEqual_ShouldSucceed()
+			{
+				SnapshotId id = Id with
+				{
+					Extension = "png",
+				};
+				InMemorySnapshotStore store = new();
+				store.SnapshotBytes[id] = [1, 2, 3,];
+				FakeSnapshotComparer comparer = FakeSnapshotComparer.Equal();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				byte[] subject = [1, 2, 4,];
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png")
+						.Using(comparer);
+
+				await That(Act).DoesNotThrow();
+				SnapshotComparisonContext context = await That(comparer.Contexts).HasSingle();
+				await That(context.Actual.IsText).IsFalse();
+				await That(context.Actual.Bytes).IsEqualTo([1, 2, 4,]);
+				await That(context.Snapshot.IsText).IsFalse();
+				await That(context.Snapshot.Bytes).IsEqualTo([1, 2, 3,]);
+				await That(store.Matches).IsEqualTo([id,]);
+			}
+
+			[Test]
+			public async Task Using_OnBinaryData_WhenComparerReportsDifference_ShouldFailWithTheDescription()
+			{
+				SnapshotId id = Id with
+				{
+					Extension = "png",
+				};
+				InMemorySnapshotStore store = new();
+				store.SnapshotBytes[id] = [1, 2, 3,];
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				byte[] subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png")
+						.Using(FakeSnapshotComparer.Different("2.3 % of the pixels differ"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but it differed: 2.3 % of the pixels differ
+					             """);
+				await That(store.MismatchBytes[id]).IsEqualTo([1, 2, 3,]);
+			}
+
+			[Test]
+			public async Task Using_ShouldGetTheIdTheSnapshotAndTheSubjectAfterTheRules()
+			{
+				SnapshotId id = Id with
+				{
+					Extension = "json",
+				};
+				InMemorySnapshotStore store = new();
+				store.Snapshots[id] = "id {Guid_1}";
+				FakeSnapshotComparer comparer = FakeSnapshotComparer.Equal();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "id 2c1b7a3e-4a2f-4d4e-9a63-0e2b1b9d6f11";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("json")
+						.For.Guids().Mask()
+						.Using(comparer);
+
+				await That(Act).DoesNotThrow();
+				SnapshotComparisonContext context = await That(comparer.Contexts).HasSingle();
+				await That(context.Id).IsEqualTo(id);
+				await That(context.Snapshot.Text).IsEqualTo("id {Guid_1}");
+				await That(context.Snapshot.Bytes).IsSameAs(store.SnapshotBytes[id]);
+				await That(context.Actual.Text).IsEqualTo("id {Guid_1}")
+					.Because("the rules are applied before the comparer");
+				await That(context.Actual.IsText).IsTrue();
+			}
+
+			[Test]
+			public async Task Using_ShouldGoBeforeTheComparersForAllSnapshots()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "Abbey Road";
+				FakeSnapshotComparer global = FakeSnapshotComparer.Different("global");
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Comparers.Set([
+					SnapshotComparer.When(_ => true, global),
+				]);
+				string subject = "Abbey Road";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Using(FakeSnapshotComparer.Different("expectation"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("*but it differed: expectation*").AsWildcard();
+				await That(global.Contexts).IsEmpty();
+			}
+
+			[Test]
+			public async Task Using_WhenComparerConsidersEqual_AndAcceptingAll_ShouldNotRewriteTheSnapshot()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "Abbey Road";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "ABBEY ROAD";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Using(IgnoringCase())
+						.Accepting(SnapshotAcceptance.All);
+
+				await That(Act).DoesNotThrow();
+				await That(store.Accepted).IsEmpty()
+					.Because("an equal result keeps the old snapshot");
+				await That(store.Snapshots[Id]).IsEqualTo("Abbey Road");
+			}
+
+			[Test]
+			public async Task Using_WhenComparerConsidersEqual_ShouldSucceedAndKeepTheSnapshot()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "Abbey Road";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "ABBEY ROAD";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Using(IgnoringCase());
+
+				await That(Act).DoesNotThrow();
+				await That(store.Matches).IsEqualTo([Id,])
+					.Because("an equal result records a match, which deletes a leftover pending snapshot");
+				await That(store.Mismatches).IsEmpty();
+				await That(store.Snapshots[Id]).IsEqualTo("Abbey Road");
+			}
+
+			[Test]
+			public async Task Using_WhenComparerReportsDifference_ShouldFailWithTheDescription()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "Abbey Road";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "Abbey Road";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Using(FakeSnapshotComparer.Different("the tempo changed"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but it differed: the tempo changed
+
+					             Actual:
+					             Abbey Road
+
+					             Snapshot:
+					             Abbey Road
+					             """)
+					.Because("the description of the comparer replaces the built-in difference");
+				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>
+				{
+					[Id] = "Abbey Road",
+				}).Because("a difference is recorded for review like any other");
+			}
+
+			[Test]
+			public async Task Using_WhenDescriptionHasSeveralLines_ShouldShowThemAll()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "Abbey Road";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "Abbey Road";
+				string newLine = Environment.NewLine;
+
+				async Task Act()
+					=> await That(subject).IsNotEmpty().And.MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Using(FakeSnapshotComparer.Different(
+							$"2 tracks differ:{newLine}- Something{newLine}- Because"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not empty and matches the snapshot "MyTests.MyTest",
+					             but it differed: 2 tracks differ:
+					             - Something
+					             - Because
+
+					             Actual:
+					             Abbey Road
+
+					             Snapshot:
+					             Abbey Road
+					             """);
+			}
+
+			[Test]
+			public async Task Using_WhenNull_ShouldThrowArgumentNullException()
+			{
+				string subject = "Abbey Road";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Using(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("comparer");
+			}
+
+			[Test]
+			public async Task Using_WhenSetTwice_ShouldUseTheLastOne()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "Abbey Road";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "Abbey Road";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Using(FakeSnapshotComparer.Different("first"))
+						.Using(FakeSnapshotComparer.Different("second"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("*but it differed: second*").AsWildcard();
+			}
+
+			[Test]
+			public async Task Using_WhenSnapshotIsMissing_ShouldNotCallTheComparer()
+			{
+				InMemorySnapshotStore store = new();
+				FakeSnapshotComparer comparer = FakeSnapshotComparer.Equal();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "Abbey Road";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Using(comparer);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("*but the snapshot did not exist*").AsWildcard();
+				await That(comparer.Contexts).IsEmpty()
+					.Because("there is nothing to compare with");
+				await That(store.Mismatches.Keys).IsEqualTo([Id,]);
+			}
+
+			[Test]
 			public async Task WhenComparerReportsDifference_AndAcceptingAll_ShouldAcceptTheSubject()
 			{
 				InMemorySnapshotStore store = new();
@@ -579,7 +579,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.ComparedWith(FakeSnapshotComparer.Different("the title changed"))
+						.Using(FakeSnapshotComparer.Different("the title changed"))
 						.Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<FailException>()
@@ -598,7 +598,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.ComparedWith(FakeSnapshotComparer.Different("the title changed"))
+						.Using(FakeSnapshotComparer.Different("the title changed"))
 						.Accepting(SnapshotAcceptance.New);
 
 				await That(Act).Throws<FailException>();
@@ -617,7 +617,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it
-						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(IgnoringCase()));
+						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).Using(IgnoringCase()));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("*but a snapshot cannot be negated").AsWildcard();
@@ -634,12 +634,12 @@ public sealed partial class ThatSnapshot
 				string subject = "Abbey Road (Remastered)";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(comparer)
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Using(comparer)
 						.Accepting(SnapshotAcceptance.All);
 
 				async Task ActNegated()
 					=> await That(subject).DoesNotComplyWith(it
-						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(comparer));
+						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).Using(comparer));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -687,7 +687,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.ComparedWith(new FakeSnapshotComparer(_ => null!));
+						.Using(new FakeSnapshotComparer(_ => null!));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage(
@@ -706,7 +706,7 @@ public sealed partial class ThatSnapshot
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 
 				async Task Act(string subject)
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(comparer);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Using(comparer);
 
 				await That(() => Act("abbey road")).DoesNotThrow();
 				await That(() => Act("ABBEY ROAD")).DoesNotThrow()
@@ -725,7 +725,7 @@ public sealed partial class ThatSnapshot
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 
 				async Task Act(string subject)
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(comparer);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Using(comparer);
 
 				await That(() => Act("Abbey Road")).DoesNotThrow();
 				await That(() => Act("Let It Be")).Throws<FailException>()
@@ -762,7 +762,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That("ABBEY ROAD").MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.ComparedWith(IgnoringCase());
+						.Using(IgnoringCase());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("*but the snapshot was already used for another value in this test run*").AsWildcard()
@@ -781,7 +781,7 @@ public sealed partial class ThatSnapshot
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 
 				async Task Act(string subject)
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(comparer);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Using(comparer);
 
 				await That(() => Act("Abbey Road")).DoesNotThrow();
 				await That(() => Act("ABBEY ROAD")).Throws<FailException>()
@@ -803,7 +803,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await Task.WhenAll(subjects.Select(async subject
 						=> await Task.Run(async () => await That(subject)
-							.MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(comparer))));
+							.MatchesSnapshot(Id.SourceFile, Id.MemberName).Using(comparer))));
 
 				await That(Act).DoesNotThrow();
 				await That(comparer.Contexts
@@ -823,7 +823,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
-						.ComparedWith(IgnoringCase())
+						.Using(IgnoringCase())
 						.Accepting(SnapshotAcceptance.All);
 
 				await That(Act).DoesNotThrow();

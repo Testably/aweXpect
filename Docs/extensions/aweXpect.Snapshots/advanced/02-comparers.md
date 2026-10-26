@@ -23,10 +23,10 @@ public sealed class CoverArtComparer(double minimumSimilarity) : SnapshotCompare
 `Actual` value, after the rules of the expectation were applied, e.g. with masked GUIDs. Both are a `SnapshotContent`
 like for [reporters](03-reporters.md): the `Bytes` as the store keeps them, and the `Text` unless it is binary data.
 
-Use the comparer for one expectation with `.ComparedWith(…)`, for strings, objects and binary data:
+Use the comparer for one expectation with `.Using(…)`, for strings, objects and binary data:
 
 ```csharp
-await Expect.That(cover).MatchesSnapshot().WithExtension("png").ComparedWith(new CoverArtComparer(0.99));
+await Expect.That(cover).MatchesSnapshot().WithExtension("png").Using(new CoverArtComparer(0.99));
 ```
 
 or for all snapshots that a condition selects, with the shorthand `ForExtension` (ignoring the case of the extension)
