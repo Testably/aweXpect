@@ -751,6 +751,26 @@ public sealed partial class ThatJsonElement
 					             ]
 					             """);
 			}
+
+			[Test]
+			public async Task WhenElementsContainTheExpectedElement_ShouldFormatItAsJson()
+			{
+				JsonElement subject = FromString("""[{"title": "Let It Be"}, "rock"]""");
+				JsonElement first = subject[0];
+				JsonElement second = subject[1];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.IsArray().WhoseElements.Contains(first).And.Contains(second));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an array whose elements contain an item equal to {"title":"Let It Be"} at least once and contain an item equal to "rock" at least once,
+					             but it was an array
+					             """)
+					.Because("the expected elements are formatted like in the failure message of the expectation");
+			}
 		}
 	}
 }

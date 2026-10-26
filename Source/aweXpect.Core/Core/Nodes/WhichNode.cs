@@ -330,6 +330,13 @@ internal class WhichNode<TSource, TMember> : Node
 	private sealed class WhichConstraintResult : CombinedResult
 	{
 		private readonly string? _contextMember;
+
+		/// <summary>
+		///     The formatters of the evaluation that created this result, which format the expectation text of the member
+		///     also when the result is negated after that evaluation, e.g. by <c>DoesNotComplyWith</c>.
+		/// </summary>
+		private readonly IValueFormatter[]? _formatters = ValueFormatter.ScopedFormatters;
+
 		private readonly bool _isMemberSkipped;
 		private readonly bool _negateMemberOnly;
 		private readonly string _separator;
@@ -478,6 +485,7 @@ internal class WhichNode<TSource, TMember> : Node
 
 		private string GetRightExpectation()
 		{
+			using ValueFormatter.FormatterScope _ = ValueFormatter.UseScopedFormatters(_formatters);
 			StringBuilder stringBuilder = new();
 			stringBuilder.AppendSeparatedExpectation(_separator, Right, null);
 			return stringBuilder.ToString();
