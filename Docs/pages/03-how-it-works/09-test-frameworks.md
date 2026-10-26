@@ -119,3 +119,48 @@ The exception that skips the test depends on the test framework:
 TUnit declares a `Skip` class of its own in the `TUnit.Core` namespace. Where the compiler reports the name as
 ambiguous, write `aweXpect.Skip`.
 :::
+
+## The running test
+
+Besides throwing its exceptions, the adapter tells aweXpect and its extensions about the running test, as far as the
+test framework exposes it:
+
+- the running test case with its arguments, e.g. to
+  [name a snapshot after the test case](/aweXpect/extensions/aweXpect.Snapshots/naming-snapshots#naming-after-the-test-case),
+- the cancellation token of the test, e.g. to cancel the expectations with
+  [`TestCancellation.FromCancellationToken(…)`](./06-time-and-cancellation.md#cancellationtoken),
+- and attachments to the result of the test, e.g. the
+  [pending file of a snapshot](/aweXpect/extensions/aweXpect.Snapshots/matching-snapshots#files).
+
+| Test framework       | Test case | Arguments of the test class | Retries                    | Cancellation token | Attachments |
+|----------------------|-----------|-----------------------------|----------------------------|--------------------|-------------|
+| MSTest 4             | opt-in    | no                          | no                         | opt-in             | opt-in      |
+| MSTest 3             | no        | no                          | no                         | no                 | no          |
+| NUnit 4 or later     | yes       | yes                         | yes, also `[Repeat]` runs  | yes                | yes         |
+| NUnit 3              | yes       | no                          | yes, also `[Repeat]` runs  | no                 | yes         |
+| TUnit                | yes       | yes                         | yes                        | yes                | yes         |
+| xUnit v3             | yes       | no                          | no                         | yes                | yes         |
+| xUnit v2             | no        | no                          | no                         | no                 | no          |
+| none detected        | no        | no                          | no                         | no                 | no          |
+
+MSTest 4 marks the API for the running test as experimental, so the adapter only uses it when the test project opts in:
+
+```xml
+<PropertyGroup>
+  <AweXpectExperimentalMSTest>true</AweXpectExperimentalMSTest>
+</PropertyGroup>
+```
+
+<details>
+<summary>Arguments, retries and attachments in detail</summary>
+
+- The arguments of the test class are those of a parameterized fixture of NUnit and of a TUnit test class, including
+  the objects that the test framework injects, e.g. a shared fixture. xUnit v3 and MSTest have no parameterized test
+  classes.
+- A retry counts the runs of the test before, starting with `0`. NUnit also counts the runs of `[Repeat]`, and xUnit v3
+  and MSTest have no retries.
+- MSTest, NUnit and TUnit read an attached file when the test ends, so it must still exist then. xUnit v3 attaches the
+  content of the file immediately.
+- With the opt-in, the generated MSTest adapter suppresses the diagnostic `MSTESTEXP` in its own code.
+
+</details>
