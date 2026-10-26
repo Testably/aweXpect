@@ -9,7 +9,7 @@ namespace aweXpect.Results;
 /// </summary>
 /// <remarks>
 ///     The options are specified via <see cref="CollectionMatchOptionsExtensions" /> and
-///     <see cref="ObjectEqualityOptionsExtensions" />.
+///     <see cref="ObjectMatchTypeExtensions" />.
 /// </remarks>
 public class ObjectProperCollectionMatchResult<TType, TThat, TItem>
 	: AndOrResult<TType, TThat, ObjectProperCollectionMatchResult<TType, TThat, TItem>>,

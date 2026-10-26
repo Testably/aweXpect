@@ -8,7 +8,7 @@ namespace aweXpect.Results;
 /// </summary>
 /// <remarks>
 ///     The options are specified via <see cref="CollectionIndexOptionsExtensions" /> and
-///     <see cref="ObjectEqualityOptionsExtensions" />.
+///     <see cref="ObjectMatchTypeExtensions" />.
 /// </remarks>
 public class ObjectHasItemResult<TCollection, TItem>(
 	ExpectationBuilder expectationBuilder,

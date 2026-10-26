@@ -9,7 +9,7 @@ namespace aweXpect.Results;
 ///     <typeparamref name="TTolerance" /> on the comparison.
 /// </summary>
 /// <remarks>
-///     The options are specified via <see cref="ObjectEqualityOptionsExtensions" />.
+///     The options are specified via <see cref="ObjectMatchTypeExtensions" />.
 /// </remarks>
 public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>(
 	ExpectationBuilder expectationBuilder,
@@ -25,7 +25,7 @@ public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TToleranc
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	OptionsSlot<ObjectMatchType<TElement>> IOptionsProvider<ObjectMatchType<TElement>>.Options => options;
 
-	/// <inheritdoc cref="ObjectEqualityOptionsExtensions.Within{TSelf, TElement, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TElement, TTolerance}, TTolerance)" />
+	/// <inheritdoc cref="ObjectMatchTypeExtensions.Within{TSelf, TElement, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TElement, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
 	{
 		options.Within(tolerance);

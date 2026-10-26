@@ -10,7 +10,7 @@ namespace aweXpect.Results;
 /// </summary>
 /// <remarks>
 ///     The options are specified via <see cref="CollectionIndexOptionsExtensions" /> and
-///     <see cref="ObjectEqualityOptionsExtensions" />.
+///     <see cref="ObjectMatchTypeExtensions" />.
 /// </remarks>
 public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
 	: AndOrResult<TCollection, IThat<TCollection?>, ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>>,
@@ -40,7 +40,7 @@ public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	OptionsSlot<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 
-	/// <inheritdoc cref="ObjectEqualityOptionsExtensions.Within{TSelf, TElement, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TElement, TTolerance}, TTolerance)" />
+	/// <inheritdoc cref="ObjectMatchTypeExtensions.Within{TSelf, TElement, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TElement, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
 	{
 		_options.Within(tolerance);

@@ -237,7 +237,8 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
 - `ObjectEqualityOptions<TSubject>` and `ObjectEqualityWithToleranceOptions<TSubject, TTolerance>` are removed. Object
   comparisons keep their `ObjectMatchType<TSubject>` in an `OptionsSlot<ObjectMatchType<TSubject>>`, also with a
   tolerance, for which `ObjectMatchType<TSubject>.WithTolerance(…)` creates an
-  `ObjectToleranceMatchType<TSubject, TTolerance>`.
+  `ObjectToleranceMatchType<TSubject, TTolerance>`. `ObjectEqualityOptionsExtensions` is renamed to
+  `ObjectMatchTypeExtensions`.
 - An `ObjectMatchType<TSubject>` passes the name of its option to its base constructor, and `SetMatchType(matchType)`
   reads it, so that the same option again replaces the match type and another one throws. A match type without a name
   is rejected.

@@ -10,7 +10,7 @@ namespace aweXpect.Results;
 /// </summary>
 /// <remarks>
 ///     The options are specified via <see cref="QuantifierExtensions" /> and
-///     <see cref="ObjectEqualityOptionsExtensions" />.
+///     <see cref="ObjectMatchTypeExtensions" />.
 /// </remarks>
 public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 	: AndOrResult<TType, TThat, ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>>,
@@ -40,7 +40,7 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	OptionsSlot<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
 
-	/// <inheritdoc cref="ObjectEqualityOptionsExtensions.Within{TSelf, TItem, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TItem, TTolerance}, TTolerance)" />
+	/// <inheritdoc cref="ObjectMatchTypeExtensions.Within{TSelf, TItem, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TItem, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
 	{
 		_options.Within(tolerance);

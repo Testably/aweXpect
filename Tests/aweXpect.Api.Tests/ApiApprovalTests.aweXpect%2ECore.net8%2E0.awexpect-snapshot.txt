@@ -176,7 +176,7 @@ namespace aweXpect
         public static TResult NotLessThan<TResult>(this aweXpect.Results.ILongPropertyResult<TResult> result, long? unexpected) { }
         public static TResult NotLessThanOrEqualTo<TResult>(this aweXpect.Results.ILongPropertyResult<TResult> result, long? unexpected) { }
     }
-    public static class ObjectEqualityOptionsExtensions
+    public static class ObjectMatchTypeExtensions
     {
         public static TSelf Using<TSelf, TElement>(this aweXpect.Results.IObjectEqualityResult<TSelf, TElement> result, System.Collections.Generic.IEqualityComparer<TElement> comparer) where TSelf : aweXpect.Results.IObjectEqualityResult<TSelf, TElement> { }
         public static TSelf Using<TSelf, TElement>(this aweXpect.Results.IObjectEqualityResult<TSelf, TElement> result, System.Collections.Generic.IEqualityComparer<object> comparer) where TSelf : aweXpect.Results.IObjectEqualityResult<TSelf, TElement> { }

@@ -12,7 +12,7 @@ namespace aweXpect;
 ///     These options all specify how two objects are compared, so only one of them can be specified; the same option
 ///     again replaces the earlier one.
 /// </remarks>
-public static class ObjectEqualityOptionsExtensions
+public static class ObjectMatchTypeExtensions
 {
 	/// <summary>
 	///     Uses the provided <paramref name="comparer" /> for comparing <see langword="object" />s.
