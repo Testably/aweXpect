@@ -17,7 +17,8 @@ public class DiscardedOptionAnalyzer : DiagnosticAnalyzer
 	///     The classes of <c>aweXpect.Options</c> that are immutable like its <see langword="readonly" /> structs.
 	/// </summary>
 	private static readonly ImmutableHashSet<string> ImmutableOptionClasses =
-		ImmutableHashSet.Create("StringEqualityOptions", "SignalerPredicateOptions");
+		ImmutableHashSet.Create("StringEqualityOptions", "SignalerPredicateOptions", "ObjectToleranceMatchType",
+			"TriggerEventFilter");
 
 	/// <inheritdoc />
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
@@ -34,11 +35,8 @@ public class DiscardedOptionAnalyzer : DiagnosticAnalyzer
 
 	private static void AnalyzeInvocation(OperationAnalysisContext context)
 	{
-		if (context.Operation is not IInvocationOperation
-		    {
-			    Parent: IExpressionStatementOperation { IsImplicit: false, },
-			    TargetMethod: { IsStatic: false, } method,
-		    } invocation ||
+		if (context.Operation is not IInvocationOperation { TargetMethod: { IsStatic: false, } method, } invocation ||
+		    !IsDiscarded(invocation) ||
 		    !IsImmutableOption(method.ContainingType) ||
 		    !SymbolEqualityComparer.Default.Equals(method.ReturnType, method.ContainingType))
 		{
@@ -46,10 +44,29 @@ public class DiscardedOptionAnalyzer : DiagnosticAnalyzer
 		}
 
 		context.ReportDiagnostic(Diagnostic.Create(Rules.DiscardedOptionRule,
-			(invocation.Syntax as InvocationExpressionSyntax)?.Expression is MemberAccessExpressionSyntax memberAccess
-				? memberAccess.Name.GetLocation()
-				: invocation.Syntax.GetLocation(),
+			(invocation.Syntax as InvocationExpressionSyntax)?.Expression switch
+			{
+				MemberAccessExpressionSyntax memberAccess => memberAccess.Name.GetLocation(),
+				MemberBindingExpressionSyntax memberBinding => memberBinding.Name.GetLocation(),
+				_ => invocation.Syntax.GetLocation(),
+			},
 			method.Name, method.ContainingType.Name));
+	}
+
+	/// <summary>
+	///     Whether the <paramref name="invocation" /> is the whole statement, also when it is only made if the instance
+	///     is not <see langword="null" />, e.g. <c>options?.AtLeast(2);</c>.
+	/// </summary>
+	private static bool IsDiscarded(IOperation invocation)
+	{
+		IOperation operation = invocation;
+		while (operation.Parent is IConditionalAccessOperation conditionalAccess &&
+		       conditionalAccess.WhenNotNull == operation)
+		{
+			operation = conditionalAccess;
+		}
+
+		return operation.Parent is IExpressionStatementOperation { IsImplicit: false, };
 	}
 
 	/// <summary>
