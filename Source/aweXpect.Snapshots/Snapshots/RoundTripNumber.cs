@@ -1,30 +1,24 @@
 using System;
 using System.Globalization;
-using System.Text;
-#if !NET8_0_OR_GREATER
 using System.Numerics;
-#endif
+using System.Text;
 
 namespace aweXpect.Snapshots;
 
 /// <summary>
-///     Writes a <see cref="double" /> or <see cref="float" /> like <c>R</c> does on .NET: with the fewest significant
-///     digits that round-trip, in fixed notation up to 17 digits (9 for a <see cref="float" />) before the decimal point.
+///     Writes a <see cref="double" /> or <see cref="float" /> in the notation of <c>R</c> on .NET: with the fewest
+///     significant digits that round-trip, in fixed notation up to 17 digits (9 for a <see cref="float" />) before the
+///     decimal point.
 /// </summary>
 /// <remarks>
-///     .NET Framework writes 15 digits with <c>R</c>, or 17 when they do not round-trip, e.g. <c>0.33333333333333331</c>
-///     for <c>1.0 / 3</c> instead of <c>0.3333333333333333</c> on .NET. Its formatting and parsing are also not exact
-///     beyond 15 digits, so below .NET 8 the digits are calculated exactly, so that a name is the same on every target
-///     framework of a test project.
+///     The digits are calculated exactly on every target framework, so that a name is the same on all of them. .NET
+///     Framework writes 15 digits with <c>R</c>, or 17 when they do not round-trip, e.g. <c>0.33333333333333331</c>
+///     for <c>1.0 / 3</c> instead of <c>0.3333333333333333</c>, and is not exact beyond 15 digits. .NET writes digits
+///     for a few powers of two that do not round-trip, e.g. <c>2.980232238769531E-08</c> for 2^-25, which may change
+///     with its version.
 /// </remarks>
 internal static class RoundTripNumber
 {
-#if NET8_0_OR_GREATER
-	public static void Append(StringBuilder stringBuilder, double value, bool isSingle)
-		=> stringBuilder.Append(isSingle
-			? ((float)value).ToString("R", CultureInfo.InvariantCulture)
-			: value.ToString("R", CultureInfo.InvariantCulture));
-#else
 	public static void Append(StringBuilder stringBuilder, double value, bool isSingle)
 	{
 		if (double.IsNaN(value) || double.IsInfinity(value))
@@ -52,20 +46,28 @@ internal static class RoundTripNumber
 		{
 			int scale = decimalExponent - digitCount + 1;
 			BigInteger digits = RoundToInteger(mantissa, exponent, scale);
+			if (digitCount < maxDigits && !RoundTrips(digits, scale, mantissa, exponent, hasNarrowerLowerGap))
+			{
+				// Below a power of two, the nearest digits can fall into the narrower lower gap, while the next
+				// larger digits still lie within the wider upper one, which .NET then writes.
+				if (!hasNarrowerLowerGap || !RoundTrips(digits + 1, scale, mantissa, exponent, true))
+				{
+					continue;
+				}
+
+				digits++;
+			}
+
 			int digitsExponent = decimalExponent;
 			if (digits == BigInteger.Pow(10, digitCount))
 			{
 				digits = BigInteger.Pow(10, digitCount - 1);
-				scale++;
 				digitsExponent++;
 			}
 
-			if (digitCount == maxDigits || RoundTrips(digits, scale, mantissa, exponent, hasNarrowerLowerGap))
-			{
-				AppendDigits(stringBuilder, digits.ToString(CultureInfo.InvariantCulture).TrimEnd('0'),
-					digitsExponent, maxDigits);
-				return;
-			}
+			AppendDigits(stringBuilder, digits.ToString(CultureInfo.InvariantCulture).TrimEnd('0'),
+				digitsExponent, maxDigits);
+			return;
 		}
 	}
 
@@ -228,5 +230,4 @@ internal static class RoundTripNumber
 				.Append(digits, decimalPoint, digits.Length - decimalPoint);
 		}
 	}
-#endif
 }

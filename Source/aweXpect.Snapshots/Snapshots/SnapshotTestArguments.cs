@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Text;
 using System.Threading;
 using aweXpect.Core.Adapters;
 using aweXpect.Customization;
+using aweXpect.Formatting;
 
 namespace aweXpect.Snapshots;
 
@@ -29,6 +29,17 @@ internal static class SnapshotTestArguments
 	private const int MaxLength = 64;
 
 	private const int HashLength = 8;
+
+	/// <summary>
+	///     Writes a nested <see cref="double" /> or <see cref="float" /> like one at the top, which also keeps it the same
+	///     on every target framework.
+	/// </summary>
+	private static readonly FormattingOptions NestedValueFormatting = FormattingOptions.Snapshot with
+	{
+		FormatValue = value => value.GetValue() is { } number and (double or float)
+			? ValueFormatting.Replace(new Unquoted(Format([number,])))
+			: ValueFormatting.Write,
+	};
 
 	/// <summary>
 	///     Returns the name of the arguments of the running test, before it is shortened, or <see langword="null" /> when
@@ -73,8 +84,9 @@ internal static class SnapshotTestArguments
 
 	/// <remarks>
 	///     A <see cref="double" /> or <see cref="float" /> is written with the fewest digits that round-trip, see
-	///     <see cref="RoundTripNumber" />. A collection is written item by item, as its <see cref="object.ToString()" /> is
-	///     usually the name of its type.
+	///     <see cref="RoundTripNumber" />. A collection, tuple, record or other object is written like in a snapshot, as its
+	///     <see cref="object.ToString()" /> is often the name of its type or uses the current culture, and so that a set is
+	///     sorted and a collection that contains itself does not overflow the stack.
 	/// </remarks>
 	private static void Append(StringBuilder stringBuilder, object? value)
 	{
@@ -95,24 +107,11 @@ internal static class SnapshotTestArguments
 			case IFormattable formattable:
 				stringBuilder.Append(formattable.ToString(null, CultureInfo.InvariantCulture));
 				break;
-			case ICollection collection:
-				stringBuilder.Append('[');
-				bool isFirst = true;
-				foreach (object? item in collection)
-				{
-					if (!isFirst)
-					{
-						stringBuilder.Append(',');
-					}
-
-					isFirst = false;
-					Append(stringBuilder, item);
-				}
-
-				stringBuilder.Append(']');
+			case bool or char:
+				stringBuilder.Append(value);
 				break;
 			default:
-				stringBuilder.Append(value);
+				aweXpect.Formatting.Format.Formatter.Format(stringBuilder, value, NestedValueFormatting);
 				break;
 		}
 	}
@@ -158,6 +157,14 @@ internal static class SnapshotTestArguments
 		return name.Substring(0, length) + "~" +
 		       GetHashCode(name).ToString("x8", CultureInfo.InvariantCulture);
 #endif
+	}
+
+	/// <summary>
+	///     A text that is written without quotes.
+	/// </summary>
+	private sealed class Unquoted(string text)
+	{
+		public override string ToString() => text;
 	}
 
 	private static int GetEscapedLength(char character)

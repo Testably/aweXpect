@@ -392,7 +392,7 @@ public sealed class FrameworkGeneratorTests
 			namespace aweXpect.Core.Adapters
 			{
 				public interface ITestFrameworkAdapter { }
-				public sealed class TestIdentity { }
+				public sealed class RunningTest { }
 			}
 			""",
 		], false, LanguageVersion.Latest, References("nunit.framework"));
@@ -464,15 +464,26 @@ public sealed class FrameworkGeneratorTests
 	}
 
 	[Test]
-	[Arguments("[System.Diagnostics.CodeAnalysis.Experimental(\"MSTESTEXP\")] public static TestContext? Current => null; public string? TestName => null;",
+	[Arguments("", "",
+		"[System.Diagnostics.CodeAnalysis.Experimental(\"MSTESTEXP\")] public static TestContext? Current => null; public string? TestName => null;",
 		"using an experimental API fails the build of the consumer unless the diagnostic is suppressed")]
-	[Arguments("[System.Obsolete(\"Use another API\")] public static TestContext? Current => null; public string? TestName => null;",
+	[Arguments("", "",
+		"[System.Obsolete(\"Use another API\")] public static TestContext? Current => null; public string? TestName => null;",
 		"using an obsolete API warns, which fails the build of a consumer that treats warnings as errors")]
-	[Arguments("public static TestContext? Current => null;",
+	[Arguments("", "", "public static TestContext? Current => null;",
 		"the generated code would use TestName, which this version of the test framework lacks")]
-	public async Task WhenRunningTestIsNotUsable_ShouldNotReturnACurrentTest(string members, string because)
+	[Arguments("", "", "public static TestContext? Current => null; public int TestName => 0;",
+		"the generated code passes TestName as the name of the test method")]
+	[Arguments("[assembly: System.Diagnostics.CodeAnalysis.Experimental(\"MSTESTEXP\")]", "",
+		"public static TestContext? Current => null; public string? TestName => null;",
+		"every type of an experimental assembly is experimental as well")]
+	[Arguments("", "[System.Diagnostics.CodeAnalysis.Experimental(\"MSTESTEXP\")]",
+		"public static TestContext? Current => null; public string? TestName => null;",
+		"every member of an experimental type is experimental as well")]
+	public async Task WhenRunningTestIsNotUsable_ShouldNotReturnACurrentTest(string assemblyAttributes,
+		string typeAttributes, string members, string because)
 	{
-		MetadataReference msTest = GeneratorRunner.CompileToReference("MSTest.TestFramework", $$"""
+		MetadataReference msTest = GeneratorRunner.CompileToReference("MSTest.TestFramework", """
 			namespace Microsoft.VisualStudio.TestTools.UnitTesting
 			{
 				public class AssertFailedException : System.Exception
@@ -481,6 +492,13 @@ public sealed class FrameworkGeneratorTests
 					public AssertFailedException(string message, System.Exception inner) : base(message, inner) { }
 				}
 				public class AssertInconclusiveException(string message) : System.Exception(message);
+			}
+			""");
+		MetadataReference msTestExtensions = GeneratorRunner.CompileToReference("MSTest.TestFramework.Extensions", $$"""
+			{{assemblyAttributes}}
+			namespace Microsoft.VisualStudio.TestTools.UnitTesting
+			{
+				{{typeAttributes}}
 				public class TestContext
 				{
 					{{members}}
@@ -491,7 +509,7 @@ public sealed class FrameworkGeneratorTests
 			""");
 
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new FrameworkGenerator(),
-			["public class Foo { }",], true, LanguageVersion.Latest, [msTest, Xunit2Assert,]);
+			["public class Foo { }",], true, LanguageVersion.Latest, [msTest, msTestExtensions, Xunit2Assert,]);
 
 		await That(result.Errors).IsEmpty().Because(because);
 		await That(result.Generated).Contains("class MsTestAdapter ").And

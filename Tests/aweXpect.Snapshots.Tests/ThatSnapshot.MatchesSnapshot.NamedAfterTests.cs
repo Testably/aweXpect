@@ -60,6 +60,17 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task WhenArgumentIsCollectionThatContainsItself_ShouldNotOverflowTheStack()
+			{
+				List<object> tracks = ["Come Together",];
+				tracks.Add(tracks);
+
+				await ShouldBeNamed("[\"Come Together\", [ *recursive* ]]",
+					result => result.NamedAfter(tracks),
+					"a collection that contains itself would otherwise end the test run");
+			}
+
+			[Test]
 			[Arguments(1.0 / 3, "0.3333333333333333")]
 			[Arguments(123456789012345.6, "123456789012345.6")]
 			[Arguments(1234567890123456.7, "1234567890123456.8")]
@@ -74,6 +85,8 @@ public sealed partial class ThatSnapshot
 			[Arguments(double.MaxValue, "1.7976931348623157E+308")]
 			[Arguments(-0.0, "-0")]
 			[Arguments(double.NegativeInfinity, "-Infinity")]
+			[Arguments(5.9604644775390625E-08, "5.960464477539063E-08")]
+			[Arguments(2.98023223876953125E-08, "2.9802322387695312E-08")]
 			public async Task WhenArgumentIsDouble_ShouldWriteTheShortestTextThatRoundTrips(double value,
 				string expected)
 			{
@@ -130,11 +143,60 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task WhenArgumentIsRecord_ShouldWriteItsMembers()
+			{
+				Album album = new("Abbey Road", 1969);
+
+				await ShouldBeNamed("ThatSnapshot.MatchesSnapshot.NamedAfterTests.Albu~b61ea1a9",
+					result => result.NamedAfter(album),
+					"a record is written like in a snapshot, with the name of its type and each member");
+			}
+
+			[Test]
+			public async Task WhenArgumentIsSet_ShouldSortTheItems()
+			{
+				HashSet<string> titles = ["Let It Be", "Abbey Road",];
+
+				await ShouldBeNamed("[\"Abbey Road\", \"Let It Be\"]",
+					result => result.NamedAfter(titles),
+					"the order of a set can differ from run to run");
+			}
+
+			[Test]
+			public async Task WhenArgumentIsTuple_ShouldUseTheInvariantCulture()
+			{
+				CultureInfo previousCulture = CultureInfo.CurrentCulture;
+				CultureInfo.CurrentCulture = new CultureInfo("de-DE");
+				try
+				{
+					(double, string) track = (4.5, "Something");
+
+					await ShouldBeNamed("(4.5, \"Something\")",
+						result => result.NamedAfter(track),
+						"the snapshot must have the same name on every machine");
+				}
+				finally
+				{
+					CultureInfo.CurrentCulture = previousCulture;
+				}
+			}
+
+			[Test]
+			public async Task WhenArgumentThrowsInToString_ShouldNameTheSnapshotAfterTheException()
+			{
+				Track track = new();
+
+				await ShouldBeNamed("[ToString of ThatSnapshot.MatchesSnapshot.NamedAfte~28799a7b",
+					result => result.NamedAfter(track),
+					"the exception is written like in a snapshot instead of failing the test");
+			}
+
+			[Test]
 			public async Task WhenArgumentsAreWrittenLikeTestArguments_ShouldUseTheSameName()
 			{
-				int[] tracks = [1, 2, 3,];
+				double[] tracks = [1, 0.1 + 0.2,];
 
-				await ShouldBeNamed("0.30000000000000004_[1,2,3]_\"\"",
+				await ShouldBeNamed("0.30000000000000004_[1, 0.30000000000000004]_\"\"",
 					result => result.NamedAfter(0.1 + 0.2, tracks, ""),
 					"the arguments of .NamedAfter(…) and of the running test are written alike");
 			}
@@ -225,6 +287,11 @@ public sealed partial class ThatSnapshot
 			}
 
 			private sealed record Album(string Title, int Year);
+
+			private sealed class Track
+			{
+				public override string ToString() => throw new InvalidOperationException("No title");
+			}
 		}
 	}
 }

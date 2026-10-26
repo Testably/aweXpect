@@ -124,7 +124,7 @@ public sealed partial class ThatSnapshot
 			[Arguments(new[] { 1, 2, 3, })]
 			public async Task WithArray_ShouldWriteItsItems(int[] tracks)
 			{
-				await ShouldBeNamed("[1,2,3]", result => result,
+				await ShouldBeNamed("[1, 2, 3]", result => result,
 					$"the name of the type of the {tracks.Length} tracks would be the same in every case");
 			}
 

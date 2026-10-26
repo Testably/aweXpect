@@ -68,19 +68,12 @@ public static class TestFrameworkRegistry
 	///     reports the test results.
 	/// </summary>
 	/// <remarks>
-	///     Returns <see langword="false" /> when no adapter is registered, its test framework does not support
-	///     attachments, no test is running, or the adapter throws. Some test frameworks only read the file when the test
-	///     ends, so it must still exist then.
+	///     Returns <see langword="false" /> when the <paramref name="filePath" /> is <see langword="null" />, no adapter
+	///     is registered, its test framework does not support attachments, no test is running, or the adapter throws.
+	///     Some test frameworks only read the file when the test ends, so it must still exist then.
 	/// </remarks>
 	public static bool TryAddAttachment(string filePath, string? description = null)
-	{
-		if (filePath is null)
-		{
-			throw Tracing.WriteException(new ArgumentNullException(nameof(filePath)));
-		}
-
-		return AweXpectInitialization.State.Value.TryAddAttachment(filePath, description);
-	}
+		=> filePath is not null && AweXpectInitialization.State.Value.TryAddAttachment(filePath, description);
 
 	internal sealed class Registration
 	{

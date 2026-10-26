@@ -226,9 +226,10 @@ public class FrameworkGenerator : IIncrementalGenerator
 	///     Each framework is checked for the members themselves, as older versions lack them, e.g. MSTest before 4.2
 	///     has no <c>TestContext.Current</c> and NUnit 3 no <c>CancellationToken</c>, so the adapter of such a version
 	///     returns <see langword="false" /> instead. Every member and every named type that the generated code uses is
-	///     checked, so that a test framework that removes one degrades the adapter instead of breaking the build of the
-	///     consumer. A member or type that is marked as experimental, like <c>TestContext.Current</c> of MSTest 4, or as
-	///     obsolete counts as missing, as using it warns in the generated code, which fails the build of a consumer that
+	///     checked, with the type of each property, so that a test framework that removes or changes one degrades the
+	///     adapter instead of breaking the build of the consumer. A member or type that is marked as experimental, like
+	///     <c>TestContext.Current</c> of MSTest 4, or as obsolete, also on a containing type or the assembly, counts as
+	///     missing, as using it warns in the generated code, which fails the build of a consumer that
 	///     treats warnings as errors.
 	/// </remarks>
 	private static TestContextSupport TestContext(Compilation c)
@@ -249,36 +250,46 @@ public class FrameworkGenerator : IIncrementalGenerator
 		INamedTypeSymbol? xunitTest = GetUsableType(c, "Xunit.v3.IXunitTest");
 		ITypeSymbol? tunitExecution = GetPropertyType(tunit, "Execution");
 
-		bool hasNunitTest = HasProperties(nunit, true, "CurrentContext") &&
-		                    HasProperties(nunit, false, "Test") &&
-		                    HasProperties(nunitTest, false, "MethodName");
-		bool hasTUnitContext = HasProperties(tunit, true, "Current");
-		bool hasXunit3Test = HasProperties(GetUsableType(c, "Xunit.TestContext"), true, "Current") &&
-		                     HasProperties(xunitContext, false, "Test");
+		bool hasNunitTest = HasProperties(nunit, true, ("CurrentContext", "global::NUnit.Framework.TestContext")) &&
+		                    HasProperties(nunit, false, ("Test", "global::NUnit.Framework.TestContext.TestAdapter")) &&
+		                    HasProperties(nunitTest, false, ("MethodName", "string"));
+		bool hasTUnitContext = HasProperties(tunit, true, ("Current", "global::TUnit.Core.TestContext"));
+		bool hasXunit3Test =
+			HasProperties(GetUsableType(c, "Xunit.TestContext"), true, ("Current", "global::Xunit.ITestContext")) &&
+			HasProperties(xunitContext, false, ("Test", null));
 		return new TestContextSupport(true,
 			new FrameworkSupport(
-				HasProperties(msTest, true, "Current") &&
-				HasProperties(msTest, false, "FullyQualifiedTestClassName", "TestName", "TestData"),
+				HasProperties(msTest, true, ("Current", "global::Microsoft.VisualStudio.TestTools.UnitTesting.TestContext")) &&
+				HasProperties(msTest, false, ("FullyQualifiedTestClassName", "string"), ("TestName", "string"),
+					("TestData", "object[]")),
 				false, false),
 			new FrameworkSupport(
 				hasNunitTest &&
-				HasProperties(nunitTest, false, "ClassName", "Arguments", "ID", "Name") &&
-				HasProperties(nunit, false, "CurrentRepeatCount"),
-				hasNunitTest && HasProperties(nunit, false, "CancellationToken"),
+				HasProperties(nunitTest, false, ("ClassName", "string"), ("Arguments", "object[]"), ("ID", "string"),
+					("Name", "string")) &&
+				HasProperties(nunit, false, ("CurrentRepeatCount", "int")),
+				hasNunitTest &&
+				HasProperties(nunit, false, ("CancellationToken", "global::System.Threading.CancellationToken")),
 				hasNunitTest && HasMethod(nunit, "AddTestAttachment", true, "string", "string")),
 			new FrameworkSupport(
 				hasTUnitContext &&
-				HasProperties(GetPropertyType(tunit, "Metadata"), false, "TestDetails", "DisplayName") &&
-				HasProperties(tunitDetails, false, "ClassType", "MethodName", "TestMethodArguments", "TestId") &&
-				HasProperties(tunitExecution, false, "CurrentRetryAttempt"),
-				hasTUnitContext && HasProperties(tunitExecution, false, "CancellationToken"),
+				HasProperties(GetPropertyType(tunit, "Metadata"), false, ("TestDetails", "global::TUnit.Core.TestDetails"),
+					("DisplayName", "string")) &&
+				HasProperties(tunitDetails, false, ("ClassType", "global::System.Type"), ("MethodName", "string"),
+					("TestMethodArguments", "object[]"), ("TestId", "string")) &&
+				HasProperties(tunitExecution, false, ("CurrentRetryAttempt", "int")),
+				hasTUnitContext &&
+				HasProperties(tunitExecution, false, ("CancellationToken", "global::System.Threading.CancellationToken")),
 				hasTUnitContext &&
 				HasMethod(GetPropertyType(tunit, "Output"), "AttachArtifact", false, "string", "string?", "string?")),
 			new FrameworkSupport(
 				hasXunit3Test &&
-				HasProperties(xunitTest, false, "TestMethodArguments", "UniqueID", "TestDisplayName") &&
-				HasProperties(GetPropertyType(xunitTest, "TestCase"), false, "TestClassName", "TestMethodName"),
-				hasXunit3Test && HasProperties(xunitContext, false, "CancellationToken"),
+				HasProperties(xunitTest, false, ("TestMethodArguments", "object[]"), ("UniqueID", "string"),
+					("TestDisplayName", "string")) &&
+				HasProperties(GetPropertyType(xunitTest, "TestCase"), false, ("TestClassName", "string"),
+					("TestMethodName", "string")),
+				hasXunit3Test &&
+				HasProperties(xunitContext, false, ("CancellationToken", "global::System.Threading.CancellationToken")),
 				hasXunit3Test && HasMethod(xunitContext, "AddAttachment", false, "string", "byte[]", "string")));
 	}
 
@@ -295,9 +306,17 @@ public class FrameworkGenerator : IIncrementalGenerator
 		=> GetMembers(type, propertyName).OfType<IPropertySymbol>().FirstOrDefault(x => !x.IsStatic && IsUsable(x))
 			?.Type;
 
-	private static bool HasProperties(ITypeSymbol? type, bool isStatic, params string[] propertyNames)
-		=> type is not null && propertyNames.All(propertyName => GetMembers(type, propertyName)
-			.OfType<IPropertySymbol>().Any(x => x.IsStatic == isStatic && IsUsable(x)));
+	/// <remarks>
+	///     Each property has the given type, written without its nullable annotation, as the generated code assigns or
+	///     passes it, or any type when it is <see langword="null" />, as the generated code only reads its members, which
+	///     are checked themselves.
+	/// </remarks>
+	private static bool HasProperties(ITypeSymbol? type, bool isStatic,
+		params (string Name, string? Type)[] properties)
+		=> type is not null && properties.All(property => GetMembers(type, property.Name)
+			.OfType<IPropertySymbol>().Any(x => x.IsStatic == isStatic && IsUsable(x) &&
+			                                    (property.Type is null || property.Type ==
+				                                    x.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))));
 
 	/// <remarks>
 	///     The <paramref name="parameterTypes" /> are compared without their nullable annotation, as an older version
@@ -338,10 +357,20 @@ public class FrameworkGenerator : IIncrementalGenerator
 		}
 	}
 
+	/// <remarks>
+	///     A member is only usable when its containing types are, and the compiler also reports a type of an assembly
+	///     that is marked as experimental.
+	/// </remarks>
 	private static bool IsUsable(ISymbol symbol)
 		=> symbol.DeclaredAccessibility == Accessibility.Public &&
-		   !symbol.GetAttributes().Any(a => a.AttributeClass?.ToDisplayString() is
-			   "System.Diagnostics.CodeAnalysis.ExperimentalAttribute" or "System.ObsoleteAttribute");
+		   !IsExperimentalOrObsolete(symbol) &&
+		   (symbol.ContainingType is { } containingType
+			   ? IsUsable(containingType)
+			   : symbol.ContainingAssembly is null || !IsExperimentalOrObsolete(symbol.ContainingAssembly));
+
+	private static bool IsExperimentalOrObsolete(ISymbol symbol)
+		=> symbol.GetAttributes().Any(a => a.AttributeClass?.ToDisplayString() is
+			"System.Diagnostics.CodeAnalysis.ExperimentalAttribute" or "System.ObsoleteAttribute");
 
 	/// <summary>
 	///     The members of an adapter that read the running test, when the referenced aweXpect.Core declares them, each

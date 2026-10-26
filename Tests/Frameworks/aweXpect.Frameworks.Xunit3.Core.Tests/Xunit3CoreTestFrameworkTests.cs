@@ -61,12 +61,18 @@ public class Xunit3TestFrameworkTests
 	{
 		string filePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.txt");
 		File.WriteAllText(filePath, "received");
+		try
+		{
+			bool isAttached = TestFrameworkRegistry.TryAddAttachment(filePath, "the received snapshot");
 
-		bool isAttached = TestFrameworkRegistry.TryAddAttachment(filePath, "the received snapshot");
-
-		await Expect.That(isAttached).IsTrue();
-		await Expect.That(TestContext.Current.Attachments!.ContainsKey(Path.GetFileName(filePath))).IsTrue()
-			.Because("xunit v3 attaches the content of the file under its name");
+			await Expect.That(isAttached).IsTrue();
+			await Expect.That(TestContext.Current.Attachments!.ContainsKey(Path.GetFileName(filePath))).IsTrue()
+				.Because("xunit v3 attaches the content of the file under its name, so it can be deleted right away");
+		}
+		finally
+		{
+			File.Delete(filePath);
+		}
 	}
 
 	[Fact]

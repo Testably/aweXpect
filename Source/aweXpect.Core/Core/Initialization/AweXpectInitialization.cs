@@ -66,7 +66,7 @@ internal static class AweXpectInitialization
 		{
 			try
 			{
-				if (testFramework.TryGetCurrentTest(out currentTest) && currentTest is not null)
+				if (testFramework.TryGetCurrentTest(out currentTest))
 				{
 					return true;
 				}

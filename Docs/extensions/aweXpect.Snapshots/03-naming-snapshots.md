@@ -76,7 +76,9 @@ parameter keeps the snapshot, and it is escaped and shortened like any other nam
 - `null` is written as `null` and an empty string as `""`.
 - A `double` or `float` is written with the fewest digits that round-trip, the same on .NET Framework and .NET, e.g.
   `0.3333333333333333` for `1.0 / 3`.
-- The items of an array or another collection are written as `[1,2,3]`, any other value by its `ToString()`.
+- A collection, tuple, record or other object is written like in a snapshot, e.g. `[1, 2, 3]` or
+  `(4.5, "Something")`, with the items of a set sorted. An object with its own `ToString()` is written by it, any other
+  one with its members.
 
 ## Naming after the test case
 
@@ -110,12 +112,14 @@ without parameters keeps its snapshot.
 
 `.Named(…)` is appended to the arguments, e.g. `.Named("cover")` gives `Abbey Road_1969_cover`, so that each case can
 hold several snapshots, while `.NamedAfter(…)` replaces them. Two cases whose arguments are written alike, e.g. two
-objects without their own `ToString()`, share a snapshot and fail like any snapshot that is used for another value.
+objects whose own `ToString()` returns the same text, share a snapshot and fail like any snapshot that is used for
+another value.
 
 The name has to be the same in every run, so name a test with `.Named(…)` or `.NamedAfter(…)` instead when one of its
 arguments is written differently each time, e.g. a `Guid.NewGuid()`, a `DateTime.Now`, a mock or any other object whose
 `ToString()` contains a random value or a hash code. Otherwise each run looks for another snapshot and fails, as it
-does not exist yet. When the `ToString()` of an argument throws, `MatchesSnapshot()` throws its exception.
+does not exist yet. When the `ToString()` of an argument throws, the name holds the exception like a snapshot would,
+but `MatchesSnapshot()` throws it for a number, a date or another `IFormattable` argument.
 
 The running test is only known when the test framework exposes it:
 

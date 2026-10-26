@@ -10,6 +10,7 @@ namespace aweXpect.Frameworks.Tunit.Core.Tests;
 
 public sealed class TunitCoreTestFrameworkTests
 {
+	private static string? _firstAttemptId;
 	private static int _retriedRuns;
 
 	[Test]
@@ -116,7 +117,7 @@ public sealed class TunitCoreTestFrameworkTests
 
 	[Test]
 	[Retry(1)]
-	public async Task TryGetCurrentTest_WhenRetried_ShouldCountTheAttempts()
+	public async Task TryGetCurrentTest_WhenRetried_ShouldCountTheAttemptsAndKeepTheId()
 	{
 		int attempt = Interlocked.Increment(ref _retriedRuns) - 1;
 
@@ -126,8 +127,12 @@ public sealed class TunitCoreTestFrameworkTests
 		await Expect.That(currentTest!.RetryAttempt).IsEqualTo(attempt);
 		if (attempt == 0)
 		{
+			_firstAttemptId = currentTest.Id;
 			throw new InvalidOperationException("The first attempt fails, so that TUnit retries the test.");
 		}
+
+		await Expect.That(currentTest.Id).IsEqualTo(_firstAttemptId)
+			.Because("the id is the one of the test, not of the attempt, so that a retry may compare with its snapshot again");
 	}
 
 	[Test]

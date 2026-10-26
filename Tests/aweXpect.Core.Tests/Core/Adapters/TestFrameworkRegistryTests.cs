@@ -89,12 +89,12 @@ public sealed class TestFrameworkRegistryTests
 	}
 
 	[Test]
-	public async Task TryAddAttachment_WithNullFilePath_ShouldThrowArgumentNullException()
+	public async Task TryAddAttachment_WithNullFilePath_ShouldReturnFalse()
 	{
-		void Act() => TestFrameworkRegistry.TryAddAttachment(null!);
+		bool isAttached = TestFrameworkRegistry.TryAddAttachment(null!);
 
-		await That(Act).Throws<ArgumentNullException>()
-			.WithParamName("filePath");
+		await That(isAttached).IsFalse()
+			.Because("like the other Try methods, it never throws");
 	}
 
 	private sealed class AvailableAdapter : ITestFrameworkAdapter
