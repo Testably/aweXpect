@@ -253,6 +253,9 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   the `StringEqualityOptions`, and `ValidateExpected(expected, parameterName)` of a `StringMatchType`.
 - `CollectionMatchOptions.SetEquivalenceRelation` is removed; pass the relation to the constructor.
   `ExecutesInResult` and `ExecutesInToleranceResult` take the `ExpectationBuilder` as first constructor argument.
+- `ExpectationBuilder.Timeout` only returns the timeouts added with `WithTimeout(…)`. The limits of `ExecutesIn()` and
+  of `Within(…)` after `Throws…()` are kept apart, so that a later limit replaces an earlier one, and still apply when
+  the expectation is evaluated.
 - The predicates of a `Signaler<TParameter>` moved from `SignalerOptions<TParameter>` to
   `SignalerPredicateOptions<TParameter>`.
 - `ConstraintResult` creates a result that fails both ways with `FailureBothWays` instead of `Fail`.

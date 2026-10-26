@@ -104,7 +104,10 @@ public abstract class ExpectationBuilder
 	/// <remarks>
 	///     It is the tightest of all timeouts added with <see cref="WithTimeout(TimeSpan)" />. The evaluation is also
 	///     limited by the timeout from <see cref="AwexpectCustomization.SettingsCustomization.TestCancellation" />, if
-	///     it is tighter.
+	///     it is tighter.<br />
+	///     The limits of <c>ExecutesIn()</c> and of <c>Within(…)</c> after <c>Throws…()</c> are not included: they are
+	///     kept apart, so that a later limit can replace an earlier one, and the tighter of them and this timeout
+	///     applies when the evaluation starts.
 	/// </remarks>
 	public TimeSpan? Timeout => _rareSettings?.Timeout;
 

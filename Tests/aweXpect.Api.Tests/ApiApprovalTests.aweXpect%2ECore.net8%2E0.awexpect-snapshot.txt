@@ -1816,6 +1816,9 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> Exactly(this aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> slot, int expected) { }
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> LessThan(this aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> slot, int maximum) { }
         public static aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> MoreThan(this aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> slot, int minimum) { }
+        public static aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> Never(this aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> slot) { }
+        public static aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> Once(this aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> slot) { }
+        public static aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> Twice(this aweXpect.Core.OptionsSlot<aweXpect.Options.Quantifier> slot) { }
     }
     public readonly struct RepeatedCheckOptions
     {

@@ -72,7 +72,7 @@ public readonly struct Quantifier
 	///     A quantifier for exactly zero items.
 	/// </summary>
 	public static Quantifier Never()
-		=> Default.Exactly(0);
+		=> Default.Exactly(0, QuantifierOption.Never);
 
 	/// <summary>
 	///     Verifies that it occurs at least <paramref name="minimum" /> times.

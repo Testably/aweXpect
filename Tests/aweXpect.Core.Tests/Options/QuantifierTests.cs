@@ -401,7 +401,8 @@ public class QuantifierTests
 
 		await That(sut.ToString()).IsEqualTo("never");
 		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("AtLeast cannot be combined with Exactly.");
+			.WithMessage("AtLeast cannot be combined with Never.")
+			.Because("the conflict names the option like the user-facing Never() does");
 	}
 
 	[Test]
