@@ -19,19 +19,19 @@ The name is appended to the file names, e.g. `AlbumTests.Describes.Abbey Road.aw
 applies to several snapshots in one test method.
 
 <details>
-<summary>Characters that are escaped</summary>
+<summary>Escaped characters and long names</summary>
 
 Characters that a file name cannot hold on every operating system (`< > : " / \ | ? *` and control characters), as well
 as `%` and `.`, are escaped as `%XX` in the file name, e.g. `.Named("AC/DC")` is stored in
 `ArtistTests.Describes.AC%2FDC.awexpect-snapshot.txt`. The same holds for `@`, which separates the environment (see
 below).
 
-</details>
-
 A name longer than 64 characters in the file name, where each escaped character takes three, is shortened to 55
 characters, followed by `~` and a hash of the whole name, e.g.
 `Sgt. Pepper's Lonely Hearts Club Band (Remastered Sup~e0c652ac`, so that the path of the snapshot stays short enough
 for every file system. This applies to every name, also to one from `.Named(…)`.
+
+</details>
 
 A snapshot that was already used for another value in the same test run fails, so that the cases cannot overwrite each
 other's pending snapshot:
@@ -42,13 +42,14 @@ matches the snapshot "/src/Tests/AlbumTests.Describes.awexpect-snapshot.txt",
 but the snapshot was already used for another value in this test run, so name each one with .Named(…) or .NamedAfter(…)
 ```
 
-The same value again is allowed, so that a retried or repeated test still compares with its snapshot. When the test
-framework reports retries (NUnit and TUnit), a retry may also use another value than its failed attempt. NUnit also
-counts the runs of `[Repeat]` as retries, so while accepting, a repeated test whose value changes keeps the value of
-its last run instead of failing.
+The same value again is allowed, so that a retried or repeated test still compares with its snapshot.
 
 <details>
-<summary>Names that only differ in case</summary>
+<summary>Retried tests and names that only differ in case</summary>
+
+When the test framework reports retries (NUnit and TUnit), a retry may also use another value than its failed attempt.
+NUnit also counts the runs of `[Repeat]` as retries, so while accepting, a repeated test whose value changes keeps the
+value of its last run instead of failing.
 
 Names that only differ in case, e.g. `.Named("Live")` and `.Named("live")`, fail as well, also for the same value, as
 they are the same file on Windows and macOS but two files on Linux:
@@ -80,7 +81,10 @@ public async Task Describes(string title, int year)
 
 The values are written in the invariant culture and separated by `_`, e.g.
 `AlbumTests.Describes.Abbey Road_1969.awexpect-snapshot.txt`. The name holds only the values, so that renaming a
-parameter keeps the snapshot, and it is escaped and shortened like any other name:
+parameter keeps the snapshot, and it is escaped and shortened like any other name.
+
+<details>
+<summary>How the values are written</summary>
 
 - `null` is written as `null` and an empty string as `""`.
 - A `double` or `float` is written with the fewest digits that round-trip, the same on .NET Framework and .NET, e.g.
@@ -89,6 +93,8 @@ parameter keeps the snapshot, and it is escaped and shortened like any other nam
 - A collection, tuple, record or other object is written like in a snapshot, e.g. `[1, 2, 3]` or
   `(4.5, "Something")`, with the items of a set sorted. An object with its own `ToString()` is written by it, any other
   one with its members.
+
+</details>
 
 ## Naming after the test case
 
@@ -117,25 +123,32 @@ public async Task Describes(string title, int year)
 ```
 
 The arguments are written like those of `.NamedAfter(…)`, e.g.
-`AlbumTests.Describes.Abbey Road_1969.awexpect-snapshot.txt`, and an injected `CancellationToken` is skipped. A test
-without parameters keeps its snapshot.
-
-The arguments of a parameterized test class come first, e.g. `de-DE_Abbey Road` for NUnit `[TestFixture("de-DE")]` or
-TUnit `[Arguments("de-DE")]` on the class, so that its instances are kept apart as well. Only values are included, e.g.
-strings, numbers, dates or collections of them, so that an object that the test framework injects, e.g. a shared
-fixture, is skipped. xUnit v3 and MSTest have no arguments of the test class, and NUnit 3 does not expose them. The
-arguments of the test method are all written, so name a test with `.Named(…)` or `.NamedAfter(…)` when the test
-framework injects an object into one of its parameters, e.g. with TUnit `[ClassDataSource]`.
-
+`AlbumTests.Describes.Abbey Road_1969.awexpect-snapshot.txt`. A test without parameters keeps its snapshot.
 `.Named(…)` is appended to the arguments, e.g. `.Named("cover")` gives `Abbey Road_1969_cover`, so that each case can
-hold several snapshots, while `.NamedAfter(…)` replaces them. Two cases whose arguments are written alike, e.g. two
-objects whose own `ToString()` returns the same text, share a snapshot and fail like any snapshot that is used for
-another value.
+hold several snapshots, while `.NamedAfter(…)` replaces them.
 
 The name has to be the same in every run, so name a test with `.Named(…)` or `.NamedAfter(…)` instead when one of its
 arguments is written differently each time, e.g. a `Guid.NewGuid()`, a `DateTime.Now`, a mock or any other object whose
 `ToString()` contains a random value or a hash code. Otherwise each run looks for another snapshot and fails, as it
-does not exist yet. When the `ToString()` of an argument throws, the name holds the exception like a snapshot would.
+does not exist yet.
+
+<details>
+<summary>Arguments of the test class, injected objects and cases written alike</summary>
+
+The arguments of a parameterized test class come first, e.g. `de-DE_Abbey Road` for NUnit `[TestFixture("de-DE")]` or
+TUnit `[Arguments("de-DE")]` on the class, so that its instances are kept apart as well. Only values are included, e.g.
+strings, numbers, dates or collections of them, so that an object that the test framework injects, e.g. a shared
+fixture, is skipped. xUnit v3 and MSTest have no arguments of the test class, and NUnit 3 does not expose them.
+
+The arguments of the test method are all written, except an injected `CancellationToken`, so name a test with
+`.Named(…)` or `.NamedAfter(…)` when the test framework injects an object into one of its parameters, e.g. with TUnit
+`[ClassDataSource]`.
+
+Two cases whose arguments are written alike, e.g. two objects whose own `ToString()` returns the same text, share a
+snapshot and fail like any snapshot that is used for another value. When the `ToString()` of an argument throws, the
+name holds the exception like a snapshot would.
+
+</details>
 
 The running test is only known when the test framework exposes it:
 

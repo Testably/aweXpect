@@ -101,13 +101,15 @@ The settings live under `Customize.aweXpect.Snapshots()` in the namespace `aweXp
 applies to the current async flow, e.g. a single test; set it on `Customize.aweXpect.Global.Snapshots()` to apply it
 to all tests:
 
-| Value                                               | Default                                                  | Summary                                                      |
-|-----------------------------------------------------|----------------------------------------------------------|--------------------------------------------------------------|
-| [`Acceptance`](./02-accepting-snapshots.md)         | `null`, left to the variable `AWEXPECT_ACCEPT_SNAPSHOTS` | which missing or changed snapshots are accepted              |
-| [`Rules`](./04-masking-values.md#for-all-snapshots) | none                                                     | the rules to mask or ignore values in every snapshot         |
-| [`Store`](./07-storing-snapshots.md)                | a file next to the test file                             | where the snapshots are kept                                 |
-| [`Comparers`](./08-comparers.md)                    | none                                                     | decide whether a value matches its snapshot, e.g. for images |
-| [`Reporters`](./09-reporters.md)                    | none                                                     | are told about every missing, different or matching snapshot |
+| Value                                                                            | Default                                                  | Summary                                                      |
+|----------------------------------------------------------------------------------|----------------------------------------------------------|--------------------------------------------------------------|
+| [`Acceptance`](./02-accepting-snapshots.md)                                      | `null`, left to the variable `AWEXPECT_ACCEPT_SNAPSHOTS` | which missing or changed snapshots are accepted              |
+| [`Rules`](./04-masking-values.md#for-all-snapshots)                              | none                                                     | the rules to mask or ignore values in every snapshot         |
+| [`Store`](./07-storing-snapshots.md)                                             | a file next to the test file                             | where the snapshots are kept                                 |
+| [`Comparers`](./08-comparers.md)                                                 | none                                                     | decide whether a value matches its snapshot, e.g. for images |
+| [`Reporters`](./09-reporters.md)                                                 | none                                                     | are told about every missing, different or matching snapshot |
+| [`NamedAfterTestArguments`](./03-naming-snapshots.md#naming-after-the-test-case) | `false`                                                  | names each snapshot after the arguments of the test case     |
+| [`AttachPendingFiles`](./01-matching-snapshots.md#files)                         | `false`                                                  | attaches the pending file of a mismatch to the test result   |
 
 ## Documentation
 
