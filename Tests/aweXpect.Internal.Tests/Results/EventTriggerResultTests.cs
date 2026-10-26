@@ -11,8 +11,8 @@ public sealed class EventTriggerResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForQuantifier()
 	{
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		EventTriggerResult<EventTriggerResultTests> sut = CreateSut(new EventTriggerResultTests(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
@@ -22,8 +22,8 @@ public sealed class EventTriggerResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForRepeatedCheckOptions()
 	{
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		EventTriggerResult<EventTriggerResultTests> sut = CreateSut(new EventTriggerResultTests(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<RepeatedCheckOptions>>()
@@ -361,8 +361,8 @@ public sealed class EventTriggerResultTests
 			             """);
 	}
 
-	private static EventTriggerResult<T> CreateSut<T>(T subject, OptionsSlot<Quantifier> quantifier,
-		OptionsSlot<RepeatedCheckOptions> options)
+	private static EventTriggerResult<T> CreateSut<T>(T subject, OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<RepeatedCheckOptions> options)
 		where T : notnull
 	{
 		RecordingFactory<T> recording = new(subject, nameof(subject));
@@ -371,7 +371,7 @@ public sealed class EventTriggerResultTests
 #pragma warning restore aweXpect0001
 		return new EventTriggerResult<T>(source.Get().ExpectationBuilder,
 			source,
-			new OptionsSlot<TriggerEventFilter>(TriggerEventFilter.Default),
+			new OptionsHolder<TriggerEventFilter>(TriggerEventFilter.Default),
 			quantifier,
 			options);
 	}

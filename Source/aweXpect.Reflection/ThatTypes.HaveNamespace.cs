@@ -25,9 +25,9 @@ public static partial class ThatTypes
 	public static StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> HaveNamespace(
 		this IThat<IEnumerable<Type?>?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Type?>>((expected, options),
+				.ExpectationBuilder.AddConstraint<(string Expected, OptionsHolder<StringEqualityOptions> Options), IEnumerable<Type?>>((expected, options),
 					static (s, it, grammars)
 					=> new HaveNamespaceConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
@@ -43,9 +43,9 @@ public static partial class ThatTypes
 	public static StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> HaveNamespace(
 		this IThat<IAsyncEnumerable<Type?>?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Type?>>((expected, options),
+				.ExpectationBuilder.AddConstraint<(string Expected, OptionsHolder<StringEqualityOptions> Options), IAsyncEnumerable<Type?>>((expected, options),
 					static (s, it, grammars)
 					=> new HaveNamespaceConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
@@ -66,9 +66,9 @@ public static partial class ThatTypes
 	public static StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotHaveNamespace(
 		this IThat<IEnumerable<Type?>?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Type?>>((unexpected, options),
+				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsHolder<StringEqualityOptions> Options), IEnumerable<Type?>>((unexpected, options),
 					static (s, it, grammars)
 					=> new DoNotHaveNamespaceConstraint(it, grammars, s.Unexpected, s.Options)),
 			subject,
@@ -89,9 +89,9 @@ public static partial class ThatTypes
 	public static StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotHaveNamespace(
 		this IThat<IAsyncEnumerable<Type?>?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Type?>>((unexpected, options),
+				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsHolder<StringEqualityOptions> Options), IAsyncEnumerable<Type?>>((unexpected, options),
 					static (s, it, grammars)
 					=> new DoNotHaveNamespaceConstraint(it, grammars, s.Unexpected, s.Options)),
 			subject,
@@ -103,7 +103,7 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -157,7 +157,7 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		string unexpected,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER

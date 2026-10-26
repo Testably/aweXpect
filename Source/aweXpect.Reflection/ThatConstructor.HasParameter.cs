@@ -24,7 +24,7 @@ public static partial class ThatConstructor
 		this IThat<ConstructorInfo?> subject)
 	{
 		Type parameterType = typeof(TParameter);
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
 		return new ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter>(subject.Get().ExpectationBuilder
@@ -48,8 +48,8 @@ public static partial class ThatConstructor
 		this IThat<ConstructorInfo?> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		OptionsSlot<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)));
@@ -72,7 +72,7 @@ public static partial class ThatConstructor
 	public static ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?> HasParameter(
 		this IThat<ConstructorInfo?> subject, Type parameterType)
 	{
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
 		return new ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?>(subject.Get().ExpectationBuilder
@@ -95,8 +95,8 @@ public static partial class ThatConstructor
 	public static NamedParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?> HasParameter(
 		this IThat<ConstructorInfo?> subject, Type parameterType, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)));
@@ -120,8 +120,8 @@ public static partial class ThatConstructor
 		this IThat<ConstructorInfo?> subject,
 		string expected)
 	{
-		OptionsSlot<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)));
 		return new NamedParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?>(subject.Get().ExpectationBuilder
 				.AddConstraint((Expected: expected, CollectionIndexOptions: collectionIndexOptions, ParameterFilterOptions: parameterFilterOptions),
@@ -180,7 +180,7 @@ public static partial class ThatConstructor
 	private static ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?> HasParameterOfKind(
 		IThat<ConstructorInfo?> subject, Func<ParameterInfo, bool> predicate, string kind)
 	{
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions = new(predicate);
 		return new ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?>(subject.Get().ExpectationBuilder
 				.AddConstraint((Kind: kind, CollectionIndexOptions: collectionIndexOptions, ParameterFilterOptions: parameterFilterOptions),
@@ -197,7 +197,7 @@ public static partial class ThatConstructor
 	private static ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter> DoesNotHaveParameterOfType<TParameter>(
 		IThat<ConstructorInfo?> subject, Type parameterType)
 	{
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
 		return new ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter>(subject.Get().ExpectationBuilder
@@ -214,8 +214,8 @@ public static partial class ThatConstructor
 	private static NamedParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter> DoesNotHaveNamedParameter<TParameter>(
 		IThat<ConstructorInfo?> subject, Type? parameterType, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, unexpected, nameof(unexpected)));
 		if (parameterType is not null)
 		{
@@ -239,7 +239,7 @@ public static partial class ThatConstructor
 		ExpectationGrammars grammars,
 		Type? parameterType,
 		string? expectedName,
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions,
 		bool exactType = false,
 		string? kind = null)

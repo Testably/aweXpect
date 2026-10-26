@@ -33,7 +33,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -65,7 +65,7 @@ public static partial class ThatAsyncEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
@@ -97,7 +97,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint(

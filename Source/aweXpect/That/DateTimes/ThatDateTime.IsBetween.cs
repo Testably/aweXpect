@@ -24,7 +24,7 @@ public static partial class ThatDateTime
 		this IThat<DateTime> subject,
 		DateTime? minimum)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<DateTime, IThat<DateTime>>, DateTime?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -52,7 +52,7 @@ public static partial class ThatDateTime
 		this IThat<DateTime> subject,
 		DateTime? minimum)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<DateTime, IThat<DateTime>>, DateTime?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -71,7 +71,7 @@ public static partial class ThatDateTime
 		ExpectationGrammars grammars,
 		DateTime? minimum,
 		DateTime? maximum,
-		OptionsSlot<TimeTolerance> tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: OrderingConstraint<DateTime>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<DateTime>
 	{

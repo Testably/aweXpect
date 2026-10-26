@@ -19,9 +19,9 @@ public static partial class ThatEventRecording
 		string it,
 		ExpectationGrammars grammars,
 		string eventName,
-		OptionsSlot<TriggerEventFilter> filter,
-		OptionsSlot<Quantifier> quantifier,
-		OptionsSlot<RepeatedCheckOptions> options)
+		OptionsHolder<TriggerEventFilter> filter,
+		OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<RepeatedCheckOptions> options)
 		: ConstraintResult(grammars),
 			IAsyncContextConstraint<IEventRecording<TSubject>>
 		where TSubject : notnull

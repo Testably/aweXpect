@@ -55,7 +55,7 @@ static file class DayToleranceExtensions
 		this IThat<DateOnly> subject,
 		DateOnly expected)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Days);
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(
 			((IExpectThat<DateOnly>)subject).ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOnSameDayAsConstraint(it, grammars, expected, tolerance)),
@@ -67,7 +67,7 @@ static file class DayToleranceExtensions
 		string it,
 		ExpectationGrammars grammars,
 		DateOnly expected,
-		OptionsSlot<TimeTolerance> tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: ConstraintResult.WithValue<DateOnly>(it, grammars),
 			IValueConstraint<DateOnly>
 	{

@@ -19,16 +19,16 @@ public class SignalCountWhoseResult<TParameter>
 		IOptionsProvider<SignalerOptions>,
 		ISignalerResult<SignalCountWhoseResult<TParameter>, TParameter>
 {
-	private readonly OptionsSlot<SignalerOptions> _options;
-	private readonly OptionsSlot<SignalerPredicateOptions<TParameter>> _predicates;
-	private readonly OptionsSlot<Quantifier> _quantifier;
+	private readonly OptionsHolder<SignalerOptions> _options;
+	private readonly OptionsHolder<SignalerPredicateOptions<TParameter>> _predicates;
+	private readonly OptionsHolder<Quantifier> _quantifier;
 
 	internal SignalCountWhoseResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<Signaler<TParameter>> returnValue,
-		OptionsSlot<Quantifier> quantifier,
-		OptionsSlot<SignalerOptions> options,
-		OptionsSlot<SignalerPredicateOptions<TParameter>> predicates)
+		OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<SignalerOptions> options,
+		OptionsHolder<SignalerPredicateOptions<TParameter>> predicates)
 		: base(expectationBuilder, returnValue)
 	{
 		_quantifier = quantifier;
@@ -51,12 +51,12 @@ public class SignalCountWhoseResult<TParameter>
 				            ExpectationGrammars.Introduced));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<SignalerOptions> IOptionsProvider<SignalerOptions>.Options => _options;
+	OptionsHolder<SignalerOptions> IOptionsProvider<SignalerOptions>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<SignalerPredicateOptions<TParameter>> IOptionsProvider<SignalerPredicateOptions<TParameter>>.Options
+	OptionsHolder<SignalerPredicateOptions<TParameter>> IOptionsProvider<SignalerPredicateOptions<TParameter>>.Options
 		=> _predicates;
 }

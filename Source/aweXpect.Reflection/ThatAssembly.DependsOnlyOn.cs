@@ -40,7 +40,7 @@ public static partial class ThatAssembly
 		this IThat<Assembly?> subject, IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Allowed: expected.ToArray(), Options: options),
 					static (s, it, grammars)
@@ -53,7 +53,7 @@ public static partial class ThatAssembly
 		string it,
 		ExpectationGrammars grammars,
 		string[] allowed,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
 			IAsyncContextConstraint<Assembly?>
 	{

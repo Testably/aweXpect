@@ -19,7 +19,7 @@ public static partial class ThatMember
 		this IThat<TMember?> subject, string unexpected)
 		where TMember : MemberInfo
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<TMember, IThat<TMember?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (s, it, grammars)

@@ -86,7 +86,7 @@ public static partial class ThatAsyncEnumerable
 		IAsyncEnumerableItems<string?> items,
 		bool expectUnique)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint(
@@ -108,7 +108,7 @@ public static partial class ThatAsyncEnumerable
 			IAsyncEnumerableItems<TItem> items,
 			bool expectUnique)
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -130,7 +130,7 @@ public static partial class ThatAsyncEnumerable
 			Func<TItem, TMember> memberAccessor, string memberAccessorExpression, bool expectUnique)
 	{
 		memberAccessor.ThrowIfNull();
-		OptionsSlot<ObjectMatchType<TMember>> options = new(ItemEqualsMatchType<TMember>.Instance);
+		OptionsHolder<ObjectMatchType<TMember>> options = new(ItemEqualsMatchType<TMember>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TMember>(
 			expectationBuilder.AddConstraint(
@@ -154,7 +154,7 @@ public static partial class ThatAsyncEnumerable
 		Func<TItem, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
 	{
 		memberAccessor.ThrowIfNull();
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint(

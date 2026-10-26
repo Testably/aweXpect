@@ -34,7 +34,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((Options: options, ExpectedExpression: expectedExpression,
@@ -65,7 +65,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((Options: options, ExpectedExpression: expectedExpression,
@@ -97,7 +97,7 @@ public static partial class ThatEnumerable
 			string? expectedExpression,
 			bool negated)
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
@@ -129,7 +129,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((Options: options, ExpectedExpression: expectedExpression,
@@ -173,7 +173,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		string?[] expectedItems = [expected,];
-		OptionsSlot<ObjectMatchType<string?>> options = new(ItemEqualsMatchType<string?>.Instance);
+		OptionsHolder<ObjectMatchType<string?>> options = new(ItemEqualsMatchType<string?>.Instance);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>(
 			expectationBuilder.AddConstraint((Options: options, ExpectedItems: expectedItems, Negated: negated),
@@ -204,7 +204,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable
 	{
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint((Options: options, ExpectedExpression: expectedExpression,
@@ -234,7 +234,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint((Options: options, ExpectedExpression: expectedExpression,
@@ -266,7 +266,7 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(

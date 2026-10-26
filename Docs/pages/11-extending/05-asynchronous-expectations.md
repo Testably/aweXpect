@@ -51,7 +51,7 @@ finish within …", and a cancellation by the caller leaves it inconclusive.
 ## Repeated checks
 
 An expectation that returns a `RepeatedCheckResult<TType, TThat>` lets the caller wait for a condition with
-`.Within(timeout)` and `.CheckEvery(interval)`, like `Satisfies` does. Pass the same slot of `RepeatedCheckOptions` to
+`.Within(timeout)` and `.CheckEvery(interval)`, like `Satisfies` does. Pass the same holder of `RepeatedCheckOptions` to
 the result and to the constraint, and make the check with `CheckRepeatedly` of its value, which honours the options. For
 a player that starts playing asynchronously:
 
@@ -67,7 +67,7 @@ public class Player
 ```csharp
 public static RepeatedCheckResult<Player, IThat<Player?>> IsPlaying(this IThat<Player?> subject)
 {
-    OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
+    OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
     return new RepeatedCheckResult<Player, IThat<Player?>>(subject.Get().ExpectationBuilder
             .AddConstraint((it, grammars) => new IsPlayingConstraint(it, grammars, options)),
         subject,
@@ -77,7 +77,7 @@ public static RepeatedCheckResult<Player, IThat<Player?>> IsPlaying(this IThat<P
 private sealed class IsPlayingConstraint(
     string it,
     ExpectationGrammars grammars,
-    OptionsSlot<RepeatedCheckOptions> options)
+    OptionsHolder<RepeatedCheckOptions> options)
     : ConstraintResult.WithNotNullValue<Player>(it, grammars),
         IAsyncContextConstraint<Player?>
 {

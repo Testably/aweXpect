@@ -40,7 +40,7 @@ public static partial class ThatHttpResponseMessage
 	public static ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String
 		HasProblemDetailsContent(this IThat<HttpResponseMessage?> subject, string? type = null)
 	{
-		OptionsSlot<StringEqualityOptions> typeOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> typeOptions = new(StringEqualityOptions.Default);
 		ProblemDetailsOptions options = new();
 		return new ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String(
 			subject.Get().ExpectationBuilder
@@ -57,7 +57,7 @@ public static partial class ThatHttpResponseMessage
 		ExpectationGrammars grammars,
 		string? expectedType,
 		ProblemDetailsOptions options,
-		OptionsSlot<StringEqualityOptions> typeOptions)
+		OptionsHolder<StringEqualityOptions> typeOptions)
 		: ConstraintResult.WithNotNullValue<HttpResponseMessage>(it, grammars),
 			IAsyncContextConstraint<HttpResponseMessage>
 	{

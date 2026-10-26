@@ -43,7 +43,7 @@ public static partial class ThatType
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		ScopeOptions scope = new();
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersScopeResult<Type, Type?>(
 			AddContainsConstraint<TMember, TFiltered>(subject, types => navigate(types, scope.MemberScope), filter,
 				quantifier, scope),
@@ -58,7 +58,7 @@ public static partial class ThatType
 		Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersResult<Type, Type?>(
 			AddContainsConstraint<TMember, TFiltered>(subject, navigate, filter, quantifier, null),
 			subject,
@@ -69,7 +69,7 @@ public static partial class ThatType
 		IThat<Type?> subject,
 		Func<Filtered.Types, TFiltered> navigate,
 		Func<TFiltered, TFiltered> filter,
-		OptionsSlot<Quantifier> quantifier,
+		OptionsHolder<Quantifier> quantifier,
 		ScopeOptions? scope)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
@@ -85,7 +85,7 @@ public static partial class ThatType
 		string it,
 		ExpectationGrammars grammars,
 		IContainedMembersFilter memberFilter,
-		OptionsSlot<Quantifier> quantifier,
+		OptionsHolder<Quantifier> quantifier,
 		ScopeOptions? scope)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IAsyncConstraint<Type?>

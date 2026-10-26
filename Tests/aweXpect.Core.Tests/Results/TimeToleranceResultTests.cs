@@ -10,7 +10,7 @@ public sealed class TimeToleranceResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForTimeTolerance()
 	{
-		OptionsSlot<TimeTolerance> options = new(TimeTolerance.Default);
+		OptionsHolder<TimeTolerance> options = new(TimeTolerance.Default);
 		TimeToleranceResult<DateTime, IThat<DateTime>> sut = CreateSut(DateTime.Now, options);
 
 		await That(sut).Is<IOptionsProvider<TimeTolerance>>()
@@ -18,9 +18,9 @@ public sealed class TimeToleranceResultTests
 	}
 
 	[Test]
-	public async Task Within_ShouldReplaceTheToleranceInTheSlot()
+	public async Task Within_ShouldReplaceTheToleranceInTheHolder()
 	{
-		OptionsSlot<TimeTolerance> options = new(TimeTolerance.Default);
+		OptionsHolder<TimeTolerance> options = new(TimeTolerance.Default);
 		TimeToleranceResult<DateTime, IThat<DateTime>> sut = CreateSut(DateTime.Now, options);
 
 		TimeToleranceResult<DateTime, IThat<DateTime>> result = sut.Within(TimeSpan.FromSeconds(2));
@@ -30,7 +30,7 @@ public sealed class TimeToleranceResultTests
 	}
 
 	private static TimeToleranceResult<DateTime, IThat<DateTime>> CreateSut(DateTime subject,
-		OptionsSlot<TimeTolerance> options)
+		OptionsHolder<TimeTolerance> options)
 	{
 #pragma warning disable aweXpect0001
 		IThat<DateTime> source = That(subject);

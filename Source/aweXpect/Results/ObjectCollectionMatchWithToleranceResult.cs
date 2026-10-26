@@ -18,15 +18,15 @@ public class ObjectCollectionMatchWithToleranceResult<TType, TThat, TItem, TTole
 		IObjectEqualityWithToleranceResult<ObjectCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>,
 			TItem, TTolerance>
 {
-	private readonly OptionsSlot<CollectionMatchOptions> _collectionMatchOptions;
-	private readonly OptionsSlot<ObjectMatchType<TItem>> _options;
+	private readonly OptionsHolder<CollectionMatchOptions> _collectionMatchOptions;
+	private readonly OptionsHolder<ObjectMatchType<TItem>> _options;
 	private readonly TThat _returnValue;
 
 	internal ObjectCollectionMatchWithToleranceResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsSlot<ObjectMatchType<TItem>> options,
-		OptionsSlot<CollectionMatchOptions> collectionMatchOptions)
+		OptionsHolder<ObjectMatchType<TItem>> options,
+		OptionsHolder<CollectionMatchOptions> collectionMatchOptions)
 		: base(expectationBuilder, returnValue)
 	{
 		_returnValue = returnValue;
@@ -35,10 +35,10 @@ public class ObjectCollectionMatchWithToleranceResult<TType, TThat, TItem, TTole
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options;
+	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<CollectionMatchOptions> IOptionsProvider<CollectionMatchOptions>.Options => _collectionMatchOptions;
+	OptionsHolder<CollectionMatchOptions> IOptionsProvider<CollectionMatchOptions>.Options => _collectionMatchOptions;
 
 	/// <inheritdoc cref="ObjectMatchTypeExtensions.Within{TSelf, TItem, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TItem, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
@@ -59,8 +59,8 @@ public class ObjectCollectionMatchWithToleranceResult<TType, TThat, TItem, TTole
 		internal WithinResult(
 			ExpectationBuilder expectationBuilder,
 			TThat returnValue,
-			OptionsSlot<ObjectMatchType<TItem>> options,
-			OptionsSlot<CollectionMatchOptions> collectionMatchOptions)
+			OptionsHolder<ObjectMatchType<TItem>> options,
+			OptionsHolder<CollectionMatchOptions> collectionMatchOptions)
 			: base(expectationBuilder, returnValue, options, collectionMatchOptions)
 		{
 		}

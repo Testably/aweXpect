@@ -26,9 +26,9 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> DoNotDependOn(
 		this IThat<IEnumerable<Assembly?>?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Assembly?>>((unexpected, options),
+				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsHolder<StringEqualityOptions> Options), IEnumerable<Assembly?>>((unexpected, options),
 					static (s, it, grammars)
 					=> new DoNotDependOnConstraint(it, grammars, s.Unexpected, s.Options)),
 			subject,
@@ -45,10 +45,10 @@ public static partial class ThatAssemblies
 		DoNotDependOn(
 			this IThat<IAsyncEnumerable<Assembly?>?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
-				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((unexpected, options),
+				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsHolder<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((unexpected, options),
 					static (s, it, grammars)
 					=> new DoNotDependOnConstraint(it, grammars, s.Unexpected, s.Options)),
 			subject,
@@ -60,7 +60,7 @@ public static partial class ThatAssemblies
 		string it,
 		ExpectationGrammars grammars,
 		string unexpected,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: CollectionConstraintResult<Assembly?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER

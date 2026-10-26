@@ -23,7 +23,7 @@ public static partial class ThatNullableTimeSpan
 		this IThat<TimeSpan?> subject,
 		TimeSpan? minimum)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<TimeSpan, IThat<TimeSpan?>>, TimeSpan?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -50,7 +50,7 @@ public static partial class ThatNullableTimeSpan
 		this IThat<TimeSpan?> subject,
 		TimeSpan? minimum)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<TimeSpan, IThat<TimeSpan?>>, TimeSpan?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -69,7 +69,7 @@ public static partial class ThatNullableTimeSpan
 		ExpectationGrammars grammars,
 		TimeSpan? minimum,
 		TimeSpan? maximum,
-		OptionsSlot<TimeTolerance> tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: OrderingConstraint<TimeSpan?>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<TimeSpan?>
 	{

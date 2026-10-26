@@ -38,7 +38,7 @@ public static partial class ConstructorFilters
 					() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 
 	/// <summary>
@@ -69,6 +69,6 @@ public static partial class ConstructorFilters
 					() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

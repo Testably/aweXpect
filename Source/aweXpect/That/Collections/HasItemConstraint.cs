@@ -32,7 +32,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 		string it,
 		ExpectationGrammars grammars,
 		ContainedItem<TItem> item,
-		OptionsSlot<CollectionIndexOptions> options)
+		OptionsHolder<CollectionIndexOptions> options)
 		: base(it, grammars)
 	{
 		_itemGrammars = grammars;
@@ -50,7 +50,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 	/// <summary>
 	///     The options for the index of the item.
 	/// </summary>
-	protected OptionsSlot<CollectionIndexOptions> Options { get; }
+	protected OptionsHolder<CollectionIndexOptions> Options { get; }
 
 	/// <summary>
 	///     Whether the predicate is synchronous, so that the items can be verified without awaiting it.
@@ -147,7 +147,7 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>(
 	string it,
 	ExpectationGrammars grammars,
 	ContainedItem<TItem> containedItem,
-	OptionsSlot<CollectionIndexOptions> options)
+	OptionsHolder<CollectionIndexOptions> options)
 	: HasItemConstraintBase<TEnumerable, TItem>(it, grammars, containedItem, options),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
@@ -243,7 +243,7 @@ internal sealed class AsyncHasItemConstraint<TItem>(
 	string it,
 	ExpectationGrammars grammars,
 	ContainedItem<TItem> containedItem,
-	OptionsSlot<CollectionIndexOptions> options)
+	OptionsHolder<CollectionIndexOptions> options)
 	: HasItemConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, containedItem, options),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {

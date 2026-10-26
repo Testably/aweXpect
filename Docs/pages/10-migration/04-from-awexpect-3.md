@@ -219,11 +219,11 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
 - The expectations on quantified items extend the Core interfaces `IEnumerableItems<TItem>`,
   `IAsyncEnumerableItems<TItem>`, `IStructEnumerableItems<TCollection, TItem>` and
   `INonGenericEnumerableItems<TCollection>`, which replace `IEnumerableElements<TItem>` and its siblings.
-- The options of an expectation are immutable values in one `OptionsSlot<TOptions>`, a reference to the current value.
-  `IOptionsProvider<TOptions>.Options` returns the slot: create it in your expectation, e.g.
-  `new OptionsSlot<Quantifier>(Quantifier.Default)`, pass it to your constraint and your result, and read
-  `slot.Value` when the constraint evaluates. A constraint that only reads the options can take an
-  `IReadOnlyOptionsSlot<TOptions>`. See [Options](../11-extending/03-options-and-match-types.md#options).
+- The options of an expectation are immutable values in one `OptionsHolder<TOptions>`, a reference to the current value.
+  `IOptionsProvider<TOptions>.Options` returns the holder: create it in your expectation, e.g.
+  `new OptionsHolder<Quantifier>(Quantifier.Default)`, pass it to your constraint and your result, and read
+  `holder.Value` when the constraint evaluates. A constraint that only reads the options can take an
+  `IReadOnlyOptionsHolder<TOptions>`. See [Options](../11-extending/03-options-and-match-types.md#options).
 - `Quantifier`, `CollectionMatchOptions`, `CollectionIndexOptions`, `CollectionOrderOptions<TItem>`,
   `NumberTolerance<TNumber>`, `TimeTolerance`, `SignalerOptions`, `RepeatedCheckOptions` and `ExecutionTimeOptions`
   are `readonly struct`s, and `StringEqualityOptions` is a sealed immutable class. Start from their `Default`, e.g.
@@ -231,11 +231,11 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   A method that sets an option returns a new value, so use the value it returns: a discarded call on a struct, e.g.
   `options.AtLeast(2);`, compiles and changes nothing. A repeated option replaces the earlier one, and methods that
   mirror a user-facing option take its name, e.g. `Within` instead of `SetTolerance`.
-- The option methods are also extension methods on the slot in `aweXpect.Options`, which replace the value in the
-  slot, e.g. `result.Options.AtLeast(2)`. Import `aweXpect.Options` where you call them: without it, the compiler
+- The option methods are also extension methods on the holder in `aweXpect.Options`, which replace the value in the
+  holder, e.g. `result.Options.AtLeast(2)`. Import `aweXpect.Options` where you call them: without it, the compiler
   finds only the user-facing option of the same name and reports `CS0311`.
 - `ObjectEqualityOptions<TSubject>` and `ObjectEqualityWithToleranceOptions<TSubject, TTolerance>` are removed. Object
-  comparisons keep their `ObjectMatchType<TSubject>` in an `OptionsSlot<ObjectMatchType<TSubject>>`, also with a
+  comparisons keep their `ObjectMatchType<TSubject>` in an `OptionsHolder<ObjectMatchType<TSubject>>`, also with a
   tolerance, for which `ObjectMatchType<TSubject>.WithTolerance(…)` creates an
   `ObjectToleranceMatchType<TSubject, TTolerance>`. `ObjectEqualityOptionsExtensions` is renamed to
   `ObjectMatchTypeExtensions`.

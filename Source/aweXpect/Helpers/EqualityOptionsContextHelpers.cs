@@ -14,10 +14,10 @@ internal static class EqualityOptionsContextHelpers
 	///     current value of the <paramref name="options" />.
 	/// </summary>
 	/// <remarks>
-	///     Options that wrap the slot of the expectation, to let the comparer of a set subject decide, are kept while the
+	///     Options that wrap the holder of the expectation, to let the comparer of a set subject decide, are kept while the
 	///     comparison is the default one, so that the comparer can still decide.
 	/// </remarks>
-	public static IEqualityEvaluator<T> ForEvaluation<T>(this IReadOnlyOptionsSlot<IEqualityOptions<T>> options,
+	public static IEqualityEvaluator<T> ForEvaluation<T>(this IReadOnlyOptionsHolder<IEqualityOptions<T>> options,
 		IEvaluationContext context, CancellationToken cancellationToken)
 	{
 		IEqualityEvaluator<T> evaluator = options.Value.ForEvaluation(context, cancellationToken);
@@ -27,7 +27,7 @@ internal static class EqualityOptionsContextHelpers
 	/// <summary>
 	///     Returns the evaluator for the texts and contexts of a constraint that was not evaluated.
 	/// </summary>
-	public static IEqualityEvaluator<T> WithoutEvaluation<T>(this IReadOnlyOptionsSlot<IEqualityOptions<T>> options)
+	public static IEqualityEvaluator<T> WithoutEvaluation<T>(this IReadOnlyOptionsHolder<IEqualityOptions<T>> options)
 		=> options.ForEvaluation(default(MatchEnvironment).Context, CancellationToken.None);
 
 	/// <summary>
@@ -39,7 +39,7 @@ internal static class EqualityOptionsContextHelpers
 	///     The options only validate an item that an item of the subject is compared with, so an expectation calls
 	///     this at the start of an evaluation, which rejects the item whichever items the subject has.
 	/// </remarks>
-	public static void ValidateExpectedItems<T, TItem>(this IReadOnlyOptionsSlot<IEqualityOptions<T>> options,
+	public static void ValidateExpectedItems<T, TItem>(this IReadOnlyOptionsHolder<IEqualityOptions<T>> options,
 		IEnumerable<TItem> expected, string parameterName)
 		where TItem : T
 	{

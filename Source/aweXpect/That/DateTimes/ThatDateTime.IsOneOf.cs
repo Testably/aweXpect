@@ -29,7 +29,7 @@ public static partial class ThatDateTime
 		bool negated)
 	{
 		IEnumerable<DateTime?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<DateTime, IThat<DateTime>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Tolerance: tolerance,
@@ -57,7 +57,7 @@ public static partial class ThatDateTime
 		ExpectationGrammars grammars,
 		IEnumerable<DateTime?> expected,
 		string? expectedExpression,
-		OptionsSlot<TimeTolerance> tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: ConstraintResult.WithValue<DateTime>(it, grammars),
 			IValueConstraint<DateTime>
 	{

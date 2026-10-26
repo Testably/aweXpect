@@ -64,7 +64,7 @@ static file class CustomResultExtensions
 
 	public static DigitCountResult HasDigits(this IThat<string> subject)
 	{
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		return new DigitCountResult(((IExpectThat<string>)subject).ExpectationBuilder.AddConstraint((it, grammars)
 			=> new DigitCountConstraint(it, grammars, quantifier)), subject, quantifier);
 	}
@@ -76,11 +76,11 @@ static file class CustomResultExtensions
 	public sealed class DigitCountResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<string> subject,
-		OptionsSlot<Quantifier> quantifier)
+		OptionsHolder<Quantifier> quantifier)
 		: AndOrResult<string, IThat<string>, DigitCountResult>(expectationBuilder, subject),
 			IOptionsProvider<Quantifier>
 	{
-		OptionsSlot<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier;
+		OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier;
 	}
 
 	public sealed class EitherResult(ExpectationBuilder expectationBuilder, IThat<int> subject)
@@ -90,7 +90,7 @@ static file class CustomResultExtensions
 			=> Or.IsNegativeNumber();
 	}
 
-	private sealed class DigitCountConstraint(string it, ExpectationGrammars grammars, OptionsSlot<Quantifier> quantifier)
+	private sealed class DigitCountConstraint(string it, ExpectationGrammars grammars, OptionsHolder<Quantifier> quantifier)
 		: ConstraintResult.WithValue<string>(it, grammars),
 			IValueConstraint<string>
 	{

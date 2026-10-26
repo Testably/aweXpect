@@ -15,14 +15,14 @@ public class ObjectCollectionMatchResult<TType, TThat, TItem>
 		IOptionsProvider<CollectionMatchOptions>,
 		IObjectEqualityResult<ObjectCollectionMatchResult<TType, TThat, TItem>, TItem>
 {
-	private readonly OptionsSlot<CollectionMatchOptions> _collectionMatchOptions;
-	private readonly OptionsSlot<ObjectMatchType<TItem>> _options;
+	private readonly OptionsHolder<CollectionMatchOptions> _collectionMatchOptions;
+	private readonly OptionsHolder<ObjectMatchType<TItem>> _options;
 
 	internal ObjectCollectionMatchResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsSlot<ObjectMatchType<TItem>> options,
-		OptionsSlot<CollectionMatchOptions> collectionMatchOptions)
+		OptionsHolder<ObjectMatchType<TItem>> options,
+		OptionsHolder<CollectionMatchOptions> collectionMatchOptions)
 		: base(expectationBuilder, returnValue)
 	{
 		_options = options;
@@ -30,8 +30,8 @@ public class ObjectCollectionMatchResult<TType, TThat, TItem>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options;
+	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<CollectionMatchOptions> IOptionsProvider<CollectionMatchOptions>.Options => _collectionMatchOptions;
+	OptionsHolder<CollectionMatchOptions> IOptionsProvider<CollectionMatchOptions>.Options => _collectionMatchOptions;
 }

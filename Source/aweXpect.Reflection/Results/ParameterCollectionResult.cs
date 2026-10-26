@@ -18,7 +18,7 @@ public sealed class ParameterCollectionResult<TType, TValue, TParameter>
 	internal ParameterCollectionResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions)
 		: base(expectationBuilder, subject, collectionIndexOptions, parameterFilterOptions)
 	{
@@ -37,13 +37,13 @@ public class ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 		IParameterFilterOptionsProvider
 	where TSelf : ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 {
-	private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
+	private readonly OptionsHolder<CollectionIndexOptions> _collectionIndexOptions;
 	private readonly ParameterFilterOptions _parameterFilterOptions;
 
 	internal ParameterCollectionResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions)
 		: base(expectationBuilder, subject)
 	{
@@ -52,7 +52,7 @@ public class ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-	OptionsSlot<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
+	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 
 	/// <inheritdoc cref="IParameterFilterOptionsProvider.ParameterFilterOptions" />
 	ParameterFilterOptions IParameterFilterOptionsProvider.ParameterFilterOptions => _parameterFilterOptions;

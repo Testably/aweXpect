@@ -18,7 +18,7 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> DoesNotHaveName(
 		this IThat<Assembly?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (s, it, grammars)

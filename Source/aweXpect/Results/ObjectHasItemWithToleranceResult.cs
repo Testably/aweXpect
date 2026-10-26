@@ -19,14 +19,14 @@ public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
 			TTolerance>
 {
 	private readonly IThat<TCollection?> _collection;
-	private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
-	private readonly OptionsSlot<ObjectMatchType<TItem>> _options;
+	private readonly OptionsHolder<CollectionIndexOptions> _collectionIndexOptions;
+	private readonly OptionsHolder<ObjectMatchType<TItem>> _options;
 
 	internal ObjectHasItemWithToleranceResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TCollection?> collection,
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
-		OptionsSlot<ObjectMatchType<TItem>> options)
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
+		OptionsHolder<ObjectMatchType<TItem>> options)
 		: base(expectationBuilder, collection)
 	{
 		_collection = collection;
@@ -35,10 +35,10 @@ public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options;
+	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
+	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 
 	/// <inheritdoc cref="ObjectMatchTypeExtensions.Within{TSelf, TElement, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TElement, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
@@ -58,8 +58,8 @@ public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
 		internal WithinResult(
 			ExpectationBuilder expectationBuilder,
 			IThat<TCollection?> collection,
-			OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
-			OptionsSlot<ObjectMatchType<TItem>> options)
+			OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
+			OptionsHolder<ObjectMatchType<TItem>> options)
 			: base(expectationBuilder, collection, collectionIndexOptions, options)
 		{
 		}

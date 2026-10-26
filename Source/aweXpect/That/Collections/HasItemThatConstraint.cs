@@ -29,7 +29,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintRes
 	protected HasItemThatConstraintBase(string it,
 		ExpectationGrammars grammars,
 		Action<IThatSubject<TItem>> expectations,
-		OptionsSlot<CollectionIndexOptions> options) : base(it, grammars)
+		OptionsHolder<CollectionIndexOptions> options) : base(it, grammars)
 	{
 		Options = options;
 		_itemExpectationBuilder =
@@ -40,7 +40,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintRes
 	/// <summary>
 	///     The options for the index of the item.
 	/// </summary>
-	protected OptionsSlot<CollectionIndexOptions> Options { get; }
+	protected OptionsHolder<CollectionIndexOptions> Options { get; }
 
 	/// <inheritdoc cref="ConstraintResult.FailureCause" />
 	public override Exception? FailureCause => _unansweredItem?.FailureCause;
@@ -181,7 +181,7 @@ internal sealed class HasItemThatConstraint<TEnumerable, TItem>(
 	string it,
 	ExpectationGrammars grammars,
 	Action<IThatSubject<TItem>> expectations,
-	OptionsSlot<CollectionIndexOptions> options)
+	OptionsHolder<CollectionIndexOptions> options)
 	: HasItemThatConstraintBase<TEnumerable, TItem>(it, grammars, expectations, options),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
@@ -245,7 +245,7 @@ internal sealed class AsyncHasItemThatConstraint<TItem>(
 	string it,
 	ExpectationGrammars grammars,
 	Action<IThatSubject<TItem>> expectations,
-	OptionsSlot<CollectionIndexOptions> options)
+	OptionsHolder<CollectionIndexOptions> options)
 	: HasItemThatConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, expectations, options),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {

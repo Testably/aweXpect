@@ -204,7 +204,7 @@ public sealed class FilteredReuseIndependenceTests
 	[Test]
 	[MethodDataSource(nameof(StringFilters))]
 	public async Task StringFilter_WhenAStringOptionIsAdded_ShouldNotChangeTheFilterItWasCalledOn(string filter,
-		Func<(IDescribableSubject Stored, Func<IDescribableSubject> AddOption, Action ChangeSlot)> create)
+		Func<(IDescribableSubject Stored, Func<IDescribableSubject> AddOption, Action ChangeHolder)> create)
 	{
 		(IDescribableSubject stored, Func<IDescribableSubject> addOption, _) = create();
 		string description = stored.GetDescription();
@@ -218,13 +218,13 @@ public sealed class FilteredReuseIndependenceTests
 
 	[Test]
 	[MethodDataSource(nameof(StringFilters))]
-	public async Task StringFilter_WhenTheOptionsSlotIsChanged_ShouldUseTheNewOptions(string filter,
-		Func<(IDescribableSubject Stored, Func<IDescribableSubject> AddOption, Action ChangeSlot)> create)
+	public async Task StringFilter_WhenTheOptionsHolderIsChanged_ShouldUseTheNewOptions(string filter,
+		Func<(IDescribableSubject Stored, Func<IDescribableSubject> AddOption, Action ChangeHolder)> create)
 	{
-		(IDescribableSubject stored, Func<IDescribableSubject> addOption, Action changeSlot) = create();
+		(IDescribableSubject stored, Func<IDescribableSubject> addOption, Action changeHolder) = create();
 		string expected = addOption().GetDescription();
 
-		changeSlot();
+		changeHolder();
 
 		await That(stored.GetDescription()).IsEqualTo(expected)
 			.Because($"{filter} must read its options when it is evaluated, also when an option bypasses the copy hook");

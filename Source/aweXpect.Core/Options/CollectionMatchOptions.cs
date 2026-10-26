@@ -507,11 +507,11 @@ public readonly partial struct CollectionMatchOptions
 	/// </summary>
 	/// <remarks>
 	///     Options that wrap other options, e.g. to let the comparer of the subject decide, provide the wrapped ones as
-	///     an <see cref="IReadOnlyOptionsSlot{TOptions}" />.
+	///     an <see cref="IReadOnlyOptionsHolder{TOptions}" />.
 	/// </remarks>
 	private static string DescribeExpected(string formattedExpected, object options)
 	{
-		object itemOptions = options is IReadOnlyOptionsSlot<object> wrapper ? wrapper.Value : options;
+		object itemOptions = options is IReadOnlyOptionsHolder<object> wrapper ? wrapper.Value : options;
 		return itemOptions is StringEqualityOptions stringEqualityOptions
 			? stringEqualityOptions.WithPatternKind(formattedExpected)
 			: formattedExpected;

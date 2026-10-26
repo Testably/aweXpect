@@ -29,22 +29,22 @@ internal interface ISubjectComparing
 /// <remarks>
 ///     The subject is only known during the evaluation, so <see cref="UseComparerOf" /> has to be called before
 ///     comparing, and the text of the options names the comparer only afterwards.<br />
-///     It offers the current options of the wrapped slot as a covariant <see cref="IReadOnlyOptionsSlot{TOptions}" />,
+///     It offers the current options of the wrapped holder as a covariant <see cref="IReadOnlyOptionsHolder{TOptions}" />,
 ///     so that a failure message of <c>aweXpect.Core</c> can describe the expected items by them.
 /// </remarks>
 internal sealed class SubjectEqualityOptions<TItem, TMatch>
-	: IEqualityEvaluator<TMatch>, IReadOnlyOptionsSlot<IEqualityOptions<TMatch>>, ISubjectComparing,
+	: IEqualityEvaluator<TMatch>, IReadOnlyOptionsHolder<IEqualityOptions<TMatch>>, ISubjectComparing,
 		IWrapsEqualityEvaluator<TMatch>
 {
 	private readonly bool _canUseSubjectComparer;
-	private readonly IReadOnlyOptionsSlot<IEqualityOptions<TMatch>> _options;
+	private readonly IReadOnlyOptionsHolder<IEqualityOptions<TMatch>> _options;
 	private IEqualityEvaluator<TMatch>? _evaluator;
 
 	/// <summary>
 	///     Lets the comparer of the subject decide, when <paramref name="canUseSubjectComparer" /> and the comparison of
 	///     the <paramref name="options" /> was not changed when the subject is evaluated.
 	/// </summary>
-	public SubjectEqualityOptions(IReadOnlyOptionsSlot<IEqualityOptions<TMatch>> options,
+	public SubjectEqualityOptions(IReadOnlyOptionsHolder<IEqualityOptions<TMatch>> options,
 		bool canUseSubjectComparer = true)
 	{
 		_options = options;
@@ -55,7 +55,7 @@ internal sealed class SubjectEqualityOptions<TItem, TMatch>
 	///     Lets the <paramref name="comparer" /> decide, which was already read from the subject, instead of the
 	///     <paramref name="evaluator" /> of the evaluation.
 	/// </summary>
-	public SubjectEqualityOptions(IReadOnlyOptionsSlot<IEqualityOptions<TMatch>> options,
+	public SubjectEqualityOptions(IReadOnlyOptionsHolder<IEqualityOptions<TMatch>> options,
 		IEqualityEvaluator<TMatch> evaluator, SubjectComparer<TItem> comparer)
 	{
 		_options = options;
@@ -84,7 +84,7 @@ internal sealed class SubjectEqualityOptions<TItem, TMatch>
 		=> Evaluator.AppendContexts(contexts);
 
 	/// <summary>
-	///     The current options of the wrapped slot.
+	///     The current options of the wrapped holder.
 	/// </summary>
 	/// <remarks>
 	///     Lets a failure message describe the expected items by the options that decide whenever the comparer of the

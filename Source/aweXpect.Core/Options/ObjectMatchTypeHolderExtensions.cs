@@ -6,14 +6,14 @@ using aweXpect.Core.Helpers;
 namespace aweXpect.Options;
 
 /// <summary>
-///     The option methods of object comparisons on the <see cref="OptionsSlot{TOptions}" /> of an expectation, whose
+///     The option methods of object comparisons on the <see cref="OptionsHolder{TOptions}" /> of an expectation, whose
 ///     value is the <see cref="ObjectMatchType{TSubject}" />.
 /// </summary>
 /// <remarks>
 ///     These options all specify how two objects are compared, so the same option again replaces the earlier match
 ///     type, while the option of another match type throws.
 /// </remarks>
-public static class ObjectMatchTypeSlotExtensions
+public static class ObjectMatchTypeHolderExtensions
 {
 	/// <summary>
 	///     Specifies the <paramref name="matchType" /> to use for matching two objects.
@@ -26,8 +26,8 @@ public static class ObjectMatchTypeSlotExtensions
 	/// <exception cref="InvalidOperationException">
 	///     Another option already specified how two objects are compared.
 	/// </exception>
-	public static OptionsSlot<ObjectMatchType<TSubject>> SetMatchType<TSubject>(
-		this OptionsSlot<ObjectMatchType<TSubject>> slot, ObjectMatchType<TSubject> matchType)
+	public static OptionsHolder<ObjectMatchType<TSubject>> SetMatchType<TSubject>(
+		this OptionsHolder<ObjectMatchType<TSubject>> holder, ObjectMatchType<TSubject> matchType)
 	{
 		matchType.ThrowIfNull();
 		if (matchType.OptionName is not { } optionName)
@@ -37,9 +37,9 @@ public static class ObjectMatchTypeSlotExtensions
 				nameof(matchType)));
 		}
 
-		ThrowHelper.ThrowIfCompetingOption(slot.Value.OptionName, optionName);
-		slot.Value = matchType;
-		return slot;
+		ThrowHelper.ThrowIfCompetingOption(holder.Value.OptionName, optionName);
+		holder.Value = matchType;
+		return holder;
 	}
 
 	/// <summary>
@@ -48,11 +48,11 @@ public static class ObjectMatchTypeSlotExtensions
 	/// <exception cref="InvalidOperationException">
 	///     Another option already specified how two objects are compared.
 	/// </exception>
-	public static OptionsSlot<ObjectMatchType<TSubject>> Using<TSubject>(
-		this OptionsSlot<ObjectMatchType<TSubject>> slot, IEqualityComparer<object> comparer)
+	public static OptionsHolder<ObjectMatchType<TSubject>> Using<TSubject>(
+		this OptionsHolder<ObjectMatchType<TSubject>> holder, IEqualityComparer<object> comparer)
 	{
 		comparer.ThrowIfNull();
-		return slot.SetMatchType(ComparerMatchType<TSubject>.For(comparer));
+		return holder.SetMatchType(ComparerMatchType<TSubject>.For(comparer));
 	}
 
 	/// <summary>
@@ -65,11 +65,11 @@ public static class ObjectMatchTypeSlotExtensions
 	/// <exception cref="InvalidOperationException">
 	///     Another option already specified how two objects are compared.
 	/// </exception>
-	public static OptionsSlot<ObjectMatchType<TSubject>> Using<TSubject>(
-		this OptionsSlot<ObjectMatchType<TSubject>> slot, IEqualityComparer<TSubject> comparer)
+	public static OptionsHolder<ObjectMatchType<TSubject>> Using<TSubject>(
+		this OptionsHolder<ObjectMatchType<TSubject>> holder, IEqualityComparer<TSubject> comparer)
 	{
 		comparer.ThrowIfNull();
-		return slot.SetMatchType(ComparerMatchType<TSubject>.For(comparer));
+		return holder.SetMatchType(ComparerMatchType<TSubject>.For(comparer));
 	}
 
 	/// <summary>
@@ -86,20 +86,20 @@ public static class ObjectMatchTypeSlotExtensions
 	///     Another option already specified how two objects are compared, or the expectation does not compare within a
 	///     <typeparamref name="TTolerance" />.
 	/// </exception>
-	public static OptionsSlot<ObjectMatchType<TSubject>> Within<TSubject, TTolerance>(
-		this OptionsSlot<ObjectMatchType<TSubject>> slot, TTolerance tolerance)
+	public static OptionsHolder<ObjectMatchType<TSubject>> Within<TSubject, TTolerance>(
+		this OptionsHolder<ObjectMatchType<TSubject>> holder, TTolerance tolerance)
 	{
 		ToleranceHelpers.ThrowIfInvalid(tolerance);
-		ThrowHelper.ThrowIfCompetingOption(slot.Value.OptionName, nameof(Within));
-		if (slot.Value is not ObjectToleranceMatchType<TSubject, TTolerance> matchType)
+		ThrowHelper.ThrowIfCompetingOption(holder.Value.OptionName, nameof(Within));
+		if (holder.Value is not ObjectToleranceMatchType<TSubject, TTolerance> matchType)
 		{
 			// ReSharper disable once LocalizableElement
 			throw Tracing.WriteException(new InvalidOperationException(
 				$"Within requires a comparison within a tolerance of type {Formatter.Format(typeof(TTolerance))}."));
 		}
 
-		slot.Value = matchType.Within(tolerance);
-		return slot;
+		holder.Value = matchType.Within(tolerance);
+		return holder;
 	}
 
 	/// <summary>
@@ -107,15 +107,15 @@ public static class ObjectMatchTypeSlotExtensions
 	///     <typeparamref name="TTolerance" />.
 	/// </summary>
 	/// <inheritdoc cref="ObjectToleranceMatchType{TSubject, TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" path="/param" />
-	public static OptionsSlot<ObjectMatchType<TSubject>> WithRelativeTolerance<TSubject, TTolerance>(
-		this OptionsSlot<ObjectMatchType<TSubject>> slot, Func<TTolerance, TTolerance, TTolerance> absoluteTolerance,
+	public static OptionsHolder<ObjectMatchType<TSubject>> WithRelativeTolerance<TSubject, TTolerance>(
+		this OptionsHolder<ObjectMatchType<TSubject>> holder, Func<TTolerance, TTolerance, TTolerance> absoluteTolerance,
 		string unit)
 	{
-		if (slot.Value is ObjectToleranceMatchType<TSubject, TTolerance> matchType)
+		if (holder.Value is ObjectToleranceMatchType<TSubject, TTolerance> matchType)
 		{
-			slot.Value = matchType.WithRelativeTolerance(absoluteTolerance, unit);
+			holder.Value = matchType.WithRelativeTolerance(absoluteTolerance, unit);
 		}
 
-		return slot;
+		return holder;
 	}
 }

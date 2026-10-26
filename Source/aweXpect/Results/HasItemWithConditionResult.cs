@@ -16,15 +16,15 @@ namespace aweXpect.Results;
 public class HasItemWithConditionResult<TCollection, TItem>
 	: IOptionsProvider<PredicateOptions<TItem>>
 {
-	private readonly OptionsSlot<CollectionIndexOptions> _collectionIndexOptions;
+	private readonly OptionsHolder<CollectionIndexOptions> _collectionIndexOptions;
 	private readonly ExpectationBuilder _expectationBuilder;
-	private readonly OptionsSlot<PredicateOptions<TItem>> _options;
+	private readonly OptionsHolder<PredicateOptions<TItem>> _options;
 	private readonly IThat<TCollection?> _subject;
 
 	internal HasItemWithConditionResult(ExpectationBuilder expectationBuilder,
 		IThat<TCollection?> subject,
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions,
-		OptionsSlot<PredicateOptions<TItem>> options)
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
+		OptionsHolder<PredicateOptions<TItem>> options)
 	{
 		_expectationBuilder = expectationBuilder;
 		_subject = subject;
@@ -33,7 +33,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<PredicateOptions<TItem>> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;
+	OptionsHolder<PredicateOptions<TItem>> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;
 
 	/// <summary>
 	///     …that satisfies the <paramref name="predicate" />.

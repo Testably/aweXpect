@@ -10,8 +10,8 @@ public sealed class ObjectCollectionMatchResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForCollectionMatchOptions()
 	{
-		OptionsSlot<ObjectMatchType<string>> options = new(ObjectMatchType<string>.Default);
-		OptionsSlot<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
+		OptionsHolder<ObjectMatchType<string>> options = new(ObjectMatchType<string>.Default);
+		OptionsHolder<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
 		ObjectCollectionMatchResult<ObjectCollectionMatchResultTests, IThat<ObjectCollectionMatchResultTests>, string>
 			sut = CreateSut(new ObjectCollectionMatchResultTests(), options, collectionMatchOptions);
 
@@ -22,8 +22,8 @@ public sealed class ObjectCollectionMatchResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForObjectMatchType()
 	{
-		OptionsSlot<ObjectMatchType<string>> options = new(ObjectMatchType<string>.Default);
-		OptionsSlot<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
+		OptionsHolder<ObjectMatchType<string>> options = new(ObjectMatchType<string>.Default);
+		OptionsHolder<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
 		ObjectCollectionMatchResult<ObjectCollectionMatchResultTests, IThat<ObjectCollectionMatchResultTests>, string>
 			sut = CreateSut(new ObjectCollectionMatchResultTests(), options, collectionMatchOptions);
 
@@ -32,7 +32,7 @@ public sealed class ObjectCollectionMatchResultTests
 	}
 
 	private static ObjectCollectionMatchResult<T, IThat<T>, TElement> CreateSut<T, TElement>(T subject,
-		OptionsSlot<ObjectMatchType<TElement>> options, OptionsSlot<CollectionMatchOptions> collectionMatchOptions)
+		OptionsHolder<ObjectMatchType<TElement>> options, OptionsHolder<CollectionMatchOptions> collectionMatchOptions)
 		where T : notnull
 	{
 #pragma warning disable aweXpect0001

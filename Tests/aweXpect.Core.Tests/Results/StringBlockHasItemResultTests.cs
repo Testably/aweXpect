@@ -11,7 +11,7 @@ public sealed class StringBlockHasItemResultTests
 	[Test]
 	public async Task AsBlock_ShouldInterpretExpectedAsBlock()
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		StringHasItemResult<IEnumerable<string>> sut = CreateSut(options);
 
 		StringBlockHasItemResult<IEnumerable<string>> result = sut.AsBlock();
@@ -58,7 +58,7 @@ public sealed class StringBlockHasItemResultTests
 	[Test]
 	public async Task IgnoringCase_ShouldSetOption()
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		StringBlockHasItemResult<IEnumerable<string>> sut = CreateSut(options).AsBlock();
 
 		StringBlockHasItemResult<IEnumerable<string>> result = sut.IgnoringCase();
@@ -70,7 +70,7 @@ public sealed class StringBlockHasItemResultTests
 	[Test]
 	public async Task Using_ShouldSetComparer()
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		StringBlockHasItemResult<IEnumerable<string>> sut = CreateSut(options).AsBlock();
 
 		StringBlockHasItemResult<IEnumerable<string>> result = sut.Using(StringComparer.OrdinalIgnoreCase);
@@ -79,14 +79,14 @@ public sealed class StringBlockHasItemResultTests
 		await That(options.ToString()).StartsWith(" as block using ");
 	}
 
-	private static StringHasItemResult<IEnumerable<string>> CreateSut(OptionsSlot<StringEqualityOptions> options)
+	private static StringHasItemResult<IEnumerable<string>> CreateSut(OptionsHolder<StringEqualityOptions> options)
 	{
 #pragma warning disable aweXpect0001
 		IThat<IEnumerable<string>?> source = That<IEnumerable<string>?>(Array.Empty<string>());
 #pragma warning restore aweXpect0001
 		return new StringHasItemResult<IEnumerable<string>>(source.Get().ExpectationBuilder.AddConstraint((it, _) => new DummyConstraint(it)),
 			source,
-			new OptionsSlot<CollectionIndexOptions>(CollectionIndexOptions.Default),
+			new OptionsHolder<CollectionIndexOptions>(CollectionIndexOptions.Default),
 			options);
 	}
 }

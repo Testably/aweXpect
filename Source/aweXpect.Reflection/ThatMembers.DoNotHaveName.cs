@@ -26,9 +26,9 @@ public static partial class ThatMembers
 		this IThat<IEnumerable<TMember>?> subject, string unexpected)
 		where TMember : MemberInfo?
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<TMember>>((unexpected, options),
+				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsHolder<StringEqualityOptions> Options), IEnumerable<TMember>>((unexpected, options),
 					static (s, it, grammars)
 					=> new DoNotHaveNameConstraint<TMember>(it, grammars, s.Unexpected, s.Options)),
 			subject,
@@ -46,9 +46,9 @@ public static partial class ThatMembers
 			this IThat<IAsyncEnumerable<TMember>?> subject, string unexpected)
 		where TMember : MemberInfo?
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<TMember>>((unexpected, options),
+				.ExpectationBuilder.AddConstraint<(string Unexpected, OptionsHolder<StringEqualityOptions> Options), IAsyncEnumerable<TMember>>((unexpected, options),
 					static (s, it, grammars)
 					=> new DoNotHaveNameConstraint<TMember>(it, grammars, s.Unexpected, s.Options)),
 			subject,
@@ -60,7 +60,7 @@ public static partial class ThatMembers
 		string it,
 		ExpectationGrammars grammars,
 		string unexpected,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: CollectionConstraintResult<TMember>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<TMember>>
 #if NET8_0_OR_GREATER

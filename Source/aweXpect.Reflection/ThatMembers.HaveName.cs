@@ -29,9 +29,9 @@ public static partial class ThatMembers
 		this IThat<IEnumerable<TMember>?> subject, string expected)
 		where TMember : MemberInfo?
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<TMember>>((expected, options),
+				.ExpectationBuilder.AddConstraint<(string Expected, OptionsHolder<StringEqualityOptions> Options), IEnumerable<TMember>>((expected, options),
 					static (s, it, grammars)
 					=> new HaveNameConstraint<TMember>(it, grammars, s.Expected, s.Options)),
 			subject,
@@ -49,9 +49,9 @@ public static partial class ThatMembers
 			this IThat<IAsyncEnumerable<TMember>?> subject, string expected)
 		where TMember : MemberInfo?
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<TMember>>((expected, options),
+				.ExpectationBuilder.AddConstraint<(string Expected, OptionsHolder<StringEqualityOptions> Options), IAsyncEnumerable<TMember>>((expected, options),
 					static (s, it, grammars)
 					=> new HaveNameConstraint<TMember>(it, grammars, s.Expected, s.Options)),
 			subject,
@@ -72,9 +72,9 @@ public static partial class ThatMembers
 		where TMember : MemberInfo?
 	{
 		ThrowHelper.ThrowIfNull(expectedNameSelector, nameof(expectedNameSelector));
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(Func<TMember, string> ExpectedNameSelector, string DoNotPopulateThisValue, OptionsSlot<StringEqualityOptions> Options), IEnumerable<TMember>>((expectedNameSelector, doNotPopulateThisValue, options),
+				.ExpectationBuilder.AddConstraint<(Func<TMember, string> ExpectedNameSelector, string DoNotPopulateThisValue, OptionsHolder<StringEqualityOptions> Options), IEnumerable<TMember>>((expectedNameSelector, doNotPopulateThisValue, options),
 					static (s, it, grammars)
 					=> new HaveNameFromSelectorConstraint<TMember>(it, grammars, s.ExpectedNameSelector,
 						s.DoNotPopulateThisValue, s.Options)),
@@ -97,9 +97,9 @@ public static partial class ThatMembers
 		where TMember : MemberInfo?
 	{
 		ThrowHelper.ThrowIfNull(expectedNameSelector, nameof(expectedNameSelector));
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(Func<TMember, string> ExpectedNameSelector, string DoNotPopulateThisValue, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<TMember>>((expectedNameSelector, doNotPopulateThisValue, options),
+				.ExpectationBuilder.AddConstraint<(Func<TMember, string> ExpectedNameSelector, string DoNotPopulateThisValue, OptionsHolder<StringEqualityOptions> Options), IAsyncEnumerable<TMember>>((expectedNameSelector, doNotPopulateThisValue, options),
 					static (s, it, grammars)
 					=> new HaveNameFromSelectorConstraint<TMember>(it, grammars, s.ExpectedNameSelector,
 						s.DoNotPopulateThisValue, s.Options)),
@@ -112,7 +112,7 @@ public static partial class ThatMembers
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: CollectionConstraintResult<TMember>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<TMember>>
 #if NET8_0_OR_GREATER
@@ -167,7 +167,7 @@ public static partial class ThatMembers
 		ExpectationGrammars grammars,
 		Func<TMember, string> expectedNameSelector,
 		string expectedNameSelectorExpression,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: CollectionConstraintResult<TMember>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<TMember>>
 #if NET8_0_OR_GREATER

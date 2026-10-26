@@ -8,7 +8,7 @@ namespace aweXpect.Core;
 ///     <see cref="aweXpect.Options.StringEqualityOptions" /> or an <see cref="ObjectMatchType{TSubject}" />.
 /// </summary>
 /// <remarks>
-///     The options are immutable values, so a constraint reads them from the slot of its expectation when it evaluates
+///     The options are immutable values, so a constraint reads them from the holder of its expectation when it evaluates
 ///     and compares with the evaluator they return for that evaluation.
 /// </remarks>
 public interface IEqualityOptions<in TSubject>

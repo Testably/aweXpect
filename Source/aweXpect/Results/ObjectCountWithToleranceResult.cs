@@ -18,15 +18,15 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 		IObjectEqualityWithToleranceResult<ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>,
 			TItem, TTolerance>
 {
-	private readonly OptionsSlot<ObjectMatchType<TItem>> _options;
-	private readonly OptionsSlot<Quantifier> _quantifier;
+	private readonly OptionsHolder<ObjectMatchType<TItem>> _options;
+	private readonly OptionsHolder<Quantifier> _quantifier;
 	private readonly TThat _returnValue;
 
 	internal ObjectCountWithToleranceResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsSlot<Quantifier> quantifier,
-		OptionsSlot<ObjectMatchType<TItem>> options)
+		OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<ObjectMatchType<TItem>> options)
 		: base(expectationBuilder, returnValue)
 	{
 		_returnValue = returnValue;
@@ -35,10 +35,10 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options;
+	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
 
 	/// <inheritdoc cref="ObjectMatchTypeExtensions.Within{TSelf, TItem, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TItem, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
@@ -58,8 +58,8 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 		internal WithinResult(
 			ExpectationBuilder expectationBuilder,
 			TThat returnValue,
-			OptionsSlot<Quantifier> quantifier,
-			OptionsSlot<ObjectMatchType<TItem>> options)
+			OptionsHolder<Quantifier> quantifier,
+			OptionsHolder<ObjectMatchType<TItem>> options)
 			: base(expectationBuilder, returnValue, quantifier, options)
 		{
 		}

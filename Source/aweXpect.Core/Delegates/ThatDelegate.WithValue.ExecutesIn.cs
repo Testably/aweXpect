@@ -26,7 +26,7 @@ public abstract partial class ThatDelegate
 		[GuaranteesNotNull]
 		public ExecutesInResult<AndResult<WithValue<T>>> ExecutesIn()
 		{
-			OptionsSlot<ExecutionTimeOptions> options = new(ExecutionTimeOptions.Default);
+			OptionsHolder<ExecutionTimeOptions> options = new(ExecutionTimeOptions.Default);
 			return new ExecutesInResult<AndResult<WithValue<T>>>(
 				_expectationBuilder,
 				new AndResult<WithValue<T>>(_expectationBuilder.AddConstraint(options,
@@ -54,7 +54,7 @@ public abstract partial class ThatDelegate
 		public ExecutesInToleranceResult<AndResult<WithValue<T>>> ExecutesIn(TimeSpan expected)
 		{
 			ThrowHelper.ThrowIfDurationIsNegative(expected, "expected duration");
-			OptionsSlot<ExecutionTimeOptions> options = new(ExecutionTimeOptions.Default);
+			OptionsHolder<ExecutionTimeOptions> options = new(ExecutionTimeOptions.Default);
 			return new ExecutesInToleranceResult<AndResult<WithValue<T>>>(
 				_expectationBuilder,
 				new AndResult<WithValue<T>>(_expectationBuilder.AddConstraint(options,

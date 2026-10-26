@@ -16,7 +16,7 @@ namespace aweXpect.Results;
 public class NullableNumberToleranceResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsSlot<NumberTolerance<TType>> options)
+	OptionsHolder<NumberTolerance<TType>> options)
 	: AndOrResult<TType?, TThat, NullableNumberToleranceResult<TType, TThat>>(expectationBuilder, returnValue),
 		INumberToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>
 #if NET8_0_OR_GREATER
@@ -28,7 +28,7 @@ public class NullableNumberToleranceResult<TType, TThat>(
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<NumberTolerance<TType>> IOptionsProvider<NumberTolerance<TType>>.Options => options;
+	OptionsHolder<NumberTolerance<TType>> IOptionsProvider<NumberTolerance<TType>>.Options => options;
 
 	/// <inheritdoc cref="ToleranceExtensions.Within{TSelf, TNumber}(INumberToleranceResult{TSelf, TNumber}, TNumber)" />
 	public WithinResult Within(TType tolerance)
@@ -44,7 +44,7 @@ public class NullableNumberToleranceResult<TType, TThat>(
 	public sealed class WithinResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsSlot<NumberTolerance<TType>> options)
+		OptionsHolder<NumberTolerance<TType>> options)
 		: NullableNumberToleranceResult<TType, TThat>(expectationBuilder, returnValue, options),
 			IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>
 	{
@@ -52,8 +52,8 @@ public class NullableNumberToleranceResult<TType, TThat>(
 		NullableNumberToleranceResult<TType, TThat> IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>.WithRelativeTolerance(
 			Func<TType, TType, TType> absoluteTolerance, string unit)
 		{
-			OptionsSlot<NumberTolerance<TType>> slot = ((IOptionsProvider<NumberTolerance<TType>>)this).Options;
-			slot.Value = slot.Value.WithRelativeTolerance(absoluteTolerance, unit);
+			OptionsHolder<NumberTolerance<TType>> holder = ((IOptionsProvider<NumberTolerance<TType>>)this).Options;
+			holder.Value = holder.Value.WithRelativeTolerance(absoluteTolerance, unit);
 			return this;
 		}
 	}

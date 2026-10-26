@@ -24,7 +24,7 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> DependsOn(
 		this IThat<Assembly?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Expected: expected, Options: options),
 					static (s, it, grammars)
@@ -38,7 +38,7 @@ public static partial class ThatAssembly
 		ExpectationGrammars grammars,
 		string expected,
 		string parameterName,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
 			IAsyncContextConstraint<Assembly?>
 	{

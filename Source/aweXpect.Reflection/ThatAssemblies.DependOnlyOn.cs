@@ -42,9 +42,9 @@ public static partial class ThatAssemblies
 		this IThat<IEnumerable<Assembly?>?> subject, IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string[] Allowed, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Assembly?>>((expected.ToArray(), options),
+				.ExpectationBuilder.AddConstraint<(string[] Allowed, OptionsHolder<StringEqualityOptions> Options), IEnumerable<Assembly?>>((expected.ToArray(), options),
 					static (s, it, grammars)
 					=> new DependOnlyOnConstraint(it, grammars, s.Allowed, s.Options)),
 			subject,
@@ -76,10 +76,10 @@ public static partial class ThatAssemblies
 			this IThat<IAsyncEnumerable<Assembly?>?> subject, IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
-				.ExpectationBuilder.AddConstraint<(string[] Allowed, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((expected.ToArray(), options),
+				.ExpectationBuilder.AddConstraint<(string[] Allowed, OptionsHolder<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((expected.ToArray(), options),
 					static (s, it, grammars)
 					=> new DependOnlyOnConstraint(it, grammars, s.Allowed, s.Options)),
 			subject,
@@ -91,7 +91,7 @@ public static partial class ThatAssemblies
 		string it,
 		ExpectationGrammars grammars,
 		string[] allowed,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: CollectionConstraintResult<Assembly?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER

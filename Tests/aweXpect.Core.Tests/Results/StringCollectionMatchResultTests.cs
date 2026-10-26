@@ -10,7 +10,7 @@ public sealed class StringCollectionMatchResultTests
 	public async Task ShouldBeOptionsProvider_ForCollectionMatchOptions()
 	{
 		StringEqualityOptions options = StringEqualityOptions.Default;
-		OptionsSlot<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
+		OptionsHolder<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
 		StringCollectionMatchResult<string[], IThat<string[]>> sut =
 			CreateSut(Array.Empty<string>(), options, collectionMatchOptions);
 
@@ -22,7 +22,7 @@ public sealed class StringCollectionMatchResultTests
 	public async Task ShouldBeOptionsProvider_ForStringEqualityOptions()
 	{
 		StringEqualityOptions options = StringEqualityOptions.Default;
-		OptionsSlot<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
+		OptionsHolder<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
 		StringCollectionMatchResult<string[], IThat<string[]>> sut =
 			CreateSut(Array.Empty<string>(), options, collectionMatchOptions);
 
@@ -31,7 +31,7 @@ public sealed class StringCollectionMatchResultTests
 	}
 
 	private static StringCollectionMatchResult<T, IThat<T>> CreateSut<T>(T subject,
-		StringEqualityOptions options, OptionsSlot<CollectionMatchOptions> collectionMatchOptions)
+		StringEqualityOptions options, OptionsHolder<CollectionMatchOptions> collectionMatchOptions)
 		where T : notnull
 	{
 #pragma warning disable aweXpect0001
@@ -39,6 +39,6 @@ public sealed class StringCollectionMatchResultTests
 #pragma warning restore aweXpect0001
 		return new StringCollectionMatchResult<T, IThat<T>>(source.Get().ExpectationBuilder,
 			source,
-			new OptionsSlot<StringEqualityOptions>(options), collectionMatchOptions);
+			new OptionsHolder<StringEqualityOptions>(options), collectionMatchOptions);
 	}
 }

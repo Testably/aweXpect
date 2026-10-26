@@ -6,7 +6,7 @@
 /// <remarks>
 ///     Covariant, so that a constraint that compares with string or object options alike can read either.
 /// </remarks>
-public interface IReadOnlyOptionsSlot<out TOptions>
+public interface IReadOnlyOptionsHolder<out TOptions>
 {
 	/// <summary>
 	///     The current options of the expectation.

@@ -2,14 +2,14 @@
 
 namespace aweXpect.Core.Tests.Core;
 
-public sealed class OptionsSlotTests
+public sealed class OptionsHolderTests
 {
 	[Test]
 	public async Task SetMatch_ShouldSetTheMatchOnTheValue()
 	{
-		OptionsSlot<CollectionIndexOptions> sut = new(CollectionIndexOptions.Default);
+		OptionsHolder<CollectionIndexOptions> sut = new(CollectionIndexOptions.Default);
 
-		OptionsSlot<CollectionIndexOptions> result = sut.SetMatch(new MyMatch(), "AtMyIndex");
+		OptionsHolder<CollectionIndexOptions> result = sut.SetMatch(new MyMatch(), "AtMyIndex");
 
 		await That(result).IsSameAs(sut);
 		await That(sut.Value.Match).Is<MyMatch>();
@@ -18,19 +18,19 @@ public sealed class OptionsSlotTests
 	[Test]
 	public async Task ToString_ShouldReturnTheTextOfTheValue()
 	{
-		OptionsSlot<StringEqualityOptions> sut = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> sut = new(StringEqualityOptions.Default);
 		sut.IgnoringCase();
 
 		string result = sut.ToString();
 
 		await That(result).IsEqualTo(" ignoring case")
-			.Because("an expectation text can append the slot like the options it holds");
+			.Because("an expectation text can append the holder like the options it holds");
 	}
 
 	[Test]
 	public async Task ToString_WhenValueIsNull_ShouldReturnEmptyString()
 	{
-		OptionsSlot<string?> sut = new(null);
+		OptionsHolder<string?> sut = new(null);
 
 		string result = sut.ToString();
 
@@ -38,10 +38,10 @@ public sealed class OptionsSlotTests
 	}
 
 	[Test]
-	public async Task Value_ShouldBeReadableAsReadOnlySlotOfABaseType()
+	public async Task Value_ShouldBeReadableAsReadOnlyHolderOfABaseType()
 	{
 		StringEqualityOptions options = StringEqualityOptions.Default;
-		OptionsSlot<StringEqualityOptions> sut = new(options);
+		OptionsHolder<StringEqualityOptions> sut = new(options);
 
 		object? result = ReadAsBaseType(sut);
 
@@ -51,7 +51,7 @@ public sealed class OptionsSlotTests
 	[Test]
 	public async Task Value_WhenReplaced_ShouldReturnTheNewValue()
 	{
-		OptionsSlot<Quantifier> sut = new(Quantifier.Default);
+		OptionsHolder<Quantifier> sut = new(Quantifier.Default);
 		Quantifier replacement = Quantifier.Default.AtLeast(3);
 
 		sut.Value = replacement;
@@ -60,11 +60,11 @@ public sealed class OptionsSlotTests
 	}
 
 	[Test]
-	public async Task WhenACollectionMatchOptionsPresetIsShared_ShouldNotBeChangedByAnotherSlot()
+	public async Task WhenACollectionMatchOptionsPresetIsShared_ShouldNotBeChangedByAnotherHolder()
 	{
 		CollectionMatchOptions preset = new CollectionMatchOptions().IgnoringDuplicates();
-		OptionsSlot<CollectionMatchOptions> first = new(preset);
-		OptionsSlot<CollectionMatchOptions> second = new(preset);
+		OptionsHolder<CollectionMatchOptions> first = new(preset);
+		OptionsHolder<CollectionMatchOptions> second = new(preset);
 
 		first.InAnyOrder();
 
@@ -75,11 +75,11 @@ public sealed class OptionsSlotTests
 	}
 
 	[Test]
-	public async Task WhenANumberTolerancePresetIsShared_ShouldNotBeChangedByAnotherSlot()
+	public async Task WhenANumberTolerancePresetIsShared_ShouldNotBeChangedByAnotherHolder()
 	{
 		NumberTolerance<int> preset = new NumberTolerance<int>((a, b) => Math.Abs(a - b)).Within(2);
-		OptionsSlot<NumberTolerance<int>> first = new(preset);
-		OptionsSlot<NumberTolerance<int>> second = new(preset);
+		OptionsHolder<NumberTolerance<int>> first = new(preset);
+		OptionsHolder<NumberTolerance<int>> second = new(preset);
 
 		first.Within(3);
 
@@ -89,11 +89,11 @@ public sealed class OptionsSlotTests
 	}
 
 	[Test]
-	public async Task WhenAQuantifierPresetIsShared_ShouldNotBeChangedByAnotherSlot()
+	public async Task WhenAQuantifierPresetIsShared_ShouldNotBeChangedByAnotherHolder()
 	{
 		Quantifier preset = Quantifier.Default.AtLeast(2);
-		OptionsSlot<Quantifier> first = new(preset);
-		OptionsSlot<Quantifier> second = new(preset);
+		OptionsHolder<Quantifier> first = new(preset);
+		OptionsHolder<Quantifier> second = new(preset);
 
 		first.AtLeast(3);
 
@@ -103,11 +103,11 @@ public sealed class OptionsSlotTests
 	}
 
 	[Test]
-	public async Task WhenAStringOptionsPresetIsShared_ShouldNotBeChangedByAnotherSlot()
+	public async Task WhenAStringOptionsPresetIsShared_ShouldNotBeChangedByAnotherHolder()
 	{
 		StringEqualityOptions preset = StringEqualityOptions.Default.IgnoringCase();
-		OptionsSlot<StringEqualityOptions> first = new(preset);
-		OptionsSlot<StringEqualityOptions> second = new(preset);
+		OptionsHolder<StringEqualityOptions> first = new(preset);
+		OptionsHolder<StringEqualityOptions> second = new(preset);
 
 		first.AsPrefix();
 
@@ -117,11 +117,11 @@ public sealed class OptionsSlotTests
 	}
 
 	[Test]
-	public async Task WhenATimeTolerancePresetIsShared_ShouldNotBeChangedByAnotherSlot()
+	public async Task WhenATimeTolerancePresetIsShared_ShouldNotBeChangedByAnotherHolder()
 	{
 		TimeTolerance preset = TimeTolerance.Days.Within(TimeSpan.FromDays(2));
-		OptionsSlot<TimeTolerance> first = new(preset);
-		OptionsSlot<TimeTolerance> second = new(preset);
+		OptionsHolder<TimeTolerance> first = new(preset);
+		OptionsHolder<TimeTolerance> second = new(preset);
 
 		first.Within(TimeSpan.FromDays(3));
 
@@ -131,12 +131,12 @@ public sealed class OptionsSlotTests
 	}
 
 	[Test]
-	public async Task WhenAnObjectMatchTypePresetIsShared_ShouldNotBeChangedByAnotherSlot()
+	public async Task WhenAnObjectMatchTypePresetIsShared_ShouldNotBeChangedByAnotherHolder()
 	{
 		ObjectMatchType<int> preset = ObjectMatchType<int>.WithTolerance<int>((a, e, t) => Math.Abs(a - e) <= t)
 			.Within(2);
-		OptionsSlot<ObjectMatchType<int>> first = new(preset);
-		OptionsSlot<ObjectMatchType<int>> second = new(preset);
+		OptionsHolder<ObjectMatchType<int>> first = new(preset);
+		OptionsHolder<ObjectMatchType<int>> second = new(preset);
 
 		first.Within(3);
 
@@ -144,7 +144,7 @@ public sealed class OptionsSlotTests
 		await That(preset.ToString()).IsEqualTo(" ± 2");
 		await That(first.Value.ToString()).IsEqualTo(" ± 3");
 	}
-	private static object? ReadAsBaseType(IReadOnlyOptionsSlot<object> slot) => slot.Value;
+	private static object? ReadAsBaseType(IReadOnlyOptionsHolder<object> holder) => holder.Value;
 
 	private sealed class MyMatch : CollectionIndexOptions.IMatch
 	{

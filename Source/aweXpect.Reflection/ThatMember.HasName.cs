@@ -23,7 +23,7 @@ public static partial class ThatMember
 		this IThat<TMember?> subject, string expected)
 		where TMember : MemberInfo
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<TMember, IThat<TMember?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (s, it, grammars)
@@ -37,7 +37,7 @@ public static partial class ThatMember
 		ExpectationGrammars grammars,
 		string expected,
 		string parameterName,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<TMember>(it, grammars),
 			IAsyncContextConstraint<TMember>
 		where TMember : MemberInfo?

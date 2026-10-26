@@ -20,7 +20,7 @@ public static partial class ThatAsyncEnumerable
 			IAsyncEnumerableItems<TItem> items,
 			TItem expected, Options.ObjectToleranceMatchType<TItem, TTolerance> initialOptions)
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
 			TTolerance>(
@@ -41,7 +41,7 @@ public static partial class ThatAsyncEnumerable
 			IAsyncEnumerableItems<TItem> items,
 			TItem expected)
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((items.Quantifier, Expected: expected, Options: options),
@@ -61,7 +61,7 @@ public static partial class ThatAsyncEnumerable
 			IAsyncEnumerableItems<string?> items,
 			string? expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((items.Quantifier, Expected: expected, Options: options),

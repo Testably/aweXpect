@@ -31,7 +31,7 @@ public static partial class ThatObject
 		bool negated)
 	{
 		IEnumerable<object?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<ObjectMatchType<object?>> options = new(ObjectMatchType<object?>.Default);
+		OptionsHolder<ObjectMatchType<object?>> options = new(ObjectMatchType<object?>.Default);
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
@@ -55,7 +55,7 @@ public static partial class ThatObject
 		where T : class?
 	{
 		IEnumerable<T?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<ObjectMatchType<T>> options = new(ObjectMatchType<T>.Default);
+		OptionsHolder<ObjectMatchType<T>> options = new(ObjectMatchType<T>.Default);
 		return new ObjectEqualityResult<T, IThat<T>, T>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
@@ -73,7 +73,7 @@ public static partial class ThatObject
 		ExpectationGrammars grammars,
 		IEnumerable<TExpected?> expected,
 		string? expectedExpression,
-		OptionsSlot<ObjectMatchType<TSubject>> options)
+		OptionsHolder<ObjectMatchType<TSubject>> options)
 		: ConstraintResult.WithValue<TSubject>(it, grammars),
 			IAsyncContextConstraint<TSubject>
 	{

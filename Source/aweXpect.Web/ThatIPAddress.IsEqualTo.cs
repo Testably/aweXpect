@@ -22,7 +22,7 @@ public static partial class ThatIPAddress
 		this IThat<IPAddress?> subject,
 		IPAddress? expected)
 	{
-		OptionsSlot<ObjectMatchType<IPAddress?>> options = new(ObjectMatchType<IPAddress?>.Default);
+		OptionsHolder<ObjectMatchType<IPAddress?>> options = new(ObjectMatchType<IPAddress?>.Default);
 		return new ObjectEqualityResult<IPAddress?, IThat<IPAddress?>, IPAddress?>(
 			subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options),
 			subject,
@@ -41,7 +41,7 @@ public static partial class ThatIPAddress
 		this IThat<IPAddress?> subject,
 		IPAddress? unexpected)
 	{
-		OptionsSlot<ObjectMatchType<IPAddress?>> options = new(ObjectMatchType<IPAddress?>.Default);
+		OptionsHolder<ObjectMatchType<IPAddress?>> options = new(ObjectMatchType<IPAddress?>.Default);
 		return new ObjectEqualityResult<IPAddress?, IThat<IPAddress?>, IPAddress?>(
 			subject.Get().ExpectationBuilder.AddEqualityConstraint(unexpected, options, isNegated: true),
 			subject,

@@ -10,7 +10,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task AreConsideredEqual_WhenBothAreNull_ShouldReturnTrue()
 	{
-		OptionsSlot<ObjectMatchType<int?>> sut =
+		OptionsHolder<ObjectMatchType<int?>> sut =
 			new(ObjectMatchType<int?>.WithTolerance<int>((a, e, t) => Math.Abs(a!.Value - e!.Value) <= t));
 		sut.Within(1);
 
@@ -22,7 +22,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task AreConsideredEqual_WhenExpectedHasAnotherType_ShouldReturnFalse()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut();
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
 		sut.Within(1);
 
 		bool result = await Evaluator(sut).AreConsideredEqual(1, "1");
@@ -34,7 +34,7 @@ public class ObjectToleranceMatchTypeTests
 	public async Task AreConsideredEqual_WithDefaultTolerance_ShouldReadItForEachComparison()
 	{
 		int tolerance = 1;
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut(defaultTolerance: () => tolerance);
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut(defaultTolerance: () => tolerance);
 		IEqualityEvaluator<int> evaluator = Evaluator(sut);
 
 		bool first = await evaluator.AreConsideredEqual(1, 2);
@@ -50,7 +50,7 @@ public class ObjectToleranceMatchTypeTests
 	public async Task ForEvaluation_ShouldReadTheDefaultToleranceOnce()
 	{
 		int reads = 0;
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut(defaultTolerance: () => ++reads);
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut(defaultTolerance: () => ++reads);
 
 		IEqualityEvaluator<int> evaluation =
 			((IEqualityOptions<int>)sut.Value).ForEvaluation(new Context(), CancellationToken.None);
@@ -66,7 +66,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task ForEvaluation_WithExplicitTolerance_ShouldReturnTheSameMatcher()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut(defaultTolerance: () => 5);
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut(defaultTolerance: () => 5);
 		sut.Within(1);
 
 		ObjectMatcher<int> first = sut.Value.ForEvaluation(new MatchEnvironment(new Context(), CancellationToken.None));
@@ -79,7 +79,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task ForEvaluation_WithoutDefaultTolerance_ShouldCompareLikeTheDefault()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut();
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
 
 		ObjectMatcher<int> result = sut.Value.ForEvaluation(default);
 
@@ -91,7 +91,7 @@ public class ObjectToleranceMatchTypeTests
 	[Arguments(true, "is not equal to 3 ± 2")]
 	public async Task GetExpectation_ShouldNameTheTolerance(bool isNegated, string expected)
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut();
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
 		sut.Within(2);
 
 		string result =
@@ -103,7 +103,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task GetItemExpectation_ShouldNameTheTolerance()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut();
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
 		sut.Within(2);
 
 		string result = sut.Value.GetItemExpectation("3", "an item", "equal to");
@@ -116,7 +116,7 @@ public class ObjectToleranceMatchTypeTests
 	[Arguments(4, false)]
 	public async Task MatchWithExplanation_ShouldDecideWithTheTolerance(int expected, bool expectMatch)
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut();
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
 		sut.Within(2);
 		ObjectMatcher<int> matcher = sut.Value.ForEvaluation(default);
 
@@ -133,7 +133,7 @@ public class ObjectToleranceMatchTypeTests
 	public async Task ToString_WithDefaultTolerance_ShouldOnlyNameAToleranceOtherThanZero(int defaultTolerance,
 		string expected)
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut(defaultTolerance: () => defaultTolerance);
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut(defaultTolerance: () => defaultTolerance);
 
 		string? result = sut.Value.ToString();
 
@@ -143,7 +143,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task Using_WhenToleranceIsSpecified_ShouldThrowInvalidOperationException()
 	{
-		OptionsSlot<ObjectMatchType<double>> sut =
+		OptionsHolder<ObjectMatchType<double>> sut =
 			new(ObjectMatchType<double>.WithTolerance<double>((a, e, t) => Math.Abs(a - e) <= t));
 		sut.Within(0.1);
 
@@ -157,7 +157,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task Using_WithDefaultTolerance_ShouldNotThrow()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut(defaultTolerance: () => 5);
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut(defaultTolerance: () => 5);
 
 		void Act() => sut.Using(new AllEqualComparer());
 
@@ -168,7 +168,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task WhenTimeSpanToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
-		OptionsSlot<ObjectMatchType<DateTime>> sut =
+		OptionsHolder<ObjectMatchType<DateTime>> sut =
 			new(ObjectMatchType<DateTime>.WithTolerance<TimeSpan>((a, e, t) => a - e <= t));
 
 		void Act() => sut.Within(TimeSpan.FromSeconds(-1));
@@ -181,7 +181,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
 	{
-		OptionsSlot<ObjectMatchType<double>> sut =
+		OptionsHolder<ObjectMatchType<double>> sut =
 			new(ObjectMatchType<double>.WithTolerance<double>((a, e, t) => Math.Abs(a - e) <= t));
 
 		void Act() => sut.Within(double.NaN);
@@ -195,7 +195,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
-		OptionsSlot<ObjectMatchType<double>> sut =
+		OptionsHolder<ObjectMatchType<double>> sut =
 			new(ObjectMatchType<double>.WithTolerance<double>((a, e, t) => Math.Abs(a - e) <= t));
 
 		void Act() => sut.Within(-1.0);
@@ -208,7 +208,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task WhenToleranceIsZero_ShouldNotThrow()
 	{
-		OptionsSlot<ObjectMatchType<double>> sut =
+		OptionsHolder<ObjectMatchType<double>> sut =
 			new(ObjectMatchType<double>.WithTolerance<double>((a, e, t) => Math.Abs(a - e) <= t));
 
 		void Act() => sut.Within(0.0);
@@ -219,7 +219,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task WithRelativeTolerance_ShouldAppendTheUnitToTheTolerance()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut();
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
 		sut.Within(5).WithRelativeTolerance<int, int>((t, e) => t * e / 100, "%");
 
 		string result = sut.Value.GetExpectation("100", ExpectationGrammars.None);
@@ -234,7 +234,7 @@ public class ObjectToleranceMatchTypeTests
 	public async Task WithRelativeTolerance_ShouldApplyTheToleranceRelativeToTheExpectedValue(int actual,
 		int expected, bool expectMatch)
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut();
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
 		sut.Within(5).WithRelativeTolerance<int, int>((t, e) => t * Math.Abs(e) / 100, "%");
 
 		bool result = await Evaluator(sut).AreConsideredEqual(actual, expected);
@@ -259,7 +259,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task WithRelativeTolerance_WhenEvaluated_ShouldKeepTheRelativeTolerance()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut();
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
 		sut.Within(5).WithRelativeTolerance<int, int>((t, e) => t * e / 100, "%");
 
 		IEqualityEvaluator<int> evaluation =
@@ -272,7 +272,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task WithRelativeTolerance_WhenSubjectIsNullable_ShouldApplyItToTheExpectedValue()
 	{
-		OptionsSlot<ObjectMatchType<int?>> sut = new(ObjectMatchType<int?>.WithTolerance<int>((a, e, t)
+		OptionsHolder<ObjectMatchType<int?>> sut = new(ObjectMatchType<int?>.WithTolerance<int>((a, e, t)
 			=> a is not null && e is not null && Math.Abs(a.Value - e.Value) <= t));
 		sut.Within(5).WithRelativeTolerance<int?, int>((t, e) => t * e / 100, "%");
 
@@ -285,7 +285,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task WithRelativeTolerance_WithoutWithin_ShouldNotChangeTheComparison()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut();
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
 		sut.WithRelativeTolerance<int, int>((t, e) => t * e / 100, "%");
 
 		bool result = await Evaluator(sut).AreConsideredEqual(201, 200);
@@ -298,7 +298,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task Within_ShouldNameTheOption()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut();
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
 
 		sut.Within(5);
 
@@ -310,8 +310,8 @@ public class ObjectToleranceMatchTypeTests
 	{
 		ObjectToleranceMatchType<int, int> start = ObjectMatchType<int>
 			.WithTolerance<int>((a, e, t) => Math.Abs(a - e) <= t);
-		OptionsSlot<ObjectMatchType<int>> first = new(start);
-		OptionsSlot<ObjectMatchType<int>> second = new(start);
+		OptionsHolder<ObjectMatchType<int>> first = new(start);
+		OptionsHolder<ObjectMatchType<int>> second = new(start);
 
 		first.Within(5);
 
@@ -324,7 +324,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task Within_WhenComparerIsSpecified_ShouldThrowInvalidOperationException()
 	{
-		OptionsSlot<ObjectMatchType<double>> sut =
+		OptionsHolder<ObjectMatchType<double>> sut =
 			new(ObjectMatchType<double>.WithTolerance<double>((a, e, t) => Math.Abs(a - e) <= t));
 		sut.Using(new AllEqualComparer());
 
@@ -338,7 +338,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task Within_WhenTheComparisonHasNoTolerance_ShouldThrowInvalidOperationException()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = new(ObjectMatchType<int>.Default);
+		OptionsHolder<ObjectMatchType<int>> sut = new(ObjectMatchType<int>.Default);
 
 		void Act() => sut.Within(0.1);
 
@@ -349,7 +349,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task Within_WhenToleranceIsRejectedByTheValidation_ShouldThrowItsException()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut(RequireEven);
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut(RequireEven);
 
 		void Act() => sut.Within(3);
 
@@ -361,7 +361,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task Within_WhenToleranceIsSpecified_ShouldUseTheLastTolerance()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut();
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
 		sut.Within(1).WithRelativeTolerance<int, int>((t, e) => t * e / 100, "%");
 
 		sut.Within(5);
@@ -374,7 +374,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task Within_WithDefaultTolerance_ShouldNotThrow()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut(defaultTolerance: () => 5);
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut(defaultTolerance: () => 5);
 
 		void Act() => sut.Within(1);
 
@@ -385,7 +385,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task Within_WithToleranceValidation_WhenToleranceIsAccepted_ShouldApplyIt()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut(_ => { });
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut(_ => { });
 		sut.Within(2);
 
 		bool result = await Evaluator(sut).AreConsideredEqual(1, 3);
@@ -396,7 +396,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task Within_WithToleranceValidation_WhenToleranceIsSpecifiedTwice_ShouldValidateTheLaterTolerance()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut(RequireEven);
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut(RequireEven);
 		sut.Within(2);
 
 		void Act() => sut.Within(3);
@@ -410,7 +410,7 @@ public class ObjectToleranceMatchTypeTests
 	[Test]
 	public async Task Within_WithToleranceValidation_WhenToleranceWasRejected_ShouldAcceptALaterTolerance()
 	{
-		OptionsSlot<ObjectMatchType<int>> sut = CreateSut(RequireEven);
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut(RequireEven);
 		await That(() => sut.Within(3)).Throws<ArgumentOutOfRangeException>()
 			.WithMessage("The tolerance must be even.").AsPrefix();
 
@@ -421,13 +421,13 @@ public class ObjectToleranceMatchTypeTests
 		await That(await Evaluator(sut).AreConsideredEqual(1, 3)).IsTrue();
 	}
 
-	private static OptionsSlot<ObjectMatchType<int>> CreateSut(Action<int>? validation = null,
+	private static OptionsHolder<ObjectMatchType<int>> CreateSut(Action<int>? validation = null,
 		Func<int>? defaultTolerance = null)
 		=> new(ObjectMatchType<int>.WithTolerance<int>((a, e, t) => Math.Abs(a - e) <= t,
 			validation: validation, defaultTolerance: defaultTolerance));
 
 #pragma warning disable CA1859 // The ObjectMatcher implements AreConsideredEqual explicitly, so the tests need the interface
-	private static IEqualityEvaluator<T> Evaluator<T>(OptionsSlot<ObjectMatchType<T>> sut)
+	private static IEqualityEvaluator<T> Evaluator<T>(OptionsHolder<ObjectMatchType<T>> sut)
 		=> sut.Value.ForEvaluation(default);
 #pragma warning restore CA1859
 

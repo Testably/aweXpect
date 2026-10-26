@@ -13,7 +13,7 @@ public abstract partial class ThatDelegate
 	private sealed class ExecutesInConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		OptionsSlot<ExecutionTimeOptions> options,
+		OptionsHolder<ExecutionTimeOptions> options,
 		Type? valueType)
 		: ConstraintResult(grammars),
 			IValueConstraint<DelegateValue>

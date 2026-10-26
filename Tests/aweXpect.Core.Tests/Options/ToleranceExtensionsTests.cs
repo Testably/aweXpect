@@ -13,7 +13,7 @@ public sealed class ToleranceExtensionsTests
 	[Test]
 	public async Task Percent_ShouldReturnTheResultOfWithin()
 	{
-		OptionsSlot<NumberTolerance<double>> options = new(new NumberTolerance<double>((_, _) => null));
+		OptionsHolder<NumberTolerance<double>> options = new(new NumberTolerance<double>((_, _) => null));
 		NumberToleranceResult<double, IThat<double>>.WithinResult within = CreateSut(2.0, options).Within(5.0);
 
 		NumberToleranceResult<double, IThat<double>> result = within.Percent();
@@ -24,7 +24,7 @@ public sealed class ToleranceExtensionsTests
 	[Test]
 	public async Task Percent_WithDecimal_ShouldMakeTheToleranceRelative()
 	{
-		OptionsSlot<NumberTolerance<decimal>> options = new(new NumberTolerance<decimal>((_, _) => null));
+		OptionsHolder<NumberTolerance<decimal>> options = new(new NumberTolerance<decimal>((_, _) => null));
 
 		_ = CreateSut(2m, options).Within(5m).Percent();
 
@@ -35,7 +35,7 @@ public sealed class ToleranceExtensionsTests
 	[Test]
 	public async Task Percent_WithDecimal_WhenTheAbsoluteToleranceOverflows_ShouldCoverEveryDifference()
 	{
-		OptionsSlot<NumberTolerance<decimal>> options = new(new NumberTolerance<decimal>((_, _) => null));
+		OptionsHolder<NumberTolerance<decimal>> options = new(new NumberTolerance<decimal>((_, _) => null));
 
 		_ = CreateSut(2m, options).Within(200m).Percent();
 
@@ -46,7 +46,7 @@ public sealed class ToleranceExtensionsTests
 	[Test]
 	public async Task Percent_WithDouble_ShouldMakeTheToleranceRelative()
 	{
-		OptionsSlot<NumberTolerance<double>> options = new(new NumberTolerance<double>((_, _) => null));
+		OptionsHolder<NumberTolerance<double>> options = new(new NumberTolerance<double>((_, _) => null));
 
 		_ = CreateSut(2.0, options).Within(5.0).Percent();
 
@@ -57,7 +57,7 @@ public sealed class ToleranceExtensionsTests
 	[Test]
 	public async Task Percent_WithFloat_ShouldMakeTheToleranceRelative()
 	{
-		OptionsSlot<NumberTolerance<float>> options = new(new NumberTolerance<float>((_, _) => null));
+		OptionsHolder<NumberTolerance<float>> options = new(new NumberTolerance<float>((_, _) => null));
 
 		_ = CreateSut(2f, options).Within(5f).Percent();
 
@@ -69,7 +69,7 @@ public sealed class ToleranceExtensionsTests
 	[Test]
 	public async Task Percent_WithHalf_ShouldMakeTheToleranceRelative()
 	{
-		OptionsSlot<NumberTolerance<Half>> options = new(new NumberTolerance<Half>((_, _) => null));
+		OptionsHolder<NumberTolerance<Half>> options = new(new NumberTolerance<Half>((_, _) => null));
 
 		_ = CreateSut((Half)2, options).Within((Half)5).Percent();
 
@@ -80,7 +80,7 @@ public sealed class ToleranceExtensionsTests
 	[Test]
 	public async Task Within_WithByte_ShouldSetTheTolerance()
 	{
-		OptionsSlot<NumberTolerance<byte>> options = new(new NumberTolerance<byte>((_, _) => null));
+		OptionsHolder<NumberTolerance<byte>> options = new(new NumberTolerance<byte>((_, _) => null));
 		NumberToleranceResult<byte, IThat<byte>> sut = CreateSut((byte)2, options);
 
 		NumberToleranceResult<byte, IThat<byte>> result = ToleranceExtensions.Within(sut,(byte)1);
@@ -92,7 +92,7 @@ public sealed class ToleranceExtensionsTests
 	[Test]
 	public async Task Within_WithInt_ShouldSetTheTolerance()
 	{
-		OptionsSlot<NumberTolerance<int>> options = new(new NumberTolerance<int>((_, _) => null));
+		OptionsHolder<NumberTolerance<int>> options = new(new NumberTolerance<int>((_, _) => null));
 		NumberToleranceResult<int, IThat<int>> sut = CreateSut(2, options);
 
 		NumberToleranceResult<int, IThat<int>> result = ToleranceExtensions.Within(sut,1);
@@ -105,7 +105,7 @@ public sealed class ToleranceExtensionsTests
 	[Test]
 	public async Task Within_WithNuint_ShouldSetTheTolerance()
 	{
-		OptionsSlot<NumberTolerance<nuint>> options = new(new NumberTolerance<nuint>((_, _) => null));
+		OptionsHolder<NumberTolerance<nuint>> options = new(new NumberTolerance<nuint>((_, _) => null));
 		NumberToleranceResult<nuint, IThat<nuint>> sut = CreateSut((nuint)2, options);
 
 		NumberToleranceResult<nuint, IThat<nuint>> result = ToleranceExtensions.Within(sut,(nuint)1);
@@ -118,7 +118,7 @@ public sealed class ToleranceExtensionsTests
 	[Test]
 	public async Task Within_WithSbyte_ShouldSetTheTolerance()
 	{
-		OptionsSlot<NumberTolerance<sbyte>> options = new(new NumberTolerance<sbyte>((_, _) => null));
+		OptionsHolder<NumberTolerance<sbyte>> options = new(new NumberTolerance<sbyte>((_, _) => null));
 		NumberToleranceResult<sbyte, IThat<sbyte>> sut = CreateSut((sbyte)2, options);
 
 		NumberToleranceResult<sbyte, IThat<sbyte>> result = ToleranceExtensions.Within(sut,(sbyte)1);
@@ -130,7 +130,7 @@ public sealed class ToleranceExtensionsTests
 	[Test]
 	public async Task Within_WithShort_ShouldSetTheTolerance()
 	{
-		OptionsSlot<NumberTolerance<short>> options = new(new NumberTolerance<short>((_, _) => null));
+		OptionsHolder<NumberTolerance<short>> options = new(new NumberTolerance<short>((_, _) => null));
 		NumberToleranceResult<short, IThat<short>> sut = CreateSut((short)2, options);
 
 		NumberToleranceResult<short, IThat<short>> result = ToleranceExtensions.Within(sut,(short)1);
@@ -142,7 +142,7 @@ public sealed class ToleranceExtensionsTests
 	[Test]
 	public async Task Within_WithUint_ShouldSetTheTolerance()
 	{
-		OptionsSlot<NumberTolerance<uint>> options = new(new NumberTolerance<uint>((_, _) => null));
+		OptionsHolder<NumberTolerance<uint>> options = new(new NumberTolerance<uint>((_, _) => null));
 		NumberToleranceResult<uint, IThat<uint>> sut = CreateSut(2u, options);
 
 		NumberToleranceResult<uint, IThat<uint>> result = ToleranceExtensions.Within(sut,1u);
@@ -154,7 +154,7 @@ public sealed class ToleranceExtensionsTests
 	[Test]
 	public async Task Within_WithUlong_ShouldSetTheTolerance()
 	{
-		OptionsSlot<NumberTolerance<ulong>> options = new(new NumberTolerance<ulong>((_, _) => null));
+		OptionsHolder<NumberTolerance<ulong>> options = new(new NumberTolerance<ulong>((_, _) => null));
 		NumberToleranceResult<ulong, IThat<ulong>> sut = CreateSut(2ul, options);
 
 		NumberToleranceResult<ulong, IThat<ulong>> result = ToleranceExtensions.Within(sut,1ul);
@@ -166,7 +166,7 @@ public sealed class ToleranceExtensionsTests
 	[Test]
 	public async Task Within_WithUshort_ShouldSetTheTolerance()
 	{
-		OptionsSlot<NumberTolerance<ushort>> options = new(new NumberTolerance<ushort>((_, _) => null));
+		OptionsHolder<NumberTolerance<ushort>> options = new(new NumberTolerance<ushort>((_, _) => null));
 		NumberToleranceResult<ushort, IThat<ushort>> sut = CreateSut((ushort)2, options);
 
 		NumberToleranceResult<ushort, IThat<ushort>> result = ToleranceExtensions.Within(sut,(ushort)1);
@@ -175,7 +175,7 @@ public sealed class ToleranceExtensionsTests
 		await That(options.Value.Tolerance).IsEqualTo((ushort)1);
 	}
 
-	private static NumberToleranceResult<T, IThat<T>> CreateSut<T>(T subject, OptionsSlot<NumberTolerance<T>> options)
+	private static NumberToleranceResult<T, IThat<T>> CreateSut<T>(T subject, OptionsHolder<NumberTolerance<T>> options)
 #if NET8_0_OR_GREATER
 		where T : struct, INumber<T>
 #else

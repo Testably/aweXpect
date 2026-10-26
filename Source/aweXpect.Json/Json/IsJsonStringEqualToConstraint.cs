@@ -15,7 +15,7 @@ internal sealed class IsJsonStringEqualToConstraint(
 	string it,
 	ExpectationGrammars grammars,
 	string expected,
-	OptionsSlot<StringEqualityOptions> options)
+	OptionsHolder<StringEqualityOptions> options)
 	: IsJsonValueEqualToConstraint<string>(it, grammars, JsonValueReaders.String)
 {
 	private string? _actualValue;

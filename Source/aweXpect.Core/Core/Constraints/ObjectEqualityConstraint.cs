@@ -19,7 +19,7 @@ internal sealed class ObjectEqualityConstraint<TSubject, TExpected>(
 	ExpectationGrammars grammars,
 	TExpected expected,
 	string? expectedExpression,
-	OptionsSlot<ObjectMatchType<TSubject>> options)
+	OptionsHolder<ObjectMatchType<TSubject>> options)
 	: ConstraintResult.WithEqualToValue<TSubject>(it, grammars, expected is null),
 		IAsyncContextConstraint<TSubject>
 {

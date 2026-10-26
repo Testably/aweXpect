@@ -212,7 +212,7 @@ public sealed class ExpectationBuilderExtensionsTests
 	private static ObjectEqualityResult<TSubject, IThat<TSubject>, TSubject> IsEqualTo<TSubject, TExpected>(
 		IThat<TSubject> subject, TExpected expected, bool isNegated)
 	{
-		OptionsSlot<ObjectMatchType<TSubject>> options = new(ObjectMatchType<TSubject>.Default);
+		OptionsHolder<ObjectMatchType<TSubject>> options = new(ObjectMatchType<TSubject>.Default);
 		return new ObjectEqualityResult<TSubject, IThat<TSubject>, TSubject>(
 			subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options, isNegated),
 			subject, options);
@@ -222,7 +222,7 @@ public sealed class ExpectationBuilderExtensionsTests
 		TExpected>(IThat<TSubject> subject, TExpected expected, bool isNegated,
 		[CallerArgumentExpression("expected")] string expectedExpression = "")
 	{
-		OptionsSlot<ObjectMatchType<TSubject>> options = new(ObjectMatchType<TSubject>.Default);
+		OptionsHolder<ObjectMatchType<TSubject>> options = new(ObjectMatchType<TSubject>.Default);
 		return new ObjectEqualityResult<TSubject, IThat<TSubject>, TSubject>(
 			subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options, isNegated, expectedExpression),
 			subject, options);
@@ -233,8 +233,8 @@ public sealed class ExpectationBuilderExtensionsTests
 	private static StringOccurrenceCountResult<string, IThat<string>> ContainsOccurrences(IThat<string> subject,
 		string expected, bool isNegated)
 	{
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringOccurrenceCountResult<string, IThat<string>>(
 			subject.Get().ExpectationBuilder.AddStringOccurrenceConstraint(expected, quantifier, options, isNegated),
 			subject, quantifier, options);

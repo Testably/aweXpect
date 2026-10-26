@@ -27,7 +27,7 @@ public static partial class ThatGeneric
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Predicate: predicate, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
 					static (state, it, grammars) =>
@@ -54,7 +54,7 @@ public static partial class ThatGeneric
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Predicate: predicate, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
 					static (state, it, grammars) =>
@@ -78,7 +78,7 @@ public static partial class ThatGeneric
 		ExpectationGrammars grammars,
 		Func<T, bool> predicate,
 		string predicateExpression,
-		OptionsSlot<RepeatedCheckOptions> options)
+		OptionsHolder<RepeatedCheckOptions> options)
 		: ConstraintResult.WithValue<T>(it, grammars),
 			IAsyncContextConstraint<T>
 	{

@@ -60,7 +60,7 @@ public static partial class ThatNullableJsonElement
 #endif
 	{
 		JsonValueReader<TNumber> reader = JsonValueReaders.GetNumber<TNumber>();
-		OptionsSlot<NumberTolerance<TNumber>> options = new(JsonValueReaders.CreateNumberTolerance<TNumber>());
+		OptionsHolder<NumberTolerance<TNumber>> options = new(JsonValueReaders.CreateNumberTolerance<TNumber>());
 		return new NumberToleranceResult<JsonElement, IThat<JsonElement?>, TNumber>(
 			subject.Get().ExpectationBuilder.AddConstraint((Reader: reader, Expected: expected, Options: options),
 				static IAsyncContextConstraint<JsonElement?> (state, it, grammars)

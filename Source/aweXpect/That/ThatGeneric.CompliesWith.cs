@@ -25,7 +25,7 @@ public static partial class ThatGeneric
 		Action<IThatSubject<T>> expectations)
 	{
 		expectations.ThrowIfNull();
-		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Expectations: expectations, Options: options), static (state, _, grammars) =>
 					new CompliesWithConstraint<T>(grammars, state.Expectations, state.Options)),
@@ -44,7 +44,7 @@ public static partial class ThatGeneric
 		Action<IThatSubject<T>> expectations)
 	{
 		expectations.ThrowIfNull();
-		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Expectations: expectations, Options: options), static (state, _, grammars) =>
 					new CompliesWithConstraint<T>(grammars, state.Expectations, state.Options).Invert()),
@@ -58,12 +58,12 @@ public static partial class ThatGeneric
 			IExpectationTextConstraint
 	{
 		private readonly ManualExpectationBuilder<T> _itemExpectationBuilder;
-		private readonly OptionsSlot<RepeatedCheckOptions> _options;
+		private readonly OptionsHolder<RepeatedCheckOptions> _options;
 		private bool _isNegated;
 		private ConstraintResult? _negatedResult;
 
 		public CompliesWithConstraint(ExpectationGrammars grammars,
-			Action<IThatSubject<T>> expectations, OptionsSlot<RepeatedCheckOptions> options)
+			Action<IThatSubject<T>> expectations, OptionsHolder<RepeatedCheckOptions> options)
 			: base(grammars)
 		{
 			_options = options;

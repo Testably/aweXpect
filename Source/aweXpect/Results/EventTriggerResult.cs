@@ -22,16 +22,16 @@ public class EventTriggerResult<TSubject>
 		IOptionsProvider<RepeatedCheckOptions>
 	where TSubject : notnull
 {
-	private readonly OptionsSlot<TriggerEventFilter> _filter;
-	private readonly OptionsSlot<RepeatedCheckOptions> _options;
-	private readonly OptionsSlot<Quantifier> _quantifier;
+	private readonly OptionsHolder<TriggerEventFilter> _filter;
+	private readonly OptionsHolder<RepeatedCheckOptions> _options;
+	private readonly OptionsHolder<Quantifier> _quantifier;
 
 	internal EventTriggerResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<IEventRecording<TSubject>> returnValue,
-		OptionsSlot<TriggerEventFilter> filter,
-		OptionsSlot<Quantifier> quantifier,
-		OptionsSlot<RepeatedCheckOptions> options)
+		OptionsHolder<TriggerEventFilter> filter,
+		OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<RepeatedCheckOptions> options)
 		: base(expectationBuilder, returnValue)
 	{
 		_filter = filter;
@@ -56,10 +56,10 @@ public class EventTriggerResult<TSubject>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<RepeatedCheckOptions> IOptionsProvider<RepeatedCheckOptions>.Options => _options;
+	OptionsHolder<RepeatedCheckOptions> IOptionsProvider<RepeatedCheckOptions>.Options => _options;
 
 	/// <summary>
 	///     Adds a predicate for the sender of the event.

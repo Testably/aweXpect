@@ -15,6 +15,6 @@ public static partial class TypeFilters
 		return new Filtered.Types.StringEqualityResult(@this, options => Filter.Suffix<Type>(
 				async type => !await options.Value.AreConsideredEqual(type.Name, unexpected, nameof(unexpected)),
 				() => $"without name {options.Value.GetExpectation(unexpected, ExpectationGrammars.None)} "),
-			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

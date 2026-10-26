@@ -40,7 +40,7 @@ public static class DecimalPropertyResultExtensions
 	{
 		result.Validation?.Invoke(expected, nameof(expected));
 		return result.CompareEquality(new PropertyEqualityComparison<decimal>(expected,
-			new OptionsSlot<NumberTolerance<decimal>>(new NumberTolerance<decimal>(NumberDifferences.Decimal)), false));
+			new OptionsHolder<NumberTolerance<decimal>>(new NumberTolerance<decimal>(NumberDifferences.Decimal)), false));
 	}
 
 	/// <summary>
@@ -125,7 +125,7 @@ public static class DecimalPropertyResultExtensions
 	{
 		result.Validation?.Invoke(unexpected, nameof(unexpected));
 		return result.CompareEquality(new PropertyEqualityComparison<decimal>(unexpected,
-			new OptionsSlot<NumberTolerance<decimal>>(new NumberTolerance<decimal>(NumberDifferences.Decimal)), true));
+			new OptionsHolder<NumberTolerance<decimal>>(new NumberTolerance<decimal>(NumberDifferences.Decimal)), true));
 	}
 
 	/// <summary>

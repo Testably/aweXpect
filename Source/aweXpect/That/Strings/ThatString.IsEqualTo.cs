@@ -18,7 +18,7 @@ public static partial class ThatString
 		this IThat<string?> subject,
 		string? expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (state, it, grammars) =>
@@ -34,7 +34,7 @@ public static partial class ThatString
 		this IThat<string?> subject,
 		string? unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (state, it, grammars) =>
@@ -48,7 +48,7 @@ public static partial class ThatString
 		ExpectationGrammars grammars,
 		string? expected,
 		string parameterName,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithEqualToValue<string?>(it, grammars, expected is null),
 			IAsyncContextConstraint<string?>
 	{

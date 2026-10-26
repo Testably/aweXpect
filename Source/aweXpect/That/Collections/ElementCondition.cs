@@ -160,7 +160,7 @@ internal sealed class ElementOfType<TItem>(Type type, bool exactly) : Synchronou
 ///     evaluator of the evaluation adds contexts.
 /// </remarks>
 internal sealed class ElementEqualTo<TItem, TValue>(
-	IReadOnlyOptionsSlot<IEqualityOptions<TValue>> options,
+	IReadOnlyOptionsHolder<IEqualityOptions<TValue>> options,
 	TValue expected,
 	bool addsContexts = false)
 	: ElementCondition<TItem>
@@ -201,7 +201,7 @@ internal sealed class ElementEqualTo<TItem, TValue>(
 
 /// <summary>
 ///     An item that is equal to the <paramref name="expected" /> string according to the current options in the
-///     <paramref name="options" /> slot, or to the comparer of a set subject, when the <paramref name="subjectOptions" />
+///     <paramref name="options" /> holder, or to the comparer of a set subject, when the <paramref name="subjectOptions" />
 ///     let it decide.
 /// </summary>
 /// <remarks>
@@ -209,7 +209,7 @@ internal sealed class ElementEqualTo<TItem, TValue>(
 ///     so that the item compares and explains with them; before an evaluation, the current options describe the item.
 /// </remarks>
 internal sealed class ElementEqualToString<TItem>(
-	IReadOnlyOptionsSlot<StringEqualityOptions> options,
+	IReadOnlyOptionsHolder<StringEqualityOptions> options,
 	string? expected,
 	SubjectEqualityOptions<string?, string?>? subjectOptions = null)
 	: ElementCondition<TItem>

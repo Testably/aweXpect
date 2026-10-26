@@ -28,7 +28,7 @@ public static partial class ThatString
 			throw Tracing.WriteException(new ArgumentException("The 'expected' string cannot be empty.", nameof(expected)));
 		}
 
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default.AsPrefix());
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default.AsPrefix());
 		return new StringEqualityResult<string, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (state, it, grammars) =>
@@ -52,7 +52,7 @@ public static partial class ThatString
 			throw Tracing.WriteException(new ArgumentException("The 'unexpected' string cannot be empty.", nameof(unexpected)));
 		}
 
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default.AsPrefix());
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default.AsPrefix());
 		return new StringEqualityResult<string, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (state, it, grammars) =>
@@ -66,7 +66,7 @@ public static partial class ThatString
 		ExpectationGrammars grammars,
 		string? expected,
 		string parameterName,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
 			IAsyncContextConstraint<string?>
 	{

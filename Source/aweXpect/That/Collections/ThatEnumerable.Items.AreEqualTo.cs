@@ -20,7 +20,7 @@ public static partial class ThatEnumerable
 			IEnumerableItems<TItem> items,
 			TItem expected, Options.ObjectToleranceMatchType<TItem, TTolerance> initialOptions)
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((Options: options, Expected: expected, items.Quantifier),
@@ -43,7 +43,7 @@ public static partial class ThatEnumerable
 			IEnumerableItems<TItem> items,
 			TItem expected)
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((Options: options, Expected: expected, items.Quantifier),
@@ -68,7 +68,7 @@ public static partial class ThatEnumerable
 			INonGenericEnumerableItems<IEnumerable> items,
 			object? expected)
 	{
-		OptionsSlot<ObjectMatchType<object?>> options = new(ItemEqualsMatchType<object?>.Instance);
+		OptionsHolder<ObjectMatchType<object?>> options = new(ItemEqualsMatchType<object?>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>(
 			expectationBuilder.AddConstraint((Options: options, Expected: expected, items.Quantifier),
@@ -93,7 +93,7 @@ public static partial class ThatEnumerable
 			TItem expected)
 		where TCollection : struct, IEnumerable<TItem>
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint((items.Quantifier, Expected: expected, Options: options),
@@ -115,7 +115,7 @@ public static partial class ThatEnumerable
 			TItem expected, Options.ObjectToleranceMatchType<TItem, TTolerance> initialOptions)
 		where TCollection : struct, IEnumerable<TItem>
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((items.Quantifier, Expected: expected, Options: options),
@@ -135,7 +135,7 @@ public static partial class ThatEnumerable
 			IEnumerableItems<string?> items,
 			string? expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((Options: options, Expected: expected, items.Quantifier),
@@ -160,7 +160,7 @@ public static partial class ThatEnumerable
 			string? expected)
 		where TCollection : struct, IEnumerable<string?>
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint((items.Quantifier, Expected: expected, Options: options),

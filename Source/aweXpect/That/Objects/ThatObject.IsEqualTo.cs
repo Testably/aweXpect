@@ -15,7 +15,7 @@ public static partial class ThatObject
 		this IThat<object?> subject,
 		object? expected)
 	{
-		OptionsSlot<ObjectMatchType<object?>> options = new(ObjectMatchType<object?>.Default);
+		OptionsHolder<ObjectMatchType<object?>> options = new(ObjectMatchType<object?>.Default);
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
 				subject.Get().ExpectationBuilder, expected, options),
@@ -32,7 +32,7 @@ public static partial class ThatObject
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where T : struct
 	{
-		OptionsSlot<ObjectMatchType<T?>> options = new(ObjectMatchType<T?>.Default);
+		OptionsHolder<ObjectMatchType<T?>> options = new(ObjectMatchType<T?>.Default);
 		return new ObjectEqualityResult<T?, IThat<T?>, T?>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
 				subject.Get().ExpectationBuilder, expected, options),
@@ -49,7 +49,7 @@ public static partial class ThatObject
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where T : struct
 	{
-		OptionsSlot<ObjectMatchType<T>> options = new(ObjectMatchType<T>.Default);
+		OptionsHolder<ObjectMatchType<T>> options = new(ObjectMatchType<T>.Default);
 		return new ObjectEqualityResult<T, IThat<T>, T>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
 				subject.Get().ExpectationBuilder, expected, options),
@@ -64,7 +64,7 @@ public static partial class ThatObject
 		this IThat<object?> subject,
 		object? unexpected)
 	{
-		OptionsSlot<ObjectMatchType<object?>> options = new(ObjectMatchType<object?>.Default);
+		OptionsHolder<ObjectMatchType<object?>> options = new(ObjectMatchType<object?>.Default);
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
 				subject.Get().ExpectationBuilder, unexpected, options, isNegated: true),
@@ -82,7 +82,7 @@ public static partial class ThatObject
 		string doNotPopulateThisValue = "")
 		where T : struct
 	{
-		OptionsSlot<ObjectMatchType<T?>> options = new(ObjectMatchType<T?>.Default);
+		OptionsHolder<ObjectMatchType<T?>> options = new(ObjectMatchType<T?>.Default);
 		return new ObjectEqualityResult<T?, IThat<T?>, T?>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
 				subject.Get().ExpectationBuilder, unexpected, options, isNegated: true),
@@ -100,7 +100,7 @@ public static partial class ThatObject
 		string doNotPopulateThisValue = "")
 		where T : struct
 	{
-		OptionsSlot<ObjectMatchType<T>> options = new(ObjectMatchType<T>.Default);
+		OptionsHolder<ObjectMatchType<T>> options = new(ObjectMatchType<T>.Default);
 		return new ObjectEqualityResult<T, IThat<T>, T>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(
 				subject.Get().ExpectationBuilder, unexpected, options, isNegated: true),

@@ -18,11 +18,11 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	: ExpectationResult<TItem, AsyncSingleItemResult<TCollection, TItem>>,
 		IOptionsProvider<PredicateOptions<TItem>>
 {
-	private readonly OptionsSlot<PredicateOptions<TItem>> _options;
+	private readonly OptionsHolder<PredicateOptions<TItem>> _options;
 	private readonly SingleItemSource<TItem> _source;
 
 	internal AsyncSingleItemResult(ExpectationBuilder expectationBuilder,
-		OptionsSlot<PredicateOptions<TItem>> options,
+		OptionsHolder<PredicateOptions<TItem>> options,
 		SingleItemSource<TItem> source)
 		: base(expectationBuilder)
 	{
@@ -38,7 +38,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 			"it", grammars => grammars & ~ExpectationGrammars.Plural));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<PredicateOptions<TItem>> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;
+	OptionsHolder<PredicateOptions<TItem>> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;
 
 	/// <summary>
 	///     …that satisfies the <paramref name="predicate" />.

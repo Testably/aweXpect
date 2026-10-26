@@ -2,7 +2,7 @@
 
 namespace aweXpect.Core.Tests.Options;
 
-public class QuantifierSlotExtensionsTests
+public class QuantifierHolderExtensionsTests
 {
 	[Test]
 	[Arguments("Never", "never", "AtLeast cannot be combined with Never.")]
@@ -11,9 +11,9 @@ public class QuantifierSlotExtensionsTests
 	public async Task ExactOption_ShouldSetTheCountAndNameTheOption(string option, string expectedText,
 		string expectedMessage)
 	{
-		OptionsSlot<Quantifier> sut = new(Quantifier.Default);
+		OptionsHolder<Quantifier> sut = new(Quantifier.Default);
 
-		OptionsSlot<Quantifier> result = option switch
+		OptionsHolder<Quantifier> result = option switch
 		{
 			"Never" => sut.Never(),
 			"Once" => sut.Once(),

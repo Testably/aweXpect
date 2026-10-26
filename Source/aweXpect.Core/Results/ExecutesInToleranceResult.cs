@@ -16,7 +16,7 @@ namespace aweXpect.Results;
 public class ExecutesInToleranceResult<TResult>(
 	ExpectationBuilder expectationBuilder,
 	TResult returnValue,
-	OptionsSlot<ExecutionTimeOptions> options,
+	OptionsHolder<ExecutionTimeOptions> options,
 	TimeSpan expected) : ITimeoutBound
 {
 	/// <inheritdoc cref="ITimeoutBound.UpperBound" />

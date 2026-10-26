@@ -27,7 +27,7 @@ internal abstract class AreUniqueConstraintBase<TValue, TItem, TMember>(
 	EnumerableQuantifier quantifier,
 	Func<TItem, TMember> memberAccessor,
 	string? memberAccessorExpression,
-	IReadOnlyOptionsSlot<IEqualityOptions<TMember>> options,
+	IReadOnlyOptionsHolder<IEqualityOptions<TMember>> options,
 	object displayedOptions,
 	bool expectUnique)
 	: Core.Extending.QuantifiedCollectionConstraintBase<TValue, TItem>(it, grammars, quantifier)
@@ -112,7 +112,7 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 	EnumerableQuantifier quantifier,
 	Func<TItem, TMember> memberAccessor,
 	string? memberAccessorExpression,
-	IReadOnlyOptionsSlot<IEqualityOptions<TMember>> options,
+	IReadOnlyOptionsHolder<IEqualityOptions<TMember>> options,
 	bool expectUnique,
 	ISubjectComparing? subjectComparing = null)
 	: AreUniqueConstraintBase<TEnumerable, TItem, TMember>(it, grammars, quantifier, memberAccessor,
@@ -230,7 +230,7 @@ internal sealed class AsyncAreUniqueConstraint<TItem, TMember>(
 	EnumerableQuantifier quantifier,
 	Func<TItem, TMember> memberAccessor,
 	string? memberAccessorExpression,
-	IReadOnlyOptionsSlot<IEqualityOptions<TMember>> options,
+	IReadOnlyOptionsHolder<IEqualityOptions<TMember>> options,
 	bool expectUnique)
 	: AreUniqueConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMember>(it, grammars, quantifier, memberAccessor,
 			memberAccessorExpression, options, options, expectUnique),

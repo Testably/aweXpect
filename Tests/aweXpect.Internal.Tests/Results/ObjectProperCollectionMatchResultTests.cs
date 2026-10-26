@@ -10,8 +10,8 @@ public sealed class ObjectProperCollectionMatchResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForCollectionMatchOptions()
 	{
-		OptionsSlot<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
-		ObjectProperCollectionMatchResult<int[], IThat<int[]?>, int> sut = CreateSut([], new OptionsSlot<ObjectMatchType<int>>(ObjectMatchType<int>.Default),
+		OptionsHolder<CollectionMatchOptions> collectionMatchOptions = new(new CollectionMatchOptions());
+		ObjectProperCollectionMatchResult<int[], IThat<int[]?>, int> sut = CreateSut([], new OptionsHolder<ObjectMatchType<int>>(ObjectMatchType<int>.Default),
 			collectionMatchOptions);
 
 		await That(sut).Is<IOptionsProvider<CollectionMatchOptions>>()
@@ -21,16 +21,16 @@ public sealed class ObjectProperCollectionMatchResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForObjectMatchType()
 	{
-		OptionsSlot<ObjectMatchType<int>> options = new(ObjectMatchType<int>.Default);
+		OptionsHolder<ObjectMatchType<int>> options = new(ObjectMatchType<int>.Default);
 		ObjectProperCollectionMatchResult<int[], IThat<int[]?>, int> sut = CreateSut([], options,
-			new OptionsSlot<CollectionMatchOptions>(new CollectionMatchOptions()));
+			new OptionsHolder<CollectionMatchOptions>(new CollectionMatchOptions()));
 
 		await That(sut).Is<IOptionsProvider<ObjectMatchType<int>>>()
 			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
 	private static ObjectProperCollectionMatchResult<int[], IThat<int[]?>, int> CreateSut(int[] subject,
-		OptionsSlot<ObjectMatchType<int>> options, OptionsSlot<CollectionMatchOptions> collectionMatchOptions)
+		OptionsHolder<ObjectMatchType<int>> options, OptionsHolder<CollectionMatchOptions> collectionMatchOptions)
 	{
 #pragma warning disable aweXpect0001
 		IThat<int[]?> source = That(subject);

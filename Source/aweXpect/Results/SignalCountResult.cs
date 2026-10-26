@@ -15,14 +15,14 @@ public class SignalCountResult
 		IOptionsProvider<Quantifier>,
 		IOptionsProvider<SignalerOptions>
 {
-	private readonly OptionsSlot<SignalerOptions> _options;
-	private readonly OptionsSlot<Quantifier> _quantifier;
+	private readonly OptionsHolder<SignalerOptions> _options;
+	private readonly OptionsHolder<Quantifier> _quantifier;
 
 	internal SignalCountResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<Signaler> returnValue,
-		OptionsSlot<Quantifier> quantifier,
-		OptionsSlot<SignalerOptions> options)
+		OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<SignalerOptions> options)
 		: base(expectationBuilder, returnValue)
 	{
 		_quantifier = quantifier;
@@ -30,8 +30,8 @@ public class SignalCountResult
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<SignalerOptions> IOptionsProvider<SignalerOptions>.Options => _options;
+	OptionsHolder<SignalerOptions> IOptionsProvider<SignalerOptions>.Options => _options;
 }

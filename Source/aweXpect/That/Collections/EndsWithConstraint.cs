@@ -23,7 +23,7 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 	string? expectedExpression,
 	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
-	IReadOnlyOptionsSlot<IEqualityOptions<TMatch>> options)
+	IReadOnlyOptionsHolder<IEqualityOptions<TMatch>> options)
 	: ConstraintResult.WithNotNullValue<TValue>(it, grammars)
 {
 	private IEqualityEvaluator<TMatch>? _evaluationOptions;
@@ -143,7 +143,7 @@ internal sealed class EndsWithConstraint<TEnumerable, TItem, TMatch>(
 	string? expectedExpression,
 	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
-	IReadOnlyOptionsSlot<IEqualityOptions<TMatch>> options,
+	IReadOnlyOptionsHolder<IEqualityOptions<TMatch>> options,
 	ISubjectComparing? subjectComparing = null)
 	: EndsWithConstraintBase<TEnumerable, TItem, TMatch>(it, grammars, parameterName, expectedExpression, expectedValues, expected,
 			options),
@@ -233,7 +233,7 @@ internal sealed class AsyncEndsWithConstraint<TItem, TMatch>(
 	string? expectedExpression,
 	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
-	IReadOnlyOptionsSlot<IEqualityOptions<TMatch>> options)
+	IReadOnlyOptionsHolder<IEqualityOptions<TMatch>> options)
 	: EndsWithConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, parameterName, expectedExpression,
 			expectedValues, expected, options),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>

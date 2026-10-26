@@ -22,7 +22,7 @@ public static partial class ThatType
 	public static StringEqualityTypeResult<Type, IThat<Type?>> HasNamespace(
 		this IThat<Type?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (s, it, grammars)
 				=> new HasNamespaceConstraint(it, grammars, s.Expected, "expected", s.Options)),
@@ -42,7 +42,7 @@ public static partial class ThatType
 	public static StringEqualityTypeResult<Type, IThat<Type?>> DoesNotHaveNamespace(
 		this IThat<Type?> subject, string unexpected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (s, it, grammars)
 				=> new HasNamespaceConstraint(it, grammars, s.Unexpected, "unexpected", s.Options).Invert()),
@@ -55,7 +55,7 @@ public static partial class ThatType
 		ExpectationGrammars grammars,
 		string expected,
 		string parameterName,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IAsyncContextConstraint<Type?>
 	{

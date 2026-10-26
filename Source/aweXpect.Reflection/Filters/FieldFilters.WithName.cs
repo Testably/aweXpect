@@ -15,6 +15,6 @@ public static partial class FieldFilters
 		return new Filtered.Fields.StringEqualityResult(@this, options => Filter.Suffix<FieldInfo>(
 				fieldInfo => options.Value.AreConsideredEqual(fieldInfo.Name, expected, nameof(expected)),
 				() => $"with name {options.Value.GetExpectation(expected, ExpectationGrammars.None)} "),
-			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

@@ -23,7 +23,7 @@ public static partial class ThatHttpRequestMessage
 		HasContent(this IThat<HttpRequestMessage?> subject, string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
@@ -63,7 +63,7 @@ public static partial class ThatHttpRequestMessage
 		DoesNotHaveContent(this IThat<HttpRequestMessage?> subject, string unexpected)
 	{
 		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
@@ -78,7 +78,7 @@ public static partial class ThatHttpRequestMessage
 		ExpectationGrammars grammars,
 		string expected,
 		string parameterName,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<HttpRequestMessage>(it, grammars),
 			IAsyncContextConstraint<HttpRequestMessage>
 	{

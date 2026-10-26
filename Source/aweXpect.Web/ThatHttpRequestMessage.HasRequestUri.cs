@@ -42,7 +42,7 @@ public static partial class ThatHttpRequestMessage
 		HasRequestUri(this IThat<HttpRequestMessage?> subject, Uri expected)
 	{
 		ThatUri.ThrowIfNotAbsolute(expected, nameof(expected));
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
@@ -70,7 +70,7 @@ public static partial class ThatHttpRequestMessage
 		DoesNotHaveRequestUri(this IThat<HttpRequestMessage?> subject, Uri unexpected)
 	{
 		ThatUri.ThrowIfNotAbsolute(unexpected, nameof(unexpected));
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
@@ -85,7 +85,7 @@ public static partial class ThatHttpRequestMessage
 		ExpectationGrammars grammars,
 		string expected,
 		string parameterName,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<HttpRequestMessage>(it, grammars),
 			IAsyncContextConstraint<HttpRequestMessage>
 	{

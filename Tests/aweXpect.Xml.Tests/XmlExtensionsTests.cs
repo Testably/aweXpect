@@ -27,7 +27,7 @@ public sealed class XmlExtensionsTests
 			IStringMatchTypeOptions,
 			ICopyOnOption<StringEqualityOptions, CopyingResult>
 	{
-		public OptionsSlot<StringEqualityOptions> Options { get; } = new(options);
+		public OptionsHolder<StringEqualityOptions> Options { get; } = new(options);
 
 		public CopyingResult WithOptions(StringEqualityOptions copiedOptions) => new(copiedOptions);
 	}

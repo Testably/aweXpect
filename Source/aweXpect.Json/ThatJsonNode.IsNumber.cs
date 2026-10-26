@@ -134,7 +134,7 @@ public static partial class ThatJsonNode
 #endif
 	{
 		JsonValueReader<TNumber> reader = JsonValueReaders.GetNumber<TNumber>();
-		OptionsSlot<NumberTolerance<TNumber>> options = new(JsonValueReaders.CreateNumberTolerance<TNumber>());
+		OptionsHolder<NumberTolerance<TNumber>> options = new(JsonValueReaders.CreateNumberTolerance<TNumber>());
 		return new NumberToleranceResult<JsonNode, IThat<JsonNode?>, TNumber>(
 			subject.Get().ExpectationBuilder.AddConstraint((Reader: reader, Expected: expected, Options: options),
 				static (state, it, grammars) => new JsonNodeConstraint<JsonNode>(

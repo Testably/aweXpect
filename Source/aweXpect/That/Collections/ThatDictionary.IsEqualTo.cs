@@ -43,7 +43,7 @@ public static partial class ThatDictionary
 	{
 		ICollection<KeyValuePair<TKey, TValue>>? expectedEntries =
 			ThrowHelper.EnsureDistinctKeys(expected, negated);
-		OptionsSlot<ObjectMatchType<TValue>> options = new(ObjectToleranceMatchTypeFactory.ForValuesOf<TValue>());
+		OptionsHolder<ObjectMatchType<TValue>> options = new(ObjectToleranceMatchTypeFactory.ForValuesOf<TValue>());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection?, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint(
@@ -70,7 +70,7 @@ public static partial class ThatDictionary
 			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		OptionsSlot<ObjectMatchType<TValue>> options = new(initialOptions);
+		OptionsHolder<ObjectMatchType<TValue>> options = new(initialOptions);
 		ICollection<KeyValuePair<TKey, TValue>>? expectedEntries =
 			ThrowHelper.EnsureDistinctKeys(expected, negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
@@ -99,7 +99,7 @@ public static partial class ThatDictionary
 	{
 		ICollection<KeyValuePair<TKey, string?>>? expectedEntries =
 			ThrowHelper.EnsureDistinctKeys(expected, negated);
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection?, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint(
@@ -120,7 +120,7 @@ public static partial class ThatDictionary
 		string parameterName,
 		string? expectedExpression,
 		IEnumerable<KeyValuePair<TKey, TValue>>? expected,
-		IReadOnlyOptionsSlot<IEqualityOptions<TValue>> options)
+		IReadOnlyOptionsHolder<IEqualityOptions<TValue>> options)
 		: ConstraintResult.WithEqualToValue<TDictionary?>(it, grammars, expected is null),
 			IAsyncContextConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>

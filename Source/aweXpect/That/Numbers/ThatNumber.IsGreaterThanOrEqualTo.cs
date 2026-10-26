@@ -25,7 +25,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		expected.ThrowIfNaN("expected value");
-		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
+		OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (state, it, grammars) =>
@@ -46,7 +46,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		expected.ThrowIfNaN("expected value");
-		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
+		OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (state, it, grammars) =>
@@ -69,7 +69,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		unexpected.ThrowIfNaN("unexpected value");
-		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
+		OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (state, it, grammars) =>
@@ -94,7 +94,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 	{
 		unexpected.ThrowIfNaN("unexpected value");
-		OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
+		OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 		return new NumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (state, it, grammars) =>
@@ -108,7 +108,7 @@ public static partial class ThatNumber
 		string it,
 		ExpectationGrammars grammars,
 		TNumber? expected,
-		OptionsSlot<NumberTolerance<TNumber>> options)
+		OptionsHolder<NumberTolerance<TNumber>> options)
 		: OrderingConstraint<TNumber>(it, grammars, expected is null),
 			IValueConstraint<TNumber>
 		where TNumber : struct, INumber<TNumber>
@@ -155,7 +155,7 @@ public static partial class ThatNumber
 		string it,
 		ExpectationGrammars grammars,
 		TNumber? expected,
-		OptionsSlot<NumberTolerance<TNumber>> options)
+		OptionsHolder<NumberTolerance<TNumber>> options)
 		: OrderingConstraint<TNumber?>(it, grammars, expected is null),
 			IValueConstraint<TNumber?>
 		where TNumber : struct, INumber<TNumber>
@@ -223,7 +223,7 @@ public static partial class ThatNumber
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		OptionsSlot<NumberTolerance<TNumber>> options = new(initialOptions);
+		OptionsHolder<NumberTolerance<TNumber>> options = new(initialOptions);
 		ThrowIfNaN(expected, negated);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
@@ -244,7 +244,7 @@ public static partial class ThatNumber
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		OptionsSlot<NumberTolerance<TNumber>> options = new(initialOptions);
+		OptionsHolder<NumberTolerance<TNumber>> options = new(initialOptions);
 		ThrowIfNaN(expected, negated);
 		return new NumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
@@ -259,7 +259,7 @@ public static partial class ThatNumber
 		string it,
 		ExpectationGrammars grammars,
 		TNumber? expected,
-		OptionsSlot<NumberTolerance<TNumber>> options)
+		OptionsHolder<NumberTolerance<TNumber>> options)
 		: OrderingConstraint<TNumber>(it, grammars, expected is null),
 			IValueConstraint<TNumber>
 		where TNumber : struct, IComparable<TNumber>
@@ -306,7 +306,7 @@ public static partial class ThatNumber
 		string it,
 		ExpectationGrammars grammars,
 		TNumber? expected,
-		OptionsSlot<NumberTolerance<TNumber>> options)
+		OptionsHolder<NumberTolerance<TNumber>> options)
 		: OrderingConstraint<TNumber?>(it, grammars, expected is null),
 			IValueConstraint<TNumber?>
 		where TNumber : struct, IComparable<TNumber>

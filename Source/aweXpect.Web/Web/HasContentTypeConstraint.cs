@@ -23,7 +23,7 @@ internal sealed class HasContentTypeConstraint<TMessage>(
 	ExpectationGrammars grammars,
 	string expected,
 	string parameterName,
-	OptionsSlot<StringEqualityOptions> options,
+	OptionsHolder<StringEqualityOptions> options,
 	Func<TMessage, HttpContent?> getContent)
 	: ConstraintResult.WithNotNullValue<TMessage>(it, grammars),
 		IAsyncContextConstraint<TMessage>

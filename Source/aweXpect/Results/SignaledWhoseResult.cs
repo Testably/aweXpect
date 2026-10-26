@@ -21,14 +21,14 @@ public class SignaledWhoseResult<TParameter>
 		IOptionsProvider<SignalerOptions>,
 		ISignalerResult<SignaledWhoseResult<TParameter>, TParameter>
 {
-	private readonly OptionsSlot<SignalerOptions> _options;
-	private readonly OptionsSlot<SignalerPredicateOptions<TParameter>> _predicates;
+	private readonly OptionsHolder<SignalerOptions> _options;
+	private readonly OptionsHolder<SignalerPredicateOptions<TParameter>> _predicates;
 
 	internal SignaledWhoseResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<Signaler<TParameter>> returnValue,
-		OptionsSlot<SignalerOptions> options,
-		OptionsSlot<SignalerPredicateOptions<TParameter>> predicates)
+		OptionsHolder<SignalerOptions> options,
+		OptionsHolder<SignalerPredicateOptions<TParameter>> predicates)
 		: base(expectationBuilder, returnValue)
 	{
 		_options = options;
@@ -50,9 +50,9 @@ public class SignaledWhoseResult<TParameter>
 				            ExpectationGrammars.Introduced));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<SignalerOptions> IOptionsProvider<SignalerOptions>.Options => _options;
+	OptionsHolder<SignalerOptions> IOptionsProvider<SignalerOptions>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<SignalerPredicateOptions<TParameter>> IOptionsProvider<SignalerPredicateOptions<TParameter>>.Options
+	OptionsHolder<SignalerPredicateOptions<TParameter>> IOptionsProvider<SignalerPredicateOptions<TParameter>>.Options
 		=> _predicates;
 }

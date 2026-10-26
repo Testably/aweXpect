@@ -7,7 +7,7 @@ public class DiscardedOptionAnalyzerTests
 	[Test]
 	[Arguments("Quantifier.Default.{|#0:AtLeast|}(2);", "AtLeast", "Quantifier")]
 	[Arguments("quantifier.{|#0:AtLeast|}(2);", "AtLeast", "Quantifier")]
-	[Arguments("slot.Value.{|#0:AtLeast|}(2);", "AtLeast", "Quantifier")]
+	[Arguments("holder.Value.{|#0:AtLeast|}(2);", "AtLeast", "Quantifier")]
 	[Arguments("CollectionMatchOptions.Default.{|#0:InAnyOrder|}();", "InAnyOrder", "CollectionMatchOptions")]
 	[Arguments("tolerance.{|#0:Within|}(0.1);", "Within", "NumberTolerance")]
 	[Arguments("StringEqualityOptions.Default.{|#0:IgnoringCase|}();", "IgnoringCase", "StringEqualityOptions")]
@@ -22,7 +22,7 @@ public class DiscardedOptionAnalyzerTests
 
 			  public class MyClass
 			  {
-			      public void MyMethod(Quantifier quantifier, OptionsSlot<Quantifier> slot,
+			      public void MyMethod(Quantifier quantifier, OptionsHolder<Quantifier> holder,
 			          NumberTolerance<double> tolerance)
 			      {
 			          {{statement}}
@@ -36,9 +36,9 @@ public class DiscardedOptionAnalyzerTests
 
 	[Test]
 	[Arguments("quantifier = quantifier.AtLeast(2);")]
-	[Arguments("slot.Value = slot.Value.AtLeast(2);")]
+	[Arguments("holder.Value = holder.Value.AtLeast(2);")]
 	[Arguments("_ = quantifier.AtLeast(2);")]
-	[Arguments("slot.AtLeast(2);")]
+	[Arguments("holder.AtLeast(2);")]
 	[Arguments("Consume(quantifier.AtLeast(2));")]
 	[Arguments("quantifier.ToString();")]
 	[Arguments("new MyOptions().Twice();")]
@@ -57,7 +57,7 @@ public class DiscardedOptionAnalyzerTests
 
 			  public class MyClass
 			  {
-			      public void MyMethod(Quantifier quantifier, OptionsSlot<Quantifier> slot)
+			      public void MyMethod(Quantifier quantifier, OptionsHolder<Quantifier> holder)
 			      {
 			          {{statement}}
 			      }

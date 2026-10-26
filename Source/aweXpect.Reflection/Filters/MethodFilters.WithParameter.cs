@@ -41,7 +41,7 @@ public static partial class MethodFilters
 					() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 
 	/// <summary>
@@ -71,7 +71,7 @@ public static partial class MethodFilters
 					() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 
 	/// <summary>
@@ -83,7 +83,7 @@ public static partial class MethodFilters
 			stringEqualityOptions => new ParameterFilterOptions(
 				p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
 				() => $"with name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}"),
-			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 
 
 	/// <summary>
@@ -147,7 +147,7 @@ public static partial class MethodFilters
 					() => $"name {stringEqualityOptions.Value.GetExpectation(unexpected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 
 	private static MethodsWithParameter<object?> WithParameterOfKind(Filtered.Methods @this,
@@ -315,16 +315,16 @@ public static partial class MethodFilters
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> _createFilter;
-		private readonly Func<IReadOnlyOptionsSlot<StringEqualityOptions>, ParameterFilterOptions> _createParameterFilterOptions;
-		private readonly OptionsSlot<StringEqualityOptions> _options;
+		private readonly Func<IReadOnlyOptionsHolder<StringEqualityOptions>, ParameterFilterOptions> _createParameterFilterOptions;
+		private readonly OptionsHolder<StringEqualityOptions> _options;
 		private readonly Filtered.Methods _source;
 
 		internal MethodsWithNamedParameter(
 			Filtered.Methods source,
 			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> createFilter,
 			CollectionIndexOptions collectionIndexOptions,
-			Func<IReadOnlyOptionsSlot<StringEqualityOptions>, ParameterFilterOptions> createParameterFilterOptions,
-			OptionsSlot<StringEqualityOptions> options)
+			Func<IReadOnlyOptionsHolder<StringEqualityOptions>, ParameterFilterOptions> createParameterFilterOptions,
+			OptionsHolder<StringEqualityOptions> options)
 			: base(source, createFilter, collectionIndexOptions, createParameterFilterOptions(options))
 		{
 			_source = source;
@@ -335,12 +335,12 @@ public static partial class MethodFilters
 		}
 
 		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
-		OptionsSlot<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
+		OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
 		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
 		MethodsWithNamedParameter<T> ICopyOnOption<StringEqualityOptions, MethodsWithNamedParameter<T>>.WithOptions(
 			StringEqualityOptions options)
-			=> new(_source, _createFilter, _collectionIndexOptions, _createParameterFilterOptions, new OptionsSlot<StringEqualityOptions>(options));
+			=> new(_source, _createFilter, _collectionIndexOptions, _createParameterFilterOptions, new OptionsHolder<StringEqualityOptions>(options));
 
 		/// <summary>
 		///     Returns a copy with the modifier <paramref name="predicate" /> and <paramref name="description" />.

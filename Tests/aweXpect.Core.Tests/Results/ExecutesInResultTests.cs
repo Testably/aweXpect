@@ -9,14 +9,14 @@ public sealed class ExecutesInResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForExecutionTimeOptions()
 	{
-		OptionsSlot<ExecutionTimeOptions> options = new(ExecutionTimeOptions.Default);
+		OptionsHolder<ExecutionTimeOptions> options = new(ExecutionTimeOptions.Default);
 		ExecutesInResult<int[]> sut = CreateSut(Array.Empty<int>(), options);
 
 		await That(sut).Is<IOptionsProvider<ExecutionTimeOptions>>()
 			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
-	private static ExecutesInResult<T> CreateSut<T>(T subject, OptionsSlot<ExecutionTimeOptions> options)
+	private static ExecutesInResult<T> CreateSut<T>(T subject, OptionsHolder<ExecutionTimeOptions> options)
 	{
 #pragma warning disable aweXpect0001
 		IThat<T> source = That(subject);

@@ -23,7 +23,7 @@ public sealed class DefaultEqualityTests
 	[Test]
 	public async Task IsUsedBy_WithAComparer_ShouldReturnFalse()
 	{
-		OptionsSlot<ObjectMatchType<int>> options = new(ItemEqualsMatchType<int>.Instance);
+		OptionsHolder<ObjectMatchType<int>> options = new(ItemEqualsMatchType<int>.Instance);
 		options.Using(EqualityComparer<int>.Default);
 
 		bool result = DefaultEquality.IsUsedBy(options.Value);
@@ -59,7 +59,7 @@ public sealed class DefaultEqualityTests
 	[Test]
 	public async Task IsUsedBy_WithWithin_ShouldReturnFalse()
 	{
-		OptionsSlot<ObjectMatchType<int>> options = new(ObjectToleranceMatchTypeFactory.CreateInt());
+		OptionsHolder<ObjectMatchType<int>> options = new(ObjectToleranceMatchTypeFactory.CreateInt());
 		options.Within(1);
 
 		bool result = DefaultEquality.IsUsedBy(options.Value);

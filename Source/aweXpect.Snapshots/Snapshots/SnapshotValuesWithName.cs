@@ -23,7 +23,7 @@ public sealed class SnapshotValuesWithName<TResult, TValue> : SnapshotValues<TRe
 {
 	private readonly Func<SnapshotRule, TResult> _add;
 	private readonly string _name;
-	private readonly OptionsSlot<StringEqualityOptions> _options;
+	private readonly OptionsHolder<StringEqualityOptions> _options;
 	private readonly ValueSelection _source;
 
 	internal SnapshotValuesWithName(Func<SnapshotRule, TResult> add, ValueSelection source, string name,
@@ -33,11 +33,11 @@ public sealed class SnapshotValuesWithName<TResult, TValue> : SnapshotValues<TRe
 		_add = add;
 		_source = source;
 		_name = name;
-		_options = new OptionsSlot<StringEqualityOptions>(options);
+		_options = new OptionsHolder<StringEqualityOptions>(options);
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
+	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
 	/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
 	SnapshotValuesWithName<TResult, TValue>

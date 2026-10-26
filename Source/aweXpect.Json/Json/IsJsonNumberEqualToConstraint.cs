@@ -21,7 +21,7 @@ internal sealed class IsJsonNumberEqualToConstraint<TNumber>(
 	ExpectationGrammars grammars,
 	JsonValueReader<TNumber> reader,
 	TNumber expected,
-	OptionsSlot<NumberTolerance<TNumber>> options)
+	OptionsHolder<NumberTolerance<TNumber>> options)
 	: IsJsonValueEqualToConstraint<TNumber>(it, grammars, reader)
 #if NET8_0_OR_GREATER
 	where TNumber : struct, INumber<TNumber>

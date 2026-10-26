@@ -135,7 +135,7 @@ internal sealed class ItemMatchingPredicate<TItem>(Func<TItem, bool> predicate, 
 /// <remarks>
 ///     Only <c>HasItem</c> specifies the predicate this way.
 /// </remarks>
-internal sealed class ItemMatchingOptions<TItem>(OptionsSlot<PredicateOptions<TItem>> options)
+internal sealed class ItemMatchingOptions<TItem>(OptionsHolder<PredicateOptions<TItem>> options)
 	: SynchronouslyMatchedItem<TItem>
 {
 	/// <inheritdoc />
@@ -191,7 +191,7 @@ internal abstract class ExpectedItem<TItem>(TItem expected) : ContainedItem<TIte
 ///     An item that is equal to the <paramref name="expected" /> one according to the current match type of the
 ///     <paramref name="options" />.
 /// </summary>
-internal sealed class EqualItem<TItem>(IReadOnlyOptionsSlot<ObjectMatchType<TItem>> options, TItem expected)
+internal sealed class EqualItem<TItem>(IReadOnlyOptionsHolder<ObjectMatchType<TItem>> options, TItem expected)
 	: ExpectedItem<TItem>(expected)
 {
 	private DefaultEqualItem? _defaultEqualItem;
@@ -299,14 +299,14 @@ internal sealed class EqualItem<TItem>(IReadOnlyOptionsSlot<ObjectMatchType<TIte
 
 /// <summary>
 ///     A string that is equal to the <paramref name="expected" /> one according to the current options in the
-///     <paramref name="options" /> slot, which reports an unusable pattern against the <paramref name="parameterName" />.
+///     <paramref name="options" /> holder, which reports an unusable pattern against the <paramref name="parameterName" />.
 /// </summary>
 /// <remarks>
 ///     The options of the evaluation are kept, so that the item compares and explains with them; before an
 ///     evaluation, the current options describe the item.
 /// </remarks>
 internal sealed class EqualStringItem(
-	IReadOnlyOptionsSlot<StringEqualityOptions> options,
+	IReadOnlyOptionsHolder<StringEqualityOptions> options,
 	string? expected,
 	string parameterName)
 	: ExpectedItem<string?>(expected)

@@ -14,7 +14,7 @@ namespace aweXpect.Reflection.Options;
 internal class GenericArgumentsFilterOptions
 {
 	private readonly List<Func<string>> _descriptions = [];
-	private readonly Dictionary<GenericArgumentFilterOptions, OptionsSlot<CollectionIndexOptions>> _filters = [];
+	private readonly Dictionary<GenericArgumentFilterOptions, OptionsHolder<CollectionIndexOptions>> _filters = [];
 	private readonly List<Func<Type[], bool>> _predicates = [];
 
 	/// <summary>
@@ -33,7 +33,7 @@ internal class GenericArgumentsFilterOptions
 	///     The index <paramref name="options" /> are read when the filter matches, so that an index option set after
 	///     adding the filter applies.
 	/// </remarks>
-	public void AddFilter(GenericArgumentFilterOptions filter, OptionsSlot<CollectionIndexOptions> options)
+	public void AddFilter(GenericArgumentFilterOptions filter, OptionsHolder<CollectionIndexOptions> options)
 		=> _filters.Add(filter, options);
 
 	/// <summary>
@@ -84,13 +84,13 @@ internal class GenericArgumentsFilterOptions
 #if NET8_0_OR_GREATER
 	private async ValueTask<bool> MatchesFilters(Type[] arguments, string[]? genericTypeNames)
 	{
-		foreach (var (filter, collectionIndexOptionsSlot) in _filters)
+		foreach (var (filter, collectionIndexOptionsHolder) in _filters)
 		{
-			CollectionIndexOptions collectionIndexOptions = collectionIndexOptionsSlot.Value;
+			CollectionIndexOptions collectionIndexOptions = collectionIndexOptionsHolder.Value;
 #else
 	private async ValueTask<bool> MatchesFilters(Type[] arguments, string[]? genericTypeNames)
 	{
-		foreach (KeyValuePair<GenericArgumentFilterOptions, OptionsSlot<CollectionIndexOptions>> keyItem in _filters)
+		foreach (KeyValuePair<GenericArgumentFilterOptions, OptionsHolder<CollectionIndexOptions>> keyItem in _filters)
 		{
 			GenericArgumentFilterOptions filter = keyItem.Key;
 			CollectionIndexOptions collectionIndexOptions = keyItem.Value.Value;

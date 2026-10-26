@@ -11,8 +11,8 @@ public sealed class SignaledResultTests
 	[Test]
 	public async Task Generic_ShouldBeOptionsProvider_ForPredicateOptions()
 	{
-		OptionsSlot<SignalerPredicateOptions<int>> predicates = new(SignalerPredicateOptions<int>.Default);
-		SignaledWhoseResult<int> sut = CreateSut(new OptionsSlot<SignalerOptions>(SignalerOptions.Default), predicates);
+		OptionsHolder<SignalerPredicateOptions<int>> predicates = new(SignalerPredicateOptions<int>.Default);
+		SignaledWhoseResult<int> sut = CreateSut(new OptionsHolder<SignalerOptions>(SignalerOptions.Default), predicates);
 
 		await That(sut).Is<IOptionsProvider<SignalerPredicateOptions<int>>>()
 			.Whose(x => x.Options, it => it.IsSameAs(predicates));
@@ -21,9 +21,9 @@ public sealed class SignaledResultTests
 	[Test]
 	public async Task Generic_ShouldBeOptionsProvider_ForSignalerOptions()
 	{
-		OptionsSlot<SignalerOptions> options = new(SignalerOptions.Default);
+		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
 		SignaledWhoseResult<int> sut =
-			CreateSut(options, new OptionsSlot<SignalerPredicateOptions<int>>(SignalerPredicateOptions<int>.Default));
+			CreateSut(options, new OptionsHolder<SignalerPredicateOptions<int>>(SignalerPredicateOptions<int>.Default));
 
 		await That(sut).Is<IOptionsProvider<SignalerOptions>>()
 			.Whose(x => x.Options, it => it.IsSameAs(options));
@@ -32,8 +32,8 @@ public sealed class SignaledResultTests
 	[Test]
 	public async Task Generic_ShouldNotBeOptionsProvider_ForQuantifier()
 	{
-		SignaledWhoseResult<int> sut = CreateSut(new OptionsSlot<SignalerOptions>(SignalerOptions.Default),
-			new OptionsSlot<SignalerPredicateOptions<int>>(SignalerPredicateOptions<int>.Default));
+		SignaledWhoseResult<int> sut = CreateSut(new OptionsHolder<SignalerOptions>(SignalerOptions.Default),
+			new OptionsHolder<SignalerPredicateOptions<int>>(SignalerPredicateOptions<int>.Default));
 
 		await That(sut).IsNot<IOptionsProvider<Quantifier>>()
 			.Because("the number of times is already given, so a quantifier would silently replace it");
@@ -42,7 +42,7 @@ public sealed class SignaledResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForPredicateOptions()
 	{
-		OptionsSlot<SignalerOptions> options = new(SignalerOptions.Default);
+		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
 		SignaledResult sut = CreateSut(options);
 
 		await That(sut).Is<IOptionsProvider<SignalerOptions>>()
@@ -52,14 +52,14 @@ public sealed class SignaledResultTests
 	[Test]
 	public async Task ShouldNotBeOptionsProvider_ForQuantifier()
 	{
-		SignaledResult sut = CreateSut(new OptionsSlot<SignalerOptions>(SignalerOptions.Default));
+		SignaledResult sut = CreateSut(new OptionsHolder<SignalerOptions>(SignalerOptions.Default));
 
 		await That(sut).IsNot<IOptionsProvider<Quantifier>>()
 			.Because("the number of times is already given, so a quantifier would silently replace it");
 	}
 
-	private static SignaledWhoseResult<TParameter> CreateSut<TParameter>(OptionsSlot<SignalerOptions> options,
-		OptionsSlot<SignalerPredicateOptions<TParameter>> predicates)
+	private static SignaledWhoseResult<TParameter> CreateSut<TParameter>(OptionsHolder<SignalerOptions> options,
+		OptionsHolder<SignalerPredicateOptions<TParameter>> predicates)
 	{
 		Signaler<TParameter> signaler = new();
 #pragma warning disable aweXpect0001
@@ -69,7 +69,7 @@ public sealed class SignaledResultTests
 			source, options, predicates);
 	}
 
-	private static SignaledResult CreateSut(OptionsSlot<SignalerOptions> options)
+	private static SignaledResult CreateSut(OptionsHolder<SignalerOptions> options)
 	{
 		Signaler signaler = new();
 #pragma warning disable aweXpect0001

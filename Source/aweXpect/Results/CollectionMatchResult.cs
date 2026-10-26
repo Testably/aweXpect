@@ -13,17 +13,17 @@ public class CollectionMatchResult<TType, TThat, TItem>
 	: AndOrResult<TType, TThat, CollectionMatchResult<TType, TThat, TItem>>,
 		IOptionsProvider<CollectionMatchOptions>
 {
-	private readonly OptionsSlot<CollectionMatchOptions> _collectionMatchOptions;
+	private readonly OptionsHolder<CollectionMatchOptions> _collectionMatchOptions;
 
 	internal CollectionMatchResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsSlot<CollectionMatchOptions> collectionMatchOptions)
+		OptionsHolder<CollectionMatchOptions> collectionMatchOptions)
 		: base(expectationBuilder, returnValue)
 	{
 		_collectionMatchOptions = collectionMatchOptions;
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<CollectionMatchOptions> IOptionsProvider<CollectionMatchOptions>.Options => _collectionMatchOptions;
+	OptionsHolder<CollectionMatchOptions> IOptionsProvider<CollectionMatchOptions>.Options => _collectionMatchOptions;
 }

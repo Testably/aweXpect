@@ -12,7 +12,7 @@ public static class MyRepeatedCheckExtensions
 {
 	public static RepeatedCheckResult<Probe, IThat<Probe>> DoesNotReturnPositive(this IThat<Probe> subject)
 	{
-		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new RepeatedCheckResult<Probe, IThat<Probe>>(((IExpectThat<Probe>)subject).ExpectationBuilder
 			.AddConstraint((it, grammars)
 				=> new ReturnsPositiveConstraint(it, grammars, options).Invert()),
@@ -22,7 +22,7 @@ public static class MyRepeatedCheckExtensions
 
 	public static RepeatedCheckResult<Probe, IThat<Probe>> ReturnsPositive(this IThat<Probe> subject)
 	{
-		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new RepeatedCheckResult<Probe, IThat<Probe>>(((IExpectThat<Probe>)subject).ExpectationBuilder
 			.AddConstraint((it, grammars)
 				=> new ReturnsPositiveConstraint(it, grammars, options)),
@@ -38,7 +38,7 @@ public static class MyRepeatedCheckExtensions
 	private sealed class ReturnsPositiveConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		OptionsSlot<RepeatedCheckOptions> options)
+		OptionsHolder<RepeatedCheckOptions> options)
 		: ConstraintResult.WithNotNullValue<Probe>(it, grammars),
 			IAsyncContextConstraint<Probe>
 	{

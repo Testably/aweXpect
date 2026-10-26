@@ -112,8 +112,8 @@ public static partial class ThatEnumerable
 			TItem expected,
 			bool negated)
 	{
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -136,8 +136,8 @@ public static partial class ThatEnumerable
 			string? expected,
 			bool negated)
 	{
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeCountResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint(
@@ -160,8 +160,8 @@ public static partial class ThatEnumerable
 			TItem expected, ObjectToleranceMatchType<TItem, TTolerance> initialOptions,
 			bool negated)
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint(
@@ -184,7 +184,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		predicate.ThrowIfNull();
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint(
@@ -227,8 +227,8 @@ public static partial class ThatEnumerable
 			object? expected,
 			bool negated)
 	{
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<ObjectMatchType<object?>> options = new(ItemEqualsMatchType<object?>.Instance);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<ObjectMatchType<object?>> options = new(ItemEqualsMatchType<object?>.Instance);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<IEnumerable, IThat<IEnumerable?>, object?>(
 			expectationBuilder.AddConstraint(
@@ -252,7 +252,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		predicate.ThrowIfNull();
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CountResult<IEnumerable, IThat<IEnumerable?>>(
 			expectationBuilder.AddConstraint(
@@ -275,8 +275,8 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -299,8 +299,8 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeCountResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint(
@@ -324,8 +324,8 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint(
@@ -349,7 +349,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable
 	{
 		predicate.ThrowIfNull();
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CountResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint(
@@ -375,8 +375,8 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -405,8 +405,8 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint(
@@ -434,8 +434,8 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<string?[], IThat<string?[]?>>(
 			expectationBuilder.AddConstraint(
@@ -464,9 +464,9 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>,
 			TItem, TTolerance>(
@@ -497,8 +497,8 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -541,8 +541,8 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable
 	{
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -569,8 +569,8 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint(
@@ -598,9 +598,9 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint(
@@ -627,7 +627,7 @@ public static partial class ThatEnumerable
 	{
 		IEnumerable<Expression<Func<TItem, bool>>> expectedValues =
 			expected.ToNonEmptyValues(negated).WithoutNullItems(negated);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -653,7 +653,7 @@ public static partial class ThatEnumerable
 	{
 		IEnumerable<Action<IThatSubject<TItem>>> expectedValues =
 			expected.ToNonEmptyValues(negated).WithoutNullItems(negated);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -682,7 +682,7 @@ public static partial class ThatEnumerable
 	{
 		IEnumerable<Expression<Func<TItem, bool>>> expectedValues =
 			expected.ToNonEmptyValues(negated).WithoutNullItems(negated);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -710,7 +710,7 @@ public static partial class ThatEnumerable
 	{
 		IEnumerable<Action<IThatSubject<TItem>>> expectedValues =
 			expected.ToNonEmptyValues(negated).WithoutNullItems(negated);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions(CollectionMatchOptions.EquivalenceRelations.Contains));
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint(

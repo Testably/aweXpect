@@ -20,7 +20,7 @@ public static partial class ThatConstructor
 		this IThat<ConstructorInfo?> subject)
 	{
 		Type parameterType = typeof(TParameter);
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		return new ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter>(subject.Get().ExpectationBuilder
@@ -44,8 +44,8 @@ public static partial class ThatConstructor
 		this IThat<ConstructorInfo?> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		OptionsSlot<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)));
@@ -70,7 +70,7 @@ public static partial class ThatConstructor
 	public static ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?> HasParameterExactly(
 		this IThat<ConstructorInfo?> subject, Type parameterType)
 	{
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		return new ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?>(subject.Get().ExpectationBuilder
@@ -93,8 +93,8 @@ public static partial class ThatConstructor
 	public static NamedParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?> HasParameterExactly(
 		this IThat<ConstructorInfo?> subject, Type parameterType, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
-		OptionsSlot<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)));

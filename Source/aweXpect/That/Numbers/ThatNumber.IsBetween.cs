@@ -27,7 +27,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 		=> new(maximum =>
 		{
-			OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
+			OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 			return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
 					(Minimum: minimum, Maximum: maximum, Options: options),
@@ -51,7 +51,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 		=> new(maximum =>
 		{
-			OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
+			OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 			return new NumberToleranceResult<TNumber, IThat<TNumber?>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
 					(Minimum: minimum, Maximum: maximum, Options: options),
@@ -75,7 +75,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 		=> new(maximum =>
 		{
-			OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
+			OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 			return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
 					(Minimum: minimum, Maximum: maximum, Options: options),
@@ -100,7 +100,7 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 		=> new(maximum =>
 		{
-			OptionsSlot<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
+			OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 			return new NumberToleranceResult<TNumber, IThat<TNumber?>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
 					(Minimum: minimum, Maximum: maximum, Options: options),
@@ -117,13 +117,13 @@ public static partial class ThatNumber
 	{
 		private readonly TNumber? _maximum;
 		private readonly TNumber? _minimum;
-		private readonly OptionsSlot<NumberTolerance<TNumber>> _options;
+		private readonly OptionsHolder<NumberTolerance<TNumber>> _options;
 
 		public IsBetweenConstraint(string it,
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
-			OptionsSlot<NumberTolerance<TNumber>> options) : base(it, grammars, minimum is null || maximum is null)
+			OptionsHolder<NumberTolerance<TNumber>> options) : base(it, grammars, minimum is null || maximum is null)
 		{
 			minimum.ThrowIfNaN();
 			maximum.ThrowIfNaN();
@@ -188,13 +188,13 @@ public static partial class ThatNumber
 	{
 		private readonly TNumber? _maximum;
 		private readonly TNumber? _minimum;
-		private readonly OptionsSlot<NumberTolerance<TNumber>> _options;
+		private readonly OptionsHolder<NumberTolerance<TNumber>> _options;
 
 		public NullableIsBetweenConstraint(string it,
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
-			OptionsSlot<NumberTolerance<TNumber>> options) : base(it, grammars, minimum is null || maximum is null)
+			OptionsHolder<NumberTolerance<TNumber>> options) : base(it, grammars, minimum is null || maximum is null)
 		{
 			minimum.ThrowIfNaN();
 			maximum.ThrowIfNaN();
@@ -273,7 +273,7 @@ public static partial class ThatNumber
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		OptionsSlot<NumberTolerance<TNumber>> options = new(initialOptions);
+		OptionsHolder<NumberTolerance<TNumber>> options = new(initialOptions);
 		return new(maximum => new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(Minimum: minimum, Maximum: maximum, Options: options, Negated: negated),
@@ -294,7 +294,7 @@ public static partial class ThatNumber
 			bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		OptionsSlot<NumberTolerance<TNumber>> options = new(initialOptions);
+		OptionsHolder<NumberTolerance<TNumber>> options = new(initialOptions);
 		return new(maximum => new NumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(Minimum: minimum, Maximum: maximum, Options: options, Negated: negated),
@@ -311,13 +311,13 @@ public static partial class ThatNumber
 	{
 		private readonly TNumber? _maximum;
 		private readonly TNumber? _minimum;
-		private readonly OptionsSlot<NumberTolerance<TNumber>> _options;
+		private readonly OptionsHolder<NumberTolerance<TNumber>> _options;
 
 		public IsBetweenConstraint(string it,
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
-			OptionsSlot<NumberTolerance<TNumber>> options) : base(it, grammars, minimum is null || maximum is null)
+			OptionsHolder<NumberTolerance<TNumber>> options) : base(it, grammars, minimum is null || maximum is null)
 		{
 			minimum.ThrowIfNaN();
 			maximum.ThrowIfNaN();
@@ -383,13 +383,13 @@ public static partial class ThatNumber
 	{
 		private readonly TNumber? _maximum;
 		private readonly TNumber? _minimum;
-		private readonly OptionsSlot<NumberTolerance<TNumber>> _options;
+		private readonly OptionsHolder<NumberTolerance<TNumber>> _options;
 
 		public NullableIsBetweenConstraint(string it,
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
-			OptionsSlot<NumberTolerance<TNumber>> options) : base(it, grammars, minimum is null || maximum is null)
+			OptionsHolder<NumberTolerance<TNumber>> options) : base(it, grammars, minimum is null || maximum is null)
 		{
 			minimum.ThrowIfNaN();
 			maximum.ThrowIfNaN();

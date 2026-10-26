@@ -18,18 +18,18 @@ using static aweXpect.Formatting.Format;
 The options, such as `.AtLeast(2)`, `.IgnoringCase()` or `.InAnyOrder()`, are extension methods in the `aweXpect`
 namespace. They apply to every result that provides the matching options, so they can be chained in any order.
 
-### One slot per expectation
+### One holder per expectation
 
 The options of an expectation are an immutable value, e.g. a `Quantifier` or `StringEqualityOptions`, in an
-`OptionsSlot<TOptions>`. The slot is a plain reference to the current value: an option replaces the value in the slot,
+`OptionsHolder<TOptions>`. The holder is a plain reference to the current value: an option replaces the value in the holder,
 and the value itself never changes, so a value can be shared and stored. Each options type starts from its `Default`,
 e.g. `Quantifier.Default` ("at least once") or `StringEqualityOptions.Default`.
 
-Create the slot in your expectation, e.g. `new OptionsSlot<Quantifier>(Quantifier.Default)`, and pass it to your
+Create the holder in your expectation, e.g. `new OptionsHolder<Quantifier>(Quantifier.Default)`, and pass it to your
 constraint and to your result. A result declares which options it offers by implementing `IOptionsProvider<TOptions>`,
-which returns this slot. The constraint reads `slot.Value` when it evaluates, never when it is built, as the options
-are set on the result after the constraint was added; a constraint that only reads the options can take the slot as a
-covariant `IReadOnlyOptionsSlot<TOptions>`. Pass your result as `TSelf` to `AndOrResult<TType, TThat, TSelf>`, so
+which returns this holder. The constraint reads `holder.Value` when it evaluates, never when it is built, as the options
+are set on the result after the constraint was added; a constraint that only reads the options can take the holder as a
+covariant `IReadOnlyOptionsHolder<TOptions>`. Pass your result as `TSelf` to `AndOrResult<TType, TThat, TSelf>`, so
 that `Because(…)`, `WithTimeout(…)` and `WithCancellation(…)` also return your result and the options can still
 follow them:
 
@@ -37,15 +37,15 @@ follow them:
 public class TrackCountResult<TThat>(
     ExpectationBuilder expectationBuilder,
     TThat returnValue,
-    OptionsSlot<Quantifier> quantifier,
-    OptionsSlot<StringEqualityOptions> options)
+    OptionsHolder<Quantifier> quantifier,
+    OptionsHolder<StringEqualityOptions> options)
     : AndOrResult<IEnumerable<Track>, TThat, TrackCountResult<TThat>>(expectationBuilder, returnValue),
         IOptionsProvider<Quantifier>,
         IOptionsProvider<StringEqualityOptions>
 {
-    OptionsSlot<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier;
+    OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier;
 
-    OptionsSlot<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options;
+    OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options;
 }
 ```
 
@@ -74,13 +74,13 @@ does not offer it again.
 
 You can also set the options of `aweXpect.Core` in your own code, e.g. in an option of your own. Each method of an
 options value that sets an option returns a new value with the option set, e.g. `Quantifier.Default.AtLeast(2)`, and
-the same methods are extension methods on the slot in the `aweXpect.Options` namespace, which replace the value in
-the slot and return the slot, so that calls chain, e.g. `result.Options.AtLeast(2).AtMost(5)`. The members that only
+the same methods are extension methods on the holder in the `aweXpect.Options` namespace, which replace the value in
+the holder and return the holder, so that calls chain, e.g. `result.Options.AtLeast(2).AtMost(5)`. The members that only
 read the options are on `result.Options.Value`.
 
 :::warning
-Import `aweXpect.Options` where you call an option on a slot. Without it, the compiler only finds the user-facing
-option of the same name in `aweXpect`, which extends the result and not the slot, and reports `CS0311`.
+Import `aweXpect.Options` where you call an option on a holder. Without it, the compiler only finds the user-facing
+option of the same name in `aweXpect`, which extends the result and not the holder, and reports `CS0311`.
 :::
 
 :::warning
@@ -103,7 +103,7 @@ The rules for the options are the same everywhere:
 ### Options of your own
 
 Follow the same rules for an options type of your own: an immutable value with a `Default`, whose option methods
-return a new value, and an extension method on its slot per option. For example, a playlist expectation can ignore
+return a new value, and an extension method on its holder per option. For example, a playlist expectation can ignore
 the bonus tracks and compare in album order or shuffled, but not both:
 
 ```csharp
@@ -142,13 +142,13 @@ public readonly struct PlaylistOptions
     }
 }
 
-public static class PlaylistOptionsSlotExtensions
+public static class PlaylistOptionsHolderExtensions
 {
-    public static OptionsSlot<PlaylistOptions> IgnoringBonusTracks(
-        this OptionsSlot<PlaylistOptions> slot, bool ignoreBonusTracks = true)
+    public static OptionsHolder<PlaylistOptions> IgnoringBonusTracks(
+        this OptionsHolder<PlaylistOptions> holder, bool ignoreBonusTracks = true)
     {
-        slot.Value = slot.Value.IgnoringBonusTracks(ignoreBonusTracks);
-        return slot;
+        holder.Value = holder.Value.IgnoringBonusTracks(ignoreBonusTracks);
+        return holder;
     }
 }
 ```
@@ -168,14 +168,14 @@ public static TResult IgnoringBonusTracks<TResult>(this TResult result, bool ign
 `Default` is the value of `default(PlaylistOptions)`, so that an options field that was never set is valid. Throw
 with `Tracing.WriteException`, so that it is written to the trace writer of
 `Customize.aweXpect.EnableTracing(…)` like the built-in exceptions, and word the message like the built-in ones. When the expectation text names the options, write that text in `ToString()`: an
-`OptionsSlot<TOptions>` returns the same text, so that the expectation can append the slot itself.
+`OptionsHolder<TOptions>` returns the same text, so that the expectation can append the holder itself.
 
 ### Results that are stored
 
 A result that can be stored and continued more than once, e.g. a filter of `aweXpect.Reflection`, must not change when
 a continuation sets an option. Such a result implements `ICopyOnOption<StringEqualityOptions, TSelf>` in addition to
 `IOptionsProvider<StringEqualityOptions>`: the string options then pass its options with the new option to
-`WithOptions(options)`, which returns a new result with them in a new slot, while the result they were called on stays
+`WithOptions(options)`, which returns a new result with them in a new holder, while the result they were called on stays
 unchanged. The new options carry every option set so far, so a repeated option replaces the earlier one and a
 competing option still throws. A string option of your own, e.g. a preset of several options, does the same, so
 that it keeps a stored result unchanged as well:
@@ -194,7 +194,7 @@ public static TResult IgnoringCaseAndIndentation<TResult>(this TResult result)
 }
 ```
 
-Like every constraint, such a result reads its slot when it evaluates: an option that sets the slot directly, without
+Like every constraint, such a result reads its holder when it evaluates: an option that sets the holder directly, without
 `WithOptions`, still applies, but it changes the result it was called on.
 
 ### Comparing with the options
@@ -341,8 +341,8 @@ argument once and reuse it, as it is immutable.
 
 ## Time tolerances
 
-A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the slot of the `TimeTolerance` options
-you pass to it and to your constraint; start the slot with `TimeTolerance.Default`. For a date without a time of day,
+A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the holder of the `TimeTolerance` options
+you pass to it and to your constraint; start the holder with `TimeTolerance.Default`. For a date without a time of day,
 such as the release date of an album as a `DateOnly`, start it with `TimeTolerance.Days` instead, as the built-in
 expectations do: it rejects a tolerance that is not a whole number of days with an `ArgumentOutOfRangeException`,
 instead of silently dropping the part below one day.
@@ -351,7 +351,7 @@ instead of silently dropping the part below one day.
 public static TimeToleranceResult<DateOnly, IThat<DateOnly>> IsOnSameDayAs(
     this IThat<DateOnly> subject, DateOnly expected)
 {
-    OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Days);
+    OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
     return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new IsOnSameDayAsConstraint(it, grammars, expected, tolerance)),
         subject,
@@ -377,14 +377,14 @@ when there are none.
 
 An expectation that compares the subject for equality, e.g. an `IsEqualTo` for your own type, adds the equality
 constraint of `IsEqualTo` with `AddEqualityConstraint` from `aweXpect.Core.Extending`. Return an `ObjectEqualityResult`
-that shares the `OptionsSlot<ObjectMatchType<T>>`, so that the caller can choose the comparison, e.g. with `Using(comparer)` or
+that shares the `OptionsHolder<ObjectMatchType<T>>`, so that the caller can choose the comparison, e.g. with `Using(comparer)` or
 a [custom match type](#custom-match-types), and the expectation and the failure read like those of `IsEqualTo`:
 
 ```csharp
 public static ObjectEqualityResult<Track?, IThat<Track?>, Track?> IsEqualTo(
     this IThat<Track?> subject, Track? expected)
 {
-    OptionsSlot<ObjectMatchType<Track?>> options = new(ObjectMatchType<Track?>.Default);
+    OptionsHolder<ObjectMatchType<Track?>> options = new(ObjectMatchType<Track?>.Default);
     return new ObjectEqualityResult<Track?, IThat<Track?>, Track?>(
         subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options),
         subject,

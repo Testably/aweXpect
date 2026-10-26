@@ -22,7 +22,7 @@ public static partial class ThatEnumerable
 	public static SingleItemResult<IEnumerable<TItem>, TItem> HasSingle<TItem>(
 		this IThat<IEnumerable<TItem>?> subject)
 	{
-		OptionsSlot<PredicateOptions<TItem>> options = new(PredicateOptions<TItem>.Default);
+		OptionsHolder<PredicateOptions<TItem>> options = new(PredicateOptions<TItem>.Default);
 		SingleItemSource<TItem> source = new();
 		return new SingleItemResult<IEnumerable<TItem>, TItem>(
 			subject.Get().ExpectationBuilder.AddConstraint((Options: options, Source: source),
@@ -40,7 +40,7 @@ public static partial class ThatEnumerable
 	public static SingleItemResult<IEnumerable, object?> HasSingle(
 		this IThat<IEnumerable?> subject)
 	{
-		OptionsSlot<PredicateOptions<object?>> options = new(PredicateOptions<object?>.Default);
+		OptionsHolder<PredicateOptions<object?>> options = new(PredicateOptions<object?>.Default);
 		SingleItemSource<object?> source = new();
 		return new SingleItemResult<IEnumerable, object?>(
 			subject.Get().ExpectationBuilder.AddConstraint((Options: options, Source: source),
@@ -57,7 +57,7 @@ public static partial class ThatEnumerable
 	public static SingleItemResult<ImmutableArray<TItem>, TItem> HasSingle<TItem>(
 		this IThat<ImmutableArray<TItem>> subject)
 	{
-		OptionsSlot<PredicateOptions<TItem>> options = new(PredicateOptions<TItem>.Default);
+		OptionsHolder<PredicateOptions<TItem>> options = new(PredicateOptions<TItem>.Default);
 		SingleItemSource<TItem> source = new();
 		return new SingleItemResult<ImmutableArray<TItem>, TItem>(
 			subject.Get().ExpectationBuilder.AddConstraint((Options: options, Source: source),

@@ -37,7 +37,7 @@ public static partial class ThatDictionary
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		expected.Key.ThrowIfNull(negated);
-		OptionsSlot<ObjectMatchType<TValue>> options = new(ObjectToleranceMatchTypeFactory.ForValuesOf<TValue>());
+		OptionsHolder<ObjectMatchType<TValue>> options = new(ObjectToleranceMatchTypeFactory.ForValuesOf<TValue>());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
@@ -62,7 +62,7 @@ public static partial class ThatDictionary
 			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		OptionsSlot<ObjectMatchType<TValue>> options = new(initialOptions);
+		OptionsHolder<ObjectMatchType<TValue>> options = new(initialOptions);
 		expected.Key.ThrowIfNull(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>(
@@ -86,7 +86,7 @@ public static partial class ThatDictionary
 		where TCollection : IEnumerable<KeyValuePair<TKey, string?>>
 	{
 		expected.Key.ThrowIfNull(negated);
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
@@ -102,7 +102,7 @@ public static partial class ThatDictionary
 		ExpectationGrammars grammars,
 		string parameterName,
 		KeyValuePair<TKey, TValue> expected,
-		IReadOnlyOptionsSlot<IEqualityOptions<TValue>> options)
+		IReadOnlyOptionsHolder<IEqualityOptions<TValue>> options)
 		: ConstraintResult.WithNotNullValue<TDictionary?>(it, grammars),
 			IAsyncContextConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>

@@ -12,7 +12,7 @@ namespace aweXpect.Core;
 /// </summary>
 /// <remarks>
 ///     The match type is the immutable value of the object comparison of an expectation, held in its
-///     <see cref="OptionsSlot{TOptions}" />. Set it with <c>SetMatchType</c> on the slot, which rejects a match type of
+///     <see cref="OptionsHolder{TOptions}" />. Set it with <c>SetMatchType</c> on the holder, which rejects a match type of
 ///     another option. The match type itself keeps no state of a comparison, as one instance serves every evaluation of
 ///     the expectation; state of an evaluation belongs into its matcher, and state of a single comparison into the
 ///     <see cref="MatchExplanation" /> of its <see cref="MatchResult" />.

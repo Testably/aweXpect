@@ -105,7 +105,7 @@ public static partial class ThatDictionary
 	///     unless the <paramref name="options" /> match a pattern instead of a value.
 	/// </summary>
 	private static IEnumerable<TValue>? GetValuesForHint<TKey, TValue>(
-		IEnumerable<KeyValuePair<TKey, TValue>>? dictionary, IReadOnlyOptionsSlot<IEqualityOptions<TValue>> options)
+		IEnumerable<KeyValuePair<TKey, TValue>>? dictionary, IReadOnlyOptionsHolder<IEqualityOptions<TValue>> options)
 		=> options.Value is StringEqualityOptions { InspectsSubject: false, }
 			? dictionary?.Select(static entry => entry.Value)
 			: null;

@@ -30,7 +30,7 @@ public sealed class PropertyEqualityComparison<TNumber> : IPropertyComparison<TN
 {
 	private readonly TNumber? _expected;
 
-	internal PropertyEqualityComparison(TNumber? expected, OptionsSlot<NumberTolerance<TNumber>> options, bool isNegated)
+	internal PropertyEqualityComparison(TNumber? expected, OptionsHolder<NumberTolerance<TNumber>> options, bool isNegated)
 	{
 		_expected = expected;
 		Options = options;
@@ -38,9 +38,9 @@ public sealed class PropertyEqualityComparison<TNumber> : IPropertyComparison<TN
 	}
 
 	/// <summary>
-	///     The slot with the tolerance of the comparison, which the result you return provides to <c>Within(…)</c>.
+	///     The holder with the tolerance of the comparison, which the result you return provides to <c>Within(…)</c>.
 	/// </summary>
-	public OptionsSlot<NumberTolerance<TNumber>> Options { get; }
+	public OptionsHolder<NumberTolerance<TNumber>> Options { get; }
 
 	/// <summary>
 	///     Flag indicating that the operator is a negated one, i.e. <c>NotEqualTo(…)</c>.

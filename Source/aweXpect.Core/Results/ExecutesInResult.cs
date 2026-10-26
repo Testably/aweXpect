@@ -16,11 +16,11 @@ namespace aweXpect.Results;
 public class ExecutesInResult<TResult>(
 	ExpectationBuilder expectationBuilder,
 	TResult returnValue,
-	OptionsSlot<ExecutionTimeOptions> options)
+	OptionsHolder<ExecutionTimeOptions> options)
 	: IOptionsProvider<ExecutionTimeOptions>, ITimeoutBound
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<ExecutionTimeOptions> IOptionsProvider<ExecutionTimeOptions>.Options => options;
+	OptionsHolder<ExecutionTimeOptions> IOptionsProvider<ExecutionTimeOptions>.Options => options;
 
 	/// <inheritdoc cref="ITimeoutBound.UpperBound" />
 	TimeSpan? ITimeoutBound.UpperBound => options.Value.UpperBound;

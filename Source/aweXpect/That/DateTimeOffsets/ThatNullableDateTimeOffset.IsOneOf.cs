@@ -29,7 +29,7 @@ public static partial class ThatNullableDateTimeOffset
 		bool negated)
 	{
 		IEnumerable<DateTimeOffset?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Tolerance: tolerance,
@@ -57,7 +57,7 @@ public static partial class ThatNullableDateTimeOffset
 		ExpectationGrammars grammars,
 		IEnumerable<DateTimeOffset?> expected,
 		string? expectedExpression,
-		OptionsSlot<TimeTolerance> tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: ConstraintResult.WithValue<DateTimeOffset?>(it, grammars),
 			IValueConstraint<DateTimeOffset?>
 	{

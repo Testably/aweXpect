@@ -24,7 +24,7 @@ public static partial class ThatNullableDateOnly
 		this IThat<DateOnly?> subject,
 		DateOnly? minimum)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Days);
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new BetweenResult<TimeToleranceResult<DateOnly, IThat<DateOnly?>>, DateOnly?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -51,7 +51,7 @@ public static partial class ThatNullableDateOnly
 		this IThat<DateOnly?> subject,
 		DateOnly? minimum)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Days);
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new BetweenResult<TimeToleranceResult<DateOnly, IThat<DateOnly?>>, DateOnly?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -70,7 +70,7 @@ public static partial class ThatNullableDateOnly
 		ExpectationGrammars grammars,
 		DateOnly? minimum,
 		DateOnly? maximum,
-		OptionsSlot<TimeTolerance> tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: OrderingConstraint<DateOnly?>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<DateOnly?>
 	{

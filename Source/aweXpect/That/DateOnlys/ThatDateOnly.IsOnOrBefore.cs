@@ -18,7 +18,7 @@ public static partial class ThatDateOnly
 		this IThat<DateOnly> subject,
 		DateOnly? expected)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Days);
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -34,7 +34,7 @@ public static partial class ThatDateOnly
 		this IThat<DateOnly> subject,
 		DateOnly? unexpected)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Days);
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -47,7 +47,7 @@ public static partial class ThatDateOnly
 		string it,
 		ExpectationGrammars grammars,
 		DateOnly? expected,
-		OptionsSlot<TimeTolerance> tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: OrderingConstraint<DateOnly>(it, grammars, expected is null),
 			IValueConstraint<DateOnly>
 	{

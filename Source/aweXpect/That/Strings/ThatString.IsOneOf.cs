@@ -30,7 +30,7 @@ public static partial class ThatString
 		bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
@@ -49,7 +49,7 @@ public static partial class ThatString
 		IEnumerable<string?> expectedValues,
 		string? expectedExpression,
 		string parameterName,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithValue<string?>(it, grammars),
 			IAsyncContextConstraint<string?>
 	{

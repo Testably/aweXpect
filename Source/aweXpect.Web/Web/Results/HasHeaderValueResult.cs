@@ -47,7 +47,7 @@ public class HasHeaderValueResult<TType, TThat>
 	/// </remarks>
 	public StringEqualityTypeResult<TType, TThat> WithValue(string? expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		_expectationBuilder.And("").AddConstraint((expected, _headerValueAccessor, options),
 			static (state, it, grammars) => new WithHeaderValueConstraint(
 				it, grammars, state.expected, state._headerValueAccessor, state.options));
@@ -66,8 +66,8 @@ public class HasHeaderValueResult<TType, TThat>
 	public StringCollectionMatchResult<TType, TThat> WithValues(IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
 		_expectationBuilder.And("").AddConstraint(
 			(expected: expected.ToArray(), _headerValueAccessor, options, matchOptions),
 			static (state, it, grammars) => new WithHeaderValuesConstraint(
@@ -121,7 +121,7 @@ public class HasHeaderValueResult<TType, TThat>
 		ExpectationGrammars grammars,
 		string? expected,
 		Func<TType, string?[]?> headerValueAccessor,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<TType?>(it, grammars),
 			IAsyncContextConstraint<TType?>
 	{
@@ -200,8 +200,8 @@ public class HasHeaderValueResult<TType, TThat>
 		ExpectationGrammars grammars,
 		string[] expected,
 		Func<TType, string?[]?> headerValueAccessor,
-		OptionsSlot<StringEqualityOptions> options,
-		OptionsSlot<CollectionMatchOptions> matchOptions)
+		OptionsHolder<StringEqualityOptions> options,
+		OptionsHolder<CollectionMatchOptions> matchOptions)
 		: ConstraintResult.WithNotNullValue<TType?>(it, grammars),
 			IAsyncContextConstraint<TType?>
 	{

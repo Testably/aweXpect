@@ -15,6 +15,6 @@ public static partial class EventFilters
 		return new Filtered.Events.StringEqualityResult(@this, options => Filter.Suffix<EventInfo>(
 				eventInfo => options.Value.AreConsideredEqual(eventInfo.Name, expected, nameof(expected)),
 				() => $"with name {options.Value.GetExpectation(expected, ExpectationGrammars.None)} "),
-			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

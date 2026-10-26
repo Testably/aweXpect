@@ -172,11 +172,11 @@ is discarded, so the call has no effect.
 using aweXpect.Core;
 using aweXpect.Options;
 
-OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
+OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 
 quantifier.Value.AtLeast(2);                       // reported: the quantifier stays unchanged
-quantifier.Value = quantifier.Value.AtLeast(2);    // fixed: the slot holds the new quantifier
-quantifier.AtLeast(2);                             // fixed: the option method of the slot replaces its value
+quantifier.Value = quantifier.Value.AtLeast(2);    // fixed: the holder gets the new quantifier
+quantifier.AtLeast(2);                             // fixed: the option method of the holder replaces its value
 ```
 
 The options are immutable values, so an option method returns new options and leaves the ones it is called on

@@ -68,7 +68,7 @@ public static partial class ThatTypes
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		ScopeOptions scope = new();
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(
 			AddContainConstraint<TMember, TFiltered>(subject, types => navigate(types, scope.MemberScope), filter,
 				quantifier, scope),
@@ -86,7 +86,7 @@ public static partial class ThatTypes
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		ScopeOptions scope = new();
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(
 			AddContainConstraint<TMember, TFiltered>(subject, types => navigate(types, scope.MemberScope), filter,
 				quantifier, scope),
@@ -102,7 +102,7 @@ public static partial class ThatTypes
 		Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersResult<IEnumerable<Type?>, IEnumerable<Type?>?>(
 			AddContainConstraint<TMember, TFiltered>(subject, navigate, filter, quantifier, null),
 			subject,
@@ -117,7 +117,7 @@ public static partial class ThatTypes
 			Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
-		OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(
 			AddContainConstraint<TMember, TFiltered>(subject, navigate, filter, quantifier, null),
 			subject,
@@ -129,14 +129,14 @@ public static partial class ThatTypes
 		IThat<IEnumerable<Type?>?> subject,
 		Func<Filtered.Types, TFiltered> navigate,
 		Func<TFiltered, TFiltered> filter,
-		OptionsSlot<Quantifier> quantifier,
+		OptionsHolder<Quantifier> quantifier,
 		ScopeOptions? scope)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		IContainedMembersFilter memberFilter =
 			TypeFilters.ContainedMembers<TMember, TFiltered>(navigate, filter, quantifier);
 		return subject.Get().ExpectationBuilder
-			.AddConstraint<(IContainedMembersFilter MemberFilter, OptionsSlot<Quantifier> Quantifier, ScopeOptions? Scope),
+			.AddConstraint<(IContainedMembersFilter MemberFilter, OptionsHolder<Quantifier> Quantifier, ScopeOptions? Scope),
 				IEnumerable<Type?>>(
 				(memberFilter, quantifier, scope),
 				static (s, it, grammars)
@@ -148,14 +148,14 @@ public static partial class ThatTypes
 		IThat<IAsyncEnumerable<Type?>?> subject,
 		Func<Filtered.Types, TFiltered> navigate,
 		Func<TFiltered, TFiltered> filter,
-		OptionsSlot<Quantifier> quantifier,
+		OptionsHolder<Quantifier> quantifier,
 		ScopeOptions? scope)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		IContainedMembersFilter memberFilter =
 			TypeFilters.ContainedMembers<TMember, TFiltered>(navigate, filter, quantifier);
 		return subject.Get().ExpectationBuilder
-			.AddConstraint<(IContainedMembersFilter MemberFilter, OptionsSlot<Quantifier> Quantifier, ScopeOptions? Scope),
+			.AddConstraint<(IContainedMembersFilter MemberFilter, OptionsHolder<Quantifier> Quantifier, ScopeOptions? Scope),
 				IAsyncEnumerable<Type?>>(
 				(memberFilter, quantifier, scope),
 				static (s, it, grammars)
@@ -167,7 +167,7 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		IContainedMembersFilter memberFilter,
-		OptionsSlot<Quantifier> quantifier,
+		OptionsHolder<Quantifier> quantifier,
 		ScopeOptions? scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Type?>>

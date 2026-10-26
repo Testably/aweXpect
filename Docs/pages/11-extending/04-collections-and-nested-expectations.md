@@ -122,8 +122,8 @@ text of `IsEqualTo`, e.g. `it lacked 1 of 2 expected items: "Outro"`, so the cal
 public static StringCollectionMatchResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> HasTitles(
     this IThat<IEnumerable<Track>?> subject, params string[] expected)
 {
-    OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-    OptionsSlot<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
+    OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+    OptionsHolder<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
     return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new HasTitlesConstraint(it, grammars, expected, options, matchOptions)),
         subject, options, matchOptions);
@@ -133,8 +133,8 @@ private sealed class HasTitlesConstraint(
     string it,
     ExpectationGrammars grammars,
     string[] expected,
-    IReadOnlyOptionsSlot<StringEqualityOptions> options,
-    IReadOnlyOptionsSlot<CollectionMatchOptions> matchOptions)
+    IReadOnlyOptionsHolder<StringEqualityOptions> options,
+    IReadOnlyOptionsHolder<CollectionMatchOptions> matchOptions)
     : ConstraintResult.WithNotNullValue<IEnumerable<Track>>(it, grammars),
         IAsyncContextConstraint<IEnumerable<Track>?>
 {

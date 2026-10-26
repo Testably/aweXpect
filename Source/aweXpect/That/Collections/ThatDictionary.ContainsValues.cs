@@ -41,7 +41,7 @@ public static partial class ThatDictionary
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		TValue[] values = expected.ToNonEmptyValues(negated).ToArray();
-		OptionsSlot<ObjectMatchType<TValue>> options = new(ObjectToleranceMatchTypeFactory.ForValuesOf<TValue>());
+		OptionsHolder<ObjectMatchType<TValue>> options = new(ObjectToleranceMatchTypeFactory.ForValuesOf<TValue>());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint(
@@ -72,7 +72,7 @@ public static partial class ThatDictionary
 			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		OptionsSlot<ObjectMatchType<TValue>> options = new(initialOptions);
+		OptionsHolder<ObjectMatchType<TValue>> options = new(initialOptions);
 		TValue[] values = expected.ToNonEmptyValues(negated).ToArray();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>(
@@ -102,7 +102,7 @@ public static partial class ThatDictionary
 		where TCollection : IEnumerable<KeyValuePair<TKey, string?>>
 	{
 		string?[] values = expected.ToNonEmptyValues(negated).ToArray();
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint(
@@ -126,7 +126,7 @@ public static partial class ThatDictionary
 		string parameterName,
 		string expectedExpression,
 		TValue[] expected,
-		IReadOnlyOptionsSlot<IEqualityOptions<TValue>> options,
+		IReadOnlyOptionsHolder<IEqualityOptions<TValue>> options,
 		bool isAny)
 		: ConstraintResult.WithNotNullValue<TDictionary?>(it, grammars),
 			IAsyncContextConstraint<TDictionary?>

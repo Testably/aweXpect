@@ -34,7 +34,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 		string it,
 		ExpectationGrammars grammars,
 		ContainedItem<TItem> item,
-		OptionsSlot<Quantifier> quantifier) : base(grammars)
+		OptionsHolder<Quantifier> quantifier) : base(grammars)
 	{
 		It = it;
 		Item = item;
@@ -56,7 +56,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	/// <summary>
 	///     The quantifier for the number of matching items.
 	/// </summary>
-	protected OptionsSlot<Quantifier> Quantifier { get; }
+	protected OptionsHolder<Quantifier> Quantifier { get; }
 
 	/// <summary>
 	///     The type of the collection that is served as the value of the result.
@@ -220,7 +220,7 @@ internal sealed class ContainConstraint<TEnumerable, TItem>(
 	string it,
 	ExpectationGrammars grammars,
 	ContainedItem<TItem> containedItem,
-	OptionsSlot<Quantifier> quantifier)
+	OptionsHolder<Quantifier> quantifier)
 	: ContainConstraintBase<TItem>(it, grammars, containedItem, quantifier),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
@@ -368,7 +368,7 @@ internal sealed class AsyncContainConstraint<TItem>(
 	string it,
 	ExpectationGrammars grammars,
 	ContainedItem<TItem> containedItem,
-	OptionsSlot<Quantifier> quantifier)
+	OptionsHolder<Quantifier> quantifier)
 	: ContainConstraintBase<TItem>(it, grammars, containedItem, quantifier),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {

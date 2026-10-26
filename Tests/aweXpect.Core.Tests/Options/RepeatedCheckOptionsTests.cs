@@ -324,7 +324,7 @@ public sealed class RepeatedCheckOptionsTests
 	private static RepeatedCheckResult<IEnumerable<int>, IThat<IEnumerable<int>>> HasMatchingItem(
 		IThat<IEnumerable<int>> subject, Func<int, bool> predicate, Action? onCheck = null)
 	{
-		OptionsSlot<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new RepeatedCheckResult<IEnumerable<int>, IThat<IEnumerable<int>>>(
 			((IExpectThat<IEnumerable<int>>)subject).ExpectationBuilder
 			.AddConstraint((it, grammars)
@@ -353,7 +353,7 @@ public sealed class RepeatedCheckOptionsTests
 		ExpectationGrammars grammars,
 		Func<int, bool> predicate,
 		Action? onCheck,
-		OptionsSlot<RepeatedCheckOptions> options)
+		OptionsHolder<RepeatedCheckOptions> options)
 		: ConstraintResult.WithNotNullValue<IEnumerable<int>>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<int>>
 	{

@@ -76,7 +76,7 @@ public static partial class MethodFilters
 						() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
 				},
-				CollectionIndexOptions.Default, new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
+				CollectionIndexOptions.Default, new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 		}
 
 		/// <summary>
@@ -91,7 +91,7 @@ public static partial class MethodFilters
 						() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
 				},
-				CollectionIndexOptions.Default, new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
+				CollectionIndexOptions.Default, new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 
 		private static IFilter<MethodInfo> WithArgumentFilter(GenericArgumentFilterOptions genericArgumentFilterOptions,
 			CollectionIndexOptions collectionIndexOptions)
@@ -159,15 +159,15 @@ public static partial class MethodFilters
 			ICopyOnOption<StringEqualityOptions, GenericMethodsWithNamedArgument>
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
-		private readonly Func<IReadOnlyOptionsSlot<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<MethodInfo>>> _createFilter;
-		private readonly OptionsSlot<StringEqualityOptions> _options;
+		private readonly Func<IReadOnlyOptionsHolder<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<MethodInfo>>> _createFilter;
+		private readonly OptionsHolder<StringEqualityOptions> _options;
 		private readonly Filtered.Methods _source;
 
 		internal GenericMethodsWithNamedArgument(
 			Filtered.Methods source,
-			Func<IReadOnlyOptionsSlot<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<MethodInfo>>> createFilter,
+			Func<IReadOnlyOptionsHolder<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<MethodInfo>>> createFilter,
 			CollectionIndexOptions collectionIndexOptions,
-			OptionsSlot<StringEqualityOptions> options)
+			OptionsHolder<StringEqualityOptions> options)
 			: base(source, createFilter(options), collectionIndexOptions)
 		{
 			_source = source;
@@ -177,11 +177,11 @@ public static partial class MethodFilters
 		}
 
 		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
-		OptionsSlot<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
+		OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
 		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
 		GenericMethodsWithNamedArgument ICopyOnOption<StringEqualityOptions, GenericMethodsWithNamedArgument>.WithOptions(
 			StringEqualityOptions options)
-			=> new(_source, _createFilter, _collectionIndexOptions, new OptionsSlot<StringEqualityOptions>(options));
+			=> new(_source, _createFilter, _collectionIndexOptions, new OptionsHolder<StringEqualityOptions>(options));
 	}
 }

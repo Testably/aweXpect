@@ -135,13 +135,13 @@ public sealed class StringEqualityOptionsTests
 			IStringMatchTypeOptions,
 			ICopyOnOption<StringEqualityOptions, CopyingResult>
 	{
-		public OptionsSlot<StringEqualityOptions> Options { get; } = new(options);
+		public OptionsHolder<StringEqualityOptions> Options { get; } = new(options);
 
 		public CopyingResult WithOptions(StringEqualityOptions copiedOptions) => new(copiedOptions);
 	}
 
 	private sealed class StringEqualityResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
-		public OptionsSlot<StringEqualityOptions> Options { get; } = new(StringEqualityOptions.Default);
+		public OptionsHolder<StringEqualityOptions> Options { get; } = new(StringEqualityOptions.Default);
 	}
 }

@@ -47,7 +47,7 @@ public class HasQueryParameterValueResult
 	/// </remarks>
 	public StringEqualityTypeResult<Uri, IThat<Uri?>> WithValue(string? expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		_expectationBuilder.And("").AddConstraint((expected, _name, options),
 			static (state, it, grammars) => new WithValueConstraint(
 				it, grammars, state.expected, state._name, state.options));
@@ -69,8 +69,8 @@ public class HasQueryParameterValueResult
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		string[] expectedValues = expected.ToArray();
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
 		_expectationBuilder.And("").AddConstraint((expectedValues, _name, options, matchOptions),
 			static (state, it, grammars) => new WithValuesConstraint(
 				it, grammars, state.expectedValues, state._name, state.options, state.matchOptions));
@@ -123,7 +123,7 @@ public class HasQueryParameterValueResult
 		ExpectationGrammars grammars,
 		string? expected,
 		string name,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<Uri?>(it, grammars),
 			IAsyncContextConstraint<Uri?>
 	{
@@ -200,8 +200,8 @@ public class HasQueryParameterValueResult
 		ExpectationGrammars grammars,
 		string[] expected,
 		string name,
-		OptionsSlot<StringEqualityOptions> options,
-		OptionsSlot<CollectionMatchOptions> matchOptions)
+		OptionsHolder<StringEqualityOptions> options,
+		OptionsHolder<CollectionMatchOptions> matchOptions)
 		: ConstraintResult.WithNotNullValue<Uri?>(it, grammars),
 			IAsyncContextConstraint<Uri?>
 	{

@@ -13,12 +13,12 @@ namespace aweXpect.Results;
 public class CollectionOrderResult<TType, TThat, TMember>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsSlot<CollectionOrderOptions<TMember>> options)
+	OptionsHolder<CollectionOrderOptions<TMember>> options)
 	: AndOrResult<TType, TThat>(expectationBuilder, returnValue),
 		IOptionsProvider<CollectionOrderOptions<TMember>>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsSlot<CollectionOrderOptions<TMember>> IOptionsProvider<CollectionOrderOptions<TMember>>.Options => options;
+	OptionsHolder<CollectionOrderOptions<TMember>> IOptionsProvider<CollectionOrderOptions<TMember>>.Options => options;
 
 	/// <summary>
 	///     Use the given <paramref name="comparer" /> to verify the order of items.

@@ -20,8 +20,8 @@ internal sealed class StringOccurrenceConstraint(
 	ExpectationGrammars grammars,
 	string expected,
 	string parameterName,
-	OptionsSlot<Quantifier> quantifier,
-	OptionsSlot<StringEqualityOptions> options)
+	OptionsHolder<Quantifier> quantifier,
+	OptionsHolder<StringEqualityOptions> options)
 	: ConstraintResult(grammars),
 		IAsyncContextConstraint<string?>
 {

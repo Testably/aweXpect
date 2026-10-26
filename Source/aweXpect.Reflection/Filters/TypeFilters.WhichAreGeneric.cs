@@ -75,7 +75,7 @@ public static partial class TypeFilters
 						() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
 				},
-				CollectionIndexOptions.Default, new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
+				CollectionIndexOptions.Default, new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 		}
 
 		/// <summary>
@@ -90,7 +90,7 @@ public static partial class TypeFilters
 						() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
 				},
-				CollectionIndexOptions.Default, new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
+				CollectionIndexOptions.Default, new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 
 		private static IFilter<Type> WithArgumentFilter(GenericArgumentFilterOptions genericArgumentFilterOptions,
 			CollectionIndexOptions collectionIndexOptions)
@@ -157,15 +157,15 @@ public static partial class TypeFilters
 				ICopyOnOption<StringEqualityOptions, GenericTypesWithNamedArgument>
 		{
 			private readonly CollectionIndexOptions _collectionIndexOptions;
-			private readonly Func<IReadOnlyOptionsSlot<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<Type>>> _createFilter;
-			private readonly OptionsSlot<StringEqualityOptions> _options;
+			private readonly Func<IReadOnlyOptionsHolder<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<Type>>> _createFilter;
+			private readonly OptionsHolder<StringEqualityOptions> _options;
 			private readonly Filtered.Types _source;
 
 			internal GenericTypesWithNamedArgument(
 				Filtered.Types source,
-				Func<IReadOnlyOptionsSlot<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<Type>>> createFilter,
+				Func<IReadOnlyOptionsHolder<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<Type>>> createFilter,
 				CollectionIndexOptions collectionIndexOptions,
-				OptionsSlot<StringEqualityOptions> options)
+				OptionsHolder<StringEqualityOptions> options)
 				: base(source, createFilter(options), collectionIndexOptions)
 			{
 				_source = source;
@@ -175,12 +175,12 @@ public static partial class TypeFilters
 			}
 
 			/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
-			OptionsSlot<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
+			OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
 			/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
 			GenericTypesWithNamedArgument ICopyOnOption<StringEqualityOptions, GenericTypesWithNamedArgument>.WithOptions(
 				StringEqualityOptions options)
-				=> new(_source, _createFilter, _collectionIndexOptions, new OptionsSlot<StringEqualityOptions>(options));
+				=> new(_source, _createFilter, _collectionIndexOptions, new OptionsHolder<StringEqualityOptions>(options));
 		}
 	}
 }

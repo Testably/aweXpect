@@ -18,7 +18,7 @@ namespace aweXpect.Equivalency;
 /// </summary>
 /// <remarks>
 ///     Use it via
-///     <see cref="ObjectMatchTypeSlotExtensions.SetMatchType{TSubject}(OptionsSlot{ObjectMatchType{TSubject}}, ObjectMatchType{TSubject})" />
+///     <see cref="ObjectMatchTypeHolderExtensions.SetMatchType{TSubject}(OptionsHolder{ObjectMatchType{TSubject}}, ObjectMatchType{TSubject})" />
 ///     as the option <c>Equivalent</c>.<br />
 ///     Mark the parameters of the expectation that receive the compared values with the
 ///     <see cref="RequiresMemberMetadataAttribute" />, so that the members of their types are registered for trimming.

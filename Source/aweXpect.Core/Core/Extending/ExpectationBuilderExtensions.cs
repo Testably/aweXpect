@@ -19,7 +19,7 @@ public static class ExpectationBuilderExtensions
 	/// </summary>
 	/// <param name="expectationBuilder">The expectation builder of the subject.</param>
 	/// <param name="expected">The value that the subject is compared with.</param>
-	/// <param name="options">The slot with how the subject is compared with the <paramref name="expected" /> value.</param>
+	/// <param name="options">The holder with how the subject is compared with the <paramref name="expected" /> value.</param>
 	/// <param name="isNegated">Whether the constraint is negated.</param>
 	/// <param name="expectedExpression">
 	///     The code of the caller for the <paramref name="expected" /> value, e.g. from a
@@ -38,7 +38,7 @@ public static class ExpectationBuilderExtensions
 	/// </remarks>
 	public static ExpectationBuilder AddEqualityConstraint<TSubject, TExpected>(
 		this ExpectationBuilder expectationBuilder,
-		TExpected expected, OptionsSlot<ObjectMatchType<TSubject>> options, bool isNegated = false,
+		TExpected expected, OptionsHolder<ObjectMatchType<TSubject>> options, bool isNegated = false,
 		string? expectedExpression = null)
 		=> expectationBuilder.AddConstraint(
 			(Expected: expected, Options: options, IsNegated: isNegated, ExpectedExpression: expectedExpression),
@@ -57,9 +57,9 @@ public static class ExpectationBuilderExtensions
 	/// </summary>
 	/// <param name="expectationBuilder">The expectation builder of the <see langword="string" /> subject.</param>
 	/// <param name="expected">The <see langword="string" /> whose occurrences are counted.</param>
-	/// <param name="quantifier">The slot with how often the <paramref name="expected" /> value has to occur.</param>
+	/// <param name="quantifier">The holder with how often the <paramref name="expected" /> value has to occur.</param>
 	/// <param name="options">
-	///     The slot with how the <paramref name="expected" /> value is matched, e.g. as a wildcard pattern.
+	///     The holder with how the <paramref name="expected" /> value is matched, e.g. as a wildcard pattern.
 	/// </param>
 	/// <param name="isNegated">Whether the constraint is negated.</param>
 	/// <returns>The <paramref name="expectationBuilder" />, e.g. for a <see cref="Results.StringOccurrenceCountResult{TType,TThat}" />.</returns>
@@ -71,7 +71,7 @@ public static class ExpectationBuilderExtensions
 	///     against the parameter <c>expected</c>, or <c>unexpected</c> when <paramref name="isNegated" />.
 	/// </remarks>
 	public static ExpectationBuilder AddStringOccurrenceConstraint(this ExpectationBuilder expectationBuilder,
-		string expected, OptionsSlot<Quantifier> quantifier, OptionsSlot<StringEqualityOptions> options,
+		string expected, OptionsHolder<Quantifier> quantifier, OptionsHolder<StringEqualityOptions> options,
 		bool isNegated = false)
 		=> expectationBuilder.AddConstraint(
 			(Expected: expected, Quantifier: quantifier, Options: options, IsNegated: isNegated),

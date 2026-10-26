@@ -11,8 +11,8 @@ public sealed class DidNotSignalResultTests
 	[Test]
 	public async Task Generic_ShouldBeOptionsProvider_ForPredicateOptions()
 	{
-		OptionsSlot<SignalerPredicateOptions<int>> predicates = new(SignalerPredicateOptions<int>.Default);
-		DidNotSignalResult<int> sut = CreateSut(new OptionsSlot<SignalerOptions>(SignalerOptions.Default), predicates);
+		OptionsHolder<SignalerPredicateOptions<int>> predicates = new(SignalerPredicateOptions<int>.Default);
+		DidNotSignalResult<int> sut = CreateSut(new OptionsHolder<SignalerOptions>(SignalerOptions.Default), predicates);
 
 		await That(sut).Is<IOptionsProvider<SignalerPredicateOptions<int>>>()
 			.Whose(x => x.Options, it => it.IsSameAs(predicates));
@@ -21,9 +21,9 @@ public sealed class DidNotSignalResultTests
 	[Test]
 	public async Task Generic_ShouldBeOptionsProvider_ForSignalerOptions()
 	{
-		OptionsSlot<SignalerOptions> options = new(SignalerOptions.Default);
+		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
 		DidNotSignalResult<int> sut =
-			CreateSut(options, new OptionsSlot<SignalerPredicateOptions<int>>(SignalerPredicateOptions<int>.Default));
+			CreateSut(options, new OptionsHolder<SignalerPredicateOptions<int>>(SignalerPredicateOptions<int>.Default));
 
 		await That(sut).Is<IOptionsProvider<SignalerOptions>>()
 			.Whose(x => x.Options, it => it.IsSameAs(options));
@@ -32,15 +32,15 @@ public sealed class DidNotSignalResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForPredicateOptions()
 	{
-		OptionsSlot<SignalerOptions> options = new(SignalerOptions.Default);
+		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
 		DidNotSignalResult sut = CreateSut(options);
 
 		await That(sut).Is<IOptionsProvider<SignalerOptions>>()
 			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
-	private static DidNotSignalResult<TParameter> CreateSut<TParameter>(OptionsSlot<SignalerOptions> options,
-		OptionsSlot<SignalerPredicateOptions<TParameter>> predicates)
+	private static DidNotSignalResult<TParameter> CreateSut<TParameter>(OptionsHolder<SignalerOptions> options,
+		OptionsHolder<SignalerPredicateOptions<TParameter>> predicates)
 	{
 		Signaler<TParameter> signaler = new();
 #pragma warning disable aweXpect0001
@@ -50,7 +50,7 @@ public sealed class DidNotSignalResultTests
 			source, options, predicates);
 	}
 
-	private static DidNotSignalResult CreateSut(OptionsSlot<SignalerOptions> options)
+	private static DidNotSignalResult CreateSut(OptionsHolder<SignalerOptions> options)
 	{
 		Signaler signaler = new();
 #pragma warning disable aweXpect0001

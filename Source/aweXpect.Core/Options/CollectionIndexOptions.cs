@@ -20,7 +20,7 @@ public readonly struct CollectionIndexOptions
 	///     <see cref="SetMatch" />.
 	/// </summary>
 	/// <remarks>
-	///     A single reference keeps the options as small as a reference, so that the slot of an expectation stays at
+	///     A single reference keeps the options as small as a reference, so that the holder of an expectation stays at
 	///     its minimum size; the built-in matches are named by their type.
 	/// </remarks>
 	private readonly object? _match;

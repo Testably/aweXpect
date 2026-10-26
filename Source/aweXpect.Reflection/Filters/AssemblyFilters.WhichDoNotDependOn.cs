@@ -19,6 +19,6 @@ public static partial class AssemblyFilters
 				async assembly => !await assembly.GetReferencedAssemblyNames()
 					.AnyAsync(dependency => options.Value.AreConsideredEqual(dependency.Name, unexpected, nameof(unexpected))),
 				() => $" which have no dependency on assembly {options.Value.GetExpectation(unexpected, ExpectationGrammars.None)}"),
-			new OptionsSlot<StringEqualityOptions>(StringEqualityOptions.Default));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

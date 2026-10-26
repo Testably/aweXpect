@@ -21,15 +21,15 @@ namespace aweXpect.Results;
 /// </remarks>
 public sealed class StringPropertyComparison
 {
-	internal StringPropertyComparison(string? expected, OptionsSlot<StringEqualityOptions> options, bool isNegated)
+	internal StringPropertyComparison(string? expected, OptionsHolder<StringEqualityOptions> options, bool isNegated)
 	{
 		Expected = expected;
 		Options = options;
 		IsNegated = isNegated;
 	}
 
-	internal StringPropertyComparison(string expected, OptionsSlot<StringEqualityOptions> options,
-		OptionsSlot<Quantifier> quantifier)
+	internal StringPropertyComparison(string expected, OptionsHolder<StringEqualityOptions> options,
+		OptionsHolder<Quantifier> quantifier)
 	{
 		Expected = expected;
 		Options = options;
@@ -37,14 +37,14 @@ public sealed class StringPropertyComparison
 	}
 
 	/// <summary>
-	///     The slot with the string options of the comparison, which the result you return provides to the option
+	///     The holder with the string options of the comparison, which the result you return provides to the option
 	///     methods, e.g. via
 	///     <see cref="StringEqualityTypeResult{TType, TThat}" />.
 	/// </summary>
-	public OptionsSlot<StringEqualityOptions> Options { get; }
+	public OptionsHolder<StringEqualityOptions> Options { get; }
 
 	/// <summary>
-	///     The slot with how often the expected value has to occur, which the result you return provides to the
+	///     The holder with how often the expected value has to occur, which the result you return provides to the
 	///     quantifiers, e.g. via
 	///     <see cref="StringOccurrenceCountResult{TType, TThat}" />.
 	/// </summary>
@@ -52,7 +52,7 @@ public sealed class StringPropertyComparison
 	///     Only the comparison of <c>Containing(…)</c>, which is passed to an
 	///     <see cref="IStringOccurrencePropertyResult{TResult}" />, has a quantifier.
 	/// </remarks>
-	public OptionsSlot<Quantifier>? Quantifier { get; }
+	public OptionsHolder<Quantifier>? Quantifier { get; }
 
 	internal string? Expected { get; }
 

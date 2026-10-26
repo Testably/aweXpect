@@ -21,7 +21,7 @@ internal abstract class IsInOrderConstraintBase<TValue, TItem, TMember>(
 	ExpectationGrammars grammars,
 	Func<TItem, TMember> memberAccessor,
 	SortOrder sortOrder,
-	OptionsSlot<CollectionOrderOptions<TMember>> options,
+	OptionsHolder<CollectionOrderOptions<TMember>> options,
 	string memberExpression,
 	Func<Func<TMember, string?>?>? createIncompatibilityCheck)
 	: OrderingConstraint<TValue>(it, grammars, false)
@@ -144,7 +144,7 @@ internal sealed class IsInOrderConstraint<TEnumerable, TItem, TMember>(
 	ExpectationGrammars grammars,
 	Func<TItem, TMember> memberAccessor,
 	SortOrder sortOrder,
-	OptionsSlot<CollectionOrderOptions<TMember>> options,
+	OptionsHolder<CollectionOrderOptions<TMember>> options,
 	string memberExpression,
 	Func<Func<TMember, string?>?>? createIncompatibilityCheck = null)
 	: IsInOrderConstraintBase<TEnumerable, TItem, TMember>(it, grammars, memberAccessor, sortOrder, options,
@@ -203,7 +203,7 @@ internal sealed class AsyncIsInOrderConstraint<TItem, TMember>(
 	ExpectationGrammars grammars,
 	Func<TItem, TMember> memberAccessor,
 	SortOrder sortOrder,
-	OptionsSlot<CollectionOrderOptions<TMember>> options,
+	OptionsHolder<CollectionOrderOptions<TMember>> options,
 	string memberExpression,
 	Func<Func<TMember, string?>?>? createIncompatibilityCheck = null)
 	: IsInOrderConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMember>(it, grammars, memberAccessor, sortOrder,

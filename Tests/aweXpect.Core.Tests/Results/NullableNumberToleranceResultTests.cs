@@ -13,7 +13,7 @@ public sealed class NullableNumberToleranceResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForNumberTolerance()
 	{
-		OptionsSlot<NumberTolerance<int>> options = new(new NumberTolerance<int>((a, b) => a - b));
+		OptionsHolder<NumberTolerance<int>> options = new(new NumberTolerance<int>((a, b) => a - b));
 		NullableNumberToleranceResult<int, IThat<int>> sut = CreateSut(2, options);
 
 		await That(sut).Is<IOptionsProvider<NumberTolerance<int>>>()
@@ -23,7 +23,7 @@ public sealed class NullableNumberToleranceResultTests
 	[Test]
 	public async Task Within_ShouldSetTheTolerance()
 	{
-		OptionsSlot<NumberTolerance<int>> options = new(new NumberTolerance<int>((a, b) => a - b));
+		OptionsHolder<NumberTolerance<int>> options = new(new NumberTolerance<int>((a, b) => a - b));
 		NullableNumberToleranceResult<int, IThat<int>> sut = CreateSut(2, options);
 
 		_ = sut.Within(1);
@@ -34,7 +34,7 @@ public sealed class NullableNumberToleranceResultTests
 	[Test]
 	public async Task Within_WithRelativeTolerance_ShouldReplaceTheToleranceAndReturnTheResult()
 	{
-		OptionsSlot<NumberTolerance<int>> options = new(new NumberTolerance<int>((a, b) => a - b));
+		OptionsHolder<NumberTolerance<int>> options = new(new NumberTolerance<int>((a, b) => a - b));
 		NullableNumberToleranceResult<int, IThat<int>> sut = CreateSut(2, options);
 		IWithinToleranceResult<NullableNumberToleranceResult<int, IThat<int>>, int> result = sut.Within(1);
 
@@ -47,7 +47,7 @@ public sealed class NullableNumberToleranceResultTests
 	}
 
 	private static NullableNumberToleranceResult<T, IThat<T>> CreateSut<T>(T subject,
-		OptionsSlot<NumberTolerance<T>> options)
+		OptionsHolder<NumberTolerance<T>> options)
 #if NET8_0_OR_GREATER
 		where T : struct, INumber<T>
 #else

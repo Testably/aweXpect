@@ -59,7 +59,7 @@ internal abstract class HasSingleConstraintBase<TItem>(string it, ExpectationGra
 internal abstract class HasSingleConstraintBase<TValue, TItem>(
 	string it,
 	ExpectationGrammars grammars,
-	OptionsSlot<PredicateOptions<TItem>> options)
+	OptionsHolder<PredicateOptions<TItem>> options)
 	: HasSingleConstraintBase<TItem>(it, grammars)
 {
 	private bool _isEmpty;
@@ -175,7 +175,7 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 internal sealed class HasSingleConstraint<TEnumerable, TItem>(
 	string it,
 	ExpectationGrammars grammars,
-	OptionsSlot<PredicateOptions<TItem>> options)
+	OptionsHolder<PredicateOptions<TItem>> options)
 	: HasSingleConstraintBase<TEnumerable, TItem>(it, grammars, options),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
@@ -238,7 +238,7 @@ internal sealed class HasSingleConstraint<TEnumerable, TItem>(
 internal sealed class AsyncHasSingleConstraint<TItem>(
 	string it,
 	ExpectationGrammars grammars,
-	OptionsSlot<PredicateOptions<TItem>> options)
+	OptionsHolder<PredicateOptions<TItem>> options)
 	: HasSingleConstraintBase<IAsyncEnumerable<TItem>, TItem>(it, grammars, options),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {

@@ -30,7 +30,7 @@ public static partial class ThatNullableDateOnly
 		bool negated)
 	{
 		IEnumerable<DateOnly?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Days);
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new TimeToleranceResult<DateOnly?, IThat<DateOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Tolerance: tolerance,
@@ -58,7 +58,7 @@ public static partial class ThatNullableDateOnly
 		ExpectationGrammars grammars,
 		IEnumerable<DateOnly?> expected,
 		string? expectedExpression,
-		OptionsSlot<TimeTolerance> tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: ConstraintResult.WithValue<DateOnly?>(it, grammars),
 			IValueConstraint<DateOnly?>
 	{

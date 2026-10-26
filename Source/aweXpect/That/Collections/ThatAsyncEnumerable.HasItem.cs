@@ -34,8 +34,8 @@ public static partial class ThatAsyncEnumerable
 			IThat<IAsyncEnumerable<TItem>?> subject,
 			bool negated)
 	{
-		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
-		OptionsSlot<PredicateOptions<TItem>> options = new(PredicateOptions<TItem>.Default);
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<PredicateOptions<TItem>> options = new(PredicateOptions<TItem>.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemWithConditionResult<IAsyncEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint((Options: options, IndexOptions: indexOptions, Negated: negated),
@@ -57,7 +57,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		predicate.ThrowIfNull();
-		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IAsyncEnumerable<TItem>>(
 			expectationBuilder.AddConstraint(
@@ -79,9 +79,9 @@ public static partial class ThatAsyncEnumerable
 			TItem expected,
 			bool negated)
 	{
-		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		OptionsSlot<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
 		return new ObjectHasItemResult<IAsyncEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
@@ -104,8 +104,8 @@ public static partial class ThatAsyncEnumerable
 			ObjectToleranceMatchType<TItem, TTolerance> initialOptions,
 			bool negated)
 	{
-		OptionsSlot<ObjectMatchType<TItem>> options = new(initialOptions);
-		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectHasItemWithToleranceResult<IAsyncEnumerable<TItem>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint(
@@ -127,9 +127,9 @@ public static partial class ThatAsyncEnumerable
 			string? expected,
 			bool negated)
 	{
-		OptionsSlot<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringHasItemResult<IAsyncEnumerable<string?>>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),

@@ -26,9 +26,9 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> DependOn(
 		this IThat<IEnumerable<Assembly?>?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IEnumerable<Assembly?>>((expected, options),
+				.ExpectationBuilder.AddConstraint<(string Expected, OptionsHolder<StringEqualityOptions> Options), IEnumerable<Assembly?>>((expected, options),
 					static (s, it, grammars)
 					=> new DependOnConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
@@ -45,10 +45,10 @@ public static partial class ThatAssemblies
 		DependOn(
 			this IThat<IAsyncEnumerable<Assembly?>?> subject, string expected)
 	{
-		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
-				.ExpectationBuilder.AddConstraint<(string Expected, OptionsSlot<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((expected, options),
+				.ExpectationBuilder.AddConstraint<(string Expected, OptionsHolder<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((expected, options),
 					static (s, it, grammars)
 					=> new DependOnConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
@@ -60,7 +60,7 @@ public static partial class ThatAssemblies
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		OptionsSlot<StringEqualityOptions> options)
+		OptionsHolder<StringEqualityOptions> options)
 		: CollectionConstraintResult<Assembly?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER

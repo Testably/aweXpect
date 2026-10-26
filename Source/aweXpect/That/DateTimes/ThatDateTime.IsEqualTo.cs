@@ -21,7 +21,7 @@ public static partial class ThatDateTime
 		this IThat<DateTime> subject,
 		DateTime? expected)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<DateTime, IThat<DateTime>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -41,7 +41,7 @@ public static partial class ThatDateTime
 		this IThat<DateTime> subject,
 		DateTime? unexpected)
 	{
-		OptionsSlot<TimeTolerance> tolerance = new(TimeTolerance.Default);
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<DateTime, IThat<DateTime>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -54,7 +54,7 @@ public static partial class ThatDateTime
 		string it,
 		ExpectationGrammars grammars,
 		DateTime? expected,
-		OptionsSlot<TimeTolerance> tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: ConstraintResult.WithEqualToValue<DateTime>(it, grammars, expected is null),
 			IValueConstraint<DateTime>
 	{
