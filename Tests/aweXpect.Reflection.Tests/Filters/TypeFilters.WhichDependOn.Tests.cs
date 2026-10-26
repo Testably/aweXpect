@@ -1,6 +1,7 @@
 ﻿using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -114,6 +115,76 @@ public sealed partial class TypeFilters
 					.OrOn(Types.InNamespace(Layer1Namespace));
 
 				await That(types).Contains(typeof(ViaField));
+			}
+		}
+
+		public sealed class SpecificTypeTests
+		{
+			[Test]
+			public async Task OrOn_ShouldNotAffectOriginalFilter()
+			{
+				Filtered.Types.TypeDependencyFilterResult original = In.Types<ViaField, OnlyLayer2, FrameworkConsumer>()
+					.WhichDependOn<TargetA>();
+				_ = original.OrOn<TargetB>();
+
+				await That(original).IsEqualTo([typeof(ViaField),]).InAnyOrder();
+			}
+
+			[Test]
+			public async Task ShouldFilterForTypesDependingOnType()
+			{
+				Filtered.Types types = In.Types<ViaField, OnlyLayer2, FrameworkConsumer>()
+					.WhichDependOn<TargetA>();
+
+				await That(types).IsEqualTo([typeof(ViaField),]).InAnyOrder();
+			}
+
+			[Test]
+			public async Task ShouldIncludeDescriptionInFailureMessage()
+			{
+				async Task Act()
+				{
+					await That(Types.InNamespace(ConsumersNamespace).WhichDependOn<TargetA>())
+						.DoesNotContain(typeof(ViaField));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that types within namespace "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers" which depend on type TargetA in all loaded assemblies
+					             does not contain an item equal to ViaField,
+					             but it contained ViaField at least once
+					             """).AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
+			{
+				void Act()
+				{
+					_ = In.Type<ViaField>().WhichDependOn((Type)null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("type").And
+					.WithMessage("The 'type' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenTypeIsSpecifiedAtRuntime_ShouldFilterForTypesDependingOnIt()
+			{
+				Filtered.Types types = In.Types<ViaField, OnlyLayer2, FrameworkConsumer>()
+					.WhichDependOn(typeof(TargetB));
+
+				await That(types).IsEqualTo([typeof(OnlyLayer2),]).InAnyOrder();
+			}
+
+			[Test]
+			public async Task WhenWidenedWithOrOn_ShouldMatchEither()
+			{
+				Filtered.Types types = In.Types<ViaField, OnlyLayer2, FrameworkConsumer>()
+					.WhichDependOn<TargetA>().OrOn(typeof(TargetB));
+
+				await That(types).IsEqualTo([typeof(ViaField), typeof(OnlyLayer2),]).InAnyOrder();
 			}
 		}
 	}

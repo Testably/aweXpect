@@ -61,7 +61,7 @@ Shared by all types, members, and assemblies.
 |------------------------------------|-----------------------------|----------------------------|-----------------------------|---------------------------------------------------------------------------|
 | has attribute                      | `.With<TAttribute>()`       | `.Has<TAttribute>()`       | `.Have<TAttribute>()`       | `Without<TAttribute>`, `DoesNotHave<TAttribute>`, `DoNotHave<TAttribute>` |
 | has attribute matching a predicate | `.With<TAttribute>(a => …)` | `.Has<TAttribute>(a => …)` | `.Have<TAttribute>(a => …)` |                                                                           |
-| any of several attributes          | `.With<T1>().OrWith<T2>()`  |                            |                             |                                                                           |
+| any of several attributes          | `.With<T1>().OrWith<T2>()`  | `.Has<T1>().OrHas<T2>()`   | `.Have<T1>().OrHave<T2>()`  |                                                                           |
 
 For types, methods, properties and events, attributes inherited from a base type or an overridden member are
 considered as well; append `.Directly()` to only consider the attributes declared on the item itself, e.g.

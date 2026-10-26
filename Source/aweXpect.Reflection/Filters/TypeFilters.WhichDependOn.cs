@@ -25,6 +25,21 @@ public static partial class TypeFilters
 				() => $"which depend on {options.Describe()} ")));
 
 	/// <summary>
+	///     Filter for types which depend on (reference in their signature) the type <typeparamref name="T" />.
+	/// </summary>
+	public static Filtered.Types.TypeDependencyFilterResult WhichDependOn<T>(this Filtered.Types @this)
+		=> @this.WhichDependOn(typeof(T));
+
+	/// <summary>
+	///     Filter for types which depend on (reference in their signature) the <paramref name="type" />.
+	/// </summary>
+	public static Filtered.Types.TypeDependencyFilterResult WhichDependOn(this Filtered.Types @this, Type type)
+		=> new(new TypeDependencyOptions(type),
+			options => @this.Which(Filter.Suffix<Type>(
+				subject => options.IsMatchedBy(subject),
+				() => $"which depend on {options.Describe()} ")));
+
+	/// <summary>
 	///     Filter for types which depend on (reference in their signature) at least one type in the filtered
 	///     collections of types <paramref name="target" /> or <paramref name="additional" />.
 	/// </summary>
@@ -60,6 +75,22 @@ public static partial class TypeFilters
 		=> new(new NamespaceDependencyOptions(namespaces),
 			options => @this.Which(Filter.Suffix<Type>(
 				type => !options.IsMatchedBy(type),
+				() => $"which do not depend on {options.Describe()} ")));
+
+	/// <summary>
+	///     Filter for types which do not depend on (do not reference in their signature) the type
+	///     <typeparamref name="T" />.
+	/// </summary>
+	public static Filtered.Types.TypeDependencyFilterResult WhichDoNotDependOn<T>(this Filtered.Types @this)
+		=> @this.WhichDoNotDependOn(typeof(T));
+
+	/// <summary>
+	///     Filter for types which do not depend on (do not reference in their signature) the <paramref name="type" />.
+	/// </summary>
+	public static Filtered.Types.TypeDependencyFilterResult WhichDoNotDependOn(this Filtered.Types @this, Type type)
+		=> new(new TypeDependencyOptions(type),
+			options => @this.Which(Filter.Suffix<Type>(
+				subject => !options.IsMatchedBy(subject),
 				() => $"which do not depend on {options.Describe()} ")));
 
 	/// <summary>

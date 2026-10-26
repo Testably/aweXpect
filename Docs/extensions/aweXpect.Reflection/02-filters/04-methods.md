@@ -53,6 +53,23 @@ The `ref` / `out` / `in` / `params` / optional parameter filters and expectation
 each also has `<T>()`, `(Type)`, `<T>("name")` and `…Exactly<T>()` overloads to constrain the parameter's type
 and name (e.g. `.WithRefParameter<int>("count")`, `.HasOutParameterExactly<string>()`).
 
+The parameter filters and expectations (`WithParameter`, `HasParameter`, `HaveParameter` and their variants) take these
+options to narrow down the parameter; they combine, and all of them must hold for the same parameter:
+
+| Option                                     | Effect                                                                     |
+|--------------------------------------------|----------------------------------------------------------------------------|
+| `.AtIndex(n)`                              | the parameter at the zero-based index `n`                                  |
+| `.AtIndexFromEnd(n)`                       | the parameter at the zero-based index `n`, counted from the last parameter |
+| `.WithDefaultValue()`                      | a parameter with a default value                                           |
+| `.WithDefaultValue(value)`                 | a parameter with the default value `value`                                 |
+| `.WithoutDefaultValue()`                   | a parameter without a default value                                        |
+| `.WithRefModifier()` *(filters only)*      | a `ref` parameter                                                          |
+| `.WithOutModifier()` *(filters only)*      | an `out` parameter                                                         |
+| `.WithInModifier()` *(filters only)*       | an `in` parameter                                                          |
+| `.WithOptionalModifier()` *(filters only)* | an optional parameter                                                      |
+| `.WithParamsModifier()` *(filters only)*   | a `params` parameter                                                       |
+| `.Matching(p => …)`                        | a parameter matching the predicate on its `ParameterInfo`                  |
+
 `WithoutParameter` / `DoesNotHaveParameter` / `DoNotHaveParameter` are the negations of `WithParameter` /
 `HasParameter` / `HaveParameter`, with the `<T>()`, `(Type)`, `<T>("name")`, `(Type, "name")` and `("name")`
 overloads and the same options (`AtIndex(…)`, `AtIndexFromEnd(…)`, `WithDefaultValue(…)`, the string matching options for
@@ -109,13 +126,13 @@ The `Operator` enum maps each C# operator to its compiler-emitted `op_*` metadat
 on magic strings. It covers unary, binary, comparison and conversion operators, including the C# 11 `checked`
 variants and `>>>` (`UnsignedRightShift`).
 
-| Scope               | Filter                         | Expect (single)                                      | Expect (many)                                         | Negated                                                                                                            |
-|---------------------|--------------------------------|------------------------------------------------------|-------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-| any operator method | `.WhichAreOperators()`         | `.IsAnOperator()`                                    | `.AreOperators()`                                     | `WhichAreNotOperators`, `IsNotAnOperator`, `AreNotOperators`                                                       |
-| specific operator   | `.WhichAreOperators(Operator)` | `.IsAnOperator(Operator)`                            | `.AreOperators(Operator)`                             | `WhichAreNotOperators(Operator)`, `IsNotAnOperator(Operator)`, `AreNotOperators(Operator)`                         |
-| type has operator   |                                | `.HasOperator(Operator)`                             | `.HaveOperator(Operator)`                             | `DoesNotHaveOperator(Operator)`, `DoNotHaveOperator(Operator)`                                                     |
-| implicit conversion |                                | `.HasImplicitConversionOperator<TSource, TTarget>()` | `.HaveImplicitConversionOperator<TSource, TTarget>()` | `DoesNotHaveImplicitConversionOperator<TSource, TTarget>`, `DoNotHaveImplicitConversionOperator<TSource, TTarget>` |
-| explicit conversion |                                | `.HasExplicitConversionOperator<TSource, TTarget>()` | `.HaveExplicitConversionOperator<TSource, TTarget>()` | `DoesNotHaveExplicitConversionOperator<TSource, TTarget>`, `DoNotHaveExplicitConversionOperator<TSource, TTarget>` |
+| Scope               | Filter                                                     | Expect (single)                                      | Expect (many)                                         | Negated                                                                                                                                                                          |
+|---------------------|------------------------------------------------------------|------------------------------------------------------|-------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| any operator method | `.WhichAreOperators()`                                     | `.IsAnOperator()`                                    | `.AreOperators()`                                     | `WhichAreNotOperators`, `IsNotAnOperator`, `AreNotOperators`                                                                                                                     |
+| specific operator   | `.WhichAreOperators(Operator)`                             | `.IsAnOperator(Operator)`                            | `.AreOperators(Operator)`                             | `WhichAreNotOperators(Operator)`, `IsNotAnOperator(Operator)`, `AreNotOperators(Operator)`                                                                                       |
+| type has operator   | `.WhichHaveOperator(Operator)`                             | `.HasOperator(Operator)`                             | `.HaveOperator(Operator)`                             | `WhichDoNotHaveOperator(Operator)`, `DoesNotHaveOperator(Operator)`, `DoNotHaveOperator(Operator)`                                                                               |
+| implicit conversion | `.WhichHaveImplicitConversionOperator<TSource, TTarget>()` | `.HasImplicitConversionOperator<TSource, TTarget>()` | `.HaveImplicitConversionOperator<TSource, TTarget>()` | `WhichDoNotHaveImplicitConversionOperator<TSource, TTarget>`, `DoesNotHaveImplicitConversionOperator<TSource, TTarget>`, `DoNotHaveImplicitConversionOperator<TSource, TTarget>` |
+| explicit conversion | `.WhichHaveExplicitConversionOperator<TSource, TTarget>()` | `.HasExplicitConversionOperator<TSource, TTarget>()` | `.HaveExplicitConversionOperator<TSource, TTarget>()` | `WhichDoNotHaveExplicitConversionOperator<TSource, TTarget>`, `DoesNotHaveExplicitConversionOperator<TSource, TTarget>`, `DoNotHaveExplicitConversionOperator<TSource, TTarget>` |
 
 ```csharp
 // Method-level: narrow an operator method to a specific operator
@@ -133,11 +150,15 @@ await Expect.That(typeof(TrackDuration)).HasOperator<int>(Operator.Addition);
 // Conversion operators are keyed by their source → target signature
 await Expect.That(typeof(TrackDuration)).HasImplicitConversionOperator<TrackDuration, TimeSpan>();
 await Expect.That(typeof(TrackDuration)).HasExplicitConversionOperator(typeof(TrackDuration), typeof(int));
+
+// Filter for the types that declare an operator themselves
+In.AssemblyContaining<TrackDuration>().Types().WhichHaveOperator(Operator.Addition).Directly()
 ```
 
-`HasOperator` / conversion operators also match the operators inherited from base types; append `.Directly()` to only
-match the operators declared on the type itself. Conversion source/target types are matched exactly. The negations
-also come with the operand overloads, e.g. `DoesNotHaveOperator<int>(Operator)`.
+`WhichHaveOperator` / `HasOperator` and the conversion operator filters and expectations also match the operators
+inherited from base types; append `.Directly()` to only match the operators declared on the type itself. Conversion
+source/target types are matched exactly. The filters, the expectations and their negations also come with the operand
+overloads, e.g. `WhichHaveOperator<int>(Operator)` or `DoesNotHaveOperator<int>(Operator)`.
 
 :::note[Operators are hidden by default]
 Operators are special-name members that are

@@ -24,23 +24,26 @@ that has none. An empty cell means that there is no such form, e.g. no negation.
 | [Types](./03-types.md#types)                                                   | types                         | `WhichAreClasses` / `IsAClass`, `WhichInheritFrom<T>` / `InheritsFrom<T>`, `WhichContainMethods` / `ContainsMethods` |
 | [Inheritance](./03-types.md#inheritance)                                       | types and members             | `Directly`, `IncludingInherited`, `IncludingObjectMembers`                                                           |
 | [Methods](./04-methods.md#methods)                                             | methods                       | `WhichAreAsync` / `IsAsync`, `WhichReturn<T>` / `Returns<T>`, `WithParameter<T>` / `HasParameter<T>`                 |
-| [Operators](./04-methods.md#operators)                                         | methods and types             | `WhichAreOperators` / `IsAnOperator`, `HasOperator`, `HasImplicitConversionOperator`                                 |
+| [Operators](./04-methods.md#operators)                                         | methods and types             | `WhichAreOperators` / `IsAnOperator`, `WhichHaveOperator` / `HasOperator`, `WhichHaveImplicitConversionOperator`     |
 | [Constructors](./04-methods.md#constructors)                                   | constructors                  | `WithoutParameters` / `HasNoParameters`, `WithParameter<T>` / `HasParameter<T>`                                      |
 | [Properties & Fields](./05-properties-fields-and-events.md#properties--fields) | properties and fields         | `OfType<T>` / `IsOfType<T>`, `WhichAreNullable` / `IsNullable`, `WhichAreRequired` / `IsRequired`                    |
 | [Events](./05-properties-fields-and-events.md#events)                          | events                        | `OfType<T>` / `IsOfType<T>`, `WhichAreStatic` / `IsStatic`, `WhichAreNullable` / `IsNullable`                        |
-| [Combining filters](#combining-filters)                                        | filters                       | `OrWith<TAttribute>`, `OrReturn<T>`, `OrOfType<T>`                                                                   |
+| [Combining filters](#combining-filters)                                        | filters and expectations      | `OrWith<TAttribute>` / `OrHas<TAttribute>`, `OrReturn<T>`, `OrOfType<T>`                                             |
 | [Custom predicates](#custom-predicates)                                        | types, members and assemblies | `Which` / `Satisfies`, `Except`                                                                                      |
 | [Collections and quantifiers](#collections-and-quantifiers)                    | all subjects                  | `Satisfies`, `All().Satisfy`, `Any().Satisfy`                                                                        |
 
 ## Combining filters
 
 Filters chain naturally (each narrows the previous result). Several filters offer an `Or…` companion to
-widen a single step:
+widen a single step. The attribute expectations have one as well: `OrHas<TAttribute>()` on a single subject and
+`OrHave<TAttribute>()` on a collection, both also with a predicate on the attribute:
 
 ```csharp
 // Any of several attributes
 In.AllLoadedAssemblies().Methods()
     .With<FactAttribute>().OrWith<TheoryAttribute>()
+await Expect.That(method).Has<FactAttribute>().OrHas<TheoryAttribute>();
+await Expect.That(methods).Have<FactAttribute>().OrHave<TheoryAttribute>(a => a.Skip == null);
 
 // Any of several return types
 In.AllLoadedAssemblies().Methods()

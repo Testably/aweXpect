@@ -581,6 +581,42 @@ public static partial class Filtered
 		}
 
 		/// <summary>
+		///     A filtered collection of <see cref="System.Type" /> from a specific-type dependency filter, allowing to
+		///     widen the targeted types.
+		/// </summary>
+		/// <remarks>
+		///     Like all filtered collections, this is an immutable value object: <see cref="OrOn{T}" /> and
+		///     <see cref="OrOn(System.Type)" /> do not mutate this instance but rebuild a fresh filter from the original
+		///     base collection, so deriving multiple views from the same instance cannot corrupt each other.
+		/// </remarks>
+		public sealed class TypeDependencyFilterResult : Types
+		{
+			private readonly Func<TypeDependencyOptions, Types> _build;
+			private readonly TypeDependencyOptions _options;
+
+			internal TypeDependencyFilterResult(
+				TypeDependencyOptions options,
+				Func<TypeDependencyOptions, Types> build)
+				: base(build(options))
+			{
+				_options = options;
+				_build = build;
+			}
+
+			/// <summary>
+			///     Widens the filter by the type <typeparamref name="T" />.
+			/// </summary>
+			public TypeDependencyFilterResult OrOn<T>()
+				=> OrOn(typeof(T));
+
+			/// <summary>
+			///     Widens the filter by the <paramref name="type" />.
+			/// </summary>
+			public TypeDependencyFilterResult OrOn(Type type)
+				=> new(_options.OrOn(type), _build);
+		}
+
+		/// <summary>
 		///     A filtered collection of <see cref="System.Type" /> from a dependency filter whose targets are filtered
 		///     collections of types, allowing to widen the targeted/allowed collections.
 		/// </summary>
