@@ -111,8 +111,8 @@ checks of aweXpect.Web offer the quantifiers and match types of `Contains`, e.g.
 
 ### Time system
 
-`WithTimeSystem(…)` is marked experimental with the diagnostic `aweXpect5001`. Suppress it in test projects that use
-a virtual time system.
+`WithTimeSystem(…)` and the `ITimeSystem` it takes are marked experimental with the diagnostic `aweXpect5001`.
+Suppress it in test projects that use a virtual time system.
 
 ## New expectations
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,6 +23,7 @@ namespace aweXpect.Core.Internal;
 ///     Waits and timeouts are separate members, unlike in <c>TimeProvider</c>, so that a virtual clock can jump to the
 ///     end of a wait while it only schedules a timeout.
 /// </remarks>
+[Experimental("aweXpect5001")]
 public interface ITimeSystem
 {
 	/// <summary>
