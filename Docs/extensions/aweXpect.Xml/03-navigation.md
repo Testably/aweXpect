@@ -3,11 +3,13 @@
 Describes the possible expectations for the attributes, child elements and values of an `XElement` or an
 [`XDocument`](#documents).
 
-| Expectation                     | Negated                | Summary                                                      |
-|---------------------------------|------------------------|--------------------------------------------------------------|
-| [`HasAttribute`](#attributes)   | `DoesNotHaveAttribute` | has the attribute, optionally with expectations on its value |
-| [`HasElement`](#child-elements) | `DoesNotHaveElement`   | has the child element, optionally with expectations on it    |
-| [`HasValue`](#values)           |                        | the value satisfies the expectations                         |
+| Expectation                                    | Negated                | Summary                                                                                       |
+|------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------|
+| [`HasAttribute`](#attributes)                  | `DoesNotHaveAttribute` | has the attribute, optionally with expectations on its value                                  |
+| [`HasAttribute(…).EqualTo(…)`, …](#attributes) |                        | has the attribute, whose value is compared with a string operator, e.g. `StartingWith`        |
+| [`HasElement`](#child-elements)                | `DoesNotHaveElement`   | has the child element, optionally with expectations on it                                     |
+| [`HasValue`](#values)                          |                        | the value satisfies the expectations                                                          |
+| [`HasValue().EqualTo(…)`, …](#values)          |                        | the value is compared with a string operator, e.g. `EndingWith` or `Containing(…).AtLeast(2)` |
 
 ## Attributes
 
@@ -35,8 +37,33 @@ but value of attribute "artist" was "Paul McCartney", which differs at index 0:
    ↑ (expected prefix)
 ```
 
+The value can also be compared directly on the result of `HasAttribute(name)` with the operators of a string
+property, `EqualTo`, `StartingWith`, `EndingWith` and `Containing(…)` (each also with `Not…`), and the string options,
+e.g. `IgnoringCase()` or `AsWildcard()`:
+
+```csharp
+await Expect.That(track)
+    .HasAttribute("title").EqualTo("let it be").IgnoringCase().And
+    .HasAttribute("artist").StartingWith("The");
+```
+
+If the title was "Yesterday" instead, the expectation would fail with:
+
+```text title="Failure message"
+Expected that track
+has attribute "title" equal to "let it be" ignoring case and has attribute "artist" starting with "The",
+but value of attribute "title" was "Yesterday", which differs at index 0:
+   ↓ (actual)
+  "Yesterday"
+  "let it be"
+   ↑ (expected)
+
+Actual:
+<track title="Yesterday" artist="The Beatles" />
+```
+
 The expectations on the value are only verified when the attribute exists, otherwise the failure states that the
-element did not have the attribute. A failed lookup, also a negated one, shows the complete element it ran on as
+element did not have the attribute, and a negated expectation, e.g. with `DoesNotComplyWith`, is met. A failed lookup, also a negated one, shows the complete element it ran on as
 `Actual` context. Without a title, `HasAttribute("title")` would fail with:
 
 ```text title="Failure message"
@@ -127,6 +154,23 @@ but value of the element was "Yesterday", which differs at index 0:
   "Yesterday"
   "Let"
    ↑ (expected prefix)
+```
+
+Like for attributes, the value can also be compared directly on the result of `HasValue()`:
+
+```csharp
+await Expect.That(track).HasElement("title", title => title.HasValue().Containing("e").AtLeast(3));
+```
+
+With the title "Let It Be", the expectation would fail with:
+
+```text title="Failure message"
+Expected that track
+has element "title" which has a value containing "e" at least 3 times,
+but value of the element contained "e" twice in "Let It Be"
+
+Actual (element "title"):
+<title>Let It Be</title>
 ```
 
 The value is the concatenated text of all descendant text nodes, including CDATA sections, like

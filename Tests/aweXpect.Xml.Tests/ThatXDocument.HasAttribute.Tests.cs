@@ -208,6 +208,74 @@ public sealed partial class ThatXDocument
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class WithOperatorTests
+		{
+			[Test]
+			public async Task WhenDocumentHasNoRoot_ShouldFail()
+			{
+				XDocument document = new();
+
+				async Task Act()
+					=> await That(document).HasAttribute("id").EqualTo("42");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that document
+					             has attribute "id" equal to "42",
+					             but it had no root element
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNegatedAndDocumentHasNoRoot_ShouldFail()
+			{
+				XDocument document = new();
+
+				async Task Act()
+					=> await That(document).DoesNotComplyWith(it => it.HasAttribute("id").EqualTo("42"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that document
+					             does not have attribute "id" equal to "42",
+					             but it had no root element
+					             """);
+			}
+
+			[Test]
+			public async Task WhenValueDiffers_ShouldFail()
+			{
+				XDocument document = XDocument.Parse("<album id=\"41\"/>");
+
+				async Task Act()
+					=> await That(document).HasAttribute("id").EqualTo("42");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that document
+					             has attribute "id" equal to "42",
+					             but value of attribute "id" was "41", which differs at index 1:
+					                 ↓ (actual)
+					               "41"
+					               "42"
+					                 ↑ (expected)
+
+					             Actual:
+					             <album id="41" />
+					             """);
+			}
+
+			[Test]
+			public async Task WhenValueMatches_ShouldContinueOnTheDocument()
+			{
+				XDocument document = XDocument.Parse("<album id=\"42\"/>");
+
+				XDocument result = await That(document).HasAttribute("id").EqualTo("42");
+
+				await That(result).IsSameAs(document);
+			}
+		}
 	}
 
 	public sealed class DoesNotHaveAttribute

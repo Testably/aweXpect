@@ -1,4 +1,6 @@
 using System.Xml.Linq;
+using aweXpect.Core;
+using aweXpect.Xml.Results;
 
 namespace aweXpect.Xml.Tests;
 
@@ -253,6 +255,287 @@ public sealed partial class ThatXElement
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("name");
+			}
+		}
+
+		public sealed class WithOperatorTests
+		{
+			[Test]
+			public async Task WhenAttributeDoesNotExist_ShouldFail()
+			{
+				XElement element = XElement.Parse("<track/>");
+
+				async Task Act()
+					=> await That(element).HasAttribute("id").EqualTo("7");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that element
+					             has attribute "id" equal to "7",
+					             but it did not have attribute "id"
+
+					             Actual:
+					             <track />
+					             """);
+			}
+
+			[Test]
+			public async Task WhenCombinedWithAnd_ShouldContinueOnTheElement()
+			{
+				XElement element = XElement.Parse("<track id=\"7\" title=\"Let It Be\"/>");
+
+				XElement result = await That(element)
+					.HasAttribute("id").EqualTo("7").And
+					.HasAttribute("title").StartingWith("Let");
+
+				await That(result).IsSameAs(element);
+			}
+
+			[Test]
+			public async Task WhenContaining_ShouldCountTheOccurrences()
+			{
+				XElement element = XElement.Parse("<track title=\"Let It Be\"/>");
+
+				async Task Act()
+					=> await That(element).HasAttribute("title").Containing("e").AtLeast(3);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that element
+					             has attribute "title" containing "e" at least 3 times,
+					             but value of attribute "title" contained "e" twice in "Let It Be"
+
+					             Actual:
+					             <track title="Let It Be" />
+					             """);
+			}
+
+			[Test]
+			public async Task WhenEndingWith_IgnoringCase_ShouldSucceed()
+			{
+				XElement element = XElement.Parse("<track title=\"Let It Be\"/>");
+
+				async Task Act()
+					=> await That(element).HasAttribute("title").EndingWith("BE").IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenEqualTo_AsWildcard_ShouldSucceed()
+			{
+				XElement element = XElement.Parse("<track title=\"Let It Be\"/>");
+
+				async Task Act()
+					=> await That(element).HasAttribute("title").EqualTo("Let*").AsWildcard();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				XElement element = XElement.Parse("<track id=\"7\"/>");
+
+				async Task Act()
+					=> await That(element).HasAttribute("id").EqualTo(null);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix()
+					.Because("the value of an attribute is never null");
+			}
+
+			[Test]
+			public async Task WhenNestedInHasElement_ShouldNameTheAttribute()
+			{
+				XElement element = XElement.Parse("<album><track id=\"8\"/></album>");
+
+				async Task Act()
+					=> await That(element).HasElement("track", track => track.HasAttribute("id").EqualTo("7"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that element
+					             has element "track" which has attribute "id" equal to "7",
+					             but value of attribute "id" was "8", which differs at index 0:
+					                ↓ (actual)
+					               "8"
+					               "7"
+					                ↑ (expected)
+
+					             Actual (element "track"):
+					             <track id="8" />
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNotStartingWith_AndValueStartsWithIt_ShouldFail()
+			{
+				XElement element = XElement.Parse("<track title=\"Let It Be\"/>");
+
+				async Task Act()
+					=> await That(element).HasAttribute("title").NotStartingWith("Let");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that element
+					             has attribute "title" not starting with "Let",
+					             but value of attribute "title" was "Let It Be"
+
+					             Actual:
+					             <track title="Let It Be" />
+					             """);
+			}
+
+			[Test]
+			public async Task WhenOperatorIsCalledTwice_ShouldThrowInvalidOperationException()
+			{
+				XElement element = XElement.Parse("<track title=\"Let It Be\"/>");
+
+				async Task Act()
+					=> await That(element).CompliesWith(it =>
+					{
+						XmlValueResult<XElement, IThat<XElement?>> result = it.HasAttribute("title");
+						result.StartingWith("Let");
+						result.EndingWith("Be");
+					});
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("HasAttribute(name) accepts only one comparison, so call only one operator on its result.");
+			}
+
+			[Test]
+			[Arguments("<track title=\"Let It Be\"/>")]
+			[Arguments("<track/>")]
+			public async Task WhenPatternIsInvalid_ShouldThrowArgumentException(string xml)
+			{
+				XElement element = XElement.Parse(xml);
+
+				async Task Act()
+					=> await That(element).HasAttribute("title").EqualTo("[").AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' regex pattern is invalid: ").AsPrefix()
+					.Because("an invalid pattern is rejected whether the attribute exists or not");
+			}
+
+			[Test]
+			public async Task WhenStartingWith_AndValueDiffers_ShouldFail()
+			{
+				XElement element = XElement.Parse("<track title=\"Yesterday\"/>");
+
+				async Task Act()
+					=> await That(element).HasAttribute("title").StartingWith("Let");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that element
+					             has attribute "title" starting with "Let",
+					             but value of attribute "title" was "Yesterday", which differs at index 0:
+					                ↓ (actual)
+					               "Yesterday"
+					               "Let"
+					                ↑ (expected prefix)
+
+					             Actual:
+					             <track title="Yesterday" />
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				XElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasAttribute("id").EqualTo("7");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has attribute "id" equal to "7",
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenValueIsEqual_ShouldSucceed()
+			{
+				XElement element = XElement.Parse("<track id=\"7\"/>");
+
+				async Task Act()
+					=> await That(element).HasAttribute("id").EqualTo("7");
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class WithOperatorNegatedTests
+		{
+			[Test]
+			public async Task WhenAttributeDoesNotExist_ShouldSucceed()
+			{
+				XElement element = XElement.Parse("<track/>");
+
+				async Task Act()
+					=> await That(element).DoesNotComplyWith(it => it.HasAttribute("id").EqualTo("7"));
+
+				await That(Act).DoesNotThrow()
+					.Because("a missing attribute has no value equal to the expected value, like for HasAttribute(name)");
+			}
+
+			[Test]
+			public async Task WhenOperatorIsNegated_ShouldCombineBothNegations()
+			{
+				XElement element = XElement.Parse("<track title=\"Yesterday\"/>");
+
+				async Task Act()
+					=> await That(element).DoesNotComplyWith(it => it.HasAttribute("title").NotStartingWith("Let"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that element
+					             does not have attribute "title" not starting with "Let",
+					             but value of attribute "title" was "Yesterday", which differs at index 0:
+					                ↓ (actual)
+					               "Yesterday"
+					               "Let"
+					                ↑ (expected prefix)
+
+					             Actual:
+					             <track title="Yesterday" />
+					             """);
+			}
+
+			[Test]
+			public async Task WhenValueDiffers_ShouldSucceed()
+			{
+				XElement element = XElement.Parse("<track id=\"8\"/>");
+
+				async Task Act()
+					=> await That(element).DoesNotComplyWith(it => it.HasAttribute("id").EqualTo("7"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenValueMatches_ShouldFail()
+			{
+				XElement element = XElement.Parse("<track title=\"Let It Be\"/>");
+
+				async Task Act()
+					=> await That(element).DoesNotComplyWith(it => it.HasAttribute("title").Containing("e").AtLeast(2));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that element
+					             does not have attribute "title" containing "e" at least twice,
+					             but value of attribute "title" contained "e" at least twice in "Let It Be"
+
+					             Actual:
+					             <track title="Let It Be" />
+					             """);
 			}
 		}
 	}

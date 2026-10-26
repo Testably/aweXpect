@@ -67,6 +67,16 @@ public sealed class NonNullableResultTests
 	}
 
 	[Test]
+	public async Task XDocumentHasAttributeWithOperator_ShouldReturnNonNullableDocument()
+	{
+		XDocument? subject = XDocument.Parse("<order id=\"1\"/>");
+
+		XDocument result = await That(subject).HasAttribute("id").EqualTo("1");
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
 	public async Task XDocumentHasElement_ShouldReturnNonNullableDocument()
 	{
 		XDocument? subject = XDocument.Parse("<order><item/></order>");
@@ -92,6 +102,16 @@ public sealed class NonNullableResultTests
 		XDocument? subject = XDocument.Parse("<order>foo</order>");
 
 		XDocument result = await That(subject).HasValue(value => value.IsEqualTo("foo"));
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
+	public async Task XDocumentHasValueWithOperator_ShouldReturnNonNullableDocument()
+	{
+		XDocument? subject = XDocument.Parse("<order>foo</order>");
+
+		XDocument result = await That(subject).HasValue().EqualTo("foo");
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
@@ -157,6 +177,16 @@ public sealed class NonNullableResultTests
 	}
 
 	[Test]
+	public async Task XElementHasAttributeWithOperator_ShouldReturnNonNullableElement()
+	{
+		XElement? subject = XElement.Parse("<order id=\"1\"/>");
+
+		XElement result = await That(subject).HasAttribute("id").EqualTo("1");
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
 	public async Task XElementHasElement_ShouldReturnNonNullableElement()
 	{
 		XElement? subject = XElement.Parse("<order><item/></order>");
@@ -182,6 +212,16 @@ public sealed class NonNullableResultTests
 		XElement? subject = XElement.Parse("<order>foo</order>");
 
 		XElement result = await That(subject).HasValue(value => value.IsEqualTo("foo"));
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
+	public async Task XElementHasValueWithOperator_ShouldReturnNonNullableElement()
+	{
+		XElement? subject = XElement.Parse("<order>foo</order>");
+
+		XElement result = await That(subject).HasValue().EqualTo("foo");
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}

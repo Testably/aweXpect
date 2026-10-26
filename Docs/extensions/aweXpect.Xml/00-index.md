@@ -30,8 +30,8 @@ XElement track = XElement.Parse("""<track title="Let It Be" artist="The Beatles"
 await Expect.That(track).Matches("""<track title="Let It Be"><genre>rock</genre></track>""");
 
 // verify single attributes, child elements and their values
-await Expect.That(track).HasAttribute("artist").And
-    .HasElement("genre", genre => genre.HasValue(value => value.IsEqualTo("rock")));
+await Expect.That(track).HasAttribute("artist").EqualTo("The Beatles").And
+    .HasElement("genre", genre => genre.HasValue().EqualTo("rock"));
 ```
 
 If the element was not closed, i.e. `<track title="Let It Be" artist="The Beatles">`, the expectation would fail with:
@@ -55,13 +55,15 @@ Expectations for [`string`](./01-strings.md):
 
 Expectations for `XElement` and `XDocument`:
 
-| Expectation                                                 | Negated                | Summary                                                      |
-|-------------------------------------------------------------|------------------------|--------------------------------------------------------------|
-| [`Matches`](./02-matching.md#elements-and-documents)        |                        | matches the expected XML, additional nodes allowed           |
-| [`MatchesExactly`](./02-matching.md#elements-and-documents) |                        | matches the expected XML exactly                             |
-| [`HasAttribute`](./03-navigation.md#attributes)             | `DoesNotHaveAttribute` | has the attribute, optionally with expectations on its value |
-| [`HasElement`](./03-navigation.md#child-elements)           | `DoesNotHaveElement`   | has the child element, optionally with expectations on it    |
-| [`HasValue`](./03-navigation.md#values)                     |                        | the value satisfies the expectations                         |
+| Expectation                                                      | Negated                | Summary                                                                                       |
+|------------------------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------|
+| [`Matches`](./02-matching.md#elements-and-documents)             |                        | matches the expected XML, additional nodes allowed                                            |
+| [`MatchesExactly`](./02-matching.md#elements-and-documents)      |                        | matches the expected XML exactly                                                              |
+| [`HasAttribute`](./03-navigation.md#attributes)                  | `DoesNotHaveAttribute` | has the attribute, optionally with expectations on its value                                  |
+| [`HasAttribute(…).EqualTo(…)`, …](./03-navigation.md#attributes) |                        | has the attribute, whose value is compared with a string operator, e.g. `StartingWith`        |
+| [`HasElement`](./03-navigation.md#child-elements)                | `DoesNotHaveElement`   | has the child element, optionally with expectations on it                                     |
+| [`HasValue`](./03-navigation.md#values)                          |                        | the value satisfies the expectations                                                          |
+| [`HasValue().EqualTo(…)`, …](./03-navigation.md#values)          |                        | the value is compared with a string operator, e.g. `EndingWith` or `Containing(…).AtLeast(2)` |
 
 The comparisons can be relaxed with the options `IgnoringAdditionalNodes()`, `IgnoringElementOrder()` and
 `IgnoringMember(path)` or `Ignoring(path => …)`, see [Matching XML](./02-matching.md#options).
