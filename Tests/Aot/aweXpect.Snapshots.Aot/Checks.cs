@@ -258,7 +258,7 @@ internal static class Checks
 			       SnapshotComparer.ForExtension("bin", new IgnoringCaseComparer()),
 		       ]))
 		{
-			await That("ABBEY ROAD").MatchesSnapshot().ComparedWith(new IgnoringCaseComparer())
+			await That("ABBEY ROAD").MatchesSnapshot().Using(new IgnoringCaseComparer())
 				.Accepting(SnapshotAcceptance.None);
 			await That(Encoding.UTF8.GetBytes("abbey road")).MatchesSnapshot().WithExtension("bin").Named("cover")
 				.Accepting(SnapshotAcceptance.None);

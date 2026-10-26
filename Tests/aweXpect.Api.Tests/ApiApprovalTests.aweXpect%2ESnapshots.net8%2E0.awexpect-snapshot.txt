@@ -249,13 +249,13 @@ namespace aweXpect.Snapshots.Results
     {
         public aweXpect.Snapshots.Results.SnapshotUniqueFor<TSelf> UniqueFor { get; }
         public aweXpect.Results.AndOrResult<TType, TThat> Accepting(aweXpect.Snapshots.SnapshotAcceptance mode) { }
-        public TSelf ComparedWith(aweXpect.Snapshots.SnapshotComparer comparer) { }
         public TSelf Named(string name) { }
         public TSelf NamedAfter(object? argument1) { }
         public TSelf NamedAfter(object? argument1, object? argument2) { }
         public TSelf NamedAfter(object? argument1, object? argument2, object? argument3) { }
         public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4) { }
         public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4, params object?[]? moreArguments) { }
+        public TSelf Using(aweXpect.Snapshots.SnapshotComparer comparer) { }
     }
     public sealed class SnapshotUniqueFor<TResult>
     {

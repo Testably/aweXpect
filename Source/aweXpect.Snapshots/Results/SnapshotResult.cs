@@ -89,7 +89,7 @@ public class SnapshotResult<TType, TThat, TSelf> : AndOrResult<TType, TThat, TSe
 	///     when the snapshot exists, and gets the subject after the rules of the expectation were applied. When it
 	///     considers the subject equal, the snapshot is kept unchanged.
 	/// </remarks>
-	public TSelf ComparedWith(SnapshotComparer comparer)
+	public TSelf Using(SnapshotComparer comparer)
 	{
 		if (comparer is null)
 		{

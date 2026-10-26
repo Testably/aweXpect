@@ -10,7 +10,7 @@ namespace aweXpect.Snapshots;
 ///     pixels.
 /// </summary>
 /// <remarks>
-///     A comparer is set for one expectation with <c>.ComparedWith(…)</c>, or for all snapshots with
+///     A comparer is set for one expectation with <c>.Using(…)</c>, or for all snapshots with
 ///     <c>Customize.aweXpect.Snapshots().Comparers</c>, e.g. <c>SnapshotComparer.ForExtension("png", comparer)</c>.
 ///     Without one, text is compared ignoring the newline style, and binary data byte by byte.<br />
 ///     It is only called when the snapshot exists, and gets the value after the rules of the expectation were applied.

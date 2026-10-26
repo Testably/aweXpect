@@ -290,7 +290,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.ComparedWith(FakeSnapshotComparer.Equal());
+						.Using(FakeSnapshotComparer.Equal());
 
 				await That(Act).DoesNotThrow();
 				await That(reporter.Matches).HasSingle()
@@ -310,7 +310,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.ComparedWith(FakeSnapshotComparer.Different("louder"));
+						.Using(FakeSnapshotComparer.Different("louder"));
 
 				await That(Act).Throws<FailException>();
 				SnapshotMismatch mismatch = await That(reporter.Mismatches).HasSingle();

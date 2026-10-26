@@ -73,7 +73,7 @@ public static class SnapshotsCustomizationExtensions
 		/// <summary>
 		///     The comparers for the snapshots that their condition selects, e.g.
 		///     <c>SnapshotComparer.ForExtension("png", imageComparer)</c>, unless the expectation sets
-		///     <c>.ComparedWith(…)</c>.
+		///     <c>.Using(…)</c>.
 		/// </summary>
 		/// <remarks>
 		///     Defaults to none, which compares text ignoring the newline style and binary data byte by byte. The first
