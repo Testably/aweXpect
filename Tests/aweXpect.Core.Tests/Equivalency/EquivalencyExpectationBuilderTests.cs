@@ -58,7 +58,7 @@ public sealed class EquivalencyExpectationBuilderTests
 		ConstraintResult constraintResult =
 			await sut.IsMetBy("foo", new EvaluationContext.EvaluationContext(), CancellationToken.None);
 
-		ConstraintResult negated = constraintResult.Negate();
+		ConstraintResult negated = constraintResult.Invert();
 
 		await That(negated).IsSameAs(constraintResult);
 		await That(negated.Outcome).IsEqualTo(Outcome.Failure)

@@ -39,7 +39,8 @@ public static class MyConstraintExtensions
 			return false;
 		}
 
-		public override ConstraintResult Negate()
-			=> this;
+		protected override void NegateInPlace()
+		{
+		}
 	}
 }

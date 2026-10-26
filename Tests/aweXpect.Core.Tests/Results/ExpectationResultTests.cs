@@ -226,6 +226,8 @@ public class ExpectationResultTests
 			return false;
 		}
 
-		public override ConstraintResult Negate() => this;
+		protected internal override void NegateInPlace()
+		{
+		}
 	}
 }

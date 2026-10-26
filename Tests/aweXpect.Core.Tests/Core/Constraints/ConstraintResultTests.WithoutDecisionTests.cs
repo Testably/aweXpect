@@ -14,7 +14,7 @@ public partial class ConstraintResultTests
 			inner.IsMetBy(false);
 			ConstraintResult sut = new ConstraintResult.WithoutDecision(inner);
 
-			ConstraintResult negated = sut.Negate();
+			ConstraintResult negated = sut.Invert();
 
 			await That(negated).IsSameAs(sut);
 			await That(negated.Outcome).IsEqualTo(Outcome.Failure)

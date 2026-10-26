@@ -93,6 +93,9 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 			return typeof(TValue).IsAssignableFrom(typeof(T));
 		}
 
-		public override ConstraintResult Negate() => this;
+		protected internal override void NegateInPlace()
+		{
+			// The negation does not apply to this guard.
+		}
 	}
 }

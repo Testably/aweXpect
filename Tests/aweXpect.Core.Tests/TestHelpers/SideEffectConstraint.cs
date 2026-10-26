@@ -55,10 +55,10 @@ internal sealed class SideEffectConstraint<T>(
 		return this;
 	}
 
-	public override ConstraintResult Negate()
+	protected internal override void NegateInPlace()
 	{
 		_isNegated = !_isNegated;
-		return base.Negate();
+		base.NegateInPlace();
 	}
 
 	private ValueTask OnCompletedAsync(CompletedEvaluation evaluation, CancellationToken cancellationToken)

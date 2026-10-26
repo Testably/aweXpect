@@ -199,7 +199,7 @@ public abstract partial class ThatDelegate
 			return false;
 		}
 
-		public override ConstraintResult Negate()
+		protected internal override void NegateInPlace()
 			=> throw Tracing.WriteException(
 				new NotSupportedException($"Negation of {nameof(ThatDelegateExtensions.IsCollectedAfter)} is not supported."));
 	}

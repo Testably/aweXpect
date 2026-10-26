@@ -36,11 +36,10 @@ public abstract partial class ConstraintResult
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> contexts.Visit(inner);
 
-		/// <inheritdoc cref="ConstraintResult.Negate()" />
-		public override ConstraintResult Negate()
+		/// <inheritdoc cref="ConstraintResult.NegateInPlace()" />
+		protected internal override void NegateInPlace()
 		{
-			inner.Negate();
-			return this;
+			inner.NegateInPlace();
 		}
 	}
 }

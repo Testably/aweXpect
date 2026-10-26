@@ -130,7 +130,7 @@ public class NarrowingMappingNodeTests
 		DummyConstraintResult expectations = new(Outcome.Success, "foo");
 		NotApplicableConstraintResult result = new(expectations);
 
-		result.Negate();
+		result.Invert();
 
 		await That(expectations.Outcome).IsEqualTo(Outcome.Failure)
 			.Because("the expectation text of the expectations that were not applied follows a negation");
@@ -141,7 +141,7 @@ public class NarrowingMappingNodeTests
 	{
 		NotApplicableConstraintResult result = new(new DummyConstraintResult(Outcome.Success, "foo"));
 
-		ConstraintResult negatedResult = result.Negate();
+		ConstraintResult negatedResult = result.Invert();
 
 		await That(negatedResult.Outcome).IsEqualTo(Outcome.Undecided);
 	}

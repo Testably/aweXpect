@@ -314,7 +314,7 @@ private sealed class HasPlaylistConstraint(string it, ExpectationGrammars gramma
   context. Keep the values that the context needs in the constraint, and format them in the callback.
 - It is only called for the parts of a combined expectation that explain the failure, after every negation, e.g. not
   for a succeeding operand of `And` or for a negated part that succeeds again under `DoesNotComplyWith`. Decide in
-  `AppendContexts` on the final `Grammars` and `Outcome` instead of in `IsMetBy` or `Negate()`.
+  `AppendContexts` on the final `Grammars` and `Outcome` instead of in `IsMetBy` or `NegateInPlace()`.
 - Capture the state in the callback when `AppendContexts` runs (`tracks` above), as the result of an item expectation
   is evaluated again for the next item before the content is created.
 - A context of a member is labelled with it, e.g. `Playlist (Albums):`. Contexts with the same title and member are

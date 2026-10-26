@@ -282,11 +282,10 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 		return _subjectType is not null && typeof(TValue).IsAssignableFrom(_subjectType);
 	}
 
-	/// <inheritdoc cref="ConstraintResult.Negate()" />
-	public override ConstraintResult Negate()
+	/// <inheritdoc cref="ConstraintResult.NegateInPlace()" />
+	protected override void NegateInPlace()
 	{
 		IsNegated = !IsNegated;
-		return this;
 	}
 
 	private bool StartEvaluation(object? items, Type subjectType)

@@ -301,7 +301,7 @@ public class ExpectTests
 			new DummyConstraintResult(Outcome.Failure, "expectation", "result"))));
 		ConstraintResult result = (await sut.GetResult(0, null, null)).ConstraintResult;
 
-		ConstraintResult negated = result.Negate();
+		ConstraintResult negated = result.Invert();
 
 		await That(negated).IsSameAs(result);
 		await That(negated.Outcome).IsEqualTo(Outcome.Failure)
@@ -976,10 +976,9 @@ public class ExpectTests
 		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 			=> inner.TryGetStoredValue(out value);
 
-		public override ConstraintResult Negate()
+		protected internal override void NegateInPlace()
 		{
-			inner.Negate();
-			return this;
+			inner.Invert();
 		}
 
 		public override void AppendContexts(ResultContextCollector collector)

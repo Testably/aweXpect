@@ -161,7 +161,7 @@ public class MappingNodeTests
 		StringBuilder sb = new();
 
 		ConstraintResult result = await node.IsMetBy("foo", null!, CancellationToken.None);
-		ConstraintResult negated = result.Negate();
+		ConstraintResult negated = result.Invert();
 
 		negated.AppendExpectation(sb);
 		await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays);
@@ -177,7 +177,7 @@ public class MappingNodeTests
 		StringBuilder sb = new();
 
 		ConstraintResult result = await node.IsMetBy("foo", null!, CancellationToken.None);
-		ConstraintResult negated = result.Negate();
+		ConstraintResult negated = result.Invert();
 
 		negated.AppendExpectation(sb);
 		await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays);
@@ -236,7 +236,7 @@ public class MappingNodeTests
 		StringBuilder sb = new();
 
 		ConstraintResult result = await node.IsMetBy<string?>(null, null!, CancellationToken.None);
-		ConstraintResult negated = result.Negate();
+		ConstraintResult negated = result.Invert();
 
 		negated.AppendExpectation(sb);
 		await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays);

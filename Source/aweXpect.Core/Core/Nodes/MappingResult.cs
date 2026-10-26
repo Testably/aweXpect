@@ -111,14 +111,13 @@ internal sealed class MappingResult : CombinedResult
 		=> contexts.VisitOptionalMember(_mappingNode.ContextMember, Right, _mappingNode.MemberAccessor.PathRoot);
 
 	/// <inheritdoc />
-	public override ConstraintResult Negate()
+	protected internal override void NegateInPlace()
 	{
 		IsNegated = !IsNegated;
-		Left.Negate();
+		Left.NegateInPlace();
 		_negatedRightExpectation = IsNegated && !IsNegatedAsAlternative ? GetRightExpectation() : null;
-		Right.Negate();
+		Right.NegateInPlace();
 		Outcome = CombineOutcomes();
-		return this;
 	}
 
 	private string GetRightExpectation()

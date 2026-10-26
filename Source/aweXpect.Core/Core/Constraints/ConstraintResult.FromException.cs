@@ -94,11 +94,10 @@ public abstract partial class ConstraintResult
 			}
 		}
 
-		/// <inheritdoc cref="ConstraintResult.Negate()" />
-		public override ConstraintResult Negate()
+		/// <inheritdoc cref="ConstraintResult.NegateInPlace()" />
+		protected internal override void NegateInPlace()
 		{
-			_inner.Negate();
-			return this;
+			_inner.NegateInPlace();
 		}
 	}
 #pragma warning restore S2166 // Rename this class to remove "Exception" or correct its inheritance

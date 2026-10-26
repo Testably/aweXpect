@@ -45,7 +45,7 @@ public sealed class CollectionConstraintResultTests
 		TestableResult sut = new(ExpectationGrammars.None);
 		if (isNegated)
 		{
-			sut.Negate();
+			sut.Invert();
 		}
 
 		sut.SetNull();

@@ -88,25 +88,22 @@ public sealed class ConstraintResultExtensionsTests
 			ConstraintResult inner = new DummyConstraintResult<string>(innerOutcome, "value", "foo");
 			ConstraintResult sut = inner.FailureBothWays("bar", 1);
 
-			sut.Negate();
+			sut.Invert();
 
 			await That(inner.Outcome).IsEqualTo(expectedAfterNegation);
 			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		}
 
 		[Test]
-		[Arguments(Outcome.Failure, false)]
-		[Arguments(Outcome.Failure, true)]
-		[Arguments(Outcome.Success, false)]
-		[Arguments(Outcome.Success, true)]
-		[Arguments(Outcome.Undecided, false)]
-		[Arguments(Outcome.Undecided, true)]
-		public async Task Negate_ShouldReturnTheFailure(Outcome innerOutcome, bool invert)
+		[Arguments(Outcome.Failure)]
+		[Arguments(Outcome.Success)]
+		[Arguments(Outcome.Undecided)]
+		public async Task Negate_ShouldReturnTheFailure(Outcome innerOutcome)
 		{
 			ConstraintResult inner = new DummyConstraintResult<string>(innerOutcome, "value", "foo", "baz");
 			ConstraintResult sut = inner.FailureBothWays("bar", 1);
 
-			ConstraintResult negated = invert ? sut.Invert() : sut.Negate();
+			ConstraintResult negated = sut.Invert();
 
 			await That(negated).IsSameAs(sut)
 				.Because("callers continue with the returned result, which has to keep the forced failure");
@@ -186,7 +183,7 @@ public sealed class ConstraintResultExtensionsTests
 			ConstraintResult inner = new DummyConstraintResult<string>(innerOutcome, "value", "foo");
 			ConstraintResult sut = inner.UseValue("bar");
 
-			sut.Negate();
+			sut.Invert();
 
 			await That(inner.Outcome).IsEqualTo(expectedAfterNegation);
 			await That(sut.Outcome).IsEqualTo(expectedAfterNegation);
@@ -215,7 +212,7 @@ public sealed class ConstraintResultExtensionsTests
 			ConstraintResult inner = new DummyConstraintResult<string>(innerOutcome, "value", "foo");
 			ConstraintResult sut = inner.AppendExpectationText(s => s.Append("bar"));
 
-			sut.Negate();
+			sut.Invert();
 
 			await That(inner.Outcome).IsEqualTo(expectedAfterNegation);
 			await That(sut.Outcome).IsEqualTo(expectedAfterNegation);
@@ -260,6 +257,37 @@ public sealed class ConstraintResultExtensionsTests
 		}
 	}
 
+	public sealed class InvertIfTests
+	{
+		[Test]
+		[Arguments(Outcome.Failure, Outcome.Success)]
+		[Arguments(Outcome.Success, Outcome.Failure)]
+		[Arguments(Outcome.Undecided, Outcome.Undecided)]
+		public async Task WhenNegated_ShouldNegateTheSameInstance(Outcome outcome, Outcome expectedOutcome)
+		{
+			DummyConstraintResult sut = new(outcome, "foo");
+
+			DummyConstraintResult result = sut.InvertIf(true);
+
+			await That(result).IsSameAs(sut);
+			await That(result.Outcome).IsEqualTo(expectedOutcome);
+		}
+
+		[Test]
+		[Arguments(Outcome.Failure)]
+		[Arguments(Outcome.Success)]
+		[Arguments(Outcome.Undecided)]
+		public async Task WhenNotNegated_ShouldKeepTheSameInstanceUnchanged(Outcome outcome)
+		{
+			DummyConstraintResult sut = new(outcome, "foo");
+
+			DummyConstraintResult result = sut.InvertIf(false);
+
+			await That(result).IsSameAs(sut);
+			await That(result.Outcome).IsEqualTo(outcome);
+		}
+	}
+
 	public sealed class PrependExpectationTextTests
 	{
 		[Test]
@@ -271,7 +299,7 @@ public sealed class ConstraintResultExtensionsTests
 			ConstraintResult inner = new DummyConstraintResult<string>(innerOutcome, "value", "foo");
 			ConstraintResult sut = inner.PrependExpectationText(s => s.Append("bar"));
 
-			sut.Negate();
+			sut.Invert();
 
 			await That(inner.Outcome).IsEqualTo(expectedAfterNegation);
 			await That(sut.Outcome).IsEqualTo(expectedAfterNegation);

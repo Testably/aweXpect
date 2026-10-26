@@ -29,12 +29,12 @@ internal abstract class CombinedResult : ConstraintResult
 	/// <summary>
 	///     The left part.
 	/// </summary>
-	protected ConstraintResult Left { get; set; }
+	protected ConstraintResult Left { get; }
 
 	/// <summary>
 	///     The right part.
 	/// </summary>
-	protected ConstraintResult Right { get; set; }
+	protected ConstraintResult Right { get; }
 
 	/// <summary>
 	///     Whether the combination is negated, which swaps the junction.

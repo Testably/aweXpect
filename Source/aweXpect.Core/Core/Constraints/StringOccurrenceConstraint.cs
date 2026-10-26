@@ -100,7 +100,7 @@ internal sealed class StringOccurrenceConstraint(
 	}
 
 	/// <inheritdoc />
-	public override ConstraintResult Negate()
+	protected internal override void NegateInPlace()
 	{
 		_isNegated = !_isNegated;
 		Outcome = Outcome switch
@@ -109,6 +109,5 @@ internal sealed class StringOccurrenceConstraint(
 			Outcome.Success => Outcome.Failure,
 			_ => Outcome,
 		};
-		return this;
 	}
 }

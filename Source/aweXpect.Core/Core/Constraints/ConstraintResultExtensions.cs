@@ -14,9 +14,16 @@ public static class ConstraintResultExtensions
 	/// </summary>
 	public static T Invert<T>(this T constraintResult) where T : ConstraintResult
 	{
-		constraintResult.Negate();
+		constraintResult.NegateInPlace();
 		return constraintResult;
 	}
+
+	/// <summary>
+	///     Negates the <paramref name="constraintResult" /> when <paramref name="isNegated" /> is <see langword="true" />
+	///     and returns the same instance.
+	/// </summary>
+	public static T InvertIf<T>(this T constraintResult, bool isNegated) where T : ConstraintResult
+		=> isNegated ? constraintResult.Invert() : constraintResult;
 
 	/// <summary>
 	///     Creates a new <see cref="ConstraintResult" /> from the <paramref name="inner" /> using the given
@@ -174,10 +181,9 @@ public static class ConstraintResultExtensions
 		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 			=> _inner.TryGetStoredValue(out value);
 
-		public override ConstraintResult Negate()
+		protected internal override void NegateInPlace()
 		{
-			_inner.Negate();
-			return this;
+			_inner.NegateInPlace();
 		}
 	}
 
@@ -225,11 +231,10 @@ public static class ConstraintResultExtensions
 			return typeof(TValue).IsAssignableFrom(typeof(T));
 		}
 
-		public override ConstraintResult Negate()
+		protected internal override void NegateInPlace()
 		{
-			_inner.Negate();
+			_inner.NegateInPlace();
 			Outcome = _inner.Outcome;
-			return this;
 		}
 	}
 
@@ -268,10 +273,9 @@ public static class ConstraintResultExtensions
 			return typeof(TValue).IsAssignableFrom(typeof(T));
 		}
 
-		public override ConstraintResult Negate()
+		protected internal override void NegateInPlace()
 		{
-			_inner.Negate();
-			return this;
+			_inner.NegateInPlace();
 		}
 	}
 
@@ -310,11 +314,10 @@ public static class ConstraintResultExtensions
 		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 			=> _inner.TryGetStoredValue(out value);
 
-		public override ConstraintResult Negate()
+		protected internal override void NegateInPlace()
 		{
-			_inner.Negate();
+			_inner.NegateInPlace();
 			Outcome = _inner.Outcome;
-			return this;
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)

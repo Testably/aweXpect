@@ -169,7 +169,7 @@ public static partial class ThatGeneric
 			if (_isNegated)
 			{
 				_negatedResult = constraintResult;
-				return constraintResult.Negate();
+				return constraintResult.Invert();
 			}
 
 			return constraintResult;
@@ -181,7 +181,7 @@ public static partial class ThatGeneric
 		/// </summary>
 		private void RevertPreviousNegation()
 		{
-			_negatedResult?.Negate();
+			_negatedResult?.Invert();
 			_negatedResult = null;
 		}
 
@@ -195,10 +195,9 @@ public static partial class ThatGeneric
 			return false;
 		}
 
-		public override ConstraintResult Negate()
+		protected override void NegateInPlace()
 		{
 			_isNegated = !_isNegated;
-			return this;
 		}
 	}
 
@@ -223,10 +222,9 @@ public static partial class ThatGeneric
 		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 			=> inner.TryGetStoredValue(out value);
 
-		public override ConstraintResult Negate()
+		protected override void NegateInPlace()
 		{
-			inner.Negate();
-			return this;
+			inner.Invert();
 		}
 	}
 }

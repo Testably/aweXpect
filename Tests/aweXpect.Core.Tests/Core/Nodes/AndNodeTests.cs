@@ -263,7 +263,7 @@ public sealed class AndNodeTests
 		node.AddNode(new DummyNode("", () => new DummyConstraintResult(node2)));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
@@ -279,7 +279,7 @@ public sealed class AndNodeTests
 		node.AddNode(new DummyNode("", () => new DummyConstraintResult(other)));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
@@ -295,7 +295,7 @@ public sealed class AndNodeTests
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
 		result.AppendExpectation(sb1);
 
-		result.Negate();
+		result.Invert();
 
 		result.AppendExpectation(sb2);
 		await That(sb1.ToString()).IsEqualTo("foo and bar");
@@ -313,7 +313,7 @@ public sealed class AndNodeTests
 		node.AddNode(new DummyNode("", () => new DummyConstraintResult(node2, "right", "r")));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.GetResultText()).IsEqualTo(expectedResultText)
 			.Because("an undecided operand explains why the combination is undecided");

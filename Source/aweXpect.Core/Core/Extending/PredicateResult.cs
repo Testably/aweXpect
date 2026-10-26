@@ -100,6 +100,9 @@ public readonly struct PredicateResult
 		}
 
 		/// <inheritdoc />
-		public override ConstraintResult Negate() => this;
+		protected internal override void NegateInPlace()
+		{
+			// An unanswered item fails both ways, also when negated.
+		}
 	}
 }

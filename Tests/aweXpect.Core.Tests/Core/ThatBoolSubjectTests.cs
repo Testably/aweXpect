@@ -14,7 +14,7 @@ public sealed class ThatBoolSubjectTests
 		ThatBoolSubject.IsTrueConstraint sut = new(ExpectationGrammars.None);
 		sut.IsMetBy(actual);
 
-		ConstraintResult negated = sut.Negate();
+		ConstraintResult negated = sut.Invert();
 
 		await That(negated.Outcome).IsEqualTo(expectedOutcome);
 		await That(negated.GetExpectationText()).IsEqualTo("is not True");

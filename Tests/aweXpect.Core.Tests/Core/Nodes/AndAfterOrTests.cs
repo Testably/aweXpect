@@ -223,7 +223,7 @@ public sealed class AndAfterOrTests
 	{
 		if (isNegated)
 		{
-			result.Negate();
+			result.Invert();
 		}
 
 		string operands = string.Join(",", evaluated);

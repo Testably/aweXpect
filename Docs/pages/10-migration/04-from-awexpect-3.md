@@ -261,6 +261,9 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
 - The predicates of a `Signaler<TParameter>` moved from `SignalerOptions<TParameter>` to
   `SignalerPredicateOptions<TParameter>`, where `WithPredicate` is `AddPredicate`, like on the `TriggerEventFilter`.
 - `ConstraintResult` creates a result that fails both ways with `FailureBothWays` instead of `Fail`.
+- A `ConstraintResult` negates itself in `protected override void NegateInPlace()` instead of
+  `public override ConstraintResult Negate()`, so a negation can no longer return a new result that is then ignored.
+  Negate a result with `.Invert()`, or with the new `.InvertIf(isNegated)`.
 - `ExpectationBuilder.WithCancellation` and `WithTimeout` return the builder, and the async `ForWhich` is
   `ForAsyncWhich`. `MemberAccessor.FromFunc` and `FromFuncAsMemberAccessor` are `FromFuncWithName` and
   `FromFuncWithCallerExpression`.

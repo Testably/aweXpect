@@ -75,15 +75,13 @@ public abstract partial class ThatDelegate
 		///     A negating expectation, such as <c>DoesNotComplyWith</c>, negates the result after the evaluation, so
 		///     the outcome is updated as well.
 		/// </remarks>
-		public override ConstraintResult Negate()
+		protected internal override void NegateInPlace()
 		{
 			_isNegated = !_isNegated;
 			if (_actual is not null)
 			{
 				UpdateOutcome(_actual);
 			}
-
-			return this;
 		}
 
 		private void UpdateOutcome(DelegateValue value)

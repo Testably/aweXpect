@@ -173,11 +173,10 @@ public static partial class ThatJsonNode
 			return typeof(TValue).IsAssignableFrom(typeof(TNode));
 		}
 
-		public override ConstraintResult Negate()
+		protected override void NegateInPlace()
 		{
-			inner.Negate();
+			inner.Invert();
 			Grammars = inner.Grammars;
-			return this;
 		}
 	}
 }

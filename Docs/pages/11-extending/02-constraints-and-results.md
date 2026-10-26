@@ -118,7 +118,7 @@ expectations, e.g. "it was 2 and was not even" instead of "it was 2 and it was n
 <summary>Deriving from ConstraintResult directly</summary>
 
 A constraint can also derive from `ConstraintResult` directly. It then writes the texts in `AppendExpectation` and
-`AppendResult`, returns the value in `TryGetStoredValue` and implements `Negate()` itself. This example does not
+`AppendResult`, returns the value in `TryGetStoredValue` and implements `NegateInPlace()` itself. This example does not
 support the negated case:
 
 ```csharp
@@ -156,16 +156,15 @@ private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars gr
         return typeof(TValue).IsAssignableFrom(typeof(Track));
     }
 
-    public override ConstraintResult Negate()
+    protected override void NegateInPlace()
         => throw Tracing.WriteException(
             new NotSupportedException("Negation of IsRadioFriendly is not supported."));
 }
 ```
 
-`Negate()` is called whenever the expectation is negated, e.g. by `DoesNotComplyWith(x => x.IsRadioFriendly())`. It
-negates the result in place and returns the same instance: `.Invert()` ignores the returned value and relies on the
-negation in place, so do not return a new result. Returning `this` without negating it would silently check the
-non-negated expectation instead, so a constraint that cannot be negated throws, like the built-in `ExecutesIn()`.
+`NegateInPlace()` is called whenever the expectation is negated, e.g. by `DoesNotComplyWith(x => x.IsRadioFriendly())`,
+and negates the result itself. Doing nothing would silently check the non-negated expectation instead, so a constraint
+that cannot be negated throws, like the built-in `ExecutesIn()`.
 
 To combine the result texts with `.And` like the helper classes, override `LeadingSubject` and `TrailingSubject` with
 `GetSubjectOfResult(it)`.
@@ -244,7 +243,7 @@ catch (Exception exception)
 
 - `Outcome.FailureBothWays` fails the expectation like `Outcome.Failure`, but a negation keeps it.
   `WithNotNullValue<T>` reports it for a `null` subject.
-- When you derive from `ConstraintResult` directly, swap only `Success` and `Failure` in your `Negate()` and keep
+- When you derive from `ConstraintResult` directly, swap only `Success` and `Failure` in your `NegateInPlace()` and keep
   `FailureBothWays`.
 - Code that reads an outcome treats `Outcome.Failure` and `Outcome.FailureBothWays` alike as a failed expectation. An
   expectation that evaluates nested expectations, e.g. on the items of a collection, checks for
@@ -265,6 +264,9 @@ public static AndOrResult<Track, IThat<Track?>> IsNotRadioFriendly(
             => new IsRadioFriendlyConstraint(it, grammars).Invert()),
         subject);
 ```
+
+`.InvertIf(isNegated)` negates the constraint only when `isNegated` is `true`, so that an expectation and its negation
+can share one implementation.
 
 ## Side effects
 
@@ -318,10 +320,10 @@ private sealed class IsArchivedConstraint(string it, ExpectationGrammars grammar
 - The `CompletedEvaluation` has the `Outcome` of the whole expectation: `Success`, `Failure` (also after a timeout)
   or `Undecided`, when the evaluation was canceled. The constraint itself knows its own `Outcome`, which already
   includes the negation, and whether it `IsNegated`.
-- A constraint that derives from `ConstraintResult` directly tracks its negation by overriding `Negate()`, which is
-  called for every negation that applies to it, also within `.And`, `.Or`, `Whose` and `Which`:
+- A constraint that derives from `ConstraintResult` directly tracks its negation by overriding `NegateInPlace()`, which
+  is called for every negation that applies to it, also within `.And`, `.Or`, `Whose` and `Which`:
   ```csharp no-compile
-  public override ConstraintResult Negate()
+  protected override void NegateInPlace()
   {
       _isNegated = !_isNegated;
       Outcome = Outcome switch
@@ -330,7 +332,6 @@ private sealed class IsArchivedConstraint(string it, ExpectationGrammars grammar
           Outcome.Failure => Outcome.Success,
           _ => Outcome,
       };
-      return this;
   }
   ```
 - Each delegate runs once, even when the constraint is evaluated several times, e.g. for each item of a collection or

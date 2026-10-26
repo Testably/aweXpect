@@ -29,7 +29,7 @@ public class ExpectationNodeTests
 			.AddConstraint(new DummyValueConstraint<int>(_ => new DummyConstraintResult(node2, "foo2", "bar2")));
 
 		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
@@ -134,7 +134,7 @@ public class ExpectationNodeTests
 			.AddConstraint(new NotEvaluatedConstraint<int>("foo2", "not foo2"));
 
 		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 		if (expectedOutcome == Outcome.Failure)
@@ -157,7 +157,7 @@ public class ExpectationNodeTests
 		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
 		if (negate)
 		{
-			result.Negate();
+			result.Invert();
 		}
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
@@ -177,7 +177,7 @@ public class ExpectationNodeTests
 			.AddConstraint(new DummyValueConstraint<int>(_ => new DummyConstraintResult(Outcome.Success, "foo2", "bar2")));
 
 		ConstraintResult result = await node.IsMetBy<string?>(null, null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
@@ -287,7 +287,7 @@ public class ExpectationNodeTests
 			.AddConstraint(new DummyValueConstraint<int>(_ => new DummyConstraintResult(node2, "foo2", "bar2")));
 
 		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
@@ -422,7 +422,7 @@ public class ExpectationNodeTests
 			.AddConstraint(new NotEvaluatedConstraint<int>("foo2", "not foo2"));
 
 		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 		if (expectedOutcome == Outcome.Failure)
@@ -444,7 +444,7 @@ public class ExpectationNodeTests
 				=> new ConstraintResult.ExpectationOnly<int>(ExpectationGrammars.None, "foo2", "not foo2")));
 
 		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 		await That(result.GetExpectationText()).IsEqualTo("foo1 length: foo2");
@@ -464,7 +464,7 @@ public class ExpectationNodeTests
 		node.AddMapping(MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length: ")).AddNode(andNode);
 
 		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
@@ -484,7 +484,7 @@ public class ExpectationNodeTests
 		node.AddMapping(MemberAccessor<string, int>.FromFuncWithName(s => s.Length, " length: ")).AddNode(orNode);
 
 		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
@@ -503,7 +503,7 @@ public class ExpectationNodeTests
 			.AddConstraint(new DummyValueConstraint<int>(_ => new DummyConstraintResult(member, "foo2", "bar2")));
 
 		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 		if (expectedOutcome == Outcome.Failure)
@@ -525,7 +525,7 @@ public class ExpectationNodeTests
 		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
 		if (negate)
 		{
-			result.Negate();
+			result.Invert();
 		}
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
@@ -545,7 +545,7 @@ public class ExpectationNodeTests
 			.AddConstraint(new DummyValueConstraint<int>(_ => new DummyConstraintResult(Outcome.Success, "foo2", "bar2")));
 
 		ConstraintResult result = await node.IsMetBy<string?>(null, null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
@@ -581,7 +581,7 @@ public class ExpectationNodeTests
 		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
 		if (negate)
 		{
-			result.Negate();
+			result.Invert();
 		}
 
 		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays)
@@ -961,7 +961,7 @@ public class ExpectationNodeTests
 
 		result.AppendResult(sb, "  ");
 		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
-		await That(result.Negate().Outcome).IsEqualTo(Outcome.FailureBothWays);
+		await That(result.Invert().Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(result.GetExpectationText()).IsEqualTo("throws");
 		await That(result.FailureCause).IsSameAs(cause)
 			.Because("only the cause that the match type gave explains the failure");
@@ -1143,7 +1143,7 @@ public class ExpectationNodeTests
 		StringBuilder sb = new();
 
 		ConstraintResult result = await node.IsMetBy(1, null!, CancellationToken.None);
-		ConstraintResult negated = result.Negate();
+		ConstraintResult negated = result.Invert();
 
 		negated.AppendExpectation(sb);
 		await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays)
@@ -1526,7 +1526,9 @@ public class ExpectationNodeTests
 			return false;
 		}
 
-		public override ConstraintResult Negate() => this;
+		protected internal override void NegateInPlace()
+		{
+		}
 	}
 
 	private sealed class ThrowingConstraint<T>(Exception exception) : IValueConstraint<T>
