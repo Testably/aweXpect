@@ -143,6 +143,10 @@ Suppress it in test projects that use a virtual time system.
   same sentence, e.g. `IsString().StartingWith("Let").IgnoringCase()` or `IsNumber().EqualTo(4.5).Within(0.1)`. They
   return `IsStringResult` and `IsNumberResult` from `aweXpect.Json.Results` instead of an `AndOrResult`, which only
   affects code that names the result type.
+- `IsArray().WhoseElements` and `IsObject().WhoseProperties` on a `JsonNode` provide the nodes, as `JsonNode?` and
+  `KeyValuePair<string, JsonNode?>` items, e.g. for `Contains(node)`, instead of `JsonElement` and `JsonProperty` items.
+  `IsArrayResult` and `IsObjectResult` take the item type as third type parameter, which only affects code that names
+  the result type.
 - `Matches` and `IsValidJsonMatching` report additional array elements. Add
   `o => o.IgnoringAdditionalArrayElements()` to allow them.
 - An expected `string` in `Matches`, `MatchesExactly`, `IsValidJsonMatching` and `IsValidJsonMatchingExactly` is JSON

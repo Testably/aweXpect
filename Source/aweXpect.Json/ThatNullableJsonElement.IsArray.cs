@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Linq;
+using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
@@ -12,11 +13,11 @@ public static partial class ThatNullableJsonElement
 	///     Verifies that the subject <see cref="JsonElement" /> is an <see cref="JsonValueKind.Array" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static IsArrayResult<JsonElement, IThat<JsonElement?>> IsArray(
+	public static IsArrayResult<JsonElement, IThat<JsonElement?>, JsonElement> IsArray(
 		this IThat<JsonElement?> subject)
 		=> new(
 			subject.Get().ExpectationBuilder.AddConstraint(static IValueConstraint<JsonElement?> (it, grammar) =>
 				new ThatJsonElement.IsValueKindConstraint(it, grammar, JsonValueKind.Array)),
 			subject,
-			static element => element);
+			static element => element.EnumerateArray().ToArray());
 }

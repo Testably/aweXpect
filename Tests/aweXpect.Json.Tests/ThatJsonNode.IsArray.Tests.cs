@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization.Metadata;
 using aweXpect.Core;
 
 namespace aweXpect.Json.Tests;
@@ -71,6 +72,25 @@ public sealed partial class ThatJsonNode
 
 		public sealed class NegatedTests
 		{
+			[Test]
+			public async Task WhenElementsDoNotContainTheNode_ShouldSucceed()
+			{
+				JsonArray subject = new(new JsonObject
+				{
+					["title"] = "Let It Be",
+				});
+				JsonObject other = new()
+				{
+					["title"] = "Let It Be",
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsArray().WhoseElements.Contains(other));
+
+				await That(Act).DoesNotThrow()
+					.Because("the elements are the nodes of the array, which have no value equality");
+			}
+
 			[Test]
 			public async Task WhenNodeIsAnArray_ShouldFail()
 			{
@@ -159,10 +179,93 @@ public sealed partial class ThatJsonNode
 			}
 
 			[Test]
+			public async Task Contains_WhenElementsContainTheNode_ShouldSucceed()
+			{
+				JsonArray subject = new(new JsonObject
+				{
+					["title"] = "Let It Be",
+				});
+				JsonNode first = subject[0]!;
+
+				async Task Act()
+					=> await That(subject).IsArray().WhoseElements.Contains(first);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Contains_WhenElementsDoNotContainTheNode_ShouldFail()
+			{
+				JsonArray subject = new(new JsonObject
+				{
+					["title"] = "Let It Be",
+				});
+				JsonObject other = new()
+				{
+					["title"] = "Let It Be",
+				};
+
+				async Task Act()
+					=> await That(subject).IsArray().WhoseElements.Contains(other);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array whose elements contain an item equal to {"title":"Let It Be"} at least once,
+					             but elements did not contain it
+
+					             Collection (elements):
+					             [
+					               {"title":"Let It Be"}
+					             ]
+					             """)
+					.Because("the elements are the nodes of the array, which have no value equality");
+			}
+
+			[Test]
+			public async Task HasItemThat_WhenElementIsTheSameNode_ShouldSucceed()
+			{
+				JsonArray subject = new("Hey Jude", null, "Let It Be");
+				JsonNode? last = subject[2];
+
+				async Task Act()
+					=> await That(subject).IsArray().WhoseElements.HasItemThat(e => e.IsSameAs(last)).AtIndex(2);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNodeIsAValueThatRepresentsAnArray_ShouldVerifyItsElementsAsNodes()
+			{
+				JsonTypeInfo<string?[]> typeInfo = (JsonTypeInfo<string?[]>)new JsonSerializerOptions
+				{
+					TypeInfoResolver = new DefaultJsonTypeInfoResolver(),
+				}.GetTypeInfo(typeof(string?[]));
+				JsonValue? subject = JsonValue.Create(["Hey Jude", null, "Let It Be",], typeInfo);
+
+				async Task Act()
+					=> await That(subject).IsArray().WhoseElements.HasItemThat(e => e.Is<JsonValue>()).AtIndex(1);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array whose elements have an item that is of type JsonValue at index 1,
+					             but for the item at index 1, it was <null>
+
+					             Collection (elements):
+					             [
+					               "Hey Jude",
+					               <null>,
+					               "Let It Be"
+					             ]
+					             """);
+			}
+
+			[Test]
 			public async Task WhenNodeWasModifiedBeforeTheEvaluation_ShouldVerifyTheModifiedElements()
 			{
 				JsonArray subject = new(1, 2);
-				IThat<IEnumerable<JsonElement>> expectation = That(subject).IsArray().WhoseElements;
+				IThat<IEnumerable<JsonNode?>> expectation = That(subject).IsArray().WhoseElements;
 
 				subject.Add(3);
 

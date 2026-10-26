@@ -18,7 +18,7 @@ namespace aweXpect
         public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> HasProperty(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string name, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
         public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> HasValueAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string path) { }
         public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> HasValueAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string path, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
-        public static aweXpect.Json.Results.IsArrayResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
+        public static aweXpect.Json.Results.IsArrayResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>, System.Text.Json.JsonElement> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsBoolean(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsBoolean(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, System.Action<aweXpect.Core.IThatSubject<bool>> expectations) { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsBoolean(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, bool expected) { }
@@ -28,7 +28,7 @@ namespace aweXpect
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) where TNumber : struct, System.Numerics.INumber<TNumber> { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, System.Action<aweXpect.Core.IThatSubject<TNumber>> expectations) where TNumber : struct, System.Numerics.INumber<TNumber> { }
         public static aweXpect.Results.NumberToleranceResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>, TNumber> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, TNumber expected) where TNumber : struct, System.Numerics.INumber<TNumber> { }
-        public static aweXpect.Json.Results.IsObjectResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsObject(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
+        public static aweXpect.Json.Results.IsObjectResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>, System.Text.Json.JsonProperty> IsObject(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
         public static aweXpect.Json.Results.IsStringResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsString(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject) { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsString(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, System.Action<aweXpect.Core.IThatSubject<string>> expectations) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsString(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string expected) { }
@@ -58,7 +58,7 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Json.Results.JsonPropertyResult<TNode, aweXpect.Core.IThat<TNode?>> HasValueAt<TNode>(this aweXpect.Core.IThat<TNode?> subject, string path, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.Nodes.JsonNode?>> expectations) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Json.Results.IsArrayResult<TNode, aweXpect.Core.IThat<TNode?>> IsArray<TNode>(this aweXpect.Core.IThat<TNode?> subject) where TNode : System.Text.Json.Nodes.JsonNode { }
+        public static aweXpect.Json.Results.IsArrayResult<TNode, aweXpect.Core.IThat<TNode?>, System.Text.Json.Nodes.JsonNode?> IsArray<TNode>(this aweXpect.Core.IThat<TNode?> subject) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TNode, aweXpect.Core.IThat<TNode?>> IsBoolean<TNode>(this aweXpect.Core.IThat<TNode?> subject) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -72,11 +72,19 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Text.Json.Nodes.JsonNode, aweXpect.Core.IThat<System.Text.Json.Nodes.JsonNode?>> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.Nodes.JsonNode?> subject, System.Action<aweXpect.Core.IThatSubject<TNumber>> expectations) where TNumber : struct, System.Numerics.INumber<TNumber> { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Text.Json.Nodes.JsonValue, aweXpect.Core.IThat<System.Text.Json.Nodes.JsonValue?>> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.Nodes.JsonValue?> subject) where TNumber : struct, System.Numerics.INumber<TNumber> { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Text.Json.Nodes.JsonValue, aweXpect.Core.IThat<System.Text.Json.Nodes.JsonValue?>> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.Nodes.JsonValue?> subject, System.Action<aweXpect.Core.IThatSubject<TNumber>> expectations) where TNumber : struct, System.Numerics.INumber<TNumber> { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TNode, aweXpect.Core.IThat<TNode?>> IsNumber<TNode>(this aweXpect.Core.IThat<TNode?> subject, System.Action<aweXpect.Core.IThatSubject<double>> expectations) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<System.Text.Json.Nodes.JsonNode, aweXpect.Core.IThat<System.Text.Json.Nodes.JsonNode?>, TNumber> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.Nodes.JsonNode?> subject, TNumber expected) where TNumber : struct, System.Numerics.INumber<TNumber> { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Json.Results.IsObjectResult<TNode, aweXpect.Core.IThat<TNode?>> IsObject<TNode>(this aweXpect.Core.IThat<TNode?> subject) where TNode : System.Text.Json.Nodes.JsonNode { }
+        public static aweXpect.Results.NumberToleranceResult<System.Text.Json.Nodes.JsonValue, aweXpect.Core.IThat<System.Text.Json.Nodes.JsonValue?>, TNumber> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.Nodes.JsonValue?> subject, TNumber expected) where TNumber : struct, System.Numerics.INumber<TNumber> { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.NumberToleranceResult<TNode, aweXpect.Core.IThat<TNode?>, TNumber> IsNumber<TNode, TNumber>(this aweXpect.Core.IThat<TNode?> subject, TNumber expected) where TNode : System.Text.Json.Nodes.JsonNode where TNumber : struct, System.Numerics.INumber<TNumber> { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Json.Results.IsObjectResult<TNode, aweXpect.Core.IThat<TNode?>, System.Collections.Generic.KeyValuePair<string, System.Text.Json.Nodes.JsonNode?>> IsObject<TNode>(this aweXpect.Core.IThat<TNode?> subject) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Json.Results.IsStringResult<TNode, aweXpect.Core.IThat<TNode?>> IsString<TNode>(this aweXpect.Core.IThat<TNode?> subject) where TNode : System.Text.Json.Nodes.JsonNode { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -144,7 +152,7 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> HasValueAt(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, string path, System.Action<aweXpect.Core.IThatSubject<System.Text.Json.JsonElement>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Json.Results.IsArrayResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject) { }
+        public static aweXpect.Json.Results.IsArrayResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>, System.Text.Json.JsonElement> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsBoolean(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -162,7 +170,7 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>, TNumber> IsNumber<TNumber>(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject, TNumber expected) where TNumber : struct, System.Numerics.INumber<TNumber> { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Json.Results.IsObjectResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsObject(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject) { }
+        public static aweXpect.Json.Results.IsObjectResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>, System.Text.Json.JsonProperty> IsObject(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Json.Results.IsStringResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsString(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -234,16 +242,16 @@ namespace aweXpect.Json.Options
 }
 namespace aweXpect.Json.Results
 {
-    public class IsArrayResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>
+    public class IsArrayResult<TType, TThat, TItem> : aweXpect.Results.AndOrResult<TType, TThat>
     {
-        public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<System.Text.Json.JsonElement>> WhoseElements { get; }
+        public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TItem>> WhoseElements { get; }
     }
     public class IsNumberResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>, aweXpect.Results.IDoublePropertyResult<aweXpect.Results.AndOrResult<TType, TThat>, aweXpect.Results.NumberToleranceResult<TType, TThat, double>>
     {
     }
-    public class IsObjectResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>
+    public class IsObjectResult<TType, TThat, TItem> : aweXpect.Results.AndOrResult<TType, TThat>
     {
-        public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<System.Text.Json.JsonProperty>> WhoseProperties { get; }
+        public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TItem>> WhoseProperties { get; }
     }
     public class IsStringResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>, aweXpect.Results.IStringAffixPropertyResult<aweXpect.Results.StringEqualityResult<TType, TThat>>, aweXpect.Results.IStringEqualityPropertyResult<aweXpect.Results.StringEqualityTypeResult<TType, TThat>>, aweXpect.Results.IStringOccurrencePropertyResult<aweXpect.Results.StringOccurrenceCountResult<TType, TThat>>
     {

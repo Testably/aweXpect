@@ -25,6 +25,10 @@ matches new { title = "Let It Be" } exactly,
 but it differed as $.artist had unexpected "The Beatles"
 ```
 
+The expectations keep the type of the subject for chaining with `.And`. A call that names the number type, like
+`IsNumber<int>()` or `IsNumber<double>(243)`, continues on a `JsonNode`, as C# cannot infer the node type then, except
+on a `JsonValue`, which has `IsNumber<TNumber>` overloads of its own.
+
 :::note
 The node is verified in the state it has when the expectation is awaited, so changes made after `Expect.That(…)` are
 included.
@@ -38,6 +42,19 @@ no JSON-specific `IsNull()` for a `JsonNode`.
 <summary>Nested nodes and `null` nodes</summary>
 
 The expectations on a property, a value at a path or an element receive the node itself, e.g. for `IsSameAs(…)`.
+Likewise, `WhoseElements` provides the nodes of an array as `JsonNode?` items and `WhoseProperties` the properties of an
+object as `KeyValuePair<string, JsonNode?>` items with the name and the node of the value, instead of `JsonElement` and
+`JsonProperty` items:
+
+```csharp
+JsonArray playlist = new(new JsonObject { ["title"] = "Let It Be" });
+JsonNode first = playlist[0]!;
+
+await Expect.That(playlist).HasElementAt(0, e => e.IsSameAs(first));
+await Expect.That(playlist).IsArray().WhoseElements.Contains(first);
+await Expect.That(first).IsObject().WhoseProperties.All().Satisfy(p => p.Value is JsonValue);
+```
+
 `Matches(null)` succeeds for a `null` node, while `IsObject()` would fail with:
 
 ```text title="Failure message"

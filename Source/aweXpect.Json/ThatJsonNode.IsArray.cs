@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using aweXpect.Core;
 using aweXpect.Core.Extending;
@@ -12,7 +14,7 @@ public static partial class ThatJsonNode
 	///     Verifies that the subject <see cref="JsonNode" /> is an <see cref="JsonValueKind.Array" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static IsArrayResult<TNode, IThat<TNode?>> IsArray<TNode>(
+	public static IsArrayResult<TNode, IThat<TNode?>, JsonNode?> IsArray<TNode>(
 		this IThat<TNode?> subject)
 		where TNode : JsonNode
 		=> new(
@@ -20,5 +22,14 @@ public static partial class ThatJsonNode
 				new JsonNodeConstraint<TNode>(
 					new ThatJsonElement.IsValueKindConstraint(it, grammar, JsonValueKind.Array))),
 			subject,
-			ToJsonElement);
+			GetElements);
+
+	/// <remarks>
+	///     A <see cref="JsonValue" /> can also represent an array, e.g. one that holds a .NET array, whose elements are
+	///     no nodes of their own, so that they are parsed as new nodes then.
+	/// </remarks>
+	private static IEnumerable<JsonNode?> GetElements(JsonNode node)
+		=> node is JsonArray jsonArray
+			? jsonArray.ToArray()
+			: ToJsonElement(node).EnumerateArray().Select(ToJsonNode).ToArray();
 }
