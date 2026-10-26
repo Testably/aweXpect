@@ -1218,6 +1218,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
+      },
+      {
+        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
+        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
       }
     ],
     "labels": [
@@ -1423,7 +1429,8 @@ window.BENCHMARK_DATA = {
       "5520582a",
       "a2e430d0",
       "705c8132",
-      "2068b12b"
+      "2068b12b",
+      "2ce286e6"
     ],
     "datasets": [
       {
@@ -1632,7 +1639,8 @@ window.BENCHMARK_DATA = {
           10518.95098055326,
           10407.075721740723,
           9259.06315867106,
-          10645.552574157715
+          10645.552574157715,
+          9308.937001154973
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1837,6 +1845,7 @@ window.BENCHMARK_DATA = {
           2208,
           2080,
           2080,
+          1976,
           1976,
           1976,
           1976,
@@ -2063,7 +2072,8 @@ window.BENCHMARK_DATA = {
           367723.56082589284,
           381647.6934988839,
           335299.8204427083,
-          389630.9268973214
+          389630.9268973214,
+          326461.39427083335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2277,7 +2287,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590264,
-          590290
+          590290,
+          590265
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2494,7 +2505,8 @@ window.BENCHMARK_DATA = {
           20034.022123209634,
           20362.432715279716,
           20013.101442464194,
-          19552.44419250488
+          19552.44419250488,
+          19488.821423339843
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2506,6 +2518,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -3898,6 +3911,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
+      },
+      {
+        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
+        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
       }
     ],
     "labels": [
@@ -4096,7 +4115,8 @@ window.BENCHMARK_DATA = {
       "5520582a",
       "a2e430d0",
       "705c8132",
-      "2068b12b"
+      "2068b12b",
+      "2ce286e6"
     ],
     "datasets": [
       {
@@ -4298,7 +4318,8 @@ window.BENCHMARK_DATA = {
           287.28559719721477,
           245.7577998797099,
           224.07638646761578,
-          233.1388209660848
+          233.1388209660848,
+          220.59947001017056
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4494,6 +4515,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -4715,7 +4737,8 @@ window.BENCHMARK_DATA = {
           494.7134147644043,
           553.6564313252767,
           571.2604010264079,
-          548.9642368316651
+          548.9642368316651,
+          562.554360707601
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4727,6 +4750,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -5132,7 +5156,8 @@ window.BENCHMARK_DATA = {
           400.3641142209371,
           407.88931735356647,
           446.4558005015055,
-          423.81022148132325
+          423.81022148132325,
+          421.60162185033164
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5144,6 +5169,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -11149,6 +11175,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
+      },
+      {
+        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
+        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
       }
     ],
     "labels": [
@@ -12117,7 +12149,8 @@ window.BENCHMARK_DATA = {
       "5520582a",
       "a2e430d0",
       "705c8132",
-      "2068b12b"
+      "2068b12b",
+      "2ce286e6"
     ],
     "datasets": [
       {
@@ -13089,7 +13122,8 @@ window.BENCHMARK_DATA = {
           123.35101833710304,
           111.55422718524933,
           122.28391969998678,
-          117.5024121761322
+          117.5024121761322,
+          134.7411268870036
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14055,6 +14089,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          320,
           320,
           320,
           320,
@@ -15046,7 +15081,8 @@ window.BENCHMARK_DATA = {
           258.14238589604696,
           248.5083598136902,
           306.2525910695394,
-          278.1785736401876
+          278.1785736401876,
+          302.6682296435038
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15239,6 +15275,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -16284,7 +16321,8 @@ window.BENCHMARK_DATA = {
           236.70207227071126,
           252.83534905115764,
           258.02726996739705,
-          255.38623778025308
+          255.38623778025308,
+          242.5142366727193
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -16296,6 +16334,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -17774,6 +17813,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
+      },
+      {
+        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
+        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
       }
     ],
     "labels": [
@@ -17979,7 +18024,8 @@ window.BENCHMARK_DATA = {
       "5520582a",
       "a2e430d0",
       "705c8132",
-      "2068b12b"
+      "2068b12b",
+      "2ce286e6"
     ],
     "datasets": [
       {
@@ -18188,7 +18234,8 @@ window.BENCHMARK_DATA = {
           235.82747624715168,
           223.7740821679433,
           219.93276567118508,
-          226.38837583248431
+          226.38837583248431,
+          221.82557617823284
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18393,6 +18440,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -18619,7 +18667,8 @@ window.BENCHMARK_DATA = {
           532.9976470947265,
           558.0476495107015,
           624.5794880549113,
-          590.0845379462609
+          590.0845379462609,
+          630.2859070460001
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18631,6 +18680,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -19050,7 +19100,8 @@ window.BENCHMARK_DATA = {
           357.75832573572796,
           349.2779003381729,
           352.742732320513,
-          373.62520627975465
+          373.62520627975465,
+          355.58903112411497
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19062,6 +19113,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -25074,6 +25126,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
+      },
+      {
+        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
+        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
       }
     ],
     "labels": [
@@ -26042,7 +26100,8 @@ window.BENCHMARK_DATA = {
       "5520582a",
       "a2e430d0",
       "705c8132",
-      "2068b12b"
+      "2068b12b",
+      "2ce286e6"
     ],
     "datasets": [
       {
@@ -27014,7 +27073,8 @@ window.BENCHMARK_DATA = {
           629.1689859798977,
           619.8666789372762,
           593.6084613800049,
-          614.4710738842303
+          614.4710738842303,
+          612.8730148587908
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27982,6 +28042,7 @@ window.BENCHMARK_DATA = {
           784,
           656,
           656,
+          600,
           600,
           600,
           600,
@@ -28971,7 +29032,8 @@ window.BENCHMARK_DATA = {
           1390.2627824147542,
           1473.1071846008301,
           1506.190026219686,
-          1499.3825670878093
+          1499.3825670878093,
+          1488.8672572544642
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29164,6 +29226,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -30209,7 +30272,8 @@ window.BENCHMARK_DATA = {
           707.3121220270792,
           681.3279069491795,
           680.8586362838745,
-          704.2055790764945
+          704.2055790764945,
+          677.1017192204794
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30221,6 +30285,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -36277,6 +36342,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
+      },
+      {
+        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
+        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
       }
     ],
     "labels": [
@@ -37245,7 +37316,8 @@ window.BENCHMARK_DATA = {
       "5520582a",
       "a2e430d0",
       "705c8132",
-      "2068b12b"
+      "2068b12b",
+      "2ce286e6"
     ],
     "datasets": [
       {
@@ -38217,7 +38289,8 @@ window.BENCHMARK_DATA = {
           627.2177370707194,
           646.7563068526132,
           610.6712423733303,
-          627.2019684864924
+          627.2019684864924,
+          684.4687255450657
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39185,6 +39258,7 @@ window.BENCHMARK_DATA = {
           832,
           704,
           704,
+          648,
           648,
           648,
           648,
@@ -40174,7 +40248,8 @@ window.BENCHMARK_DATA = {
           28446.75635172526,
           28693.625462849934,
           24533.275508626302,
-          29209.810224260604
+          29209.810224260604,
+          24680.975152151925
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41151,7 +41226,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
-          33471
+          33471,
+          33468
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41412,7 +41488,8 @@ window.BENCHMARK_DATA = {
           828.0452209881374,
           809.6587336858114,
           839.1119194666545,
-          822.4396275792803
+          822.4396275792803,
+          827.7211853663126
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -41424,6 +41501,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -43250,6 +43328,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
+      },
+      {
+        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
+        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
       }
     ],
     "labels": [
@@ -43513,7 +43597,8 @@ window.BENCHMARK_DATA = {
       "5520582a",
       "a2e430d0",
       "705c8132",
-      "2068b12b"
+      "2068b12b",
+      "2ce286e6"
     ],
     "datasets": [
       {
@@ -43780,7 +43865,8 @@ window.BENCHMARK_DATA = {
           666.411365713392,
           713.445157623291,
           652.726514561971,
-          748.7592710494995
+          748.7592710494995,
+          653.6614570617676
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44043,6 +44129,7 @@ window.BENCHMARK_DATA = {
           1688,
           1608,
           1608,
+          1576,
           1576,
           1576,
           1576,
@@ -44327,7 +44414,8 @@ window.BENCHMARK_DATA = {
           83352.08643450055,
           84230.58907063802,
           62009.10281606821,
-          83743.44901936849
+          83743.44901936849,
+          60706.828783307756
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44599,7 +44687,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5254,
-          5252
+          5252,
+          5254
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46179,6 +46268,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
+      },
+      {
+        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
+        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
       }
     ],
     "labels": [
@@ -46442,7 +46537,8 @@ window.BENCHMARK_DATA = {
       "5520582a",
       "a2e430d0",
       "705c8132",
-      "2068b12b"
+      "2068b12b",
+      "2ce286e6"
     ],
     "datasets": [
       {
@@ -46709,7 +46805,8 @@ window.BENCHMARK_DATA = {
           137.3226841290792,
           140.3202334880829,
           146.02151627540587,
-          146.6848596426157
+          146.6848596426157,
+          154.5695377667745
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46972,6 +47069,7 @@ window.BENCHMARK_DATA = {
           464,
           336,
           336,
+          320,
           320,
           320,
           320,
@@ -47256,7 +47354,8 @@ window.BENCHMARK_DATA = {
           33568.48595755441,
           32649.32285970052,
           25295.77742591271,
-          32085.885384114583
+          32085.885384114583,
+          24716.21125793457
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47528,7 +47627,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47789,7 +47889,8 @@ window.BENCHMARK_DATA = {
           246.66916149003166,
           259.4673128809248,
           241.25962209701538,
-          272.6461998303731
+          272.6461998303731,
+          244.32995370229085
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47801,6 +47902,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -49279,6 +49381,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
+      },
+      {
+        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
+        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
       }
     ],
     "labels": [
@@ -49484,7 +49592,8 @@ window.BENCHMARK_DATA = {
       "5520582a",
       "a2e430d0",
       "705c8132",
-      "2068b12b"
+      "2068b12b",
+      "2ce286e6"
     ],
     "datasets": [
       {
@@ -49693,7 +49802,8 @@ window.BENCHMARK_DATA = {
           291.35002538136075,
           312.7133852958679,
           333.971711397171,
-          302.44043226242064
+          302.44043226242064,
+          322.599967112908
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49898,6 +50008,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -50124,7 +50235,8 @@ window.BENCHMARK_DATA = {
           402.7374384880066,
           421.7551830291748,
           419.8720821936925,
-          404.3782656873976
+          404.3782656873976,
+          450.74779435566495
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50136,6 +50248,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -50555,7 +50668,8 @@ window.BENCHMARK_DATA = {
           413.89203421274823,
           416.51892738342286,
           406.6680244763692,
-          430.41957165400186
+          430.41957165400186,
+          416.2830434481303
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -50567,6 +50681,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -52001,6 +52116,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
+      },
+      {
+        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
+        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
       }
     ],
     "labels": [
@@ -52206,7 +52327,8 @@ window.BENCHMARK_DATA = {
       "5520582a",
       "a2e430d0",
       "705c8132",
-      "2068b12b"
+      "2068b12b",
+      "2ce286e6"
     ],
     "datasets": [
       {
@@ -52415,7 +52537,8 @@ window.BENCHMARK_DATA = {
           785.0743770599365,
           809.3368290583293,
           757.8678945541382,
-          798.2168514887492
+          798.2168514887492,
+          751.3252913611276
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52620,6 +52743,7 @@ window.BENCHMARK_DATA = {
           1448,
           1376,
           1376,
+          1280,
           1280,
           1280,
           1280,
@@ -52846,7 +52970,8 @@ window.BENCHMARK_DATA = {
           1991.6265038081578,
           1979.0988202412923,
           2149.868045043945,
-          2051.9786197117396
+          2051.9786197117396,
+          2134.982639857701
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52858,6 +52983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -53277,7 +53403,8 @@ window.BENCHMARK_DATA = {
           973.0913032531738,
           958.0345230102539,
           944.5890074509841,
-          986.8440039316813
+          986.8440039316813,
+          949.604197365897
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -53289,6 +53416,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -54723,6 +54851,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
+      },
+      {
+        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
+        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
       }
     ],
     "labels": [
@@ -54928,7 +55062,8 @@ window.BENCHMARK_DATA = {
       "5520582a",
       "a2e430d0",
       "705c8132",
-      "2068b12b"
+      "2068b12b",
+      "2ce286e6"
     ],
     "datasets": [
       {
@@ -55137,7 +55272,8 @@ window.BENCHMARK_DATA = {
           11976.642706734794,
           12397.290591430665,
           11701.54149576823,
-          12131.549342564174
+          12131.549342564174,
+          11695.624444144112
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55342,6 +55478,7 @@ window.BENCHMARK_DATA = {
           1680,
           1752,
           1752,
+          1712,
           1712,
           1712,
           1712,
@@ -55568,7 +55705,8 @@ window.BENCHMARK_DATA = {
           40928.246826171875,
           41677.81279109074,
           36373.74493408203,
-          41509.35246863732
+          41509.35246863732,
+          35777.98292032877
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55778,6 +55916,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -55999,7 +56138,8 @@ window.BENCHMARK_DATA = {
           10579.259935651507,
           10677.300686176006,
           10121.383895874023,
-          10680.143263753254
+          10680.143263753254,
+          9982.329533168248
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -56011,6 +56151,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -57445,6 +57586,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
+      },
+      {
+        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
+        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
       }
     ],
     "labels": [
@@ -57650,7 +57797,8 @@ window.BENCHMARK_DATA = {
       "5520582a",
       "a2e430d0",
       "705c8132",
-      "2068b12b"
+      "2068b12b",
+      "2ce286e6"
     ],
     "datasets": [
       {
@@ -57859,7 +58007,8 @@ window.BENCHMARK_DATA = {
           11680.612877478967,
           11752.5470929827,
           11357.333339146206,
-          11527.85748799642
+          11527.85748799642,
+          11578.363608805339
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58064,6 +58213,7 @@ window.BENCHMARK_DATA = {
           2160,
           2232,
           2232,
+          2192,
           2192,
           2192,
           2192,
@@ -58290,7 +58440,8 @@ window.BENCHMARK_DATA = {
           59106.88135579427,
           58821.4951944987,
           51851.53050537109,
-          59416.75593348912
+          59416.75593348912,
+          51222.1364440918
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58502,6 +58653,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553
@@ -58721,7 +58873,8 @@ window.BENCHMARK_DATA = {
           20977.52168927874,
           21139.241020789512,
           19916.897288731165,
-          21092.62966449444
+          21092.62966449444,
+          19775.621311442057
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -58733,6 +58886,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
