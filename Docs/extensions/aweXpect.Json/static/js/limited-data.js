@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "487b869aca9f751f6188528a45c205e3a6031130",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
-        "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
-      },
-      {
         "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
         "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
+      },
+      {
+        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
       }
     ],
     "labels": [
-      "487b869a",
       "f19d2281",
       "5703bc6b",
       "7d17a8ab",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "1dc71bae",
       "5520582a",
       "a2e430d0",
-      "705c8132"
+      "705c8132",
+      "2068b12b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2223.7999839782715,
           2186.2204775129044,
           1263.9030807495117,
           2053.383698976957,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1743.8749532699585,
           1555.8806336266655,
           2077.206997190203,
-          2022.4838717533992
+          2022.4838717533992,
+          1539.126728938176
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -458,7 +458,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
-          1264,
+          1136,
           1136,
           1136,
           1136,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15722.535391671317,
           15795.50902733436,
           8023.185302734375,
           15778.961948649088,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           12821.364896501813,
           10373.62582724435,
           15797.021658090445,
-          16396.497399466378
+          16396.497399466378,
+          10941.935059611003
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "487b869aca9f751f6188528a45c205e3a6031130",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
-        "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
-      },
-      {
         "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
         "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
+      },
+      {
+        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
       }
     ],
     "labels": [
-      "487b869a",
       "f19d2281",
       "5703bc6b",
       "7d17a8ab",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "1dc71bae",
       "5520582a",
       "a2e430d0",
-      "705c8132"
+      "705c8132",
+      "2068b12b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1716.54064478193,
           1827.978007725307,
           922.1590306942279,
           1754.598953100351,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1370.1837903431483,
           1237.6183641873872,
           1707.7806851704916,
-          1628.0818207604545
+          1628.0818207604545,
+          1240.6637877146402
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1066,7 +1066,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
-          1240,
+          1112,
           1112,
           1112,
           1112,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14473.652552286783,
           14772.158507283528,
           7333.939217200646,
           14503.715684744027,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           12044.597059122721,
           9507.562659630408,
           14388.153580801827,
-          14987.185563223702
+          14987.185563223702,
+          10183.632310994466
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "487b869aca9f751f6188528a45c205e3a6031130",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
-        "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
-      },
-      {
         "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
         "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
+      },
+      {
+        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
       }
     ],
     "labels": [
-      "487b869a",
       "f19d2281",
       "5703bc6b",
       "7d17a8ab",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "1dc71bae",
       "5520582a",
       "a2e430d0",
-      "705c8132"
+      "705c8132",
+      "2068b12b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4917.287217203776,
           5277.116115025112,
           2689.1067942105806,
           5335.27877338116,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           4173.6183504377095,
           3929.077146911621,
           5650.870903602014,
-          5524.671089172363
+          5524.671089172363,
+          3857.0855066935223
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1674,7 +1674,7 @@ window.BENCHMARK_DATA = {
           3736,
           3736,
           3736,
-          3736,
+          3712,
           3712,
           3712,
           3712,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          43574.2735421317,
           47870.735188802086,
           22547.263248697916,
           46847.978872445914,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           36000.69462702824,
           29005.375069754464,
           47018.66225585937,
-          48515.545335036055
+          48515.545335036055,
+          29642.267236328124
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61932,
           61926,
           61925,
           61925,
@@ -1808,6 +1807,7 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61925,
+          61926,
           61926,
           61926,
           61926
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "487b869aca9f751f6188528a45c205e3a6031130",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
-        "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
-      },
       {
         "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
         "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
+      },
+      {
+        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
       }
     ],
     "labels": [
-      "487b869a",
       "f19d2281",
       "5703bc6b",
       "7d17a8ab",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "1dc71bae",
       "5520582a",
       "a2e430d0",
-      "705c8132"
+      "705c8132",
+      "2068b12b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10066.213928222656,
           9558.349999060998,
           5590.569007237752,
           9548.16493334089,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           8322.804649353027,
           7380.94525381235,
           9506.016381399972,
-          9682.06654663086
+          9682.06654663086,
+          7323.611813863118
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2282,7 +2282,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
-          7064,
+          6936,
           6936,
           6936,
           6936,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          291143.2507324219,
           306332.8115583147,
           159775.3765218099,
           306089.28485576925,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           249743.68704427083,
           209206.36682942708,
           298369.51307896205,
-          320901.01326497394
+          320901.01326497394,
+          204920.83212076823
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521573,
           521594,
           521542,
           521594,
@@ -2416,6 +2415,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521541,
+          521594,
           521594,
           521594,
           521594
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "487b869aca9f751f6188528a45c205e3a6031130",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
-        "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
-      },
       {
         "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
         "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
+      },
+      {
+        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
       }
     ],
     "labels": [
-      "487b869a",
       "f19d2281",
       "5703bc6b",
       "7d17a8ab",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "1dc71bae",
       "5520582a",
       "a2e430d0",
-      "705c8132"
+      "705c8132",
+      "2068b12b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3126.027317047119,
           2863.7862648010255,
           1800.4310746874128,
           2816.453644343785,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2629.9251869746618,
           2213.655953816005,
           2867.4629217294546,
-          2900.133402457604
+          2900.133402457604,
+          2226.762110573905
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2868,7 +2868,6 @@ window.BENCHMARK_DATA = {
           1328,
           1328,
           1328,
-          1328,
           1488,
           1488,
           1488,
@@ -2893,6 +2892,7 @@ window.BENCHMARK_DATA = {
           1488,
           1360,
           1360,
+          1288,
           1288,
           1288,
           1288,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2220.0785842308633,
           1979.1245062691826,
           1289.9836774190267,
           1970.3915857950847,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1917.626728602818,
           1560.3824951171875,
           1979.0604921976726,
-          2031.432422910418
+          2031.432422910418,
+          1543.6657938639323
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "487b869aca9f751f6188528a45c205e3a6031130",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 11:45:32 2026 \u002B0200",
-        "message": "fix: pass the analyzers of aweXpect.Core on from the extension packages (#2001)"
-      },
-      {
         "sha": "f19d22816377c6683bd945c65eb98e46123fcb98",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:50:20 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
         "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
+      },
+      {
+        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
       }
     ],
     "labels": [
-      "487b869a",
       "f19d2281",
       "5703bc6b",
       "7d17a8ab",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "1dc71bae",
       "5520582a",
       "a2e430d0",
-      "705c8132"
+      "705c8132",
+      "2068b12b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2223.227627680852,
           2174.663460322789,
           1214.2710430438701,
           2085.9824703216555,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2207.171106719971,
           2106.5819759368896,
           2660.720199584961,
-          2747.917680467878
+          2747.917680467878,
+          2021.4810256958008
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3491,7 +3491,6 @@ window.BENCHMARK_DATA = {
           2864,
           2864,
           2864,
-          2864,
           2832,
           2832,
           2832,
@@ -3501,6 +3500,7 @@ window.BENCHMARK_DATA = {
           2832,
           2832,
           2832,
+          2776,
           2776,
           2776,
           2776,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2283.0073571886337,
           1915.3657567342123,
           1224.1755921290471,
           1768.434166844686,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           2056.406147548131,
           1397.956110127767,
           1748.7187596834624,
-          1960.9122652689616
+          1960.9122652689616,
+          1353.3319322041102
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3756,6 +3756,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
         "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
+      },
+      {
+        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
       }
     ],
     "labels": [
@@ -3776,7 +3782,8 @@ window.BENCHMARK_DATA = {
       "1dc71bae",
       "5520582a",
       "a2e430d0",
-      "705c8132"
+      "705c8132",
+      "2068b12b"
     ],
     "datasets": [
       {
@@ -3800,7 +3807,8 @@ window.BENCHMARK_DATA = {
           1855.3363744099936,
           1632.067563756307,
           2086.253339494978,
-          2179.8960843404134
+          2179.8960843404134,
+          1621.8879848480224
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3812,6 +3820,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2888,
           2888,
           2888,
           2888,
@@ -3861,7 +3870,8 @@ window.BENCHMARK_DATA = {
           1470.8178543090821,
           956.542239634196,
           1162.572247314453,
-          1258.825724919637
+          1258.825724919637,
+          908.7803482691447
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3873,6 +3883,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -4012,6 +4023,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
         "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
+      },
+      {
+        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
       }
     ],
     "labels": [
@@ -4032,7 +4049,8 @@ window.BENCHMARK_DATA = {
       "1dc71bae",
       "5520582a",
       "a2e430d0",
-      "705c8132"
+      "705c8132",
+      "2068b12b"
     ],
     "datasets": [
       {
@@ -4056,7 +4074,8 @@ window.BENCHMARK_DATA = {
           2663.779745992025,
           2288.356576283773,
           2956.896233694894,
-          3022.1497230529785
+          3022.1497230529785,
+          2220.7155164082847
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4075,6 +4094,7 @@ window.BENCHMARK_DATA = {
           3768,
           3768,
           3768,
+          3744,
           3744,
           3744,
           3744,
@@ -4117,7 +4137,8 @@ window.BENCHMARK_DATA = {
           1690.9243260792323,
           1050.104055404663,
           1293.8981304168701,
-          1429.0526109842153
+          1429.0526109842153,
+          1058.6966256459555
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4129,6 +4150,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
