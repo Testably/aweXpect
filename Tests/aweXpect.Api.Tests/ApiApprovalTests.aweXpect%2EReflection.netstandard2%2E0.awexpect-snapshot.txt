@@ -1198,10 +1198,6 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, System.Reflection.PropertyInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>?> subject, System.Func<TAttribute, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>?>> HaveAGetter(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>?>> HaveAGetter(this aweXpect.IEnumerableItems<System.Reflection.PropertyInfo?> items) { }
-        public static aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection>> HaveAGetter<TCollection>(this aweXpect.IStructEnumerableItems<TCollection, System.Reflection.PropertyInfo?> items) where TCollection : struct, System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?> { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>?>> HaveASetter(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>?>> HaveASetter(this aweXpect.IEnumerableItems<System.Reflection.PropertyInfo?> items) { }
         public static aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection>> HaveASetter<TCollection>(this aweXpect.IStructEnumerableItems<TCollection, System.Reflection.PropertyInfo?> items) where TCollection : struct, System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?> { }
@@ -1228,8 +1224,6 @@ namespace aweXpect
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.PropertyInfo, System.Reflection.PropertyInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) where TAttribute : System.Attribute { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.PropertyInfo, System.Reflection.PropertyInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject, System.Func<TAttribute, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
-        [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> HasAGetter(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> HasASetter(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -2303,7 +2297,6 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichDoNotHaveASetter(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichDoNotHaveAnInitSetter(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichDoNotOverride(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
-        public static aweXpect.Reflection.Collections.Filtered.Properties WhichHaveAGetter(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichHaveASetter(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichHaveAnInitSetter(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichOverride(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }

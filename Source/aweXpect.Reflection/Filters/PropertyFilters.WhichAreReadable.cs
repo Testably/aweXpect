@@ -9,6 +9,9 @@ public static partial class PropertyFilters
 	/// <summary>
 	///     Filters for properties that are readable (can be read).
 	/// </summary>
+	/// <remarks>
+	///     Every property has at least one accessor, so <see cref="WhichAreWriteOnly" /> is the negation.
+	/// </remarks>
 	public static Filtered.Properties WhichAreReadable(this Filtered.Properties @this)
 		=> @this.Which(Filter.Prefix<PropertyInfo>(
 			property => property.IsReadable(),

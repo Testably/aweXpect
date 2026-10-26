@@ -224,12 +224,6 @@ internal static class PropertyInfoHelpers
 		=> propertyInfo is { CanWrite: true, };
 
 	/// <summary>
-	///     Checks if the <paramref name="propertyInfo" /> has a getter.
-	/// </summary>
-	public static bool HasGetter(this PropertyInfo? propertyInfo)
-		=> propertyInfo?.GetMethod != null;
-
-	/// <summary>
 	///     Checks if the <paramref name="propertyInfo" /> has an init-only setter.
 	/// </summary>
 	/// <remarks>

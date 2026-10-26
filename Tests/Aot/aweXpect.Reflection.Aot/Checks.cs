@@ -50,9 +50,9 @@ internal static class Checks
 			() => ShouldFailOrFailLoudly(async ()
 				=> await That(typeof(Order)).ContainsMethods(methods => methods.WithName("Missing")).AtLeast()
 					.Once(), "contains")),
-		new("a property found statically has a getter",
+		new("a property found statically is readable",
 			() => ShouldPass(async ()
-				=> await That(typeof(Order).GetProperty(nameof(Order.Id))).HasAGetter())),
+				=> await That(typeof(Order).GetProperty(nameof(Order.Id))).IsReadable())),
 		new("a nullable property is nullable",
 			() => ShouldPassOrFailLoudly(async ()
 				=> await That(typeof(Customer).GetProperty(nameof(Customer.Nickname))).IsNullable())),

@@ -172,7 +172,7 @@ await Expect.That(In.AssemblyContaining<Playlist>()
 ## Property
 
 - **FluentAssertions** (`PropertyInfoAssertions`): `BeVirtual`/`NotBeVirtual`, `BeReadable`/`BeWritable` (each with an optional `CSharpAccessModifier`), `NotBeReadable`/`NotBeWritable`, `Return<T>`/`NotReturn<T>`, `BeDecoratedWith<T>`. No assertions for `static`/`abstract`/`sealed`/`required`/indexer/init-setter/override, and no name assertion.
-- **aweXpect.Reflection**: `IsReadable`/`IsWritable`/`IsReadOnly`/`IsWriteOnly`/`IsReadWrite`, `HasAGetter`/`HasASetter`/`HasAnInitSetter`, `IsStatic`/`IsAbstract`/`IsSealed`/`IsVirtual`, `IsRequired`, `IsNullable`, `IsAnIndexer`, `IsAnExtensionProperty`, `Overrides<T>`, `IsOfType<T>`/`IsOfExactType<T>` (and `IsNotOfType<T>`/`IsNotOfExactType<T>`), `HasName`, `Has<TAttribute>`.
+- **aweXpect.Reflection**: `IsReadable`/`IsWritable`/`IsReadOnly`/`IsWriteOnly`/`IsReadWrite`, `HasASetter`/`HasAnInitSetter`, `IsStatic`/`IsAbstract`/`IsSealed`/`IsVirtual`, `IsRequired`, `IsNullable`, `IsAnIndexer`, `IsAnExtensionProperty`, `Overrides<T>`, `IsOfType<T>`/`IsOfExactType<T>` (and `IsNotOfType<T>`/`IsNotOfExactType<T>`), `HasName`, `Has<TAttribute>`.
 
 <Tabs groupId="assertion-library">
 <TabItem value="fluentassertions" label="FluentAssertions" default>
@@ -189,7 +189,7 @@ property.Should().Return<int>();
 
 ```csharp
 PropertyInfo property = typeof(Playlist).GetProperty("Rating");
-await Expect.That(property).HasAGetter();
+await Expect.That(property).IsReadable();
 await Expect.That(property).IsWritable();
 await Expect.That(property).IsOfType<int>();
 await Expect.That(property).HasName("Rating");
