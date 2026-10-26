@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
-        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
-      },
-      {
         "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10870.915044148764,
           10832.311373197115,
           5138.976625442505,
           10927.52736790975,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           7838.555939894456,
           10757.492473057338,
           11087.898408156176,
-          7941.239956665039
+          7941.239956665039,
+          10665.054735310872
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -447,7 +447,7 @@ window.BENCHMARK_DATA = {
           2168,
           2168,
           2168,
-          2168,
+          2208,
           2208,
           2208,
           2208,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          386705.76848958334,
           371048.873828125,
           160992.68551199776,
           377486.63190104166,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           262346.61158854165,
           366177.63828125,
           373085.5595703125,
-          244617.19088040866
+          244617.19088040866,
+          366880.78738839284
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590290,
           590287,
           590292,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590288,
           590290,
           590292,
-          590288
+          590288,
+          590290
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19971.390464782715,
           19921.152348109656,
           9524.840710231236,
           19641.993630981444,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           14319.51313273112,
           19276.359716796876,
           19665.55696818034,
-          14634.465534464518
+          14634.465534464518,
+          19815.836309814455
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
-        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
-      },
-      {
         "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          288.8466412226359,
           335.15895795822144,
           125.7688092163631,
           354.83541577657064,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           216.77277930577597,
           287.95696135929654,
           303.7410211881002,
-          223.39375359217325
+          223.39375359217325,
+          276.03488512039183
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          550.6628290812174,
           490.70683758599415,
           230.83236303696265,
           488.1098541895548,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           449.1883031300136,
           506.8851100921631,
           506.2186897277832,
-          393.97632912227084
+          393.97632912227084,
+          469.4289601325989
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          411.00827697345187,
           387.37396478652954,
           194.65890187483566,
           393.5741816248213,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           377.82894908464874,
           386.43536475499474,
           395.56076087270463,
-          289.2729404522822
+          289.2729404522822,
+          361.23641939163207
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
-        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
-      },
-      {
         "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          163.13414532343546,
           151.13110345204672,
           70.46661165356636,
           145.3027798618589,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           116.4588635478701,
           143.65945262908934,
           171.66304176648458,
-          106.3719213604927
+          106.3719213604927,
+          141.35797703266144
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          274.72456899056067,
           251.36154244740803,
           124.85725712776184,
           245.87467125483923,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           209.00569519996642,
           249.13233129794781,
           253.13348197937012,
-          197.4414882818858
+          197.4414882818858,
+          239.54336631298065
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          260.9330695470174,
           246.57321246465048,
           118.11973311901093,
           236.4103583438056,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           191.31890745162963,
           238.73520429929098,
           252.85191383361817,
-          180.5800591982328
+          180.5800591982328,
+          228.09027440207345
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
-        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
-      },
-      {
         "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          282.36354075159346,
           257.3949202219645,
           127.3903511842092,
           268.6450390448937,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           233.31166462898256,
           265.5308675765991,
           277.8937107086182,
-          200.33035922050476
+          200.33035922050476,
+          279.32535433769226
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2646,7 +2646,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
-          488,
+          520,
           520,
           520,
           520,
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          561.7477843602499,
           497.3336700598399,
           255.66964111328124,
           524.4197180821345,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           429.9906591006688,
           518.7095698674519,
           541.2626361846924,
-          427.44613410631814
+          427.44613410631814,
+          492.57743911743165
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          363.1258801619212,
           343.05807479222614,
           164.19173996265118,
           341.9401974360148,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           282.0584105344919,
           347.1272107533046,
           346.37852363586427,
-          256.11666504542035
+          256.11666504542035,
+          320.4914550145467
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
-        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
-      },
-      {
         "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          699.8700706618173,
           629.5781616483416,
           329.44736552238464,
           689.2244403362274,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           568.1178137705876,
           661.0110391616821,
           675.7342365809849,
-          523.6622376124064
+          523.6622376124064,
+          663.1149373054504
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1459.4424999782018,
           1375.784213747297,
           656.2123964627584,
           1366.1297442572456,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1169.750495638166,
           1380.8408908843994,
           1420.4930718739827,
-          1067.1937713623047
+          1067.1937713623047,
+          1346.2110308238439
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          683.5578035354614,
           698.8061735788981,
           321.87240428190967,
           643.7252431869507,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           523.4726700782776,
           660.8363005320231,
           657.4896403092605,
-          506.19700889587403
+          506.19700889587403,
+          615.9237252871195
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
-        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
-      },
-      {
         "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          666.9187263488769,
           611.2960834503174,
           320.2746046611241,
           658.779904978616,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           565.6428933510414,
           648.0624050140381,
           668.3425291697184,
-          533.8242816925049
+          533.8242816925049,
+          656.2300875981649
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28546.07060139974,
           28074.099779401506,
           10851.304249064127,
           27581.238907877603,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           17752.779359944663,
           27716.699626668295,
           28228.88483973912,
-          15506.206599934896
+          15506.206599934896,
+          27651.467165265763
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4216,7 +4216,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4241,6 +4240,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          808.0674879074097,
           849.7840337117512,
           390.6332723753793,
           788.4490484237671,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           631.6617696625846,
           778.4582978657314,
           787.538090297154,
-          564.140283720834
+          564.140283720834,
+          779.462045288086
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
-        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
-      },
-      {
         "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          763.981609471639,
           724.4463818232218,
           336.48655770375177,
           704.6499107996623,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           567.0076211293539,
           731.8403738657634,
           747.9089997836521,
-          566.8400911603655
+          566.8400911603655,
+          672.7429393132528
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          85521.0860921224,
           84115.55133463541,
           27130.838614908855,
           84535.62928263347,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           53793.49128417969,
           81665.23321940104,
           85179.76094156901,
-          52607.74634225028
+          52607.74634225028,
+          83008.08897298177
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4944,7 +4944,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5252,
-          5252,
           5256,
           5252,
           5252,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
-        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
-      },
       {
         "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          190.5678290469306,
           202.61823102633159,
           86.42247979130063,
           184.38410047122412,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           147.23687370006854,
           174.6519075234731,
           184.9235103726387,
-          129.70845831357516
+          129.70845831357516,
+          175.90533679326376
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          33259.39869588216,
           33027.11542765299,
           8907.560680682842,
           32663.567504882812,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           14896.602600097656,
           31353.51924641927,
           31630.95509033203,
-          14459.642929077148
+          14459.642929077148,
+          30923.344569614954
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5552,7 +5552,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5614,
-          5614,
           5615,
           5614,
           5614,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          260.7919875894274,
           244.8237632751465,
           115.16590298073632,
           244.48581635157268,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           189.42202481856714,
           243.60685968399048,
           248.55921954375046,
-          178.8496106011527
+          178.8496106011527,
+          228.8451004879815
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
-        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
-      },
-      {
         "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          361.3528435230255,
           348.0887165387472,
           161.67912128993444,
           359.7383336339678,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           271.808910540172,
           360.78996613820397,
           365.7113471031189,
-          292.2740718034598
+          292.2740718034598,
+          350.0953129359654
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          390.6793306555067,
           366.91732358932495,
           185.63858553568522,
           377.17135320390975,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           332.82876031215375,
           384.91252625783284,
           386.13799950054715,
-          306.49175053376416
+          306.49175053376416,
+          363.9032681465149
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          477.97781726292203,
           412.1185622851054,
           195.6275898860051,
           405.41184839835535,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           348.999557188579,
           406.8818880489894,
           410.9538699296805,
-          340.3141288757324
+          340.3141288757324,
+          392.9324012200038
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
-        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
-      },
-      {
         "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          746.0307025909424,
           690.4038049697876,
           334.13899183273315,
           724.727005141122,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           602.6303013483683,
           761.9184070587158,
           791.0103004455566,
-          570.9538644154867
+          570.9538644154867,
+          750.932220395406
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6919,7 +6919,7 @@ window.BENCHMARK_DATA = {
           1384,
           1384,
           1384,
-          1384,
+          1448,
           1448,
           1448,
           1448,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2023.164930343628,
           1952.0433807373047,
           1002.7757556915283,
           2074.059708150228,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1670.665205001831,
           1889.7947486877442,
           1914.0542945861816,
-          1512.1110822237456
+          1512.1110822237456,
+          1831.6024804433187
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          1015.1897013346354,
           957.6677699770246,
           464.8748167991638,
           956.786252784729,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           768.3087452479771,
           919.6154991785685,
           952.3509455362956,
-          767.0848663965861
+          767.0848663965861,
+          877.5123423258464
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
-        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
-      },
-      {
         "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11375.462392534528,
           11550.72001538958,
           5478.403459402231,
           11218.427151271275,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           8568.552437918526,
           11504.348241533551,
           11610.452999408428,
-          8253.137580284705
+          8253.137580284705,
+          11458.119884784404
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7652,7 +7652,6 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
-          1576,
           1608,
           1608,
           1608,
@@ -7669,6 +7668,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1680,
           1680,
           1680,
           1680,
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          41971.7538655599,
           41918.698704310824,
           17787.92162867955,
           40766.7369150015,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           27791.624383108956,
           40264.42847149189,
           40328.68602905273,
-          26413.56932373047
+          26413.56932373047,
+          39632.33622741699
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10664.439044952393,
           10706.022544273963,
           5380.410812922886,
           10519.155495779854,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           8232.179388192984,
           10557.764910016742,
           10602.941390991211,
-          7875.768165001502
+          7875.768165001502,
+          10566.375685555595
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
-        "message": "refactor!: nest expectations on IsValidJson and IsValidXml as an overload instead of Which (#1991)"
-      },
-      {
         "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10956.196783883232,
           11041.578094482422,
           5213.175956726074,
           10856.006446251502,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           8232.63698049692,
           11160.833149210612,
           11300.075103759766,
-          7814.424248831613
+          7814.424248831613,
+          10932.918025090145
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8385,7 +8385,6 @@ window.BENCHMARK_DATA = {
           2056,
           2056,
           2056,
-          2056,
           2088,
           2088,
           2088,
@@ -8402,6 +8401,7 @@ window.BENCHMARK_DATA = {
           2088,
           2088,
           2088,
+          2160,
           2160,
           2160,
           2160,
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          59760.42678128756,
           58727.364103190106,
           25595.61394042969,
           58681.763157435824,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           39597.84237467448,
           57320.96973528181,
           58803.04060145787,
-          37831.24760554387
+          37831.24760554387,
+          57584.23080209585
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8494,7 +8494,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8520,6 +8519,7 @@ window.BENCHMARK_DATA = {
           23553,
           23554,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          21044.809646606445,
           20946.3355082194,
           11302.479058837891,
           20932.46697998047,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           16053.09954398019,
           21079.536822979266,
           20952.266590663367,
-          15280.485498046875
+          15280.485498046875,
+          20962.449650691105
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
