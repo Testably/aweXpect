@@ -68,6 +68,8 @@ in XML docs and `Docs/agents`, not in the user docs.
   `Source`. Add a redirect for the old URL to `docusaurus.config.ts` in `Testably/Testably.Site`, deployed together
   with the move, as its build fails on a redirect to a missing page.
 - `Docs/extensions` links core pages with absolute URLs, as its pages are also published on NuGet.
+- The site compiles the pages as MDX: no custom heading ids (`{#id}`) and no other unescaped `{` or `<` in prose. To
+  keep an anchor, keep the heading text.
 
 ## Checks
 

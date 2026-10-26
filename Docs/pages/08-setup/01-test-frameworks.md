@@ -77,7 +77,7 @@ catch (IOException exception)
 }
 ```
 
-## Ending a test as inconclusive {#inconclusive}
+## Inconclusive
 
 `Fail.Inconclusive` ends the running test as inconclusive, i.e. as neither passed nor failed, e.g. when it depends on
 something that is not available:
