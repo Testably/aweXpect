@@ -48,7 +48,7 @@ internal sealed class MatchesXmlConstraint<TNode>(
 	public static AndOrResult<TNode, IThat<TNode?>> Add(IThat<TNode?> source, string expected,
 		bool ignoreAdditionalNodes, Func<TNode, XElement?> getElement, Func<XmlOptions, XmlOptions>? options)
 	{
-		XElement expectedElement = SecureXml.LoadExpected(expected).Root!;
+		XElement expectedElement = SecureXml.LoadExpected(expected, nameof(expected)).Root!;
 		XmlOptions xmlOptions = new()
 		{
 			IgnoreAdditionalNodes = ignoreAdditionalNodes,

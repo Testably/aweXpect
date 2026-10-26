@@ -276,7 +276,7 @@ public sealed partial class ThatJsonNode
 					=> await That(subject).IsString((string)null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithMessage("The 'expected' cannot be null.").AsPrefix();
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
 			[Test]

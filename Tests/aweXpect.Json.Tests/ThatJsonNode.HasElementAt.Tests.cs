@@ -59,7 +59,7 @@ public sealed partial class ThatJsonNode
 					=> await That(subject).HasElementAt(-1, e => e.IsNumber());
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("The 'index' must not be negative.").AsPrefix();
+					.WithMessage("The index must not be negative.").AsPrefix();
 			}
 
 			[Test]
@@ -136,7 +136,7 @@ public sealed partial class ThatJsonNode
 					=> await That(subject).HasElementAt(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("The 'index' must not be negative.").AsPrefix();
+					.WithMessage("The index must not be negative.").AsPrefix();
 			}
 
 			[Test]

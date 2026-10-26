@@ -441,7 +441,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 				{
 					if (unexpected is null)
 					{
-						throw global::aweXpect.Core.Tracing.WriteException(new global::System.ArgumentNullException(nameof(unexpected), "The 'unexpected' cannot be null."));
+						throw global::aweXpect.Core.Tracing.WriteException(new global::System.ArgumentNullException(nameof(unexpected), "The 'unexpected' value cannot be null."));
 					}
 
 					return new global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<string?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?>>(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint(unexpected, (__state, __it, __grammars) => new

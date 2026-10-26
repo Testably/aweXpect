@@ -125,7 +125,7 @@ public sealed partial class ThatXElement
 					=> await That(element).Matches("<a>");
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("The expected XML is invalid: *").AsWildcard();
+					.WithMessage("The 'expected' XML is invalid: *").AsWildcard();
 			}
 
 			[Test]
@@ -137,7 +137,7 @@ public sealed partial class ThatXElement
 					=> await That(element).Matches("<!DOCTYPE a><a/>");
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("The expected XML is invalid, because it contains a document type definition (DTD), which is prohibited for security reasons.");
+					.WithMessage("The 'expected' XML is invalid, because it contains a document type definition (DTD), which is prohibited for security reasons.").AsPrefix();
 			}
 
 			[Test]
@@ -150,7 +150,7 @@ public sealed partial class ThatXElement
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("expected").And
-					.WithMessage("The expected XML cannot be null.*").AsWildcard();
+					.WithMessage("The 'expected' XML cannot be null.*").AsWildcard();
 			}
 		}
 
