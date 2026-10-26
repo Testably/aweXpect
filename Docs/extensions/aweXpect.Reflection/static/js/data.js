@@ -822,6 +822,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
         "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
+      },
+      {
+        "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
+        "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
       }
     ],
     "labels": [
@@ -961,7 +967,8 @@ window.BENCHMARK_DATA = {
       "f760ae08",
       "be28a12e",
       "a7c1c18e",
-      "35cd9bf1"
+      "35cd9bf1",
+      "7a6dec57"
     ],
     "datasets": [
       {
@@ -1104,7 +1111,8 @@ window.BENCHMARK_DATA = {
           359.6314206123352,
           739.1604601542155,
           666.1251465252468,
-          681.5917372022357
+          681.5917372022357,
+          667.73224903987
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1251,6 +1259,7 @@ window.BENCHMARK_DATA = {
           592,
           592,
           592,
+          464,
           464,
           464
         ],
@@ -1403,7 +1412,8 @@ window.BENCHMARK_DATA = {
           504.9373365402222,
           919.4542154947917,
           878.8707562226516,
-          919.635594177246
+          919.635594177246,
+          839.5925099509103
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1415,6 +1425,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -2387,6 +2398,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
         "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
+      },
+      {
+        "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
+        "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
       }
     ],
     "labels": [
@@ -2526,7 +2543,8 @@ window.BENCHMARK_DATA = {
       "f760ae08",
       "be28a12e",
       "a7c1c18e",
-      "35cd9bf1"
+      "35cd9bf1",
+      "7a6dec57"
     ],
     "datasets": [
       {
@@ -2669,7 +2687,8 @@ window.BENCHMARK_DATA = {
           71.08562221697399,
           143.14115254084268,
           95.40810291583722,
-          113.804558467865
+          113.804558467865,
+          121.59816252390543
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2816,6 +2835,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168
         ],
@@ -2968,7 +2988,8 @@ window.BENCHMARK_DATA = {
           119.76266268583444,
           199.99008261362712,
           194.2811522117028,
-          206.95528313318889
+          206.95528313318889,
+          200.0570366382599
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2980,6 +3001,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -3952,6 +3974,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
         "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
+      },
+      {
+        "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
+        "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
       }
     ],
     "labels": [
@@ -4091,7 +4119,8 @@ window.BENCHMARK_DATA = {
       "f760ae08",
       "be28a12e",
       "a7c1c18e",
-      "35cd9bf1"
+      "35cd9bf1",
+      "7a6dec57"
     ],
     "datasets": [
       {
@@ -4234,7 +4263,8 @@ window.BENCHMARK_DATA = {
           967.8895690100534,
           1962.1086298624675,
           1753.2441694895426,
-          1819.4027413686117
+          1819.4027413686117,
+          1894.5421292231633
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4381,6 +4411,7 @@ window.BENCHMARK_DATA = {
           1888,
           1888,
           1888,
+          1808,
           1808,
           1808
         ],
@@ -4533,7 +4564,8 @@ window.BENCHMARK_DATA = {
           787.9122326533,
           1453.9501083374023,
           1450.8811801910401,
-          1527.9401044209799
+          1527.9401044209799,
+          1483.6678530375164
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4680,6 +4712,7 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1864,
+          1953,
           1953,
           1953
         ],
@@ -5457,6 +5490,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
         "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
+      },
+      {
+        "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
+        "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
       }
     ],
     "labels": [
@@ -5586,7 +5625,8 @@ window.BENCHMARK_DATA = {
       "f760ae08",
       "be28a12e",
       "a7c1c18e",
-      "35cd9bf1"
+      "35cd9bf1",
+      "7a6dec57"
     ],
     "datasets": [
       {
@@ -5719,7 +5759,8 @@ window.BENCHMARK_DATA = {
           1396.671679360526,
           2693.8259791056316,
           2678.464265696208,
-          2719.236819131034
+          2719.236819131034,
+          2771.6956988743373
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5856,6 +5897,7 @@ window.BENCHMARK_DATA = {
           3184,
           3184,
           3184,
+          3104,
           3104,
           3104
         ],
@@ -5998,7 +6040,8 @@ window.BENCHMARK_DATA = {
           2116.9674554552353,
           3745.0930099487305,
           3654.145457903544,
-          3800.112295423235
+          3800.112295423235,
+          3704.700168355306
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6136,7 +6179,8 @@ window.BENCHMARK_DATA = {
           3980,
           3981,
           3981,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6912,6 +6956,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
         "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
+      },
+      {
+        "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
+        "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
       }
     ],
     "labels": [
@@ -7041,7 +7091,8 @@ window.BENCHMARK_DATA = {
       "f760ae08",
       "be28a12e",
       "a7c1c18e",
-      "35cd9bf1"
+      "35cd9bf1",
+      "7a6dec57"
     ],
     "datasets": [
       {
@@ -7174,7 +7225,8 @@ window.BENCHMARK_DATA = {
           197.72969339688618,
           403.7545188585917,
           385.26661993662515,
-          387.92745672861736
+          387.92745672861736,
+          364.816552734375
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7311,6 +7363,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568
         ],
@@ -7453,7 +7506,8 @@ window.BENCHMARK_DATA = {
           1270.2852588066687,
           2263.6409190041677,
           2228.0702811649867,
-          2345.3910257975263
+          2345.3910257975263,
+          2224.275225575765
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7465,6 +7519,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -8367,6 +8422,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
         "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
+      },
+      {
+        "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
+        "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
       }
     ],
     "labels": [
@@ -8496,7 +8557,8 @@ window.BENCHMARK_DATA = {
       "f760ae08",
       "be28a12e",
       "a7c1c18e",
-      "35cd9bf1"
+      "35cd9bf1",
+      "7a6dec57"
     ],
     "datasets": [
       {
@@ -8629,7 +8691,8 @@ window.BENCHMARK_DATA = {
           1567.33477935791,
           2897.169204711914,
           2709.6661731175013,
-          2873.708875020345
+          2873.708875020345,
+          2957.8502721150717
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8766,6 +8829,7 @@ window.BENCHMARK_DATA = {
           3312,
           3312,
           3312,
+          3232,
           3232,
           3232
         ],
@@ -8908,7 +8972,8 @@ window.BENCHMARK_DATA = {
           163951.69403948102,
           281821.78837890626,
           277930.8960367839,
-          279789.09524739586
+          279789.09524739586,
+          282710.95253208705
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9044,6 +9109,7 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17574,
+          17577,
           17577,
           17577,
           17577
