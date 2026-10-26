@@ -798,6 +798,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -933,7 +939,8 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -1072,7 +1079,8 @@ window.BENCHMARK_DATA = {
           733.8927498499553,
           556.6532575167142,
           409.9796852043697,
-          726.7930959701538
+          726.7930959701538,
+          743.9194248835246
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1211,6 +1219,7 @@ window.BENCHMARK_DATA = {
           1152,
           1152,
           1152,
+          1080,
           1080,
           1080,
           1080,
@@ -1363,7 +1372,8 @@ window.BENCHMARK_DATA = {
           783.5919907251994,
           526.1884100987361,
           377.02296912670135,
-          760.9886703491211
+          760.9886703491211,
+          768.2881415230887
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1375,6 +1385,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2319,6 +2330,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -2454,7 +2471,8 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -2593,7 +2611,8 @@ window.BENCHMARK_DATA = {
           5033.549484761556,
           3335.5453368595668,
           2987.065302335299,
-          5165.6495735168455
+          5165.6495735168455,
+          4399.229815419515
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2737,7 +2756,8 @@ window.BENCHMARK_DATA = {
           24321,
           24320,
           24320,
-          24320
+          24320,
+          24321
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2884,7 +2904,8 @@ window.BENCHMARK_DATA = {
           5963.410941060384,
           3740.684619394938,
           3033.248120625814,
-          5786.943173726399
+          5786.943173726399,
+          5125.238162994385
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2896,6 +2917,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -3780,6 +3802,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -3905,7 +3933,8 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -4034,7 +4063,8 @@ window.BENCHMARK_DATA = {
           3023.9696243286135,
           1866.8709212711879,
           1601.7549558367048,
-          2804.4334988911946
+          2804.4334988911946,
+          2733.1737197875977
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4168,7 +4198,8 @@ window.BENCHMARK_DATA = {
           12856,
           12780,
           12856,
-          12780
+          12780,
+          12856
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4305,7 +4336,8 @@ window.BENCHMARK_DATA = {
           3969.5252009073893,
           2530.741511027018,
           2059.767382558187,
-          3629.5616887410483
+          3629.5616887410483,
+          3667.0052350362143
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4317,6 +4349,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -5191,6 +5224,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -5316,7 +5355,8 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -5445,7 +5485,8 @@ window.BENCHMARK_DATA = {
           14718.640434773763,
           9840.119656154087,
           8028.292962646485,
-          14126.528017316547
+          14126.528017316547,
+          14680.194589233399
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5579,7 +5620,8 @@ window.BENCHMARK_DATA = {
           25568,
           25494,
           25568,
-          25494
+          25494,
+          25568
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5716,7 +5758,8 @@ window.BENCHMARK_DATA = {
           363687.6955078125,
           237700.49888392858,
           178568.9136230469,
-          371800.84294782364
+          371800.84294782364,
+          353536.9967447917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5846,6 +5889,7 @@ window.BENCHMARK_DATA = {
           544335,
           544268,
           544247,
+          544335,
           544335,
           544335,
           544335,
