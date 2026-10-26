@@ -103,9 +103,6 @@ public static partial class ThatDateOnly
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(tolerance.Value.ToDayString());
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }
 #endif

@@ -101,9 +101,6 @@ public static partial class ThatUri
 				Formatter.Format(stringBuilder, Actual);
 			}
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class FailIfRelativeConstraint(string it, ExpectationGrammars grammars)

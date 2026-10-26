@@ -115,9 +115,6 @@ public static partial class ThatDateOnly
 			Formatter.Format(stringBuilder, maximum);
 			stringBuilder.Append(tolerance.Value.ToDayString());
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }
 #endif

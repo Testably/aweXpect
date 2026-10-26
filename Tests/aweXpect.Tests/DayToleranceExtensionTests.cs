@@ -87,9 +87,6 @@ static file class DayToleranceExtensions
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("is not on the same day as ").Append(expected).Append(tolerance.Value.ToDayString());
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }
 #endif

@@ -315,9 +315,6 @@ public static partial class ThatNumber
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsOneOfConstraint<TNumber>(
@@ -363,9 +360,6 @@ public static partial class ThatNumber
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class IsOneOfConstraintWithNullable<TNumber>(
@@ -411,9 +405,6 @@ public static partial class ThatNumber
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsOneOfConstraintWithNullable<TNumber>(
@@ -459,9 +450,6 @@ public static partial class ThatNumber
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #else
 	private const string IsOneOfSummary =
@@ -616,9 +604,6 @@ public static partial class ThatNumber
 			                     ?? ValueFormatters.Format(Formatter, expected));
 			stringBuilder.Append(options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsOneOfConstraint<TNumber>(
@@ -666,9 +651,6 @@ public static partial class ThatNumber
 			                     ?? ValueFormatters.Format(Formatter, expected));
 			stringBuilder.Append(options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class IsOneOfConstraintWithNullable<TNumber>(
@@ -716,9 +698,6 @@ public static partial class ThatNumber
 			                     ?? ValueFormatters.Format(Formatter, expected));
 			stringBuilder.Append(options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsOneOfConstraintWithNullable<TNumber>(
@@ -766,9 +745,6 @@ public static partial class ThatNumber
 			                     ?? ValueFormatters.Format(Formatter, expected));
 			stringBuilder.Append(options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #endif
 }

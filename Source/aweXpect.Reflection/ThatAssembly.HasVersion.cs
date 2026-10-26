@@ -125,9 +125,6 @@ public static partial class ThatAssembly
 			AppendComponents(stringBuilder);
 		}
 
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
-
 		private void AppendComponents(StringBuilder stringBuilder)
 		{
 			for (int i = 0; i < checks.Value.Length; i++)

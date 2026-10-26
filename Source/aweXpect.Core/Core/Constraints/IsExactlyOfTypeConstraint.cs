@@ -44,7 +44,4 @@ internal sealed class IsExactlyOfTypeConstraint<TActual, TType>(
 		stringBuilder.Append(Grammars.Verb("is not exactly of type ", "are not exactly of type "));
 		Formatter.Format(stringBuilder, typeof(TType));
 	}
-
-	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		=> AppendNormalResult(stringBuilder, indentation);
 }

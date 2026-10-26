@@ -101,9 +101,6 @@ public static partial class ThatNumber
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotPositive, ExpectAreNotPositive));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsPositiveConstraint<TNumber>(
@@ -133,9 +130,6 @@ public static partial class ThatNumber
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotPositive, ExpectAreNotPositive));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #else
 	private const string IsPositiveSummary = "Verifies that the subject is positive.";
@@ -196,9 +190,6 @@ public static partial class ThatNumber
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotPositive, ExpectAreNotPositive));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsPositiveConstraint<TNumber>(
@@ -227,9 +218,6 @@ public static partial class ThatNumber
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotPositive, ExpectAreNotPositive));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #endif
 }

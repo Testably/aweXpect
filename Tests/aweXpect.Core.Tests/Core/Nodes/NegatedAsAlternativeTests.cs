@@ -87,7 +87,7 @@ public class NegatedAsAlternativeTests
 				.Validate((it, grammars) => new HasFirstCharConstraint(it, grammars))
 				.NegatedAsAlternative(static (member, stringBuilder)
 					=> stringBuilder.Append(" or ").Append(member).Append(' '))
-				.AddExpectations(e => expectations(new ThatSubject<char>(e))),
+				.AddExpectations(expectations),
 			subject);
 
 	private sealed class HasFirstCharConstraint(string it, ExpectationGrammars grammars)

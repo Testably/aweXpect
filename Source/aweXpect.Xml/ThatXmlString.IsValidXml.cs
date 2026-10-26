@@ -77,8 +77,7 @@ public static partial class ThatXmlString
 				=> new IsValidXmlConstraint(it, grammars, true))
 			.ForMember(MemberAccessor<XDocument, XElement>.FromFuncWithName(document => document.Root!, "it"),
 				(_, stringBuilder) => stringBuilder.Append(" which "))
-			.AddExpectations(expectations,
-				static (expectations, e) => expectations(new ThatSubject<XElement>(e)));
+			.AddExpectations(expectations);
 
 	private sealed class IsValidXmlConstraint(string it, ExpectationGrammars grammars, bool hasExpectations = false)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),

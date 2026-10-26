@@ -178,9 +178,6 @@ private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars gr
 
     protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append(Grammars.IsPlural() ? "are not radio friendly" : "is not radio friendly");
-
-    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-        => AppendNormalResult(stringBuilder, indentation);
 }
 ```
 
@@ -228,9 +225,6 @@ private sealed class HasPlaylistConstraint(string it, ExpectationGrammars gramma
 
     protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("does not have a playlist of up to 20 tracks");
-
-    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-        => AppendNormalResult(stringBuilder, indentation);
 }
 ```
 

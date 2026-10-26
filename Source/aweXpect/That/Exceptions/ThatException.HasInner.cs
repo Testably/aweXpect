@@ -28,8 +28,7 @@ public static partial class ThatException
 					replaceIt: false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars, true))
-				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<Exception?>(e)),
-					grammars => grammars | ExpectationGrammars.Nested),
+				.AddExpectations(expectations, grammars => grammars | ExpectationGrammars.Nested),
 			subject);
 	}
 
@@ -109,8 +108,7 @@ public static partial class ThatException
 					replaceIt: false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(type, it, grammars, true))
-				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<Exception?>(e)),
-					grammars => grammars | ExpectationGrammars.Nested),
+				.AddExpectations(expectations, grammars => grammars | ExpectationGrammars.Nested),
 			subject);
 	}
 

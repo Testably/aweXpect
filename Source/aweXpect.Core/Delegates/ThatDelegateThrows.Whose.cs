@@ -22,7 +22,7 @@ public partial class ThatDelegateThrows<TException>
 					MemberAccessor<TException, TMember?>.FromFuncWithCallerExpression(memberAccessor,
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))
-				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
+				.AddExpectations(expectations,
 					grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
 			this);
 	}

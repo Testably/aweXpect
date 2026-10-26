@@ -177,9 +177,6 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, _maximum);
 			stringBuilder.Append(_options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsBetweenConstraint<TNumber> : OrderingConstraint<TNumber?>,
@@ -248,9 +245,6 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, _maximum);
 			stringBuilder.Append(_options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #else
 	private const string IsBetweenSummary =
@@ -372,9 +366,6 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, _maximum);
 			stringBuilder.Append(_options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsBetweenConstraint<TNumber> : OrderingConstraint<TNumber?>,
@@ -444,9 +435,6 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, _maximum);
 			stringBuilder.Append(_options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #endif
 }

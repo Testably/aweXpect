@@ -178,8 +178,5 @@ public static partial class ThatJsonElement
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("is ", "are "))
 				.Append(JsonValidation.FormatExpected(expected, Grammars & ~ExpectationGrammars.Plural));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

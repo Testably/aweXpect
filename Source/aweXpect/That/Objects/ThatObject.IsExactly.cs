@@ -85,8 +85,5 @@ public static partial class ThatObject
 			stringBuilder.Append(Grammars.Verb("is not exactly of type ", "are not exactly of type "));
 			Formatter.Format(stringBuilder, type);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

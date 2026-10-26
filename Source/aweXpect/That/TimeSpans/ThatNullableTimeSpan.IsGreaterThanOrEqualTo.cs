@@ -86,8 +86,5 @@ public static partial class ThatNullableTimeSpan
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

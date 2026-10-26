@@ -176,7 +176,7 @@ internal static class ExpectationWriter
 		AppendIsMetBy(sb, model, overload, owner);
 		AppendTextMethod(sb, "AppendNormalExpectation", model.PositiveText);
 		AppendTextMethod(sb, "AppendNegatedExpectation", model.NegatedText);
-		AppendResultMethods(sb, model, overload, owner, fields);
+		AppendResultMethod(sb, model, overload, owner, fields);
 		sb.AppendLine("\t}");
 	}
 
@@ -289,7 +289,7 @@ internal static class ExpectationWriter
 		sb.AppendLine("\t\t\tOutcome = result.Outcome;");
 	}
 
-	private static void AppendResultMethods(StringBuilder sb, ExpectationModel model, OverloadModel overload,
+	private static void AppendResultMethod(StringBuilder sb, ExpectationModel model, OverloadModel overload,
 		string owner, string fields)
 	{
 		sb.Append("\t\tprotected override void AppendNormalResult(").Append(StringBuilder)
@@ -323,10 +323,6 @@ internal static class ExpectationWriter
 		}
 
 		sb.AppendLine("\t\t}");
-		sb.AppendLine();
-		sb.Append("\t\tprotected override void AppendNegatedResult(").Append(StringBuilder)
-			.AppendLine(" stringBuilder, string? indentation = null)");
-		sb.AppendLine("\t\t\t=> AppendNormalResult(stringBuilder, indentation);");
 	}
 
 	private static void AppendTextMethod(StringBuilder sb, string name, EquatableArray<TextPart> parts)

@@ -60,8 +60,5 @@ public static partial class ThatEnum
 			stringBuilder.Append(Grammars.Verb("is not equal to ", "are not equal to "));
 			Formatter.Format(stringBuilder, expected);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

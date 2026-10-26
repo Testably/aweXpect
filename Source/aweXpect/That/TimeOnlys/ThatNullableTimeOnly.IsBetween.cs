@@ -110,9 +110,6 @@ public static partial class ThatNullableTimeOnly
 			Formatter.Format(stringBuilder, maximum);
 			stringBuilder.Append(tolerance);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }
 #endif

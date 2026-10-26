@@ -70,8 +70,5 @@ public static partial class ThatNullableEnum
 			stringBuilder.Append(Grammars.Verb("does not have flag ", "do not have flag "));
 			Formatter.Format(stringBuilder, expectedFlag);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

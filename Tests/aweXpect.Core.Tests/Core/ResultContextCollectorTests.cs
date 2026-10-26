@@ -364,7 +364,7 @@ internal static class ResultContextCollectorTestExtensions
 		expectationBuilder
 			.ForMember(MemberAccessor<TSource, TMember>.FromFuncWithPath(accessor, path, "$"),
 				(member, stringBuilder) => stringBuilder.Append("whose ").Append(member).Append(' '))
-			.AddExpectations(e => expectations(new ThatSubject<TMember>(e)));
+			.AddExpectations(expectations);
 		return new AndOrResult<TSource, IThat<TSource>>(expectationBuilder, subject);
 	}
 
@@ -379,7 +379,7 @@ internal static class ResultContextCollectorTestExtensions
 		expectationBuilder
 			.ForMember(MemberAccessor<TSource, TMember>.FromFuncWithName(accessor, name),
 				(member, stringBuilder) => stringBuilder.Append("whose ").Append(member).Append(' '))
-			.AddExpectations(e => expectations(new ThatSubject<TMember>(e)));
+			.AddExpectations(expectations);
 		return new AndOrResult<TSource, IThat<TSource>>(expectationBuilder, subject);
 	}
 

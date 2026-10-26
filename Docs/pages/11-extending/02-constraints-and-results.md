@@ -94,8 +94,9 @@ with `DoesNotComplyWith`. The recommended practice is to use the same class for 
 | `ConstraintResult.WithValue<T>`        | is not handled                                   | handles `null` itself or has a non-nullable subject |
 
 All three take the name of the subject (`it`) and the `grammars` in their constructor and expose the name as the
-inherited `It` property. You set the `Actual` property in the `IsMetBy` method and override `AppendNormalExpectation`
-and `AppendNegatedExpectation` as well as `AppendNormalResult` and `AppendNegatedResult`. `WithEqualToValue<T>`
+inherited `It` property. You set the `Actual` property in the `IsMetBy` method and override `AppendNormalExpectation`,
+`AppendNegatedExpectation` and `AppendNormalResult`. By default, the negated result is described like the normal one;
+override `AppendNegatedResult` when it differs, e.g. "it was" for a negated "it was not". `WithEqualToValue<T>`
 additionally takes a flag indicating if the expected value is `null`.
 
 The `IsRadioFriendlyConstraint` of [your first expectation](./index.md#the-constraint) derives from

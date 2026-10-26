@@ -41,7 +41,4 @@ internal sealed class IsOfTypeConstraint<TActual, TType>(
 		stringBuilder.Append(Grammars.Verb("is not of type ", "are not of type "));
 		Formatter.Format(stringBuilder, typeof(TType));
 	}
-
-	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		=> AppendNormalResult(stringBuilder, indentation);
 }

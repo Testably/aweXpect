@@ -37,8 +37,5 @@ public static partial class ThatBool
 			stringBuilder.Append(Grammars.Verb("is not ", "are not "));
 			Formatter.Format(stringBuilder, expected, FormattingOptions.Indented(indentation));
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

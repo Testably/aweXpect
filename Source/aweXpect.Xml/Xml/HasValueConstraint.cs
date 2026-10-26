@@ -25,7 +25,7 @@ internal static class HasValueConstraint
 		expectationBuilder
 			.ForMember(MemberAccessor<FoundNode<XElement>, string?>.FromFuncWithName(found => found.Node.Value, memberName),
 				(_, stringBuilder) => stringBuilder.Append(" which "))
-			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?>(e)));
+			.AddExpectations(expectations);
 		return new AndOrResult<TSubject, IThat<TSubject?>>(expectationBuilder, source);
 	}
 }

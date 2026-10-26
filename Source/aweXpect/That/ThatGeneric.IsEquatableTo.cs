@@ -66,8 +66,5 @@ public static partial class ThatGeneric
 			stringBuilder.Append(Grammars.Verb("is not equatable to ", "are not equatable to "));
 			Formatter.Format(stringBuilder, expected, FormattingOptions.Indented(indentation));
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

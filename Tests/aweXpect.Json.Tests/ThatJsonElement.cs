@@ -31,8 +31,7 @@ public sealed partial class ThatJsonElement
 		expectationBuilder
 			.ForMember(MemberAccessor<JsonElement, JsonElement>.FromFuncWithName(items => items, "Items"),
 				(_, stringBuilder) => stringBuilder.Append("whose Items "))
-			.AddExpectations(e => expectations(new ThatSubject<JsonElement>(e)),
-				grammars => grammars | ExpectationGrammars.Plural);
+			.AddExpectations(expectations, grammars => grammars | ExpectationGrammars.Plural);
 		return new AndOrResult<JsonElement, IThat<JsonElement>>(expectationBuilder, subject);
 	}
 }
