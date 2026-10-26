@@ -900,6 +900,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
         "message": "feat!: honour ICopyOnOption in the quantifier and index options (#2089)"
+      },
+      {
+        "sha": "37b174905de0d9912be203dc1bc612231f2c9c43",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:03:20 2026 \u002B0100",
+        "message": "fix: align the argument messages of the extension packages with Core (#2088)"
       }
     ],
     "labels": [
@@ -1052,7 +1058,8 @@ window.BENCHMARK_DATA = {
       "2068b12b",
       "2ce286e6",
       "1b028951",
-      "f34312fa"
+      "f34312fa",
+      "37b17490"
     ],
     "datasets": [
       {
@@ -1208,7 +1215,8 @@ window.BENCHMARK_DATA = {
           357.96529528299965,
           485.09850184122723,
           305.2768303326198,
-          672.5391998291016
+          672.5391998291016,
+          321.551107100078
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1364,6 +1372,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
+          368,
           368,
           368,
           368,
@@ -1533,7 +1542,8 @@ window.BENCHMARK_DATA = {
           545.3626660567063,
           708.5867201487223,
           456.65093636512756,
-          938.6117691675822
+          938.6117691675822,
+          480.6825157574245
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1545,6 +1555,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -2608,6 +2619,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
         "message": "feat!: honour ICopyOnOption in the quantifier and index options (#2089)"
+      },
+      {
+        "sha": "37b174905de0d9912be203dc1bc612231f2c9c43",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:03:20 2026 \u002B0100",
+        "message": "fix: align the argument messages of the extension packages with Core (#2088)"
       }
     ],
     "labels": [
@@ -2760,7 +2777,8 @@ window.BENCHMARK_DATA = {
       "2068b12b",
       "2ce286e6",
       "1b028951",
-      "f34312fa"
+      "f34312fa",
+      "37b17490"
     ],
     "datasets": [
       {
@@ -2916,7 +2934,8 @@ window.BENCHMARK_DATA = {
           53.8455001860857,
           78.19539122581482,
           50.853073966503146,
-          115.95841000630305
+          115.95841000630305,
+          50.65768897959164
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3063,6 +3082,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -3241,7 +3261,8 @@ window.BENCHMARK_DATA = {
           138.7467544078827,
           172.65625494321188,
           114.17726723353069,
-          205.34584108988443
+          205.34584108988443,
+          118.32105479790614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3253,6 +3274,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -4316,6 +4338,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
         "message": "feat!: honour ICopyOnOption in the quantifier and index options (#2089)"
+      },
+      {
+        "sha": "37b174905de0d9912be203dc1bc612231f2c9c43",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:03:20 2026 \u002B0100",
+        "message": "fix: align the argument messages of the extension packages with Core (#2088)"
       }
     ],
     "labels": [
@@ -4468,7 +4496,8 @@ window.BENCHMARK_DATA = {
       "2068b12b",
       "2ce286e6",
       "1b028951",
-      "f34312fa"
+      "f34312fa",
+      "37b17490"
     ],
     "datasets": [
       {
@@ -4624,7 +4653,8 @@ window.BENCHMARK_DATA = {
           980.5618464152018,
           1334.4731621061053,
           863.3503203392029,
-          1917.4474782307943
+          1917.4474782307943,
+          895.0653916872465
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4771,6 +4801,7 @@ window.BENCHMARK_DATA = {
           1888,
           1888,
           1888,
+          1808,
           1808,
           1808,
           1808,
@@ -4949,7 +4980,8 @@ window.BENCHMARK_DATA = {
           834.5415642602103,
           1088.1556775753315,
           793.0441759654453,
-          1537.6500537872314
+          1537.6500537872314,
+          836.8872440201895
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5109,6 +5141,7 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1864,
+          1953,
           1953,
           1953
         ],
@@ -5964,6 +5997,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
         "message": "feat!: honour ICopyOnOption in the quantifier and index options (#2089)"
+      },
+      {
+        "sha": "37b174905de0d9912be203dc1bc612231f2c9c43",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:03:20 2026 \u002B0100",
+        "message": "fix: align the argument messages of the extension packages with Core (#2088)"
       }
     ],
     "labels": [
@@ -6106,7 +6145,8 @@ window.BENCHMARK_DATA = {
       "2068b12b",
       "2ce286e6",
       "1b028951",
-      "f34312fa"
+      "f34312fa",
+      "37b17490"
     ],
     "datasets": [
       {
@@ -6252,7 +6292,8 @@ window.BENCHMARK_DATA = {
           1381.0182583882258,
           1999.697290802002,
           1267.707849230085,
-          2649.5504282633465
+          2649.5504282633465,
+          1298.8998357137045
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6389,6 +6430,7 @@ window.BENCHMARK_DATA = {
           3184,
           3184,
           3184,
+          3104,
           3104,
           3104,
           3104,
@@ -6557,7 +6599,8 @@ window.BENCHMARK_DATA = {
           2122.3299384483926,
           2979.260217666626,
           1985.5223154340472,
-          3809.488615853446
+          3809.488615853446,
+          2192.452367401123
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6708,6 +6751,7 @@ window.BENCHMARK_DATA = {
           3980,
           3981,
           3981,
+          3980,
           3980
         ],
         "borderColor": "#FF671B",
@@ -7562,6 +7606,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
         "message": "feat!: honour ICopyOnOption in the quantifier and index options (#2089)"
+      },
+      {
+        "sha": "37b174905de0d9912be203dc1bc612231f2c9c43",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:03:20 2026 \u002B0100",
+        "message": "fix: align the argument messages of the extension packages with Core (#2088)"
       }
     ],
     "labels": [
@@ -7704,7 +7754,8 @@ window.BENCHMARK_DATA = {
       "2068b12b",
       "2ce286e6",
       "1b028951",
-      "f34312fa"
+      "f34312fa",
+      "37b17490"
     ],
     "datasets": [
       {
@@ -7850,7 +7901,8 @@ window.BENCHMARK_DATA = {
           195.19042773246764,
           285.1616200038365,
           204.2250519434611,
-          387.6586204210917
+          387.6586204210917,
+          180.43834250313895
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7987,6 +8039,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -8155,7 +8208,8 @@ window.BENCHMARK_DATA = {
           1319.374270439148,
           1790.130494181315,
           1209.6026319357065,
-          2307.908590443929
+          2307.908590443929,
+          1264.2456291743688
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8167,6 +8221,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -9160,6 +9215,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
         "message": "feat!: honour ICopyOnOption in the quantifier and index options (#2089)"
+      },
+      {
+        "sha": "37b174905de0d9912be203dc1bc612231f2c9c43",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:03:20 2026 \u002B0100",
+        "message": "fix: align the argument messages of the extension packages with Core (#2088)"
       }
     ],
     "labels": [
@@ -9302,7 +9363,8 @@ window.BENCHMARK_DATA = {
       "2068b12b",
       "2ce286e6",
       "1b028951",
-      "f34312fa"
+      "f34312fa",
+      "37b17490"
     ],
     "datasets": [
       {
@@ -9448,7 +9510,8 @@ window.BENCHMARK_DATA = {
           1556.9537018140156,
           2190.3123732346753,
           1409.1255081176757,
-          2924.038712056478
+          2924.038712056478,
+          1456.498062814985
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9594,6 +9657,7 @@ window.BENCHMARK_DATA = {
           3232,
           3232,
           3232,
+          3200,
           3200,
           3200,
           3200,
@@ -9753,7 +9817,8 @@ window.BENCHMARK_DATA = {
           173705.89926757812,
           241536.76070731026,
           158555.87022986778,
-          280671.80494791665
+          280671.80494791665,
+          165805.58987862724
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9904,7 +9969,8 @@ window.BENCHMARK_DATA = {
           17574,
           17577,
           17576,
-          17577
+          17577,
+          17574
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
