@@ -870,6 +870,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
         "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
+      },
+      {
+        "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
+        "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
       }
     ],
     "labels": [
@@ -1017,7 +1023,8 @@ window.BENCHMARK_DATA = {
       "20357097",
       "1dc71bae",
       "5520582a",
-      "a2e430d0"
+      "a2e430d0",
+      "705c8132"
     ],
     "datasets": [
       {
@@ -1168,7 +1175,8 @@ window.BENCHMARK_DATA = {
           356.174617099762,
           704.3644876480103,
           535.3990122721746,
-          606.8000283922468
+          606.8000283922468,
+          656.6080237706502
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1324,6 +1332,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
+          368,
           368
         ],
         "borderColor": "#63A2AC",
@@ -1483,7 +1492,8 @@ window.BENCHMARK_DATA = {
           536.8183043162028,
           926.7215559823172,
           599.25021387736,
-          897.3135285059611
+          897.3135285059611,
+          896.3854001998901
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1495,6 +1505,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -2523,6 +2534,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
         "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
+      },
+      {
+        "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
+        "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
       }
     ],
     "labels": [
@@ -2670,7 +2687,8 @@ window.BENCHMARK_DATA = {
       "20357097",
       "1dc71bae",
       "5520582a",
-      "a2e430d0"
+      "a2e430d0",
+      "705c8132"
     ],
     "datasets": [
       {
@@ -2821,7 +2839,8 @@ window.BENCHMARK_DATA = {
           58.143421300819945,
           104.04969412088394,
           76.7723245529028,
-          109.94119653531483
+          109.94119653531483,
+          105.98728456497193
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2968,6 +2987,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -3136,7 +3156,8 @@ window.BENCHMARK_DATA = {
           122.15644100734166,
           215.77363429750716,
           208.96221241950988,
-          214.08026609970972
+          214.08026609970972,
+          248.21908877690632
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3148,6 +3169,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -4176,6 +4198,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
         "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
+      },
+      {
+        "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
+        "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
       }
     ],
     "labels": [
@@ -4323,7 +4351,8 @@ window.BENCHMARK_DATA = {
       "20357097",
       "1dc71bae",
       "5520582a",
-      "a2e430d0"
+      "a2e430d0",
+      "705c8132"
     ],
     "datasets": [
       {
@@ -4474,7 +4503,8 @@ window.BENCHMARK_DATA = {
           877.4776200612386,
           1863.7854092461723,
           1032.0853875967173,
-          1913.7210534413655
+          1913.7210534413655,
+          1861.0644271850585
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4621,6 +4651,7 @@ window.BENCHMARK_DATA = {
           1888,
           1888,
           1888,
+          1808,
           1808,
           1808,
           1808,
@@ -4789,7 +4820,8 @@ window.BENCHMARK_DATA = {
           790.3319710413615,
           1452.0054513386317,
           948.3869262422834,
-          1417.8631495067052
+          1417.8631495067052,
+          1502.5857846577962
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4945,7 +4977,8 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1864,
-          1864
+          1864,
+          1953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5769,6 +5802,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
         "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
+      },
+      {
+        "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
+        "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
       }
     ],
     "labels": [
@@ -5906,7 +5945,8 @@ window.BENCHMARK_DATA = {
       "20357097",
       "1dc71bae",
       "5520582a",
-      "a2e430d0"
+      "a2e430d0",
+      "705c8132"
     ],
     "datasets": [
       {
@@ -6047,7 +6087,8 @@ window.BENCHMARK_DATA = {
           1403.0971938451132,
           2742.6894027165004,
           1625.616120147705,
-          2683.3756768362864
+          2683.3756768362864,
+          2855.267758778163
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6184,6 +6225,7 @@ window.BENCHMARK_DATA = {
           3184,
           3184,
           3184,
+          3104,
           3104,
           3104,
           3104,
@@ -6342,7 +6384,8 @@ window.BENCHMARK_DATA = {
           2185.3293940226235,
           3875.937665499174,
           2474.9843826293945,
-          3703.219406568087
+          3703.219406568087,
+          3803.046391296387
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6488,7 +6531,8 @@ window.BENCHMARK_DATA = {
           3981,
           3981,
           3977,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7312,6 +7356,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
         "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
+      },
+      {
+        "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
+        "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
       }
     ],
     "labels": [
@@ -7449,7 +7499,8 @@ window.BENCHMARK_DATA = {
       "20357097",
       "1dc71bae",
       "5520582a",
-      "a2e430d0"
+      "a2e430d0",
+      "705c8132"
     ],
     "datasets": [
       {
@@ -7590,7 +7641,8 @@ window.BENCHMARK_DATA = {
           186.8432778040568,
           397.83714217406055,
           258.73817995616366,
-          355.00933027267456
+          355.00933027267456,
+          393.6206706682841
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7727,6 +7779,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -7885,7 +7938,8 @@ window.BENCHMARK_DATA = {
           1231.1973390579224,
           2321.012066432408,
           1513.0686894734702,
-          2207.5948312123614
+          2207.5948312123614,
+          2320.0149681091307
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7897,6 +7951,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -8855,6 +8910,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
         "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
+      },
+      {
+        "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
+        "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
       }
     ],
     "labels": [
@@ -8992,7 +9053,8 @@ window.BENCHMARK_DATA = {
       "20357097",
       "1dc71bae",
       "5520582a",
-      "a2e430d0"
+      "a2e430d0",
+      "705c8132"
     ],
     "datasets": [
       {
@@ -9133,7 +9195,8 @@ window.BENCHMARK_DATA = {
           1460.6088209885818,
           2941.172984568278,
           1744.8773065294538,
-          2959.1051738445576
+          2959.1051738445576,
+          3001.027625744159
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9279,6 +9342,7 @@ window.BENCHMARK_DATA = {
           3232,
           3232,
           3232,
+          3200,
           3200
         ],
         "borderColor": "#63A2AC",
@@ -9428,7 +9492,8 @@ window.BENCHMARK_DATA = {
           169174.7233561198,
           283718.9447265625,
           184646.6104561942,
-          303895.9719935826
+          303895.9719935826,
+          279478.11985677085
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9574,6 +9639,7 @@ window.BENCHMARK_DATA = {
           17576,
           17577,
           17528,
+          17577,
           17577
         ],
         "borderColor": "#FF671B",
