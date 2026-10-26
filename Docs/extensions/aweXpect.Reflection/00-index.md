@@ -91,31 +91,34 @@ await Expect.That(In.AllLoadedAssemblies()
 Each filter narrows a selection and its expectation counterpart verifies it, e.g. `.WhichArePublic()` and
 `.IsPublic()` (`.ArePublic()` for collections):
 
-| Topic                                                                 | Applies to                    | Filters / expectations                                                                                               |
-|-----------------------------------------------------------------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| [Access modifiers](./02-filters.md#access-modifiers)         | types and members             | `WhichArePublic` / `IsPublic`, `WhichAre(AccessModifiers)` / `Is(AccessModifiers)`, …                                |
-| [Attributes](./02-filters.md#attributes)                     | types, members and assemblies | `With<TAttribute>` / `Has<TAttribute>`, `Without<TAttribute>` / `DoesNotHave<TAttribute>`                            |
-| [Obsolete](./02-filters.md#obsolete)                         | types and members             | `WhichAreObsolete` / `IsObsolete`, `WhichAreNotObsolete` / `IsNotObsolete`                                           |
-| [Names and namespaces](./02-filters.md#names-and-namespaces) | types and members             | `WithName` / `HasName`, `WithNamespace` / `HasNamespace`, `WhichAreWithinNamespace` / `IsWithinNamespace`            |
-| [Types](./02-filters.md#types)                               | types                         | `WhichAreClasses` / `IsAClass`, `WhichInheritFrom<T>` / `InheritsFrom<T>`, `WhichContainMethods` / `ContainsMethods` |
-| [Methods](./02-filters.md#methods)                           | methods                       | `WhichAreAsync` / `IsAsync`, `WhichReturn<T>` / `Returns<T>`, `WithParameter<T>` / `HasParameter<T>`                 |
-| [Operators](./02-filters.md#operators)                       | methods and types             | `WhichAreOperators` / `IsAnOperator`, `HasOperator`, `HasImplicitConversionOperator`                                 |
-| [Properties & Fields](./02-filters.md#properties--fields)    | properties and fields         | `OfType<T>` / `IsOfType<T>`, `WhichAreNullable` / `IsNullable`, `WhichAreRequired` / `IsRequired`                    |
-| [Events](./02-filters.md#events)                             | events                        | `OfType<T>` / `IsOfType<T>`, `WhichAreStatic` / `IsStatic`, `WhichAreNullable` / `IsNullable`                        |
-| [Constructors](./02-filters.md#constructors)                 | constructors                  | `WithoutParameters` / `HasNoParameters`, `WithParameter<T>` / `HasParameter<T>`                                      |
-| [Assemblies](./02-filters.md#assemblies)                     | assemblies                    | `WhichTarget` / `Targets`, `WithVersion` / `HasVersion`, `WhichDependOn` / `DependsOn`                               |
-| [Custom predicates](./02-filters.md#custom-predicates)       | types, members and assemblies | `Which` / `Satisfies`, `Except`                                                                                      |
-| [Inheritance](./02-filters.md#inheritance)                   | types and members             | `Directly`, `IncludingInherited`, `IncludingObjectMembers`                                                           |
+| Topic                                                                                                            | Applies to                    | Filters / expectations                                                                                               |
+|------------------------------------------------------------------------------------------------------------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| [Access modifiers](./02-filters/01-common-filters.md#access-modifiers)                                           | types and members             | `WhichArePublic` / `IsPublic`, `WhichAre(AccessModifiers)` / `Is(AccessModifiers)`, …                                |
+| [Attributes](./02-filters/01-common-filters.md#attributes)                                                       | types, members and assemblies | `With<TAttribute>` / `Has<TAttribute>`, `Without<TAttribute>` / `DoesNotHave<TAttribute>`                            |
+| [Obsolete](./02-filters/01-common-filters.md#obsolete)                                                           | types and members             | `WhichAreObsolete` / `IsObsolete`, `WhichAreNotObsolete` / `IsNotObsolete`                                           |
+| [Names and namespaces](./02-filters/01-common-filters.md#names-and-namespaces)                                   | types and members             | `WithName` / `HasName`, `WithNamespace` / `HasNamespace`, `WhichAreWithinNamespace` / `IsWithinNamespace`            |
+| [Types](./02-filters/02-types.md#types)                                                                          | types                         | `WhichAreClasses` / `IsAClass`, `WhichInheritFrom<T>` / `InheritsFrom<T>`, `WhichContainMethods` / `ContainsMethods` |
+| [Methods](./02-filters/03-methods.md#methods)                                                                    | methods                       | `WhichAreAsync` / `IsAsync`, `WhichReturn<T>` / `Returns<T>`, `WithParameter<T>` / `HasParameter<T>`                 |
+| [Operators](./02-filters/03-methods.md#operators)                                                                | methods and types             | `WhichAreOperators` / `IsAnOperator`, `HasOperator`, `HasImplicitConversionOperator`                                 |
+| [Properties & Fields](./02-filters/04-properties-fields-and-events.md#properties--fields)                        | properties and fields         | `OfType<T>` / `IsOfType<T>`, `WhichAreNullable` / `IsNullable`, `WhichAreRequired` / `IsRequired`                    |
+| [Events](./02-filters/04-properties-fields-and-events.md#events)                                                 | events                        | `OfType<T>` / `IsOfType<T>`, `WhichAreStatic` / `IsStatic`, `WhichAreNullable` / `IsNullable`                        |
+| [Constructors](./02-filters/03-methods.md#constructors)                                                          | constructors                  | `WithoutParameters` / `HasNoParameters`, `WithParameter<T>` / `HasParameter<T>`                                      |
+| [Assemblies](./02-filters/05-assemblies.md)                                                                      | assemblies                    | `WhichTarget` / `Targets`, `WithVersion` / `HasVersion`, `WhichDependOn` / `DependsOn`                               |
+| [Custom predicates](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters#custom-predicates) | types, members and assemblies | `Which` / `Satisfies`, `Except`                                                                                      |
+| [Inheritance](./02-filters/02-types.md#inheritance)                                                              | types and members             | `Directly`, `IncludingInherited`, `IncludingObjectMembers`                                                           |
 
 Each filter and expectation has its negation where it makes sense, e.g. `WithoutName` / `DoesNotHaveName`,
 `WithoutNamespace` / `DoesNotHaveNamespace`, `NotOfType<T>` / `IsNotOfType<T>`, `WhichDoNotReturn<T>` /
 `DoesNotReturn<T>`, `WithoutParameter<T>` / `DoesNotHaveParameter<T>` or `WhichDoNotTarget` / `DoesNotTarget`.
 On a collection, a negated expectation (`DoNotReturn<T>`, `AreNotOfType<T>`, …) verifies that *none* of the items
-match. The tables in [Filters and expectations](./02-filters.md) list every negation in a **Negated** column.
+match. The tables in
+[Filters and expectations](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters#how-to-read-the-tables) list every negation in
+a **Negated** column.
 
 The name filters and expectations accept the
-[string matching options](./02-filters.md#string-matching-options) like `AsPrefix()`, `AsSuffix()` or
-`AsWildcard()`. [Filters and expectations](./02-filters.md) documents the complete vocabulary.
+[string matching options](./02-filters/01-common-filters.md#string-matching-options) like `AsPrefix()`,
+`AsSuffix()` or `AsWildcard()`. [Filters and expectations](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters)
+documents the complete vocabulary.
 
 ## Architecture rules
 
@@ -171,8 +174,8 @@ The full documentation is available at
 
 - [Selecting types and members](./01-sources.md): the `In` and `Types` sources and navigating
   between assemblies, types and members
-- [Filters and expectations](./02-filters.md): the complete reference for all subject kinds,
-  string matching options and quantifiers
+- [Filters and expectations](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters): the complete reference for
+  all subject kinds, string matching options and quantifiers
 - [Architecture rules](./03-architecture-rules.md): type dependencies, dependency cycles and
   layers as type selections
 - [Customization](./04-configuration.md): assembly exclusions, compiler-generated members and
