@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
+using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
 
@@ -51,42 +51,28 @@ public static partial class ThatString
 		string parameterName,
 		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithEqualToValue<string?>(it, grammars, expected is null),
-			IAsyncContextConstraint<string?>
+			IAsyncContextConstraint<string?>, IStringMatchConstraint
 	{
 		private StringEqualityOptions? _evaluationOptions;
 		private MatchResult _matchResult;
 
-		/// <remarks>
-		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, cannot answer for a
-		///     <see langword="null" /> subject, because it has no content.<br />
-		///     Most comparisons complete synchronously, so the result is returned without a state machine; an exception is
-		///     returned in the task, like from an asynchronous method.
-		/// </remarks>
 		public ValueTask<ConstraintResult> IsMetBy(string? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-		{
-			try
-			{
-				Actual = actual;
-				_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-				ValueTask<MatchResult> match = _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
-				if (match.IsCompletedSuccessfully)
-				{
-					return new ValueTask<ConstraintResult>(Complete(match.Result));
-				}
+			=> StringMatchConstraint.IsMetBy(this, actual, context, cancellationToken);
 
-				return CompleteAsync(match);
-			}
-			catch (Exception exception)
-			{
-				return new ValueTask<ConstraintResult>(Task.FromException<ConstraintResult>(exception));
-			}
+		ValueTask<MatchResult> IStringMatchConstraint.StartMatch(string? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
+			Actual = actual;
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			return _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
 		}
 
-		private async ValueTask<ConstraintResult> CompleteAsync(ValueTask<MatchResult> match)
-			=> Complete(await match);
-
-		private IsEqualToConstraint Complete(MatchResult matchResult)
+		/// <remarks>
+		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, cannot answer for a
+		///     <see langword="null" /> subject, because it has no content.
+		/// </remarks>
+		ConstraintResult IStringMatchConstraint.CompleteMatch(MatchResult matchResult)
 		{
 			_matchResult = matchResult;
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;

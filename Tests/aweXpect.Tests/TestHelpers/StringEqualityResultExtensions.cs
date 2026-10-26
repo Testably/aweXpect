@@ -50,6 +50,16 @@ public static class StringEqualityResultExtensions
 		return result;
 	}
 
+	/// <remarks>
+	///     A custom match type that compares exactly, but only after yielding, as an asynchronous extension would.
+	/// </remarks>
+	public static TResult AsYielding<TResult>(this TResult result)
+		where TResult : IOptionsProvider<StringEqualityOptions>
+	{
+		result.Options.SetMatchType(new YieldingMatchType(), nameof(AsYielding));
+		return result;
+	}
+
 	private sealed class CaseFoldedMatchType(string? context = null) : StringMatchType
 	{
 		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
@@ -114,6 +124,25 @@ public static class StringEqualityResultExtensions
 
 				return new ValueTask<MatchResult>(MatchResult.From(TryParse(expected, out int expectedNumber) &&
 				                                                   actualNumber == expectedNumber));
+			}
+		}
+	}
+
+	private sealed class YieldingMatchType : StringMatchType
+	{
+		private static readonly YieldingMatcher Matcher = new();
+
+		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+			=> Matcher;
+
+		public override MatchPhrase Phrase { get; } = MatchPhrase.EqualTo.WithName(" after yielding");
+
+		private sealed class YieldingMatcher : StringMatcher
+		{
+			public override async ValueTask<MatchResult> Match(string? actual, string? expected)
+			{
+				await Task.Yield();
+				return MatchResult.From(string.Equals(actual, expected, StringComparison.Ordinal));
 			}
 		}
 	}

@@ -44,7 +44,7 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 
 	/// <inheritdoc cref="IAwexpectCustomization.Get{TValue}(string, TValue)" />
 	TValue IAwexpectCustomization.Get<TValue>(string key, TValue defaultValue)
-		=> Lookup(_isGlobal ? null : _store.Value, _global.Store, key, defaultValue);
+		=> Lookup(_isGlobal || !_global.HasScopedValues ? null : _store.Value, _global.Store, key, defaultValue);
 
 	/// <inheritdoc cref="IAwexpectCustomization.Set{TValue}(string, TValue)" />
 	CustomizationLifetime IAwexpectCustomization.Set<TValue>(string key, TValue value)
@@ -55,9 +55,7 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 	/// </summary>
 	internal (TestCancellation? TestCancellation, ITraceWriter? TraceWriter) GetEvaluationSettings()
 	{
-		// Reading the async local costs about as much as a simple expectation, so it is skipped until a scoped value
-		// was set at all.
-		CustomizationStore? store = _isGlobal || !_global.HasScopedValues ? null : _store.Value;
+		CustomizationStore? store = _isGlobal || !_global.HasScopedEvaluationSettings ? null : _store.Value;
 		CustomizationStore? globalStore = _global.Store;
 		if (store is null && globalStore is null)
 		{
@@ -104,7 +102,7 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 		}
 
 		object token = new();
-		_global.HasScopedValues = true;
+		_global.OnScopedValueSet(key);
 		_store.Value = CustomizationStore.With(_store.Value, key, token, value);
 		return new CustomizationLifetime(() => _store.Value = CustomizationStore.Without(_store.Value, key, token));
 	}
@@ -121,19 +119,38 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 	private sealed class GlobalLayer
 	{
 		private readonly object _lock = new();
+		private bool _hasScopedEvaluationSettings;
 		private bool _hasScopedValues;
 		private CustomizationStore? _store;
 
 		/// <summary>
-		///     Whether a scoped value was ever set, which is shared by the scoped and the global customization.
+		///     Whether a value was ever set in an async flow.
 		/// </summary>
-		public bool HasScopedValues
-		{
-			get => Volatile.Read(ref _hasScopedValues);
-			set => Volatile.Write(ref _hasScopedValues, value);
-		}
+		/// <remarks>
+		///     Reading the async local costs about as much as a simple expectation and it stays empty until then, so it is
+		///     skipped before. The flag is never reset, as a flow that captured a value can outlive its lifetime.
+		/// </remarks>
+		public bool HasScopedValues => Volatile.Read(ref _hasScopedValues);
+
+		/// <summary>
+		///     Whether a value that <see cref="GetEvaluationSettings" /> reads was ever set in an async flow, so that other
+		///     scoped values do not slow down every evaluation, see <see cref="HasScopedValues" />.
+		/// </summary>
+		public bool HasScopedEvaluationSettings => Volatile.Read(ref _hasScopedEvaluationSettings);
 
 		public CustomizationStore? Store => Volatile.Read(ref _store);
+
+		/// <summary>
+		///     Records that a value for the <paramref name="key" /> is set in an async flow, before it is set.
+		/// </summary>
+		public void OnScopedValueSet(string key)
+		{
+			Volatile.Write(ref _hasScopedValues, true);
+			if (key is SettingsCustomization.TestCancellationKey or TraceWriterKey)
+			{
+				Volatile.Write(ref _hasScopedEvaluationSettings, true);
+			}
+		}
 
 		public CustomizationLifetime Set(string key, object? value)
 		{

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
 
@@ -238,6 +239,27 @@ public class AwexpectCustomizationTests
 	}
 
 	[Test]
+	public async Task Get_WhenTheLifetimeEndedAfterAnotherFlowStarted_ShouldStillReturnTheValueInThatFlow()
+	{
+		AwexpectCustomization customization = new();
+		TaskCompletionSource<bool> lifetimeEnded = new();
+		Task<string> otherFlow;
+		using (customization.MyConfiguration().Set("scoped"))
+		{
+			otherFlow = Task.Run(async () =>
+			{
+				await lifetimeEnded.Task;
+				return customization.MyConfiguration().Get();
+			});
+		}
+
+		lifetimeEnded.SetResult(true);
+
+		await That(await otherFlow).IsEqualTo("scoped")
+			.Because("a flow keeps the values that were set when it started");
+	}
+
+	[Test]
 	public async Task Get_WhenValueTypeCannotHoldTheStoredNull_ShouldReturnTheDefaultValue()
 	{
 		AwexpectCustomization customization = new();
@@ -250,6 +272,50 @@ public class AwexpectCustomizationTests
 			.Because("a non-nullable value type cannot hold the stored null");
 		await That(global.Get("my-key", 42)).IsEqualTo(42)
 			.Because("a non-nullable value type cannot hold the stored null");
+	}
+
+	[Test]
+	public async Task GetEvaluationSettings_WhenOnlyAnotherValueIsSetInTheCurrentFlow_ShouldReturnTheGlobalSettings()
+	{
+		AwexpectCustomization customization = new();
+		TestCancellation globalCancellation = TestCancellation.FromTimeout(TimeSpan.FromSeconds(10));
+		using CustomizationLifetime globalLifetime =
+			customization.Global.Settings().TestCancellation.Set(globalCancellation);
+		using CustomizationLifetime scopedLifetime = customization.Formatting().MaximumStringLength.Set(7);
+
+		(TestCancellation? testCancellation, ITraceWriter? traceWriter) = customization.GetEvaluationSettings();
+
+		await That(testCancellation).IsSameAs(globalCancellation)
+			.Because("a scoped value that no evaluation reads leaves the global settings in effect");
+		await That(traceWriter).IsNull();
+	}
+
+	[Test]
+	public async Task GetEvaluationSettings_WhenTheTestCancellationIsSetAfterAnotherValue_ShouldReturnIt()
+	{
+		AwexpectCustomization customization = new();
+		TestCancellation scopedCancellation = TestCancellation.FromTimeout(TimeSpan.FromSeconds(5));
+		using CustomizationLifetime otherLifetime = customization.Formatting().MaximumStringLength.Set(7);
+		using CustomizationLifetime scopedLifetime =
+			customization.Settings().TestCancellation.Set(scopedCancellation);
+
+		(TestCancellation? testCancellation, _) = customization.GetEvaluationSettings();
+
+		await That(testCancellation).IsSameAs(scopedCancellation)
+			.Because("a scoped value of the settings is read, even when another scoped value was set before");
+	}
+
+	[Test]
+	public async Task GetEvaluationSettings_WhenTracingIsEnabledInTheCurrentFlow_ShouldReturnTheTraceWriter()
+	{
+		AwexpectCustomization customization = new();
+		TestTraceWriter scopedTraceWriter = new();
+		using CustomizationLifetime scopedLifetime = customization.EnableTracing(scopedTraceWriter);
+
+		(TestCancellation? testCancellation, ITraceWriter? traceWriter) = customization.GetEvaluationSettings();
+
+		await That(traceWriter).IsSameAs(scopedTraceWriter);
+		await That(testCancellation).IsNull();
 	}
 
 	[Test]

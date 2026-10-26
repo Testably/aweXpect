@@ -68,17 +68,26 @@ public static partial class ThatString
 		string parameterName,
 		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
-			IAsyncContextConstraint<string?>
+			IAsyncContextConstraint<string?>, IStringMatchConstraint
 	{
 		private StringEqualityOptions? _evaluationOptions;
 		private MatchResult _matchResult;
 
-		public async ValueTask<ConstraintResult> IsMetBy(string? actual, IEvaluationContext context,
+		public ValueTask<ConstraintResult> IsMetBy(string? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> StringMatchConstraint.IsMetBy(this, actual, context, cancellationToken);
+
+		ValueTask<MatchResult> IStringMatchConstraint.StartMatch(string? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
+			return _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
+		}
+
+		ConstraintResult IStringMatchConstraint.CompleteMatch(MatchResult matchResult)
+		{
+			_matchResult = matchResult;
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}

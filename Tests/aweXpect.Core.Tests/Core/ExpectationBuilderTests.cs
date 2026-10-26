@@ -1608,6 +1608,72 @@ public class ExpectationBuilderTests
 		await That(usedExpectationGrammars).IsEqualTo(ExpectationGrammars.Nested);
 	}
 
+	[Test]
+	public async Task IsMet_WhenAConstraintImplementsSeveralInterfaces_ShouldUseTheSameOneWithAndWithoutANode()
+	{
+		SeveralInterfacesConstraint constraint = new();
+
+		await new ExpectationResult(That(1).Get().ExpectationBuilder
+			.AddConstraint<int>((_, _) => (IAsyncContextConstraint<int>)constraint));
+		await new ExpectationResult(That(1).Get().ExpectationBuilder
+			.AddConstraint<int>((_, _) => (IAsyncContextConstraint<int>)constraint)).WithTimeout(30.Seconds());
+
+		await That(constraint.Evaluations).IsEqualTo(new[] { "value", "value", })
+			.Because("the evaluation right away probes the constraint interfaces in the same order as the node");
+	}
+
+	[Test]
+	public async Task IsMet_WhenAContravariantConstraintIsNotMet_ShouldFail()
+	{
+		async Task Act()
+			=> await new ExpectationResult(That("foo").Get().ExpectationBuilder
+				.AddConstraint<object?>((_, _) => new DummyValueConstraint<object?>(
+					value => new DummyConstraintResult(Outcome.Failure, "is something else", $"it was {value}"))));
+
+		await That(Act).ThrowsExactly<FailException>()
+			.WithMessage("""
+			             Expected that "foo"
+			             is something else,
+			             but it was foo
+			             """)
+			.Because("a constraint on a base type of the subject verifies the subject itself");
+	}
+
+	[Test]
+	public async Task IsMet_WhenAnAsyncConstraintThrowsAfterAnAwait_ShouldFailWithTheExceptionOfTheCaller()
+	{
+		async Task Act()
+			=> await new ExpectationResult(That(1).Get().ExpectationBuilder
+				.AddConstraint((_, _) => new ThrowsAfterAnAwaitConstraint()));
+
+		await That(Act).ThrowsExactly<FailException>()
+			.WithMessage("""
+			             Expected that 1
+			             throws after an await,
+			             but it did throw a MyException:
+			               the code of the caller failed
+			             """)
+			.Because("a constraint that receives no context gets one for its failure");
+	}
+
+	[Test]
+	public async Task IsMet_WhenAnExceptionIsThrownByAValueConstraint_ShouldFailWithTheExceptionOfTheCaller()
+	{
+		async Task Act()
+			=> await new ExpectationResult(That(1).Get().ExpectationBuilder
+				.AddConstraint((_, _) => new UserCodeConstraint<int>(
+					() => throw new MyException("the code of the caller failed"), "throws", "does not throw")));
+
+		await That(Act).ThrowsExactly<FailException>()
+			.WithMessage("""
+			             Expected that 1
+			             throws,
+			             but it did throw a MyException:
+			               the code of the caller failed
+			             """)
+			.Because("a constraint that receives no context gets one for its failure");
+	}
+
 #if NET8_0_OR_GREATER
 	[Test]
 	public async Task IsMet_WhenEvaluatedAgain_ShouldAwaitTheReleaseOfThePreviousEvaluation()
@@ -2183,6 +2249,27 @@ public class ExpectationBuilderTests
 	}
 #endif
 
+	private sealed class SeveralInterfacesConstraint : IValueConstraint<int>, IAsyncContextConstraint<int>
+	{
+		public List<string> Evaluations { get; } = [];
+
+		public ConstraintResult IsMetBy(int actual)
+		{
+			Evaluations.Add("value");
+			return new DummyConstraint<int>(_ => true).IsMetBy(actual);
+		}
+
+		public ValueTask<ConstraintResult> IsMetBy(int actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
+			Evaluations.Add("async context");
+			return new ValueTask<ConstraintResult>(new DummyConstraint<int>(_ => true).IsMetBy(actual));
+		}
+
+		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("has several interfaces");
+	}
+
 	/// <remarks>
 	///     It awaits until the evaluation is cancelled, or fails after half a minute, so that a regression fails the
 	///     test instead of hanging the test run.
@@ -2205,6 +2292,18 @@ public class ExpectationBuilderTests
 
 		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("stops at the cancellation");
+	}
+
+	private sealed class ThrowsAfterAnAwaitConstraint : IAsyncConstraint<int>
+	{
+		public async ValueTask<ConstraintResult> IsMetBy(int actual, CancellationToken cancellationToken)
+		{
+			await Task.Yield();
+			return UserCode.Invoke<ConstraintResult>(() => throw new MyException("the code of the caller failed"));
+		}
+
+		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("throws after an await");
 	}
 }
 

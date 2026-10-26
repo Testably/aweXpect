@@ -189,6 +189,35 @@ public sealed partial class ThatString
 			}
 
 			[Test]
+			public async Task WhenCustomMatchTypeComparesAsynchronously_AndStringsAreEqual_ShouldSucceed()
+			{
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("foo").AsYielding();
+
+				await That(Act).DoesNotThrow()
+					.Because("the expectation awaits a comparison that does not complete synchronously");
+			}
+
+			[Test]
+			public async Task WhenCustomMatchTypeComparesAsynchronously_AndStringsDiffer_ShouldFail()
+			{
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("bar").AsYielding();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to "bar",
+					             but it was "foo"
+					             """)
+					.Because("the expectation awaits a comparison that does not complete synchronously");
+			}
+
+			[Test]
 			public async Task WhenCustomMatchTypeComparesByValue_AndBothAreNull_ShouldSucceed()
 			{
 				string? subject = null;

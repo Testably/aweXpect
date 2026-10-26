@@ -68,40 +68,24 @@ public static partial class ThatString
 		string parameterName,
 		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
-			IAsyncContextConstraint<string?>
+			IAsyncContextConstraint<string?>, IStringMatchConstraint
 	{
 		private StringEqualityOptions? _evaluationOptions;
 		private MatchResult _matchResult;
 
-		/// <remarks>
-		///     Most comparisons complete synchronously, so the result is returned without a state machine; an exception is
-		///     returned in the task, like from an asynchronous method.
-		/// </remarks>
 		public ValueTask<ConstraintResult> IsMetBy(string? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-		{
-			try
-			{
-				Actual = actual;
-				_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-				ValueTask<MatchResult> match = _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
-				if (match.IsCompletedSuccessfully)
-				{
-					return new ValueTask<ConstraintResult>(Complete(match.Result));
-				}
+			=> StringMatchConstraint.IsMetBy(this, actual, context, cancellationToken);
 
-				return CompleteAsync(match);
-			}
-			catch (Exception exception)
-			{
-				return new ValueTask<ConstraintResult>(Task.FromException<ConstraintResult>(exception));
-			}
+		ValueTask<MatchResult> IStringMatchConstraint.StartMatch(string? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
+			Actual = actual;
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			return _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
 		}
 
-		private async ValueTask<ConstraintResult> CompleteAsync(ValueTask<MatchResult> match)
-			=> Complete(await match);
-
-		private StartsWithConstraint Complete(MatchResult matchResult)
+		ConstraintResult IStringMatchConstraint.CompleteMatch(MatchResult matchResult)
 		{
 			_matchResult = matchResult;
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
