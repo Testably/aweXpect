@@ -23,9 +23,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have dependency on assembly equal to "NonExistentAssembly",
-					             but it contained assemblies without the required dependency
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -101,7 +106,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             not all have dependency on assembly equal to "aweXpect.Core",
-					             but it only contained assemblies with the unexpected dependency
+					             but all 1 did
 
 					             Collection:
 					             [

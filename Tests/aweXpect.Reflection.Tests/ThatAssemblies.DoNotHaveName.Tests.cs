@@ -41,10 +41,15 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
-					             all have name not ending with ".Tests",
-					             but it contained not matching assemblies
+					             none have name ending with ".Tests",
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -64,10 +69,15 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
-					             all have name not equal to "aweXpect.Reflection.Tests",
-					             but it contained not matching assemblies
+					             none have name equal to "aweXpect.Reflection.Tests",
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -87,10 +97,15 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
-					             all have name not equal to "AWExPECT.rEFLECTION.tESTS" ignoring case,
-					             but it contained not matching assemblies
+					             none have name equal to "AWExPECT.rEFLECTION.tESTS" ignoring case,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -143,10 +158,15 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have name not equal to "aweXpect.Reflection.Tests",
-					             but it contained not matching assemblies
+					             none have name equal to "aweXpect.Reflection.Tests",
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -183,8 +203,13 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
-					             not all have name not equal to "NonExistentAssembly",
-					             but it only contained matching assemblies*
+					             at least one has name equal to "NonExistentAssembly",
+					             but none of 1 did
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
 					             """).AsWildcard();
 			}
 		}

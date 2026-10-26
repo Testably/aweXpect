@@ -22,11 +22,25 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that properties in types matching t => t == typeof(T) in assembly containing type ThatProperty.ClassWithProperties
 					             all have name equal to "PublicProperty",
-					             but it contained not matching items
+					             but only 1 of 6 did
 
 					             Not matching items:
 					             [
-					               *
+					               internal int ThatProperty.ClassWithProperties.InternalProperty { get; set; },
+					               protected int ThatProperty.ClassWithProperties.ProtectedProperty { get; set; },
+					               private int ThatProperty.ClassWithProperties.PrivateProperty { get; set; },
+					               protected internal int ThatProperty.ClassWithProperties.ProtectedInternalProperty { get; set; },
+					               private protected int ThatProperty.ClassWithProperties.PrivateProtectedProperty { get; set; }
+					             ]
+
+					             Collection:
+					             [
+					               public int ThatProperty.ClassWithProperties.PublicProperty { get; set; },
+					               internal int ThatProperty.ClassWithProperties.InternalProperty { get; set; },
+					               protected int ThatProperty.ClassWithProperties.ProtectedProperty { get; set; },
+					               private int ThatProperty.ClassWithProperties.PrivateProperty { get; set; },
+					               protected internal int ThatProperty.ClassWithProperties.ProtectedInternalProperty { get; set; },
+					               private protected int ThatProperty.ClassWithProperties.PrivateProtectedProperty { get; set; }
 					             ]
 					             """).AsWildcard();
 			}
@@ -100,7 +114,12 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that properties in types matching t => t == typeof(T) in assembly containing type ThatProperty.ClassWithSingleProperty
 					             not all have name equal to "MyProperty",
-					             but it only contained matching items*
+					             but all 1 did
+
+					             Collection:
+					             [
+					               public int ThatProperty.ClassWithSingleProperty.MyProperty { get; set; }
+					             ]
 					             """).AsWildcard();
 			}
 		}

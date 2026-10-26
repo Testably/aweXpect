@@ -51,11 +51,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.UnrelatedClass]
-					             are all assignable to ThatTypes.BaseClass,
-					             but it contained not matching types
+					             all are assignable to ThatTypes.BaseClass,
+					             but only 1 of 2 were
 
 					             Not matching items:
 					             [
+					               ThatTypes.UnrelatedClass
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.DerivedClass1,
 					               ThatTypes.UnrelatedClass
 					             ]
 					             """);
@@ -79,6 +85,21 @@ public sealed partial class ThatTypes
 					.WithMessage(
 						"The type to check assignability against must not be an open generic type definition, but it was IEnumerable<>. Use 'Implements' or 'InheritsFrom' for open generic type definitions.");
 			}
+
+			[Test]
+			public async Task WhenTypeIsAnOpenGenericAndThereAreNoTypes_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = Array.Empty<Type?>();
+				Type openGeneric = typeof(IEnumerable<>);
+
+				async Task Act()
+				{
+					await That(subject).AreAssignableTo(openGeneric);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the generated expectation rejects an open generic type only when it compares an item with it");
+			}
 		}
 
 		public sealed class NegatedTests
@@ -96,8 +117,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.DerivedClass2]
-					             are not all assignable to ThatTypes.BaseClass,
-					             but it only contained matching types
+					             not all are assignable to ThatTypes.BaseClass,
+					             but all 2 were
 
 					             Collection:
 					             [
@@ -155,10 +176,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1]
-					             are all not assignable to ThatTypes.BaseClass,
-					             but it contained not matching types
+					             none are assignable to ThatTypes.BaseClass,
+					             but 1 of 1 were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatTypes.DerivedClass1
+					             ]
+
+					             Collection:
 					             [
 					               ThatTypes.DerivedClass1
 					             ]
@@ -181,8 +207,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.UnrelatedClass]
-					             also contain a type assignable to ThatTypes.BaseClass,
-					             but it only contained matching types
+					             at least one is assignable to ThatTypes.BaseClass,
+					             but none of 1 were
 
 					             Collection:
 					             [
@@ -239,11 +265,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.BaseClass, ThatTypes.UnrelatedClass]
-					             are all assignable from ThatTypes.DerivedClass1,
-					             but it contained not matching types
+					             all are assignable from ThatTypes.DerivedClass1,
+					             but only 1 of 2 were
 
 					             Not matching items:
 					             [
+					               ThatTypes.UnrelatedClass
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.BaseClass,
 					               ThatTypes.UnrelatedClass
 					             ]
 					             """);
@@ -265,8 +297,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.BaseClass, ThatTypes.DerivedClass1]
-					             are not all assignable from ThatTypes.GrandChildClass,
-					             but it only contained matching types
+					             not all are assignable from ThatTypes.GrandChildClass,
+					             but all 2 were
 
 					             Collection:
 					             [
@@ -324,10 +356,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.BaseClass]
-					             are all not assignable from ThatTypes.DerivedClass1,
-					             but it contained not matching types
+					             none are assignable from ThatTypes.DerivedClass1,
+					             but 1 of 1 were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatTypes.BaseClass
+					             ]
+
+					             Collection:
 					             [
 					               ThatTypes.BaseClass
 					             ]
@@ -350,8 +387,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.UnrelatedClass]
-					             also contain a type assignable from ThatTypes.DerivedClass1,
-					             but it only contained matching types
+					             at least one is assignable from ThatTypes.DerivedClass1,
+					             but none of 1 were
 
 					             Collection:
 					             [

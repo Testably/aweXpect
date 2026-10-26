@@ -54,12 +54,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with name equal to "DoNotHaveNameType" in assembly containing type ThatTypes.DoNotHaveName.Tests
-					             all have name not equal to "DoNotHaveNameType",
-					             but it contained not matching items
+					             none have name equal to "DoNotHaveNameType",
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
 					             [
-					               *DoNotHaveNameType*
+					               ThatTypes.DoNotHaveName.Tests.DoNotHaveNameType
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.DoNotHaveName.Tests.DoNotHaveNameType
 					             ]
 					             """).AsWildcard();
 			}
@@ -78,12 +83,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with name equal to "DoNotHaveNameType" in assembly containing type ThatTypes.DoNotHaveName.Tests
-					             all have name not ending with "HaveNameType",
-					             but it contained not matching items
+					             none have name ending with "HaveNameType",
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
 					             [
-					               *DoNotHaveNameType*
+					               ThatTypes.DoNotHaveName.Tests.DoNotHaveNameType
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.DoNotHaveName.Tests.DoNotHaveNameType
 					             ]
 					             """).AsWildcard();
 			}
@@ -123,12 +133,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have name not equal to "DoNotHaveNameType",
-					             but it contained not matching items
+					             none have name equal to "DoNotHaveNameType",
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
 					             [
-					               *DoNotHaveNameType*
+					               ThatTypes.DoNotHaveName.Tests.DoNotHaveNameType
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.DoNotHaveName.Tests.DoNotHaveNameType
 					             ]
 					             """).AsWildcard();
 			}
@@ -151,12 +166,12 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with name equal to "DoNotHaveNameTypeNeg" in assembly containing type ThatTypes.DoNotHaveName.Tests
-					             not all have name not equal to "SomeOtherClassName",
-					             but it only contained matching items
+					             at least one has name equal to "SomeOtherClassName",
+					             but none of 1 did
 
 					             Collection:
 					             [
-					               *DoNotHaveNameTypeNeg*
+					               ThatTypes.DoNotHaveName.NegatedTests.DoNotHaveNameTypeNeg
 					             ]
 					             """).AsWildcard();
 			}

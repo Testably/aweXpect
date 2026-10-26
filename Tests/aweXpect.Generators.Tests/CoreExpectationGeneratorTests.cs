@@ -196,6 +196,19 @@ public sealed class CoreExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task ExpectationOptions_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Named", "is {not} named {expected}")]
+			private static bool IsNamed(string value, string expected, [ExpectationOptions] aweXpect.Options.StringEqualityOptions options) => true;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsNamed(string, string, StringEqualityOptions)' cannot generate an expectation, because the parameter 'options' is marked with [ExpectationOptions], which only [GenerateCollectionExpectation] supports");
+	}
+
+	[Test]
 	public async Task ExpectationTextHasNoNot_ShouldReportADiagnostic()
 	{
 		GeneratorRunner.GeneratorResult result = RunOn(

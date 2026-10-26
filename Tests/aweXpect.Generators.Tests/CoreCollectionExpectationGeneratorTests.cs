@@ -583,6 +583,183 @@ public sealed class CoreCollectionExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task Options_BeforeOtherParameters_ShouldBePassedAtTheirPosition()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreNamed", "is named {expected}", "are named {expected}", NullableOverload = false)]
+			private static ValueTask<bool> IsNamed(string? value, [ExpectationOptions] aweXpect.Options.StringEqualityOptions options, [EvaluationCancellationToken] CancellationToken cancellationToken, string expected)
+				=> options.AreConsideredEqual(value, expected, nameof(expected));
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated)
+			.Contains("global::Lib.ThatSample.IsNamed(item, (_evaluationOptions ?? _options.Value), cancellationToken, _p0)");
+		await That(result.Generated).Contains(" AreNamed(this global::aweXpect.IEnumerableItems<string?> items, string expected)");
+	}
+
+	[Test]
+	public async Task Options_InCSharp8_ShouldCompile()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect.Core.Extending;
+			using aweXpect.Options;
+
+			namespace Lib
+			{
+				public static partial class ThatSample
+				{
+					[GenerateCollectionExpectation("AreNamed", "is named {expected}", "are named {expected}",
+						CollectionOverload = true, NegatedName = "AreNotNamed")]
+					private static ValueTask<bool> IsNamed(string? value, [NegatedParameterName("unexpected")] string expected, [ExpectationOptions] StringEqualityOptions options)
+						=> options.AreConsideredEqual(value, expected, nameof(expected));
+				}
+			}
+			""", LanguageVersion.CSharp8);
+
+		await ThatCompiles(result);
+	}
+
+	[Test]
+	public async Task Options_OnAnotherType_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreNamed", "is named {expected}", "are named {expected}")]
+			private static bool IsNamed(string value, string expected, [ExpectationOptions] int options) => true;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsNamed(string, string, int)' cannot generate an expectation, because the parameter 'options' is marked with [ExpectationOptions], but 'int' is no supported options type");
+	}
+
+	[Test]
+	public async Task Options_OnMoreThanOneParameter_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreNamed", "is named {expected}", "are named {expected}")]
+			private static bool IsNamed(string value, string expected, [ExpectationOptions] aweXpect.Options.StringEqualityOptions options, [ExpectationOptions] aweXpect.Options.StringEqualityOptions other) => true;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsNamed(string, string, StringEqualityOptions, StringEqualityOptions)' cannot generate an expectation, because more than one parameter is marked with [ExpectationOptions]");
+	}
+
+	[Test]
+	public async Task Options_OnTheSubject_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreDefault", "is default", "are default")]
+			private static bool IsDefault([ExpectationOptions] aweXpect.Options.StringEqualityOptions value) => true;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsDefault(StringEqualityOptions)' cannot generate an expectation, because the subject cannot be marked with [ExpectationOptions]");
+	}
+
+	[Test]
+	public async Task Options_ShouldBeCreatedAndReturnedInTheResult()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreNamed", "is named {expected}", "are named {expected}",
+				CollectionOverload = true, NegatedName = "AreNotNamed")]
+			private static ValueTask<bool> IsNamed(string? value, [NegatedParameterName("unexpected")] string expected, [ExpectationOptions] aweXpect.Options.StringEqualityOptions? options)
+				=> options!.AreConsideredEqual(value, expected, nameof(expected));
+			""");
+
+		await ThatCompiles(result);
+		await ThatContainsLines(result,
+			"""
+				public static global::aweXpect.Results.StringEqualityTypeResult<global::System.Collections.Generic.IEnumerable<string?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?>> AreNamed(this global::aweXpect.IEnumerableItems<string?> items, string expected)
+				{
+					if (expected is null)
+					{
+						throw global::aweXpect.Core.Tracing.WriteException(new global::System.ArgumentNullException(nameof(expected), "The 'expected' value cannot be null."));
+					}
+
+					global::aweXpect.Core.OptionsHolder<global::aweXpect.Options.StringEqualityOptions> __options = new global::aweXpect.Core.OptionsHolder<global::aweXpect.Options.StringEqualityOptions>(global::aweXpect.Options.StringEqualityOptions.Default);
+					return new global::aweXpect.Results.StringEqualityTypeResult<global::System.Collections.Generic.IEnumerable<string?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?>>(global::aweXpect.Core.Extending.ThatExtensions.Get(items.Subject).ExpectationBuilder.AddConstraint((items.Quantifier, expected, __options), (__state, __it, __grammars) => new IsNamed_GeneratedItemsConstraint<global::System.Collections.Generic.IEnumerable<string?>?>(__it, __grammars, __state.Item1, false, __state.Item2, __state.Item3, "expected")),
+						items.Subject, __options);
+				}
+			""");
+		await That(result.Generated)
+			.Contains("__state.Item1, __state.Item2, \"unexpected\")").Exactly(2);
+		await That(result.Generated)
+			.Contains("stringBuilder.Append(_options.Value.GetExpectation(_p0, grammars));").Exactly(4);
+		await That(result.Generated)
+			.Contains("protected override void OnEvaluating(global::aweXpect.Core.EvaluationContext.IEvaluationContext context, global::System.Threading.CancellationToken cancellationToken)").Exactly(2);
+		await That(result.Generated)
+			.Contains("_evaluationOptions = _options.Value.ForEvaluation(context, cancellationToken);").Exactly(2);
+		await That(result.Generated)
+			.Contains("_evaluationOptions.ValidateExpected(_p0, _optionsParameterName);").Exactly(2);
+		await That(result.Generated).DoesNotContain("AndOrResult<");
+	}
+
+	[Test]
+	public async Task Options_WithNegatedParameterName_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreNamed", "is named {expected}", "are named {expected}", NegatedName = "AreNotNamed")]
+			private static bool IsNamed(string value, string expected, [ExpectationOptions, NegatedParameterName("other")] aweXpect.Options.StringEqualityOptions options) => true;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsNamed(string, string, StringEqualityOptions)' cannot generate an expectation, because the parameter 'options' is marked with [ExpectationOptions] and cannot be marked with [NegatedParameterName]");
+	}
+
+	[Test]
+	public async Task Options_WithNullItemFailsBothWays_ShouldFailANullItemBeforeThePredicate()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreNamed", "is named {expected}", "are named {expected}", NullItemFailsBothWays = true)]
+			private static ValueTask<bool> IsNamed(string value, string expected, [ExpectationOptions] aweXpect.Options.StringEqualityOptions options)
+				=> options.AreConsideredEqual(value, expected, nameof(expected));
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated)
+			.Contains("=> item is null ? global::aweXpect.Core.Extending.PredicateResult.FailureBothWays(\"was <null>\") : await global::Lib.ThatSample.IsNamed(item, _p0, (_evaluationOptions ?? _options.Value));")
+			.Exactly(2);
+	}
+
+	[Test]
+	public async Task Options_WithoutAStringParameter_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreNamed", "is named", "are named")]
+			private static bool IsNamed(string value, [ExpectationOptions] aweXpect.Options.StringEqualityOptions options) => true;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsNamed(string, StringEqualityOptions)' cannot generate an expectation, because the options parameter 'options' needs exactly one string parameter to compare with");
+	}
+
+	[Test]
+	public async Task Options_WithoutTheAttribute_ShouldBeAParameterOfTheExpectation()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreNamed", "is named {expected}", "are named {expected}", NullableOverload = false)]
+			private static ValueTask<bool> IsNamed(string? value, string expected, aweXpect.Options.StringEqualityOptions options)
+				=> options.AreConsideredEqual(value, expected, nameof(expected));
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated)
+			.Contains(" AreNamed(this global::aweXpect.IEnumerableItems<string?> items, string expected, global::aweXpect.Options.StringEqualityOptions options)")
+			.Because("only a parameter marked with [ExpectationOptions] receives the options of the evaluation");
+		await That(result.Generated).DoesNotContain("StringEqualityTypeResult");
+	}
+
+	[Test]
 	public async Task OverloadedPredicates_ShouldGenerateDistinctConstraints()
 	{
 		GeneratorRunner.GeneratorResult result = RunOn(

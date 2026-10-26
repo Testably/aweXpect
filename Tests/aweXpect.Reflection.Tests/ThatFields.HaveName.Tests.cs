@@ -22,11 +22,25 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that fields in types matching t => t == typeof(T) in assembly containing type ThatField.ClassWithFields
 					             all have name equal to "PublicField",
-					             but it contained not matching items
+					             but only 1 of 6 did
 
 					             Not matching items:
 					             [
-					               *
+					               int ThatField.ClassWithFields.InternalField,
+					               int ThatField.ClassWithFields.PrivateField,
+					               int ThatField.ClassWithFields.PrivateProtectedField,
+					               int ThatField.ClassWithFields.ProtectedField,
+					               int ThatField.ClassWithFields.ProtectedInternalField
+					             ]
+
+					             Collection:
+					             [
+					               int ThatField.ClassWithFields.InternalField,
+					               int ThatField.ClassWithFields.PrivateField,
+					               int ThatField.ClassWithFields.PrivateProtectedField,
+					               int ThatField.ClassWithFields.ProtectedField,
+					               int ThatField.ClassWithFields.ProtectedInternalField,
+					               int ThatField.ClassWithFields.PublicField
 					             ]
 					             """).AsWildcard();
 			}
@@ -100,7 +114,12 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that fields in types matching t => t == typeof(T) in assembly containing type ThatField.ClassWithSingleField
 					             not all have name equal to "MyField",
-					             but it only contained matching items*
+					             but all 1 did
+
+					             Collection:
+					             [
+					               int ThatField.ClassWithSingleField.MyField
+					             ]
 					             """).AsWildcard();
 			}
 		}

@@ -48,10 +48,15 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that in assembly containing type PublicAbstractClass
-					              all target not equal to "{CurrentTarget}",
-					              but it contained not matching assemblies
+					              none target equal to "{CurrentTarget}",
+					              but 1 of 1 did
 
-					              Not matching items:
+					              Matching items:
+					              [
+					                aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					              ]
+
+					              Collection:
 					              [
 					                aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					              ]
@@ -84,10 +89,15 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that in assembly containing type PublicAbstractClass
-					              all target not equal to "{CurrentTarget.ToUpperInvariant()}" ignoring case,
-					              but it contained not matching assemblies
+					              none target equal to "{CurrentTarget.ToUpperInvariant()}" ignoring case,
+					              but 1 of 1 did
 
-					              Not matching items:
+					              Matching items:
+					              [
+					                aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					              ]
+
+					              Collection:
 					              [
 					                aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					              ]
@@ -107,10 +117,10 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all target not equal to "net99.0",
-					             but it contained not matching assemblies
+					             none target equal to "net99.0",
+					             but for the item at index 0, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
 					               <null>
 					             ]
@@ -130,7 +140,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all target not equal to "net99.0",
+					             none target equal to "net99.0",
 					             but it was <null>
 					             """);
 			}
@@ -151,8 +161,8 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
-					             not all target not equal to "net99.0",
-					             but it only contained matching assemblies
+					             at least one targets equal to "net99.0",
+					             but none of 1 did
 
 					             Collection:
 					             [
@@ -210,10 +220,15 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              all target not equal to "{CurrentTarget}",
-					              but it contained not matching assemblies
+					              none target equal to "{CurrentTarget}",
+					              but 1 of 1 did
 
-					              Not matching items:
+					              Matching items:
+					              [
+					                aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					              ]
+
+					              Collection:
 					              [
 					                aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					              ]

@@ -58,6 +58,7 @@ internal sealed record ExpectationModel(
 /// <param name="ItemTypeParameter">The type parameter of the method that is the type of the item, if any.</param>
 /// <param name="ItemTypeConstraints">The constraints of the <paramref name="ItemTypeParameter" />.</param>
 /// <param name="SupportsAsyncEnumerables">Whether the referenced aweXpect.Core supports <c>IAsyncEnumerable</c>.</param>
+/// <param name="Options">The options that the predicate receives and the result exposes, if any.</param>
 internal sealed record CollectionExpectationModel(
 	ClassModel Class,
 	string Name,
@@ -76,7 +77,8 @@ internal sealed record CollectionExpectationModel(
 	string? FormattedItem,
 	string? ItemTypeParameter,
 	string? ItemTypeConstraints,
-	bool SupportsAsyncEnumerables)
+	bool SupportsAsyncEnumerables,
+	OptionsModel? Options = null)
 {
 	public bool PassesCancellationToken => CancellationTokenIndex >= 0;
 
@@ -122,6 +124,24 @@ internal readonly record struct ItemModel(
 	string ConstraintPrefix,
 	bool FailsOnNull,
 	string ItemArgument);
+
+/// <summary>
+///     The parameter of the predicate marked with the <c>ExpectationOptionsAttribute</c>: the generated expectation
+///     holds the options in an <c>OptionsHolder</c> that the returned result changes, and passes the options of the
+///     evaluation to the predicate.
+/// </summary>
+/// <param name="OptionsType">The type of the options, which has a static <c>Default</c> value.</param>
+/// <param name="ResultType">The generic result type without its type arguments, e.g. <c>StringEqualityTypeResult</c>.</param>
+/// <param name="ArgumentIndex">The position of the options among the arguments after the item.</param>
+/// <param name="PatternParameterIndex">
+///     The expectation parameter that the options compare with: the options validate it against its name, and write
+///     its placeholder, e.g. <c>starts with "foo" ignoring case</c>.
+/// </param>
+internal readonly record struct OptionsModel(
+	string OptionsType,
+	string ResultType,
+	int ArgumentIndex,
+	int PatternParameterIndex);
 
 /// <summary>
 ///     The method that describes the subject after "but", and which of the optional arguments it takes.

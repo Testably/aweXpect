@@ -24,6 +24,12 @@ public sealed class CollectionConstraintTests
 			             Expected that subject
 			             all have namespace equal to "Foo",
 			             but it could not be verified, because the evaluation was already canceled
+
+			             Collection:
+			             [
+			               string,
+			               int
+			             ]
 			             """);
 	}
 

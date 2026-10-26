@@ -171,8 +171,7 @@ internal static class CollectionExpectationWriter
 		string quantifier = negated
 			? $"{EnumerableQuantifier}.None({Grammars}.Nested)"
 			: $"{EnumerableQuantifier}.All()";
-		string resultType =
-			$"global::aweXpect.Results.AndOrResult<{collection}, global::aweXpect.Core.IThat<{collection}?>>";
+		string resultType = ResultType(model, collection, $"global::aweXpect.Core.IThat<{collection}?>");
 		sb.AppendLine("\t/// <summary>");
 		AppendDocumentation(sb, summary);
 		sb.AppendLine("\t/// </summary>");
@@ -197,10 +196,18 @@ internal static class CollectionExpectationWriter
 		AppendItemTypeConstraints(sb, model);
 		sb.AppendLine("\t{");
 		AppendNullChecks(sb, classModel.Parameters, negated);
-		int count = classModel.Parameters.Count;
+		AppendOptions(sb, model);
+		List<string> values = classModel.Parameters.Values.Select(p => p.GetName(negated)).ToList();
+		if (model.Options is not null)
+		{
+			values.Add("__options");
+		}
+
+		int count = values.Count;
 		string arguments = string.Concat(Enumerable.Range(0, count)
 			.Select(i => count == 1 ? ", __state" : $", __state.Item{i + 1}"));
-		string newConstraint = $"new {constraint}(__it, __grammars, {quantifier}, true{arguments})";
+		string newConstraint =
+			$"new {constraint}(__it, __grammars, {quantifier}, true{arguments}{OptionsParameterName(model, negated)})";
 		sb.Append("\t\treturn new ").Append(resultType)
 			.Append("(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint(");
 		switch (count)
@@ -209,16 +216,15 @@ internal static class CollectionExpectationWriter
 				sb.Append("(__it, __grammars) => ");
 				break;
 			case 1:
-				sb.Append(classModel.Parameters.Values[0].GetName(negated)).Append(", (__state, __it, __grammars) => ");
+				sb.Append(values[0]).Append(", (__state, __it, __grammars) => ");
 				break;
 			default:
-				sb.Append('(').Append(string.Join(", ", classModel.Parameters.Values.Select(p => p.GetName(negated))))
-					.Append("), (__state, __it, __grammars) => ");
+				sb.Append('(').Append(string.Join(", ", values)).Append("), (__state, __it, __grammars) => ");
 				break;
 		}
 
 		sb.Append(newConstraint).AppendLine("),");
-		sb.AppendLine("\t\t\tsubject);");
+		sb.Append("\t\t\tsubject").Append(model.Options is null ? "" : ", __options").AppendLine(");");
 		sb.AppendLine("\t}");
 		sb.AppendLine();
 	}
@@ -267,8 +273,7 @@ internal static class CollectionExpectationWriter
 		ClassModel classModel = model.Class;
 		string receiver = classModel.Parameters.Values.Any(p => p.Name == "items") ? "__items" : "items";
 		string thatType = structConstraint is null ? collection + "?" : collection;
-		string resultType =
-			$"global::aweXpect.Results.AndOrResult<{collection}, global::aweXpect.Core.IThat<{thatType}>>";
+		string resultType = ResultType(model, collection, $"global::aweXpect.Core.IThat<{thatType}>");
 		sb.AppendLine("\t/// <summary>");
 		AppendDocumentation(sb, model.Summary ?? $"…{ToDocumentation(model.PluralText, classModel, false)}.");
 		sb.AppendLine("\t/// </summary>");
@@ -297,10 +302,17 @@ internal static class CollectionExpectationWriter
 		AppendItemTypeConstraints(sb, model);
 		sb.AppendLine("\t{");
 		AppendNullChecks(sb, classModel.Parameters, false);
-		int count = classModel.Parameters.Count;
+		AppendOptions(sb, model);
+		List<string> values = classModel.Parameters.Values.Select(p => p.Name).ToList();
+		if (model.Options is not null)
+		{
+			values.Add("__options");
+		}
+
+		int count = values.Count;
 		string state = count == 0
 			? $"{receiver}.Quantifier"
-			: $"({receiver}.Quantifier, {string.Join(", ", classModel.Parameters.Values.Select(p => p.Name))})";
+			: $"({receiver}.Quantifier, {string.Join(", ", values)})";
 		string arguments = (count == 0 ? "__state" : "__state.Item1") +
 		                   (model.HasCollectionExpectations ? ", false" : "") +
 		                   string.Concat(Enumerable.Range(0, count).Select(i => $", __state.Item{i + 2}"));
@@ -308,11 +320,45 @@ internal static class CollectionExpectationWriter
 			.Append("(global::aweXpect.Core.Extending.ThatExtensions.Get(").Append(receiver)
 			.Append(".Subject).ExpectationBuilder.AddConstraint(")
 			.Append(state).Append(", (__state, __it, __grammars) => new ").Append(constraint)
-			.Append("(__it, __grammars, ").Append(arguments).AppendLine(")),");
-		sb.Append("\t\t\t").Append(receiver).AppendLine(".Subject);");
+			.Append("(__it, __grammars, ").Append(arguments).Append(OptionsParameterName(model, false)).AppendLine(")),");
+		sb.Append("\t\t\t").Append(receiver).Append(".Subject").Append(model.Options is null ? "" : ", __options")
+			.AppendLine(");");
 		sb.AppendLine("\t}");
 		sb.AppendLine();
 	}
+
+	/// <summary>
+	///     The plain result, or with options the result that configures them.
+	/// </summary>
+	private static string ResultType(CollectionExpectationModel model, string collection, string that)
+		=> model.Options is { } options
+			? $"{options.ResultType}<{collection}, {that}>"
+			: $"global::aweXpect.Results.AndOrResult<{collection}, {that}>";
+
+	/// <summary>
+	///     Creates the holder of the options with their default value, which the result changes.
+	/// </summary>
+	private static void AppendOptions(StringBuilder sb, CollectionExpectationModel model)
+	{
+		if (model.Options is { } options)
+		{
+			string holder = OptionsHolder(options);
+			sb.Append("\t\t").Append(holder).Append(" __options = new ").Append(holder).Append('(')
+				.Append(options.OptionsType).AppendLine(".Default);");
+		}
+	}
+
+	/// <summary>
+	///     The name of the parameter that the options compare with, as the expectation names it, so that an unusable
+	///     pattern is reported against it, or nothing without options.
+	/// </summary>
+	private static string OptionsParameterName(CollectionExpectationModel model, bool negated)
+		=> model.Options is { } options
+			? ", " + Literal(model.Class.Parameters.Values[options.PatternParameterIndex].GetName(negated).TrimStart('@'))
+			: "";
+
+	private static string OptionsHolder(OptionsModel options)
+		=> $"global::aweXpect.Core.OptionsHolder<{options.OptionsType}>";
 
 	private static string SyncConstraint(ItemModel item) => $"{item.ConstraintPrefix}ItemsConstraint";
 
@@ -347,7 +393,14 @@ internal static class CollectionExpectationWriter
 				.AppendLine(";");
 		}
 
-		if (classModel.Parameters.Count > 0)
+		if (model.Options is { } options)
+		{
+			sb.Append("\t\tprivate readonly ").Append(OptionsHolder(options)).AppendLine(" _options;");
+			sb.AppendLine("\t\tprivate readonly string _optionsParameterName;");
+			sb.Append("\t\tprivate ").Append(options.OptionsType).AppendLine("? _evaluationOptions;");
+		}
+
+		if (classModel.Parameters.Count > 0 || model.Options is not null)
 		{
 			sb.AppendLine();
 		}
@@ -360,6 +413,11 @@ internal static class CollectionExpectationWriter
 			sb.Append(", ").Append(classModel.Parameters.Values[i].Type).Append(" p").Append(i);
 		}
 
+		if (model.Options is not null)
+		{
+			sb.Append(", ").Append(OptionsHolder(model.Options.Value)).Append(" options, string optionsParameterName");
+		}
+
 		sb.AppendLine(")");
 		sb.Append("\t\t\t: base(it, grammars, quantifier").Append(model.HasCollectionExpectations ? ", isOnCollection" : "")
 			.AppendLine(")");
@@ -369,8 +427,19 @@ internal static class CollectionExpectationWriter
 			sb.Append("\t\t\t_p").Append(i).Append(" = p").Append(i).AppendLine(";");
 		}
 
+		if (model.Options is not null)
+		{
+			sb.AppendLine("\t\t\t_options = options;");
+			sb.AppendLine("\t\t\t_optionsParameterName = optionsParameterName;");
+		}
+
 		sb.AppendLine("\t\t}");
 		sb.AppendLine();
+		if (model.Options is not null)
+		{
+			AppendOptionsEvaluation(sb, model.Options.Value);
+		}
+
 		sb.Append("\t\tprotected override string Verb => ").Append(Literal(model.Verb)).AppendLine(";");
 		sb.AppendLine();
 		AppendIsMatch(sb, model, item);
@@ -401,6 +470,53 @@ internal static class CollectionExpectationWriter
 			.Append(", object?>(items, item => ").Append(value).AppendLine("), options);");
 	}
 
+	/// <remarks>
+	///     The expected value is validated before any item is read, so that an unusable pattern is rejected for every
+	///     collection, also an empty one.
+	/// </remarks>
+	private static void AppendOptionsEvaluation(StringBuilder sb, OptionsModel options)
+	{
+		sb.AppendLine("\t\tprotected override void OnEvaluating(global::aweXpect.Core.EvaluationContext.IEvaluationContext context, global::System.Threading.CancellationToken cancellationToken)");
+		sb.AppendLine("\t\t{");
+		sb.AppendLine("\t\t\t_evaluationOptions = _options.Value.ForEvaluation(context, cancellationToken);");
+		sb.Append("\t\t\t_evaluationOptions.ValidateExpected(_p").Append(options.PatternParameterIndex)
+			.AppendLine(", _optionsParameterName);");
+		sb.AppendLine("\t\t}");
+		sb.AppendLine();
+		sb.AppendLine("\t\tpublic override void AppendContexts(global::aweXpect.Core.ResultContextCollector contexts)");
+		sb.AppendLine("\t\t{");
+		sb.AppendLine("\t\t\tbase.AppendContexts(contexts);");
+		sb.AppendLine("\t\t\t(_evaluationOptions ?? _options.Value).AppendContexts(contexts);");
+		sb.AppendLine("\t\t}");
+		sb.AppendLine();
+	}
+
+	/// <summary>
+	///     The arguments of the predicate after the item, with the cancellation token and the options of the evaluation
+	///     at their positions.
+	/// </summary>
+	private static string GetPredicateArguments(CollectionExpectationModel model)
+	{
+		List<string> arguments = Enumerable.Range(0, model.Class.Parameters.Count).Select(i => $"_p{i}").ToList();
+		List<(int Index, string Argument)> inserted = [];
+		if (model.CancellationTokenIndex >= 0)
+		{
+			inserted.Add((model.CancellationTokenIndex, "cancellationToken"));
+		}
+
+		if (model.Options is { } options)
+		{
+			inserted.Add((options.ArgumentIndex, "(_evaluationOptions ?? _options.Value)"));
+		}
+
+		foreach ((int index, string argument) in inserted.OrderBy(x => x.Index))
+		{
+			arguments.Insert(index, argument);
+		}
+
+		return string.Concat(arguments.Select(argument => ", " + argument));
+	}
+
 	private static string Owner(ClassModel classModel)
 		=> classModel.Namespace is null
 			? $"global::{classModel.ClassName}"
@@ -410,7 +526,7 @@ internal static class CollectionExpectationWriter
 	{
 		ClassModel classModel = model.Class;
 		string call = $"{Owner(classModel)}.{classModel.PredicateName}{TypeParameters(model, null)}({item.ItemArgument}"
-		              + $"{GetArguments(classModel.Parameters.Count, model.CancellationTokenIndex)})";
+		              + $"{GetPredicateArguments(model)})";
 		string result = $"{ExpectationWriter.ValueTask}<{PredicateResult}>";
 		// An asynchronous bool is awaited, as only the result itself converts to a PredicateResult.
 		bool awaitsBool = model.PredicateKind != PredicateKind.Synchronous && !model.ReturnsPredicateResult;
@@ -443,20 +559,28 @@ internal static class CollectionExpectationWriter
 		sb.AppendLine("\t\t{");
 		sb.Append("\t\t\tif (").Append(GrammarsExtensions).AppendLine(".IsPlural(grammars))");
 		sb.AppendLine("\t\t\t{");
-		AppendTextParts(sb, model.PluralText);
+		AppendTextParts(sb, model.PluralText, model.Options);
 		sb.AppendLine("\t\t\t}");
 		sb.AppendLine("\t\t\telse");
 		sb.AppendLine("\t\t\t{");
-		AppendTextParts(sb, model.Text);
+		AppendTextParts(sb, model.Text, model.Options);
 		sb.AppendLine("\t\t\t}");
 		sb.AppendLine("\t\t}");
 	}
 
-	private static void AppendTextParts(StringBuilder sb, EquatableArray<TextPart> parts)
+	/// <remarks>
+	///     The options write the parameter that they compare with, e.g. <c>starts with "foo" ignoring case</c>.
+	/// </remarks>
+	private static void AppendTextParts(StringBuilder sb, EquatableArray<TextPart> parts, OptionsModel? options)
 	{
 		foreach (TextPart part in parts.Values)
 		{
-			if (part.Text is null)
+			if (part.Text is null && part.ParameterIndex == options?.PatternParameterIndex)
+			{
+				sb.Append("\t\t\t\tstringBuilder.Append(_options.Value.GetExpectation(_p").Append(part.ParameterIndex)
+					.AppendLine(", grammars));");
+			}
+			else if (part.Text is null)
 			{
 				sb.Append("\t\t\t\t").Append(ValueFormatters).Append(".Format(").Append(Formatter)
 					.Append(", stringBuilder, _p").Append(part.ParameterIndex).AppendLine(");");
