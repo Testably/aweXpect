@@ -27,15 +27,15 @@ public static partial class ThatHttpRequestMessage
 		HasContentType(this IThat<HttpRequestMessage?> subject, string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default.IgnoringCase());
 		return new StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
-				.AddConstraint((expected, options), static (state, it, grammars) =>
-					new HasContentTypeConstraint<HttpRequestMessage>(it, grammars, state.expected, "expected", state.options,
-						static m => m.Content)),
+				.AddConstraint(expected, static (expected, it, grammars) =>
+						new HasContentTypeConstraint<HttpRequestMessage>(it, grammars, expected, "expected",
+							StringEqualityOptions.Default.IgnoringCase(), static m => m.Content),
+					out HasContentTypeConstraint<HttpRequestMessage> constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	/// <summary>
@@ -54,14 +54,14 @@ public static partial class ThatHttpRequestMessage
 		DoesNotHaveContentType(this IThat<HttpRequestMessage?> subject, string unexpected)
 	{
 		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default.IgnoringCase());
 		return new StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
-				.AddConstraint((unexpected, options), static (state, it, grammars) =>
-					new HasContentTypeConstraint<HttpRequestMessage>(it, grammars, state.unexpected, "unexpected", state.options,
-						static m => m.Content).Invert()),
+				.AddConstraint(unexpected, static (unexpected, it, grammars) =>
+						new HasContentTypeConstraint<HttpRequestMessage>(it, grammars, unexpected, "unexpected",
+							StringEqualityOptions.Default.IgnoringCase(), static m => m.Content).Invert(),
+					out HasContentTypeConstraint<HttpRequestMessage> constraint),
 			subject,
-			options);
+			constraint);
 	}
 }

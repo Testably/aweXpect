@@ -24,19 +24,15 @@ public static partial class ThatEventRecording
 		where TSubject : notnull
 	{
 		eventName.ThrowIfNull();
-		OptionsHolder<Options.Quantifier> quantifier = new(new Options.Quantifier());
-		OptionsHolder<TriggerEventFilter> filter = new(TriggerEventFilter.Default);
-		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new EventTriggerResult<TSubject>(
-			subject.Get().ExpectationBuilder.AddConstraint(
-				(EventName: eventName, Filter: filter, Quantifier: quantifier, Options: options),
-				static (state, it, grammars)
-					=> new HaveTriggeredConstraint<TSubject>(it, grammars, state.EventName, state.Filter,
-						state.Quantifier, state.Options)),
+			subject.Get().ExpectationBuilder.AddConstraint(eventName,
+				static (eventName, it, grammars)
+					=> new HaveTriggeredConstraint<TSubject>(it, grammars, eventName, TriggerEventFilter.Default),
+				out HaveTriggeredConstraint<TSubject> constraint),
 			subject,
-			filter,
-			quantifier,
-			options);
+			constraint,
+			constraint,
+			constraint);
 	}
 
 	/// <summary>
@@ -56,18 +52,15 @@ public static partial class ThatEventRecording
 		where TSubject : notnull
 	{
 		eventName.ThrowIfNull();
-		OptionsHolder<Options.Quantifier> quantifier = new(new Options.Quantifier());
-		OptionsHolder<TriggerEventFilter> filter = new(TriggerEventFilter.Default);
-		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new EventTriggerResult<TSubject>(
-			subject.Get().ExpectationBuilder.AddConstraint(
-				(EventName: eventName, Filter: filter, Quantifier: quantifier, Options: options),
-				static (state, it, grammars)
-					=> new HaveTriggeredConstraint<TSubject>(it, grammars, state.EventName, state.Filter,
-						state.Quantifier, state.Options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint(eventName,
+				static (eventName, it, grammars)
+					=> new HaveTriggeredConstraint<TSubject>(it, grammars, eventName, TriggerEventFilter.Default)
+						.Invert(),
+				out HaveTriggeredConstraint<TSubject> constraint),
 			subject,
-			filter,
-			quantifier,
-			options);
+			constraint,
+			constraint,
+			constraint);
 	}
 }

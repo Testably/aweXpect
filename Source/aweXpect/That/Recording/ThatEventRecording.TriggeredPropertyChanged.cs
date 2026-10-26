@@ -19,20 +19,16 @@ public static partial class ThatEventRecording
 		this IThat<IEventRecording<TSubject>?> subject)
 		where TSubject : INotifyPropertyChanged
 	{
-		OptionsHolder<Options.Quantifier> quantifier = new(new Options.Quantifier());
-		OptionsHolder<TriggerEventFilter> filter = new(TriggerEventFilter.Default);
-		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new EventTriggerResult<TSubject>(
-			subject.Get().ExpectationBuilder.AddConstraint((Filter: filter, Quantifier: quantifier, Options: options),
-				static (state, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(TriggerEventFilter.Default,
+				static (filter, it, grammars)
 					=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
-						state.Filter,
-						state.Quantifier,
-						state.Options)),
+						filter),
+				out HaveTriggeredConstraint<TSubject> constraint),
 			subject,
-			filter,
-			quantifier,
-			options);
+			constraint,
+			constraint,
+			constraint);
 	}
 
 	/// <summary>
@@ -48,19 +44,15 @@ public static partial class ThatEventRecording
 		this IThat<IEventRecording<TSubject>?> subject)
 		where TSubject : INotifyPropertyChanged
 	{
-		OptionsHolder<Options.Quantifier> quantifier = new(new Options.Quantifier());
-		OptionsHolder<TriggerEventFilter> filter = new(TriggerEventFilter.Default);
-		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new EventTriggerResult<TSubject>(
-			subject.Get().ExpectationBuilder.AddConstraint((Filter: filter, Quantifier: quantifier, Options: options),
-				static (state, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(TriggerEventFilter.Default,
+				static (filter, it, grammars)
 					=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
-						state.Filter,
-						state.Quantifier,
-						state.Options).Invert()),
+						filter).Invert(),
+				out HaveTriggeredConstraint<TSubject> constraint),
 			subject,
-			filter,
-			quantifier,
-			options);
+			constraint,
+			constraint,
+			constraint);
 	}
 }
