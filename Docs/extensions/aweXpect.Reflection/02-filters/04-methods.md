@@ -141,7 +141,7 @@ also come with the operand overloads, e.g. `DoesNotHaveOperator<int>(Operator)`.
 
 :::note[Operators are hidden by default]
 Operators are special-name members that are
-[hidden by default](../04-configuration.md#compiler-generated-members), so the
+[hidden by default](../04-customization.md#compiler-generated-members), so the
 plain `.Methods()` collection excludes them unless opted in via `IncludedSpecialNameMembers`. The
 `.WhichAreOperators(Operator)` filter implicitly re-includes operators for its query, so it works without
 that configuration. The negative `.WhichAreNotOperators(Operator)` filter does **not** re-include operators; if you

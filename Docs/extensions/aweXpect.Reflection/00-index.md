@@ -12,7 +12,7 @@ dotnet add package aweXpect.Reflection
 
 The package brings `Expect.That` with it, but not the expectations for strings, numbers or collections, so reference
 [`aweXpect`](https://www.nuget.org/packages/aweXpect) as well. The expectations live in the namespace `aweXpect`; the
-sources `In` and `Types`, their filters and the [customization](./04-configuration.md) need
+sources `In` and `Types`, their filters and the [customization](./04-customization.md) need
 `using aweXpect.Reflection;`, and a stored selection like `Filtered.Types` needs
 `using aweXpect.Reflection.Collections;`.
 
@@ -178,7 +178,7 @@ The full documentation is available at
   all subject kinds, string matching options and quantifiers
 - [Architecture rules](./03-architecture-rules.md): type dependencies, dependency cycles and
   layers as type selections
-- [Customization](./04-configuration.md): assembly exclusions, compiler-generated members and
+- [Customization](./04-customization.md): assembly exclusions, compiler-generated members and
   the dependency resolver
 - Comparisons: feature maps against
   [FluentAssertions](./comparison/01-fluentassertions-comparison.mdx) and against

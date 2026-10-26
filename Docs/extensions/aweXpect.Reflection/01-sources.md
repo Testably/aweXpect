@@ -11,7 +11,7 @@ evaluated collection that you can navigate and filter further.
 
 | Source                                                                                        | Returns                                                                                                   |
 |-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
-| `In.AllLoadedAssemblies()`                                                                    | all currently loaded assemblies (system assemblies [excluded](./04-configuration.md#assembly-exclusions)) |
+| `In.AllLoadedAssemblies()`                                                                    | all currently loaded assemblies (system assemblies [excluded](./04-customization.md#assembly-exclusions)) |
 | `In.Assemblies(a1, a2, …)` / `In.Assemblies(collection)`                                      | the given assemblies                                                                                      |
 | `In.AssemblyContaining<T>()` / `In.AssemblyContaining(typeof(T))`                             | the assembly that declares `T`                                                                            |
 | `In.Type<T>()` / `In.Type(typeof(T))`                                                         | a single type                                                                                             |
@@ -22,7 +22,7 @@ evaluated collection that you can navigate and filter further.
 <summary>When a source is evaluated</summary>
 
 A source is read each time an expectation enumerates it, not when it is created: a source stored in a field also
-sees assemblies loaded later and the [assembly exclusions](./04-configuration.md#assembly-exclusions) customized at
+sees assemblies loaded later and the [assembly exclusions](./04-customization.md#assembly-exclusions) customized at
 that time, and a collection you pass in is enumerated again on every evaluation.
 
 </details>

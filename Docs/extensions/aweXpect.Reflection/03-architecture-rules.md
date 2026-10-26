@@ -45,7 +45,7 @@ Nested types are separate types with their own dependency surface: verifying `ty
 include what `Outer.Inner` references. The collection-based expectations (e.g. over `Types.InNamespace(…)`)
 enumerate nested types as their own items and therefore cover them. For IL/body-level accuracy, plug in
 your own resolver via `Customize.aweXpect.Reflection().DependencyResolver` (see
-[Customization](./04-configuration.md#dependency-resolver)).
+[Customization](./04-customization.md#dependency-resolver)).
 :::
 
 Namespace matching is ordinal and case-sensitive and, like `WhichAreWithinNamespace`, includes sub-namespaces by
@@ -110,7 +110,7 @@ All dependency families additionally accept a reusable `Filtered.Types` selectio
 
 :::warning[Framework dependencies are ignored unless you name one explicitly]
 `DependOnlyOn` ignores dependencies whose assembly name matches one of the
-[`ExcludedAssemblyPrefixes`](./04-configuration.md#assembly-exclusions) (e.g. `System` covers `System` and
+[`ExcludedAssemblyPrefixes`](./04-customization.md#assembly-exclusions) (e.g. `System` covers `System` and
 `System.Text.Json`), so you never have to whitelist `System.*`, while a type's **own namespace** is always allowed. `DependsOn` / `DoesNotDependOn` / `WhichDependOn` still match a
 framework namespace when you name it explicitly (e.g. `DoesNotDependOn("System.Data")`).
 
@@ -118,7 +118,7 @@ The default prefixes include `Microsoft`, so `DependOnlyOn` also ignores depende
 `Microsoft.EntityFrameworkCore`, `Microsoft.AspNetCore` and `Microsoft.Extensions.*`; a domain entity
 inheriting `DbContext` does **not** fail `DependOnlyOn("MusicStore.Domain")`. To forbid such dependencies, name
 them explicitly (`DoesNotDependOn<DbContext>()` or `DoNotDependOn("Microsoft.EntityFrameworkCore")`) or
-customize the [`ExcludedAssemblyPrefixes`](./04-configuration.md#assembly-exclusions). Note that the
+customize the [`ExcludedAssemblyPrefixes`](./04-customization.md#assembly-exclusions). Note that the
 customization also affects assembly scanning and assembly-level dependency expectations.
 :::
 
@@ -197,7 +197,7 @@ By default a namespace and its sub-namespaces collapse into a single node (a fam
 (not just a suppressed pair of edges), a cycle that leaves the family and returns through a *different* member of it
 (e.g. `MusicStore.Catalog -> MusicStore.Billing -> MusicStore.Catalog.Domain`) is still detected.
 
-Configuring a [custom dependency resolver](./04-configuration.md#dependency-resolver) (e.g. an IL-level one) also
+Configuring a [custom dependency resolver](./04-customization.md#dependency-resolver) (e.g. an IL-level one) also
 sharpens cycle detection: body-level references it surfaces can complete a cycle that the signature-level default
 cannot see.
 
