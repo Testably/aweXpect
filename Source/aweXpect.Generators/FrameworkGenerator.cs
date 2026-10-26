@@ -250,70 +250,85 @@ public class FrameworkGenerator : IIncrementalGenerator
 			return default;
 		}
 
+		return new TestContextSupport(true, allowsExperimentalMsTest, MsTestSupport(c, allowsExperimentalMsTest),
+			NunitSupport(c), TUnitSupport(c), Xunit3Support(c));
+	}
+
+	private static FrameworkSupport MsTestSupport(Compilation c, bool allowsExperimental)
+	{
 		INamedTypeSymbol? msTest = GetUsableType(c, "Microsoft.VisualStudio.TestTools.UnitTesting.TestContext");
+		bool hasContext = GetMembers(msTest, "Current").OfType<IPropertySymbol>().Any(x =>
+			x.IsStatic && IsUsable(x, allowsExperimental) &&
+			x.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) ==
+			"global::Microsoft.VisualStudio.TestTools.UnitTesting.TestContext");
+		return new FrameworkSupport(
+			hasContext &&
+			HasProperties(msTest, false, ("FullyQualifiedTestClassName", "string"), ("TestName", "string"),
+				("TestData", "object[]")),
+			false,
+			hasContext &&
+			HasProperties(msTest, false, ("CancellationToken", "global::System.Threading.CancellationToken")),
+			hasContext && HasMethod(msTest, "AddResultFile", false, "string"));
+	}
+
+	private static FrameworkSupport NunitSupport(Compilation c)
+	{
 		INamedTypeSymbol? nunit = GetUsableType(c, "NUnit.Framework.TestContext");
 		INamedTypeSymbol? nunitTest = GetUsableType(c, "NUnit.Framework.TestContext+TestAdapter");
 		INamedTypeSymbol? nunitSuite = GetUsableType(c, "NUnit.Framework.Interfaces.ITest");
+		bool hasTest = HasProperties(nunit, true, ("CurrentContext", "global::NUnit.Framework.TestContext")) &&
+		               HasProperties(nunit, false, ("Test", "global::NUnit.Framework.TestContext.TestAdapter")) &&
+		               HasProperties(nunitTest, false, ("MethodName", "string"));
+		return new FrameworkSupport(
+			hasTest &&
+			HasProperties(nunitTest, false, ("ClassName", "string"), ("Arguments", "object[]"), ("ID", "string"),
+				("Name", "string")) &&
+			HasProperties(nunit, false, ("CurrentRepeatCount", "int")),
+			hasTest &&
+			HasProperties(nunitTest, false, ("Parent", "global::NUnit.Framework.Interfaces.ITest")) &&
+			HasProperties(nunitSuite, false, ("Parent", "global::NUnit.Framework.Interfaces.ITest"), ("Method", null),
+				("Arguments", "object[]")),
+			hasTest && HasProperties(nunit, false, ("CancellationToken", "global::System.Threading.CancellationToken")),
+			hasTest && HasMethod(nunit, "AddTestAttachment", true, "string", "string"));
+	}
+
+	private static FrameworkSupport TUnitSupport(Compilation c)
+	{
 		INamedTypeSymbol? tunit = GetUsableType(c, "TUnit.Core.TestContext");
 		INamedTypeSymbol? tunitDetails = GetUsableType(c, "TUnit.Core.TestDetails");
+		ITypeSymbol? tunitExecution = GetPropertyType(tunit, "Execution");
+		bool hasContext = HasProperties(tunit, true, ("Current", "global::TUnit.Core.TestContext"));
+		return new FrameworkSupport(
+			hasContext &&
+			HasProperties(GetPropertyType(tunit, "Metadata"), false, ("TestDetails", "global::TUnit.Core.TestDetails"),
+				("DisplayName", "string")) &&
+			HasProperties(tunitDetails, false, ("ClassType", "global::System.Type"), ("MethodName", "string"),
+				("TestMethodArguments", "object[]"), ("TestId", "string")) &&
+			HasProperties(tunitExecution, false, ("CurrentRetryAttempt", "int")),
+			HasProperties(tunitDetails, false, ("TestClassArguments", "object[]")),
+			hasContext &&
+			HasProperties(tunitExecution, false, ("CancellationToken", "global::System.Threading.CancellationToken")),
+			hasContext &&
+			HasMethod(GetPropertyType(tunit, "Output"), "AttachArtifact", false, "string", "string?", "string?"));
+	}
+
+	private static FrameworkSupport Xunit3Support(Compilation c)
+	{
 		INamedTypeSymbol? xunitContext = GetUsableType(c, "Xunit.ITestContext");
 		INamedTypeSymbol? xunitTest = GetUsableType(c, "Xunit.v3.IXunitTest");
-		ITypeSymbol? tunitExecution = GetPropertyType(tunit, "Execution");
-
-		bool hasNunitTest = HasProperties(nunit, true, ("CurrentContext", "global::NUnit.Framework.TestContext")) &&
-		                    HasProperties(nunit, false, ("Test", "global::NUnit.Framework.TestContext.TestAdapter")) &&
-		                    HasProperties(nunitTest, false, ("MethodName", "string"));
-		bool hasTUnitContext = HasProperties(tunit, true, ("Current", "global::TUnit.Core.TestContext"));
-		bool hasMsTestContext = GetMembers(msTest, "Current").OfType<IPropertySymbol>().Any(x =>
-			x.IsStatic && IsUsable(x, allowsExperimentalMsTest) &&
-			x.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) ==
-			"global::Microsoft.VisualStudio.TestTools.UnitTesting.TestContext");
-		bool hasXunit3Test =
+		bool hasTest =
 			HasProperties(GetUsableType(c, "Xunit.TestContext"), true, ("Current", "global::Xunit.ITestContext")) &&
 			HasProperties(xunitContext, false, ("Test", null));
-		return new TestContextSupport(true, allowsExperimentalMsTest,
-			new FrameworkSupport(
-				hasMsTestContext &&
-				HasProperties(msTest, false, ("FullyQualifiedTestClassName", "string"), ("TestName", "string"),
-					("TestData", "object[]")),
-				false,
-				hasMsTestContext &&
-				HasProperties(msTest, false, ("CancellationToken", "global::System.Threading.CancellationToken")),
-				hasMsTestContext && HasMethod(msTest, "AddResultFile", false, "string")),
-			new FrameworkSupport(
-				hasNunitTest &&
-				HasProperties(nunitTest, false, ("ClassName", "string"), ("Arguments", "object[]"), ("ID", "string"),
-					("Name", "string")) &&
-				HasProperties(nunit, false, ("CurrentRepeatCount", "int")),
-				hasNunitTest &&
-				HasProperties(nunitTest, false, ("Parent", "global::NUnit.Framework.Interfaces.ITest")) &&
-				HasProperties(nunitSuite, false, ("Parent", "global::NUnit.Framework.Interfaces.ITest"),
-					("Method", null), ("Arguments", "object[]")),
-				hasNunitTest &&
-				HasProperties(nunit, false, ("CancellationToken", "global::System.Threading.CancellationToken")),
-				hasNunitTest && HasMethod(nunit, "AddTestAttachment", true, "string", "string")),
-			new FrameworkSupport(
-				hasTUnitContext &&
-				HasProperties(GetPropertyType(tunit, "Metadata"), false, ("TestDetails", "global::TUnit.Core.TestDetails"),
-					("DisplayName", "string")) &&
-				HasProperties(tunitDetails, false, ("ClassType", "global::System.Type"), ("MethodName", "string"),
-					("TestMethodArguments", "object[]"), ("TestId", "string")) &&
-				HasProperties(tunitExecution, false, ("CurrentRetryAttempt", "int")),
-				HasProperties(tunitDetails, false, ("TestClassArguments", "object[]")),
-				hasTUnitContext &&
-				HasProperties(tunitExecution, false, ("CancellationToken", "global::System.Threading.CancellationToken")),
-				hasTUnitContext &&
-				HasMethod(GetPropertyType(tunit, "Output"), "AttachArtifact", false, "string", "string?", "string?")),
-			new FrameworkSupport(
-				hasXunit3Test &&
-				HasProperties(xunitTest, false, ("TestMethodArguments", "object[]"), ("UniqueID", "string"),
-					("TestDisplayName", "string")) &&
-				HasProperties(GetPropertyType(xunitTest, "TestCase"), false, ("TestClassName", "string"),
-					("TestMethodName", "string")),
-				false,
-				hasXunit3Test &&
-				HasProperties(xunitContext, false, ("CancellationToken", "global::System.Threading.CancellationToken")),
-				hasXunit3Test && HasMethod(xunitContext, "AddAttachment", false, "string", "byte[]", "string")));
+		return new FrameworkSupport(
+			hasTest &&
+			HasProperties(xunitTest, false, ("TestMethodArguments", "object[]"), ("UniqueID", "string"),
+				("TestDisplayName", "string")) &&
+			HasProperties(GetPropertyType(xunitTest, "TestCase"), false, ("TestClassName", "string"),
+				("TestMethodName", "string")),
+			false,
+			hasTest &&
+			HasProperties(xunitContext, false, ("CancellationToken", "global::System.Threading.CancellationToken")),
+			hasTest && HasMethod(xunitContext, "AddAttachment", false, "string", "byte[]", "string"));
 	}
 
 	/// <summary>
@@ -540,7 +555,12 @@ public class FrameworkGenerator : IIncrementalGenerator
 	///     method.
 	/// </remarks>
 	private static string NunitTestContext(bool isDeclared, FrameworkSupport support)
-		=> TestContextMembers(isDeclared, support.CurrentTest
+	{
+		string fixture = support.ClassArguments ? NunitFixture : "";
+		string classArguments = support.ClassArguments
+			? "fixture == null || fixture.Arguments == null ? new object[0] : fixture.Arguments"
+			: "new object[0]";
+		return TestContextMembers(isDeclared, support.CurrentTest
 				? $$"""
 
 
@@ -557,8 +577,8 @@ public class FrameworkGenerator : IIncrementalGenerator
 				  					return false;
 				  				}
 
-				  {{(support.ClassArguments ? NunitFixture : "")}}
-				  				currentTest = new global::aweXpect.Core.Adapters.RunningTest(new global::aweXpect.Core.Adapters.TestIdentity(test.ClassName, {{(support.ClassArguments ? "fixture == null || fixture.Arguments == null ? new object[0] : fixture.Arguments" : "new object[0]")}}, test.MethodName, test.Arguments ?? new object[0]), test.ID, test.Name, context.CurrentRepeatCount);
+				  {{fixture}}
+				  				currentTest = new global::aweXpect.Core.Adapters.RunningTest(new global::aweXpect.Core.Adapters.TestIdentity(test.ClassName, {{classArguments}}, test.MethodName, test.Arguments ?? new object[0]), test.ID, test.Name, context.CurrentRepeatCount);
 				  				return true;
 				  			}
 				  			catch (global::System.Exception)
@@ -621,6 +641,7 @@ public class FrameworkGenerator : IIncrementalGenerator
 				  		}
 				  """
 				: null);
+	}
 
 	/// <summary>
 	///     Finds the fixture of the test, whose arguments are those of the test class, above the suite of a
@@ -637,10 +658,16 @@ public class FrameworkGenerator : IIncrementalGenerator
 
 	/// <remarks>
 	///     The id is the one of the test, not of the <c>TestContext</c>, so that it stays the same when the test is
-	///     retried. TUnit attaches a missing file without an error, so the adapter checks that it exists.
+	///     retried. The name of the class is its <c>ToString()</c>, as its <c>FullName</c> names the assembly and the version
+	///     of the runtime for each type argument of a generic test class. TUnit attaches a missing file without an error,
+	///     so the adapter checks that it exists.
 	/// </remarks>
 	private static string TUnitTestContext(bool isDeclared, FrameworkSupport support)
-		=> TestContextMembers(isDeclared, support.CurrentTest
+	{
+		string classArguments = support.ClassArguments
+			? "details.TestClassArguments ?? new object[0]"
+			: "new object[0]";
+		return TestContextMembers(isDeclared, support.CurrentTest
 				? $$"""
 
 
@@ -657,7 +684,7 @@ public class FrameworkGenerator : IIncrementalGenerator
 				  					return false;
 				  				}
 
-				  				currentTest = new global::aweXpect.Core.Adapters.RunningTest(new global::aweXpect.Core.Adapters.TestIdentity(details.ClassType.FullName ?? details.ClassType.Name, {{(support.ClassArguments ? "details.TestClassArguments ?? new object[0]" : "new object[0]")}}, details.MethodName, details.TestMethodArguments ?? new object[0]), details.TestId, context.Metadata.DisplayName, context.Execution == null ? 0 : context.Execution.CurrentRetryAttempt);
+				  				currentTest = new global::aweXpect.Core.Adapters.RunningTest(new global::aweXpect.Core.Adapters.TestIdentity(details.ClassType.ToString(), {{classArguments}}, details.MethodName, details.TestMethodArguments ?? new object[0]), details.TestId, context.Metadata.DisplayName, context.Execution == null ? 0 : context.Execution.CurrentRetryAttempt);
 				  				return true;
 				  			}
 				  			catch (global::System.Exception)
@@ -720,6 +747,7 @@ public class FrameworkGenerator : IIncrementalGenerator
 				  		}
 				  """
 				: null);
+	}
 
 	/// <remarks>
 	///     The arguments are those of the test, as a theory whose data cannot be enumerated up front runs all its rows in
