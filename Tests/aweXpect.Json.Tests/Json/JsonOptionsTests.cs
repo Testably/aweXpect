@@ -237,6 +237,23 @@ public class JsonOptionsTests
 	}
 
 	[Test]
+	public async Task Percent_ShouldNotChangeTheOptionsItIsCalledOn()
+	{
+		JsonElement subject = JsonDocument.Parse("3").RootElement;
+
+		async Task Act()
+			=> await That(subject).MatchesExactly(1, o =>
+			{
+				JsonNumbersWithinOptions withinOptions = o.ComparingNumbersWithin(5);
+				_ = withinOptions.Percent();
+				return withinOptions;
+			});
+
+		await That(Act).DoesNotThrow()
+			.Because("Percent() returns new options, so the options it is called on keep the absolute tolerance");
+	}
+
+	[Test]
 	public async Task WithDocumentOptions_ShouldSetDocumentOptions()
 	{
 		string subject = "[1, /* two */ 2]";

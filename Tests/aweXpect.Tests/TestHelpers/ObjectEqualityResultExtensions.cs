@@ -1,4 +1,5 @@
 using aweXpect.Core;
+using aweXpect.Options;
 using aweXpect.Results;
 
 namespace aweXpect.Tests;
@@ -13,11 +14,11 @@ public static class ObjectEqualityResultExtensions
 		Func<TElement?, int> key)
 		where TSelf : IObjectEqualityResult<TSelf, TElement>
 	{
-		result.Options.SetMatchType(new KeyMatchType<TElement>(key), nameof(ByKey));
+		result.Options.SetMatchType(new KeyMatchType<TElement>(key));
 		return (TSelf)result;
 	}
 
-	private sealed class KeyMatchType<TSubject>(Func<TSubject?, int> key) : ObjectMatchType<TSubject>
+	private sealed class KeyMatchType<TSubject>(Func<TSubject?, int> key) : ObjectMatchType<TSubject>(nameof(ByKey))
 	{
 		public override MatchPhrase Phrase { get; } = MatchPhrase.Being("keyed like");
 

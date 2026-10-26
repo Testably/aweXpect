@@ -19,7 +19,7 @@ public static partial class MethodFilters
 	public static MethodsWithParameter<T> WithParameter<T>(this Filtered.Methods @this)
 	{
 		Type parameterType = typeof(T);
-		CollectionIndexOptions collectionIndexOptions = new();
+		CollectionIndexOptions collectionIndexOptions = CollectionIndexOptions.Default;
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new MethodsWithParameter<T>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
@@ -32,16 +32,16 @@ public static partial class MethodFilters
 	public static MethodsWithNamedParameter<T> WithParameter<T>(this Filtered.Methods @this, string expected)
 	{
 		Type parameterType = typeof(T);
-		return new MethodsWithNamedParameter<T>(@this, WithParameterFilter, new CollectionIndexOptions(),
+		return new MethodsWithNamedParameter<T>(@this, WithParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions =>
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 					() => $"of type {Formatter.Format(parameterType)}");
-				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-					() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
+					() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new StringEqualityOptions(nameof(expected)));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 
 	/// <summary>
@@ -49,7 +49,7 @@ public static partial class MethodFilters
 	/// </summary>
 	public static MethodsWithParameter<object?> WithParameter(this Filtered.Methods @this, Type parameterType)
 	{
-		CollectionIndexOptions collectionIndexOptions = new();
+		CollectionIndexOptions collectionIndexOptions = CollectionIndexOptions.Default;
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new MethodsWithParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
@@ -62,16 +62,16 @@ public static partial class MethodFilters
 	public static MethodsWithNamedParameter<object?> WithParameter(this Filtered.Methods @this, Type parameterType,
 		string expected)
 	{
-		return new MethodsWithNamedParameter<object?>(@this, WithParameterFilter, new CollectionIndexOptions(),
+		return new MethodsWithNamedParameter<object?>(@this, WithParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions =>
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 					() => $"of type {Formatter.Format(parameterType)}");
-				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-					() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
+					() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new StringEqualityOptions(nameof(expected)));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 
 	/// <summary>
@@ -79,11 +79,11 @@ public static partial class MethodFilters
 	/// </summary>
 	public static MethodsWithNamedParameter<object?> WithParameter(this Filtered.Methods @this,
 		string expected)
-		=> new(@this, WithParameterFilter, new CollectionIndexOptions(),
+		=> new(@this, WithParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions => new ParameterFilterOptions(
-				p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-				() => $"with name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}"),
-			new StringEqualityOptions(nameof(expected)));
+				p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
+				() => $"with name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}"),
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 
 
 	/// <summary>
@@ -122,7 +122,7 @@ public static partial class MethodFilters
 
 	private static MethodsWithParameter<T> WithoutParameterOfType<T>(Filtered.Methods @this, Type parameterType)
 	{
-		CollectionIndexOptions collectionIndexOptions = new();
+		CollectionIndexOptions collectionIndexOptions = CollectionIndexOptions.Default;
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new MethodsWithParameter<T>(@this, WithoutParameterFilter, collectionIndexOptions,
@@ -132,22 +132,22 @@ public static partial class MethodFilters
 	private static MethodsWithNamedParameter<T> WithoutNamedParameter<T>(Filtered.Methods @this, Type? parameterType,
 		string unexpected)
 	{
-		return new MethodsWithNamedParameter<T>(@this, WithoutParameterFilter, new CollectionIndexOptions(),
+		return new MethodsWithNamedParameter<T>(@this, WithoutParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions =>
 			{
 				if (parameterType is null)
 				{
-					return new ParameterFilterOptions(p => stringEqualityOptions.AreConsideredEqual(p.Name, unexpected),
-						() => $"with name {stringEqualityOptions.GetExpectation(unexpected, ExpectationGrammars.None)}");
+					return new ParameterFilterOptions(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, unexpected, nameof(unexpected)),
+						() => $"with name {stringEqualityOptions.Value.GetExpectation(unexpected, ExpectationGrammars.None)}");
 				}
 
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 					() => $"of type {Formatter.Format(parameterType)}");
-				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, unexpected),
-					() => $"name {stringEqualityOptions.GetExpectation(unexpected, ExpectationGrammars.None)}");
+				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, unexpected, nameof(unexpected)),
+					() => $"name {stringEqualityOptions.Value.GetExpectation(unexpected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new StringEqualityOptions(nameof(unexpected)));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 
 	private static MethodsWithParameter<object?> WithParameterOfKind(Filtered.Methods @this,
@@ -155,7 +155,7 @@ public static partial class MethodFilters
 		=> new(@this,
 			(collectionIndexOptions, parameterFilterOptions)
 				=> WithParameterOfKindFilter(kind, collectionIndexOptions, parameterFilterOptions),
-			new CollectionIndexOptions(), new ParameterFilterOptions(predicate));
+			CollectionIndexOptions.Default, new ParameterFilterOptions(predicate));
 
 	private static IFilter<MethodInfo> WithParameterFilter(
 		CollectionIndexOptions collectionIndexOptions, ParameterFilterOptions parameterFilterOptions)
@@ -193,8 +193,7 @@ public static partial class MethodFilters
 	///     Additional filters on methods with a parameter of a specific type.
 	/// </summary>
 	public class MethodsWithParameter<T>
-		: Filtered.Methods,
-			IOptionsProvider<ParameterFilterOptions>
+		: Filtered.Methods
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> _createFilter;
@@ -214,14 +213,11 @@ public static partial class MethodFilters
 			_parameterFilterOptions = parameterFiltersOptions;
 		}
 
-		/// <inheritdoc cref="IOptionsProvider{ParameterFilterOptions}.Options" />
-		ParameterFilterOptions IOptionsProvider<ParameterFilterOptions>.Options => _parameterFilterOptions;
-
 		/// <summary>
 		///     …at the given zero-based <paramref name="index" />.
 		/// </summary>
 		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
-		/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+		/// <exception cref="InvalidOperationException">An index of another option is already specified.</exception>
 		public MethodsWithParameter<T> AtIndex(int index)
 			=> WithIndex(o => o.AtIndex(index));
 
@@ -229,7 +225,7 @@ public static partial class MethodFilters
 		///     …at the given zero-based <paramref name="index" />, counted from the end of the parameters.
 		/// </summary>
 		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
-		/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+		/// <exception cref="InvalidOperationException">An index of another option is already specified.</exception>
 		public MethodsWithParameter<T> AtIndexFromEnd(int index)
 			=> WithIndex(o => o.AtIndexFromEnd(index));
 
@@ -296,8 +292,15 @@ public static partial class MethodFilters
 			=> new(_source, _createFilter, _collectionIndexOptions,
 				_parameterFilterOptions.WithPredicate(predicate, description));
 
-		private MethodsWithParameter<T> WithIndex(Action<CollectionIndexOptions> setIndex)
-			=> new(_source, _createFilter, FilterIndexOptions.With(_collectionIndexOptions, setIndex),
+		/// <summary>
+		///     Returns a copy with the modifier <paramref name="predicate" /> and <paramref name="description" />.
+		/// </summary>
+		internal MethodsWithParameter<T> WithModifier(Func<ParameterInfo, bool> predicate, string description)
+			=> new(_source, _createFilter, _collectionIndexOptions,
+				_parameterFilterOptions.WithModifier(predicate, () => description));
+
+		private MethodsWithParameter<T> WithIndex(Func<CollectionIndexOptions, CollectionIndexOptions> setIndex)
+			=> new(_source, _createFilter, setIndex(_collectionIndexOptions),
 				_parameterFilterOptions);
 	}
 
@@ -312,16 +315,16 @@ public static partial class MethodFilters
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> _createFilter;
-		private readonly Func<StringEqualityOptions, ParameterFilterOptions> _createParameterFilterOptions;
-		private readonly StringEqualityOptions _options;
+		private readonly Func<IReadOnlyOptionsHolder<StringEqualityOptions>, ParameterFilterOptions> _createParameterFilterOptions;
+		private readonly OptionsHolder<StringEqualityOptions> _options;
 		private readonly Filtered.Methods _source;
 
 		internal MethodsWithNamedParameter(
 			Filtered.Methods source,
 			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> createFilter,
 			CollectionIndexOptions collectionIndexOptions,
-			Func<StringEqualityOptions, ParameterFilterOptions> createParameterFilterOptions,
-			StringEqualityOptions options)
+			Func<IReadOnlyOptionsHolder<StringEqualityOptions>, ParameterFilterOptions> createParameterFilterOptions,
+			OptionsHolder<StringEqualityOptions> options)
 			: base(source, createFilter, collectionIndexOptions, createParameterFilterOptions(options))
 		{
 			_source = source;
@@ -332,21 +335,21 @@ public static partial class MethodFilters
 		}
 
 		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
-		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
+		OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
 		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
 		MethodsWithNamedParameter<T> ICopyOnOption<StringEqualityOptions, MethodsWithNamedParameter<T>>.WithOptions(
 			StringEqualityOptions options)
-			=> new(_source, _createFilter, _collectionIndexOptions, _createParameterFilterOptions, options);
+			=> new(_source, _createFilter, _collectionIndexOptions, _createParameterFilterOptions, new OptionsHolder<StringEqualityOptions>(options));
 
 		/// <summary>
 		///     Returns a copy with the modifier <paramref name="predicate" /> and <paramref name="description" />.
 		/// </summary>
 		/// <remarks>
-		///     Hides the in-place helper for parameter filters, so that the modifier is kept when a string option
+		///     Hides the copy of the base filter, so that the modifier is kept when a string option
 		///     rebuilds the parameter filter options.
 		/// </remarks>
-		internal MethodsWithNamedParameter<T> WithModifier(Func<ParameterInfo, bool> predicate, string description)
+		internal new MethodsWithNamedParameter<T> WithModifier(Func<ParameterInfo, bool> predicate, string description)
 			=> new(_source, _createFilter, _collectionIndexOptions,
 				options => _createParameterFilterOptions(options).WithModifier(predicate, () => description),
 				_options);

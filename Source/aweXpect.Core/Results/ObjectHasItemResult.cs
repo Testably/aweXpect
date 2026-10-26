@@ -8,21 +8,21 @@ namespace aweXpect.Results;
 /// </summary>
 /// <remarks>
 ///     The options are specified via <see cref="CollectionIndexOptionsExtensions" /> and
-///     <see cref="ObjectEqualityOptionsExtensions" />.
+///     <see cref="ObjectMatchTypeExtensions" />.
 /// </remarks>
 public class ObjectHasItemResult<TCollection, TItem>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TCollection?> collection,
-	CollectionIndexOptions collectionIndexOptions,
-	ObjectEqualityOptions<TItem> options)
+	OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
+	OptionsHolder<ObjectMatchType<TItem>> options)
 	: AndOrResult<TCollection, IThat<TCollection?>, ObjectHasItemResult<TCollection, TItem>>(expectationBuilder,
 			collection),
 		IOptionsProvider<CollectionIndexOptions>,
 		IObjectEqualityResult<ObjectHasItemResult<TCollection, TItem>, TItem>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => options;
+	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
 }

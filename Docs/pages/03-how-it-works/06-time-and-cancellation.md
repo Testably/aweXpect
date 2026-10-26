@@ -131,7 +131,7 @@ Track track = new();
 await Expect.That(track).Satisfies(x => x.IsPlayed).Within(2.Seconds()).CheckEvery(50.Milliseconds());
 ```
 
-The interval must be positive, and `Within` and `CheckEvery` can each only be specified once.
+The interval must be positive, and a later `Within` or `CheckEvery` replaces the earlier one.
 
 As for [`Eventually()`](#eventually), a shorter `WithTimeout` or global timeout ends the checks with "did not finish
 within …", and a cancellation makes the expectation inconclusive.
@@ -169,7 +169,7 @@ await Expect.That(() => track.PlayCount).Eventually().Within(5.Seconds()).CheckE
 When the play count never exceeds 3, the retries end after 2 seconds, because the timeout is shorter than `Within`.
 
 `Within(Timeout.InfiniteTimeSpan)` retries until the expectations are met or the expectation is canceled. A negative
-timeout or an interval that is not positive is rejected, and each of them can only be specified once.
+timeout or an interval that is not positive is rejected, and a later `Within` or `CheckEvery` replaces the earlier one.
 
 An exception thrown by the delegate counts as an unmet expectation and is retried. When the timeout expires while the
 delegate is still throwing, the expectation fails and the last exception is reported as the cause of the failure.

@@ -10,7 +10,7 @@ public sealed class SingleItemResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForPredicateOptions()
 	{
-		PredicateOptions<int> options = new();
+		OptionsHolder<PredicateOptions<int>> options = new(PredicateOptions<int>.Default);
 		SingleItemResult<string[], int> sut = CreateSut(Array.Empty<string>(), options);
 
 		await That(sut).Is<IOptionsProvider<PredicateOptions<int>>>()
@@ -18,7 +18,7 @@ public sealed class SingleItemResultTests
 	}
 
 	private static SingleItemResult<TCollection, TItem> CreateSut<TCollection, TItem>(TCollection subject,
-		PredicateOptions<TItem> options)
+		OptionsHolder<PredicateOptions<TItem>> options)
 	{
 #pragma warning disable aweXpect0001
 		IThat<TCollection> source = That(subject);

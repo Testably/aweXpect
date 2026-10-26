@@ -11,8 +11,8 @@ public sealed class EventTriggerResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForQuantifier()
 	{
-		Quantifier quantifier = new();
-		RepeatedCheckOptions options = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		EventTriggerResult<EventTriggerResultTests> sut = CreateSut(new EventTriggerResultTests(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
@@ -22,8 +22,8 @@ public sealed class EventTriggerResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForRepeatedCheckOptions()
 	{
-		Quantifier quantifier = new();
-		RepeatedCheckOptions options = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		EventTriggerResult<EventTriggerResultTests> sut = CreateSut(new EventTriggerResultTests(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<RepeatedCheckOptions>>()
@@ -361,18 +361,17 @@ public sealed class EventTriggerResultTests
 			             """);
 	}
 
-	private static EventTriggerResult<T> CreateSut<T>(T subject, Quantifier quantifier, RepeatedCheckOptions options,
-		TriggerEventFilter? filter = null)
+	private static EventTriggerResult<T> CreateSut<T>(T subject, OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<RepeatedCheckOptions> options)
 		where T : notnull
 	{
 		RecordingFactory<T> recording = new(subject, nameof(subject));
-		filter ??= new TriggerEventFilter();
 #pragma warning disable aweXpect0001
 		IThat<IEventRecording<T>> source = That(recording.Events());
 #pragma warning restore aweXpect0001
 		return new EventTriggerResult<T>(source.Get().ExpectationBuilder,
 			source,
-			filter,
+			new OptionsHolder<TriggerEventFilter>(TriggerEventFilter.Default),
 			quantifier,
 			options);
 	}

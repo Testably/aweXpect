@@ -40,12 +40,11 @@ public partial class StringEqualityOptions
 	///     Interprets the expected <see langword="string" /> as <see cref="Regex" /> pattern.
 	/// </summary>
 	/// <exception cref="System.InvalidOperationException">
-	///     A custom comparer is already set, which the regex engine cannot honour, or a match type is already specified.
+	///     A custom comparer is already set, which the regex engine cannot honour, or another match type is already specified.
 	/// </exception>
 	public StringEqualityOptions AsRegex()
 	{
-		SetMatchType(RegexMatch, nameof(AsRegex));
-		return this;
+		return WithMatchType(RegexMatch, nameof(AsRegex), RegexMatchTypeIndex);
 	}
 
 	/// <summary>
@@ -57,7 +56,7 @@ public partial class StringEqualityOptions
 	///     casing is ignored via <see cref="IgnoringCase(bool)" />.
 	/// </remarks>
 	/// <exception cref="System.InvalidOperationException">
-	///     A custom comparer is already set, which the regex engine cannot honour, or a match type is already specified.
+	///     A custom comparer is already set, which the regex engine cannot honour, or another match type is already specified.
 	/// </exception>
 	/// <exception cref="System.ArgumentOutOfRangeException">
 	///     The <paramref name="regexOptions" /> are not a valid combination of <see cref="RegexOptions" />.
@@ -65,8 +64,7 @@ public partial class StringEqualityOptions
 	public StringEqualityOptions AsRegex(RegexOptions regexOptions)
 	{
 		ThrowIfInvalidRegexOptions(regexOptions);
-		SetMatchType(new RegexMatchType(regexOptions), nameof(AsRegex));
-		return this;
+		return WithMatchType(new RegexMatchType(regexOptions), nameof(AsRegex), PrivateMatchTypeIndex);
 	}
 
 	/// <summary>
@@ -224,7 +222,10 @@ public partial class StringEqualityOptions
 		/// </summary>
 		private sealed class RegexMatcher(RegexMatchType matchType, bool ignoreCase) : StringMatcher
 		{
-			private string? _pattern;
+			/// <remarks>
+			///     The regex knows its pattern, so that one field is enough for the matcher of shared options, which is used
+			///     by several threads.
+			/// </remarks>
 			private Regex? _regex;
 
 			/// <inheritdoc />
@@ -263,14 +264,15 @@ public partial class StringEqualityOptions
 
 			private Regex GetRegex(string expected)
 			{
-				if (_regex is null || !string.Equals(_pattern, expected, StringComparison.Ordinal) ||
-				    _regex.MatchTimeout != GetRegexTimeout())
+				Regex? regex = _regex;
+				if (regex is null || !string.Equals(regex.ToString(), expected, StringComparison.Ordinal) ||
+				    regex.MatchTimeout != GetRegexTimeout())
 				{
-					_regex = matchType.CreateRegex(expected, ignoreCase);
-					_pattern = expected;
+					regex = matchType.CreateRegex(expected, ignoreCase);
+					_regex = regex;
 				}
 
-				return _regex;
+				return regex;
 			}
 		}
 	}

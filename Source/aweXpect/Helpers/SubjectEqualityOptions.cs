@@ -28,29 +28,38 @@ internal interface ISubjectComparing
 /// </summary>
 /// <remarks>
 ///     The subject is only known during the evaluation, so <see cref="UseComparerOf" /> has to be called before
-///     comparing, and the text of the options names the comparer only afterwards.
+///     comparing, and the text of the options names the comparer only afterwards.<br />
+///     It offers the current options of the wrapped holder as a covariant <see cref="IReadOnlyOptionsHolder{TOptions}" />,
+///     so that a failure message of <c>aweXpect.Core</c> can describe the expected items by them.
 /// </remarks>
 internal sealed class SubjectEqualityOptions<TItem, TMatch>
-	: IOptionsEquality<TMatch>, IOptionsProvider<IOptionsEquality<TMatch>>, ISubjectComparing
+	: IEqualityEvaluator<TMatch>, IReadOnlyOptionsHolder<IEqualityOptions<TMatch>>, ISubjectComparing,
+		IWrapsEqualityEvaluator<TMatch>
 {
 	private readonly bool _canUseSubjectComparer;
+	private readonly IReadOnlyOptionsHolder<IEqualityOptions<TMatch>> _options;
+	private IEqualityEvaluator<TMatch>? _evaluator;
 
 	/// <summary>
 	///     Lets the comparer of the subject decide, when <paramref name="canUseSubjectComparer" /> and the comparison of
 	///     the <paramref name="options" /> was not changed when the subject is evaluated.
 	/// </summary>
-	public SubjectEqualityOptions(IOptionsEquality<TMatch> options, bool canUseSubjectComparer = true)
+	public SubjectEqualityOptions(IReadOnlyOptionsHolder<IEqualityOptions<TMatch>> options,
+		bool canUseSubjectComparer = true)
 	{
-		Options = options;
+		_options = options;
 		_canUseSubjectComparer = canUseSubjectComparer;
 	}
 
 	/// <summary>
-	///     Lets the <paramref name="comparer" /> decide, which was already read from the subject.
+	///     Lets the <paramref name="comparer" /> decide, which was already read from the subject, instead of the
+	///     <paramref name="evaluator" /> of the evaluation.
 	/// </summary>
-	public SubjectEqualityOptions(IOptionsEquality<TMatch> options, SubjectComparer<TItem> comparer)
+	public SubjectEqualityOptions(IReadOnlyOptionsHolder<IEqualityOptions<TMatch>> options,
+		IEqualityEvaluator<TMatch> evaluator, SubjectComparer<TItem> comparer)
 	{
-		Options = options;
+		_options = options;
+		_evaluator = evaluator;
 		Comparer = comparer;
 	}
 
@@ -59,32 +68,55 @@ internal sealed class SubjectEqualityOptions<TItem, TMatch>
 	/// </summary>
 	public SubjectComparer<TItem>? Comparer { get; private set; }
 
-	/// <inheritdoc cref="IOptionsEquality{TSubject}.AreConsideredEqual{TExpected}(TSubject, TExpected)" />
+	/// <summary>
+	///     The evaluator of the evaluation, which decides whenever the comparer of the subject does not.
+	/// </summary>
+	private IEqualityEvaluator<TMatch> Evaluator => _evaluator ??= _options.WithoutEvaluation();
+
+	/// <inheritdoc cref="IEqualityEvaluator{TSubject}.AreConsideredEqual{TExpected}(TSubject, TExpected)" />
 	public ValueTask<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
 		=> Comparer is null
-			? Options.AreConsideredEqual(actual, expected)
+			? Evaluator.AreConsideredEqual(actual, expected)
 			: new ValueTask<bool>(Comparer.AreEqual(actual, expected));
 
-	/// <inheritdoc cref="IOptionsEquality{TSubject}.AppendContexts(ResultContextCollector)" />
+	/// <inheritdoc cref="IEqualityEvaluator{TSubject}.AppendContexts(ResultContextCollector)" />
 	public void AppendContexts(ResultContextCollector contexts)
-		=> Options.AppendContexts(contexts);
+		=> Evaluator.AppendContexts(contexts);
 
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	/// <summary>
+	///     The current options of the wrapped holder.
+	/// </summary>
 	/// <remarks>
 	///     Lets a failure message describe the expected items by the options that decide whenever the comparer of the
 	///     subject does not.
 	/// </remarks>
-	public IOptionsEquality<TMatch> Options { get; }
+	public IEqualityOptions<TMatch> Value => _options.Value;
 
 	/// <inheritdoc cref="ISubjectComparing.UseComparerOf(object?)" />
 	public bool UseComparerOf(object? subject)
 	{
-		Comparer = _canUseSubjectComparer && DefaultEquality.IsUsedBy(Options)
+		Comparer = _canUseSubjectComparer && DefaultEquality.IsUsedBy(Value)
 			? CollectionComparerHelpers.GetSubjectComparer<TItem>(subject)
 			: null;
 		return Comparer is not null;
 	}
 
+	/// <inheritdoc cref="IWrapsEqualityEvaluator{T}.Wrap(IEqualityEvaluator{T})" />
+	/// <remarks>
+	///     The comparer of the subject never decides once the comparison was changed, so the
+	///     <paramref name="evaluator" /> is returned as it is then.
+	/// </remarks>
+	public IEqualityEvaluator<TMatch> Wrap(IEqualityEvaluator<TMatch> evaluator)
+	{
+		if (!DefaultEquality.IsUsedBy(Value))
+		{
+			return evaluator;
+		}
+
+		_evaluator = evaluator;
+		return this;
+	}
+
 	/// <inheritdoc cref="object.ToString()" />
-	public override string ToString() => $"{Options}{Comparer}";
+	public override string ToString() => $"{Value}{Comparer}";
 }

@@ -233,28 +233,19 @@ public sealed partial class ThatNumber
 			}
 
 			[Test]
-			[Arguments(false)]
-			[Arguments(true)]
-			public async Task ForDouble_WhenToleranceIsSpecifiedTwice_ShouldThrowInvalidOperationException(
-				bool negated)
+			public async Task ForDouble_WhenToleranceIsSpecifiedTwice_ShouldUseTheLastTolerance()
 			{
 				double subject = 12.5;
 
 				async Task Act()
-				{
-					if (negated)
-					{
-						await That(subject).IsNotEqualTo(12.5).Within(0.1).Within(0.2);
-					}
-					else
-					{
-						await That(subject).IsEqualTo(12.5).Within(0.1).Within(0.2);
-					}
-				}
+					=> await That(subject).IsEqualTo(12.9).Within(1.0).Within(0.1);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Within cannot be specified more than once.")
-					.Because("the second tolerance would silently replace the first one");
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 12.9 ± 0.1,
+					             but it was 12.5, which differs by -0.4
+					             """);
 			}
 
 			[Test]
@@ -743,28 +734,19 @@ public sealed partial class ThatNumber
 			}
 
 			[Test]
-			[Arguments(false)]
-			[Arguments(true)]
-			public async Task ForNullableDouble_WhenToleranceIsSpecifiedTwice_ShouldThrowInvalidOperationException(
-				bool negated)
+			public async Task ForNullableDouble_WhenToleranceIsSpecifiedTwice_ShouldUseTheLastTolerance()
 			{
 				double? subject = 12.5;
 
 				async Task Act()
-				{
-					if (negated)
-					{
-						await That(subject).IsNotEqualTo(12.5).Within(0.1).Within(0.2);
-					}
-					else
-					{
-						await That(subject).IsEqualTo(12.5).Within(0.1).Within(0.2);
-					}
-				}
+					=> await That(subject).IsEqualTo(12.9).Within(1.0).Within(0.1);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Within cannot be specified more than once.")
-					.Because("the second tolerance would silently replace the first one");
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 12.9 ± 0.1,
+					             but it was 12.5, which differs by -0.4
+					             """);
 			}
 
 			[Test]

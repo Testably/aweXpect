@@ -39,7 +39,7 @@ public class SnapshotLines<TResult>
 	/// </remarks>
 	public SnapshotLinesContaining<TResult> Containing(string text)
 		=> new(_add, _filters, _validations, RuleArguments.ThrowIfNullOrEmpty(text, nameof(text)),
-			new StringEqualityOptions(nameof(text)));
+			StringEqualityOptions.Default);
 
 	/// <summary>
 	///     Filters for the lines for which the <paramref name="predicate" /> returns <see langword="true" />.

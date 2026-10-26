@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
+using aweXpect.Core.Constraints;
 using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
@@ -213,23 +214,23 @@ public class CollectionMatchOptionsTests
 			CollectionMatchOptions sut = new(relation);
 			if (mode.StartsWith("any", StringComparison.Ordinal))
 			{
-				sut.InAnyOrder();
+				sut = sut.InAnyOrder();
 			}
 
 			if (mode.Contains("dup"))
 			{
-				sut.IgnoringDuplicates();
+				sut = sut.IgnoringDuplicates();
 			}
 
 			if (mode.Contains("interspersed"))
 			{
-				sut.IgnoringInterspersedItems();
+				sut = sut.IgnoringInterspersedItems();
 			}
 
 			return sut.GetCollectionMatcher<int, int>(expected);
 		}
 
-		private sealed class AsynchronousEquality(string kind) : IOptionsEquality<int>
+		private sealed class AsynchronousEquality(string kind) : IEqualityEvaluator<int>
 		{
 			private readonly ReferenceCaseTests.Equality _equality = new(kind);
 
@@ -256,7 +257,7 @@ public class CollectionMatchOptionsTests
 			double[] values = [0.0, -0.0, double.NaN, 1.0,];
 
 			(int met, List<string> disagreements) = await Compare(1811,
-				random => values[random.Next(values.Length)], new ObjectEqualityOptions<double>());
+				random => values[random.Next(values.Length)], ObjectMatchType<double>.Default.ForEvaluation(default));
 
 			await That(disagreements).IsEmpty();
 			await That(met).IsGreaterThan(100);
@@ -266,7 +267,7 @@ public class CollectionMatchOptionsTests
 		public async Task Numbers_ShouldAgreeWithUnrecognizedOptions()
 		{
 			(int met, List<string> disagreements) = await Compare(1705,
-				random => random.Next(4), new ObjectEqualityOptions<int>());
+				random => random.Next(4), ObjectMatchType<int>.Default.ForEvaluation(default));
 
 			await That(disagreements).IsEmpty();
 			await That(met).IsGreaterThan(100);
@@ -276,7 +277,7 @@ public class CollectionMatchOptionsTests
 		public async Task NumbersComparedAsObjects_ShouldAgreeWithUnrecognizedOptions()
 		{
 			(int met, List<string> disagreements) = await Compare(1529,
-				random => random.Next(4), new ObjectEqualityOptions<object?>());
+				random => random.Next(4), ObjectMatchType<object?>.Default.ForEvaluation(default));
 
 			await That(disagreements).IsEmpty();
 			await That(met).IsGreaterThan(100);
@@ -288,7 +289,7 @@ public class CollectionMatchOptionsTests
 			string?[] values = ["a", "b", "c", null,];
 
 			(int met, List<string> disagreements) = await Compare<string?, string?>(1642,
-				random => values[random.Next(values.Length)], new StringEqualityOptions("expected"));
+				random => values[random.Next(values.Length)], StringEqualityOptions.Default);
 
 			await That(disagreements).IsEmpty();
 			await That(met).IsGreaterThan(100);
@@ -297,8 +298,8 @@ public class CollectionMatchOptionsTests
 		[Test]
 		public async Task Strings_WhenCaseIsIgnored_ShouldMatchItemsThatDifferInCase()
 		{
-			StringEqualityOptions options = new("expected");
-			options.IgnoringCase();
+			StringEqualityOptions options = StringEqualityOptions.Default;
+			options = options.IgnoringCase();
 
 			string result = await Describe(["a", "B", null,], [null, "b", "A",], options);
 
@@ -308,7 +309,7 @@ public class CollectionMatchOptionsTests
 		[Test]
 		public async Task Strings_WhenTheFirstItemIsNotExpected_ShouldReportTheIndexOfEachItem()
 		{
-			StringEqualityOptions options = new("expected");
+			StringEqualityOptions options = StringEqualityOptions.Default;
 
 			string result = await Describe<string?, string?>(["a", "b",], ["x", "b", "y", "a",], options);
 
@@ -322,7 +323,7 @@ public class CollectionMatchOptionsTests
 		[Test]
 		public async Task Strings_WhenTheLastItemIsNotExpected_ShouldReportItsIndex()
 		{
-			StringEqualityOptions options = new("expected");
+			StringEqualityOptions options = StringEqualityOptions.Default;
 
 			string result = await Describe<string?, string?>(["a", "b", "c",], ["c", "a", "x",], options);
 
@@ -338,7 +339,7 @@ public class CollectionMatchOptionsTests
 		///     different order, with the <paramref name="options" /> and with the same options behind another type.
 		/// </summary>
 		private static async Task<(int Met, List<string> Disagreements)> Compare<T, T2>(int seed,
-			Func<Random, T> createItem, IOptionsEquality<T2> options)
+			Func<Random, T> createItem, IEqualityEvaluator<T2> options)
 			where T : T2
 		{
 			Random random = new(seed);
@@ -368,11 +369,11 @@ public class CollectionMatchOptionsTests
 			return (met, disagreements);
 		}
 
-		private static async Task<string> Describe<T, T2>(T[] expected, T[] subject, IOptionsEquality<T2> options)
+		private static async Task<string> Describe<T, T2>(T[] expected, T[] subject, IEqualityEvaluator<T2> options)
 			where T : T2
 		{
 			CollectionMatchOptions sut = new();
-			sut.InAnyOrder();
+			sut = sut.InAnyOrder();
 			ICollectionMatcher<T, T2> matcher = sut.GetCollectionMatcher<T, T2>(expected);
 			foreach (T item in subject)
 			{
@@ -387,13 +388,41 @@ public class CollectionMatchOptionsTests
 			return $"{isCompleteFailure}: {completeError}";
 		}
 
-		private sealed class ForwardingEquality<T>(IOptionsEquality<T> options) : IOptionsEquality<T>
+		private sealed class ForwardingEquality<T>(IEqualityEvaluator<T> options) : IEqualityEvaluator<T>
 		{
 			public ValueTask<bool> AreConsideredEqual<TExpected>(T actual, TExpected expected)
 				=> options.AreConsideredEqual(actual, expected);
 
 			public void AppendContexts(ResultContextCollector contexts)
 				=> options.AppendContexts(contexts);
+		}
+	}
+
+	public class DefaultTests
+	{
+		[Test]
+		public async Task WhenTheSubjectHasAnAdditionalItem_ShouldFail()
+		{
+			(Outcome outcome, string? failure) = await CollectionMatchOptions.Default
+				.GetCollectionMatcher<int, int>([1, 2,])
+				.VerifyItems("it", [1, 2, 3,], ObjectMatchType<int>.Default.ForEvaluation(default),
+					CancellationToken.None);
+
+			await That(outcome).IsEqualTo(Outcome.Failure)
+				.Because("the default options match equivalent collections, not a superset");
+			await That(failure).IsEqualTo("it contained item 3 at index 2 that was not expected");
+		}
+
+		[Test]
+		public async Task WhenTheSubjectHasTheItemsInAnotherOrder_ShouldFail()
+		{
+			(Outcome outcome, _) = await CollectionMatchOptions.Default
+				.GetCollectionMatcher<int, int>([1, 2,])
+				.VerifyItems("it", [2, 1,], ObjectMatchType<int>.Default.ForEvaluation(default),
+					CancellationToken.None);
+
+			await That(outcome).IsEqualTo(Outcome.Failure)
+				.Because("the default options match the items in the same order");
 		}
 	}
 
@@ -410,12 +439,12 @@ public class CollectionMatchOptionsTests
 			CollectionMatchOptions sut = new();
 			if (inAnyOrder)
 			{
-				sut.InAnyOrder();
+				sut = sut.InAnyOrder();
 			}
 
 			if (ignoringDuplicates)
 			{
-				sut.IgnoringDuplicates();
+				sut = sut.IgnoringDuplicates();
 			}
 
 			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 4, 5,], [2, 3,]),
@@ -456,7 +485,7 @@ public class CollectionMatchOptionsTests
 			bool ignoringDuplicates)
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
-			sut.IgnoringDuplicates(ignoringDuplicates);
+			sut = sut.IgnoringDuplicates(ignoringDuplicates);
 
 			string result = await Describe(sut.GetCollectionMatcher<int, int>([3, 5,], [2, 3,]),
 				[1, 2, 3, 4, 5, 6,]);
@@ -471,7 +500,7 @@ public class CollectionMatchOptionsTests
 			bool ignoringDuplicates)
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
-			sut.IgnoringDuplicates(ignoringDuplicates);
+			sut = sut.IgnoringDuplicates(ignoringDuplicates);
 
 			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 4, 5,], [2, 2,]),
 				[2, 3, 4, 1,]);
@@ -483,7 +512,7 @@ public class CollectionMatchOptionsTests
 		public async Task WhenThereAreTooManyDeviations_ShouldNameTheListedItemsByTheirIndexInEveryDimension()
 		{
 			CollectionMatchOptions sut = new();
-			sut.InAnyOrder();
+			sut = sut.InAnyOrder();
 
 			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 4, 5, 6,], [3, 2,]),
 				[1, 7, 8, 9, 10, 11,]);
@@ -530,7 +559,7 @@ public class CollectionMatchOptionsTests
 
 		private static async Task<string> Describe(ICollectionMatcher<int, int> matcher, IEnumerable<int> subject)
 		{
-			ObjectEqualityOptions<int> options = new();
+			IEqualityEvaluator<int> options = ObjectMatchType<int>.Default.ForEvaluation(default);
 			foreach (int item in subject)
 			{
 				(bool isFailure, string? error) = await matcher.Verify("it", item, options, 2);
@@ -1177,12 +1206,12 @@ public class CollectionMatchOptionsTests
 			CollectionMatchOptions sut = new();
 			if (inAnyOrder)
 			{
-				sut.InAnyOrder();
+				sut = sut.InAnyOrder();
 			}
 
 			if (ignoringDuplicates)
 			{
-				sut.IgnoringDuplicates();
+				sut = sut.IgnoringDuplicates();
 			}
 
 			Expression<Func<int, bool>>[] expected = [x => x > 0, null!,];
@@ -1280,17 +1309,17 @@ public class CollectionMatchOptionsTests
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 			if (inAnyOrder)
 			{
-				sut.InAnyOrder();
+				sut = sut.InAnyOrder();
 			}
 
 			if (ignoringDuplicates)
 			{
-				sut.IgnoringDuplicates();
+				sut = sut.IgnoringDuplicates();
 			}
 
 			if (ignoringInterspersedItems)
 			{
-				sut.IgnoringInterspersedItems();
+				sut = sut.IgnoringInterspersedItems();
 			}
 
 			string result = sut.GetExpectation("[1]", ExpectationGrammars.None);
@@ -1768,14 +1797,14 @@ public class CollectionMatchOptionsTests
 			CollectionMatchOptions sut = new(relation);
 			if (mode == "any")
 			{
-				sut.InAnyOrder();
+				sut = sut.InAnyOrder();
 			}
 			else if (mode == "same-interspersed")
 			{
-				sut.IgnoringInterspersedItems();
+				sut = sut.IgnoringInterspersedItems();
 			}
 
-			sut.IgnoringDuplicates();
+			sut = sut.IgnoringDuplicates();
 			IEnumerable<int> expectedValues = expected.Split(',').Select(int.Parse);
 			ICollectionMatcher<int, int> matcher = kind switch
 			{
@@ -1873,7 +1902,7 @@ public class CollectionMatchOptionsTests
 		public async Task WhenInAnyOrderIsSpecified_ShouldThrowInvalidOperationException()
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
-			sut.InAnyOrder();
+			sut = sut.InAnyOrder();
 
 			void Act() => sut.IgnoringInterspersedItems();
 
@@ -1886,7 +1915,7 @@ public class CollectionMatchOptionsTests
 		public async Task WhenInAnyOrderIsSpecifiedAfterwards_ShouldThrowInvalidOperationException()
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
-			sut.IgnoringInterspersedItems();
+			sut = sut.IgnoringInterspersedItems();
 
 			void Act() => sut.InAnyOrder();
 
@@ -1896,15 +1925,14 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Test]
-		public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		public async Task WhenSpecifiedTwice_ShouldNotThrow()
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
-			sut.IgnoringInterspersedItems();
+			sut = sut.IgnoringInterspersedItems();
 
 			void Act() => sut.IgnoringInterspersedItems();
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("IgnoringInterspersedItems cannot be specified more than once.");
+			await That(Act).DoesNotThrow();
 		}
 
 		[Test]
@@ -1912,16 +1940,17 @@ public class CollectionMatchOptionsTests
 		[Arguments(true, false)]
 		[Arguments(false, true)]
 		[Arguments(false, false)]
-		public async Task WhenSpecifiedTwiceWithAValue_ShouldThrowInvalidOperationException(bool first, bool second)
+		public async Task WhenSpecifiedTwiceWithAValue_ShouldUseTheLastValue(bool first, bool second)
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
-			sut.IgnoringInterspersedItems(first);
+			CollectionMatchOptions onlySecond = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			onlySecond = onlySecond.IgnoringInterspersedItems(second);
+			sut = sut.IgnoringInterspersedItems(first);
 
-			void Act() => sut.IgnoringInterspersedItems(second);
+			sut = sut.IgnoringInterspersedItems(second);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("IgnoringInterspersedItems cannot be specified more than once.")
-				.Because("the second value would silently replace the first one");
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None))
+				.IsEqualTo(onlySecond.GetExpectation("[1]", ExpectationGrammars.None));
 		}
 
 		[Test]
@@ -1930,7 +1959,7 @@ public class CollectionMatchOptionsTests
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 			string expected = sut.GetExpectation("[1]", ExpectationGrammars.None);
 
-			sut.IgnoringInterspersedItems(false);
+			sut = sut.IgnoringInterspersedItems(false);
 
 			await That(sut.GetExpectation("[1]", ExpectationGrammars.None)).IsEqualTo(expected);
 		}
@@ -1939,9 +1968,9 @@ public class CollectionMatchOptionsTests
 		public async Task WithFalse_WhenInAnyOrderIsSpecified_ShouldNotThrow()
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
-			sut.InAnyOrder();
+			sut = sut.InAnyOrder();
 
-			void Act() => sut.IgnoringInterspersedItems(false);
+			void Act() => sut = sut.IgnoringInterspersedItems(false);
 
 			await That(Act).DoesNotThrow()
 				.Because("not ignoring interspersed items states the default, which does not compete with the order");
@@ -1953,9 +1982,9 @@ public class CollectionMatchOptionsTests
 		public async Task WithFalse_WhenInAnyOrderIsSpecifiedAfterwards_ShouldNotThrow()
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
-			sut.IgnoringInterspersedItems(false);
+			sut = sut.IgnoringInterspersedItems(false);
 
-			void Act() => sut.InAnyOrder();
+			void Act() => sut = sut.InAnyOrder();
 
 			await That(Act).DoesNotThrow()
 				.Because("not ignoring interspersed items states the default, which does not compete with the order");
@@ -1967,7 +1996,7 @@ public class CollectionMatchOptionsTests
 		public async Task WithTrue_WhenInAnyOrderIsSpecified_ShouldThrowInvalidOperationException()
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
-			sut.InAnyOrder();
+			sut = sut.InAnyOrder();
 
 			void Act() => sut.IgnoringInterspersedItems(true);
 
@@ -1979,7 +2008,7 @@ public class CollectionMatchOptionsTests
 		public async Task WithTrue_WhenInAnyOrderIsSpecifiedAfterwards_ShouldThrowInvalidOperationException()
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
-			sut.IgnoringInterspersedItems(true);
+			sut = sut.IgnoringInterspersedItems(true);
 
 			void Act() => sut.InAnyOrder();
 
@@ -2367,15 +2396,25 @@ public class CollectionMatchOptionsTests
 	public class OptionTests
 	{
 		[Test]
-		public async Task IgnoringDuplicates_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		public async Task Default_ShouldMatchAnEquivalentCollectionInOrder()
+		{
+			CollectionMatchOptions sut = default;
+
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None))
+				.IsEqualTo("is equal to collection [1] in order");
+			await That(new CollectionMatchOptions().GetExpectation("[1]", ExpectationGrammars.None))
+				.IsEqualTo("is equal to collection [1] in order");
+		}
+
+		[Test]
+		public async Task IgnoringDuplicates_WhenSpecifiedTwice_ShouldNotThrow()
 		{
 			CollectionMatchOptions sut = new();
-			sut.IgnoringDuplicates();
+			sut = sut.IgnoringDuplicates();
 
 			void Act() => sut.IgnoringDuplicates();
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("IgnoringDuplicates cannot be specified more than once.");
+			await That(Act).DoesNotThrow();
 		}
 
 		[Test]
@@ -2383,17 +2422,18 @@ public class CollectionMatchOptionsTests
 		[Arguments(true, false)]
 		[Arguments(false, true)]
 		[Arguments(false, false)]
-		public async Task IgnoringDuplicates_WhenSpecifiedTwiceWithAValue_ShouldThrowInvalidOperationException(
-			bool first, bool second)
+		public async Task IgnoringDuplicates_WhenSpecifiedTwiceWithAValue_ShouldUseTheLastValue(bool first,
+			bool second)
 		{
 			CollectionMatchOptions sut = new();
-			sut.IgnoringDuplicates(first);
+			CollectionMatchOptions onlySecond = new();
+			onlySecond = onlySecond.IgnoringDuplicates(second);
+			sut = sut.IgnoringDuplicates(first);
 
-			void Act() => sut.IgnoringDuplicates(second);
+			sut = sut.IgnoringDuplicates(second);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("IgnoringDuplicates cannot be specified more than once.")
-				.Because("the second value would silently replace the first one");
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None))
+				.IsEqualTo(onlySecond.GetExpectation("[1]", ExpectationGrammars.None));
 		}
 
 		[Test]
@@ -2402,21 +2442,23 @@ public class CollectionMatchOptionsTests
 			CollectionMatchOptions sut = new();
 			string expected = sut.GetExpectation("[1]", ExpectationGrammars.None);
 
-			sut.IgnoringDuplicates(false);
+			sut = sut.IgnoringDuplicates(false);
 
 			await That(sut.GetExpectation("[1]", ExpectationGrammars.None)).IsEqualTo(expected);
 		}
 
 		[Test]
-		public async Task InAnyOrder_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		public async Task InAnyOrder_WhenSpecifiedTwice_ShouldKeepTheAnyOrderMatch()
 		{
 			CollectionMatchOptions sut = new();
-			sut.InAnyOrder();
+			CollectionMatchOptions once = new();
+			once = once.InAnyOrder();
+			sut = sut.InAnyOrder();
 
-			void Act() => sut.InAnyOrder();
+			sut = sut.InAnyOrder();
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("InAnyOrder cannot be specified more than once.");
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None))
+				.IsEqualTo(once.GetExpectation("[1]", ExpectationGrammars.None));
 		}
 
 		[Test]
@@ -2429,21 +2471,25 @@ public class CollectionMatchOptionsTests
 		{
 			CollectionMatchOptions sut = new(relation);
 
-			sut.Properly();
+			sut = sut.Properly();
 
 			await That(sut.GetExpectation("[1]", ExpectationGrammars.None)).StartsWith(expectedPrefix);
 		}
 
 		[Test]
-		public async Task Properly_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains,
+			"contains collection [1] and at least one additional item")]
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
+			"is contained in collection [1] that has at least one additional item")]
+		public async Task Properly_WhenSpecifiedTwice_ShouldKeepTheProperRelation(
+			CollectionMatchOptions.EquivalenceRelations relation, string expectedPrefix)
 		{
-			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
-			sut.Properly();
+			CollectionMatchOptions sut = new(relation);
+			sut = sut.Properly();
 
-			void Act() => sut.Properly();
+			sut = sut.Properly();
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("Properly cannot be specified more than once.");
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None)).StartsWith(expectedPrefix);
 		}
 
 		[Test]
@@ -2458,23 +2504,11 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Test]
-		public async Task SetEquivalenceRelation_ShouldReplaceTheRelation()
-		{
-			CollectionMatchOptions sut = new();
-
-			sut.SetEquivalenceRelation(CollectionMatchOptions.EquivalenceRelations.Contains);
-
-			await That(sut.GetExpectation("[1]", ExpectationGrammars.None))
-				.IsEqualTo("contains collection [1] in order and contiguous");
-		}
-
-		[Test]
-		[Arguments("IgnoringDuplicates")]
-		[Arguments("IgnoringInterspersedItems")]
-		[Arguments("InAnyOrder")]
-		[Arguments("Properly")]
-		[Arguments("SetEquivalenceRelation")]
-		public async Task Setter_ShouldReturnTheSameOptions(string option)
+		[Arguments("IgnoringDuplicates", "contains collection [1] in order and contiguous ignoring duplicates")]
+		[Arguments("IgnoringInterspersedItems", "contains collection [1] in order ignoring interspersed items")]
+		[Arguments("InAnyOrder", "contains collection [1] in any order")]
+		[Arguments("Properly", "contains collection [1] and at least one additional item in order and contiguous")]
+		public async Task Setter_ShouldNotChangeTheOriginalOptions(string option, string expected)
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 
@@ -2483,11 +2517,13 @@ public class CollectionMatchOptionsTests
 				"IgnoringDuplicates" => sut.IgnoringDuplicates(),
 				"IgnoringInterspersedItems" => sut.IgnoringInterspersedItems(),
 				"InAnyOrder" => sut.InAnyOrder(),
-				"Properly" => sut.Properly(),
-				_ => sut.SetEquivalenceRelation(CollectionMatchOptions.EquivalenceRelations.IsContainedIn),
+				_ => sut.Properly(),
 			};
 
-			await That(result).IsSameAs(sut);
+			await That(result.GetExpectation("[1]", ExpectationGrammars.None)).IsEqualTo(expected);
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None))
+				.IsEqualTo("contains collection [1] in order and contiguous")
+				.Because("the options are an immutable value that can be shared");
 		}
 	}
 
@@ -2551,17 +2587,17 @@ public class CollectionMatchOptionsTests
 			CollectionMatchOptions sut = new(relation);
 			if (mode is ['a', ..,])
 			{
-				sut.InAnyOrder();
+				sut = sut.InAnyOrder();
 			}
 
 			if (mode.Contains("dup"))
 			{
-				sut.IgnoringDuplicates();
+				sut = sut.IgnoringDuplicates();
 			}
 
 			if (mode.Contains("interspersed"))
 			{
-				sut.IgnoringInterspersedItems();
+				sut = sut.IgnoringInterspersedItems();
 			}
 
 			ICollectionMatcher<int, int> matcher = equality == "pred"
@@ -2603,12 +2639,12 @@ public class CollectionMatchOptionsTests
 					CollectionMatchOptions sut = new(relation);
 					if (isInAnyOrder)
 					{
-						sut.InAnyOrder();
+						sut = sut.InAnyOrder();
 					}
 
 					if (isInterspersed)
 					{
-						sut.IgnoringInterspersedItems();
+						sut = sut.IgnoringInterspersedItems();
 					}
 
 					return sut.GetCollectionMatcher<int, int>(expected);
@@ -2659,7 +2695,7 @@ public class CollectionMatchOptionsTests
 				CollectionMatchOptions sut = new(relation);
 				if (isInterspersed)
 				{
-					sut.IgnoringInterspersedItems();
+					sut = sut.IgnoringInterspersedItems();
 				}
 
 				ICollectionMatcher<int, int> matcher = equality == "pred"
@@ -2678,7 +2714,7 @@ public class CollectionMatchOptionsTests
 		}
 
 		internal static async Task<string> Describe(ICollectionMatcher<int, int> matcher, IEnumerable<int> subject,
-			IOptionsEquality<int> options)
+			IEqualityEvaluator<int> options)
 		{
 			foreach (int item in subject)
 			{
@@ -2745,7 +2781,7 @@ public class CollectionMatchOptionsTests
 		}
 
 		internal static async Task<bool> Matches(ICollectionMatcher<int, int> matcher, IEnumerable<int> subject,
-			IOptionsEquality<int> options)
+			IEqualityEvaluator<int> options)
 		{
 			foreach (int item in subject)
 			{
@@ -2778,7 +2814,7 @@ public class CollectionMatchOptionsTests
 		/// <summary>
 		///     "div2" merges distinct values like ignoring the casing; "near" is not transitive, like a tolerance.
 		/// </summary>
-		internal sealed class Equality(string kind) : IOptionsEquality<int>
+		internal sealed class Equality(string kind) : IEqualityEvaluator<int>
 		{
 			public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
 				=> new(IsEqual(actual, expected));
@@ -2798,7 +2834,7 @@ public class CollectionMatchOptionsTests
 		/// <summary>
 		///     Compares like <see cref="Equality" />, but every other comparison completes asynchronously.
 		/// </summary>
-		internal sealed class YieldingEquality(string kind) : IOptionsEquality<int>
+		internal sealed class YieldingEquality(string kind) : IEqualityEvaluator<int>
 		{
 			private readonly Equality _equality = new(kind);
 			private int _comparisons;
@@ -2997,7 +3033,7 @@ public class CollectionMatchOptionsTests
 		public async Task WhenAMissingItemFormatsLikeAnAdditionalItemOfTheSameType_ShouldNotNameTheType()
 		{
 			CollectionMatchOptions sut = new();
-			sut.InAnyOrder();
+			sut = sut.InAnyOrder();
 			ICollectionMatcher<int, int> matcher = sut.GetCollectionMatcher<int, int>([1,]);
 
 			string result = await Describe(matcher, [1,], 10, new NeverEquality());
@@ -3014,7 +3050,7 @@ public class CollectionMatchOptionsTests
 		public async Task WhenProperlyContainedInAnyOrder_ShouldOnlyBeDeterminedWithAnAdditionalItem()
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
-			sut.InAnyOrder();
+			sut = sut.InAnyOrder();
 			ICollectionMatcher<int, int> matcher = sut.GetCollectionMatcher<int, int>([1,]);
 			ReferenceCaseTests.Equality options = new("eq");
 
@@ -3034,7 +3070,7 @@ public class CollectionMatchOptionsTests
 		{
 			InvalidOperationException exception = new("comparison failed");
 			CollectionMatchOptions sut = new();
-			sut.InAnyOrder();
+			sut = sut.InAnyOrder();
 			ICollectionMatcher<int, int> matcher = sut.GetCollectionMatcher<int, int>([1,]);
 
 			async Task Act()
@@ -3049,7 +3085,7 @@ public class CollectionMatchOptionsTests
 		public async Task WhenTheMaximumNumberIsZero_ShouldOnlyCountTheDeviations()
 		{
 			CollectionMatchOptions sut = new();
-			sut.InAnyOrder();
+			sut = sut.InAnyOrder();
 			ICollectionMatcher<int, int> matcher = sut.GetCollectionMatcher<int, int>(Array.Empty<int>());
 
 			string result = await Describe(matcher, [1,], 0);
@@ -3059,7 +3095,7 @@ public class CollectionMatchOptionsTests
 		}
 
 		private static async Task<string> Describe(ICollectionMatcher<int, int> matcher, int[] subject,
-			int maximumNumber, IOptionsEquality<int>? options = null)
+			int maximumNumber, IEqualityEvaluator<int>? options = null)
 		{
 			options ??= new ReferenceCaseTests.Equality("eq");
 			foreach (int item in subject)
@@ -3075,7 +3111,7 @@ public class CollectionMatchOptionsTests
 			return $"{isCompleteFailure}: {completeError}";
 		}
 
-		private sealed class NeverEquality : IOptionsEquality<int>
+		private sealed class NeverEquality : IEqualityEvaluator<int>
 		{
 			public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
 				=> new(false);
@@ -3084,7 +3120,7 @@ public class CollectionMatchOptionsTests
 				=> throw new NotSupportedException();
 		}
 
-		private sealed class ThrowingEquality(Exception exception) : IOptionsEquality<int>
+		private sealed class ThrowingEquality(Exception exception) : IEqualityEvaluator<int>
 		{
 			public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
 				=> throw exception;

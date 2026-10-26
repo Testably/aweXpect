@@ -118,12 +118,12 @@ public static partial class Filtered
 		public class StringEqualityResult : Methods, IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions,
 			ICopyOnOption<StringEqualityOptions, StringEqualityResult>
 		{
-			private readonly Func<StringEqualityOptions, IFilter<MethodInfo>> _createFilter;
-			private readonly StringEqualityOptions _options;
+			private readonly Func<IReadOnlyOptionsHolder<StringEqualityOptions>, IFilter<MethodInfo>> _createFilter;
+			private readonly OptionsHolder<StringEqualityOptions> _options;
 			private readonly Methods _source;
 
-			internal StringEqualityResult(Methods source, Func<StringEqualityOptions, IFilter<MethodInfo>> createFilter,
-				StringEqualityOptions options) : base(source.Which(createFilter(options)))
+			internal StringEqualityResult(Methods source, Func<IReadOnlyOptionsHolder<StringEqualityOptions>, IFilter<MethodInfo>> createFilter,
+				OptionsHolder<StringEqualityOptions> options) : base(source.Which(createFilter(options)))
 			{
 				_source = source;
 				_createFilter = createFilter;
@@ -131,12 +131,12 @@ public static partial class Filtered
 			}
 
 			/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
-			StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
+			OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
 			/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
 			StringEqualityResult ICopyOnOption<StringEqualityOptions, StringEqualityResult>.WithOptions(
 				StringEqualityOptions options)
-				=> new(_source, _createFilter, options);
+				=> new(_source, _createFilter, new OptionsHolder<StringEqualityOptions>(options));
 		}
 
 		/// <summary>

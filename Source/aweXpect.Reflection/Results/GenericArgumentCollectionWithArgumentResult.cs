@@ -14,7 +14,7 @@ public sealed class GenericArgumentCollectionWithArgumentResult<TType, TValue>
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
 		GenericArgumentsFilterOptions genericArgumentsFilterOptions,
-		CollectionIndexOptions collectionIndexOptions)
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions)
 		: base(expectationBuilder, subject, genericArgumentsFilterOptions, collectionIndexOptions)
 	{
 	}
@@ -31,18 +31,18 @@ public class GenericArgumentCollectionWithArgumentResult<TType, TValue, TSelf>
 		IOptionsProvider<CollectionIndexOptions>
 	where TSelf : GenericArgumentCollectionWithArgumentResult<TType, TValue, TSelf>
 {
-	private readonly CollectionIndexOptions _collectionIndexOptions;
+	private readonly OptionsHolder<CollectionIndexOptions> _collectionIndexOptions;
 
 	internal GenericArgumentCollectionWithArgumentResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
 		GenericArgumentsFilterOptions genericArgumentsFilterOptions,
-		CollectionIndexOptions collectionIndexOptions)
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions)
 		: base(expectationBuilder, subject, genericArgumentsFilterOptions)
 	{
 		_collectionIndexOptions = collectionIndexOptions;
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
+	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 }

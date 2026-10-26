@@ -44,6 +44,11 @@ public class JsonOptions
 	}
 
 	/// <summary>
+	///     The options without any active option, shared by every expectation that starts from them.
+	/// </summary>
+	internal static JsonOptions Default { get; } = new();
+
+	/// <summary>
 	///     The current <see cref="JsonDocumentOptions" /> to use when interpreting a <see langword="string" /> as JSON.
 	/// </summary>
 	internal JsonDocumentOptions DocumentOptions
@@ -96,7 +101,7 @@ public class JsonOptions
 	/// <summary>
 	///     The tolerance to apply when comparing numbers, or <see langword="null" /> to compare them exactly.
 	/// </summary>
-	internal JsonNumberTolerance? NumberTolerance { get; private protected set; }
+	internal JsonNumberTolerance? NumberTolerance { get; init; }
 
 	/// <summary>
 	///     Adds the "JSON options" context, which lists the active options, to the <paramref name="contexts" /> of a

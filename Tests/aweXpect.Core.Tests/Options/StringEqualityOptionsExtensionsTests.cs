@@ -9,7 +9,7 @@ public sealed class StringEqualityOptionsExtensionsTests
 	[Test]
 	public async Task WhenTheResultCopiesOnOption_ShouldKeepTheMatchTypeSetSoFar()
 	{
-		CopyingResult sut = new(new StringEqualityOptions("expected"));
+		CopyingResult sut = new(StringEqualityOptions.Default);
 
 		void Act() => sut.AsPrefix().AsSuffix();
 
@@ -18,14 +18,20 @@ public sealed class StringEqualityOptionsExtensionsTests
 	}
 
 	[Test]
-	public async Task WhenTheResultCopiesOnOption_ShouldKeepTheOptionsSetSoFar()
+	public async Task WhenTheResultCopiesOnOption_ShouldReplaceARepeatedOptionOnTheCopy()
 	{
-		CopyingResult sut = new(new StringEqualityOptions("expected"));
+		CopyingResult sut = new(StringEqualityOptions.Default);
+		CopyingResult ignoringCase = sut.IgnoringCase();
 
-		void Act() => sut.IgnoringCase().IgnoringCase();
+		CopyingResult result = ignoringCase.IgnoringCase(false);
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("IgnoringCase cannot be specified more than once.");
+		await That(result.Options.ToString()).IsEqualTo(sut.Options.ToString());
+		await That(ignoringCase.Options.ToString()).EndsWith(" ignoring case")
+			.Because("the repeated option must be set on a copy of the options");
+		await That(() => ignoringCase.Using(StringComparer.Ordinal)).Throws<InvalidOperationException>()
+			.WithMessage(
+				"IgnoringCase cannot be combined with a custom comparer; use a case-insensitive comparer instead.")
+			.Because("the copy carries the options set so far, so incompatible options still throw");
 	}
 
 	[Test]
@@ -43,7 +49,7 @@ public sealed class StringEqualityOptionsExtensionsTests
 	[Arguments("Using")]
 	public async Task WhenTheResultCopiesOnOption_ShouldSetTheOptionOnACopy(string option)
 	{
-		CopyingResult sut = new(new StringEqualityOptions("expected"));
+		CopyingResult sut = new(StringEqualityOptions.Default);
 		string unchangedOptions = sut.Options.ToString();
 
 		CopyingResult result = Apply(sut, option);
@@ -70,15 +76,15 @@ public sealed class StringEqualityOptionsExtensionsTests
 	[Arguments("Using")]
 	public async Task WhenTheResultDoesNotCopyOnOption_ShouldSetTheOptionInPlace(string option)
 	{
-		StringEqualityOptions options = new("expected");
-		InPlaceResult sut = new(options);
-		string unchangedOptions = options.ToString();
+		InPlaceResult sut = new(StringEqualityOptions.Default);
+		OptionsHolder<StringEqualityOptions> holder = sut.Options;
+		string unchangedOptions = holder.Value.ToString();
 
 		InPlaceResult result = Apply(sut, option);
 
 		await That(result).IsSameAs(sut);
-		await That(result.Options).IsSameAs(options);
-		await That(options.ToString()).IsNotEqualTo(unchangedOptions);
+		await That(result.Options).IsSameAs(holder);
+		await That(holder.Value.ToString()).IsNotEqualTo(unchangedOptions);
 	}
 
 	private static TResult Apply<TResult>(TResult result, string option)
@@ -105,7 +111,7 @@ public sealed class StringEqualityOptionsExtensionsTests
 			IStringMatchTypeOptions,
 			ICopyOnOption<StringEqualityOptions, CopyingResult>
 	{
-		public StringEqualityOptions Options => options;
+		public OptionsHolder<StringEqualityOptions> Options { get; } = new(options);
 
 		public CopyingResult WithOptions(StringEqualityOptions copiedOptions) => new(copiedOptions);
 	}
@@ -114,6 +120,6 @@ public sealed class StringEqualityOptionsExtensionsTests
 		: IOptionsProvider<StringEqualityOptions>,
 			IStringMatchTypeOptions
 	{
-		public StringEqualityOptions Options => options;
+		public OptionsHolder<StringEqualityOptions> Options { get; } = new(options);
 	}
 }

@@ -24,7 +24,7 @@ public static partial class ThatNullableDateOnly
 		this IThat<DateOnly?> subject,
 		DateOnly? minimum)
 	{
-		TimeTolerance tolerance = new DayTolerance();
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new BetweenResult<TimeToleranceResult<DateOnly, IThat<DateOnly?>>, DateOnly?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -51,7 +51,7 @@ public static partial class ThatNullableDateOnly
 		this IThat<DateOnly?> subject,
 		DateOnly? minimum)
 	{
-		TimeTolerance tolerance = new DayTolerance();
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new BetweenResult<TimeToleranceResult<DateOnly, IThat<DateOnly?>>, DateOnly?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
@@ -70,7 +70,7 @@ public static partial class ThatNullableDateOnly
 		ExpectationGrammars grammars,
 		DateOnly? minimum,
 		DateOnly? maximum,
-		TimeTolerance tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: OrderingConstraint<DateOnly?>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<DateOnly?>
 	{
@@ -83,7 +83,7 @@ public static partial class ThatNullableDateOnly
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
+				TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
 				Outcome = minimum.Value.DayNumber - actual.Value.DayNumber <= (int)timeTolerance.TotalDays &&
 				          actual.Value.DayNumber - maximum.Value.DayNumber <= (int)timeTolerance.TotalDays
 					? Outcome.Success
@@ -99,7 +99,7 @@ public static partial class ThatNullableDateOnly
 			Formatter.Format(stringBuilder, minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, maximum);
-			stringBuilder.Append(tolerance.ToDayString());
+			stringBuilder.Append(tolerance.Value.ToDayString());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -115,7 +115,7 @@ public static partial class ThatNullableDateOnly
 			Formatter.Format(stringBuilder, minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, maximum);
-			stringBuilder.Append(tolerance.ToDayString());
+			stringBuilder.Append(tolerance.Value.ToDayString());
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

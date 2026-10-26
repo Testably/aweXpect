@@ -10,7 +10,7 @@ using aweXpect.Core;
 
 namespace aweXpect.Options;
 
-public partial class CollectionMatchOptions
+public readonly partial struct CollectionMatchOptions
 {
 	private sealed class SameOrderIgnoreDuplicatesCollectionMatcher<T, T2>(
 		EquivalenceRelations equivalenceRelation,
@@ -34,7 +34,7 @@ public partial class CollectionMatchOptions
 			=> (_expectedValues ??= new HashSet<T>(ExpectedItems)).Contains(value);
 
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, T expected,
-			IOptionsEquality<T2> options)
+			IEqualityEvaluator<T2> options)
 			=> options.AreConsideredEqual(value, expected);
 	}
 
@@ -50,7 +50,7 @@ public partial class CollectionMatchOptions
 		where T : T2
 	{
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, ExpectationItem<T> expected,
-			IOptionsEquality<T2> options)
+			IEqualityEvaluator<T2> options)
 			=> expected.IsMetBy(value, index);
 	}
 
@@ -68,7 +68,7 @@ public partial class CollectionMatchOptions
 		private readonly CompiledPredicates<T> _predicates = new();
 
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, Expression<Func<T, bool>> expected,
-			IOptionsEquality<T2> options)
+			IEqualityEvaluator<T2> options)
 			=> _predicates.Invoke(expected, value, index);
 	}
 
@@ -132,7 +132,7 @@ public partial class CollectionMatchOptions
 		public bool IsDetermined { get; private set; }
 
 		public async ValueTask<(bool IsFailure, string? Failure)>
-			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
+			Verify(string it, T value, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			bool mergesEqualItems = MergesEqualItems(options);
 			int index = _subjectIdAt.Count;
@@ -168,7 +168,7 @@ public partial class CollectionMatchOptions
 		}
 
 		public async ValueTask<(bool IsFailure, string? Failure)>
-			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
+			VerifyComplete(string it, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			MergesEqualItems(options);
 			DistinctItemsInOrder order = CreateOrder(options);
@@ -205,7 +205,7 @@ public partial class CollectionMatchOptions
 		///     Otherwise only identical items are merged, and another item only with an earlier equal item that matches
 		///     the same expected items.
 		/// </remarks>
-		private bool MergesEqualItems(IOptionsEquality<T2> options)
+		private bool MergesEqualItems(IEqualityEvaluator<T2> options)
 		{
 			if (_mergesEqualItems is { } mergesEqualItems)
 			{
@@ -250,7 +250,7 @@ public partial class CollectionMatchOptions
 		}
 
 		private async ValueTask<bool> MatchesTheSameExpectedItems(int subjectId, int index, T value,
-			IOptionsEquality<T2> options)
+			IEqualityEvaluator<T2> options)
 		{
 			for (int expectedId = 0; expectedId < _expectedDistinctItems.Length; expectedId++)
 			{
@@ -268,7 +268,7 @@ public partial class CollectionMatchOptions
 		///     The decision is only consulted, once the items so far followed all expected items in order, so that it does
 		///     not run for every item; a run or a placement of the expected items implies such a sequence.
 		/// </summary>
-		private async ValueTask CheckWhetherTheResultIsDetermined(int subjectId, IOptionsEquality<T2> options)
+		private async ValueTask CheckWhetherTheResultIsDetermined(int subjectId, IEqualityEvaluator<T2> options)
 		{
 			while (_followedExpectedItems < _expectedDistinctItems.Length &&
 			       await IsMatch(subjectId, _followedExpectedItems, options))
@@ -287,7 +287,7 @@ public partial class CollectionMatchOptions
 			                await order.HasAdditionalItem());
 		}
 
-		private async ValueTask<bool> MatchesAnExpectedItem(int subjectId, IOptionsEquality<T2> options)
+		private async ValueTask<bool> MatchesAnExpectedItem(int subjectId, IEqualityEvaluator<T2> options)
 		{
 			int expectedId = await FindNear(_lastMatchedExpectedId, _expectedDistinctItems.Length,
 				id => IsMatch(subjectId, id, options));
@@ -304,7 +304,7 @@ public partial class CollectionMatchOptions
 		///     The containment searches the subject in the expected items, the other relations search the expected items
 		///     in the subject.
 		/// </summary>
-		private async ValueTask<InOrderDeviations<T, T3>> FindTheDeviations(IOptionsEquality<T2> options)
+		private async ValueTask<InOrderDeviations<T, T3>> FindTheDeviations(IEqualityEvaluator<T2> options)
 		{
 			if (_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
 			{
@@ -328,7 +328,7 @@ public partial class CollectionMatchOptions
 		///     The containment searches the subject in the expected items, the other relations search the expected items
 		///     in the subject.
 		/// </summary>
-		private DistinctItemsInOrder CreateOrder(IOptionsEquality<T2> options)
+		private DistinctItemsInOrder CreateOrder(IEqualityEvaluator<T2> options)
 			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn)
 				? new DistinctItemsInOrder(_expectedIds, _expectedDistinctItems.Length, _subjectIds.Items.Count,
 					(expectedId, subjectId) => IsMatch(subjectId, expectedId, options), GetOrderMatch())
@@ -346,7 +346,7 @@ public partial class CollectionMatchOptions
 			return _ignoreInterspersedItems ? OrderMatch.Subsequence : OrderMatch.Contiguous;
 		}
 
-		private ValueTask<bool> IsMatch(int subjectId, int expectedId, IOptionsEquality<T2> options)
+		private ValueTask<bool> IsMatch(int subjectId, int expectedId, IEqualityEvaluator<T2> options)
 			=> AreConsideredEqual(_firstIndexOfSubjectItem[subjectId], _subjectIds.Items[subjectId],
 				_expectedDistinctItems[expectedId], options);
 
@@ -358,7 +358,7 @@ public partial class CollectionMatchOptions
 		///     A duplicate is only compared once, so the <paramref name="index" /> is the one of its first occurrence.
 		/// </remarks>
 		protected abstract ValueTask<bool>
-			AreConsideredEqual(int index, T value, T3 expected, IOptionsEquality<T2> options);
+			AreConsideredEqual(int index, T value, T3 expected, IEqualityEvaluator<T2> options);
 	}
 
 	/// <summary>

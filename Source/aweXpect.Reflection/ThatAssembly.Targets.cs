@@ -24,11 +24,11 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> Targets(
 		this IThat<Assembly?> subject, string expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (s, it, grammars)
-				=> new TargetsConstraint(it, grammars, s.Expected, s.Options)),
+				=> new TargetsConstraint(it, grammars, s.Expected, "expected", s.Options)),
 			subject,
 			options);
 	}
@@ -41,11 +41,11 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> DoesNotTarget(
 		this IThat<Assembly?> subject, string unexpected)
 	{
-		StringEqualityOptions options = new(nameof(unexpected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (s, it, grammars)
-				=> new TargetsConstraint(it, grammars, s.Unexpected, s.Options).Invert()),
+				=> new TargetsConstraint(it, grammars, s.Unexpected, "unexpected", s.Options).Invert()),
 			subject,
 			options);
 	}
@@ -54,7 +54,8 @@ public static partial class ThatAssembly
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		StringEqualityOptions options)
+		string parameterName,
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
 			IAsyncContextConstraint<Assembly?>
 	{
@@ -65,21 +66,21 @@ public static partial class ThatAssembly
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.GetTargetFramework(), expected);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.GetTargetFramework(), expected, parameterName);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options).AppendContexts(contexts);
+			=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("targets ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("targets ").Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It, "target framework",
+			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedMemberFailure(It, "target framework",
 				Grammars, Actual?.GetTargetFramework(), expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -36,12 +36,12 @@ public sealed class StringMatchTypeTests
 	public async Task ForEvaluation_ShouldFreezeTheSettings()
 	{
 		RecordingMatchType matchType = new();
-		StringEqualityOptions options = new("expected");
-		options.SetMatchType(matchType, "AsTitle");
-		options.IgnoringCase();
+		StringEqualityOptions options = StringEqualityOptions.Default;
+		options = options.SetMatchType(matchType, "AsTitle");
+		options = options.IgnoringCase();
 
 		await options.ForEvaluation(new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None)
-			.AreConsideredEqual("let it be", "Let It Be");
+			.AreConsideredEqual("let it be", "Let It Be", "expected");
 
 		await That(matchType.Settings).HasCount(1);
 		await That(matchType.Settings[0].IgnoreCase).IsTrue();
@@ -52,13 +52,13 @@ public sealed class StringMatchTypeTests
 	public async Task ForEvaluation_ShouldNotKeepTheMatcherOfTheEvaluationInTheOptions()
 	{
 		RecordingMatchType matchType = new();
-		StringEqualityOptions options = new("expected");
-		options.SetMatchType(matchType, "AsTitle");
+		StringEqualityOptions options = StringEqualityOptions.Default;
+		options = options.SetMatchType(matchType, "AsTitle");
 
 		StringEqualityOptions evaluationOptions =
 			options.ForEvaluation(new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
-		await evaluationOptions.AreConsideredEqual("Let It Be", "Let It Be");
-		await options.AreConsideredEqual("Get Back", "Get Back");
+		await evaluationOptions.AreConsideredEqual("Let It Be", "Let It Be", "expected");
+		await options.AreConsideredEqual("Get Back", "Get Back", "expected");
 
 		await That(evaluationOptions).IsNotSameAs(options);
 		await That(matchType.Matchers[0].Comparisons).IsEqualTo(1)
@@ -72,10 +72,10 @@ public sealed class StringMatchTypeTests
 		using CancellationTokenSource cts = new();
 		IEvaluationContext context = new aweXpect.Core.EvaluationContext.EvaluationContext();
 		RecordingMatchType matchType = new();
-		StringEqualityOptions options = new("expected");
-		options.SetMatchType(matchType, "AsTitle");
+		StringEqualityOptions options = StringEqualityOptions.Default;
+		options = options.SetMatchType(matchType, "AsTitle");
 
-		await options.ForEvaluation(context, cts.Token).AreConsideredEqual("Let It Be", "Let It Be");
+		await options.ForEvaluation(context, cts.Token).AreConsideredEqual("Let It Be", "Let It Be", "expected");
 
 		await That(matchType.Environments).HasCount(1);
 		await That(matchType.Environments[0].Context).IsSameAs(context);
@@ -85,7 +85,7 @@ public sealed class StringMatchTypeTests
 	[Test]
 	public async Task ForEvaluation_WhenTheMatcherIsShared_ShouldReturnTheSameOptions()
 	{
-		StringEqualityOptions sut = new StringEqualityOptions("expected").AsPrefix();
+		StringEqualityOptions sut = StringEqualityOptions.Default.AsPrefix();
 
 		StringEqualityOptions first =
 			sut.ForEvaluation(new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
@@ -115,16 +115,16 @@ public sealed class StringMatchTypeTests
 	public async Task WhenAnExpectationIsEvaluatedTwice_ShouldCreateAMatcherForEachEvaluation()
 	{
 		RecordingMatchType matchType = new();
-		StringEqualityOptions options = new("expected");
-		options.SetMatchType(matchType, "AsTitle");
+		StringEqualityOptions options = StringEqualityOptions.Default;
+		options = options.SetMatchType(matchType, "AsTitle");
 
 		StringEqualityOptions first =
 			options.ForEvaluation(new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
 		StringEqualityOptions second =
 			options.ForEvaluation(new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
-		await first.AreConsideredEqual("Let It Be", "Let It Be");
-		await second.AreConsideredEqual("Get Back", "Get Back");
-		await second.AreConsideredEqual("Two of Us", "Two of Us");
+		await first.AreConsideredEqual("Let It Be", "Let It Be", "expected");
+		await second.AreConsideredEqual("Get Back", "Get Back", "expected");
+		await second.AreConsideredEqual("Two of Us", "Two of Us", "expected");
 
 		await That(second).IsNotSameAs(first);
 		await That(matchType.Matchers).HasCount(2);

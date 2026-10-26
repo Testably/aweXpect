@@ -20,9 +20,9 @@ internal static class StringBuilderExtensions
 	///     pattern, so that it is not mistaken for the value the item had to be equal to.
 	/// </summary>
 	public static void AppendExpectedItem<TMatch>(this StringBuilder stringBuilder, TMatch expected,
-		IOptionsEquality<TMatch> options, string? indentation)
+		object options, string? indentation)
 	{
-		object itemOptions = options is IOptionsProvider<object> provider ? provider.Options : options;
+		object itemOptions = options is IReadOnlyOptionsHolder<object> wrapper ? wrapper.Value : options;
 		if (itemOptions is StringEqualityOptions stringEqualityOptions)
 		{
 			stringBuilder.Append(stringEqualityOptions.FormatExpectedItem(expected as string));

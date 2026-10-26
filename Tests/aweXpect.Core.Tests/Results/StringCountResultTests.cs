@@ -10,8 +10,8 @@ public sealed class StringCountResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForQuantifier()
 	{
-		Quantifier quantifier = new();
-		StringEqualityOptions options = new("expected");
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		StringEqualityOptions options = StringEqualityOptions.Default;
 		StringCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<Quantifier>>()
@@ -21,15 +21,15 @@ public sealed class StringCountResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForStringEqualityOptions()
 	{
-		Quantifier quantifier = new();
-		StringEqualityOptions options = new("expected");
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		StringEqualityOptions options = StringEqualityOptions.Default;
 		StringCountResult<int[], IThat<int[]>> sut = CreateSut(Array.Empty<int>(), quantifier, options);
 
 		await That(sut).Is<IOptionsProvider<StringEqualityOptions>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+			.Whose(x => x.Options.Value, it => it.IsSameAs(options));
 	}
 
-	private static StringCountResult<T, IThat<T>> CreateSut<T>(T subject, Quantifier quantifier,
+	private static StringCountResult<T, IThat<T>> CreateSut<T>(T subject, OptionsHolder<Quantifier> quantifier,
 		StringEqualityOptions options)
 	{
 #pragma warning disable aweXpect0001
@@ -39,6 +39,6 @@ public sealed class StringCountResultTests
 				=> new DummyConstraint(it)),
 			source,
 			quantifier,
-			options);
+			new OptionsHolder<StringEqualityOptions>(options));
 	}
 }

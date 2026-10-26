@@ -33,7 +33,7 @@ public sealed class DayToleranceExtensionTests
 		await That(ActOnExtension).Throws<ArgumentOutOfRangeException>()
 			.WithParamName("tolerance").And
 			.WithMessage("The tolerance must be a whole number of days.").AsPrefix()
-			.Because("an extension using DayTolerance rejects a sub-day tolerance as soon as it is specified");
+			.Because("an extension starting from TimeTolerance.Days rejects a sub-day tolerance as soon as it is specified");
 		await That(Catch.Exception(ActOnExtension)?.Message).IsEqualTo(Catch.Exception(ActOnBuiltIn)?.Message)
 			.Because("the extension must reject the tolerance exactly like the built-in expectations");
 	}
@@ -55,7 +55,7 @@ static file class DayToleranceExtensions
 		this IThat<DateOnly> subject,
 		DateOnly expected)
 	{
-		TimeTolerance tolerance = new DayTolerance();
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(
 			((IExpectThat<DateOnly>)subject).ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOnSameDayAsConstraint(it, grammars, expected, tolerance)),
@@ -67,26 +67,26 @@ static file class DayToleranceExtensions
 		string it,
 		ExpectationGrammars grammars,
 		DateOnly expected,
-		TimeTolerance tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: ConstraintResult.WithValue<DateOnly>(it, grammars),
 			IValueConstraint<DateOnly>
 	{
 		public ConstraintResult IsMetBy(DateOnly actual)
 		{
 			Actual = actual;
-			int days = (int)tolerance.GetToleranceOrDefault().TotalDays;
+			int days = (int)tolerance.Value.GetToleranceOrDefault().TotalDays;
 			Outcome = Math.Abs(actual.DayNumber - expected.DayNumber) <= days ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is on the same day as ").Append(expected).Append(tolerance.ToDayString());
+			=> stringBuilder.Append("is on the same day as ").Append(expected).Append(tolerance.Value.ToDayString());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" was ").Append(Actual);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not on the same day as ").Append(expected).Append(tolerance.ToDayString());
+			=> stringBuilder.Append("is not on the same day as ").Append(expected).Append(tolerance.Value.ToDayString());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

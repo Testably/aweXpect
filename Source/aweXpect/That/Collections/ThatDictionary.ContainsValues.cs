@@ -41,13 +41,13 @@ public static partial class ThatDictionary
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		TValue[] values = expected.ToNonEmptyValues(negated).ToArray();
-		ObjectEqualityOptions<TValue> options = ObjectEqualityWithToleranceOptionsFactory.ForValuesOf<TValue>();
+		OptionsHolder<ObjectMatchType<TValue>> options = new(ObjectToleranceMatchTypeFactory.ForValuesOf<TValue>());
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TValue>(
 			expectationBuilder.AddConstraint(
 				(ExpectedExpression: expectedExpression, Values: values, Options: options, Negated: negated),
 				static (state, it, grammars) =>
-					new ContainValuesConstraint<TCollection, TKey, TValue>(it, grammars,
+					new ContainValuesConstraint<TCollection, TKey, TValue>(it, grammars, state.Negated ? "unexpected" : "expected",
 							state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Values),
 							state.Values, state.Options, state.Negated)
 						.InvertIf(state.Negated)),
@@ -56,29 +56,30 @@ public static partial class ThatDictionary
 	}
 
 	[CreateExpectationFamily("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		GuaranteesNotNull = true, Summary = ContainsValuesSummary, NegatedSummary = DoesNotContainValuesSummary,
 		NegatedRemarks = DoesNotContainValuesRemarks)]
 	[CreateExpectationFamily("ContainsValues", NegatedName = "DoesNotContainValues", PerSubject = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		GuaranteesNotNull = true, Params = true, Summary = ContainsValuesSummary,
 		NegatedSummary = DoesNotContainValuesSummary, NegatedRemarks = DoesNotContainValuesRemarks)]
 	internal static ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>
 		ContainsValuesWithToleranceCore<TCollection, TKey, TValue, TTolerance>(
 			IThat<TCollection?> subject,
 			IEnumerable<TValue> expected,
-			ObjectEqualityWithToleranceOptions<TValue, TTolerance> options,
+			ObjectToleranceMatchType<TValue, TTolerance> initialOptions,
 			string? expectedExpression,
 			bool negated)
 		where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
+		OptionsHolder<ObjectMatchType<TValue>> options = new(initialOptions);
 		TValue[] values = expected.ToNonEmptyValues(negated).ToArray();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection?>, TValue, TTolerance>(
 			expectationBuilder.AddConstraint(
 				(ExpectedExpression: expectedExpression, Values: values, Options: options, Negated: negated),
 				static (state, it, grammars) =>
-					new ContainValuesConstraint<TCollection, TKey, TValue>(it, grammars,
+					new ContainValuesConstraint<TCollection, TKey, TValue>(it, grammars, state.Negated ? "unexpected" : "expected",
 							state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Values),
 							state.Values, state.Options, state.Negated)
 						.InvertIf(state.Negated)),
@@ -101,13 +102,13 @@ public static partial class ThatDictionary
 		where TCollection : IEnumerable<KeyValuePair<TKey, string?>>
 	{
 		string?[] values = expected.ToNonEmptyValues(negated).ToArray();
-		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint(
 				(ExpectedExpression: expectedExpression, Values: values, Options: options, Negated: negated),
 				static (state, it, grammars) =>
-					new ContainValuesConstraint<TCollection, TKey, string?>(it, grammars,
+					new ContainValuesConstraint<TCollection, TKey, string?>(it, grammars, state.Negated ? "unexpected" : "expected",
 							state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Values),
 							state.Values, state.Options, state.Negated)
 						.InvertIf(state.Negated)),
@@ -122,15 +123,16 @@ public static partial class ThatDictionary
 	private sealed class ContainValuesConstraint<TDictionary, TKey, TValue>(
 		string it,
 		ExpectationGrammars grammars,
+		string parameterName,
 		string expectedExpression,
 		TValue[] expected,
-		IOptionsEquality<TValue> options,
+		IReadOnlyOptionsHolder<IEqualityOptions<TValue>> options,
 		bool isAny)
 		: ConstraintResult.WithNotNullValue<TDictionary?>(it, grammars),
 			IAsyncContextConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		private IOptionsEquality<TValue>? _evaluationOptions;
+		private IEqualityEvaluator<TValue>? _evaluationOptions;
 		private List<TValue>? _existingValues;
 		private List<TValue>? _missingValues;
 
@@ -142,7 +144,7 @@ public static partial class ThatDictionary
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			options.ValidateExpectedItems(expected);
+			options.ValidateExpectedItems(expected, parameterName);
 			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			if (actual is not null)
 			{
@@ -175,7 +177,7 @@ public static partial class ThatDictionary
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			AddDictionaryContext(contexts, Actual);
-			contexts.AddEqualityOptionsContexts(_evaluationOptions ?? options);
+			contexts.AddEqualityOptionsContexts(_evaluationOptions ?? options.WithoutEvaluation());
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

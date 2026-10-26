@@ -8,7 +8,7 @@ namespace aweXpect;
 ///     Extension methods for results that match a collection with <see cref="CollectionMatchOptions" />.
 /// </summary>
 /// <remarks>
-///     Each option can be specified only once.
+///     A repeated option replaces the earlier one.
 /// </remarks>
 public static class CollectionMatchOptionsExtensions
 {
@@ -31,7 +31,6 @@ public static class CollectionMatchOptionsExtensions
 	///     item has to match an expected item, as far as the relation requires it, so <c>[1, 1, 2]</c> matches
 	///     <c>[1, 2]</c>.
 	/// </remarks>
-	/// <exception cref="System.InvalidOperationException">The duplicates are already specified.</exception>
 	public static TResult IgnoringDuplicates<TResult>(this TResult result, bool ignoreDuplicates = true)
 		where TResult : IOptionsProvider<CollectionMatchOptions>
 	{

@@ -19,8 +19,9 @@ internal sealed class StringOccurrenceConstraint(
 	string it,
 	ExpectationGrammars grammars,
 	string expected,
-	Quantifier quantifier,
-	StringEqualityOptions options)
+	string parameterName,
+	OptionsHolder<Quantifier> quantifier,
+	OptionsHolder<StringEqualityOptions> options)
 	: ConstraintResult(grammars),
 		IAsyncContextConstraint<string?>
 {
@@ -40,24 +41,25 @@ internal sealed class StringOccurrenceConstraint(
 		CancellationToken cancellationToken)
 	{
 		_actual = actual;
-		_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+		_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 		(_actualCount, _isFinished) =
-			await StringOccurrences.Count(_evaluationOptions, actual ?? string.Empty, expected, quantifier);
+			await StringOccurrences.Count(_evaluationOptions, actual ?? string.Empty, expected, quantifier.Value,
+				parameterName);
 		if (actual is null)
 		{
 			Outcome = Outcome.FailureBothWays;
 			return this;
 		}
 
-		Outcome = quantifier.Check(_actualCount, true, _isNegated) ?? _isNegated ? Outcome.Success : Outcome.Failure;
+		Outcome = quantifier.Value.Check(_actualCount, true, _isNegated) ?? _isNegated ? Outcome.Success : Outcome.Failure;
 		return this;
 	}
 
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> StringOccurrences.AppendExpectation(stringBuilder, quantifier, _isNegated,
+		=> StringOccurrences.AppendExpectation(stringBuilder, quantifier.Value, _isNegated,
 			Grammars.Verb("contains", "contain"), Grammars.Verb("does not contain", "do not contain"), expected,
-			options);
+			options.Value);
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
@@ -68,7 +70,7 @@ internal sealed class StringOccurrenceConstraint(
 			contexts.AddStringContext("Expected", expected, this);
 		}
 
-		(_evaluationOptions ?? options).AppendContexts(contexts);
+		(_evaluationOptions ?? options.Value).AppendContexts(contexts);
 	}
 
 	/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
@@ -94,7 +96,7 @@ internal sealed class StringOccurrenceConstraint(
 		}
 
 		StringOccurrences.AppendResult(stringBuilder, it, expected, _actual, (_actualCount, _isFinished),
-			_evaluationOptions ?? options, indentation);
+			_evaluationOptions ?? options.Value, indentation);
 	}
 
 	/// <inheritdoc />

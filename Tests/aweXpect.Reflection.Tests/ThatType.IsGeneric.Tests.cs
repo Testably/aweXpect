@@ -1,7 +1,4 @@
-﻿using aweXpect.Core;
-using aweXpect.Options;
-using aweXpect.Reflection.Options;
-using aweXpect.Reflection.Results;
+﻿using System.Collections.Generic;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
@@ -13,50 +10,23 @@ public sealed partial class ThatType
 		public sealed class Tests
 		{
 			[Test]
-			public async Task WhenArgumentFilterThrows_ShouldFail()
-			{
-				Type subject = typeof(PublicGenericClass<int>);
-				Func<Type, string?, bool> predicate = (_, _) => throw new InvalidOperationException("boom");
-
-				async Task Act()
-				{
-					GenericArgumentCollectionResult<Type, Type?> result = That(subject).IsGeneric();
-					((IOptionsProvider<GenericArgumentsFilterOptions>)result).Options.AddFilter(
-						new GenericArgumentFilterOptions(predicate, () => "matching predicate"), new CollectionIndexOptions());
-					await result;
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is generic with argument matching predicate,
-					             but the predicate did throw an InvalidOperationException:
-					               boom
-					             """)
-					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
-			}
-
-			[Test]
-			public async Task WhenArgumentsPredicateThrows_ShouldFail()
+			public async Task WhenArgumentComparerThrows_ShouldFail()
 			{
 				Type subject = typeof(PublicGenericClass<int>);
 
 				async Task Act()
 				{
-					GenericArgumentCollectionResult<Type, Type?> result = That(subject).IsGeneric();
-					((IOptionsProvider<GenericArgumentsFilterOptions>)result).Options.AddPredicate(
-						_ => throw new InvalidOperationException("boom"), () => "with arguments matching predicate");
-					await result;
+					await That(subject).IsGeneric().WithArgument("T").Using(new ThrowingComparer());
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             is generic with arguments matching predicate,
-					             but the predicate did throw an InvalidOperationException:
+					             is generic with argument name equal to "T" using ThatType.IsGeneric.ThrowingComparer,
+					             but the comparer did throw an InvalidOperationException:
 					               boom
 					             """)
-					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
+					.Because("an exception of the comparer must fail the expectation instead of aborting the evaluation");
 			}
 
 			[Test]
@@ -112,25 +82,23 @@ public sealed partial class ThatType
 		public sealed class NegatedTests
 		{
 			[Test]
-			public async Task WhenArgumentsPredicateThrows_ShouldFail()
+			public async Task WhenArgumentComparerThrows_ShouldFail()
 			{
 				Type subject = typeof(PublicGenericClass<int>);
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it
-						=> ((IOptionsProvider<GenericArgumentsFilterOptions>)it.IsGeneric()).Options.AddPredicate(
-							_ => throw new InvalidOperationException("boom"), () => "with arguments matching predicate"));
+					await That(subject).DoesNotComplyWith(it => it.IsGeneric().WithArgument("T").Using(new ThrowingComparer()));
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not generic,
-					             but the predicate did throw an InvalidOperationException:
+					             but the comparer did throw an InvalidOperationException:
 					               boom
 					             """)
-					.Because("a predicate that throws answers neither the expectation nor its negation");
+					.Because("a comparer that throws answers neither the expectation nor its negation");
 			}
 
 			[Test]
@@ -163,6 +131,13 @@ public sealed partial class ThatType
 
 				await That(Act).DoesNotThrow();
 			}
+		}
+
+		private sealed class ThrowingComparer : IEqualityComparer<string>
+		{
+			public bool Equals(string? x, string? y) => throw new InvalidOperationException("boom");
+
+			public int GetHashCode(string obj) => obj.GetHashCode();
 		}
 	}
 }

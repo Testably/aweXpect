@@ -16,7 +16,7 @@ public static partial class ConstructorFilters
 	public static ConstructorsWithParameter<T> WithParameterExactly<T>(this Filtered.Constructors @this)
 	{
 		Type parameterType = typeof(T);
-		CollectionIndexOptions collectionIndexOptions = new();
+		CollectionIndexOptions collectionIndexOptions = CollectionIndexOptions.Default;
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		return new ConstructorsWithParameter<T>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
@@ -29,16 +29,16 @@ public static partial class ConstructorFilters
 	public static ConstructorsWithNamedParameter<T> WithParameterExactly<T>(this Filtered.Constructors @this, string expected)
 	{
 		Type parameterType = typeof(T);
-		return new ConstructorsWithNamedParameter<T>(@this, WithParameterFilter, new CollectionIndexOptions(),
+		return new ConstructorsWithNamedParameter<T>(@this, WithParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions =>
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 					() => $"of exact type {Formatter.Format(parameterType)}");
-				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-					() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
+					() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new StringEqualityOptions(nameof(expected)));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 
 	/// <summary>
@@ -47,7 +47,7 @@ public static partial class ConstructorFilters
 	public static ConstructorsWithParameter<object?> WithParameterExactly(this Filtered.Constructors @this,
 		Type parameterType)
 	{
-		CollectionIndexOptions collectionIndexOptions = new();
+		CollectionIndexOptions collectionIndexOptions = CollectionIndexOptions.Default;
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		return new ConstructorsWithParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
@@ -60,15 +60,15 @@ public static partial class ConstructorFilters
 	public static ConstructorsWithNamedParameter<object?> WithParameterExactly(this Filtered.Constructors @this,
 		Type parameterType, string expected)
 	{
-		return new ConstructorsWithNamedParameter<object?>(@this, WithParameterFilter, new CollectionIndexOptions(),
+		return new ConstructorsWithNamedParameter<object?>(@this, WithParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions =>
 			{
 				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 					() => $"of exact type {Formatter.Format(parameterType)}");
-				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-					() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
+					() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
-			new StringEqualityOptions(nameof(expected)));
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

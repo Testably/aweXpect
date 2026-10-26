@@ -783,8 +783,7 @@ public sealed class ResultContextCollectorExtensionsTests
 	[Test]
 	public async Task AddEqualityOptionsContexts_ShouldAddTheContextsOfTheMatchType()
 	{
-		ObjectEqualityOptions<int> options = new();
-		options.SetMatchType(new EquivalencyMatchType<int>(new EquivalencyOptions()), "Equivalent");
+		IEqualityEvaluator<int> options = new EquivalencyMatchType<int>(new EquivalencyOptions()).ForEvaluation(default);
 
 		async Task Act()
 			=> await That(1).ShowsContexts((contexts, _, _) => contexts.AddEqualityOptionsContexts(options));
@@ -803,7 +802,7 @@ public sealed class ResultContextCollectorExtensionsTests
 	[Test]
 	public async Task AddEqualityOptionsContexts_WhenTheMatchTypeHasNoContexts_ShouldNotAddAContext()
 	{
-		ObjectEqualityOptions<int> options = new();
+		IEqualityEvaluator<int> options = ObjectMatchType<int>.Default.ForEvaluation(default);
 
 		async Task Act()
 			=> await That(1).ShowsContexts((contexts, _, _) => contexts.AddEqualityOptionsContexts(options));
@@ -819,8 +818,8 @@ public sealed class ResultContextCollectorExtensionsTests
 	[Test]
 	public async Task AddEqualityOptionsContexts_WithStringEqualityOptions_ShouldAddTheContextsOfTheStringMatchType()
 	{
-		StringEqualityOptions options = new("expected");
-		options.SetMatchType(new MatchTypeWithContext(), "WithContext");
+		StringEqualityOptions options = StringEqualityOptions.Default;
+		options = options.SetMatchType(new MatchTypeWithContext(), "WithContext");
 
 		async Task Act()
 			=> await That(1).ShowsContexts((contexts, _, _) => contexts.AddEqualityOptionsContexts(options));
@@ -957,7 +956,7 @@ public sealed class ResultContextCollectorExtensionsTests
 
 		async Task Act()
 			=> await That(subject).ShowsContexts((contexts, actual, result)
-				=> contexts.AddStringDifferencesContext(actual, expected, new StringEqualityOptions("expected"),
+				=> contexts.AddStringDifferencesContext(actual, expected, StringEqualityOptions.Default,
 					result.Grammars));
 
 		await That(Act).Throws<FailException>()
@@ -985,7 +984,7 @@ public sealed class ResultContextCollectorExtensionsTests
 
 		async Task Act()
 			=> await That(subject).DoesNotComplyWith(it => it.ShowsContexts((contexts, actual, result)
-				=> contexts.AddStringDifferencesContext(actual, expected, new StringEqualityOptions("expected"),
+				=> contexts.AddStringDifferencesContext(actual, expected, StringEqualityOptions.Default,
 					result.Grammars), true));
 
 		await That(Act).Throws<FailException>()
@@ -1006,7 +1005,7 @@ public sealed class ResultContextCollectorExtensionsTests
 	{
 		async Task Act()
 			=> await That(1).ShowsContexts((contexts, _, result)
-				=> contexts.AddStringDifferencesContext(actual, expected, new StringEqualityOptions("expected"),
+				=> contexts.AddStringDifferencesContext(actual, expected, StringEqualityOptions.Default,
 					result.Grammars));
 
 		await That(Act).Throws<FailException>()

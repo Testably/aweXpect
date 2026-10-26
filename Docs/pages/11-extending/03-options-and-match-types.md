@@ -16,24 +16,36 @@ using static aweXpect.Formatting.Format;
 ## Options
 
 The options, such as `.AtLeast(2)`, `.IgnoringCase()` or `.InAnyOrder()`, are extension methods in the `aweXpect`
-namespace. They apply to every result that provides the matching options object, so they can be chained in any order.
-A result of your own declares which options it offers by implementing `IOptionsProvider<TOptions>`. Pass it as `TSelf`
-to `AndOrResult<TType, TThat, TSelf>`, so that `Because(…)`, `WithTimeout(…)` and `WithCancellation(…)` also return
-your result and the options can still follow them:
+namespace. They apply to every result that provides the matching options, so they can be chained in any order.
+
+### One holder per expectation
+
+The options of an expectation are an immutable value, e.g. a `Quantifier` or `StringEqualityOptions`, in an
+`OptionsHolder<TOptions>`. The holder is a plain reference to the current value: an option replaces the value in the holder,
+and the value itself never changes, so a value can be shared and stored. Each options type starts from its `Default`,
+e.g. `Quantifier.Default` ("at least once") or `StringEqualityOptions.Default`.
+
+Create the holder in your expectation, e.g. `new OptionsHolder<Quantifier>(Quantifier.Default)`, and pass it to your
+constraint and to your result. A result declares which options it offers by implementing `IOptionsProvider<TOptions>`,
+which returns this holder. The constraint reads `holder.Value` when it evaluates, never when it is built, as the options
+are set on the result after the constraint was added; a constraint that only reads the options can take the holder as a
+covariant `IReadOnlyOptionsHolder<TOptions>`. Pass your result as `TSelf` to `AndOrResult<TType, TThat, TSelf>`, so
+that `Because(…)`, `WithTimeout(…)` and `WithCancellation(…)` also return your result and the options can still
+follow them:
 
 ```csharp
 public class TrackCountResult<TThat>(
     ExpectationBuilder expectationBuilder,
     TThat returnValue,
-    Quantifier quantifier,
-    StringEqualityOptions options)
+    OptionsHolder<Quantifier> quantifier,
+    OptionsHolder<StringEqualityOptions> options)
     : AndOrResult<IEnumerable<Track>, TThat, TrackCountResult<TThat>>(expectationBuilder, returnValue),
         IOptionsProvider<Quantifier>,
         IOptionsProvider<StringEqualityOptions>
 {
-    Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+    OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier;
 
-    StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
+    OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options;
 }
 ```
 
@@ -55,32 +67,149 @@ An expectation that returns this result then offers the count and the string opt
 | `Within` on times                       | `IOptionsProvider<TimeTolerance>`                                         |
 
 The interfaces with `TSelf` let the compiler infer the element type from your result, so pass your result type as
-`TSelf`. Every option can be specified only once, and options that would replace each other, e.g. two match types or
-`AtLeast(2).AtMost(5)`, throw an `InvalidOperationException` at the call. Follow the same rule for the options of your
-own results: throw it with `Tracing.WriteException` at the second call, worded like the built-in ones, e.g.
-`WithTitle cannot be specified more than once.` or `AtMost cannot be combined with AtLeast.`. An expectation that
-already sets an option itself, e.g. `StartsWith` the match type, returns a result that does not offer it again.
+`TSelf`. An expectation that already sets an option itself, e.g. `StartsWith` the match type, returns a result that
+does not offer it again.
 
-The options objects of `aweXpect.Core` belong to a single expectation and are changed in place. You can also call
-their methods directly, e.g. in an option of your own: each method that sets an option returns the options object, so
-that calls chain, e.g. `quantifier.AtLeast(2)`, and has the name of the option that the caller writes, e.g. `Within` on
-a `TimeTolerance`. The hooks for a strategy of your own are named `Set…` and take the name of your option, e.g.
-`SetMatchType(matchType, nameof(ByTitle))`, or `SetMatch(match, nameof(AtTrackNumber))` on the
-`CollectionIndexOptions`, so that a second call or a conflicting option throws with that name.
+### Setting options in your own code
+
+You can also set the options of `aweXpect.Core` in your own code, e.g. in an option of your own. Each method of an
+options value that sets an option returns a new value with the option set, e.g. `Quantifier.Default.AtLeast(2)`, and
+the same methods are extension methods on the holder in the `aweXpect.Options` namespace, which replace the value in
+the holder and return the holder, so that calls chain, e.g. `result.Options.IgnoringCase().AsPrefix()`. The members that only
+read the options are on `result.Options.Value`.
+
+:::warning
+Import `aweXpect.Options` where you call an option on a holder. Without it, the compiler only finds the user-facing
+option of the same name in `aweXpect`, which extends the result and not the holder, and reports `CS0311`.
+:::
+
+:::warning
+Use the value that an option method returns. Most options types are `readonly struct`s, so a call whose result is
+discarded, e.g. `options.AtLeast(2);`, compiles and changes nothing. The analyzer rule
+[aweXpect0009](../08-analyzers.md#awexpect0009) reports it in a project that references `aweXpect`.
+:::
+
+The rules for the options are the same everywhere:
+
+- A repeated option replaces the earlier one, e.g. `AtLeast(2).AtLeast(3)` requires three.
+- An option set to `false` is the same as not set, e.g. `IgnoringCase(false)`.
+- Options that set the same thing in different ways throw an `InvalidOperationException` at the call, e.g.
+  `AtMost cannot be combined with AtLeast.` or `AsSuffix cannot be combined with AsPrefix.`
+- The hooks for a strategy of your own are named `Set…` and take the name of your option, e.g.
+  `SetMatchType(matchType, nameof(AsTitle))` on the `StringEqualityOptions` or `SetMatch(match, nameof(AtTrackNumber))`
+  on the `CollectionIndexOptions`, so that a competing option throws with that name, while the same name again
+  replaces the earlier strategy. An [object match type](#custom-match-types) carries its name itself.
+
+### Options of your own
+
+Follow the same rules for an options type of your own: an immutable value with a `Default`, whose option methods
+return a new value, and an extension method on its holder per option. For example, a playlist expectation can ignore
+the bonus tracks and compare in album order or shuffled, but not both:
+
+```csharp
+public readonly struct PlaylistOptions
+{
+    private readonly string? _orderOption;
+
+    private PlaylistOptions(string? orderOption, bool ignoresBonusTracks)
+    {
+        _orderOption = orderOption;
+        IgnoresBonusTracks = ignoresBonusTracks;
+    }
+
+    public static PlaylistOptions Default => default;
+
+    public bool IgnoresBonusTracks { get; }
+
+    public bool IsShuffled => _orderOption == nameof(Shuffled);
+
+    public PlaylistOptions IgnoringBonusTracks(bool ignoreBonusTracks = true)
+        => new(_orderOption, ignoreBonusTracks);
+
+    public PlaylistOptions InAlbumOrder() => WithOrder(nameof(InAlbumOrder));
+
+    public PlaylistOptions Shuffled() => WithOrder(nameof(Shuffled));
+
+    private PlaylistOptions WithOrder(string option)
+    {
+        if (_orderOption is not null && _orderOption != option)
+        {
+            throw Tracing.WriteException(new InvalidOperationException(
+                $"{option} cannot be combined with {_orderOption}."));
+        }
+
+        return new PlaylistOptions(option, IgnoresBonusTracks);
+    }
+}
+
+public static class PlaylistOptionsHolderExtensions
+{
+    public static OptionsHolder<PlaylistOptions> IgnoringBonusTracks(
+        this OptionsHolder<PlaylistOptions> holder, bool ignoreBonusTracks = true)
+    {
+        holder.Value = holder.Value.IgnoringBonusTracks(ignoreBonusTracks);
+        return holder;
+    }
+}
+```
+
+The user-facing option extends every result that provides the options and returns it, so that the caller can go on
+with the result, e.g. `.HasTracks(12).IgnoringBonusTracks()`:
+
+```csharp
+public static TResult IgnoringBonusTracks<TResult>(this TResult result, bool ignoreBonusTracks = true)
+    where TResult : IOptionsProvider<PlaylistOptions>
+{
+    result.Options.IgnoringBonusTracks(ignoreBonusTracks);
+    return result;
+}
+```
+
+`Default` is the value of `default(PlaylistOptions)`, so that an options field that was never set is valid. Throw
+with `Tracing.WriteException`, so that it is written to the trace writer of
+`Customize.aweXpect.EnableTracing(…)` like the built-in exceptions, and word the message like the built-in ones. When the expectation text names the options, write that text in `ToString()`: an
+`OptionsHolder<TOptions>` returns the same text, so that the expectation can append the holder itself.
+
+### Results that are stored
 
 A result that can be stored and continued more than once, e.g. a filter of `aweXpect.Reflection`, must not change when
 a continuation sets an option. Such a result implements `ICopyOnOption<StringEqualityOptions, TSelf>` in addition to
-`IOptionsProvider<StringEqualityOptions>`: the string options then set the option on a copy of its options and pass it
-to `WithOptions(options)`, which returns a new result with them, while the result they were called on stays unchanged.
-The copy carries every option set so far, so a repeated or conflicting option still throws.
+`IOptionsProvider<StringEqualityOptions>`: the string options then pass its options with the new option to
+`WithOptions(options)`, which returns a new result with them in a new holder, while the result they were called on stays
+unchanged. The new options carry every option set so far, so a repeated option replaces the earlier one and a
+competing option still throws. A string option of your own, e.g. a preset of several options, does the same, so
+that it keeps a stored result unchanged as well:
+
+```csharp
+public static TResult IgnoringCaseAndIndentation<TResult>(this TResult result)
+    where TResult : IOptionsProvider<StringEqualityOptions>
+{
+    if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+    {
+        return copyOnOption.WithOptions(result.Options.Value.IgnoringCase().IgnoringIndentation());
+    }
+
+    result.Options.IgnoringCase().IgnoringIndentation();
+    return result;
+}
+```
+
+Like every constraint, such a result reads its holder when it evaluates: an option that sets the holder directly, without
+`WithOptions`, still applies, but it changes the result it was called on.
+
+### Comparing with the options
 
 In the constraint, compare with the options that `ForEvaluation(context, cancellationToken)` returns for its evaluation,
 so that the match type can use the evaluation and keep what its comparisons found. `MatchWithExplanation(actual,
-expected)` returns a `MatchResult`, which the constraint keeps for its failure message, as the options keep nothing of a
-comparison. The `StringEqualityOptions` also write the texts for every match type: `GetExpectation(expected, grammars)`
-the expectation and `GetExtendedFailure(it, grammars, actual, expected, result)` the result, e.g. "it was "Yesterday",
-which differs …". When the string is a member of the subject, `GetExtendedMemberFailure(it, "title", grammars, actual,
-expected, result)` names it like the built-in expectations do, e.g. "it had title "Yesterday", which differs …".
+expected, nameof(expected))` returns a `MatchResult`, which the constraint keeps for its failure message, as the options
+keep nothing of a comparison. The string options carry no parameter name: the members that can reject the expected
+value, e.g. an invalid regex pattern, take the name of the parameter that the `ArgumentException` reports, e.g.
+`ValidateExpected(expected, nameof(expected))`, `MatchWithExplanation(…)`, `AreConsideredEqual(actual, expected,
+nameof(expected))` or `CountOccurrences(…)`. The `StringEqualityOptions` also write the texts for every match type:
+`GetExpectation(expected, grammars)` the expectation and `GetExtendedFailure(it, grammars, actual, expected, result)`
+the result, e.g. "it was "Yesterday", which differs …". When the string is a member of the subject,
+`GetExtendedMemberFailure(it, "title", grammars, actual, expected, result)` names it like the built-in expectations do,
+e.g. "it had title "Yesterday", which differs …".
 
 For the index options, call `MatchesIndex(index, count)` on the `CollectionIndexOptions` for each item, with the number
 of items or `null` while it is not known yet. Only `true` means that the item is at the expected index: `null` means
@@ -212,16 +341,17 @@ argument once and reuse it, as it is immutable.
 
 ## Time tolerances
 
-A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the `TimeTolerance` options you
-pass to it and to your constraint. For a date without a time of day, such as the release date of an album as a
-`DateOnly`, pass a `DayTolerance` instead, as the built-in expectations do: it rejects a tolerance that is not a whole
-number of days with an `ArgumentOutOfRangeException`, instead of silently dropping the part below one day.
+A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the holder of the `TimeTolerance` options
+you pass to it and to your constraint; start the holder with `TimeTolerance.Default`. For a date without a time of day,
+such as the release date of an album as a `DateOnly`, start it with `TimeTolerance.Days` instead, as the built-in
+expectations do: it rejects a tolerance that is not a whole number of days with an `ArgumentOutOfRangeException`,
+instead of silently dropping the part below one day.
 
 ```csharp no-compile
 public static TimeToleranceResult<DateOnly, IThat<DateOnly>> IsOnSameDayAs(
     this IThat<DateOnly> subject, DateOnly expected)
 {
-    TimeTolerance tolerance = new DayTolerance();
+    OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
     return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new IsOnSameDayAsConstraint(it, grammars, expected, tolerance)),
         subject,
@@ -237,24 +367,24 @@ DateOnly releaseDate = new(1969, 9, 26);
 await Expect.That(releaseDate).IsOnSameDayAs(new DateOnly(1969, 9, 27)).Within(TimeSpan.FromDays(1));
 ```
 
-In the constraint, compare with `tolerance.GetToleranceOrDefault()`. Without `.Within(…)`, it returns the
-`DefaultTimeComparisonTolerance` from `Customize.aweXpect.Settings()`, and for a `DayTolerance` only its whole days,
-like the built-in expectations do. Append the tolerance to the expectation text like any other option, e.g. with
-`stringBuilder.Append(tolerance)`: a `DayTolerance` writes the whole days that apply, e.g. " ± 1 day", and nothing when
-there are none.
+In the constraint, compare with `tolerance.Value.GetToleranceOrDefault()`. Without `.Within(…)`, it returns the
+`DefaultTimeComparisonTolerance` from `Customize.aweXpect.Settings()`, and for `TimeTolerance.Days` only its whole
+days, like the built-in expectations do. Append the tolerance to the expectation text like any other option, e.g. with
+`stringBuilder.Append(tolerance)`: `TimeTolerance.Days` writes the whole days that apply, e.g. " ± 1 day", and nothing
+when there are none.
 
 ## Equality expectations
 
 An expectation that compares the subject for equality, e.g. an `IsEqualTo` for your own type, adds the equality
 constraint of `IsEqualTo` with `AddEqualityConstraint` from `aweXpect.Core.Extending`. Return an `ObjectEqualityResult`
-that shares its `ObjectEqualityOptions<T>`, so that the caller can choose the comparison, e.g. with `Using(comparer)` or
+that shares the `OptionsHolder<ObjectMatchType<T>>`, so that the caller can choose the comparison, e.g. with `Using(comparer)` or
 a [custom match type](#custom-match-types), and the expectation and the failure read like those of `IsEqualTo`:
 
 ```csharp
 public static ObjectEqualityResult<Track?, IThat<Track?>, Track?> IsEqualTo(
     this IThat<Track?> subject, Track? expected)
 {
-    ObjectEqualityOptions<Track?> options = new();
+    OptionsHolder<ObjectMatchType<Track?>> options = new(ObjectMatchType<Track?>.Default);
     return new ObjectEqualityResult<Track?, IThat<Track?>, Track?>(
         subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options),
         subject,
@@ -270,19 +400,20 @@ Its common leading whitespace is removed, and an expected `null` is still shown 
 ## Custom match types
 
 `IsEqualTo` compares two values with `Equals`, unless the caller chooses another comparison, e.g. with `.Equivalent()`.
-You can offer a comparison of your own: derive from `ObjectMatchType<TSubject>` and set it on the options of the result
-with `SetMatchType`, passing the name of your option, so that combining it with another comparison throws. For example,
-two tracks with the same title can count as equal:
+You can offer a comparison of your own: derive from `ObjectMatchType<TSubject>`, pass the name of your option to its
+base constructor and set it on the options of the result with `SetMatchType(matchType)`, which reads that name: the
+same option again replaces the earlier match type, and combining it with another comparison throws, e.g. "ByTitle
+cannot be combined with Equivalent.". `SetMatchType` rejects a match type without a name. For example, two tracks with the same title can count as equal:
 
 ```csharp
 public static TSelf ByTitle<TSelf, TElement>(this IObjectEqualityResult<TSelf, TElement> result)
     where TSelf : IObjectEqualityResult<TSelf, TElement>
 {
-    result.Options.SetMatchType(new ByTitleMatchType<TElement>(), nameof(ByTitle));
+    result.Options.SetMatchType(new ByTitleMatchType<TElement>());
     return (TSelf)result;
 }
 
-private sealed class ByTitleMatchType<TSubject> : ObjectMatchType<TSubject>
+private sealed class ByTitleMatchType<TSubject>() : ObjectMatchType<TSubject>("ByTitle")
 {
     private static readonly ByTitleMatcher Matcher = new();
 
@@ -336,14 +467,17 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
   expected item, and `WithUnformattedExpected()` writes it as it is instead of quoting it, e.g. a JSON document.
 - The matcher can add [contexts](./06-message-conventions.md#contexts) that explain a failure in `AppendContexts`, e.g.
   the options of the comparison.
-- For strings, derive from `StringMatchType` instead and set it with `SetMatchType` on the `StringEqualityOptions`.
+- For strings, derive from `StringMatchType` instead and set it with `SetMatchType(matchType, nameof(AsTitle))` on the
+  `StringEqualityOptions`, which takes the name of your option, as a string match type carries none.
   Its `ForEvaluation` also receives the `StringMatchSettings`, i.e. whether the casing is ignored and the comparer of the
   caller, and its `StringMatcher` compares the values after the whitespace options are applied. Core appends these
   options to the expectation text, e.g. "starts with "Let it" ignoring case". Declare the settings that the match type
   honours in `SupportedSettings`: Core rejects every other one with the same message, e.g. "IgnoringCase cannot be
   combined with AsTitle.", at the call that specifies the conflict, in either order. The whitespace options are
-  supported unless you leave them out. Throw in its `ValidateExpected` for an expected value that it cannot use: it is
-  called for every subject, also when nothing is compared with the expected value, e.g. for an empty collection.
+  supported unless you leave them out. Throw in its `ValidateExpected(expected, parameterName)` for an expected value
+  that it cannot use, with an `ArgumentException` for the `parameterName` it receives, as neither the match type nor the
+  options know the parameter of the expectation: it is called for every subject, also when nothing is compared with the
+  expected value, e.g. for an empty collection.
 - A string match type can also tell Core where its expected value lines up with the subject (`Anchors`, e.g. a prefix
   only at the start), count the occurrences of the expected value for a quantified `Contains` (`CountOccurrences` of
   the matcher), and whether a failure lists the differing lines or hints at a different newline style.
@@ -369,10 +503,10 @@ single comparison found in its `MatchExplanation` instead, as a collection compa
 When the result text spans several lines, indent the lines after the first by the `indentation`, e.g. with
 `FormattingOptions.Indented(indentation)` for a formatted value, so that it stays aligned inside `Expect.ThatAll`.
 
-An `ObjectEqualityOptions<T>` compares like `IsEquivalentTo` with
-`SetMatchType(new EquivalencyMatchType<T>(options), "Equivalent")`. A constraint compares with the options that
-`ForEvaluation(context, cancellationToken)` returns for its evaluation, so that the timeout and the cancellation of the
-evaluation also end the expectations of an `It.Is…` in the expected object. It also appends its contexts from these
-options, as only they know what the comparisons found, e.g. a member to ignore that matched no member.
+An `EquivalencyMatchType<T>` compares like `IsEquivalentTo`. A constraint compares with the matcher that
+`ForEvaluation(new MatchEnvironment(context, cancellationToken))` returns for its evaluation, e.g. with
+`CompareWithExplanation(actual, expected)`, so that the timeout and the cancellation of the evaluation also end the
+expectations of an `It.Is…` in the expected object. It also appends its contexts from this matcher, as only it knows
+what the comparisons found, e.g. a member to ignore that matched no member.
 
 </details>

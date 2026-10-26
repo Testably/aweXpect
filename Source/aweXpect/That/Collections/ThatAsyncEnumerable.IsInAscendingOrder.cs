@@ -133,10 +133,10 @@ public static partial class ThatAsyncEnumerable
 			SortOrder sortOrder,
 			string memberExpression,
 			bool isNegated,
-			Func<CollectionOrderOptions<TMember>, Func<Func<TMember, string?>?>>? createIncompatibilityCheck = null)
+			Func<OptionsHolder<CollectionOrderOptions<TMember>>, Func<Func<TMember, string?>?>>? createIncompatibilityCheck = null)
 	{
 		memberAccessor.ThrowIfNull();
-		CollectionOrderOptions<TMember> options = new();
+		OptionsHolder<CollectionOrderOptions<TMember>> options = new(CollectionOrderOptions<TMember>.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionOrderResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TMember>(
 			expectationBuilder.AddConstraint(

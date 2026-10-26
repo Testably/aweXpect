@@ -27,7 +27,7 @@ public static partial class ThatGeneric
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		RepeatedCheckOptions options = new();
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Predicate: predicate, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
 					static (state, it, grammars) =>
@@ -54,7 +54,7 @@ public static partial class ThatGeneric
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		RepeatedCheckOptions options = new();
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Predicate: predicate, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
 					static (state, it, grammars) =>
@@ -78,7 +78,7 @@ public static partial class ThatGeneric
 		ExpectationGrammars grammars,
 		Func<T, bool> predicate,
 		string predicateExpression,
-		RepeatedCheckOptions options)
+		OptionsHolder<RepeatedCheckOptions> options)
 		: ConstraintResult.WithValue<T>(it, grammars),
 			IAsyncContextConstraint<T>
 	{
@@ -91,7 +91,7 @@ public static partial class ThatGeneric
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (!options.IsRepeated)
+			if (!options.Value.IsRepeated)
 			{
 				IsMet(actual, cancellationToken);
 				return new ValueTask<ConstraintResult>(this);
@@ -104,7 +104,7 @@ public static partial class ThatGeneric
 			CancellationToken cancellationToken)
 		{
 			Outcome outcome =
-				await options.CheckRepeatedly(_ => new ValueTask<bool>(IsMet(actual, cancellationToken)), context);
+				await options.Value.CheckRepeatedly(_ => new ValueTask<bool>(IsMet(actual, cancellationToken)), context);
 			if (outcome == Outcome.Undecided)
 			{
 				Outcome = Outcome.Undecided;

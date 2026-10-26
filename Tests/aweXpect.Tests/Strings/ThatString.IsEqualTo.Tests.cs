@@ -90,29 +90,27 @@ public sealed partial class ThatString
 			}
 
 			[Test]
-			[Arguments(false)]
-			[Arguments(true)]
-			public async Task WhenComparerIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool negated)
+			public async Task WhenComparerIsSpecifiedTwice_ShouldUseTheLastComparer()
 			{
 				string subject = "ABC";
 
 				async Task Act()
-				{
-					if (negated)
-					{
-						await That(subject).IsNotEqualTo("abc")
-							.Using(StringComparer.Ordinal).Using(StringComparer.OrdinalIgnoreCase);
-					}
-					else
-					{
-						await That(subject).IsEqualTo("abc")
-							.Using(StringComparer.Ordinal).Using(StringComparer.OrdinalIgnoreCase);
-					}
-				}
+					=> await That(subject).IsEqualTo("abc")
+						.Using(StringComparer.Ordinal).Using(StringComparer.OrdinalIgnoreCase);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Using cannot be specified more than once.")
-					.Because("the second comparer would silently replace the first one");
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenComparerIsSpecifiedTwice_WhenNegated_ShouldUseTheLastComparer()
+			{
+				string subject = "ABC";
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo("abc")
+						.Using(StringComparer.OrdinalIgnoreCase).Using(StringComparer.Ordinal);
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Test]
@@ -410,15 +408,14 @@ public sealed partial class ThatString
 			}
 
 			[Test]
-			public async Task WhenTheSameMatchTypeIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			public async Task WhenTheSameMatchTypeIsSpecifiedTwice_ShouldUseTheLastMatchType()
 			{
-				string subject = "abc";
+				string subject = "ABC";
 
 				async Task Act()
 					=> await That(subject).IsEqualTo("a.*").AsRegex().AsRegex(RegexOptions.IgnoreCase);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("AsRegex cannot be specified more than once.");
+				await That(Act).DoesNotThrow();
 			}
 
 			[Test]
@@ -857,15 +854,27 @@ public sealed partial class ThatString
 			}
 
 			[Test]
-			public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+			[Arguments(true, true)]
+			[Arguments(true, false)]
+			[Arguments(false, true)]
+			[Arguments(false, false)]
+			public async Task WhenSpecifiedTwice_ShouldUseTheLastValue(bool first, bool second)
 			{
-				string subject = "foo";
+				string subject = "a  b";
 
 				async Task Act()
-					=> await That(subject).IsEqualTo("foo").NormalizingWhiteSpace().NormalizingWhiteSpace();
+					=> await That(subject).IsEqualTo("a b").NormalizingWhiteSpace(first).NormalizingWhiteSpace(second);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("NormalizingWhiteSpace cannot be specified more than once.");
+				await That(Act).Throws<FailException>().OnlyIf(!second)
+					.WithMessage("""
+					             Expected that subject
+					             is equal to "a b",
+					             but it was "a  b", which differs at index 2:
+					                  ↓ (actual)
+					               "a  b"
+					               "a b"
+					                  ↑ (expected)
+					             """);
 			}
 
 			[Test]

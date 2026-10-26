@@ -23,11 +23,11 @@ public static partial class ThatMember
 		this IThat<TMember?> subject, string expected)
 		where TMember : MemberInfo
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<TMember, IThat<TMember?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (s, it, grammars)
-				=> new HasNameConstraint<TMember?>(it, grammars, s.Expected, s.Options)),
+				=> new HasNameConstraint<TMember?>(it, grammars, s.Expected, "expected", s.Options)),
 			subject,
 			options);
 	}
@@ -36,7 +36,8 @@ public static partial class ThatMember
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		StringEqualityOptions options)
+		string parameterName,
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<TMember>(it, grammars),
 			IAsyncContextConstraint<TMember>
 		where TMember : MemberInfo?
@@ -48,21 +49,21 @@ public static partial class ThatMember
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.Name, expected);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.Name, expected, parameterName);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options).AppendContexts(contexts);
+			=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has name ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("has name ").Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It, "name", Grammars,
+			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedMemberFailure(It, "name", Grammars,
 				Actual?.Name, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

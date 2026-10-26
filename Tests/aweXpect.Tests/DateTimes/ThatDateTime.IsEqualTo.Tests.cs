@@ -242,27 +242,20 @@ public sealed partial class ThatDateTime
 			}
 
 			[Test]
-			[Arguments(false)]
-			[Arguments(true)]
-			public async Task WhenToleranceIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool negated)
+			public async Task WhenToleranceIsSpecifiedTwice_ShouldUseTheLastTolerance()
 			{
 				DateTime subject = CurrentTime();
+				DateTime? expected = LaterTime(4);
 
 				async Task Act()
-				{
-					if (negated)
-					{
-						await That(subject).IsNotEqualTo(subject).Within(1.Seconds()).Within(2.Seconds());
-					}
-					else
-					{
-						await That(subject).IsEqualTo(subject).Within(1.Seconds()).Within(2.Seconds());
-					}
-				}
+					=> await That(subject).IsEqualTo(expected).Within(5.Seconds()).Within(3.Seconds());
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Within cannot be specified more than once.")
-					.Because("the second tolerance would silently replace the first one");
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)} ± 0:03,
+					              but it was {Formatter.Format(subject)}, which differs by -0:04
+					              """);
 			}
 
 			[Test]

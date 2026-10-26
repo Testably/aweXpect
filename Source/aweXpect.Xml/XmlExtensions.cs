@@ -29,7 +29,13 @@ public static class XmlExtensions
 		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
 		XmlOptions xmlOptions = options?.Invoke(new XmlOptions()) ?? new XmlOptions();
-		result.Options.SetMatchType(new XmlMatchType(xmlOptions), nameof(AsXml));
+		XmlMatchType matchType = new(xmlOptions);
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Value.SetMatchType(matchType, nameof(AsXml)));
+		}
+
+		result.Options.SetMatchType(matchType, nameof(AsXml));
 		return result;
 	}
 }

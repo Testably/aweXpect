@@ -23,7 +23,7 @@ public static partial class ThatTimeOnly
 		this IThat<TimeOnly> subject,
 		TimeOnly? minimum)
 	{
-		TimeTolerance tolerance = new();
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<TimeOnly, IThat<TimeOnly>>, TimeOnly?>(maximum
 			=> new TimeToleranceResult<TimeOnly, IThat<TimeOnly>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
@@ -46,7 +46,7 @@ public static partial class ThatTimeOnly
 		this IThat<TimeOnly> subject,
 		TimeOnly? minimum)
 	{
-		TimeTolerance tolerance = new();
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new BetweenResult<TimeToleranceResult<TimeOnly, IThat<TimeOnly>>, TimeOnly?>(maximum
 			=> new TimeToleranceResult<TimeOnly, IThat<TimeOnly>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
@@ -62,7 +62,7 @@ public static partial class ThatTimeOnly
 		ExpectationGrammars grammars,
 		TimeOnly? minimum,
 		TimeOnly? maximum,
-		TimeTolerance tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: OrderingConstraint<TimeOnly>(it, grammars, minimum is null || maximum is null),
 			IValueConstraint<TimeOnly>
 	{
@@ -75,7 +75,7 @@ public static partial class ThatTimeOnly
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
+				TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
 				Outcome = actual.IsOnArc(minimum.Value, maximum.Value, timeTolerance)
 					? Outcome.Success
 					: Outcome.Failure;

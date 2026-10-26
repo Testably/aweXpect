@@ -16,7 +16,7 @@ namespace aweXpect;
 ///     of the same hash code, in the order they were added, so that it is still counted for the first one it equals.
 /// </remarks>
 internal sealed class OccurrenceCounter<TMember>(
-	IOptionsEquality<TMember> options,
+	IEqualityEvaluator<TMember> options,
 	Func<TMember, int>? getHashCode = null)
 {
 	/// <summary>

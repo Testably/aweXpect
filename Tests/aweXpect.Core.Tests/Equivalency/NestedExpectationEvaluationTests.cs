@@ -213,10 +213,10 @@ public sealed class NestedExpectationEvaluationTests
 			TimeSystem = timeSystem,
 		};
 		CapturingConstraint constraint = new(Outcome.Success);
-		ObjectEqualityOptions<MyClass> sut = Equivalent();
+		IEqualityOptions<MyClass> sut = Equivalent();
 
-		ObjectEqualityOptions<MyClass> options = sut.ForEvaluation(context, cts.Token);
-		bool result = await options.AreConsideredEqual(new MyClass
+		IEqualityEvaluator<MyClass> evaluator = sut.ForEvaluation(context, cts.Token);
+		bool result = await evaluator.AreConsideredEqual(new MyClass
 		{
 			Value = 1,
 		}, new
@@ -235,26 +235,28 @@ public sealed class NestedExpectationEvaluationTests
 	[Test]
 	public async Task ForEvaluation_ShouldNotShareTheDifferencesBetweenEvaluations()
 	{
-		ObjectEqualityOptions<MyClass> sut = Equivalent();
+		ObjectMatchType<MyClass> sut = Equivalent();
 		MyClass actual = new()
 		{
 			Value = 1,
 		};
 
-		ObjectEqualityOptions<MyClass> firstEvaluation = sut.ForEvaluation(new Context(), CancellationToken.None);
-		MatchResult first = await firstEvaluation.MatchWithExplanation(actual, new
+		ObjectMatcher<MyClass> firstEvaluation =
+			sut.ForEvaluation(new MatchEnvironment(new Context(), CancellationToken.None));
+		MatchResult first = await firstEvaluation.CompareWithExplanation(actual, new
 		{
 			Value = 2,
 		});
-		ObjectEqualityOptions<MyClass> secondEvaluation = sut.ForEvaluation(new Context(), CancellationToken.None);
-		await secondEvaluation.MatchWithExplanation(actual, new
+		ObjectMatcher<MyClass> secondEvaluation =
+			sut.ForEvaluation(new MatchEnvironment(new Context(), CancellationToken.None));
+		await secondEvaluation.CompareWithExplanation(actual, new
 		{
 			Value = 3,
 		});
 
 		await That(secondEvaluation).IsNotSameAs(firstEvaluation)
 			.Because("the second evaluation gets a matcher of its own");
-		await That(firstEvaluation.GetExtendedFailure("it", ExpectationGrammars.None, actual, actual, first))
+		await That(firstEvaluation.GetFailure("it", ExpectationGrammars.None, actual, actual, first, null))
 			.IsEqualTo("""
 			           it was not:
 			             Property Value differed:
@@ -273,8 +275,8 @@ public sealed class NestedExpectationEvaluationTests
 		It.IsEquivalent<int> expectation = ItIs(constraint);
 		_ = expectation.Because(Task.FromResult<string?>("of a reason"));
 
-		MatchResult result = await Equivalent().ForEvaluation(context, CancellationToken.None)
-			.MatchWithExplanation(new MyClass
+		MatchResult result = await Equivalent().ForEvaluation(new MatchEnvironment(context, CancellationToken.None))
+			.CompareWithExplanation(new MyClass
 			{
 				Value = 1,
 			}, new
@@ -293,14 +295,15 @@ public sealed class NestedExpectationEvaluationTests
 	}
 
 	[Test]
-	public async Task ForEvaluation_WithoutEquivalency_ShouldReturnTheSameOptions()
+	public async Task ForEvaluation_WithoutEquivalency_ShouldReturnTheSameMatcher()
 	{
-		ObjectEqualityOptions<MyClass> sut = new();
+		IEqualityOptions<MyClass> sut = ObjectMatchType<MyClass>.Default;
 
-		ObjectEqualityOptions<MyClass> options = sut.ForEvaluation(new Context(), CancellationToken.None);
+		IEqualityEvaluator<MyClass> first = sut.ForEvaluation(new Context(), CancellationToken.None);
+		IEqualityEvaluator<MyClass> second = sut.ForEvaluation(new Context(), CancellationToken.None);
 
-		await That(options).IsSameAs(sut)
-			.Because("a comparison that evaluates nothing needs no options of its own for an evaluation");
+		await That(second).IsSameAs(first)
+			.Because("a comparison that evaluates nothing needs no matcher of its own for an evaluation");
 	}
 
 	[Test]
@@ -394,7 +397,9 @@ public sealed class NestedExpectationEvaluationTests
 	{
 		CapturingConstraint constraint = new(Outcome.Success);
 
-		bool result = await Equivalent().AreConsideredEqual(new MyClass
+		IEqualityEvaluator<MyClass> sut = Equivalent().ForEvaluation(default);
+
+		bool result = await sut.AreConsideredEqual(new MyClass
 		{
 			Value = 1,
 		}, new
@@ -742,9 +747,8 @@ public sealed class NestedExpectationEvaluationTests
 		return cancellationToken is null ? limited : limited.WithCancellation(cancellationToken.Value);
 	}
 
-	private static ObjectEqualityOptions<MyClass> Equivalent()
-		=> new ObjectEqualityOptions<MyClass>().SetMatchType(new EquivalencyMatchType<MyClass>(new EquivalencyOptions()),
-			"Equivalent");
+	private static ObjectMatchType<MyClass> Equivalent()
+		=> new EquivalencyMatchType<MyClass>(new EquivalencyOptions());
 
 	private static EquivalencyExpectationBuilder GetBuilder(It.IsEquivalent<int> expectation)
 		=> (EquivalencyExpectationBuilder)((IExpectThat<int>)expectation).ExpectationBuilder;

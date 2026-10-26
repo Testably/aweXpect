@@ -28,11 +28,11 @@ public static partial class ThatString
 			throw Tracing.WriteException(new ArgumentException("The 'expected' string cannot be empty.", nameof(expected)));
 		}
 
-		StringEqualityOptions options = new StringEqualityOptions(nameof(expected)).AsPrefix();
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default.AsPrefix());
 		return new StringEqualityResult<string, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (state, it, grammars) =>
-					new StartsWithConstraint(it, grammars, state.Expected, state.Options)),
+					new StartsWithConstraint(it, grammars, state.Expected, "expected", state.Options)),
 			subject,
 			options);
 	}
@@ -52,11 +52,11 @@ public static partial class ThatString
 			throw Tracing.WriteException(new ArgumentException("The 'unexpected' string cannot be empty.", nameof(unexpected)));
 		}
 
-		StringEqualityOptions options = new StringEqualityOptions(nameof(unexpected)).AsPrefix();
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default.AsPrefix());
 		return new StringEqualityResult<string, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
 				static (state, it, grammars) =>
-					new StartsWithConstraint(it, grammars, state.Unexpected, state.Options).Invert()),
+					new StartsWithConstraint(it, grammars, state.Unexpected, "unexpected", state.Options).Invert()),
 			subject,
 			options);
 	}
@@ -65,7 +65,8 @@ public static partial class ThatString
 		string it,
 		ExpectationGrammars grammars,
 		string? expected,
-		StringEqualityOptions options)
+		string parameterName,
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
 			IAsyncContextConstraint<string?>
 	{
@@ -76,8 +77,8 @@ public static partial class ThatString
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -91,21 +92,21 @@ public static partial class ThatString
 				contexts.AddStringContext("Expected", expected, this);
 			}
 
-			(_evaluationOptions ?? options).AppendContexts(contexts);
+			(_evaluationOptions ?? options.Value).AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
+			=> stringBuilder.Append(options.Value.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult)
+			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult)
 				.Indent(indentation, false));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
+			=> stringBuilder.Append(options.Value.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult)
+			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult)
 				.Indent(indentation, false));
 	}
 }

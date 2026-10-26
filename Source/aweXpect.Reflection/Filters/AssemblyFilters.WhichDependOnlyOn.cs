@@ -33,10 +33,10 @@ public static partial class AssemblyFilters
 		string[] allowed = expected.ToArray();
 		return new Filtered.Assemblies.StringEqualityResult(@this, options => Filter.Suffix<Assembly>(
 				async assembly
-					=> (await assembly.GetDisallowedAssemblyDependencies(allowed, options)).Length == 0,
+					=> (await assembly.GetDisallowedAssemblyDependencies(allowed, options.Value)).Length == 0,
 				() => allowed.Length == 0
 					? " which have dependencies only on no assemblies"
-					: $" which have dependencies only on assemblies {string.Join(" or ", allowed.Select(expected => options.GetExpectation(expected, ExpectationGrammars.None)))}"),
-			new StringEqualityOptions(nameof(expected)));
+					: $" which have dependencies only on assemblies {string.Join(" or ", allowed.Select(expected => options.Value.GetExpectation(expected, ExpectationGrammars.None)))}"),
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

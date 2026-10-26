@@ -104,7 +104,10 @@ public abstract class ExpectationBuilder
 	/// <remarks>
 	///     It is the tightest of all timeouts added with <see cref="WithTimeout(TimeSpan)" />. The evaluation is also
 	///     limited by the timeout from <see cref="AwexpectCustomization.SettingsCustomization.TestCancellation" />, if
-	///     it is tighter.
+	///     it is tighter.<br />
+	///     The limits of <c>ExecutesIn()</c> and of <c>Within(…)</c> after <c>Throws…()</c> are not included: they are
+	///     kept apart, so that a later limit can replace an earlier one, and the tighter of them and this timeout
+	///     applies when the evaluation starts.
 	/// </remarks>
 	public TimeSpan? Timeout => _rareSettings?.Timeout;
 
@@ -740,7 +743,7 @@ public abstract class ExpectationBuilder
 	/// <exception cref="InvalidOperationException">A cancellation token is already set.</exception>
 	public ExpectationBuilder WithCancellation(CancellationToken cancellationToken)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(CancellationToken is not null, nameof(WithCancellation));
+		ThrowHelper.ThrowIfAlreadySpecified(CancellationToken is not null, nameof(WithCancellation));
 		GetRareSettings().CancellationToken = cancellationToken;
 		return this;
 	}
@@ -1581,7 +1584,8 @@ public abstract class ExpectationBuilder
 			CancellationToken cancellationToken = CombineCancellation(CancellationToken, combinationToken, context) ??
 			                                      testCancellation?.CancellationTokenFactory?.Invoke() ??
 			                                      System.Threading.CancellationToken.None;
-			TimeSpan? timeout = TimerHelpers.Tighter(TimerHelpers.Tighter(Timeout, testCancellation?.Timeout), limit);
+			TimeSpan? timeout = TimerHelpers.Tighter(TimerHelpers.Tighter(TimerHelpers.Tighter(
+				Timeout, _rareSettings?.TimeoutBound?.UpperBound), testCancellation?.Timeout), limit);
 			// Nothing negates the result of the whole expectation, and a combination only reads the contexts of a
 			// failed member.
 			Node rootNode = GetRootNode(false);
@@ -1723,12 +1727,33 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
+	///     Limits the evaluation by the upper bound of the <paramref name="bound" /> options, like a timeout added with
+	///     <see cref="WithTimeout(TimeSpan)" />.
+	/// </summary>
+	/// <remarks>
+	///     The upper bound is read when the evaluation starts, so that a later option replaces the bound of an earlier
+	///     one, while the tighter timeout still wins. Adding the same options again has no effect.
+	/// </remarks>
+	internal void AddTimeoutBound(ITimeoutBound bound)
+	{
+		RareSettings settings = GetRareSettings();
+		if (settings.TimeoutBound is null)
+		{
+			settings.TimeoutBound = bound;
+		}
+		else if (!ReferenceEquals(settings.TimeoutBound, bound))
+		{
+			settings.TimeoutBound = new TighterTimeoutBound(settings.TimeoutBound, bound);
+		}
+	}
+
+	/// <summary>
 	///     Specifies a <see cref="ITimeSystem" /> to use for the expectation.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">A time system is already set.</exception>
 	internal void UseTimeSystem(ITimeSystem timeSystem)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_rareSettings?.TimeSystem is not null,
+		ThrowHelper.ThrowIfAlreadySpecified(_rareSettings?.TimeSystem is not null,
 			"WithTimeSystem");
 		GetRareSettings().TimeSystem = timeSystem;
 	}
@@ -1745,12 +1770,36 @@ public abstract class ExpectationBuilder
 		/// </summary>
 		public Exception[]? OtherExceptions { get; set; }
 
+		/// <remarks>
+		///     The ticks of the timeout, or <see cref="long.MinValue" /> for none, instead of a nullable
+		///     <see cref="TimeSpan" />, so that the <see cref="TimeoutBound" /> fits into the same size.<br />
+		///     <see cref="long.MinValue" /> are the ticks of <see cref="TimeSpan.MinValue" />, which cannot be confused with
+		///     a timeout: <see cref="WithTimeout(TimeSpan)" /> rejects negative timeouts, and the only negative one it
+		///     accepts, <see cref="System.Threading.Timeout.InfiniteTimeSpan" />, has other ticks.
+		/// </remarks>
+		private long _timeoutTicks = long.MinValue;
+
 		public IValueFormatter[]? Formatters { get; set; }
 		public Node? PendingWhichNode { get; set; }
 		public Node? PendingWhichRoot { get; set; }
 		public object? SubjectContexts { get; set; }
-		public TimeSpan? Timeout { get; set; }
+
+		public TimeSpan? Timeout
+		{
+			get => _timeoutTicks == long.MinValue ? null : new TimeSpan(_timeoutTicks);
+			set => _timeoutTicks = value?.Ticks ?? long.MinValue;
+		}
+
+		public ITimeoutBound? TimeoutBound { get; set; }
 		public ITimeSystem? TimeSystem { get; set; }
+	}
+
+	/// <summary>
+	///     Limits the evaluation by the tighter upper bound of two options.
+	/// </summary>
+	private sealed class TighterTimeoutBound(ITimeoutBound first, ITimeoutBound second) : ITimeoutBound
+	{
+		public TimeSpan? UpperBound => TimerHelpers.Tighter(first.UpperBound, second.UpperBound);
 	}
 
 	/// <summary>

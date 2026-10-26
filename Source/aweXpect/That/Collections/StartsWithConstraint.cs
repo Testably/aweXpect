@@ -19,13 +19,14 @@ namespace aweXpect;
 internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
+	string parameterName,
 	string? expectedExpression,
 	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
-	IOptionsEquality<TMatch> options)
+	IReadOnlyOptionsHolder<IEqualityOptions<TMatch>> options)
 	: ConstraintResult.WithNotNullValue<TValue>(it, grammars)
 {
-	private IOptionsEquality<TMatch>? _evaluationOptions;
+	private IEqualityEvaluator<TMatch>? _evaluationOptions;
 	private string? _expectedText;
 	private TItem? _firstMismatchItem;
 	private bool _foundMismatch;
@@ -42,7 +43,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> contexts.AddEqualityOptionsContexts(_evaluationOptions ?? options);
+		=> contexts.AddEqualityOptionsContexts(_evaluationOptions ?? options.WithoutEvaluation());
 
 	/// <summary>
 	///     Starts a new evaluation in the <paramref name="context" />.
@@ -54,7 +55,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	protected void Start(IEvaluationContext context, CancellationToken cancellationToken)
 	{
 		_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-		options.ValidateExpectedItems(expected);
+		options.ValidateExpectedItems(expected, parameterName);
 		_firstMismatchItem = default;
 		_foundMismatch = false;
 		Count = 0;
@@ -67,7 +68,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	{
 		TMatch expectedItem = expected[Count++];
 		return CollectionItems<TItem>.TryCast(item, out TMatch matchedItem)
-			? (_evaluationOptions ?? options).AreConsideredEqual(matchedItem, expectedItem)
+			? (_evaluationOptions ?? options.WithoutEvaluation()).AreConsideredEqual(matchedItem, expectedItem)
 			: new ValueTask<bool>(false);
 	}
 
@@ -133,12 +134,13 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
+	string parameterName,
 	string? expectedExpression,
 	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
-	IOptionsEquality<TMatch> options,
+	IReadOnlyOptionsHolder<IEqualityOptions<TMatch>> options,
 	ISubjectComparing? subjectComparing = null)
-	: StartsWithConstraintBase<TEnumerable, TItem, TMatch>(it, grammars, expectedExpression, expectedValues, expected,
+	: StartsWithConstraintBase<TEnumerable, TItem, TMatch>(it, grammars, parameterName, expectedExpression, expectedValues, expected,
 			options),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
@@ -219,11 +221,12 @@ internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 internal sealed class AsyncStartsWithConstraint<TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
+	string parameterName,
 	string? expectedExpression,
 	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
-	IOptionsEquality<TMatch> options)
-	: StartsWithConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, expectedExpression,
+	IReadOnlyOptionsHolder<IEqualityOptions<TMatch>> options)
+	: StartsWithConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, parameterName, expectedExpression,
 			expectedValues, expected, options),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {

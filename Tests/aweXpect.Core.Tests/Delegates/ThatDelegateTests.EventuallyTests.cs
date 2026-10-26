@@ -105,19 +105,23 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Test]
-		public async Task CheckEvery_WhenSetTwice_ShouldThrowInvalidOperationException()
+		public async Task CheckEvery_WhenSetTwice_ShouldUseTheLastInterval()
 		{
 			Counter counter = new();
 
 			async Task Act()
-				=> await That(() => counter.Value).Eventually()
-					.CheckEvery(10.Milliseconds()).CheckEvery(20.Milliseconds())
-					.IsEqualTo(1);
+				=> await That(() => counter.Value).Eventually().OnVirtualTime()
+					.CheckEvery(100.Milliseconds()).CheckEvery(200.Milliseconds())
+					.Within(1.Seconds()).IsEqualTo(1);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("CheckEvery cannot be specified more than once.");
-			await That(counter.EvaluationCount).IsEqualTo(0)
-				.Because("the interval is validated when the expectation is built");
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that () => counter.Value
+				             eventually is equal to 1 within 0:01,
+				             but it was 0, which differs by -1
+				             """);
+			await That(counter.EvaluationCount).IsEqualTo(6)
+				.Because("the later interval of 200ms results in evaluations at 0ms, 200ms, 400ms, 600ms, 800ms and 1000ms");
 		}
 
 		[Test]
@@ -1546,18 +1550,23 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Test]
-		public async Task WhenTimeoutIsSetTwice_ShouldThrowInvalidOperationException()
+		public async Task WhenTimeoutIsSetTwice_ShouldUseTheLastTimeout()
 		{
 			Counter counter = new();
+			VirtualTimeSystem time = new();
 
 			async Task Act()
-				=> await That(() => counter.Value).Eventually().Within(VeryLowTimeout).Within(SuccessTimeout)
+				=> await That(() => counter.Value).Eventually().OnVirtualTime(time)
+					.Within(VeryLowTimeout).Within(1.Seconds())
 					.IsEqualTo(1);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("Within cannot be specified more than once.");
-			await That(counter.EvaluationCount).IsEqualTo(0)
-				.Because("the timeout is validated when the expectation is built");
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that () => counter.Value
+				             eventually is equal to 1 within 0:01,
+				             but it was 0, which differs by -1
+				             """);
+			await That(time.Now).IsEqualTo(1.Seconds());
 		}
 
 		[Test]

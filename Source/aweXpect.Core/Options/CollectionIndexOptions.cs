@@ -7,28 +7,70 @@ namespace aweXpect.Options;
 /// <summary>
 ///     Options for limitations on a collection index.
 /// </summary>
-public class CollectionIndexOptions
+/// <remarks>
+///     An immutable value: the option methods return new options, and <see langword="default" /> matches every index,
+///     like <see cref="Default" />.
+/// </remarks>
+public readonly struct CollectionIndexOptions
 {
 	private static readonly IMatch DefaultMatch = new AlwaysMatch();
-	private string? _indexOption;
+
+	/// <summary>
+	///     The match of <see cref="AtIndex" /> or <see cref="AtIndexFromEnd" />, or a <see cref="NamedMatch" /> of
+	///     <see cref="SetMatch" />.
+	/// </summary>
+	/// <remarks>
+	///     A single reference keeps the options as small as a reference, so that the holder of an expectation stays at
+	///     its minimum size; the built-in matches are named by their type.
+	/// </remarks>
+	private readonly object? _match;
+
+	private CollectionIndexOptions(object match)
+	{
+		_match = match;
+	}
+
+	/// <summary>
+	///     The options without a limitation on the index.
+	/// </summary>
+	public static CollectionIndexOptions Default => default;
 
 	/// <summary>
 	///     The object used to check if an index is a match.
 	/// </summary>
-	public IMatch Match { get; private set; } = DefaultMatch;
+	public IMatch Match => _match switch
+	{
+		NamedMatch namedMatch => namedMatch.Match,
+		IMatch match => match,
+		_ => DefaultMatch,
+	};
+
+	/// <summary>
+	///     The name of the option that specified the index.
+	/// </summary>
+	private string? IndexOption => _match switch
+	{
+		null => null,
+		NamedMatch namedMatch => namedMatch.OptionName,
+		IMatchFromEnd => nameof(AtIndexFromEnd),
+		_ => nameof(AtIndex),
+	};
 
 	/// <summary>
 	///     Sets the object of the option named <paramref name="optionName" /> to verify the index match.
 	/// </summary>
-	/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+	/// <remarks>
+	///     An index of the same option replaces the earlier one.
+	/// </remarks>
+	/// <exception cref="InvalidOperationException">An index of another option is already specified.</exception>
 	public CollectionIndexOptions SetMatch(IMatch match, string optionName)
-		=> SetIndex(match, optionName);
+		=> SetIndex(new NamedMatch(match, optionName), optionName);
 
 	/// <summary>
 	///     Only matches the item at the given zero-based <paramref name="index" />.
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+	/// <exception cref="InvalidOperationException">An index of another option is already specified.</exception>
 	public CollectionIndexOptions AtIndex(int index)
 		=> SetIndex(new AtIndexMatch(index), nameof(AtIndex));
 
@@ -37,7 +79,7 @@ public class CollectionIndexOptions
 	///     collection.
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+	/// <exception cref="InvalidOperationException">An index of another option is already specified.</exception>
 	public CollectionIndexOptions AtIndexFromEnd(int index)
 		=> SetIndex(new AtIndexMatch(index).FromEnd(), nameof(AtIndexFromEnd));
 
@@ -66,12 +108,16 @@ public class CollectionIndexOptions
 			_ => false,
 		};
 
-	private CollectionIndexOptions SetIndex(IMatch match, string option)
+	private CollectionIndexOptions SetIndex(object match, string option)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_indexOption, option);
-		_indexOption = option;
-		Match = match;
-		return this;
+		ThrowHelper.ThrowIfCompetingOption(IndexOption, option);
+		return new CollectionIndexOptions(match);
+	}
+
+	private sealed class NamedMatch(IMatch match, string optionName)
+	{
+		public IMatch Match { get; } = match;
+		public string OptionName { get; } = optionName;
 	}
 
 	private sealed class AtIndexMatch : IMatchFromBeginning

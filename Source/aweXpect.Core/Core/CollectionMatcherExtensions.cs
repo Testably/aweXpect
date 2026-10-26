@@ -41,7 +41,7 @@ public static class CollectionMatcherExtensions
 	/// </exception>
 	public static ValueTask<(Outcome Outcome, string? Failure)> VerifyItems<TItem, TMatch>(
 		this ICollectionMatcher<TItem, TMatch> matcher, string it, IEnumerable<TItem> items,
-		IOptionsEquality<TMatch> options, CancellationToken cancellationToken)
+		IEqualityEvaluator<TMatch> options, CancellationToken cancellationToken)
 		where TItem : TMatch
 	{
 		matcher.ThrowIfNull();
@@ -96,7 +96,7 @@ public static class CollectionMatcherExtensions
 	/// </summary>
 	private static async ValueTask<(Outcome, string?)> VerifyItemsAsync<TItem, TMatch>(
 		ValueTask<(bool, string?)> verified, ItemEnumerator<TItem> enumerator,
-		ICollectionMatcher<TItem, TMatch> matcher, string it, IOptionsEquality<TMatch> options, int maximumNumber,
+		ICollectionMatcher<TItem, TMatch> matcher, string it, IEqualityEvaluator<TMatch> options, int maximumNumber,
 		CancellationToken cancellationToken)
 		where TItem : TMatch
 	{
@@ -131,7 +131,7 @@ public static class CollectionMatcherExtensions
 	}
 
 	private static ValueTask<(Outcome, string?)> Complete<TItem, TMatch>(ICollectionMatcher<TItem, TMatch> matcher,
-		string it, IOptionsEquality<TMatch> options, int maximumNumber, CancellationToken cancellationToken)
+		string it, IEqualityEvaluator<TMatch> options, int maximumNumber, CancellationToken cancellationToken)
 		where TItem : TMatch
 	{
 		ValueTask<(bool, string?)> completed = matcher.VerifyComplete(it, options, maximumNumber);

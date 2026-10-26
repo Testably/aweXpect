@@ -22,8 +22,14 @@ public static class JsonExtensions
 		Func<JsonOptions, JsonOptions>? options = null)
 		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
-		JsonOptions jsonOptions = options?.Invoke(new JsonOptions()) ?? new JsonOptions();
-		result.Options.SetMatchType(new JsonMatchType(jsonOptions), nameof(AsJson));
+		JsonOptions jsonOptions = options?.Invoke(JsonOptions.Default) ?? JsonOptions.Default;
+		JsonMatchType matchType = new(jsonOptions);
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Value.SetMatchType(matchType, nameof(AsJson)));
+		}
+
+		result.Options.SetMatchType(matchType, nameof(AsJson));
 		return result;
 	}
 }

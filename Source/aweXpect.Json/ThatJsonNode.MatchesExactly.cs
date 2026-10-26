@@ -19,7 +19,7 @@ public static partial class ThatJsonNode
 		Func<JsonOptions, JsonOptions>? options = null,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where TNode : JsonNode
-		=> AddMatchesConstraint(subject, expected, doNotPopulateThisValue, new JsonOptions(), options);
+		=> AddMatchesConstraint(subject, expected, doNotPopulateThisValue, JsonOptions.Default, options);
 
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonNode" /> matches the <paramref name="expected" /> array exactly.
@@ -30,5 +30,5 @@ public static partial class ThatJsonNode
 		Func<JsonOptions, JsonOptions>? options = null,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where TNode : JsonNode
-		=> AddMatchesConstraint(subject, expected, doNotPopulateThisValue, new JsonOptions(), options);
+		=> AddMatchesConstraint(subject, expected, doNotPopulateThisValue, JsonOptions.Default, options);
 }

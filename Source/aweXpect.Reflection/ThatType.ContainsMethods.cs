@@ -43,7 +43,7 @@ public static partial class ThatType
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		ScopeOptions scope = new();
-		Quantifier quantifier = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersScopeResult<Type, Type?>(
 			AddContainsConstraint<TMember, TFiltered>(subject, types => navigate(types, scope.MemberScope), filter,
 				quantifier, scope),
@@ -58,7 +58,7 @@ public static partial class ThatType
 		Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
-		Quantifier quantifier = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersResult<Type, Type?>(
 			AddContainsConstraint<TMember, TFiltered>(subject, navigate, filter, quantifier, null),
 			subject,
@@ -69,7 +69,7 @@ public static partial class ThatType
 		IThat<Type?> subject,
 		Func<Filtered.Types, TFiltered> navigate,
 		Func<TFiltered, TFiltered> filter,
-		Quantifier quantifier,
+		OptionsHolder<Quantifier> quantifier,
 		ScopeOptions? scope)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
@@ -85,7 +85,7 @@ public static partial class ThatType
 		string it,
 		ExpectationGrammars grammars,
 		IContainedMembersFilter memberFilter,
-		Quantifier quantifier,
+		OptionsHolder<Quantifier> quantifier,
 		ScopeOptions? scope)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IAsyncConstraint<Type?>
@@ -102,7 +102,7 @@ public static partial class ThatType
 			}
 
 			_count = await memberFilter.CountMatchingMembers(actual, cancellationToken);
-			Outcome = quantifier.Check(_count, true) ?? false
+			Outcome = quantifier.Value.Check(_count, true) ?? false
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

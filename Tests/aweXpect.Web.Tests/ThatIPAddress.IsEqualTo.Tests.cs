@@ -222,7 +222,21 @@ public sealed partial class ThatIPAddress
 						.Using(new SameFamilyComparer()).IgnoringIPv4MappedToIPv6();
 
 				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("IgnoringIPv4MappedToIPv6 cannot be combined with Using.")
 					.Because("both options specify how the addresses are compared");
+			}
+
+			[Test]
+			public async Task WhenComparerFollows_ShouldThrowInvalidOperationException()
+			{
+				IPAddress subject = IPAddress.Parse("10.0.0.1");
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(IPAddress.Parse("10.0.0.1"))
+						.IgnoringIPv4MappedToIPv6().Using(new SameFamilyComparer());
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Using cannot be combined with IgnoringIPv4MappedToIPv6.");
 			}
 
 			[Test]
@@ -251,6 +265,19 @@ public sealed partial class ThatIPAddress
 					             but it was ::ffff:10.0.0.2
 					             """)
 					.Because("ignoring the mapping does not make different addresses equal");
+			}
+
+			[Test]
+			public async Task WhenSpecifiedTwice_ShouldSucceed()
+			{
+				IPAddress subject = IPAddress.Parse("::ffff:10.0.0.1");
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(IPAddress.Parse("10.0.0.1"))
+						.IgnoringIPv4MappedToIPv6().IgnoringIPv4MappedToIPv6();
+
+				await That(Act).DoesNotThrow()
+					.Because("the same option again replaces the earlier one");
 			}
 
 			[Test]

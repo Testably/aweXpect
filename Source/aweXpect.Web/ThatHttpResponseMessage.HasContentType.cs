@@ -24,12 +24,12 @@ public static partial class ThatHttpResponseMessage
 		HasContentType(this IThat<HttpResponseMessage?> subject, string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint((expected, options), static (state, it, grammars) =>
-					new HasContentTypeConstraint<HttpResponseMessage>(it, grammars, state.expected, state.options,
+					new HasContentTypeConstraint<HttpResponseMessage>(it, grammars, state.expected, "expected", state.options,
 						static m => m.Content)),
 			subject,
 			options);
@@ -49,12 +49,12 @@ public static partial class ThatHttpResponseMessage
 		DoesNotHaveContentType(this IThat<HttpResponseMessage?> subject, string unexpected)
 	{
 		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
-		StringEqualityOptions options = new(nameof(unexpected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint((unexpected, options), static (state, it, grammars) =>
-					new HasContentTypeConstraint<HttpResponseMessage>(it, grammars, state.unexpected, state.options,
+					new HasContentTypeConstraint<HttpResponseMessage>(it, grammars, state.unexpected, "unexpected", state.options,
 						static m => m.Content).Invert()),
 			subject,
 			options);

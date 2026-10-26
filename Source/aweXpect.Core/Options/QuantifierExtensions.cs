@@ -124,7 +124,7 @@ public static class QuantifierExtensions
 	public static TResult Never<TResult>(this TResult result)
 		where TResult : IOptionsProvider<Quantifier>
 	{
-		result.Options.Exactly(0, nameof(Never));
+		result.Options.Exactly(0, QuantifierOption.Never);
 		return result;
 	}
 
@@ -134,7 +134,7 @@ public static class QuantifierExtensions
 	public static TResult Once<TResult>(this TResult result)
 		where TResult : IOptionsProvider<Quantifier>
 	{
-		result.Options.Exactly(1, nameof(Once));
+		result.Options.Exactly(1, QuantifierOption.Once);
 		return result;
 	}
 
@@ -144,7 +144,7 @@ public static class QuantifierExtensions
 	public static TResult Twice<TResult>(this TResult result)
 		where TResult : IOptionsProvider<Quantifier>
 	{
-		result.Options.Exactly(2, nameof(Twice));
+		result.Options.Exactly(2, QuantifierOption.Twice);
 		return result;
 	}
 }

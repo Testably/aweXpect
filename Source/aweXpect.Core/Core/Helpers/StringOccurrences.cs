@@ -13,16 +13,17 @@ internal static class StringOccurrences
 {
 	/// <summary>
 	///     Counts the occurrences of the <paramref name="expected" /> value in the <paramref name="actual" /> value until
-	///     no further occurrence could change the outcome of the <paramref name="quantifier" />.
+	///     no further occurrence could change the outcome of the <paramref name="quantifier" />; an unusable
+///     <paramref name="expected" /> value is reported against the <paramref name="parameterName" />.
 	/// </summary>
 	/// <remarks>
 	///     The count is not <c>IsFinished</c> when the search stopped early, so that more occurrences may follow.
 	/// </remarks>
 	public static async ValueTask<(int Count, bool IsFinished)> Count(StringEqualityOptions options, string actual,
-		string expected, Quantifier quantifier)
+		string expected, Quantifier quantifier, string parameterName)
 	{
 		int decisiveAmount = GetDecisiveAmount(quantifier);
-		int count = await options.CountOccurrences(actual, expected, decisiveAmount);
+		int count = await options.CountOccurrences(actual, expected, decisiveAmount, parameterName);
 		return (count, count < decisiveAmount);
 	}
 

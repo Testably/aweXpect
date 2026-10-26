@@ -29,8 +29,7 @@ public static partial class ThatEnumerable
 			equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 		}
 
-		Options.ObjectEqualityOptions<TItem> equalityOptions = new();
-		equalityOptions.Equivalent(equivalencyOptions);
+		ObjectMatchType<TItem> equalityOptions = new EquivalencyMatchType<TItem>(equivalencyOptions);
 		return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint(
 				(Quantifier: items.Quantifier, Expected: expected, DoNotPopulateThisValue: doNotPopulateThisValue,
@@ -74,8 +73,7 @@ public static partial class ThatEnumerable
 			equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 		}
 
-		Options.ObjectEqualityOptions<object?> equalityOptions = new();
-		equalityOptions.Equivalent(equivalencyOptions);
+		ObjectMatchType<object?> equalityOptions = new EquivalencyMatchType<object?>(equivalencyOptions);
 		return new AndOrResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint(
 				(Quantifier: items.Quantifier, Expected: expected, DoNotPopulateThisValue: doNotPopulateThisValue,
@@ -121,8 +119,7 @@ public static partial class ThatEnumerable
 			equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 		}
 
-		Options.ObjectEqualityOptions<TItem> equalityOptions = new();
-		equalityOptions.Equivalent(equivalencyOptions);
+		ObjectMatchType<TItem> equalityOptions = new EquivalencyMatchType<TItem>(equivalencyOptions);
 		return new AndOrResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint(
 				(Quantifier: items.Quantifier, Expected: expected, DoNotPopulateThisValue: doNotPopulateThisValue,

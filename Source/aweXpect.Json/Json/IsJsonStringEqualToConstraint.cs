@@ -15,7 +15,7 @@ internal sealed class IsJsonStringEqualToConstraint(
 	string it,
 	ExpectationGrammars grammars,
 	string expected,
-	StringEqualityOptions options)
+	OptionsHolder<StringEqualityOptions> options)
 	: IsJsonValueEqualToConstraint<string>(it, grammars, JsonValueReaders.String)
 {
 	private string? _actualValue;
@@ -26,22 +26,22 @@ internal sealed class IsJsonStringEqualToConstraint(
 		CancellationToken cancellationToken)
 	{
 		_actualValue = value;
-		_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-		_matchResult = await _evaluationOptions.MatchWithExplanation(value, expected);
+		_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+		_matchResult = await _evaluationOptions.MatchWithExplanation(value, expected, nameof(expected));
 		return _matchResult.IsMatch;
 	}
 
 	public override void AppendContexts(ResultContextCollector contexts)
 	{
-		(_evaluationOptions ?? options).AppendContexts(contexts);
+		(_evaluationOptions ?? options.Value).AppendContexts(contexts);
 		base.AppendContexts(contexts);
 	}
 
 	protected override void AppendComparison(StringBuilder stringBuilder)
-		=> stringBuilder.Append(options.GetExpectation(expected,
+		=> stringBuilder.Append(options.Value.GetExpectation(expected,
 			Grammars & ~(ExpectationGrammars.Active | ExpectationGrammars.Negated)));
 
 	protected override void AppendMismatch(StringBuilder stringBuilder)
-		=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, _actualValue,
+		=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedFailure(It, Grammars, _actualValue,
 			expected, _matchResult));
 }

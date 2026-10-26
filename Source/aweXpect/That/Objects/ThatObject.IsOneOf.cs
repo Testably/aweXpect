@@ -31,7 +31,7 @@ public static partial class ThatObject
 		bool negated)
 	{
 		IEnumerable<object?> expectedValues = expected.ToNonEmptyValues(negated);
-		ObjectEqualityOptions<object?> options = new();
+		OptionsHolder<ObjectMatchType<object?>> options = new(ObjectMatchType<object?>.Default);
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
@@ -55,7 +55,7 @@ public static partial class ThatObject
 		where T : class?
 	{
 		IEnumerable<T?> expectedValues = expected.ToNonEmptyValues(negated);
-		ObjectEqualityOptions<T> options = new();
+		OptionsHolder<ObjectMatchType<T>> options = new(ObjectMatchType<T>.Default);
 		return new ObjectEqualityResult<T, IThat<T>, T>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
@@ -73,13 +73,15 @@ public static partial class ThatObject
 		ExpectationGrammars grammars,
 		IEnumerable<TExpected?> expected,
 		string? expectedExpression,
-		ObjectEqualityOptions<TSubject> options)
+		OptionsHolder<ObjectMatchType<TSubject>> options)
 		: ConstraintResult.WithValue<TSubject>(it, grammars),
 			IAsyncContextConstraint<TSubject>
 	{
-		private ObjectEqualityOptions<TSubject>? _evaluationOptions;
+		private ObjectMatcher<TSubject>? _matcher;
 		private TExpected? _matchedCandidate;
 		private MatchResult _matchResult;
+
+		private ObjectMatcher<TSubject> Matcher => _matcher ?? options.Value.ForEvaluation(default);
 
 		/// <remarks>
 		///     Every candidate is compared with an explanation, as the failure message explains the comparison with a
@@ -90,10 +92,10 @@ public static partial class ThatObject
 		{
 			Actual = actual;
 			_matchedCandidate = default;
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_matcher = options.Value.ForEvaluation(new MatchEnvironment(context, cancellationToken));
 			foreach (TExpected? value in expected)
 			{
-				_matchResult = await _evaluationOptions.MatchWithExplanation(actual, value);
+				_matchResult = await _matcher.CompareWithExplanation(actual, value);
 				if (_matchResult.IsMatch)
 				{
 					_matchedCandidate = value;
@@ -110,7 +112,7 @@ public static partial class ThatObject
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars);
-			(_evaluationOptions ?? options).AppendContexts(contexts);
+			Matcher.AppendContexts(contexts);
 		}
 
 		/// <remarks>
@@ -118,7 +120,7 @@ public static partial class ThatObject
 		///     itself, e.g. <c>is equivalent to one of […]</c>.
 		/// </remarks>
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("is ", "are ")).Append(options.GetItemExpectation(
+			=> stringBuilder.Append(Grammars.Verb("is ", "are ")).Append(options.Value.GetItemExpectation(
 				"one of " + (expectedExpression ?? Formatter.Format(expected)).TrimCommonWhiteSpace()));
 
 		/// <remarks>
@@ -129,12 +131,12 @@ public static partial class ThatObject
 		{
 			TExpected?[] candidates = expected.Take(2).ToArray();
 			stringBuilder.Append(candidates.Length == 1
-				? (_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, candidates[0], _matchResult, indentation)
+				? Matcher.GetFailure(It, Grammars, Actual, candidates[0], _matchResult, indentation)
 				: $"{It}{Grammars.SubjectVerb(It, " was ", " were ")}{Formatter.Format(Actual, FormattingOptions.Indented(indentation))}");
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("is not ", "are not ")).Append(options.GetItemExpectation(
+			=> stringBuilder.Append(Grammars.Verb("is not ", "are not ")).Append(options.Value.GetItemExpectation(
 				"one of " + (expectedExpression ?? Formatter.Format(expected)).TrimCommonWhiteSpace()));
 
 		/// <remarks>
@@ -142,7 +144,7 @@ public static partial class ThatObject
 		///     with that candidate.
 		/// </remarks>
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual,
+			=> stringBuilder.Append(Matcher.GetFailure(It, Grammars, Actual,
 				_matchedCandidate, _matchResult, indentation));
 	}
 }

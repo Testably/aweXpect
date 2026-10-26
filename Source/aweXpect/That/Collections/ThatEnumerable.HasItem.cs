@@ -35,8 +35,8 @@ public static partial class ThatEnumerable
 			IThat<IEnumerable<TItem>?> subject,
 			bool negated)
 	{
-		CollectionIndexOptions indexOptions = new();
-		PredicateOptions<TItem> options = new();
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<PredicateOptions<TItem>> options = new(PredicateOptions<TItem>.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemWithConditionResult<IEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint((Options: options, IndexOptions: indexOptions, Negated: negated),
@@ -58,7 +58,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		predicate.ThrowIfNull();
-		CollectionIndexOptions indexOptions = new();
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>>(
 			expectationBuilder.AddConstraint(
@@ -80,9 +80,9 @@ public static partial class ThatEnumerable
 			TItem expected,
 			bool negated)
 	{
-		CollectionIndexOptions indexOptions = new();
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		ItemEqualityOptions<TItem> options = new();
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		return new ObjectHasItemResult<IEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
@@ -96,16 +96,17 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", GuaranteesNotNull = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem, Remarks = SetItemComparerRemarks)]
 	internal static ObjectHasItemWithToleranceResult<IEnumerable<TItem>, TItem, TTolerance>
 		HasTheItemWithToleranceCore<TItem, TTolerance>(
 			IThat<IEnumerable<TItem>?> subject,
 			TItem expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			ObjectToleranceMatchType<TItem, TTolerance> initialOptions,
 			bool negated)
 	{
-		CollectionIndexOptions indexOptions = new();
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectHasItemWithToleranceResult<IEnumerable<TItem>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint(
@@ -127,15 +128,15 @@ public static partial class ThatEnumerable
 			string? expected,
 			bool negated)
 	{
-		CollectionIndexOptions indexOptions = new();
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringHasItemResult<IEnumerable<string?>>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new HasItemConstraint<IEnumerable<string?>?, string?>(it, grammars,
-						new SubjectComparedItem<string?, string?>(new EqualStringItem(state.Options, state.Expected)),
+						new SubjectComparedItem<string?, string?>(new EqualStringItem(state.Options, state.Expected, state.Negated ? "unexpected" : "expected")),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
@@ -149,8 +150,8 @@ public static partial class ThatEnumerable
 			IThat<IEnumerable?> subject,
 			bool negated)
 	{
-		CollectionIndexOptions indexOptions = new();
-		PredicateOptions<object?> options = new();
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<PredicateOptions<object?>> options = new(PredicateOptions<object?>.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemWithConditionResult<IEnumerable, object?>(
 			expectationBuilder.AddConstraint((Options: options, IndexOptions: indexOptions, Negated: negated),
@@ -172,7 +173,7 @@ public static partial class ThatEnumerable
 			bool negated)
 	{
 		predicate.ThrowIfNull();
-		CollectionIndexOptions indexOptions = new();
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable>(
 			expectationBuilder.AddConstraint(
@@ -195,9 +196,9 @@ public static partial class ThatEnumerable
 			object? expected,
 			bool negated)
 	{
-		CollectionIndexOptions indexOptions = new();
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		ItemEqualityOptions<object?> options = new();
+		OptionsHolder<ObjectMatchType<object?>> options = new(ItemEqualsMatchType<object?>.Instance);
 		return new ObjectHasItemResult<IEnumerable, object?>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
@@ -221,7 +222,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable
 	{
 		predicate.ThrowIfNull();
-		CollectionIndexOptions indexOptions = new();
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<TCollection>(
 			expectationBuilder.AddConstraint(
@@ -244,8 +245,8 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		CollectionIndexOptions indexOptions = new();
-		PredicateOptions<TItem> options = new();
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
+		OptionsHolder<PredicateOptions<TItem>> options = new(PredicateOptions<TItem>.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemWithConditionResult<TCollection, TItem>(
 			expectationBuilder.AddConstraint((Options: options, IndexOptions: indexOptions, Negated: negated),
@@ -267,9 +268,9 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		CollectionIndexOptions indexOptions = new();
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		ObjectEqualityOptions<TItem> options = new();
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
 		return new ObjectHasItemResult<TCollection, TItem>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
@@ -284,17 +285,18 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateExpectationFamily("HasItem", NegatedName = "DoesNotHaveItem", PerSubject = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = HasTheItem, NegatedSummary = DoesNotHaveTheItem)]
 	internal static ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
 		HasTheItemWithToleranceForCollectionCore<TCollection, TItem, TTolerance>(
 			IThat<TCollection> subject,
 			TItem expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			ObjectToleranceMatchType<TItem, TTolerance> initialOptions,
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		CollectionIndexOptions indexOptions = new();
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>(
 			expectationBuilder.AddConstraint(
@@ -318,16 +320,16 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable
 	{
-		CollectionIndexOptions indexOptions = new();
+		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringHasItemResult<TCollection>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new HasItemConstraint<TCollection, string?>(
 						it, grammars,
-						new EqualStringItem(state.Options, state.Expected),
+						new EqualStringItem(state.Options, state.Expected, state.Negated ? "unexpected" : "expected"),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,

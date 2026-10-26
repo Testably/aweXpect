@@ -22,16 +22,26 @@ public sealed class SnapshotLinesContaining<TResult> : SnapshotLines<TResult>,
 	ICopyOnOption<StringEqualityOptions, SnapshotLinesContaining<TResult>>
 {
 	private readonly Func<SnapshotRule, TResult> _add;
-	private readonly StringEqualityOptions _options;
+	private readonly OptionsHolder<StringEqualityOptions> _options;
 	private readonly Func<string, ValueTask<bool>>[] _sourceFilters;
 	private readonly Action[] _sourceValidations;
 	private readonly string _text;
 
 	internal SnapshotLinesContaining(Func<SnapshotRule, TResult> add, Func<string, ValueTask<bool>>[] sourceFilters,
 		Action[] sourceValidations, string text, StringEqualityOptions options)
+		: this(add, sourceFilters, sourceValidations, text, new OptionsHolder<StringEqualityOptions>(options))
+	{
+	}
+
+	/// <remarks>
+	///     The filter and the validation read the <paramref name="options" /> from the holder, so that an option that
+	///     changes the holder directly also applies.
+	/// </remarks>
+	private SnapshotLinesContaining(Func<SnapshotRule, TResult> add, Func<string, ValueTask<bool>>[] sourceFilters,
+		Action[] sourceValidations, string text, OptionsHolder<StringEqualityOptions> options)
 		: base(add,
-			[.. sourceFilters, line => StringRules.Contains(options, line, text),],
-			[.. sourceValidations, () => options.ValidateExpected(text),])
+			[.. sourceFilters, line => StringRules.Contains(options.Value, line, text, nameof(text)),],
+			[.. sourceValidations, () => options.Value.ValidateExpected(text, nameof(text)),])
 	{
 		_add = add;
 		_sourceFilters = sourceFilters;
@@ -41,7 +51,7 @@ public sealed class SnapshotLinesContaining<TResult> : SnapshotLines<TResult>,
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
+	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
 	/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
 	SnapshotLinesContaining<TResult> ICopyOnOption<StringEqualityOptions, SnapshotLinesContaining<TResult>>.WithOptions(

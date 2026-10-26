@@ -215,16 +215,13 @@ public sealed partial class ConstructorFilters
 			}
 
 			[Test]
-			public async Task WithParameterAtIndex_WhenIndexIsAlreadySpecified_ShouldThrowInvalidOperationException()
+			public async Task WithParameterAtIndex_WhenIndexIsAlreadySpecified_ShouldUseTheLastIndex()
 			{
-				void Act()
-				{
-					In.Type<TestClassWithConstructorParameters>()
-						.Constructors().WithParameter<int>().AtIndex(0).AtIndex(1);
-				}
+				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
+					.Constructors().WithParameter<int>().AtIndex(0).AtIndex(1);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("AtIndex cannot be specified more than once.");
+				await That(constructors.GetDescription())
+					.IsEqualTo("constructors with parameter of type int at index 1 in").AsPrefix();
 			}
 
 			[Test]

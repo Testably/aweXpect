@@ -58,17 +58,35 @@ public sealed partial class ThatType
 				}
 
 				[Test]
-				public async Task AtIndex_WhenIndexIsAlreadySpecified_ShouldThrowInvalidOperationException()
+				public async Task AtIndex_WhenIndexFromEndIsAlreadySpecified_ShouldThrowInvalidOperationException()
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
 
 					async Task Act()
 					{
-						await That(subject).IsGeneric().WithArgument<BaseClass>().AtIndex(1).AtIndex(1);
+						await That(subject).IsGeneric().WithArgument<BaseClass>().AtIndexFromEnd(0).AtIndex(1);
 					}
 
 					await That(Act).Throws<InvalidOperationException>()
-						.WithMessage("AtIndex cannot be specified more than once.");
+						.WithMessage("AtIndex cannot be combined with AtIndexFromEnd.");
+				}
+
+				[Test]
+				public async Task AtIndex_WhenIndexIsAlreadySpecified_ShouldUseTheLastIndex()
+				{
+					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
+
+					async Task Act()
+					{
+						await That(subject).IsGeneric().WithArgument<BaseClass>().AtIndex(1).AtIndex(2);
+					}
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is generic with argument of type ThatType.BaseClass at index 2,
+						             but it was generic ThatType.GenericClassWithTwoArguments<int, ThatType.BaseClass>
+						             """);
 				}
 
 				[Test]

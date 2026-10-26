@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Core;
 
@@ -11,8 +12,51 @@ namespace aweXpect.Core;
 ///     state across them, e.g. which options matched nothing in any comparison.<br />
 ///     Derive from <see cref="ObjectMatcher{TSubject, TExpected}" /> instead, when the expected value has a known type.
 /// </remarks>
-public abstract class ObjectMatcher<TSubject>
+public abstract class ObjectMatcher<TSubject> : IEqualityEvaluator<TSubject>
 {
+	/// <inheritdoc cref="IEqualityEvaluator{TSubject}.AreConsideredEqual{TExpected}(TSubject, TExpected)" />
+	/// <remarks>
+	///     A subject that the matcher cannot compare throws, so that every collection fails for it in both polarities.
+	/// </remarks>
+	ValueTask<bool> IEqualityEvaluator<TSubject>.AreConsideredEqual<TExpected>(TSubject actual, TExpected expected)
+	{
+		ValueTask<MatchResult> result = Match(actual, expected);
+		if (!result.IsCompletedSuccessfully)
+		{
+			return AwaitIsMatch(result);
+		}
+
+		return new ValueTask<bool>(ComparableOrThrow(result.Result).IsMatch);
+
+		static async ValueTask<bool> AwaitIsMatch(ValueTask<MatchResult> result)
+			=> ComparableOrThrow(await result).IsMatch;
+	}
+
+	/// <summary>
+	///     Compares the <paramref name="actual" /> with the <paramref name="expected" /> value for a constraint, which
+	///     keeps the result to explain a failure with
+	///     <see cref="GetFailure{TExpected}(string, ExpectationGrammars, TSubject, TExpected, MatchResult, string?)" />.
+	/// </summary>
+	/// <remarks>
+	///     This is the entry point that constraints call, so it cannot be overridden; a matcher overrides the
+	///     <c>Match…</c> methods instead.<br />
+	///     Compares with <see cref="MatchWithExplanation{TExpected}(TSubject, TExpected)" />. Unlike it, a subject that the
+	///     matcher cannot compare throws, so that the expectation fails in both polarities.
+	/// </remarks>
+	public ValueTask<MatchResult> CompareWithExplanation<TExpected>(TSubject actual, TExpected expected)
+	{
+		ValueTask<MatchResult> result = MatchWithExplanation(actual, expected);
+		if (!result.IsCompletedSuccessfully)
+		{
+			return AwaitComparable(result);
+		}
+
+		return new ValueTask<MatchResult>(ComparableOrThrow(result.Result));
+
+		static async ValueTask<MatchResult> AwaitComparable(ValueTask<MatchResult> result)
+			=> ComparableOrThrow(await result);
+	}
+
 	/// <summary>
 	///     Decides whether the <paramref name="actual" /> value matches the <paramref name="expected" /> value, whose type
 	///     varies, e.g. an anonymous object for an equivalency.
@@ -67,6 +111,15 @@ public abstract class ObjectMatcher<TSubject>
 	{
 		// Most matchers have nothing to add.
 	}
+
+	/// <summary>
+	///     Throws for a <paramref name="result" /> that could not compare the subject, so that every expectation and
+	///     every collection fails for it in both polarities, like for an exception of the caller's code.
+	/// </summary>
+	private static MatchResult ComparableOrThrow(MatchResult result)
+		=> result.Outcome != MatchOutcome.NotComparable
+			? result
+			: throw new UserCodeException(new NotComparableException(result.NotComparableReason!, result.Cause));
 }
 
 /// <summary>

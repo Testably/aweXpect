@@ -1,31 +1,30 @@
 using System;
 using aweXpect.Core;
-using aweXpect.Helpers;
 
 namespace aweXpect.Options;
 
-internal class PredicateOptions<TItem>
+/// <summary>
+///     The predicate that selects the items of an expectation.
+/// </summary>
+/// <remarks>
+///     An immutable value: a new predicate creates new options, and
+///     <see langword="default" /> matches every item, like <see cref="Default" />.
+/// </remarks>
+internal readonly struct PredicateOptions<TItem>
 {
-	private Func<TItem, bool>? _predicate;
-	private string? _predicateDescription;
+	private readonly Func<TItem, bool>? _predicate;
+	private readonly string? _predicateDescription;
 
-	public bool Matches(TItem item)
-		=> _predicate is null || UserCode.Invoke(_predicate, item, "the predicate");
-
-	internal void SetPredicate(Func<TItem, bool> predicate, string predicateDescription)
+	public PredicateOptions(Func<TItem, bool> predicate, string predicateDescription)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_predicate is not null, "Matching");
 		_predicate = predicate;
 		_predicateDescription = predicateDescription;
 	}
 
-	public string GetDescription()
-	{
-		if (_predicateDescription is null)
-		{
-			return "";
-		}
+	public static PredicateOptions<TItem> Default => default;
 
-		return _predicateDescription;
-	}
+	public bool Matches(TItem item)
+		=> _predicate is null || UserCode.Invoke(_predicate, item, "the predicate");
+
+	public string GetDescription() => _predicateDescription ?? "";
 }

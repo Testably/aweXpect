@@ -6,12 +6,13 @@ using aweXpect.Results;
 namespace aweXpect;
 
 /// <summary>
-///     Extension methods for results that compare objects with <see cref="ObjectEqualityOptions{TSubject}" />.
+///     Extension methods for results that compare objects with an <see cref="ObjectMatchType{TSubject}" />.
 /// </summary>
 /// <remarks>
-///     These options all specify how two objects are compared, so only one of them can be specified.
+///     These options all specify how two objects are compared, so only one of them can be specified; the same option
+///     again replaces the earlier one.
 /// </remarks>
-public static class ObjectEqualityOptionsExtensions
+public static class ObjectMatchTypeExtensions
 {
 	/// <summary>
 	///     Uses the provided <paramref name="comparer" /> for comparing <see langword="object" />s.
@@ -43,7 +44,7 @@ public static class ObjectEqualityOptionsExtensions
 		TTolerance tolerance)
 		where TSelf : IObjectEqualityWithToleranceResult<TSelf, TElement, TTolerance>
 	{
-		((IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>)result).Options.Within(tolerance);
+		result.Options.Within(tolerance);
 		return (TSelf)result;
 	}
 

@@ -174,17 +174,21 @@ public sealed partial class ThatDelegate
 			[Arguments(true, false)]
 			[Arguments(false, true)]
 			[Arguments(false, false)]
-			public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException(bool first, bool second)
+			public async Task WhenSpecifiedTwice_ShouldUseTheLastValue(bool first, bool second)
 			{
-				Action @delegate = () => { };
+				Action @delegate = () => throw new MyException();
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AllowingExceptions(first).AllowingExceptions(second)
 						.AtMost(5000.Milliseconds());
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("AllowingExceptions cannot be specified more than once.")
-					.Because("the second value would silently replace the first one");
+				await That(Act).Throws<FailException>().OnlyIf(!second)
+					.WithMessage($"""
+					              Expected that @delegate
+					              executes in at most 0:05,
+					              but it did throw a MyException:
+					                {nameof(WhenSpecifiedTwice_ShouldUseTheLastValue)}
+					              """);
 			}
 
 			[Test]
@@ -245,18 +249,21 @@ public sealed partial class ThatDelegate
 			[Arguments(true, false)]
 			[Arguments(false, true)]
 			[Arguments(false, false)]
-			public async Task WhenToleranceIsGivenAndSpecifiedTwice_ShouldThrowInvalidOperationException(
-				bool first, bool second)
+			public async Task WhenToleranceIsGivenAndSpecifiedTwice_ShouldUseTheLastValue(bool first, bool second)
 			{
-				Action @delegate = () => { };
+				Action @delegate = () => throw new MyException();
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn(50.Milliseconds())
 						.AllowingExceptions(first).AllowingExceptions(second).Within(5.Seconds());
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("AllowingExceptions cannot be specified more than once.")
-					.Because("the second value would silently replace the first one");
+				await That(Act).Throws<FailException>().OnlyIf(!second)
+					.WithMessage($"""
+					              Expected that @delegate
+					              executes in approximately 0:00.050 ± 0:05,
+					              but it did throw a MyException:
+					                {nameof(WhenToleranceIsGivenAndSpecifiedTwice_ShouldUseTheLastValue)}
+					              """);
 			}
 		}
 	}

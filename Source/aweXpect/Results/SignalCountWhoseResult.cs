@@ -16,20 +16,24 @@ namespace aweXpect.Results;
 public class SignalCountWhoseResult<TParameter>
 	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>, SignalCountWhoseResult<TParameter>>,
 		IOptionsProvider<Quantifier>,
+		IOptionsProvider<SignalerOptions>,
 		ISignalerResult<SignalCountWhoseResult<TParameter>, TParameter>
 {
-	private readonly SignalerOptions<TParameter> _options;
-	private readonly Quantifier _quantifier;
+	private readonly OptionsHolder<SignalerOptions> _options;
+	private readonly OptionsHolder<SignalerPredicateOptions<TParameter>> _predicates;
+	private readonly OptionsHolder<Quantifier> _quantifier;
 
 	internal SignalCountWhoseResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<Signaler<TParameter>> returnValue,
-		Quantifier quantifier,
-		SignalerOptions<TParameter> options)
+		OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<SignalerOptions> options,
+		OptionsHolder<SignalerPredicateOptions<TParameter>> predicates)
 		: base(expectationBuilder, returnValue)
 	{
 		_quantifier = quantifier;
 		_options = options;
+		_predicates = predicates;
 	}
 
 	/// <summary>
@@ -41,14 +45,18 @@ public class SignalCountWhoseResult<TParameter>
 	public IThatSubject<IEnumerable<TParameter>> WhoseParameters
 		=> new ThatSubject<IEnumerable<TParameter>>(
 			ExpectationBuilder.ForWhich<SignalerResult<TParameter>, IEnumerable<TParameter>>(
-				x => x.Parameters.Where(_options.Matches).ToArray(),
+				x => x.Parameters.Where(_predicates.Value.Matches).ToArray(),
 				" with parameters that ", null,
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural |
 				            ExpectationGrammars.Introduced));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => _quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	SignalerOptions<TParameter> IOptionsProvider<SignalerOptions<TParameter>>.Options => _options;
+	OptionsHolder<SignalerOptions> IOptionsProvider<SignalerOptions>.Options => _options;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	OptionsHolder<SignalerPredicateOptions<TParameter>> IOptionsProvider<SignalerPredicateOptions<TParameter>>.Options
+		=> _predicates;
 }

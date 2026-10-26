@@ -19,9 +19,9 @@ public static partial class ThatEventRecording
 		this IThat<IEventRecording<TSubject>> subject)
 		where TSubject : INotifyPropertyChanged
 	{
-		Options.Quantifier quantifier = new();
-		TriggerEventFilter filter = new();
-		RepeatedCheckOptions options = new();
+		OptionsHolder<Options.Quantifier> quantifier = new(new Options.Quantifier());
+		OptionsHolder<TriggerEventFilter> filter = new(TriggerEventFilter.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint((Filter: filter, Quantifier: quantifier, Options: options),
 				static (state, it, grammars)
@@ -48,9 +48,9 @@ public static partial class ThatEventRecording
 		this IThat<IEventRecording<TSubject>> subject)
 		where TSubject : INotifyPropertyChanged
 	{
-		Options.Quantifier quantifier = new();
-		TriggerEventFilter filter = new();
-		RepeatedCheckOptions options = new();
+		OptionsHolder<Options.Quantifier> quantifier = new(new Options.Quantifier());
+		OptionsHolder<TriggerEventFilter> filter = new(TriggerEventFilter.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint((Filter: filter, Quantifier: quantifier, Options: options),
 				static (state, it, grammars)

@@ -19,17 +19,17 @@ public static partial class ThatEventRecording
 		string it,
 		ExpectationGrammars grammars,
 		string eventName,
-		TriggerEventFilter filter,
-		Quantifier quantifier,
-		RepeatedCheckOptions options)
+		OptionsHolder<TriggerEventFilter> filter,
+		OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<RepeatedCheckOptions> options)
 		: ConstraintResult(grammars),
 			IAsyncContextConstraint<IEventRecording<TSubject>>
 		where TSubject : notnull
 	{
-		private readonly Func<object?[], bool> _isMatch = filter.IsMatch;
 		private IEventRecording<TSubject>? _actual;
 		private Func<IEventRecordingResult, bool>? _areFound;
 		private bool _isNegated;
+		private Func<object?[], bool>? _isMatch;
 		private IEventRecordingResult? _result;
 		private bool _stoppedEarly;
 		private TimeSpan? _waitedTime;
@@ -45,15 +45,16 @@ public static partial class ThatEventRecording
 				return this;
 			}
 
-			long? startTimestamp = options.IsRepeated ? context.GetTimestamp() : null;
-			_result = await actual.StopWhen(_areFound ??= AreFound, options.Timeout, context, cancellationToken);
+			_isMatch = filter.Value.IsMatch;
+			long? startTimestamp = options.Value.IsRepeated ? context.GetTimestamp() : null;
+			_result = await actual.StopWhen(_areFound ??= AreFound, options.Value.Timeout, context, cancellationToken);
 			int eventCount = _result.GetEventCount(eventName, _isMatch);
 			if (startTimestamp is not null)
 			{
 				_waitedTime = context.GetElapsedTime(startTimestamp.Value);
-				_stoppedEarly = quantifier.Check(eventCount, false) != null;
+				_stoppedEarly = quantifier.Value.Check(eventCount, false) != null;
 				if (!_stoppedEarly && cancellationToken.IsCancellationRequested &&
-				    !context.Cancellation.HasWaitElapsed(options.Timeout, _waitedTime.Value))
+				    !context.Cancellation.HasWaitElapsed(options.Value.Timeout, _waitedTime.Value))
 				{
 					// A cancellation can end the wait before the timeout, so the events recorded until then decide nothing.
 					Outcome = Outcome.Undecided;
@@ -61,13 +62,13 @@ public static partial class ThatEventRecording
 				}
 			}
 
-			Outcome = quantifier.Check(eventCount, true, _isNegated) ?? _isNegated ? Outcome.Success : Outcome.Failure;
+			Outcome = quantifier.Value.Check(eventCount, true, _isNegated) ?? _isNegated ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (quantifier.IsNever(_isNegated))
+			if (quantifier.Value.IsNever(_isNegated))
 			{
 				stringBuilder.Append("has never recorded the ").Append(eventName).Append(" event");
 				if (_actual != null)
@@ -85,12 +86,12 @@ public static partial class ThatEventRecording
 					stringBuilder.Append(" on ").Append(_actual);
 				}
 
-				stringBuilder.Append(filter).Append(' ').Append(quantifier.ToString(_isNegated)).Append(options);
+				stringBuilder.Append(filter).Append(' ').Append(quantifier.Value.ToString(_isNegated)).Append(options.Value);
 			}
 		}
 
 		private bool AreFound(IEventRecordingResult result)
-			=> quantifier.Check(result.GetEventCount(eventName, _isMatch), false) != null;
+			=> quantifier.Value.Check(result.GetEventCount(eventName, _isMatch!), false) != null;
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -107,7 +108,7 @@ public static partial class ThatEventRecording
 			}
 
 			stringBuilder.Append(it).Append(" was ");
-			ThatSignaler.AppendOccurrences(stringBuilder, quantifier, _isNegated,
+			ThatSignaler.AppendOccurrences(stringBuilder, quantifier.Value, _isNegated,
 				_result?.GetEventCount(eventName, _isMatch) ?? 0);
 			if (_result?.GetEventCount(eventName) > 0)
 			{

@@ -17,7 +17,7 @@ public static partial class ThatTimeSpan
 		this IThat<TimeSpan> subject,
 		TimeSpan? expected)
 	{
-		TimeTolerance tolerance = new();
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -33,7 +33,7 @@ public static partial class ThatTimeSpan
 		this IThat<TimeSpan> subject,
 		TimeSpan? unexpected)
 	{
-		TimeTolerance tolerance = new();
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -46,14 +46,14 @@ public static partial class ThatTimeSpan
 		string it,
 		ExpectationGrammars grammars,
 		TimeSpan? expected,
-		TimeTolerance tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: ConstraintResult.WithEqualToValue<TimeSpan>(it, grammars, false),
 			IValueConstraint<TimeSpan>
 	{
 		public ConstraintResult IsMetBy(TimeSpan actual)
 		{
 			Actual = actual;
-			Outcome = expected != null && IsWithinTolerance(tolerance.Tolerance, actual, expected.Value)
+			Outcome = expected != null && IsWithinTolerance(tolerance.Value.Tolerance, actual, expected.Value)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

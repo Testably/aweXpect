@@ -15,9 +15,9 @@ public static partial class AssemblyFilters
 		string expected)
 	{
 		return new Filtered.Assemblies.StringEqualityResult(@this, options => Filter.Suffix<Assembly>(
-				assembly => options.AreConsideredEqual(assembly.GetTargetFramework(), expected),
-				() => $" targeting {options.GetExpectation(expected, ExpectationGrammars.None)}"),
-			new StringEqualityOptions(nameof(expected)));
+				assembly => options.Value.AreConsideredEqual(assembly.GetTargetFramework(), expected, nameof(expected)),
+				() => $" targeting {options.Value.GetExpectation(expected, ExpectationGrammars.None)}"),
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 
 	/// <summary>
@@ -27,8 +27,8 @@ public static partial class AssemblyFilters
 		string unexpected)
 	{
 		return new Filtered.Assemblies.StringEqualityResult(@this, options => Filter.Suffix<Assembly>(
-				async assembly => !await options.AreConsideredEqual(assembly.GetTargetFramework(), unexpected),
-				() => $" not targeting {options.GetExpectation(unexpected, ExpectationGrammars.None)}"),
-			new StringEqualityOptions(nameof(unexpected)));
+				async assembly => !await options.Value.AreConsideredEqual(assembly.GetTargetFramework(), unexpected, nameof(unexpected)),
+				() => $" not targeting {options.Value.GetExpectation(unexpected, ExpectationGrammars.None)}"),
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

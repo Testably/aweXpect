@@ -24,7 +24,7 @@ public static partial class ThatMethod
 		this IThat<MethodInfo?> subject)
 	{
 		Type parameterType = typeof(TParameter);
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
 		return new ParameterCollectionResult<MethodInfo, MethodInfo?, TParameter>(subject.Get().ExpectationBuilder
@@ -48,11 +48,11 @@ public static partial class ThatMethod
 		this IThat<MethodInfo?> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsHolder<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)));
 		return new NamedParameterCollectionResult<MethodInfo, MethodInfo?, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint((ParameterType: parameterType, Expected: expected, CollectionIndexOptions: collectionIndexOptions, ParameterFilterOptions: parameterFilterOptions),
 					static (s, it, grammars)
@@ -72,7 +72,7 @@ public static partial class ThatMethod
 	public static ParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasParameter(
 		this IThat<MethodInfo?> subject, Type parameterType)
 	{
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
 		return new ParameterCollectionResult<MethodInfo, MethodInfo?, object?>(subject.Get().ExpectationBuilder
@@ -95,11 +95,11 @@ public static partial class ThatMethod
 	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasParameter(
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsHolder<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)));
 		return new NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?>(subject.Get().ExpectationBuilder
 				.AddConstraint((ParameterType: parameterType, Expected: expected, CollectionIndexOptions: collectionIndexOptions, ParameterFilterOptions: parameterFilterOptions),
 					static (s, it, grammars)
@@ -120,9 +120,9 @@ public static partial class ThatMethod
 		this IThat<MethodInfo?> subject,
 		string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
-		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
+		OptionsHolder<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)));
 		return new NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?>(subject.Get().ExpectationBuilder
 				.AddConstraint((Expected: expected, CollectionIndexOptions: collectionIndexOptions, ParameterFilterOptions: parameterFilterOptions),
 					static (s, it, grammars)
@@ -180,7 +180,7 @@ public static partial class ThatMethod
 	private static ParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasParameterOfKind(
 		IThat<MethodInfo?> subject, Func<ParameterInfo, bool> predicate, string kind)
 	{
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions = new(predicate);
 		return new ParameterCollectionResult<MethodInfo, MethodInfo?, object?>(subject.Get().ExpectationBuilder
 				.AddConstraint((Kind: kind, CollectionIndexOptions: collectionIndexOptions, ParameterFilterOptions: parameterFilterOptions),
@@ -197,7 +197,7 @@ public static partial class ThatMethod
 	private static ParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> DoesNotHaveParameterOfType<TParameter>(
 		IThat<MethodInfo?> subject, Type parameterType)
 	{
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
 		return new ParameterCollectionResult<MethodInfo, MethodInfo?, TParameter>(subject.Get().ExpectationBuilder
@@ -214,9 +214,9 @@ public static partial class ThatMethod
 	private static NamedParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> DoesNotHaveNamedParameter<TParameter>(
 		IThat<MethodInfo?> subject, Type? parameterType, string unexpected)
 	{
-		StringEqualityOptions stringEqualityOptions = new(nameof(unexpected));
-		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, unexpected));
+		OptionsHolder<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
+		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, unexpected, nameof(unexpected)));
 		if (parameterType is not null)
 		{
 			parameterFilterOptions.AddPredicate(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
@@ -239,7 +239,7 @@ public static partial class ThatMethod
 		ExpectationGrammars grammars,
 		Type? parameterType,
 		string? expectedName,
-		CollectionIndexOptions collectionIndexOptions,
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions,
 		bool exactType = false,
 		string? kind = null)
@@ -258,7 +258,7 @@ public static partial class ThatMethod
 			ParameterInfo[] parameters = actual.GetParameters();
 			bool hasParameter = await parameters.AnyAsync(async (p, i) =>
 			{
-				return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true && await parameterFilterOptions.Matches(p);
+				return collectionIndexOptions.Value.MatchesIndex(i, parameters.Length) == true && await parameterFilterOptions.Matches(p);
 			});
 
 			Outcome = hasParameter ? Outcome.Success : Outcome.Failure;
@@ -280,7 +280,7 @@ public static partial class ThatMethod
 
 			stringBuilder.Append(parameterFilterOptions.GetModifierDescription());
 
-			string indexDescription = collectionIndexOptions.Match.GetDescription();
+			string indexDescription = collectionIndexOptions.Value.Match.GetDescription();
 			if (!string.IsNullOrEmpty(indexDescription))
 			{
 				stringBuilder.Append(indexDescription);
@@ -305,7 +305,7 @@ public static partial class ThatMethod
 
 			stringBuilder.Append(parameterFilterOptions.GetModifierDescription());
 
-			string indexDescription = collectionIndexOptions.Match.GetDescription();
+			string indexDescription = collectionIndexOptions.Value.Match.GetDescription();
 			if (!string.IsNullOrEmpty(indexDescription))
 			{
 				stringBuilder.Append(indexDescription);

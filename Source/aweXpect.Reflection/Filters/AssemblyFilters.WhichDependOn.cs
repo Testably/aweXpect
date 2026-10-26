@@ -17,8 +17,8 @@ public static partial class AssemblyFilters
 	{
 		return new Filtered.Assemblies.StringEqualityResult(@this, options => Filter.Suffix<Assembly>(
 				assembly => assembly.GetReferencedAssemblyNames()
-					.AnyAsync(dependency => options.AreConsideredEqual(dependency.Name, expected)),
-				() => $" which have a dependency on assembly {options.GetExpectation(expected, ExpectationGrammars.None)}"),
-			new StringEqualityOptions(nameof(expected)));
+					.AnyAsync(dependency => options.Value.AreConsideredEqual(dependency.Name, expected, nameof(expected))),
+				() => $" which have a dependency on assembly {options.Value.GetExpectation(expected, ExpectationGrammars.None)}"),
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

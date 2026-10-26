@@ -8,20 +8,20 @@ namespace aweXpect.Results;
 /// </summary>
 /// <remarks>
 ///     The options are specified via <see cref="QuantifierExtensions" /> and
-///     <see cref="ObjectEqualityOptionsExtensions" />.
+///     <see cref="ObjectMatchTypeExtensions" />.
 /// </remarks>
 public class ObjectCountResult<TType, TThat, TItem>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	Quantifier quantifier,
-	ObjectEqualityOptions<TItem> options)
+	OptionsHolder<Quantifier> quantifier,
+	OptionsHolder<ObjectMatchType<TItem>> options)
 	: AndOrResult<TType, TThat, ObjectCountResult<TType, TThat, TItem>>(expectationBuilder, returnValue),
 		IOptionsProvider<Quantifier>,
 		IObjectEqualityResult<ObjectCountResult<TType, TThat, TItem>, TItem>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => options;
+	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier;
 }

@@ -47,7 +47,7 @@ public class HasHeaderValueResult<TType, TThat>
 	/// </remarks>
 	public StringEqualityTypeResult<TType, TThat> WithValue(string? expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		_expectationBuilder.And("").AddConstraint((expected, _headerValueAccessor, options),
 			static (state, it, grammars) => new WithHeaderValueConstraint(
 				it, grammars, state.expected, state._headerValueAccessor, state.options));
@@ -66,8 +66,8 @@ public class HasHeaderValueResult<TType, TThat>
 	public StringCollectionMatchResult<TType, TThat> WithValues(IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		StringEqualityOptions options = new(nameof(expected));
-		CollectionMatchOptions matchOptions = new();
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
 		_expectationBuilder.And("").AddConstraint(
 			(expected: expected.ToArray(), _headerValueAccessor, options, matchOptions),
 			static (state, it, grammars) => new WithHeaderValuesConstraint(
@@ -121,7 +121,7 @@ public class HasHeaderValueResult<TType, TThat>
 		ExpectationGrammars grammars,
 		string? expected,
 		Func<TType, string?[]?> headerValueAccessor,
-		StringEqualityOptions options)
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<TType?>(it, grammars),
 			IAsyncContextConstraint<TType?>
 	{
@@ -147,15 +147,15 @@ public class HasHeaderValueResult<TType, TThat>
 			}
 
 			string? headerValue = _headerValues[0];
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(headerValue, expected);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(headerValue, expected, nameof(expected));
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options).AppendContexts(contexts);
+			=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
 
 		/// <remarks>
 		///     The text continues the one of the header, which carries the negation and the number of the subject, like
@@ -164,7 +164,7 @@ public class HasHeaderValueResult<TType, TThat>
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(" whose value ");
-			stringBuilder.Append(options.GetExpectation(expected, ExpectationGrammars.Active));
+			stringBuilder.Append(options.Value.GetExpectation(expected, ExpectationGrammars.Active));
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -191,7 +191,7 @@ public class HasHeaderValueResult<TType, TThat>
 			=> AppendValueFailure(stringBuilder);
 
 		private void AppendValueFailure(StringBuilder stringBuilder)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It, "header value",
+			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedMemberFailure(It, "header value",
 				Grammars, _headerValues?[0], expected, _matchResult));
 	}
 
@@ -200,8 +200,8 @@ public class HasHeaderValueResult<TType, TThat>
 		ExpectationGrammars grammars,
 		string[] expected,
 		Func<TType, string?[]?> headerValueAccessor,
-		StringEqualityOptions options,
-		CollectionMatchOptions matchOptions)
+		OptionsHolder<StringEqualityOptions> options,
+		OptionsHolder<CollectionMatchOptions> matchOptions)
 		: ConstraintResult.WithNotNullValue<TType?>(it, grammars),
 			IAsyncContextConstraint<TType?>
 	{
@@ -221,27 +221,27 @@ public class HasHeaderValueResult<TType, TThat>
 			}
 
 			_headerValues = headerValueAccessor(actual);
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			if (_headerValues is null)
 			{
 				Outcome = Outcome.Failure;
 				return this;
 			}
 
-			(Outcome, _failure) = await matchOptions.GetCollectionMatcher<string?, string?>(expected)
+			(Outcome, _failure) = await matchOptions.Value.GetCollectionMatcher<string?, string?>(expected)
 				.VerifyItems(CollectionMatchFailure.Subject, _headerValues, _evaluationOptions, cancellationToken);
 			return this;
 		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options).AppendContexts(contexts);
+			=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
 
 		/// <remarks>
 		///     The text continues the one of the header, which carries the negation, like <c>WithValue</c> does.
 		/// </remarks>
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(" whose values ").Append(matchOptions.GetExpectation(
+			=> stringBuilder.Append(" whose values ").Append(matchOptions.Value.GetExpectation(
 				Formatter.Format(expected, FormattingOptions.SingleLine) + options, ExpectationGrammars.Plural));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)

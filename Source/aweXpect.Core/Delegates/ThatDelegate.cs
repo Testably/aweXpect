@@ -85,17 +85,17 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 				.Append(Formatter.Format(exceptionType).PrependAOrAn());
 		}
 
-		if (options.ExecutionTimeOptions is not null)
+		if (options.ExecutionTimeOptions is { } executionTimeOptions)
 		{
 			stringBuilder.Append(' ');
-			options.ExecutionTimeOptions.AppendTo(stringBuilder, "in ");
+			executionTimeOptions.AppendTo(stringBuilder, "in ");
 		}
 	}
 
 	/// <summary>
 	///     Options on expectations if a delegate throws.
 	/// </summary>
-	internal class ThrowsOption
+	internal class ThrowsOption : ITimeoutBound
 	{
 		/// <summary>
 		///     Flag indicating if the delegate is expected to throw an exception.
@@ -115,14 +115,7 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 		/// </summary>
 		internal bool IsNegated { get; set; }
 
-		/// <summary>
-		///     Flag indicating if a condition was already specified with <c>OnlyIf(…)</c>, even the default one.
-		/// </summary>
-		internal bool IsOnlyIfSpecified { get; set; }
-
-		/// <summary>
-		///     Flag indicating if a duration was already specified with <c>Within(…)</c>, even an infinite one.
-		/// </summary>
-		internal bool IsWithinSpecified { get; set; }
+		/// <inheritdoc cref="ITimeoutBound.UpperBound" />
+		TimeSpan? ITimeoutBound.UpperBound => ExecutionTimeOptions?.UpperBound;
 	}
 }

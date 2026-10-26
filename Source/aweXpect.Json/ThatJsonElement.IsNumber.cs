@@ -102,7 +102,7 @@ public static partial class ThatJsonElement
 #endif
 	{
 		JsonValueReader<TNumber> reader = JsonValueReaders.GetNumber<TNumber>();
-		NumberTolerance<TNumber> options = JsonValueReaders.CreateNumberTolerance<TNumber>();
+		OptionsHolder<NumberTolerance<TNumber>> options = new(JsonValueReaders.CreateNumberTolerance<TNumber>());
 		return new NumberToleranceResult<JsonElement, IThat<JsonElement>, TNumber>(
 			subject.Get().ExpectationBuilder.AddConstraint((Reader: reader, Expected: expected, Options: options),
 				static IAsyncContextConstraint<JsonElement> (state, it, grammars)

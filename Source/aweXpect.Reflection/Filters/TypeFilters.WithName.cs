@@ -13,8 +13,8 @@ public static partial class TypeFilters
 	public static Filtered.Types.StringEqualityResult WithName(this Filtered.Types @this, string expected)
 	{
 		return new Filtered.Types.StringEqualityResult(@this, options => Filter.Suffix<Type>(
-				type => options.AreConsideredEqual(type.Name, expected),
-				() => $"with name {options.GetExpectation(expected, ExpectationGrammars.None)} "),
-			new StringEqualityOptions(nameof(expected)));
+				type => options.Value.AreConsideredEqual(type.Name, expected, nameof(expected)),
+				() => $"with name {options.Value.GetExpectation(expected, ExpectationGrammars.None)} "),
+			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
 	}
 }

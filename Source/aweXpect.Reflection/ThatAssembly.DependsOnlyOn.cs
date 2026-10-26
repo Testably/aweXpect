@@ -40,7 +40,7 @@ public static partial class ThatAssembly
 		this IThat<Assembly?> subject, IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Allowed: expected.ToArray(), Options: options),
 					static (s, it, grammars)
@@ -53,7 +53,7 @@ public static partial class ThatAssembly
 		string it,
 		ExpectationGrammars grammars,
 		string[] allowed,
-		StringEqualityOptions options)
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
 			IAsyncContextConstraint<Assembly?>
 	{
@@ -70,7 +70,7 @@ public static partial class ThatAssembly
 				return this;
 			}
 
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			_violations = await actual.GetDisallowedAssemblyDependencies(allowed, _evaluationOptions);
 			Outcome = _violations.Length == 0 ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -96,12 +96,12 @@ public static partial class ThatAssembly
 				contexts.AddDependenciesContext("Disallowed dependencies", _violations);
 			}
 
-			(_evaluationOptions ?? options).AppendContexts(contexts);
+			(_evaluationOptions ?? options.Value).AppendContexts(contexts);
 		}
 
 		private string DescribeAllowed()
 			=> allowed.Length == 0
 				? "no assemblies"
-				: $"assemblies {string.Join(" or ", allowed.Select(expected => options.GetExpectation(expected, ExpectationGrammars.None)))}";
+				: $"assemblies {string.Join(" or ", allowed.Select(expected => options.Value.GetExpectation(expected, ExpectationGrammars.None)))}";
 	}
 }

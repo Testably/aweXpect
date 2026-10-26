@@ -26,7 +26,7 @@ public interface ICollectionMatcher<in TItem, out TMatch> where TItem : TMatch
 	/// </remarks>
 	/// <returns><see langword="true" /> when it results in a failure, otherwise <see langword="false" />.</returns>
 	ValueTask<(bool IsFailure, string? Failure)>
-		Verify(string it, TItem value, IOptionsEquality<TMatch> options, int maximumNumber);
+		Verify(string it, TItem value, IEqualityEvaluator<TMatch> options, int maximumNumber);
 
 	/// <summary>
 	///     Verifies if it results in a failure when the enumeration is complete.
@@ -37,5 +37,5 @@ public interface ICollectionMatcher<in TItem, out TMatch> where TItem : TMatch
 	/// </remarks>
 	/// <returns><see langword="true" /> when it results in a failure, otherwise <see langword="false" />.</returns>
 	ValueTask<(bool IsFailure, string? Failure)>
-		VerifyComplete(string it, IOptionsEquality<TMatch> options, int maximumNumber);
+		VerifyComplete(string it, IEqualityEvaluator<TMatch> options, int maximumNumber);
 }

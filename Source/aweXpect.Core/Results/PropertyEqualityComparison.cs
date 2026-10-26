@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Options;
 #if NET8_0_OR_GREATER
@@ -29,7 +30,7 @@ public sealed class PropertyEqualityComparison<TNumber> : IPropertyComparison<TN
 {
 	private readonly TNumber? _expected;
 
-	internal PropertyEqualityComparison(TNumber? expected, NumberTolerance<TNumber> options, bool isNegated)
+	internal PropertyEqualityComparison(TNumber? expected, OptionsHolder<NumberTolerance<TNumber>> options, bool isNegated)
 	{
 		_expected = expected;
 		Options = options;
@@ -37,9 +38,9 @@ public sealed class PropertyEqualityComparison<TNumber> : IPropertyComparison<TN
 	}
 
 	/// <summary>
-	///     The tolerance of the comparison, which the result you return provides to <c>Within(…)</c>.
+	///     The holder with the tolerance of the comparison, which the result you return provides to <c>Within(…)</c>.
 	/// </summary>
-	public NumberTolerance<TNumber> Options { get; }
+	public OptionsHolder<NumberTolerance<TNumber>> Options { get; }
 
 	/// <summary>
 	///     Flag indicating that the operator is a negated one, i.e. <c>NotEqualTo(…)</c>.
@@ -71,5 +72,5 @@ public sealed class PropertyEqualityComparison<TNumber> : IPropertyComparison<TN
 	///     <see langword="null" />.
 	/// </remarks>
 	public Outcome Evaluate(TNumber? actual)
-		=> Options.IsWithinTolerance(actual, _expected) != IsNegated ? Outcome.Success : Outcome.Failure;
+		=> Options.Value.IsWithinTolerance(actual, _expected) != IsNegated ? Outcome.Success : Outcome.Failure;
 }

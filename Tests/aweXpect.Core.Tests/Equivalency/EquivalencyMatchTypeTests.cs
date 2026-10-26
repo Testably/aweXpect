@@ -39,28 +39,6 @@ public sealed class EquivalencyMatchTypeTests
 	}
 
 	[Test]
-	public async Task AppendContexts_AfterAFailedDecidingComparison_ShouldNameTheMembersToIgnore()
-	{
-		ObjectMatcher<object> sut = new EquivalencyMatchType<object>(IgnoringMember("Valeu")).ForEvaluation(CreateEnvironment());
-		await sut.Match(new Dummy
-		{
-			Value = 1,
-		}, new Dummy
-		{
-			Value = 2,
-		});
-
-		string? result = await ContextOf(sut);
-
-		await That(result).IsEqualTo("""
-		                              - include public fields and properties
-		                              - ignore members: ["Valeu"]
-		                                "Valeu" matched no member (did you mean "Value"?)
-		                             """)
-			.Because("the items of a collection are compared without an explanation");
-	}
-
-	[Test]
 	public async Task AppendContexts_AfterAFailedDecidingComparisonWithAMatchedMapping_ShouldNotNameIt()
 	{
 		ObjectMatcher<object> sut = new EquivalencyMatchType<object>(new EquivalencyOptions().Mapping("Missing", "Value"))
@@ -108,6 +86,28 @@ public sealed class EquivalencyMatchTypeTests
 		                                  "Valeu" matched no member (did you mean "Value"?)
 		                             """)
 			.Because("the options registered for a type are only known during the comparison");
+	}
+
+	[Test]
+	public async Task AppendContexts_AfterAFailedDecidingComparison_ShouldNameTheMembersToIgnore()
+	{
+		ObjectMatcher<object> sut = new EquivalencyMatchType<object>(IgnoringMember("Valeu")).ForEvaluation(CreateEnvironment());
+		await sut.Match(new Dummy
+		{
+			Value = 1,
+		}, new Dummy
+		{
+			Value = 2,
+		});
+
+		string? result = await ContextOf(sut);
+
+		await That(result).IsEqualTo("""
+		                              - include public fields and properties
+		                              - ignore members: ["Valeu"]
+		                                "Valeu" matched no member (did you mean "Value"?)
+		                             """)
+			.Because("the items of a collection are compared without an explanation");
 	}
 
 	[Test]
@@ -200,26 +200,6 @@ public sealed class EquivalencyMatchTypeTests
 	}
 
 	[Test]
-	[Arguments(1, true)]
-	[Arguments(2, false)]
-	public async Task Match_ShouldDecideWhetherTheObjectsAreEquivalent(int expectedValue, bool expectMatch)
-	{
-		ObjectMatcher<object> sut = new EquivalencyMatchType<object>(new EquivalencyOptions()).ForEvaluation(CreateEnvironment());
-
-		MatchResult result = await sut.Match(new Dummy
-		{
-			Value = 1,
-		}, new Dummy
-		{
-			Value = expectedValue,
-		});
-
-		await That(result.IsMatch).IsEqualTo(expectMatch);
-		await That(result.Explanation).IsNull()
-			.Because("a deciding comparison does not collect the differences");
-	}
-
-	[Test]
 	public async Task MatchWithExplanation_WhenNotEquivalent_ShouldExplainTheDifferences()
 	{
 		ObjectMatcher<object> sut = new EquivalencyMatchType<object>(new EquivalencyOptions()).ForEvaluation(CreateEnvironment());
@@ -245,10 +225,37 @@ public sealed class EquivalencyMatchTypeTests
 	}
 
 	[Test]
+	[Arguments(1, true)]
+	[Arguments(2, false)]
+	public async Task Match_ShouldDecideWhetherTheObjectsAreEquivalent(int expectedValue, bool expectMatch)
+	{
+		ObjectMatcher<object> sut = new EquivalencyMatchType<object>(new EquivalencyOptions()).ForEvaluation(CreateEnvironment());
+
+		MatchResult result = await sut.Match(new Dummy
+		{
+			Value = 1,
+		}, new Dummy
+		{
+			Value = expectedValue,
+		});
+
+		await That(result.IsMatch).IsEqualTo(expectMatch);
+		await That(result.Explanation).IsNull()
+			.Because("a deciding comparison does not collect the differences");
+	}
+
+	[Test]
+	public async Task OptionName_ShouldBeEquivalent()
+	{
+		EquivalencyMatchType<int> sut = new(new EquivalencyOptions());
+
+		await That(sut.OptionName).IsEqualTo("Equivalent");
+	}
+
+	[Test]
 	public async Task Phrase_ShouldPrependTheItemNoun()
 	{
-		ObjectEqualityOptions<int> sut = new();
-		sut.SetMatchType(new EquivalencyMatchType<int>(new EquivalencyOptions()), "Equivalent");
+		EquivalencyMatchType<int> sut = new(new EquivalencyOptions());
 
 		string result = sut.GetItemExpectation("expected", "an item", "equal to");
 
@@ -259,8 +266,7 @@ public sealed class EquivalencyMatchTypeTests
 	[Test]
 	public async Task Phrase_WithoutItemNoun_ShouldOnlyNameTheEquivalency()
 	{
-		ObjectEqualityOptions<int> sut = new();
-		sut.SetMatchType(new EquivalencyMatchType<int>(new EquivalencyOptions()), "Equivalent");
+		EquivalencyMatchType<int> sut = new(new EquivalencyOptions());
 
 		string result = sut.GetItemExpectation("expected", comparison: "equal to");
 
@@ -270,8 +276,7 @@ public sealed class EquivalencyMatchTypeTests
 	[Test]
 	public async Task ToString_ShouldDescribeTheEquivalency()
 	{
-		ObjectEqualityOptions<int> options = new();
-		options.SetMatchType(new EquivalencyMatchType<int>(new EquivalencyOptions()), "Equivalent");
+		EquivalencyMatchType<int> options = new(new EquivalencyOptions());
 
 		string? result = options.ToString();
 
@@ -473,7 +478,6 @@ public sealed class EquivalencyMatchTypeTests
 			.IsEqualTo(await MessageOf(async () => await That(subject).IsEquivalentTo(expected)))
 			.Because("the failure is the same as the one of the built-in expectation");
 	}
-
 	private static async Task<string?> ContextOf(ObjectMatcher<object> matcher)
 	{
 		ResultContextCollector contexts = new();
@@ -540,54 +544,50 @@ internal static class EquivalencyMatchTypeTestExtensions
 					unexpected is null ? null : doNotPopulateThisValue, CreateOptions<TSubject>()).Invert()),
 			subject);
 
-	private static ObjectEqualityOptions<TSubject> CreateOptions<TSubject>(
+	private static ObjectMatchType<TSubject> CreateOptions<TSubject>(
 		EquivalencyOptions? equivalencyOptions = null)
-	{
-		ObjectEqualityOptions<TSubject> options = new();
-		options.SetMatchType(
-			new EquivalencyMatchType<TSubject>(equivalencyOptions
-			                         ?? Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get()),
-			"Equivalent");
-		return options;
-	}
+		=> new EquivalencyMatchType<TSubject>(equivalencyOptions
+		                                      ?? Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get());
 
 	private sealed class IsEquivalentToConstraint<TSubject, TExpected>(
 		string it,
 		ExpectationGrammars grammars,
 		TExpected expected,
 		string? expectedExpression,
-		ObjectEqualityOptions<TSubject> options)
+		ObjectMatchType<TSubject> matchType)
 		: ConstraintResult.WithEqualToValue<TSubject>(it, grammars, expected is null),
 			IAsyncContextConstraint<TSubject>
 	{
-		private ObjectEqualityOptions<TSubject>? _evaluationOptions;
+		private ObjectMatcher<TSubject>? _matcher;
 		private MatchResult _matchResult;
+
+		private ObjectMatcher<TSubject> Matcher => _matcher ?? matchType.ForEvaluation(default);
 
 		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(actual, expected);
+			_matcher = matchType.ForEvaluation(new MatchEnvironment(context, cancellationToken));
+			_matchResult = await _matcher.CompareWithExplanation(actual, expected);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddEqualityOptionsContexts(_evaluationOptions ?? options);
+			=> contexts.AddEqualityOptionsContexts(Matcher);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExpectation(
+			=> stringBuilder.Append(matchType.GetExpectation(
 				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
+			=> stringBuilder.Append(Matcher.GetFailure(It, Grammars, Actual, expected, _matchResult, indentation));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExpectation(
+			=> stringBuilder.Append(matchType.GetExpectation(
 				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, expected, _matchResult, indentation));
+			=> stringBuilder.Append(Matcher.GetFailure(It, Grammars, Actual, expected, _matchResult, indentation));
 	}
 }

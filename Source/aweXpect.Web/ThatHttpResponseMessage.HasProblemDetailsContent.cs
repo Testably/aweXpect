@@ -40,7 +40,7 @@ public static partial class ThatHttpResponseMessage
 	public static ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String
 		HasProblemDetailsContent(this IThat<HttpResponseMessage?> subject, string? type = null)
 	{
-		StringEqualityOptions typeOptions = new(nameof(type));
+		OptionsHolder<StringEqualityOptions> typeOptions = new(StringEqualityOptions.Default);
 		ProblemDetailsOptions options = new();
 		return new ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String(
 			subject.Get().ExpectationBuilder
@@ -57,7 +57,7 @@ public static partial class ThatHttpResponseMessage
 		ExpectationGrammars grammars,
 		string? expectedType,
 		ProblemDetailsOptions options,
-		StringEqualityOptions typeOptions)
+		OptionsHolder<StringEqualityOptions> typeOptions)
 		: ConstraintResult.WithNotNullValue<HttpResponseMessage>(it, grammars),
 			IAsyncContextConstraint<HttpResponseMessage>
 	{
@@ -92,7 +92,7 @@ public static partial class ThatHttpResponseMessage
 			}
 
 			_failures.Clear();
-			StringEqualityOptions evaluationTypeOptions = typeOptions.ForEvaluation(context, cancellationToken);
+			StringEqualityOptions evaluationTypeOptions = typeOptions.Value.ForEvaluation(context, cancellationToken);
 			ProblemDetailsOptions evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			_evaluationTypeOptions = evaluationTypeOptions;
 			_evaluationOptions = evaluationOptions;
@@ -103,7 +103,7 @@ public static partial class ThatHttpResponseMessage
 			}
 			else if (expectedType != null)
 			{
-				MatchResult typeResult = await evaluationTypeOptions.MatchWithExplanation(type, expectedType);
+				MatchResult typeResult = await evaluationTypeOptions.MatchWithExplanation(type, expectedType, "type");
 				if (!typeResult.IsMatch)
 				{
 					_failures.Add(evaluationTypeOptions.GetExtendedMemberFailure(It, "type", Grammars, type,
@@ -122,7 +122,7 @@ public static partial class ThatHttpResponseMessage
 
 			if (_failures.Any())
 			{
-				Outcome = (expectedType != null && type == null && typeOptions.InspectsSubject) ||
+				Outcome = (expectedType != null && type == null && typeOptions.Value.InspectsSubject) ||
 				          evaluationOptions.InspectsAbsentMember(title, detail, instance)
 					? Outcome.FailureBothWays
 					: Outcome.Failure;
@@ -221,7 +221,7 @@ public static partial class ThatHttpResponseMessage
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			(_evaluationTypeOptions ?? typeOptions).AppendContexts(contexts);
+			(_evaluationTypeOptions ?? typeOptions.Value).AppendContexts(contexts);
 			(_evaluationOptions ?? options).AppendContexts(contexts);
 		}
 
@@ -234,7 +234,7 @@ public static partial class ThatHttpResponseMessage
 			}
 			else
 			{
-				stringBuilder.Append(ProblemDetailsOptions.Describe("type", expectedType, typeOptions));
+				stringBuilder.Append(ProblemDetailsOptions.Describe("type", expectedType, typeOptions.Value));
 			}
 
 			stringBuilder.Append(options);
@@ -259,7 +259,7 @@ public static partial class ThatHttpResponseMessage
 			stringBuilder.Append(Grammars.Verb("does not have a ProblemDetails content", "do not have a ProblemDetails content"));
 			if (expectedType is not null)
 			{
-				stringBuilder.Append(" with ").Append(ProblemDetailsOptions.Describe("type", expectedType, typeOptions));
+				stringBuilder.Append(" with ").Append(ProblemDetailsOptions.Describe("type", expectedType, typeOptions.Value));
 			}
 
 			stringBuilder.Append(options);

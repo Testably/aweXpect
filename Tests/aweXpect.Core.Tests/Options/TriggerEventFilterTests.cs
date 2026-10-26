@@ -5,22 +5,24 @@ namespace aweXpect.Core.Tests.Options;
 public class TriggerEventFilterTests
 {
 	[Test]
-	public async Task AddPredicate_ShouldReturnTheSameFilter()
+	public async Task AddPredicate_ShouldNotChangeTheOriginalFilter()
 	{
-		TriggerEventFilter sut = new();
+		TriggerEventFilter sut = TriggerEventFilter.Default;
 
 		TriggerEventFilter result = sut.AddPredicate(p => p.Length > 0, " with a parameter");
 
-		await That(result).IsSameAs(sut);
+		await That(result.IsMatch([])).IsFalse();
+		await That(sut.IsMatch([])).IsTrue();
+		await That(sut.ToString()).IsEmpty();
 	}
 
 	[Test]
 	public async Task AddPredicate_Twice_ShouldRequireBothPredicatesAndNameBoth()
 	{
-		TriggerEventFilter sut = new();
+		TriggerEventFilter sut = TriggerEventFilter.Default;
 
-		sut.AddPredicate(p => p.Length > 0, " with a parameter");
-		sut.AddPredicate(p => p[0] is int, " with an int");
+		sut = sut.AddPredicate(p => p.Length > 0, " with a parameter");
+		sut = sut.AddPredicate(p => p[0] is int, " with an int");
 
 		await That(sut.ToString()).IsEqualTo(" with a parameter and with an int");
 		await That(sut.IsMatch([1,])).IsTrue();
@@ -30,7 +32,7 @@ public class TriggerEventFilterTests
 	[Test]
 	public async Task AddPredicate_WhenPredicateIsNull_ShouldThrowArgumentNullException()
 	{
-		TriggerEventFilter sut = new();
+		TriggerEventFilter sut = TriggerEventFilter.Default;
 
 		void Act() => sut.AddPredicate(null!, " with nothing");
 
@@ -43,7 +45,7 @@ public class TriggerEventFilterTests
 	[Test]
 	public async Task IsMatch_WithoutPredicate_ShouldMatchAnyParameters()
 	{
-		TriggerEventFilter sut = new();
+		TriggerEventFilter sut = TriggerEventFilter.Default;
 
 		bool result = sut.IsMatch([]);
 

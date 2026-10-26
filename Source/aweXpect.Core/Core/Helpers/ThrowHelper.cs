@@ -86,26 +86,38 @@ internal static class ThrowHelper
 	}
 
 	/// <summary>
-	///     Rejects the <paramref name="option" /> when the <paramref name="existingOption" /> already specified the
-	///     same setting, because the later option would silently replace the earlier one.
+	///     Rejects the <paramref name="option" /> when the <paramref name="earlierOption" /> is another option of the
+	///     same group, because the later option would silently set the same thing in a different way.
 	/// </summary>
-	public static void ThrowIfOptionIsAlreadySpecified(string? existingOption, string option)
+	/// <remarks>
+	///     The same option again replaces the earlier one.
+	/// </remarks>
+	public static void ThrowIfCompetingOption(string? earlierOption, string option)
 	{
-		if (existingOption is not null)
+		if (earlierOption is not null && earlierOption != option)
 		{
 			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(new InvalidOperationException(existingOption == option
-				? $"{option} cannot be specified more than once."
-				: $"{option} cannot be combined with {existingOption}."));
+			throw Tracing.WriteException(new InvalidOperationException(
+				$"{option} cannot be combined with {earlierOption}."));
 		}
 	}
 
 	/// <summary>
-	///     Rejects the <paramref name="option" /> when it <paramref name="isAlreadySpecified" />, because the later
-	///     value would silently replace the earlier one.
+	///     Rejects the <paramref name="option" /> when it <paramref name="isAlreadySpecified" />.
 	/// </summary>
-	public static void ThrowIfOptionIsAlreadySpecified(bool isAlreadySpecified, string option)
-		=> ThrowIfOptionIsAlreadySpecified(isAlreadySpecified ? option : null, option);
+	/// <remarks>
+	///     Only for settings that span the whole expectation chain, where a second call usually comes from another
+	///     expectation of the chain.
+	/// </remarks>
+	public static void ThrowIfAlreadySpecified(bool isAlreadySpecified, string option)
+	{
+		if (isAlreadySpecified)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new InvalidOperationException(
+				$"{option} cannot be specified more than once."));
+		}
+	}
 
 	/// <summary>
 	///     Rejects a negative duration, because an elapsed time is never below zero and the bound could therefore
@@ -160,7 +172,7 @@ internal static class ThrowHelper
 	///     would silently drop it.
 	/// </summary>
 	/// <remarks>
-	///     aweXpect has its own copy for tolerances outside a <see cref="Options.DayTolerance" />; keep the message
+	///     aweXpect has its own copy for tolerances outside <see cref="Options.TimeTolerance.Days" />; keep the message
 	///     identical.
 	/// </remarks>
 	public static void ThrowIfToleranceIsNotWholeDays(TimeSpan tolerance)

@@ -252,7 +252,7 @@ public abstract class Expectation
 		/// <exception cref="InvalidOperationException">A cancellation token is already set.</exception>
 		private protected void SetCancellation(CancellationToken cancellationToken)
 		{
-			ThrowHelper.ThrowIfOptionIsAlreadySpecified(_options?.CancellationToken is not null,
+			ThrowHelper.ThrowIfAlreadySpecified(_options?.CancellationToken is not null,
 				nameof(Combination<All>.WithCancellation));
 			GetOptions().CancellationToken = cancellationToken;
 		}

@@ -42,12 +42,12 @@ public static partial class ThatHttpRequestMessage
 		HasRequestUri(this IThat<HttpRequestMessage?> subject, Uri expected)
 	{
 		ThatUri.ThrowIfNotAbsolute(expected, nameof(expected));
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
 				.AddConstraint((expected: expected.ToString(), options), static (state, it, grammars) =>
-					new HasRequestUriConstraint(it, grammars, state.expected, state.options)),
+					new HasRequestUriConstraint(it, grammars, state.expected, "expected", state.options)),
 			subject,
 			options);
 	}
@@ -70,12 +70,12 @@ public static partial class ThatHttpRequestMessage
 		DoesNotHaveRequestUri(this IThat<HttpRequestMessage?> subject, Uri unexpected)
 	{
 		ThatUri.ThrowIfNotAbsolute(unexpected, nameof(unexpected));
-		StringEqualityOptions options = new(nameof(unexpected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
 				.AddConstraint((unexpected: unexpected.ToString(), options), static (state, it, grammars) =>
-					new HasRequestUriConstraint(it, grammars, state.unexpected, state.options).Invert()),
+					new HasRequestUriConstraint(it, grammars, state.unexpected, "unexpected", state.options).Invert()),
 			subject,
 			options);
 	}
@@ -84,7 +84,8 @@ public static partial class ThatHttpRequestMessage
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		StringEqualityOptions options)
+		string parameterName,
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<HttpRequestMessage>(it, grammars),
 			IAsyncContextConstraint<HttpRequestMessage>
 	{
@@ -103,33 +104,33 @@ public static partial class ThatHttpRequestMessage
 			}
 
 			_requestUri = actual.RequestUri?.ToString();
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			if (_requestUri is null)
 			{
 				Outcome = Outcome.Failure;
 				return this;
 			}
 
-			_matchResult = await _evaluationOptions.MatchWithExplanation(_requestUri, expected);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(_requestUri, expected, parameterName);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options).AppendContexts(contexts);
+			=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has a request URI ", "have a request URI "))
-				.Append(options.GetExpectation(expected, ExpectationGrammars.None));
+				.Append(options.Value.GetExpectation(expected, ExpectationGrammars.None));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It, "request URI",
+			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedMemberFailure(It, "request URI",
 				Grammars, _requestUri, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have a request URI ", "do not have a request URI "))
-				.Append(options.GetExpectation(expected, Grammars.Negate()));
+				.Append(options.Value.GetExpectation(expected, Grammars.Negate()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" had");

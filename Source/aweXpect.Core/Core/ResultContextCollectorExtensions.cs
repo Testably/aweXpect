@@ -143,7 +143,7 @@ public static class ResultContextCollectorExtensions
 	/// <param name="contexts">The collector to add the contexts to.</param>
 	/// <param name="options">The equality options.</param>
 	public static void AddEqualityOptionsContexts<T>(this ResultContextCollector contexts,
-		IOptionsEquality<T> options)
+		IEqualityEvaluator<T> options)
 		=> options.AppendContexts(contexts);
 
 	/// <summary>

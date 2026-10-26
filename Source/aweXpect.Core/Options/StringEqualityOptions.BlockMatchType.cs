@@ -22,13 +22,12 @@ public partial class StringEqualityOptions
 	///     so <c>"a\nb\n"</c> has the same two lines as <c>"a\nb"</c>.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">
-	///     A match type is already specified, or an option that changes the lines, e.g. the indentation, which the
+	///     Another match type is already specified, or an option that changes the lines, e.g. the indentation, which the
 	///     block compares on its own.
 	/// </exception>
 	public StringEqualityOptions AsBlock()
 	{
-		SetMatchType(BlockMatch, nameof(AsBlock));
-		return this;
+		return WithMatchType(BlockMatch, nameof(AsBlock), BlockMatchTypeIndex);
 	}
 
 	private sealed class BlockMatchType : BuiltInMatchType

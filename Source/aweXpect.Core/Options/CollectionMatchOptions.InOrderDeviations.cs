@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace aweXpect.Options;
 
-public partial class CollectionMatchOptions
+public readonly partial struct CollectionMatchOptions
 {
 	/// <summary>
 	///     The deviations of an <see cref="InOrderMismatch" /> as items of the subject and of the expected collection.

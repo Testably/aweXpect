@@ -20,7 +20,7 @@ public static partial class TypeFilters
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		ContainedMembersFilter<TMember, TFiltered> containedMembersFilter =
-			new(navigate, filter, new Quantifier(), MemberScopes.None);
+			new(navigate, filter, new OptionsHolder<Quantifier>(Quantifier.Default), MemberScopes.None);
 		return new TypesContainingMembers(@this, containedMembersFilter, containedMembersFilter.WithQuantifier);
 	}
 
@@ -33,7 +33,7 @@ public static partial class TypeFilters
 		return new TypesContainingMembersScopeResult(@this, memberScope =>
 		{
 			ContainedMembersFilter<TMember, TFiltered> containedMembersFilter =
-				new(types => navigate(types, memberScope), filter, new Quantifier(), memberScope);
+				new(types => navigate(types, memberScope), filter, new OptionsHolder<Quantifier>(Quantifier.Default), memberScope);
 			return (containedMembersFilter, containedMembersFilter.WithQuantifier);
 		}, MemberScopes.None);
 	}
@@ -46,7 +46,7 @@ public static partial class TypeFilters
 	internal static IContainedMembersFilter ContainedMembers<TMember, TFiltered>(
 		Func<Filtered.Types, TFiltered> navigate,
 		Func<TFiltered, TFiltered> filter,
-		Quantifier quantifier)
+		OptionsHolder<Quantifier> quantifier)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 		=> new ContainedMembersFilter<TMember, TFiltered>(navigate, filter, quantifier, MemberScopes.None);
 
@@ -57,10 +57,10 @@ public static partial class TypeFilters
 	public class TypesContainingMembers : Filtered.Types
 	{
 		private readonly Filtered.Types _source;
-		private readonly Func<Quantifier, IFilter<Type>> _withQuantifier;
+		private readonly Func<OptionsHolder<Quantifier>, IFilter<Type>> _withQuantifier;
 
 		internal TypesContainingMembers(Filtered.Types source, IFilter<Type> filter,
-			Func<Quantifier, IFilter<Type>> withQuantifier)
+			Func<OptionsHolder<Quantifier>, IFilter<Type>> withQuantifier)
 			: base(source.Which(filter))
 		{
 			_source = source;
@@ -145,9 +145,9 @@ public static partial class TypeFilters
 		public Filtered.Types Twice()
 			=> Quantify(quantifier => quantifier.Exactly(2));
 
-		private Filtered.Types Quantify(Action<Quantifier> specify)
+		private Filtered.Types Quantify(Action<OptionsHolder<Quantifier>> specify)
 		{
-			Quantifier quantifier = new();
+			OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 			specify(quantifier);
 			return _source.Which(_withQuantifier(quantifier));
 		}
@@ -166,20 +166,20 @@ public static partial class TypeFilters
 	public sealed class TypesContainingMembersScopeResult : TypesContainingMembers
 	{
 		private readonly
-			Func<MemberScopes, (IFilter<Type> Filter, Func<Quantifier, IFilter<Type>> WithQuantifier)> _create;
+			Func<MemberScopes, (IFilter<Type> Filter, Func<OptionsHolder<Quantifier>, IFilter<Type>> WithQuantifier)> _create;
 
 		private readonly Filtered.Types _scopeSource;
 
 		internal TypesContainingMembersScopeResult(Filtered.Types source,
-			Func<MemberScopes, (IFilter<Type> Filter, Func<Quantifier, IFilter<Type>> WithQuantifier)> create,
+			Func<MemberScopes, (IFilter<Type> Filter, Func<OptionsHolder<Quantifier>, IFilter<Type>> WithQuantifier)> create,
 			MemberScopes memberScope)
 			: this(source, create, create(memberScope))
 		{
 		}
 
 		private TypesContainingMembersScopeResult(Filtered.Types source,
-			Func<MemberScopes, (IFilter<Type> Filter, Func<Quantifier, IFilter<Type>> WithQuantifier)> create,
-			(IFilter<Type> Filter, Func<Quantifier, IFilter<Type>> WithQuantifier) filters)
+			Func<MemberScopes, (IFilter<Type> Filter, Func<OptionsHolder<Quantifier>, IFilter<Type>> WithQuantifier)> create,
+			(IFilter<Type> Filter, Func<OptionsHolder<Quantifier>, IFilter<Type>> WithQuantifier) filters)
 			: base(source, filters.Filter, filters.WithQuantifier)
 		{
 			_scopeSource = source;
@@ -206,11 +206,11 @@ public static partial class TypeFilters
 		private readonly Func<TFiltered, TFiltered> _filter;
 		private readonly MemberScopes _memberScope;
 		private readonly Func<Filtered.Types, TFiltered> _navigate;
-		private readonly Quantifier _quantifier;
+		private readonly OptionsHolder<Quantifier> _quantifier;
 
 		public ContainedMembersFilter(Func<Filtered.Types, TFiltered> navigate,
 			Func<TFiltered, TFiltered> filter,
-			Quantifier quantifier,
+			OptionsHolder<Quantifier> quantifier,
 			MemberScopes memberScope)
 		{
 			ThrowHelper.ThrowIfNull(filter, nameof(filter));
@@ -229,7 +229,7 @@ public static partial class TypeFilters
 			MembersDescription = inner;
 		}
 
-		private ContainedMembersFilter(ContainedMembersFilter<TMember, TFiltered> original, Quantifier quantifier)
+		private ContainedMembersFilter(ContainedMembersFilter<TMember, TFiltered> original, OptionsHolder<Quantifier> quantifier)
 		{
 			_navigate = original._navigate;
 			_filter = original._filter;
@@ -244,7 +244,7 @@ public static partial class TypeFilters
 		/// <summary>
 		///     Returns a copy of this filter that uses the given <paramref name="quantifier" />.
 		/// </summary>
-		public ContainedMembersFilter<TMember, TFiltered> WithQuantifier(Quantifier quantifier)
+		public ContainedMembersFilter<TMember, TFiltered> WithQuantifier(OptionsHolder<Quantifier> quantifier)
 			=> new ContainedMembersFilter<TMember, TFiltered>(this, quantifier);
 
 #if NET8_0_OR_GREATER
@@ -276,7 +276,7 @@ public static partial class TypeFilters
 #endif
 
 		public async ValueTask<bool> Applies(Type value)
-			=> _quantifier.Check(await CountMatchingMembers(value, CancellationToken.None), true) ?? false;
+			=> _quantifier.Value.Check(await CountMatchingMembers(value, CancellationToken.None), true) ?? false;
 
 		private TFiltered Filter(Type value)
 			=> UserCode.Invoke(_filter, _navigate(new Filtered.Types([value,], static () => "")), "the filter");

@@ -13,13 +13,14 @@ public static partial class ThatEnumerable
 {
 	private const string ItemsAreEqualTo = "…are equal to the <paramref name=\"expected\" /> value.";
 
-	[CreateExpectationFamily("AreEqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+	[CreateExpectationFamily("AreEqualTo", Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = ItemsAreEqualTo, Remarks = SetItemComparerRemarks)]
 	internal static ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>
 		AreEqualToWithToleranceCore<TItem, TTolerance>(
 			IEnumerableItems<TItem> items,
-			TItem expected, Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+			TItem expected, Options.ObjectToleranceMatchType<TItem, TTolerance> initialOptions)
 	{
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((Options: options, Expected: expected, items.Quantifier),
@@ -42,7 +43,7 @@ public static partial class ThatEnumerable
 			IEnumerableItems<TItem> items,
 			TItem expected)
 	{
-		ItemEqualityOptions<TItem> options = new();
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((Options: options, Expected: expected, items.Quantifier),
@@ -53,7 +54,7 @@ public static partial class ThatEnumerable
 					return new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 						it, grammars,
 						state.Quantifier,
-						new ElementEqualTo<TItem, TItem>(itemOptions, state.Expected, state.Options),
+						new ElementEqualTo<TItem, TItem>(itemOptions, state.Expected, true),
 						"were");
 				}),
 			items.Subject,
@@ -67,7 +68,7 @@ public static partial class ThatEnumerable
 			INonGenericEnumerableItems<IEnumerable> items,
 			object? expected)
 	{
-		ItemEqualityOptions<object?> options = new();
+		OptionsHolder<ObjectMatchType<object?>> options = new(ItemEqualsMatchType<object?>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>(
 			expectationBuilder.AddConstraint((Options: options, Expected: expected, items.Quantifier),
@@ -78,7 +79,7 @@ public static partial class ThatEnumerable
 					return new CollectionConstraint<IEnumerable, object?>(
 						it, grammars,
 						state.Quantifier,
-						new ElementEqualTo<object?, object?>(itemOptions, state.Expected, state.Options),
+						new ElementEqualTo<object?, object?>(itemOptions, state.Expected, true),
 						"were");
 				}),
 			items.Subject,
@@ -92,7 +93,7 @@ public static partial class ThatEnumerable
 			TItem expected)
 		where TCollection : struct, IEnumerable<TItem>
 	{
-		ItemEqualityOptions<TItem> options = new();
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint((items.Quantifier, Expected: expected, Options: options),
@@ -100,20 +101,21 @@ public static partial class ThatEnumerable
 					=> new CollectionConstraint<TCollection, object?>(
 						it, grammars,
 						state.Quantifier,
-						new ElementEqualTo<object?, TItem>(state.Options, state.Expected, state.Options),
+						new ElementEqualTo<object?, TItem>(state.Options, state.Expected, true),
 						"were")),
 			items.Subject,
 			options);
 	}
 
-	[CreateExpectationFamily("AreEqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+	[CreateExpectationFamily("AreEqualTo", Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = ItemsAreEqualTo)]
 	internal static ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>
 		AreEqualToWithToleranceForStructCore<TCollection, TItem, TTolerance>(
 			IStructEnumerableItems<TCollection, TItem> items,
-			TItem expected, Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+			TItem expected, Options.ObjectToleranceMatchType<TItem, TTolerance> initialOptions)
 		where TCollection : struct, IEnumerable<TItem>
 	{
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((items.Quantifier, Expected: expected, Options: options),
@@ -133,7 +135,7 @@ public static partial class ThatEnumerable
 			IEnumerableItems<string?> items,
 			string? expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((Options: options, Expected: expected, items.Quantifier),
@@ -158,7 +160,7 @@ public static partial class ThatEnumerable
 			string? expected)
 		where TCollection : struct, IEnumerable<string?>
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint((items.Quantifier, Expected: expected, Options: options),

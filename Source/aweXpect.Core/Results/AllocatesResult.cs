@@ -26,7 +26,6 @@ public class AllocatesResult<TResult>
 	///     The delegate then runs twice. An exception in the warm-up fails the expectation like one in the measured
 	///     invocation, which is then skipped, unless <c>AllowingExceptions()</c> is specified.
 	/// </remarks>
-	/// <exception cref="InvalidOperationException">The warm-up is already specified.</exception>
 	public AllocatesResult<TResult> AfterWarmUp()
 	{
 		_options.AfterWarmUp();
@@ -42,7 +41,6 @@ public class AllocatesResult<TResult>
 	///     <para />
 	///     A cancellation still fails the expectation, because it aborts the execution instead of measuring it.
 	/// </remarks>
-	/// <exception cref="InvalidOperationException">The exceptions are already specified.</exception>
 	public AllocatesResult<TResult> AllowingExceptions(bool allowExceptions = true)
 	{
 		_options.AllowingExceptions(allowExceptions);
@@ -53,7 +51,7 @@ public class AllocatesResult<TResult>
 	///     …at least <paramref name="minimum" /> bytes.
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="minimum" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
+	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
 	public TResult AtLeast(long minimum)
 	{
 		_options.AtLeast(minimum);
@@ -64,7 +62,7 @@ public class AllocatesResult<TResult>
 	///     …at most <paramref name="maximum" /> bytes.
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="maximum" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
+	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
 	public TResult AtMost(long maximum)
 	{
 		_options.AtMost(maximum);
@@ -86,7 +84,7 @@ public class AllocatesResult<TResult>
 	/// <remarks>
 	///     The shorthand for <c>AtMost(0)</c>.
 	/// </remarks>
-	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
+	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
 	public TResult Nothing()
 	{
 		_options.Nothing();

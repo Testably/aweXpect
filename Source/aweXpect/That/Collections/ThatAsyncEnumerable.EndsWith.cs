@@ -33,7 +33,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
-		ObjectEqualityOptions<TItem> options = new();
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -41,7 +41,7 @@ public static partial class ThatAsyncEnumerable
 					Negated: negated),
 				static (state, it, grammars) =>
 				{
-					AsyncEndsWithConstraint<TItem, TItem> constraint = new(it, grammars,
+					AsyncEndsWithConstraint<TItem, TItem> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), state.Options);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -51,20 +51,21 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
 	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
-		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), Params = true,
+		Factory = typeof(ObjectToleranceMatchTypeFactory), Params = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
 	internal static ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
 			TTolerance>
 		EndsWithWithToleranceCore<TItem, TTolerance>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<TItem> expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			ObjectToleranceMatchType<TItem, TTolerance> initialOptions,
 			string? expectedExpression,
 			bool negated)
 	{
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
 		IEnumerable<TItem> expectedValues = expected.ToNonEmptyValues(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
@@ -74,7 +75,7 @@ public static partial class ThatAsyncEnumerable
 					Negated: negated),
 				static (state, it, grammars) =>
 				{
-					AsyncEndsWithConstraint<TItem, TItem> constraint = new(it, grammars,
+					AsyncEndsWithConstraint<TItem, TItem> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), state.Options);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -96,7 +97,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint(
@@ -104,7 +105,7 @@ public static partial class ThatAsyncEnumerable
 					Negated: negated),
 				static (state, it, grammars) =>
 				{
-					AsyncEndsWithConstraint<string?, string?> constraint = new(it, grammars,
+					AsyncEndsWithConstraint<string?, string?> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), state.Options);
 					return state.Negated ? constraint.Invert() : constraint;

@@ -15,12 +15,11 @@ public partial class StringEqualityOptions
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </summary>
 	/// <exception cref="System.InvalidOperationException">
-	///     A custom comparer is already set, which the regex engine cannot honour, or a match type is already specified.
+	///     A custom comparer is already set, which the regex engine cannot honour, or another match type is already specified.
 	/// </exception>
 	public StringEqualityOptions AsWildcard()
 	{
-		SetMatchType(WildcardMatch, nameof(AsWildcard));
-		return this;
+		return WithMatchType(WildcardMatch, nameof(AsWildcard), WildcardMatchTypeIndex);
 	}
 
 	private sealed class WildcardMatchType : StringMatchType
@@ -53,8 +52,11 @@ public partial class StringEqualityOptions
 		/// </summary>
 		private sealed class WildcardMatcher(bool ignoreCase) : StringMatcher
 		{
-			private string? _pattern;
-			private Regex? _regex;
+			/// <remarks>
+			///     The pattern and its regex are replaced together, as the matcher of shared options is used by several
+			///     threads.
+			/// </remarks>
+			private ParsedPattern? _parsedPattern;
 
 			/// <inheritdoc />
 			public override ValueTask<MatchResult> Match(string? actual, string? expected)
@@ -95,14 +97,22 @@ public partial class StringEqualityOptions
 
 			private Regex GetRegex(string expected)
 			{
-				if (_regex is null || !string.Equals(_pattern, expected, StringComparison.Ordinal) ||
-				    _regex.MatchTimeout != GetRegexTimeout())
+				ParsedPattern? parsedPattern = _parsedPattern;
+				if (parsedPattern is null || !string.Equals(parsedPattern.Pattern, expected, StringComparison.Ordinal) ||
+				    parsedPattern.Regex.MatchTimeout != GetRegexTimeout())
 				{
-					_regex = CreateRegex(expected, ignoreCase);
-					_pattern = expected;
+					parsedPattern = new ParsedPattern(expected, CreateRegex(expected, ignoreCase));
+					_parsedPattern = parsedPattern;
 				}
 
-				return _regex;
+				return parsedPattern.Regex;
+			}
+
+			private sealed class ParsedPattern(string pattern, Regex regex)
+			{
+				public string Pattern { get; } = pattern;
+
+				public Regex Regex { get; } = regex;
 			}
 
 			/// <summary>

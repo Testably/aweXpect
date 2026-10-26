@@ -27,9 +27,9 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> HaveName(
 		this IThat<IEnumerable<Assembly?>?> subject, string expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Expected, StringEqualityOptions Options), IEnumerable<Assembly?>>((expected, options),
+				.ExpectationBuilder.AddConstraint<(string Expected, OptionsHolder<StringEqualityOptions> Options), IEnumerable<Assembly?>>((expected, options),
 					static (s, it, grammars)
 					=> new HaveNameConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
@@ -45,10 +45,10 @@ public static partial class ThatAssemblies
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> HaveName(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject, string expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
-				.ExpectationBuilder.AddConstraint<(string Expected, StringEqualityOptions Options), IAsyncEnumerable<Assembly?>>((expected, options),
+				.ExpectationBuilder.AddConstraint<(string Expected, OptionsHolder<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((expected, options),
 					static (s, it, grammars)
 					=> new HaveNameConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
@@ -68,9 +68,9 @@ public static partial class ThatAssemblies
 		string doNotPopulateThisValue = "")
 	{
 		ThrowHelper.ThrowIfNull(expectedNameSelector, nameof(expectedNameSelector));
-		StringEqualityOptions options = new(nameof(expectedNameSelector));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(Func<Assembly?, string> ExpectedNameSelector, string DoNotPopulateThisValue, StringEqualityOptions Options), IEnumerable<Assembly?>>((expectedNameSelector, doNotPopulateThisValue, options),
+				.ExpectationBuilder.AddConstraint<(Func<Assembly?, string> ExpectedNameSelector, string DoNotPopulateThisValue, OptionsHolder<StringEqualityOptions> Options), IEnumerable<Assembly?>>((expectedNameSelector, doNotPopulateThisValue, options),
 					static (s, it, grammars)
 					=> new HaveNameFromSelectorConstraint(it, grammars, s.ExpectedNameSelector, s.DoNotPopulateThisValue,
 						s.Options)),
@@ -91,10 +91,10 @@ public static partial class ThatAssemblies
 		string doNotPopulateThisValue = "")
 	{
 		ThrowHelper.ThrowIfNull(expectedNameSelector, nameof(expectedNameSelector));
-		StringEqualityOptions options = new(nameof(expectedNameSelector));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
-				.ExpectationBuilder.AddConstraint<(Func<Assembly?, string> ExpectedNameSelector, string DoNotPopulateThisValue, StringEqualityOptions Options), IAsyncEnumerable<Assembly?>>((expectedNameSelector, doNotPopulateThisValue, options),
+				.ExpectationBuilder.AddConstraint<(Func<Assembly?, string> ExpectedNameSelector, string DoNotPopulateThisValue, OptionsHolder<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((expectedNameSelector, doNotPopulateThisValue, options),
 					static (s, it, grammars)
 					=> new HaveNameFromSelectorConstraint(it, grammars, s.ExpectedNameSelector, s.DoNotPopulateThisValue,
 						s.Options)),
@@ -107,7 +107,7 @@ public static partial class ThatAssemblies
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		StringEqualityOptions options)
+		OptionsHolder<StringEqualityOptions> options)
 		: CollectionConstraintResult<Assembly?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER
@@ -116,24 +116,24 @@ public static partial class ThatAssemblies
 	{
 		private StringEqualityOptions? _evaluationOptions;
 
-		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options;
+		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options.Value;
 
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetAsyncValue(actual, context,
-				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetName().Name, expected), cancellationToken);
+				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetName().Name, expected, nameof(expected)), cancellationToken);
 		}
 #endif
 
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetValue(actual, context,
-				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetName().Name, expected), cancellationToken);
+				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetName().Name, expected, nameof(expected)), cancellationToken);
 		}
 
 		/// <inheritdoc />
@@ -144,13 +144,13 @@ public static partial class ThatAssemblies
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all have name ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("all have name ").Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained not matching assemblies");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all have name ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("not all have name ").Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained matching assemblies");
@@ -161,7 +161,7 @@ public static partial class ThatAssemblies
 		ExpectationGrammars grammars,
 		Func<Assembly?, string> expectedNameSelector,
 		string expectedNameSelectorExpression,
-		StringEqualityOptions options)
+		OptionsHolder<StringEqualityOptions> options)
 		: CollectionConstraintResult<Assembly?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER
@@ -170,26 +170,26 @@ public static partial class ThatAssemblies
 	{
 		private StringEqualityOptions? _evaluationOptions;
 
-		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options;
+		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options.Value;
 
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetAsyncValue(actual, context,
 				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetName().Name,
-					UserCode.Invoke(expectedNameSelector, assembly, "the name selector")), cancellationToken);
+					UserCode.Invoke(expectedNameSelector, assembly, "the name selector"), nameof(expectedNameSelector)), cancellationToken);
 		}
 #endif
 
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 			return await SetValue(actual, context,
 				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetName().Name,
-					UserCode.Invoke(expectedNameSelector, assembly, "the name selector")), cancellationToken);
+					UserCode.Invoke(expectedNameSelector, assembly, "the name selector"), nameof(expectedNameSelector)), cancellationToken);
 		}
 
 		/// <inheritdoc />

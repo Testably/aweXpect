@@ -217,6 +217,22 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task Containing_WhenAnOptionChangesTheHolderDirectly_ShouldApplyIt()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "Abbey Road\nElapsed 3 ms\nelapsed 4 ms";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Containing("ELAPSED").IgnoringCaseInPlace().Ignore();
+
+				await That(Act).Throws<FailException>();
+				await That(store.Mismatches[Id]).IsEqualTo("Abbey Road")
+					.Because("the selection reads its holder when it matches a line");
+			}
+
+			[Test]
 			public async Task Containing_WhenAnOptionIsAppliedAfterTheRuleWasCreated_ShouldNotChangeTheRule()
 			{
 				InMemorySnapshotStore store = new();

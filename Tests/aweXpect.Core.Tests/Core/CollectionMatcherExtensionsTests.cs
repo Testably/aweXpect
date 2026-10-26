@@ -27,7 +27,7 @@ public sealed class CollectionMatcherExtensionsTests
 		ICollectionMatcher<int, int> matcher = new CollectionMatchOptions().GetCollectionMatcher<int, int>(expected);
 
 		(Outcome outcome, string? failure) =
-			await matcher.VerifyItems("it", [1,], new ObjectEqualityOptions<int>(), cts.Token);
+			await matcher.VerifyItems("it", [1,], ObjectMatchType<int>.Default.ForEvaluation(default), cts.Token);
 
 		await That(outcome).IsEqualTo(Outcome.Undecided)
 			.Because("the canceled item expectation did not decide whether the item matches");
@@ -42,7 +42,7 @@ public sealed class CollectionMatcherExtensionsTests
 		ICollectionMatcher<int, int> matcher = new CollectionMatchOptions().GetCollectionMatcher<int, int>([1, 2,]);
 
 		(Outcome outcome, string? failure) =
-			await matcher.VerifyItems("it", ToEnumerable(1, 3), new ObjectEqualityOptions<int>(), cts.Token);
+			await matcher.VerifyItems("it", ToEnumerable(1, 3), ObjectMatchType<int>.Default.ForEvaluation(default), cts.Token);
 
 		await That(outcome).IsEqualTo(Outcome.Undecided)
 			.Because("the remaining items of the sequence were not read");
@@ -57,7 +57,7 @@ public sealed class CollectionMatcherExtensionsTests
 		ICollectionMatcher<int, int> matcher = new CollectionMatchOptions().GetCollectionMatcher<int, int>([1, 2,]);
 
 		(Outcome outcome, string? failure) =
-			await matcher.VerifyItems("it", new List<int> { 1, 3, }, new ObjectEqualityOptions<int>(), cts.Token);
+			await matcher.VerifyItems("it", new List<int> { 1, 3, }, ObjectMatchType<int>.Default.ForEvaluation(default), cts.Token);
 
 		await That(outcome).IsEqualTo(Outcome.Failure)
 			.Because("a collection that is complete in memory is judged like any other value");
@@ -70,7 +70,7 @@ public sealed class CollectionMatcherExtensionsTests
 		ICollectionMatcher<int, int> matcher = new CollectionMatchOptions().GetCollectionMatcher<int, int>([1,]);
 
 		async Task Act()
-			=> await matcher.VerifyItems("it", null!, new ObjectEqualityOptions<int>(), CancellationToken.None);
+			=> await matcher.VerifyItems("it", null!, ObjectMatchType<int>.Default.ForEvaluation(default), CancellationToken.None);
 
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("items").And
@@ -84,7 +84,7 @@ public sealed class CollectionMatcherExtensionsTests
 			.GetCollectionMatcher<string, string>(["rock", "jazz",]);
 
 		(Outcome outcome, string? failure) = await matcher.VerifyItems("it", ["rock", "pop",],
-			new ObjectEqualityOptions<string>(), CancellationToken.None);
+			ObjectMatchType<string>.Default.ForEvaluation(default), CancellationToken.None);
 
 		await That(outcome).IsEqualTo(Outcome.Failure);
 		await That(failure).IsEqualTo("""
@@ -101,7 +101,7 @@ public sealed class CollectionMatcherExtensionsTests
 			new CollectionMatchOptions().GetCollectionMatcher<int, int>([1, 2, 3,]);
 
 		(Outcome outcome, string? failure) =
-			await matcher.VerifyItems("it", ToEnumerable(1, 2, 3), new ObjectEqualityOptions<int>(), CancellationToken.None);
+			await matcher.VerifyItems("it", ToEnumerable(1, 2, 3), ObjectMatchType<int>.Default.ForEvaluation(default), CancellationToken.None);
 
 		await That(outcome).IsEqualTo(Outcome.Success);
 		await That(failure).IsNull();
@@ -113,7 +113,7 @@ public sealed class CollectionMatcherExtensionsTests
 		AwaitingMatcher matcher = new(failingValue: 3);
 
 		(Outcome outcome, string? failure) =
-			await matcher.VerifyItems("it", ToEnumerable(1, 2, 3, 4), new ObjectEqualityOptions<int>(), CancellationToken.None);
+			await matcher.VerifyItems("it", ToEnumerable(1, 2, 3, 4), ObjectMatchType<int>.Default.ForEvaluation(default), CancellationToken.None);
 
 		await That(outcome).IsEqualTo(Outcome.Failure);
 		await That(failure).IsEqualTo("it had 3");
@@ -127,7 +127,7 @@ public sealed class CollectionMatcherExtensionsTests
 		AwaitingMatcher matcher = new(failingValue: null);
 
 		(Outcome outcome, string? failure) =
-			await matcher.VerifyItems("it", [1, 2,], new ObjectEqualityOptions<int>(), CancellationToken.None);
+			await matcher.VerifyItems("it", [1, 2,], ObjectMatchType<int>.Default.ForEvaluation(default), CancellationToken.None);
 
 		await That(outcome).IsEqualTo(Outcome.Failure);
 		await That(failure).IsEqualTo("it was completed");
@@ -153,7 +153,7 @@ public sealed class CollectionMatcherExtensionsTests
 				.GetCollectionMatcher<int, int>([1, 2,]);
 
 		(Outcome outcome, string? failure) =
-			await matcher.VerifyItems("it", Source(), new ObjectEqualityOptions<int>(), CancellationToken.None);
+			await matcher.VerifyItems("it", Source(), ObjectMatchType<int>.Default.ForEvaluation(default), CancellationToken.None);
 
 		await That(outcome).IsEqualTo(Outcome.Success);
 		await That(failure).IsNull();
@@ -166,7 +166,7 @@ public sealed class CollectionMatcherExtensionsTests
 		ICollectionMatcher<int, int> matcher = null!;
 
 		async Task Act()
-			=> await matcher.VerifyItems("it", [1,], new ObjectEqualityOptions<int>(), CancellationToken.None);
+			=> await matcher.VerifyItems("it", [1,], ObjectMatchType<int>.Default.ForEvaluation(default), CancellationToken.None);
 
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("matcher").And
@@ -179,7 +179,7 @@ public sealed class CollectionMatcherExtensionsTests
 		AwaitingMatcher matcher = new(failingValue: 1, failure: null, isAwaited: false);
 
 		(Outcome outcome, string? failure) =
-			await matcher.VerifyItems("it", [1,], new ObjectEqualityOptions<int>(), CancellationToken.None);
+			await matcher.VerifyItems("it", [1,], ObjectMatchType<int>.Default.ForEvaluation(default), CancellationToken.None);
 
 		await That(outcome).IsEqualTo(Outcome.Failure);
 		await That(failure).IsEqualTo(
@@ -214,7 +214,7 @@ public sealed class CollectionMatcherExtensionsTests
 		ICollectionMatcher<int, int> matcher = new CollectionMatchOptions().GetCollectionMatcher<int, int>([1, 2,]);
 
 		async Task Act()
-			=> await matcher.VerifyItems("it", Source(), new ObjectEqualityOptions<int>(), CancellationToken.None);
+			=> await matcher.VerifyItems("it", Source(), ObjectMatchType<int>.Default.ForEvaluation(default), CancellationToken.None);
 
 		UserCodeException failure = await That(Act).Throws<UserCodeException>()
 			.WithMessage("The code of the caller threw an exception while the expectation was evaluated.");
@@ -229,7 +229,7 @@ public sealed class CollectionMatcherExtensionsTests
 			new CollectionMatchOptions().GetCollectionMatcher<int, int>([1, 2, 3,]);
 
 		(Outcome outcome, string? failure) =
-			await matcher.VerifyItems("it", materialized, new ObjectEqualityOptions<int>(), CancellationToken.None);
+			await matcher.VerifyItems("it", materialized, ObjectMatchType<int>.Default.ForEvaluation(default), CancellationToken.None);
 
 		await That(outcome).IsEqualTo(Outcome.Failure);
 		await That(failure).IsEqualTo("it contained item 4 at index 2 instead of 3");
@@ -254,7 +254,7 @@ public sealed class CollectionMatcherExtensionsTests
 		public bool IsDetermined => false;
 
 		public ValueTask<(bool IsFailure, string? Failure)> Verify(string it, int value,
-			IOptionsEquality<int> options, int maximumNumber)
+			IEqualityEvaluator<int> options, int maximumNumber)
 		{
 			VerifiedValues.Add(value);
 			(bool, string?) result = value == failingValue
@@ -263,7 +263,7 @@ public sealed class CollectionMatcherExtensionsTests
 			return isAwaited ? Await(result) : new ValueTask<(bool, string?)>(result);
 		}
 
-		public ValueTask<(bool IsFailure, string? Failure)> VerifyComplete(string it, IOptionsEquality<int> options,
+		public ValueTask<(bool IsFailure, string? Failure)> VerifyComplete(string it, IEqualityEvaluator<int> options,
 			int maximumNumber)
 			=> Await((true, $"{it} was completed"));
 

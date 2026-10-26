@@ -11,10 +11,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_BothNull_ShouldReturnTrue()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
-			bool result = await sut.AreConsideredEqual<string?>(null, null);
+			bool result = await sut.AreConsideredEqual(null, null, "expected");
 
 			await That(result).IsTrue();
 		}
@@ -24,10 +24,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments("foo", null)]
 		public async Task AreConsideredEqual_OneNull_ShouldReturnFalse(string? actual, string? expected)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await sut.AreConsideredEqual(actual, expected, "expected");
 
 			await That(result).IsFalse();
 		}
@@ -41,10 +41,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_ShouldIgnoreASingleTrailingLineTerminator(string actual,
 			string expected, bool expectedResult)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await sut.AreConsideredEqual(actual, expected, "expected");
 
 			await That(result).IsEqualTo(expectedResult);
 		}
@@ -52,10 +52,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenActualHasAdditionalLines_ShouldReturnFalse()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
-			bool result = await sut.AreConsideredEqual("class C\n{\n    Foo();\n}", "{\n    Foo();\n}");
+			bool result = await sut.AreConsideredEqual("class C\n{\n    Foo();\n}", "{\n    Foo();\n}", "expected");
 
 			await That(result).IsFalse();
 		}
@@ -63,31 +63,32 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenBlockIsIndentedAsAWhole_ShouldReturnTrue()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
-			bool result = await sut.AreConsideredEqual("    {\n        Foo();\n    }", "{\n    Foo();\n}");
+			bool result = await sut.AreConsideredEqual("    {\n        Foo();\n    }", "{\n    Foo();\n}", "expected");
 
 			await That(result).IsTrue();
 		}
 
 		[Test]
-		public async Task AsBlock_ShouldReturnSameInstance()
+		public async Task AsBlock_ShouldNotChangeTheOriginalOptions()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			StringEqualityOptions result = sut.AsBlock();
 
-			await That(result).IsSameAs(sut);
+			await That(result).IsNotSameAs(sut);
+			await That(sut.ComparesByOrdinalEquality).IsTrue();
 		}
 
 		[Test]
 		public async Task CountOccurrences_ShouldCountNonOverlappingOccurrences()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
-			int result = await sut.CountOccurrences("a\nb\na\nb\na", "a\nb\na");
+			int result = await sut.CountOccurrences("a\nb\na\nb\na", "a\nb\na", "expected");
 
 			await That(result).IsEqualTo(1);
 		}
@@ -104,10 +105,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_ShouldIgnoreASingleTrailingLineTerminator(string actual,
 			string expected, int expectedCount)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
-			int result = await sut.CountOccurrences(actual, expected);
+			int result = await sut.CountOccurrences(actual, expected, "expected");
 
 			await That(result).IsEqualTo(expectedCount);
 		}
@@ -115,10 +116,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_ShouldNotMatchMidLine()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
-			int result = await sut.CountOccurrences("public int Foo;", "int Foo");
+			int result = await sut.CountOccurrences("public int Foo;", "int Foo", "expected");
 
 			await That(result).IsEqualTo(0);
 		}
@@ -138,10 +139,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_ShouldRequireTheSameWhiteSpacePrefixOnAllLines(string actual,
 			int expectedCount)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
-			int result = await sut.CountOccurrences(actual, "public int Foo\n{\n    get;\n}");
+			int result = await sut.CountOccurrences(actual, "public int Foo\n{\n    get;\n}", "expected");
 
 			await That(result).IsEqualTo(expectedCount);
 		}
@@ -149,10 +150,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenActualLineEndsWithExpectedLine_ShouldNotMatch()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
-			int result = await sut.CountOccurrences("public int Foo;", "int Foo;");
+			int result = await sut.CountOccurrences("public int Foo;", "int Foo;", "expected");
 
 			await That(result).IsEqualTo(0);
 		}
@@ -165,10 +166,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_WhenBlockContainsBlankLine_ShouldMatchAnyWhiteSpaceOnlyLine(
 			string actual)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
-			int result = await sut.CountOccurrences(actual, "a\n\nb");
+			int result = await sut.CountOccurrences(actual, "a\n\nb", "expected");
 
 			await That(result).IsEqualTo(1);
 		}
@@ -176,10 +177,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenBlockContainsBlankLine_ShouldNotMatchNonBlankLine()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
-			int result = await sut.CountOccurrences("a\nx\nb", "a\n\nb");
+			int result = await sut.CountOccurrences("a\nx\nb", "a\n\nb", "expected");
 
 			await That(result).IsEqualTo(0);
 		}
@@ -187,10 +188,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenCaseIsIgnored_ShouldIgnoreCase()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock().IgnoringCase();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock().IgnoringCase();
 
-			int result = await sut.CountOccurrences("  FOO\n  bar", "foo\nBAR");
+			int result = await sut.CountOccurrences("  FOO\n  bar", "foo\nBAR", "expected");
 
 			await That(result).IsEqualTo(1);
 		}
@@ -198,10 +199,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenComparerIsUsed_ShouldUseComparer()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock().Using(StringComparer.OrdinalIgnoreCase);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock().Using(StringComparer.OrdinalIgnoreCase);
 
-			int result = await sut.CountOccurrences("  FOO\n  bar", "foo\nBAR");
+			int result = await sut.CountOccurrences("  FOO\n  bar", "foo\nBAR", "expected");
 
 			await That(result).IsEqualTo(1);
 		}
@@ -209,10 +210,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenOccurrencesAreIndentedDifferently_ShouldCountAll()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
-			int result = await sut.CountOccurrences("\ta\n\tb\nx\n  a\n  b\na\nb", "a\nb");
+			int result = await sut.CountOccurrences("\ta\n\tb\nx\n  a\n  b\na\nb", "a\nb", "expected");
 
 			await That(result).IsEqualTo(3);
 		}
@@ -220,8 +221,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExpectation_ShouldIncludeAsBlock()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetExpectation("foo", ExpectationGrammars.Active);
 
@@ -231,8 +232,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExpectation_WhenNegatedAndPassive_ShouldSayNotMatching()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetExpectation("foo", ExpectationGrammars.Negated);
 
@@ -242,8 +243,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_Null_ShouldReturnItWasNull()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, null, "foo", MatchResult.NoMatch);
 
@@ -253,8 +254,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenABlankLineIsExpected_ShouldNameTheLineThatIsNotBlank()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\n  x\nb", "a\n\nb", MatchResult.NoMatch);
 
@@ -264,8 +265,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenALineDiffers_ShouldShowTheDifferenceOnThatLine()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  a\n  bxd\n  c", "a\nbyd\nc", MatchResult.NoMatch);
 
@@ -281,8 +282,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenALineDiffersAndTheLineCountDiffers_ShouldShowTheDifferenceOnThatLine()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\nx\nb", "a\nb", MatchResult.NoMatch);
 
@@ -304,8 +305,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetExtendedFailure_WhenALineIsIndentedDifferently_ShouldNameItsIndentation(string actual,
 			string expected, string expectedMessage)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected, MatchResult.NoMatch);
 
@@ -315,8 +316,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenCaseIsIgnored_ShouldOnlyShowOtherDifferences()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock().IgnoringCase();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock().IgnoringCase();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  FOO\n  bar\n  BAZ", "foo\nBAR\nbax", MatchResult.NoMatch);
 
@@ -332,8 +333,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenComparerIsUsed_ShouldUseTheComparer()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock().Using(new IgnoreCaseComparer());
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock().Using(new IgnoreCaseComparer());
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  FOO\nBAR", "foo\nbar", MatchResult.NoMatch);
 
@@ -343,8 +344,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenComparerThrows_ShouldReturnTheSubject()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock().Using(new ThrowingComparer(new NotSupportedException("foo")));
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock().Using(new ThrowingComparer(new NotSupportedException("foo")));
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\nb", "a\nc", MatchResult.NoMatch);
 
@@ -354,8 +355,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenComparerThrowsForTheWholeText_ShouldNameTheLine()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock().Using(new ThrowingForMultipleLinesComparer());
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock().Using(new ThrowingForMultipleLinesComparer());
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\nx", "a\nb", MatchResult.NoMatch);
 
@@ -366,8 +367,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenExpectedIsEmpty_ShouldNameTheNumberOfLines()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a", "", MatchResult.NoMatch);
 
@@ -377,8 +378,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenSubjectHasAdditionalLines_ShouldNameTheNumberOfLines()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo\nbar", "foo", MatchResult.NoMatch);
 
@@ -388,8 +389,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenSubjectHasFewerLines_ShouldNameTheNumberOfLines()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "a\nb\n", "a\nb\nc", MatchResult.NoMatch);
 
@@ -400,8 +401,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenSubjectIsASingleLine_ShouldShowTheIndex()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "fob", "foo", MatchResult.NoMatch);
 
@@ -417,8 +418,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenSubjectIsEmpty_ShouldReturnTheSubject()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "", "a", MatchResult.NoMatch);
 
@@ -432,8 +433,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetExtendedFailure_WhenSubjectUsesOtherLineTerminators_ShouldNumberTheLinesOfTheSubject(
 			string actual)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, "a\nb\nc", MatchResult.NoMatch);
 
@@ -443,8 +444,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenTheBlockStartsWithBlankLines_ShouldNumberTheLinesOfTheSubject()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "\n \n  a\n  x", "\n\na\nb", MatchResult.NoMatch);
 
@@ -454,8 +455,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenABlankLineIsExpected_ShouldNameTheLineThatIsNotBlank()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails("x\na\ny\nb", "a\n\nb", 0);
 
@@ -465,8 +466,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenALineOfTheClosestMatchDiffers_ShouldShowTheDifference()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails("class C\n{\n    int x;\n    int y;\n}",
 				"{\n    int x;\n    int z;\n}", 0);
@@ -483,8 +484,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenBlockConsistsOfBlankLines_ShouldReturnEmpty()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails("a\n b", "\n \n", 0);
 
@@ -495,8 +496,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenBlockIsLongerThanTheSubjectAndALineDiffers_ShouldShowTheDifference()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails("{\n  a;\n}", "{\n  a;\n  b;\n}", 0);
 
@@ -511,8 +512,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetOccurrenceDetails_WhenBlockIsLongerThanTheSubject_ShouldCompareFromTheFirstLine(
 			string actual, string expected, string expectedDetails)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails(actual, expected, 0);
 
@@ -522,8 +523,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenCountIsPositiveWithoutAnOccurrence_ShouldReturnEmpty()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails("x\ny", "a", 1);
 
@@ -539,8 +540,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetOccurrenceDetails_WhenBlockOccurs_ShouldNameItsLines(string actual, string expected,
 			int count, string expectedDetails)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails(actual, expected, count);
 
@@ -554,8 +555,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetOccurrenceDetails_WhenBlockOccursMoreOften_ShouldOnlyNameTheCountedOccurrences(
 			string actual, string expected, int count, string expectedDetails)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails(actual, expected, count);
 
@@ -570,8 +571,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetOccurrenceDetails_WhenBlockOccursOnlyInsideOfLines_ShouldNameTheLines(string actual,
 			string expected, string expectedDetails)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails(actual, expected, 0);
 
@@ -585,8 +586,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetOccurrenceDetails_WhenCaseIsIgnored_ShouldIgnoreCase(string actual, string expected,
 			string expectedDetails)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock().IgnoringCase();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock().IgnoringCase();
 
 			string result = sut.GetOccurrenceDetails(actual, expected, 0);
 
@@ -596,8 +597,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenComparerThrows_ShouldReturnEmpty()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock().Using(new ThrowingComparer(new NotSupportedException("foo")));
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock().Using(new ThrowingComparer(new NotSupportedException("foo")));
 
 			string result = sut.GetOccurrenceDetails("    a\nb", "a\nb", 0);
 
@@ -607,8 +608,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenCultureAwareComparerIsUsed_ShouldSearchInsideOfLines()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock().Using(StringComparer.InvariantCultureIgnoreCase);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock().Using(StringComparer.InvariantCultureIgnoreCase);
 
 			string result = sut.GetOccurrenceDetails("public INT FOO;", "int foo", 0);
 
@@ -618,8 +619,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenCustomComparerIsUsed_ShouldNotSearchInsideOfLines()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock().Using(new IgnoreCaseComparer());
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock().Using(new IgnoreCaseComparer());
 
 			string result = sut.GetOccurrenceDetails("public INT FOO;", "int foo", 0);
 
@@ -630,8 +631,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenCustomComparerIsUsed_ShouldUseItForTheClosestMatch()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock().Using(new IgnoreCaseComparer());
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock().Using(new IgnoreCaseComparer());
 
 			string result = sut.GetOccurrenceDetails("x\n  FOO\nbar", "foo\nBAR", 0);
 
@@ -642,8 +643,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenExpectedIsEmpty_ShouldReturnEmpty()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails("a", "", 0);
 
@@ -653,8 +654,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenIndentationAndInsideOfLinesBothApply_ShouldPreferTheIndentation()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails("xa\nby\n  a\nb", "a\nb", 0);
 
@@ -664,8 +665,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenInsideOfLinesAndAClosestMatchBothApply_ShouldPreferInsideOfLines()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails("a\nc\nxa\nby", "a\nb", 0);
 
@@ -675,8 +676,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenNoLineMatches_ShouldReturnEmpty()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails("x\ny\nz", "a\nb", 0);
 
@@ -686,7 +687,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenNotMatchedAsBlock_ShouldReturnEmpty()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			string result = sut.GetOccurrenceDetails("    a\nb", "a\nb", 0);
 
@@ -696,8 +697,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenOnlyBlankLinesMatch_ShouldReturnEmpty()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails("x\n\ny", "a\n\nb", 0);
 
@@ -717,8 +718,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetOccurrenceDetails_WhenOnlyTheIndentationDiffers_ShouldNameTheIndentation(string actual,
 			string expected, string expectedDetails)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails(actual, expected, 0);
 
@@ -728,8 +729,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenSeveralMatchesAreEquallyClose_ShouldPickTheFirst()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails("x\na\ny\na\nz", "a\nb", 0);
 
@@ -739,8 +740,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetOccurrenceDetails_WhenSubjectIsEmpty_ShouldReturnEmpty()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.GetOccurrenceDetails("", "a", 0);
 
@@ -753,8 +754,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetOccurrenceDetails_WhenSubjectIsTooLong_ShouldNotSearchForAClosestMatch(
 			int additionalLines, bool expectEmpty)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 			string actual = "a\nc" + string.Concat(Enumerable.Repeat("\nx", additionalLines));
 
 			string result = sut.GetOccurrenceDetails(actual, "a\nb", 0);
@@ -776,8 +777,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetOccurrenceDetails_WhenSubjectIsTooLong_ShouldStillSearchInsideOfLines(
 			int additionalLines, string expectedDetails)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 			string actual = "    a\nb" + string.Concat(Enumerable.Repeat("\nx", additionalLines));
 
 			string result = sut.GetOccurrenceDetails(actual, "a\nb", 0);
@@ -789,8 +790,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task ToString_ShouldReturnAsBlock()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			string result = sut.ToString();
 
@@ -800,8 +801,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task ToString_WhenCaseIsIgnored_ShouldReturnAsBlockIgnoringCase()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock().IgnoringCase();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock().IgnoringCase();
 
 			string result = sut.ToString();
 

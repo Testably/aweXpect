@@ -36,12 +36,11 @@ public static partial class ThatEventRecording
 		string? propertyName)
 		where TSubject : INotifyPropertyChanged
 	{
-		Options.Quantifier quantifier = new();
-		TriggerEventFilter filter = new();
-		RepeatedCheckOptions options = new();
-		filter.AddPredicate(
+		OptionsHolder<Options.Quantifier> quantifier = new(new Options.Quantifier());
+		OptionsHolder<TriggerEventFilter> filter = new(TriggerEventFilter.Default.AddPredicate(
 			MatchesPropertyName(propertyName),
-			DescribePropertyName(propertyName));
+			DescribePropertyName(propertyName)));
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint((Filter: filter, Quantifier: quantifier, Options: options),
 				static (state, it, grammars)
@@ -86,12 +85,11 @@ public static partial class ThatEventRecording
 		string? propertyName)
 		where TSubject : INotifyPropertyChanged
 	{
-		Options.Quantifier quantifier = new();
-		TriggerEventFilter filter = new();
-		RepeatedCheckOptions options = new();
-		filter.AddPredicate(
+		OptionsHolder<Options.Quantifier> quantifier = new(new Options.Quantifier());
+		OptionsHolder<TriggerEventFilter> filter = new(TriggerEventFilter.Default.AddPredicate(
 			MatchesPropertyName(propertyName),
-			DescribePropertyName(propertyName));
+			DescribePropertyName(propertyName)));
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint((Filter: filter, Quantifier: quantifier, Options: options),
 				static (state, it, grammars)

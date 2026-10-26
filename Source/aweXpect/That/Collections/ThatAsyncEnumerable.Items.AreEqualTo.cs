@@ -13,13 +13,14 @@ public static partial class ThatAsyncEnumerable
 {
 	private const string ItemsAreEqualTo = "…are equal to the <paramref name=\"expected\" /> value.";
 
-	[CreateExpectationFamily("AreEqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+	[CreateExpectationFamily("AreEqualTo", Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = ItemsAreEqualTo)]
 	internal static ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>
 		AreEqualToWithToleranceCore<TItem, TTolerance>(
 			IAsyncEnumerableItems<TItem> items,
-			TItem expected, Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+			TItem expected, Options.ObjectToleranceMatchType<TItem, TTolerance> initialOptions)
 	{
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
 			TTolerance>(
@@ -40,7 +41,7 @@ public static partial class ThatAsyncEnumerable
 			IAsyncEnumerableItems<TItem> items,
 			TItem expected)
 	{
-		Options.ObjectEqualityOptions<TItem> options = new();
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((items.Quantifier, Expected: expected, Options: options),
@@ -48,7 +49,7 @@ public static partial class ThatAsyncEnumerable
 					=> new AsyncCollectionConstraint<TItem>(
 						it, grammars,
 						state.Quantifier,
-						new ElementEqualTo<TItem, TItem>(state.Options, state.Expected, state.Options),
+						new ElementEqualTo<TItem, TItem>(state.Options, state.Expected, true),
 						"were")),
 			items.Subject,
 			options);
@@ -60,7 +61,7 @@ public static partial class ThatAsyncEnumerable
 			IAsyncEnumerableItems<string?> items,
 			string? expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((items.Quantifier, Expected: expected, Options: options),

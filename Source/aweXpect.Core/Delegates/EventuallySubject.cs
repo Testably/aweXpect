@@ -28,7 +28,6 @@ public readonly struct EventuallySubject<T> : IExpectThat<T>, IThatSubject<T>
 	///     Defaults to <c>Customize.aweXpect.Settings().DefaultCheckInterval</c>.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="interval" /> is not positive.</exception>
-	/// <exception cref="InvalidOperationException">An interval is already set.</exception>
 	public EventuallySubject<T> CheckEvery(TimeSpan interval)
 	{
 		_expectationBuilder.CheckEvery(interval);
@@ -43,7 +42,6 @@ public readonly struct EventuallySubject<T> : IExpectThat<T>, IThatSubject<T>
 	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> retries until the expectations are met.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
 	public EventuallySubject<T> Within(TimeSpan timeout)
 	{
 		_expectationBuilder.Within(timeout);

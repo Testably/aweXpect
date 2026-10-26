@@ -23,8 +23,8 @@ public static partial class ThatSignaler
 	public static SignalCountResult Signaled(
 		this IThat<Signaler> subject)
 	{
-		Quantifier quantifier = new();
-		SignalerOptions options = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
 		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint(
 				(Quantifier: quantifier, Options: options),
 				static (state, it, grammars)
@@ -41,15 +41,18 @@ public static partial class ThatSignaler
 	public static SignalCountWhoseResult<TParameter> Signaled<TParameter>(
 		this IThat<Signaler<TParameter>> subject)
 	{
-		Quantifier quantifier = new();
-		SignalerOptions<TParameter> options = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
+		OptionsHolder<SignalerPredicateOptions<TParameter>> predicates = new(SignalerPredicateOptions<TParameter>.Default);
 		return new SignalCountWhoseResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint(
-				(Quantifier: quantifier, Options: options),
+				(Quantifier: quantifier, Options: options, Predicates: predicates),
 				static (state, it, grammars)
-					=> new SignaledConstraint<TParameter>(it, grammars, state.Quantifier, state.Options)),
+					=> new SignaledConstraint<TParameter>(it, grammars, state.Quantifier, state.Options,
+						state.Predicates)),
 			subject,
 			quantifier,
-			options);
+			options,
+			predicates);
 	}
 
 	/// <summary>
@@ -62,9 +65,9 @@ public static partial class ThatSignaler
 		Times times)
 	{
 		ThrowHelper.ThrowIfTimesIsNotPositive(times);
-		Quantifier quantifier = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		quantifier.AtLeast(times.Value);
-		SignalerOptions options = new();
+		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
 		return new SignaledResult(subject.Get().ExpectationBuilder.AddConstraint(
 				(Quantifier: quantifier, Options: options),
 				static (state, it, grammars)
@@ -83,15 +86,18 @@ public static partial class ThatSignaler
 		Times times)
 	{
 		ThrowHelper.ThrowIfTimesIsNotPositive(times);
-		Quantifier quantifier = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		quantifier.AtLeast(times.Value);
-		SignalerOptions<TParameter> options = new();
+		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
+		OptionsHolder<SignalerPredicateOptions<TParameter>> predicates = new(SignalerPredicateOptions<TParameter>.Default);
 		return new SignaledWhoseResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint(
-				(Quantifier: quantifier, Options: options),
+				(Quantifier: quantifier, Options: options, Predicates: predicates),
 				static (state, it, grammars)
-					=> new SignaledConstraint<TParameter>(it, grammars, state.Quantifier, state.Options)),
+					=> new SignaledConstraint<TParameter>(it, grammars, state.Quantifier, state.Options,
+						state.Predicates)),
 			subject,
-			options);
+			options,
+			predicates);
 	}
 
 	/// <summary>
@@ -108,8 +114,8 @@ public static partial class ThatSignaler
 	public static DidNotSignalResult DidNotSignal(
 		this IThat<Signaler> subject)
 	{
-		Quantifier quantifier = new();
-		SignalerOptions options = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
 		return new DidNotSignalResult(subject.Get().ExpectationBuilder.AddConstraint(
 				(Quantifier: quantifier, Options: options),
 				static (state, it, grammars)
@@ -133,14 +139,17 @@ public static partial class ThatSignaler
 	public static DidNotSignalResult<TParameter> DidNotSignal<TParameter>(
 		this IThat<Signaler<TParameter>> subject)
 	{
-		Quantifier quantifier = new();
-		SignalerOptions<TParameter> options = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
+		OptionsHolder<SignalerPredicateOptions<TParameter>> predicates = new(SignalerPredicateOptions<TParameter>.Default);
 		return new DidNotSignalResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint(
-				(Quantifier: quantifier, Options: options),
+				(Quantifier: quantifier, Options: options, Predicates: predicates),
 				static (state, it, grammars)
-					=> new SignaledConstraint<TParameter>(it, grammars, state.Quantifier, state.Options).Invert()),
+					=> new SignaledConstraint<TParameter>(it, grammars, state.Quantifier, state.Options,
+						state.Predicates).Invert()),
 			subject,
-			options);
+			options,
+			predicates);
 	}
 
 	/// <summary>
@@ -160,9 +169,9 @@ public static partial class ThatSignaler
 		Times times)
 	{
 		ThrowHelper.ThrowIfTimesIsNotPositive(times);
-		Quantifier quantifier = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		quantifier.AtLeast(times.Value);
-		SignalerOptions options = new();
+		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
 		return new DidNotSignalResult(subject.Get().ExpectationBuilder.AddConstraint(
 				(Quantifier: quantifier, Options: options),
 				static (state, it, grammars)
@@ -190,15 +199,18 @@ public static partial class ThatSignaler
 		Times times)
 	{
 		ThrowHelper.ThrowIfTimesIsNotPositive(times);
-		Quantifier quantifier = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		quantifier.AtLeast(times.Value);
-		SignalerOptions<TParameter> options = new();
+		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
+		OptionsHolder<SignalerPredicateOptions<TParameter>> predicates = new(SignalerPredicateOptions<TParameter>.Default);
 		return new DidNotSignalResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint(
-				(Quantifier: quantifier, Options: options),
+				(Quantifier: quantifier, Options: options, Predicates: predicates),
 				static (state, it, grammars)
-					=> new SignaledConstraint<TParameter>(it, grammars, state.Quantifier, state.Options).Invert()),
+					=> new SignaledConstraint<TParameter>(it, grammars, state.Quantifier, state.Options,
+						state.Predicates).Invert()),
 			subject,
-			options);
+			options,
+			predicates);
 	}
 
 	/// <remarks>
@@ -206,7 +218,7 @@ public static partial class ThatSignaler
 	///     <c>Signaled().Never()</c>.
 	/// </remarks>
 	private static void AppendCallbackExpectation(StringBuilder stringBuilder, Quantifier quantifier, bool isNegated,
-		SignalerOptions options, TimeSpan? defaultTimeout)
+		object? predicates, SignalerOptions options, TimeSpan? defaultTimeout)
 	{
 		if (quantifier.IsNever(isNegated))
 		{
@@ -217,7 +229,7 @@ public static partial class ThatSignaler
 			stringBuilder.Append("has recorded the callback ").Append(quantifier.ToString(isNegated));
 		}
 
-		stringBuilder.Append(options);
+		stringBuilder.Append(predicates).Append(options);
 		if (defaultTimeout is not null && defaultTimeout != Timeout.InfiniteTimeSpan)
 		{
 			stringBuilder.Append(" within ");
@@ -281,8 +293,8 @@ public static partial class ThatSignaler
 	private sealed class SignaledConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		Quantifier quantifier,
-		SignalerOptions options)
+		OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<SignalerOptions> options)
 		: ConstraintResult.WithNotNullValue<SignalerResult>(it, grammars), IAsyncContextConstraint<Signaler>
 	{
 		private TimeSpan? _defaultTimeout;
@@ -300,38 +312,38 @@ public static partial class ThatSignaler
 				return this;
 			}
 
-			int determinableAmount = quantifier.DeterminableAmount;
-			_defaultTimeout = GetDefaultTimeout(options, determinableAmount);
-			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout ?? _defaultTimeout : TimeSpan.Zero;
+			int determinableAmount = quantifier.Value.DeterminableAmount;
+			_defaultTimeout = GetDefaultTimeout(options.Value, determinableAmount);
+			TimeSpan? timeout = determinableAmount > 0 ? options.Value.Timeout ?? _defaultTimeout : TimeSpan.Zero;
 			long startTimestamp = context.GetTimestamp();
 			// With nothing to wait for, the timeout is zero, and the Times overload rejects an amount of zero.
 			Actual = determinableAmount > 0
 				? await context.WaitForSignalsAsync(actual, determinableAmount.Times(), timeout, cancellationToken)
 				: await actual.WaitAsync(timeout, cancellationToken);
 			TimeSpan waited = context.GetElapsedTime(startTimestamp);
-			_waitedTime = options.Timeout is null && _defaultTimeout is null ? null : waited;
+			_waitedTime = options.Value.Timeout is null && _defaultTimeout is null ? null : waited;
 			if (IsCanceledBeforeTheTimeout(Actual.IsSuccess, timeout, waited, context))
 			{
 				Outcome = Outcome.Undecided;
 				return this;
 			}
 
-			Outcome = quantifier.Check(Actual.Count, true) == true ? Outcome.Success : Outcome.Failure;
+			Outcome = quantifier.Value.Check(Actual.Count, true) == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendCallbackExpectation(stringBuilder, quantifier, false, options, _defaultTimeout);
+			=> AppendCallbackExpectation(stringBuilder, quantifier.Value, false, null, options.Value, _defaultTimeout);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was ");
-			AppendOccurrences(stringBuilder, quantifier, IsNegated, Actual?.Count ?? 0);
+			AppendOccurrences(stringBuilder, quantifier.Value, IsNegated, Actual?.Count ?? 0);
 			AppendWaitedTime(stringBuilder, _waitedTime, Actual?.IsSuccess);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendCallbackExpectation(stringBuilder, quantifier, true, options, _defaultTimeout);
+			=> AppendCallbackExpectation(stringBuilder, quantifier.Value, true, null, options.Value, _defaultTimeout);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
@@ -340,8 +352,9 @@ public static partial class ThatSignaler
 	private sealed class SignaledConstraint<TParameter>(
 		string it,
 		ExpectationGrammars grammars,
-		Quantifier quantifier,
-		SignalerOptions<TParameter> options)
+		OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<SignalerOptions> options,
+		OptionsHolder<SignalerPredicateOptions<TParameter>> predicates)
 		: ConstraintResult.WithNotNullValue<SignalerResult<TParameter>>(it, grammars),
 			IAsyncContextConstraint<Signaler<TParameter>>
 	{
@@ -363,10 +376,10 @@ public static partial class ThatSignaler
 				return this;
 			}
 
-			SignalerOptions<TParameter> o = options;
-			int determinableAmount = quantifier.DeterminableAmount;
-			_defaultTimeout = GetDefaultTimeout(options, determinableAmount);
-			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout ?? _defaultTimeout : TimeSpan.Zero;
+			SignalerPredicateOptions<TParameter> o = predicates.Value;
+			int determinableAmount = quantifier.Value.DeterminableAmount;
+			_defaultTimeout = GetDefaultTimeout(options.Value, determinableAmount);
+			TimeSpan? timeout = determinableAmount > 0 ? options.Value.Timeout ?? _defaultTimeout : TimeSpan.Zero;
 			long startTimestamp = context.GetTimestamp();
 			// With nothing to wait for, the timeout is zero, and the Times overload rejects an amount of zero.
 			Actual = await UserCode.InvokeAsync(async () => determinableAmount > 0
@@ -374,7 +387,7 @@ public static partial class ThatSignaler
 					cancellationToken)
 				: await actual.WaitAsync(o.Matches, timeout, cancellationToken), "the predicate", CancellationToken.None);
 			TimeSpan waited = context.GetElapsedTime(startTimestamp);
-			_waitedTime = o.Timeout is null && _defaultTimeout is null ? null : waited;
+			_waitedTime = options.Value.Timeout is null && _defaultTimeout is null ? null : waited;
 			if (IsCanceledBeforeTheTimeout(Actual.IsSuccess, timeout, waited, context))
 			{
 				Outcome = Outcome.Undecided;
@@ -383,17 +396,17 @@ public static partial class ThatSignaler
 
 			_actualCount = Actual.Parameters.Count(p => UserCode.Invoke(o.Matches, p, "the predicate"));
 
-			Outcome = quantifier.Check(_actualCount, true) == true ? Outcome.Success : Outcome.Failure;
+			Outcome = quantifier.Value.Check(_actualCount, true) == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendCallbackExpectation(stringBuilder, quantifier, false, options, _defaultTimeout);
+			=> AppendCallbackExpectation(stringBuilder, quantifier.Value, false, predicates.Value, options.Value, _defaultTimeout);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was ");
-			AppendOccurrences(stringBuilder, quantifier, IsNegated, _actualCount);
+			AppendOccurrences(stringBuilder, quantifier.Value, IsNegated, _actualCount);
 
 			if (Actual?.Count > 0)
 			{
@@ -406,7 +419,7 @@ public static partial class ThatSignaler
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendCallbackExpectation(stringBuilder, quantifier, true, options, _defaultTimeout);
+			=> AppendCallbackExpectation(stringBuilder, quantifier.Value, true, predicates.Value, options.Value, _defaultTimeout);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

@@ -30,7 +30,7 @@ public static partial class ThatTimeOnly
 		bool negated)
 	{
 		IEnumerable<TimeOnly?> expectedValues = expected.ToNonEmptyValues(negated);
-		TimeTolerance tolerance = new();
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<TimeOnly, IThat<TimeOnly>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Tolerance: tolerance,
@@ -58,14 +58,14 @@ public static partial class ThatTimeOnly
 		ExpectationGrammars grammars,
 		IEnumerable<TimeOnly?> expected,
 		string? expectedExpression,
-		TimeTolerance tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: ConstraintResult.WithValue<TimeOnly?>(it, grammars),
 			IValueConstraint<TimeOnly>
 	{
 		public ConstraintResult IsMetBy(TimeOnly actual)
 		{
 			Actual = actual;
-			TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
+			TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
 			foreach (TimeOnly? value in expected)
 			{
 				if (value != null &&

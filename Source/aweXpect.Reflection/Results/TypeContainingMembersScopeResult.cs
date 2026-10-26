@@ -23,7 +23,7 @@ public sealed class TypeContainingMembersScopeResult<TType, TValue> : TypeContai
 	internal TypeContainingMembersScopeResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		Quantifier quantifier,
+		OptionsHolder<Quantifier> quantifier,
 		ScopeOptions scope)
 		: base(expectationBuilder, subject, quantifier)
 	{

@@ -13,8 +13,8 @@ namespace aweXpect.Results;
 public class StringHasItemResult<TCollection>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TCollection?> collection,
-	CollectionIndexOptions collectionIndexOptions,
-	StringEqualityOptions options)
+	OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
+	OptionsHolder<StringEqualityOptions> options)
 	: AndOrResult<TCollection, IThat<TCollection?>, StringHasItemResult<TCollection>>(expectationBuilder,
 			collection),
 		IOptionsProvider<CollectionIndexOptions>,
@@ -24,10 +24,10 @@ public class StringHasItemResult<TCollection>(
 	private readonly IThat<TCollection?> _collection = collection;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
+	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options;
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a block of lines, which may be indented as a whole.

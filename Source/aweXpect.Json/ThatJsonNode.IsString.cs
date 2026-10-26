@@ -60,7 +60,7 @@ public static partial class ThatJsonNode
 		where TNode : JsonNode
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<TNode, IThat<TNode?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static (state, it, grammars) => new JsonNodeConstraint<TNode>(

@@ -22,7 +22,7 @@ public static partial class ThatNullableTimeOnly
 	public static TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>> IsEqualTo(this IThat<TimeOnly?> subject,
 		TimeOnly? expected)
 	{
-		TimeTolerance tolerance = new();
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -43,7 +43,7 @@ public static partial class ThatNullableTimeOnly
 		this IThat<TimeOnly?> subject,
 		TimeOnly? unexpected)
 	{
-		TimeTolerance tolerance = new();
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
 				static (state, it, grammars) =>
@@ -56,7 +56,7 @@ public static partial class ThatNullableTimeOnly
 		string it,
 		ExpectationGrammars grammars,
 		TimeOnly? expected,
-		TimeTolerance tolerance)
+		OptionsHolder<TimeTolerance> tolerance)
 		: ConstraintResult.WithEqualToValue<TimeOnly?>(it, grammars, expected is null),
 			IValueConstraint<TimeOnly?>
 	{
@@ -73,7 +73,7 @@ public static partial class ThatNullableTimeOnly
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
+				TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
 				Outcome = actual.Value.IsConsideredEqualTo(expected, timeTolerance)
 					? Outcome.Success
 					: Outcome.Failure;

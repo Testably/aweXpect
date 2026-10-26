@@ -1,4 +1,5 @@
-﻿using aweXpect.Core;
+﻿using System;
+using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect.Results;
@@ -8,12 +9,12 @@ namespace aweXpect.Results;
 ///     <typeparamref name="TTolerance" /> on the comparison.
 /// </summary>
 /// <remarks>
-///     The options are specified via <see cref="ObjectEqualityOptionsExtensions" />.
+///     The options are specified via <see cref="ObjectMatchTypeExtensions" />.
 /// </remarks>
 public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	ObjectEqualityWithToleranceOptions<TElement, TTolerance> options)
+	OptionsHolder<ObjectMatchType<TElement>> options)
 	: AndOrResult<TType, TThat, ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>>(
 			expectationBuilder, returnValue),
 		IObjectEqualityWithToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>,
@@ -22,13 +23,9 @@ public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TToleranc
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ObjectEqualityOptions<TElement> IOptionsProvider<ObjectEqualityOptions<TElement>>.Options => options;
+	OptionsHolder<ObjectMatchType<TElement>> IOptionsProvider<ObjectMatchType<TElement>>.Options => options;
 
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ObjectEqualityWithToleranceOptions<TElement, TTolerance>
-		IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>.Options => options;
-
-	/// <inheritdoc cref="ObjectEqualityOptionsExtensions.Within{TSelf, TElement, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TElement, TTolerance}, TTolerance)" />
+	/// <inheritdoc cref="ObjectMatchTypeExtensions.Within{TSelf, TElement, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TElement, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
 	{
 		options.Within(tolerance);
@@ -42,18 +39,19 @@ public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TToleranc
 	public sealed class WithinResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		ObjectEqualityWithToleranceOptions<TElement, TTolerance> options)
+		OptionsHolder<ObjectMatchType<TElement>> options)
 		: ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>(expectationBuilder, returnValue,
 				options),
 			IWithinToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>
 	{
-		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-		IRelativeToleranceOptions<TTolerance> IOptionsProvider<IRelativeToleranceOptions<TTolerance>>.Options
-			=> ((IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>)this).Options;
-
-		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.Result" />
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
 		ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>
-			IWithinToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>.Result
-			=> this;
+			IWithinToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>.WithRelativeTolerance(
+				Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
+		{
+			((IOptionsProvider<ObjectMatchType<TElement>>)this).Options
+				.WithRelativeTolerance<TElement, TTolerance>(absoluteTolerance, unit);
+			return this;
+		}
 	}
 }

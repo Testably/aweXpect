@@ -14,7 +14,7 @@ namespace aweXpect.Results;
 public class StringBlockResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	StringEqualityOptions options)
+	OptionsHolder<StringEqualityOptions> options)
 	: AndOrResult<TType, TThat, StringBlockResult<TType, TThat>>(expectationBuilder, returnValue)
 {
 	/// <summary>

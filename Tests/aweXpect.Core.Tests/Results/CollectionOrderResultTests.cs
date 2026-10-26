@@ -10,7 +10,7 @@ public sealed class CollectionOrderResultTests
 	[Test]
 	public async Task ShouldBeOptionsProvider_ForCollectionOrderOptions()
 	{
-		CollectionOrderOptions<int> options = new();
+		OptionsHolder<CollectionOrderOptions<int>> options = new(CollectionOrderOptions<int>.Default);
 		CollectionOrderResult<int[], IThat<int[]>, int> sut = CreateSut(Array.Empty<int>(), options);
 
 		await That(sut).Is<IOptionsProvider<CollectionOrderOptions<int>>>()
@@ -18,7 +18,7 @@ public sealed class CollectionOrderResultTests
 	}
 
 	private static CollectionOrderResult<T, IThat<T>, TMember> CreateSut<T, TMember>(T subject,
-		CollectionOrderOptions<TMember> options)
+		OptionsHolder<CollectionOrderOptions<TMember>> options)
 	{
 #pragma warning disable aweXpect0001
 		IThat<T> source = That(subject);

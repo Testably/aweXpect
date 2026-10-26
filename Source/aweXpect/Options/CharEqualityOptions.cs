@@ -1,24 +1,16 @@
 ﻿using System;
-using aweXpect.Helpers;
 
 namespace aweXpect.Options;
 
 internal sealed class CharEqualityOptions
 {
-	private bool _isIgnoreCaseSpecified;
-
 	public bool IgnoreCase { get; private set; }
 
 	/// <summary>
 	///     Ignores casing when comparing the <see langword="char" />s.
 	/// </summary>
-	/// <exception cref="InvalidOperationException">The casing is already specified.</exception>
 	public void IgnoringCase(bool ignoreCase)
-	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isIgnoreCaseSpecified, nameof(IgnoringCase));
-		_isIgnoreCaseSpecified = true;
-		IgnoreCase = ignoreCase;
-	}
+		=> IgnoreCase = ignoreCase;
 
 	public bool AreConsideredEqual(char? actual, char? expected)
 	{

@@ -29,8 +29,7 @@ public static partial class ThatAsyncEnumerable
 			equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 		}
 
-		Options.ObjectEqualityOptions<TItem> equalityOptions = new();
-		equalityOptions.Equivalent(equivalencyOptions);
+		ObjectMatchType<TItem> equalityOptions = new EquivalencyMatchType<TItem>(equivalencyOptions);
 		return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint(
 				(Quantifier: items.Quantifier, Expected: expected, DoNotPopulateThisValue: doNotPopulateThisValue,

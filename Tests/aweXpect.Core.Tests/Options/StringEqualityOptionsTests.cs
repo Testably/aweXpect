@@ -13,12 +13,12 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_Null_ShouldReturnFalse()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringLeadingWhiteSpace();
-			sut.IgnoringTrailingWhiteSpace();
-			sut.IgnoringNewlineStyle();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringLeadingWhiteSpace();
+			sut = sut.IgnoringTrailingWhiteSpace();
+			sut = sut.IgnoringNewlineStyle();
 
-			bool result = await sut.AreConsideredEqual(null, "foo");
+			bool result = await sut.AreConsideredEqual(null, "foo", "expected");
 
 			await That(result).IsFalse();
 		}
@@ -26,10 +26,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenAComparerIsUsed_ShouldStillApplyTheWhiteSpaceOptions()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Using(StringComparer.Ordinal).IgnoringLeadingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Using(StringComparer.Ordinal).IgnoringLeadingWhiteSpace();
 
-			bool result = await sut.AreConsideredEqual("  foo", "foo");
+			bool result = await sut.AreConsideredEqual("  foo", "foo", "expected");
 
 			await That(result).IsTrue()
 				.Because("both values are normalized before the comparer sees them, so neither option is dropped");
@@ -44,8 +44,8 @@ public sealed partial class StringEqualityOptionsTests
 			bool completesLater, object expected)
 		{
 			FormatException cause = new("no number");
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(new DelegatingMatchType(completesLater
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(new DelegatingMatchType(completesLater
 				? async () =>
 				{
 					await Task.Yield();
@@ -54,7 +54,7 @@ public sealed partial class StringEqualityOptionsTests
 				: () => new ValueTask<MatchResult>(
 					MatchResult.NotComparable("is not comparable", cause))), "AsCustom");
 
-			async Task Act() => await sut.AreConsideredEqual("foo", expected);
+			async Task Act() => await ((IEqualityEvaluator<string?>)sut).AreConsideredEqual("foo", expected);
 
 			await That(Act).Throws<UserCodeException>()
 				.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
@@ -68,14 +68,14 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenACustomMatchTypeCompletesLater_ShouldAwaitIt()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(new DelegatingMatchType(async () =>
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(new DelegatingMatchType(async () =>
 			{
 				await Task.Yield();
 				return MatchResult.Match;
 			}), "AsCustom");
 
-			bool result = await sut.AreConsideredEqual("foo", "bar");
+			bool result = await sut.AreConsideredEqual("foo", "bar", "expected");
 
 			await That(result).IsTrue();
 		}
@@ -90,11 +90,11 @@ public sealed partial class StringEqualityOptionsTests
 		{
 			ArgumentException exception = new("my rejection");
 			ValidatingMatchType matchType = new(rejectExpected: _ => exception);
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringTrailingWhiteSpace();
-			sut.SetMatchType(matchType, "AsCustom");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringTrailingWhiteSpace();
+			sut = sut.SetMatchType(matchType, "AsCustom");
 
-			void Act() => sut.AreConsideredEqual("foo", expected).AsTask();
+			void Act() => ((IEqualityEvaluator<string?>)sut).AreConsideredEqual("foo", expected).AsTask();
 
 			ArgumentException thrownException = await That(Act).Throws<ArgumentException>()
 				.Because("an unusable expected value must not only throw when the returned task is awaited");
@@ -107,10 +107,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_WhenACustomMatchTypeTimesOut_ShouldNameItsTimeout()
 		{
 			RegexMatchTimeoutException exception = new("foo", "bar", TimeSpan.FromSeconds(3));
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(new DelegatingMatchType(() => throw exception), "AsCustom");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(new DelegatingMatchType(() => throw exception), "AsCustom");
 
-			async Task Act() => await sut.AreConsideredEqual("foo", "bar");
+			async Task Act() => await sut.AreConsideredEqual("foo", "bar", "expected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage(
@@ -125,8 +125,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_WhenACustomMatchTypeTimesOut_ShouldThrowArgumentException(bool completesLater)
 		{
 			RegexMatchTimeoutException exception = new("foo", "bar", TimeSpan.FromSeconds(1));
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(new DelegatingMatchType(completesLater
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(new DelegatingMatchType(completesLater
 				? async () =>
 				{
 					await Task.Yield();
@@ -134,7 +134,7 @@ public sealed partial class StringEqualityOptionsTests
 				}
 				: () => throw exception), "AsCustom");
 
-			async Task Act() => await sut.AreConsideredEqual("foo", "bar");
+			async Task Act() => await sut.AreConsideredEqual("foo", "bar", "expected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage(
@@ -148,10 +148,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenIndentationIsIgnored_ShouldEmptyWhiteSpaceOnlyLines()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringIndentation();
 
-			bool result = await sut.AreConsideredEqual("foo\n    ", "foo\n");
+			bool result = await sut.AreConsideredEqual("foo\n    ", "foo\n", "expected");
 
 			await That(result).IsTrue();
 		}
@@ -167,10 +167,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_WhenIndentationIsIgnored_ShouldRemoveLeadingWhiteSpacePerLine(
 			string actual, string expected)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringIndentation();
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await sut.AreConsideredEqual(actual, expected, "expected");
 
 			await That(result).IsTrue();
 		}
@@ -178,10 +178,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AreConsideredEqual_WhenIndentationIsIgnored_ShouldStillConsiderTrailingWhiteSpace()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringIndentation();
 
-			bool result = await sut.AreConsideredEqual("foo  \nbar", "foo\nbar");
+			bool result = await sut.AreConsideredEqual("foo  \nbar", "foo\nbar", "expected");
 
 			await That(result).IsFalse();
 		}
@@ -196,10 +196,10 @@ public sealed partial class StringEqualityOptionsTests
 		{
 			InvalidOperationException exception = new("comparer failed");
 			StringEqualityOptions sut = WithMatchType(matchType);
-			sut.Using(new ThrowingComparer(exception));
+			sut = sut.Using(new ThrowingComparer(exception));
 
 			async Task Act()
-				=> await sut.AreConsideredEqual("foo", "foo");
+				=> await sut.AreConsideredEqual("foo", "foo", "expected");
 
 			await That(Act).Throws<UserCodeException>()
 				.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
@@ -216,11 +216,11 @@ public sealed partial class StringEqualityOptionsTests
 		{
 			StringEqualityOptions sut = WithMatchType(matchType);
 
-			bool matchingResult = await sut.AreConsideredEqual("foo", matchingPattern);
-			bool otherResult = await sut.AreConsideredEqual("foo", otherPattern);
-			bool caseSensitiveResult = await sut.AreConsideredEqual("FOO", matchingPattern);
-			sut.IgnoringCase();
-			bool ignoringCaseResult = await sut.AreConsideredEqual("FOO", matchingPattern);
+			bool matchingResult = await sut.AreConsideredEqual("foo", matchingPattern, "expected");
+			bool otherResult = await sut.AreConsideredEqual("foo", otherPattern, "expected");
+			bool caseSensitiveResult = await sut.AreConsideredEqual("FOO", matchingPattern, "expected");
+			sut = sut.IgnoringCase();
+			bool ignoringCaseResult = await sut.AreConsideredEqual("FOO", matchingPattern, "expected");
 
 			await That(matchingResult).IsTrue();
 			await That(otherResult).IsFalse()
@@ -256,9 +256,9 @@ public sealed partial class StringEqualityOptionsTests
 			string matchType, string? actual, string expected, bool isEqual)
 		{
 			StringEqualityOptions sut = WithMatchType(matchType);
-			sut.NormalizingWhiteSpace();
+			sut = sut.NormalizingWhiteSpace();
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool result = await sut.AreConsideredEqual(actual, expected, "expected");
 
 			await That(result).IsEqualTo(isEqual)
 				.Because("every run of whitespace counts as a single space, and the whitespace of the expected value at an "
@@ -273,12 +273,12 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_WhenWhiteSpaceIsNormalized_ShouldSupersedeTheOtherWhiteSpaceOptions(
 			string option)
 		{
-			StringEqualityOptions sut = new("expected");
-			Change(sut, option, true);
-			sut.NormalizingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = Change(sut, option, true);
+			sut = sut.NormalizingWhiteSpace();
 
-			bool isEqual = await sut.AreConsideredEqual("  a \r\n\t b  ", "a b");
-			bool isEqualWithoutWhiteSpace = await sut.AreConsideredEqual("a  b", "ab");
+			bool isEqual = await sut.AreConsideredEqual("  a \r\n\t b  ", "a b", "expected");
+			bool isEqualWithoutWhiteSpace = await sut.AreConsideredEqual("a  b", "ab", "expected");
 
 			await That(isEqual).IsTrue();
 			await That(isEqualWithoutWhiteSpace).IsFalse()
@@ -297,13 +297,13 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_WithoutOptions_ShouldCompareOrdinally(
 			string? actual, string? expected, bool isEqual)
 		{
-			StringEqualityOptions sut = new("expected");
-			StringEqualityOptions withComparer = new("expected");
-			withComparer.Using(StringComparer.Ordinal);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			StringEqualityOptions withComparer = StringEqualityOptions.Default;
+			withComparer = withComparer.Using(StringComparer.Ordinal);
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			bool resultAsObject = await sut.AreConsideredEqual<object?>(actual, expected);
-			bool resultWithComparer = await withComparer.AreConsideredEqual(actual, expected);
+			bool result = await sut.AreConsideredEqual(actual, expected, "expected");
+			bool resultAsObject = await ((IEqualityEvaluator<string?>)sut).AreConsideredEqual<object?>(actual, expected);
+			bool resultWithComparer = await withComparer.AreConsideredEqual(actual, expected, "expected");
 
 			await That(result).IsEqualTo(isEqual);
 			await That(resultAsObject).IsEqualTo(isEqual);
@@ -318,12 +318,12 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task AreConsideredEqual_WithoutOptions_WhenExpectedIsNoString_ShouldCompareWithNull(
 			string? actual, bool isEqual)
 		{
-			StringEqualityOptions sut = new("expected");
-			StringEqualityOptions withComparer = new("expected");
-			withComparer.Using(StringComparer.Ordinal);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			StringEqualityOptions withComparer = StringEqualityOptions.Default;
+			withComparer = withComparer.Using(StringComparer.Ordinal);
 
-			bool result = await sut.AreConsideredEqual(actual, 1);
-			bool resultWithComparer = await withComparer.AreConsideredEqual(actual, 1);
+			bool result = await ((IEqualityEvaluator<string?>)sut).AreConsideredEqual(actual, 1);
+			bool resultWithComparer = await ((IEqualityEvaluator<string?>)withComparer).AreConsideredEqual(actual, 1);
 
 			await That(result).IsEqualTo(isEqual);
 			await That(resultWithComparer).IsEqualTo(isEqual);
@@ -335,23 +335,40 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
 		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
 		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
-		public async Task AsBlock_WhenALineOptionIsSpecified_ShouldThrowInvalidOperationException(string option)
+		public async Task AsBlock_WhenALineOptionIsDisabled_ShouldNotThrow(string option)
 		{
-			StringEqualityOptions sut = new("expected");
-			Change(sut, option, false);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = Change(sut, option, false);
+
+			void Act() => sut.AsBlock();
+
+			await That(Act).DoesNotThrow()
+				.Because("an option set to false is the same as not set");
+		}
+
+		[Test]
+		[Arguments(nameof(StringEqualityOptions.IgnoringIndentation))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
+		public async Task AsBlock_WhenALineOptionIsEnabled_ShouldThrowInvalidOperationException(string option)
+		{
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = Change(sut, option, true);
 
 			void Act() => sut.AsBlock();
 
 			await That(Act).Throws<InvalidOperationException>()
 				.WithMessage($"{option} cannot be combined with AsBlock.")
-				.Because("a block compares the lines on its own, and any explicit call counts as specified");
+				.Because("a block compares the lines on its own");
 		}
 
 		[Test]
 		public async Task AsBlock_WhenAnotherMatchTypeIsSpecified_ShouldThrowInvalidOperationException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix();
 
 			void Act() => sut.AsBlock();
 
@@ -362,8 +379,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AsRegex_WhenAComparerIsUsed_ShouldThrowInvalidOperationException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Using(StringComparer.Ordinal);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Using(StringComparer.Ordinal);
 
 			void Act() => sut.AsRegex();
 
@@ -374,8 +391,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AsRegex_WithOptions_WhenAComparerIsUsed_ShouldThrowInvalidOperationException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Using(StringComparer.Ordinal);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Using(StringComparer.Ordinal);
 
 			void Act() => sut.AsRegex(RegexOptions.Multiline);
 
@@ -386,8 +403,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task AsWildcard_WhenAComparerIsUsed_ShouldThrowInvalidOperationException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Using(StringComparer.Ordinal);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Using(StringComparer.Ordinal);
 
 			void Act() => sut.AsWildcard();
 
@@ -398,7 +415,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task ComparesByOrdinalEquality_ByDefault_ShouldBeTrue()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			await That(sut.ComparesByOrdinalEquality).IsTrue();
 		}
@@ -420,8 +437,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(nameof(StringEqualityOptions.Using))]
 		public async Task ComparesByOrdinalEquality_WhenTheComparisonIsChanged_ShouldBeFalse(string option)
 		{
-			StringEqualityOptions sut = new("expected");
-			Change(sut, option, true);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = Change(sut, option, true);
 
 			await That(sut.ComparesByOrdinalEquality).IsFalse();
 		}
@@ -435,8 +452,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
 		public async Task ComparesByOrdinalEquality_WhenTheOptionIsDisabled_ShouldBeTrue(string option)
 		{
-			StringEqualityOptions sut = new("expected");
-			Change(sut, option, false);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = Change(sut, option, false);
 
 			await That(sut.ComparesByOrdinalEquality).IsTrue();
 		}
@@ -444,10 +461,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenAComparerIsUsed_ShouldCompareEveryWindowWithIt()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Using(StringComparer.OrdinalIgnoreCase);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Using(StringComparer.OrdinalIgnoreCase);
 
-			int result = await sut.CountOccurrences("xabAB", "ab");
+			int result = await sut.CountOccurrences("xabAB", "ab", "expected");
 
 			await That(result).IsEqualTo(2);
 		}
@@ -455,11 +472,11 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenACustomMatchTypeCannotCompareAWindow_ShouldThrowUserCodeException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(new DelegatingMatchType(() => new ValueTask<MatchResult>(
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(new DelegatingMatchType(() => new ValueTask<MatchResult>(
 				MatchResult.NotComparable("is not comparable"))), "AsCustom");
 
-			async Task Act() => await sut.CountOccurrences("foo", "f");
+			async Task Act() => await sut.CountOccurrences("foo", "f", "expected");
 
 			await That(Act).Throws<UserCodeException>()
 				.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
@@ -474,11 +491,11 @@ public sealed partial class StringEqualityOptionsTests
 		{
 			ArgumentException exception = new("my rejection");
 			ValidatingMatchType matchType = new(rejectExpected: _ => exception);
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringNewlineStyle();
-			sut.SetMatchType(matchType, "AsCustom");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringNewlineStyle();
+			sut = sut.SetMatchType(matchType, "AsCustom");
 
-			void Act() => sut.CountOccurrences("some text", "b\r\nar").AsTask();
+			void Act() => sut.CountOccurrences("some text", "b\r\nar", "expected").AsTask();
 
 			ArgumentException thrownException = await That(Act).Throws<ArgumentException>()
 				.Because("an unusable expected value must not only throw when the returned task is awaited");
@@ -497,10 +514,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_WhenComparedOrdinally_ShouldCountTheNonOverlappingOccurrences(
 			string actual, string expected, bool ignoreCase, int expectedCount)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringCase(ignoreCase);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringCase(ignoreCase);
 
-			int result = await sut.CountOccurrences(actual, expected);
+			int result = await sut.CountOccurrences(actual, expected, "expected");
 
 			await That(result).IsEqualTo(expectedCount)
 				.Because("the occurrences are searched instead of compared with a window at every position, which must count alike");
@@ -509,10 +526,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenExpectedIsLongerThanActual_ShouldStillApplyTheOptions()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringTrailingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringTrailingWhiteSpace();
 
-			int result = await sut.CountOccurrences("ab", "ab ");
+			int result = await sut.CountOccurrences("ab", "ab ", "expected");
 
 			await That(result).IsEqualTo(1);
 		}
@@ -520,10 +537,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenExpectedIsPaddedWithWhiteSpace_ShouldOnlyIgnoreItAtTheEndOfTheSubject()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringTrailingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringTrailingWhiteSpace();
 
-			int result = await sut.CountOccurrences("abab", "ab  ");
+			int result = await sut.CountOccurrences("abab", "ab  ", "expected");
 
 			await That(result).IsEqualTo(1)
 				.Because("the first 'ab' is followed by another character instead of whitespace");
@@ -535,10 +552,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments("\t")]
 		public async Task CountOccurrences_WhenExpectedNormalizesToEmpty_ShouldThrowArgumentException(string expected)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringIndentation();
 
-			async Task Act() => await sut.CountOccurrences("some text", expected);
+			async Task Act() => await sut.CountOccurrences("some text", expected, "expected");
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("The 'expected' string cannot be empty.").AsPrefix().And
@@ -549,10 +566,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenIndentationIsIgnored_ShouldFindNestedMultiLineSnippet()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringIndentation();
 
-			int result = await sut.CountOccurrences("class C\n{\n    Foo();\n    Bar();\n}", "Foo();\nBar();");
+			int result = await sut.CountOccurrences("class C\n{\n    Foo();\n    Bar();\n}", "Foo();\nBar();", "expected");
 
 			await That(result).IsEqualTo(1);
 		}
@@ -560,10 +577,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenMatchingAsRegex_ShouldNotLimitTheWindowToThePatternLength()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
-			int result = await sut.CountOccurrences("ab", "^.*$");
+			int result = await sut.CountOccurrences("ab", "^.*$", "expected");
 
 			await That(result).IsEqualTo(1);
 		}
@@ -571,10 +588,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenMatchingAsRegex_ShouldNotNormalizeTheIndividualWindows()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex().IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex().IgnoringIndentation();
 
-			int result = await sut.CountOccurrences("x  abz", "^ab$");
+			int result = await sut.CountOccurrences("x  abz", "^ab$", "expected");
 
 			await That(result).IsEqualTo(0)
 				.Because("the indentation is removed once from the whole string, not a second time from each occurrence");
@@ -587,10 +604,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_WhenMatchingAsRegex_ShouldOnlyIgnoreTheWhiteSpaceOfThePatternAtTheStartOfTheSubject(
 			string actual, int expectedCount)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex().IgnoringLeadingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex().IgnoringLeadingWhiteSpace();
 
-			int result = await sut.CountOccurrences(actual, " g.t");
+			int result = await sut.CountOccurrences(actual, " g.t", "expected");
 
 			await That(result).IsEqualTo(expectedCount)
 				.Because("the space of the pattern is only optional where the pattern reaches the start of the subject");
@@ -599,10 +616,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenMatchingAsWildcard_ShouldNotNormalizeTheIndividualWindows()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsWildcard().IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsWildcard().IgnoringIndentation();
 
-			int result = await sut.CountOccurrences("a b", "?b");
+			int result = await sut.CountOccurrences("a b", "?b", "expected");
 
 			await That(result).IsEqualTo(1);
 		}
@@ -614,10 +631,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_WhenMatchingAsWildcard_ShouldOnlyIgnoreTheWhiteSpaceOfThePatternAtTheStartOfTheSubject(
 			string actual, int expectedCount)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsWildcard().IgnoringLeadingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsWildcard().IgnoringLeadingWhiteSpace();
 
-			int result = await sut.CountOccurrences(actual, " g?t");
+			int result = await sut.CountOccurrences(actual, " g?t", "expected");
 
 			await That(result).IsEqualTo(expectedCount)
 				.Because("the space of the pattern is only optional where the pattern reaches the start of the subject");
@@ -626,10 +643,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task CountOccurrences_WhenOccurrencesAreIndentedDifferently_ShouldCountAll()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringIndentation();
 
-			int result = await sut.CountOccurrences("  a\n  b\nx\na\nb", "a\nb");
+			int result = await sut.CountOccurrences("  a\n  b\nx\na\nb", "a\nb", "expected");
 
 			await That(result).IsEqualTo(2);
 		}
@@ -644,10 +661,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_WhenWhiteSpaceIsIgnored_ShouldOnlyIgnoreTheWhiteSpaceOfTheExpectedValueAtTheEdgesOfTheSubject(
 			string actual, string expected, int expectedCount)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringLeadingWhiteSpace().IgnoringTrailingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringLeadingWhiteSpace().IgnoringTrailingWhiteSpace();
 
-			int result = await sut.CountOccurrences(actual, expected);
+			int result = await sut.CountOccurrences(actual, expected, "expected");
 
 			await That(result).IsEqualTo(expectedCount)
 				.Because("the whitespace of the expected value is only optional where it reaches an edge of the subject, "
@@ -664,10 +681,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_WhenWhiteSpaceIsNormalized_ShouldCountTheOccurrencesInTheCollapsedValue(
 			string actual, string expected, int expectedCount)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.NormalizingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.NormalizingWhiteSpace();
 
-			int result = await sut.CountOccurrences(actual, expected);
+			int result = await sut.CountOccurrences(actual, expected, "expected");
 
 			await That(result).IsEqualTo(expectedCount)
 				.Because("both values are collapsed once as a whole, and whitespace alone never occurs at an edge");
@@ -683,14 +700,14 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_WithMaximum_ShouldStopAtTheMaximum(string? option, string actual,
 			string expected)
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 			if (option is not null)
 			{
-				Change(sut, option, true);
+				sut = Change(sut, option, true);
 			}
 
-			int result = await sut.CountOccurrences(actual, expected, 2);
-			int total = await sut.CountOccurrences(actual, expected);
+			int result = await sut.CountOccurrences(actual, expected, 2, "expected");
+			int total = await sut.CountOccurrences(actual, expected, "expected");
 
 			await That(result).IsEqualTo(2)
 				.Because("the search stops once the maximum number of occurrences is found");
@@ -702,9 +719,9 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(-1)]
 		public async Task CountOccurrences_WithMaximum_WhenNotPositive_ShouldThrowArgumentOutOfRangeException(int maximum)
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
-			void Act() => sut.CountOccurrences("abab", "ab", maximum).AsTask();
+			void Act() => sut.CountOccurrences("abab", "ab", maximum, "expected").AsTask();
 
 			await That(Act).Throws<ArgumentOutOfRangeException>()
 				.WithParamName("maximum").And
@@ -719,13 +736,13 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_WithMaximum_WhenThereAreFewerOccurrences_ShouldCountAll(string? option,
 			string actual, string expected)
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 			if (option is not null)
 			{
-				Change(sut, option, true);
+				sut = Change(sut, option, true);
 			}
 
-			int result = await sut.CountOccurrences(actual, expected, 10);
+			int result = await sut.CountOccurrences(actual, expected, 10, "expected");
 
 			await That(result).IsEqualTo(4);
 		}
@@ -800,10 +817,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_Null_ShouldReturnItWasNull()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringLeadingWhiteSpace();
-			sut.IgnoringTrailingWhiteSpace();
-			sut.IgnoringNewlineStyle();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringLeadingWhiteSpace();
+			sut = sut.IgnoringTrailingWhiteSpace();
+			sut = sut.IgnoringNewlineStyle();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, null, "foo", MatchResult.NoMatch);
 
@@ -813,9 +830,9 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenExpectedIsNull_ShouldOnlyTrimTheActualValue()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringLeadingWhiteSpace();
-			sut.IgnoringTrailingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringLeadingWhiteSpace();
+			sut = sut.IgnoringTrailingWhiteSpace();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, " foo ", null, MatchResult.NoMatch);
 
@@ -825,8 +842,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenACustomMatchTypeThrowsWithoutComparer_ShouldNotCatchTheException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(new CustomMatchType(), "AsCustom");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(new CustomMatchType(), "AsCustom");
 
 			void Act()
 				=> sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo", "bar", MatchResult.NoMatch);
@@ -838,7 +855,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenAPluralSubjectIsIt_ShouldKeepTheSingularVerb()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.Plural, "foo", "bar", MatchResult.NoMatch);
 
@@ -856,7 +873,7 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetExtendedFailure_WhenAPluralSubjectIsNamed_ShouldUseThePluralVerb(string matchType)
 		{
 			StringEqualityOptions sut = matchType == "AsCustom"
-				? new StringEqualityOptions("expected").SetMatchType(new DefaultFailureMatchType(), "AsCustom")
+				? StringEqualityOptions.Default.SetMatchType(new DefaultFailureMatchType(), "AsCustom")
 				: WithMatchType(matchType);
 
 			string result = sut.GetExtendedFailure("the titles", ExpectationGrammars.Plural, "foo", "bar",
@@ -877,9 +894,9 @@ public sealed partial class StringEqualityOptionsTests
 			string matchType, string actual, string expected)
 		{
 			StringEqualityOptions sut = WithMatchType(matchType);
-			sut.Using(new VersionStringComparer());
+			sut = sut.Using(new VersionStringComparer());
 
-			bool isEqual = await sut.AreConsideredEqual(actual, expected);
+			bool isEqual = await sut.AreConsideredEqual(actual, expected, "expected");
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected, MatchResult.NoMatch);
 
 			await That(isEqual).IsFalse();
@@ -890,8 +907,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenTheComparerThrowsForTrimmedValues_ShouldOmitTheDifference()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Using(new ThrowingForComparer("1.2.3"));
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Using(new ThrowingForComparer("1.2.3"));
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, " 1.2.3", "1.2.4", MatchResult.NoMatch);
 
@@ -901,8 +918,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenIndentationAndLeadingWhiteSpaceAreIgnored_ShouldReportOriginalPosition()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringIndentation().IgnoringLeadingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringIndentation().IgnoringLeadingWhiteSpace();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "\n  foo", "bar", MatchResult.NoMatch);
 
@@ -912,8 +929,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenIndentationIsIgnored_ShouldReportColumnOfOriginalLine()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringIndentation();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo\n    baz", "foo\nbar", MatchResult.NoMatch);
 
@@ -923,8 +940,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenIndentationIsIgnoredAsPrefix_ShouldReportOriginalIndex()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix().IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsPrefix().IgnoringIndentation();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  foobar", "baz", MatchResult.NoMatch);
 
@@ -934,8 +951,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenIndentationIsIgnoredAsSuffix_ShouldReportOriginalIndex()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsSuffix().IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsSuffix().IgnoringIndentation();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  foobar", "baz", MatchResult.NoMatch);
 
@@ -945,8 +962,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenIndentationIsIgnoredOnSingleLine_ShouldReportOriginalIndex()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringIndentation();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  foo", "bar", MatchResult.NoMatch);
 
@@ -956,8 +973,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenLeadingWhiteSpaceIsIgnored_ShouldNotShiftColumnsOnLaterLines()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringLeadingWhiteSpace();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringLeadingWhiteSpace();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  a\nbcd", "a\nbXd", MatchResult.NoMatch);
 
@@ -971,13 +988,13 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetExtendedFailure_WhenWhiteSpaceIsNormalized_ShouldReportThePositionInTheNormalizedValues(
 			string? option)
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 			if (option is not null)
 			{
-				Change(sut, option, true);
+				sut = Change(sut, option, true);
 			}
 
-			sut.NormalizingWhiteSpace();
+			sut = sut.NormalizingWhiteSpace();
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "\n  a  b\n  c", "a b  d", MatchResult.NoMatch);
 
@@ -995,7 +1012,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedMemberFailure_Negated_ShouldStateTheValueOfTheMember()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.Negated, "foo", "foo", MatchResult.NoMatch);
 
@@ -1005,7 +1022,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedMemberFailure_Null_ShouldStateThatTheMemberWasNull()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.None, null, "foo", MatchResult.NoMatch);
 
@@ -1015,8 +1032,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedMemberFailure_WhenACustomMatchTypeFails_ShouldKeepItsFailure()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(new DelegatingMatchType(() => new ValueTask<MatchResult>(MatchResult.NoMatch), "my custom failure"), "AsCustom");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(new DelegatingMatchType(() => new ValueTask<MatchResult>(MatchResult.NoMatch), "my custom failure"), "AsCustom");
 
 			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.None, "foo", "bar", MatchResult.NoMatch);
 
@@ -1027,7 +1044,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedMemberFailure_WhenThePluralSubjectIsNamed_ShouldKeepTheMemberSingular()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			string result = sut.GetExtendedMemberFailure("the requests", "header value", ExpectationGrammars.Plural,
 				"foo", "bar", MatchResult.NoMatch);
@@ -1096,8 +1113,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task IgnoringCase_WhenACustomMatchTypeDoesNotSupportIt_ShouldThrowAndKeepTheOptions()
 		{
 			ValidatingMatchType matchType = new(StringMatchSettingKinds.None);
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(matchType, "AsCustom");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(matchType, "AsCustom");
 
 			void Act() => sut.IgnoringCase();
 
@@ -1114,10 +1131,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task IgnoringCase_WhenACustomMatchTypeIsSpecified_ShouldApplyASupportedCasing(bool ignoreCase)
 		{
 			ValidatingMatchType matchType = new(StringMatchSettingKinds.IgnoreCase);
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(matchType, "AsCustom");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(matchType, "AsCustom");
 
-			sut.IgnoringCase(ignoreCase);
+			sut = sut.IgnoringCase(ignoreCase);
 
 			await That(sut.ToString()).IsEqualTo(ignoreCase ? " as custom ignoring case" : " as custom");
 		}
@@ -1126,9 +1143,9 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task IgnoringCase_WhenAComparerIsUsed_ShouldReportTheComparerBeforeTheMatchType()
 		{
 			ValidatingMatchType matchType = new(StringMatchSettingKinds.Comparer);
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(matchType, "AsCustom");
-			sut.Using(StringComparer.Ordinal);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(matchType, "AsCustom");
+			sut = sut.Using(StringComparer.Ordinal);
 
 			void Act() => sut.IgnoringCase();
 
@@ -1141,8 +1158,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task IgnoringCase_WhenAComparerIsUsed_ShouldThrowInvalidOperationException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Using(StringComparer.Ordinal);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Using(StringComparer.Ordinal);
 
 			void Act() => sut.IgnoringCase();
 
@@ -1154,8 +1171,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task IgnoringCase_WithFalse_WhenAComparerIsUsed_ShouldNotThrow()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Using(StringComparer.Ordinal);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Using(StringComparer.Ordinal);
 
 			void Act() => sut.IgnoringCase(false);
 
@@ -1181,19 +1198,19 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task IgnoringCase_WithABuiltInMatchType_ShouldBeAcceptedInEitherOrder(
 			string matchType, bool matchTypeFirst)
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			void Act()
 			{
 				if (matchTypeFirst)
 				{
-					Change(sut, matchType, true);
-					sut.IgnoringCase();
+					sut = Change(sut, matchType, true);
+					sut = sut.IgnoringCase();
 				}
 				else
 				{
-					sut.IgnoringCase();
-					Change(sut, matchType, true);
+					sut = sut.IgnoringCase();
+					sut = Change(sut, matchType, true);
 				}
 			}
 
@@ -1207,10 +1224,27 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
 		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
 		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
+		public async Task IgnoringOption_WhenDisabledAndMatchingAsBlock_ShouldNotThrow(string option)
+		{
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
+
+			void Act() => Change(sut, option, false);
+
+			await That(Act).DoesNotThrow()
+				.Because("an option set to false is the same as not set");
+		}
+
+		[Test]
+		[Arguments(nameof(StringEqualityOptions.IgnoringIndentation))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
 		public async Task IgnoringOption_WhenMatchingAsBlock_ShouldThrowInvalidOperationException(string option)
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsBlock();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsBlock();
 
 			void Act() => Change(sut, option, true);
 
@@ -1220,32 +1254,39 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
-		[Arguments(nameof(StringEqualityOptions.IgnoringCase))]
-		[Arguments(nameof(StringEqualityOptions.IgnoringIndentation))]
-		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
-		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
-		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
-		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
-		public async Task IgnoringOption_WhenSpecifiedTwice_ShouldThrowInvalidOperationException(string option)
+		[Arguments(nameof(StringEqualityOptions.IgnoringCase), true)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringCase), false)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringIndentation), true)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringIndentation), false)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace), true)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace), false)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle), true)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle), false)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace), true)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace), false)]
+		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace), true)]
+		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace), false)]
+		public async Task IgnoringOption_WhenSpecifiedTwice_ShouldUseTheLastValue(string option, bool last)
 		{
-			StringEqualityOptions sut = new("expected");
-			Change(sut, option, false);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			StringEqualityOptions onlyLast = StringEqualityOptions.Default;
+			onlyLast = Change(onlyLast, option, last);
+			sut = Change(sut, option, !last);
 
-			void Act() => Change(sut, option, true);
+			sut = Change(sut, option, last);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage($"{option} cannot be specified more than once.")
-				.Because("any explicit call counts as specified, also with false");
+			await That(sut.ToString()).IsEqualTo(onlyLast.ToString());
 		}
 
 		[Test]
-		public async Task SetMatchType_ShouldReturnTheSameOptions()
+		public async Task SetMatchType_ShouldNotChangeTheOriginalOptions()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			StringEqualityOptions result = sut.SetMatchType(new CustomMatchType(), "AsCustom");
 
-			await That(result).IsSameAs(sut);
+			await That(result).IsNotSameAs(sut);
+			await That(sut.ComparesByOrdinalEquality).IsTrue();
 		}
 
 		[Test]
@@ -1256,8 +1297,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(nameof(StringEqualityOptions.Containing))]
 		public async Task SetMatchType_WhenAMatchTypeIsSpecified_ShouldThrowInvalidOperationException(string option)
 		{
-			StringEqualityOptions sut = new("expected");
-			Change(sut, option, true);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = Change(sut, option, true);
 
 			void Act() => sut.SetMatchType(new CustomMatchType(), "AsCustom");
 
@@ -1274,9 +1315,9 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task SetMatchType_WhenAMatchTypeIsSpecified_ShouldNotCheckTheSettings(string option)
 		{
 			ValidatingMatchType matchType = new(StringMatchSettingKinds.None);
-			StringEqualityOptions sut = new("expected");
-			Change(sut, option, true);
-			sut.IgnoringCase();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = Change(sut, option, true);
+			sut = sut.IgnoringCase();
 
 			void Act() => sut.SetMatchType(matchType, "AsCustom");
 
@@ -1289,10 +1330,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task SetMatchType_WhenCaseIsIgnored_ShouldAcceptASupportedCasing()
 		{
 			ValidatingMatchType matchType = new(StringMatchSettingKinds.IgnoreCase);
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringCase();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringCase();
 
-			sut.SetMatchType(matchType, "AsCustom");
+			sut = sut.SetMatchType(matchType, "AsCustom");
 
 			await That(sut.ToString()).IsEqualTo(" as custom ignoring case");
 		}
@@ -1301,10 +1342,10 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task SetMatchType_WhenAComparerIsUsed_ShouldAcceptASupportedComparer()
 		{
 			ValidatingMatchType matchType = new(StringMatchSettingKinds.Comparer);
-			StringEqualityOptions sut = new("expected");
-			sut.Using(StringComparer.Ordinal);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Using(StringComparer.Ordinal);
 
-			sut.SetMatchType(matchType, "AsCustom");
+			sut = sut.SetMatchType(matchType, "AsCustom");
 
 			await That(sut.ToString()).IsEqualTo($" as custom using {Formatter.Format(StringComparer.Ordinal.GetType())}");
 		}
@@ -1318,8 +1359,8 @@ public sealed partial class StringEqualityOptionsTests
 			string option)
 		{
 			ValidatingMatchType matchType = new(StringMatchSettingKinds.None);
-			StringEqualityOptions sut = new("expected");
-			Change(sut, option, true);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = Change(sut, option, true);
 			string optionString = sut.ToString();
 
 			void Act() => sut.SetMatchType(matchType, "AsCustom");
@@ -1332,10 +1373,89 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task SetMatchType_WhenTheOptionsAreDisabled_ShouldNotThrow()
+		{
+			ValidatingMatchType matchType = new(StringMatchSettingKinds.None);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringCase(false).IgnoringIndentation(false).IgnoringNewlineStyle(false)
+				.IgnoringLeadingWhiteSpace(false).IgnoringTrailingWhiteSpace(false).NormalizingWhiteSpace(false);
+
+			void Act() => sut.SetMatchType(matchType, "AsCustom");
+
+			await That(Act).DoesNotThrow()
+				.Because("an option set to false is the same as not set");
+		}
+
+		[Test]
+		public async Task SetMatchType_WhenTheSameMatchTypeOptionIsRepeated_ShouldCheckTheSettingsAgain()
+		{
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(new ValidatingMatchType(StringMatchSettingKinds.WhiteSpace), "AsCustom");
+			sut = sut.IgnoringIndentation();
+
+			void Act() => sut.SetMatchType(new ValidatingMatchType(StringMatchSettingKinds.None), "AsCustom");
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("IgnoringIndentation cannot be combined with AsCustom.");
+		}
+
+		[Test]
+		public async Task SetMatchType_WhenTheSameMatchTypeOptionIsRepeated_ShouldReplaceTheMatchType()
+		{
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(new ValidatingMatchType(), "AsCustom");
+
+			sut = sut.SetMatchType(new CustomMatchType(), "AsCustom");
+
+			await That(() => sut.IgnoringCase()).Throws<InvalidOperationException>()
+				.WithMessage("IgnoringCase cannot be combined with AsCustom.")
+				.Because("the later match type without casing replaced the earlier one with casing");
+		}
+
+		[Test]
+		[Arguments(new[] { "IgnoringTrailingWhiteSpace", "IgnoringIndentation", },
+			"IgnoringIndentation and IgnoringTrailingWhiteSpace cannot be combined with AsCustom.")]
+		[Arguments(new[] { "NormalizingWhiteSpace", "IgnoringLeadingWhiteSpace", "IgnoringCase", },
+			"IgnoringCase, IgnoringLeadingWhiteSpace and NormalizingWhiteSpace cannot be combined with AsCustom.")]
+		[Arguments(new[] { "Using", "IgnoringNewlineStyle", },
+			"IgnoringNewlineStyle and Using cannot be combined with AsCustom.")]
+		[Arguments(new[] { "IgnoringIndentation", "IgnoringNewlineStyle", "IgnoringLeadingWhiteSpace", "IgnoringTrailingWhiteSpace", "NormalizingWhiteSpace", "IgnoringCase", },
+			"IgnoringCase, IgnoringIndentation, IgnoringNewlineStyle, IgnoringLeadingWhiteSpace, IgnoringTrailingWhiteSpace and NormalizingWhiteSpace cannot be combined with AsCustom.")]
+		public async Task SetMatchType_WhenSeveralSpecifiedOptionsAreNotSupported_ShouldNameAllOfThemInDeclarationOrder(
+			string[] options, string expectedMessage)
+		{
+			ValidatingMatchType matchType = new(StringMatchSettingKinds.None);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			foreach (string option in options)
+			{
+				sut = Change(sut, option, true);
+			}
+
+			void Act() => sut.SetMatchType(matchType, "AsCustom");
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage(expectedMessage);
+		}
+
+		[Test]
+		[Arguments(nameof(StringEqualityOptions.AsPrefix), nameof(StringEqualityOptions.AsSuffix))]
+		[Arguments(nameof(StringEqualityOptions.AsSuffix), nameof(StringEqualityOptions.AsPrefix))]
+		public async Task SetMatchType_WithTwoDifferentMatchTypes_ShouldThrowInEitherOrder(string first, string second)
+		{
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = Change(sut, first, true);
+
+			void Act() => Change(sut, second, true);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage($"{second} cannot be combined with {first}.");
+		}
+
+		[Test]
 		public async Task ToString_WhenCaseAndIndentationIsIgnored_ShouldIncludeOptions()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringCase().IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringCase().IgnoringIndentation();
 
 			string result = sut.ToString();
 
@@ -1345,8 +1465,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task ToString_WhenCaseAndNewlineStyleIsIgnored_ShouldIncludeOptions()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringCase().IgnoringNewlineStyle();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringCase().IgnoringNewlineStyle();
 
 			string result = sut.ToString();
 
@@ -1356,8 +1476,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task ToString_WhenCaseAndWhiteSpaceAndNewlineStyleAndIndentationIsIgnored_ShouldIncludeOptions()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringCase().IgnoringLeadingWhiteSpace()
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringCase().IgnoringLeadingWhiteSpace()
 				.IgnoringTrailingWhiteSpace()
 				.IgnoringNewlineStyle()
 				.IgnoringIndentation();
@@ -1370,8 +1490,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task ToString_WhenCaseAndWhiteSpaceAndNewlineStyleIsIgnored_ShouldIncludeOptions()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringCase().IgnoringLeadingWhiteSpace()
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringCase().IgnoringLeadingWhiteSpace()
 				.IgnoringTrailingWhiteSpace()
 				.IgnoringNewlineStyle();
 
@@ -1383,8 +1503,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task ToString_WhenIndentationAndNewlineStyleIsIgnored_ShouldIncludeOptions()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringNewlineStyle().IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringNewlineStyle().IgnoringIndentation();
 
 			string result = sut.ToString();
 
@@ -1394,8 +1514,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task ToString_WhenIndentationIsIgnored_ShouldIncludeOptions()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringIndentation();
 
 			string result = sut.ToString();
 
@@ -1405,8 +1525,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task ToString_WhenIndentationIsIgnoredWithComparer_ShouldIncludeOptions()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Using(StringComparer.Ordinal).IgnoringIndentation();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Using(StringComparer.Ordinal).IgnoringIndentation();
 
 			string result = sut.ToString();
 
@@ -1417,8 +1537,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task ToString_WhenWhiteSpaceAndNewlineStyleIsIgnored_ShouldIncludeOptions()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringLeadingWhiteSpace()
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringLeadingWhiteSpace()
 				.IgnoringTrailingWhiteSpace()
 				.IgnoringNewlineStyle();
 
@@ -1434,13 +1554,13 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments("IgnoringNewlineStyle", " ignoring newline style and normalizing whitespace")]
 		public async Task ToString_WhenWhiteSpaceIsNormalized_ShouldIncludeOptions(string? option, string expected)
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 			if (option is not null)
 			{
-				Change(sut, option, true);
+				sut = Change(sut, option, true);
 			}
 
-			sut.NormalizingWhiteSpace();
+			sut = sut.NormalizingWhiteSpace();
 
 			string result = sut.ToString();
 
@@ -1451,8 +1571,8 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task Using_WhenACustomMatchTypeDoesNotSupportIt_ShouldThrowAndKeepTheOptions()
 		{
 			ValidatingMatchType matchType = new(StringMatchSettingKinds.None);
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(matchType, "AsCustom");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(matchType, "AsCustom");
 
 			void Act() => sut.Using(StringComparer.Ordinal);
 
@@ -1468,11 +1588,11 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task Using_WhenACustomMatchTypeIsSpecified_ShouldApplyASupportedComparer()
 		{
 			ValidatingMatchType matchType = new(StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.Comparer);
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(matchType, "AsCustom");
-			sut.IgnoringCase(false);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(matchType, "AsCustom");
+			sut = sut.IgnoringCase(false);
 
-			sut.Using(StringComparer.Ordinal);
+			sut = sut.Using(StringComparer.Ordinal);
 
 			await That(sut.ToString()).IsEqualTo($" as custom using {Formatter.Format(StringComparer.Ordinal.GetType())}");
 		}
@@ -1481,9 +1601,9 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task Using_WhenCaseIsIgnored_ShouldReportTheCasingBeforeTheMatchType()
 		{
 			ValidatingMatchType matchType = new(StringMatchSettingKinds.IgnoreCase);
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(matchType, "AsCustom");
-			sut.IgnoringCase();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(matchType, "AsCustom");
+			sut = sut.IgnoringCase();
 
 			void Act() => sut.Using(StringComparer.Ordinal);
 
@@ -1494,23 +1614,21 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
-		public async Task Using_WhenAComparerIsUsed_ShouldThrowInvalidOperationException()
+		public async Task Using_WhenAComparerIsUsed_ShouldUseTheLastComparer()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Using(StringComparer.Ordinal);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Using(StringComparer.Ordinal);
 
-			void Act() => sut.Using(StringComparer.OrdinalIgnoreCase);
+			sut = sut.Using(StringComparer.OrdinalIgnoreCase);
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("Using cannot be specified more than once.")
-				.Because("the second comparer would silently replace the first one");
+			await That(await sut.AreConsideredEqual("foo", "FOO", "expected")).IsTrue();
 		}
 
 		[Test]
 		public async Task Using_WhenCaseIsExplicitlyNotIgnored_ShouldNotThrow()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringCase(false);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringCase(false);
 
 			void Act() => sut.Using(StringComparer.Ordinal);
 
@@ -1519,10 +1637,22 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task Using_WhenCaseIsIgnoredAndReset_ShouldNotThrow()
+		{
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringCase().IgnoringCase(false);
+
+			void Act() => sut.Using(StringComparer.Ordinal);
+
+			await That(Act).DoesNotThrow()
+				.Because("the later IgnoringCase(false) replaces the earlier one, so the casing is not ignored");
+		}
+
+		[Test]
 		public async Task Using_WhenCaseIsIgnored_ShouldThrowInvalidOperationException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringCase();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringCase();
 
 			void Act() => sut.Using(StringComparer.Ordinal);
 
@@ -1534,8 +1664,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task Using_WhenMatchingAsRegex_ShouldThrowInvalidOperationException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsRegex();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsRegex();
 
 			void Act() => sut.Using(StringComparer.Ordinal);
 
@@ -1546,8 +1676,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task Using_WhenMatchingAsWildcard_ShouldThrowInvalidOperationException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.AsWildcard();
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.AsWildcard();
 
 			void Act() => sut.Using(StringComparer.Ordinal);
 
@@ -1558,7 +1688,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task Using_WithNull_ShouldThrowArgumentNullException()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			void Act() => sut.Using(null!);
 
@@ -1570,8 +1700,8 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task Using_WithNull_WhenAComparerIsUsed_ShouldThrowArgumentNullException()
 		{
-			StringEqualityOptions sut = new("expected");
-			sut.Using(StringComparer.Ordinal);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.Using(StringComparer.Ordinal);
 
 			void Act() => sut.Using(null!);
 
@@ -1586,14 +1716,14 @@ public sealed partial class StringEqualityOptionsTests
 		{
 			ArgumentException exception = new("my rejection");
 			ValidatingMatchType matchType = new(rejectExpected: expected => expected == "foo" ? exception : null);
-			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(matchType, "AsCustom");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.SetMatchType(matchType, "AsCustom");
 
-			void Act() => sut.ValidateExpected("foo");
+			void Act() => sut.ValidateExpected("foo", "expected");
 
 			ArgumentException thrownException = await That(Act).Throws<ArgumentException>();
 			await That(thrownException).IsSameAs(exception);
-			await That(() => sut.ValidateExpected("bar")).DoesNotThrow();
+			await That(() => sut.ValidateExpected("bar", "expected")).DoesNotThrow();
 		}
 
 		[Test]
@@ -1610,20 +1740,20 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task ValidateExpected_WhenExpectedIsUnusable_ShouldThrowTheSameExceptionAsTheComparison(
 			string matchType, string? expected)
 		{
-			StringEqualityOptions sut = new StringEqualityOptions("unexpected")
+			StringEqualityOptions sut = StringEqualityOptions.Default
 				.IgnoringLeadingWhiteSpace().IgnoringTrailingWhiteSpace();
-			SetMatchType(sut, matchType);
+			sut = SetMatchType(sut, matchType);
 			ArgumentException? comparisonException = null;
 			try
 			{
-				await sut.AreConsideredEqual("foo", expected);
+				await sut.AreConsideredEqual("foo", expected, "unexpected");
 			}
 			catch (ArgumentException exception)
 			{
 				comparisonException = exception;
 			}
 
-			void Act() => sut.ValidateExpected(expected);
+			void Act() => sut.ValidateExpected(expected, "unexpected");
 
 			ArgumentException validationException = await That(Act).Throws<ArgumentException>()
 				.WithParamName("unexpected");
@@ -1644,10 +1774,10 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments("AsWildcard", "f*")]
 		public async Task ValidateExpected_WhenExpectedIsUsable_ShouldNotThrow(string matchType, string? expected)
 		{
-			StringEqualityOptions sut = new("expected");
-			SetMatchType(sut, matchType);
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = SetMatchType(sut, matchType);
 
-			void Act() => sut.ValidateExpected(expected);
+			void Act() => sut.ValidateExpected(expected, "expected");
 
 			await That(Act).DoesNotThrow();
 		}
@@ -1662,88 +1792,70 @@ public sealed partial class StringEqualityOptionsTests
 			string? expected, string? normalizedExpected)
 		{
 			ValidatingMatchType matchType = new();
-			StringEqualityOptions sut = new("expected");
-			sut.IgnoringLeadingWhiteSpace().IgnoringTrailingWhiteSpace().IgnoringNewlineStyle();
-			sut.SetMatchType(matchType, "AsCustom");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
+			sut = sut.IgnoringLeadingWhiteSpace().IgnoringTrailingWhiteSpace().IgnoringNewlineStyle();
+			sut = sut.SetMatchType(matchType, "AsCustom");
 
-			sut.ValidateExpected(expected);
-			await sut.AreConsideredEqual("foo", expected);
+			sut.ValidateExpected(expected, "expected");
+			await ((IEqualityEvaluator<string?>)sut).AreConsideredEqual("foo", expected);
 
 			await That(matchType.ValidatedExpected).IsEqualTo([normalizedExpected, normalizedExpected,]);
 			await That(matchType.ComparedExpected).IsEqualTo([normalizedExpected,]);
 		}
 
-		private static void SetMatchType(StringEqualityOptions options, string matchType)
+		private static StringEqualityOptions SetMatchType(StringEqualityOptions options, string matchType)
 		{
 			switch (matchType)
 			{
 				case "AsBlock":
-					options.AsBlock();
-					break;
+					return options.AsBlock();
 				case "AsPrefix":
-					options.AsPrefix();
-					break;
+					return options.AsPrefix();
 				case "AsRegex":
-					options.AsRegex();
-					break;
+					return options.AsRegex();
 				case "AsSuffix":
-					options.AsSuffix();
-					break;
+					return options.AsSuffix();
 				case "AsWildcard":
-					options.AsWildcard();
-					break;
+					return options.AsWildcard();
 				case "Containing":
-					options.Containing();
-					break;
+					return options.Containing();
+				default:
+					return options;
 			}
 		}
 
-		private static void Change(StringEqualityOptions options, string option, bool enable)
+		private static StringEqualityOptions Change(StringEqualityOptions options, string option, bool enable)
 		{
 			switch (option)
 			{
 				case "AsBlock":
-					options.AsBlock();
-					break;
+					return options.AsBlock();
 				case "AsPrefix":
-					options.AsPrefix();
-					break;
+					return options.AsPrefix();
 				case "AsRegex":
-					options.AsRegex();
-					break;
+					return options.AsRegex();
 				case "AsRegexWithOptions":
-					options.AsRegex(RegexOptions.Multiline);
-					break;
+					return options.AsRegex(RegexOptions.Multiline);
 				case "AsSuffix":
-					options.AsSuffix();
-					break;
+					return options.AsSuffix();
 				case "AsWildcard":
-					options.AsWildcard();
-					break;
+					return options.AsWildcard();
 				case "Containing":
-					options.Containing();
-					break;
+					return options.Containing();
 				case "IgnoringCase":
-					options.IgnoringCase(enable);
-					break;
+					return options.IgnoringCase(enable);
 				case "IgnoringIndentation":
-					options.IgnoringIndentation(enable);
-					break;
+					return options.IgnoringIndentation(enable);
 				case "IgnoringLeadingWhiteSpace":
-					options.IgnoringLeadingWhiteSpace(enable);
-					break;
+					return options.IgnoringLeadingWhiteSpace(enable);
 				case "IgnoringNewlineStyle":
-					options.IgnoringNewlineStyle(enable);
-					break;
+					return options.IgnoringNewlineStyle(enable);
 				case "IgnoringTrailingWhiteSpace":
-					options.IgnoringTrailingWhiteSpace(enable);
-					break;
+					return options.IgnoringTrailingWhiteSpace(enable);
 				case "NormalizingWhiteSpace":
-					options.NormalizingWhiteSpace(enable);
-					break;
+					return options.NormalizingWhiteSpace(enable);
 				case "Using":
-					options.Using(StringComparer.Ordinal);
-					break;
+					return options.Using(StringComparer.Ordinal);
 				default:
 					throw new ArgumentOutOfRangeException(nameof(option), option, null);
 			}
@@ -1754,27 +1866,21 @@ public sealed partial class StringEqualityOptionsTests
 		/// </remarks>
 		private static StringEqualityOptions WithMatchType(string matchType)
 		{
-			StringEqualityOptions options = new("expected");
+			StringEqualityOptions options = StringEqualityOptions.Default;
 			switch (matchType)
 			{
 				case "AsBlock":
-					options.AsBlock();
-					break;
+					return options.AsBlock();
 				case "AsPrefix":
-					options.AsPrefix();
-					break;
+					return options.AsPrefix();
 				case "AsRegex":
-					options.AsRegex();
-					break;
+					return options.AsRegex();
 				case "AsSuffix":
-					options.AsSuffix();
-					break;
+					return options.AsSuffix();
 				case "AsWildcard":
-					options.AsWildcard();
-					break;
+					return options.AsWildcard();
 				case "Containing":
-					options.Containing();
-					break;
+					return options.Containing();
 			}
 
 			return options;

@@ -23,11 +23,11 @@ public static partial class ThatConstructors
 		this IThat<IEnumerable<ConstructorInfo?>?> subject)
 	{
 		Type parameterType = typeof(TParameter);
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		return new ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter>(subject.Get().ExpectationBuilder
-				.AddConstraint<(Type ParameterType, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IEnumerable<ConstructorInfo?>>((parameterType, collectionIndexOptions, parameterFilterOptions),
+				.AddConstraint<(Type ParameterType, OptionsHolder<CollectionIndexOptions> CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IEnumerable<ConstructorInfo?>>((parameterType, collectionIndexOptions, parameterFilterOptions),
 					static (s, it, grammars)
 					=> new HaveParameterConstraint(it, grammars, s.ParameterType, null,
 						s.CollectionIndexOptions,
@@ -46,11 +46,11 @@ public static partial class ThatConstructors
 	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveParameterExactly(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType)
 	{
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		return new ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?>(subject.Get().ExpectationBuilder
-				.AddConstraint<(Type ParameterType, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IEnumerable<ConstructorInfo?>>((parameterType, collectionIndexOptions, parameterFilterOptions),
+				.AddConstraint<(Type ParameterType, OptionsHolder<CollectionIndexOptions> CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IEnumerable<ConstructorInfo?>>((parameterType, collectionIndexOptions, parameterFilterOptions),
 					static (s, it, grammars)
 					=> new HaveParameterConstraint(it, grammars, s.ParameterType, null,
 						s.CollectionIndexOptions,
@@ -70,14 +70,14 @@ public static partial class ThatConstructors
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsHolder<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)));
 		return new NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter>(subject.Get()
 				.ExpectationBuilder
-				.AddConstraint<(Type ParameterType, string Expected, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IEnumerable<ConstructorInfo?>>((parameterType, expected, collectionIndexOptions, parameterFilterOptions),
+				.AddConstraint<(Type ParameterType, string Expected, OptionsHolder<CollectionIndexOptions> CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IEnumerable<ConstructorInfo?>>((parameterType, expected, collectionIndexOptions, parameterFilterOptions),
 					static (s, it, grammars)
 					=> new HaveParameterConstraint(it, grammars, s.ParameterType, s.Expected,
 						s.CollectionIndexOptions,
@@ -97,14 +97,14 @@ public static partial class ThatConstructors
 	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveParameterExactly(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsHolder<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)));
 		return new NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?>(subject.Get()
 				.ExpectationBuilder
-				.AddConstraint<(Type ParameterType, string Expected, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IEnumerable<ConstructorInfo?>>((parameterType, expected, collectionIndexOptions, parameterFilterOptions),
+				.AddConstraint<(Type ParameterType, string Expected, OptionsHolder<CollectionIndexOptions> CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IEnumerable<ConstructorInfo?>>((parameterType, expected, collectionIndexOptions, parameterFilterOptions),
 					static (s, it, grammars)
 					=> new HaveParameterConstraint(it, grammars, s.ParameterType, s.Expected,
 						s.CollectionIndexOptions,
@@ -126,11 +126,11 @@ public static partial class ThatConstructors
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject)
 	{
 		Type parameterType = typeof(TParameter);
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		return new ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter>(subject.Get().ExpectationBuilder
-				.AddConstraint<(Type ParameterType, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IAsyncEnumerable<ConstructorInfo?>>((parameterType, collectionIndexOptions, parameterFilterOptions),
+				.AddConstraint<(Type ParameterType, OptionsHolder<CollectionIndexOptions> CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IAsyncEnumerable<ConstructorInfo?>>((parameterType, collectionIndexOptions, parameterFilterOptions),
 					static (s, it, grammars)
 					=> new HaveParameterConstraint(it, grammars, s.ParameterType, null,
 						s.CollectionIndexOptions,
@@ -151,11 +151,11 @@ public static partial class ThatConstructors
 	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveParameterExactly(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type parameterType)
 	{
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		return new ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?>(subject.Get().ExpectationBuilder
-				.AddConstraint<(Type ParameterType, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IAsyncEnumerable<ConstructorInfo?>>((parameterType, collectionIndexOptions, parameterFilterOptions),
+				.AddConstraint<(Type ParameterType, OptionsHolder<CollectionIndexOptions> CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IAsyncEnumerable<ConstructorInfo?>>((parameterType, collectionIndexOptions, parameterFilterOptions),
 					static (s, it, grammars)
 					=> new HaveParameterConstraint(it, grammars, s.ParameterType, null,
 						s.CollectionIndexOptions,
@@ -177,14 +177,14 @@ public static partial class ThatConstructors
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
-		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsHolder<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)));
 		return new NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter>(subject.Get()
 				.ExpectationBuilder
-				.AddConstraint<(Type ParameterType, string Expected, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IAsyncEnumerable<ConstructorInfo?>>((parameterType, expected, collectionIndexOptions, parameterFilterOptions),
+				.AddConstraint<(Type ParameterType, string Expected, OptionsHolder<CollectionIndexOptions> CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IAsyncEnumerable<ConstructorInfo?>>((parameterType, expected, collectionIndexOptions, parameterFilterOptions),
 					static (s, it, grammars)
 					=> new HaveParameterConstraint(it, grammars, s.ParameterType, s.Expected,
 						s.CollectionIndexOptions,
@@ -206,14 +206,14 @@ public static partial class ThatConstructors
 	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveParameterExactly(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type parameterType, string expected)
 	{
-		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
-		CollectionIndexOptions collectionIndexOptions = new();
+		OptionsHolder<StringEqualityOptions> stringEqualityOptions = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionIndexOptions> collectionIndexOptions = new(CollectionIndexOptions.Default);
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)));
 		return new NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?>(subject.Get()
 				.ExpectationBuilder
-				.AddConstraint<(Type ParameterType, string Expected, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IAsyncEnumerable<ConstructorInfo?>>((parameterType, expected, collectionIndexOptions, parameterFilterOptions),
+				.AddConstraint<(Type ParameterType, string Expected, OptionsHolder<CollectionIndexOptions> CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IAsyncEnumerable<ConstructorInfo?>>((parameterType, expected, collectionIndexOptions, parameterFilterOptions),
 					static (s, it, grammars)
 					=> new HaveParameterConstraint(it, grammars, s.ParameterType, s.Expected,
 						s.CollectionIndexOptions,

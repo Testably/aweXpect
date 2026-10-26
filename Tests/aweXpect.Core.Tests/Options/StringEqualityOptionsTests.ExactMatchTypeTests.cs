@@ -14,7 +14,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExpectation_WhenExpectedIsTruncated_ShouldNotSplitAnEscapeSequence()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			string result;
 			using (Customize.aweXpect.Formatting().MaximumStringLength.Set(5))
@@ -31,7 +31,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenExpectedIsEmptyAndSubjectIsOnlyWhitespace_ShouldNameTheWhitespace()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  ", "", MatchResult.NoMatch);
 
@@ -43,7 +43,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenSubjectIsEmptyAndExpectedIsOnlyWhitespace_ShouldNameTheWhitespace()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "", "  ", MatchResult.NoMatch);
 
@@ -55,7 +55,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		public async Task GetExtendedFailure_WhenWhitespaceIsTruncated_ShouldNotSplitAnEscapeSequence()
 		{
-			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions sut = StringEqualityOptions.Default;
 
 			string result;
 			using (Customize.aweXpect.Formatting().MaximumStringLength.Set(4))

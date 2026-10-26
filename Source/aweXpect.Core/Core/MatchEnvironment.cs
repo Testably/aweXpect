@@ -20,11 +20,16 @@ public readonly struct MatchEnvironment
 	///     Describes the evaluation in the <paramref name="context" /> that the <paramref name="cancellationToken" />
 	///     cancels.
 	/// </summary>
+	/// <remarks>
+	///     The <see cref="Context" /> of the <see langword="default" /> value describes a comparison outside an evaluation
+	///     again, so that a caller without access to an evaluation can pass it through
+	///     <see cref="IEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />.
+	/// </remarks>
 	/// <exception cref="System.ArgumentNullException">The <paramref name="context" /> is <see langword="null" />.</exception>
 	public MatchEnvironment(IEvaluationContext context, CancellationToken cancellationToken)
 	{
 		context.ThrowIfNull();
-		_context = context;
+		_context = ReferenceEquals(context, ContextWithoutEvaluation) ? null : context;
 		CancellationToken = cancellationToken;
 	}
 

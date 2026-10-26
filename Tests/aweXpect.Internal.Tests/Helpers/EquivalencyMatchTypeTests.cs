@@ -105,15 +105,15 @@ public sealed partial class EquivalencyMatchTypeTests
 
 	private static ValueTask<bool> AreConsideredEqual<TActual, TExpected>(EquivalencyMatchType<object?> sut, TActual actual,
 		TExpected expected)
-		=> new ObjectEqualityOptions<object?>().SetMatchType(sut, "Equivalent").AreConsideredEqual(actual, expected);
+		=> ((IEqualityEvaluator<object?>)sut.ForEvaluation(default)).AreConsideredEqual(actual, expected);
 
 	private static async Task<Explanation> ExplainAsync<TActual, TExpected>(EquivalencyMatchType<object?> sut, TActual actual,
 		TExpected expected)
 	{
-		ObjectEqualityOptions<object?> options = new ObjectEqualityOptions<object?>().SetMatchType(sut, "Equivalent");
-		MatchResult result = await options.MatchWithExplanation(actual, expected);
+		ObjectMatcher<object?> matcher = sut.ForEvaluation(default);
+		MatchResult result = await matcher.CompareWithExplanation(actual, expected);
 		return new Explanation(result.IsMatch,
-			(it, grammars, a, e) => options.GetExtendedFailure(it, grammars, a, e, result));
+			(it, grammars, a, e) => matcher.GetFailure(it, grammars, a, e, result, null));
 	}
 
 	private sealed class Explanation(

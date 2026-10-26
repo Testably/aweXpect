@@ -13,7 +13,7 @@ public abstract partial class ThatDelegate
 	private sealed class ExecutesInConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		ExecutionTimeOptions options,
+		OptionsHolder<ExecutionTimeOptions> options,
 		Type? valueType)
 		: ConstraintResult(grammars),
 			IValueConstraint<DelegateValue>
@@ -23,7 +23,7 @@ public abstract partial class ThatDelegate
 		/// <inheritdoc cref="ConstraintResult.FailureCause" />
 		public override Exception? FailureCause
 			=> Outcome == Outcome.Failure &&
-			   (_actual?.ExceededTimeout is not null || !options.AllowsException(_actual?.Exception))
+			   (_actual?.ExceededTimeout is not null || !options.Value.AllowsException(_actual?.Exception))
 				? _actual?.Exception
 				: null;
 
@@ -31,7 +31,7 @@ public abstract partial class ThatDelegate
 		public ConstraintResult IsMetBy(DelegateValue value)
 		{
 			if (value is { LateResult: { } lateResult, ExceededTimeout: { } timeout, } &&
-			    options.JudgesLateResult(timeout, lateResult.Duration))
+			    options.Value.JudgesLateResult(timeout, lateResult.Duration))
 			{
 				value = lateResult;
 			}
@@ -43,7 +43,7 @@ public abstract partial class ThatDelegate
 				return this;
 			}
 
-			Outcome = options.AllowsException(value.Exception) && options.IsWithinLimit(value.Duration)
+			Outcome = options.Value.AllowsException(value.Exception) && options.Value.IsWithinLimit(value.Duration)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -52,8 +52,8 @@ public abstract partial class ThatDelegate
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("executes ");
-			options.AppendTo(stringBuilder, "in ");
-			if (options.AreExceptionsAllowed)
+			options.Value.AppendTo(stringBuilder, "in ");
+			if (options.Value.AreExceptionsAllowed)
 			{
 				stringBuilder.Append(" allowing exceptions");
 			}
@@ -69,7 +69,7 @@ public abstract partial class ThatDelegate
 			{
 				stringBuilder.ItDidNotFinishWithin(it, exceededTimeout);
 			}
-			else if (_actual.Exception is { } exception && !options.AreExceptionsAllowed)
+			else if (_actual.Exception is { } exception && !options.Value.AreExceptionsAllowed)
 			{
 				stringBuilder.Append(it).Append(" did throw ");
 				stringBuilder.Append(FormatForMessage(exception, indentation));
@@ -77,7 +77,7 @@ public abstract partial class ThatDelegate
 			else
 			{
 				stringBuilder.Append(it).Append(" took ");
-				options.AppendFailureResult(stringBuilder, _actual.Duration);
+				options.Value.AppendFailureResult(stringBuilder, _actual.Duration);
 				if (_actual.Exception is { } allowedException)
 				{
 					stringBuilder.Append(" and did throw ");

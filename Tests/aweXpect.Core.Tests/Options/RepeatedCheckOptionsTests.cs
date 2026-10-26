@@ -18,13 +18,15 @@ namespace aweXpect.Core.Tests.Options;
 public sealed class RepeatedCheckOptionsTests
 {
 	[Test]
-	public async Task CheckEvery_ShouldReturnTheSameOptions()
+	public async Task CheckEvery_ShouldNotChangeTheOriginalOptions()
 	{
-		RepeatedCheckOptions sut = new();
+		RepeatedCheckOptions sut = RepeatedCheckOptions.Default.Within(2.Seconds());
 
 		RepeatedCheckOptions result = sut.CheckEvery(1.Seconds());
 
-		await That(result).IsSameAs(sut);
+		await That(result.Interval).IsEqualTo(1.Seconds());
+		await That(result.Timeout).IsEqualTo(2.Seconds());
+		await That(sut.Interval).IsNotEqualTo(1.Seconds());
 	}
 
 	[Test]
@@ -119,8 +121,8 @@ public sealed class RepeatedCheckOptionsTests
 	public async Task CheckRepeatedly_WhenTheContextIsOfAnotherImplementation_ShouldUseTheRealTimeSystem()
 	{
 		RepeatedCheckOptions sut = new();
-		sut.Within(30.Seconds());
-		sut.CheckEvery(50.Milliseconds());
+		sut = sut.Within(30.Seconds());
+		sut = sut.CheckEvery(50.Milliseconds());
 		int checks = 0;
 		Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -137,7 +139,7 @@ public sealed class RepeatedCheckOptionsTests
 	public async Task CheckRepeatedly_WhenTheEvaluationIsCanceled_ShouldBeUndecided()
 	{
 		RepeatedCheckOptions sut = new();
-		sut.Within(30.Seconds());
+		sut = sut.Within(30.Seconds());
 		int checks = 0;
 		EvaluationCancellation cancellation = EvaluationCancellation.Create(null, new CancellationToken(true));
 
@@ -156,7 +158,7 @@ public sealed class RepeatedCheckOptionsTests
 	public async Task CheckRepeatedly_WhenTheFirstCheckIsMet_ShouldNotCheckAgain()
 	{
 		RepeatedCheckOptions sut = new();
-		sut.Within(30.Seconds());
+		sut = sut.Within(30.Seconds());
 		int checks = 0;
 
 		Outcome outcome = await sut.CheckRepeatedly(_ =>
@@ -290,13 +292,28 @@ public sealed class RepeatedCheckOptionsTests
 	}
 
 	[Test]
-	public async Task Within_ShouldReturnTheSameOptions()
+	public async Task Within_ShouldNotChangeTheOriginalOptions()
 	{
-		RepeatedCheckOptions sut = new();
+		RepeatedCheckOptions sut = RepeatedCheckOptions.Default.CheckEvery(1.Seconds());
 
-		RepeatedCheckOptions result = sut.Within(1.Seconds());
+		RepeatedCheckOptions result = sut.Within(2.Seconds());
 
-		await That(result).IsSameAs(sut);
+		await That(result.Timeout).IsEqualTo(2.Seconds());
+		await That(result.Interval).IsEqualTo(1.Seconds());
+		await That(sut.Timeout).IsEqualTo(TimeSpan.Zero);
+		await That(sut.IsRepeated).IsFalse();
+	}
+
+	[Test]
+	public async Task Within_WhenTimeoutIsZero_ShouldNameIt()
+	{
+		RepeatedCheckOptions sut = RepeatedCheckOptions.Default.Within(TimeSpan.Zero);
+
+		string result = sut.ToString();
+
+		await That(result).IsEqualTo(" within 0:00")
+			.Because("an explicit timeout is named even when it is zero");
+		await That(RepeatedCheckOptions.Default.ToString()).IsEmpty();
 	}
 
 	/// <summary>
@@ -307,7 +324,7 @@ public sealed class RepeatedCheckOptionsTests
 	private static RepeatedCheckResult<IEnumerable<int>, IThat<IEnumerable<int>>> HasMatchingItem(
 		IThat<IEnumerable<int>> subject, Func<int, bool> predicate, Action? onCheck = null)
 	{
-		RepeatedCheckOptions options = new();
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new RepeatedCheckResult<IEnumerable<int>, IThat<IEnumerable<int>>>(
 			((IExpectThat<IEnumerable<int>>)subject).ExpectationBuilder
 			.AddConstraint((it, grammars)
@@ -336,7 +353,7 @@ public sealed class RepeatedCheckOptionsTests
 		ExpectationGrammars grammars,
 		Func<int, bool> predicate,
 		Action? onCheck,
-		RepeatedCheckOptions options)
+		OptionsHolder<RepeatedCheckOptions> options)
 		: ConstraintResult.WithNotNullValue<IEnumerable<int>>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<int>>
 	{
@@ -346,7 +363,7 @@ public sealed class RepeatedCheckOptionsTests
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome outcome = await options.CheckRepeatedly(checkContext =>
+			Outcome outcome = await options.Value.CheckRepeatedly(checkContext =>
 			{
 				onCheck?.Invoke();
 				_items = checkContext.UseMaterializedEnumerable(actual).ToList();

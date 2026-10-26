@@ -19,10 +19,10 @@ internal static class MemberHashing
 	///     The hash code for members that the <paramref name="options" /> compare in a way that a hash code agrees with,
 	///     or <see langword="null" /> otherwise.
 	/// </summary>
-	public static Func<TMember, int>? For<TMember>(IOptionsEquality<TMember> options)
+	public static Func<TMember, int>? For<TMember>(IEqualityOptions<TMember> options)
 		=> options switch
 		{
-			ItemEqualityOptions<TMember> itemOptions => For(itemOptions),
+			ItemEqualsMatchType<TMember> => ForDefaultEquality<TMember>(),
 			StringEqualityOptions stringOptions => For(stringOptions) as Func<TMember, int>,
 			_ => null,
 		};
@@ -37,11 +37,11 @@ internal static class MemberHashing
 			: null;
 
 	/// <summary>
-	///     The hash code for members of a framework type that the <paramref name="options" /> compare with their default
-	///     equality, or <see langword="null" /> otherwise.
+	///     The hash code for members of a framework type that are compared with their default equality, or
+	///     <see langword="null" /> otherwise.
 	/// </summary>
-	public static Func<TMember, int>? For<TMember>(ItemEqualityOptions<TMember> options)
-		=> options.HasDefaultMatchType && HasFrameworkHashCode(typeof(TMember))
+	private static Func<TMember, int>? ForDefaultEquality<TMember>()
+		=> HasFrameworkHashCode(typeof(TMember))
 			? static value => value is null ? 0 : EqualityComparer<TMember>.Default.GetHashCode(value)
 			: null;
 

@@ -17,11 +17,11 @@ public class SingleItemResult<TCollection, TItem>
 	: ExpectationResult<TItem, SingleItemResult<TCollection, TItem>>,
 		IOptionsProvider<PredicateOptions<TItem>>
 {
-	private readonly PredicateOptions<TItem> _options;
+	private readonly OptionsHolder<PredicateOptions<TItem>> _options;
 	private readonly SingleItemSource<TItem> _source;
 
 	internal SingleItemResult(ExpectationBuilder expectationBuilder,
-		PredicateOptions<TItem> options,
+		OptionsHolder<PredicateOptions<TItem>> options,
 		SingleItemSource<TItem> source)
 		: base(expectationBuilder)
 	{
@@ -37,18 +37,17 @@ public class SingleItemResult<TCollection, TItem>
 			grammars => grammars & ~ExpectationGrammars.Plural));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	PredicateOptions<TItem> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;
+	OptionsHolder<PredicateOptions<TItem>> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;
 
 	/// <summary>
 	///     …that satisfies the <paramref name="predicate" />.
 	/// </summary>
-	/// <exception cref="InvalidOperationException">A filter is already set.</exception>
 	public SingleMatchingItemResult<TCollection, TItem> Matching(Func<TItem, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_options.SetPredicate(predicate,
+		_options.Value = new PredicateOptions<TItem>(predicate,
 			$" matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new SingleMatchingItemResult<TCollection, TItem>(ExpectationBuilder, _source.Get<TCollection>);
 	}
@@ -56,10 +55,9 @@ public class SingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …of type <typeparamref name="T" />.
 	/// </summary>
-	/// <exception cref="InvalidOperationException">A filter is already set.</exception>
 	public SingleMatchingItemResult<TCollection, T> Matching<T>()
 	{
-		_options.SetPredicate(item => item is T,
+		_options.Value = new PredicateOptions<TItem>(item => item is T,
 			$" of type {Formatter.Format(typeof(T))}");
 		return Cast<T>(x => (T)(object)x!);
 	}
@@ -67,13 +65,12 @@ public class SingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …of type <typeparamref name="T" /> that satisfies the <paramref name="predicate" />.
 	/// </summary>
-	/// <exception cref="InvalidOperationException">A filter is already set.</exception>
 	public SingleMatchingItemResult<TCollection, T> Matching<T>(Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_options.SetPredicate(item => item is T typed && predicate(typed),
+		_options.Value = new PredicateOptions<TItem>(item => item is T typed && predicate(typed),
 			$" of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return Cast<T>(x => (T)(object)x!);
 	}
@@ -81,11 +78,10 @@ public class SingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …exactly of type <typeparamref name="T" />.
 	/// </summary>
-	/// <exception cref="InvalidOperationException">A filter is already set.</exception>
 	public SingleMatchingItemResult<TCollection, T> MatchingExactly<T>()
 	{
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
-		_options.SetPredicate(item => item is T && item.GetType() == exactType,
+		_options.Value = new PredicateOptions<TItem>(item => item is T && item.GetType() == exactType,
 			$" exactly of type {Formatter.Format(typeof(T))}");
 		return Cast<T>(x => (T)(object)x!);
 	}
@@ -93,14 +89,13 @@ public class SingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …exactly of type <typeparamref name="T" /> that satisfies the <paramref name="predicate" />.
 	/// </summary>
-	/// <exception cref="InvalidOperationException">A filter is already set.</exception>
 	public SingleMatchingItemResult<TCollection, T> MatchingExactly<T>(Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
-		_options.SetPredicate(item => item is T typed && item.GetType() == exactType && predicate(typed),
+		_options.Value = new PredicateOptions<TItem>(item => item is T typed && item.GetType() == exactType && predicate(typed),
 			$" exactly of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return Cast<T>(x => (T)(object)x!);
 	}

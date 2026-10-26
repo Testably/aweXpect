@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 
@@ -49,9 +50,19 @@ public partial class StringEqualityOptions
 			}
 
 			return settings.IgnoreCase
-				? _ignoringCaseMatcher ??= new BuiltInMatcher(this, settings)
-				: _ordinalMatcher ??= new BuiltInMatcher(this, settings);
+				? GetSharedMatcher(ref _ignoringCaseMatcher, true)
+				: GetSharedMatcher(ref _ordinalMatcher, false);
 		}
+
+		/// <remarks>
+		///     Published only once, so that the shared options and every evaluation get the same matcher, also when
+		///     they are created on several threads.
+		/// </remarks>
+		private BuiltInMatcher GetSharedMatcher(ref BuiltInMatcher? matcher, bool ignoreCase)
+			=> Volatile.Read(ref matcher)
+			   ?? Interlocked.CompareExchange(ref matcher,
+				   new BuiltInMatcher(this, new StringMatchSettings(ignoreCase, null)), null)
+			   ?? matcher!;
 
 		private sealed class BuiltInMatcher(BuiltInMatchType matchType, StringMatchSettings settings)
 			: StringMatcher

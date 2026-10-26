@@ -1,15 +1,15 @@
-﻿using aweXpect.Options;
+﻿using aweXpect.Core;
 
 namespace aweXpect.Internal.Tests.Helpers;
 
-public class ObjectEqualityOptionsTests
+public class DefaultObjectMatchTypeTests
 {
 	[Test]
 	[Arguments(true)]
 	[Arguments(false)]
 	public async Task WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException(bool isEqual)
 	{
-		ObjectEqualityOptions<object?> sut = new();
+		IEqualityEvaluator<object?> sut = ObjectMatchType<object?>.Default.ForEvaluation(default);
 		EqualsObject a = new(isEqual);
 		EqualsObject b = new(isEqual);
 

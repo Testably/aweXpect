@@ -37,7 +37,7 @@ public static partial class ThatDictionary
 	///     expectation, while the comparison of the values reports its own.
 	/// </remarks>
 	private static async Task<bool> ContainsValue<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> dictionary,
-		TValue value, IOptionsEquality<TValue> options)
+		TValue value, IEqualityEvaluator<TValue> options)
 	{
 		using IEnumerator<KeyValuePair<TKey, TValue>> entries =
 			UserCode.Invoke(static subject => subject.GetEnumerator(), dictionary);
@@ -105,8 +105,8 @@ public static partial class ThatDictionary
 	///     unless the <paramref name="options" /> match a pattern instead of a value.
 	/// </summary>
 	private static IEnumerable<TValue>? GetValuesForHint<TKey, TValue>(
-		IEnumerable<KeyValuePair<TKey, TValue>>? dictionary, IOptionsEquality<TValue> options)
-		=> options is StringEqualityOptions { InspectsSubject: false, }
+		IEnumerable<KeyValuePair<TKey, TValue>>? dictionary, IReadOnlyOptionsHolder<IEqualityOptions<TValue>> options)
+		=> options.Value is StringEqualityOptions { InspectsSubject: false, }
 			? dictionary?.Select(static entry => entry.Value)
 			: null;
 

@@ -19,11 +19,12 @@ internal class ProblemDetailsOptions
 
 	/// <remarks>
 	///     The options of a value are only created when the value is expected, as most expectations specify only some.
+	///     The holder is read when the options are used, as the options of the value are set after it.
 	/// </remarks>
-	private StringEqualityOptions? _detailOptions;
+	private IReadOnlyOptionsHolder<StringEqualityOptions>? _detailOptions;
 
-	private StringEqualityOptions? _instanceOptions;
-	private StringEqualityOptions? _titleOptions;
+	private IReadOnlyOptionsHolder<StringEqualityOptions>? _instanceOptions;
+	private IReadOnlyOptionsHolder<StringEqualityOptions>? _titleOptions;
 
 	/// <summary>
 	///     The title of a problem details object.
@@ -68,52 +69,79 @@ internal class ProblemDetailsOptions
 	/// <summary>
 	///     Sets the expected <paramref name="title" />.
 	/// </summary>
-	public StringEqualityOptions WithTitle(string title)
+	/// <remarks>
+	///     A later title replaces the earlier one together with its options, and keeps its place in the description.
+	/// </remarks>
+	public OptionsHolder<StringEqualityOptions> WithTitle(string title)
 	{
 		ThrowHelper.ThrowIfNull(title, nameof(title));
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Title is not null, nameof(WithTitle));
+		bool isFirst = Title is null;
 		Title = title;
-		StringEqualityOptions titleOptions = new("title");
+		OptionsHolder<StringEqualityOptions> titleOptions = new(StringEqualityOptions.Default);
 		_titleOptions = titleOptions;
-		_parts.Add(() => Describe("title", title, titleOptions));
+		if (isFirst)
+		{
+			_parts.Add(() => Describe("title", Title!, _titleOptions!.Value));
+		}
+
 		return titleOptions;
 	}
 
 	/// <summary>
 	///     Sets the expected <paramref name="status" />.
 	/// </summary>
+	/// <remarks>
+	///     A later status replaces the earlier one, and keeps its place in the description.
+	/// </remarks>
 	public void WithStatus(int status)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Status is not null, nameof(WithStatus));
+		bool isFirst = Status is null;
 		Status = status;
-		_parts.Add(() => $"status {Formatter.Format(status)}");
+		if (isFirst)
+		{
+			_parts.Add(() => $"status {Formatter.Format(Status)}");
+		}
 	}
 
 	/// <summary>
 	///     Sets the expected <paramref name="detail" />.
 	/// </summary>
-	public StringEqualityOptions WithDetail(string detail)
+	/// <remarks>
+	///     A later detail replaces the earlier one together with its options, and keeps its place in the description.
+	/// </remarks>
+	public OptionsHolder<StringEqualityOptions> WithDetail(string detail)
 	{
 		ThrowHelper.ThrowIfNull(detail, nameof(detail));
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Detail is not null, nameof(WithDetail));
+		bool isFirst = Detail is null;
 		Detail = detail;
-		StringEqualityOptions detailOptions = new("detail");
+		OptionsHolder<StringEqualityOptions> detailOptions = new(StringEqualityOptions.Default);
 		_detailOptions = detailOptions;
-		_parts.Add(() => Describe("detail", detail, detailOptions));
+		if (isFirst)
+		{
+			_parts.Add(() => Describe("detail", Detail!, _detailOptions!.Value));
+		}
+
 		return detailOptions;
 	}
 
 	/// <summary>
 	///     Sets the expected <paramref name="instance" />.
 	/// </summary>
-	public StringEqualityOptions WithInstance(string instance)
+	/// <remarks>
+	///     A later instance replaces the earlier one together with its options, and keeps its place in the description.
+	/// </remarks>
+	public OptionsHolder<StringEqualityOptions> WithInstance(string instance)
 	{
 		ThrowHelper.ThrowIfNull(instance, nameof(instance));
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Instance is not null, nameof(WithInstance));
+		bool isFirst = Instance is null;
 		Instance = instance;
-		StringEqualityOptions instanceOptions = new("instance");
+		OptionsHolder<StringEqualityOptions> instanceOptions = new(StringEqualityOptions.Default);
 		_instanceOptions = instanceOptions;
-		_parts.Add(() => Describe("instance", instance, instanceOptions));
+		if (isFirst)
+		{
+			_parts.Add(() => Describe("instance", Instance!, _instanceOptions!.Value));
+		}
+
 		return instanceOptions;
 	}
 
@@ -134,9 +162,12 @@ internal class ProblemDetailsOptions
 	/// </summary>
 	public ProblemDetailsOptions ForEvaluation(IEvaluationContext context, CancellationToken cancellationToken)
 	{
-		StringEqualityOptions? titleOptions = _titleOptions?.ForEvaluation(context, cancellationToken);
-		StringEqualityOptions? detailOptions = _detailOptions?.ForEvaluation(context, cancellationToken);
-		StringEqualityOptions? instanceOptions = _instanceOptions?.ForEvaluation(context, cancellationToken);
+		IReadOnlyOptionsHolder<StringEqualityOptions>? titleOptions =
+			ForEvaluation(_titleOptions, context, cancellationToken);
+		IReadOnlyOptionsHolder<StringEqualityOptions>? detailOptions =
+			ForEvaluation(_detailOptions, context, cancellationToken);
+		IReadOnlyOptionsHolder<StringEqualityOptions>? instanceOptions =
+			ForEvaluation(_instanceOptions, context, cancellationToken);
 		if (ReferenceEquals(titleOptions, _titleOptions) && ReferenceEquals(detailOptions, _detailOptions) &&
 		    ReferenceEquals(instanceOptions, _instanceOptions))
 		{
@@ -155,6 +186,26 @@ internal class ProblemDetailsOptions
 		};
 		evaluationOptions._parts.AddRange(_parts);
 		return evaluationOptions;
+	}
+
+	/// <summary>
+	///     Returns the <paramref name="options" />, or a holder with the options of the evaluation when the evaluation
+	///     gets options of its own.
+	/// </summary>
+	private static IReadOnlyOptionsHolder<StringEqualityOptions>? ForEvaluation(
+		IReadOnlyOptionsHolder<StringEqualityOptions>? options, IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		if (options is null)
+		{
+			return null;
+		}
+
+		StringEqualityOptions value = options.Value;
+		StringEqualityOptions evaluationValue = value.ForEvaluation(context, cancellationToken);
+		return ReferenceEquals(evaluationValue, value)
+			? options
+			: new OptionsHolder<StringEqualityOptions>(evaluationValue);
 	}
 
 	/// <summary>
@@ -198,18 +249,23 @@ internal class ProblemDetailsOptions
 		=> InspectsAbsentValue(_titleOptions, title) || InspectsAbsentValue(_detailOptions, detail) ||
 		   InspectsAbsentValue(_instanceOptions, instance);
 
-	private static bool InspectsAbsentValue(StringEqualityOptions? options, string? actual)
-		=> actual is null && options?.InspectsSubject == true;
+	private static bool InspectsAbsentValue(IReadOnlyOptionsHolder<StringEqualityOptions>? options, string? actual)
+		=> actual is null && options?.Value.InspectsSubject == true;
 
-	private static async ValueTask<string?> GetFailure(StringEqualityOptions? options, string it, string member,
-		ExpectationGrammars grammars, string? actual, string? expected)
+	/// <remarks>
+	///     An unusable <paramref name="expected" /> value is reported against the parameter named like the
+	///     <paramref name="member" />, e.g. <c>title</c>.
+	/// </remarks>
+	private static async ValueTask<string?> GetFailure(IReadOnlyOptionsHolder<StringEqualityOptions>? optionsHolder,
+		string it, string member, ExpectationGrammars grammars, string? actual, string? expected)
 	{
-		if (options is null)
+		if (optionsHolder is null)
 		{
 			return null;
 		}
 
-		MatchResult result = await options.MatchWithExplanation(actual, expected);
+		StringEqualityOptions options = optionsHolder.Value;
+		MatchResult result = await options.MatchWithExplanation(actual, expected, member);
 		return result.IsMatch
 			? null
 			: options.GetExtendedMemberFailure(it, member, grammars, actual, expected, result);
@@ -217,9 +273,9 @@ internal class ProblemDetailsOptions
 
 	internal void AppendContexts(ResultContextCollector contexts)
 	{
-		_titleOptions?.AppendContexts(contexts);
-		_detailOptions?.AppendContexts(contexts);
-		_instanceOptions?.AppendContexts(contexts);
+		_titleOptions?.Value.AppendContexts(contexts);
+		_detailOptions?.Value.AppendContexts(contexts);
+		_instanceOptions?.Value.AppendContexts(contexts);
 	}
 
 	/// <inheritdoc cref="object.ToString()" />

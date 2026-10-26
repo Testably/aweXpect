@@ -28,7 +28,7 @@ public static partial class ThatNullableJsonElement
 		this IThat<JsonElement?> subject, string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<JsonElement, IThat<JsonElement?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
 				static IAsyncContextConstraint<JsonElement?> (state, it, grammars)

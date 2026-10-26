@@ -1,4 +1,5 @@
-﻿using aweXpect.Core;
+﻿using System;
+using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect.Results;
@@ -9,7 +10,7 @@ namespace aweXpect.Results;
 /// </summary>
 /// <remarks>
 ///     The options are specified via <see cref="QuantifierExtensions" /> and
-///     <see cref="ObjectEqualityOptionsExtensions" />.
+///     <see cref="ObjectMatchTypeExtensions" />.
 /// </remarks>
 public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 	: AndOrResult<TType, TThat, ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>>,
@@ -17,15 +18,15 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 		IObjectEqualityWithToleranceResult<ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>,
 			TItem, TTolerance>
 {
-	private readonly ObjectEqualityWithToleranceOptions<TItem, TTolerance> _options;
-	private readonly Quantifier _quantifier;
+	private readonly OptionsHolder<ObjectMatchType<TItem>> _options;
+	private readonly OptionsHolder<Quantifier> _quantifier;
 	private readonly TThat _returnValue;
 
 	internal ObjectCountWithToleranceResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		Quantifier quantifier,
-		ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+		OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<ObjectMatchType<TItem>> options)
 		: base(expectationBuilder, returnValue)
 	{
 		_returnValue = returnValue;
@@ -34,16 +35,12 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => _options;
+	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ObjectEqualityWithToleranceOptions<TItem, TTolerance>
-		IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>.Options => _options;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
 
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => _quantifier;
-
-	/// <inheritdoc cref="ObjectEqualityOptionsExtensions.Within{TSelf, TItem, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TItem, TTolerance}, TTolerance)" />
+	/// <inheritdoc cref="ObjectMatchTypeExtensions.Within{TSelf, TItem, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TItem, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
 	{
 		_options.Within(tolerance);
@@ -61,19 +58,20 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 		internal WithinResult(
 			ExpectationBuilder expectationBuilder,
 			TThat returnValue,
-			Quantifier quantifier,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+			OptionsHolder<Quantifier> quantifier,
+			OptionsHolder<ObjectMatchType<TItem>> options)
 			: base(expectationBuilder, returnValue, quantifier, options)
 		{
 		}
 
-		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-		IRelativeToleranceOptions<TTolerance> IOptionsProvider<IRelativeToleranceOptions<TTolerance>>.Options
-			=> ((IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>)this).Options;
-
-		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.Result" />
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
 		ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
-			IWithinToleranceResult<ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>, TTolerance>.Result
-			=> this;
+			IWithinToleranceResult<ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>, TTolerance>.WithRelativeTolerance(
+				Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
+		{
+			((IOptionsProvider<ObjectMatchType<TItem>>)this).Options
+				.WithRelativeTolerance<TItem, TTolerance>(absoluteTolerance, unit);
+			return this;
+		}
 	}
 }

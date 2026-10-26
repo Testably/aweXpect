@@ -251,7 +251,7 @@ public static partial class ThatEnumerable
 		IEnumerableItems<string?> items,
 		bool expectUnique)
 	{
-		StringEqualityOptions options = new("expected");
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint(
@@ -277,7 +277,7 @@ public static partial class ThatEnumerable
 		IEnumerableItems<TItem> items,
 		bool expectUnique)
 	{
-		ItemEqualityOptions<TItem> options = new();
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -305,7 +305,7 @@ public static partial class ThatEnumerable
 			Func<TItem, TMember> memberAccessor, string memberAccessorExpression, bool expectUnique)
 	{
 		memberAccessor.ThrowIfNull();
-		ItemEqualityOptions<TMember> options = new();
+		OptionsHolder<ObjectMatchType<TMember>> options = new(ItemEqualsMatchType<TMember>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TMember>(
 			expectationBuilder.AddConstraint(
@@ -329,7 +329,7 @@ public static partial class ThatEnumerable
 		Func<TItem, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
 	{
 		memberAccessor.ThrowIfNull();
-		StringEqualityOptions options = new("expected");
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint(
@@ -352,7 +352,7 @@ public static partial class ThatEnumerable
 		INonGenericEnumerableItems<TCollection> items, bool expectUnique)
 		where TCollection : IEnumerable?
 	{
-		ItemEqualityOptions<object?> options = new();
+		OptionsHolder<ObjectMatchType<object?>> options = new(ItemEqualsMatchType<object?>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, object?>(
 			expectationBuilder.AddConstraint(
@@ -380,7 +380,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable?
 	{
 		memberAccessor.ThrowIfNull();
-		ItemEqualityOptions<TMember> options = new();
+		OptionsHolder<ObjectMatchType<TMember>> options = new(ItemEqualsMatchType<TMember>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, TMember>(
 			expectationBuilder.AddConstraint(
@@ -405,7 +405,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable?
 	{
 		memberAccessor.ThrowIfNull();
-		StringEqualityOptions options = new("expected");
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint(
@@ -428,7 +428,7 @@ public static partial class ThatEnumerable
 		IStructEnumerableItems<TCollection, TItem> items, bool expectUnique)
 		where TCollection : struct, IEnumerable<TItem>
 	{
-		ItemEqualityOptions<TItem> options = new();
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ItemEqualsMatchType<TItem>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -452,7 +452,7 @@ public static partial class ThatEnumerable
 		where TCollection : struct, IEnumerable<TItem>
 	{
 		memberAccessor.ThrowIfNull();
-		ItemEqualityOptions<TMember> options = new();
+		OptionsHolder<ObjectMatchType<TMember>> options = new(ItemEqualsMatchType<TMember>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection, IThat<TCollection>, TMember>(
 			expectationBuilder.AddConstraint(
@@ -477,7 +477,7 @@ public static partial class ThatEnumerable
 		where TCollection : struct, IEnumerable<TItem>
 	{
 		memberAccessor.ThrowIfNull();
-		StringEqualityOptions options = new("expected");
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint(
@@ -500,7 +500,7 @@ public static partial class ThatEnumerable
 		IStructEnumerableItems<TCollection, string?> items, bool expectUnique)
 		where TCollection : struct, IEnumerable<string?>
 	{
-		StringEqualityOptions options = new("expected");
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint(

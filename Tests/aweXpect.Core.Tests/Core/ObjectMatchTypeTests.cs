@@ -9,18 +9,36 @@ namespace aweXpect.Core.Tests.Core;
 public sealed class ObjectMatchTypeTests
 {
 	[Test]
-	public async Task ForEvaluation_ShouldNotKeepTheMatcherOfTheEvaluationInTheOptions()
+	public async Task Constructor_WithNullOptionName_ShouldThrowArgumentNullException()
+	{
+		void Act() => _ = new NamedMatchType(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("optionName").And
+			.WithMessage("The 'optionName' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task Constructor_WithOptionName_ShouldKeepIt()
+	{
+		NamedMatchType sut = new("ByTitle");
+
+		await That(sut.OptionName).IsEqualTo("ByTitle");
+	}
+
+	[Test]
+	public async Task ForEvaluation_ShouldNotKeepTheMatcherOfTheEvaluationInTheMatchType()
 	{
 		RecordingMatchType<Track> matchType = new();
-		ObjectEqualityOptions<Track> options = new();
-		options.SetMatchType(matchType, "ByTitle");
+		IEqualityOptions<Track> options = matchType;
 
-		ObjectEqualityOptions<Track> evaluationOptions =
+		IEqualityEvaluator<Track> evaluator =
 			options.ForEvaluation(new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
-		await evaluationOptions.AreConsideredEqual(new Track("Let It Be"), new Track("Let It Be"));
-		await options.AreConsideredEqual(new Track("Get Back"), new Track("Get Back"));
+		await evaluator.AreConsideredEqual(new Track("Let It Be"), new Track("Let It Be"));
+		IEqualityEvaluator<Track> withoutEvaluation = matchType.ForEvaluation(default);
+		await withoutEvaluation.AreConsideredEqual(new Track("Get Back"), new Track("Get Back"));
 
-		await That(evaluationOptions).IsNotSameAs(options);
+		await That(withoutEvaluation).IsNotSameAs(evaluator);
 		await That(matchType.Matchers[0].Comparisons).IsEqualTo(1)
 			.Because("a comparison outside the evaluation must not use the matcher of the evaluation");
 		await That(matchType.MatcherWithoutEvaluation?.Comparisons).IsEqualTo(1);
@@ -32,8 +50,7 @@ public sealed class ObjectMatchTypeTests
 		using CancellationTokenSource cts = new();
 		IEvaluationContext context = new aweXpect.Core.EvaluationContext.EvaluationContext();
 		RecordingMatchType<Track> matchType = new();
-		ObjectEqualityOptions<Track> options = new();
-		options.SetMatchType(matchType, "ByTitle");
+		IEqualityOptions<Track> options = matchType;
 
 		await options.ForEvaluation(context, cts.Token).AreConsideredEqual(new Track("Let It Be"),
 			new Track("Let It Be"));
@@ -111,8 +128,7 @@ public sealed class ObjectMatchTypeTests
 	public async Task WhenTheExpectedValueHasAnotherType_ShouldNotMatchWithoutAskingATypedMatcher()
 	{
 		RecordingMatchType<Track> matchType = new();
-		ObjectEqualityOptions<Track> options = new();
-		options.SetMatchType(matchType, "ByTitle");
+		IEqualityOptions<Track> options = matchType;
 
 		bool result = await options.ForEvaluation(new aweXpect.Core.EvaluationContext.EvaluationContext(),
 			CancellationToken.None).AreConsideredEqual(new Track("Let It Be"), "Let It Be");
@@ -145,7 +161,7 @@ public sealed class ObjectMatchTypeTests
 		public string Title { get; } = title;
 	}
 
-	private sealed class ExplainingMatchType<TSubject> : ObjectMatchType<TSubject>
+	private sealed class ExplainingMatchType<TSubject>() : ObjectMatchType<TSubject>("ByTitle")
 	{
 		private static readonly Matcher SharedMatcher = new();
 
@@ -175,7 +191,15 @@ public sealed class ObjectMatchTypeTests
 		}
 	}
 
-	private sealed class NotComparableMatchType<TSubject> : ObjectMatchType<TSubject>
+	private sealed class NamedMatchType(string optionName) : ObjectMatchType<object>(optionName)
+	{
+		public override MatchPhrase Phrase => MatchPhrase.EqualTo;
+
+		public override ObjectMatcher<object> ForEvaluation(MatchEnvironment environment)
+			=> throw new NotSupportedException();
+	}
+
+	private sealed class NotComparableMatchType<TSubject>() : ObjectMatchType<TSubject>("ByTitle")
 	{
 		public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
 			=> new Matcher();
@@ -189,7 +213,7 @@ public sealed class ObjectMatchTypeTests
 		}
 	}
 
-	private sealed class RecordingMatchType<TSubject> : ObjectMatchType<TSubject>
+	private sealed class RecordingMatchType<TSubject>() : ObjectMatchType<TSubject>("ByTitle")
 	{
 		public List<MatchEnvironment> Environments { get; } = [];
 		public List<CountingMatcher> Matchers { get; } = [];
@@ -236,7 +260,7 @@ internal static class ObjectMatchTypeTestExtensions
 		ObjectMatchType<TElement> matchType)
 		where TSelf : IObjectEqualityResult<TSelf, TElement>
 	{
-		result.Options.SetMatchType(matchType, nameof(ByTitle));
+		result.Options.SetMatchType(matchType);
 		return (TSelf)result;
 	}
 }

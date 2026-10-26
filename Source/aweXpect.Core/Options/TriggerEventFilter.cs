@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using aweXpect.Core;
 
 namespace aweXpect.Options;
@@ -8,13 +6,28 @@ namespace aweXpect.Options;
 /// <summary>
 ///     Filter for event parameters.
 /// </summary>
-public class TriggerEventFilter
+/// <remarks>
+///     Immutable: <see cref="AddPredicate(Func{object?[], bool}, string)" /> returns a new filter, so that
+///     <see cref="Default" /> can be shared.
+/// </remarks>
+public sealed class TriggerEventFilter
 {
-	private List<Func<object?[], bool>>? _predicates;
-	private StringBuilder? _toString;
+	private readonly Func<object?[], bool>[] _predicates;
+	private readonly string _text;
+
+	private TriggerEventFilter(Func<object?[], bool>[] predicates, string text)
+	{
+		_predicates = predicates;
+		_text = text;
+	}
 
 	/// <summary>
-	///     Filters the event parameters using the <paramref name="predicate" />.
+	///     The filter without a predicate, which every event matches.
+	/// </summary>
+	public static TriggerEventFilter Default { get; } = new([], "");
+
+	/// <summary>
+	///     Returns a filter that also filters the event parameters using the <paramref name="predicate" />.
 	///     The <paramref name="predicateExpression" /> is used in the expectation string.
 	/// </summary>
 	public TriggerEventFilter AddPredicate(Func<object?[], bool> predicate, string predicateExpression)
@@ -22,15 +35,11 @@ public class TriggerEventFilter
 		// ReSharper disable once LocalizableElement
 		_ = predicate ?? throw Tracing.WriteException(
 			new ArgumentNullException(nameof(predicate), "The 'predicate' cannot be null."));
-		_toString ??= new StringBuilder();
-		if (_predicates is not null)
-		{
-			_toString.Append(" and");
-		}
-
-		_toString.Append(predicateExpression);
-		(_predicates ??= []).Add(predicate);
-		return this;
+		Func<object?[], bool>[] predicates = new Func<object?[], bool>[_predicates.Length + 1];
+		_predicates.CopyTo(predicates, 0);
+		predicates[_predicates.Length] = predicate;
+		string separator = _predicates.Length == 0 ? "" : " and";
+		return new TriggerEventFilter(predicates, _text + separator + predicateExpression);
 	}
 
 	/// <summary>
@@ -42,14 +51,9 @@ public class TriggerEventFilter
 	/// </remarks>
 	public bool IsMatch(object?[] parameters)
 	{
-		if (_predicates is null)
+		foreach (Func<object?[], bool> predicate in _predicates)
 		{
-			return true;
-		}
-
-		for (int i = 0; i < _predicates.Count; i++)
-		{
-			if (!_predicates[i](parameters))
+			if (!predicate(parameters))
 			{
 				return false;
 			}
@@ -61,5 +65,5 @@ public class TriggerEventFilter
 	/// <summary>
 	///     A string representation including all predicate expressions.
 	/// </summary>
-	public override string ToString() => _toString?.ToString() ?? "";
+	public override string ToString() => _text;
 }

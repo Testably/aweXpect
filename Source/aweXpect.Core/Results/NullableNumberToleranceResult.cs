@@ -1,7 +1,6 @@
-﻿#if NET8_0_OR_GREATER
+﻿using System;
+#if NET8_0_OR_GREATER
 using System.Numerics;
-#else
-using System;
 #endif
 using aweXpect.Core;
 using aweXpect.Options;
@@ -17,7 +16,7 @@ namespace aweXpect.Results;
 public class NullableNumberToleranceResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	NumberTolerance<TType> options)
+	OptionsHolder<NumberTolerance<TType>> options)
 	: AndOrResult<TType?, TThat, NullableNumberToleranceResult<TType, TThat>>(expectationBuilder, returnValue),
 		INumberToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>
 #if NET8_0_OR_GREATER
@@ -29,7 +28,7 @@ public class NullableNumberToleranceResult<TType, TThat>(
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	NumberTolerance<TType> IOptionsProvider<NumberTolerance<TType>>.Options => options;
+	OptionsHolder<NumberTolerance<TType>> IOptionsProvider<NumberTolerance<TType>>.Options => options;
 
 	/// <inheritdoc cref="ToleranceExtensions.Within{TSelf, TNumber}(INumberToleranceResult{TSelf, TNumber}, TNumber)" />
 	public WithinResult Within(TType tolerance)
@@ -45,16 +44,17 @@ public class NullableNumberToleranceResult<TType, TThat>(
 	public sealed class WithinResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		NumberTolerance<TType> options)
+		OptionsHolder<NumberTolerance<TType>> options)
 		: NullableNumberToleranceResult<TType, TThat>(expectationBuilder, returnValue, options),
 			IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>
 	{
-		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-		IRelativeToleranceOptions<TType> IOptionsProvider<IRelativeToleranceOptions<TType>>.Options
-			=> ((IOptionsProvider<NumberTolerance<TType>>)this).Options;
-
-		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.Result" />
-		NullableNumberToleranceResult<TType, TThat> IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>.Result
-			=> this;
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
+		NullableNumberToleranceResult<TType, TThat> IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>.WithRelativeTolerance(
+			Func<TType, TType, TType> absoluteTolerance, string unit)
+		{
+			OptionsHolder<NumberTolerance<TType>> holder = ((IOptionsProvider<NumberTolerance<TType>>)this).Options;
+			holder.Value = holder.Value.WithRelativeTolerance(absoluteTolerance, unit);
+			return this;
+		}
 	}
 }

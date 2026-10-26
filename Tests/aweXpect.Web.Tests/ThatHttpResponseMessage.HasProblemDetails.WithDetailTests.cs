@@ -9,32 +9,6 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class WithDetailTests
 		{
 			[Test]
-			public async Task WhenDetailIsSpecifiedTwice_ShouldThrowInvalidOperationException()
-			{
-				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
-
-				async Task Act()
-					=> await That(subject).HasProblemDetailsContent().WithDetail("foo").WithDetail("bar");
-
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("WithDetail cannot be specified more than once.")
-					.Because("the second detail would silently replace the first one");
-			}
-
-			[Test]
-			public async Task WhenDetailIsSpecifiedTwiceAroundStatus_ShouldThrowInvalidOperationException()
-			{
-				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
-
-				async Task Act()
-					=> await That(subject).HasProblemDetailsContent().WithDetail("foo").WithStatus(500).WithDetail("bar");
-
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("WithDetail cannot be specified more than once.")
-					.Because("the second detail would silently replace the first one");
-			}
-
-			[Test]
 			public async Task WhenDetailIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -58,6 +32,46 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("detail").And
 					.WithMessage("The 'detail' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenDetailIsSpecifiedTwice_ShouldUseTheLastDetail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "detail": "baz"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithDetail("foo").WithDetail("bar");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("*has a ProblemDetails content with any type and detail \"bar\",*but it had detail \"baz\"*")
+					.AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenDetailIsSpecifiedTwiceAroundStatus_ShouldUseTheLastDetailInItsPlace()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "detail": "baz",
+					               "status": 500
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithDetail("foo").WithStatus(500).WithDetail("bar");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage(
+						"*has a ProblemDetails content with any type, detail \"bar\" and status 500,*but it had detail \"baz\"*")
+					.AsWildcard();
 			}
 
 			[Test]

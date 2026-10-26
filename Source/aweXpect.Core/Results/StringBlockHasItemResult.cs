@@ -14,14 +14,14 @@ namespace aweXpect.Results;
 public class StringBlockHasItemResult<TCollection>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TCollection?> collection,
-	CollectionIndexOptions collectionIndexOptions,
-	StringEqualityOptions options)
+	OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
+	OptionsHolder<StringEqualityOptions> options)
 	: AndOrResult<TCollection, IThat<TCollection?>, StringBlockHasItemResult<TCollection>>(expectationBuilder,
 			collection),
 		IOptionsProvider<CollectionIndexOptions>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
 
 	/// <summary>
 	///     Ignores casing when comparing the <see langword="string" />s.

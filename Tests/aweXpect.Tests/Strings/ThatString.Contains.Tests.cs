@@ -203,15 +203,19 @@ public sealed partial class ThatString
 			}
 
 			[Test]
-			public async Task WhenTheSameQuantifierIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			public async Task WhenTheSameQuantifierIsSpecifiedTwice_ShouldUseTheLastValue()
 			{
 				string subject = "abc";
 
 				async Task Act()
 					=> await That(subject).Contains("b").AtLeast(1).AtLeast(2);
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("AtLeast cannot be specified more than once.");
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "b" at least twice,
+					             but it contained "b" once in "abc"
+					             """);
 			}
 
 			[Test]
@@ -322,6 +326,18 @@ public sealed partial class ThatString
 			}
 
 			[Test]
+			public async Task WhenCombinedWithDisabledIgnoringIndentation_ShouldSucceed()
+			{
+				string subject = "class C\n{\n    int x;\n}";
+
+				async Task Act()
+					=> await That(subject).Contains("{\n    int x;\n}").IgnoringIndentation(false).AsBlock();
+
+				await That(Act).DoesNotThrow()
+					.Because("an option set to false is the same as not set");
+			}
+
+			[Test]
 			public async Task WhenCombinedWithIgnoringCase_ShouldIgnoreCase()
 			{
 				string subject = "  FOO\n  bar";
@@ -387,6 +403,20 @@ public sealed partial class ThatString
 					                                       ↑ (expected)
 					              [02] it was "class C\n{\n    int x;\n    int y;\n}"
 					             """);
+			}
+
+			[Test]
+			public async Task WhenCombinedWithSeveralLineOptions_ShouldNameAllOfThem()
+			{
+				string subject = "  foo\n  bar";
+
+				async Task Act()
+					=> await That(subject).Contains("foo\nbar").NormalizingWhiteSpace().IgnoringIndentation()
+						.IgnoringNewlineStyle().AsBlock();
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage(
+						"IgnoringIndentation, IgnoringNewlineStyle and NormalizingWhiteSpace cannot be combined with AsBlock.");
 			}
 
 			[Test]

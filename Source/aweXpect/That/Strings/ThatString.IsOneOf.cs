@@ -30,14 +30,14 @@ public static partial class ThatString
 		bool negated)
 	{
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
-		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
 					Negated: negated),
 				static (state, it, grammars)
 					=> new IsOneOfConstraint(it, grammars, state.ExpectedValues, state.ExpectedExpression,
-							state.Options)
+							state.Negated ? "unexpected" : "expected", state.Options)
 						.InvertIf(state.Negated)),
 			subject,
 			options);
@@ -48,7 +48,8 @@ public static partial class ThatString
 		ExpectationGrammars grammars,
 		IEnumerable<string?> expectedValues,
 		string? expectedExpression,
-		StringEqualityOptions options)
+		string parameterName,
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithValue<string?>(it, grammars),
 			IAsyncContextConstraint<string?>
 	{
@@ -66,14 +67,14 @@ public static partial class ThatString
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			StringEqualityOptions stringEqualityOptions = options.ForEvaluation(context, cancellationToken);
+			StringEqualityOptions stringEqualityOptions = options.Value.ForEvaluation(context, cancellationToken);
 			_evaluationOptions = stringEqualityOptions;
-			bool comparesAllValues = options.InspectsSubject && expectedValues is ICollection<string?>;
+			bool comparesAllValues = options.Value.InspectsSubject && expectedValues is ICollection<string?>;
 			bool isOneOf = false;
 			foreach (string? value in expectedValues)
 			{
 				if (await stringEqualityOptions
-					    .AreConsideredEqual(actual, value))
+					    .AreConsideredEqual(actual, value, parameterName))
 				{
 					isOneOf = true;
 					if (!comparesAllValues)
@@ -83,7 +84,7 @@ public static partial class ThatString
 				}
 			}
 
-			if (actual is null && options.InspectsSubject)
+			if (actual is null && options.Value.InspectsSubject)
 			{
 				Outcome = Outcome.FailureBothWays;
 			}
@@ -99,7 +100,7 @@ public static partial class ThatString
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			contexts.AddExpectedValuesContext(expectedExpression, expectedValues, Grammars);
-			(_evaluationOptions ?? options).AppendContexts(contexts);
+			(_evaluationOptions ?? options.Value).AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -294,43 +294,83 @@ public sealed partial class ThatDelegate
 				}
 
 				[Test]
-				public async Task WhenWithinIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+				public async Task WhenWithinIsSpecifiedTwice_ShouldUseTheLastDuration()
 				{
-					Action action = () => throw new CustomException();
+					VirtualTimeSystem time = new();
+					Action action = () =>
+					{
+						time.Advance(50.Milliseconds());
+						throw new CustomException();
+					};
 
 					async Task<Exception> Act()
-						=> await That(action).Throws().Within(1.Seconds()).Within(5.Seconds());
+						=> await That(action).Throws().Within(1.Seconds()).Within(5.Milliseconds())
+							.WithTimeSystem(time);
 
-					await That(Act).Throws<InvalidOperationException>()
-						.WithMessage("Within cannot be specified more than once.")
-						.Because("a second duration would silently disagree with the timeout of the first one");
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception within 0:00.005,
+						             but it took *
+						             """).AsWildcard();
 				}
 
 				[Test]
-				public async Task WhenWithinIsSpecifiedTwice_WithInfiniteDuration_ShouldThrowInvalidOperationException()
+				public async Task WhenWithinIsSpecifiedTwice_WithALongerLastDuration_ShouldApplyItAsTimeout()
 				{
-					Action action = () => throw new CustomException();
+					VirtualTimeSystem time = new();
+					Action action = () =>
+					{
+						time.Advance(3.Seconds());
+						throw new CustomException();
+					};
 
 					async Task<Exception> Act()
-						=> await That(action).Throws().Within(Timeout.InfiniteTimeSpan)
-							.Within(1.Seconds());
+						=> await That(action).Throws().Within(1.Seconds()).Within(5.Seconds())
+							.WithTimeSystem(time);
 
-					await That(Act).Throws<InvalidOperationException>()
-						.WithMessage("Within cannot be specified more than once.")
-						.Because("an infinite duration is specified as well, even though it imposes no limit");
+					await That(Act).DoesNotThrow()
+						.Because("the timeout is read from the last duration when the evaluation starts");
 				}
 
 				[Test]
-				public async Task WhenWithinIsSpecifiedTwice_WithOnlyIfInBetween_ShouldThrowInvalidOperationException()
+				public async Task WhenWithinIsSpecifiedTwice_WithInfiniteDuration_ShouldUseTheLastDuration()
 				{
-					Action action = () => throw new CustomException();
+					VirtualTimeSystem time = new();
+					Action action = () =>
+					{
+						time.Advance(50.Milliseconds());
+						throw new CustomException();
+					};
+
+					async Task<Exception> Act()
+						=> await That(action).Throws().Within(5.Milliseconds()).Within(Timeout.InfiniteTimeSpan)
+							.WithTimeSystem(time);
+
+					await That(Act).DoesNotThrow()
+						.Because("the infinite duration replaces the earlier one and imposes no limit");
+				}
+
+				[Test]
+				public async Task WhenWithinIsSpecifiedTwice_WithOnlyIfInBetween_ShouldUseTheLastDuration()
+				{
+					VirtualTimeSystem time = new();
+					Action action = () =>
+					{
+						time.Advance(50.Milliseconds());
+						throw new CustomException();
+					};
 
 					async Task<Exception?> Act()
-						=> await That(action).Throws().Within(1.Seconds()).OnlyIf(true).Within(5.Seconds());
+						=> await That(action).Throws().Within(1.Seconds()).OnlyIf(true).Within(5.Milliseconds())
+							.WithTimeSystem(time);
 
-					await That(Act).Throws<InvalidOperationException>()
-						.WithMessage("Within cannot be specified more than once.")
-						.Because("the continuation shares the duration of the expectation");
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception within 0:00.005,
+						             but it took *
+						             """).AsWildcard();
 				}
 
 				/// <remarks>

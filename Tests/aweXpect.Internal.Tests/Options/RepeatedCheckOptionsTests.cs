@@ -11,16 +11,14 @@ namespace aweXpect.Internal.Tests.Options;
 public class RepeatedCheckOptionsTests
 {
 	[Test]
-	public async Task CheckEvery_WhenIntervalIsSpecified_ShouldThrowInvalidOperationException()
+	public async Task CheckEvery_WhenIntervalIsSpecified_ShouldUseTheLastInterval()
 	{
 		RepeatedCheckOptions sut = new();
-		sut.CheckEvery(10.Milliseconds());
+		sut = sut.CheckEvery(10.Milliseconds());
 
-		void Act() => sut.CheckEvery(20.Milliseconds());
+		sut = sut.CheckEvery(20.Milliseconds());
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("CheckEvery cannot be specified more than once.")
-			.Because("the second interval would silently replace the first one");
+		await That(sut.Interval).IsEqualTo(20.Milliseconds());
 	}
 
 	[Test]
@@ -29,7 +27,7 @@ public class RepeatedCheckOptionsTests
 		RepeatedCheckOptions sut = new();
 		_ = sut.Interval;
 
-		void Act() => sut.CheckEvery(20.Milliseconds());
+		void Act() => sut = sut.CheckEvery(20.Milliseconds());
 
 		await That(Act).DoesNotThrow()
 			.Because("the customized default interval is not an explicit interval");
@@ -40,7 +38,7 @@ public class RepeatedCheckOptionsTests
 	public async Task CheckRepeatedly_WhenIntervalIsNotPositive_ShouldYieldBetweenChecks()
 	{
 		RepeatedCheckOptions sut = new();
-		sut.Within(Timeout.InfiniteTimeSpan);
+		sut = sut.Within(Timeout.InfiniteTimeSpan);
 		bool isMet = false;
 		ValueTask<Outcome> result;
 		using (((IAwexpectCustomization)Customize.aweXpect).Set("aweXpect.Settings.DefaultCheckInterval",
@@ -94,7 +92,7 @@ public class RepeatedCheckOptionsTests
 	public async Task ToString_WhenTimeoutIsZero_ShouldIncludeTheTimeout()
 	{
 		RepeatedCheckOptions sut = new();
-		sut.Within(TimeSpan.Zero);
+		sut = sut.Within(TimeSpan.Zero);
 
 		string result = sut.ToString();
 
@@ -103,16 +101,15 @@ public class RepeatedCheckOptionsTests
 	}
 
 	[Test]
-	public async Task Within_WhenTimeoutIsSpecified_ShouldThrowInvalidOperationException()
+	public async Task Within_WhenTimeoutIsSpecified_ShouldUseTheLastTimeout()
 	{
 		RepeatedCheckOptions sut = new();
-		sut.Within(1.Seconds());
+		sut = sut.Within(1.Seconds());
 
-		void Act() => sut.Within(2.Seconds());
+		sut = sut.Within(2.Seconds());
 
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("Within cannot be specified more than once.")
-			.Because("the second timeout would silently replace the first one");
+		await That(sut.Timeout).IsEqualTo(2.Seconds());
+		await That(sut.ToString()).IsEqualTo(" within 0:02");
 	}
 
 	private sealed class NoEvaluationContext : IEvaluationContext

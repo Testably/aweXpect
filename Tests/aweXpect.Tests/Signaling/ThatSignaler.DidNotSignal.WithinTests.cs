@@ -138,29 +138,41 @@ public sealed partial class ThatSignaler
 			}
 
 			[Test]
-			public async Task WhenTimeoutIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			public async Task WhenTimeoutIsSpecifiedTwice_ShouldUseTheLastTimeout()
 			{
 				Signaler signaler = new();
+				signaler.Signal();
 
 				async Task Act() =>
-					await That(signaler).DidNotSignal().Within(1.Seconds()).Within(50.Milliseconds());
+					await That(signaler).DidNotSignal().Within(1.Seconds()).Within(50.Milliseconds())
+						.WithTimeSystem(new VirtualTimeSystem());
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Within cannot be specified more than once.")
-					.Because("the second timeout would silently replace the first one");
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has never recorded the callback within 0:00.050,
+					             but it was recorded once after 0:*
+					             """).AsWildcard();
 			}
 
 			[Test]
-			public async Task WhenTimeoutIsSpecifiedTwice_WithParameter_ShouldThrowInvalidOperationException()
+			public async Task WhenTimeoutIsSpecifiedTwice_WithParameter_ShouldUseTheLastTimeout()
 			{
 				Signaler<string> signaler = new();
+				signaler.Signal("foo");
 
 				async Task Act() =>
-					await That(signaler).DidNotSignal().Within(1.Seconds()).Within(50.Milliseconds());
+					await That(signaler).DidNotSignal().Within(1.Seconds()).Within(50.Milliseconds())
+						.WithTimeSystem(new VirtualTimeSystem());
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Within cannot be specified more than once.")
-					.Because("the second timeout would silently replace the first one");
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has never recorded the callback within 0:00.050,
+					             but it was recorded once in [
+					               "foo"
+					             ] after 0:*
+					             """).AsWildcard();
 			}
 
 			[Test]

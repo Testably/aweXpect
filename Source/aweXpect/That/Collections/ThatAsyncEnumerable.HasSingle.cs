@@ -19,7 +19,7 @@ public static partial class ThatAsyncEnumerable
 	public static AsyncSingleItemResult<IAsyncEnumerable<TItem>, TItem> HasSingle<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject)
 	{
-		PredicateOptions<TItem> options = new();
+		OptionsHolder<PredicateOptions<TItem>> options = new(PredicateOptions<TItem>.Default);
 		SingleItemSource<TItem> source = new();
 		return new AsyncSingleItemResult<IAsyncEnumerable<TItem>, TItem>(
 			subject.Get().ExpectationBuilder.AddConstraint((Options: options, Source: source),

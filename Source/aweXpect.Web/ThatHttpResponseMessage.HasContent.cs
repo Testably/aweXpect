@@ -23,12 +23,12 @@ public static partial class ThatHttpResponseMessage
 		HasContent(this IThat<HttpResponseMessage?> subject, string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint((expected, options), static (state, it, grammars) =>
-					new HasContentConstraint(it, grammars, state.expected, state.options)),
+					new HasContentConstraint(it, grammars, state.expected, "expected", state.options)),
 			subject,
 			options);
 	}
@@ -61,12 +61,12 @@ public static partial class ThatHttpResponseMessage
 		DoesNotHaveContent(this IThat<HttpResponseMessage?> subject, string unexpected)
 	{
 		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
-		StringEqualityOptions options = new(nameof(unexpected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint((unexpected, options), static (state, it, grammars) =>
-					new HasContentConstraint(it, grammars, state.unexpected, state.options).Invert()),
+					new HasContentConstraint(it, grammars, state.unexpected, "unexpected", state.options).Invert()),
 			subject,
 			options);
 	}
@@ -75,7 +75,8 @@ public static partial class ThatHttpResponseMessage
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		StringEqualityOptions options)
+		string parameterName,
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<HttpResponseMessage>(it, grammars),
 			IAsyncContextConstraint<HttpResponseMessage>
 	{
@@ -96,8 +97,8 @@ public static partial class ThatHttpResponseMessage
 			}
 
 			_message = await actual.Content.ReadAsStringOrEmptyAsync(cancellationToken);
-			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.MatchWithExplanation(_message, expected);
+			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(_message, expected, parameterName);
 			if (_matchResult.IsMatch)
 			{
 				Outcome = Outcome.Success;
@@ -110,19 +111,19 @@ public static partial class ThatHttpResponseMessage
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options).AppendContexts(contexts);
+			=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has a string content ", "have a string content "))
-				.Append(options.GetExpectation(expected, ExpectationGrammars.None));
+				.Append(options.Value.GetExpectation(expected, ExpectationGrammars.None));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It, "string content",
+			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedMemberFailure(It, "string content",
 				Grammars, _message, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have a string content ", "do not have a string content "))
-				.Append(options.GetExpectation(expected, ExpectationGrammars.None));
+				.Append(options.Value.GetExpectation(expected, ExpectationGrammars.None));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" had");

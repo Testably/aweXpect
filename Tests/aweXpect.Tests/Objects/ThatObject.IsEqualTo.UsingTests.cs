@@ -116,29 +116,44 @@ public sealed partial class ThatObject
 			}
 
 			[Test]
-			[Arguments(false)]
-			[Arguments(true)]
-			public async Task WhenComparerIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool negated)
+			public async Task WhenComparerIsSpecifiedTwice_ShouldUseTheLastComparer()
 			{
-				OuterClass subject = new();
+				OuterClass subject = new()
+				{
+					Value = "Foo",
+				};
 
 				async Task Act()
-				{
-					if (negated)
-					{
-						await That(subject).IsNotEqualTo(subject)
-							.Using(new MyComparer(true)).Using(new MyComparer(false));
-					}
-					else
-					{
-						await That(subject).IsEqualTo(subject)
-							.Using(new MyComparer(true)).Using(new MyComparer(false));
-					}
-				}
+					=> await That(subject).IsEqualTo(subject)
+						.Using(new MyComparer(true)).Using(new MyComparer(false));
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Using cannot be specified more than once.")
-					.Because("the second comparer would silently replace the first one");
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to ThatObject.OuterClass {
+					                 Inner = <null>,
+					                 Value = "Foo"
+					               } using ThatObject.IsEqualTo.UsingTests.MyComparer,
+					             but it was ThatObject.OuterClass {
+					                 Inner = <null>,
+					                 Value = "Foo"
+					               }
+					             """);
+			}
+
+			[Test]
+			public async Task WhenComparerIsSpecifiedTwice_WhenNegated_ShouldUseTheLastComparer()
+			{
+				OuterClass subject = new()
+				{
+					Value = "Foo",
+				};
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(subject)
+						.Using(new MyComparer(true)).Using(new MyComparer(false));
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Test]

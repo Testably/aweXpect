@@ -28,8 +28,8 @@ public static partial class ThatAsyncEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		ObjectEqualityOptions<TItem> options = new();
-		CollectionMatchOptions matchOptions = new();
+		OptionsHolder<ObjectMatchType<TItem>> options = new(ObjectMatchType<TItem>.Default);
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCollectionMatchResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -37,7 +37,7 @@ public static partial class ThatAsyncEnumerable
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 				{
-					AsyncIsEqualToConstraint<TItem, TItem> constraint = new(it, grammars,
+					AsyncIsEqualToConstraint<TItem, TItem> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -55,8 +55,8 @@ public static partial class ThatAsyncEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
-		CollectionMatchOptions matchOptions = new();
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringCollectionMatchResult<IAsyncEnumerable<string?>?, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint(
@@ -64,7 +64,7 @@ public static partial class ThatAsyncEnumerable
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 				{
-					AsyncIsEqualToConstraint<string?, string?> constraint = new(it, grammars,
+					AsyncIsEqualToConstraint<string?, string?> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -74,18 +74,19 @@ public static partial class ThatAsyncEnumerable
 			matchOptions);
 	}
 
-	[CreateExpectationFamily("Is{Not}EqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+	[CreateExpectationFamily("Is{Not}EqualTo", Factory = typeof(ObjectToleranceMatchTypeFactory),
 		Summary = Matches, NegatedSummary = DoesNotMatch)]
 	internal static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>?,
 			IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>
 		IsEqualToWithToleranceCore<TItem, TTolerance>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<TItem>? expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			ObjectToleranceMatchType<TItem, TTolerance> initialOptions,
 			string expectedExpression,
 			bool negated)
 	{
-		CollectionMatchOptions matchOptions = new();
+		OptionsHolder<ObjectMatchType<TItem>> options = new(initialOptions);
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>,
 			TItem, TTolerance>(
@@ -94,7 +95,7 @@ public static partial class ThatAsyncEnumerable
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 				{
-					AsyncIsEqualToConstraint<TItem, TItem> constraint = new(it, grammars,
+					AsyncIsEqualToConstraint<TItem, TItem> constraint = new(it, grammars, state.Negated ? "unexpected" : "expected",
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions);
 					return state.Negated ? constraint.Invert() : constraint;
@@ -116,7 +117,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		IEnumerable<Expression<Func<TItem, bool>>>? expectedValues = expected.WithoutNullItems(negated);
-		CollectionMatchOptions matchOptions = new();
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionMatchResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
@@ -144,7 +145,7 @@ public static partial class ThatAsyncEnumerable
 			bool negated)
 	{
 		IEnumerable<Action<IThatSubject<TItem>>>? expectedValues = expected.WithoutNullItems(negated);
-		CollectionMatchOptions matchOptions = new();
+		OptionsHolder<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionMatchResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(

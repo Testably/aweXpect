@@ -7,7 +7,7 @@ using aweXpect.Core;
 
 namespace aweXpect.Options;
 
-public partial class CollectionMatchOptions
+public readonly partial struct CollectionMatchOptions
 {
 	private sealed class SameOrderCollectionMatcher<T, T2>(
 		EquivalenceRelations equivalenceRelation,
@@ -28,7 +28,7 @@ public partial class CollectionMatchOptions
 			=> (_expectedValues ??= new HashSet<T>(ExpectedItems)).Contains(value);
 
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, T expected,
-			IOptionsEquality<T2> options)
+			IEqualityEvaluator<T2> options)
 			=> options.AreConsideredEqual(value, expected);
 
 		protected override ICollectionMatcher<T, T2> CreateAnyOrderMatcher()
@@ -45,7 +45,7 @@ public partial class CollectionMatchOptions
 		where T : T2
 	{
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, ExpectationItem<T> expected,
-			IOptionsEquality<T2> options)
+			IEqualityEvaluator<T2> options)
 			=> expected.IsMetBy(value, index);
 
 		protected override ICollectionMatcher<T, T2> CreateAnyOrderMatcher()
@@ -64,7 +64,7 @@ public partial class CollectionMatchOptions
 		private readonly CompiledPredicates<T> _predicates = new();
 
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, Expression<Func<T, bool>> expected,
-			IOptionsEquality<T2> options)
+			IEqualityEvaluator<T2> options)
 			=> _predicates.Invoke(expected, value, index);
 
 		protected override ICollectionMatcher<T, T2> CreateAnyOrderMatcher()
@@ -154,7 +154,7 @@ public partial class CollectionMatchOptions
 			    _values.Count > ExpectedItems.Length);
 
 		public ValueTask<(bool IsFailure, string? Failure)>
-			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
+			Verify(string it, T value, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			if (EquivalenceRelation.Includes(EquivalenceRelations.IsContainedIn))
 			{
@@ -174,7 +174,7 @@ public partial class CollectionMatchOptions
 		///     without a deviation and with as many items as expected is met, which returns without a state machine.
 		/// </remarks>
 		public ValueTask<(bool IsFailure, string? Failure)>
-			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
+			VerifyComplete(string it, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			if (_positionalDeviations == 0 && _values.Count == ExpectedItems.Length &&
 			    !EquivalenceRelation.Includes(EquivalenceRelations.Contains) &&
@@ -193,7 +193,7 @@ public partial class CollectionMatchOptions
 		///     whose comparisons complete synchronously returns without a state machine.
 		/// </remarks>
 		private ValueTask<(bool, string?)>
-			VerifyTheCurrentValueContainsTheExpectedItems(T value, IOptionsEquality<T2> options)
+			VerifyTheCurrentValueContainsTheExpectedItems(T value, IEqualityEvaluator<T2> options)
 		{
 			_values.Add(value);
 			if (_isFound)
@@ -220,7 +220,7 @@ public partial class CollectionMatchOptions
 		}
 
 		private async ValueTask<(bool, string?)>
-			VerifyCompleteWithInAnyOrderHint(string it, IOptionsEquality<T2> options, int maximumNumber)
+			VerifyCompleteWithInAnyOrderHint(string it, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			(bool isFailure, string? error) = await VerifyCompleteInOrder(it, options, maximumNumber);
 			if (error is null || !await MatchesInAnyOrder(it, options, maximumNumber))
@@ -231,7 +231,7 @@ public partial class CollectionMatchOptions
 			return (isFailure, error + Environment.NewLine + ItemsMatchInADifferentOrderHint);
 		}
 
-		private async ValueTask<bool> MatchesInAnyOrder(string it, IOptionsEquality<T2> options, int maximumNumber)
+		private async ValueTask<bool> MatchesInAnyOrder(string it, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			ICollectionMatcher<T, T2> matcher = CreateAnyOrderMatcher();
 			foreach (T value in _values)
@@ -248,7 +248,7 @@ public partial class CollectionMatchOptions
 		}
 
 		private async ValueTask<(bool, string?)>
-			VerifyCompleteInOrder(string it, IOptionsEquality<T2> options, int maximumNumber)
+			VerifyCompleteInOrder(string it, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			if (!EquivalenceRelation.Includes(EquivalenceRelations.Contains) &&
 			    !EquivalenceRelation.Includes(EquivalenceRelations.IsContainedIn))
@@ -278,7 +278,7 @@ public partial class CollectionMatchOptions
 		///     The containment searches the subject in the expected items, the other relations search the expected items
 		///     in the subject.
 		/// </summary>
-		private async ValueTask<InOrderDeviations<T, T3>> FindTheDeviations(IOptionsEquality<T2> options)
+		private async ValueTask<InOrderDeviations<T, T3>> FindTheDeviations(IEqualityEvaluator<T2> options)
 		{
 			OrderMatch orderMatch = _ignoreInterspersedItems ? OrderMatch.Subsequence : OrderMatch.Contiguous;
 			if (EquivalenceRelation.Includes(EquivalenceRelations.IsContainedIn))
@@ -307,7 +307,7 @@ public partial class CollectionMatchOptions
 		/// <remarks>
 		///     After the partial runs, the item starts a new one, i.e. continues a run of length <c>0</c>.
 		/// </remarks>
-		private ValueTask<bool> CompletesARun(int index, IOptionsEquality<T2> options)
+		private ValueTask<bool> CompletesARun(int index, IEqualityEvaluator<T2> options)
 		{
 			List<int> runLengths = _nextOffsetsOrRunLengths ??= new List<int>();
 			runLengths.Clear();
@@ -331,7 +331,7 @@ public partial class CollectionMatchOptions
 		}
 
 		private async ValueTask<bool> CompletesARunAsync(ValueTask<bool> isMatch, int index, int i, int count,
-			List<int> runLengths, IOptionsEquality<T2> options)
+			List<int> runLengths, IEqualityEvaluator<T2> options)
 		{
 			while (true)
 			{
@@ -363,7 +363,7 @@ public partial class CollectionMatchOptions
 		///     Taking the first item that matches the next expected item never prevents finding a subsequence.
 		/// </summary>
 		/// <returns><see langword="true" />, when all expected items are found.</returns>
-		private ValueTask<bool> ContinuesTheSubsequence(int index, IOptionsEquality<T2> options)
+		private ValueTask<bool> ContinuesTheSubsequence(int index, IEqualityEvaluator<T2> options)
 		{
 			ValueTask<bool> isMatch = IsMatch(index, ExpectedItems[_matchIndex], options);
 			if (!isMatch.IsCompletedSuccessfully)
@@ -396,7 +396,7 @@ public partial class CollectionMatchOptions
 		///     state machine.
 		/// </remarks>
 		private ValueTask<(bool, string?)>
-			VerifyTheCurrentValueIsContainedInTheExpectedItems(string it, T value, IOptionsEquality<T2> options,
+			VerifyTheCurrentValueIsContainedInTheExpectedItems(string it, T value, IEqualityEvaluator<T2> options,
 				int maximumNumber)
 		{
 			_values.Add(value);
@@ -420,7 +420,7 @@ public partial class CollectionMatchOptions
 			return CountTheUnexpectedItems(it, value, options, maximumNumber);
 		}
 
-		private ValueTask<bool> ContinuesInTheExpectedItems(int index, IOptionsEquality<T2> options)
+		private ValueTask<bool> ContinuesInTheExpectedItems(int index, IEqualityEvaluator<T2> options)
 		{
 			if (_ignoreInterspersedItems)
 			{
@@ -431,7 +431,7 @@ public partial class CollectionMatchOptions
 		}
 
 		private async ValueTask<(bool, string?)> VerifyWhetherTheExpectedItemsAreLeft(ValueTask<bool> continues,
-			string it, T value, IOptionsEquality<T2> options, int maximumNumber)
+			string it, T value, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			_isBroken = !await continues;
 			return _isBroken
@@ -440,7 +440,7 @@ public partial class CollectionMatchOptions
 		}
 
 		private async ValueTask<(bool, string?)> CountTheUnexpectedItems(string it, T value,
-			IOptionsEquality<T2> options, int maximumNumber)
+			IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			if (!IsEqualToAnExpectedItem(value) && !await MatchesAnExpectedItem(_values.Count - 1, options))
 			{
@@ -459,7 +459,7 @@ public partial class CollectionMatchOptions
 		/// <summary>
 		///     The subject continues the run at every offset in the expected items at which all its items so far match.
 		/// </summary>
-		private ValueTask<bool> ContinuesTheRunInTheExpectedItems(int index, IOptionsEquality<T2> options)
+		private ValueTask<bool> ContinuesTheRunInTheExpectedItems(int index, IEqualityEvaluator<T2> options)
 		{
 			List<int> candidateOffsets = _nextOffsetsOrRunLengths ??= new List<int>();
 			candidateOffsets.Clear();
@@ -487,7 +487,7 @@ public partial class CollectionMatchOptions
 		}
 
 		private async ValueTask<bool> ContinuesTheRunInTheExpectedItemsAsync(ValueTask<bool> isMatch, int index,
-			int i, int count, List<int> candidateOffsets, IOptionsEquality<T2> options)
+			int i, int count, List<int> candidateOffsets, IEqualityEvaluator<T2> options)
 		{
 			if (await isMatch)
 			{
@@ -523,7 +523,7 @@ public partial class CollectionMatchOptions
 		/// <summary>
 		///     Taking the first expected item that matches never prevents finding the subject as a subsequence.
 		/// </summary>
-		private ValueTask<bool> ContinuesTheSubsequenceInTheExpectedItems(int index, IOptionsEquality<T2> options)
+		private ValueTask<bool> ContinuesTheSubsequenceInTheExpectedItems(int index, IEqualityEvaluator<T2> options)
 		{
 			for (int i = _matchIndex; i < ExpectedItems.Length; i++)
 			{
@@ -544,7 +544,7 @@ public partial class CollectionMatchOptions
 		}
 
 		private async ValueTask<bool> ContinuesTheSubsequenceInTheExpectedItemsAsync(ValueTask<bool> isMatch,
-			int index, int i, IOptionsEquality<T2> options)
+			int index, int i, IEqualityEvaluator<T2> options)
 		{
 			while (!await isMatch)
 			{
@@ -568,7 +568,7 @@ public partial class CollectionMatchOptions
 		/// </remarks>
 		protected virtual bool IsEqualToAnExpectedItem(T value) => false;
 
-		private async ValueTask<bool> MatchesAnExpectedItem(int index, IOptionsEquality<T2> options)
+		private async ValueTask<bool> MatchesAnExpectedItem(int index, IEqualityEvaluator<T2> options)
 		{
 			int expectedIndex = await FindNear(_lastMatchedExpectedIndex, ExpectedItems.Length,
 				candidate => IsMatch(index, ExpectedItems[candidate], options));
@@ -584,7 +584,7 @@ public partial class CollectionMatchOptions
 		/// <summary>
 		///     Additional items are no deviation for the containment relation, so they are left out.
 		/// </summary>
-		private IEnumerable<string> GetDeviations(IOptionsEquality<T2> options)
+		private IEnumerable<string> GetDeviations(IEqualityEvaluator<T2> options)
 			=> IncorrectItemsError(_incorrectItems ?? new Dictionary<int, (T Item, T3 Expected)>(), options,
 					_dimensions)
 				.Concat(AdditionalItemsError(_additionalItems ?? new Dictionary<int, T>(), CreateItemFormatter(),
@@ -596,7 +596,7 @@ public partial class CollectionMatchOptions
 		///     an item was inserted, these edits are reported instead.
 		/// </summary>
 		private async ValueTask<(bool, string?)>
-			VerifyCompleteForPositionalMatch(string it, IOptionsEquality<T2> options, int maximumNumber)
+			VerifyCompleteForPositionalMatch(string it, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			int positionalDeviations = _positionalDeviations + Math.Max(0, ExpectedItems.Length - _values.Count);
 			if (_editDistance is not null)
@@ -632,7 +632,7 @@ public partial class CollectionMatchOptions
 		/// </remarks>
 		private async ValueTask<(bool, string?)>
 			ReturnEditsError(string it, List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)> edits,
-				IOptionsEquality<T2> options, int maximumNumber)
+				IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			Dictionary<int, (T Item, T3 Expected)> incorrectItems = new();
 			Dictionary<int, T> additionalItems = new();
@@ -670,7 +670,7 @@ public partial class CollectionMatchOptions
 
 		private (bool, string?) ReturnError(string it, Dictionary<int, (T Item, T3 Expected)> incorrectItems,
 			Dictionary<int, T> outOfOrderItems, Dictionary<int, T> additionalItems, List<T3> missingItems,
-			IOptionsEquality<T2> options, int maximumNumber)
+			IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			Func<object?, string> formatItem =
 				GetItemFormatter(additionalItems.Values.Cast<object?>(), missingItems.Cast<object?>());
@@ -699,7 +699,7 @@ public partial class CollectionMatchOptions
 		///     every item of a met expectation does.
 		/// </remarks>
 		private ValueTask<(bool, string?)>
-			VerifyTheCurrentValueMatchesTheItemAtItsPosition(string it, T value, IOptionsEquality<T2> options,
+			VerifyTheCurrentValueMatchesTheItemAtItsPosition(string it, T value, IEqualityEvaluator<T2> options,
 				int maximumNumber)
 		{
 			int index = _values.Count;
@@ -711,7 +711,7 @@ public partial class CollectionMatchOptions
 		}
 
 		private ValueTask<(bool, string?)> ContinueAfterTheComparison(ValueTask<bool> isMatch, string it, int index,
-			T value, IOptionsEquality<T2> options, int maximumNumber)
+			T value, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			if (_editDistance is null && isMatch.IsCompletedSuccessfully)
 			{
@@ -724,7 +724,7 @@ public partial class CollectionMatchOptions
 		}
 
 		private async ValueTask<(bool, string?)> ContinueAfterTheComparisonAsync(ValueTask<bool> isMatch, string it,
-			int index, T value, IOptionsEquality<T2> options, int maximumNumber)
+			int index, T value, IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			if (!await isMatch)
 			{
@@ -735,7 +735,7 @@ public partial class CollectionMatchOptions
 		}
 
 		private async ValueTask<(bool, string?)> ContinueAfterADeviation(string it, int index, T value,
-			IOptionsEquality<T2> options, int maximumNumber)
+			IEqualityEvaluator<T2> options, int maximumNumber)
 		{
 			RecordADeviation(index, value, maximumNumber);
 			return await ContinueTheEditDistance(it, options, maximumNumber);
@@ -764,7 +764,7 @@ public partial class CollectionMatchOptions
 				(int)Math.Min(2L * maximumNumber, int.MaxValue), index);
 		}
 
-		private async ValueTask<(bool, string?)> ContinueTheEditDistance(string it, IOptionsEquality<T2> options,
+		private async ValueTask<(bool, string?)> ContinueTheEditDistance(string it, IEqualityEvaluator<T2> options,
 			int maximumNumber)
 		{
 			if (_editDistance is not null &&
@@ -783,7 +783,7 @@ public partial class CollectionMatchOptions
 		private Func<object?, string> CreateItemFormatter()
 			=> GetItemFormatter((_additionalItems ?? new Dictionary<int, T>()).Values.Cast<object?>(), []);
 
-		private ValueTask<bool> IsMatch(int index, T3 expected, IOptionsEquality<T2> options)
+		private ValueTask<bool> IsMatch(int index, T3 expected, IEqualityEvaluator<T2> options)
 			=> AreConsideredEqual(index, _values[index], expected, options);
 
 		/// <summary>
@@ -791,7 +791,7 @@ public partial class CollectionMatchOptions
 		///     <paramref name="expected" /> item.
 		/// </summary>
 		protected abstract ValueTask<bool>
-			AreConsideredEqual(int index, T value, T3 expected, IOptionsEquality<T2> options);
+			AreConsideredEqual(int index, T value, T3 expected, IEqualityEvaluator<T2> options);
 
 		/// <summary>
 		///     Creates the matcher that checks whether the same items match in any order.

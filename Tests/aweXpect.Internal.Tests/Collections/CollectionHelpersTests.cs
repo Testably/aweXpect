@@ -167,8 +167,7 @@ public sealed class CollectionHelpersTests
 	[Test]
 	public async Task TryCountForIndex_WhenTheIndexIsNotCountedFromTheEnd_ShouldNotCount()
 	{
-		CollectionIndexOptions options = new();
-		options.AtIndex(0);
+		CollectionIndexOptions options = CollectionIndexOptions.Default.AtIndex(0);
 		IEnumerable<int> subject = Create(Kind.Queue, 1, 2, 3);
 
 		bool result = ThatEnumerable.TryCountForIndex(options, subject, subject, Canceled, out int? count);
@@ -323,11 +322,7 @@ public sealed class CollectionHelpersTests
 #endif
 
 	private static CollectionIndexOptions FromEnd()
-	{
-		CollectionIndexOptions options = new();
-		options.AtIndexFromEnd(0);
-		return options;
-	}
+		=> CollectionIndexOptions.Default.AtIndexFromEnd(0);
 
 	private static IEnumerable<int> Create(Kind kind, params int[] items)
 		=> kind switch

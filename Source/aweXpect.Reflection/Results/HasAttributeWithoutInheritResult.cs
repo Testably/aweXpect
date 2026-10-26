@@ -12,8 +12,7 @@ namespace aweXpect.Reflection.Results;
 ///     (assemblies, constructors and fields).
 /// </summary>
 public sealed class HasAttributeWithoutInheritResult<TType, TMember>
-	: AndOrResult<TType, IThat<TMember>, HasAttributeWithoutInheritResult<TType, TMember>>,
-		IOptionsProvider<AttributeFilterOptions<TMember>>
+	: AndOrResult<TType, IThat<TMember>, HasAttributeWithoutInheritResult<TType, TMember>>
 {
 	private readonly AttributeFilterOptions<TMember> _attributeFilterOptions;
 
@@ -25,10 +24,6 @@ public sealed class HasAttributeWithoutInheritResult<TType, TMember>
 	{
 		_attributeFilterOptions = attributeFilterOptions;
 	}
-
-	/// <inheritdoc cref="IOptionsProvider{AttributeFilterOptions}.Options" />
-	AttributeFilterOptions<TMember> IOptionsProvider<AttributeFilterOptions<TMember>>.Options
-		=> _attributeFilterOptions;
 
 	/// <summary>
 	///     Allows an alternative attribute of type <typeparamref name="TAttribute" />.

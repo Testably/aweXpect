@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using aweXpect.Core;
 using aweXpect.Formatting;
 using aweXpect.Options;
 
@@ -37,9 +38,14 @@ internal sealed class ValueSelection
 	/// <summary>
 	///     Selects the values with the <paramref name="name" />, compared with the <paramref name="options" />.
 	/// </summary>
-	public ValueSelection WithName(string name, StringEqualityOptions options)
-		=> new(_isMembersOnly, [.. _filters, value => StringRules.IsMatch(options, value.Name, name),],
-			[.. _validations, () => options.ValidateExpected(name),], _types, true);
+	/// <remarks>
+	///     The options are read from the holder whenever a value is matched, so that an option that changes the holder
+	///     directly also applies.
+	/// </remarks>
+	public ValueSelection WithName(string name, IReadOnlyOptionsHolder<StringEqualityOptions> options)
+		=> new(_isMembersOnly,
+			[.. _filters, value => StringRules.IsMatch(options.Value, value.Name, name, nameof(name)),],
+			[.. _validations, () => options.Value.ValidateExpected(name, nameof(name)),], _types, true);
 
 	public ValueSelection WithPath(string path)
 		=> new(_isMembersOnly, [.. _filters, value => ValueFilters.HasPath(value.Path, path),], _validations,

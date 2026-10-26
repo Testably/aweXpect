@@ -3,7 +3,7 @@ using aweXpect.Core;
 
 namespace aweXpect.Options;
 
-public partial class CollectionMatchOptions
+public readonly partial struct CollectionMatchOptions
 {
 	/// <summary>
 	///     A collection matcher of <see cref="ExpectationItem{TItem}" /> items, whose expectations can stay undecided.
@@ -44,11 +44,11 @@ public partial class CollectionMatchOptions
 
 		public bool IsDetermined => matcher.IsDetermined;
 
-		public ValueTask<(bool IsFailure, string? Failure)> Verify(string it, T value, IOptionsEquality<T2> options,
+		public ValueTask<(bool IsFailure, string? Failure)> Verify(string it, T value, IEqualityEvaluator<T2> options,
 			int maximumNumber)
 			=> matcher.Verify(it, value, options, maximumNumber);
 
-		public ValueTask<(bool IsFailure, string? Failure)> VerifyComplete(string it, IOptionsEquality<T2> options,
+		public ValueTask<(bool IsFailure, string? Failure)> VerifyComplete(string it, IEqualityEvaluator<T2> options,
 			int maximumNumber)
 			=> matcher.VerifyComplete(it, options, maximumNumber);
 	}

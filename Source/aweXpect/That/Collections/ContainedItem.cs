@@ -29,8 +29,9 @@ internal abstract class ContainedItem<TItem>
 	///     Returns the item to match the items with during the evaluation in the <paramref name="context" />.
 	/// </summary>
 	/// <remarks>
-	///     Only an item whose comparison evaluates expectations of its own returns another item than itself, see
-	///     <see cref="ObjectEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />.
+	///     An item that compares by options keeps the evaluator of the evaluation, see
+	///     <see cref="IEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />, or returns
+	///     another item for it.
 	/// </remarks>
 	public virtual ContainedItem<TItem> ForEvaluation(IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -134,11 +135,12 @@ internal sealed class ItemMatchingPredicate<TItem>(Func<TItem, bool> predicate, 
 /// <remarks>
 ///     Only <c>HasItem</c> specifies the predicate this way.
 /// </remarks>
-internal sealed class ItemMatchingOptions<TItem>(PredicateOptions<TItem> options) : SynchronouslyMatchedItem<TItem>
+internal sealed class ItemMatchingOptions<TItem>(OptionsHolder<PredicateOptions<TItem>> options)
+	: SynchronouslyMatchedItem<TItem>
 {
 	/// <inheritdoc />
 	public override bool IsMatch(TItem item)
-		=> UserCode.Invoke(static values => values.Options.Matches(values.Item), (Options: options, Item: item),
+		=> UserCode.Invoke(static values => values.Options.Matches(values.Item), (Options: options.Value, Item: item),
 			"the predicate");
 
 	/// <inheritdoc />
@@ -147,7 +149,7 @@ internal sealed class ItemMatchingOptions<TItem>(PredicateOptions<TItem> options
 
 	/// <inheritdoc />
 	public override string GetHasItemExpectation(ExpectationGrammars grammars)
-		=> options.GetDescription();
+		=> options.Value.GetDescription();
 }
 
 /// <summary>
@@ -186,39 +188,47 @@ internal abstract class ExpectedItem<TItem>(TItem expected) : ContainedItem<TIte
 }
 
 /// <summary>
-///     An item that is equal to the <paramref name="expected" /> one according to the <paramref name="options" />.
+///     An item that is equal to the <paramref name="expected" /> one according to the current match type of the
+///     <paramref name="options" />.
 /// </summary>
-internal sealed class EqualItem<TItem>(ObjectEqualityOptions<TItem> options, TItem expected)
+internal sealed class EqualItem<TItem>(IReadOnlyOptionsHolder<ObjectMatchType<TItem>> options, TItem expected)
 	: ExpectedItem<TItem>(expected)
 {
 	private DefaultEqualItem? _defaultEqualItem;
+	private ObjectMatcher<TItem>? _matcher;
+
+	private IEqualityEvaluator<TItem> Matcher => _matcher ?? options.Value.ForEvaluation(default);
 
 	/// <inheritdoc />
 	public override bool UsesDefaultEquality
-		=> Expected is not null && options is IHasDefaultMatchType { HasDefaultMatchType: true, };
+		=> Expected is not null && DefaultEquality.IsUsedBy(options.Value);
 
 	/// <inheritdoc />
 	/// <remarks>
 	///     The default match type compares a primitive, an enum, a <see langword="decimal" /> and a
 	///     <see cref="Guid" /> like <see cref="EqualityComparer{T}.Default" />, whose comparison of them cannot throw, so
 	///     it needs neither to be awaited nor guarded as code of the caller. Only the time types have a default
-	///     tolerance instead, see <see cref="ObjectEqualityWithToleranceOptionsFactory" />.
+	///     tolerance instead, see <see cref="ObjectToleranceMatchTypeFactory" />.
 	/// </remarks>
 	public override SynchronouslyMatchedItem<TItem>? GetSynchronousItem()
-		=> HasFrameworkEquality.Value && options is IHasDefaultMatchType { HasDefaultMatchType: true, }
+		=> HasFrameworkEquality.Value && DefaultEquality.IsUsedBy(options.Value)
 			? _defaultEqualItem ??= new DefaultEqualItem(this)
 			: null;
 
 	/// <inheritdoc />
 	public override ValueTask<bool> Matches(TItem item)
-		=> options.AreConsideredEqual(item, Expected);
+		=> Matcher.AreConsideredEqual(item, Expected);
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     The item keeps the matcher of the evaluation, so that it compares with the match type that the options of
+	///     the expectation specified last.
+	/// </remarks>
 	public override ContainedItem<TItem> ForEvaluation(IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		ObjectEqualityOptions<TItem> evaluationOptions = options.ForEvaluation(context, cancellationToken);
-		return ReferenceEquals(evaluationOptions, options) ? this : new EqualItem<TItem>(evaluationOptions, Expected);
+		_matcher = options.Value.ForEvaluation(new MatchEnvironment(context, cancellationToken));
+		return this;
 	}
 
 	/// <inheritdoc />
@@ -228,15 +238,15 @@ internal sealed class EqualItem<TItem>(ObjectEqualityOptions<TItem> options, TIt
 	///     reader to guess it from "contains 3".
 	/// </remarks>
 	public override string GetItemExpectation()
-		=> options.GetItemExpectation(Formatter.Format(Expected), "an item", "equal to");
+		=> options.Value.GetItemExpectation(Formatter.Format(Expected), "an item", "equal to");
 
 	/// <inheritdoc />
 	public override string GetHasItemExpectation(ExpectationGrammars grammars)
-		=> options.GetItemExpectation(Formatter.Format(Expected), comparison: "equal to");
+		=> options.Value.GetItemExpectation(Formatter.Format(Expected), comparison: "equal to");
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> options.AppendContexts(contexts);
+		=> Matcher.AppendContexts(contexts);
 
 	/// <summary>
 	///     The <paramref name="equalItem" /> compared like the default match type compares it.
@@ -288,27 +298,38 @@ internal sealed class EqualItem<TItem>(ObjectEqualityOptions<TItem> options, TIt
 }
 
 /// <summary>
-///     A string that is equal to the <paramref name="expected" /> one according to the <paramref name="options" />.
+///     A string that is equal to the <paramref name="expected" /> one according to the current options in the
+///     <paramref name="options" /> holder, which reports an unusable pattern against the <paramref name="parameterName" />.
 /// </summary>
-internal sealed class EqualStringItem(StringEqualityOptions options, string? expected)
+/// <remarks>
+///     The options of the evaluation are kept, so that the item compares and explains with them; before an
+///     evaluation, the current options describe the item.
+/// </remarks>
+internal sealed class EqualStringItem(
+	IReadOnlyOptionsHolder<StringEqualityOptions> options,
+	string? expected,
+	string parameterName)
 	: ExpectedItem<string?>(expected)
 {
+	private StringEqualityOptions? _evaluationOptions;
 	private OrdinalStringItem? _ordinalItem;
+
+	private StringEqualityOptions Options => _evaluationOptions ?? options.Value;
 
 	/// <inheritdoc />
 	public override bool UsesDefaultEquality
-		=> Expected is not null && options.ComparesByOrdinalEquality;
+		=> Expected is not null && Options.ComparesByOrdinalEquality;
 
 	/// <inheritdoc />
 	/// <remarks>
 	///     A pattern, e.g. a wildcard or a prefix, is not a value that could have been mistyped.
 	/// </remarks>
 	public override bool SuggestsClosestMatch
-		=> !options.InspectsSubject;
+		=> !Options.InspectsSubject;
 
 	/// <inheritdoc />
 	public override ValueTask<bool> Matches(string? item)
-		=> options.AreConsideredEqual(item, Expected);
+		=> Options.AreConsideredEqual(item, Expected, parameterName);
 
 	/// <inheritdoc />
 	/// <remarks>
@@ -318,9 +339,10 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 	public override ContainedItem<string?> ForEvaluation(IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		options.ValidateExpected(Expected);
-		StringEqualityOptions evaluationOptions = options.ForEvaluation(context, cancellationToken);
-		return ReferenceEquals(evaluationOptions, options) ? this : new EqualStringItem(evaluationOptions, Expected);
+		StringEqualityOptions currentOptions = options.Value;
+		currentOptions.ValidateExpected(Expected, parameterName);
+		_evaluationOptions = currentOptions.ForEvaluation(context, cancellationToken);
+		return this;
 	}
 
 	/// <inheritdoc />
@@ -328,24 +350,27 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 	///     Without an option, the items are compared ordinally, which needs nothing to be awaited.
 	/// </remarks>
 	public override SynchronouslyMatchedItem<string?>? GetSynchronousItem()
-		=> options.ComparesByOrdinalEquality ? _ordinalItem ??= new OrdinalStringItem(this) : null;
+		=> Options.ComparesByOrdinalEquality ? _ordinalItem ??= new OrdinalStringItem(this) : null;
 
 	/// <inheritdoc />
 	/// <remarks>
 	///     A match type other than equality describes the item, so it reads "contains an item matching regex …".
 	/// </remarks>
 	public override string GetItemExpectation()
-		=> options.InspectsSubject
-			? "an item " + options.GetExpectation(Expected, ExpectationGrammars.None)
-			: Formatter.Format(Expected) + options;
+	{
+		StringEqualityOptions currentOptions = Options;
+		return currentOptions.InspectsSubject
+			? "an item " + currentOptions.GetExpectation(Expected, ExpectationGrammars.None)
+			: Formatter.Format(Expected) + currentOptions;
+	}
 
 	/// <inheritdoc />
 	public override string GetHasItemExpectation(ExpectationGrammars grammars)
-		=> options.GetExpectation(Expected, grammars);
+		=> Options.GetExpectation(Expected, grammars);
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> options.AppendContexts(contexts);
+		=> Options.AppendContexts(contexts);
 
 	/// <summary>
 	///     The <paramref name="equalItem" /> compared ordinally, like the options compare it without an option.

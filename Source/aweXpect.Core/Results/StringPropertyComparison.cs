@@ -21,14 +21,15 @@ namespace aweXpect.Results;
 /// </remarks>
 public sealed class StringPropertyComparison
 {
-	internal StringPropertyComparison(string? expected, StringEqualityOptions options, bool isNegated)
+	internal StringPropertyComparison(string? expected, OptionsHolder<StringEqualityOptions> options, bool isNegated)
 	{
 		Expected = expected;
 		Options = options;
 		IsNegated = isNegated;
 	}
 
-	internal StringPropertyComparison(string expected, StringEqualityOptions options, Quantifier quantifier)
+	internal StringPropertyComparison(string expected, OptionsHolder<StringEqualityOptions> options,
+		OptionsHolder<Quantifier> quantifier)
 	{
 		Expected = expected;
 		Options = options;
@@ -36,22 +37,29 @@ public sealed class StringPropertyComparison
 	}
 
 	/// <summary>
-	///     The string options of the comparison, which the result you return provides to the option methods, e.g. via
+	///     The holder with the string options of the comparison, which the result you return provides to the option
+	///     methods, e.g. via
 	///     <see cref="StringEqualityTypeResult{TType, TThat}" />.
 	/// </summary>
-	public StringEqualityOptions Options { get; }
+	public OptionsHolder<StringEqualityOptions> Options { get; }
 
 	/// <summary>
-	///     How often the expected value has to occur, which the result you return provides to the quantifiers, e.g. via
+	///     The holder with how often the expected value has to occur, which the result you return provides to the
+	///     quantifiers, e.g. via
 	///     <see cref="StringOccurrenceCountResult{TType, TThat}" />.
 	/// </summary>
 	/// <remarks>
 	///     Only the comparison of <c>Containing(…)</c>, which is passed to an
 	///     <see cref="IStringOccurrencePropertyResult{TResult}" />, has a quantifier.
 	/// </remarks>
-	public Quantifier? Quantifier { get; }
+	public OptionsHolder<Quantifier>? Quantifier { get; }
 
 	internal string? Expected { get; }
+
+	/// <summary>
+	///     The name of the parameter of the operator that received the <see cref="Expected" /> value.
+	/// </summary>
+	private string ParameterName => IsNegated ? "unexpected" : "expected";
 
 	/// <summary>
 	///     Flag indicating that the operator is a negated one, e.g. <c>NotStartingWith(…)</c>.
@@ -78,7 +86,7 @@ public sealed class StringPropertyComparison
 	{
 		if (Quantifier is null)
 		{
-			stringBuilder.Append(Options.GetExpectation(Expected, grammars));
+			stringBuilder.Append(Options.Value.GetExpectation(Expected, grammars));
 			return;
 		}
 
@@ -98,7 +106,7 @@ public sealed class StringPropertyComparison
 	/// <exception cref="System.ArgumentException">
 	///     The expected value cannot be used with the options, e.g. an invalid regex pattern.
 	/// </exception>
-	public void ValidateExpected() => Options.ValidateExpected(Expected);
+	public void ValidateExpected() => Options.Value.ValidateExpected(Expected, ParameterName);
 
 	/// <summary>
 	///     Evaluates the comparison against the <paramref name="actual" /> value of the property in the
@@ -115,12 +123,12 @@ public sealed class StringPropertyComparison
 	public async ValueTask<StringPropertyOutcome> Evaluate(string? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		StringEqualityOptions options = Options.ForEvaluation(context, cancellationToken);
+		StringEqualityOptions options = Options.Value.ForEvaluation(context, cancellationToken);
 		if (Quantifier is null)
 		{
-			MatchResult matchResult = await options.MatchWithExplanation(actual, Expected);
+			MatchResult matchResult = await options.MatchWithExplanation(actual, Expected, ParameterName);
 			Outcome outcome = matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
-			if (actual is null && Options.InspectsSubject)
+			if (actual is null && Options.Value.InspectsSubject)
 			{
 				outcome = Outcome.FailureBothWays;
 			}
@@ -135,8 +143,8 @@ public sealed class StringPropertyComparison
 		}
 
 		(int Count, bool IsFinished) occurrences =
-			await StringOccurrences.Count(options, actual, Expected!, Quantifier);
-		Outcome occurrenceOutcome = Quantifier.Check(occurrences.Count, true) == true ? Outcome.Success : Outcome.Failure;
+			await StringOccurrences.Count(options, actual, Expected!, Quantifier.Value, ParameterName);
+		Outcome occurrenceOutcome = Quantifier.Value.Check(occurrences.Count, true) == true ? Outcome.Success : Outcome.Failure;
 		return new StringPropertyOutcome(this, occurrenceOutcome, actual, options, default, occurrences);
 	}
 
@@ -146,6 +154,6 @@ public sealed class StringPropertyComparison
 	/// </summary>
 	internal void AppendOccurrenceExpectation(StringBuilder stringBuilder, bool isNegated, string verb,
 		string negatedVerb)
-		=> StringOccurrences.AppendExpectation(stringBuilder, Quantifier!, isNegated, verb, negatedVerb, Expected!,
-			Options);
+		=> StringOccurrences.AppendExpectation(stringBuilder, Quantifier!.Value, isNegated, verb, negatedVerb, Expected!,
+			Options.Value);
 }

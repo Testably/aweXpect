@@ -505,31 +505,46 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Test]
-			[Arguments(false)]
-			[Arguments(true)]
-			public async Task WhenTimeoutIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool never)
+			public async Task WhenTimeoutIsSpecifiedTwice_ShouldUseTheLastTimeout()
 			{
 				CustomEventWithoutParametersClass sut = new();
 				IEventRecording<CustomEventWithoutParametersClass> recording =
 					sut.Record().Events();
 
-				async Task Act()
-				{
-					if (never)
-					{
-						await That(recording).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
-							.Never().Within(1.Seconds()).Within(2.Seconds());
-					}
-					else
-					{
-						await That(recording).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
-							.Within(1.Seconds()).Within(2.Seconds());
-					}
-				}
+				async Task Act() =>
+					await That(recording).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Within(1.Seconds()).Within(10.Milliseconds())
+						.WithTimeSystem(new VirtualTimeSystem());
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Within cannot be specified more than once.")
-					.Because("the second timeout would silently replace the first one");
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the CustomEvent event on sut at least once within 0:00.010,
+					             but it was never recorded within 0:00.010
+					             """);
+			}
+
+			[Test]
+			public async Task WhenTimeoutIsSpecifiedTwice_WithNever_ShouldUseTheLastTimeout()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording =
+					sut.Record().Events();
+				sut.NotifyCustomEvent();
+
+				async Task Act() =>
+					await That(recording).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Never().Within(1.Seconds()).Within(10.Milliseconds())
+						.WithTimeSystem(new VirtualTimeSystem());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that recording
+					             has never recorded the CustomEvent event on sut within 0:00.010,
+					             but it was recorded once in [
+					               CustomEvent()
+					             ]*
+					             """).AsWildcard();
 			}
 
 			[Test]

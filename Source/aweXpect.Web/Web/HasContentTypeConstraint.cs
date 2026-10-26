@@ -22,7 +22,8 @@ internal sealed class HasContentTypeConstraint<TMessage>(
 	string it,
 	ExpectationGrammars grammars,
 	string expected,
-	StringEqualityOptions options,
+	string parameterName,
+	OptionsHolder<StringEqualityOptions> options,
 	Func<TMessage, HttpContent?> getContent)
 	: ConstraintResult.WithNotNullValue<TMessage>(it, grammars),
 		IAsyncContextConstraint<TMessage>
@@ -48,8 +49,8 @@ internal sealed class HasContentTypeConstraint<TMessage>(
 			return this;
 		}
 
-		_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-		_matchResult = await _evaluationOptions.MatchWithExplanation(_contentType, expected);
+		_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+		_matchResult = await _evaluationOptions.MatchWithExplanation(_contentType, expected, parameterName);
 		if (!_matchResult.IsMatch)
 		{
 			Outcome = Outcome.Failure;
@@ -62,11 +63,11 @@ internal sealed class HasContentTypeConstraint<TMessage>(
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> (_evaluationOptions ?? options).AppendContexts(contexts);
+		=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(Grammars.Verb("has a `Content-Type` header ", "have a `Content-Type` header "))
-			.Append(options.GetExpectation(expected, Grammars));
+			.Append(options.Value.GetExpectation(expected, Grammars));
 
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -76,14 +77,14 @@ internal sealed class HasContentTypeConstraint<TMessage>(
 		}
 		else
 		{
-			stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It, "content type",
+			stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedMemberFailure(It, "content type",
 				Grammars, _contentType, expected, _matchResult));
 		}
 	}
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(Grammars.Verb("does not have a `Content-Type` header ", "do not have a `Content-Type` header "))
-			.Append(options.GetExpectation(expected, Grammars.Negate()));
+			.Append(options.Value.GetExpectation(expected, Grammars.Negate()));
 
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(It).Append(" had");

@@ -22,7 +22,7 @@ public sealed class SignalerOptionsTests
 		public async Task ToString_WithInfiniteTimeout_ShouldReturnEmptyString()
 		{
 			SignalerOptions sut = new();
-			sut.Within(Timeout.InfiniteTimeSpan);
+			sut = sut.Within(Timeout.InfiniteTimeSpan);
 
 			string result = sut.ToString();
 
@@ -34,7 +34,7 @@ public sealed class SignalerOptionsTests
 		public async Task ToString_WithTimeout_ShouldIncludeTimeout()
 		{
 			SignalerOptions sut = new();
-			sut.Within(5.Seconds());
+			sut = sut.Within(5.Seconds());
 
 			string result = sut.ToString();
 
@@ -42,111 +42,35 @@ public sealed class SignalerOptionsTests
 		}
 
 		[Test]
-		public async Task Within_ShouldReturnTheSameOptions()
+		public async Task Within_ShouldNotChangeTheOriginalOptions()
 		{
-			SignalerOptions sut = new();
+			SignalerOptions sut = SignalerOptions.Default;
 
 			SignalerOptions result = sut.Within(5.Seconds());
 
-			await That(result).IsSameAs(sut);
+			await That(result.Timeout).IsEqualTo(5.Seconds());
+			await That(sut.Timeout).IsNull();
 		}
 
 		[Test]
-		public async Task Within_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		public async Task Within_WhenSpecifiedAsZero_ShouldKeepIt()
+		{
+			SignalerOptions sut = SignalerOptions.Default.Within(TimeSpan.Zero);
+
+			await That(sut.Timeout).IsEqualTo(TimeSpan.Zero);
+			await That(sut.ToString()).IsEqualTo(" within 0:00");
+		}
+
+		[Test]
+		public async Task Within_WhenSpecifiedTwice_ShouldUseTheLastTimeout()
 		{
 			SignalerOptions sut = new();
-			sut.Within(5.Seconds());
+			sut = sut.Within(5.Seconds());
 
-			void Act() => sut.Within(6.Seconds());
+			sut = sut.Within(6.Seconds());
 
-			await That(Act).Throws<InvalidOperationException>()
-				.WithMessage("Within cannot be specified more than once.");
-			await That(sut.Timeout).IsEqualTo(5.Seconds())
-				.Because("a rejected timeout must not replace the first one");
-		}
-	}
-
-	public sealed class WithParameterTests
-	{
-		[Test]
-		public async Task ToString_Empty_ShouldReturnEmptyString()
-		{
-			SignalerOptions<int> sut = new();
-
-			string result = sut.ToString();
-
-			await That(result).IsEmpty();
-		}
-
-		[Test]
-		public async Task ToString_WhenPredicateIsAddedAfterFirstCall_ShouldAppendTimeoutLast()
-		{
-			SignalerOptions<int> sut = new();
-			sut.Within(75.Seconds());
-			sut.WithPredicate(_ => true, "my predicate");
-			_ = sut.ToString();
-			sut.WithPredicate(_ => true, "my other predicate");
-
-			string result = sut.ToString();
-
-			await That(result).IsEqualTo(" with my predicate and with my other predicate within 1:15");
-		}
-
-		[Test]
-		public async Task ToString_WithPredicate_ShouldIncludePredicateExpression()
-		{
-			SignalerOptions<int> sut = new();
-			sut.WithPredicate(_ => true, "my predicate");
-
-			string result = sut.ToString();
-
-			await That(result).IsEqualTo(" with my predicate");
-		}
-
-		[Test]
-		public async Task ToString_WithTimeout_ShouldIncludeTimeout()
-		{
-			SignalerOptions<int> sut = new();
-			sut.Within(5.Seconds());
-
-			string result = sut.ToString();
-
-			await That(result).IsEqualTo(" within 0:05");
-		}
-
-		[Test]
-		public async Task ToString_WithTimeoutAndPredicate_ShouldIncludePredicateExpression()
-		{
-			SignalerOptions<int> sut = new();
-			sut.Within(75.Seconds());
-			sut.WithPredicate(_ => true, "my predicate");
-
-			string result = sut.ToString();
-
-			await That(result).IsEqualTo(" with my predicate within 1:15");
-		}
-
-		[Test]
-		public async Task ToString_WithTimeoutAndPredicate_WhenCalledTwice_ShouldReturnSameText()
-		{
-			SignalerOptions<int> sut = new();
-			sut.Within(75.Seconds());
-			sut.WithPredicate(_ => true, "my predicate");
-
-			_ = sut.ToString();
-			string result = sut.ToString();
-
-			await That(result).IsEqualTo(" with my predicate within 1:15");
-		}
-
-		[Test]
-		public async Task WithPredicate_ShouldReturnTheSameOptions()
-		{
-			SignalerOptions<int> sut = new();
-
-			SignalerOptions<int> result = sut.WithPredicate(_ => true, "my predicate");
-
-			await That(result).IsSameAs(sut);
+			await That(sut.Timeout).IsEqualTo(6.Seconds());
+			await That(sut.ToString()).IsEqualTo(" within 0:06");
 		}
 	}
 }
