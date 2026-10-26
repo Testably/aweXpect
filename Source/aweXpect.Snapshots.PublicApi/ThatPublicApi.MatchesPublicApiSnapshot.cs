@@ -43,7 +43,7 @@ public static class ThatPublicApi
 		[CallerFilePath] string callerFilePath = "",
 		[CallerMemberName] string callerMemberName = "")
 		=> AddPublicApiSnapshot(subject,
-			assembly => PublicApiDeclarations.GenerateFrom(assembly, options ?? DefaultOptions),
+			assembly => PublicApiDeclarations.GenerateFrom(assembly, options),
 			callerFilePath, callerMemberName);
 
 	/// <summary>
@@ -73,10 +73,8 @@ public static class ThatPublicApi
 		[CallerFilePath] string callerFilePath = "",
 		[CallerMemberName] string callerMemberName = "")
 		=> AddPublicApiSnapshot(subject,
-			file => PublicApiDeclarations.GenerateFrom(file, options ?? DefaultOptions),
+			file => PublicApiDeclarations.GenerateFrom(file, options),
 			callerFilePath, callerMemberName);
-
-	private static PublicApiOptions DefaultOptions(PublicApiOptions options) => options;
 
 	/// <remarks>
 	///     The result stays nullable, unlike the one of the string snapshot, as awaiting it does not return the

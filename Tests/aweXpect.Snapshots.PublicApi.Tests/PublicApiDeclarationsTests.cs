@@ -912,27 +912,23 @@ public sealed partial class PublicApiDeclarationsTests
 	}
 
 	[Test]
-	public async Task GenerateFrom_WhenOptionsOfAnAssemblyAreNull_ShouldThrowArgumentNullException()
+	public async Task GenerateFrom_WhenOptionsOfAnAssemblyAreNull_ShouldUseTheDefaults()
 	{
-		void Act()
-			=> PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly, null!);
+		Assembly assembly = typeof(Album).Assembly;
 
-		await That(Act).Throws<ArgumentNullException>()
-			.WithParamName("options").And
-			.WithMessage("The 'options' cannot be null.*").AsWildcard();
+		string result = PublicApiDeclarations.GenerateFrom(assembly, null);
+
+		await That(result).IsEqualTo(PublicApiDeclarations.GenerateFrom(assembly, o => o));
 	}
 
 	[Test]
-	public async Task GenerateFrom_WhenOptionsOfAFileAreNull_ShouldThrowArgumentNullException()
+	public async Task GenerateFrom_WhenOptionsOfAFileAreNull_ShouldUseTheDefaults()
 	{
 		FileInfo file = new(typeof(Album).Assembly.Location);
 
-		void Act()
-			=> PublicApiDeclarations.GenerateFrom(file, null!);
+		string result = PublicApiDeclarations.GenerateFrom(file, null);
 
-		await That(Act).Throws<ArgumentNullException>()
-			.WithParamName("options").And
-			.WithMessage("The 'options' cannot be null.*").AsWildcard();
+		await That(result).IsEqualTo(PublicApiDeclarations.GenerateFrom(file, o => o));
 	}
 
 	[Test]

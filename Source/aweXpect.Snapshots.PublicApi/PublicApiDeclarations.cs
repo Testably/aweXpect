@@ -162,33 +162,22 @@ public static class PublicApiDeclarations
 		new(StringComparer.OrdinalIgnoreCase);
 
 	/// <summary>
-	///     Generates the public API of the <paramref name="assembly" />, which must be loaded from a file.
-	/// </summary>
-	/// <remarks>
-	///     The file of the assembly is read like by <see cref="GenerateFrom(FileInfo)" />.
-	/// </remarks>
-	/// <exception cref="InvalidOperationException">
-	///     An assembly that the <paramref name="assembly" /> references cannot be resolved, or only in a lower version, which
-	///     would change the generated public API.
-	/// </exception>
-	public static string GenerateFrom(Assembly assembly)
-		=> GenerateFrom(assembly, static options => options);
-
-	/// <summary>
 	///     Generates the public API of the <paramref name="assembly" />, which must be loaded from a file, with the
-	///     <paramref name="options" />.
+	///     optional <paramref name="options" />.
 	/// </summary>
 	/// <remarks>
-	///     The file of the assembly is read like by <see cref="GenerateFrom(FileInfo)" />.
+	///     The file of the assembly is read like by
+	///     <see cref="GenerateFrom(FileInfo, Func{PublicApiOptions, PublicApiOptions})" />.
 	/// </remarks>
+	/// <param name="assembly">The assembly.</param>
+	/// <param name="options">The options, or <see langword="null" /> for the defaults.</param>
 	/// <exception cref="InvalidOperationException">
 	///     An assembly that the <paramref name="assembly" /> references cannot be resolved, or only in a lower version, which
 	///     would change the generated public API.
 	/// </exception>
-	public static string GenerateFrom(Assembly assembly, Func<PublicApiOptions, PublicApiOptions> options)
+	public static string GenerateFrom(Assembly assembly, Func<PublicApiOptions, PublicApiOptions>? options = null)
 	{
 		ArgumentChecks.ThrowIfNull(assembly, nameof(assembly));
-		ArgumentChecks.ThrowIfNull(options, nameof(options));
 		if (assembly.IsDynamic || string.IsNullOrEmpty(assembly.Location))
 		{
 			throw Tracing.WriteException(new ArgumentException(
@@ -200,37 +189,27 @@ public static class PublicApiDeclarations
 	}
 
 	/// <summary>
-	///     Generates the public API of the assembly in the <paramref name="assemblyFile" /> without loading it, e.g. of a
-	///     build for a target framework that the application cannot run on or of a reference assembly.
+	///     Generates the public API of the assembly in the <paramref name="assemblyFile" /> with the optional
+	///     <paramref name="options" /> without loading it, e.g. of a build for a target framework that the application
+	///     cannot run on or of a reference assembly.
 	/// </summary>
 	/// <remarks>
 	///     The types in signatures are resolved from the assemblies next to it, of the application, of the .NET version
 	///     it targets (when the .NET SDK is installed) and of the current runtime, or else from the NuGet packages that its
 	///     <c>deps.json</c> lists.
 	/// </remarks>
+	/// <param name="assemblyFile">The file of the assembly.</param>
+	/// <param name="options">The options, or <see langword="null" /> for the defaults.</param>
 	/// <exception cref="InvalidOperationException">
 	///     An assembly that the assembly references cannot be resolved, or only in a lower version, which would change the
 	///     generated public API.
 	/// </exception>
-	public static string GenerateFrom(FileInfo assemblyFile)
-		=> GenerateFrom(assemblyFile, static options => options);
-
-	/// <summary>
-	///     Generates the public API of the assembly in the <paramref name="assemblyFile" /> with the
-	///     <paramref name="options" /> without loading it.
-	/// </summary>
-	/// <remarks>
-	///     The assembly is read like by <see cref="GenerateFrom(FileInfo)" />.
-	/// </remarks>
-	/// <exception cref="InvalidOperationException">
-	///     An assembly that the assembly references cannot be resolved, or only in a lower version, which would change the
-	///     generated public API.
-	/// </exception>
-	public static string GenerateFrom(FileInfo assemblyFile, Func<PublicApiOptions, PublicApiOptions> options)
+	public static string GenerateFrom(FileInfo assemblyFile, Func<PublicApiOptions, PublicApiOptions>? options = null)
 	{
 		ArgumentChecks.ThrowIfNull(assemblyFile, nameof(assemblyFile));
-		ArgumentChecks.ThrowIfNull(options, nameof(options));
-		return WriteFile(assemblyFile.FullName, GetReferencePack(assemblyFile.FullName), options(new PublicApiOptions()));
+		PublicApiOptions publicApiOptions = new();
+		return WriteFile(assemblyFile.FullName, GetReferencePack(assemblyFile.FullName),
+			options?.Invoke(publicApiOptions) ?? publicApiOptions);
 	}
 
 	private static string WriteFile(string assemblyFile, string? referencePack, PublicApiOptions options)
