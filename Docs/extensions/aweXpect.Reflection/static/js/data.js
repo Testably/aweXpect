@@ -846,6 +846,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "2035709788e314afef5721e8499327ca998ac367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
+        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
       }
     ],
     "labels": [
@@ -989,7 +995,8 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "20357097"
     ],
     "datasets": [
       {
@@ -1136,7 +1143,8 @@ window.BENCHMARK_DATA = {
           667.73224903987,
           502.4869992392404,
           715.4485103062221,
-          656.0633188247681
+          656.0633188247681,
+          356.174617099762
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1283,6 +1291,7 @@ window.BENCHMARK_DATA = {
           592,
           592,
           592,
+          464,
           464,
           464,
           464,
@@ -1443,7 +1452,8 @@ window.BENCHMARK_DATA = {
           839.5925099509103,
           692.9500990595136,
           794.6288106918335,
-          888.5572644869486
+          888.5572644869486,
+          536.8183043162028
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1455,6 +1465,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -2455,6 +2466,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "2035709788e314afef5721e8499327ca998ac367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
+        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
       }
     ],
     "labels": [
@@ -2598,7 +2615,8 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "20357097"
     ],
     "datasets": [
       {
@@ -2745,7 +2763,8 @@ window.BENCHMARK_DATA = {
           121.59816252390543,
           76.32721045811971,
           112.69869488080343,
-          114.66328901510973
+          114.66328901510973,
+          58.143421300819945
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2892,6 +2911,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -3052,7 +3072,8 @@ window.BENCHMARK_DATA = {
           200.0570366382599,
           165.79196189244587,
           257.97272974650065,
-          215.35406255722046
+          215.35406255722046,
+          122.15644100734166
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3064,6 +3085,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -4064,6 +4086,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "2035709788e314afef5721e8499327ca998ac367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
+        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
       }
     ],
     "labels": [
@@ -4207,7 +4235,8 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "20357097"
     ],
     "datasets": [
       {
@@ -4354,7 +4383,8 @@ window.BENCHMARK_DATA = {
           1894.5421292231633,
           1463.3685356140136,
           1411.1039389201574,
-          1838.6320939745221
+          1838.6320939745221,
+          877.4776200612386
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4501,6 +4531,7 @@ window.BENCHMARK_DATA = {
           1888,
           1888,
           1888,
+          1808,
           1808,
           1808,
           1808,
@@ -4661,7 +4692,8 @@ window.BENCHMARK_DATA = {
           1483.6678530375164,
           1060.8135719299316,
           1312.3308497111002,
-          1354.369742711385
+          1354.369742711385,
+          790.3319710413615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4813,6 +4845,7 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1952,
+          1864,
           1864
         ],
         "borderColor": "#FF671B",
@@ -5613,6 +5646,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "2035709788e314afef5721e8499327ca998ac367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
+        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
       }
     ],
     "labels": [
@@ -5746,7 +5785,8 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "20357097"
     ],
     "datasets": [
       {
@@ -5883,7 +5923,8 @@ window.BENCHMARK_DATA = {
           2771.6956988743373,
           2034.700079697829,
           2151.8225588117325,
-          2642.3334612165177
+          2642.3334612165177,
+          1403.0971938451132
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6020,6 +6061,7 @@ window.BENCHMARK_DATA = {
           3184,
           3184,
           3184,
+          3104,
           3104,
           3104,
           3104,
@@ -6170,7 +6212,8 @@ window.BENCHMARK_DATA = {
           3704.700168355306,
           2906.4009140559606,
           3378.733670454759,
-          3859.4906572614395
+          3859.4906572614395,
+          2185.3293940226235
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6312,7 +6355,8 @@ window.BENCHMARK_DATA = {
           3981,
           3981,
           3977,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7112,6 +7156,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "2035709788e314afef5721e8499327ca998ac367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
+        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
       }
     ],
     "labels": [
@@ -7245,7 +7295,8 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "20357097"
     ],
     "datasets": [
       {
@@ -7382,7 +7433,8 @@ window.BENCHMARK_DATA = {
           364.816552734375,
           266.5842892101833,
           355.14465500758246,
-          339.7191134770711
+          339.7191134770711,
+          186.8432778040568
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7519,6 +7571,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -7669,7 +7722,8 @@ window.BENCHMARK_DATA = {
           2224.275225575765,
           1691.443691117423,
           1988.174253845215,
-          2213.8134574890137
+          2213.8134574890137,
+          1231.1973390579224
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7681,6 +7735,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -8611,6 +8666,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "2035709788e314afef5721e8499327ca998ac367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
+        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
       }
     ],
     "labels": [
@@ -8744,7 +8805,8 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "20357097"
     ],
     "datasets": [
       {
@@ -8881,7 +8943,8 @@ window.BENCHMARK_DATA = {
           2957.8502721150717,
           2206.4882451375324,
           2327.8528725550723,
-          2930.2676840562085
+          2930.2676840562085,
+          1460.6088209885818
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9018,6 +9081,7 @@ window.BENCHMARK_DATA = {
           3312,
           3312,
           3312,
+          3232,
           3232,
           3232,
           3232,
@@ -9168,7 +9232,8 @@ window.BENCHMARK_DATA = {
           282710.95253208705,
           241591.6001674107,
           260116.4959716797,
-          298482.9997907366
+          298482.9997907366,
+          169174.7233561198
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9310,7 +9375,8 @@ window.BENCHMARK_DATA = {
           17577,
           17707,
           17528,
-          17577
+          17577,
+          17576
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
