@@ -130,7 +130,7 @@ test framework exposes it:
 - the cancellation token of the test, e.g. to cancel the expectations with
   [`TestCancellation.FromCancellationToken(…)`](./06-time-and-cancellation.md#cancellationtoken),
 - and attachments to the result of the test, e.g. the
-  [pending file of a snapshot](/aweXpect/extensions/aweXpect.Snapshots/matching-snapshots#files).
+  [pending file of a snapshot](/aweXpect/extensions/aweXpect.Snapshots/matching-snapshots#encoding-line-breaks-and-attachments).
 
 | Test framework       | Test case | Arguments of the test class | Retries                    | Cancellation token | Attachments |
 |----------------------|-----------|-----------------------------|----------------------------|--------------------|-------------|

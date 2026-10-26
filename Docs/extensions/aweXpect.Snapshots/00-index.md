@@ -16,9 +16,9 @@ dotnet add package aweXpect.Snapshots
   binary data and files. The other two packages bring it with them.
 - [aweXpect.Snapshots.DiffEngine](https://www.nuget.org/packages/aweXpect.Snapshots.DiffEngine): add it to open a diff
   tool for a missing or different snapshot when the tests run locally; it registers itself, see
-  [Diff tools](./10-diff-tools.md).
+  [Diff tools](./03-diff-tools.md).
 - [aweXpect.Snapshots.PublicApi](https://www.nuget.org/packages/aweXpect.Snapshots.PublicApi): add it to verify the
-  public API of an assembly with `MatchesPublicApiSnapshot`, see [Public API](./11-public-api.md).
+  public API of an assembly with `MatchesPublicApiSnapshot`, see [Public API](./07-public-api.md).
 
 The packages bring `Expect.That` with them, but not the expectations for strings, numbers or collections, so reference
 [`aweXpect`](https://www.nuget.org/packages/aweXpect) as well. `MatchesSnapshot` and `MatchesPublicApiSnapshot` live in
@@ -67,18 +67,7 @@ The snapshot is stored as `<Class>.<Method>.awexpect-snapshot.txt` next to the t
 of the test file. A missing or different snapshot fails the test and writes the actual value to
 `<Class>.<Method>.awexpect-snapshot.pending.txt`; rename it to `<Class>.<Method>.awexpect-snapshot.txt` to accept it,
 or set the environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` to `all` to accept all changed snapshots of a test run (or
-to `new` to only add the missing ones). In Rider and Visual Studio, the snapshots are
-[nested under their test file](./03-naming-snapshots.md#nesting-in-the-ide).
-`OrphanedSnapshots.CheckAsync()` in the teardown of the test run reports the snapshots that no test uses any more on a
-build server, and deletes them while accepting all changes.
-[Comparers](./08-comparers.md) decide whether a value matches its snapshot instead of the built-in
-comparison, e.g. an image comparer that tolerates small differences of single pixels.
-[Reporters](./09-reporters.md) are told about every missing, different or matching snapshot, e.g. to open a
-diff tool.
-
-Reference [aweXpect.Snapshots.DiffEngine](https://www.nuget.org/packages/aweXpect.Snapshots.DiffEngine) as well, and a
-missing or different snapshot opens a diff tool with [DiffEngine](https://github.com/VerifyTests/DiffEngine), in which
-the change can be taken over into the snapshot; see [Diff tools](./10-diff-tools.md).
+to `new` to only add the missing ones).
 
 ## Overview
 
@@ -93,7 +82,7 @@ Expectations for `Assembly` and `FileInfo`, from aweXpect.Snapshots.PublicApi:
 
 | Expectation                                      | Negated | Summary                                                                              |
 |--------------------------------------------------|---------|--------------------------------------------------------------------------------------|
-| [`MatchesPublicApiSnapshot`](./11-public-api.md) |         | the public API of the assembly, or of the assembly in the file, matches the snapshot |
+| [`MatchesPublicApiSnapshot`](./07-public-api.md) |         | the public API of the assembly, or of the assembly in the file, matches the snapshot |
 
 ## Customization
 
@@ -101,17 +90,38 @@ The settings live under `Customize.aweXpect.Snapshots()` in the namespace `aweXp
 applies to the current async flow, e.g. a single test; set it on `Customize.aweXpect.Global.Snapshots()` to apply it
 to all tests:
 
-| Value                                                                            | Default                                                  | Summary                                                      |
-|----------------------------------------------------------------------------------|----------------------------------------------------------|--------------------------------------------------------------|
-| [`Acceptance`](./02-accepting-snapshots.md)                                      | `null`, left to the variable `AWEXPECT_ACCEPT_SNAPSHOTS` | which missing or changed snapshots are accepted              |
-| [`Rules`](./04-masking-values.md#for-all-snapshots)                              | none                                                     | the rules to mask or ignore values in every snapshot         |
-| [`Store`](./07-storing-snapshots.md)                                             | a file next to the test file                             | where the snapshots are kept                                 |
-| [`Comparers`](./08-comparers.md)                                                 | none                                                     | decide whether a value matches its snapshot, e.g. for images |
-| [`Reporters`](./09-reporters.md)                                                 | none                                                     | are told about every missing, different or matching snapshot |
-| [`NamedAfterTestArguments`](./03-naming-snapshots.md#naming-after-the-test-case) | `false`                                                  | names each snapshot after the arguments of the test case     |
-| [`AttachPendingFiles`](./01-matching-snapshots.md#files)                         | `false`                                                  | attaches the pending file of a mismatch to the test result   |
+| Value                                                                                   | Default                                                  | Summary                                                      |
+|-----------------------------------------------------------------------------------------|----------------------------------------------------------|--------------------------------------------------------------|
+| [`Acceptance`](./02-accepting-snapshots.md)                                             | `null`, left to the variable `AWEXPECT_ACCEPT_SNAPSHOTS` | which missing or changed snapshots are accepted              |
+| [`Rules`](./05-masking-values.md#for-all-snapshots)                                     | none                                                     | the rules to mask or ignore values in every snapshot         |
+| [`Store`](./advanced/01-storing-snapshots.md)                                           | a file next to the test file                             | where the snapshots are kept                                 |
+| [`Comparers`](./advanced/02-comparers.md)                                               | none                                                     | decide whether a value matches its snapshot, e.g. for images |
+| [`Reporters`](./advanced/03-reporters.md)                                               | none                                                     | are told about every missing, different or matching snapshot |
+| [`NamedAfterTestArguments`](./04-naming-snapshots.md#naming-after-the-test-case)        | `false`                                                  | names each snapshot after the arguments of the test case     |
+| [`AttachPendingFiles`](./01-matching-snapshots.md#encoding-line-breaks-and-attachments) | `false`                                                  | attaches the pending file of a mismatch to the test result   |
 
 ## Documentation
 
 The full documentation is available at
-[docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Snapshots/).
+[docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Snapshots/):
+
+- [Matching snapshots](./01-matching-snapshots.md): strings, objects, exceptions, binary data and files, the file
+  extension, encoding and line breaks
+- [Accepting snapshots](./02-accepting-snapshots.md): reviewing the pending file and accepting all changes of a run
+- [Diff tools](./03-diff-tools.md): open a diff tool for a missing or different snapshot with
+  [DiffEngine](https://github.com/VerifyTests/DiffEngine), in which the change can be taken over into the snapshot
+- [Naming snapshots](./04-naming-snapshots.md): a snapshot per test case or environment, and
+  [nested under their test file](./04-naming-snapshots.md#nesting-in-the-ide) in Rider and Visual Studio
+- [Masking and ignoring values](./05-masking-values.md): mask, convert or leave out values that change from run to run
+- [Orphaned snapshots](./06-orphaned-snapshots.md): `OrphanedSnapshots.CheckAsync()` in the teardown of the test run
+  reports the snapshots that no test uses any more on a build server, and deletes them while accepting all changes
+- [Public API](./07-public-api.md): `MatchesPublicApiSnapshot` from aweXpect.Snapshots.PublicApi
+- Advanced:
+  - [Storing snapshots elsewhere](./advanced/01-storing-snapshots.md): a `SnapshotStore` instead of files next to the
+    tests, e.g. a shared folder or a database
+  - [Comparers](./advanced/02-comparers.md): decide whether a value matches its snapshot instead of the built-in
+    comparison, e.g. an image comparer that tolerates small differences of single pixels
+  - [Reporters](./advanced/03-reporters.md): are told about every missing, different or matching snapshot, e.g. to
+    open a diff tool
+  - [Deterministic builds](./advanced/04-deterministic-builds.md): how the snapshots are found when the build replaces
+    the path of the repository with `/_/`

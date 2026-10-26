@@ -14,7 +14,7 @@ The diff tool compares the pending file with the snapshot file, e.g.
 a change in the diff tool changes the snapshot, and the next run of the test passes. DiffEngine creates an empty snapshot file for a snapshot that does not exist yet, as most diff
 tools need two files. Once the snapshot matches, the diff tool is closed again.
 
-With a [store of your own](07-storing-snapshots.md) that keeps no files, the value and the snapshot are written to
+With a [store of your own](advanced/01-storing-snapshots.md) that keeps no files, the value and the snapshot are written to
 temporary files in `<temp>/aweXpect.Snapshots`, e.g. `Tests%2FAlbumTests.Describes.received.txt` and
 `Tests%2FAlbumTests.Describes.snapshot.txt`, so that the change can be reviewed; edits in the diff tool are lost
 there.
@@ -26,7 +26,7 @@ other options, e.g. the order of the diff tools.
 
 ## Registration
 
-The package registers a [reporter](09-reporters.md) by calling `DiffEngineReporter.Register()` from a module
+The package registers a [reporter](advanced/03-reporters.md) by calling `DiffEngineReporter.Register()` from a module
 initializer that the source generator of aweXpect.Core adds to the test project. To register it yourself, e.g. only
 for some test projects, turn this off in the project file:
 

@@ -120,7 +120,7 @@ Album {
   sorted by their written text, and the entries of a `ConcurrentDictionary`, `ImmutableDictionary`, `FrozenDictionary`
   or `Hashtable` by their key. A `Dictionary<TKey, TValue>` keeps its insertion order.
 - Text rules apply to the written text, e.g. `.For.Guids().Mask()` for a `Guid` member; member and value rules, e.g.
-  `.For.Members().WithName("Id").Ignore()`, apply while the object is written, see [rules](04-masking-values.md).
+  `.For.Members().WithName("Id").Ignore()`, apply while the object is written, see [rules](05-masking-values.md).
 
 <details>
 <summary>Trimming and Native AOT</summary>
@@ -170,9 +170,9 @@ ArgumentOutOfRangeException {
   assemblies, are left out, as they differ between builds, runtimes, machines and Native AOT.
 - The message of a framework exception can differ between the runtimes, operating systems and cultures: the message
   above names the actual value on a line of its own, with the line break of the operating system, and .NET Framework
-  words it differently. Leave out or mask such members with the [member rules](04-masking-values.md#members-and-values),
+  words it differently. Leave out or mask such members with the [member rules](05-masking-values.md#members-and-values),
   or keep a snapshot per target framework and operating system with
-  [`.UniqueFor`](03-naming-snapshots.md#snapshots-per-environment):
+  [`.UniqueFor`](04-naming-snapshots.md#snapshots-per-environment):
 
   ```csharp
   await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>()
@@ -229,12 +229,12 @@ Pending snapshot:
 ```
 
 - The bytes are stored unchanged: no encoding, no additional final line break, and the newline style is not ignored.
-- Rules do not apply to binary data: the [rules for all snapshots](04-masking-values.md) are ignored.
-- Names, `.UniqueFor`, accepting changes and the [check for orphaned snapshots](05-orphaned-snapshots.md) work as for
+- Rules do not apply to binary data: the [rules for all snapshots](05-masking-values.md) are ignored.
+- Names, `.UniqueFor`, accepting changes and the [check for orphaned snapshots](06-orphaned-snapshots.md) work as for
   any other snapshot.
 - A `byte[]` is compared as binary data, not written by the formatter like other collections. As for a string, the
   static type decides, so a `byte[]` in an `object` subject is still written by the formatter.
-- A [comparer](08-comparers.md) can compare it instead, e.g. tolerating small differences of single pixels.
+- A [comparer](advanced/02-comparers.md) can compare it instead, e.g. tolerating small differences of single pixels.
 - Version control must not change the line breaks in a binary snapshot, so mark its extension as binary in
   `.gitattributes`, e.g. `*.png binary`, unless Git already detects it as binary.
 
@@ -247,14 +247,14 @@ A type derived from `Stream`, e.g. a `MemoryStream`, needs C# 13 or later to cho
 
 </details>
 
-## Files
+## Encoding, line breaks and attachments
 
 The text of a string or an object is stored encoded as UTF-8. The pending file ends with an additional line break, which
 is removed again when the snapshot is read, so that an editor which adds a final line break does not change the
 snapshot.
 
 The newline style of a text snapshot is ignored when comparing, because version control can change it when the snapshot
-is checked out. A [comparer](08-comparers.md) can compare it in another way.
+is checked out. A [comparer](advanced/02-comparers.md) can compare it in another way.
 
 To review a mismatch after a run on a build server, attach its pending file to the result of the test, when the test
 framework supports attachments (NUnit, TUnit, xUnit v3, and MSTest 4 with `AweXpectExperimentalMSTest`):

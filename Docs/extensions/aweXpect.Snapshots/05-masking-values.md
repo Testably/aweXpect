@@ -6,55 +6,18 @@ masked, converted or left out before the subject is compared, so that the snapsh
 
 ```csharp
 await Expect.That(album).MatchesSnapshot()
-    .For.Members().WithName("PlayCount").Ignore()                       // left out with its name
-    .For.Members().WithName("Id").Mask()                                // numbered: Id = {Id_1}
-    .For.Members().WithPath("Artist.StreamToken").Mask("{token}")       // fixed text
-    .For.Values().OfType<Guid>().Mask()                                 // numbered: {Guid_1}
-    .For.Members().DeclaredIn<Album>().WithName(nameof(Album.Released)).OfType<DateTime>()
-        .Convert(released => released.Year);                            // Released = 1969
-
-await Expect.That(log).MatchesSnapshot()
-    .For.Lines().Containing("elapsed").IgnoringCase().Ignore()
-    .For.Text(album.Id.ToString()).Mask("<album-id>")
-    .For.Guids().Mask()
-    .For.Dates().Mask();
+    .For.Guids().Mask()                           // numbered: {Guid_1}
+    .For.Members().WithName("Id").Ignore();       // left out with its name
 ```
-
-## Overview
-
-The selections and their filters:
-
-| Selection                                                | Filters                                                                                 |
-|----------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| `.For.Members()`                                         | `WithName`, `WithPath`, `OfType<T>`, `OfExactType<T>`, `DeclaredIn<T>`, `Which`, `Except` |
-| `.For.Members().OfType<T>()`, `.OfExactType<T>()`        | `OrOfType<T>`, `OrOfExactType<T>`, and the filters of `Members()`                        |
-| `.For.Members().WhichAreEmptyCollections()`              | the filters of `Members()` before it                                                    |
-| `.For.Values()`                                          | like `Members()`, without `WhichAreEmptyCollections`                                    |
-| `.For.Lines()`                                           | `Containing(text)`, `Which`, `Except`                                                   |
-| `.For.Text(text)`                                        | `IgnoringCase()`, `AsWildcard()`, `AsRegex()`                                           |
-| `.For.Regex(regex)`, `.For.Guids()`, `.For.Dates()`      | –                                                                                       |
-| `.For.MachineName()`, `.For.UserName()`, `.For.Paths()`  | –                                                                                       |
-
-The actions that each selection offers:
-
-| Selection                       | `Ignore()` | `Mask()`                         | `Mask("…")` | `Convert(…)`            | `Keep()` |
-|---------------------------------|:----------:|----------------------------------|:-----------:|-------------------------|:--------:|
-| `Members()`                     |     ✅      | `{Id_1}`, `{Guid_1}`             |      ✅      | ✅ typed by `OfType<T>`  |    –     |
-| `WhichAreEmptyCollections()`    |     ✅      | –                                |      –      | –                       |    –     |
-| `Values()`                      |     ✅      | `{Id_1}`, `{Guid_1}`, `{Item_1}` |      ✅      | ✅ typed by `OfType<T>`  |    –     |
-| `Lines()`                       |     ✅      | –                                | ✅ the line  | ✅ `string → string?`    |    –     |
-| `Text(text)`, `Regex(regex)`    |     –      | –                                |      ✅      | –                       |    –     |
-| `Guids()`, `Dates()`            |     –      | `{Guid_1}`, `{Date_1}`           |      ✅      | –                       |    –     |
-| `MachineName()`, `UserName()`   |     –      | `{MachineName}`, `{UserName}`    |      ✅      | –                       |    –     |
-| `Paths()`                       |     –      | –                                |      –      | –                       |    ✅     |
 
 The filters are combined, so a value has to match all of them. After the action, the next rule starts with
 `.For` again, or the expectation continues with `.Named(…)`, `.UniqueFor` or `.Accepting(…)`.
 
 `.For.Members()` and `.For.Values()` only apply to a [snapshot of an object](01-matching-snapshots.md#objects), and
-`.For.Lines()` only to a snapshot of a `string`. The text selections apply to every snapshot.
+`.For.Lines()` only to a snapshot of a `string`. The text selections apply to every snapshot. The
+[overview](#overview) at the end lists all selections, filters and actions.
 
-### Mask texts are templates
+## Mask texts are templates
 
 The text of `Mask("…")` is written as it is, without quotes, unless it contains `{0}`: then `{0}` is replaced with the
 number of the value. Every value masked with the same template shares one counter, across all rules, and the same value
@@ -68,35 +31,6 @@ await Expect.That(album).MatchesSnapshot()
 `Mask()` is the shorthand for the template named after the selection: `Mask("{Id_{0}}")` for a member named `Id`,
 `Mask("{Guid_{0}}")` for `.For.Guids()` and `.For.Values().OfType<Guid>()`, `Mask("{Item_{0}}")` for an item of a
 collection. That is why a `Guid` member masked by its type and the same `Guid` in a string get the same number.
-
-For members and values, the template can also depend on the value, e.g. to link ids that belong together:
-
-```csharp
-await Expect.That(label).MatchesSnapshot()
-    .For.Members().OfType<int>().WithName("Id").AsSuffix()
-    .Mask(value => "{" + (value.Name == "Id"
-        ? value.DeclaringType.Name
-        : value.Name.Substring(0, value.Name.Length - 2)) + "_{0}}");
-```
-
-```text title="Snapshot"
-Label {
-  Albums = [
-    Album {
-      ArtistId = {Artist_1},
-      Id = {Album_1}
-    }
-  ],
-  Artists = [
-    Artist {
-      Id = {Artist_1},
-      Name = "The Beatles"
-    }
-  ]
-}
-```
-
-A value for which the function returns `null` is kept.
 
 <details>
 <summary>Braces in a template</summary>
@@ -148,6 +82,36 @@ list. Select members only with `.For.Members()`, mask the items instead, or leav
 `Mask()` and `Mask("…")` replace the value, see [the templates](#mask-texts-are-templates). A `null` value is neither
 masked nor converted, as it does not change from run to run.
 
+For members and values, the template can also depend on the value, which the function gets as a `FormattedValue`, e.g.
+to link ids that belong together:
+
+```csharp
+await Expect.That(label).MatchesSnapshot()
+    .For.Members().OfType<int>().WithName("Id").AsSuffix()
+    .Mask(value => "{" + (value.Name == "Id"
+        ? value.DeclaringType.Name
+        : value.Name.Substring(0, value.Name.Length - 2)) + "_{0}}");
+```
+
+```text title="Snapshot"
+Label {
+  Albums = [
+    Album {
+      ArtistId = {Artist_1},
+      Id = {Album_1}
+    }
+  ],
+  Artists = [
+    Artist {
+      Id = {Artist_1},
+      Name = "The Beatles"
+    }
+  ]
+}
+```
+
+A value for which the function returns `null` is kept.
+
 <details>
 <summary>How the placeholder of Mask() is named</summary>
 
@@ -165,24 +129,21 @@ Values of related types, such as numeric ids of `int` and `long`, are selected t
 
 ```csharp
 await Expect.That(label).MatchesSnapshot()
-    .For.Members().OfType<int>().OrOfType<long>().WithName("Id").AsSuffix()
-    .Mask(value => "{" + (value.Name == "Id"
-        ? value.DeclaringType.Name
-        : value.Name.Substring(0, value.Name.Length - 2)) + "_{0}}");
+    .For.Members().OfType<int>().OrOfType<long>().WithName("Id").AsSuffix().Mask("<id>");
 ```
 
 ```text title="Snapshot"
 Label {
   Albums = [
     Album {
-      ArtistId = {Artist_1},
+      ArtistId = <id>,
       CatalogId = "PCS 7088",
-      Id = {Album_1}
+      Id = <id>
     }
   ],
   Artists = [
     Artist {
-      Id = {Artist_1},
+      Id = <id>,
       Name = "The Beatles"
     }
   ]
@@ -341,7 +302,7 @@ In the other order, the general rule would already have replaced today's date wi
 
 The snapshot, the pending and the accepted snapshot and the failure contain the masked value, as it is what is compared.
 Two values that only differ in a masked part count as the same value for the check of [named
-snapshots](03-naming-snapshots.md).
+snapshots](04-naming-snapshots.md).
 
 <details>
 <summary>Regex timeouts</summary>
@@ -390,7 +351,7 @@ Cache: C:\Users\paul\AppData\Local\Temp\abbey.tmp      Cache: {TempPath}\abbey.t
 | Placeholder          | Path                                                                                     |
 |----------------------|------------------------------------------------------------------------------------------|
 | `{ProjectDirectory}` | the directory of the test project that contains the test file                            |
-| `{SourceRoot}`       | the source root, see [deterministic builds](06-deterministic-builds.md)                  |
+| `{SourceRoot}`       | the source root, see [deterministic builds](advanced/04-deterministic-builds.md)                  |
 | `{OutputDirectory}`  | `AppContext.BaseDirectory`                                                               |
 | `{TempPath}`         | `Path.GetTempPath()`                                                                     |
 | `{UserProfile}`      | `Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)`, on every system      |
@@ -470,3 +431,49 @@ The rules are applied in this order:
 
 Numbered placeholders share their counters across all these steps, so e.g. `.For.Values().OfType<Guid>().Mask()` and
 `.For.Guids().Mask()` give the same `Guid` the same number.
+
+## Overview
+
+The selections and their filters:
+
+| Selection                                                | Filters                                                                                 |
+|----------------------------------------------------------|-----------------------------------------------------------------------------------------|
+| `.For.Members()`                                         | `WithName`, `WithPath`, `OfType<T>`, `OfExactType<T>`, `DeclaredIn<T>`, `Which`, `Except` |
+| `.For.Members().OfType<T>()`, `.OfExactType<T>()`        | `OrOfType<T>`, `OrOfExactType<T>`, and the filters of `Members()`                        |
+| `.For.Members().WhichAreEmptyCollections()`              | the filters of `Members()` before it                                                    |
+| `.For.Values()`                                          | like `Members()`, without `WhichAreEmptyCollections`                                    |
+| `.For.Lines()`                                           | `Containing(text)`, `Which`, `Except`                                                   |
+| `.For.Text(text)`                                        | `IgnoringCase()`, `AsWildcard()`, `AsRegex()`                                           |
+| `.For.Regex(regex)`, `.For.Guids()`, `.For.Dates()`      | –                                                                                       |
+| `.For.MachineName()`, `.For.UserName()`, `.For.Paths()`  | –                                                                                       |
+
+The actions that each selection offers:
+
+| Selection                       | `Ignore()` | `Mask()`                         | `Mask("…")` | `Convert(…)`            | `Keep()` |
+|---------------------------------|:----------:|----------------------------------|:-----------:|-------------------------|:--------:|
+| `Members()`                     |     ✅      | `{Id_1}`, `{Guid_1}`             |      ✅      | ✅ typed by `OfType<T>`  |    –     |
+| `WhichAreEmptyCollections()`    |     ✅      | –                                |      –      | –                       |    –     |
+| `Values()`                      |     ✅      | `{Id_1}`, `{Guid_1}`, `{Item_1}` |      ✅      | ✅ typed by `OfType<T>`  |    –     |
+| `Lines()`                       |     ✅      | –                                | ✅ the line  | ✅ `string → string?`    |    –     |
+| `Text(text)`, `Regex(regex)`    |     –      | –                                |      ✅      | –                       |    –     |
+| `Guids()`, `Dates()`            |     –      | `{Guid_1}`, `{Date_1}`           |      ✅      | –                       |    –     |
+| `MachineName()`, `UserName()`   |     –      | `{MachineName}`, `{UserName}`    |      ✅      | –                       |    –     |
+| `Paths()`                       |     –      | –                                |      –      | –                       |    ✅     |
+
+A combination of the rules described above:
+
+```csharp
+await Expect.That(album).MatchesSnapshot()
+    .For.Members().WithName("PlayCount").Ignore()                       // left out with its name
+    .For.Members().WithName("Id").Mask()                                // numbered: Id = {Id_1}
+    .For.Members().WithPath("Artist.StreamToken").Mask("{token}")       // fixed text
+    .For.Values().OfType<Guid>().Mask()                                 // numbered: {Guid_1}
+    .For.Members().DeclaredIn<Album>().WithName(nameof(Album.Released)).OfType<DateTime>()
+        .Convert(released => released.Year);                            // Released = 1969
+
+await Expect.That(log).MatchesSnapshot()
+    .For.Lines().Containing("elapsed").IgnoringCase().Ignore()
+    .For.Text(album.Id.ToString()).Mask("<album-id>")
+    .For.Guids().Mask()
+    .For.Dates().Mask();
+```

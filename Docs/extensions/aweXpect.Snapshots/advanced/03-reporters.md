@@ -29,12 +29,12 @@ Customize.aweXpect.Global.Snapshots().Reporters.Set([
 Like the pending file, a mismatch is only reported when the whole expectation fails, e.g. not when another branch of an
 `.Or` is met, and not for a negated snapshot. An accepted change is not reported, as it needs no review. Several
 reporters are called in the order of the list, and never on a build server, the same detection as for
-[accepting changes](02-accepting-snapshots.md). An exception of a reporter never changes the result of the test.
+[accepting changes](../02-accepting-snapshots.md). An exception of a reporter never changes the result of the test.
 
 `SnapshotMismatch` has the `Id` and the `Store` of the snapshot, the reviewed `Snapshot` (`null` when it did not exist)
 and the `Actual` value, after the rules of the expectation were applied, e.g. with masked GUIDs. Both are a
 `SnapshotContent` with the `Bytes` as the store keeps them (text as UTF-8 with an additional final line break), and,
-unless it is [binary data](01-matching-snapshots.md#binary-data-and-files), the `Text` that was compared (`IsText`).
+unless it is [binary data](../01-matching-snapshots.md#binary-data-and-files), the `Text` that was compared (`IsText`).
 `SnapshotMatch` has the `Id` and the `Store`.
 
 The reporter is not told about files, as a store need not keep any. A store that keeps the snapshots in files, like the

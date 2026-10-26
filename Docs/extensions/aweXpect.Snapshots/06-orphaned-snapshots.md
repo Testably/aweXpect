@@ -70,7 +70,7 @@ The check cannot know about tests that did not reach `MatchesSnapshot()`:
 - A skipped test, or one that fails before calling `MatchesSnapshot()`, leaves its snapshot unused.
 - A test that only exists for some target frameworks, e.g. behind `#if NET8_0_OR_GREATER`, leaves its snapshot unused
   in the test runs of the other target frameworks, so only check in the run of a target framework that has all tests.
-- A snapshot per environment (see [Snapshots per environment](03-naming-snapshots.md#snapshots-per-environment)), e.g.
+- A snapshot per environment (see [Snapshots per environment](04-naming-snapshots.md#snapshots-per-environment)), e.g.
   `AlbumTests.Describes@net48@windows.awexpect-snapshot.txt`, is only checked by a test run in that environment, here
   on Windows for `net48`; the test runs of the other environments skip it.
 - Test projects that share a directory see each other's snapshots, so give each test project its own directory.

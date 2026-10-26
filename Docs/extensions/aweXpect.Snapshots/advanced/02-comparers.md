@@ -1,7 +1,7 @@
 # Comparers
 
 By default, a text snapshot matches when it is equal apart from the newline style, and
-[binary data](01-matching-snapshots.md#binary-data-and-files) when every byte is equal. A comparer decides it instead,
+[binary data](../01-matching-snapshots.md#binary-data-and-files) when every byte is equal. A comparer decides it instead,
 e.g. for cover art that is rendered with slightly different pixels on every machine. Derive from `SnapshotComparer` in
 the namespace `aweXpect.Snapshots`:
 
@@ -21,7 +21,7 @@ public sealed class CoverArtComparer(double minimumSimilarity) : SnapshotCompare
 
 `SnapshotComparisonContext` has the `Id` of the snapshot (e.g. its `Extension`), the reviewed `Snapshot` and the
 `Actual` value, after the rules of the expectation were applied, e.g. with masked GUIDs. Both are a `SnapshotContent`
-like for [reporters](09-reporters.md): the `Bytes` as the store keeps them, and the `Text` unless it is binary data.
+like for [reporters](03-reporters.md): the `Bytes` as the store keeps them, and the `Text` unless it is binary data.
 
 Use the comparer for one expectation with `.ComparedWith(…)`, for strings, objects and binary data:
 

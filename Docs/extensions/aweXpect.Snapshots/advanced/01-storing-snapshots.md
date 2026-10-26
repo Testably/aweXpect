@@ -40,7 +40,7 @@ public sealed class FolderSnapshotStore(string root) : SnapshotStore
 
 A snapshot is passed as bytes, which the store keeps unchanged. The library encodes the text of a string or an object
 as UTF-8 without a byte order mark, with an additional final line break that it removes again when reading, and passes
-[binary data](01-matching-snapshots.md#binary-data-and-files) as it is, so one store keeps both.
+[binary data](../01-matching-snapshots.md#binary-data-and-files) as it is, so one store keeps both.
 
 The operations describe what happened in the expectation, so the store decides how it keeps a value that awaits review
 apart from the reviewed snapshot:
@@ -53,7 +53,7 @@ apart from the reviewed snapshot:
 | `RecordMatchAsync`    | when the snapshot matches, e.g. to clean up    | the error is ignored, as the snapshot matched    |
 | `Describe`            | to name the snapshot in the failure            |                                                  |
 | `DescribeMismatch`    | to name the recorded mismatch, `null` to omit  |                                                  |
-| `ListAsync`           | to list the snapshots of the test project for the [check](05-orphaned-snapshots.md), `null` if it cannot | the check fails with the exception |
+| `ListAsync`           | to list the snapshots of the test project for the [check](../06-orphaned-snapshots.md), `null` if it cannot | the check fails with the exception |
 | `DeleteAsync`         | to delete an orphaned snapshot and its mismatch, while accepting changes | the check names the error and continues |
 
 `RecordMatchAsync`, `Describe`, `DescribeMismatch`, `ListAsync` and `DeleteAsync` are optional. A store that does not
@@ -61,13 +61,13 @@ list its snapshots fails `OrphanedSnapshots.CheckAsync()`, so that a check that 
 checking anything. A cancellation of the evaluation still aborts it.
 
 A `SnapshotId` consists of the path of the test file relative to the repository (`SourceFile`, e.g.
-`Tests/AlbumTests.cs`, see [Deterministic builds](06-deterministic-builds.md)), the name of the test method
+`Tests/AlbumTests.cs`, see [Deterministic builds](04-deterministic-builds.md)), the name of the test method
 (`MemberName`), the name from `.Named(…)` (`Name`) and the environment from `.UniqueFor` (`Variant`, e.g.
-`net8.0@windows`, see [Snapshots per environment](03-naming-snapshots.md#snapshots-per-environment)). It is a record,
+`net8.0@windows`, see [Snapshots per environment](../04-naming-snapshots.md#snapshots-per-environment)). It is a record,
 so it can be used as a key, and its `ToString()` returns `AlbumTests.Describes`, `AlbumTests.Describes.Abbey Road` or
 `AlbumTests.Describes.Abbey Road@net8.0@windows`. A listed snapshot whose `Variant` is for another environment is
 skipped by the check. `Extension` is the file extension from
-[`.WithExtension(…)`](01-matching-snapshots.md#file-extension) or of a `FileInfo`, `txt` by default, e.g. to choose a
+[`.WithExtension(…)`](../01-matching-snapshots.md#file-extension) or of a `FileInfo`, `txt` by default, e.g. to choose a
 content type; it is not part of `ToString()`.
 
 Set the store for all tests, e.g. in an assembly-level setup, or only for the current async flow:

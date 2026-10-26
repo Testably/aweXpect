@@ -150,16 +150,9 @@ name holds the exception like a snapshot would.
 
 </details>
 
-The running test is only known when the test framework exposes it:
-
-| Test framework | Supported    | Reason                                                                         |
-|----------------|--------------|--------------------------------------------------------------------------------|
-| NUnit 3 to 5   | yes          | `TestContext.CurrentContext.Test`                                              |
-| TUnit          | yes          | `TestContext.Current`                                                          |
-| xUnit v3       | yes          | `TestContext.Current.Test`                                                     |
-| MSTest 4       | when enabled | `TestContext.Current` is experimental, see below                               |
-| MSTest 3       | no           | `TestContext.Current` is missing                                               |
-| xUnit v2       | no           | there is no context of the running test                                        |
+The running test is only known when the test framework exposes it, see
+[the running test](https://docs.testably.org/aweXpect/how-it-works/test-frameworks#the-running-test) for the
+supported test frameworks.
 
 MSTest 4 marks `TestContext.Current` as experimental, so it is only used when the test project opts in, which also
 suppresses the diagnostic `MSTESTEXP` in the generated code:
@@ -196,7 +189,7 @@ The environment is appended to the file names after an `@`, e.g.
 The values always keep this order, whatever the order of the calls. A missing snapshot of the environment fails like
 any other missing snapshot; it does not fall back to the snapshot that every environment shares.
 
-A [custom store](07-storing-snapshots.md) receives the environment as `SnapshotId.Variant`, e.g. `net8.0@windows`.
+A [custom store](advanced/01-storing-snapshots.md) receives the environment as `SnapshotId.Variant`, e.g. `net8.0@windows`.
 
 <details>
 <summary>How the environment is determined</summary>
