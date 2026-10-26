@@ -195,16 +195,18 @@ public sealed partial class StringEqualityOptions : IEqualityOptions<string?>, I
 	///     <paramref name="cancellationToken" />. A constraint compares with the returned options, and also appends its
 	///     contexts and explains its failures with them, as only they know what the comparisons of the evaluation
 	///     found.<br />
-	///     The options return themselves, unless the evaluation gets a matcher of its own.
+	///     The options return themselves, unless the evaluation gets a matcher of its own, so also for the context of
+	///     a comparison outside an evaluation, see <see cref="MatchEnvironment.Context" />.
 	/// </remarks>
 	public StringEqualityOptions ForEvaluation(IEvaluationContext context, CancellationToken cancellationToken)
 	{
-		if (ComparesByOrdinalEquality)
+		MatchEnvironment environment = new(context, cancellationToken);
+		if (ComparesByOrdinalEquality || environment.Evaluation is null)
 		{
 			return this;
 		}
 
-		StringMatcher matcher = _matchType.ForEvaluation(new MatchEnvironment(context, cancellationToken), Settings);
+		StringMatcher matcher = _matchType.ForEvaluation(environment, Settings);
 		return ReferenceEquals(matcher, GetMatcher())
 			? this
 			: new StringEqualityOptions(_matchType, _matchTypeOption, _comparer, _flags, matcher);

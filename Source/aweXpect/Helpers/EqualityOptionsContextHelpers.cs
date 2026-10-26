@@ -27,8 +27,13 @@ internal static class EqualityOptionsContextHelpers
 	/// <summary>
 	///     Returns the evaluator for the texts and contexts of a constraint that was not evaluated.
 	/// </summary>
+	/// <remarks>
+	///     The context of <see langword="default" /> <see cref="MatchEnvironment" /> marks a comparison outside an
+	///     evaluation. Options that wrap the holder are not asked to wrap it, as no subject is known whose comparer could
+	///     decide, so that they keep the evaluator of their last evaluation.
+	/// </remarks>
 	public static IEqualityEvaluator<T> WithoutEvaluation<T>(this IReadOnlyOptionsHolder<IEqualityOptions<T>> options)
-		=> options.ForEvaluation(default(MatchEnvironment).Context, CancellationToken.None);
+		=> options.Value.ForEvaluation(default(MatchEnvironment).Context, CancellationToken.None);
 
 	/// <summary>
 	///     Rejects the first of the <paramref name="expected" /> items, which the caller received as
