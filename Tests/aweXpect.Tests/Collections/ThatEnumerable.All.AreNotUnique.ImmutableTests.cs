@@ -85,6 +85,17 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Test]
+				public async Task WhenAllNullableMembersAreNull_ShouldSucceed()
+				{
+					ImmutableArray<MyNullableStringClass> subject = [new(null), new(null),];
+
+					async Task Act()
+						=> await That(subject).All().AreNotUnique(x => x.Value).IgnoringCase();
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
 				public async Task WhenAllStringMembersAreDuplicated_ShouldSucceed()
 				{
 					ImmutableArray<MyClass> subject = [new(1, "a"), new(2, "a"),];

@@ -645,6 +645,48 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
+				[Test]
+				public async Task WhenNullableMembersAreNull_ShouldFail()
+				{
+					ImmutableArray<MyNullableStringClass> subject = [new("a"), new(null), new("b"), new(null),];
+
+					async Task Act()
+						=> await That(subject).All().AreUnique(x => x.Value).IgnoringCase();
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is unique by x => x.Value ignoring case for all items,
+						             but only 2 of 4 were
+
+						             Not matching items:
+						             [
+						               MyNullableStringClass {
+						                 Value = <null>
+						               },
+						               MyNullableStringClass {
+						                 Value = <null>
+						               }
+						             ]
+
+						             Collection:
+						             [
+						               MyNullableStringClass {
+						                 Value = "a"
+						               },
+						               MyNullableStringClass {
+						                 Value = <null>
+						               },
+						               MyNullableStringClass {
+						                 Value = "b"
+						               },
+						               MyNullableStringClass {
+						                 Value = <null>
+						               }
+						             ]
+						             """);
+				}
+
 				private sealed class MyStringClass(string value)
 				{
 					public string Value { get; } = value;

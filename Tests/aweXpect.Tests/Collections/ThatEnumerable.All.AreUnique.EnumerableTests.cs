@@ -430,6 +430,39 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Test]
+				public async Task WhenNullableMembersAreNull_ShouldFail()
+				{
+					IEnumerable subject = new[]
+					{
+						"a", null, "b", null,
+					};
+
+					async Task Act()
+						=> await That(subject).All().AreUnique(x => (string?)x).IgnoringCase();
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is unique by x => (string?)x ignoring case for all items,
+						             but only 2 of 4 were
+
+						             Not matching items:
+						             [
+						               <null>,
+						               <null>
+						             ]
+
+						             Collection:
+						             [
+						               "a",
+						               <null>,
+						               "b",
+						               <null>
+						             ]
+						             """);
+				}
+
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable? subject = null;
