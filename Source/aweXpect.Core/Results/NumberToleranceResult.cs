@@ -48,12 +48,12 @@ public class NumberToleranceResult<TType, TThat>(
 		: NumberToleranceResult<TType, TThat>(expectationBuilder, returnValue, options),
 			IWithinToleranceResult<NumberToleranceResult<TType, TThat>, TType>
 	{
-		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
-		NumberToleranceResult<TType, TThat> IWithinToleranceResult<NumberToleranceResult<TType, TThat>, TType>.WithRelativeTolerance(
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.SetRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
+		NumberToleranceResult<TType, TThat> IWithinToleranceResult<NumberToleranceResult<TType, TThat>, TType>.SetRelativeTolerance(
 			Func<TType, TType, TType> absoluteTolerance, string unit)
 		{
 			OptionsHolder<NumberTolerance<TType>> holder = ((IOptionsProvider<NumberTolerance<TType>>)this).Options;
-			holder.Value = holder.Value.WithRelativeTolerance(absoluteTolerance, unit);
+			holder.Value = holder.Value.SetRelativeTolerance(absoluteTolerance, unit);
 			return this;
 		}
 	}
@@ -101,13 +101,13 @@ public class NumberToleranceResult<TType, TThat, TNumber>(
 		: NumberToleranceResult<TType, TThat, TNumber>(expectationBuilder, returnValue, options),
 			IWithinToleranceResult<NumberToleranceResult<TType, TThat, TNumber>, TNumber>
 	{
-		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.SetRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
 		NumberToleranceResult<TType, TThat, TNumber>
-			IWithinToleranceResult<NumberToleranceResult<TType, TThat, TNumber>, TNumber>.WithRelativeTolerance(
+			IWithinToleranceResult<NumberToleranceResult<TType, TThat, TNumber>, TNumber>.SetRelativeTolerance(
 				Func<TNumber, TNumber, TNumber> absoluteTolerance, string unit)
 		{
 			OptionsHolder<NumberTolerance<TNumber>> holder = ((IOptionsProvider<NumberTolerance<TNumber>>)this).Options;
-			holder.Value = holder.Value.WithRelativeTolerance(absoluteTolerance, unit);
+			holder.Value = holder.Value.SetRelativeTolerance(absoluteTolerance, unit);
 			return this;
 		}
 	}

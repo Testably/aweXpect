@@ -140,6 +140,109 @@ public class ObjectToleranceMatchTypeTests
 	}
 
 	[Test]
+	public async Task SetRelativeTolerance_ShouldAppendTheUnitToTheTolerance()
+	{
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
+		sut.Within(5).SetRelativeTolerance<int, int>((t, e) => t * e / 100, "%");
+
+		string result = sut.Value.GetExpectation("100", ExpectationGrammars.None);
+
+		await That(result).IsEqualTo("is equal to 100 ± 5%");
+	}
+
+	[Test]
+	[Arguments(-105, -100, true)]
+	[Arguments(105, 100, true)]
+	[Arguments(106, 100, false)]
+	public async Task SetRelativeTolerance_ShouldApplyTheToleranceRelativeToTheExpectedValue(int actual,
+		int expected, bool expectMatch)
+	{
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
+		sut.Within(5).SetRelativeTolerance<int, int>((t, e) => t * Math.Abs(e) / 100, "%");
+
+		bool result = await Evaluator(sut).AreConsideredEqual(actual, expected);
+
+		await That(result).IsEqualTo(expectMatch);
+	}
+
+	[Test]
+	public async Task SetRelativeTolerance_ShouldNotChangeTheMatchTypeItIsCalledOn()
+	{
+		ObjectToleranceMatchType<int, int> within = ObjectMatchType<int>
+			.WithTolerance<int>((a, e, t) => Math.Abs(a - e) <= t)
+			.Within(5);
+
+		ObjectToleranceMatchType<int, int> result = within.SetRelativeTolerance((t, e) => t * e / 100, "%");
+
+		await That(result).IsNotSameAs(within);
+		await That(within.ToString()).IsEqualTo(" ± 5");
+		await That(result.ToString()).IsEqualTo(" ± 5%");
+	}
+
+	[Test]
+	public async Task SetRelativeTolerance_WhenEvaluated_ShouldKeepTheRelativeTolerance()
+	{
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
+		sut.Within(5).SetRelativeTolerance<int, int>((t, e) => t * e / 100, "%");
+
+		IEqualityEvaluator<int> evaluation =
+			((IEqualityOptions<int>)sut.Value).ForEvaluation(new Context(), CancellationToken.None);
+		bool result = await evaluation.AreConsideredEqual(210, 200);
+
+		await That(result).IsTrue();
+	}
+
+	[Test]
+	public async Task SetRelativeTolerance_WhenSubjectIsNullable_ShouldApplyItToTheExpectedValue()
+	{
+		OptionsHolder<ObjectMatchType<int?>> sut = new(ObjectMatchType<int?>.WithTolerance<int>((a, e, t)
+			=> a is not null && e is not null && Math.Abs(a.Value - e.Value) <= t));
+		sut.Within(5).SetRelativeTolerance<int?, int>((t, e) => t * e / 100, "%");
+
+		bool result = await Evaluator(sut).AreConsideredEqual((int?)210, (int?)200);
+
+		await That(result).IsTrue()
+			.Because("the nullable expected value 200 makes 5% a tolerance of 10");
+	}
+
+	[Test]
+	public async Task SetRelativeTolerance_WhenTheComparisonHasAnotherToleranceType_ShouldThrowInvalidOperationException()
+	{
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
+		sut.Within(5);
+
+		void Act() => sut.SetRelativeTolerance<int, double>((t, e) => t * e / 100, "%");
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("SetRelativeTolerance requires a comparison within a tolerance of type double.")
+			.Because("the relative tolerance would otherwise be silently ignored");
+	}
+
+	[Test]
+	public async Task SetRelativeTolerance_WithDefaultTolerance_ShouldThrowInvalidOperationException()
+	{
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut(defaultTolerance: () => 5);
+
+		void Act() => sut.SetRelativeTolerance<int, int>((t, e) => t * e / 100, "%");
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("SetRelativeTolerance requires a tolerance specified with Within.")
+			.Because("a later Within would silently replace the relative tolerance");
+	}
+
+	[Test]
+	public async Task SetRelativeTolerance_WithoutWithin_ShouldThrowInvalidOperationException()
+	{
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
+
+		void Act() => sut.SetRelativeTolerance<int, int>((t, e) => t * e / 100, "%");
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("SetRelativeTolerance requires a tolerance specified with Within.")
+			.Because("a later Within would silently replace the relative tolerance");
+	}
+
+	[Test]
 	[Arguments(0, "")]
 	[Arguments(5, " ± 5")]
 	public async Task ToString_WithDefaultTolerance_ShouldOnlyNameAToleranceOtherThanZero(int defaultTolerance,
@@ -229,85 +332,6 @@ public class ObjectToleranceMatchTypeTests
 	}
 
 	[Test]
-	public async Task WithRelativeTolerance_ShouldAppendTheUnitToTheTolerance()
-	{
-		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
-		sut.Within(5).WithRelativeTolerance<int, int>((t, e) => t * e / 100, "%");
-
-		string result = sut.Value.GetExpectation("100", ExpectationGrammars.None);
-
-		await That(result).IsEqualTo("is equal to 100 ± 5%");
-	}
-
-	[Test]
-	[Arguments(-105, -100, true)]
-	[Arguments(105, 100, true)]
-	[Arguments(106, 100, false)]
-	public async Task WithRelativeTolerance_ShouldApplyTheToleranceRelativeToTheExpectedValue(int actual,
-		int expected, bool expectMatch)
-	{
-		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
-		sut.Within(5).WithRelativeTolerance<int, int>((t, e) => t * Math.Abs(e) / 100, "%");
-
-		bool result = await Evaluator(sut).AreConsideredEqual(actual, expected);
-
-		await That(result).IsEqualTo(expectMatch);
-	}
-
-	[Test]
-	public async Task WithRelativeTolerance_ShouldNotChangeTheMatchTypeItIsCalledOn()
-	{
-		ObjectToleranceMatchType<int, int> within = ObjectMatchType<int>
-			.WithTolerance<int>((a, e, t) => Math.Abs(a - e) <= t)
-			.Within(5);
-
-		ObjectToleranceMatchType<int, int> result = within.WithRelativeTolerance((t, e) => t * e / 100, "%");
-
-		await That(result).IsNotSameAs(within);
-		await That(within.ToString()).IsEqualTo(" ± 5");
-		await That(result.ToString()).IsEqualTo(" ± 5%");
-	}
-
-	[Test]
-	public async Task WithRelativeTolerance_WhenEvaluated_ShouldKeepTheRelativeTolerance()
-	{
-		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
-		sut.Within(5).WithRelativeTolerance<int, int>((t, e) => t * e / 100, "%");
-
-		IEqualityEvaluator<int> evaluation =
-			((IEqualityOptions<int>)sut.Value).ForEvaluation(new Context(), CancellationToken.None);
-		bool result = await evaluation.AreConsideredEqual(210, 200);
-
-		await That(result).IsTrue();
-	}
-
-	[Test]
-	public async Task WithRelativeTolerance_WhenSubjectIsNullable_ShouldApplyItToTheExpectedValue()
-	{
-		OptionsHolder<ObjectMatchType<int?>> sut = new(ObjectMatchType<int?>.WithTolerance<int>((a, e, t)
-			=> a is not null && e is not null && Math.Abs(a.Value - e.Value) <= t));
-		sut.Within(5).WithRelativeTolerance<int?, int>((t, e) => t * e / 100, "%");
-
-		bool result = await Evaluator(sut).AreConsideredEqual((int?)210, (int?)200);
-
-		await That(result).IsTrue()
-			.Because("the nullable expected value 200 makes 5% a tolerance of 10");
-	}
-
-	[Test]
-	public async Task WithRelativeTolerance_WithoutWithin_ShouldNotChangeTheComparison()
-	{
-		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
-		sut.WithRelativeTolerance<int, int>((t, e) => t * e / 100, "%");
-
-		bool result = await Evaluator(sut).AreConsideredEqual(201, 200);
-		string expectation = sut.Value.GetExpectation("200", ExpectationGrammars.None);
-
-		await That(result).IsFalse();
-		await That(expectation).IsEqualTo("is equal to 200");
-	}
-
-	[Test]
 	public async Task Within_ShouldNameTheOption()
 	{
 		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
@@ -374,7 +398,7 @@ public class ObjectToleranceMatchTypeTests
 	public async Task Within_WhenToleranceIsSpecified_ShouldUseTheLastTolerance()
 	{
 		OptionsHolder<ObjectMatchType<int>> sut = CreateSut();
-		sut.Within(1).WithRelativeTolerance<int, int>((t, e) => t * e / 100, "%");
+		sut.Within(1).SetRelativeTolerance<int, int>((t, e) => t * e / 100, "%");
 
 		sut.Within(5);
 

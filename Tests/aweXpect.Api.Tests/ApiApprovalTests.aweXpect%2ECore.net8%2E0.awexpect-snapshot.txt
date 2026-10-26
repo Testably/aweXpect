@@ -1790,9 +1790,9 @@ namespace aweXpect.Options
         public TNumber? Tolerance { get; }
         public TNumber? CalculateDifference(TNumber? actual, TNumber? expected) { }
         public bool IsWithinTolerance(TNumber? actual, TNumber? expected) { }
+        public aweXpect.Options.NumberTolerance<TNumber> SetRelativeTolerance(System.Func<TNumber, TNumber, TNumber> absoluteTolerance, string unit) { }
         public override string ToString() { }
         public TNumber? ToleranceFor(TNumber expected) { }
-        public aweXpect.Options.NumberTolerance<TNumber> WithRelativeTolerance(System.Func<TNumber, TNumber, TNumber> absoluteTolerance, string unit) { }
         public aweXpect.Options.NumberTolerance<TNumber> Within(TNumber tolerance) { }
     }
     public static class NumberToleranceHolderExtensions
@@ -1802,16 +1802,16 @@ namespace aweXpect.Options
     public static class ObjectMatchTypeHolderExtensions
     {
         public static aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TSubject>> SetMatchType<TSubject>(this aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TSubject>> holder, aweXpect.Core.ObjectMatchType<TSubject> matchType) { }
+        public static aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TSubject>> SetRelativeTolerance<TSubject, TTolerance>(this aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TSubject>> holder, System.Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit) { }
         public static aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TSubject>> Using<TSubject>(this aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TSubject>> holder, System.Collections.Generic.IEqualityComparer<TSubject> comparer) { }
         public static aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TSubject>> Using<TSubject>(this aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TSubject>> holder, System.Collections.Generic.IEqualityComparer<object> comparer) { }
-        public static aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TSubject>> WithRelativeTolerance<TSubject, TTolerance>(this aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TSubject>> holder, System.Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit) { }
         public static aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TSubject>> Within<TSubject, TTolerance>(this aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TSubject>> holder, TTolerance tolerance) { }
     }
     public sealed class ObjectToleranceMatchType<TSubject, TTolerance> : aweXpect.Core.ObjectMatchType<TSubject>
     {
         public override aweXpect.Core.MatchPhrase Phrase { get; }
         public override aweXpect.Core.ObjectMatcher<TSubject> ForEvaluation(aweXpect.Core.MatchEnvironment environment) { }
-        public aweXpect.Options.ObjectToleranceMatchType<TSubject, TTolerance> WithRelativeTolerance(System.Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit) { }
+        public aweXpect.Options.ObjectToleranceMatchType<TSubject, TTolerance> SetRelativeTolerance(System.Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit) { }
         public aweXpect.Options.ObjectToleranceMatchType<TSubject, TTolerance> Within(TTolerance tolerance) { }
     }
     public readonly struct Quantifier
@@ -1826,9 +1826,9 @@ namespace aweXpect.Options
         public bool IsNever(bool isNegated) { }
         public aweXpect.Options.Quantifier LessThan(int maximum) { }
         public aweXpect.Options.Quantifier MoreThan(int minimum) { }
+        public aweXpect.Options.Quantifier Never() { }
         public override string ToString() { }
         public string ToString(bool isNegated) { }
-        public static aweXpect.Options.Quantifier Never() { }
     }
     public static class QuantifierHolderExtensions
     {
@@ -1872,13 +1872,13 @@ namespace aweXpect.Options
     public sealed class SignalerPredicateOptions<TParameter>
     {
         public static aweXpect.Options.SignalerPredicateOptions<TParameter> Default { get; }
+        public aweXpect.Options.SignalerPredicateOptions<TParameter> AddPredicate(System.Func<TParameter, bool> predicate, string predicateExpression) { }
         public bool Matches(TParameter parameter) { }
         public override string ToString() { }
-        public aweXpect.Options.SignalerPredicateOptions<TParameter> WithPredicate(System.Func<TParameter, bool> predicate, string predicateExpression) { }
     }
     public static class SignalerPredicateOptionsHolderExtensions
     {
-        public static aweXpect.Core.OptionsHolder<aweXpect.Options.SignalerPredicateOptions<TParameter>> WithPredicate<TParameter>(this aweXpect.Core.OptionsHolder<aweXpect.Options.SignalerPredicateOptions<TParameter>> holder, System.Func<TParameter, bool> predicate, string predicateExpression) { }
+        public static aweXpect.Core.OptionsHolder<aweXpect.Options.SignalerPredicateOptions<TParameter>> AddPredicate<TParameter>(this aweXpect.Core.OptionsHolder<aweXpect.Options.SignalerPredicateOptions<TParameter>> holder, System.Func<TParameter, bool> predicate, string predicateExpression) { }
     }
     public sealed class StringEqualityOptions : aweXpect.Core.IEqualityEvaluator<string?>, aweXpect.Core.IEqualityOptions<string?>
     {
@@ -2205,7 +2205,7 @@ namespace aweXpect.Results
     }
     public interface IWithinToleranceResult<TResult, TTolerance>
     {
-        TResult WithRelativeTolerance(System.Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit);
+        TResult SetRelativeTolerance(System.Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit);
     }
     public class NullableNumberToleranceResult<TType, TThat> : aweXpect.Results.AndOrResult<TType?, TThat, aweXpect.Results.NullableNumberToleranceResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.NumberTolerance<TType>>, aweXpect.Results.INumberToleranceResult<aweXpect.Results.NullableNumberToleranceResult<TType, TThat>, TType> where TType : struct, System.Numerics.INumber<TType>
     {

@@ -18,11 +18,11 @@ public sealed class JsonNumbersWithinOptions
 		NumberTolerance = new JsonNumberTolerance(tolerance);
 	}
 
-	/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
+	/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.SetRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
 	/// <remarks>
 	///     Returns new options, so that these options keep their absolute tolerance.
 	/// </remarks>
-	JsonOptions IWithinToleranceResult<JsonOptions, double>.WithRelativeTolerance(
+	JsonOptions IWithinToleranceResult<JsonOptions, double>.SetRelativeTolerance(
 		Func<double, double, double> absoluteTolerance, string unit)
 		=> new(this)
 		{

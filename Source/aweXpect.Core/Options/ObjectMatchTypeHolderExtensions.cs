@@ -103,19 +103,28 @@ public static class ObjectMatchTypeHolderExtensions
 	}
 
 	/// <summary>
-	///     Interprets the tolerance relative to the expected value, when the expectation compares within a
-	///     <typeparamref name="TTolerance" />.
+	///     Interprets the tolerance relative to the expected value.
 	/// </summary>
-	/// <inheritdoc cref="ObjectToleranceMatchType{TSubject, TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" path="/param" />
-	public static OptionsHolder<ObjectMatchType<TSubject>> WithRelativeTolerance<TSubject, TTolerance>(
+	/// <inheritdoc cref="ObjectToleranceMatchType{TSubject, TTolerance}.SetRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" path="/param" />
+	/// <remarks>
+	///     A later relative tolerance replaces the earlier one, and a later <c>Within</c> replaces both.
+	/// </remarks>
+	/// <exception cref="InvalidOperationException">
+	///     The expectation does not compare within a <typeparamref name="TTolerance" />, or no tolerance was specified
+	///     with <c>Within</c>.
+	/// </exception>
+	public static OptionsHolder<ObjectMatchType<TSubject>> SetRelativeTolerance<TSubject, TTolerance>(
 		this OptionsHolder<ObjectMatchType<TSubject>> holder, Func<TTolerance, TTolerance, TTolerance> absoluteTolerance,
 		string unit)
 	{
-		if (holder.Value is ObjectToleranceMatchType<TSubject, TTolerance> matchType)
+		if (holder.Value is not ObjectToleranceMatchType<TSubject, TTolerance> matchType)
 		{
-			holder.Value = matchType.WithRelativeTolerance(absoluteTolerance, unit);
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new InvalidOperationException(
+				$"SetRelativeTolerance requires a comparison within a tolerance of type {Formatter.Format(typeof(TTolerance))}."));
 		}
 
+		holder.Value = matchType.SetRelativeTolerance(absoluteTolerance, unit);
 		return holder;
 	}
 }

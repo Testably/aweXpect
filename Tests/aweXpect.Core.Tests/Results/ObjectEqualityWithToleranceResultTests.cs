@@ -51,7 +51,7 @@ public sealed class ObjectEqualityWithToleranceResultTests
 			sut.Within(1.0);
 
 		ObjectEqualityWithToleranceResult<int, IThat<int>, int, double> continuation =
-			result.WithRelativeTolerance((tolerance, expected) => tolerance * expected / 100, "%");
+			result.SetRelativeTolerance((tolerance, expected) => tolerance * expected / 100, "%");
 
 		await That(continuation).IsSameAs(result);
 		await That(options.ToString()).IsEqualTo(" ± 1.0%");

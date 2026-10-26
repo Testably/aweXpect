@@ -91,14 +91,16 @@ discarded, e.g. `options.AtLeast(2);`, compiles and changes nothing. The analyze
 
 The rules for the options are the same everywhere:
 
-- A repeated option replaces the earlier one, e.g. `AtLeast(2).AtLeast(3)` requires three.
+- A repeated option replaces the earlier one, e.g. `AtLeast(2).AtLeast(3)` requires three. The predicates of a
+  signal or event filter combine instead, so that their hook is named `AddPredicate`.
 - An option set to `false` is the same as not set, e.g. `IgnoringCase(false)`.
 - Options that set the same thing in different ways throw an `InvalidOperationException` at the call, e.g.
   `AtMost cannot be combined with AtLeast.` or `AsSuffix cannot be combined with AsPrefix.`
 - The hooks for a strategy of your own are named `Set…` and take the name of your option, e.g.
   `SetMatchType(matchType, nameof(AsTitle))` on the `StringEqualityOptions` or `SetMatch(match, nameof(AtTrackNumber))`
   on the `CollectionIndexOptions`, so that a competing option throws with that name, while the same name again
-  replaces the earlier strategy. An [object match type](#custom-match-types) carries its name itself.
+  replaces the earlier strategy. An [object match type](#custom-match-types) carries its name itself, and
+  `SetComparer` on the `CollectionOrderOptions` takes no name, as no other option sets the order.
 
 ### Options of your own
 

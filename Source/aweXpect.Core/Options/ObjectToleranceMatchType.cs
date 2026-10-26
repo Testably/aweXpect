@@ -22,12 +22,10 @@ public sealed class ObjectToleranceMatchType<TSubject, TTolerance> : ObjectMatch
 	private readonly string _unit;
 	private WithinMatcher? _matcher;
 
-	private ObjectToleranceMatchType(Comparison comparison,
-		Func<TTolerance, TTolerance, TTolerance>? absoluteTolerance, string unit)
+	private ObjectToleranceMatchType(Comparison comparison)
 	{
 		_comparison = comparison;
-		_absoluteTolerance = absoluteTolerance;
-		_unit = unit;
+		_unit = "";
 	}
 
 	private ObjectToleranceMatchType(Comparison comparison, TTolerance tolerance,
@@ -73,8 +71,7 @@ public sealed class ObjectToleranceMatchType<TSubject, TTolerance> : ObjectMatch
 	{
 		isWithinTolerance.ThrowIfNull();
 		return new ObjectToleranceMatchType<TSubject, TTolerance>(
-			new Comparison(isWithinTolerance, toString ?? ToleranceHelpers.Format, validation, defaultTolerance),
-			null, "");
+			new Comparison(isWithinTolerance, toString ?? ToleranceHelpers.Format, validation, defaultTolerance));
 	}
 
 	/// <inheritdoc />
@@ -126,16 +123,19 @@ public sealed class ObjectToleranceMatchType<TSubject, TTolerance> : ObjectMatch
 	/// </param>
 	/// <param name="unit">The unit appended to the tolerance in the expectation text, e.g. <c>%</c>.</param>
 	/// <remarks>
-	///     Applies only to expected values of type <typeparamref name="TTolerance" />.
+	///     Applies only to expected values of type <typeparamref name="TTolerance" />. A later relative tolerance
+	///     replaces the earlier one, and a later <see cref="Within(TTolerance)" /> replaces both.
 	/// </remarks>
-	public ObjectToleranceMatchType<TSubject, TTolerance> WithRelativeTolerance(
+	/// <exception cref="InvalidOperationException">
+	///     No tolerance was specified with <see cref="Within(TTolerance)" />.
+	/// </exception>
+	public ObjectToleranceMatchType<TSubject, TTolerance> SetRelativeTolerance(
 		Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
 	{
 		absoluteTolerance.ThrowIfNull();
 		unit.ThrowIfNull();
-		return OptionName is null
-			? new ObjectToleranceMatchType<TSubject, TTolerance>(_comparison, absoluteTolerance, unit)
-			: new ObjectToleranceMatchType<TSubject, TTolerance>(_comparison, _tolerance, absoluteTolerance, unit);
+		ToleranceHelpers.ThrowIfRelativeToleranceHasNoTolerance(OptionName is not null);
+		return new ObjectToleranceMatchType<TSubject, TTolerance>(_comparison, _tolerance, absoluteTolerance, unit);
 	}
 
 	private MatchPhrase GetPhrase(TTolerance tolerance)

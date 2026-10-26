@@ -9,12 +9,12 @@ namespace aweXpect.Options;
 /// </summary>
 public static class SignalerPredicateOptionsHolderExtensions
 {
-	/// <inheritdoc cref="SignalerPredicateOptions{TParameter}.WithPredicate(Func{TParameter, bool}, string)" />
-	public static OptionsHolder<SignalerPredicateOptions<TParameter>> WithPredicate<TParameter>(
+	/// <inheritdoc cref="SignalerPredicateOptions{TParameter}.AddPredicate(Func{TParameter, bool}, string)" />
+	public static OptionsHolder<SignalerPredicateOptions<TParameter>> AddPredicate<TParameter>(
 		this OptionsHolder<SignalerPredicateOptions<TParameter>> holder, Func<TParameter, bool> predicate,
 		string predicateExpression)
 	{
-		holder.Value = holder.Value.WithPredicate(predicate, predicateExpression);
+		holder.Value = holder.Value.AddPredicate(predicate, predicateExpression);
 		return holder;
 	}
 }

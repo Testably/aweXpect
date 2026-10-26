@@ -44,13 +44,13 @@ public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TToleranc
 				options),
 			IWithinToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>
 	{
-		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.SetRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
 		ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>
-			IWithinToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>.WithRelativeTolerance(
+			IWithinToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>.SetRelativeTolerance(
 				Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
 		{
 			((IOptionsProvider<ObjectMatchType<TElement>>)this).Options
-				.WithRelativeTolerance<TElement, TTolerance>(absoluteTolerance, unit);
+				.SetRelativeTolerance<TElement, TTolerance>(absoluteTolerance, unit);
 			return this;
 		}
 	}

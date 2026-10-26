@@ -227,7 +227,7 @@ public class QuantifierTests
 			Quantifier.Default.Exactly(2),
 			Quantifier.Default.LessThan(3),
 			Quantifier.Default.MoreThan(2),
-			Quantifier.Never(),
+			Quantifier.Default.Never(),
 		];
 
 		foreach (Quantifier sut in quantifiers)
@@ -395,7 +395,7 @@ public class QuantifierTests
 	[Test]
 	public async Task Never_ShouldBeExactlyZero()
 	{
-		Quantifier sut = Quantifier.Never();
+		Quantifier sut = Quantifier.Default.Never();
 
 		void Act() => sut.AtLeast(1);
 
@@ -403,6 +403,17 @@ public class QuantifierTests
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("AtLeast cannot be combined with Never.")
 			.Because("the conflict names the option like the user-facing Never() does");
+	}
+
+	[Test]
+	public async Task Never_WhenAnotherQuantifierIsSpecified_ShouldThrowInvalidOperationException()
+	{
+		Quantifier sut = Quantifier.Default.AtLeast(1);
+
+		void Act() => sut.Never();
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Never cannot be combined with AtLeast.");
 	}
 
 	[Test]

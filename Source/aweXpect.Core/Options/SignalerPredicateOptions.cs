@@ -7,7 +7,7 @@ namespace aweXpect.Options;
 ///     The predicates that filter the signals of a <see cref="Signaler{TParameter}" />.
 /// </summary>
 /// <remarks>
-///     Immutable: <see cref="WithPredicate(Func{TParameter, bool}, string)" /> returns new options, so that
+///     Immutable: <see cref="AddPredicate(Func{TParameter, bool}, string)" /> returns new options, so that
 ///     <see cref="Default" /> can be shared.<br />
 ///     The timeout is in the <see cref="SignalerOptions" />.
 /// </remarks>
@@ -33,7 +33,7 @@ public sealed class SignalerPredicateOptions<TParameter>
 	/// <remarks>
 	///     The predicates of several calls are combined, so that a signal has to match all of them.
 	/// </remarks>
-	public SignalerPredicateOptions<TParameter> WithPredicate(Func<TParameter, bool> predicate,
+	public SignalerPredicateOptions<TParameter> AddPredicate(Func<TParameter, bool> predicate,
 		string predicateExpression)
 	{
 		Func<TParameter, bool>[] predicates = new Func<TParameter, bool>[_predicates.Length + 1];

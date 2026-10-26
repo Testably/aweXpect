@@ -85,11 +85,47 @@ public class NumberToleranceTests
 	{
 		NumberTolerance<int> sut = new NumberTolerance<int>((a, b) => Math.Abs(a - b))
 			.Within(5)
-			.WithRelativeTolerance((t, e) => t * Math.Abs(e) / 100, "%");
+			.SetRelativeTolerance((t, e) => t * Math.Abs(e) / 100, "%");
 
 		bool result = sut.IsWithinTolerance(actual, expected);
 
 		await That(result).IsEqualTo(expectedResult);
+	}
+
+	[Test]
+	public async Task SetRelativeTolerance_ShouldNotChangeTheOriginalTolerance()
+	{
+		NumberTolerance<int> sut = new NumberTolerance<int>((a, b) => Math.Abs(a - b)).Within(5);
+
+		NumberTolerance<int> result = sut.SetRelativeTolerance((t, e) => t * e / 100, "%");
+
+		await That(result.ToleranceFor(200)).IsEqualTo(10);
+		await That(sut.ToleranceFor(200)).IsEqualTo(5);
+		await That(sut.ToString()).IsEqualTo(" ± 5");
+	}
+
+	[Test]
+	public async Task SetRelativeTolerance_WhenAbsoluteToleranceIsNull_ShouldThrowArgumentNullException()
+	{
+		NumberTolerance<int> sut = new NumberTolerance<int>((a, b) => Math.Abs(a - b)).Within(5);
+
+		void Act() => sut.SetRelativeTolerance(null!, "%");
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("absoluteTolerance").And
+			.WithMessage("The 'absoluteTolerance' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task SetRelativeTolerance_WithoutTolerance_ShouldThrowInvalidOperationException()
+	{
+		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
+
+		void Act() => sut.SetRelativeTolerance((t, e) => t * e / 100, "%");
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("SetRelativeTolerance requires a tolerance specified with Within.")
+			.Because("a later Within would silently replace the relative tolerance");
 	}
 
 	[Test]
@@ -105,8 +141,7 @@ public class NumberToleranceTests
 	[Test]
 	public async Task ToleranceFor_WithoutTolerance_ShouldReturnNull()
 	{
-		NumberTolerance<int> sut = new NumberTolerance<int>((a, b) => Math.Abs(a - b))
-			.WithRelativeTolerance((t, e) => t * e / 100, "%");
+		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
 
 		int? result = sut.ToleranceFor(200);
 
@@ -118,7 +153,7 @@ public class NumberToleranceTests
 	{
 		NumberTolerance<int> sut = new NumberTolerance<int>((a, b) => Math.Abs(a - b))
 			.Within(5)
-			.WithRelativeTolerance((t, e) => t * e / 100, "%");
+			.SetRelativeTolerance((t, e) => t * e / 100, "%");
 
 		int? result = sut.ToleranceFor(200);
 
@@ -153,7 +188,7 @@ public class NumberToleranceTests
 	{
 		NumberTolerance<int> sut = new NumberTolerance<int>((a, b) => Math.Abs(a - b))
 			.Within(5)
-			.WithRelativeTolerance((t, e) => t * e / 100, "%");
+			.SetRelativeTolerance((t, e) => t * e / 100, "%");
 
 		string result = sut.ToString();
 
@@ -229,7 +264,7 @@ public class NumberToleranceTests
 	{
 		NumberTolerance<int> sut = new NumberTolerance<int>((_, _) => null)
 			.Within(1)
-			.WithRelativeTolerance((tolerance, expected) => tolerance * expected / 100, "%");
+			.SetRelativeTolerance((tolerance, expected) => tolerance * expected / 100, "%");
 
 		sut = sut.Within(2);
 
@@ -261,17 +296,5 @@ public class NumberToleranceTests
 		await That(result.Tolerance).IsEqualTo(1);
 		await That(sut.Tolerance).IsNull();
 		await That(sut.IsWithinTolerance(1, 2)).IsFalse();
-	}
-
-	[Test]
-	public async Task WithRelativeTolerance_ShouldNotChangeTheOriginalTolerance()
-	{
-		NumberTolerance<int> sut = new NumberTolerance<int>((a, b) => Math.Abs(a - b)).Within(5);
-
-		NumberTolerance<int> result = sut.WithRelativeTolerance((t, e) => t * e / 100, "%");
-
-		await That(result.ToleranceFor(200)).IsEqualTo(10);
-		await That(sut.ToleranceFor(200)).IsEqualTo(5);
-		await That(sut.ToString()).IsEqualTo(" ± 5");
 	}
 }

@@ -39,7 +39,7 @@ public sealed class NumberToleranceResultTests
 		IWithinToleranceResult<NumberToleranceResult<int, IThat<int>>, int> result = sut.Within(1);
 
 		NumberToleranceResult<int, IThat<int>> continuation =
-			result.WithRelativeTolerance((tolerance, expected) => tolerance * expected / 100, "%");
+			result.SetRelativeTolerance((tolerance, expected) => tolerance * expected / 100, "%");
 
 		await That(continuation).IsSameAs(result);
 		await That(options.Value.ToleranceFor(200)).IsEqualTo(2);
@@ -75,7 +75,7 @@ public sealed class NumberToleranceResultTests
 		IWithinToleranceResult<NumberToleranceResult<string, IThat<string>, int>, int> result = sut.Within(1);
 
 		NumberToleranceResult<string, IThat<string>, int> continuation =
-			result.WithRelativeTolerance((tolerance, expected) => tolerance * expected / 100, "%");
+			result.SetRelativeTolerance((tolerance, expected) => tolerance * expected / 100, "%");
 
 		await That(continuation).IsSameAs(result);
 		await That(options.Value.ToleranceFor(200)).IsEqualTo(2);
