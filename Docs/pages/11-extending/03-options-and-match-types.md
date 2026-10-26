@@ -85,7 +85,8 @@ option of the same name in `aweXpect`, which extends the result and not the slot
 
 :::warning
 Use the value that an option method returns. Most options types are `readonly struct`s, so a call whose result is
-discarded, e.g. `options.AtLeast(2);`, compiles and changes nothing.
+discarded, e.g. `options.AtLeast(2);`, compiles and changes nothing. The analyzer rule
+[aweXpect0009](../08-analyzers.md#awexpect0009) reports it in a project that references `aweXpect`.
 :::
 
 The rules for the options are the same everywhere:

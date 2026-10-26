@@ -161,6 +161,29 @@ was met. Do not use it, or check it first and suppress the warning there. The ru
 the type of the subject, or a base type or an interface of it, because then every alternative returns the subject. See
 [Combining expectations](./03-how-it-works/03-combining.md#using-the-result).
 
+## aweXpect0009
+
+:::warning[Warning]
+The value returned by an option method of an immutable option, such as a `Quantifier` or the `StringEqualityOptions`,
+is discarded, so the call has no effect.
+:::
+
+```csharp
+using aweXpect.Core;
+using aweXpect.Options;
+
+OptionsSlot<Quantifier> quantifier = new(Quantifier.Default);
+
+quantifier.Value.AtLeast(2);                       // reported: the quantifier stays unchanged
+quantifier.Value = quantifier.Value.AtLeast(2);    // fixed: the slot holds the new quantifier
+quantifier.AtLeast(2);                             // fixed: the option method of the slot replaces its value
+```
+
+The options are immutable values, so an option method returns new options and leaves the ones it is called on
+unchanged. A call that is the whole body of a lambda or local function written with `=>` is not reported, as it is
+usually there to check that the option throws. This mostly concerns the authors of extensions, see
+[Options](./11-extending/03-options-and-match-types.md#options).
+
 ## Nullability suppressor
 
 After an expectation that a `null` subject can never satisfy, such as `IsNotNull()`, the

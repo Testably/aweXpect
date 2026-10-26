@@ -8,3 +8,4 @@
  aweXpect0006 | Usage    | Warning  | Collections without a defined order must not be compared by position.    
  aweXpect0007 | Usage    | Error    | A "ValueTask" or "Task" returned by a delegate subject is never awaited. 
  aweXpect0008 | Usage    | Warning  | The value of an expectation combined with "Or" can be the default value. 
+ aweXpect0009 | Usage    | Warning  | The value returned by an option method is discarded.                     

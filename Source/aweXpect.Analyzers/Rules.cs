@@ -59,6 +59,10 @@ internal static class Rules
 		"aweXpect0008", Title("aweXpect0008"), MessageFormat("aweXpect0008"), UsageCategory,
 		DiagnosticSeverity.Warning, true, Description("aweXpect0008"), HelpLinkUri("aweXpect0008"));
 
+	public static readonly DiagnosticDescriptor DiscardedOptionRule = new(
+		"aweXpect0009", Title("aweXpect0009"), MessageFormat("aweXpect0009"), UsageCategory,
+		DiagnosticSeverity.Warning, true, Description("aweXpect0009"), HelpLinkUri("aweXpect0009"));
+
 	/// <summary>
 	///     The nullability warnings that are suppressed after an expectation that guarantees a not-null subject.
 	/// </summary>
