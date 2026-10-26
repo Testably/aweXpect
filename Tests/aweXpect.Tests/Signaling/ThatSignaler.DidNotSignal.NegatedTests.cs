@@ -44,6 +44,40 @@ public sealed partial class ThatSignaler
 			}
 
 			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Signaler? subject = null;
+
+				async Task Act() =>
+					await That(subject).DoesNotComplyWith(s => s.DidNotSignal());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has recorded the callback at least once,
+					             but it was <null>
+					             """)
+					.Because("a null signaler cannot be inspected, so the negation fails as well");
+			}
+
+			[Test]
+			public async Task WithParameter_WhenSubjectIsNull_ShouldFail()
+			{
+				Signaler<int>? subject = null;
+
+				async Task Act() =>
+					await That(subject).DoesNotComplyWith(s => s.DidNotSignal());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has recorded the callback at least once,
+					             but it was <null>
+					             """)
+					.Because("a null signaler cannot be inspected, so the negation fails as well");
+			}
+
+			[Test]
 			public async Task WithParameter_WhenTriggeredWithOtherParameter_ShouldFail()
 			{
 				Signaler<int> signaler = new();

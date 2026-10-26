@@ -382,7 +382,7 @@ public sealed partial class ThatEventRecording
 				IEventRecording<CustomEventWithoutParametersClass>? subject = null;
 
 				async Task Act()
-					=> await That(subject!).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+					=> await That(subject).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(4.Seconds());
 
 				await That(Act).Throws<FailException>()
@@ -553,7 +553,7 @@ public sealed partial class ThatEventRecording
 				IEventRecording<CustomEventWithoutParametersClass>? subject = null;
 
 				async Task Act()
-					=> await That(subject!).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+					=> await That(subject).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(TimeSpan.Zero);
 
 				await That(Act).Throws<FailException>()

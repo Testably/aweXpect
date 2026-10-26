@@ -23,7 +23,7 @@ public static partial class ThatEventRecording
 		OptionsHolder<Quantifier> quantifier,
 		OptionsHolder<RepeatedCheckOptions> options)
 		: ConstraintResult(grammars),
-			IAsyncContextConstraint<IEventRecording<TSubject>>
+			IAsyncContextConstraint<IEventRecording<TSubject>?>
 		where TSubject : notnull
 	{
 		private IEventRecording<TSubject>? _actual;
@@ -34,11 +34,10 @@ public static partial class ThatEventRecording
 		private bool _stoppedEarly;
 		private TimeSpan? _waitedTime;
 
-		public async ValueTask<ConstraintResult> IsMetBy(IEventRecording<TSubject> actual, IEvaluationContext context,
+		public async ValueTask<ConstraintResult> IsMetBy(IEventRecording<TSubject>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			_actual = actual;
-			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 			if (actual == null)
 			{
 				Outcome = Outcome.FailureBothWays;

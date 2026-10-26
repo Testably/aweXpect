@@ -73,7 +73,7 @@ public sealed partial class ThatEventRecording
 				IEventRecording<PropertyChangedClass>? subject = null;
 
 				async Task Act()
-					=> await That(subject!).TriggeredPropertyChanged().Within(5671.Milliseconds());
+					=> await That(subject).TriggeredPropertyChanged().Within(5671.Milliseconds());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

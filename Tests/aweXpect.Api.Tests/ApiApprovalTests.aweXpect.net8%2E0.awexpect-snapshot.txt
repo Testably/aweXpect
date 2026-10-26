@@ -8270,21 +8270,21 @@ namespace aweXpect
     public static class ThatEventRecording
     {
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.EventTriggerResult<TSubject> DidNotTrigger<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> subject, string eventName) where TSubject : notnull { }
+        public static aweXpect.Results.EventTriggerResult<TSubject> DidNotTrigger<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>?> subject, string eventName) where TSubject : notnull { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.EventTriggerResult<TSubject> DidNotTriggerPropertyChanged<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> subject) where TSubject : System.ComponentModel.INotifyPropertyChanged { }
+        public static aweXpect.Results.EventTriggerResult<TSubject> DidNotTriggerPropertyChanged<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>?> subject) where TSubject : System.ComponentModel.INotifyPropertyChanged { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.EventTriggerResult<TSubject> DidNotTriggerPropertyChangedFor<TSubject, TProperty>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> subject, System.Linq.Expressions.Expression<System.Func<TSubject, TProperty>> propertyExpression) where TSubject : System.ComponentModel.INotifyPropertyChanged { }
+        public static aweXpect.Results.EventTriggerResult<TSubject> DidNotTriggerPropertyChangedFor<TSubject, TProperty>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>?> subject, System.Linq.Expressions.Expression<System.Func<TSubject, TProperty>> propertyExpression) where TSubject : System.ComponentModel.INotifyPropertyChanged { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.EventTriggerResult<TSubject> DidNotTriggerPropertyChangedFor<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> subject, string? propertyName) where TSubject : System.ComponentModel.INotifyPropertyChanged { }
+        public static aweXpect.Results.EventTriggerResult<TSubject> DidNotTriggerPropertyChangedFor<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>?> subject, string? propertyName) where TSubject : System.ComponentModel.INotifyPropertyChanged { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.EventTriggerResult<TSubject> Triggered<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> subject, string eventName) where TSubject : notnull { }
+        public static aweXpect.Results.EventTriggerResult<TSubject> Triggered<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>?> subject, string eventName) where TSubject : notnull { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.EventTriggerResult<TSubject> TriggeredPropertyChanged<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> subject) where TSubject : System.ComponentModel.INotifyPropertyChanged { }
+        public static aweXpect.Results.EventTriggerResult<TSubject> TriggeredPropertyChanged<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>?> subject) where TSubject : System.ComponentModel.INotifyPropertyChanged { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.EventTriggerResult<TSubject> TriggeredPropertyChangedFor<TSubject, TProperty>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> subject, System.Linq.Expressions.Expression<System.Func<TSubject, TProperty>> propertyExpression) where TSubject : System.ComponentModel.INotifyPropertyChanged { }
+        public static aweXpect.Results.EventTriggerResult<TSubject> TriggeredPropertyChangedFor<TSubject, TProperty>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>?> subject, System.Linq.Expressions.Expression<System.Func<TSubject, TProperty>> propertyExpression) where TSubject : System.ComponentModel.INotifyPropertyChanged { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.EventTriggerResult<TSubject> TriggeredPropertyChangedFor<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> subject, string? propertyName) where TSubject : System.ComponentModel.INotifyPropertyChanged { }
+        public static aweXpect.Results.EventTriggerResult<TSubject> TriggeredPropertyChangedFor<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>?> subject, string? propertyName) where TSubject : System.ComponentModel.INotifyPropertyChanged { }
     }
     public static class ThatException
     {
@@ -8848,21 +8848,21 @@ namespace aweXpect
     public static class ThatSignaler
     {
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.DidNotSignalResult DidNotSignal(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler> subject) { }
+        public static aweXpect.Results.DidNotSignalResult DidNotSignal(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.DidNotSignalResult DidNotSignal(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler> subject, aweXpect.Core.Times times) { }
+        public static aweXpect.Results.DidNotSignalResult DidNotSignal(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler?> subject, aweXpect.Core.Times times) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.DidNotSignalResult<TParameter> DidNotSignal<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> subject) { }
+        public static aweXpect.Results.DidNotSignalResult<TParameter> DidNotSignal<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.DidNotSignalResult<TParameter> DidNotSignal<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> subject, aweXpect.Core.Times times) { }
+        public static aweXpect.Results.DidNotSignalResult<TParameter> DidNotSignal<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>?> subject, aweXpect.Core.Times times) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.SignalCountResult Signaled(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler> subject) { }
+        public static aweXpect.Results.SignalCountResult Signaled(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.SignalCountWhoseResult<TParameter> Signaled<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> subject) { }
+        public static aweXpect.Results.SignalCountWhoseResult<TParameter> Signaled<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.SignaledResult Signaled(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler> subject, aweXpect.Core.Times times) { }
+        public static aweXpect.Results.SignaledResult Signaled(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler?> subject, aweXpect.Core.Times times) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.SignaledWhoseResult<TParameter> Signaled<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> subject, aweXpect.Core.Times times) { }
+        public static aweXpect.Results.SignaledWhoseResult<TParameter> Signaled<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>?> subject, aweXpect.Core.Times times) { }
     }
     public static class ThatSpan
     {
@@ -9123,10 +9123,10 @@ namespace aweXpect.Results
     {
         public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TValue>> WhoseValues { get; }
     }
-    public class DidNotSignalResult : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult, aweXpect.Core.IThat<aweXpect.Signaling.Signaler>, aweXpect.Results.DidNotSignalResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>
+    public class DidNotSignalResult : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult, aweXpect.Core.IThat<aweXpect.Signaling.Signaler?>, aweXpect.Results.DidNotSignalResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>
     {
     }
-    public class DidNotSignalResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>>, aweXpect.Results.DidNotSignalResult<TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerPredicateOptions<TParameter>>, aweXpect.Results.ISignalerResult<aweXpect.Results.DidNotSignalResult<TParameter>, TParameter>
+    public class DidNotSignalResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>?>, aweXpect.Results.DidNotSignalResult<TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerPredicateOptions<TParameter>>, aweXpect.Results.ISignalerResult<aweXpect.Results.DidNotSignalResult<TParameter>, TParameter>
     {
     }
     public class EnumValueResult<TItem> : aweXpect.Results.EnumValueResult<TItem, TItem>
@@ -9159,7 +9159,7 @@ namespace aweXpect.Results
         public aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>> NotLessThanOrEqualTo(long? unexpected) { }
         public aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>> NotLessThanOrEqualTo(ulong? unexpected) { }
     }
-    public class EventTriggerResult<TSubject> : aweXpect.Results.AndOrResult<aweXpect.Recording.IEventRecording<TSubject>, aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>>, aweXpect.Results.EventTriggerResult<TSubject>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Core.IOptionsProvider<aweXpect.Options.RepeatedCheckOptions>, aweXpect.Results.EventTriggerResult<TSubject>.ICustomParameterFilter where TSubject : notnull
+    public class EventTriggerResult<TSubject> : aweXpect.Results.AndOrResult<aweXpect.Recording.IEventRecording<TSubject>, aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>?>, aweXpect.Results.EventTriggerResult<TSubject>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Core.IOptionsProvider<aweXpect.Options.RepeatedCheckOptions>, aweXpect.Results.EventTriggerResult<TSubject>.ICustomParameterFilter where TSubject : notnull
     {
         public aweXpect.Results.EventTriggerResult<TSubject> With<TEventArgs>(System.Func<TEventArgs, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TEventArgs : System.EventArgs { }
         public aweXpect.Results.EventTriggerResult<TSubject> WithParameter<TParameter>(System.Func<TParameter, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
@@ -9228,17 +9228,17 @@ namespace aweXpect.Results
     public class ProperCollectionMatchResult<TType, TThat, TItem> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.ProperCollectionMatchResult<TType, TThat, TItem>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions>, aweXpect.Results.ICollectionContainmentOptions, aweXpect.Results.IProperContainmentOptions
     {
     }
-    public class SignalCountResult : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult, aweXpect.Core.IThat<aweXpect.Signaling.Signaler>, aweXpect.Results.SignalCountResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>
+    public class SignalCountResult : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult, aweXpect.Core.IThat<aweXpect.Signaling.Signaler?>, aweXpect.Results.SignalCountResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>
     {
     }
-    public class SignalCountWhoseResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>>, aweXpect.Results.SignalCountWhoseResult<TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerPredicateOptions<TParameter>>, aweXpect.Results.ISignalerResult<aweXpect.Results.SignalCountWhoseResult<TParameter>, TParameter>
+    public class SignalCountWhoseResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>?>, aweXpect.Results.SignalCountWhoseResult<TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerPredicateOptions<TParameter>>, aweXpect.Results.ISignalerResult<aweXpect.Results.SignalCountWhoseResult<TParameter>, TParameter>
     {
         public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TParameter>> WhoseParameters { get; }
     }
-    public class SignaledResult : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult, aweXpect.Core.IThat<aweXpect.Signaling.Signaler>, aweXpect.Results.SignaledResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>
+    public class SignaledResult : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult, aweXpect.Core.IThat<aweXpect.Signaling.Signaler?>, aweXpect.Results.SignaledResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>
     {
     }
-    public class SignaledWhoseResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>>, aweXpect.Results.SignaledWhoseResult<TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerPredicateOptions<TParameter>>, aweXpect.Results.ISignalerResult<aweXpect.Results.SignaledWhoseResult<TParameter>, TParameter>
+    public class SignaledWhoseResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>?>, aweXpect.Results.SignaledWhoseResult<TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerPredicateOptions<TParameter>>, aweXpect.Results.ISignalerResult<aweXpect.Results.SignaledWhoseResult<TParameter>, TParameter>
     {
         public aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<TParameter>> WhoseParameters { get; }
     }
