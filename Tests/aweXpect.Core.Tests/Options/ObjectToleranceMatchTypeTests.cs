@@ -87,6 +87,18 @@ public class ObjectToleranceMatchTypeTests
 	}
 
 	[Test]
+	public async Task ForEvaluation_WithoutEvaluation_ShouldReturnTheSameMatcher()
+	{
+		OptionsHolder<ObjectMatchType<int>> sut = CreateSut(defaultTolerance: () => 5);
+
+		ObjectMatcher<int> first = sut.Value.ForEvaluation(default);
+		ObjectMatcher<int> second = sut.Value.ForEvaluation(default);
+
+		await That(second).IsSameAs(first)
+			.Because("the matcher outside an evaluation reads the default tolerance for each comparison itself");
+	}
+
+	[Test]
 	[Arguments(false, "is equal to 3 ± 2")]
 	[Arguments(true, "is not equal to 3 ± 2")]
 	public async Task GetExpectation_ShouldNameTheTolerance(bool isNegated, string expected)

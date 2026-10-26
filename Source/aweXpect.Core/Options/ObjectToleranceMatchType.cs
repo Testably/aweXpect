@@ -81,7 +81,9 @@ public sealed class ObjectToleranceMatchType<TSubject, TTolerance> : ObjectMatch
 	/// <remarks>
 	///     A default tolerance can be customized, so it is read once for each evaluation, and outside an evaluation
 	///     for every comparison, while a specified tolerance is the same for every evaluation. Without a default
-	///     tolerance, the values are compared like <see cref="ObjectMatchType{TSubject}.Default" />.
+	///     tolerance, the values are compared like <see cref="ObjectMatchType{TSubject}.Default" />.<br />
+	///     The matcher outside an evaluation reads the default tolerance itself, so it is created once, also for a
+	///     starting value that every expectation shares, where a race only creates a second, equal matcher.
 	/// </remarks>
 	public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
 	{
@@ -96,7 +98,7 @@ public sealed class ObjectToleranceMatchType<TSubject, TTolerance> : ObjectMatch
 		}
 
 		return environment.Evaluation is null
-			? new WithinMatcher(this, default!, true)
+			? _matcher ??= new WithinMatcher(this, default!, true)
 			: new WithinMatcher(this, defaultTolerance());
 	}
 
