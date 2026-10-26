@@ -161,14 +161,17 @@ discarded, e.g. `options.AtLeast(2);`, compiles and changes nothing. The analyze
 :::
 
 The [general rules for options](../03-how-it-works/05-options.md) apply to the options of `aweXpect.Core` as well as to
-those of your own. For an extension, two more details matter:
+those of your own. For an extension, these details matter as well:
 
 - Options that set the same thing in different ways throw an `InvalidOperationException` at the call, with a message
   like `AtMost cannot be combined with AtLeast.` or `AsSuffix cannot be combined with AsPrefix.`
 - The hooks for a strategy of your own are named `Set…` and take the name of your option, e.g.
   `SetMatchType(matchType, nameof(AsTitle))` on the `StringEqualityOptions` or `SetMatch(match, nameof(AtTrackNumber))`
   on the `CollectionIndexOptions`, so that a competing option throws with that name, while the same name again
-  replaces the earlier strategy. An [object match type](./06-comparisons.md#custom-match-types) carries its name itself.
+  replaces the earlier strategy. An [object match type](./06-comparisons.md#custom-match-types) carries its name itself, and
+  `SetComparer` on the `CollectionOrderOptions` takes no name, as no other option sets the order.
+- A hook that combines with the earlier calls instead of replacing them, like the predicates of a signal or event
+  filter, is named `Add…`, e.g. `AddPredicate`.
 
 ## Options of your own
 
