@@ -120,13 +120,7 @@ internal class ExpectationNode : Node
 		if (_constraint is null && _inner is not null && _reasons is null &&
 		    context is not ExpectationTextEvaluationContext)
 		{
-			ValueTask<ConstraintResult> isInnerMet = IsInnerMetBy(_inner, value, null, context, cancellationToken);
-			if (!isInnerMet.IsCompletedSuccessfully)
-			{
-				return AwaitInner(isInnerMet);
-			}
-
-			return new ValueTask<ConstraintResult>(CombineWithMapping(isInnerMet.Result));
+			return IsOnlyInnerMetBy(_inner, value, context, cancellationToken);
 		}
 
 		if (_inner is null && _reasons is null && context is not ExpectationTextEvaluationContext)
@@ -180,6 +174,25 @@ internal class ExpectationNode : Node
 				FromUnansweredItemException(e, value, context, CancellationToken.None)),
 			_ => new ValueTask<ConstraintResult>(Task.FromException<ConstraintResult>(exception)),
 		};
+
+	/// <summary>
+	///     Verifies the <paramref name="inner" /> expectations of a node without a constraint, e.g. only on a member.
+	/// </summary>
+	/// <remarks>
+	///     Kept out of <see cref="IsMetBy{TValue}" />, which is compiled for every type of subject, so that a node with a
+	///     single constraint does not pay for this path when it is compiled.
+	/// </remarks>
+	private ValueTask<ConstraintResult> IsOnlyInnerMetBy<TValue>(Node inner, TValue? value, IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		ValueTask<ConstraintResult> isInnerMet = IsInnerMetBy(inner, value, null, context, cancellationToken);
+		if (!isInnerMet.IsCompletedSuccessfully)
+		{
+			return AwaitInner(isInnerMet);
+		}
+
+		return new ValueTask<ConstraintResult>(CombineWithMapping(isInnerMet.Result));
+	}
 
 	/// <summary>
 	///     Verifies the expectations of the node like <see cref="IsMetBy{TValue}" />, but lets the members continue from

@@ -8,7 +8,11 @@ namespace aweXpect.Options;
 
 public partial class StringEqualityOptions
 {
-	private static readonly StringMatchType WildcardMatch = new WildcardMatchType();
+	/// <remarks>
+	///     The match type is only created when it is first used, so that a comparison with another match type does not
+	///     pay for it on its first call.
+	/// </remarks>
+	private static StringMatchType WildcardMatch => WildcardMatchType.Instance;
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as wildcard pattern.<br />
@@ -28,6 +32,8 @@ public partial class StringEqualityOptions
 			MatchPhrase.Verb("matches", "match", "matching")
 				.WithName(" as wildcard")
 				.WithPattern("wildcard", "wildcard pattern");
+
+		public static readonly WildcardMatchType Instance = new();
 
 		/// <inheritdoc />
 		public override bool InspectsSubject => true;

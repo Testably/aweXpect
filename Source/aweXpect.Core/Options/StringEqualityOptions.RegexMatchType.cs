@@ -21,7 +21,11 @@ public partial class StringEqualityOptions
 
 	private const int MaximumParsedRegexes = 256;
 
-	private static readonly StringMatchType RegexMatch = new RegexMatchType(RegexOptions.None);
+	/// <remarks>
+	///     The match type is only created when it is first used, so that a comparison with another match type does not
+	///     pay for it on its first call.
+	/// </remarks>
+	private static StringMatchType RegexMatch => RegexMatchType.Instance;
 
 	/// <summary>
 	///     The regexes parsed by any expectation, as each expectation has options of its own, and parsing a pattern
@@ -32,9 +36,8 @@ public partial class StringEqualityOptions
 	///     <see cref="RegexOptions.CultureInvariant" />, and so is the timeout, because a regex keeps the one it was
 	///     parsed with. The cache is cleared when it is full, so that generated patterns cannot grow it without limit.
 	/// </remarks>
-	private static readonly
-		ConcurrentDictionary<(string Pattern, RegexOptions Options, string Culture, TimeSpan Timeout), Regex>
-		ParsedRegexes = new();
+	private static ConcurrentDictionary<(string Pattern, RegexOptions Options, string Culture, TimeSpan Timeout), Regex>
+		ParsedRegexes => ParsedRegexCache.Instance;
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as <see cref="Regex" /> pattern.
@@ -88,6 +91,16 @@ public partial class StringEqualityOptions
 		}
 	}
 
+	/// <summary>
+	///     Holds the cache of <see cref="ParsedRegexes" />, so that it is only created when a regex is first parsed.
+	/// </summary>
+	private static class ParsedRegexCache
+	{
+		public static readonly
+			ConcurrentDictionary<(string Pattern, RegexOptions Options, string Culture, TimeSpan Timeout), Regex>
+			Instance = new();
+	}
+
 	/// <remarks>
 	///     The timeout is read whenever a regex is needed, so that a value set for a scope applies to the expectations
 	///     that are evaluated within it.
@@ -120,6 +133,8 @@ public partial class StringEqualityOptions
 			MatchPhrase.Verb("matches regex", "match regex", "matching regex")
 				.WithName(" as regex")
 				.WithPattern("regex", "regex pattern");
+
+		public static readonly RegexMatchType Instance = new(RegexOptions.None);
 
 		/// <summary>
 		///     The last pattern that was accepted, because it is validated again for every item of a collection.
