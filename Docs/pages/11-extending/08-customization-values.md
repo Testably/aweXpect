@@ -20,11 +20,11 @@ using aweXpect.Customization;
 You can add a simple customizable value (e.g. an `int`):
 
 ```csharp
-public static class MyCustomizationExtensions
+public static class PlaylistCustomizationExtensions
 {
-    public static ICustomizationValueSetter<int> MyCustomization(
+    public static ICustomizationValueSetter<int> MaximumPlaylistLength(
         this AwexpectCustomization awexpectCustomization)
-        => new CustomizationValue<int>(awexpectCustomization, "MyExtension.MyCustomization", 42);
+        => new CustomizationValue<int>(awexpectCustomization, "MyExtension.MaximumPlaylistLength", 100);
 }
 ```
 
@@ -36,20 +36,20 @@ be `null`, as the group below does.
 This allows expectations to access the value:
 
 ```csharp
- // will return the default value of 42
-int myCustomization = Customize.aweXpect.MyCustomization().Get();
+ // will return the default value of 100
+int maximumPlaylistLength = Customize.aweXpect.MaximumPlaylistLength().Get();
 ```
 
 And users can customize the value:
 
 ```csharp
-using (Customize.aweXpect.MyCustomization().Set(43))
+using (Customize.aweXpect.MaximumPlaylistLength().Set(50))
 {
-    // will now return 43
-    int myCustomization = Customize.aweXpect.MyCustomization().Get();
+    // will now return 50
+    int maximumPlaylistLength = Customize.aweXpect.MaximumPlaylistLength().Get();
 }
-// will now return again the default value of 42, because the customization lifetime was disposed
-_ = Customize.aweXpect.MyCustomization().Get();
+// will now return again the default value of 100, because the customization lifetime was disposed
+_ = Customize.aweXpect.MaximumPlaylistLength().Get();
 ```
 
 You can also use this mechanism for complex objects like classes, but then they can only be changed as a whole and not
@@ -131,7 +131,7 @@ using (Customize.aweXpect.MusicStore().DefaultGenre.Set("Pop"))
 ```
 
 Both kinds of customizations work with [global defaults](../08-setup/02-configuration.md#global-defaults)
-without any change: `Customize.aweXpect.Global.MyCustomization().Set(43)` or
+without any change: `Customize.aweXpect.Global.MaximumPlaylistLength().Set(50)` or
 `Customize.aweXpect.Global.MusicStore().DefaultGenre.Set(…)` stores the value for all async flows, because
 `Global` is an `AwexpectCustomization` as well. Their
 [lifetimes](../08-setup/02-configuration.md#lifetimes-and-async-flows) behave like the ones of the built-in
@@ -143,17 +143,17 @@ The built-in groups `Equivalency()`, `Formatting()` and `Settings()` implement `
 you can add a value to one of them with an extension method on the group:
 
 ```csharp
-public static class MySettingsCustomizationExtensions
+public static class TrackFormattingCustomizationExtensions
 {
-    public static ICustomizationValueSetter<string[]> ExcludedTypePrefixes(
-        this AwexpectCustomization.SettingsCustomization settings)
-        => new CustomizationValue<string[]>(settings, "MyExtension.Settings.ExcludedTypePrefixes", []);
+    public static ICustomizationValueSetter<string> TrackDurationFormat(
+        this AwexpectCustomization.FormattingCustomization formatting)
+        => new CustomizationValue<string>(formatting, "MyExtension.Formatting.TrackDurationFormat", @"m\:ss");
 }
 ```
 
-Users then find the value next to the built-in ones, e.g. `Customize.aweXpect.Settings().ExcludedTypePrefixes()`. A
+Users then find the value next to the built-in ones, e.g. `Customize.aweXpect.Formatting().TrackDurationFormat()`. A
 group stores its values in the customization it was taken from, so
-`Customize.aweXpect.Global.Settings().ExcludedTypePrefixes().Set(…)` stores the value for all async flows.
+`Customize.aweXpect.Global.Formatting().TrackDurationFormat().Set(…)` stores the value for all async flows.
 
 ## Exclude the framework assemblies
 

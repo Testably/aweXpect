@@ -1,12 +1,20 @@
 # Target frameworks
 
-aweXpect supports .NET Framework 4.8, .NET Standard 2.0 and .NET 8 or later; some features need .NET 8 or later.
-A test project can also be published with [Native AOT and trimming](./04-native-aot.md).
+aweXpect supports test projects on .NET Framework 4.8, .NET Standard 2.0 and .NET 8 or later. Most expectations work
+the same on all of them, but some need .NET 8 or later, because they build on types or language features that only
+exist there.
 
-<details>
-<summary>Differences between the target frameworks</summary>
+| Target framework                | Support                                                    |
+|---------------------------------|------------------------------------------------------------|
+| .NET 8 or later                 | all expectations                                           |
+| .NET Framework 4.8              | all expectations except the ones [listed below](#net-8-or-later) |
+| .NET Standard 2.0, e.g. .NET 6  | all expectations except the ones [listed below](#net-8-or-later) |
 
-Only on .NET 8 or later:
+A test project on .NET 8 or later can also be published with [Native AOT and trimming](./04-native-aot.md).
+
+## .NET 8 or later
+
+These expectations and behaviours are only available on .NET 8 or later:
 
 - expectations for [`IAsyncEnumerable<T>`](../05-collections/index.md);
 - [`DateOnly` and `TimeOnly`](../04-values/11-date-time-only.md);
@@ -23,6 +31,13 @@ Only on .NET 8 or later:
   another numeric type with the same value;
 - failure messages show the names `Half.MinValue`, `Half.MaxValue`, `NFloat.MinValue` and `NFloat.MaxValue` instead of
   the number.
+
+## .NET Framework
+
+On .NET Framework, the expectations above are not available, and the rest works as on .NET 8.
+
+<details>
+<summary>Dictionaries with a custom comparer</summary>
 
 Before .NET 5, e.g. on .NET Framework, aweXpect cannot read the key comparer of a `ConcurrentDictionary<TKey, TValue>`,
 so its keys are compared with their own `Equals`, as for a dictionary whose comparer is unknown.
