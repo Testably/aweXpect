@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "5b99ffec400fc66271f3aa5f41c30450878aa7f9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
-        "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
-      },
-      {
         "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
         "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
+      },
+      {
+        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
+        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
       }
     ],
     "labels": [
-      "5b99ffec",
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "be28a12e",
       "a7c1c18e",
       "35cd9bf1",
-      "7a6dec57"
+      "7a6dec57",
+      "0f3856d6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          706.7569433848063,
           723.178446843074,
           750.6744119780404,
           828.2216255823771,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           739.1604601542155,
           666.1251465252468,
           681.5917372022357,
-          667.73224903987
+          667.73224903987,
+          502.4869992392404
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -453,7 +453,6 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
-          680,
           592,
           592,
           592,
@@ -467,6 +466,7 @@ window.BENCHMARK_DATA = {
           592,
           592,
           592,
+          464,
           464,
           464,
           464
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          875.9277635574341,
           893.2027821222941,
           930.7932638804118,
           1000.652376683553,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           919.4542154947917,
           878.8707562226516,
           919.635594177246,
-          839.5925099509103
+          839.5925099509103,
+          692.9500990595136
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "5b99ffec400fc66271f3aa5f41c30450878aa7f9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
-        "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
-      },
-      {
         "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
         "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
+      },
+      {
+        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
+        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
       }
     ],
     "labels": [
-      "5b99ffec",
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "be28a12e",
       "a7c1c18e",
       "35cd9bf1",
-      "7a6dec57"
+      "7a6dec57",
+      "0f3856d6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          126.37143219312033,
           131.68541417121887,
           145.15047478675842,
           152.42138187090555,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           143.14115254084268,
           95.40810291583722,
           113.804558467865,
-          121.59816252390543
+          121.59816252390543,
+          76.32721045811971
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1074,7 +1074,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
-          296,
+          168,
           168,
           168,
           168
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          194.47578207651773,
           202.8990991751353,
           216.16398320198059,
           260.91552282969155,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           199.99008261362712,
           194.2811522117028,
           206.95528313318889,
-          200.0570366382599
+          200.0570366382599,
+          165.79196189244587
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "5b99ffec400fc66271f3aa5f41c30450878aa7f9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
-        "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
-      },
-      {
         "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
         "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
+      },
+      {
+        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
+        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
       }
     ],
     "labels": [
-      "5b99ffec",
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "be28a12e",
       "a7c1c18e",
       "35cd9bf1",
-      "7a6dec57"
+      "7a6dec57",
+      "0f3856d6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1908.19892578125,
           1919.278336933681,
           1948.302420752389,
           2265.132890319824,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1962.1086298624675,
           1753.2441694895426,
           1819.4027413686117,
-          1894.5421292231633
+          1894.5421292231633,
+          1463.3685356140136
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2080,
           2080,
           2008,
           2008,
@@ -1685,6 +1684,7 @@ window.BENCHMARK_DATA = {
           1888,
           1808,
           1808,
+          1808,
           1808
         ],
         "borderColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1428.3426189422607,
           1424.2435644785562,
           1919.1028493245442,
           1796.0417376200357,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1453.9501083374023,
           1450.8811801910401,
           1527.9401044209799,
-          1483.6678530375164
+          1483.6678530375164,
+          1060.8135719299316
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1762,7 +1762,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1864,
-          1864,
           1953,
           1953,
           1864,
@@ -1808,6 +1807,7 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1864,
+          1953,
           1953,
           1953,
           1953
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "5b99ffec400fc66271f3aa5f41c30450878aa7f9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
-        "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
-      },
       {
         "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
         "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
+      },
+      {
+        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
+        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
       }
     ],
     "labels": [
-      "5b99ffec",
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "be28a12e",
       "a7c1c18e",
       "35cd9bf1",
-      "7a6dec57"
+      "7a6dec57",
+      "0f3856d6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2868.1801869319033,
           2730.670189158122,
           2819.9075679779053,
           3246.1514302571613,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2693.8259791056316,
           2678.464265696208,
           2719.236819131034,
-          2771.6956988743373
+          2771.6956988743373,
+          2034.700079697829
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2992,
           3048,
           2936,
           2936,
@@ -2293,6 +2292,7 @@ window.BENCHMARK_DATA = {
           3184,
           3104,
           3104,
+          3104,
           3104
         ],
         "borderColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3773.184170314244,
           3806.4862400935244,
           4408.032223837717,
           4610.656294686453,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3745.0930099487305,
           3654.145457903544,
           3800.112295423235,
-          3704.700168355306
+          3704.700168355306,
+          2906.4009140559606
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3980,
           3981,
           3981,
           3981,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           3981,
           3981,
           3980,
+          3981,
           3981
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "5b99ffec400fc66271f3aa5f41c30450878aa7f9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
-        "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
-      },
       {
         "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
         "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
+      },
+      {
+        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
+        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
       }
     ],
     "labels": [
-      "5b99ffec",
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "be28a12e",
       "a7c1c18e",
       "35cd9bf1",
-      "7a6dec57"
+      "7a6dec57",
+      "0f3856d6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          355.4702772299449,
           378.1494118054708,
           385.48768854141235,
           423.73469829559326,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           403.7545188585917,
           385.26661993662515,
           387.92745672861736,
-          364.816552734375
+          364.816552734375,
+          266.5842892101833
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2885,7 +2885,6 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
-          552,
           696,
           696,
           696,
@@ -2899,6 +2898,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2262.9301157633463,
           2299.4594403584797,
           2361.66218363444,
           2542.0603912353517,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2263.6409190041677,
           2228.0702811649867,
           2345.3910257975263,
-          2224.275225575765
+          2224.275225575765,
+          1691.443691117423
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "5b99ffec400fc66271f3aa5f41c30450878aa7f9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
-        "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
-      },
-      {
         "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
         "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
+      },
+      {
+        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
+        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
       }
     ],
     "labels": [
-      "5b99ffec",
       "d2a64ca4",
       "67eb3ff5",
       "46bf8489",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "be28a12e",
       "a7c1c18e",
       "35cd9bf1",
-      "7a6dec57"
+      "7a6dec57",
+      "0f3856d6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3281.3380301339284,
           3257.855588022868,
           3392.8279530843097,
           3903.961083730062,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2897.169204711914,
           2709.6661731175013,
           2873.708875020345,
-          2957.8502721150717
+          2957.8502721150717,
+          2206.4882451375324
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3104,
           3104,
           3032,
           3032,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           3312,
           3232,
           3232,
+          3232,
           3232
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          275263.8832356771,
           282827.42356770835,
           282806.5103841146,
           309410.88004557294,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           281821.78837890626,
           277930.8960367839,
           279789.09524739586,
-          282710.95253208705
+          282710.95253208705,
+          241591.6001674107
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17577,
           17577,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17577,
-          17577
+          17577,
+          17707
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
