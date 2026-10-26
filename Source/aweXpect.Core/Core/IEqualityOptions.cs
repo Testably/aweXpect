@@ -23,4 +23,17 @@ public interface IEqualityOptions<in TSubject>
 	///     cancels them, and its timeout and time system apply to them.
 	/// </remarks>
 	IEqualityEvaluator<TSubject> ForEvaluation(IEvaluationContext context, CancellationToken cancellationToken);
+
+	/// <summary>
+	///     Rejects the <paramref name="expected" /> value, which the caller received as <paramref name="parameterName" />,
+	///     when the options cannot compare with it, e.g. an invalid regex pattern.
+	/// </summary>
+	/// <remarks>
+	///     An expectation calls this for every expected value before it looks at the subject, so that an unusable value is
+	///     rejected whichever subject it is verified for, also when no value is compared with it.
+	/// </remarks>
+	/// <exception cref="System.ArgumentException">
+	///     The options cannot compare with the <paramref name="expected" /> value.
+	/// </exception>
+	void ValidateExpected(TSubject expected, string parameterName);
 }

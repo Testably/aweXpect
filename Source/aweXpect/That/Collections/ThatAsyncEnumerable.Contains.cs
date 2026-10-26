@@ -60,7 +60,7 @@ public static partial class ThatAsyncEnumerable
 				(Options: options, Expected: expected, Quantifier: quantifier, Negated: negated),
 				static (state, it, grammars) =>
 					new AsyncContainConstraint<TItem>(it, grammars,
-						new EqualItem<TItem>(state.Options, state.Expected),
+						new EqualItem<TItem>(state.Options, state.Expected, state.Negated ? "unexpected" : "expected"),
 						state.Quantifier).InvertIf(state.Negated)),
 			subject,
 			quantifier,
@@ -86,7 +86,7 @@ public static partial class ThatAsyncEnumerable
 				(Options: options, Expected: expected, Quantifier: quantifier, Negated: negated),
 				static (state, it, grammars) =>
 					new AsyncContainConstraint<TItem>(it, grammars,
-						new EqualItem<TItem>(state.Options, state.Expected),
+						new EqualItem<TItem>(state.Options, state.Expected, state.Negated ? "unexpected" : "expected"),
 						state.Quantifier).InvertIf(state.Negated)),
 			subject,
 			quantifier,

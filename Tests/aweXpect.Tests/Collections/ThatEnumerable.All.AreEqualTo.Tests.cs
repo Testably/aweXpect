@@ -194,6 +194,20 @@ public sealed partial class ThatEnumerable
 						             but it was <null>
 						             """);
 				}
+
+				[Test]
+				public async Task WhenTheMatchTypeRejectsTheExpectedValue_ShouldThrowItsExceptionWhicheverItemsTheSubjectHas()
+				{
+					IEnumerable<int> subject = ToEnumerable(Array.Empty<int>());
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo(2).Rejecting(2);
+
+					await That(Act).Throws<ArgumentException>()
+						.WithParamName("expected").And
+						.WithMessage("The 'expected' item 2 is rejected.").AsPrefix()
+						.Because("the match type rejects the expected value before any item of the subject is compared");
+				}
 			}
 
 			public sealed class StringItemTests

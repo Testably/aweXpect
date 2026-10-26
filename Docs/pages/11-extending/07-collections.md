@@ -333,6 +333,11 @@ private sealed class HasTitlesConstraint(
     {
         Actual = actual;
         _failure = null;
+        foreach (string title in expected)
+        {
+            options.Value.ValidateExpected(title, nameof(expected));
+        }
+
         if (actual is null)
         {
             Outcome = Outcome.Failure;
@@ -364,6 +369,11 @@ private sealed class HasTitlesConstraint(
 
 `await Expect.That(tracks).HasTitles("Intro", "Outro").InAnyOrder()` then fails with e.g.
 `but it contained item "Bonus" at index 1 that was not expected`.
+
+Validate every expected item with `ValidateExpected(item, nameof(expected))` of the options before you look at the
+subject, as above, so that an item the options cannot use, e.g. an invalid regex pattern after `AsRegex()`, throws
+whichever items the subject has. A [custom match type](./06-comparisons.md#custom-match-types) decides which items it
+rejects.
 
 <details>
 <summary>How the items are verified</summary>

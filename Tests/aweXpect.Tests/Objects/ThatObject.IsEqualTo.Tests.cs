@@ -209,6 +209,20 @@ public sealed partial class ThatObject
 					             but it was <null>
 					             """);
 			}
+
+			[Test]
+			public async Task WhenTheMatchTypeRejectsTheExpectedValue_ShouldThrowItsException()
+			{
+				object? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(2).Rejecting(2);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' item 2 is rejected.").AsPrefix()
+					.Because("the match type rejects the expected value before the subject is compared");
+			}
 		}
 
 		public sealed class StructTests

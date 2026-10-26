@@ -12,14 +12,16 @@ namespace aweXpect.Core.Constraints;
 /// <remarks>
 ///     Registered via <see cref="Extending.ExpectationBuilderExtensions" />. The expectation text shows the
 ///     <paramref name="expectedExpression" /> instead of the formatted <paramref name="expected" /> value, when it is
-///     not <see langword="null" />.
+///     not <see langword="null" />. The match type rejects an unusable <paramref name="expected" /> value against the
+///     <paramref name="parameterName" />.
 /// </remarks>
 internal sealed class ObjectEqualityConstraint<TSubject, TExpected>(
 	string it,
 	ExpectationGrammars grammars,
 	TExpected expected,
 	string? expectedExpression,
-	OptionsHolder<ObjectMatchType<TSubject>> options)
+	OptionsHolder<ObjectMatchType<TSubject>> options,
+	string parameterName)
 	: ConstraintResult.WithEqualToValue<TSubject>(it, grammars, expected is null),
 		IAsyncContextConstraint<TSubject>
 {
@@ -32,10 +34,29 @@ internal sealed class ObjectEqualityConstraint<TSubject, TExpected>(
 		CancellationToken cancellationToken)
 	{
 		Actual = actual;
-		_matcher = options.Value.ForEvaluation(new MatchEnvironment(context, cancellationToken));
+		ObjectMatchType<TSubject> matchType = options.Value;
+		ValidateExpected(matchType);
+		_matcher = matchType.ForEvaluation(new MatchEnvironment(context, cancellationToken));
 		_matchResult = await _matcher.CompareWithExplanation(actual, expected);
 		Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 		return this;
+	}
+
+	/// <remarks>
+	///     Only an expected value that the match type can receive is validated: <see langword="null" /> when the subject
+	///     can be <see langword="null" />, and otherwise a <typeparamref name="TSubject" />, e.g. not the anonymous object
+	///     of an equivalency.
+	/// </remarks>
+	private void ValidateExpected(ObjectMatchType<TSubject> matchType)
+	{
+		if (expected is TSubject typedExpected)
+		{
+			matchType.ValidateExpected(typedExpected, parameterName);
+		}
+		else if (expected is null && default(TSubject) is null)
+		{
+			matchType.ValidateExpected(default!, parameterName);
+		}
 	}
 
 	/// <inheritdoc />

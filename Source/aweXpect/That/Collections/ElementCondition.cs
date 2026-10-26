@@ -157,7 +157,7 @@ internal sealed class ElementOfType<TItem>(Type type, bool exactly) : Synchronou
 /// <remarks>
 ///     The <paramref name="options" /> also describe the comparison, so a <see cref="SubjectEqualityOptions{TItem,TMatch}" />
 ///     lets the comparer of a set subject decide and names it. Only when it <paramref name="addsContexts" />, the
-///     evaluator of the evaluation adds contexts.
+///     evaluator of the evaluation adds contexts. An unusable value is reported against the parameter <c>expected</c>.
 /// </remarks>
 internal sealed class ElementEqualTo<TItem, TValue>(
 	IReadOnlyOptionsHolder<IEqualityOptions<TValue>> options,
@@ -174,9 +174,13 @@ internal sealed class ElementEqualTo<TItem, TValue>(
 		=> Evaluator.AreConsideredEqual((TValue)(object?)item!, expected);
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     The expected value is validated here, so that it is rejected whichever items the subject has.
+	/// </remarks>
 	public override ElementCondition<TItem> ForEvaluation(IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
+		options.Value.ValidateExpected(expected, "expected");
 		_evaluator = options.ForEvaluation(context, cancellationToken);
 		return this;
 	}
