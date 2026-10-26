@@ -36,3 +36,14 @@ namespace System.Runtime.CompilerServices
 	// a warning.
 	internal static class IsExternalInit;
 }
+
+namespace System.Diagnostics.CodeAnalysis
+{
+	// The adapter on the page needs this attribute, which is missing in net48, and on the other targets it only causes a
+	// warning.
+	[AttributeUsage(AttributeTargets.Parameter)]
+	internal sealed class NotNullWhenAttribute(bool returnValue) : Attribute
+	{
+		public bool ReturnValue { get; } = returnValue;
+	}
+}
