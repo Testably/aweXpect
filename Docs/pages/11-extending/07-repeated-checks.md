@@ -1,4 +1,8 @@
-# Asynchronous expectations
+# Repeated checks and synchronous boundaries
+
+The basics of asynchronous constraints, the `CancellationToken` and an undecided outcome, are described in
+[constraints and results](./02-constraints-and-results.md#asynchronous-constraints). This page shows how an
+expectation waits for a condition, and how code that has to answer synchronously calls asynchronous code.
 
 <details>
 <summary>Namespaces used on this page</summary>
@@ -11,40 +15,6 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Options;
 using aweXpect.Results;
 ```
-
-</details>
-
-## Asynchronous constraints
-
-An `IAsyncConstraint<T>` receives the `CancellationToken` of the expectation, which is canceled when the timeout
-(`WithTimeout`) elapses or the caller cancels (`WithCancellation`). Pass it on to the asynchronous work:
-
-```csharp no-compile
-public async ValueTask<ConstraintResult> IsMetBy(Track? actual, CancellationToken cancellationToken)
-{
-    Actual = actual;
-    if (actual is not null)
-    {
-        Outcome = await IsInCatalogAsync(actual, cancellationToken) ? Outcome.Success : Outcome.Failure;
-    }
-
-    return this;
-}
-```
-
-An `OperationCanceledException` from that token needs no handling: a timeout fails the expectation with "did not
-finish within …", and a cancellation by the caller leaves it inconclusive.
-
-<details>
-<summary>Stopping without an exception</summary>
-
-- A constraint that stops at the cancellation without throwing leaves its `Outcome` undecided. A timeout then fails the
-  expectation in the same way. After a cancellation, the helper classes write the result text with
-  `AppendUndecidedResult`, which you can override. By default it writes "it could not be verified, because the
-  evaluation was already canceled".
-- Leave the `Outcome` undecided only for a cancellation. An expectation whose outcome stays undecided although nothing
-  was canceled, e.g. because one branch of `IsMetBy` does not set it or a collection constraint does not call
-  `Complete()`, fails with "it could not be verified, because the expectation did not decide its outcome".
 
 </details>
 

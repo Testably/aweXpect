@@ -93,7 +93,7 @@ number of items is known, and `(… and maybe more)` when it is not, e.g. for a 
 stopped enumerating early.
 
 To format your own types, register an `IValueFormatter` with `ValueFormatter.Register(…)`, which returns an
-`IDisposable` that removes it again, see [initialization](../11-extending/08-initialization.md).
+`IDisposable` that removes it again, see [initialization](../11-extending/09-initialization.md).
 
 <details>
 <summary>Multi-dimensional arrays</summary>
@@ -148,7 +148,7 @@ prefixes.
 A prefix matches at a segment boundary of the assembly name, so `System` excludes `System.Net.Http`, but not an
 assembly named `Systemics`. A prefix that ends with a `.`, e.g. `MyCompany.`, excludes all assemblies whose name starts
 with it, and an empty prefix excludes nothing. Extensions use the same matching, which
-[`AssemblyPrefixes.IsExcluded`](../11-extending/07-customization-values.md#exclude-the-framework-assemblies) offers to
+[`AssemblyPrefixes.IsExcluded`](../11-extending/08-customization-values.md#exclude-the-framework-assemblies) offers to
 your own extension.
 
 The loaded assemblies are only scanned for a test framework adapter below .NET 8, e.g. on .NET Framework. On .NET 8 or
@@ -187,4 +187,4 @@ Extensions can add their own groups. For example, the
 [`aweXpect.Json`](/aweXpect/extensions/aweXpect.Json) package adds `Customize.aweXpect.Json()` with the default
 [`JsonDocumentOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsondocumentoptions) and
 [`JsonSerializerOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions). See
-[customization values](../11-extending/07-customization-values.md) to add a group yourself.
+[customization values](../11-extending/08-customization-values.md) to add a group yourself.

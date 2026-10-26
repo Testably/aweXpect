@@ -7,25 +7,85 @@ This library will never be able to cope with all ideas and use cases. Therefore,
 This package aims to be more stable than the main aweXpect package, to reduce the risk of version conflicts between
 different extensions.
 
+| Page                                                                               | Topics                                                                           |
+|------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| [Generated expectations](./01-generated-expectations.md)                           | expectations generated from a method that checks a condition                     |
+| [Constraints and results](./02-constraints-and-results.md)                         | constraints, asynchronous constraints, result helpers, negation, `null` subjects |
+| [Message conventions](./03-message-conventions.md)                                 | how the failure messages of an extension should read                             |
+| [Options](./04-options.md)                                                         | options of your own results, time tolerances                                     |
+| [Comparisons](./05-comparisons.md)                                                 | equality expectations, custom match types, property comparisons                  |
+| [Collections and nested expectations](./06-collections-and-nested-expectations.md) | collection subjects, expectations on collection items and on members             |
+| [Repeated checks and synchronous boundaries](./07-repeated-checks.md)              | waiting for a condition, calling asynchronous code synchronously                 |
+| [Customization values](./08-customization-values.md)                               | customization values of your own, with lifetimes                                 |
+| [Initialization](./09-initialization.md)                                           | value formatters and test framework adapters                                     |
+| [Native AOT for extensions](./10-native-aot.md)                                    | the metadata your expectations need under Native AOT                             |
+
+## Setting up the package
+
+### Referencing aweXpect.Core
+
 Reference `aweXpect.Core` in your extension, not `aweXpect`, and use the lowest version that contains the API you
 need, so that the extension works together with as many versions of `aweXpect` as possible. The namespace
 `aweXpect.Core.Internal` may change in any version, so don't use it in the code that your extension ships. The
 compiler reminds you of this with the diagnostic `aweXpect5001`.
 
-Keep your extensions trimmable and AOT compatible like aweXpect itself, as described in
-[Native AOT for extensions](./09-native-aot.md).
+Reference it with `PrivateAssets="contentfiles;build"`, so that the source generators of `aweXpect.Core` also run in
+the projects that use your extension, see [Native AOT for extensions](./10-native-aot.md):
 
-| Page                                                                               | Topics                                                                   |
-|------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
-| [Generated expectations](./01-generated-expectations.md)                           | expectations generated from a method that checks a condition             |
-| [Constraints and results](./02-constraints-and-results.md)                         | constraints, result helpers, `null` subjects, negation, argument checks  |
-| [Options and match types](./03-options-and-match-types.md)                         | options of your own results, time tolerances, custom comparisons         |
-| [Collections and nested expectations](./04-collections-and-nested-expectations.md) | collection subjects, expectations on members and on collection items     |
-| [Asynchronous expectations](./05-asynchronous-expectations.md)                     | asynchronous constraints, cancellation, repeated checks                  |
-| [Message conventions](./06-message-conventions.md)                                 | how the failure messages of an extension should read                     |
-| [Customization values](./07-customization-values.md)                               | customization values of your own, with lifetimes                         |
-| [Initialization](./08-initialization.md)                                           | value formatters and test framework adapters                             |
-| [Native AOT for extensions](./09-native-aot.md)                                    | the metadata your expectations need under Native AOT                     |
+```xml
+<ItemGroup>
+  <PackageReference Include="aweXpect.Core" Version="…" PrivateAssets="contentfiles;build" />
+</ItemGroup>
+```
+
+### Target frameworks
+
+`aweXpect.Core` targets `netstandard2.0`, `net8.0` and `net10.0`, like the extension packages of aweXpect. Include
+`netstandard2.0` in the targets of your extension, so that it also works in test projects on .NET Framework.
+
+Keep your extensions trimmable and AOT compatible like aweXpect itself, as described in
+[Native AOT for extensions](./10-native-aot.md).
+
+### Namespace and class names
+
+Declare your expectations in the namespace `aweXpect`, which the users import for `Expect.That` anyway, so that they
+need no further `using` for your extension. Name the class after the subject type, e.g. `ThatTrack` for the
+expectations on a `Track`, and make it `partial`, so that each expectation can have a file of its own, like
+`ThatJsonElement.HasProperty.cs` in `aweXpect.Json`:
+
+```csharp no-compile
+namespace aweXpect;
+
+public static partial class ThatTrack
+{
+    // the expectations on a Track
+}
+```
+
+### Polyfills for older targets
+
+Some attributes that an extension uses are compiler features that are missing in `netstandard2.0` and `net48`. Declare
+them as `internal` types in your own package there:
+
+- `CallerArgumentExpressionAttribute` (C# 10) shows the code of the caller in the expectation text, see
+  [message conventions](./03-message-conventions.md#code-of-the-caller-in-the-expectation-text).
+- `ModuleInitializerAttribute` (C# 9) runs code before the first expectation, see
+  [initialization](./09-initialization.md). The source generators of `aweXpect.Core` also need it, see
+  [Native AOT for extensions](./10-native-aot.md).
+
+```csharp no-compile
+namespace System.Runtime.CompilerServices
+{
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class CallerArgumentExpressionAttribute(string parameterName) : Attribute
+    {
+        public string ParameterName { get; } = parameterName;
+    }
+
+    [AttributeUsage(AttributeTargets.Method)]
+    internal sealed class ModuleInitializerAttribute : Attribute;
+}
+```
 
 ## Your first expectation
 
@@ -33,8 +93,12 @@ Keep your extensions trimmable and AOT compatible like aweXpect itself, as descr
 <summary>Namespaces used in this section</summary>
 
 ```csharp
+using System.Text;
 using aweXpect.Core;
+using aweXpect.Core.Constraints;
+using aweXpect.Formatting;
 using aweXpect.Results;
+using static aweXpect.Formatting.Format;
 ```
 
 </details>
@@ -101,12 +165,85 @@ You can then use the `ExpectationBuilder` to add an `IsRadioFriendlyConstraint`:
 ```csharp
 using aweXpect.Core.Extending;
 
-public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track?> subject)
-    => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new IsRadioFriendlyConstraint(it, grammars)),
-        subject);
+public static partial class ThatTrack
+{
+    public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track?> subject)
+        => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+                => new IsRadioFriendlyConstraint(it, grammars)),
+            subject);
+}
 ```
 
 The factory receives the name of the subject (`it`) and the `grammars` of the sentence, which the constraint uses to
-write its part of the failure message. [Constraints and results](./02-constraints-and-results.md) shows how to write
-the `IsRadioFriendlyConstraint`, and [message conventions](./06-message-conventions.md) how its texts should read.
+write its part of the failure message.
+
+### The constraint
+
+The constraint decides whether the subject meets the expectation and writes its part of the failure message. Declare
+it as a nested class of `ThatTrack`, next to the expectation, and derive it from the helper class
+`ConstraintResult.WithNotNullValue<Track>`, which fails the expectation for a `null` track:
+
+```csharp
+private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars grammars)
+    : ConstraintResult.WithNotNullValue<Track>(it, grammars),
+        IValueConstraint<Track?>
+{
+    public ConstraintResult IsMetBy(Track? actual)
+    {
+        Actual = actual;
+        Outcome = actual?.Duration <= TimeSpan.FromMinutes(3) ? Outcome.Success : Outcome.Failure;
+        return this;
+    }
+
+    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("is radio friendly");
+
+    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+    {
+        stringBuilder.Append(It).Append(" was ");
+        Formatter.Format(stringBuilder, Actual?.Duration);
+        stringBuilder.Append(" long");
+    }
+
+    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("is not radio friendly");
+
+    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+    {
+        stringBuilder.Append(It).Append(" was ");
+        Formatter.Format(stringBuilder, Actual?.Duration);
+        stringBuilder.Append(" long");
+    }
+}
+```
+
+- `IsMetBy` receives the track, keeps it as `Actual` and decides the `Outcome`.
+- `AppendNormalExpectation` writes the expectation text and `AppendNormalResult` the result text of the failure
+  message. The negated variants write them for the negated expectation, e.g. in
+  `DoesNotComplyWith(t => t.IsRadioFriendly())`.
+
+[Constraints and results](./02-constraints-and-results.md) explains the other kinds of constraints and results, and
+[message conventions](./03-message-conventions.md) how the texts should read.
+
+### Using it in a test
+
+A test project that references your extension and aweXpect calls the expectation like a built-in one. As `ThatTrack`
+is in the namespace `aweXpect`, the test needs no further `using`:
+
+```csharp
+[Test]
+public async Task Track_ShouldBeRadioFriendly()
+{
+    Track track = new("Hey Jude", new TimeSpan(0, 7, 11));
+
+    await Expect.That(track).IsRadioFriendly();
+}
+```
+
+For "Hey Jude", the test fails with:
+
+```text title="Failure message"
+Expected that track
+is radio friendly,
+but it was 7:11 long
+```

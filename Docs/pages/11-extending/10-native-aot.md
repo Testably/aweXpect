@@ -46,7 +46,7 @@ project.
 ## Registering metadata yourself
 
 For the types that your extension declares itself, you don't depend on the source generator: register their public
-members in `TypeMetadataRegistry` from a module initializer (see [initialization](./08-initialization.md)).
+members in `TypeMetadataRegistry` from a module initializer (see [initialization](./09-initialization.md)).
 `RegisterBatch` publishes the registrations together, so that no comparison sees a type with only some of them:
 
 ```csharp

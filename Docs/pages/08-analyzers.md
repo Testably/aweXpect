@@ -188,7 +188,7 @@ quantifier.AtLeast(2);                             // fixed: the option method o
 The options are immutable values, so an option method returns new options and leaves the ones it is called on
 unchanged. A call that is the whole body of a lambda or local function written with `=>` is not reported, as it is
 usually there to check that the option throws. This mostly concerns the authors of extensions, see
-[Options](./11-extending/03-options-and-match-types.md#options).
+[Options](./11-extending/04-options.md).
 
 ## Nullability suppressor
 
@@ -241,7 +241,7 @@ The source generator in `aweXpect.Core` reports an error for a method marked wit
 The source generator in `aweXpect.Core` reports the error `aweXpect4005` when a name in the MSBuild property
 `AweXpectModuleInitializers` names no accessible `static` method without parameters, and leaves the call out of the
 module initializer. The build targets of an extension set this property, see
-[registration from the test project](./11-extending/08-initialization.md#registration-from-the-test-project).
+[registration from the test project](./11-extending/09-initialization.md#registration-from-the-test-project).
 
 ## Test framework adapter
 
@@ -249,7 +249,7 @@ The source generator warns with `aweXpect2002` when a test project on .NET 8 or 
 The generated test framework adapter registers itself with a module initializer, which needs C# 9, and on .NET 8 or
 later the loaded assemblies are not scanned for it. Without the adapter, aweXpect throws its own exceptions, so a
 skipped or inconclusive test is reported as failed. Set `<LangVersion>` to 9 or later, or register the adapter before
-the first expectation, see [initialization](./11-extending/08-initialization.md).
+the first expectation, see [initialization](./11-extending/09-initialization.md).
 
 ```csharp no-compile
 TestFrameworkRegistry.Register(new aweXpect.Frameworks.NunitAdapter());

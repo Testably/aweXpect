@@ -10,7 +10,7 @@ namespace Snippets
 	// The type that the "Extending aweXpect" page declares.
 	public record Track(string Title, TimeSpan Duration);
 
-	// The expectation that the "Constraints and results" page writes.
+	// The expectation that the "Extending aweXpect" page writes.
 	internal static class IsRadioFriendlyExtensions
 	{
 		public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track?> subject)

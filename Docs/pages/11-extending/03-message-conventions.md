@@ -29,7 +29,7 @@ but <result>
 
 Your constraint only writes its expectation text (`AppendExpectation`) and its result text (`AppendResult`); the rest
 is added around them. For the `IsRadioFriendly` expectation from
-[constraints and results](./02-constraints-and-results.md), `await Expect.That(track).IsRadioFriendly()` fails for
+[your first expectation](./index.md#the-constraint), `await Expect.That(track).IsRadioFriendly()` fails for
 "Hey Jude" with:
 
 ```text title="Failure message"
@@ -142,7 +142,7 @@ of a collection puts each member on its own line; `FormattingOptions.SingleLine`
 `FormattingOptions.Snapshot`, or `IsSnapshot = true` on any other options, writes the value for a snapshot: without
 shortening it, and the items of collections whose order depends on hash codes or threads, like a `HashSet<T>` or a
 `ConcurrentDictionary<TKey, TValue>`, sorted by their formatted text or key, so that it is the same in every run.
-Register an `IValueFormatter` to format your own types, see [value formatters](./08-initialization.md#value-formatters).
+Register an `IValueFormatter` to format your own types, see [value formatters](./09-initialization.md#value-formatters).
 
 `FormatValue` on the `FormattingOptions` decides for every nested value whether it is written
 (`ValueFormatting.Write`), left out (`ValueFormatting.Omit`) or replaced by another value that is formatted in its

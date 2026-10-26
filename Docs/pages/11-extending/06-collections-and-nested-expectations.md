@@ -85,7 +85,192 @@ For an `IAsyncEnumerable<T>`, implement `IAsyncContextConstraint<T>` and call `U
 
 </details>
 
-### Expected collections
+## Expectations on collection items
+
+An expectation on the items of a collection, i.e. an extension method on `IEnumerableItems<TItem>`, the items that
+`All()`, `AtLeast(2)` and the other quantifiers select, derives from `QuantifiedCollectionConstraint<TValue, TItem>`.
+`IEnumerableItems<TItem>` gives access to the quantifier and the subject. The built-in expectations on the items, like
+`Satisfy` or `AreEqualTo`, are such extension methods as well. For a condition on a single item,
+[`[GenerateCollectionExpectation]`](./01-generated-expectations.md#collections) generates such an expectation.
+
+```csharp
+public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> AreRadioFriendly(
+    this IEnumerableItems<Track> items)
+{
+    return new(items.Subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+            => new AreRadioFriendlyConstraint(it, grammars, items.Quantifier)),
+        items.Subject);
+}
+
+private sealed class AreRadioFriendlyConstraint(
+    string it,
+    ExpectationGrammars grammars,
+    EnumerableQuantifier quantifier)
+    : QuantifiedCollectionConstraint<IEnumerable<Track>?, Track>(it, grammars, quantifier,
+            g => g.IsPlural() ? "are radio friendly" : "is radio friendly", "were"),
+        IContextConstraint<IEnumerable<Track>?>
+{
+    public ConstraintResult IsMetBy(IEnumerable<Track>? actual, IEvaluationContext context)
+    {
+        StartEvaluation();
+        Actual = actual;
+        if (actual is not null)
+        {
+            foreach (Track track in context.UseMaterializedEnumerable(actual))
+            {
+                Record(track, track.Duration <= TimeSpan.FromMinutes(3));
+            }
+
+            Complete();
+        }
+
+        return this;
+    }
+}
+```
+
+```csharp
+Track[] tracks = [new("Love Me Do", new TimeSpan(0, 2, 22)), new("She Loves You", new TimeSpan(0, 2, 21))];
+
+await Expect.That(tracks).All().AreRadioFriendly();
+```
+
+- `StartEvaluation` forgets the items of an earlier evaluation, as the constraint is evaluated again, e.g. by
+  `Eventually()` or for each item of an outer collection.
+- `Record` classifies an item as matching or not matching, and `Complete` decides the outcome from the quantifier.
+- The expectation text is for a single item and is never negated, as the quantifier carries the negation. The
+  `Plural` grammar asks for the plural form, e.g. in "whose Tracks are radio friendly for at least 2 items".
+- The verb completes the result, e.g. "but only 1 of 3 were".
+- The other collections have their own interfaces: `INonGenericEnumerableItems<TCollection>` for a non-generic
+  `IEnumerable`, `IStructEnumerableItems<TCollection, TItem>` for an `ImmutableArray` and
+  `IAsyncEnumerableItems<TItem>` for an `IAsyncEnumerable`. Strings have no interface of their own: an expectation
+  only for strings extends `IEnumerableItems<string?>`.
+- The interfaces are covariant in `TItem`, so an expectation on the items of `Track?` also applies to the items of a
+  `List<Track>` or of a collection of a type derived from `Track`. Extend `IEnumerableItems<Track?>` to cover both
+  nullabilities.
+
+The base class renders the quantifier like the built-in `Satisfy`, also when negated or nested, and adds the matching
+or not matching items as [context](./03-message-conventions.md#contexts).
+`DoesNotComplyWith(t => t.AtLeast(2).AreRadioFriendly())` then reads "is radio friendly for fewer than 2 items, but 3
+of 3 were", followed by the "Matching items". Unlike the built-in expectations, it does not add the "Collection"
+context.
+
+<details>
+<summary>Early completion, nested item results, the base class and overloads</summary>
+
+- The quantifiers return the derived `IQuantifiedEnumerableItems<TItem>`, which only adds the type checks
+  `Are<TType>()` and `AreExactly<TType>()`, whose type argument cannot be inferred.
+- Overload resolution prefers an expectation on `IEnumerableItems<string?>` over one on `IEnumerableItems<TItem>`.
+- Call `CompleteEarly()` instead of `Complete()` as soon as `IsDetermined`, to stop reading the items once they
+  decide the outcome.
+- When the items are verified by nested expectations, record the result of each item with `Record(item, itemResult)`,
+  so that the contexts of the item that explains the failure are shown as well, labelled with its index, e.g.
+  `Actual (item [2]):`.
+- An item result with `Outcome.FailureBothWays` is neither matching nor not matching, e.g. because the nested
+  expectations threw. Like the built-in `ComplyWith`, `Record(item, itemResult)` stops at such an item and fails with
+  its result and the contexts of the item, also when negated. An item result with `Outcome.Undecided`, e.g. after a
+  canceled evaluation, leaves the outcome undecided. Neither changes an outcome that the items before already
+  determine: `IsDetermined` is then `true`, and the remaining items are not counted.
+- When the item expectation or the verb are only known while the failure message is created, e.g. because they come
+  from nested expectations, derive from `QuantifiedCollectionConstraintBase<TValue, TItem>` and implement
+  `AppendItemExpectation` and `Verb` instead.
+
+</details>
+
+### Nested expectations on items
+
+When the caller passes expectations for the items, like the built-in `ComplyWith`, evaluate them with a
+`ManualExpectationBuilder<TItem>` and record the result of each item.
+
+<details>
+<summary>Sample with nested expectations on the items</summary>
+
+```csharp
+public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> AreTracksThat(
+    this IEnumerableItems<Track> items, Action<IThatSubject<Track>> expectations)
+    => new(items.Subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+            => new AreTracksThatConstraint(it, grammars, items.Quantifier, expectations)),
+        items.Subject);
+
+private sealed class AreTracksThatConstraint
+    : QuantifiedCollectionConstraintBase<IEnumerable<Track>?, Track>,
+        IAsyncContextConstraint<IEnumerable<Track>?>,
+        IExpectationTextConstraint
+{
+    private readonly ManualExpectationBuilder<Track> _itemExpectations;
+
+    public AreTracksThatConstraint(string it, ExpectationGrammars grammars, EnumerableQuantifier quantifier,
+        Action<IThatSubject<Track>> expectations)
+        : base(it, grammars, quantifier)
+    {
+        _itemExpectations = new ManualExpectationBuilder<Track>(grammars);
+        expectations(new ThatSubject<Track>(_itemExpectations));
+    }
+
+    protected override string Verb => _itemExpectations.GetResultVerb();
+
+    public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Track>? actual, IEvaluationContext context,
+        CancellationToken cancellationToken)
+    {
+        StartEvaluation();
+        Actual = actual;
+        await _itemExpectations.PrepareExpectation(context, cancellationToken);
+        if (actual is not null)
+        {
+            foreach (Track track in context.UseMaterializedEnumerable(actual))
+            {
+                Record(track, await _itemExpectations.IsMetBy(track, context, cancellationToken));
+            }
+
+            Complete();
+        }
+
+        return this;
+    }
+
+    public async ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+        CancellationToken cancellationToken)
+    {
+        await _itemExpectations.PrepareExpectation(context, cancellationToken);
+        return this;
+    }
+
+    protected override void AppendItemExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
+        string? indentation)
+        => _itemExpectations.AppendExpectation(stringBuilder, indentation);
+
+    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+    {
+        base.AppendNormalExpectation(stringBuilder, indentation);
+        _itemExpectations.AppendReasons(stringBuilder);
+    }
+
+    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+    {
+        base.AppendNegatedExpectation(stringBuilder, indentation);
+        _itemExpectations.AppendReasons(stringBuilder);
+    }
+}
+```
+
+```csharp
+Track[] playlist = [new("Love Me Do", new TimeSpan(0, 2, 22)), new("She Loves You", new TimeSpan(0, 2, 21))];
+
+await Expect.That(playlist).All().AreTracksThat(track => track.IsRadioFriendly());
+```
+
+- `PrepareExpectation` writes the text of the nested expectations without evaluating them, so that it is complete
+  also when no item is evaluated, e.g. for an empty or a `null` collection: otherwise a nested `DoesNotComplyWith` is
+  shown without its negation, and the reasons that must be awaited are missing. Call it at the start of each
+  evaluation and in `GetExpectationResult` of `IExpectationTextConstraint`, which is called when only the expectation
+  text is needed.
+- `AppendReasons` adds the reasons of the nested expectations after the quantifier, e.g. "for all items, because …".
+- Each item is evaluated with its own values in the `IEvaluationContext`, while the materialized collections are
+  shared with the whole evaluation.
+
+</details>
+
+## Expected collections
 
 A collection that the caller passes as the expected value, e.g. the titles a playlist must contain, can also be a
 query that may only be enumerated once. Enumerate it only once per evaluation: copy it at the start of `IsMetBy`
@@ -390,193 +575,8 @@ if (EquivalencyExpectations.TryGetBuilder(expectedValue, out EquivalencyExpectat
 - The collections are released before `IsMetBy` returns, so describe the failure from the result right away: it only
   shows the items that the expectation read.
 - An `Outcome.Undecided` result means that the evaluation was canceled. Leave the outcome of your constraint
-  undecided as well, see [stopping without an exception](./05-asynchronous-expectations.md#asynchronous-constraints).
+  undecided as well, see [stopping without an exception](./02-constraints-and-results.md#asynchronous-constraints).
 - After a cancellation, `EquivalencyComparison.Compare` throws an `OperationCanceledException` instead, which needs
   no handling.
-
-</details>
-
-## Expectations on collection items
-
-An expectation on the items of a collection, i.e. an extension method on `IEnumerableItems<TItem>`, the items that
-`All()`, `AtLeast(2)` and the other quantifiers select, derives from `QuantifiedCollectionConstraint<TValue, TItem>`.
-`IEnumerableItems<TItem>` gives access to the quantifier and the subject. The built-in expectations on the items, like
-`Satisfy` or `AreEqualTo`, are such extension methods as well. For a condition on a single item,
-[`[GenerateCollectionExpectation]`](./01-generated-expectations.md#collections) generates such an expectation.
-
-```csharp
-public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> AreRadioFriendly(
-    this IEnumerableItems<Track> items)
-{
-    return new(items.Subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new AreRadioFriendlyConstraint(it, grammars, items.Quantifier)),
-        items.Subject);
-}
-
-private sealed class AreRadioFriendlyConstraint(
-    string it,
-    ExpectationGrammars grammars,
-    EnumerableQuantifier quantifier)
-    : QuantifiedCollectionConstraint<IEnumerable<Track>?, Track>(it, grammars, quantifier,
-            g => g.IsPlural() ? "are radio friendly" : "is radio friendly", "were"),
-        IContextConstraint<IEnumerable<Track>?>
-{
-    public ConstraintResult IsMetBy(IEnumerable<Track>? actual, IEvaluationContext context)
-    {
-        StartEvaluation();
-        Actual = actual;
-        if (actual is not null)
-        {
-            foreach (Track track in context.UseMaterializedEnumerable(actual))
-            {
-                Record(track, track.Duration <= TimeSpan.FromMinutes(3));
-            }
-
-            Complete();
-        }
-
-        return this;
-    }
-}
-```
-
-```csharp
-Track[] tracks = [new("Love Me Do", new TimeSpan(0, 2, 22)), new("She Loves You", new TimeSpan(0, 2, 21))];
-
-await Expect.That(tracks).All().AreRadioFriendly();
-```
-
-- `StartEvaluation` forgets the items of an earlier evaluation, as the constraint is evaluated again, e.g. by
-  `Eventually()` or for each item of an outer collection.
-- `Record` classifies an item as matching or not matching, and `Complete` decides the outcome from the quantifier.
-- The expectation text is for a single item and is never negated, as the quantifier carries the negation. The
-  `Plural` grammar asks for the plural form, e.g. in "whose Tracks are radio friendly for at least 2 items".
-- The verb completes the result, e.g. "but only 1 of 3 were".
-- The other collections have their own interfaces: `INonGenericEnumerableItems<TCollection>` for a non-generic
-  `IEnumerable`, `IStructEnumerableItems<TCollection, TItem>` for an `ImmutableArray` and
-  `IAsyncEnumerableItems<TItem>` for an `IAsyncEnumerable`. Strings have no interface of their own: an expectation
-  only for strings extends `IEnumerableItems<string?>`.
-- The interfaces are covariant in `TItem`, so an expectation on the items of `Track?` also applies to the items of a
-  `List<Track>` or of a collection of a type derived from `Track`. Extend `IEnumerableItems<Track?>` to cover both
-  nullabilities.
-
-The base class renders the quantifier like the built-in `Satisfy`, also when negated or nested, and adds the matching
-or not matching items as [context](./06-message-conventions.md#contexts).
-`DoesNotComplyWith(t => t.AtLeast(2).AreRadioFriendly())` then reads "is radio friendly for fewer than 2 items, but 3
-of 3 were", followed by the "Matching items". Unlike the built-in expectations, it does not add the "Collection"
-context.
-
-<details>
-<summary>Early completion, nested item results, the base class and overloads</summary>
-
-- The quantifiers return the derived `IQuantifiedEnumerableItems<TItem>`, which only adds the type checks
-  `Are<TType>()` and `AreExactly<TType>()`, whose type argument cannot be inferred.
-- Overload resolution prefers an expectation on `IEnumerableItems<string?>` over one on `IEnumerableItems<TItem>`.
-- Call `CompleteEarly()` instead of `Complete()` as soon as `IsDetermined`, to stop reading the items once they
-  decide the outcome.
-- When the items are verified by nested expectations, record the result of each item with `Record(item, itemResult)`,
-  so that the contexts of the item that explains the failure are shown as well, labelled with its index, e.g.
-  `Actual (item [2]):`.
-- An item result with `Outcome.FailureBothWays` is neither matching nor not matching, e.g. because the nested
-  expectations threw. Like the built-in `ComplyWith`, `Record(item, itemResult)` stops at such an item and fails with
-  its result and the contexts of the item, also when negated. An item result with `Outcome.Undecided`, e.g. after a
-  canceled evaluation, leaves the outcome undecided. Neither changes an outcome that the items before already
-  determine: `IsDetermined` is then `true`, and the remaining items are not counted.
-- When the item expectation or the verb are only known while the failure message is created, e.g. because they come
-  from nested expectations, derive from `QuantifiedCollectionConstraintBase<TValue, TItem>` and implement
-  `AppendItemExpectation` and `Verb` instead.
-
-</details>
-
-### Nested expectations on items
-
-When the caller passes expectations for the items, like the built-in `ComplyWith`, evaluate them with a
-`ManualExpectationBuilder<TItem>` and record the result of each item.
-
-<details>
-<summary>Sample with nested expectations on the items</summary>
-
-```csharp
-public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> AreTracksThat(
-    this IEnumerableItems<Track> items, Action<IThatSubject<Track>> expectations)
-    => new(items.Subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new AreTracksThatConstraint(it, grammars, items.Quantifier, expectations)),
-        items.Subject);
-
-private sealed class AreTracksThatConstraint
-    : QuantifiedCollectionConstraintBase<IEnumerable<Track>?, Track>,
-        IAsyncContextConstraint<IEnumerable<Track>?>,
-        IExpectationTextConstraint
-{
-    private readonly ManualExpectationBuilder<Track> _itemExpectations;
-
-    public AreTracksThatConstraint(string it, ExpectationGrammars grammars, EnumerableQuantifier quantifier,
-        Action<IThatSubject<Track>> expectations)
-        : base(it, grammars, quantifier)
-    {
-        _itemExpectations = new ManualExpectationBuilder<Track>(grammars);
-        expectations(new ThatSubject<Track>(_itemExpectations));
-    }
-
-    protected override string Verb => _itemExpectations.GetResultVerb();
-
-    public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Track>? actual, IEvaluationContext context,
-        CancellationToken cancellationToken)
-    {
-        StartEvaluation();
-        Actual = actual;
-        await _itemExpectations.PrepareExpectation(context, cancellationToken);
-        if (actual is not null)
-        {
-            foreach (Track track in context.UseMaterializedEnumerable(actual))
-            {
-                Record(track, await _itemExpectations.IsMetBy(track, context, cancellationToken));
-            }
-
-            Complete();
-        }
-
-        return this;
-    }
-
-    public async ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
-        CancellationToken cancellationToken)
-    {
-        await _itemExpectations.PrepareExpectation(context, cancellationToken);
-        return this;
-    }
-
-    protected override void AppendItemExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
-        string? indentation)
-        => _itemExpectations.AppendExpectation(stringBuilder, indentation);
-
-    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-    {
-        base.AppendNormalExpectation(stringBuilder, indentation);
-        _itemExpectations.AppendReasons(stringBuilder);
-    }
-
-    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-    {
-        base.AppendNegatedExpectation(stringBuilder, indentation);
-        _itemExpectations.AppendReasons(stringBuilder);
-    }
-}
-```
-
-```csharp
-Track[] playlist = [new("Love Me Do", new TimeSpan(0, 2, 22)), new("She Loves You", new TimeSpan(0, 2, 21))];
-
-await Expect.That(playlist).All().AreTracksThat(track => track.IsRadioFriendly());
-```
-
-- `PrepareExpectation` writes the text of the nested expectations without evaluating them, so that it is complete
-  also when no item is evaluated, e.g. for an empty or a `null` collection: otherwise a nested `DoesNotComplyWith` is
-  shown without its negation, and the reasons that must be awaited are missing. Call it at the start of each
-  evaluation and in `GetExpectationResult` of `IExpectationTextConstraint`, which is called when only the expectation
-  text is needed.
-- `AppendReasons` adds the reasons of the nested expectations after the quantifier, e.g. "for all items, because …".
-- Each item is evaluated with its own values in the `IEvaluationContext`, while the materialized collections are
-  shared with the whole evaluation.
 
 </details>

@@ -187,13 +187,13 @@ See [Analyzers](../08-analyzers.md).
 If you wrote your own expectations on `aweXpect.Core`, the compiler points out most of the changes. The important ones:
 
 - Replace `IAweXpectInitializer` with a `[ModuleInitializer]` and register a test framework adapter explicitly. See
-  [Initialization](../11-extending/08-initialization.md).
+  [Initialization](../11-extending/09-initialization.md).
 - Options are extension methods in the `aweXpect` namespace, and the result classes with a `TSelf` type parameter are
   gone. A result of your own derives from `AndOrResult<TType, TThat, TSelf>` and implements `IOptionsProvider<TOptions>`.
-  See [Options](../11-extending/03-options-and-match-types.md#options).
+  See [Options](../11-extending/04-options.md).
 - A constraint adds its contexts in `ConstraintResult.AppendContexts(ResultContextCollector)`, which replaces
   `ExpectationBuilder.AddContext(…)` and `UpdateContexts(…)`. See
-  [Contexts](../11-extending/06-message-conventions.md#contexts).
+  [Contexts](../11-extending/03-message-conventions.md#contexts).
 - `IAsyncConstraint<T>.IsMetBy` returns a `ValueTask<ConstraintResult>` instead of a `Task<ConstraintResult>`.
 - A result that fails the expectation and its negation alike sets the new `Outcome.FailureBothWays`. See
   [Failing both ways](../11-extending/02-constraints-and-results.md#failing-both-ways).
@@ -204,4 +204,4 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
 - A custom `IObjectMatchType` implements `AppendContexts(…)` and `AreConsideredEqualWithExplanation(…)`, which takes
   over `GetExtendedFailure`.
 - A customization group stores each value on its own. See
-  [Customization values](../11-extending/07-customization-values.md#add-a-customization-group).
+  [Customization values](../11-extending/08-customization-values.md#add-a-customization-group).

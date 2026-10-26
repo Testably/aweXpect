@@ -130,4 +130,4 @@ recording of all events did not find, asks you to root the type instead.
 
 </details>
 
-For what an extension author has to consider, see [Native AOT for extensions](../11-extending/09-native-aot.md).
+For what an extension author has to consider, see [Native AOT for extensions](../11-extending/10-native-aot.md).

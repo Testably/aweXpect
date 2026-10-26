@@ -290,13 +290,13 @@ namespace MusicStore
 <details>
 <summary>Projects without module initializers</summary>
 
-- The generator runs under the same conditions as the one for the [type metadata](./09-native-aot.md): the project
+- The generator runs under the same conditions as the one for the [type metadata](./10-native-aot.md): the project
   gets the analyzers of `aweXpect.Core`, is compiled with C# 9 or later and has the `ModuleInitializerAttribute`
   (.NET 5 or later, or an own `internal` declaration).
 - Otherwise, e.g. on .NET Framework with C# 7.3, or for a test project in F# or Visual Basic, nothing is registered
   and no initializer is called. Tell your users to call the initializer themselves, e.g. in an assembly-level setup of
   the test framework, and read the values from the loaded assemblies as a fallback, but only from those that
-  [`AssemblyPrefixes.IsExcluded`](./07-customization-values.md#exclude-the-framework-assemblies) does not exclude.
+  [`AssemblyPrefixes.IsExcluded`](./08-customization-values.md#exclude-the-framework-assemblies) does not exclude.
 - One process can load assemblies of both kinds, e.g. an F# test project that calls a helper library in C#. Decide for
   each assembly whether it registered its values: let your build targets also record the assembly name, e.g. as
   `$(AssemblyName)`, register it with the values, and skip the assemblies with a registered name in the fallback.

@@ -55,7 +55,7 @@ they are `internal` as well.
 The `name` is the name of the expectation. A `{Not}` in it, or a `NegatedName`, also generates the negated
 expectation, e.g. `"Is{Not}LongerThan"` generates `IsLongerThan` and `IsNotLongerThan`.
 
-The `expectationText` follows the [message conventions](./06-message-conventions.md). `{not}` is removed from the
+The `expectationText` follows the [message conventions](./03-message-conventions.md). `{not}` is removed from the
 expectation and becomes "not" in its negation. Any other placeholder, e.g. `{minimum}`, names a parameter, whose
 formatted value replaces it.
 
@@ -256,7 +256,7 @@ await Expect.That(tracks).AreNotLongerThan(TimeSpan.FromMinutes(5));
 ### Formatting the items
 
 The failure message lists the items with their formatter. To show something else for them, e.g. a wrapper that a
-[formatter of your own](./08-initialization.md#value-formatters) formats, name a `static` method in the same class in
+[formatter of your own](./09-initialization.md#value-formatters) formats, name a `static` method in the same class in
 `FormattedItem`. It takes the item, which can be `null` for a reference type, and its result stands for the item in
 the listed items and in the collection:
 

@@ -3,7 +3,7 @@
 aweXpect reports a failed, skipped or inconclusive test by throwing an exception that your test framework understands.
 For MSTest, NUnit, TUnit and xUnit (v2 and v3), the `aweXpect` package generates an adapter into the test project that
 throws these exceptions. Another test framework needs an adapter of its own, see
-[test framework adapter](../11-extending/08-initialization.md#test-framework-adapter).
+[test framework adapter](../11-extending/09-initialization.md#test-framework-adapter).
 
 ## Failed expectations
 

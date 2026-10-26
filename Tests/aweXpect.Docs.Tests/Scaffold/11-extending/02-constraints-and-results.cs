@@ -9,7 +9,7 @@ namespace Snippets
 	// The type that the "Extending aweXpect" page declares.
 	public record Track(string Title, TimeSpan Duration);
 
-	// The page declares the constraint privately next to each of its versions, and uses it from another sample.
+	// The page declares the constraint privately in a sample of its own, and uses it from other samples.
 	internal sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<Track>(it, grammars),
 			IValueConstraint<Track?>
