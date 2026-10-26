@@ -1,5 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
+using aweXpect.Core;
+using aweXpect.Options;
+using aweXpect.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -199,6 +203,100 @@ public sealed partial class ThatEnumerable
 						             is equal to 42 for all items,
 						             but it was <null>
 						             """);
+				}
+			}
+
+			public sealed class CustomCollectionTests
+			{
+				[Test]
+				public async Task ShouldUseCustomComparer()
+				{
+					CustomCollection? subject = new(1, 2, 3);
+
+					async Task Act()
+						=> await new CustomItems(That(subject), EnumerableQuantifier.All())
+							.AreEqualTo(5).Using(new AllEqualComparer());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
+				public async Task WhenItemsDiffer_ShouldFail()
+				{
+					CustomCollection? subject = new(1, 2, 1);
+
+					async Task Act()
+						=> await new CustomItems(That(subject), EnumerableQuantifier.All())
+							.AreEqualTo(1);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to 1 for all items,
+						             but only 1 of at least 2 were
+
+						             Not matching items:
+						             [2, (… and maybe more)]
+
+						             Collection:
+						             [1, 2, (… and maybe more)]
+						             """);
+				}
+
+				[Test]
+				public async Task WhenNegated_ShouldFailWhenAllItemsAreEqual()
+				{
+					CustomCollection? subject = new(1, 1, 1);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => new CustomItems(it, EnumerableQuantifier.All())
+							.AreEqualTo(1));
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to 1 not for all items,
+						             but all 3 were
+
+						             Collection:
+						             [1, 1, 1]
+						             """);
+				}
+
+				[Test]
+				public async Task WhenNoItemsDiffer_ShouldSucceed()
+				{
+					CustomCollection? subject = new(1, 1, 1);
+
+					async Task Act()
+						=> await new CustomItems(That(subject), EnumerableQuantifier.All())
+							.AreEqualTo(1);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				private sealed class CustomCollection(params int[] values) : IEnumerable
+				{
+					public IEnumerator GetEnumerator() => values.GetEnumerator();
+				}
+
+				private sealed class CustomItems(IThat<CustomCollection?> subject, EnumerableQuantifier quantifier)
+					: INonGenericEnumerableItems<CustomCollection>
+				{
+					public EnumerableQuantifier Quantifier => quantifier;
+					public IThat<CustomCollection?> Subject => subject;
+
+					public AndOrResult<CustomCollection, IThat<CustomCollection?>> Are<TType>()
+						=> throw new NotSupportedException();
+
+					public AndOrResult<CustomCollection, IThat<CustomCollection?>> Are(Type type)
+						=> throw new NotSupportedException();
+
+					public AndOrResult<CustomCollection, IThat<CustomCollection?>> AreExactly<TType>()
+						=> throw new NotSupportedException();
+
+					public AndOrResult<CustomCollection, IThat<CustomCollection?>> AreExactly(Type type)
+						=> throw new NotSupportedException();
 				}
 			}
 		}
