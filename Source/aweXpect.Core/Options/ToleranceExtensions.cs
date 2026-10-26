@@ -104,7 +104,7 @@ public static class ToleranceExtensions
 	///     On an expected value of zero, only an equal value is within the tolerance.
 	/// </remarks>
 	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, double> result)
-		=> result.WithRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100, "%");
+		=> result.SetRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100, "%");
 
 	/// <summary>
 	///     …interpreting the tolerance as a percentage of the expected value.
@@ -113,7 +113,7 @@ public static class ToleranceExtensions
 	///     On an expected value of zero, only an equal value is within the tolerance.
 	/// </remarks>
 	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, float> result)
-		=> result.WithRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100, "%");
+		=> result.SetRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100, "%");
 
 	/// <summary>
 	///     …interpreting the tolerance as a percentage of the expected value.
@@ -122,12 +122,12 @@ public static class ToleranceExtensions
 	///     On an expected value of zero, only an equal value is within the tolerance.
 	/// </remarks>
 	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, decimal> result)
-		=> result.WithRelativeTolerance(RelativeDecimalTolerance, "%");
+		=> result.SetRelativeTolerance(RelativeDecimalTolerance, "%");
 
 #if NET8_0_OR_GREATER
 	/// <inheritdoc cref="Percent{TResult}(IWithinToleranceResult{TResult, double})" />
 	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, Half> result)
-		=> result.WithRelativeTolerance(
+		=> result.SetRelativeTolerance(
 			static (tolerance, expected) => (Half)((float)tolerance * Math.Abs((float)expected) / 100), "%");
 #endif
 

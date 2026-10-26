@@ -44,6 +44,19 @@ internal static class ToleranceHelpers
 	}
 
 	/// <summary>
+	///     Rejects a relative tolerance without a tolerance, which a later <c>Within</c> would silently replace.
+	/// </summary>
+	public static void ThrowIfRelativeToleranceHasNoTolerance(bool hasTolerance)
+	{
+		if (!hasTolerance)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new InvalidOperationException(
+				"SetRelativeTolerance requires a tolerance specified with Within."));
+		}
+	}
+
+	/// <summary>
 	///     Returns the text of the <paramref name="tolerance" />, e.g. <c> ± 0.1</c>.
 	/// </summary>
 	public static string Format<TTolerance>(TTolerance tolerance)

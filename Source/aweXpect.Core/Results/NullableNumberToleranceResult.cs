@@ -48,12 +48,12 @@ public class NullableNumberToleranceResult<TType, TThat>(
 		: NullableNumberToleranceResult<TType, TThat>(expectationBuilder, returnValue, options),
 			IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>
 	{
-		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
-		NullableNumberToleranceResult<TType, TThat> IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>.WithRelativeTolerance(
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.SetRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
+		NullableNumberToleranceResult<TType, TThat> IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>.SetRelativeTolerance(
 			Func<TType, TType, TType> absoluteTolerance, string unit)
 		{
 			OptionsHolder<NumberTolerance<TType>> holder = ((IOptionsProvider<NumberTolerance<TType>>)this).Options;
-			holder.Value = holder.Value.WithRelativeTolerance(absoluteTolerance, unit);
+			holder.Value = holder.Value.SetRelativeTolerance(absoluteTolerance, unit);
 			return this;
 		}
 	}

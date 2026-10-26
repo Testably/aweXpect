@@ -67,14 +67,14 @@ public class ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem,
 		{
 		}
 
-		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.SetRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
 		ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>
 			IWithinToleranceResult<ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>,
-				TTolerance>.WithRelativeTolerance(
+				TTolerance>.SetRelativeTolerance(
 				Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
 		{
 			((IOptionsProvider<ObjectMatchType<TItem>>)this).Options
-				.WithRelativeTolerance<TItem, TTolerance>(absoluteTolerance, unit);
+				.SetRelativeTolerance<TItem, TTolerance>(absoluteTolerance, unit);
 			return this;
 		}
 	}

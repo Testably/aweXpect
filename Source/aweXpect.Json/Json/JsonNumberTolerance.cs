@@ -25,7 +25,7 @@ internal sealed class JsonNumberTolerance
 			new NumberTolerance<double>(static (actual, expected) => Math.Abs(actual - expected)).Within(tolerance);
 		_numberTolerance = absoluteTolerance is null
 			? numberTolerance
-			: numberTolerance.WithRelativeTolerance(absoluteTolerance, unit);
+			: numberTolerance.SetRelativeTolerance(absoluteTolerance, unit);
 		_text = " ± " + tolerance.ToString("R", CultureInfo.InvariantCulture) + unit;
 	}
 

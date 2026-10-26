@@ -60,9 +60,19 @@ public readonly struct NumberTolerance<TNumber>
 	///     Calculates the absolute tolerance from the specified tolerance and the expected value.
 	/// </param>
 	/// <param name="unit">The unit appended to the tolerance in the expectation text, e.g. <c>%</c>.</param>
-	public NumberTolerance<TNumber> WithRelativeTolerance(Func<TNumber, TNumber, TNumber> absoluteTolerance,
+	/// <remarks>
+	///     A later relative tolerance replaces the earlier one, and a later <see cref="Within(TNumber)" /> replaces
+	///     both.
+	/// </remarks>
+	/// <exception cref="InvalidOperationException">No tolerance was specified with <see cref="Within(TNumber)" />.</exception>
+	public NumberTolerance<TNumber> SetRelativeTolerance(Func<TNumber, TNumber, TNumber> absoluteTolerance,
 		string unit)
-		=> new(_calculateDifference, Tolerance, absoluteTolerance, unit);
+	{
+		absoluteTolerance.ThrowIfNull();
+		unit.ThrowIfNull();
+		ToleranceHelpers.ThrowIfRelativeToleranceHasNoTolerance(Tolerance is not null);
+		return new NumberTolerance<TNumber>(_calculateDifference, Tolerance, absoluteTolerance, unit);
+	}
 
 	/// <summary>
 	///     Returns the absolute tolerance to apply on a comparison with the <paramref name="expected" /> value.

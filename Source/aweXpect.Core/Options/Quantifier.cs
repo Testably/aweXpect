@@ -69,12 +69,6 @@ public readonly struct Quantifier
 			: Bounds.IsNever;
 
 	/// <summary>
-	///     A quantifier for exactly zero items.
-	/// </summary>
-	public static Quantifier Never()
-		=> Default.Exactly(0, QuantifierOption.Never);
-
-	/// <summary>
 	///     Verifies that it occurs at least <paramref name="minimum" /> times.
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="minimum" /> is negative.</exception>
@@ -118,6 +112,13 @@ public readonly struct Quantifier
 	/// <exception cref="InvalidOperationException">Another quantifier is already specified.</exception>
 	public Quantifier MoreThan(int minimum)
 		=> With(CountBounds.MoreThan(minimum), QuantifierOption.MoreThan);
+
+	/// <summary>
+	///     Verifies that it never occurs.
+	/// </summary>
+	/// <exception cref="InvalidOperationException">Another quantifier is already specified.</exception>
+	public Quantifier Never()
+		=> Exactly(0, QuantifierOption.Never);
 
 	/// <summary>
 	///     Verifies the amount against the conditions, or against their negation when <paramref name="isNegated" />.

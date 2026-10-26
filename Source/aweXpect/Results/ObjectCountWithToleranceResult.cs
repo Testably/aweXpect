@@ -64,13 +64,13 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 		{
 		}
 
-		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.WithRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.SetRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
 		ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
-			IWithinToleranceResult<ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>, TTolerance>.WithRelativeTolerance(
+			IWithinToleranceResult<ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>, TTolerance>.SetRelativeTolerance(
 				Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
 		{
 			((IOptionsProvider<ObjectMatchType<TItem>>)this).Options
-				.WithRelativeTolerance<TItem, TTolerance>(absoluteTolerance, unit);
+				.SetRelativeTolerance<TItem, TTolerance>(absoluteTolerance, unit);
 			return this;
 		}
 	}

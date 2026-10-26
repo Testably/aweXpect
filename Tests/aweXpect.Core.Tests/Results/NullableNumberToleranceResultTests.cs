@@ -39,7 +39,7 @@ public sealed class NullableNumberToleranceResultTests
 		IWithinToleranceResult<NullableNumberToleranceResult<int, IThat<int>>, int> result = sut.Within(1);
 
 		NullableNumberToleranceResult<int, IThat<int>> continuation =
-			result.WithRelativeTolerance((tolerance, expected) => tolerance * expected / 100, "%");
+			result.SetRelativeTolerance((tolerance, expected) => tolerance * expected / 100, "%");
 
 		await That(continuation).IsSameAs(result);
 		await That(options.Value.ToleranceFor(200)).IsEqualTo(2);

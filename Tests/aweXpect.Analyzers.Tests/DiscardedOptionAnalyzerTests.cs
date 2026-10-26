@@ -11,7 +11,7 @@ public class DiscardedOptionAnalyzerTests
 	[Arguments("CollectionMatchOptions.Default.{|#0:InAnyOrder|}();", "InAnyOrder", "CollectionMatchOptions")]
 	[Arguments("tolerance.{|#0:Within|}(0.1);", "Within", "NumberTolerance")]
 	[Arguments("StringEqualityOptions.Default.{|#0:IgnoringCase|}();", "IgnoringCase", "StringEqualityOptions")]
-	[Arguments("SignalerPredicateOptions<int>.Default.{|#0:WithPredicate|}(x => x > 0, \"x > 0\");", "WithPredicate",
+	[Arguments("SignalerPredicateOptions<int>.Default.{|#0:AddPredicate|}(x => x > 0, \"x > 0\");", "AddPredicate",
 		"SignalerPredicateOptions")]
 	[Arguments("matchType.{|#0:Within|}(1);", "Within", "ObjectToleranceMatchType")]
 	[Arguments("TriggerEventFilter.Default.{|#0:AddPredicate|}(_ => true, \"any\");", "AddPredicate",

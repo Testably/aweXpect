@@ -57,12 +57,12 @@ public static class QuantifierHolderExtensions
 		return holder;
 	}
 
-	/// <summary>
-	///     Verifies that it never occurs.
-	/// </summary>
-	/// <exception cref="System.InvalidOperationException">Another quantifier is already specified.</exception>
+	/// <inheritdoc cref="Quantifier.Never()" />
 	public static OptionsHolder<Quantifier> Never(this OptionsHolder<Quantifier> holder)
-		=> holder.Exactly(0, QuantifierOption.Never);
+	{
+		holder.Value = holder.Value.Never();
+		return holder;
+	}
 
 	/// <summary>
 	///     Verifies that it occurs exactly once.

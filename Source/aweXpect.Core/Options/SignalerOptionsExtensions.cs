@@ -39,7 +39,7 @@ public static class SignalerOptionsExtensions
 		where TSelf : ISignalerResult<TSelf, TParameter>
 	{
 		predicate.ThrowIfNull();
-		result.Options.WithPredicate(predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
+		result.Options.AddPredicate(predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
 		return (TSelf)result;
 	}
 }

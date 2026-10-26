@@ -230,7 +230,8 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   `StringEqualityOptions.Default`, instead of a parameterless constructor, and for a date from `TimeTolerance.Days`.
   A method that sets an option returns a new value, so use the value it returns: a discarded call on a struct, e.g.
   `options.AtLeast(2);`, compiles and changes nothing. A repeated option replaces the earlier one, and methods that
-  mirror a user-facing option take its name, e.g. `Within` instead of `SetTolerance`.
+  mirror a user-facing option take its name, e.g. `Within` instead of `SetTolerance`. `Quantifier.Never()` is an
+  option method instead of a static factory, e.g. `Quantifier.Default.Never()`.
 - The option methods are also extension methods on the holder in `aweXpect.Options`, which replace the value in the
   holder, e.g. `result.Options.AtLeast(2)`. Import `aweXpect.Options` where you call them: without it, the compiler
   finds only the user-facing option of the same name and reports `CS0311`.
@@ -245,7 +246,7 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
 - `IOptionsEquality<TSubject>` is renamed to `IEqualityEvaluator<TSubject>`. The new `IEqualityOptions<TSubject>`
   returns the evaluator for one evaluation with `ForEvaluation(…)`, and `ObjectMatcher<TSubject>` is such an evaluator.
 - `DayTolerance` is removed; `TimeTolerance.Days` rejects a tolerance that is not a whole number of days.
-  `IRelativeToleranceOptions<T>` is removed as well: `Percent()` calls the new `WithRelativeTolerance(…)` of
+  `IRelativeToleranceOptions<T>` is removed as well: `Percent()` calls the new `SetRelativeTolerance(…)` of
   `IWithinToleranceResult<TResult, TTolerance>`, which a result of your own implements: it makes the tolerance
   relative and returns the result to continue with.
 - The string options carry no parameter name. The members that can reject the expected value take the name of the
@@ -258,7 +259,7 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   of `Within(…)` after `Throws…()` are kept apart, so that a later limit replaces an earlier one, and still apply when
   the expectation is evaluated.
 - The predicates of a `Signaler<TParameter>` moved from `SignalerOptions<TParameter>` to
-  `SignalerPredicateOptions<TParameter>`.
+  `SignalerPredicateOptions<TParameter>`, where `WithPredicate` is `AddPredicate`, like on the `TriggerEventFilter`.
 - `ConstraintResult` creates a result that fails both ways with `FailureBothWays` instead of `Fail`.
 - `ExpectationBuilder.WithCancellation` and `WithTimeout` return the builder, and the async `ForWhich` is
   `ForAsyncWhich`. `MemberAccessor.FromFunc` and `FromFuncAsMemberAccessor` are `FromFuncWithName` and
