@@ -99,17 +99,17 @@ dependency on it; reference the package yourself), for IL/body-level accuracy:
 ```csharp
 // Replace the resolver within a scope
 using (Customize.aweXpect.Reflection().DependencyResolver
-    .Set(type => MyCecilResolver.GetBodyTypes(type)))
+    .Set(CecilDependencyResolver.GetUsedTypes))
 {
-    // only the body-level references count as dependencies
+    // the references in method bodies count as dependencies, too
 }
 
 // Or augment instead of replace: compose on the current default
 var resolver = Customize.aweXpect.Reflection().DependencyResolver;
 var builtin = resolver.Get()!;
-using (resolver.Set(type => builtin(type).Concat(MyCecilResolver.GetBodyTypes(type))))
+using (resolver.Set(type => builtin(type).Concat(CecilDependencyResolver.GetUsedTypes(type))))
 {
-    // built-in signature dependencies plus the body-level extras
+    // the built-in dependencies plus the ones the Cecil resolver finds
 }
 
 // Setting null reverts to the built-in default, e.g. to opt a single test out
@@ -126,37 +126,95 @@ so composing on it works regardless of what an outer scope has set up.
 <details>
 <summary>Example: a resolver backed by Mono.Cecil</summary>
 
-`MyCecilResolver.GetBodyTypes` reads the IL of the methods of a type with Mono.Cecil and returns the types that their
-bodies reference: the types of local variables, created or cast types, and the types of called methods and accessed
-fields. Combine it with the built-in resolver as shown above to keep the signature dependencies. It reads the assembly
-file, so it does not work for an assembly that was loaded from memory or bundled into a single-file app.
+`CecilDependencyResolver.GetUsedTypes` reads a type with Mono.Cecil: its signature surface and the IL of its method
+bodies, i.e. the types of local variables, created or cast types, and the types of called methods and accessed fields.
+It reads the assembly file, so it skips an assembly that was loaded from memory or bundled into a single-file app.
+Code in lambdas, async methods and iterators is compiled into nested types, which are resolved as types of their own.
 
 ```csharp
-using System.Collections.Concurrent;
-using System.Reflection;
+using System.Collections.Generic;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
-public static class MyCecilResolver
+/// <summary>
+///     Example of a custom resolver for <c>Customize.aweXpect.Reflection().DependencyResolver</c>, backed by
+///     Mono.Cecil: in addition to the declared signature surface it reads method bodies from the IL, so
+///     references that only occur inside a body (object creations, static calls, locals) are detected as
+///     dependencies, too, which the built-in signature-level resolver cannot see.
+/// </summary>
+/// <remarks>
+///     The output does not need to be unwrapped, de-duplicated or cached here: the library normalizes and
+///     memoizes every resolver's output per type.
+/// </remarks>
+public static class CecilDependencyResolver
 {
-    private static readonly ConcurrentDictionary<Assembly, ModuleDefinition> Modules = new();
-
-    public static IEnumerable<Type> GetBodyTypes(Type type)
-        => GetBodyReferences(type).Select(ToType).OfType<Type>();
-
-    private static IEnumerable<TypeReference> GetBodyReferences(Type type)
+    public static IEnumerable<Type> GetUsedTypes(Type type)
     {
-        ModuleDefinition module = Modules.GetOrAdd(type.Assembly, a => ModuleDefinition.ReadModule(a.Location));
-        TypeDefinition? definition = module.GetType(type.FullName!.Replace('+', '/'));
+        if (type.FullName is null || string.IsNullOrEmpty(type.Assembly.Location))
+        {
+            yield break;
+        }
+
+        using AssemblyDefinition assembly = AssemblyDefinition.ReadAssembly(type.Assembly.Location);
+        TypeDefinition? definition = assembly.MainModule.GetType(type.FullName.Replace('+', '/'));
         if (definition is null)
         {
             yield break;
         }
 
-        foreach (MethodDefinition method in WithGeneratedTypes(definition)
-                     .SelectMany(t => t.Methods)
-                     .Where(m => m.HasBody))
+        foreach (TypeReference reference in EnumerateTypeReferences(definition))
         {
+            foreach (TypeReference flattened in Flatten(reference))
+            {
+                if (ResolveRuntimeType(flattened) is { } resolved)
+                {
+                    yield return resolved;
+                }
+            }
+        }
+    }
+
+    private static IEnumerable<TypeReference> EnumerateTypeReferences(TypeDefinition definition)
+    {
+        if (definition.BaseType is not null)
+        {
+            yield return definition.BaseType;
+        }
+
+        foreach (InterfaceImplementation @interface in definition.Interfaces)
+        {
+            yield return @interface.InterfaceType;
+        }
+
+        foreach (FieldDefinition field in definition.Fields)
+        {
+            yield return field.FieldType;
+        }
+
+        foreach (PropertyDefinition property in definition.Properties)
+        {
+            yield return property.PropertyType;
+        }
+
+        foreach (EventDefinition @event in definition.Events)
+        {
+            yield return @event.EventType;
+        }
+
+        foreach (MethodDefinition method in definition.Methods)
+        {
+            yield return method.ReturnType;
+
+            foreach (ParameterDefinition parameter in method.Parameters)
+            {
+                yield return parameter.ParameterType;
+            }
+
+            if (!method.HasBody)
+            {
+                continue;
+            }
+
             foreach (VariableDefinition variable in method.Body.Variables)
             {
                 yield return variable.VariableType;
@@ -164,41 +222,63 @@ public static class MyCecilResolver
 
             foreach (Instruction instruction in method.Body.Instructions)
             {
-                switch (instruction.Operand)
+                TypeReference? operandType = instruction.Operand switch
                 {
-                    case TypeReference typeReference:
-                        yield return typeReference;
-                        break;
-                    case MemberReference memberReference: // a called method or an accessed field
-                        yield return memberReference.DeclaringType;
-                        break;
+                    TypeReference typeReference => typeReference,
+                    MemberReference memberReference => memberReference.DeclaringType,
+                    _ => null,
+                };
+                if (operandType is not null)
+                {
+                    yield return operandType;
                 }
             }
         }
     }
 
-    // Lambdas, async methods and iterators are compiled into nested types, whose bodies belong to the type.
-    private static IEnumerable<TypeDefinition> WithGeneratedTypes(TypeDefinition type)
-        => type.NestedTypes
-            .Where(IsCompilerGenerated)
-            .SelectMany(WithGeneratedTypes)
-            .Prepend(type);
-
-    private static bool IsCompilerGenerated(TypeReference type)
-        => type.Name.StartsWith("<");
-
-    private static Type? ToType(TypeReference reference)
+    /// <summary>
+    ///     Strips array/by-ref/pointer wrappers and flattens generic instances into their definition and
+    ///     arguments, so that every part can be resolved by full name.
+    /// </summary>
+    private static IEnumerable<TypeReference> Flatten(TypeReference reference)
     {
-        reference = reference.GetElementType(); // strips arrays, by-refs, pointers and generic arguments
-        string? assemblyName = reference.Scope switch
+        while (reference is TypeSpecification specification and not GenericInstanceType)
         {
-            AssemblyNameReference name => name.FullName,
+            reference = specification.ElementType;
+        }
+
+        if (reference is Mono.Cecil.GenericParameter)
+        {
+            yield break;
+        }
+
+        if (reference is GenericInstanceType generic)
+        {
+            yield return generic.ElementType;
+            foreach (TypeReference argument in generic.GenericArguments)
+            {
+                foreach (TypeReference flattened in Flatten(argument))
+                {
+                    yield return flattened;
+                }
+            }
+        }
+        else
+        {
+            yield return reference;
+        }
+    }
+
+    private static Type? ResolveRuntimeType(TypeReference reference)
+    {
+        string assemblyName = reference.Scope switch
+        {
+            AssemblyNameReference assemblyReference => assemblyReference.FullName,
             ModuleDefinition module => module.Assembly.FullName,
-            _ => null,
+            _ => reference.Module.Assembly.FullName,
         };
-        return reference is GenericParameter || IsCompilerGenerated(reference) || assemblyName is null
-            ? null
-            : Type.GetType($"{reference.FullName.Replace('/', '+')}, {assemblyName}", throwOnError: false);
+
+        return Type.GetType($"{reference.FullName.Replace('/', '+')}, {assemblyName}", false);
     }
 }
 ```
