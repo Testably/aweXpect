@@ -489,13 +489,15 @@ public sealed class FrameworkGeneratorTests
 	}
 
 	[Test]
-	[Arguments("true", true)]
-	[Arguments("True", true)]
-	[Arguments("false", false)]
-	[Arguments("", false)]
-	public async Task WhenMsTestIsExperimental_ShouldOnlyUseItWhenAllowed(string allowsExperimental, bool isUsed)
+	[Arguments("true", "MSTESTEXP", true)]
+	[Arguments("True", "MSTESTEXP", true)]
+	[Arguments("false", "MSTESTEXP", false)]
+	[Arguments("", "MSTESTEXP", false)]
+	[Arguments("true", "MSTESTEXP2", false)]
+	public async Task WhenMsTestIsExperimental_ShouldOnlyUseItWhenAllowed(string allowsExperimental,
+		string diagnosticId, bool isUsed)
 	{
-		MetadataReference msTest = GeneratorRunner.CompileToReference("MSTest.TestFramework", """
+		MetadataReference msTest = GeneratorRunner.CompileToReference("MSTest.TestFramework", $$"""
 			namespace Microsoft.VisualStudio.TestTools.UnitTesting
 			{
 				public class AssertFailedException : System.Exception
@@ -506,7 +508,7 @@ public sealed class FrameworkGeneratorTests
 				public class AssertInconclusiveException(string message) : System.Exception(message);
 				public class TestContext
 				{
-					[System.Diagnostics.CodeAnalysis.Experimental("MSTESTEXP")]
+					[System.Diagnostics.CodeAnalysis.Experimental("{{diagnosticId}}")]
 					public static TestContext? Current => null;
 					public string? FullyQualifiedTestClassName => null;
 					public string? TestName => null;
@@ -530,7 +532,58 @@ public sealed class FrameworkGeneratorTests
 		await That(result.Generated.Contains("cancellationToken = context.CancellationToken;")).IsEqualTo(isUsed);
 		await That(result.Generated.Contains("context.AddResultFile(filePath);")).IsEqualTo(isUsed);
 		await That(result.Generated.Contains("#pragma warning disable MSTESTEXP")).IsEqualTo(isUsed)
-			.Because("the experimental API of MSTest is only used when the consumer opts in");
+			.Because("the experimental API of MSTest is only used when the consumer opts in, and only with the diagnostic that the generated code suppresses");
+	}
+
+	[Test]
+	[Arguments("public class TestAdapter : IHasParent { NUnit.Framework.Interfaces.ITest? IHasParent.Parent => null; public string? ClassName => null; public string? MethodName => null; public object?[] Arguments => []; public string ID => \"\"; public string Name => \"\"; }",
+		"ITest? Parent { get; }",
+		"the adapter of the test implements Parent explicitly, so it cannot be accessed through it")]
+	[Arguments("public class TestAdapter { public NUnit.Framework.Interfaces.ITest? Parent => null; public string? ClassName => null; public string? MethodName => null; public object?[] Arguments => []; public string ID => \"\"; public string Name => \"\"; }",
+		"object? Parent { get; }",
+		"the generated code assigns the Parent of a suite to an ITest")]
+	public async Task WhenNunitFixtureIsNotUsable_ShouldNotPassTheClassArguments(string adapter, string suiteParent,
+		string because)
+	{
+		MetadataReference nunit = GeneratorRunner.CompileToReference("nunit.framework", $$"""
+			namespace NUnit.Framework
+			{
+				public class AssertionException : System.Exception
+				{
+					public AssertionException(string message) : base(message) { }
+					public AssertionException(string message, System.Exception inner) : base(message, inner) { }
+				}
+				public class IgnoreException(string message) : System.Exception(message);
+				public class InconclusiveException(string message) : System.Exception(message);
+				public interface IHasParent
+				{
+					NUnit.Framework.Interfaces.ITest? Parent { get; }
+				}
+				public class TestContext
+				{
+					public static TestContext CurrentContext { get; } = new();
+					public TestAdapter Test { get; } = new();
+					public int CurrentRepeatCount => 0;
+					{{adapter}}
+				}
+			}
+			namespace NUnit.Framework.Interfaces
+			{
+				public interface ITest
+				{
+					{{suiteParent}}
+					object? Method { get; }
+					object?[] Arguments { get; }
+				}
+			}
+			""");
+
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new FrameworkGenerator(),
+			["public class Foo { }",], true, LanguageVersion.Latest, nunit, Xunit2Assert);
+
+		await That(result.Errors).IsEmpty().Because(because);
+		await That(result.Generated).Contains("new global::aweXpect.Core.Adapters.TestIdentity(").And
+			.DoesNotContain("fixture");
 	}
 
 	[Test]

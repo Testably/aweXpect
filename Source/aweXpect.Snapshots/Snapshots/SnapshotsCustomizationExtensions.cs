@@ -92,15 +92,18 @@ public static class SnapshotsCustomizationExtensions
 		///     Defaults to <see langword="false" />, as it changes the snapshot of each parameterized test whose cases
 		///     shared one so far.<br />
 		///     It only applies when the test framework exposes the running test, see
-		///     <see cref="aweXpect.Core.Adapters.TestFrameworkRegistry.TryGetCurrentTest" />, which MSTest and xunit v2 do
-		///     not, and to a test with arguments, so the snapshot of a test without parameters keeps its name. A name set by
-		///     <c>.Named(…)</c> is appended to it, e.g. <c>Abbey Road_1969_cover</c>, and <c>.NamedAfter(…)</c> replaces it.<br />
+		///     <see cref="aweXpect.Core.Adapters.TestFrameworkRegistry.TryGetCurrentTest" />, which MSTest 3 and xunit v2 do
+		///     not, and MSTest 4 only with the MSBuild property <c>AweXpectExperimentalMSTest</c>, and to a test with
+		///     arguments, so the snapshot of a test without parameters keeps its name. A name set by <c>.Named(…)</c> is
+		///     appended to it, e.g. <c>Abbey Road_1969_cover</c>, and <c>.NamedAfter(…)</c> replaces it.<br />
 		///     The arguments are written like those of <c>.NamedAfter(…)</c>: in the invariant culture and separated by
 		///     <c>_</c>, <see langword="null" /> as <c>null</c>, an empty string as <c>""</c>, a <see cref="double" /> or
 		///     <see cref="float" /> with the fewest digits that round-trip, and a collection, tuple, record or other object
 		///     like in a snapshot, e.g. <c>[1, 2, 3]</c>; a <see cref="System.Threading.CancellationToken" /> is skipped. The
-		///     arguments of a parameterized test class come first, but only values, so that an injected fixture is skipped. Like every name, a name longer than 64 characters in the file name, where each escaped character
-		///     takes three, is shortened and ends with <c>~</c> and a hash of the whole name, so that it stays unique.<br />
+		///     arguments of a parameterized test class come first, but only values, so that an injected fixture is skipped,
+		///     while every argument of the test method is written. Like every name, a name longer than 64 characters in the
+		///     file name, where each escaped character takes three, is shortened and ends with <c>~</c> and a hash of the
+		///     whole name, so that it stays unique.<br />
 		///     An argument that is written differently in each run, e.g. a new <see cref="System.Guid" />, gives the snapshot
 		///     another name in each run, so name such a test with <c>.Named(…)</c> or <c>.NamedAfter(…)</c> instead.
 		/// </remarks>

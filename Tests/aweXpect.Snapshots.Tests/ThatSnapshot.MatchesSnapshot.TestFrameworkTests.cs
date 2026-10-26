@@ -26,7 +26,18 @@ public sealed partial class ThatSnapshot
 					=> await That("foo").MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("*Pending snapshot:*").AsWildcard();
+					.WithMessage($"""
+					              Expected that "foo"
+					              matches the snapshot "{directory.SnapshotPath}",
+					              but it was "foo", which differs at index 0:
+					                 ↓ (actual)
+					                "foo"
+					                "outdated"
+					                 ↑ (expected)
+
+					              Pending snapshot:
+					              {directory.PendingPath}
+					              """);
 				await That(TestContext.Current!.Output.Artifacts.Select(x => x.File.FullName))
 					.Contains(directory.PendingPath)
 					.Because("the recorded mismatch can be reviewed in the results of the test, e.g. on a build server");
@@ -42,7 +53,18 @@ public sealed partial class ThatSnapshot
 					=> await That("foo").MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("*Pending snapshot:*").AsWildcard();
+					.WithMessage($"""
+					              Expected that "foo"
+					              matches the snapshot "{directory.SnapshotPath}",
+					              but it was "foo", which differs at index 0:
+					                 ↓ (actual)
+					                "foo"
+					                "outdated"
+					                 ↑ (expected)
+
+					              Pending snapshot:
+					              {directory.PendingPath}
+					              """);
 				await That(TestContext.Current!.Output.Artifacts.Select(x => x.File.FullName))
 					.DoesNotContain(directory.PendingPath)
 					.Because("attaching the pending file is opt-in");

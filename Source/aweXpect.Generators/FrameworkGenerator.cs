@@ -371,6 +371,10 @@ public class FrameworkGenerator : IIncrementalGenerator
 	///     The members with the <paramref name="name" />, including the inherited ones, as the generated code accesses
 	///     them through the <paramref name="type" />.
 	/// </summary>
+	/// <remarks>
+	///     A class is only searched with its base classes, as a member of an interface that it implements explicitly
+	///     cannot be accessed through it, and one that it implements implicitly is a member of the class itself.
+	/// </remarks>
 	private static IEnumerable<ISymbol> GetMembers(ITypeSymbol? type, string name)
 	{
 		if (type is null)
@@ -386,6 +390,11 @@ public class FrameworkGenerator : IIncrementalGenerator
 			}
 		}
 
+		if (type.TypeKind != TypeKind.Interface)
+		{
+			yield break;
+		}
+
 		foreach (INamedTypeSymbol @interface in type.AllInterfaces)
 		{
 			foreach (ISymbol member in @interface.GetMembers(name))
@@ -397,7 +406,8 @@ public class FrameworkGenerator : IIncrementalGenerator
 
 	/// <remarks>
 	///     A member is only usable when its containing types are, and the compiler also reports a type of an assembly
-	///     that is marked as experimental.
+	///     that is marked as experimental. With <paramref name="allowsExperimental" />, only the diagnostic
+	///     <c>MSTESTEXP</c> of MSTest is allowed, as the generated code suppresses only this one.
 	/// </remarks>
 	private static bool IsUsable(ISymbol symbol, bool allowsExperimental = false)
 		=> symbol.DeclaredAccessibility == Accessibility.Public &&
@@ -410,7 +420,9 @@ public class FrameworkGenerator : IIncrementalGenerator
 	private static bool IsExperimentalOrObsolete(ISymbol symbol, bool allowsExperimental)
 		=> symbol.GetAttributes().Any(a => a.AttributeClass?.ToDisplayString() switch
 		{
-			"System.Diagnostics.CodeAnalysis.ExperimentalAttribute" => !allowsExperimental,
+			"System.Diagnostics.CodeAnalysis.ExperimentalAttribute" => !allowsExperimental ||
+			                                                          a.ConstructorArguments.FirstOrDefault().Value as string !=
+			                                                          "MSTESTEXP",
 			"System.ObsoleteAttribute" => true,
 			_ => false,
 		});
@@ -545,7 +557,7 @@ public class FrameworkGenerator : IIncrementalGenerator
 				  		}
 				  """
 				: null);
-		return allowsExperimental && members.Length > 0
+		return allowsExperimental && (support.CurrentTest || support.CancellationToken || support.Attachment)
 			? "\n#pragma warning disable MSTESTEXP" + members + "\n#pragma warning restore MSTESTEXP"
 			: members;
 	}

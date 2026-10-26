@@ -22,6 +22,7 @@ internal sealed record SnapshotSettings(
 	{
 		SnapshotsCustomizationExtensions.SnapshotsCustomization customization = Customize.aweXpect.Snapshots();
 		return new SnapshotSettings(customization.Store.Get(), customization.Acceptance.Get(),
-			customization.AttachPendingFiles.Get(), customization.Rules.Get(), customization.Reporters.Get(), customization.Comparers.Get());
+			customization.AttachPendingFiles.Get(), customization.Rules.Get(), customization.Reporters.Get(),
+			customization.Comparers.Get());
 	}
 }

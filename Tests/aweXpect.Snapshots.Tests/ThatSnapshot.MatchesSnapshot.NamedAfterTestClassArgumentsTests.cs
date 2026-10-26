@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using aweXpect.Customization;
 using aweXpect.Snapshots.Tests.TestHelpers;
 
@@ -33,6 +34,30 @@ public sealed partial class ThatSnapshot
 				await ShouldBeNamed(Id, title,
 					$"an injected object like the {studio.Name} studio is no value, and its members can change from run to run");
 			}
+		}
+
+		[ClassDataSource(typeof(Playlist), Shared = [SharedType.PerClass,])]
+		public sealed class NamedAfterInjectedCollectionTestClassArgumentsTests(Playlist playlist)
+		{
+			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
+
+			[Test]
+			[Arguments("Abbey Road")]
+			public async Task ShouldNotEnumerateTheInjectedCollection(string title)
+			{
+				await ShouldBeNamed(Id, title,
+					$"an injected collection like the {playlist.Name} playlist is no value, and could throw when it is enumerated");
+			}
+		}
+
+		public sealed class Playlist : IEnumerable<string>
+		{
+			public string Name => "Beatles";
+
+			public IEnumerator<string> GetEnumerator()
+				=> throw new InvalidOperationException("The playlist is not loaded yet.");
+
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 		}
 
 		public sealed class Studio

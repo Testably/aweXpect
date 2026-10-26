@@ -114,7 +114,9 @@ without parameters keeps its snapshot.
 The arguments of a parameterized test class come first, e.g. `de-DE_Abbey Road` for NUnit `[TestFixture("de-DE")]` or
 TUnit `[Arguments("de-DE")]` on the class, so that its instances are kept apart as well. Only values are included, e.g.
 strings, numbers, dates or collections of them, so that an object that the test framework injects, e.g. a shared
-fixture, is skipped. xUnit v3 and MSTest have no arguments of the test class, and NUnit 3 does not expose them.
+fixture, is skipped. xUnit v3 and MSTest have no arguments of the test class, and NUnit 3 does not expose them. The
+arguments of the test method are all written, so name a test with `.Named(…)` or `.NamedAfter(…)` when the test
+framework injects an object into one of its parameters, e.g. with TUnit `[ClassDataSource]`.
 
 `.Named(…)` is appended to the arguments, e.g. `.Named("cover")` gives `Abbey Road_1969_cover`, so that each case can
 hold several snapshots, while `.NamedAfter(…)` replaces them. Two cases whose arguments are written alike, e.g. two

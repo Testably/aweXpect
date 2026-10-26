@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -67,11 +66,15 @@ internal static class SnapshotTestArguments
 	}
 
 	/// <summary>
-	///     Whether the <paramref name="argument" /> is a value, or a collection of values, rather than an injected object.
+	///     Whether the <paramref name="argument" /> is a value, or an array of values, rather than an injected object.
 	/// </summary>
+	/// <remarks>
+	///     Only an array is enumerated, as attributes pass collections as arrays, while an injected object that is a
+	///     collection could throw or change when it is enumerated.
+	/// </remarks>
 	private static bool IsValue(object? argument)
 		=> IsScalar(argument) ||
-		   (argument is IEnumerable items && items.Cast<object?>().All(IsScalar));
+		   (argument is Array items && items.Cast<object?>().All(IsScalar));
 
 	private static bool IsScalar(object? value)
 		=> value is null or string or bool or char or IFormattable;

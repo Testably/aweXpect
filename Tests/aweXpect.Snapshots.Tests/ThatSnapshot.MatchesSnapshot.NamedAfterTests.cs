@@ -87,6 +87,7 @@ public sealed partial class ThatSnapshot
 			[Arguments(double.NegativeInfinity, "-Infinity")]
 			[Arguments(5.9604644775390625E-08, "5.960464477539063E-08")]
 			[Arguments(2.98023223876953125E-08, "2.9802322387695312E-08")]
+			[Arguments(4.1045368012983762E-289, "4.1045368012983762E-289")]
 			public async Task WhenArgumentIsDouble_ShouldWriteTheShortestTextThatRoundTrips(double value,
 				string expected)
 			{

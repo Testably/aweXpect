@@ -112,6 +112,7 @@ A module initializer only runs when its assembly is first used, and the tests ne
 an adapter, so a registration in a separate package would never run:
 
 ```csharp
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using aweXpect.Core.Adapters;
@@ -131,7 +132,7 @@ namespace MyTests
 
         public void Inconclusive(string message) => throw new MyTestInconclusiveException(message);
 
-        public bool TryGetCurrentTest(out RunningTest? currentTest)
+        public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
         {
             MyTestContext? context = MyTestContext.Current;
             currentTest = context is null
