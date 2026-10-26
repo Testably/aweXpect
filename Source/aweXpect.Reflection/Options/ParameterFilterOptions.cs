@@ -10,7 +10,7 @@ namespace aweXpect.Reflection.Options;
 /// <summary>
 ///     Options for adding additional predicates to filter the parameter list.
 /// </summary>
-internal class ParameterFilterOptions
+internal sealed class ParameterFilterOptions
 {
 	private readonly List<Func<string>> _descriptions;
 	private readonly List<Func<string>> _modifierDescriptions = [];

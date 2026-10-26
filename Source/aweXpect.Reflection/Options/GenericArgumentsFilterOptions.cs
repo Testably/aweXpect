@@ -11,7 +11,7 @@ namespace aweXpect.Reflection.Options;
 /// <summary>
 ///     Options for adding additional <see cref="GenericArgumentFilterOptions" /> to filter the generic arguments.
 /// </summary>
-internal class GenericArgumentsFilterOptions
+internal sealed class GenericArgumentsFilterOptions
 {
 	private readonly List<Func<string>> _descriptions = [];
 	private readonly Dictionary<GenericArgumentFilterOptions, OptionsHolder<CollectionIndexOptions>> _filters = [];

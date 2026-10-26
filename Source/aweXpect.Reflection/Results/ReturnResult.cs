@@ -34,7 +34,7 @@ public sealed class ReturnResult<TType>
 	/// </summary>
 	public ReturnResult<TType> OrReturn(Type returnType)
 	{
-		_typeFilterOptions.RegisterType(returnType, false);
+		_typeFilterOptions.AddType(returnType, false);
 		return this;
 	}
 
@@ -49,7 +49,7 @@ public sealed class ReturnResult<TType>
 	/// </summary>
 	public ReturnResult<TType> OrReturnExactly(Type returnType)
 	{
-		_typeFilterOptions.RegisterType(returnType, true);
+		_typeFilterOptions.AddType(returnType, true);
 		return this;
 	}
 }

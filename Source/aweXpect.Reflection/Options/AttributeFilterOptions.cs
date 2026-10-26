@@ -7,13 +7,13 @@ using aweXpect.Reflection.Helpers;
 namespace aweXpect.Reflection.Options;
 
 /// <summary>
-///     Options for adding additional predicates to filter the parameter list.
+///     Options for filtering for a list of alternative attributes.
 /// </summary>
 /// <remarks>
 ///     Inherited attributes are considered, unless the result restricts the check to the attributes declared directly
 ///     on the member.
 /// </remarks>
-internal class AttributeFilterOptions<TMember>
+internal sealed class AttributeFilterOptions<TMember>
 {
 	private readonly List<Action<StringBuilder>> _descriptions = [];
 	private readonly Func<TMember, Type, Func<Attribute, bool>, bool, bool> _memberHasAttribute;
@@ -47,9 +47,10 @@ internal class AttributeFilterOptions<TMember>
 	}
 
 	/// <summary>
-	///     Returns the combination of all descriptions joined by <c>" and "</c>.
+	///     Appends the expectation for the registered attributes, joined by <c>" or "</c>, to the
+	///     <paramref name="stringBuilder" />.
 	/// </summary>
-	public void AppendDescription(StringBuilder stringBuilder, ExpectationGrammars grammar)
+	public void AppendExpectation(StringBuilder stringBuilder, ExpectationGrammars grammar)
 	{
 		string prefix = grammar.HasFlag(ExpectationGrammars.Plural) ? "have " : "has ";
 		if (grammar.HasFlag(ExpectationGrammars.Negated))
@@ -76,9 +77,9 @@ internal class AttributeFilterOptions<TMember>
 	}
 
 	/// <summary>
-	///     Registers an <typeparamref name="TAttribute" />
+	///     Adds the alternative <typeparamref name="TAttribute" />.
 	/// </summary>
-	public void RegisterAttribute<TAttribute>()
+	public void AddAttribute<TAttribute>()
 		where TAttribute : Attribute
 	{
 		_descriptions.Add(sb => Formatter.Format(sb, typeof(TAttribute)));
@@ -86,7 +87,7 @@ internal class AttributeFilterOptions<TMember>
 	}
 
 	/// <summary>
-	///     Registers an <typeparamref name="TAttribute" />
+	///     Adds the alternative <typeparamref name="TAttribute" />.
 	/// </summary>
 	/// <param name="predicate">
 	///     (optional) A predicate to check the attribute values.
@@ -94,7 +95,7 @@ internal class AttributeFilterOptions<TMember>
 	///     If not set (<see langword="null" />), will only check if the attribute is present.
 	/// </param>
 	/// <param name="predicateExpression">The expression of the predicate to use in the description message.</param>
-	public void RegisterAttribute<TAttribute>(
+	public void AddAttribute<TAttribute>(
 		Func<TAttribute, bool> predicate,
 		string predicateExpression)
 		where TAttribute : Attribute

@@ -27,7 +27,7 @@ public static partial class ThatField
 		this IThat<FieldInfo?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(fieldType, true);
+		typeFilterOptions.AddType(fieldType, true);
 		return new OfTypeResult<FieldInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -52,7 +52,7 @@ public static partial class ThatField
 		this IThat<FieldInfo?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(fieldType, true);
+		typeFilterOptions.AddType(fieldType, true);
 		return new AndOrResult<FieldInfo, IThat<FieldInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)

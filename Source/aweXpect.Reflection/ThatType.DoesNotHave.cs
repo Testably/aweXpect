@@ -23,7 +23,7 @@ public static partial class ThatType
 	{
 		AttributeFilterOptions<Type?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		attributeFilterOptions.AddAttribute<TAttribute>();
 		return new InheritanceScopeResult<Type, Type?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),

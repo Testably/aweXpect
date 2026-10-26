@@ -30,7 +30,7 @@ public sealed class HaveAttributeResult<TType, TMember>
 	public HaveAttributeResult<TType, TMember> OrHave<TAttribute>()
 		where TAttribute : Attribute
 	{
-		_attributeFilterOptions.RegisterAttribute<TAttribute>();
+		_attributeFilterOptions.AddAttribute<TAttribute>();
 		return this;
 	}
 
@@ -44,7 +44,7 @@ public sealed class HaveAttributeResult<TType, TMember>
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		_attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
+		_attributeFilterOptions.AddAttribute(predicate, doNotPopulateThisValue.TrimExpression());
 		return this;
 	}
 

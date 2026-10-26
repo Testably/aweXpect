@@ -31,7 +31,7 @@ public sealed class HaveAttributeWithoutInheritResult<TType, TMember>
 	public HaveAttributeWithoutInheritResult<TType, TMember> OrHave<TAttribute>()
 		where TAttribute : Attribute
 	{
-		_attributeFilterOptions.RegisterAttribute<TAttribute>();
+		_attributeFilterOptions.AddAttribute<TAttribute>();
 		return this;
 	}
 
@@ -45,7 +45,7 @@ public sealed class HaveAttributeWithoutInheritResult<TType, TMember>
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		_attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
+		_attributeFilterOptions.AddAttribute(predicate, doNotPopulateThisValue.TrimExpression());
 		return this;
 	}
 }

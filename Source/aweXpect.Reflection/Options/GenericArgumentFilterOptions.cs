@@ -9,7 +9,7 @@ namespace aweXpect.Reflection.Options;
 /// <summary>
 ///     Options for adding additional predicates to filter the generic arguments.
 /// </summary>
-internal class GenericArgumentFilterOptions
+internal sealed class GenericArgumentFilterOptions
 {
 	private readonly List<Func<string>> _descriptions;
 	private readonly List<Func<Type, string?, ValueTask<bool>>> _predicates;

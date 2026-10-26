@@ -27,7 +27,7 @@ public static partial class ThatMethod
 		this IThat<MethodInfo?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(returnType, true);
+		typeFilterOptions.AddType(returnType, true);
 		return new ReturnsResult<MethodInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -52,7 +52,7 @@ public static partial class ThatMethod
 		this IThat<MethodInfo?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(returnType, true);
+		typeFilterOptions.AddType(returnType, true);
 		return new AndOrResult<MethodInfo, IThat<MethodInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)

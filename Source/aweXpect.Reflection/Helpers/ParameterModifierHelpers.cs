@@ -6,7 +6,7 @@ using aweXpect.Reflection.Options;
 namespace aweXpect.Reflection.Helpers;
 
 /// <summary>
-///     Helper to append a parameter modifier predicate to an existing parameter filter/assertion result.
+///     Helper to append a parameter modifier predicate to an existing parameter assertion result.
 /// </summary>
 internal static class ParameterModifierHelpers
 {

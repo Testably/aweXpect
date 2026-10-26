@@ -29,7 +29,7 @@ public static partial class ThatEvents
 		this IThat<IEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(handlerType, true);
+		typeFilterOptions.AddType(handlerType, true);
 		return new OfTypeResult<IEnumerable<EventInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -57,7 +57,7 @@ public static partial class ThatEvents
 		this IThat<IAsyncEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(handlerType, true);
+		typeFilterOptions.AddType(handlerType, true);
 		return new OfTypeResult<IAsyncEnumerable<EventInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -85,7 +85,7 @@ public static partial class ThatEvents
 		this IThat<IEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(handlerType, true);
+		typeFilterOptions.AddType(handlerType, true);
 		return new AndOrResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -114,7 +114,7 @@ public static partial class ThatEvents
 			this IThat<IAsyncEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(handlerType, true);
+		typeFilterOptions.AddType(handlerType, true);
 		return new AndOrResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)

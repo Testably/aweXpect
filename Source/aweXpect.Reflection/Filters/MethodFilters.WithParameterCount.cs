@@ -10,7 +10,7 @@ public static partial class MethodFilters
 	/// </summary>
 	public static Filtered.Methods WithParameterCount(this Filtered.Methods @this, int expected)
 	{
-		IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+		IFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
 			methodInfo => methodInfo.GetParameters().Length == expected,
 			expected switch
 			{

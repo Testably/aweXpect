@@ -22,7 +22,7 @@ public static partial class ThatAssembly
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		attributeFilterOptions.AddAttribute<TAttribute>();
 		return new HasAttributeWithoutInheritResult<Assembly, Assembly?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
@@ -44,7 +44,7 @@ public static partial class ThatAssembly
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
+		attributeFilterOptions.AddAttribute(predicate, doNotPopulateThisValue.TrimExpression());
 		return new HasAttributeWithoutInheritResult<Assembly, Assembly?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
@@ -67,7 +67,7 @@ public static partial class ThatAssembly
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			=> attributeFilterOptions.AppendExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -76,7 +76,7 @@ public static partial class ThatAssembly
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			=> attributeFilterOptions.AppendExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

@@ -27,7 +27,7 @@ public static partial class ThatProperties
 		this IThat<IEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(propertyType, true);
+		typeFilterOptions.AddType(propertyType, true);
 		return new OfTypeResult<IEnumerable<PropertyInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -53,7 +53,7 @@ public static partial class ThatProperties
 		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(propertyType, true);
+		typeFilterOptions.AddType(propertyType, true);
 		return new OfTypeResult<IAsyncEnumerable<PropertyInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -82,7 +82,7 @@ public static partial class ThatProperties
 		this IThat<IEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(propertyType, true);
+		typeFilterOptions.AddType(propertyType, true);
 		return new AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -111,7 +111,7 @@ public static partial class ThatProperties
 			this IThat<IAsyncEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(propertyType, true);
+		typeFilterOptions.AddType(propertyType, true);
 		return new AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)

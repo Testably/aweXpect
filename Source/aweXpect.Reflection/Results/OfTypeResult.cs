@@ -34,7 +34,7 @@ public sealed class OfTypeResult<TType>
 	/// </summary>
 	public OfTypeResult<TType> OrOfType(Type type)
 	{
-		_typeFilterOptions.RegisterType(type, false);
+		_typeFilterOptions.AddType(type, false);
 		return this;
 	}
 
@@ -49,7 +49,7 @@ public sealed class OfTypeResult<TType>
 	/// </summary>
 	public OfTypeResult<TType> OrOfExactType(Type type)
 	{
-		_typeFilterOptions.RegisterType(type, true);
+		_typeFilterOptions.AddType(type, true);
 		return this;
 	}
 }

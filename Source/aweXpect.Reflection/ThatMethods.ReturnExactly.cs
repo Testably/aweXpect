@@ -29,7 +29,7 @@ public static partial class ThatMethods
 		this IThat<IEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(returnType, true);
+		typeFilterOptions.AddType(returnType, true);
 		return new ReturnResult<IEnumerable<MethodInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -57,7 +57,7 @@ public static partial class ThatMethods
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(returnType, true);
+		typeFilterOptions.AddType(returnType, true);
 		return new ReturnResult<IAsyncEnumerable<MethodInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -83,7 +83,7 @@ public static partial class ThatMethods
 		this IThat<IEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(returnType, true);
+		typeFilterOptions.AddType(returnType, true);
 		return new AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -109,7 +109,7 @@ public static partial class ThatMethods
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(returnType, true);
+		typeFilterOptions.AddType(returnType, true);
 		return new AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)

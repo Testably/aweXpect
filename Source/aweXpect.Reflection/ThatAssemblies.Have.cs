@@ -32,7 +32,7 @@ public static partial class ThatAssemblies
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		attributeFilterOptions.AddAttribute<TAttribute>();
 		return new HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<Assembly?>, IEnumerable<Assembly?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
@@ -55,7 +55,7 @@ public static partial class ThatAssemblies
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
+		attributeFilterOptions.AddAttribute(predicate, doNotPopulateThisValue.TrimExpression());
 		return new HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<Assembly?>, IEnumerable<Assembly?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
@@ -76,7 +76,7 @@ public static partial class ThatAssemblies
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		attributeFilterOptions.AddAttribute<TAttribute>();
 		return new HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<Assembly?>, IAsyncEnumerable<Assembly?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
@@ -101,7 +101,7 @@ public static partial class ThatAssemblies
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
+		attributeFilterOptions.AddAttribute(predicate, doNotPopulateThisValue.TrimExpression());
 		return new HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<Assembly?>, IAsyncEnumerable<Assembly?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
@@ -133,7 +133,7 @@ public static partial class ThatAssemblies
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			attributeFilterOptions.AppendExpectation(stringBuilder, Grammars);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -142,7 +142,7 @@ public static partial class ThatAssemblies
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("not all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			attributeFilterOptions.AppendExpectation(stringBuilder, Grammars);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

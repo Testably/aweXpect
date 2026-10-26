@@ -25,7 +25,7 @@ public static partial class ThatEvent
 	{
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		attributeFilterOptions.AddAttribute<TAttribute>();
 		return new InheritanceScopeResult<EventInfo, EventInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),

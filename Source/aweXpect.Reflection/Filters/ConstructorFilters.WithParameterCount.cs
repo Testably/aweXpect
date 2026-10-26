@@ -10,7 +10,7 @@ public static partial class ConstructorFilters
 	/// </summary>
 	public static Filtered.Constructors WithParameterCount(this Filtered.Constructors @this, int expected)
 	{
-		IChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
+		IFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
 			constructorInfo => constructorInfo.GetParameters().Length == expected,
 			expected switch
 			{

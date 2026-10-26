@@ -35,7 +35,7 @@ public static partial class ThatEvents
 	{
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		attributeFilterOptions.AddAttribute<TAttribute>();
 		return new InheritanceScopeResult<IEnumerable<EventInfo?>, IEnumerable<EventInfo?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<EventInfo?>, IEnumerable<EventInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
@@ -60,7 +60,7 @@ public static partial class ThatEvents
 	{
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		attributeFilterOptions.AddAttribute<TAttribute>();
 		return new InheritanceScopeResult<IAsyncEnumerable<EventInfo?>, IAsyncEnumerable<EventInfo?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<EventInfo?>, IAsyncEnumerable<EventInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
@@ -93,7 +93,7 @@ public static partial class ThatEvents
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars.Negate());
+			attributeFilterOptions.AppendExpectation(stringBuilder, Grammars.Negate());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -102,7 +102,7 @@ public static partial class ThatEvents
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("not all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars.Negate());
+			attributeFilterOptions.AppendExpectation(stringBuilder, Grammars.Negate());
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

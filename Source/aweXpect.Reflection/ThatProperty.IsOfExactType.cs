@@ -27,7 +27,7 @@ public static partial class ThatProperty
 		this IThat<PropertyInfo?> subject, Type propertyType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(propertyType, true);
+		typeFilterOptions.AddType(propertyType, true);
 		return new OfTypeResult<PropertyInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -52,7 +52,7 @@ public static partial class ThatProperty
 		this IThat<PropertyInfo?> subject, Type propertyType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(propertyType, true);
+		typeFilterOptions.AddType(propertyType, true);
 		return new AndOrResult<PropertyInfo, IThat<PropertyInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)

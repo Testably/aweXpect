@@ -63,6 +63,22 @@ public sealed class FilteredReuseIndependenceTests
 	}
 
 	[Test]
+	public async Task ConstructorsWithParameter_BranchingFromSharedBase_ShouldBeIndependent()
+	{
+		ConstructorInfo inConstructor = typeof(SampleWithParameters).GetConstructor([typeof(int).MakeByRefType(),])!;
+		ConstructorInfo valueConstructor = typeof(SampleWithParameters).GetConstructor([typeof(int), typeof(string),])!;
+		ConstructorFilters.ConstructorsWithParameter<int> @base = In.Type<SampleWithParameters>()
+			.Constructors().WithParameter<int>();
+
+		Filtered.Constructors view1 = @base.WithInModifier();
+		Filtered.Constructors view2 = @base.Matching(p => !p.IsIn);
+
+		await That(view1).IsEqualTo([inConstructor,]);
+		await That(view2).IsEqualTo([valueConstructor,]);
+		await That(@base).IsEqualTo([inConstructor, valueConstructor,]).InAnyOrder();
+	}
+
+	[Test]
 	public async Task Events_BranchingFromSharedBase_ShouldBeIndependent()
 	{
 		EventInfo eventA = typeof(SampleWithMembers).GetEvent(nameof(SampleWithMembers.EventA))!;
@@ -184,6 +200,22 @@ public sealed class FilteredReuseIndependenceTests
 			typeof(SampleWithParameters).GetMethod(nameof(SampleWithParameters.WithInValue))!,
 			typeof(SampleWithParameters).GetMethod(nameof(SampleWithParameters.WithValue))!,
 		]).InAnyOrder();
+	}
+
+	[Test]
+	public async Task MethodsWithParameter_BranchingFromSharedBase_ShouldBeIndependent()
+	{
+		MethodInfo inMethod = typeof(SampleWithParameters).GetMethod(nameof(SampleWithParameters.WithInValue))!;
+		MethodInfo valueMethod = typeof(SampleWithParameters).GetMethod(nameof(SampleWithParameters.WithValue))!;
+		MethodFilters.MethodsWithParameter<int> @base = In.Type<SampleWithParameters>()
+			.Methods().WithParameter<int>();
+
+		Filtered.Methods view1 = @base.WithInModifier();
+		Filtered.Methods view2 = @base.Matching(p => !p.IsIn);
+
+		await That(view1).IsEqualTo([inMethod,]);
+		await That(view2).IsEqualTo([valueMethod,]);
+		await That(@base).IsEqualTo([inMethod, valueMethod,]).InAnyOrder();
 	}
 
 	[Test]
@@ -441,6 +473,10 @@ public sealed class FilteredReuseIndependenceTests
 		}
 
 		public SampleWithParameters(in int value)
+		{
+		}
+
+		public SampleWithParameters(int value, string other)
 		{
 		}
 

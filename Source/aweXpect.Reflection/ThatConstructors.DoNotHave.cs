@@ -31,7 +31,7 @@ public static partial class ThatConstructors
 	{
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		attributeFilterOptions.AddAttribute<TAttribute>();
 		return new AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<ConstructorInfo?>, IEnumerable<ConstructorInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
@@ -52,7 +52,7 @@ public static partial class ThatConstructors
 	{
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		attributeFilterOptions.AddAttribute<TAttribute>();
 		return new AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
@@ -84,7 +84,7 @@ public static partial class ThatConstructors
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars.Negate());
+			attributeFilterOptions.AppendExpectation(stringBuilder, Grammars.Negate());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -93,7 +93,7 @@ public static partial class ThatConstructors
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("not all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars.Negate());
+			attributeFilterOptions.AppendExpectation(stringBuilder, Grammars.Negate());
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

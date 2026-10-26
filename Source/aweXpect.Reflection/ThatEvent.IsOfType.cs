@@ -28,7 +28,7 @@ public static partial class ThatEvent
 		this IThat<EventInfo?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(handlerType, false);
+		typeFilterOptions.AddType(handlerType, false);
 		return new OfTypeResult<EventInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -55,7 +55,7 @@ public static partial class ThatEvent
 		this IThat<EventInfo?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(handlerType, false);
+		typeFilterOptions.AddType(handlerType, false);
 		return new AndOrResult<EventInfo, IThat<EventInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)

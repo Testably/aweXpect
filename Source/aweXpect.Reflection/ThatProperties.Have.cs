@@ -36,7 +36,7 @@ public static partial class ThatProperties
 	{
 		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		attributeFilterOptions.AddAttribute<TAttribute>();
 		return new HaveAttributeResult<IEnumerable<PropertyInfo?>, PropertyInfo?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<PropertyInfo?>, IEnumerable<PropertyInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
@@ -63,7 +63,7 @@ public static partial class ThatProperties
 	{
 		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
+		attributeFilterOptions.AddAttribute(predicate, doNotPopulateThisValue.TrimExpression());
 		return new HaveAttributeResult<IEnumerable<PropertyInfo?>, PropertyInfo?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<PropertyInfo?>, IEnumerable<PropertyInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
@@ -88,7 +88,7 @@ public static partial class ThatProperties
 	{
 		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		attributeFilterOptions.AddAttribute<TAttribute>();
 		return new HaveAttributeResult<IAsyncEnumerable<PropertyInfo?>, PropertyInfo?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<PropertyInfo?>, IAsyncEnumerable<PropertyInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
@@ -117,7 +117,7 @@ public static partial class ThatProperties
 	{
 		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
+		attributeFilterOptions.AddAttribute(predicate, doNotPopulateThisValue.TrimExpression());
 		return new HaveAttributeResult<IAsyncEnumerable<PropertyInfo?>, PropertyInfo?>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<PropertyInfo?>, IAsyncEnumerable<PropertyInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
@@ -149,7 +149,7 @@ public static partial class ThatProperties
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			attributeFilterOptions.AppendExpectation(stringBuilder, Grammars);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -158,7 +158,7 @@ public static partial class ThatProperties
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("not all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			attributeFilterOptions.AppendExpectation(stringBuilder, Grammars);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

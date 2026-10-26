@@ -27,7 +27,7 @@ public static partial class ThatProperty
 	{
 		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		attributeFilterOptions.AddAttribute<TAttribute>();
 		return new HasAttributeResult<PropertyInfo, PropertyInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
@@ -53,7 +53,7 @@ public static partial class ThatProperty
 	{
 		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
+		attributeFilterOptions.AddAttribute(predicate, doNotPopulateThisValue.TrimExpression());
 		return new HasAttributeResult<PropertyInfo, PropertyInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
@@ -76,7 +76,7 @@ public static partial class ThatProperty
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			=> attributeFilterOptions.AppendExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -85,7 +85,7 @@ public static partial class ThatProperty
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			=> attributeFilterOptions.AppendExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

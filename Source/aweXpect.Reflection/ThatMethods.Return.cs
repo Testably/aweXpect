@@ -37,7 +37,7 @@ public static partial class ThatMethods
 		this IThat<IEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(returnType, false);
+		typeFilterOptions.AddType(returnType, false);
 		return new ReturnResult<IEnumerable<MethodInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -65,7 +65,7 @@ public static partial class ThatMethods
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(returnType, false);
+		typeFilterOptions.AddType(returnType, false);
 		return new ReturnResult<IAsyncEnumerable<MethodInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -93,7 +93,7 @@ public static partial class ThatMethods
 		this IThat<IEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(returnType, false);
+		typeFilterOptions.AddType(returnType, false);
 		return new AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -120,7 +120,7 @@ public static partial class ThatMethods
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(returnType, false);
+		typeFilterOptions.AddType(returnType, false);
 		return new AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -152,7 +152,7 @@ public static partial class ThatMethods
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all ");
-			typeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			typeFilterOptions.AppendExpectation(stringBuilder, Grammars);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -161,7 +161,7 @@ public static partial class ThatMethods
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("not all ");
-			typeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			typeFilterOptions.AppendExpectation(stringBuilder, Grammars);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -191,25 +191,25 @@ public static partial class ThatMethods
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all do not ");
-			typeFilterOptions.AppendDescription(stringBuilder, ExpectationGrammars.Plural);
+			typeFilterOptions.AppendExpectation(stringBuilder, ExpectationGrammars.Plural);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" contained methods which ");
-			typeFilterOptions.AppendDescription(stringBuilder, ExpectationGrammars.Plural);
+			typeFilterOptions.AppendExpectation(stringBuilder, ExpectationGrammars.Plural);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("also contain a method which ");
-			typeFilterOptions.AppendDescription(stringBuilder, ExpectationGrammars.None);
+			typeFilterOptions.AppendExpectation(stringBuilder, ExpectationGrammars.None);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" only contained methods which do not ");
-			typeFilterOptions.AppendDescription(stringBuilder, ExpectationGrammars.Plural);
+			typeFilterOptions.AppendExpectation(stringBuilder, ExpectationGrammars.Plural);
 		}
 	}
 }

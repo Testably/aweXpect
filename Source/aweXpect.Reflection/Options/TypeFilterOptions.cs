@@ -10,7 +10,7 @@ namespace aweXpect.Reflection.Options;
 /// <summary>
 ///     Options for filtering for a list of alternative types.
 /// </summary>
-internal class TypeFilterOptions
+internal sealed class TypeFilterOptions
 {
 	private readonly List<(Type, bool)> _types = [];
 
@@ -21,9 +21,10 @@ internal class TypeFilterOptions
 		=> _types.Any(t => type?.IsOrInheritsFrom(t.Item1, t.Item2) == true);
 
 	/// <summary>
-	///     Returns the combination of all descriptions joined by <c>" or "</c>.
+	///     Appends the expectation for the registered types, joined by <c>" or "</c>, to the
+	///     <paramref name="stringBuilder" />.
 	/// </summary>
-	public void AppendDescription(StringBuilder stringBuilder, ExpectationGrammars grammar)
+	public void AppendExpectation(StringBuilder stringBuilder, ExpectationGrammars grammar)
 	{
 		if (grammar.IsPlural())
 		{
@@ -73,7 +74,8 @@ internal class TypeFilterOptions
 	}
 
 	/// <summary>
-	///     Registers a <paramref name="type" />.
+	///     Adds the alternative <paramref name="type" />, matched exactly when <paramref name="exactly" /> is
+	///     <see langword="true" />.
 	/// </summary>
-	public void RegisterType(Type type, bool exactly) => _types.Add((type, exactly));
+	public void AddType(Type type, bool exactly) => _types.Add((type, exactly));
 }

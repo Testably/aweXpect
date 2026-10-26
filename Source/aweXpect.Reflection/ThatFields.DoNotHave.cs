@@ -31,7 +31,7 @@ public static partial class ThatFields
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		attributeFilterOptions.AddAttribute<TAttribute>();
 		return new AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<FieldInfo?>, IEnumerable<FieldInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
@@ -51,7 +51,7 @@ public static partial class ThatFields
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		attributeFilterOptions.AddAttribute<TAttribute>();
 		return new AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<FieldInfo?>, IAsyncEnumerable<FieldInfo?>>(attributeFilterOptions,
 				static (attributeFilterOptions, it, grammars)
@@ -83,7 +83,7 @@ public static partial class ThatFields
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars.Negate());
+			attributeFilterOptions.AppendExpectation(stringBuilder, Grammars.Negate());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -92,7 +92,7 @@ public static partial class ThatFields
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("not all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars.Negate());
+			attributeFilterOptions.AppendExpectation(stringBuilder, Grammars.Negate());
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

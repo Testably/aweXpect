@@ -37,7 +37,7 @@ public static partial class ThatFields
 		this IThat<IEnumerable<FieldInfo?>?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(fieldType, false);
+		typeFilterOptions.AddType(fieldType, false);
 		return new OfTypeResult<IEnumerable<FieldInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<FieldInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -63,7 +63,7 @@ public static partial class ThatFields
 		this IThat<IAsyncEnumerable<FieldInfo?>?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(fieldType, false);
+		typeFilterOptions.AddType(fieldType, false);
 		return new OfTypeResult<IAsyncEnumerable<FieldInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<FieldInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -91,7 +91,7 @@ public static partial class ThatFields
 		this IThat<IEnumerable<FieldInfo?>?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(fieldType, false);
+		typeFilterOptions.AddType(fieldType, false);
 		return new AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<FieldInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -118,7 +118,7 @@ public static partial class ThatFields
 		this IThat<IAsyncEnumerable<FieldInfo?>?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(fieldType, false);
+		typeFilterOptions.AddType(fieldType, false);
 		return new AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<FieldInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)

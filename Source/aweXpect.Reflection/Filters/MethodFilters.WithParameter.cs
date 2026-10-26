@@ -192,8 +192,11 @@ public static partial class MethodFilters
 	/// <summary>
 	///     Additional filters on methods with a parameter of a specific type.
 	/// </summary>
-	public class MethodsWithParameter<T>
-		: Filtered.Methods
+	/// <remarks>
+	///     Every method returns a new filter, so that a stored filter stays unchanged. Extensions add their own
+	///     predicates with <see cref="Matching(Func{ParameterInfo, bool}, string)" />.
+	/// </remarks>
+	public class MethodsWithParameter<T> : Filtered.Methods
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> _createFilter;

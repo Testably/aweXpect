@@ -196,8 +196,11 @@ public static partial class ConstructorFilters
 	/// <summary>
 	///     Additional filters on constructors with a parameter of a specific type.
 	/// </summary>
-	public class ConstructorsWithParameter<T>
-		: Filtered.Constructors
+	/// <remarks>
+	///     Every method returns a new filter, so that a stored filter stays unchanged. Extensions add their own
+	///     predicates with <see cref="Matching(Func{ParameterInfo, bool}, string)" />.
+	/// </remarks>
+	public class ConstructorsWithParameter<T> : Filtered.Constructors
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
 		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> _createFilter;
