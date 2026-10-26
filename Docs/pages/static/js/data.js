@@ -1140,6 +1140,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -1332,7 +1338,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -1528,7 +1535,8 @@ window.BENCHMARK_DATA = {
           7838.555939894456,
           10757.492473057338,
           11087.898408156176,
-          7941.239956665039
+          7941.239956665039,
+          10665.054735310872
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1708,6 +1716,7 @@ window.BENCHMARK_DATA = {
           2168,
           2168,
           2168,
+          2208,
           2208,
           2208,
           2208,
@@ -1933,7 +1942,8 @@ window.BENCHMARK_DATA = {
           262346.61158854165,
           366177.63828125,
           373085.5595703125,
-          244617.19088040866
+          244617.19088040866,
+          366880.78738839284
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2134,7 +2144,8 @@ window.BENCHMARK_DATA = {
           590288,
           590290,
           590292,
-          590288
+          590288,
+          590290
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2338,7 +2349,8 @@ window.BENCHMARK_DATA = {
           14319.51313273112,
           19276.359716796876,
           19665.55696818034,
-          14634.465534464518
+          14634.465534464518,
+          19815.836309814455
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2350,6 +2362,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -3651,6 +3664,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -3836,7 +3855,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -4025,7 +4045,8 @@ window.BENCHMARK_DATA = {
           216.77277930577597,
           287.95696135929654,
           303.7410211881002,
-          223.39375359217325
+          223.39375359217325,
+          276.03488512039183
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4114,6 +4135,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -4416,7 +4438,8 @@ window.BENCHMARK_DATA = {
           449.1883031300136,
           506.8851100921631,
           506.2186897277832,
-          393.97632912227084
+          393.97632912227084,
+          469.4289601325989
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4428,6 +4451,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -4807,7 +4831,8 @@ window.BENCHMARK_DATA = {
           377.82894908464874,
           386.43536475499474,
           395.56076087270463,
-          289.2729404522822
+          289.2729404522822,
+          361.23641939163207
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4819,6 +4844,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -10733,6 +10759,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -11688,7 +11720,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -12647,7 +12680,8 @@ window.BENCHMARK_DATA = {
           116.4588635478701,
           143.65945262908934,
           171.66304176648458,
-          106.3719213604927
+          106.3719213604927,
+          141.35797703266144
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13506,6 +13540,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -14578,7 +14613,8 @@ window.BENCHMARK_DATA = {
           209.00569519996642,
           249.13233129794781,
           253.13348197937012,
-          197.4414882818858
+          197.4414882818858,
+          239.54336631298065
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14771,6 +14807,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -15790,7 +15827,8 @@ window.BENCHMARK_DATA = {
           191.31890745162963,
           238.73520429929098,
           252.85191383361817,
-          180.5800591982328
+          180.5800591982328,
+          228.09027440207345
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15802,6 +15840,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -17189,6 +17228,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -17381,7 +17426,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -17577,7 +17623,8 @@ window.BENCHMARK_DATA = {
           233.31166462898256,
           265.5308675765991,
           277.8937107086182,
-          200.33035922050476
+          200.33035922050476,
+          279.32535433769226
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17757,6 +17804,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          520,
           520,
           520,
           520,
@@ -17982,7 +18030,8 @@ window.BENCHMARK_DATA = {
           429.9906591006688,
           518.7095698674519,
           541.2626361846924,
-          427.44613410631814
+          427.44613410631814,
+          492.57743911743165
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17994,6 +18043,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -18387,7 +18437,8 @@ window.BENCHMARK_DATA = {
           282.0584105344919,
           347.1272107533046,
           346.37852363586427,
-          256.11666504542035
+          256.11666504542035,
+          320.4914550145467
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -18399,6 +18450,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -24320,6 +24372,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -25275,7 +25333,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -26234,7 +26293,8 @@ window.BENCHMARK_DATA = {
           568.1178137705876,
           661.0110391616821,
           675.7342365809849,
-          523.6622376124064
+          523.6622376124064,
+          663.1149373054504
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27093,6 +27153,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -28165,7 +28226,8 @@ window.BENCHMARK_DATA = {
           1169.750495638166,
           1380.8408908843994,
           1420.4930718739827,
-          1067.1937713623047
+          1067.1937713623047,
+          1346.2110308238439
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28358,6 +28420,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -29377,7 +29440,8 @@ window.BENCHMARK_DATA = {
           523.4726700782776,
           660.8363005320231,
           657.4896403092605,
-          506.19700889587403
+          506.19700889587403,
+          615.9237252871195
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -29389,6 +29453,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -35354,6 +35419,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -36309,7 +36380,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -37268,7 +37340,8 @@ window.BENCHMARK_DATA = {
           565.6428933510414,
           648.0624050140381,
           668.3425291697184,
-          533.8242816925049
+          533.8242816925049,
+          656.2300875981649
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38127,6 +38200,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -39199,7 +39273,8 @@ window.BENCHMARK_DATA = {
           17752.779359944663,
           27716.699626668295,
           28228.88483973912,
-          15506.206599934896
+          15506.206599934896,
+          27651.467165265763
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40163,6 +40238,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -40411,7 +40487,8 @@ window.BENCHMARK_DATA = {
           631.6617696625846,
           778.4582978657314,
           787.538090297154,
-          564.140283720834
+          564.140283720834,
+          779.462045288086
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -40423,6 +40500,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -42158,6 +42236,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -42408,7 +42492,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -42662,7 +42747,8 @@ window.BENCHMARK_DATA = {
           567.0076211293539,
           731.8403738657634,
           747.9089997836521,
-          566.8400911603655
+          566.8400911603655,
+          672.7429393132528
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42864,6 +42950,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
+          1688,
           1688,
           1688,
           1688,
@@ -43183,7 +43270,8 @@ window.BENCHMARK_DATA = {
           53793.49128417969,
           81665.23321940104,
           85179.76094156901,
-          52607.74634225028
+          52607.74634225028,
+          83008.08897298177
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43442,7 +43530,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44944,6 +45033,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -45194,7 +45289,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -45448,7 +45544,8 @@ window.BENCHMARK_DATA = {
           147.23687370006854,
           174.6519075234731,
           184.9235103726387,
-          129.70845831357516
+          129.70845831357516,
+          175.90533679326376
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45602,6 +45699,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -45969,7 +46067,8 @@ window.BENCHMARK_DATA = {
           14896.602600097656,
           31353.51924641927,
           31630.95509033203,
-          14459.642929077148
+          14459.642929077148,
+          30923.344569614954
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46228,7 +46327,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46476,7 +46576,8 @@ window.BENCHMARK_DATA = {
           189.42202481856714,
           243.60685968399048,
           248.55921954375046,
-          178.8496106011527
+          178.8496106011527,
+          228.8451004879815
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -46488,6 +46589,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -47875,6 +47977,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -48067,7 +48175,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -48263,7 +48372,8 @@ window.BENCHMARK_DATA = {
           271.808910540172,
           360.78996613820397,
           365.7113471031189,
-          292.2740718034598
+          292.2740718034598,
+          350.0953129359654
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48359,6 +48469,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -48668,7 +48779,8 @@ window.BENCHMARK_DATA = {
           332.82876031215375,
           384.91252625783284,
           386.13799950054715,
-          306.49175053376416
+          306.49175053376416,
+          363.9032681465149
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48680,6 +48792,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -49073,7 +49186,8 @@ window.BENCHMARK_DATA = {
           348.999557188579,
           406.8818880489894,
           410.9538699296805,
-          340.3141288757324
+          340.3141288757324,
+          392.9324012200038
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -49085,6 +49199,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -50428,6 +50543,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -50620,7 +50741,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -50816,7 +50938,8 @@ window.BENCHMARK_DATA = {
           602.6303013483683,
           761.9184070587158,
           791.0103004455566,
-          570.9538644154867
+          570.9538644154867,
+          750.932220395406
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50996,6 +51119,7 @@ window.BENCHMARK_DATA = {
           1384,
           1384,
           1384,
+          1448,
           1448,
           1448,
           1448,
@@ -51221,7 +51345,8 @@ window.BENCHMARK_DATA = {
           1670.665205001831,
           1889.7947486877442,
           1914.0542945861816,
-          1512.1110822237456
+          1512.1110822237456,
+          1831.6024804433187
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51233,6 +51358,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -51626,7 +51752,8 @@ window.BENCHMARK_DATA = {
           768.3087452479771,
           919.6154991785685,
           952.3509455362956,
-          767.0848663965861
+          767.0848663965861,
+          877.5123423258464
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -51638,6 +51765,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -52981,6 +53109,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -53173,7 +53307,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -53369,7 +53504,8 @@ window.BENCHMARK_DATA = {
           8568.552437918526,
           11504.348241533551,
           11610.452999408428,
-          8253.137580284705
+          8253.137580284705,
+          11458.119884784404
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -53565,6 +53701,7 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
+          1680,
           1680,
           1680,
           1680,
@@ -53774,7 +53911,8 @@ window.BENCHMARK_DATA = {
           27791.624383108956,
           40264.42847149189,
           40328.68602905273,
-          26413.56932373047
+          26413.56932373047,
+          39632.33622741699
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53942,6 +54080,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -54179,7 +54318,8 @@ window.BENCHMARK_DATA = {
           8232.179388192984,
           10557.764910016742,
           10602.941390991211,
-          7875.768165001502
+          7875.768165001502,
+          10566.375685555595
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -54191,6 +54331,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -55534,6 +55675,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 19:07:13 2026 \u002B0100",
         "message": "feat!: add PropertyComparison\u003CT\u003E.Satisfying so that extensions can add property operators (#2067)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
@@ -55726,7 +55873,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "f760ae08"
+      "f760ae08",
+      "be28a12e"
     ],
     "datasets": [
       {
@@ -55922,7 +56070,8 @@ window.BENCHMARK_DATA = {
           8232.63698049692,
           11160.833149210612,
           11300.075103759766,
-          7814.424248831613
+          7814.424248831613,
+          10932.918025090145
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56118,6 +56267,7 @@ window.BENCHMARK_DATA = {
           2088,
           2088,
           2088,
+          2160,
           2160,
           2160,
           2160,
@@ -56327,7 +56477,8 @@ window.BENCHMARK_DATA = {
           39597.84237467448,
           57320.96973528181,
           58803.04060145787,
-          37831.24760554387
+          37831.24760554387,
+          57584.23080209585
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56516,6 +56667,7 @@ window.BENCHMARK_DATA = {
           23553,
           23554,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -56732,7 +56884,8 @@ window.BENCHMARK_DATA = {
           16053.09954398019,
           21079.536822979266,
           20952.266590663367,
-          15280.485498046875
+          15280.485498046875,
+          20962.449650691105
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -56744,6 +56897,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
