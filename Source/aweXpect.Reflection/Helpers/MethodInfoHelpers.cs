@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Core.Extending;
-using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Helpers;
 

@@ -1,6 +1,4 @@
-﻿using aweXpect.Reflection.Collections;
-
-namespace aweXpect.Reflection.Tests;
+﻿namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {

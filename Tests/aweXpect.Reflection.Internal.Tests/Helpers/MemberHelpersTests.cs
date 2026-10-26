@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Internal.Tests.Helpers;

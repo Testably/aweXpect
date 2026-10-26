@@ -8,6 +8,7 @@ using aweXpect.Core;
 using aweXpect.Core.Extending;
 using aweXpect.Formatting;
 using aweXpect.Options;
+using aweXpect.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
