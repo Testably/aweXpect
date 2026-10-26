@@ -34,7 +34,7 @@ internal static class SourceRoots
 	private static readonly ConcurrentQueue<Assembly> LoadedAssemblies = new();
 	private static readonly object RecordedLock = new();
 
-	private static Records? _records;
+	private static ScannedAssembly[]? _scanned;
 	private static CombinedRecords? _combinedRecords;
 
 	/// <summary>
@@ -44,33 +44,47 @@ internal static class SourceRoots
 
 	/// <summary>
 	///     The recorded values, from the <see cref="ExtensionRegistry" /> and from the loaded assemblies that registered
-	///     nothing.
+	///     nothing and that the <c>ExcludedAssemblyPrefixes</c> of the settings do not exclude.
 	/// </summary>
 	/// <remarks>
 	///     Each assembly is decided on its own, as the assemblies of one process can differ, e.g. a test project in F# or
 	///     for .NET Framework with C# 7.3 that calls a helper library in C# 9, which registers its values.<br />
-	///     A test assembly that is loaded later registers its values when it is loaded. The registry returns the same
-	///     lists until a value is added, so the records are only built again when one was added or an assembly was read.
+	///     The assemblies are decided on each access, not when they are read, as the settings can differ between tests
+	///     and an assembly can be read before its module initializer registered its values.<br />
+	///     The registry and the settings return the same lists until they change, so the records are only built again
+	///     when one changed or an assembly was read.
 	/// </remarks>
 	private static Records GetRecords()
 	{
 		IReadOnlyList<string> sourceRoots = ExtensionRegistry.GetValues(MetadataKey);
 		IReadOnlyList<string> projectDirectories = ExtensionRegistry.GetValues(ProjectDirectoryKey);
 		IReadOnlyList<string> targetFrameworks = ExtensionRegistry.GetValues(TargetFrameworkKey);
-		Records scanned = GetScannedRecords();
+		IReadOnlyList<string> registeredAssemblies = ExtensionRegistry.GetValues(AssemblyKey);
+		IReadOnlyList<string> excludedPrefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
+		ScannedAssembly[] scanned = GetScannedAssemblies();
 		CombinedRecords? combined = Volatile.Read(ref _combinedRecords);
 		if (combined is null ||
 		    !ReferenceEquals(combined.SourceRoots, sourceRoots) ||
 		    !ReferenceEquals(combined.ProjectDirectories, projectDirectories) ||
 		    !ReferenceEquals(combined.TargetFrameworks, targetFrameworks) ||
+		    !ReferenceEquals(combined.RegisteredAssemblies, registeredAssemblies) ||
+		    !ReferenceEquals(combined.ExcludedPrefixes, excludedPrefixes) ||
 		    !ReferenceEquals(combined.Scanned, scanned))
 		{
-			Records registered = Parse(sourceRoots, projectDirectories, targetFrameworks);
-			combined = new CombinedRecords(sourceRoots, projectDirectories, targetFrameworks, scanned,
+			Records[] records =
+			[
+				Parse(sourceRoots, projectDirectories, targetFrameworks),
+				.. scanned
+					.Where(assembly => !registeredAssemblies.Contains(assembly.Name) &&
+					                   !AssemblyPrefixes.IsExcluded(assembly.Name, excludedPrefixes))
+					.Select(assembly => assembly.Records),
+			];
+			combined = new CombinedRecords(sourceRoots, projectDirectories, targetFrameworks, registeredAssemblies,
+				excludedPrefixes, scanned,
 				new Records(
-					[.. registered.SourceRoots, .. scanned.SourceRoots,],
-					[.. registered.ProjectDirectories, .. scanned.ProjectDirectories,],
-					[.. registered.TargetFrameworks, .. scanned.TargetFrameworks,]));
+					records.SelectMany(record => record.SourceRoots).ToArray(),
+					records.SelectMany(record => record.ProjectDirectories).ToArray(),
+					records.SelectMany(record => record.TargetFrameworks).ToArray()));
 			Volatile.Write(ref _combinedRecords, combined);
 		}
 
@@ -78,34 +92,31 @@ internal static class SourceRoots
 	}
 
 	/// <summary>
-	///     The recorded values, read from the loaded assemblies on first use and extended by every assembly that is
-	///     loaded afterwards.
+	///     The loaded assemblies that record values, read on first use and extended by every assembly that is loaded
+	///     afterwards.
 	/// </summary>
 	/// <remarks>
-	///     The assemblies that registered their values in the <see cref="ExtensionRegistry" /> and those that the
-	///     <c>ExcludedAssemblyPrefixes</c> of the settings exclude are not read. An assembly that is read before its
-	///     module initializer registered its values only records the same values twice.<br />
 	///     The event is subscribed before the loaded assemblies are read, so that no assembly is missed in between; one
 	///     that is read twice only records the same value twice, which counts as one.<br />
 	///     An assembly loaded afterwards is only queued by the event and read on the next access, as the event of a
 	///     dynamic assembly is raised before its attributes exist, and as reading the attributes of every assembly that
-	///     is loaded would cost even when no snapshot needs them. The records are replaced instead of changed, so that
-	///     the common case of nothing new to read needs no lock.
+	///     is loaded would cost even when no snapshot needs them. The array is replaced instead of changed, so that the
+	///     common case of nothing new to read needs no lock.
 	/// </remarks>
-	private static Records GetScannedRecords()
+	private static ScannedAssembly[] GetScannedAssemblies()
 	{
-		Records? records = Volatile.Read(ref _records);
-		if (records is not null && LoadedAssemblies.IsEmpty)
+		ScannedAssembly[]? scanned = Volatile.Read(ref _scanned);
+		if (scanned is not null && LoadedAssemblies.IsEmpty)
 		{
-			return records;
+			return scanned;
 		}
 
 		lock (RecordedLock)
 		{
-			if (_records is null)
+			if (_scanned is null)
 			{
 				AppDomain.CurrentDomain.AssemblyLoad += (_, args) => LoadedAssemblies.Enqueue(args.LoadedAssembly);
-				Volatile.Write(ref _records, Read(AppDomain.CurrentDomain.GetAssemblies()));
+				Volatile.Write(ref _scanned, Read(AppDomain.CurrentDomain.GetAssemblies()));
 			}
 
 			List<Assembly> loadedAssemblies = new();
@@ -116,14 +127,10 @@ internal static class SourceRoots
 
 			if (loadedAssemblies.Count > 0)
 			{
-				Records loaded = Read(loadedAssemblies);
-				Volatile.Write(ref _records, new Records(
-					[.. _records!.SourceRoots, .. loaded.SourceRoots,],
-					[.. _records.ProjectDirectories, .. loaded.ProjectDirectories,],
-					[.. _records.TargetFrameworks, .. loaded.TargetFrameworks,]));
+				Volatile.Write(ref _scanned, [.. _scanned!, .. Read(loadedAssemblies),]);
 			}
 
-			return _records!;
+			return _scanned!;
 		}
 	}
 
@@ -354,40 +361,33 @@ internal static class SourceRoots
 	///     A mapped path never contains <c>=</c>, so the first one separates it from the source root. The same holds for
 	///     a target framework, which is recorded as <c>&lt;TargetFramework&gt;=&lt;ProjectDirectory&gt;</c>.
 	/// </remarks>
-	private static Records Read(IEnumerable<Assembly> assemblies)
-	{
-		IReadOnlyList<string> excludedPrefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
-		IReadOnlyList<string> registeredAssemblies = ExtensionRegistry.GetValues(AssemblyKey);
-		AssemblyMetadataAttribute[] attributes = assemblies
-			.Where(assembly =>
+	private static ScannedAssembly[] Read(IEnumerable<Assembly> assemblies)
+		=> assemblies
+			.Select(assembly =>
 			{
-				string? name = assembly.GetName().Name;
-				return !registeredAssemblies.Contains(name) && !AssemblyPrefixes.IsExcluded(name, excludedPrefixes);
+				AssemblyMetadataAttribute[] attributes = GetMetadata(assembly);
+				return new ScannedAssembly(assembly.GetName().Name, Parse(GetValues(attributes, MetadataKey),
+					GetValues(attributes, ProjectDirectoryKey), GetValues(attributes, TargetFrameworkKey)));
 			})
-			.SelectMany(GetMetadata)
+			.Where(scanned => scanned.Records.SourceRoots.Length > 0 ||
+			                  scanned.Records.ProjectDirectories.Length > 0 ||
+			                  scanned.Records.TargetFrameworks.Length > 0)
 			.ToArray();
-		return Parse(GetValues(attributes, MetadataKey), GetValues(attributes, ProjectDirectoryKey),
-			GetValues(attributes, TargetFrameworkKey));
-	}
 
 	/// <summary>
 	///     Returns the name of each loaded assembly that the <c>ExcludedAssemblyPrefixes</c> of the settings exclude, and
 	///     that records a source root whose mapped path the <paramref name="sourceFile" /> starts with.
 	/// </summary>
-	/// <remarks>
-	///     Only used to explain a failure, so the excluded assemblies are not read before.
-	/// </remarks>
 	private static string[] GetExcludedAssembliesRecording(string sourceFile)
 	{
 		IReadOnlyList<string> excludedPrefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
 		IReadOnlyList<string> registeredAssemblies = ExtensionRegistry.GetValues(AssemblyKey);
-		return AppDomain.CurrentDomain.GetAssemblies()
-			.Select(assembly => (Assembly: assembly, assembly.GetName().Name))
-			.Where(item => !registeredAssemblies.Contains(item.Name) &&
-			               AssemblyPrefixes.IsExcluded(item.Name, excludedPrefixes) &&
-			               SplitAtSeparator(GetValues(GetMetadata(item.Assembly), MetadataKey))
-				               .Any(recorded => sourceFile.StartsWith(recorded.Key, FileSystemPaths.Comparison)))
-			.Select(item => item.Name!)
+		return GetScannedAssemblies()
+			.Where(assembly => !registeredAssemblies.Contains(assembly.Name) &&
+			                   AssemblyPrefixes.IsExcluded(assembly.Name, excludedPrefixes) &&
+			                   assembly.Records.SourceRoots.Any(recorded
+				                   => sourceFile.StartsWith(recorded.Key, FileSystemPaths.Comparison)))
+			.Select(assembly => assembly.Name!)
 			.Distinct(StringComparer.Ordinal)
 			.ToArray();
 	}
@@ -448,13 +448,20 @@ internal static class SourceRoots
 		KeyValuePair<string, string>[] TargetFrameworks);
 
 	/// <summary>
-	///     The <paramref name="Records" /> built from the lists that the <see cref="ExtensionRegistry" /> returned and
-	///     from the <paramref name="Scanned" /> records.
+	///     The values that the assembly with the <paramref name="Name" /> records.
+	/// </summary>
+	private sealed record ScannedAssembly(string? Name, Records Records);
+
+	/// <summary>
+	///     The <paramref name="Records" /> built from the lists that the <see cref="ExtensionRegistry" /> and the settings
+	///     returned and from the <paramref name="Scanned" /> assemblies.
 	/// </summary>
 	private sealed record CombinedRecords(
 		IReadOnlyList<string> SourceRoots,
 		IReadOnlyList<string> ProjectDirectories,
 		IReadOnlyList<string> TargetFrameworks,
-		Records Scanned,
+		IReadOnlyList<string> RegisteredAssemblies,
+		IReadOnlyList<string> ExcludedPrefixes,
+		ScannedAssembly[] Scanned,
 		Records Records);
 }

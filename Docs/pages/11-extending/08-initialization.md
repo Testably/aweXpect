@@ -170,8 +170,8 @@ build targets of your package (in its `buildTransitive` folder) only pass names 
 
 - `AweXpectRegisteredMetadataKeys`: the keys of the `AssemblyMetadataAttribute`s of the test project whose values
   are registered in `ExtensionRegistry`.
-- `AweXpectModuleInitializers`: the public static methods without parameters that are called afterwards, so that
-  they can already read the registered values.
+- `AweXpectModuleInitializers`: the static methods without parameters, accessible from the test project, that are
+  called afterwards, so that they can already read the registered values.
 
 Both are lists separated by `,` or `;`. Append your names to the value that other packages set, and make the property
 visible to the generator:
@@ -200,9 +200,6 @@ visible to the generator:
 `ExtensionRegistry.GetValues` returns the values that are registered under a key, from every test assembly in the
 process, in the order of their registration:
 
-A name in `AweXpectModuleInitializers` that names no accessible `static` method without parameters is reported as the
-error [`aweXpect4005`](../08-analyzers.md#registration-generator).
-
 ```csharp
 using aweXpect.Core.Extending;
 
@@ -217,6 +214,9 @@ namespace MusicStore
     }
 }
 ```
+
+A name in `AweXpectModuleInitializers` that names no accessible `static` method without parameters is reported as the
+error [`aweXpect4005`](../08-analyzers.md#registration-generator).
 
 <details>
 <summary>Projects without module initializers</summary>

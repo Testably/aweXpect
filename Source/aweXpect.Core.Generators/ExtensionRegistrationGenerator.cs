@@ -12,8 +12,8 @@ namespace aweXpect.Core.Generators;
 /// </summary>
 /// <remarks>
 ///     The build targets pass only names: <c>AweXpectRegisteredMetadataKeys</c> lists the keys of the
-///     <c>AssemblyMetadataAttribute</c>s whose values are registered, and <c>AweXpectModuleInitializers</c> the public
-///     static methods without parameters that are called afterwards. Both are separated by <c>,</c>, as the compiler
+///     <c>AssemblyMetadataAttribute</c>s whose values are registered, and <c>AweXpectModuleInitializers</c> the
+///     accessible static methods without parameters that are called afterwards. Both are separated by <c>,</c>, as the compiler
 ///     receives the properties in an <c>.editorconfig</c>, where a <c>;</c> starts a comment; the build targets of
 ///     aweXpect.Core replace a <c>;</c> before.<br />
 ///     An initializer that names no accessible static method without parameters is reported as an error instead of
