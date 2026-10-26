@@ -11,7 +11,8 @@ public static partial class ThatTypes
 		Remarks = """
 		          Static types or interfaces are not considered abstract, even though they
 		          have <see cref="Type.IsAbstract" /> set to <see langword="true" />.
-		          """)]
-	private static PredicateResult IsAbstractType(Type? type)
-		=> type is null ? ItemResults.Null : type.IsReallyAbstract();
+		          """,
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsAbstractType(Type type)
+		=> type.IsReallyAbstract();
 }

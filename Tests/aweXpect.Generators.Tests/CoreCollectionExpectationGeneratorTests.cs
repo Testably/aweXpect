@@ -528,6 +528,61 @@ public sealed class CoreCollectionExpectationGeneratorTests
 	}
 
 	[Test]
+	[Arguments("private static bool IsZero(int value) => value == 0;",
+		"=> item is null ? new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(global::aweXpect.Core.Extending.PredicateResult.FailureBothWays(\"was <null>\")) : new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(global::Lib.ThatSample.IsZero(item.Value));")]
+	[Arguments("private static bool IsZero([DisallowNull] int? value) => value == 0;",
+		"=> item is null ? new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(global::aweXpect.Core.Extending.PredicateResult.FailureBothWays(\"was <null>\")) : new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(global::Lib.ThatSample.IsZero(item.Value));")]
+	[Arguments("private static Task<PredicateResult> IsZero(int value) => Task.FromResult<PredicateResult>(value == 0);",
+		"=> item is null ? new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(global::aweXpect.Core.Extending.PredicateResult.FailureBothWays(\"was <null>\")) : new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(global::Lib.ThatSample.IsZero(item.Value));")]
+	[Arguments("private static Task<bool> IsZero(int value) => Task.FromResult(value == 0);",
+		"=> item is null ? global::aweXpect.Core.Extending.PredicateResult.FailureBothWays(\"was <null>\") : await global::Lib.ThatSample.IsZero(item.Value);")]
+	[Arguments("private static ValueTask<PredicateResult> IsZero(int value) => new(value == 0);",
+		"=> item is null ? new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(global::aweXpect.Core.Extending.PredicateResult.FailureBothWays(\"was <null>\")) : global::Lib.ThatSample.IsZero(item.Value);")]
+	public async Task NullItemFailsBothWays_ShouldFailANullItemBothWays(string method, string expectedMatch)
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			$$"""
+			  [GenerateCollectionExpectation("AreZero", "is zero", "are zero", NullItemFailsBothWays = true)]
+			  {{method}}
+			  """);
+
+		await ThatCompiles(result);
+		await That(result.Generated).Contains(expectedMatch).Exactly(2)
+			.Because("the null items of the nullable type fail with the reason of a null subject");
+	}
+
+	[Test]
+	[Arguments("int? value", "int?")]
+	[Arguments("string? value", "string?")]
+	public async Task NullItemFailsBothWays_WithANullableItemParameter_ShouldReportADiagnostic(string parameter,
+		string type)
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			$$"""
+			  [GenerateCollectionExpectation("AreEmpty", "is empty", "are empty", NullItemFailsBothWays = true)]
+			  private static bool IsEmpty({{parameter}}) => value == default;
+			  """);
+
+		await ThatReports(result,
+			$"aweXpect4002: 'ThatSample.IsEmpty({type})' cannot generate an expectation, because NullItemFailsBothWays requires an item parameter that is not nullable or is marked with [DisallowNull]");
+	}
+
+	[Test]
+	public async Task NullItemFailsBothWays_WithAReferenceType_ShouldFailANullItemBothWays()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreEmpty", "is empty", "are empty", NullItemFailsBothWays = true)]
+			private static bool IsEmpty(string value) => value.Length == 0;
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated)
+			.Contains("=> item is null ? new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(global::aweXpect.Core.Extending.PredicateResult.FailureBothWays(\"was <null>\")) : new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(global::Lib.ThatSample.IsEmpty(item));")
+			.Exactly(2);
+	}
+
+	[Test]
 	public async Task OverloadedPredicates_ShouldGenerateDistinctConstraints()
 	{
 		GeneratorRunner.GeneratorResult result = RunOn(

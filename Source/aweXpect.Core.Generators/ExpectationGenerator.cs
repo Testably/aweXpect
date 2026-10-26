@@ -229,6 +229,14 @@ public class ExpectationGenerator : IIncrementalGenerator
 				new Problem(InvalidFormattedItem, signature.Location, formattedItem, signature.MethodName));
 		}
 
+		EquatableArray<ItemModel> items = GetItems(signature.Subject, signature.ConstraintPrefix,
+			GetNamedArgument<bool?>(attribute, "NullableOverload") ?? true);
+		bool nullItemFailsBothWays = GetNamedArgument<bool?>(attribute, "NullItemFailsBothWays") ?? false;
+		if (GetNullItemFailsBothWaysProblem(nullItemFailsBothWays, signature.Subject, items) is { } nullItemProblem)
+		{
+			return signature.FailCollection(nullItemProblem);
+		}
+
 		ITypeParameterSymbol? itemTypeParameter = GetItemTypeParameter(signature.Method);
 		return new CollectionExpectationResult(new CollectionExpectationModel(
 			signature.ToClassModel(context, ".Items"),
@@ -241,8 +249,8 @@ public class ExpectationGenerator : IIncrementalGenerator
 			GetPredicateKind(signature.Method.ReturnType),
 			signature.CancellationTokenIndex,
 			signature.ReturnsPredicateResult,
-			GetItems(signature.Subject, signature.ConstraintPrefix,
-				GetNamedArgument<bool?>(attribute, "NullableOverload") ?? true),
+			items,
+			nullItemFailsBothWays,
 			GetNamedArgument<bool?>(attribute, "CollectionOverload") ?? false,
 			negatedName,
 			formattedItemMethod,
@@ -465,6 +473,12 @@ public class ExpectationGenerator : IIncrementalGenerator
 
 		return null;
 	}
+
+	private static string? GetNullItemFailsBothWaysProblem(bool nullItemFailsBothWays, IParameterSymbol subject,
+		EquatableArray<ItemModel> items)
+		=> nullItemFailsBothWays && LetsThePredicateDecideOnNull(subject, items)
+			? "NullItemFailsBothWays requires an item parameter that is not nullable or is marked with [DisallowNull]"
+			: null;
 
 	private static string? GetCollectionNegatedNameProblem(string name, string? negatedName)
 	{
@@ -832,6 +846,13 @@ public class ExpectationGenerator : IIncrementalGenerator
 		static EquatableArray<ItemModel> Items(params ItemModel[] items)
 			=> new(items.ToImmutableArray());
 	}
+
+	/// <summary>
+	///     Whether the predicate receives a <see langword="null" /> item, as its item parameter is nullable.
+	/// </summary>
+	private static bool LetsThePredicateDecideOnNull(IParameterSymbol subject, EquatableArray<ItemModel> items)
+		=> !items.Values[0].FailsOnNull &&
+		   (!subject.Type.IsValueType || subject.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T);
 
 	private static bool IsCodeAnalysisAttribute(AttributeData attribute, string name)
 		=> attribute.AttributeClass is { Name: var attributeName, ContainingNamespace: var ns, } &&

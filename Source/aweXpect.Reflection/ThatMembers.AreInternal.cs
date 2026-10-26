@@ -8,8 +8,9 @@ namespace aweXpect;
 public static partial class ThatMembers
 {
 	[GenerateCollectionExpectation("AreInternal", "is internal", "are internal",
-		CollectionOverload = true, NegatedName = "AreNotInternal", FormattedItem = nameof(Formattable))]
-	private static PredicateResult IsInternalMember<TMember>(TMember? member)
+		CollectionOverload = true, NegatedName = "AreNotInternal", FormattedItem = nameof(Formattable),
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsInternalMember<TMember>(TMember member)
 		where TMember : MemberInfo
-		=> member is null ? ItemResults.Null : member.HasAccessModifier(AccessModifiers.Internal);
+		=> member.HasAccessModifier(AccessModifiers.Internal);
 }

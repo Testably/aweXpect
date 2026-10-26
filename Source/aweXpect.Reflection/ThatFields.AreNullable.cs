@@ -7,7 +7,8 @@ namespace aweXpect;
 public static partial class ThatFields
 {
 	[GenerateCollectionExpectation("AreNullable", "is nullable", "are nullable",
-		CollectionOverload = true, NegatedName = "AreNotNullable", FormattedItem = nameof(Formattable))]
-	private static PredicateResult IsNullableField(FieldInfo? field)
-		=> field is null ? ItemResults.Null : field.IsNullable();
+		CollectionOverload = true, NegatedName = "AreNotNullable", FormattedItem = nameof(Formattable),
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsNullableField(FieldInfo field)
+		=> field.IsNullable();
 }

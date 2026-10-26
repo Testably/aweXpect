@@ -9,8 +9,9 @@ public static partial class ThatTypes
 	[GenerateCollectionExpectation("AreWithinNamespace", "is within namespace {expected}",
 		"are within namespace {expected}",
 		CollectionOverload = true, NegatedName = "AreNotWithinNamespace",
-		Remarks = "Sub-namespaces of the <paramref name=\"expected\" /> namespace are included.")]
-	private static PredicateResult IsWithinNamespaceType(Type? type,
+		Remarks = "Sub-namespaces of the <paramref name=\"expected\" /> namespace are included.",
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsWithinNamespaceType(Type type,
 		[NegatedParameterName("unexpected")] string expected)
-		=> type is null ? ItemResults.Null : type.IsWithinNamespace(expected);
+		=> type.IsWithinNamespace(expected);
 }

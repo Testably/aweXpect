@@ -7,7 +7,8 @@ namespace aweXpect;
 public static partial class ThatProperties
 {
 	[GenerateCollectionExpectation("AreRequired", "is required", "are required",
-		CollectionOverload = true, NegatedName = "AreNotRequired", FormattedItem = nameof(Formattable))]
-	private static PredicateResult IsRequiredProperty(PropertyInfo? property)
-		=> property is null ? ItemResults.Null : property.IsRequired();
+		CollectionOverload = true, NegatedName = "AreNotRequired", FormattedItem = nameof(Formattable),
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsRequiredProperty(PropertyInfo property)
+		=> property.IsRequired();
 }

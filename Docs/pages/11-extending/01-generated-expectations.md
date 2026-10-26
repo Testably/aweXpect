@@ -208,6 +208,9 @@ await Expect.That(tracks).None().AreLongerThan(TimeSpan.FromMinutes(5));
   with a form of "be". The failure message lists the matching or not matching items and the collection.
 - A `null` item does not match, unless the item parameter is nullable: then the method decides. `[DisallowNull]` and
   `NullableOverload` work like for a subject.
+- `NullItemFailsBothWays = true` makes a `null` item fail the expectation and its negation instead, like a `null`
+  subject, e.g. `but for the item at index 1, it was <null>`. Use it when the question cannot be answered for a
+  `null` item, instead of a nullable item parameter that returns `PredicateResult.FailureBothWays` for it.
 - An item that the method [cannot answer](#questions-that-cannot-be-answered) fails the expectation and its negation,
   e.g. "but for the item at index 1, it had no duration", unless the items before already determine the outcome.
 - `Summary` and `Remarks` replace or extend the XML documentation, which is derived from the plural text.

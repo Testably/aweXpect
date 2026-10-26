@@ -7,7 +7,8 @@ namespace aweXpect;
 public static partial class ThatProperties
 {
 	[GenerateCollectionExpectation("AreVirtual", "is virtual", "are virtual",
-		CollectionOverload = true, NegatedName = "AreNotVirtual", FormattedItem = nameof(Formattable))]
-	private static PredicateResult IsVirtualProperty(PropertyInfo? property)
-		=> property is null ? ItemResults.Null : property.IsReallyVirtual();
+		CollectionOverload = true, NegatedName = "AreNotVirtual", FormattedItem = nameof(Formattable),
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsVirtualProperty(PropertyInfo property)
+		=> property.IsReallyVirtual();
 }

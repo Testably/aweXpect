@@ -18,9 +18,9 @@ namespace aweXpect.Core.Extending;
 ///     <see cref="PredicateResult" />, unless the items before already determine the outcome.
 ///     <para />
 ///     The expectation extends the items that a quantifier like <c>All()</c> or <c>AtLeast(2)</c> selects, of every
-///     kind of collection that can hold the item. A <see langword="null" /> item does not match, unless the item
-///     parameter is nullable: then the method decides, and <c>[DisallowNull]</c> on the parameter restores that a
-///     <see langword="null" /> item does not match.
+///     kind of collection that can hold the item. A <see langword="null" /> item does not match, or fails both ways
+///     with <see cref="NullItemFailsBothWays" />, unless the item parameter is nullable: then the method decides, and
+///     <c>[DisallowNull]</c> on the parameter restores that a <see langword="null" /> item does not match.
 ///     <para />
 ///     Unlike for <see cref="GenerateExpectationAttribute" />, the type of the item can be the only type parameter of
 ///     the method, when a constraint restricts it to reference types and no other parameter uses it. The expectations
@@ -81,6 +81,17 @@ public sealed class GenerateCollectionExpectationAttribute : Attribute
 	///     which a <see langword="null" /> item does not match. Defaults to <see langword="true" />.
 	/// </summary>
 	public bool NullableOverload { get; set; } = true;
+
+	/// <summary>
+	///     Whether a <see langword="null" /> item fails the expectation and its negation, like a <see langword="null" />
+	///     subject, instead of not matching, e.g. "but for the item at index 1, it was &lt;null&gt;".
+	/// </summary>
+	/// <remarks>
+	///     The item parameter must not be nullable, unless it is marked with <c>[DisallowNull]</c>, so that the method
+	///     never receives a <see langword="null" /> item. For a non-nullable value type, it applies to the collections
+	///     of its nullable type (see <see cref="NullableOverload" />).
+	/// </remarks>
+	public bool NullItemFailsBothWays { get; set; }
 
 	/// <summary>
 	///     Whether the expectation is also generated as an overload directly on the collection, where all items have to

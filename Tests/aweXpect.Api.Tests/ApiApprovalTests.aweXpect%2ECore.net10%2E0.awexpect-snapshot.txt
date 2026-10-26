@@ -1002,6 +1002,7 @@ namespace aweXpect.Core.Extending
         public string? FormattedItem { get; set; }
         public string Name { get; }
         public string? NegatedName { get; set; }
+        public bool NullItemFailsBothWays { get; set; }
         public bool NullableOverload { get; set; }
         public string PluralExpectationText { get; }
         public string? Remarks { get; set; }

@@ -7,7 +7,8 @@ namespace aweXpect;
 public static partial class ThatProperties
 {
 	[GenerateCollectionExpectation("AreReadable", "is readable", "are readable",
-		CollectionOverload = true, FormattedItem = nameof(Formattable))]
-	private static PredicateResult IsReadableProperty(PropertyInfo? property)
-		=> property is null ? ItemResults.Null : property.IsReadable();
+		CollectionOverload = true, FormattedItem = nameof(Formattable),
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsReadableProperty(PropertyInfo property)
+		=> property.IsReadable();
 }

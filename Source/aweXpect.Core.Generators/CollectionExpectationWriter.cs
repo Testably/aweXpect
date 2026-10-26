@@ -414,16 +414,20 @@ internal static class CollectionExpectationWriter
 		string result = $"{ExpectationWriter.ValueTask}<{PredicateResult}>";
 		// An asynchronous bool is awaited, as only the result itself converts to a PredicateResult.
 		bool awaitsBool = model.PredicateKind != PredicateKind.Synchronous && !model.ReturnsPredicateResult;
+		string nullItem = model.NullItemFailsBothWays
+			? $"{PredicateResult}.FailureBothWays({Literal("was <null>")})"
+			: "false";
 		string match = model.PredicateKind switch
 		{
-			_ when awaitsBool && item.FailsOnNull => $"item is null ? false : await {call}",
+			_ when awaitsBool && item.FailsOnNull => $"item is null ? {nullItem} : await {call}",
 			_ when awaitsBool => $"await {call}",
-			PredicateKind.Synchronous when item.FailsOnNull && !model.ReturnsPredicateResult
+			PredicateKind.Synchronous when item.FailsOnNull && !model.ReturnsPredicateResult &&
+			                               !model.NullItemFailsBothWays
 				=> $"new {result}(!(item is null) && {call})",
 			PredicateKind.Synchronous or PredicateKind.Task when item.FailsOnNull
-				=> $"item is null ? new {result}(false) : new {result}({call})",
+				=> $"item is null ? new {result}({nullItem}) : new {result}({call})",
 			PredicateKind.Synchronous or PredicateKind.Task => $"new {result}({call})",
-			_ when item.FailsOnNull => $"item is null ? new {result}(false) : {call}",
+			_ when item.FailsOnNull => $"item is null ? new {result}({nullItem}) : {call}",
 			_ => call,
 		};
 		sb.Append("\t\tprotected override ").Append(awaitsBool ? "async " : "").Append(result).Append(" IsMatch(")

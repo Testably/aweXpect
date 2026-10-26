@@ -7,7 +7,8 @@ namespace aweXpect;
 public static partial class ThatTypes
 {
 	[GenerateCollectionExpectation("AreRecordStructs", "is a record struct", "are record structs",
-		CollectionOverload = true, NegatedName = "AreNotRecordStructs")]
-	private static PredicateResult IsARecordStructType(Type? type)
-		=> type is null ? ItemResults.Null : type.IsRecordStruct();
+		CollectionOverload = true, NegatedName = "AreNotRecordStructs",
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsARecordStructType(Type type)
+		=> type.IsRecordStruct();
 }

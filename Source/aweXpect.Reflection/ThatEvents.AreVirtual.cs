@@ -7,7 +7,8 @@ namespace aweXpect;
 public static partial class ThatEvents
 {
 	[GenerateCollectionExpectation("AreVirtual", "is virtual", "are virtual",
-		CollectionOverload = true, NegatedName = "AreNotVirtual", FormattedItem = nameof(Formattable))]
-	private static PredicateResult IsVirtualEvent(EventInfo? @event)
-		=> @event is null ? ItemResults.Null : @event.IsReallyVirtual();
+		CollectionOverload = true, NegatedName = "AreNotVirtual", FormattedItem = nameof(Formattable),
+		NullItemFailsBothWays = true)]
+	private static PredicateResult IsVirtualEvent(EventInfo @event)
+		=> @event.IsReallyVirtual();
 }

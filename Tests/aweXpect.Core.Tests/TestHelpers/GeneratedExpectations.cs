@@ -89,6 +89,13 @@ internal static partial class ThatAccount
 	private static PredicateResult IsSenior(Account account)
 		=> account.Level < 0 ? PredicateResult.FailureBothWays("had no level") : account.Level > 3;
 
+	[GenerateCollectionExpectation("AreSuspended", "is suspended", "are suspended", NullItemFailsBothWays = true)]
+	private static async ValueTask<bool> IsSuspended(Account account)
+	{
+		await Task.Yield();
+		return account.Level == 0;
+	}
+
 	[GenerateExpectation("IsTheOwner", "is {not} the owner")]
 	private static bool IsTheOwner(Account account) => account.Name == "owner";
 
@@ -147,6 +154,9 @@ internal static partial class ThatLuckyNumber
 	[GenerateCollectionExpectation("AreOdd", "is odd", "are odd")]
 	[GenerateExpectation("Is{Not}Odd", "is {not} odd")]
 	private static bool IsOdd([DisallowNull] int? value) => value.GetValueOrDefault() % 2 != 0;
+
+	[GenerateCollectionExpectation("ArePrime", "is prime", "are prime", NullItemFailsBothWays = true)]
+	private static bool IsPrime(int value) => value is 2 or 3 or 5 or 7;
 
 	[GenerateCollectionExpectation("AreSingleDigits", "is a single digit", "are single digits")]
 	private static bool IsSingleDigit(int value)
