@@ -1,5 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<!-- Opts in to the experimental TestContext.Current of MSTest 4, through the targets that the package of aweXpect.Core imports. -->
+	<PropertyGroup>
+		<AweXpectExperimentalMSTest>true</AweXpectExperimentalMSTest>
+	</PropertyGroup>
+
+	<Import Project="..\..\..\Source\aweXpect.Core\buildTransitive\aweXpect.Core.targets"/>
+
 	<ItemGroup>
 		<PackageReference Include="MSTest.TestAdapter"/>
 		<PackageReference Include="MSTest.TestFramework"/>

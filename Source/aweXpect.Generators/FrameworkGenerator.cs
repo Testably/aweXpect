@@ -11,7 +11,7 @@ namespace aweXpect.Generators;
 ///     and qualifies every name with <c>global::</c>, because a namespace under <c>aweXpect.</c> would shadow it.
 /// </remarks>
 [Generator]
-public class FrameworkGenerator : IIncrementalGenerator
+public partial class FrameworkGenerator : IIncrementalGenerator
 {
 	/// <summary>
 	///     Reported for each generated adapter that is never used, because it cannot register itself and the
@@ -29,25 +29,34 @@ public class FrameworkGenerator : IIncrementalGenerator
 
 	void IIncrementalGenerator.Initialize(IncrementalGeneratorInitializationContext context)
 	{
+		IncrementalValueProvider<bool> allowsExperimentalMsTest = context.AnalyzerConfigOptionsProvider
+			.Select((options, _) =>
+				options.GlobalOptions.TryGetValue("build_property.AweXpectExperimentalMSTest", out string? value) &&
+				string.Equals(value, "true", StringComparison.OrdinalIgnoreCase));
 		IncrementalValueProvider<Settings> settings = context.CompilationProvider
-			.Select((c, _) => new Settings(
-				References(c, "Microsoft.VisualStudio.TestPlatform.TestFramework") ||
-				References(c, "MSTest.TestFramework"),
-				References(c, "nunit.framework"),
-				References(c, "TUnit.Core"),
-				References(c, "TUnit.Assertions"),
-				References(c, "xunit.assert"),
-				References(c, "xunit.v3.core"),
-				References(c, "xunit.v3.assert"),
-				HasAttribute(c, "System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute"),
-				HasAttribute(c, "System.Diagnostics.StackTraceHiddenAttribute"),
-				SupportsAdapterRegistration(c),
-				HasAttribute(c, "System.Runtime.CompilerServices.ModuleInitializerAttribute"),
-				HasModuleInitializerLanguageVersion(c),
-				CoreScansForAdapters(c)));
+			.Combine(allowsExperimentalMsTest)
+			.Select((x, _) => CreateSettings(x.Left, x.Right));
 
 		context.RegisterSourceOutput(settings, Emit);
 	}
+
+	private static Settings CreateSettings(Compilation c, bool allowsExperimentalMsTest)
+		=> new(
+			References(c, "Microsoft.VisualStudio.TestPlatform.TestFramework") ||
+			References(c, "MSTest.TestFramework"),
+			References(c, "nunit.framework"),
+			References(c, "TUnit.Core"),
+			References(c, "TUnit.Assertions"),
+			References(c, "xunit.assert"),
+			References(c, "xunit.v3.core"),
+			References(c, "xunit.v3.assert"),
+			HasAttribute(c, "System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute"),
+			HasAttribute(c, "System.Diagnostics.StackTraceHiddenAttribute"),
+			SupportsAdapterRegistration(c),
+			HasAttribute(c, "System.Runtime.CompilerServices.ModuleInitializerAttribute"),
+			HasModuleInitializerLanguageVersion(c),
+			CoreScansForAdapters(c),
+			TestContext(c, allowsExperimentalMsTest));
 
 	private static void Emit(SourceProductionContext context, Settings settings)
 	{
@@ -63,34 +72,41 @@ public class FrameworkGenerator : IIncrementalGenerator
 		}
 
 		List<(string File, string Name, string Declaration)> adapters = [];
+		TestContextSupport testContext = settings.TestContextSupport;
 
 		if (settings.HasMsTest)
 		{
-			adapters.Add(("MsTest", "MsTestAdapter", MsTestAdapter(attributes)));
+			adapters.Add(("MsTest", "MsTestAdapter", MsTestAdapter(attributes,
+				MsTestTestContext(testContext.IsDeclared, testContext.MsTest, testContext.AllowsExperimentalMsTest))));
 		}
 
 		if (settings.HasNunit)
 		{
-			adapters.Add(("Nunit", "NunitAdapter", NunitAdapter(attributes)));
+			adapters.Add(("Nunit", "NunitAdapter", NunitAdapter(attributes,
+				NunitTestContext(testContext.IsDeclared, testContext.Nunit))));
 		}
 
 		if (settings.HasTUnit)
 		{
-			adapters.Add(("TUnit", "TUnitAdapter", TUnitAdapter(attributes, settings.HasTUnitAssertions)));
+			adapters.Add(("TUnit", "TUnitAdapter", TUnitAdapter(attributes, settings.HasTUnitAssertions,
+				TUnitTestContext(testContext.IsDeclared, testContext.TUnit))));
 		}
 
 		if (settings.HasXunit2)
 		{
-			adapters.Add(("Xunit2", "Xunit2Adapter", Xunit2Adapter(attributes)));
+			adapters.Add(("Xunit2", "Xunit2Adapter", Xunit2Adapter(attributes,
+				TestContextMembers(testContext.IsDeclared, null, null, null))));
 		}
 
 		if (settings.HasXunit3Assert)
 		{
-			adapters.Add(("Xunit3", "Xunit3Adapter", Xunit3AssertAdapter(attributes)));
+			adapters.Add(("Xunit3", "Xunit3Adapter", Xunit3AssertAdapter(attributes,
+				Xunit3TestContext(testContext.IsDeclared, testContext.Xunit3))));
 		}
 		else if (settings.HasXunit3Core)
 		{
-			adapters.Add(("Xunit3", "Xunit3Adapter", Xunit3CoreAdapter(attributes)));
+			adapters.Add(("Xunit3", "Xunit3Adapter", Xunit3CoreAdapter(attributes,
+				Xunit3TestContext(testContext.IsDeclared, testContext.Xunit3))));
 		}
 
 		bool isRegistered = RegistersAdapters(context, settings, adapters.Select(x => x.Name));
@@ -210,196 +226,164 @@ public class FrameworkGenerator : IIncrementalGenerator
 		=> string.Join("\n", declaration.Split('\n')
 			.Select(line => line.TrimEnd('\r').Length == 0 ? line : "\t" + line));
 
-	private static string MsTestAdapter(string attributes) =>
-		$$"""
-		  	internal class MsTestAdapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
-		  	{
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.IsAvailable" />
-		  		public bool IsAvailable { get; } = true;
-
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Skip(string)" />
-		  		{{attributes}}public void Skip(string message)
-		  			=> throw new global::Microsoft.VisualStudio.TestTools.UnitTesting.AssertInconclusiveException(message);
-
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string)" />
-		  		{{attributes}}public void Fail(string message)
-		  			=> throw new global::Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException(message);
-
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string, global::System.Exception)" />
-		  		{{attributes}}public void Fail(string message, global::System.Exception innerException)
-		  			=> throw new global::Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException(message, innerException);
-
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Inconclusive(string)" />
-		  		{{attributes}}public void Inconclusive(string message)
-		  			=> throw new global::Microsoft.VisualStudio.TestTools.UnitTesting.AssertInconclusiveException(message);
-		  	}
-		  """;
-
-	private static string NunitAdapter(string attributes) =>
-		$$"""
-		  	internal class NunitAdapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
-		  	{
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.IsAvailable" />
-		  		public bool IsAvailable { get; } = true;
-
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Skip(string)" />
-		  		{{attributes}}public void Skip(string message)
-		  			=> throw new global::NUnit.Framework.IgnoreException(message);
-
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string)" />
-		  		{{attributes}}public void Fail(string message)
-		  			=> throw new global::NUnit.Framework.AssertionException(message);
-
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string, global::System.Exception)" />
-		  		{{attributes}}public void Fail(string message, global::System.Exception innerException)
-		  			=> throw new global::NUnit.Framework.AssertionException(message, innerException);
-
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Inconclusive(string)" />
-		  		{{attributes}}public void Inconclusive(string message)
-		  			=> throw new global::NUnit.Framework.InconclusiveException(message);
-		  	}
-		  """;
-
+	/// <summary>
+	///     Which test frameworks expose the running test, its cancellation token and attachments with the members that
+	///     the generated adapter uses, when the referenced aweXpect.Core declares them.
+	/// </summary>
 	/// <remarks>
-	///     A project that uses aweXpect instead of TUnit's assertions references only TUnit.Core, which is enough to skip
-	///     a test, so a failure then throws the exception of aweXpect.
+	///     Each framework is checked for the members themselves, as older versions lack them, e.g. MSTest before 4.2
+	///     has no <c>TestContext.Current</c> and NUnit 3 no <c>CancellationToken</c>, so the adapter of such a version
+	///     returns <see langword="false" /> instead. Every member and every named type that the generated code uses is
+	///     checked, with the type of each property, so that a test framework that removes or changes one degrades the
+	///     adapter instead of breaking the build of the consumer. A member or type that is marked as experimental, like
+	///     <c>TestContext.Current</c> of MSTest 4, or as obsolete, also on a containing type or the assembly, counts as
+	///     missing, as using it warns in the generated code, which fails the build of a consumer that treats warnings as
+	///     errors. Only the experimental members of MSTest are used when the consumer sets the MSBuild property
+	///     <c>AweXpectExperimentalMSTest</c>.
 	/// </remarks>
-	private static string TUnitAdapter(string attributes, bool hasAssertions)
+	private static TestContextSupport TestContext(Compilation c, bool allowsExperimentalMsTest)
 	{
-		string failException = hasAssertions
-			? "global::TUnit.Assertions.Exceptions.AssertionException"
-			: "global::aweXpect.FailException";
-		return $$"""
-		         	internal class TUnitAdapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
-		         	{
-		         		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.IsAvailable" />
-		         		public bool IsAvailable { get; } = true;
+		if (c.GetTypeByMetadataName("aweXpect.Core.Adapters.ITestFrameworkAdapter")?.GetMembers("TryGetCurrentTest")
+			    .IsEmpty != false ||
+		    c.GetTypeByMetadataName("aweXpect.Core.Adapters.RunningTest") is null)
+		{
+			return default;
+		}
 
-		         		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Skip(string)" />
-		         		{{attributes}}public void Skip(string message)
-		         			=> throw new global::TUnit.Core.Exceptions.SkipTestException(message);
-
-		         		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string)" />
-		         		{{attributes}}public void Fail(string message)
-		         			=> throw new {{failException}}(message);
-
-		         		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string, global::System.Exception)" />
-		         		{{attributes}}public void Fail(string message, global::System.Exception innerException)
-		         			=> throw new {{failException}}(message, innerException);
-
-		         		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Inconclusive(string)" />
-		         		{{attributes}}public void Inconclusive(string message)
-		         			=> throw new global::TUnit.Core.Exceptions.InconclusiveTestException(message, null);
-		         	}
-		         """;
+		return new TestContextSupport(true, allowsExperimentalMsTest, MsTestSupport(c, allowsExperimentalMsTest),
+			NunitSupport(c), TUnitSupport(c), Xunit3Support(c));
 	}
 
-	private static string Xunit2Adapter(string attributes) =>
-		$$"""
-		  	internal class Xunit2Adapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
-		  	{
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.IsAvailable" />
-		  		public bool IsAvailable { get; } = true;
+	/// <summary>
+	///     The type with the <paramref name="typeName" />, when the generated code may name it.
+	/// </summary>
+	private static INamedTypeSymbol? GetUsableType(Compilation c, string typeName)
+		=> c.GetTypeByMetadataName(typeName) is { } type && IsUsable(type) ? type : null;
 
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Skip(string)" />
-		  		{{attributes}}public void Skip(string message)
-		  			=> throw new global::aweXpect.SkipException($"SKIPPED: {message} (xunit v2 does not support skipping test)");
+	/// <summary>
+	///     The type of the instance property, when the generated code may access it.
+	/// </summary>
+	private static ITypeSymbol? GetPropertyType(ITypeSymbol? type, string propertyName)
+		=> GetMembers(type, propertyName).OfType<IPropertySymbol>().FirstOrDefault(x => !x.IsStatic && IsUsable(x))
+			?.Type;
 
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string)" />
-		  		{{attributes}}public void Fail(string message)
-		  			=> throw new global::Xunit.Sdk.XunitException(message);
+	/// <remarks>
+	///     Each property has the given type, written without its nullable annotation, as the generated code assigns or
+	///     passes it, or any type when it is <see langword="null" />, as the generated code only reads its members, which
+	///     are checked themselves.
+	/// </remarks>
+	private static bool HasProperties(ITypeSymbol? type, bool isStatic,
+		params (string Name, string? Type)[] properties)
+		=> type is not null && properties.All(property => GetMembers(type, property.Name)
+			.OfType<IPropertySymbol>().Any(x => x.IsStatic == isStatic && IsUsable(x) &&
+			                                    (property.Type is null || property.Type ==
+				                                    x.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))));
 
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string, global::System.Exception)" />
-		  		{{attributes}}public void Fail(string message, global::System.Exception innerException)
-		  			=> throw new global::Xunit.Sdk.XunitException(message, innerException);
+	/// <remarks>
+	///     The <paramref name="parameterTypes" /> are compared without their nullable annotation, as an older version
+	///     of the test framework may not annotate them.
+	/// </remarks>
+	private static bool HasMethod(ITypeSymbol? type, string methodName, bool isStatic,
+		params string[] parameterTypes)
+		=> GetMembers(type, methodName).OfType<IMethodSymbol>()
+			.Any(x => x.IsStatic == isStatic && IsUsable(x) &&
+			          x.Parameters.Select(p => p.Type.WithNullableAnnotation(NullableAnnotation.None).ToDisplayString())
+				          .SequenceEqual(parameterTypes.Select(t => t.TrimEnd('?'))));
 
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Inconclusive(string)" />
-		  		{{attributes}}public void Inconclusive(string message)
-		  			=> throw new global::aweXpect.InconclusiveException(message);
-		  	}
-		  """;
+	/// <summary>
+	///     The members with the <paramref name="name" />, including the inherited ones, as the generated code accesses
+	///     them through the <paramref name="type" />.
+	/// </summary>
+	/// <remarks>
+	///     A class is only searched with its base classes, as a member of an interface that it implements explicitly
+	///     cannot be accessed through it, and one that it implements implicitly is a member of the class itself.
+	/// </remarks>
+	private static IEnumerable<ISymbol> GetMembers(ITypeSymbol? type, string name)
+	{
+		if (type is null)
+		{
+			yield break;
+		}
 
-	private static string Xunit3CoreAdapter(string attributes) =>
-		$$"""
-		  	internal class Xunit3Adapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
-		  	{
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.IsAvailable" />
-		  		public bool IsAvailable { get; } = true;
+		for (ITypeSymbol? current = type; current is not null; current = current.BaseType)
+		{
+			foreach (ISymbol member in current.GetMembers(name))
+			{
+				yield return member;
+			}
+		}
 
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Skip(string)" />
-		  		{{attributes}}public void Skip(string message)
-		  			=> throw new global::aweXpect.SkipException($"$XunitDynamicSkip${message}");
+		if (type.TypeKind != TypeKind.Interface)
+		{
+			yield break;
+		}
 
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string)" />
-		  		{{attributes}}public void Fail(string message)
-		  			=> throw new XunitException(message);
+		foreach (INamedTypeSymbol @interface in type.AllInterfaces)
+		{
+			foreach (ISymbol member in @interface.GetMembers(name))
+			{
+				yield return member;
+			}
+		}
+	}
 
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string, global::System.Exception)" />
-		  		{{attributes}}public void Fail(string message, global::System.Exception innerException)
-		  			=> throw new XunitException(message, innerException);
+	/// <remarks>
+	///     A member is only usable when its containing types are, and the compiler also reports a type of an assembly
+	///     that is marked as experimental. With <paramref name="allowsExperimental" />, only the diagnostic
+	///     <c>MSTESTEXP</c> of MSTest is allowed, as the generated code suppresses only this one.
+	/// </remarks>
+	private static bool IsUsable(ISymbol symbol, bool allowsExperimental = false)
+		=> symbol.DeclaredAccessibility == Accessibility.Public &&
+		   !IsExperimentalOrObsolete(symbol, allowsExperimental) &&
+		   (symbol.ContainingType is { } containingType
+			   ? IsUsable(containingType, allowsExperimental)
+			   : symbol.ContainingAssembly is null ||
+			     !IsExperimentalOrObsolete(symbol.ContainingAssembly, allowsExperimental));
 
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Inconclusive(string)" />
-		  		{{attributes}}public void Inconclusive(string message)
-		  			=> throw new XunitTimeoutException(message);
+	/// <summary>
+	///     The members of an adapter that read the running test, when the referenced aweXpect.Core declares them, each
+	///     returning <see langword="false" /> without the implementation of its test framework.
+	/// </summary>
+	/// <remarks>
+	///     The implementations catch every exception of the test framework and return <see langword="false" />, as the
+	///     members are documented to never throw.
+	/// </remarks>
+	private static string TestContextMembers(bool isDeclared, string? tryGetCurrentTest,
+		string? tryGetCancellationToken, string? tryAddAttachment)
+	{
+		if (!isDeclared)
+		{
+			return string.Empty;
+		}
 
-		  		/// <summary>
-		  		///     Interface is required by xunit v3 to identify an assertion exception.
-		  		/// </summary>
-		  		private interface IAssertionException { }
+		return (tryGetCurrentTest ?? """
 
-		  #pragma warning disable S3871 // Exception types should be "public"
-		  		private sealed class XunitException : global::System.Exception, IAssertionException
-		  		{
-		  			public XunitException(string message) : base(message) { }
 
-		  			public XunitException(string message, global::System.Exception innerException) : base(message, innerException) { }
-		  		}
-		  #pragma warning restore S3871 // Exception types should be "public"
+		                             		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryGetCurrentTest(out global::aweXpect.Core.Adapters.RunningTest)" />
+		                             		public bool TryGetCurrentTest(out global::aweXpect.Core.Adapters.RunningTest currentTest)
+		                             		{
+		                             			currentTest = null;
+		                             			return false;
+		                             		}
+		                             """) +
+		       (tryGetCancellationToken ?? """
 
-		  #pragma warning disable S3871 // Exception types should be "public"
-		  		private sealed class XunitTimeoutException : global::aweXpect.InconclusiveException, ITestTimeoutException
-		  		{
-		  			public XunitTimeoutException(string message) : base(message) { }
-		  		}
-		  #pragma warning restore S3871 // Exception types should be "public"
 
-		  		private interface ITestTimeoutException { }
-		  	}
-		  """;
+		                                   		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryGetCancellationToken(out global::System.Threading.CancellationToken)" />
+		                                   		public bool TryGetCancellationToken(out global::System.Threading.CancellationToken cancellationToken)
+		                                   		{
+		                                   			cancellationToken = global::System.Threading.CancellationToken.None;
+		                                   			return false;
+		                                   		}
+		                                   """) +
+		       (tryAddAttachment ?? """
 
-	private static string Xunit3AssertAdapter(string attributes) =>
-		$$"""
-		  	internal class Xunit3Adapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
-		  	{
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.IsAvailable" />
-		  		public bool IsAvailable { get; } = true;
 
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Skip(string)" />
-		  		{{attributes}}public void Skip(string message)
-		  			=> throw new global::aweXpect.SkipException($"$XunitDynamicSkip${message}");
-
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string)" />
-		  		{{attributes}}public void Fail(string message)
-		  			=> throw new global::Xunit.Sdk.XunitException(message);
-
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string, global::System.Exception)" />
-		  		{{attributes}}public void Fail(string message, global::System.Exception innerException)
-		  			=> throw new global::Xunit.Sdk.XunitException(message, innerException);
-
-		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.Inconclusive(string)" />
-		  		{{attributes}}public void Inconclusive(string message)
-		  			=> throw new XunitTimeoutException(message);
-
-		  #pragma warning disable S3871 // Exception types should be "public"
-		  		private sealed class XunitTimeoutException : global::aweXpect.InconclusiveException, ITestTimeoutException
-		  		{
-		  			public XunitTimeoutException(string message) : base(message) { }
-		  		}
-		  #pragma warning restore S3871 // Exception types should be "public"
-
-		  		private interface ITestTimeoutException { }
-		  	}
-		  """;
+		                            		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.TryAddAttachment(string, string)" />
+		                            		public bool TryAddAttachment(string filePath, string description)
+		                            			=> false;
+		                            """);
+	}
 
 	private static bool HasAttribute(Compilation c, string attributeName)
 	{
@@ -423,5 +407,28 @@ public class FrameworkGenerator : IIncrementalGenerator
 		bool HasTestFrameworkRegistry,
 		bool HasModuleInitializerAttribute,
 		bool CanCompileModuleInitializer,
-		bool IsAdapterFoundByScan);
+		bool IsAdapterFoundByScan,
+		TestContextSupport TestContextSupport);
+
+	/// <summary>
+	///     Whether aweXpect.Core declares the members of an adapter that read the running test, and what each test
+	///     framework exposes, see <see cref="TestContext(Compilation, bool)" />.
+	/// </summary>
+	private readonly record struct TestContextSupport(
+		bool IsDeclared,
+		bool AllowsExperimentalMsTest,
+		FrameworkSupport MsTest,
+		FrameworkSupport Nunit,
+		FrameworkSupport TUnit,
+		FrameworkSupport Xunit3);
+
+	/// <summary>
+	///     Whether a test framework exposes the running test, the arguments of its test class, its cancellation token
+	///     and attachments.
+	/// </summary>
+	private readonly record struct FrameworkSupport(
+		bool CurrentTest,
+		bool ClassArguments,
+		bool CancellationToken,
+		bool Attachment);
 }

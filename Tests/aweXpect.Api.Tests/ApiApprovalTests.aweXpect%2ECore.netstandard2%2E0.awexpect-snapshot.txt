@@ -726,10 +726,32 @@ namespace aweXpect.Core.Adapters
         void Inconclusive(string message);
         [System.Diagnostics.CodeAnalysis.DoesNotReturn]
         void Skip(string message);
+        bool TryAddAttachment(string filePath, string? description);
+        bool TryGetCancellationToken(out System.Threading.CancellationToken cancellationToken);
+        bool TryGetCurrentTest([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out aweXpect.Core.Adapters.RunningTest? currentTest);
+    }
+    public sealed class RunningTest
+    {
+        public RunningTest(aweXpect.Core.Adapters.TestIdentity identity, string? id, string? displayName, int retryAttempt) { }
+        public string? DisplayName { get; }
+        public string? Id { get; }
+        public aweXpect.Core.Adapters.TestIdentity Identity { get; }
+        public int RetryAttempt { get; }
     }
     public static class TestFrameworkRegistry
     {
         public static void Register(aweXpect.Core.Adapters.ITestFrameworkAdapter testFrameworkAdapter, bool overwrite = true) { }
+        public static bool TryAddAttachment(string filePath, string? description = null) { }
+        public static bool TryGetCancellationToken(out System.Threading.CancellationToken cancellationToken) { }
+        public static bool TryGetCurrentTest([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out aweXpect.Core.Adapters.RunningTest? currentTest) { }
+    }
+    public sealed class TestIdentity
+    {
+        public TestIdentity(string className, System.Collections.Generic.IReadOnlyList<object?> classArguments, string methodName, System.Collections.Generic.IReadOnlyList<object?> arguments) { }
+        public System.Collections.Generic.IReadOnlyList<object?> Arguments { get; }
+        public System.Collections.Generic.IReadOnlyList<object?> ClassArguments { get; }
+        public string ClassName { get; }
+        public string MethodName { get; }
     }
 }
 namespace aweXpect.Core.Constraints

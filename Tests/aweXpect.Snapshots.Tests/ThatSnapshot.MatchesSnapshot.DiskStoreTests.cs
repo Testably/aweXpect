@@ -332,12 +332,12 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
-			public async Task WhenNamedAfterArguments_ShouldAppendTheirNamesAndValuesToTheFileNames()
+			public async Task WhenNamedAfterArguments_ShouldAppendTheirValuesToTheFileNames()
 			{
 				using SnapshotDirectory directory = new();
-				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.Artist=AC%2FDC_year=1979.awexpect-snapshot.txt");
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.AC%2FDC_1979.awexpect-snapshot.txt");
 				string pendingPath =
-					Path.Combine(directory.Path, "MyTests.MyTest.Artist=AC%2FDC_year=1979.awexpect-snapshot.pending.txt");
+					Path.Combine(directory.Path, "MyTests.MyTest.AC%2FDC_1979.awexpect-snapshot.pending.txt");
 				(string Artist, string Album) release = ("AC/DC", "Highway to Hell");
 				int year = 1979;
 

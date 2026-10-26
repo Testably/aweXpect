@@ -247,6 +247,13 @@ A snapshot that cannot be read, e.g. because another process locks it, fails the
 file that cannot be written is named as such in the failure, and a leftover pending file that cannot be deleted does not
 fail a matching snapshot.
 
+To review a mismatch after a run on a build server, attach its pending file to the result of the test, when the test
+framework supports attachments (NUnit, TUnit, xUnit v3, and MSTest 4 with `AweXpectExperimentalMSTest`):
+
+```csharp
+Customize.aweXpect.Snapshots().AttachPendingFiles.Set(true); // for this async flow
+```
+
 A snapshot cannot be negated: `DoesNotComplyWith(it => it.MatchesSnapshot())` always fails, as accepting the pending
 snapshot would turn any success into a failure. Nothing is written for a negated snapshot, also not while accepting
 changes.

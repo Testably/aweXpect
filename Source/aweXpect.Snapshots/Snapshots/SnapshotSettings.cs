@@ -13,6 +13,7 @@ namespace aweXpect.Snapshots;
 internal sealed record SnapshotSettings(
 	SnapshotStore Store,
 	SnapshotAcceptance? Acceptance,
+	bool AttachPendingFiles,
 	IReadOnlyList<SnapshotRule> Rules,
 	IReadOnlyList<SnapshotReporter> Reporters,
 	IReadOnlyList<SnapshotComparerRegistration> Comparers)
@@ -21,6 +22,7 @@ internal sealed record SnapshotSettings(
 	{
 		SnapshotsCustomizationExtensions.SnapshotsCustomization customization = Customize.aweXpect.Snapshots();
 		return new SnapshotSettings(customization.Store.Get(), customization.Acceptance.Get(),
-			customization.Rules.Get(), customization.Reporters.Get(), customization.Comparers.Get());
+			customization.AttachPendingFiles.Get(), customization.Rules.Get(), customization.Reporters.Get(),
+			customization.Comparers.Get());
 	}
 }

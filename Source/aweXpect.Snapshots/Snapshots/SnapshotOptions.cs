@@ -15,6 +15,7 @@ internal sealed class SnapshotOptions
 	private static readonly char[] LineBreaks = ['\r', '\n',];
 	private readonly string _memberName;
 	private readonly string _sourceFile;
+	private readonly string? _testArgumentsName;
 	private readonly string?[] _variantParts = new string?[3];
 	private string _extension;
 	private bool _isExtensionSet;
@@ -22,7 +23,8 @@ internal sealed class SnapshotOptions
 	private string? _variant;
 
 	/// <remarks>
-	///     The snapshot is claimed right away, see <see cref="ClaimedSnapshots" />.
+	///     The snapshot is claimed right away, see <see cref="ClaimedSnapshots" />, with the name of the arguments of the
+	///     running test, see <see cref="SnapshotTestArguments" />.
 	/// </remarks>
 	public SnapshotOptions(string sourceFile, string memberName, string? extension = null)
 	{
@@ -30,6 +32,8 @@ internal sealed class SnapshotOptions
 		_memberName = memberName;
 		_extension = extension ?? SnapshotId.DefaultExtension;
 		_isExtensionSet = extension is not null;
+		_testArgumentsName = SnapshotTestArguments.GetName();
+		_name = _testArgumentsName is null ? null : SnapshotTestArguments.Shorten(_testArgumentsName);
 		ClaimedSnapshots.Claim(Id);
 	}
 
@@ -91,7 +95,8 @@ internal sealed class SnapshotOptions
 	public List<SnapshotRule> Rules { get; } = new();
 
 	/// <remarks>
-	///     A new name moves the claim of the snapshot to the named one.
+	///     A new name moves the claim of the snapshot to the named one. A long name is shortened, see
+	///     <see cref="SnapshotTestArguments.Shorten" />.
 	/// </remarks>
 	public string? Name
 	{
@@ -99,10 +104,20 @@ internal sealed class SnapshotOptions
 		set
 		{
 			ClaimedSnapshots.Release(Id);
-			_name = value;
+			_name = value is null ? null : SnapshotTestArguments.Shorten(value);
 			ClaimedSnapshots.Claim(Id);
 		}
 	}
+
+	/// <summary>
+	///     Names one of several snapshots of the test case after the name of the arguments of the running test, when the
+	///     snapshot is named after them, e.g. <c>Abbey Road_1969_cover</c>.
+	/// </summary>
+	/// <remarks>
+	///     It always starts from the name of the arguments, so that a later name replaces an earlier one.
+	/// </remarks>
+	public void NameWithinTestCase(string name)
+		=> Name = _testArgumentsName is null ? name : $"{_testArgumentsName}_{name}";
 
 	/// <summary>
 	///     Makes the snapshot unique for the <paramref name="value" /> of the <paramref name="part" /> of the environment.

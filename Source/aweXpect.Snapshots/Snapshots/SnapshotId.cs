@@ -12,8 +12,9 @@ namespace aweXpect.Snapshots;
 /// </param>
 /// <param name="MemberName">The name of the test method.</param>
 /// <param name="Name">
-///     The name from <c>.Named(…)</c> or <c>.NamedAfter(…)</c>, which tells several snapshots of the same test method apart, or
-///     <see langword="null" />.
+///     The name from <c>.Named(…)</c> or <c>.NamedAfter(…)</c>, or from the arguments of the running test with
+///     <c>Customize.aweXpect.Snapshots().NamedAfterTestArguments</c>, which tells several snapshots of the same test method
+///     apart, or <see langword="null" />.
 /// </param>
 public sealed record SnapshotId(string SourceFile, string MemberName, string? Name = null)
 {

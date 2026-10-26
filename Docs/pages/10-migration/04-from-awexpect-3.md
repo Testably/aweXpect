@@ -278,3 +278,6 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   `TResult` for the type returned after an option, e.g. `CollectionOrderResult<TType, TThat, TMember>`.
 - `[GenerateCollectionExpectation]` also generates the expectation directly on a collection with `CollectionOverload`
   and `NegatedName`.
+- `ITestFrameworkAdapter` has the new members `TryGetCurrentTest`, `TryGetCancellationToken` and `TryAddAttachment`,
+  so an adapter of your own has to implement them; each returns `false` when the test framework does not support it.
+  See [the running test](../11-extending/08-initialization.md#the-running-test).

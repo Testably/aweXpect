@@ -1,4 +1,7 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using aweXpect.Core.Initialization;
 
 namespace aweXpect.Core.Adapters;
 
@@ -34,6 +37,43 @@ public static class TestFrameworkRegistry
 	/// </remarks>
 	public static void Register(ITestFrameworkAdapter testFrameworkAdapter, bool overwrite = true)
 		=> Instance.Add(testFrameworkAdapter, overwrite);
+
+	/// <summary>
+	///     Returns the test that is running in the current execution context, from the adapter that reports the test
+	///     results.
+	/// </summary>
+	/// <remarks>
+	///     Returns <see langword="false" /> when no adapter is registered, its test framework does not expose the running
+	///     test, no test is running, e.g. in a setup of the whole assembly, or the adapter throws. The adapter is resolved
+	///     when first needed and then cached, but the running test is read from it on every call.
+	/// </remarks>
+	public static bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
+		=> AweXpectInitialization.State.Value.TryGetCurrentTest(out currentTest);
+
+	/// <summary>
+	///     Returns the token with which the test framework cancels the running test, from the adapter that reports the
+	///     test results.
+	/// </summary>
+	/// <remarks>
+	///     Returns <see langword="false" /> when no adapter is registered, its test framework does not expose the token,
+	///     no test is running, or the adapter throws. Expectations do not observe it unless
+	///     <c>Customize.aweXpect.Settings().TestCancellation</c> is set to <c>TestCancellation.FromCancellationToken(…)</c>
+	///     with it.
+	/// </remarks>
+	public static bool TryGetCancellationToken(out CancellationToken cancellationToken)
+		=> AweXpectInitialization.State.Value.TryGetCancellationToken(out cancellationToken);
+
+	/// <summary>
+	///     Attaches the file at the <paramref name="filePath" /> to the result of the running test, with the adapter that
+	///     reports the test results.
+	/// </summary>
+	/// <remarks>
+	///     Returns <see langword="false" /> when the <paramref name="filePath" /> is <see langword="null" />, no adapter
+	///     is registered, its test framework does not support attachments, no test is running, or the adapter throws.
+	///     Some test frameworks only read the file when the test ends, so it must still exist then.
+	/// </remarks>
+	public static bool TryAddAttachment(string filePath, string? description = null)
+		=> filePath is not null && AweXpectInitialization.State.Value.TryAddAttachment(filePath, description);
 
 	internal sealed class Registration
 	{

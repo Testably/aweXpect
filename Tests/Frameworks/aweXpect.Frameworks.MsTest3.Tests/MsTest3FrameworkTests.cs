@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
+using aweXpect.Core.Adapters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace aweXpect.Frameworks.MsTest3.Tests;
@@ -59,5 +61,34 @@ public sealed class MsTestFrameworkTests
 
 		await Expect.That(version).StartsWith("3.")
 			.Because("this project tests the adapter against MSTest 3");
+	}
+
+	[TestMethod]
+	public async Task TryAddAttachment_ShouldNotBeSupported()
+	{
+		bool isAttached = TestFrameworkRegistry.TryAddAttachment("snapshot.txt", "the received snapshot");
+
+		await Expect.That(isAttached).IsFalse()
+			.Because("MSTest 3 has no ambient context of the running test");
+	}
+
+	[TestMethod]
+	public async Task TryGetCancellationToken_ShouldNotBeSupported()
+	{
+		bool hasToken = TestFrameworkRegistry.TryGetCancellationToken(out CancellationToken cancellationToken);
+
+		await Expect.That(hasToken).IsFalse()
+			.Because("MSTest 3 has no ambient context of the running test");
+		await Expect.That(cancellationToken).IsEqualTo(CancellationToken.None);
+	}
+
+	[TestMethod]
+	public async Task TryGetCurrentTest_ShouldNotFindTheRunningTest()
+	{
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
+
+		await Expect.That(isRunning).IsFalse()
+			.Because("MSTest 3 has no TestContext.Current, so the running test is only known to a TestContext that is injected into the test class");
+		await Expect.That(currentTest).IsNull();
 	}
 }

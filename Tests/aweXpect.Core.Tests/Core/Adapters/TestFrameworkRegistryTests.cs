@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using aweXpect.Core.Adapters;
 
 namespace aweXpect.Core.Tests.Core.Adapters;
@@ -87,6 +88,15 @@ public sealed class TestFrameworkRegistryTests
 		await That(registration.TestFrameworkAdapter).IsNull();
 	}
 
+	[Test]
+	public async Task TryAddAttachment_WithNullFilePath_ShouldReturnFalse()
+	{
+		bool isAttached = TestFrameworkRegistry.TryAddAttachment(null!);
+
+		await That(isAttached).IsFalse()
+			.Because("like the other Try methods, it never throws");
+	}
+
 	private sealed class AvailableAdapter : ITestFrameworkAdapter
 	{
 		public bool IsAvailable => true;
@@ -103,6 +113,20 @@ public sealed class TestFrameworkRegistryTests
 
 		[DoesNotReturn]
 		public void Skip(string message) => throw new NotSupportedException(message);
+
+		public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
+		{
+			currentTest = null;
+			return false;
+		}
+
+		public bool TryGetCancellationToken(out CancellationToken cancellationToken)
+		{
+			cancellationToken = CancellationToken.None;
+			return false;
+		}
+
+		public bool TryAddAttachment(string filePath, string? description) => false;
 #pragma warning restore CS0436
 	}
 
@@ -122,6 +146,20 @@ public sealed class TestFrameworkRegistryTests
 
 		[DoesNotReturn]
 		public void Skip(string message) => throw new NotSupportedException(message);
+
+		public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
+		{
+			currentTest = null;
+			return false;
+		}
+
+		public bool TryGetCancellationToken(out CancellationToken cancellationToken)
+		{
+			cancellationToken = CancellationToken.None;
+			return false;
+		}
+
+		public bool TryAddAttachment(string filePath, string? description) => false;
 #pragma warning restore CS0436
 	}
 }

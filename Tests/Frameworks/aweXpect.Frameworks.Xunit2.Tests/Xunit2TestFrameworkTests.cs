@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using aweXpect.Core.Adapters;
 using Xunit;
 using Xunit.Sdk;
 
@@ -55,5 +57,34 @@ public sealed class Xunit2TestFrameworkTests
 
 		await Expect.That(version?.Major).IsEqualTo(2)
 			.Because("this project tests the adapter against xunit v2");
+	}
+
+	[Fact]
+	public async Task TryAddAttachment_ShouldNotBeSupported()
+	{
+		bool isAttached = TestFrameworkRegistry.TryAddAttachment("snapshot.txt", "the received snapshot");
+
+		await Expect.That(isAttached).IsFalse()
+			.Because("xunit v2 has no ambient context of the running test");
+	}
+
+	[Fact]
+	public async Task TryGetCancellationToken_ShouldNotBeSupported()
+	{
+		bool hasToken = TestFrameworkRegistry.TryGetCancellationToken(out CancellationToken cancellationToken);
+
+		await Expect.That(hasToken).IsFalse()
+			.Because("xunit v2 has no ambient context of the running test");
+		await Expect.That(cancellationToken).IsEqualTo(CancellationToken.None);
+	}
+
+	[Fact]
+	public async Task TryGetCurrentTest_ShouldNotFindTheRunningTest()
+	{
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
+
+		await Expect.That(isRunning).IsFalse()
+			.Because("xunit v2 has no ambient context of the running test");
+		await Expect.That(currentTest).IsNull();
 	}
 }

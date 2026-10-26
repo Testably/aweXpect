@@ -1,0 +1,60 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace aweXpect.Core.Adapters;
+
+/// <summary>
+///     Identifies a test by its class, its method and the arguments of the test class and the test case, which are the
+///     same in every run.
+/// </summary>
+public sealed class TestIdentity
+{
+	/// <summary>
+	///     Identifies a test.
+	/// </summary>
+	/// <param name="className">The full name of the test class, as the test framework reports it.</param>
+	/// <param name="classArguments">
+	///     The arguments of the test class, which are empty for a test class without parameters.
+	/// </param>
+	/// <param name="methodName">The name of the test method.</param>
+	/// <param name="arguments">The arguments of the test case, which are empty for a test without parameters.</param>
+	public TestIdentity(string className, IReadOnlyList<object?> classArguments, string methodName,
+		IReadOnlyList<object?> arguments)
+	{
+		ClassName = className ?? throw Tracing.WriteException(new ArgumentNullException(nameof(className)));
+		ClassArguments = classArguments ??
+		                 throw Tracing.WriteException(new ArgumentNullException(nameof(classArguments)));
+		MethodName = methodName ?? throw Tracing.WriteException(new ArgumentNullException(nameof(methodName)));
+		Arguments = arguments ?? throw Tracing.WriteException(new ArgumentNullException(nameof(arguments)));
+	}
+
+	/// <summary>
+	///     The full name of the test class, as the test framework reports it, e.g. <c>MyTests.AlbumTests</c>.
+	/// </summary>
+	public string ClassName { get; }
+
+	/// <summary>
+	///     The arguments of the test class, e.g. of a parameterized fixture, in the order of the parameters of its
+	///     constructor; empty for a test class without parameters or when the test framework does not report them.
+	/// </summary>
+	/// <remarks>
+	///     They can also be instances that the test framework injects, e.g. a shared fixture, and are the instances of
+	///     the test framework, so do not modify the list or its values.
+	/// </remarks>
+	public IReadOnlyList<object?> ClassArguments { get; }
+
+	/// <summary>
+	///     The name of the test method.
+	/// </summary>
+	public string MethodName { get; }
+
+	/// <summary>
+	///     The arguments of the test case, e.g. of a parameterized test, in the order of the parameters of the test
+	///     method; empty for a test without parameters.
+	/// </summary>
+	/// <remarks>
+	///     They are the instances that the test framework passes to the test, usually in its own array, so do not modify
+	///     the list or its values.
+	/// </remarks>
+	public IReadOnlyList<object?> Arguments { get; }
+}

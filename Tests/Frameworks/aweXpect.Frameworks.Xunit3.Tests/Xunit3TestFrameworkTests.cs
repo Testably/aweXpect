@@ -1,6 +1,9 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using aweXpect.Core.Adapters;
 using Xunit;
 using Xunit.Sdk;
 
@@ -49,5 +52,80 @@ public class Xunit3TestFrameworkTests
 
 		await Expect.That(Act).Throws<SkipException>()
 			.WithMessage("$XunitDynamicSkip$my message");
+	}
+
+	[Fact]
+	public async Task TryAddAttachment_ShouldAttachTheFile()
+	{
+		string filePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.txt");
+		File.WriteAllText(filePath, "received");
+		try
+		{
+			bool isAttached = TestFrameworkRegistry.TryAddAttachment(filePath, "the received snapshot");
+
+			await Expect.That(isAttached).IsTrue();
+			await Expect.That(TestContext.Current.Attachments!.ContainsKey(Path.GetFileName(filePath))).IsTrue()
+				.Because("xunit v3 attaches the content of the file under its name, so it can be deleted right away");
+		}
+		finally
+		{
+			File.Delete(filePath);
+		}
+	}
+
+	[Fact]
+	public async Task TryAddAttachment_WhenFileDoesNotExist_ShouldReturnFalse()
+	{
+		string filePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.txt");
+
+		bool isAttached = TestFrameworkRegistry.TryAddAttachment(filePath, "the received snapshot");
+
+		await Expect.That(isAttached).IsFalse()
+			.Because("xunit v3 cannot read a missing file, which the adapter catches");
+	}
+
+	[Fact]
+	public async Task TryGetCancellationToken_ShouldReturnTheTokenOfTheTest()
+	{
+		bool hasToken = TestFrameworkRegistry.TryGetCancellationToken(out CancellationToken cancellationToken);
+
+		await Expect.That(hasToken).IsTrue();
+		await Expect.That(cancellationToken).IsEqualTo(TestContext.Current.CancellationToken);
+	}
+
+	[Theory]
+	[InlineData("Abbey Road", 1969)]
+	[InlineData("Revolver", 1966)]
+	public async Task TryGetCurrentTest_ShouldReturnTheArgumentsOfTheTestCase(string title, int year)
+	{
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
+
+		await Expect.That(isRunning).IsTrue()
+			.Because("xunit v3 exposes the running test");
+		await Expect.That(currentTest!.Identity.ClassName).IsEqualTo(typeof(Xunit3TestFrameworkTests).FullName);
+		await Expect.That(currentTest.Identity.MethodName).IsEqualTo(nameof(TryGetCurrentTest_ShouldReturnTheArgumentsOfTheTestCase));
+		await Expect.That(currentTest.Identity.Arguments).IsEqualTo(new object?[] { title, year, });
+	}
+
+	[Fact]
+	public async Task TryGetCurrentTest_ShouldReturnTheIdAndTheDisplayName()
+	{
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
+
+		await Expect.That(isRunning).IsTrue();
+		await Expect.That(currentTest!.Id).IsEqualTo(TestContext.Current.Test!.UniqueID);
+		await Expect.That(currentTest.DisplayName).IsEqualTo(TestContext.Current.Test.TestDisplayName);
+		await Expect.That(currentTest.RetryAttempt).IsEqualTo(0)
+			.Because("xunit v3 does not retry tests");
+	}
+
+	[Fact]
+	public async Task TryGetCurrentTest_WithoutParameters_ShouldReturnNoArguments()
+	{
+		bool isRunning = TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest);
+
+		await Expect.That(isRunning).IsTrue();
+		await Expect.That(currentTest!.Identity.MethodName).IsEqualTo(nameof(TryGetCurrentTest_WithoutParameters_ShouldReturnNoArguments));
+		await Expect.That(currentTest.Identity.Arguments).IsEmpty();
 	}
 }

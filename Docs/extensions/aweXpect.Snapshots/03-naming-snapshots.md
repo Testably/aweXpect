@@ -21,6 +21,11 @@ applies to several snapshots in one test method. Characters that a file name can
 `.Named("AC/DC")` is stored in `ArtistTests.Describes.AC%2FDC.awexpect-snapshot.txt`. The same holds for `@`, which
 separates the environment (see below).
 
+A name longer than 64 characters in the file name, where each escaped character takes three, is shortened to 55
+characters, followed by `~` and a hash of the whole name, e.g.
+`Sgt. Pepper's Lonely Hearts Club Band (Remastered Sup~e0c652ac`, so that the path of the snapshot stays short enough
+for every file system. This applies to every name, also to one from `.Named(…)`.
+
 A snapshot that was already used for another value in the same test run fails, so that the cases cannot overwrite each
 other's pending snapshot:
 
@@ -30,7 +35,10 @@ matches the snapshot "/src/Tests/AlbumTests.Describes.awexpect-snapshot.txt",
 but the snapshot was already used for another value in this test run, so name each one with .Named(…) or .NamedAfter(…)
 ```
 
-The same value again is allowed, so that a retried or repeated test still compares with its snapshot.
+The same value again is allowed, so that a retried or repeated test still compares with its snapshot. When the test
+framework reports retries (NUnit and TUnit), a retry may also use another value than its failed attempt. NUnit also
+counts the runs of `[Repeat]` as retries, so while accepting, a repeated test whose value changes keeps the value of
+its last run instead of failing.
 
 Names that only differ in case, e.g. `.Named("Live")` and `.Named("live")`, fail as well, also for the same value, as
 they are the same file on Windows and macOS but two files on Linux:
@@ -46,8 +54,8 @@ argument: `MatchesSnapshot("login")` throws an `ArgumentException` that points t
 
 ## Naming after the arguments
 
-`.NamedAfter(…)` names the snapshot after up to four arguments of the test. The compiler passes the name of each
-argument, so it works with every test framework and under Native AOT:
+`.NamedAfter(…)` names the snapshot after any number of arguments of the test, which works with every test framework
+and under Native AOT:
 
 ```csharp
 [Theory]
@@ -61,10 +69,86 @@ public async Task Describes(string title, int year)
 }
 ```
 
-Each argument is written as `<name>=<value>`, separated by `_`, e.g.
-`AlbumTests.Describes.title=Abbey Road_year=1969.awexpect-snapshot.txt`. A member access is named like `nameof`, so
-`.NamedAfter(album.Title)` gives `Title=Abbey Road`; any other expression is used as written. Values are written in
-the invariant culture, `null` as `null`, and escaped like any other name.
+The values are written in the invariant culture and separated by `_`, e.g.
+`AlbumTests.Describes.Abbey Road_1969.awexpect-snapshot.txt`. The name holds only the values, so that renaming a
+parameter keeps the snapshot, and it is escaped and shortened like any other name:
+
+- `null` is written as `null` and an empty string as `""`.
+- A `double` or `float` is written with the fewest digits that round-trip, the same on .NET Framework and .NET, e.g.
+  `0.3333333333333333` for `1.0 / 3`.
+- A date or time is written in ISO 8601, e.g. `1969-09-26T00:00:00.0000000`.
+- A collection, tuple, record or other object is written like in a snapshot, e.g. `[1, 2, 3]` or
+  `(4.5, "Something")`, with the items of a set sorted. An object with its own `ToString()` is written by it, any other
+  one with its members.
+
+## Naming after the test case
+
+:::note[Experimental]
+This setting is a proposal and off by default, as it changes the snapshot of every parameterized test whose cases
+shared one so far.
+:::
+
+With `NamedAfterTestArguments`, each snapshot of a parameterized test is named after the arguments of the running test
+case, so that its cases are kept apart without `.Named(…)` or `.NamedAfter(…)`:
+
+```csharp
+Customize.aweXpect.Snapshots().NamedAfterTestArguments.Set(true); // for this async flow
+```
+
+```csharp
+[Test]
+[Arguments("Abbey Road", 1969)]
+[Arguments("Let It Be", 1970)]
+public async Task Describes(string title, int year)
+{
+    string description = Describe(new Album(title, year));
+
+    await Expect.That(description).MatchesSnapshot();
+}
+```
+
+The arguments are written like those of `.NamedAfter(…)`, e.g.
+`AlbumTests.Describes.Abbey Road_1969.awexpect-snapshot.txt`, and an injected `CancellationToken` is skipped. A test
+without parameters keeps its snapshot.
+
+The arguments of a parameterized test class come first, e.g. `de-DE_Abbey Road` for NUnit `[TestFixture("de-DE")]` or
+TUnit `[Arguments("de-DE")]` on the class, so that its instances are kept apart as well. Only values are included, e.g.
+strings, numbers, dates or collections of them, so that an object that the test framework injects, e.g. a shared
+fixture, is skipped. xUnit v3 and MSTest have no arguments of the test class, and NUnit 3 does not expose them. The
+arguments of the test method are all written, so name a test with `.Named(…)` or `.NamedAfter(…)` when the test
+framework injects an object into one of its parameters, e.g. with TUnit `[ClassDataSource]`.
+
+`.Named(…)` is appended to the arguments, e.g. `.Named("cover")` gives `Abbey Road_1969_cover`, so that each case can
+hold several snapshots, while `.NamedAfter(…)` replaces them. Two cases whose arguments are written alike, e.g. two
+objects whose own `ToString()` returns the same text, share a snapshot and fail like any snapshot that is used for
+another value.
+
+The name has to be the same in every run, so name a test with `.Named(…)` or `.NamedAfter(…)` instead when one of its
+arguments is written differently each time, e.g. a `Guid.NewGuid()`, a `DateTime.Now`, a mock or any other object whose
+`ToString()` contains a random value or a hash code. Otherwise each run looks for another snapshot and fails, as it
+does not exist yet. When the `ToString()` of an argument throws, the name holds the exception like a snapshot would.
+
+The running test is only known when the test framework exposes it:
+
+| Test framework | Supported    | Reason                                                                         |
+|----------------|--------------|--------------------------------------------------------------------------------|
+| NUnit 3 to 5   | yes          | `TestContext.CurrentContext.Test`                                              |
+| TUnit          | yes          | `TestContext.Current`                                                          |
+| xUnit v3       | yes          | `TestContext.Current.Test`                                                     |
+| MSTest 4       | when enabled | `TestContext.Current` is experimental, see below                               |
+| MSTest 3       | no           | `TestContext.Current` is missing                                               |
+| xUnit v2       | no           | there is no context of the running test                                        |
+
+MSTest 4 marks `TestContext.Current` as experimental, so it is only used when the test project opts in, which also
+suppresses the diagnostic `MSTESTEXP` in the generated code:
+
+```xml
+<PropertyGroup>
+  <AweXpectExperimentalMSTest>true</AweXpectExperimentalMSTest>
+</PropertyGroup>
+```
+
+Without it, the snapshot keeps the name of the test method, as without the setting.
 
 ## Snapshots per environment
 

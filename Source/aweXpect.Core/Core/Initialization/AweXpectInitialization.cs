@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using aweXpect.Core.Adapters;
 using aweXpect.Core.Extending;
 using aweXpect.Core.Helpers;
@@ -53,6 +54,68 @@ internal static class AweXpectInitialization
 	internal class InitializationState(ITestFrameworkAdapter testFramework)
 	{
 		public ValueFormatter Formatter { get; } = new();
+
+		/// <summary>
+		///     Returns the running test, when the test framework exposes it.
+		/// </summary>
+		/// <remarks>
+		///     An adapter that throws counts as one that does not expose it, so that a faulty adapter never changes the
+		///     result of an expectation; the same applies to the other <c>Try</c> methods.
+		/// </remarks>
+		public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
+		{
+			try
+			{
+				if (testFramework.TryGetCurrentTest(out currentTest))
+				{
+					return true;
+				}
+			}
+			catch (Exception exception)
+			{
+				Tracing.WriteException(exception);
+			}
+
+			currentTest = null;
+			return false;
+		}
+
+		/// <summary>
+		///     Returns the token that cancels the running test, when the test framework exposes it.
+		/// </summary>
+		public bool TryGetCancellationToken(out CancellationToken cancellationToken)
+		{
+			try
+			{
+				if (testFramework.TryGetCancellationToken(out cancellationToken))
+				{
+					return true;
+				}
+			}
+			catch (Exception exception)
+			{
+				Tracing.WriteException(exception);
+			}
+
+			cancellationToken = CancellationToken.None;
+			return false;
+		}
+
+		/// <summary>
+		///     Attaches the file to the result of the running test, when the test framework supports it.
+		/// </summary>
+		public bool TryAddAttachment(string filePath, string? description)
+		{
+			try
+			{
+				return testFramework.TryAddAttachment(filePath, description);
+			}
+			catch (Exception exception)
+			{
+				Tracing.WriteException(exception);
+				return false;
+			}
+		}
 
 		/// <summary>
 		///     Throws a framework-specific exception to indicate a skipped unit test.
@@ -146,6 +209,20 @@ internal static class AweXpectInitialization
 		[StackTraceHidden]
 		public void Inconclusive(string message)
 			=> throw new InconclusiveException(message);
+
+		public bool TryGetCurrentTest([NotNullWhen(true)] out RunningTest? currentTest)
+		{
+			currentTest = null;
+			return false;
+		}
+
+		public bool TryGetCancellationToken(out CancellationToken cancellationToken)
+		{
+			cancellationToken = CancellationToken.None;
+			return false;
+		}
+
+		public bool TryAddAttachment(string filePath, string? description) => false;
 
 		#endregion
 	}
