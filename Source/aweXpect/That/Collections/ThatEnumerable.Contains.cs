@@ -121,7 +121,7 @@ public static partial class ThatEnumerable
 				(Options: options, Expected: expected, Quantifier: quantifier, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
-						new SubjectComparedItem<TItem, TItem>(new EqualItem<TItem>(state.Options, state.Expected)),
+						new SubjectComparedItem<TItem, TItem>(new EqualItem<TItem>(state.Options, state.Expected, state.Negated ? "unexpected" : "expected")),
 						state.Quantifier).InvertIf(state.Negated)),
 			subject,
 			quantifier,
@@ -169,7 +169,7 @@ public static partial class ThatEnumerable
 				(Options: options, Expected: expected, Quantifier: quantifier, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
-						new SubjectComparedItem<TItem, TItem>(new EqualItem<TItem>(state.Options, state.Expected)),
+						new SubjectComparedItem<TItem, TItem>(new EqualItem<TItem>(state.Options, state.Expected, state.Negated ? "unexpected" : "expected")),
 						state.Quantifier).InvertIf(state.Negated)),
 			subject,
 			quantifier,
@@ -236,7 +236,7 @@ public static partial class ThatEnumerable
 				(Options: options, Expected: expected, Quantifier: quantifier, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainConstraint<IEnumerable?, object?>(it, grammars,
-						new SubjectComparedItem<TSetItem, object?>(new EqualItem<object?>(state.Options, state.Expected)),
+						new SubjectComparedItem<TSetItem, object?>(new EqualItem<object?>(state.Options, state.Expected, state.Negated ? "unexpected" : "expected")),
 						state.Quantifier).InvertIf(state.Negated)),
 			subject,
 			quantifier,
@@ -284,7 +284,7 @@ public static partial class ThatEnumerable
 				(Options: options, Expected: expected, Quantifier: quantifier, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainConstraint<TCollection?, TItem>(it, grammars,
-						new EqualItem<TItem>(state.Options, state.Expected),
+						new EqualItem<TItem>(state.Options, state.Expected, state.Negated ? "unexpected" : "expected"),
 						state.Quantifier).InvertIf(state.Negated)),
 			subject,
 			quantifier,
@@ -333,7 +333,7 @@ public static partial class ThatEnumerable
 				(Options: options, Expected: expected, Quantifier: quantifier, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainConstraint<TCollection?, TItem>(it, grammars,
-						new EqualItem<TItem>(state.Options, state.Expected),
+						new EqualItem<TItem>(state.Options, state.Expected, state.Negated ? "unexpected" : "expected"),
 						state.Quantifier).InvertIf(state.Negated)),
 			subject,
 			quantifier,

@@ -71,5 +71,8 @@ public sealed class DefaultEqualityTests
 	{
 		public IEqualityEvaluator<int> ForEvaluation(IEvaluationContext context, CancellationToken cancellationToken)
 			=> throw new NotSupportedException();
+
+		public void ValidateExpected(int expected, string parameterName)
+			=> throw new NotSupportedException();
 	}
 }

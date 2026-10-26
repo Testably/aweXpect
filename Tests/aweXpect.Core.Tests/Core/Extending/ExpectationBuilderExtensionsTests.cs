@@ -64,6 +64,20 @@ public sealed class ExpectationBuilderExtensionsTests
 	}
 
 	[Test]
+	public async Task AddEqualityConstraint_WhenNegatedAndTheMatchTypeRejectsTheUnexpectedValue_ShouldNameTheParameter()
+	{
+		int? subject = 3;
+
+		async Task Act()
+			=> await IsEqualTo(That(subject), 3, true, new RejectingMatchType<int?>(3));
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("unexpected").And
+			.WithMessage("The 'unexpected' value 3 is rejected.").AsPrefix()
+			.Because("the negated constraint receives the unexpected value");
+	}
+
+	[Test]
 	public async Task AddEqualityConstraint_WhenSubjectIsNull_ShouldFail()
 	{
 		string? subject = null;
@@ -77,6 +91,35 @@ public sealed class ExpectationBuilderExtensionsTests
 			             is equal to "foo",
 			             but it was <null>
 			             """);
+	}
+
+	[Test]
+	public async Task AddEqualityConstraint_WhenTheMatchTypeRejectsANullExpectedValue_ShouldThrowItsException()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await IsEqualTo<string?, string?>(That<string?>(subject), null, false,
+				new RejectingMatchType<string?>(null));
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("expected").And
+			.WithMessage("The 'expected' value <null> is rejected.").AsPrefix()
+			.Because("a null expected value is validated as well when the subject can be null");
+	}
+
+	[Test]
+	public async Task AddEqualityConstraint_WhenTheMatchTypeRejectsTheExpectedValue_ShouldThrowItsException()
+	{
+		int? subject = null;
+
+		async Task Act()
+			=> await IsEqualTo(That(subject), 3, false, new RejectingMatchType<int?>(3));
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("expected").And
+			.WithMessage("The 'expected' value 3 is rejected.").AsPrefix()
+			.Because("the match type rejects the expected value before the subject is compared");
 	}
 
 	[Test]
@@ -210,9 +253,9 @@ public sealed class ExpectationBuilderExtensionsTests
 	}
 
 	private static ObjectEqualityResult<TSubject, IThat<TSubject>, TSubject> IsEqualTo<TSubject, TExpected>(
-		IThat<TSubject> subject, TExpected expected, bool isNegated)
+		IThat<TSubject> subject, TExpected expected, bool isNegated, ObjectMatchType<TSubject>? matchType = null)
 	{
-		OptionsHolder<ObjectMatchType<TSubject>> options = new(ObjectMatchType<TSubject>.Default);
+		OptionsHolder<ObjectMatchType<TSubject>> options = new(matchType ?? ObjectMatchType<TSubject>.Default);
 		return new ObjectEqualityResult<TSubject, IThat<TSubject>, TSubject>(
 			subject.Get().ExpectationBuilder.AddEqualityConstraint(expected, options, isNegated),
 			subject, options);
@@ -229,6 +272,23 @@ public sealed class ExpectationBuilderExtensionsTests
 	}
 
 	private static int Sum(int left, int right) => left + right;
+
+	private sealed class RejectingMatchType<TSubject>(TSubject rejected) : ObjectMatchType<TSubject>("Rejecting")
+	{
+		public override MatchPhrase Phrase => Default.Phrase;
+
+		public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
+			=> Default.ForEvaluation(environment);
+
+		public override void ValidateExpected(TSubject expected, string parameterName)
+		{
+			if (Equals(expected, rejected))
+			{
+				throw new ArgumentException(
+					$"The '{parameterName}' value {Formatter.Format(expected)} is rejected.", parameterName);
+			}
+		}
+	}
 
 	private static StringOccurrenceCountResult<string, IThat<string>> ContainsOccurrences(IThat<string> subject,
 		string expected, bool isNegated)

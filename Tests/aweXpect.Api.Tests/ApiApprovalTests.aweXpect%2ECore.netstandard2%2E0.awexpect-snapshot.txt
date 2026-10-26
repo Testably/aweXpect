@@ -395,6 +395,7 @@ namespace aweXpect.Core
     public interface IEqualityOptions<in TSubject>
     {
         aweXpect.Core.IEqualityEvaluator<in TSubject> ForEvaluation(aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken);
+        void ValidateExpected(TSubject expected, string parameterName);
     }
     public interface IExpectThat<out T> : aweXpect.Core.IThat<out T>
     {
@@ -533,6 +534,7 @@ namespace aweXpect.Core
         public string GetExpectation(string expectedExpression, aweXpect.Core.ExpectationGrammars grammars) { }
         public string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null) { }
         public override string ToString() { }
+        public virtual void ValidateExpected(TSubject expected, string parameterName) { }
         public static aweXpect.Options.ObjectToleranceMatchType<TSubject, TTolerance> WithTolerance<TTolerance>(System.Func<TSubject, TSubject, TTolerance, bool> isWithinTolerance, System.Func<TTolerance, string>? toString = null, System.Action<TTolerance>? validation = null, System.Func<TTolerance>? defaultTolerance = null) { }
     }
     public abstract class ObjectMatcher<TSubject> : aweXpect.Core.IEqualityEvaluator<TSubject>

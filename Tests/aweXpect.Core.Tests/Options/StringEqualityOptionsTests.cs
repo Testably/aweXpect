@@ -1712,6 +1712,19 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task ValidateExpected_ThroughTheEqualityOptions_ShouldRejectAnUnusableExpectedValue()
+		{
+			StringEqualityOptions sut = StringEqualityOptions.Default.AsPrefix();
+
+			void Act() => ValidateThroughTheEqualityOptions(sut, "", "expected");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix()
+				.Because("a collection expectation validates its expected items through the equality options");
+		}
+
+		[Test]
 		public async Task ValidateExpected_WhenACustomMatchTypeRejectsTheExpectedValue_ShouldThrowItsException()
 		{
 			ArgumentException exception = new("my rejection");
@@ -1860,6 +1873,16 @@ public sealed partial class StringEqualityOptionsTests
 					throw new ArgumentOutOfRangeException(nameof(option), option, null);
 			}
 		}
+
+		/// <remarks>
+		///     The options are a type parameter constrained to the interface, so that the call goes through
+		///     <see cref="IEqualityOptions{TSubject}.ValidateExpected(TSubject, string)" /> as in a collection expectation,
+		///     while a cast to the interface would be redundant for the sealed options.
+		/// </remarks>
+		private static void ValidateThroughTheEqualityOptions<TOptions>(TOptions options, string? expected,
+			string parameterName)
+			where TOptions : IEqualityOptions<string?>
+			=> options.ValidateExpected(expected, parameterName);
 
 		/// <remarks>
 		///     The exact match type is the default, so it is selected by naming no method at all.

@@ -116,6 +116,20 @@ public sealed partial class ThatObject
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Test]
+			public async Task WhenTheMatchTypeRejectsTheUnexpectedValue_ShouldThrowItsException()
+			{
+				object? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(2).Rejecting(2);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' item 2 is rejected.").AsPrefix()
+					.Because("the match type rejects the unexpected value before the subject is compared");
+			}
 		}
 
 		public sealed class StructTests

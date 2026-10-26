@@ -95,13 +95,13 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
 - When the result text of `GetFailure` spans several lines, indent the lines after the first by the `indentation`,
   e.g. with `FormattingOptions.Indented(indentation)` for a formatted value, so that it stays aligned inside
   `Expect.ThatAll`.
+- Override `ValidateExpected(expected, parameterName)` to reject an expected value that the match type cannot use,
+  with an `ArgumentException` for the `parameterName` it receives, as neither the match type nor the options know the
+  parameter of the expectation.
 - For strings, derive from `StringMatchType` instead and set it with `SetMatchType(matchType, nameof(AsTitle))` on the
   `StringEqualityOptions`, which takes the name of your option, as a string match type carries none.
 - Declare the settings that a string match type honours in `SupportedSettings`: Core rejects every other one, e.g.
   "IgnoringCase cannot be combined with AsTitle.". The whitespace options are supported unless you leave them out.
-- Throw in `ValidateExpected(expected, parameterName)` of a string match type for an expected value that it cannot
-  use, with an `ArgumentException` for the `parameterName` it receives, as neither the match type nor the options know
-  the parameter of the expectation.
 
 <details>
 <summary>Matchers, results, phrases and string match types in detail</summary>
@@ -139,8 +139,8 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
 
 Through its name, the same option again replaces the earlier match type, and combining it with another comparison
 throws, e.g. "ByTitle cannot be combined with Equivalent.". Core rejects an unsupported setting of a string match type
-at the call that specifies the conflict, in either order. Its `ValidateExpected` is called for every subject, also
-when nothing is compared with the expected value, e.g. for an empty collection.
+at the call that specifies the conflict, in either order. The `ValidateExpected` of a match type is called for every
+subject, also when nothing is compared with the expected value, e.g. for an empty collection.
 
 The items of a collection are compared one after the other with the matcher of the evaluation, so a matcher may keep
 state across them, e.g. which options matched nothing in any comparison, and report it in `AppendContexts`. Keep what a

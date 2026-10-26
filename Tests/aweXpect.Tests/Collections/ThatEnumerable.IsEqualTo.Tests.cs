@@ -532,6 +532,20 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			public async Task WhenTheMatchTypeRejectsAnExpectedItem_ShouldThrowItsExceptionWhicheverItemsTheSubjectHas()
+			{
+				IEnumerable<int> subject = ToEnumerable(Array.Empty<int>());
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(new[] { 1, 2, }).Rejecting(2);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' item 2 is rejected.").AsPrefix()
+					.Because("the match type rejects the expected item before any item of the subject is compared");
+			}
+
+			[Test]
 			public async Task WhenTypeDoesNotMatchNullabilityAndItemsDiffer_ShouldListTheExpectedItemsOnOneLine()
 			{
 				IEnumerable<double?> subject = [1.0, 2.0, 3.0,];

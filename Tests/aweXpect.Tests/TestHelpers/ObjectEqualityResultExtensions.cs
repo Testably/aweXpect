@@ -18,6 +18,34 @@ public static class ObjectEqualityResultExtensions
 		return (TSelf)result;
 	}
 
+	/// <remarks>
+	///     A match type that compares by <see cref="object.Equals(object)" /> and rejects the <paramref name="rejected" />
+	///     value as an expected value.
+	/// </remarks>
+	public static TSelf Rejecting<TSelf, TElement>(this IObjectEqualityResult<TSelf, TElement> result,
+		TElement rejected)
+		where TSelf : IObjectEqualityResult<TSelf, TElement>
+	{
+		result.Options.SetMatchType(new RejectingMatchType<TElement>(rejected));
+		return (TSelf)result;
+	}
+
+	private sealed class RejectingMatchType<TSubject>(TSubject rejected) : ObjectMatchType<TSubject>(nameof(Rejecting))
+	{
+		public override MatchPhrase Phrase => Default.Phrase;
+
+		public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
+			=> Default.ForEvaluation(environment);
+
+		public override void ValidateExpected(TSubject expected, string parameterName)
+		{
+			if (Equals(expected, rejected))
+			{
+				throw new ArgumentException($"The '{parameterName}' item {expected} is rejected.", parameterName);
+			}
+		}
+	}
+
 	private sealed class KeyMatchType<TSubject>(Func<TSubject?, int> key) : ObjectMatchType<TSubject>(nameof(ByKey))
 	{
 		public override MatchPhrase Phrase { get; } = MatchPhrase.Being("keyed like");

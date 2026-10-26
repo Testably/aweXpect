@@ -61,6 +61,21 @@ public sealed class ObjectMatchTypeTests
 	}
 
 	[Test]
+	public async Task ValidateExpected_ShouldAcceptEveryExpectedValue()
+	{
+		ObjectMatchType<string?> sut = ObjectMatchType<string?>.Default;
+
+		void Act()
+		{
+			sut.ValidateExpected(null, "expected");
+			sut.ValidateExpected("", "expected");
+		}
+
+		await That(Act).DoesNotThrow()
+			.Because("a match type compares with every expected value, so that it rejects none up front");
+	}
+
+	[Test]
 	public async Task WhenATypedMatcherExplainsAMismatch_ShouldUseItsExplanation()
 	{
 		Track subject = new("Let It Be");

@@ -189,9 +189,12 @@ internal abstract class ExpectedItem<TItem>(TItem expected) : ContainedItem<TIte
 
 /// <summary>
 ///     An item that is equal to the <paramref name="expected" /> one according to the current match type of the
-///     <paramref name="options" />.
+///     <paramref name="options" />, which rejects an unusable item against the <paramref name="parameterName" />.
 /// </summary>
-internal sealed class EqualItem<TItem>(IReadOnlyOptionsHolder<ObjectMatchType<TItem>> options, TItem expected)
+internal sealed class EqualItem<TItem>(
+	IReadOnlyOptionsHolder<ObjectMatchType<TItem>> options,
+	TItem expected,
+	string parameterName)
 	: ExpectedItem<TItem>(expected)
 {
 	private DefaultEqualItem? _defaultEqualItem;
@@ -222,12 +225,15 @@ internal sealed class EqualItem<TItem>(IReadOnlyOptionsHolder<ObjectMatchType<TI
 	/// <inheritdoc />
 	/// <remarks>
 	///     The item keeps the matcher of the evaluation, so that it compares with the match type that the options of
-	///     the expectation specified last.
+	///     the expectation specified last. The expected item is validated here, so that it is rejected whichever items
+	///     the subject has.
 	/// </remarks>
 	public override ContainedItem<TItem> ForEvaluation(IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		_matcher = options.Value.ForEvaluation(new MatchEnvironment(context, cancellationToken));
+		ObjectMatchType<TItem> matchType = options.Value;
+		matchType.ValidateExpected(Expected, parameterName);
+		_matcher = matchType.ForEvaluation(new MatchEnvironment(context, cancellationToken));
 		return this;
 	}
 

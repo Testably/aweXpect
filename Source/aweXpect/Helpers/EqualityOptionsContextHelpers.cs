@@ -2,7 +2,6 @@
 using System.Threading;
 using aweXpect.Core;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Options;
 
 namespace aweXpect.Helpers;
 
@@ -37,8 +36,8 @@ internal static class EqualityOptionsContextHelpers
 
 	/// <summary>
 	///     Rejects the first of the <paramref name="expected" /> items, which the caller received as
-	///     <paramref name="parameterName" />, that the match type of string
-	///     <paramref name="options" /> cannot use, e.g. an invalid regex pattern.
+	///     <paramref name="parameterName" />, that the <paramref name="options" /> cannot use, e.g. an invalid regex
+	///     pattern, see <see cref="IEqualityOptions{TSubject}.ValidateExpected(TSubject, string)" />.
 	/// </summary>
 	/// <remarks>
 	///     The options only validate an item that an item of the subject is compared with, so an expectation calls
@@ -48,14 +47,10 @@ internal static class EqualityOptionsContextHelpers
 		IEnumerable<TItem> expected, string parameterName)
 		where TItem : T
 	{
-		if (options.Value is not StringEqualityOptions stringOptions || stringOptions.ComparesByOrdinalEquality)
-		{
-			return;
-		}
-
+		IEqualityOptions<T> currentOptions = options.Value;
 		foreach (TItem item in expected)
 		{
-			stringOptions.ValidateExpected(item as string, parameterName);
+			currentOptions.ValidateExpected(item, parameterName);
 		}
 	}
 }

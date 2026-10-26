@@ -34,7 +34,10 @@ public static class ExpectationBuilderExtensions
 	///     <paramref name="options" />, so that the comparison can be specified on it, e.g. with <c>Using(comparer)</c>
 	///     or a match type of your own.<br />
 	///     A <see langword="null" /> subject is never equal to an <paramref name="expected" /> value that is not
-	///     <see langword="null" />, whatever the comparison.
+	///     <see langword="null" />, whatever the comparison.<br />
+	///     The match type validates the <paramref name="expected" /> value first, see
+	///     <see cref="ObjectMatchType{TSubject}.ValidateExpected(TSubject, string)" />, as the parameter <c>expected</c>,
+	///     or <c>unexpected</c> when <paramref name="isNegated" />.
 	/// </remarks>
 	public static ExpectationBuilder AddEqualityConstraint<TSubject, TExpected>(
 		this ExpectationBuilder expectationBuilder,
@@ -46,7 +49,8 @@ public static class ExpectationBuilderExtensions
 			{
 				ObjectEqualityConstraint<TSubject, TExpected> constraint =
 					new(it, grammars, state.Expected,
-						state.Expected is null ? null : state.ExpectedExpression?.TrimCommonWhiteSpace(), state.Options);
+						state.Expected is null ? null : state.ExpectedExpression?.TrimCommonWhiteSpace(), state.Options,
+						state.IsNegated ? "unexpected" : "expected");
 				return state.IsNegated ? constraint.Invert() : constraint;
 			});
 

@@ -66,6 +66,19 @@ public abstract class ObjectMatchType<TSubject> : IEqualityOptions<TSubject>
 		=> ForEvaluation(new MatchEnvironment(context, cancellationToken));
 
 	/// <summary>
+	///     Rejects an <paramref name="expected" /> value that the match type cannot use, by throwing, e.g. an
+	///     <see cref="ArgumentException" /> for the <paramref name="parameterName" /> of the caller.
+	/// </summary>
+	/// <remarks>
+	///     This is called before a subject is compared with the value and also when there is none to compare, e.g. for
+	///     an empty collection, so that an unusable value is rejected whichever subject it is verified for.
+	/// </remarks>
+	public virtual void ValidateExpected(TSubject expected, string parameterName)
+	{
+		// Every value is usable unless a match type says otherwise.
+	}
+
+	/// <summary>
 	///     Creates the starting value of an expectation whose values are compared within a tolerance, which
 	///     <see cref="ObjectToleranceMatchType{TSubject, TTolerance}.Within(TTolerance)" /> sets.
 	/// </summary>
