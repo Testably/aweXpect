@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "09:00"
+      time: "23:00"
       timezone: "Europe/Vienna"
     commit-message:
       prefix: chore
@@ -15,7 +15,7 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "09:00"
+      time: "23:00"
       timezone: "Europe/Vienna"
     commit-message:
       prefix: chore
