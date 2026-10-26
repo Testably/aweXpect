@@ -15,7 +15,7 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.Port" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<Uri?, Uri, IThat<Uri?>> HasPort(this IThat<Uri?> subject)
+	public static PropertyResult.Int<Uri, IThat<Uri?>, Uri?> HasPort(this IThat<Uri?> subject)
 		=> new(subject.FailIfRelative(), u => u?.Port, "port");
 
 	/// <summary>

@@ -90,7 +90,7 @@ For an `IAsyncEnumerable<T>`, implement `IAsyncContextConstraint<T>` and call `U
 ## Expectations on collection items
 
 An expectation on the items of a collection, i.e. an extension method on `IEnumerableItems<TItem>`, the items that
-`All()`, `AtLeast(2)` and the other quantifiers select, derives from `QuantifiedCollectionConstraint<TValue, TItem>`.
+`All()`, `AtLeast(2)` and the other quantifiers select, derives from `QuantifiedCollectionConstraint<TCollection, TItem>`.
 `IEnumerableItems<TItem>` gives access to the quantifier and the subject. The built-in expectations on the items, like
 `Satisfy` or `AreEqualTo`, are such extension methods as well. For a condition on a single item,
 [`[GenerateCollectionExpectation]`](./01-generated-expectations.md#collections) generates such an expectation.
@@ -174,7 +174,7 @@ context.
   canceled evaluation, leaves the outcome undecided. Neither changes an outcome that the items before already
   determine: `IsDetermined` is then `true`, and the remaining items are not counted.
 - When the item expectation or the verb are only known while the failure message is created, e.g. because they come
-  from nested expectations, derive from `QuantifiedCollectionConstraintBase<TValue, TItem>` and implement
+  from nested expectations, derive from `QuantifiedCollectionConstraintBase<TCollection, TItem>` and implement
   `AppendItemExpectation` and `Verb` instead.
 
 </details>

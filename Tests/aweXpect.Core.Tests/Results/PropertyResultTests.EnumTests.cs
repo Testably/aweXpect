@@ -65,7 +65,7 @@ public sealed partial class PropertyResultTests
 		[Test]
 		public async Task Satisfying_WhenNegatedAndPredicateHolds_ShouldFail()
 		{
-			PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> sut =
+			PropertyResult.Enum<MyClass?, IThat<MyClass?>, MyClass?, DateTimeKind> sut =
 				MyClass.HasDateTimeKindValue(DateTimeKind.Utc, ExpectationGrammars.None);
 
 			async Task Act()
@@ -82,7 +82,7 @@ public sealed partial class PropertyResultTests
 		[Test]
 		public async Task Satisfying_WhenPredicateDoesNotHold_ShouldFail()
 		{
-			PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> sut =
+			PropertyResult.Enum<MyClass?, IThat<MyClass?>, MyClass?, DateTimeKind> sut =
 				MyClass.HasDateTimeKindValue(DateTimeKind.Unspecified, ExpectationGrammars.None);
 
 			async Task Act()
@@ -99,7 +99,7 @@ public sealed partial class PropertyResultTests
 		[Test]
 		public async Task Satisfying_WhenPredicateHolds_ShouldSucceed()
 		{
-			PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> sut =
+			PropertyResult.Enum<MyClass?, IThat<MyClass?>, MyClass?, DateTimeKind> sut =
 				MyClass.HasDateTimeKindValue(DateTimeKind.Local, ExpectationGrammars.None);
 
 			async Task Act()
@@ -118,7 +118,7 @@ public sealed partial class PropertyResultTests
 			[Test]
 			public async Task WhenActive_ShouldUseTheActiveVoice()
 			{
-				PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> sut =
+				PropertyResult.Enum<MyClass?, IThat<MyClass?>, MyClass?, DateTimeKind> sut =
 					MyClass.HasDateTimeKindValue(DateTimeKind.Utc, ExpectationGrammars.Active);
 
 				async Task Act()
@@ -135,7 +135,7 @@ public sealed partial class PropertyResultTests
 			[Test]
 			public async Task WhenActive_WithNegatedSatisfying_ShouldPlaceTheNegationBeforeTheExpectation()
 			{
-				PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> sut =
+				PropertyResult.Enum<MyClass?, IThat<MyClass?>, MyClass?, DateTimeKind> sut =
 					MyClass.HasDateTimeKindValue(DateTimeKind.Utc, ExpectationGrammars.Active);
 
 				async Task Act()
@@ -203,7 +203,7 @@ public sealed partial class PropertyResultTests
 			[Test]
 			public async Task WhenNested_ShouldNameTheProperty()
 			{
-				PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> sut =
+				PropertyResult.Enum<MyClass?, IThat<MyClass?>, MyClass?, DateTimeKind> sut =
 					MyClass.HasDateTimeKindValue(DateTimeKind.Utc, ExpectationGrammars.Nested);
 
 				async Task Act()
@@ -220,7 +220,7 @@ public sealed partial class PropertyResultTests
 			[Test]
 			public async Task WhenNested_WithNegatedSatisfying_ShouldPlaceTheNegationBeforeTheExpectation()
 			{
-				PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> sut =
+				PropertyResult.Enum<MyClass?, IThat<MyClass?>, MyClass?, DateTimeKind> sut =
 					MyClass.HasDateTimeKindValue(DateTimeKind.Utc, ExpectationGrammars.Nested);
 
 				async Task Act()

@@ -9,7 +9,7 @@ public static partial class ThatDelegateThrows
 	/// <summary>
 	///     Verifies that the HResult of the thrown exception…
 	/// </summary>
-	public static PropertyResult.Int<Exception?, TException, IThatDelegateThrows<TException>> WithHResult<TException>(
+	public static PropertyResult.Int<TException, IThatDelegateThrows<TException>, Exception?> WithHResult<TException>(
 		this IThatDelegateThrows<TException> subject)
 		where TException : Exception?
 		=> new(subject, e => e?.HResult, "HResult",

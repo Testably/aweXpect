@@ -6,7 +6,7 @@ namespace aweXpect.Results;
 /// <summary>
 ///     The result of a <see langword="string" /> equality check, which in addition to the options on the
 ///     <see cref="StringEqualityOptions" /> allows specifying the match type, e.g. via
-///     <see cref="StringEqualityOptionsExtensions.AsWildcard{TResult}(TResult)" />.
+///     <see cref="StringEqualityOptionsExtensions.AsWildcard{TSelf}(TSelf)" />.
 /// </summary>
 public class StringEqualityTypeResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,

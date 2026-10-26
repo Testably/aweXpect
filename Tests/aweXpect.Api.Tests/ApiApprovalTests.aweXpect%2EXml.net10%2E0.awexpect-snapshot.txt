@@ -61,7 +61,7 @@ namespace aweXpect
     }
     public static class XmlExtensions
     {
-        public static TResult AsXml<TResult>(this TResult result, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions { }
+        public static TSelf AsXml<TSelf>(this TSelf result, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) where TSelf : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions { }
     }
 }
 namespace aweXpect.Xml

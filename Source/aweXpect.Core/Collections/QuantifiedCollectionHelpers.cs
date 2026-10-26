@@ -10,7 +10,7 @@ using aweXpect.Options;
 namespace aweXpect;
 
 /// <summary>
-///     The contexts and the item formatting of the <see cref="QuantifiedCollectionConstraintBase{TValue,TItem}" />.
+///     The contexts and the item formatting of the <see cref="QuantifiedCollectionConstraintBase{TCollection, TItem}" />.
 /// </summary>
 /// <remarks>
 ///     aweXpect keeps its own copies of <see cref="AppendIsIncomplete" /> and <see cref="GetFormattingOption" /> for the

@@ -522,7 +522,7 @@ public sealed class EquivalencyMatchTypeTests
 internal static class EquivalencyMatchTypeTestExtensions
 {
 	/// <summary>
-	///     An equivalency expectation of a Core-only extension, which uses the <see cref="EquivalencyMatchType{TSubject}" />.
+	///     An equivalency expectation of a Core-only extension, which uses the <see cref="EquivalencyMatchType{TElement}" />.
 	/// </summary>
 	public static AndOrResult<TSubject, IThat<TSubject>> IsEquivalentToUsingMatchType<TSubject, TExpected>(
 		this IThat<TSubject> subject,

@@ -11,7 +11,7 @@ public static partial class ThatException
 	///     Verifies that the message of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.String<Exception?, TException, IThat<TException?>> HasMessage<TException>(
+	public static PropertyResult.String<TException, IThat<TException?>, Exception?> HasMessage<TException>(
 		this IThat<TException?> subject)
 		where TException : Exception
 		=> new(subject, e => e?.Message, "message", includeValueInContext: true);

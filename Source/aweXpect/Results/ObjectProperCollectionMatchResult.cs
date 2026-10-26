@@ -11,12 +11,12 @@ namespace aweXpect.Results;
 ///     The options are specified via <see cref="CollectionMatchOptionsExtensions" /> and
 ///     <see cref="ObjectMatchTypeExtensions" />.
 /// </remarks>
-public class ObjectProperCollectionMatchResult<TType, TThat, TItem>
-	: AndOrResult<TType, TThat, ObjectProperCollectionMatchResult<TType, TThat, TItem>>,
+public class ObjectProperCollectionMatchResult<TCollection, TThat, TItem>
+	: AndOrResult<TCollection, TThat, ObjectProperCollectionMatchResult<TCollection, TThat, TItem>>,
 		IOptionsProvider<CollectionMatchOptions>,
 		ICollectionContainmentOptions,
 		IProperContainmentOptions,
-		IObjectEqualityResult<ObjectProperCollectionMatchResult<TType, TThat, TItem>, TItem>
+		IObjectEqualityResult<ObjectProperCollectionMatchResult<TCollection, TThat, TItem>, TItem>
 {
 	private readonly OptionsHolder<CollectionMatchOptions> _collectionMatchOptions;
 	private readonly OptionsHolder<ObjectMatchType<TItem>> _options;

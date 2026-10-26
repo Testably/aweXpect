@@ -11,7 +11,7 @@ public static partial class ThatException
 	///     Verifies that the param name of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.String<Exception?, TException, IThat<TException?>> HasParamName<TException>(
+	public static PropertyResult.String<TException, IThat<TException?>, Exception?> HasParamName<TException>(
 		this IThat<TException?> subject)
 		where TException : ArgumentException
 		=> new(subject, e => (e as ArgumentException)?.ParamName, "param name", includeValueInContext: true);

@@ -5,17 +5,17 @@ using aweXpect.Core.Helpers;
 namespace aweXpect.Options;
 
 /// <summary>
-///     The options for specifying a <see cref="IComparer{TItem}" /> to use to compare the order of items.
+///     The options for specifying a <see cref="IComparer{TElement}" /> to use to compare the order of items.
 /// </summary>
 /// <remarks>
-///     An immutable value: <see cref="SetComparer(IComparer{TItem})" /> returns new options, and
+///     An immutable value: <see cref="SetComparer(IComparer{TElement})" /> returns new options, and
 ///     <see langword="default" /> uses the default comparer, like <see cref="Default" />.
 /// </remarks>
-public readonly struct CollectionOrderOptions<TItem>
+public readonly struct CollectionOrderOptions<TElement>
 {
-	private readonly IComparer<TItem>? _comparer;
+	private readonly IComparer<TElement>? _comparer;
 
-	private CollectionOrderOptions(IComparer<TItem> comparer)
+	private CollectionOrderOptions(IComparer<TElement> comparer)
 	{
 		_comparer = comparer;
 	}
@@ -23,7 +23,7 @@ public readonly struct CollectionOrderOptions<TItem>
 	/// <summary>
 	///     The options that compare the order with the default comparer.
 	/// </summary>
-	public static CollectionOrderOptions<TItem> Default => default;
+	public static CollectionOrderOptions<TElement> Default => default;
 
 	/// <summary>
 	///     Indicates whether a comparer was specified.
@@ -33,7 +33,7 @@ public readonly struct CollectionOrderOptions<TItem>
 	/// <summary>
 	///     Returns the specified comparer or a default comparer.
 	/// </summary>
-	public IComparer<TItem> GetComparer() => _comparer ?? GetDefaultComparer();
+	public IComparer<TElement> GetComparer() => _comparer ?? GetDefaultComparer();
 
 	/// <summary>
 	///     Set the comparer to use to compare the order of items.
@@ -41,25 +41,25 @@ public readonly struct CollectionOrderOptions<TItem>
 	/// <remarks>
 	///     A later comparer replaces the earlier one.
 	/// </remarks>
-	public CollectionOrderOptions<TItem> SetComparer(IComparer<TItem> comparer)
+	public CollectionOrderOptions<TElement> SetComparer(IComparer<TElement> comparer)
 	{
 		comparer.ThrowIfNull();
-		return new CollectionOrderOptions<TItem>(comparer);
+		return new CollectionOrderOptions<TElement>(comparer);
 	}
 
-	private static IComparer<TItem> GetDefaultComparer()
+	private static IComparer<TElement> GetDefaultComparer()
 	{
-		if (typeof(TItem) == typeof(string))
+		if (typeof(TElement) == typeof(string))
 		{
-			return (IComparer<TItem>)StringComparer.Ordinal;
+			return (IComparer<TElement>)StringComparer.Ordinal;
 		}
 
-		if (typeof(TItem) == typeof(object))
+		if (typeof(TElement) == typeof(object))
 		{
-			return (IComparer<TItem>)(object)ObjectComparer.Instance;
+			return (IComparer<TElement>)(object)ObjectComparer.Instance;
 		}
 
-		return Comparer<TItem>.Default;
+		return Comparer<TElement>.Default;
 	}
 
 	/// <inheritdoc />

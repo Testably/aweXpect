@@ -7,7 +7,7 @@ namespace aweXpect.Results;
 ///     The result for verifying how often a <see langword="string" /> occurs within a <see langword="string" />, which
 ///     in addition to the options of a <see cref="StringCountResult{TType,TThat}" /> allows interpreting the expected
 ///     <see langword="string" /> as a pattern, e.g. via
-///     <see cref="StringEqualityOptionsExtensions.AsWildcard{TResult}(TResult)" />.
+///     <see cref="StringEqualityOptionsExtensions.AsWildcard{TSelf}(TSelf)" />.
 /// </summary>
 /// <remarks>
 ///     An occurrence can be anywhere within the <see langword="string" />, so the expected <see langword="string" />

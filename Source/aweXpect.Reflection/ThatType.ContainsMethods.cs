@@ -23,7 +23,7 @@ public static partial class ThatType
 	///     The <paramref name="filter" /> receives the methods of the type and may use the full method-filter
 	///     DSL (e.g. <c>methods.With&lt;FactAttribute&gt;().OrWith&lt;TheoryAttribute&gt;()</c>).<br />
 	///     By default the assertion succeeds when the type contains at least one matching method. Append a quantifier
-	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.<br />
+	///     (e.g. <see cref="QuantifierExtensions.Exactly{TSelf}(TSelf, Times)" />) to require a specific count.<br />
 	///     The inherited methods are considered, but neither those declared on <see cref="object" />,
 	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those the type cannot access. Restrict them with
 	///     <see cref="TypeContainingMembersScopeResult{TType, TValue}.Directly" /> or add the members of these roots with

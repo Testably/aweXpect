@@ -10,12 +10,12 @@ namespace aweXpect.Results;
 ///     The options are specified via <see cref="CollectionMatchOptionsExtensions" /> and
 ///     <see cref="StringEqualityOptionsExtensions" />.
 /// </remarks>
-public class StringCollectionMatchResult<TType, TThat>(
+public class StringCollectionMatchResult<TCollection, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
 	OptionsHolder<StringEqualityOptions> options,
 	OptionsHolder<CollectionMatchOptions> collectionMatchOptions)
-	: AndOrResult<TType, TThat, StringCollectionMatchResult<TType, TThat>>(expectationBuilder, returnValue),
+	: AndOrResult<TCollection, TThat, StringCollectionMatchResult<TCollection, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<CollectionMatchOptions>,
 		IOptionsProvider<StringEqualityOptions>,
 		IStringMatchTypeOptions

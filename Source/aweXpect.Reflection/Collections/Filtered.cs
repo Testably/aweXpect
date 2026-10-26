@@ -26,7 +26,7 @@ public static partial class Filtered;
 ///     The options on a filtered result (e.g. <c>OrWith</c>) also return a NEW instance
 ///     and leave the one they are called on unchanged. So do the options of aweXpect that they use, e.g.
 ///     <c>IgnoringCase</c>, <c>AtIndex</c> or <c>Once</c>, as these results implement
-///     <see cref="aweXpect.Core.ICopyOnOption{TOptions, TResult}" />.
+///     <see cref="aweXpect.Core.ICopyOnOption{TOptions, TSelf}" />.
 /// </remarks>
 #if NET8_0_OR_GREATER
 public abstract class Filtered<T, TFiltered>

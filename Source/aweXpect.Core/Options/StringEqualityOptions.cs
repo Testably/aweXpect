@@ -213,7 +213,7 @@ public sealed partial class StringEqualityOptions : IEqualityOptions<string?>, I
 			: new StringEqualityOptions(_matchType, _matchTypeOption, _comparer, _flags, matcher);
 	}
 
-	/// <inheritdoc cref="IEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />
+	/// <inheritdoc cref="IEqualityOptions{TElement}.ForEvaluation(IEvaluationContext, CancellationToken)" />
 	IEqualityEvaluator<string?> IEqualityOptions<string?>.ForEvaluation(IEvaluationContext context,
 		CancellationToken cancellationToken)
 		=> ForEvaluation(context, cancellationToken);

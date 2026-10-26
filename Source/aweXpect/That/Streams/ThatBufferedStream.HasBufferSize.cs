@@ -12,7 +12,7 @@ public static partial class ThatBufferedStream
 	///     Verifies that the buffer size of the <see cref="BufferedStream" /> subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<BufferedStream?, BufferedStream, IThat<BufferedStream?>> HasBufferSize(this IThat<BufferedStream?> subject)
+	public static PropertyResult.Int<BufferedStream, IThat<BufferedStream?>, BufferedStream?> HasBufferSize(this IThat<BufferedStream?> subject)
 		=> new(subject, a => a?.BufferSize, "buffer size", (value, paramName) =>
 		{
 			if (value < 0)

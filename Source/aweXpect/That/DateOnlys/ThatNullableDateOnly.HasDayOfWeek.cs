@@ -11,7 +11,7 @@ public static partial class ThatNullableDateOnly
 	///     Verifies that the day of the week of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Enum<DateOnly?, DateOnly, IThat<DateOnly?>, DayOfWeek> HasDayOfWeek(this IThat<DateOnly?> subject)
+	public static PropertyResult.Enum<DateOnly, IThat<DateOnly?>, DateOnly?, DayOfWeek> HasDayOfWeek(this IThat<DateOnly?> subject)
 		=> new(subject, a => a?.DayOfWeek, "day of week");
 
 	/// <summary>

@@ -349,7 +349,7 @@ public sealed partial class ThatXmlString
 						=> typeof(XmlExtensions).GetMethod(nameof(XmlExtensions.AsXml))!.MakeGenericMethod(result);
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("GenericArguments[0], ?aweXpect.Results.StringOccurrenceCountResult`2*?TResult?.").AsWildcard()
+						.WithMessage("GenericArguments[0], ?aweXpect.Results.StringOccurrenceCountResult`2*?TSelf?.").AsWildcard()
 						.Because("parts of an XML string are usually no XML document, so IsEqualTo(…).AsXml() should be used instead");
 				}
 

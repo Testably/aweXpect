@@ -185,9 +185,9 @@ internal static class EqualsMatchType
 /// <summary>
 ///     The match type that compares by <see cref="EqualsMatchType.IsEqual{TActual, TExpected}" />.
 /// </summary>
-internal sealed class EqualsMatchType<TSubject> : ObjectMatchType<TSubject>
+internal sealed class EqualsMatchType<TElement> : ObjectMatchType<TElement>
 {
-	internal static readonly EqualsMatchType<TSubject> Instance = new();
+	internal static readonly EqualsMatchType<TElement> Instance = new();
 	private static readonly EqualsMatcher Matcher = new();
 
 	private EqualsMatchType()
@@ -198,27 +198,27 @@ internal sealed class EqualsMatchType<TSubject> : ObjectMatchType<TSubject>
 	public override MatchPhrase Phrase => MatchPhrase.EqualTo;
 
 	/// <inheritdoc />
-	public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
+	public override ObjectMatcher<TElement> ForEvaluation(MatchEnvironment environment)
 		=> Matcher;
 
 	/// <summary>
 	///     Whether the <paramref name="evaluator" /> compares by <see cref="EqualsMatchType.IsEqual{TActual, TExpected}" />.
 	/// </summary>
-	internal static bool IsUsedBy(IEqualityEvaluator<TSubject> evaluator)
+	internal static bool IsUsedBy(IEqualityEvaluator<TElement> evaluator)
 		=> ReferenceEquals(evaluator, Matcher);
 
 	/// <remarks>
 	///     The comparison of the items of a collection is called directly, because the generic virtual call to
-	///     <see cref="Match{TExpected}(TSubject, TExpected)" /> costs more than comparing most items.
+	///     <see cref="Match{TExpected}(TElement, TExpected)" /> costs more than comparing most items.
 	/// </remarks>
-	private sealed class EqualsMatcher : ObjectMatcher<TSubject>, IEqualityEvaluator<TSubject>
+	private sealed class EqualsMatcher : ObjectMatcher<TElement>, IEqualityEvaluator<TElement>
 	{
 		/// <inheritdoc />
-		public override ValueTask<MatchResult> Match<TExpected>(TSubject actual, TExpected expected)
+		public override ValueTask<MatchResult> Match<TExpected>(TElement actual, TExpected expected)
 			=> new(MatchResult.From(EqualsMatchType.IsEqual(actual, expected)));
 
-		/// <inheritdoc cref="IEqualityEvaluator{TSubject}.AreConsideredEqual{TExpected}(TSubject, TExpected)" />
-		ValueTask<bool> IEqualityEvaluator<TSubject>.AreConsideredEqual<TExpected>(TSubject actual, TExpected expected)
+		/// <inheritdoc cref="IEqualityEvaluator{TElement}.AreConsideredEqual{TExpected}(TElement, TExpected)" />
+		ValueTask<bool> IEqualityEvaluator<TElement>.AreConsideredEqual<TExpected>(TElement actual, TExpected expected)
 			=> new(EqualsMatchType.IsEqual(actual, expected));
 	}
 }

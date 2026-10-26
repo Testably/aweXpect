@@ -317,7 +317,7 @@ public sealed partial class ThatDictionary
 				};
 
 				async Task Act()
-					=> await (ContainsKeyResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>, string, int>)
+					=> await (ContainsKeyResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>, int>)
 						That(subject).ContainsKey("a");
 
 				await That(Act).DoesNotThrow()

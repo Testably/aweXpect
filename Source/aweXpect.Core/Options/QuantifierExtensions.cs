@@ -10,7 +10,7 @@ namespace aweXpect;
 /// <remarks>
 ///     Only one of these options can be specified, so <c>AtLeast(2).AtMost(5)</c> throws; specify a range with
 ///     <c>Between(2).And(5)</c> instead.<br />
-///     A result that implements <see cref="ICopyOnOption{TOptions, TResult}" /> stays unchanged: it returns a new one
+///     A result that implements <see cref="ICopyOnOption{TOptions, TSelf}" /> stays unchanged: it returns a new one
 ///     with the new quantifier.
 /// </remarks>
 public static class QuantifierExtensions
@@ -18,11 +18,11 @@ public static class QuantifierExtensions
 	/// <summary>
 	///     Verifies that it occurs at least…
 	/// </summary>
-	public static CountTimesResult<TResult> AtLeast<TResult>(this TResult result)
-		where TResult : IOptionsProvider<Quantifier>
+	public static CountTimesResult<TSelf> AtLeast<TSelf>(this TSelf result)
+		where TSelf : IOptionsProvider<Quantifier>
 		=> new(value =>
 		{
-			if (result is ICopyOnOption<Quantifier, TResult> copyOnOption)
+			if (result is ICopyOnOption<Quantifier, TSelf> copyOnOption)
 			{
 				return copyOnOption.WithOptions(result.Options.Value.AtLeast(value));
 			}
@@ -34,10 +34,10 @@ public static class QuantifierExtensions
 	/// <summary>
 	///     Verifies that it occurs at least <paramref name="minimum" /> times.
 	/// </summary>
-	public static TResult AtLeast<TResult>(this TResult result, Times minimum)
-		where TResult : IOptionsProvider<Quantifier>
+	public static TSelf AtLeast<TSelf>(this TSelf result, Times minimum)
+		where TSelf : IOptionsProvider<Quantifier>
 	{
-		if (result is ICopyOnOption<Quantifier, TResult> copyOnOption)
+		if (result is ICopyOnOption<Quantifier, TSelf> copyOnOption)
 		{
 			return copyOnOption.WithOptions(result.Options.Value.AtLeast(minimum.Value));
 		}
@@ -49,11 +49,11 @@ public static class QuantifierExtensions
 	/// <summary>
 	///     Verifies that it occurs at most…
 	/// </summary>
-	public static CountTimesResult<TResult> AtMost<TResult>(this TResult result)
-		where TResult : IOptionsProvider<Quantifier>
+	public static CountTimesResult<TSelf> AtMost<TSelf>(this TSelf result)
+		where TSelf : IOptionsProvider<Quantifier>
 		=> new(value =>
 		{
-			if (result is ICopyOnOption<Quantifier, TResult> copyOnOption)
+			if (result is ICopyOnOption<Quantifier, TSelf> copyOnOption)
 			{
 				return copyOnOption.WithOptions(result.Options.Value.AtMost(value));
 			}
@@ -65,10 +65,10 @@ public static class QuantifierExtensions
 	/// <summary>
 	///     Verifies that it occurs at most <paramref name="maximum" /> times.
 	/// </summary>
-	public static TResult AtMost<TResult>(this TResult result, Times maximum)
-		where TResult : IOptionsProvider<Quantifier>
+	public static TSelf AtMost<TSelf>(this TSelf result, Times maximum)
+		where TSelf : IOptionsProvider<Quantifier>
 	{
-		if (result is ICopyOnOption<Quantifier, TResult> copyOnOption)
+		if (result is ICopyOnOption<Quantifier, TSelf> copyOnOption)
 		{
 			return copyOnOption.WithOptions(result.Options.Value.AtMost(maximum.Value));
 		}
@@ -80,11 +80,11 @@ public static class QuantifierExtensions
 	/// <summary>
 	///     Verifies that it occurs between <paramref name="minimum" />…
 	/// </summary>
-	public static BetweenResult<TResult, Times> Between<TResult>(this TResult result, int minimum)
-		where TResult : IOptionsProvider<Quantifier>
+	public static BetweenResult<TSelf, Times> Between<TSelf>(this TSelf result, int minimum)
+		where TSelf : IOptionsProvider<Quantifier>
 		=> new(maximum =>
 		{
-			if (result is ICopyOnOption<Quantifier, TResult> copyOnOption)
+			if (result is ICopyOnOption<Quantifier, TSelf> copyOnOption)
 			{
 				return copyOnOption.WithOptions(result.Options.Value.Between(minimum, maximum));
 			}
@@ -96,10 +96,10 @@ public static class QuantifierExtensions
 	/// <summary>
 	///     Verifies that it occurs exactly <paramref name="expected" /> times.
 	/// </summary>
-	public static TResult Exactly<TResult>(this TResult result, Times expected)
-		where TResult : IOptionsProvider<Quantifier>
+	public static TSelf Exactly<TSelf>(this TSelf result, Times expected)
+		where TSelf : IOptionsProvider<Quantifier>
 	{
-		if (result is ICopyOnOption<Quantifier, TResult> copyOnOption)
+		if (result is ICopyOnOption<Quantifier, TSelf> copyOnOption)
 		{
 			return copyOnOption.WithOptions(result.Options.Value.Exactly(expected.Value));
 		}
@@ -111,11 +111,11 @@ public static class QuantifierExtensions
 	/// <summary>
 	///     Verifies that it occurs fewer than…
 	/// </summary>
-	public static CountTimesResult<TResult> LessThan<TResult>(this TResult result)
-		where TResult : IOptionsProvider<Quantifier>
+	public static CountTimesResult<TSelf> LessThan<TSelf>(this TSelf result)
+		where TSelf : IOptionsProvider<Quantifier>
 		=> new(value =>
 		{
-			if (result is ICopyOnOption<Quantifier, TResult> copyOnOption)
+			if (result is ICopyOnOption<Quantifier, TSelf> copyOnOption)
 			{
 				return copyOnOption.WithOptions(result.Options.Value.LessThan(value));
 			}
@@ -127,10 +127,10 @@ public static class QuantifierExtensions
 	/// <summary>
 	///     Verifies that it occurs fewer than <paramref name="maximum" /> times.
 	/// </summary>
-	public static TResult LessThan<TResult>(this TResult result, Times maximum)
-		where TResult : IOptionsProvider<Quantifier>
+	public static TSelf LessThan<TSelf>(this TSelf result, Times maximum)
+		where TSelf : IOptionsProvider<Quantifier>
 	{
-		if (result is ICopyOnOption<Quantifier, TResult> copyOnOption)
+		if (result is ICopyOnOption<Quantifier, TSelf> copyOnOption)
 		{
 			return copyOnOption.WithOptions(result.Options.Value.LessThan(maximum.Value));
 		}
@@ -142,11 +142,11 @@ public static class QuantifierExtensions
 	/// <summary>
 	///     Verifies that it occurs more than…
 	/// </summary>
-	public static CountTimesResult<TResult> MoreThan<TResult>(this TResult result)
-		where TResult : IOptionsProvider<Quantifier>
+	public static CountTimesResult<TSelf> MoreThan<TSelf>(this TSelf result)
+		where TSelf : IOptionsProvider<Quantifier>
 		=> new(value =>
 		{
-			if (result is ICopyOnOption<Quantifier, TResult> copyOnOption)
+			if (result is ICopyOnOption<Quantifier, TSelf> copyOnOption)
 			{
 				return copyOnOption.WithOptions(result.Options.Value.MoreThan(value));
 			}
@@ -158,10 +158,10 @@ public static class QuantifierExtensions
 	/// <summary>
 	///     Verifies that it occurs more than <paramref name="minimum" /> times.
 	/// </summary>
-	public static TResult MoreThan<TResult>(this TResult result, Times minimum)
-		where TResult : IOptionsProvider<Quantifier>
+	public static TSelf MoreThan<TSelf>(this TSelf result, Times minimum)
+		where TSelf : IOptionsProvider<Quantifier>
 	{
-		if (result is ICopyOnOption<Quantifier, TResult> copyOnOption)
+		if (result is ICopyOnOption<Quantifier, TSelf> copyOnOption)
 		{
 			return copyOnOption.WithOptions(result.Options.Value.MoreThan(minimum.Value));
 		}
@@ -173,10 +173,10 @@ public static class QuantifierExtensions
 	/// <summary>
 	///     Verifies that it never occurs.
 	/// </summary>
-	public static TResult Never<TResult>(this TResult result)
-		where TResult : IOptionsProvider<Quantifier>
+	public static TSelf Never<TSelf>(this TSelf result)
+		where TSelf : IOptionsProvider<Quantifier>
 	{
-		if (result is ICopyOnOption<Quantifier, TResult> copyOnOption)
+		if (result is ICopyOnOption<Quantifier, TSelf> copyOnOption)
 		{
 			return copyOnOption.WithOptions(result.Options.Value.Exactly(0, QuantifierOption.Never));
 		}
@@ -188,10 +188,10 @@ public static class QuantifierExtensions
 	/// <summary>
 	///     Verifies that it occurs exactly once.
 	/// </summary>
-	public static TResult Once<TResult>(this TResult result)
-		where TResult : IOptionsProvider<Quantifier>
+	public static TSelf Once<TSelf>(this TSelf result)
+		where TSelf : IOptionsProvider<Quantifier>
 	{
-		if (result is ICopyOnOption<Quantifier, TResult> copyOnOption)
+		if (result is ICopyOnOption<Quantifier, TSelf> copyOnOption)
 		{
 			return copyOnOption.WithOptions(result.Options.Value.Exactly(1, QuantifierOption.Once));
 		}
@@ -203,10 +203,10 @@ public static class QuantifierExtensions
 	/// <summary>
 	///     Verifies that it occurs exactly twice.
 	/// </summary>
-	public static TResult Twice<TResult>(this TResult result)
-		where TResult : IOptionsProvider<Quantifier>
+	public static TSelf Twice<TSelf>(this TSelf result)
+		where TSelf : IOptionsProvider<Quantifier>
 	{
-		if (result is ICopyOnOption<Quantifier, TResult> copyOnOption)
+		if (result is ICopyOnOption<Quantifier, TSelf> copyOnOption)
 		{
 			return copyOnOption.WithOptions(result.Options.Value.Exactly(2, QuantifierOption.Twice));
 		}

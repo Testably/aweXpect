@@ -10,7 +10,7 @@ public static partial class ThatNullableDateTimeOffset
 	///     Verifies that the month of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<DateTimeOffset?, DateTimeOffset, IThat<DateTimeOffset?>> HasMonth(this IThat<DateTimeOffset?> subject)
+	public static PropertyResult.Int<DateTimeOffset, IThat<DateTimeOffset?>, DateTimeOffset?> HasMonth(this IThat<DateTimeOffset?> subject)
 		=> new(subject, a => a?.Month, "month");
 
 	/// <summary>

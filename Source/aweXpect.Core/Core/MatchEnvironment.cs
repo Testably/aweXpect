@@ -7,7 +7,7 @@ namespace aweXpect.Core;
 /// <summary>
 ///     The evaluation for which a match type creates its matcher, see
 ///     <see cref="StringMatchType.ForEvaluation(MatchEnvironment, StringMatchSettings)" /> and
-///     <see cref="ObjectMatchType{TSubject}.ForEvaluation(MatchEnvironment)" />.
+///     <see cref="ObjectMatchType{TElement}.ForEvaluation(MatchEnvironment)" />.
 /// </summary>
 /// <remarks>
 ///     The <see langword="default" /> value describes a comparison outside an evaluation.
@@ -23,7 +23,7 @@ public readonly struct MatchEnvironment
 	/// <remarks>
 	///     The <see cref="Context" /> of the <see langword="default" /> value describes a comparison outside an evaluation
 	///     again, so that a caller without access to an evaluation can pass it through
-	///     <see cref="IEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />.
+	///     <see cref="IEqualityOptions{TElement}.ForEvaluation(IEvaluationContext, CancellationToken)" />.
 	/// </remarks>
 	/// <exception cref="System.ArgumentNullException">The <paramref name="context" /> is <see langword="null" />.</exception>
 	public MatchEnvironment(IEvaluationContext context, CancellationToken cancellationToken)

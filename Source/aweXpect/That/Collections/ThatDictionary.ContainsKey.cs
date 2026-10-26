@@ -14,7 +14,7 @@ public static partial class ThatDictionary
 		GuaranteesNotNull = true, NegatedReturnType = NegatedKeyReturnType,
 		Summary = "Verifies that the dictionary contains the <paramref name=\"expected\" /> key.",
 		NegatedSummary = "Verifies that the dictionary does not contain the <paramref name=\"unexpected\" /> key.")]
-	internal static ContainsKeyResult<TCollection, IThat<TCollection?>, TKey, TValue?>
+	internal static ContainsKeyResult<TCollection, IThat<TCollection?>, TValue?>
 		ContainsKeyCore<TCollection, TKey, TValue>(
 			IThat<TCollection?> subject,
 			TKey expected,
@@ -23,7 +23,7 @@ public static partial class ThatDictionary
 	{
 		expected.ThrowIfNull(negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ContainsKeyResult<TCollection, IThat<TCollection?>, TKey, TValue?>(
+		return new ContainsKeyResult<TCollection, IThat<TCollection?>, TValue?>.ForKey<TKey>(
 			expectationBuilder.AddConstraint((Expected: expected, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainsKeyConstraint<TCollection, TKey, TValue>(it, grammars, state.Expected)

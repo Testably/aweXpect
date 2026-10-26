@@ -9,11 +9,11 @@ namespace aweXpect.Results;
 /// <remarks>
 ///     The index is specified via <see cref="CollectionIndexOptionsExtensions" />.
 /// </remarks>
-public class HasItemResult<TCollection>(
+public class HasItemResult<TCollection, TThat>(
 	ExpectationBuilder expectationBuilder,
-	IThat<TCollection?> collection,
+	TThat returnValue,
 	OptionsHolder<CollectionIndexOptions> collectionIndexOptions)
-	: AndOrResult<TCollection, IThat<TCollection?>, HasItemResult<TCollection>>(expectationBuilder, collection),
+	: AndOrResult<TCollection, TThat, HasItemResult<TCollection, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<CollectionIndexOptions>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />

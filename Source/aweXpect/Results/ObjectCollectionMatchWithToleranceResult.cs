@@ -12,10 +12,10 @@ namespace aweXpect.Results;
 ///     The options are specified via <see cref="CollectionMatchOptionsExtensions" /> and
 ///     <see cref="ObjectMatchTypeExtensions" />.
 /// </remarks>
-public class ObjectCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>
-	: AndOrResult<TType, TThat, ObjectCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>>,
+public class ObjectCollectionMatchWithToleranceResult<TCollection, TThat, TItem, TTolerance>
+	: AndOrResult<TCollection, TThat, ObjectCollectionMatchWithToleranceResult<TCollection, TThat, TItem, TTolerance>>,
 		IOptionsProvider<CollectionMatchOptions>,
-		IObjectEqualityWithToleranceResult<ObjectCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>,
+		IObjectEqualityWithToleranceResult<ObjectCollectionMatchWithToleranceResult<TCollection, TThat, TItem, TTolerance>,
 			TItem, TTolerance>
 {
 	private readonly OptionsHolder<CollectionMatchOptions> _collectionMatchOptions;
@@ -52,8 +52,8 @@ public class ObjectCollectionMatchWithToleranceResult<TType, TThat, TItem, TTole
 	///     the expected value, e.g. via <c>Percent()</c>.
 	/// </summary>
 	public sealed class WithinResult
-		: ObjectCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>,
-			IWithinToleranceResult<ObjectCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>,
+		: ObjectCollectionMatchWithToleranceResult<TCollection, TThat, TItem, TTolerance>,
+			IWithinToleranceResult<ObjectCollectionMatchWithToleranceResult<TCollection, TThat, TItem, TTolerance>,
 				TTolerance>
 	{
 		internal WithinResult(
@@ -66,8 +66,8 @@ public class ObjectCollectionMatchWithToleranceResult<TType, TThat, TItem, TTole
 		}
 
 		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.SetRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
-		ObjectCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>
-			IWithinToleranceResult<ObjectCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>,
+		ObjectCollectionMatchWithToleranceResult<TCollection, TThat, TItem, TTolerance>
+			IWithinToleranceResult<ObjectCollectionMatchWithToleranceResult<TCollection, TThat, TItem, TTolerance>,
 				TTolerance>.SetRelativeTolerance(
 				Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
 		{

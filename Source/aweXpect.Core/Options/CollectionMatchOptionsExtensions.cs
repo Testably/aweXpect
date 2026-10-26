@@ -15,8 +15,8 @@ public static class CollectionMatchOptionsExtensions
 	/// <summary>
 	///     Ignores the order in the subject and expected values.
 	/// </summary>
-	public static TResult InAnyOrder<TResult>(this TResult result)
-		where TResult : IOptionsProvider<CollectionMatchOptions>
+	public static TSelf InAnyOrder<TSelf>(this TSelf result)
+		where TSelf : IOptionsProvider<CollectionMatchOptions>
 	{
 		result.Options.InAnyOrder();
 		return result;
@@ -31,8 +31,8 @@ public static class CollectionMatchOptionsExtensions
 	///     item has to match an expected item, as far as the relation requires it, so <c>[1, 1, 2]</c> matches
 	///     <c>[1, 2]</c>.
 	/// </remarks>
-	public static TResult IgnoringDuplicates<TResult>(this TResult result, bool ignoreDuplicates = true)
-		where TResult : IOptionsProvider<CollectionMatchOptions>
+	public static TSelf IgnoringDuplicates<TSelf>(this TSelf result, bool ignoreDuplicates = true)
+		where TSelf : IOptionsProvider<CollectionMatchOptions>
 	{
 		result.Options.IgnoringDuplicates(ignoreDuplicates);
 		return result;
@@ -45,9 +45,9 @@ public static class CollectionMatchOptionsExtensions
 	/// <exception cref="System.InvalidOperationException">
 	///     The interspersed items are already specified, or the order is already ignored via <c>InAnyOrder()</c>.
 	/// </exception>
-	public static TResult IgnoringInterspersedItems<TResult>(this TResult result,
+	public static TSelf IgnoringInterspersedItems<TSelf>(this TSelf result,
 		bool ignoreInterspersedItems = true)
-		where TResult : IOptionsProvider<CollectionMatchOptions>, ICollectionContainmentOptions
+		where TSelf : IOptionsProvider<CollectionMatchOptions>, ICollectionContainmentOptions
 	{
 		result.Options.IgnoringInterspersedItems(ignoreInterspersedItems);
 		return result;
@@ -60,8 +60,8 @@ public static class CollectionMatchOptionsExtensions
 	///     This means that the expected collection is a proper subset of the subject for <c>Contains</c> and a proper
 	///     superset for <c>IsContainedIn</c>.
 	/// </remarks>
-	public static TResult Properly<TResult>(this TResult result)
-		where TResult : IOptionsProvider<CollectionMatchOptions>, IProperContainmentOptions
+	public static TSelf Properly<TSelf>(this TSelf result)
+		where TSelf : IOptionsProvider<CollectionMatchOptions>, IProperContainmentOptions
 	{
 		result.Options.Properly();
 		return result;

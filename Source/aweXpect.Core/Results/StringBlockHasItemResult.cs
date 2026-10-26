@@ -11,13 +11,12 @@ namespace aweXpect.Results;
 ///     A block compares the lines on its own, so of the string options only the casing and a comparer can be
 ///     specified; the index is specified via <see cref="CollectionIndexOptionsExtensions" />.
 /// </remarks>
-public class StringBlockHasItemResult<TCollection>(
+public class StringBlockHasItemResult<TCollection, TThat>(
 	ExpectationBuilder expectationBuilder,
-	IThat<TCollection?> collection,
+	TThat returnValue,
 	OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
 	OptionsHolder<StringEqualityOptions> options)
-	: AndOrResult<TCollection, IThat<TCollection?>, StringBlockHasItemResult<TCollection>>(expectationBuilder,
-			collection),
+	: AndOrResult<TCollection, TThat, StringBlockHasItemResult<TCollection, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<CollectionIndexOptions>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
@@ -26,7 +25,7 @@ public class StringBlockHasItemResult<TCollection>(
 	/// <summary>
 	///     Ignores casing when comparing the <see langword="string" />s.
 	/// </summary>
-	public StringBlockHasItemResult<TCollection> IgnoringCase(bool ignoreCase = true)
+	public StringBlockHasItemResult<TCollection, TThat> IgnoringCase(bool ignoreCase = true)
 	{
 		options.IgnoringCase(ignoreCase);
 		return this;
@@ -35,7 +34,7 @@ public class StringBlockHasItemResult<TCollection>(
 	/// <summary>
 	///     Uses the provided <paramref name="comparer" /> for comparing <see langword="string" />s.
 	/// </summary>
-	public StringBlockHasItemResult<TCollection> Using(
+	public StringBlockHasItemResult<TCollection, TThat> Using(
 		IEqualityComparer<string> comparer)
 	{
 		options.Using(comparer);

@@ -7,8 +7,8 @@ using aweXpect.Options;
 namespace aweXpect.Core;
 
 /// <summary>
-///     Defines how a <typeparamref name="TSubject" /> is compared: configured once, and asked for an
-///     <see cref="ObjectMatcher{TSubject}" /> for each evaluation.
+///     Defines how a <typeparamref name="TElement" /> is compared: configured once, and asked for an
+///     <see cref="ObjectMatcher{TElement}" /> for each evaluation.
 /// </summary>
 /// <remarks>
 ///     The match type is the immutable value of the object comparison of an expectation, held in its
@@ -17,7 +17,7 @@ namespace aweXpect.Core;
 ///     the expectation; state of an evaluation belongs into its matcher, and state of a single comparison into the
 ///     <see cref="MatchExplanation" /> of its <see cref="MatchResult" />.
 /// </remarks>
-public abstract class ObjectMatchType<TSubject> : IEqualityOptions<TSubject>
+public abstract class ObjectMatchType<TElement> : IEqualityOptions<TElement>
 {
 	/// <summary>
 	///     A match type without an option name, i.e. the comparison an expectation starts with.
@@ -40,7 +40,7 @@ public abstract class ObjectMatchType<TSubject> : IEqualityOptions<TSubject>
 	///     The comparison by <see cref="object.Equals(object)" />, which also considers numbers of different types equal
 	///     when they have the same value.
 	/// </summary>
-	public static ObjectMatchType<TSubject> Default => EqualsMatchType<TSubject>.Instance;
+	public static ObjectMatchType<TElement> Default => EqualsMatchType<TElement>.Instance;
 
 	/// <summary>
 	///     The name of the option that set the match type, or <see langword="null" /> for the comparison an expectation
@@ -60,8 +60,8 @@ public abstract class ObjectMatchType<TSubject> : IEqualityOptions<TSubject>
 	/// </remarks>
 	public abstract MatchPhrase Phrase { get; }
 
-	/// <inheritdoc cref="IEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />
-	IEqualityEvaluator<TSubject> IEqualityOptions<TSubject>.ForEvaluation(IEvaluationContext context,
+	/// <inheritdoc cref="IEqualityOptions{TElement}.ForEvaluation(IEvaluationContext, CancellationToken)" />
+	IEqualityEvaluator<TElement> IEqualityOptions<TElement>.ForEvaluation(IEvaluationContext context,
 		CancellationToken cancellationToken)
 		=> ForEvaluation(new MatchEnvironment(context, cancellationToken));
 
@@ -73,18 +73,18 @@ public abstract class ObjectMatchType<TSubject> : IEqualityOptions<TSubject>
 	///     This is called before a subject is compared with the value and also when there is none to compare, e.g. for
 	///     an empty collection, so that an unusable value is rejected whichever subject it is verified for.
 	/// </remarks>
-	public virtual void ValidateExpected(TSubject expected, string parameterName)
+	public virtual void ValidateExpected(TElement expected, string parameterName)
 	{
 		// Every value is usable unless a match type says otherwise.
 	}
 
 	/// <summary>
 	///     Creates the starting value of an expectation whose values are compared within a tolerance, which
-	///     <see cref="ObjectToleranceMatchType{TSubject, TTolerance}.Within(TTolerance)" /> sets.
+	///     <see cref="ObjectToleranceMatchType{TElement, TTolerance}.Within(TTolerance)" /> sets.
 	/// </summary>
 	/// <param name="isWithinTolerance">Whether the actual value is within the tolerance of the expected value.</param>
 	/// <param name="toString">The text of a tolerance, by default e.g. <c> ± 0.1</c>.</param>
-	/// <param name="validation">Rejects a tolerance that the comparison of <typeparamref name="TSubject" /> cannot honour.</param>
+	/// <param name="validation">Rejects a tolerance that the comparison of <typeparamref name="TElement" /> cannot honour.</param>
 	/// <param name="defaultTolerance">
 	///     The tolerance that applies until one is specified, read once per evaluation; without one the values are
 	///     compared like <see cref="Default" />.
@@ -92,12 +92,12 @@ public abstract class ObjectMatchType<TSubject> : IEqualityOptions<TSubject>
 	/// <remarks>
 	///     The value can be shared by every expectation, as it never changes.
 	/// </remarks>
-	public static ObjectToleranceMatchType<TSubject, TTolerance> WithTolerance<TTolerance>(
-		Func<TSubject, TSubject, TTolerance, bool> isWithinTolerance,
+	public static ObjectToleranceMatchType<TElement, TTolerance> WithTolerance<TTolerance>(
+		Func<TElement, TElement, TTolerance, bool> isWithinTolerance,
 		Func<TTolerance, string>? toString = null,
 		Action<TTolerance>? validation = null,
 		Func<TTolerance>? defaultTolerance = null)
-		=> ObjectToleranceMatchType<TSubject, TTolerance>.Create(isWithinTolerance, toString, validation,
+		=> ObjectToleranceMatchType<TElement, TTolerance>.Create(isWithinTolerance, toString, validation,
 			defaultTolerance);
 
 	/// <summary>
@@ -106,7 +106,7 @@ public abstract class ObjectMatchType<TSubject> : IEqualityOptions<TSubject>
 	/// <remarks>
 	///     A match type without state per evaluation returns a shared matcher, so that an evaluation allocates nothing.
 	/// </remarks>
-	public abstract ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment);
+	public abstract ObjectMatcher<TElement> ForEvaluation(MatchEnvironment environment);
 
 	/// <summary>
 	///     Returns the expectation string, e.g. <c>be equal to {expectedExpression}</c>.

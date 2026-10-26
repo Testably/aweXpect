@@ -10,7 +10,7 @@ public static partial class ThatNullableDateTimeOffset
 	///     Verifies that the year of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<DateTimeOffset?, DateTimeOffset, IThat<DateTimeOffset?>> HasYear(this IThat<DateTimeOffset?> subject)
+	public static PropertyResult.Int<DateTimeOffset, IThat<DateTimeOffset?>, DateTimeOffset?> HasYear(this IThat<DateTimeOffset?> subject)
 		=> new(subject, a => a?.Year, "year");
 
 	/// <summary>

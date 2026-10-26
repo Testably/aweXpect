@@ -10,15 +10,14 @@ namespace aweXpect.Results;
 ///     The options are specified via <see cref="CollectionIndexOptionsExtensions" /> and
 ///     <see cref="ObjectMatchTypeExtensions" />.
 /// </remarks>
-public class ObjectHasItemResult<TCollection, TItem>(
+public class ObjectHasItemResult<TCollection, TThat, TItem>(
 	ExpectationBuilder expectationBuilder,
-	IThat<TCollection?> collection,
+	TThat returnValue,
 	OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
 	OptionsHolder<ObjectMatchType<TItem>> options)
-	: AndOrResult<TCollection, IThat<TCollection?>, ObjectHasItemResult<TCollection, TItem>>(expectationBuilder,
-			collection),
+	: AndOrResult<TCollection, TThat, ObjectHasItemResult<TCollection, TThat, TItem>>(expectationBuilder, returnValue),
 		IOptionsProvider<CollectionIndexOptions>,
-		IObjectEqualityResult<ObjectHasItemResult<TCollection, TItem>, TItem>
+		IObjectEqualityResult<ObjectHasItemResult<TCollection, TThat, TItem>, TItem>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => options;

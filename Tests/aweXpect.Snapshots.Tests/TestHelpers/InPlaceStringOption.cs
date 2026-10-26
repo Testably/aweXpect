@@ -7,7 +7,7 @@ internal static class InPlaceStringOption
 {
 	/// <remarks>
 	///     A custom option that changes the holder of the result directly instead of returning a copy, as an extension
-	///     without <see cref="ICopyOnOption{TOptions, TResult}" /> would.
+	///     without <see cref="ICopyOnOption{TOptions, TSelf}" /> would.
 	/// </remarks>
 	public static TResult IgnoringCaseInPlace<TResult>(this TResult result)
 		where TResult : IOptionsProvider<StringEqualityOptions>

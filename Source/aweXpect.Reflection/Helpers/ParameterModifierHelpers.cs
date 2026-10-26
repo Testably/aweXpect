@@ -14,11 +14,11 @@ internal static class ParameterModifierHelpers
 	///     Adds the modifier <paramref name="predicate" /> with the <paramref name="description" /> to the
 	///     <see cref="ParameterFilterOptions" /> of the <paramref name="result" /> and returns it for further chaining.
 	/// </summary>
-	public static TResult WithModifier<TResult>(
-		this TResult result,
+	public static TSelf WithModifier<TSelf>(
+		this TSelf result,
 		Func<ParameterInfo, bool> predicate,
 		string description)
-		where TResult : IParameterFilterOptionsProvider
+		where TSelf : IParameterFilterOptionsProvider
 	{
 		result.ParameterFilterOptions.Value =
 			result.ParameterFilterOptions.Value.WithModifier(predicate, () => description);

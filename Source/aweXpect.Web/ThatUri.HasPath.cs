@@ -15,7 +15,7 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.AbsolutePath" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static PropertyResult.String<Uri?, Uri, IThat<Uri?>> HasPath(this IThat<Uri?> subject)
+	public static PropertyResult.String<Uri, IThat<Uri?>, Uri?> HasPath(this IThat<Uri?> subject)
 		=> new(subject.FailIfRelative(), u => u is null ? null : Uri.UnescapeDataString(u.AbsolutePath), "path");
 
 	/// <summary>

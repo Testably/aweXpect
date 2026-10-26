@@ -66,7 +66,7 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, System.Net.HttpStatusCode expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.PropertyResult.Enum<System.Net.Http.HttpResponseMessage?, System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>, System.Net.HttpStatusCode> HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject) { }
+        public static aweXpect.Results.PropertyResult.Enum<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>, System.Net.Http.HttpResponseMessage?, System.Net.HttpStatusCode> HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject) { }
     }
     public static class ThatIPAddress
     {
@@ -99,25 +99,25 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> HasDefaultPort(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasFragment(this aweXpect.Core.IThat<System.Uri?> subject) { }
+        public static aweXpect.Results.PropertyResult.String<System.Uri, aweXpect.Core.IThat<System.Uri?>, System.Uri?> HasFragment(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> HasFragment(this aweXpect.Core.IThat<System.Uri?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasHost(this aweXpect.Core.IThat<System.Uri?> subject) { }
+        public static aweXpect.Results.PropertyResult.String<System.Uri, aweXpect.Core.IThat<System.Uri?>, System.Uri?> HasHost(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> HasHost(this aweXpect.Core.IThat<System.Uri?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasPath(this aweXpect.Core.IThat<System.Uri?> subject) { }
+        public static aweXpect.Results.PropertyResult.String<System.Uri, aweXpect.Core.IThat<System.Uri?>, System.Uri?> HasPath(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> HasPath(this aweXpect.Core.IThat<System.Uri?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> HasPort(this aweXpect.Core.IThat<System.Uri?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.PropertyResult.Int<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasPort(this aweXpect.Core.IThat<System.Uri?> subject) { }
+        public static aweXpect.Results.PropertyResult.Int<System.Uri, aweXpect.Core.IThat<System.Uri?>, System.Uri?> HasPort(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Web.Results.HasQueryParameterValueResult HasQueryParameter(this aweXpect.Core.IThat<System.Uri?> subject, string name) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasScheme(this aweXpect.Core.IThat<System.Uri?> subject) { }
+        public static aweXpect.Results.PropertyResult.String<System.Uri, aweXpect.Core.IThat<System.Uri?>, System.Uri?> HasScheme(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> HasScheme(this aweXpect.Core.IThat<System.Uri?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]

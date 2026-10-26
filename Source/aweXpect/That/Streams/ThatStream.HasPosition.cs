@@ -11,7 +11,7 @@ public static partial class ThatStream
 	///     Verifies that the position of the <see cref="Stream" /> subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Long<Stream?, TStream, IThat<TStream?>> HasPosition<TStream>(
+	public static PropertyResult.Long<TStream, IThat<TStream?>, Stream?> HasPosition<TStream>(
 		this IThat<TStream?> subject)
 		where TStream : Stream
 		=> new(subject, a => a?.Position, "position", (value, paramName) =>

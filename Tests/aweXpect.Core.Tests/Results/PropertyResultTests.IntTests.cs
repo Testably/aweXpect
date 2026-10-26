@@ -1154,7 +1154,7 @@ public sealed partial class PropertyResultTests
 			[Test]
 			public async Task WhenActive_ShouldUseTheActiveVoice()
 			{
-				PropertyResult.Int<MyClass?, MyClass?, IThat<MyClass?>> sut =
+				PropertyResult.Int<MyClass?, IThat<MyClass?>, MyClass?> sut =
 					MyClass.HasIntValue(42, ExpectationGrammars.Active);
 
 				async Task Act()
@@ -1239,7 +1239,7 @@ public sealed partial class PropertyResultTests
 			[Test]
 			public async Task WhenNested_ShouldReadAsAStatementAboutTheProperty()
 			{
-				PropertyResult.Int<MyClass?, MyClass?, IThat<MyClass?>> sut =
+				PropertyResult.Int<MyClass?, IThat<MyClass?>, MyClass?> sut =
 					MyClass.HasIntValue(42, ExpectationGrammars.Nested);
 
 				async Task Act()
@@ -1291,7 +1291,7 @@ public sealed partial class PropertyResultTests
 			[Test]
 			public async Task WhenPlural_ShouldUseThePluralVerb()
 			{
-				PropertyResult.Int<MyClass?, MyClass?, IThat<MyClass?>> sut =
+				PropertyResult.Int<MyClass?, IThat<MyClass?>, MyClass?> sut =
 					MyClass.HasIntValue(42, ExpectationGrammars.Plural);
 
 				async Task Act()

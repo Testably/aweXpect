@@ -77,7 +77,7 @@ public static partial class TypeFilters
 		/// <inheritdoc cref="IOptionsProvider{Quantifier}.Options" />
 		OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
 
-		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
 		TypesContainingMembers ICopyOnOption<Quantifier, TypesContainingMembers>.WithOptions(Quantifier options)
 			=> new(_source, _withQuantifier, new OptionsHolder<Quantifier>(options));
 	}
@@ -123,7 +123,7 @@ public static partial class TypeFilters
 			_quantifier = quantifier;
 		}
 
-		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
 		TypesContainingMembersScopeResult ICopyOnOption<Quantifier, TypesContainingMembersScopeResult>.WithOptions(
 			Quantifier options)
 			=> new(_scopeSource, _create, _memberScope, _withQuantifier, new OptionsHolder<Quantifier>(options));

@@ -11,7 +11,7 @@ public static partial class ThatNullableDateOnly
 	///     Verifies that the day of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<DateOnly?, DateOnly, IThat<DateOnly?>> HasDay(this IThat<DateOnly?> subject)
+	public static PropertyResult.Int<DateOnly, IThat<DateOnly?>, DateOnly?> HasDay(this IThat<DateOnly?> subject)
 		=> new(subject, a => a?.Day, "day");
 
 	/// <summary>

@@ -10,7 +10,7 @@ public static partial class ThatNullableDateTime
 	///     Verifies that the hour of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<DateTime?, DateTime, IThat<DateTime?>> HasHour(this IThat<DateTime?> subject)
+	public static PropertyResult.Int<DateTime, IThat<DateTime?>, DateTime?> HasHour(this IThat<DateTime?> subject)
 		=> new(subject, a => a?.Hour, "hour");
 
 	/// <summary>

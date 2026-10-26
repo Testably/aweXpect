@@ -5,25 +5,25 @@ using aweXpect.Options;
 namespace aweXpect.Results;
 
 /// <summary>
-///     The result of an expectation with an underlying value of type <typeparamref name="TType" />.
+///     The result of an expectation with an underlying value of type <typeparamref name="TCollection" />.
 ///     <para />
-///     In addition to the combinations from <see cref="AndOrResult{TType,TThat}" />, allows specifying
-///     the <see cref="IComparer{TMember}" /> used to verify the order of items.
+///     In addition to the combinations from <see cref="AndOrResult{TCollection,TThat}" />, allows specifying
+///     the <see cref="IComparer{TElement}" /> used to verify the order of items.
 /// </summary>
-public class CollectionOrderResult<TType, TThat, TMember>(
+public class CollectionOrderResult<TCollection, TThat, TElement>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<CollectionOrderOptions<TMember>> options)
-	: AndOrResult<TType, TThat>(expectationBuilder, returnValue),
-		IOptionsProvider<CollectionOrderOptions<TMember>>
+	OptionsHolder<CollectionOrderOptions<TElement>> options)
+	: AndOrResult<TCollection, TThat>(expectationBuilder, returnValue),
+		IOptionsProvider<CollectionOrderOptions<TElement>>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<CollectionOrderOptions<TMember>> IOptionsProvider<CollectionOrderOptions<TMember>>.Options => options;
+	OptionsHolder<CollectionOrderOptions<TElement>> IOptionsProvider<CollectionOrderOptions<TElement>>.Options => options;
 
 	/// <summary>
 	///     Use the given <paramref name="comparer" /> to verify the order of items.
 	/// </summary>
-	public AndOrResult<TType, TThat> Using(IComparer<TMember> comparer)
+	public AndOrResult<TCollection, TThat> Using(IComparer<TElement> comparer)
 	{
 		options.SetComparer(comparer);
 		return this;

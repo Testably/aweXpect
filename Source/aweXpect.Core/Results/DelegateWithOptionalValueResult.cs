@@ -10,9 +10,9 @@ namespace aweXpect.Results;
 ///     returns no value. <see cref="WhoseResult" /> verifies the returned value, which requires that no exception was
 ///     thrown at all.
 /// </remarks>
-public class DelegateWithOptionalValueResult<T>(ExpectationBuilder expectationBuilder)
-	: ExpectationResultWithoutValue<DelegateWithOptionalValueResult<T>>(expectationBuilder)
+public class DelegateWithOptionalValueResult<TValue>(ExpectationBuilder expectationBuilder)
+	: ExpectationResultWithoutValue<DelegateWithOptionalValueResult<TValue>>(expectationBuilder)
 {
-	/// <inheritdoc cref="DelegateWithValueResult{T}.WhoseResult" />
-	public IThatSubject<T> WhoseResult => DelegateWithValueResult<T>.ContinueWithResult(ExpectationBuilder);
+	/// <inheritdoc cref="DelegateWithValueResult{TValue}.WhoseResult" />
+	public IThatSubject<TValue> WhoseResult => DelegateWithValueResult<TValue>.ContinueWithResult(ExpectationBuilder);
 }

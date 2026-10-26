@@ -15,7 +15,7 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.Fragment" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static PropertyResult.String<Uri?, Uri, IThat<Uri?>> HasFragment(this IThat<Uri?> subject)
+	public static PropertyResult.String<Uri, IThat<Uri?>, Uri?> HasFragment(this IThat<Uri?> subject)
 		=> new(subject.FailIfRelative(), u => u is null ? null : DecodeFragment(u.Fragment), "fragment");
 
 	/// <summary>

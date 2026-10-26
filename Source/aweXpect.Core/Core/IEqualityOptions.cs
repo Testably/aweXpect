@@ -4,14 +4,14 @@ using aweXpect.Core.EvaluationContext;
 namespace aweXpect.Core;
 
 /// <summary>
-///     Options that compare values of <typeparamref name="TSubject" />, e.g. the
-///     <see cref="aweXpect.Options.StringEqualityOptions" /> or an <see cref="ObjectMatchType{TSubject}" />.
+///     Options that compare values of <typeparamref name="TElement" />, e.g. the
+///     <see cref="aweXpect.Options.StringEqualityOptions" /> or an <see cref="ObjectMatchType{TElement}" />.
 /// </summary>
 /// <remarks>
 ///     The options are immutable values, so a constraint reads them from the holder of its expectation when it evaluates
 ///     and compares with the evaluator they return for that evaluation.
 /// </remarks>
-public interface IEqualityOptions<in TSubject>
+public interface IEqualityOptions<in TElement>
 {
 	/// <summary>
 	///     Returns the comparison for all comparisons of the evaluation in the <paramref name="context" />, which may keep
@@ -22,7 +22,7 @@ public interface IEqualityOptions<in TSubject>
 	///     equivalency comparison, evaluates them as part of that evaluation: the <paramref name="cancellationToken" />
 	///     cancels them, and its timeout and time system apply to them.
 	/// </remarks>
-	IEqualityEvaluator<TSubject> ForEvaluation(IEvaluationContext context, CancellationToken cancellationToken);
+	IEqualityEvaluator<TElement> ForEvaluation(IEvaluationContext context, CancellationToken cancellationToken);
 
 	/// <summary>
 	///     Rejects the <paramref name="expected" /> value, which the caller received as <paramref name="parameterName" />,
@@ -35,5 +35,5 @@ public interface IEqualityOptions<in TSubject>
 	/// <exception cref="System.ArgumentException">
 	///     The options cannot compare with the <paramref name="expected" /> value.
 	/// </exception>
-	void ValidateExpected(TSubject expected, string parameterName);
+	void ValidateExpected(TElement expected, string parameterName);
 }

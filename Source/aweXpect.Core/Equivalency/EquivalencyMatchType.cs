@@ -18,12 +18,12 @@ namespace aweXpect.Equivalency;
 /// </summary>
 /// <remarks>
 ///     Use it via
-///     <see cref="ObjectMatchTypeHolderExtensions.SetMatchType{TSubject}(OptionsHolder{ObjectMatchType{TSubject}}, ObjectMatchType{TSubject})" />
+///     <see cref="ObjectMatchTypeHolderExtensions.SetMatchType{TElement}(OptionsHolder{ObjectMatchType{TElement}}, ObjectMatchType{TElement})" />
 ///     as the option <c>Equivalent</c>.<br />
 ///     Mark the parameters of the expectation that receive the compared values with the
 ///     <see cref="RequiresMemberMetadataAttribute" />, so that the members of their types are registered for trimming.
 /// </remarks>
-public sealed class EquivalencyMatchType<TSubject> : ObjectMatchType<TSubject>
+public sealed class EquivalencyMatchType<TElement> : ObjectMatchType<TElement>
 {
 	private static readonly MatchPhrase SharedPhrase =
 		MatchPhrase.Being("equivalent to").WithName(" using equivalency");
@@ -46,7 +46,7 @@ public sealed class EquivalencyMatchType<TSubject> : ObjectMatchType<TSubject>
 	///     <paramref name="environment" /> and use the timeout and the time system of its evaluation. The matcher keeps the
 	///     members to ignore that matched nothing across the items of a collection.
 	/// </remarks>
-	public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
+	public override ObjectMatcher<TElement> ForEvaluation(MatchEnvironment environment)
 		=> new EquivalencyMatcher(_equivalencyOptions, environment.Evaluation, environment.CancellationToken);
 
 	/// <inheritdoc />
@@ -55,7 +55,7 @@ public sealed class EquivalencyMatchType<TSubject> : ObjectMatchType<TSubject>
 	private sealed class EquivalencyMatcher(
 		EquivalencyOptions equivalencyOptions,
 		IEvaluationContext? evaluation,
-		CancellationToken cancellationToken) : ObjectMatcher<TSubject>
+		CancellationToken cancellationToken) : ObjectMatcher<TElement>
 	{
 		private StringBuilder? _failureBuilder;
 		private Dictionary<string, string?>? _unmatchedMembersToIgnore;
@@ -65,7 +65,7 @@ public sealed class EquivalencyMatchType<TSubject> : ObjectMatchType<TSubject>
 		///     Only options that can ignore members by name track them, so that most comparisons of collection items stay
 		///     as they are.
 		/// </remarks>
-		public override ValueTask<MatchResult> Match<TExpected>(TSubject actual, TExpected expected)
+		public override ValueTask<MatchResult> Match<TExpected>(TElement actual, TExpected expected)
 			=> CanIgnoreMembersByName(equivalencyOptions)
 				? MatchTrackingMembersToIgnore(actual, expected)
 				: MatchWithoutTracking(actual, expected);
@@ -75,7 +75,7 @@ public sealed class EquivalencyMatchType<TSubject> : ObjectMatchType<TSubject>
 		///     The items of a collection are compared one after the other with the same matcher, so the members to ignore
 		///     of every failed comparison are kept.
 		/// </remarks>
-		public override async ValueTask<MatchResult> MatchWithExplanation<TExpected>(TSubject actual,
+		public override async ValueTask<MatchResult> MatchWithExplanation<TExpected>(TElement actual,
 			TExpected expected)
 		{
 			StringBuilder failureBuilder = _failureBuilder ??= new StringBuilder();
@@ -92,7 +92,7 @@ public sealed class EquivalencyMatchType<TSubject> : ObjectMatchType<TSubject>
 		/// <remarks>
 		///     The differences keep their layout and are shifted as a whole by the <paramref name="indentation" />.
 		/// </remarks>
-		public override string GetFailure<TExpected>(string it, ExpectationGrammars grammars, TSubject? actual,
+		public override string GetFailure<TExpected>(string it, ExpectationGrammars grammars, TElement? actual,
 			TExpected expected, MatchResult result, string? indentation)
 		{
 			if (grammars.IsNegated())
@@ -129,11 +129,11 @@ public sealed class EquivalencyMatchType<TSubject> : ObjectMatchType<TSubject>
 				() => equivalencyOptions.ToString(unmatchedMembersToIgnore), int.MinValue));
 		}
 
-		private async ValueTask<MatchResult> MatchWithoutTracking<TExpected>(TSubject actual, TExpected expected)
+		private async ValueTask<MatchResult> MatchWithoutTracking<TExpected>(TElement actual, TExpected expected)
 			=> MatchResult.From(await EquivalencyComparison.IsEquivalent(actual, expected, equivalencyOptions,
 				evaluation, cancellationToken));
 
-		private async ValueTask<MatchResult> MatchTrackingMembersToIgnore<TExpected>(TSubject actual,
+		private async ValueTask<MatchResult> MatchTrackingMembersToIgnore<TExpected>(TElement actual,
 			TExpected expected)
 		{
 			(bool isEquivalent, _unmatchedMembersToIgnore) =

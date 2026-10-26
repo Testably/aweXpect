@@ -83,7 +83,7 @@ public sealed partial class PropertyResultTests
 		public async Task Containing_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
-			PropertyResult.String<string, string, IThat<string>> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
+			PropertyResult.String<string, IThat<string>, string> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
 			{
 				signal.Signal(e);
 			});
@@ -258,7 +258,7 @@ public sealed partial class PropertyResultTests
 		public async Task EndingWith_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
-			PropertyResult.String<string, string, IThat<string>> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
+			PropertyResult.String<string, IThat<string>, string> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
 			{
 				signal.Signal(e);
 			});
@@ -388,7 +388,7 @@ public sealed partial class PropertyResultTests
 		public async Task EqualTo_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
-			PropertyResult.String<string, string, IThat<string>> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
+			PropertyResult.String<string, IThat<string>, string> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
 			{
 				signal.Signal(e);
 			});
@@ -413,7 +413,7 @@ public sealed partial class PropertyResultTests
 		{
 			int calls = 0;
 			Func<int> subject = () => 1;
-			PropertyResult.String<int, int, IThat<int>> sut = new(
+			PropertyResult.String<int, IThat<int>, int> sut = new(
 				That(subject).Eventually().OnVirtualTime().Within(1.Seconds()).CheckEvery(10.Milliseconds()),
 				_ => calls++ == 0 ? throw new InvalidOperationException("not ready") : "foo",
 				"string value");
@@ -565,7 +565,7 @@ public sealed partial class PropertyResultTests
 		public async Task NotContaining_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
-			PropertyResult.String<string, string, IThat<string>> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
+			PropertyResult.String<string, IThat<string>, string> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
 			{
 				signal.Signal(e);
 			});
@@ -653,7 +653,7 @@ public sealed partial class PropertyResultTests
 		public async Task NotEndingWith_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
-			PropertyResult.String<string, string, IThat<string>> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
+			PropertyResult.String<string, IThat<string>, string> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
 			{
 				signal.Signal(e);
 			});
@@ -772,7 +772,7 @@ public sealed partial class PropertyResultTests
 		public async Task NotEqualTo_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
-			PropertyResult.String<string, string, IThat<string>> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
+			PropertyResult.String<string, IThat<string>, string> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
 			{
 				signal.Signal(e);
 			});
@@ -964,7 +964,7 @@ public sealed partial class PropertyResultTests
 		public async Task NotStartingWith_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
-			PropertyResult.String<string, string, IThat<string>> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
+			PropertyResult.String<string, IThat<string>, string> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
 			{
 				signal.Signal(e);
 			});
@@ -1068,7 +1068,7 @@ public sealed partial class PropertyResultTests
 		public async Task StartingWith_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
-			PropertyResult.String<string, string, IThat<string>> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
+			PropertyResult.String<string, IThat<string>, string> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
 			{
 				signal.Signal(e);
 			});
@@ -1203,7 +1203,7 @@ public sealed partial class PropertyResultTests
 			[Test]
 			public async Task WhenActive_ShouldUseTheActiveVoice()
 			{
-				PropertyResult.String<MyClass?, MyClass?, IThat<MyClass?>> sut =
+				PropertyResult.String<MyClass?, IThat<MyClass?>, MyClass?> sut =
 					MyClass.HasStringValue("foo", ExpectationGrammars.Active);
 
 				async Task Act()
@@ -1231,7 +1231,7 @@ public sealed partial class PropertyResultTests
 			public async Task WhenContaining_ShouldFollowTheGrammars(ExpectationGrammars grammars, bool isNever,
 				string expectedExpectation)
 			{
-				PropertyResult.String<MyClass?, MyClass?, IThat<MyClass?>> sut = MyClass.HasStringValue("foo", grammars);
+				PropertyResult.String<MyClass?, IThat<MyClass?>, MyClass?> sut = MyClass.HasStringValue("foo", grammars);
 				string expectedResult = isNever
 					? "string value contained \"foo\" at least once in \"foo\""
 					: "string value did not contain \"bar\" in \"foo\"";
@@ -1275,7 +1275,7 @@ public sealed partial class PropertyResultTests
 			[Test]
 			public async Task WhenNested_ShouldReadAsAStatementAboutTheProperty()
 			{
-				PropertyResult.String<MyClass?, MyClass?, IThat<MyClass?>> sut =
+				PropertyResult.String<MyClass?, IThat<MyClass?>, MyClass?> sut =
 					MyClass.HasStringValue("foo", ExpectationGrammars.Nested);
 
 				async Task Act()
@@ -1292,7 +1292,7 @@ public sealed partial class PropertyResultTests
 			[Test]
 			public async Task WhenPlural_ShouldUseThePluralVerb()
 			{
-				PropertyResult.String<MyClass?, MyClass?, IThat<MyClass?>> sut =
+				PropertyResult.String<MyClass?, IThat<MyClass?>, MyClass?> sut =
 					MyClass.HasStringValue("foo", ExpectationGrammars.Plural);
 
 				async Task Act()

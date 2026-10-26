@@ -7,7 +7,7 @@ namespace aweXpect.Results;
 /// <remarks>
 ///     The option methods are extension methods that infer <typeparamref name="TTolerance" /> from this interface, so a
 ///     result has to implement it only once, with itself as <typeparamref name="TSelf" />. The match type of the
-///     expectation starts as an <see cref="aweXpect.Options.ObjectToleranceMatchType{TSubject, TTolerance}" />.
+///     expectation starts as an <see cref="aweXpect.Options.ObjectToleranceMatchType{TElement, TTolerance}" />.
 /// </remarks>
 public interface IObjectEqualityWithToleranceResult<TSelf, TElement, TTolerance>
 	: IObjectEqualityResult<TSelf, TElement>

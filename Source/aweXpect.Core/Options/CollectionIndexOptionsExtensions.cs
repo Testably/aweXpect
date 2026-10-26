@@ -8,7 +8,7 @@ namespace aweXpect;
 /// </summary>
 /// <remarks>
 ///     Only one index can be specified.<br />
-///     A result that implements <see cref="ICopyOnOption{TOptions, TResult}" /> stays unchanged: it returns a new one
+///     A result that implements <see cref="ICopyOnOption{TOptions, TSelf}" /> stays unchanged: it returns a new one
 ///     with the new index.
 /// </remarks>
 public static class CollectionIndexOptionsExtensions
@@ -16,10 +16,10 @@ public static class CollectionIndexOptionsExtensions
 	/// <summary>
 	///     …at the given zero-based <paramref name="index" />.
 	/// </summary>
-	public static TResult AtIndex<TResult>(this TResult result, int index)
-		where TResult : IOptionsProvider<CollectionIndexOptions>
+	public static TSelf AtIndex<TSelf>(this TSelf result, int index)
+		where TSelf : IOptionsProvider<CollectionIndexOptions>
 	{
-		if (result is ICopyOnOption<CollectionIndexOptions, TResult> copyOnOption)
+		if (result is ICopyOnOption<CollectionIndexOptions, TSelf> copyOnOption)
 		{
 			return copyOnOption.WithOptions(result.Options.Value.AtIndex(index));
 		}
@@ -31,10 +31,10 @@ public static class CollectionIndexOptionsExtensions
 	/// <summary>
 	///     …at the given zero-based <paramref name="index" />, counted from the end of the collection.
 	/// </summary>
-	public static TResult AtIndexFromEnd<TResult>(this TResult result, int index)
-		where TResult : IOptionsProvider<CollectionIndexOptions>
+	public static TSelf AtIndexFromEnd<TSelf>(this TSelf result, int index)
+		where TSelf : IOptionsProvider<CollectionIndexOptions>
 	{
-		if (result is ICopyOnOption<CollectionIndexOptions, TResult> copyOnOption)
+		if (result is ICopyOnOption<CollectionIndexOptions, TSelf> copyOnOption)
 		{
 			return copyOnOption.WithOptions(result.Options.Value.AtIndexFromEnd(index));
 		}

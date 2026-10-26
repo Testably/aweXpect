@@ -90,8 +90,8 @@ public static class ToleranceExtensions
 	///     <see cref="ArgumentOutOfRangeException" />; an expectation of an extension gets this check by starting from
 	///     <see cref="TimeTolerance.Days" />.
 	/// </remarks>
-	public static TResult Within<TResult>(this TResult result, TimeSpan tolerance)
-		where TResult : IOptionsProvider<TimeTolerance>
+	public static TSelf Within<TSelf>(this TSelf result, TimeSpan tolerance)
+		where TSelf : IOptionsProvider<TimeTolerance>
 	{
 		result.Options.Within(tolerance);
 		return result;

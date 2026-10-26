@@ -15,14 +15,14 @@ namespace aweXpect.Results;
 public static class PropertyResult
 {
 	/// <summary>
-	///     Result for an <see langword="int" /> property that continues on the <see cref="IThat{TItem}" /> subject.
+	///     Result for an <see langword="int" /> property that continues on the <see cref="IThat{TType}" /> subject.
 	/// </summary>
-	public class Int<TItem>(
-		IThat<TItem> subject,
-		Func<TItem, int?> mapper,
+	public class Int<TType>(
+		IThat<TType> subject,
+		Func<TType, int?> mapper,
 		string propertyExpression,
 		Action<int?, string>? validation = null)
-		: Int<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation);
+		: Int<TType, IThat<TType>, TType>(subject, mapper, propertyExpression, validation);
 
 	/// <summary>
 	///     Result for an <see langword="int" /> property of a <typeparamref name="TValue" /> which continues on
@@ -31,10 +31,10 @@ public static class PropertyResult
 	/// <remarks>
 	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in <see cref="IntPropertyResultExtensions" />.
 	///     <para />
-	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
+	///     See <see cref="String{TType, TThat, TValue}" /> for the role of the <paramref name="grammars" /> and of the
 	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
 	/// </remarks>
-	public class Int<TValue, TType, TThat>(
+	public class Int<TType, TThat, TValue>(
 		TThat subject,
 		Func<TValue, int?> mapper,
 		string propertyExpression,
@@ -53,14 +53,14 @@ public static class PropertyResult
 	}
 
 	/// <summary>
-	///     Result for a <see langword="long" /> property that continues on the <see cref="IThat{TItem}" /> subject.
+	///     Result for a <see langword="long" /> property that continues on the <see cref="IThat{TType}" /> subject.
 	/// </summary>
-	public class Long<TItem>(
-		IThat<TItem> subject,
-		Func<TItem, long?> mapper,
+	public class Long<TType>(
+		IThat<TType> subject,
+		Func<TType, long?> mapper,
 		string propertyExpression,
 		Action<long?, string>? validation = null)
-		: Long<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation);
+		: Long<TType, IThat<TType>, TType>(subject, mapper, propertyExpression, validation);
 
 	/// <summary>
 	///     Result for a <see langword="long" /> property of a <typeparamref name="TValue" /> which continues on
@@ -69,10 +69,10 @@ public static class PropertyResult
 	/// <remarks>
 	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in <see cref="LongPropertyResultExtensions" />.
 	///     <para />
-	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
+	///     See <see cref="String{TType, TThat, TValue}" /> for the role of the <paramref name="grammars" /> and of the
 	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
 	/// </remarks>
-	public class Long<TValue, TType, TThat>(
+	public class Long<TType, TThat, TValue>(
 		TThat subject,
 		Func<TValue, long?> mapper,
 		string propertyExpression,
@@ -91,13 +91,13 @@ public static class PropertyResult
 	}
 
 	/// <summary>
-	///     Result for a <typeparamref name="TEnum" /> property that continues on the <see cref="IThat{TItem}" /> subject.
+	///     Result for a <typeparamref name="TEnum" /> property that continues on the <see cref="IThat{TType}" /> subject.
 	/// </summary>
-	public class Enum<TItem, TEnum>(
-		IThat<TItem> subject,
-		Func<TItem, TEnum?> mapper,
+	public class Enum<TType, TEnum>(
+		IThat<TType> subject,
+		Func<TType, TEnum?> mapper,
 		string propertyExpression)
-		: Enum<TItem, TItem, IThat<TItem>, TEnum>(subject, mapper, propertyExpression)
+		: Enum<TType, IThat<TType>, TType, TEnum>(subject, mapper, propertyExpression)
 		where TEnum : struct, Enum;
 
 	/// <summary>
@@ -107,10 +107,10 @@ public static class PropertyResult
 	/// <remarks>
 	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in <see cref="EnumPropertyResultExtensions" />.
 	///     <para />
-	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
+	///     See <see cref="String{TType, TThat, TValue}" /> for the role of the <paramref name="grammars" /> and of the
 	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
 	/// </remarks>
-	public class Enum<TValue, TType, TThat, TEnum>(
+	public class Enum<TType, TThat, TValue, TEnum>(
 		TThat subject,
 		Func<TValue, TEnum?> mapper,
 		string propertyExpression,
@@ -126,14 +126,14 @@ public static class PropertyResult
 	}
 
 	/// <summary>
-	///     Result for a <see cref="TimeSpan" /> property that continues on the <see cref="IThat{TItem}" /> subject.
+	///     Result for a <see cref="TimeSpan" /> property that continues on the <see cref="IThat{TType}" /> subject.
 	/// </summary>
-	public class TimeSpan<TItem>(
-		IThat<TItem> subject,
-		Func<TItem, TimeSpan?> mapper,
+	public class TimeSpan<TType>(
+		IThat<TType> subject,
+		Func<TType, TimeSpan?> mapper,
 		string propertyExpression,
 		Action<TimeSpan?, string>? validation = null)
-		: TimeSpan<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation);
+		: TimeSpan<TType, IThat<TType>, TType>(subject, mapper, propertyExpression, validation);
 
 	/// <summary>
 	///     Result for a <see cref="TimeSpan" /> property of a <typeparamref name="TValue" /> which continues on
@@ -143,10 +143,10 @@ public static class PropertyResult
 	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in
 	///     <see cref="TimeSpanPropertyResultExtensions" />.
 	///     <para />
-	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
+	///     See <see cref="String{TType, TThat, TValue}" /> for the role of the <paramref name="grammars" /> and of the
 	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
 	/// </remarks>
-	public class TimeSpan<TValue, TType, TThat>(
+	public class TimeSpan<TType, TThat, TValue>(
 		TThat subject,
 		Func<TValue, TimeSpan?> mapper,
 		string propertyExpression,
@@ -165,14 +165,14 @@ public static class PropertyResult
 	}
 
 	/// <summary>
-	///     Result for a <see langword="double" /> property that continues on the <see cref="IThat{TItem}" /> subject.
+	///     Result for a <see langword="double" /> property that continues on the <see cref="IThat{TType}" /> subject.
 	/// </summary>
-	public class Double<TItem>(
-		IThat<TItem> subject,
-		Func<TItem, double?> mapper,
+	public class Double<TType>(
+		IThat<TType> subject,
+		Func<TType, double?> mapper,
 		string propertyExpression,
 		Action<double?, string>? validation = null)
-		: Double<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation);
+		: Double<TType, IThat<TType>, TType>(subject, mapper, propertyExpression, validation);
 
 	/// <summary>
 	///     Result for a <see langword="double" /> property of a <typeparamref name="TValue" /> which continues on
@@ -181,10 +181,10 @@ public static class PropertyResult
 	/// <remarks>
 	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in <see cref="DoublePropertyResultExtensions" />.
 	///     <para />
-	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
+	///     See <see cref="String{TType, TThat, TValue}" /> for the role of the <paramref name="grammars" /> and of the
 	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
 	/// </remarks>
-	public class Double<TValue, TType, TThat>(
+	public class Double<TType, TThat, TValue>(
 		TThat subject,
 		Func<TValue, double?> mapper,
 		string propertyExpression,
@@ -214,14 +214,14 @@ public static class PropertyResult
 	}
 
 	/// <summary>
-	///     Result for a <see langword="decimal" /> property that continues on the <see cref="IThat{TItem}" /> subject.
+	///     Result for a <see langword="decimal" /> property that continues on the <see cref="IThat{TType}" /> subject.
 	/// </summary>
-	public class Decimal<TItem>(
-		IThat<TItem> subject,
-		Func<TItem, decimal?> mapper,
+	public class Decimal<TType>(
+		IThat<TType> subject,
+		Func<TType, decimal?> mapper,
 		string propertyExpression,
 		Action<decimal?, string>? validation = null)
-		: Decimal<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation);
+		: Decimal<TType, IThat<TType>, TType>(subject, mapper, propertyExpression, validation);
 
 	/// <summary>
 	///     Result for a <see langword="decimal" /> property of a <typeparamref name="TValue" /> which continues on
@@ -230,10 +230,10 @@ public static class PropertyResult
 	/// <remarks>
 	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in <see cref="DecimalPropertyResultExtensions" />.
 	///     <para />
-	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
+	///     See <see cref="String{TType, TThat, TValue}" /> for the role of the <paramref name="grammars" /> and of the
 	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
 	/// </remarks>
-	public class Decimal<TValue, TType, TThat>(
+	public class Decimal<TType, TThat, TValue>(
 		TThat subject,
 		Func<TValue, decimal?> mapper,
 		string propertyExpression,
@@ -263,14 +263,14 @@ public static class PropertyResult
 	}
 
 	/// <summary>
-	///     Result for a <see langword="string" /> property that continues on the <see cref="IThat{TItem}" /> subject.
+	///     Result for a <see langword="string" /> property that continues on the <see cref="IThat{TType}" /> subject.
 	/// </summary>
-	public class String<TItem>(
-		IThat<TItem> subject,
-		Func<TItem, string?> mapper,
+	public class String<TType>(
+		IThat<TType> subject,
+		Func<TType, string?> mapper,
 		string propertyExpression,
 		Action<string?, string>? validation = null)
-		: String<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation);
+		: String<TType, IThat<TType>, TType>(subject, mapper, propertyExpression, validation);
 
 	/// <summary>
 	///     Result for a <see langword="string" /> property of a <typeparamref name="TValue" /> which continues on
@@ -287,7 +287,7 @@ public static class PropertyResult
 	///     source provides, while the result carries the narrowed type. It also differs for a nullable subject, whose
 	///     value is no longer <see langword="null" /> once the property could be compared.
 	/// </remarks>
-	public class String<TValue, TType, TThat>(
+	public class String<TType, TThat, TValue>(
 		TThat subject,
 		Func<TValue, string?> mapper,
 		string propertyExpression,

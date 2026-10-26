@@ -297,7 +297,7 @@ public static partial class ConstructorFilters
 		OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options
 			=> new(_collectionIndexOptions);
 
-		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
 		ConstructorsWithParameter<T> ICopyOnOption<CollectionIndexOptions, ConstructorsWithParameter<T>>.WithOptions(
 			CollectionIndexOptions options)
 			=> new(_source, _createFilter, options, _parameterFilterOptions);
@@ -337,12 +337,12 @@ public static partial class ConstructorFilters
 		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 		OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
-		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
 		ConstructorsWithNamedParameter<T> ICopyOnOption<CollectionIndexOptions, ConstructorsWithNamedParameter<T>>.WithOptions(
 			CollectionIndexOptions options)
 			=> new(_source, _createFilter, options, _createParameterFilterOptions, new OptionsHolder<StringEqualityOptions>(_options.Value));
 
-		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
 		ConstructorsWithNamedParameter<T> ICopyOnOption<StringEqualityOptions, ConstructorsWithNamedParameter<T>>.
 			WithOptions(StringEqualityOptions options)
 			=> new(_source, _createFilter, _collectionIndexOptions, _createParameterFilterOptions, new OptionsHolder<StringEqualityOptions>(options));

@@ -7,14 +7,14 @@ using aweXpect.Core.Helpers;
 namespace aweXpect.Options;
 
 /// <summary>
-///     Compares <typeparamref name="TSubject" /> values within a <typeparamref name="TTolerance" />.
+///     Compares <typeparamref name="TElement" /> values within a <typeparamref name="TTolerance" />.
 /// </summary>
 /// <remarks>
-///     An expectation starts with the value of <see cref="ObjectMatchType{TSubject}.WithTolerance{TTolerance}" />, which
+///     An expectation starts with the value of <see cref="ObjectMatchType{TElement}.WithTolerance{TTolerance}" />, which
 ///     applies its default tolerance, and <see cref="Within(TTolerance)" /> returns a new value with the specified
 ///     tolerance, so that a stored value never changes.
 /// </remarks>
-public sealed class ObjectToleranceMatchType<TSubject, TTolerance> : ObjectMatchType<TSubject>
+public sealed class ObjectToleranceMatchType<TElement, TTolerance> : ObjectMatchType<TElement>
 {
 	private readonly Func<TTolerance, TTolerance, TTolerance>? _absoluteTolerance;
 	private readonly Comparison _comparison;
@@ -63,14 +63,14 @@ public sealed class ObjectToleranceMatchType<TSubject, TTolerance> : ObjectMatch
 		}
 	}
 
-	internal static ObjectToleranceMatchType<TSubject, TTolerance> Create(
-		Func<TSubject, TSubject, TTolerance, bool> isWithinTolerance,
+	internal static ObjectToleranceMatchType<TElement, TTolerance> Create(
+		Func<TElement, TElement, TTolerance, bool> isWithinTolerance,
 		Func<TTolerance, string>? toString,
 		Action<TTolerance>? validation,
 		Func<TTolerance>? defaultTolerance)
 	{
 		isWithinTolerance.ThrowIfNull();
-		return new ObjectToleranceMatchType<TSubject, TTolerance>(
+		return new ObjectToleranceMatchType<TElement, TTolerance>(
 			new Comparison(isWithinTolerance, toString ?? ToleranceHelpers.Format, validation, defaultTolerance));
 	}
 
@@ -78,11 +78,11 @@ public sealed class ObjectToleranceMatchType<TSubject, TTolerance> : ObjectMatch
 	/// <remarks>
 	///     A default tolerance can be customized, so it is read once for each evaluation, and outside an evaluation
 	///     for every comparison, while a specified tolerance is the same for every evaluation. Without a default
-	///     tolerance, the values are compared like <see cref="ObjectMatchType{TSubject}.Default" />.<br />
+	///     tolerance, the values are compared like <see cref="ObjectMatchType{TElement}.Default" />.<br />
 	///     The matcher outside an evaluation reads the default tolerance itself, so it is created once, also for a
 	///     starting value that every expectation shares, where a race only creates a second, equal matcher.
 	/// </remarks>
-	public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
+	public override ObjectMatcher<TElement> ForEvaluation(MatchEnvironment environment)
 	{
 		if (OptionName is not null)
 		{
@@ -108,11 +108,11 @@ public sealed class ObjectToleranceMatchType<TSubject, TTolerance> : ObjectMatch
 	/// <exception cref="ArgumentOutOfRangeException">
 	///     The <paramref name="tolerance" /> is negative or cannot be honoured by the comparison.
 	/// </exception>
-	public ObjectToleranceMatchType<TSubject, TTolerance> Within(TTolerance tolerance)
+	public ObjectToleranceMatchType<TElement, TTolerance> Within(TTolerance tolerance)
 	{
 		ToleranceHelpers.ThrowIfInvalid(tolerance);
 		_comparison.Validation?.Invoke(tolerance);
-		return new ObjectToleranceMatchType<TSubject, TTolerance>(_comparison, tolerance, null, "");
+		return new ObjectToleranceMatchType<TElement, TTolerance>(_comparison, tolerance, null, "");
 	}
 
 	/// <summary>
@@ -129,13 +129,13 @@ public sealed class ObjectToleranceMatchType<TSubject, TTolerance> : ObjectMatch
 	/// <exception cref="InvalidOperationException">
 	///     No tolerance was specified with <see cref="Within(TTolerance)" />.
 	/// </exception>
-	public ObjectToleranceMatchType<TSubject, TTolerance> SetRelativeTolerance(
+	public ObjectToleranceMatchType<TElement, TTolerance> SetRelativeTolerance(
 		Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
 	{
 		absoluteTolerance.ThrowIfNull();
 		unit.ThrowIfNull();
 		ToleranceHelpers.ThrowIfRelativeToleranceHasNoTolerance(OptionName is not null);
-		return new ObjectToleranceMatchType<TSubject, TTolerance>(_comparison, _tolerance, absoluteTolerance, unit);
+		return new ObjectToleranceMatchType<TElement, TTolerance>(_comparison, _tolerance, absoluteTolerance, unit);
 	}
 
 	private MatchPhrase GetPhrase(TTolerance tolerance)
@@ -148,32 +148,32 @@ public sealed class ObjectToleranceMatchType<TSubject, TTolerance> : ObjectMatch
 	///     The comparison that every value derived from the same starting value shares.
 	/// </summary>
 	private sealed class Comparison(
-		Func<TSubject, TSubject, TTolerance, bool> isWithinTolerance,
+		Func<TElement, TElement, TTolerance, bool> isWithinTolerance,
 		Func<TTolerance, string> format,
 		Action<TTolerance>? validation,
 		Func<TTolerance>? defaultTolerance)
 	{
-		public Func<TSubject, TSubject, TTolerance, bool> IsWithinTolerance { get; } = isWithinTolerance;
+		public Func<TElement, TElement, TTolerance, bool> IsWithinTolerance { get; } = isWithinTolerance;
 		public Func<TTolerance, string> Format { get; } = format;
 		public Action<TTolerance>? Validation { get; } = validation;
 		public Func<TTolerance>? DefaultTolerance { get; } = defaultTolerance;
 	}
 
 	/// <remarks>
-	///     A value that is not a <typeparamref name="TSubject" /> never matches. The matcher reads the default tolerance
+	///     A value that is not a <typeparamref name="TElement" /> never matches. The matcher reads the default tolerance
 	///     for every comparison when it <paramref name="readsTolerance" />.
 	/// </remarks>
 	private sealed class WithinMatcher(
-		ObjectToleranceMatchType<TSubject, TTolerance> matchType,
+		ObjectToleranceMatchType<TElement, TTolerance> matchType,
 		TTolerance tolerance,
 		bool readsTolerance = false)
-		: ObjectMatcher<TSubject, TSubject>
+		: ObjectMatcher<TElement, TElement>
 	{
 		/// <inheritdoc />
-		public override ValueTask<MatchResult> Match(TSubject actual, TSubject expected)
+		public override ValueTask<MatchResult> Match(TElement actual, TElement expected)
 			=> new(MatchResult.From(IsEqual(actual, expected)));
 
-		private bool IsEqual(TSubject actual, TSubject expected)
+		private bool IsEqual(TElement actual, TElement expected)
 		{
 			if (actual is null || expected is null)
 			{
@@ -183,7 +183,7 @@ public sealed class ObjectToleranceMatchType<TSubject, TTolerance> : ObjectMatch
 			return matchType._comparison.IsWithinTolerance(actual, expected, ToleranceFor(expected));
 		}
 
-		private TTolerance ToleranceFor(TSubject expected)
+		private TTolerance ToleranceFor(TElement expected)
 		{
 			TTolerance value = readsTolerance ? matchType._comparison.DefaultTolerance!() : tolerance;
 			return matchType._absoluteTolerance is not null && expected is TTolerance typedExpected

@@ -6,7 +6,7 @@ namespace aweXpect
 {
     public static class JsonExtensions
     {
-        public static TResult AsJson<TResult>(this TResult result, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions { }
+        public static TSelf AsJson<TSelf>(this TSelf result, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) where TSelf : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions { }
     }
     public static class ThatJsonElement
     {

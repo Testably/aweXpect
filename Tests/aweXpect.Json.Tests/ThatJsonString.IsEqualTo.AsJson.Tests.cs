@@ -53,7 +53,7 @@ public sealed partial class ThatJsonString
 						=> typeof(JsonExtensions).GetMethod(nameof(JsonExtensions.AsJson))!.MakeGenericMethod(result);
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("GenericArguments[0], ?aweXpect.Results.StringOccurrenceCountResult`2*?TResult?.").AsWildcard()
+						.WithMessage("GenericArguments[0], ?aweXpect.Results.StringOccurrenceCountResult`2*?TSelf?.").AsWildcard()
 						.Because("comparing substrings of a string as JSON is not meaningful, so IsEqualTo(…).AsJson() or IsValidJsonMatching should be used instead");
 				}
 

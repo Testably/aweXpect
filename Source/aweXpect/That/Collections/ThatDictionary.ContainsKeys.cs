@@ -29,7 +29,7 @@ public static partial class ThatDictionary
 		GuaranteesNotNull = true, Params = true, NegatedReturnType = NegatedKeyReturnType,
 		Summary = ContainsKeysSummary, NegatedSummary = DoesNotContainKeysSummary,
 		NegatedRemarks = DoesNotContainKeysRemarks)]
-	internal static ContainsKeysResult<TCollection, IThat<TCollection?>, TKey, TValue?>
+	internal static ContainsKeysResult<TCollection, IThat<TCollection?>, TValue?>
 		ContainsKeysCore<TCollection, TKey, TValue>(
 			IThat<TCollection?> subject,
 			IEnumerable<TKey> expected,
@@ -44,7 +44,7 @@ public static partial class ThatDictionary
 		}
 
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ContainsKeysResult<TCollection, IThat<TCollection?>, TKey, TValue?>(
+		return new ContainsKeysResult<TCollection, IThat<TCollection?>, TValue?>.ForKeys<TKey>(
 			expectationBuilder.AddConstraint((ExpectedExpression: expectedExpression, Keys: keys, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainKeysConstraint<TCollection, TKey, TValue>(it, grammars,
