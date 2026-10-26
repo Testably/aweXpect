@@ -1,9 +1,20 @@
 # Customization
 
+Set a value under `Customize.aweXpect.Web()` for the current
+[async flow](https://docs.testably.org/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
+`Customize.aweXpect.Global.Web()` for
+[all tests](https://docs.testably.org/aweXpect/how-it-works/configuration#global-defaults).
+
+| Value                                      | Default                                                                    | Summary                                                          |
+|--------------------------------------------|----------------------------------------------------------------------------|------------------------------------------------------------------|
+| [`ContentProcessors`](#content-processors) | `JsonContentProcessor`, `StringContentProcessor`, `BinaryContentProcessor` | format the content of requests and responses in failure messages |
+
+## Content processors
+
 The failure messages include the content of the request and the response. Each content is formatted by the first
 content processor that can handle it: by default JSON is indented, text is shown as is, and audio, image, video and
 PDF content is summarized with its media type and length. You can change the processors, e.g. with your own
-`IContentProcessor`. The value is restored when the returned lifetime is disposed:
+`IContentProcessor`:
 
 ```csharp
 using aweXpect.Customization;
@@ -20,5 +31,3 @@ using (Customize.aweXpect.Web().ContentProcessors.Set([
     // formats CSV content with the custom processor
 }
 ```
-
-To change the processors for all tests, set them on `Customize.aweXpect.Global.Web()` instead.

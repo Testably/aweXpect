@@ -1,7 +1,7 @@
 # Matching JSON
 
 Describes the possible expectations for matching a `JsonElement` or a
-[`JsonNode`](./03-objects-and-arrays.md#jsonnode) with an expected value, and the [options](#options) to relax the
+[`JsonNode`](./04-json-nodes.md) with an expected value, and the [options](#options) to relax the
 comparison.
 
 | Expectation                  | Negated | Summary                                                   |
@@ -100,7 +100,7 @@ but it differed as $.artist had unexpected "The Beatles"
 
 The options are available wherever `JsonOptions` are accepted, e.g. `Matches`, `MatchesExactly`,
 `IsEqualTo(expected).AsJson(o => …)`, `IsValidJsonMatching` and
-[`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json).
+[`IsJsonSerializedAs`](./05-serialization.md#serialized-as-json).
 They work like the [options of aweXpect](https://docs.testably.org/aweXpect/how-it-works/options):
 
 | Option                                                             | Configures                                             |
@@ -111,7 +111,7 @@ They work like the [options of aweXpect](https://docs.testably.org/aweXpect/how-
 | [`IgnoringArrayOrder()`](#array-order)                             | the elements of arrays can be in any order             |
 | [`IgnoringMember(name)`, `Ignoring(path => …)`](#ignoring-members) | leaves values out of the comparison                    |
 | [`ComparingNumbersWithin(tolerance)`](#numbers-within-a-tolerance) | numbers match within an absolute or relative tolerance |
-| [`WithDocumentOptions(…)`](./05-customization.md)                  | the `JsonDocumentOptions` used to parse JSON strings   |
+| [`WithDocumentOptions(…)`](./06-customization.md)                  | the `JsonDocumentOptions` used to parse JSON strings   |
 | [`WithSerializerOptions(…)`](#serializer-options)                  | the `JsonSerializerOptions` for the expected value     |
 
 ### Treating `null` as absent
@@ -294,12 +294,12 @@ await Expect.That(track).MatchesExactly(new { Title = "Let It Be", Artist = "The
 ```
 
 The comparison itself stays strict: only the JSON of the expected value changes. Without the option, the expected value
-is serialized with the `DefaultJsonSerializerOptions` of the [customization](./05-customization.md) when they are
-customized, except in [`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json). `It.Is…` expectations keep
+is serialized with the `DefaultJsonSerializerOptions` of the [customization](./06-customization.md) when they are
+customized, except in [`IsJsonSerializedAs`](./05-serialization.md#serialized-as-json). `It.Is…` expectations keep
 working with any options.
 
 Pass the options of a source-generated `JsonSerializerContext` to use it with trimming or
-[Native AOT](./04-serialization.md#serialized-as-json).
+[Native AOT](./05-serialization.md#serialized-as-json).
 
 <details>
 <summary>Source-generated serializer contexts</summary>

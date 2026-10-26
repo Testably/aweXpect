@@ -47,7 +47,7 @@ Expected that every snapshot is used by a test of this run, but 1 snapshot was n
   /src/Tests/AlbumTests.Describes.Let It Be.awexpect-snapshot.txt
 ```
 
-While accepting all changes (`SnapshotAcceptance.All`, see [Accepting a snapshot](02-accepting-snapshots.md)), the
+While accepting all changes (`SnapshotAcceptance.All`, see [Accepting snapshots](02-accepting-snapshots.md)), the
 orphaned snapshots and their pending files are deleted, and the check still fails, so that a deletion never goes
 unnoticed; `SnapshotAcceptance.New` only adds snapshots, so it keeps them:
 
@@ -57,8 +57,8 @@ Expected that every snapshot is used by a test of this run, but 1 snapshot was n
 ```
 
 A test run that only runs some of the tests, e.g. a single test in the IDE, cannot be told apart from a complete one,
-so the check only runs on a build server (when `CI`, `TF_BUILD`, `JENKINS_URL` or `TEAMCITY_VERSION` is set), where
-the environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` is ignored, so that it only reports. To check locally after
+so the check only runs on a [build server](02-accepting-snapshots.md#on-a-build-server), where the environment
+variable `AWEXPECT_ACCEPT_SNAPSHOTS` is ignored, so that it only reports. To check locally after
 running all tests, e.g. to delete the orphaned snapshots together with `AWEXPECT_ACCEPT_SNAPSHOTS=all`, force it:
 
 ```csharp

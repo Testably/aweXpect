@@ -63,11 +63,25 @@ await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot()
     .UniqueFor.TargetFramework();
 ```
 
-The snapshot is stored as `<Class>.<Method>.awexpect-snapshot.txt` next to the test file, where `<Class>` is the name
-of the test file. A missing or different snapshot fails the test and writes the actual value to
-`<Class>.<Method>.awexpect-snapshot.pending.txt`; rename it to `<Class>.<Method>.awexpect-snapshot.txt` to accept it,
-or set the environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` to `all` to accept all changed snapshots of a test run (or
-to `new` to only add the missing ones).
+The snapshot is stored as `<TestFile>.<Method>.awexpect-snapshot.txt` next to the test file, where `<TestFile>` is the
+name of the test file without its extension. A missing or different snapshot fails the test and writes the actual
+value to `<TestFile>.<Method>.awexpect-snapshot.pending.txt`; rename it to `<TestFile>.<Method>.awexpect-snapshot.txt`
+to accept it, or set the environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` to `all` to accept all changed snapshots of a
+test run (or to `new` to only add the missing ones).
+
+Before the first run, the snapshot of `description` does not exist yet, so the expectation fails with:
+
+```text title="Failure message"
+Expected that description
+matches the snapshot "/src/Tests/AlbumTests.Describes.awexpect-snapshot.txt",
+but the snapshot did not exist
+
+Actual:
+Abbey Road by The Beatles
+
+Pending snapshot:
+/src/Tests/AlbumTests.Describes.awexpect-snapshot.pending.txt
+```
 
 ## Overview
 
@@ -86,19 +100,20 @@ Expectations for `Assembly` and `FileInfo`, from aweXpect.Snapshots.PublicApi:
 
 ## Customization
 
-The settings live under `Customize.aweXpect.Snapshots()` in the namespace `aweXpect.Snapshots`. A value set there
-applies to the current async flow, e.g. a single test; set it on `Customize.aweXpect.Global.Snapshots()` to apply it
-to all tests:
+Set a value under `Customize.aweXpect.Snapshots()` for the current
+[async flow](https://docs.testably.org/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
+`Customize.aweXpect.Global.Snapshots()` for
+[all tests](https://docs.testably.org/aweXpect/how-it-works/configuration#global-defaults).
 
-| Value                                                                                   | Default                                                  | Summary                                                      |
-|-----------------------------------------------------------------------------------------|----------------------------------------------------------|--------------------------------------------------------------|
-| [`Acceptance`](./02-accepting-snapshots.md)                                             | `null`, left to the variable `AWEXPECT_ACCEPT_SNAPSHOTS` | which missing or changed snapshots are accepted              |
-| [`Rules`](./05-masking-values.md#for-all-snapshots)                                     | none                                                     | the rules to mask or ignore values in every snapshot         |
-| [`Store`](./advanced/01-storing-snapshots.md)                                           | a file next to the test file                             | where the snapshots are kept                                 |
-| [`Comparers`](./advanced/02-comparers.md)                                               | none                                                     | decide whether a value matches its snapshot, e.g. for images |
-| [`Reporters`](./advanced/03-reporters.md)                                               | none                                                     | are told about every missing, different or matching snapshot |
-| [`NamedAfterTestArguments`](./04-naming-snapshots.md#naming-after-the-test-case)        | `false`                                                  | names each snapshot after the arguments of the test case     |
-| [`AttachPendingFiles`](./01-matching-snapshots.md#encoding-line-breaks-and-attachments) | `false`                                                  | attaches the pending file of a mismatch to the test result   |
+| Value                                                                            | Default                                                  | Summary                                                      |
+|----------------------------------------------------------------------------------|----------------------------------------------------------|--------------------------------------------------------------|
+| [`Acceptance`](./02-accepting-snapshots.md)                                      | `null`, left to the variable `AWEXPECT_ACCEPT_SNAPSHOTS` | which missing or changed snapshots are accepted              |
+| [`Rules`](./05-masking-values.md#for-all-snapshots)                              | none                                                     | the rules to mask or ignore values in every snapshot         |
+| [`Store`](./advanced/01-storing-snapshots.md)                                    | a file next to the test file                             | where the snapshots are kept                                 |
+| [`Comparers`](./advanced/02-comparers.md)                                        | none                                                     | decide whether a value matches its snapshot, e.g. for images |
+| [`Reporters`](./advanced/03-reporters.md)                                        | none                                                     | are told about every missing, different or matching snapshot |
+| [`NamedAfterTestArguments`](./04-naming-snapshots.md#naming-after-the-test-case) | `false`                                                  | names each snapshot after the arguments of the test case     |
+| [`AttachPendingFiles`](./02-accepting-snapshots.md#on-a-build-server)            | `false`                                                  | attaches the pending file of a mismatch to the test result   |
 
 ## Documentation
 
@@ -107,7 +122,8 @@ The full documentation is available at
 
 - [Matching snapshots](./01-matching-snapshots.md): strings, objects, exceptions, binary data and files, the file
   extension, encoding and line breaks
-- [Accepting snapshots](./02-accepting-snapshots.md): reviewing the pending file and accepting all changes of a run
+- [Accepting snapshots](./02-accepting-snapshots.md): reviewing the pending file, accepting all changes of a run and
+  attaching the pending files on a build server
 - [Diff tools](./03-diff-tools.md): open a diff tool for a missing or different snapshot with
   [DiffEngine](https://github.com/VerifyTests/DiffEngine), in which the change can be taken over into the snapshot
 - [Naming snapshots](./04-naming-snapshots.md): a snapshot per test case or environment, and

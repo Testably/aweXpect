@@ -26,6 +26,11 @@ namespace MusicStore
 }
 ```
 
+It behaves like [`MatchesSnapshot()` for strings](01-matching-snapshots.md#strings), e.g. for the files and
+[accepting changes](02-accepting-snapshots.md).
+
+## Target frameworks and reference assemblies
+
 It usually differs between the target frameworks of a library, so keep a snapshot per target framework of the test
 project with `.UniqueFor.TargetFramework()`; each target framework of the test project loads the matching build of the
 library. A build that the tests cannot run on, e.g. for `netstandard2.0`, or a reference assembly is read from its file
@@ -50,14 +55,21 @@ writing a public API that differs from machine to machine.
 
 </details>
 
+## Options
+
+Options configure what is written, for the expectation and for `PublicApiDeclarations.GenerateFrom(…)`.
+
+### Forwarded types
+
 The types that the assembly forwards to another assembly are written as
 `[assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(…))]`, as removing a forward breaks the consumers
-that were compiled against the assembly. Options configure what is written, for the expectation and for
-`PublicApiDeclarations.GenerateFrom(…)`:
+that were compiled against the assembly. They can be ignored:
 
 ```csharp
 await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Ignoring.ForwardedTypes());
 ```
+
+### Attributes
 
 An attribute is written when consumers can see its class, or when compilers or analyzers read it by its name, e.g.
 `[NotNullWhen(true)]` or `[OverloadResolutionPriority(1)]`, so that also a polyfill that the library declares internally
@@ -74,6 +86,8 @@ await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
 metadata instead of as attributes, as removing them breaks consumers, e.g. of serialization or interop; they can be
 ignored like any other attribute.
 
+### Records
+
 A record is written with the members that the compiler synthesizes for it, e.g. `Equals`, `GetHashCode`, `ToString`,
 `Deconstruct`, the copy constructor and the equality operators. The members that are marked as `[CompilerGenerated]` can
 be ignored, which keeps the primary constructor, the positional properties and the hand-written members of the record:
@@ -81,6 +95,8 @@ be ignored, which keeps the primary constructor, the positional properties and t
 ```csharp
 await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Ignoring.CompilerGeneratedMembers());
 ```
+
+### Namespaces and types
 
 The public API can be restricted to namespaces, including their sub-namespaces, or to types, including their nested
 types, and namespaces and types can be ignored. A namespace matches whole segments, so `MusicStore.Generated` neither
@@ -96,6 +112,8 @@ await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
 A type is selected by its type or by its full name like `Type.FullName`, for a generic type with any type arguments.
 A nested type is written with its containing type. The filters also apply to the forwarded types. An empty namespace
 is the global namespace.
+
+### Formatting
 
 Every declaration is written on a single line by default. To see a change of a single parameter as a change of a single
 line, write the parameters of methods, constructors, operators, delegates and indexers with more than one parameter on
@@ -119,9 +137,8 @@ public Album(
     [System.Runtime.CompilerServices.CallerMemberName] string source = "") { }
 ```
 
+## Requirements
+
 The assembly is read with Roslyn, so the package depends on a recent version of `Microsoft.CodeAnalysis.CSharp` that
 reads all extension members correctly. A test project that needs an older Roslyn, e.g. for testing an analyzer, cannot
 use the package, so verify the public API in a separate test project.
-
-Otherwise it behaves like [`MatchesSnapshot()` for strings](01-matching-snapshots.md#strings), e.g. for the files and
-[accepting changes](02-accepting-snapshots.md).

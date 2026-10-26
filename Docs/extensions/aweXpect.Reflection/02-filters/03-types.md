@@ -30,8 +30,8 @@ considered. [Filters and expectations](./index.md#how-to-read-the-tables) explai
 | instantiable              | `.WhichAreInstantiable()`                       | `.IsInstantiable()`            | `.AreInstantiable()`            | `WhichAreNotInstantiable`, `IsNotInstantiable`, `AreNotInstantiable`                                  |
 | immutable                 | `.WhichAreImmutable()`                          | `.IsImmutable()`               | `.AreImmutable()`               | `WhichAreNotImmutable`, `IsNotImmutable`, `AreNotImmutable`                                           |
 | default constructor       | `.WhichHaveADefaultConstructor()`               | `.HasADefaultConstructor()`    | `.HaveADefaultConstructor()`    | `WhichDoNotHaveADefaultConstructor`, `DoesNotHaveADefaultConstructor`, `DoNotHaveADefaultConstructor` |
-| only nullable members     | `.WhichOnlyHaveNullableMembers()`               | `.OnlyHasNullableMembers()`    | `.OnlyHaveNullableMembers()`    | -                                                                                                     |
-| only non-nullable members | `.WhichOnlyHaveNonNullableMembers()`            | `.OnlyHasNonNullableMembers()` | `.OnlyHaveNonNullableMembers()` | -                                                                                                     |
+| only nullable members     | `.WhichOnlyHaveNullableMembers()`               | `.OnlyHasNullableMembers()`    | `.OnlyHaveNullableMembers()`    |                                                                                                       |
+| only non-nullable members | `.WhichOnlyHaveNonNullableMembers()`            | `.OnlyHasNonNullableMembers()` | `.OnlyHaveNonNullableMembers()` |                                                                                                       |
 | custom predicate          | `.Which(t => …)`                                | `.Satisfies(t => …)`           | `.All().Satisfy(t => …)`        | `Except(t => …)`, `Except<T>()`                                                                       |
 
 `WhichInheritFrom` / `InheritsFrom` consider only the **base-class chain** (not implemented interfaces) and
@@ -41,12 +41,8 @@ For interfaces, use `Implements`.
 `WhichImplement` / `Implements` consider only implemented **interfaces**. With
 `.Directly()`, an interface reached only through a base class or through another implemented interface does not
 count as *directly* implemented. The negations accept `.Directly()` as well (e.g.
-`WhichDoNotInheritFrom<T>().Directly()`, `DoesNotImplement<T>().Directly()`).
-
-```csharp
-await Expect.That(typeof(AlbumController)).InheritsFrom<ControllerBase>().Directly();
-await Expect.That(typeof(AlbumRepository)).Implements<IRepository>().Directly();
-```
+`WhichDoNotInheritFrom<T>().Directly()`, `DoesNotImplement<T>().Directly()`). [Inheritance](#inheritance) shows
+samples.
 
 `IsAssignableTo` / `IsAssignableFrom` (and their `WhichAre…` / `Are…` forms) use runtime assignability, which
 covers base classes *and* interfaces in one step, treats a type as assignable to itself, and honors closed
@@ -187,8 +183,8 @@ otherwise have `ToString`, `Equals`, `GetHashCode`, …; `.IncludingObjectMember
 | Relations (`InheritsFrom<T>()`, `Implements<T>()`, their filters and negations)               | the base class anywhere in the base-class chain, or any implemented interface | `.Directly()`: only the direct base class or a directly implemented interface                                   |
 | Member checks (`ContainsMethods(…)`, `WhichContainMethods(…)`, `OnlyHasNullableMembers()`, …) | also the inherited members                                                    | `.Directly()`: only the declared members, or `.IncludingObjectMembers()`: also the members of the three roots   |
 | Member listings of types (`Types().Methods()`, `In.Type<T>().Properties()`, …)                | only the declared members                                                     | `.IncludingInherited()`: also the inherited members, `.IncludingObjectMembers()`: also those of the three roots |
-| Member listings of assemblies (`In.AssemblyContaining<T>().Methods()`, …)                     | each member once, on the type that declares it                                | -                                                                                                               |
-| Constructors, and the attributes of assemblies, constructors and fields                       | no inheritance                                                                | -                                                                                                               |
+| Member listings of assemblies (`In.AssemblyContaining<T>().Methods()`, …)                     | each member once, on the type that declares it                                |                                                                                                                 |
+| Constructors, and the attributes of assemblies, constructors and fields                       | no inheritance                                                                |                                                                                                                 |
 
 ```csharp
 await Expect.That(typeof(AlbumController)).InheritsFrom<ControllerBase>().Directly();

@@ -1,7 +1,7 @@
 # Accepting snapshots
 
-A missing or different snapshot writes the actual value to `<Class>.<Method>.awexpect-snapshot.pending.txt` next to
-the snapshot. Review it and rename it to `<Class>.<Method>.awexpect-snapshot.txt` to accept it. The next run that
+A missing or different snapshot writes the actual value to `<TestFile>.<Method>.awexpect-snapshot.pending.txt` next
+to the snapshot. Review it and rename it to `<TestFile>.<Method>.awexpect-snapshot.txt` to accept it. The next run that
 matches the snapshot deletes a leftover pending file.
 
 Add the pending files to your `.gitignore`, so that they are not committed by accident; the pattern also covers
@@ -39,6 +39,17 @@ Accepted snapshot:
 The next run compares with the accepted snapshot. Review the changed snapshots in version control before committing
 them.
 
+<details>
+<summary>Snapshots combined with other expectations</summary>
+
+The pending snapshot is only written, and a change only accepted, when the whole expectation fails. When the snapshot
+is combined with other expectations and another branch is met, e.g. `.Or.IsEqualTo(…)` or `Expect.ThatAny(…)`, the
+test passes and nothing is written, so that a passing test never changes a snapshot.
+
+</details>
+
+## On a build server
+
 The environment variable is ignored on a build server (when `CI`, `TF_BUILD`, `JENKINS_URL` or `TEAMCITY_VERSION` is
 set), so that a variable that was forgotten in a pipeline cannot change the snapshots there. To decide it in code
 instead, which also applies on a build server:
@@ -55,11 +66,10 @@ Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.New);          
 environment variable, so `Accepting(SnapshotAcceptance.None)` keeps a snapshot from being accepted while the variable
 is set. The setting defaults to `null`, which leaves it to the environment variable.
 
-<details>
-<summary>Snapshots combined with other expectations</summary>
+To review a mismatch after a run on a build server, attach its pending file to the result of the test, when the
+[test framework supports attachments](https://docs.testably.org/aweXpect/setup/test-frameworks#the-running-test).
+MSTest 4 needs the [opt-in](04-naming-snapshots.md#naming-after-the-test-case) `AweXpectExperimentalMSTest` for it:
 
-The pending snapshot is only written, and a change only accepted, when the whole expectation fails. When the snapshot
-is combined with other expectations and another branch is met, e.g. `.Or.IsEqualTo(…)` or `Expect.ThatAny(…)`, the
-test passes and nothing is written, so that a passing test never changes a snapshot.
-
-</details>
+```csharp
+Customize.aweXpect.Snapshots().AttachPendingFiles.Set(true); // for this async flow
+```

@@ -1,5 +1,15 @@
 # Matching snapshots
 
+Describes the possible expectations for comparing strings, objects, exceptions, binary data and files with a snapshot.
+
+| Expectation                                 | Negated | Summary                                                  |
+|---------------------------------------------|---------|----------------------------------------------------------|
+| [`MatchesSnapshot`](#strings)               |         | a string matches the snapshot stored next to the test    |
+| [`MatchesSnapshot`](#objects)               |         | an object matches its snapshot, written by aweXpect      |
+| [`MatchesSnapshot`](#exceptions)            |         | an exception matches its snapshot, written member-wise   |
+| [`MatchesSnapshot`](#binary-data-and-files) |         | a `byte[]` or `Stream` matches its snapshot byte by byte |
+| [`MatchesSnapshot`](#binary-data-and-files) |         | a `FileInfo` matches its snapshot byte by byte           |
+
 ## Strings
 
 You can verify that a string matches the snapshot that is stored next to the test:
@@ -247,7 +257,7 @@ A type derived from `Stream`, e.g. a `MemoryStream`, needs C# 13 or later to cho
 
 </details>
 
-## Encoding, line breaks and attachments
+## Encoding and line breaks
 
 The text of a string or an object is stored encoded as UTF-8. The pending file ends with an additional line break, which
 is removed again when the snapshot is read, so that an editor which adds a final line break does not change the
@@ -255,13 +265,6 @@ snapshot.
 
 The newline style of a text snapshot is ignored when comparing, because version control can change it when the snapshot
 is checked out. A [comparer](advanced/02-comparers.md) can compare it in another way.
-
-To review a mismatch after a run on a build server, attach its pending file to the result of the test, when the test
-framework supports attachments (NUnit, TUnit, xUnit v3, and MSTest 4 with `AweXpectExperimentalMSTest`):
-
-```csharp
-Customize.aweXpect.Snapshots().AttachPendingFiles.Set(true); // for this async flow
-```
 
 <details>
 <summary>Files that cannot be read or written, and negation</summary>

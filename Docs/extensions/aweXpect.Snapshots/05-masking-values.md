@@ -17,29 +17,6 @@ The filters are combined, so a value has to match all of them. After the action,
 `.For.Lines()` only to a snapshot of a `string`. The text selections apply to every snapshot. The
 [overview](#overview) at the end lists all selections, filters and actions.
 
-## Mask texts are templates
-
-The text of `Mask("…")` is written as it is, without quotes, unless it contains `{0}`: then `{0}` is replaced with the
-number of the value. Every value masked with the same template shares one counter, across all rules, and the same value
-keeps the same number, so relations stay visible in the snapshot:
-
-```csharp
-await Expect.That(album).MatchesSnapshot()
-    .For.Members().WithName("ArtistId").Mask("{Artist_{0}}");   // ArtistId = {Artist_1}
-```
-
-`Mask()` is the shorthand for the template named after the selection: `Mask("{Id_{0}}")` for a member named `Id`,
-`Mask("{Guid_{0}}")` for `.For.Guids()` and `.For.Values().OfType<Guid>()`, `Mask("{Item_{0}}")` for an item of a
-collection. That is why a `Guid` member masked by its type and the same `Guid` in a string get the same number.
-
-<details>
-<summary>Braces in a template</summary>
-
-`{0}` is replaced as plain text, not with `string.Format`, so braces need no escaping: `Mask("{{Artist_{0}}}")` writes
-`{{Artist_1}}`, not `{Artist_1}`.
-
-</details>
-
 ## Members and values
 
 `.For.Members()` selects the members of the objects in the snapshot, at any depth. `.For.Values()` selects the members
@@ -338,6 +315,29 @@ album {Guid_1} played {Date_2}
 The numbers are counted per subject in the order of appearance, and only after the rules that come before, so
 `.For.Text(album.Id.ToString()).Mask("<album-id>").For.Guids().Mask()` numbers only the other `Guid`s.
 
+## Mask texts are templates
+
+The text of `Mask("…")` is written as it is, without quotes, unless it contains `{0}`: then `{0}` is replaced with the
+number of the value. Every value masked with the same template shares one counter, across all rules, and the same value
+keeps the same number, so relations stay visible in the snapshot:
+
+```csharp
+await Expect.That(album).MatchesSnapshot()
+    .For.Members().WithName("ArtistId").Mask("{Artist_{0}}");   // ArtistId = {Artist_1}
+```
+
+`Mask()` is the shorthand for the template named after the selection: `Mask("{Id_{0}}")` for a member named `Id`,
+`Mask("{Guid_{0}}")` for `.For.Guids()` and `.For.Values().OfType<Guid>()`, `Mask("{Item_{0}}")` for an item of a
+collection. That is why a `Guid` member masked by its type and the same `Guid` in a string get the same number.
+
+<details>
+<summary>Braces in a template</summary>
+
+`{0}` is replaced as plain text, not with `string.Format`, so braces need no escaping: `Mask("{{Artist_{0}}}")` writes
+`{{Artist_1}}`, not `{Artist_1}`.
+
+</details>
+
 ## Environment
 
 Paths of the environment differ between machines, so they are masked by default:
@@ -444,21 +444,21 @@ The selections and their filters:
 | `.For.Values()`                                          | like `Members()`, without `WhichAreEmptyCollections`                                    |
 | `.For.Lines()`                                           | `Containing(text)`, `Which`, `Except`                                                   |
 | `.For.Text(text)`                                        | `IgnoringCase()`, `AsWildcard()`, `AsRegex()`                                           |
-| `.For.Regex(regex)`, `.For.Guids()`, `.For.Dates()`      | –                                                                                       |
-| `.For.MachineName()`, `.For.UserName()`, `.For.Paths()`  | –                                                                                       |
+| `.For.Regex(regex)`, `.For.Guids()`, `.For.Dates()`      |                                                                                         |
+| `.For.MachineName()`, `.For.UserName()`, `.For.Paths()`  |                                                                                         |
 
 The actions that each selection offers:
 
 | Selection                       | `Ignore()` | `Mask()`                         | `Mask("…")` | `Convert(…)`            | `Keep()` |
 |---------------------------------|:----------:|----------------------------------|:-----------:|-------------------------|:--------:|
-| `Members()`                     |     ✅      | `{Id_1}`, `{Guid_1}`             |      ✅      | ✅ typed by `OfType<T>`  |    –     |
-| `WhichAreEmptyCollections()`    |     ✅      | –                                |      –      | –                       |    –     |
-| `Values()`                      |     ✅      | `{Id_1}`, `{Guid_1}`, `{Item_1}` |      ✅      | ✅ typed by `OfType<T>`  |    –     |
-| `Lines()`                       |     ✅      | –                                | ✅ the line  | ✅ `string → string?`    |    –     |
-| `Text(text)`, `Regex(regex)`    |     –      | –                                |      ✅      | –                       |    –     |
-| `Guids()`, `Dates()`            |     –      | `{Guid_1}`, `{Date_1}`           |      ✅      | –                       |    –     |
-| `MachineName()`, `UserName()`   |     –      | `{MachineName}`, `{UserName}`    |      ✅      | –                       |    –     |
-| `Paths()`                       |     –      | –                                |      –      | –                       |    ✅     |
+| `Members()`                     |     ✅      | `{Id_1}`, `{Guid_1}`             |      ✅      | ✅ typed by `OfType<T>`  |          |
+| `WhichAreEmptyCollections()`    |     ✅      |                                  |             |                         |          |
+| `Values()`                      |     ✅      | `{Id_1}`, `{Guid_1}`, `{Item_1}` |      ✅      | ✅ typed by `OfType<T>`  |          |
+| `Lines()`                       |     ✅      |                                  | ✅ the line  | ✅ `string → string?`    |          |
+| `Text(text)`, `Regex(regex)`    |            |                                  |      ✅      |                         |          |
+| `Guids()`, `Dates()`            |            | `{Guid_1}`, `{Date_1}`           |      ✅      |                         |          |
+| `MachineName()`, `UserName()`   |            | `{MachineName}`, `{UserName}`    |      ✅      |                         |          |
+| `Paths()`                       |            |                                  |             |                         |    ✅     |
 
 A combination of the rules described above:
 

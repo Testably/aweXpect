@@ -14,7 +14,7 @@ dotnet add package aweXpect.Json
 The package brings `Expect.That` with it, but not the expectations for strings, numbers or collections, so reference
 [`aweXpect`](https://www.nuget.org/packages/aweXpect) as well, e.g. for the `IsEqualTo` of `IsEqualTo(…).AsJson()`.
 The expectations live in the namespace `aweXpect`, so `using aweXpect;` is all you need; only the
-[customization](./05-customization.md) lives in `aweXpect.Json`.
+[customization](./06-customization.md) lives in `aweXpect.Json`.
 
 ## At a glance
 
@@ -63,7 +63,7 @@ Expectations for [`string`](./01-strings.md):
 | [`IsValidJsonMatching`](./01-strings.md#validation)                  |                            | valid JSON that matches the expected value                      |
 | [`IsValidJsonMatchingExactly`](./01-strings.md#validation)           |                            | valid JSON that matches the expected value exactly              |
 
-Expectations for `JsonElement` and `JsonNode`:
+Expectations for `JsonElement` and [`JsonNode`](./04-json-nodes.md):
 
 | Expectation                                                               | Negated               | Summary                                                                                                      |
 |---------------------------------------------------------------------------|-----------------------|--------------------------------------------------------------------------------------------------------------|
@@ -88,11 +88,23 @@ Expectations for any `object`, serialized with `System.Text.Json`:
 
 | Expectation                                                      | Negated | Summary                                                |
 |------------------------------------------------------------------|---------|--------------------------------------------------------|
-| [`IsJsonSerializable`](./04-serialization.md#json-serializable)  |         | survives a round trip through the JSON serializer      |
-| [`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json) |         | serialized by the JSON serializer as the expected JSON |
+| [`IsJsonSerializable`](./05-serialization.md#json-serializable)  |         | survives a round trip through the JSON serializer      |
+| [`IsJsonSerializedAs`](./05-serialization.md#serialized-as-json) |         | serialized by the JSON serializer as the expected JSON |
 
 The comparisons can be relaxed with options like `TreatingNullAsAbsent()`, `IgnoringArrayOrder()`,
 `IgnoringMember(name)` or `ComparingNumbersWithin(tolerance)`, see [Matching JSON](./02-matching.md).
+
+## Customization
+
+Set a value under `Customize.aweXpect.Json()` for the current
+[async flow](https://docs.testably.org/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
+`Customize.aweXpect.Global.Json()` for
+[all tests](https://docs.testably.org/aweXpect/how-it-works/configuration#global-defaults).
+
+| Value                                                   | Default                      | Summary                                         |
+|---------------------------------------------------------|------------------------------|-------------------------------------------------|
+| [`DefaultJsonDocumentOptions`](./06-customization.md)   | `AllowTrailingCommas = true` | the options to parse JSON strings               |
+| [`DefaultJsonSerializerOptions`](./06-customization.md) | `AllowTrailingCommas = true` | the options to format and serialize JSON values |
 
 ## Documentation
 
@@ -102,6 +114,7 @@ The full documentation is available at
 - [JSON strings](./01-strings.md): comparing strings as JSON and validating them
 - [Matching JSON](./02-matching.md): `Matches` and `MatchesExactly`, and the options to relax the comparison
 - [Objects, arrays and value kinds](./03-objects-and-arrays.md): `HasProperty`, `HasValueAt`, `HasElementAt`,
-  `IsObject`, `WhoseProperties`, `IsArray`, `WhoseElements`, the value kinds and `JsonNode` subjects
-- [Serialization](./04-serialization.md): `IsJsonSerializable` and `IsJsonSerializedAs`
-- [Customization](./05-customization.md): the default `JsonDocumentOptions` and `JsonSerializerOptions`
+  `IsObject`, `WhoseProperties`, `IsArray`, `WhoseElements` and the value kinds
+- [`JsonNode`](./04-json-nodes.md): the same expectations for a `JsonNode` and its subtypes
+- [Serialization](./05-serialization.md): `IsJsonSerializable` and `IsJsonSerializedAs`
+- [Customization](./06-customization.md): the default `JsonDocumentOptions` and `JsonSerializerOptions`

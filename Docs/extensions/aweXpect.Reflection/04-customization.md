@@ -1,11 +1,11 @@
 # Customization
 
-The customizations of this library live under `Customize.aweXpect.Reflection()`, which this library provides in the
-namespace `aweXpect.Reflection`, together with the enums `CompilerGeneratedMembers` and `SpecialNameMembers`. The
-assembly exclusions are shared with aweXpect.Core and live under `Customize.aweXpect.Settings()`. Every `Set(…)` returns
-a scope that restores the previous value when disposed.
+Set a value under `Customize.aweXpect.Reflection()` for the current
+[async flow](https://docs.testably.org/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
+`Customize.aweXpect.Global.Reflection()` for
+[all tests](https://docs.testably.org/aweXpect/how-it-works/configuration#global-defaults).
 
-| Customization                                                              | Default                           | Summary                                                                                      |
+| Value                                                                      | Default                           | Summary                                                                                      |
 |----------------------------------------------------------------------------|-----------------------------------|----------------------------------------------------------------------------------------------|
 | [`Settings().ExcludedAssemblyPrefixes`](#assembly-exclusions)              | `System`, `Microsoft`, …          | assemblies excluded from `In.AllLoadedAssemblies()` and ignored by the `DependOnlyOn` family |
 | [`IncludedCompilerGeneratedMembers`](#compiler-generated-members)          | `CompilerGeneratedMembers.None`   | the compiler-generated types and members included in the navigations                         |
@@ -13,9 +13,9 @@ a scope that restores the previous value when disposed.
 | [`DependencyResolver`](#dependency-resolver)                               | built-in signature-level resolver | how the type-level dependency expectations determine the dependencies of a type              |
 | [`ExcludedAttributeTypes`](./03-architecture-rules.md#type-dependencies)   | none                              | additional compiler-emitted attributes that never count as dependencies                      |
 
-A value set on `Customize.aweXpect` applies to the current async flow only, e.g. a single test. To apply a
-customization to all tests, set it on `Customize.aweXpect.Global`, e.g. once in an assembly-level setup; a value set
-in the current async flow takes precedence over the global one:
+`Customize.aweXpect.Reflection()` and the enums `CompilerGeneratedMembers` and `SpecialNameMembers` live in the
+namespace `aweXpect.Reflection`. The assembly exclusions are shared with aweXpect.Core and live under
+`Customize.aweXpect.Settings()`. For example, to include the operators in `.Methods()` for all tests:
 
 ```csharp
 using aweXpect.Customization;
@@ -39,7 +39,7 @@ matches at a name-segment boundary, so `System` covers `System` and `System.Text
 named `SystemsBiology`.
 
 Customize this via `Customize.aweXpect.Settings().ExcludedAssemblyPrefixes`. `Set(…)` replaces the
-list and returns a scope that restores the previous value when disposed:
+list:
 
 ```csharp
 using (Customize.aweXpect.Settings().ExcludedAssemblyPrefixes

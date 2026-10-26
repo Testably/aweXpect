@@ -63,7 +63,7 @@ await Expect.That(track).IsJsonSerializable(
 ```
 
 Without `JsonSerializerOptions`, the subject is serialized with the default options of the
-[customization](./05-customization.md).
+[customization](./06-customization.md).
 
 <details>
 <summary>Runtime type and `null` subjects</summary>
@@ -113,7 +113,7 @@ enums, omitted `null` values and the effect of converters.
 
 The expected value is either a JSON string or an object that is compared like in [`Matches`](./02-matching.md),
 including `It.Is…` expectations. Without `JsonSerializerOptions`, the subject is serialized with the default options of
-the [customization](./05-customization.md). A `null` subject is serialized as `null`, and a subject that cannot be
+the [customization](./06-customization.md). A `null` subject is serialized as `null`, and a subject that cannot be
 serialized, e.g. because of a reference cycle, fails the expectation with the message of the exception.
 
 The `JsonSerializerOptions` parameter only serializes the subject. An expected object is serialized with the default

@@ -8,11 +8,11 @@ and verify them directly.
 |---------------------|------------------------------|--------------------------|--------------------------|---------------------------------------------------------------------------|
 | by name             | `.WithName("x")`             | `.HasName("x")`          | `.HaveName("x")`         | `WithoutName`, `DoesNotHaveName`, `DoNotHaveName`                         |
 | by target framework | `.WhichTarget("net8.0")`     | `.Targets("net8.0")`     | `.Target("net8.0")`      | `WhichDoNotTarget`, `DoesNotTarget`, `DoNotTarget`                        |
-| by version          | `.WithVersion(…)`            | `.HasVersion(…)`         | `.HaveVersion(…)`        | -                                                                         |
+| by version          | `.WithVersion(…)`            | `.HasVersion(…)`         | `.HaveVersion(…)`        |                                                                           |
 | strong named        | `.WhichAreStrongNamed()`     | `.IsStrongNamed()`       | `.AreStrongNamed()`      | `WhichAreNotStrongNamed`, `IsNotStrongNamed`, `AreNotStrongNamed`         |
 | has attribute       | `.With<TAttribute>()`        | `.Has<TAttribute>()`     | `.Have<TAttribute>()`    | `Without<TAttribute>`, `DoesNotHave<TAttribute>`, `DoNotHave<TAttribute>` |
 | depends on assembly | `.WhichDependOn("x")`        | `.DependsOn("x")`        | `.DependOn("x")`         | `WhichDoNotDependOn`, `DoesNotDependOn`, `DoNotDependOn`                  |
-| depends only on set | `.WhichDependOnlyOn("x", …)` | `.DependsOnlyOn("x", …)` | `.DependOnlyOn("x", …)`  | -                                                                         |
+| depends only on set | `.WhichDependOnlyOn("x", …)` | `.DependsOnlyOn("x", …)` | `.DependOnlyOn("x", …)`  |                                                                           |
 | custom predicate    | `.Which(a => …)`             | `.Satisfies(a => …)`     | `.All().Satisfy(a => …)` | `Except(a => …)`                                                          |
 
 ```csharp

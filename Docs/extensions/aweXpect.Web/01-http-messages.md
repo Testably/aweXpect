@@ -4,24 +4,24 @@ Describes the possible expectations for `HttpRequestMessage` and `HttpResponseMe
 
 Expectations for [`HttpRequestMessage`](#httprequestmessage):
 
-| Expectation                                   | Negated                  | Summary                               |
-|-----------------------------------------------|--------------------------|---------------------------------------|
-| [`HasMethod`](#method)                        | `DoesNotHaveMethod`      | has the expected HTTP method          |
-| [`HasRequestUri`](#request-uri)               | `DoesNotHaveRequestUri`  | has the expected request URI          |
-| [`HasHeader`](#request-headers)               | `DoesNotHaveHeader`      | has a header, optionally with a value |
-| [`HasContentType`](#request-content-type)     | `DoesNotHaveContentType` | has the expected media type           |
-| [`HasContent`](#request-content)              | `DoesNotHaveContent`     | has the expected string content       |
+| Expectation                               | Negated                  | Summary                               |
+|-------------------------------------------|--------------------------|---------------------------------------|
+| [`HasMethod`](#method)                    | `DoesNotHaveMethod`      | has the expected HTTP method          |
+| [`HasRequestUri`](#request-uri)           | `DoesNotHaveRequestUri`  | has the expected request URI          |
+| [`HasHeader`](#request-headers)           | `DoesNotHaveHeader`      | has a header, optionally with a value |
+| [`HasContentType`](#request-content-type) | `DoesNotHaveContentType` | has the expected media type           |
+| [`HasContent`](#request-content)          | `DoesNotHaveContent`     | has the expected string content       |
 
 Expectations for [`HttpResponseMessage`](#httpresponsemessage):
 
-| Expectation                                    | Negated                       | Summary                                         |
-|------------------------------------------------|-------------------------------|-------------------------------------------------|
-| [`HasStatusCode`](#status-code)                | `DoesNotHaveStatusCode`       | has the expected status code or status category |
-| [`HasHeader`](#response-headers)               | `DoesNotHaveHeader`           | has a header, optionally with a value           |
-| [`HasContentType`](#content-type)              | `DoesNotHaveContentType`      | has the expected media type                     |
-| [`HasContent`](#response-content)              | `DoesNotHaveContent`          | has the expected string content                 |
-| [`HasProblemDetailsContent`](#problem-details) | `DoesNotComplyWith`           | has a `ProblemDetails` content                  |
-| [`HasRequestMessage`](#request-message)        |                               | the request message meets nested expectations   |
+| Expectation                                    | Negated                  | Summary                                         |
+|------------------------------------------------|--------------------------|-------------------------------------------------|
+| [`HasStatusCode`](#status-code)                | `DoesNotHaveStatusCode`  | has the expected status code or status category |
+| [`HasHeader`](#response-headers)               | `DoesNotHaveHeader`      | has a header, optionally with a value           |
+| [`HasContentType`](#response-content-type)     | `DoesNotHaveContentType` | has the expected media type                     |
+| [`HasContent`](#response-content)              | `DoesNotHaveContent`     | has the expected string content                 |
+| [`HasProblemDetailsContent`](#problem-details) | use `DoesNotComplyWith`  | has a `ProblemDetails` content                  |
+| [`HasRequestMessage`](#request-message)        |                          | the request message meets nested expectations   |
 
 ## `HttpRequestMessage`
 
@@ -140,8 +140,8 @@ await Expect.That(request).DoesNotHaveContentType("text/html");
 The media type supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
 [match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. As
 [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110#section-8.3.1) defines the media type as case-insensitive, it is
-compared ignoring case by default, also with a match type; add `.IgnoringCase(false)` to compare it case-sensitively,
-also before `.Using(comparer)` or a match type of your own that does not support the casing.
+compared ignoring case by default, also with a match type. Add `.IgnoringCase(false)` to compare it case-sensitively,
+which a `.Using(comparer)` or a match type of your own that cannot ignore the casing needs as well.
 A request without content or without a `Content-Type` header does not have the unexpected media type.
 
 ### Request content
@@ -261,7 +261,7 @@ await Expect.That(response).HasHeader("Vary")
     .WhoseValues(values => values.Contains("Accept-Encoding"));
 ```
 
-### Content type
+### Response content type
 
 You can verify the media type in the `Content-Type` header of the `HttpResponseMessage`:
 

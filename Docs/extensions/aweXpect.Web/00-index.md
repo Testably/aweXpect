@@ -58,51 +58,62 @@ HTTP-Response:
 
 Expectations for [`HttpRequestMessage`](./01-http-messages.md#httprequestmessage):
 
-| Expectation                                                    | Negated                 | Summary                               |
-|----------------------------------------------------------------|-------------------------|---------------------------------------|
-| [`HasMethod`](./01-http-messages.md#method)           | `DoesNotHaveMethod`     | has the expected HTTP method          |
-| [`HasRequestUri`](./01-http-messages.md#request-uri)  | `DoesNotHaveRequestUri` | has the expected request URI          |
-| [`HasHeader`](./01-http-messages.md#request-headers)  | `DoesNotHaveHeader`     | has a header, optionally with a value |
-| [`HasContentType`](./01-http-messages.md#request-content-type) | `DoesNotHaveContentType` | has the expected media type |
-| [`HasContent`](./01-http-messages.md#request-content) | `DoesNotHaveContent`    | has the expected string content       |
+| Expectation                                                    | Negated                  | Summary                               |
+|----------------------------------------------------------------|--------------------------|---------------------------------------|
+| [`HasMethod`](./01-http-messages.md#method)                    | `DoesNotHaveMethod`      | has the expected HTTP method          |
+| [`HasRequestUri`](./01-http-messages.md#request-uri)           | `DoesNotHaveRequestUri`  | has the expected request URI          |
+| [`HasHeader`](./01-http-messages.md#request-headers)           | `DoesNotHaveHeader`      | has a header, optionally with a value |
+| [`HasContentType`](./01-http-messages.md#request-content-type) | `DoesNotHaveContentType` | has the expected media type           |
+| [`HasContent`](./01-http-messages.md#request-content)          | `DoesNotHaveContent`     | has the expected string content       |
 
 Expectations for [`HttpResponseMessage`](./01-http-messages.md#httpresponsemessage):
 
-| Expectation                                                                  | Negated                       | Summary                                         |
-|------------------------------------------------------------------------------|-------------------------------|-------------------------------------------------|
-| [`HasStatusCode`](./01-http-messages.md#status-code)                | `DoesNotHaveStatusCode`       | has the expected status code or status category |
-| [`HasHeader`](./01-http-messages.md#response-headers)               | `DoesNotHaveHeader`           | has a header, optionally with a value           |
-| [`HasContentType`](./01-http-messages.md#content-type)              | `DoesNotHaveContentType`      | has the expected media type                     |
-| [`HasContent`](./01-http-messages.md#response-content)              | `DoesNotHaveContent`          | has the expected string content                 |
-| [`HasProblemDetailsContent`](./01-http-messages.md#problem-details) | `DoesNotComplyWith`           | has a `ProblemDetails` content                  |
-| [`HasRequestMessage`](./01-http-messages.md#request-message)        |                               | the request message meets nested expectations   |
+| Expectation                                                         | Negated                  | Summary                                         |
+|---------------------------------------------------------------------|--------------------------|-------------------------------------------------|
+| [`HasStatusCode`](./01-http-messages.md#status-code)                | `DoesNotHaveStatusCode`  | has the expected status code or status category |
+| [`HasHeader`](./01-http-messages.md#response-headers)               | `DoesNotHaveHeader`      | has a header, optionally with a value           |
+| [`HasContentType`](./01-http-messages.md#response-content-type)     | `DoesNotHaveContentType` | has the expected media type                     |
+| [`HasContent`](./01-http-messages.md#response-content)              | `DoesNotHaveContent`     | has the expected string content                 |
+| [`HasProblemDetailsContent`](./01-http-messages.md#problem-details) | use `DoesNotComplyWith`  | has a `ProblemDetails` content                  |
+| [`HasRequestMessage`](./01-http-messages.md#request-message)        |                          | the request message meets nested expectations   |
 
 Expectations for [`Uri`](./02-uri.md):
 
-| Expectation                                                  | Negated                     | Summary                                        |
-|--------------------------------------------------------------|-----------------------------|------------------------------------------------|
-| [`IsAbsolute`](./02-uri.md#kind)                    | `IsNotAbsolute`             | an absolute URI                                |
-| [`IsFile`](./02-uri.md#kind)                        | `IsNotFile`                 | a file URI                                     |
-| [`IsLoopback`](./02-uri.md#kind)                    | `IsNotLoopback`             | references the local host                      |
-| [`IsUnc`](./02-uri.md#kind)                         | `IsNotUnc`                  | a UNC path                                     |
-| [`HasDefaultPort`](./02-uri.md#default-port)        | `DoesNotHaveDefaultPort`    | uses the default port of its scheme            |
-| [`HasPort`](./02-uri.md#port)                       | negated comparison          | has the expected port                          |
-| [`HasScheme`](./02-uri.md#scheme)                   | negated comparison          | has the expected scheme                        |
-| [`HasHost`](./02-uri.md#host)                       | negated comparison          | has the expected host                          |
-| [`HasPath`](./02-uri.md#path)                       | negated comparison          | has the expected path                          |
-| [`HasFragment`](./02-uri.md#fragment)               | negated comparison          | has the expected fragment                      |
-| [`IsBaseOf`](./02-uri.md#base-uri)                  | `IsNotBaseOf`               | a base URI of the expected URI                 |
-| [`HasQueryParameter`](./02-uri.md#query-parameters) | `DoesNotHaveQueryParameter` | has a query parameter, optionally with a value |
+| Expectation                                         | Negated                           | Summary                                        |
+|-----------------------------------------------------|-----------------------------------|------------------------------------------------|
+| [`IsAbsolute`](./02-uri.md#kind)                    | `IsNotAbsolute`                   | an absolute URI                                |
+| [`IsFile`](./02-uri.md#kind)                        | `IsNotFile`                       | a file URI                                     |
+| [`IsLoopback`](./02-uri.md#kind)                    | `IsNotLoopback`                   | references the local host                      |
+| [`IsUnc`](./02-uri.md#kind)                         | `IsNotUnc`                        | a UNC path                                     |
+| [`HasDefaultPort`](./02-uri.md#default-port)        | `DoesNotHaveDefaultPort`          | uses the default port of its scheme            |
+| [`HasPort`](./02-uri.md#port)                       | use `HasPort().NotEqualTo(…)`     | has the expected port                          |
+| [`HasScheme`](./02-uri.md#scheme)                   | use `HasScheme().NotEqualTo(…)`   | has the expected scheme                        |
+| [`HasHost`](./02-uri.md#host)                       | use `HasHost().NotEqualTo(…)`     | has the expected host                          |
+| [`HasPath`](./02-uri.md#path)                       | use `HasPath().NotEqualTo(…)`     | has the expected path                          |
+| [`HasFragment`](./02-uri.md#fragment)               | use `HasFragment().NotEqualTo(…)` | has the expected fragment                      |
+| [`IsBaseOf`](./02-uri.md#base-uri)                  | `IsNotBaseOf`                     | a base URI of the expected URI                 |
+| [`HasQueryParameter`](./02-uri.md#query-parameters) | `DoesNotHaveQueryParameter`       | has a query parameter, optionally with a value |
 
 Expectations for [`IPAddress`](./03-ip-address.md):
 
-| Expectation                                         | Negated         | Summary                                                    |
-|-----------------------------------------------------|-----------------|------------------------------------------------------------|
+| Expectation                                | Negated         | Summary                                                    |
+|--------------------------------------------|-----------------|------------------------------------------------------------|
 | [`IsIPv4`](./03-ip-address.md#kind)        | `IsNotIPv4`     | an IPv4 address                                            |
 | [`IsIPv6`](./03-ip-address.md#kind)        | `IsNotIPv6`     | an IPv6 address                                            |
 | [`IsLoopback`](./03-ip-address.md#kind)    | `IsNotLoopback` | a loopback address                                         |
 | [`IsInSubnet`](./03-ip-address.md#subnet)  | `IsNotInSubnet` | in the expected subnet                                     |
 | [`IsEqualTo`](./03-ip-address.md#equality) | `IsNotEqualTo`  | equal to the expected address, optionally ignoring mapping |
+
+## Customization
+
+Set a value under `Customize.aweXpect.Web()` for the current
+[async flow](https://docs.testably.org/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
+`Customize.aweXpect.Global.Web()` for
+[all tests](https://docs.testably.org/aweXpect/how-it-works/configuration#global-defaults).
+
+| Value                                                           | Default                                                                    | Summary                                                          |
+|-----------------------------------------------------------------|----------------------------------------------------------------------------|------------------------------------------------------------------|
+| [`ContentProcessors`](./04-customization.md#content-processors) | `JsonContentProcessor`, `StringContentProcessor`, `BinaryContentProcessor` | format the content of requests and responses in failure messages |
 
 ## Documentation
 

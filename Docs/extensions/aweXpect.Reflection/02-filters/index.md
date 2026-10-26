@@ -9,7 +9,7 @@ each other: a filter has an `Is…`/`Are…` expectation counterpart for the sam
 The tables on the pages of this group pair them up. The **Filter** column is used on a selection (`In.…` or
 `Types.…`); the **Expect (single)** column applies to one subject; the **Expect (many)** column applies to a
 collection. The **Negated** column lists the negations in the same order (filter, single, many), leaving out a form
-that has none; a row without a negation shows `-`.
+that has none. An empty cell means that there is no such form, e.g. no negation.
 
 ## Overview
 
