@@ -1,7 +1,7 @@
 ﻿using System;
 using aweXpect.Results;
 
-namespace aweXpect.Json;
+namespace aweXpect.Json.Options;
 
 /// <summary>
 ///     The <see cref="JsonOptions" /> directly after <see cref="JsonOptionsExtensions.ComparingNumbersWithin" />, whose

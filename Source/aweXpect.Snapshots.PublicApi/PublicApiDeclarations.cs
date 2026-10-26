@@ -13,6 +13,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using aweXpect.Core;
+using aweXpect.Snapshots.PublicApi.Options;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using SymbolDisplayFormat = Microsoft.CodeAnalysis.SymbolDisplayFormat;

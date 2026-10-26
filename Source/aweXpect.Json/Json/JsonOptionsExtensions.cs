@@ -4,6 +4,7 @@ using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
+using aweXpect.Json.Options;
 
 namespace aweXpect.Json;
 
@@ -165,7 +166,7 @@ public static class JsonOptionsExtensions
 	///     With <see cref="IgnoringArrayOrder" />, an index refers to the element of the subject, which is then left out
 	///     of the pairing.
 	/// </remarks>
-	public static JsonOptions Ignoring(
+	public static JsonOptions IgnoringMembers(
 		this JsonOptions @this,
 		Func<string, bool> predicate,
 		[CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")

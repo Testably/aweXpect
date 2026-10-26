@@ -239,7 +239,7 @@ public sealed class JsonOptionsContextTests
 					foo = 2,
 				}, o => o
 					.IgnoringMember("id")
-					.Ignoring(path => path.EndsWith(".etag"))
+					.IgnoringMembers(path => path.EndsWith(".etag"))
 					.TreatingNullAsAbsent());
 
 			await That(Act).Throws<FailException>()
@@ -395,7 +395,7 @@ public sealed class JsonOptionsContextTests
 				}, o => o
 					.IgnoringMember("nmae")
 					.IgnoringMember("etag")
-					.Ignoring(_ => false)
+					.IgnoringMembers(_ => false)
 					.IgnoringMember("idd"));
 
 			await That(Act).Throws<FailException>()

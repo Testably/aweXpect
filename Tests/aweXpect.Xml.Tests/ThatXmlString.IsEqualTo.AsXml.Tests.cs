@@ -37,8 +37,8 @@ public sealed partial class ThatXmlString
 
 				[Test]
 				[Arguments("<a x=\"1\"/>", "<a x=\"2\"/>", "/a/@x was \"1\" instead of \"2\"")]
-				[Arguments("<a/>", "<a x=\"2\"/>", "/a/@x was missing")]
-				[Arguments("<a x=\"1\"/>", "<a/>", "/a/@x was unexpected")]
+				[Arguments("<a/>", "<a x=\"2\"/>", "/a/@x had missing \"2\"")]
+				[Arguments("<a x=\"1\"/>", "<a/>", "/a/@x had unexpected \"1\"")]
 				[Arguments("<a xmlns:p=\"urn:p\" p:x=\"1\"/>", "<a x=\"1\"/>",
 					"/a/@x was in namespace \"urn:p\" instead of no namespace")]
 				[Arguments("<b/>", "<a/>", "/a was <b> instead of <a>")]
@@ -46,13 +46,13 @@ public sealed partial class ThatXmlString
 					"/a was in namespace \"urn:v1\" instead of namespace \"urn:v2\"")]
 				[Arguments("<a>1.0</a>", "<a>1.00</a>", "/a/text() was \"1.0\" instead of \"1.00\"")]
 				[Arguments("<a> x </a>", "<a>x</a>", "/a/text() was \" x \" instead of \"x\"")]
-				[Arguments("<a xml:space=\"preserve\"> </a>", "<a xml:space=\"preserve\"/>", "/a/text() was unexpected")]
-				[Arguments("<a/>", "<a>x</a>", "/a/text() was missing")]
+				[Arguments("<a xml:space=\"preserve\"> </a>", "<a xml:space=\"preserve\"/>", "/a/text() had unexpected \" \"")]
+				[Arguments("<a/>", "<a>x</a>", "/a/text() had missing \"x\"")]
 				[Arguments("<a><b>1</b><b>3</b></a>", "<a><b>1</b><b>2</b></a>", "/a/b[2]/text() was \"3\" instead of \"2\"")]
-				[Arguments("<a><b/></a>", "<a><b/><b/></a>", "/a/b[2] was missing")]
-				[Arguments("<a><b/><b/></a>", "<a><b/></a>", "/a/b[2] was unexpected")]
-				[Arguments("<a><b/><c/></a>", "<a><b/></a>", "/a/c was unexpected")]
-				[Arguments("<a><x/><b/><c/></a>", "<a><b/><c/></a>", "/a/x was unexpected")]
+				[Arguments("<a><b/></a>", "<a><b/><b/></a>", "/a/b[2] had missing <b />")]
+				[Arguments("<a><b/><b/></a>", "<a><b/></a>", "/a/b[2] had unexpected <b />")]
+				[Arguments("<a><b/><c/></a>", "<a><b/></a>", "/a/c had unexpected <c />")]
+				[Arguments("<a><x/><b/><c/></a>", "<a><b/><c/></a>", "/a/x had unexpected <x />")]
 				[Arguments("<a><c/><b/></a>", "<a><b/><c/></a>", "/a had the child nodes in the order c, b instead of b, c")]
 				[Arguments("<a><b>1</b><c/><b>2</b></a>", "<a><b>1</b><b>2</b><c/></a>",
 					"/a had the child nodes in the order b[1], c, b[2] instead of b[1], b[2], c")]
@@ -108,9 +108,9 @@ public sealed partial class ThatXmlString
 				}
 
 				[Test]
-				[Arguments("<a><b/></a>", "<a><c/></a>", "/a/c was missing", "/a/b was unexpected")]
-				[Arguments("<a><b/></a>", "<a>x</a>", "/a/text() was missing", "/a/b was unexpected")]
-				[Arguments("<a>x</a>", "<a><b/></a>", "/a/b was missing", "/a/text() was unexpected")]
+				[Arguments("<a><b/></a>", "<a><c/></a>", "/a/c had missing <c />", "/a/b had unexpected <b />")]
+				[Arguments("<a><b/></a>", "<a>x</a>", "/a/text() had missing \"x\"", "/a/b had unexpected <b />")]
+				[Arguments("<a>x</a>", "<a><b/></a>", "/a/b had missing <b />", "/a/text() had unexpected \"x\"")]
 				public async Task WhenChildDiffersByName_ShouldReportMissingAndUnexpectedChild(string subject,
 					string expected, string missing, string unexpected)
 				{
@@ -160,10 +160,10 @@ public sealed partial class ThatXmlString
 						              is XML equivalent to {expected},
 						              but it differed as
 						                /order/@id was "42" instead of "43" and
-						                /order/@status was unexpected and
+						                /order/@status had unexpected "open" and
 						                /order/item[2]/@price was "2.0" instead of "2.00" and
-						                /order/item[2]/@quantity was missing and
-						                /order/note was unexpected
+						                /order/item[2]/@quantity had missing "1" and
+						                /order/note had unexpected <note>urgent</note>
 
 						              Actual:
 						              {subject}
@@ -188,8 +188,8 @@ public sealed partial class ThatXmlString
 						             Expected that subject
 						             is XML equivalent to <a/>,
 						             but it differed as
-						               /a/@b was unexpected and
-						               /a/@c was unexpected and
+						               /a/@b had unexpected "1" and
+						               /a/@c had unexpected "1" and
 						               (… and 2 more)
 
 						             Actual:

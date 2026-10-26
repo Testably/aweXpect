@@ -4,6 +4,7 @@ using System.Text;
 using System.Xml.Linq;
 using aweXpect.Customization;
 using aweXpect.Formatting;
+using aweXpect.Xml.Options;
 using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Xml;
@@ -98,7 +99,7 @@ internal static class XmlComparer
 
 			if (actualAttribute is null)
 			{
-				result.AddError(attributePath, "was missing");
+				result.AddError(attributePath, $"had missing {Formatter.Format(expectedAttribute.Value)}");
 			}
 			else if (actualAttribute.Name.Namespace != expectedAttribute.Name.Namespace)
 			{
@@ -122,7 +123,7 @@ internal static class XmlComparer
 			string attributePath = $"{path}{PathSeparator}@{unexpectedAttribute.Name.LocalName}";
 			if (!comparison.IsIgnored(attributePath))
 			{
-				result.AddError(attributePath, "was unexpected");
+				result.AddError(attributePath, $"had unexpected {Formatter.Format(unexpectedAttribute.Value)}");
 			}
 		}
 	}
@@ -186,7 +187,8 @@ internal static class XmlComparer
 		{
 			if (!actualAttribute.IsNamespaceDeclaration && expected.Attribute(actualAttribute.Name) is null)
 			{
-				result.AddError($"{path}{PathSeparator}@{actualAttribute.Name.LocalName}", "was unexpected");
+				result.AddError($"{path}{PathSeparator}@{actualAttribute.Name.LocalName}",
+					$"had unexpected {Formatter.Format(actualAttribute.Value)}");
 			}
 		}
 	}
@@ -215,7 +217,7 @@ internal static class XmlComparer
 		{
 			if (!pairs.TryGetValue(expectedChild, out Content? actualChild))
 			{
-				result.AddError(expectedChild.Path, "was missing");
+				result.AddError(expectedChild.Path, $"had missing {expectedChild.Format()}");
 			}
 			else if (!expectedChild.IsPairedAsEquivalent)
 			{
@@ -231,7 +233,7 @@ internal static class XmlComparer
 		HashSet<Content> pairedChildren = new(pairs.Values);
 		foreach (Content unexpectedChild in actualChildren.Where(child => !pairedChildren.Contains(child)))
 		{
-			result.AddError(unexpectedChild.Path, "was unexpected");
+			result.AddError(unexpectedChild.Path, $"had unexpected {unexpectedChild.Format()}");
 		}
 	}
 
@@ -536,6 +538,12 @@ internal static class XmlComparer
 		public string Key => _key ??= $"{Name}[{occurrence}]";
 		public string Segment => _segment ??= HasSiblingsOfSameName ? Key : Name;
 		public string Path => _path ??= parentPath + PathSeparator + Segment;
+
+		/// <summary>
+		///     Formats an element on a single line like the "Actual" context formats the subject, and a text like a value.
+		/// </summary>
+		public string Format()
+			=> Element?.ToString(SaveOptions.DisableFormatting) ?? Formatter.Format(Text);
 	}
 
 	/// <summary>

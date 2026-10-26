@@ -1,4 +1,4 @@
-namespace aweXpect.Snapshots.PublicApi;
+namespace aweXpect.Snapshots.PublicApi.Options;
 
 /// <summary>
 ///     Selects what is left out of the public API, e.g. <c>o => o.Ignoring.Namespace("MyLibrary.Generated")</c>.
@@ -33,10 +33,11 @@ public sealed class PublicApiIgnoring
 	///     <c>MyNamespace.TagAttribute`1</c> for a generic attribute.
 	/// </remarks>
 	public PublicApiOptions Attribute(string fullName)
-	{
-		_options.AttributesToIgnore.Add(ArgumentChecks.ThrowIfNullOrEmpty(fullName, nameof(fullName)));
-		return _options;
-	}
+		=> new PublicApiOptions(_options)
+		{
+			AttributesToIgnore = PublicApiOptions.Add(_options.AttributesToIgnore,
+				ArgumentChecks.ThrowIfNullOrEmpty(fullName, nameof(fullName))),
+		};
 
 	/// <summary>
 	///     Ignores the members that are marked as <see cref="System.Runtime.CompilerServices.CompilerGeneratedAttribute" />,
@@ -49,20 +50,20 @@ public sealed class PublicApiIgnoring
 	///     marks only their accessors and backing fields.
 	/// </remarks>
 	public PublicApiOptions CompilerGeneratedMembers()
-	{
-		_options.IncludesCompilerGeneratedMembers = false;
-		return _options;
-	}
+		=> new PublicApiOptions(_options)
+		{
+			IncludesCompilerGeneratedMembers = false,
+		};
 
 	/// <summary>
 	///     Ignores the types that the assembly forwards to another assembly, which are written by default as
 	///     <c>[assembly: TypeForwardedTo(typeof(…))]</c>.
 	/// </summary>
 	public PublicApiOptions ForwardedTypes()
-	{
-		_options.IncludesForwardedTypes = false;
-		return _options;
-	}
+		=> new PublicApiOptions(_options)
+		{
+			IncludesForwardedTypes = false,
+		};
 
 	/// <summary>
 	///     Ignores the types in the <paramref name="namespace" /> and in its sub-namespaces.
@@ -72,10 +73,11 @@ public sealed class PublicApiIgnoring
 	///     <c>MyLibrary.GeneratedTools</c>. An empty <paramref name="namespace" /> is the global namespace.
 	/// </remarks>
 	public PublicApiOptions Namespace(string @namespace)
-	{
-		_options.NamespacesToIgnore.Add(ArgumentChecks.ThrowIfNull(@namespace, nameof(@namespace)));
-		return _options;
-	}
+		=> new PublicApiOptions(_options)
+		{
+			NamespacesToIgnore = PublicApiOptions.Add(_options.NamespacesToIgnore,
+				ArgumentChecks.ThrowIfNull(@namespace, nameof(@namespace))),
+		};
 
 	/// <summary>
 	///     Ignores the type <typeparamref name="TType" /> with its nested types, for a generic type with any type
@@ -93,8 +95,9 @@ public sealed class PublicApiIgnoring
 	///     <c>MyNamespace.Outer+Inner</c> for a nested and <c>MyNamespace.Box`1</c> for a generic type.
 	/// </remarks>
 	public PublicApiOptions Type(string fullName)
-	{
-		_options.TypesToIgnore.Add(ArgumentChecks.ThrowIfNullOrEmpty(fullName, nameof(fullName)));
-		return _options;
-	}
+		=> new PublicApiOptions(_options)
+		{
+			TypesToIgnore = PublicApiOptions.Add(_options.TypesToIgnore,
+				ArgumentChecks.ThrowIfNullOrEmpty(fullName, nameof(fullName))),
+		};
 }

@@ -834,7 +834,7 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Test]
-			[Arguments("{}", "$.foo was missing")]
+			[Arguments("{}", "$.foo had missing 2")]
 			[Arguments("{\"foo\": 2}")]
 			public async Task ShouldFailIfPropertyIsMissing(string json,
 				string? errorMessage = null)
@@ -1015,7 +1015,7 @@ public sealed partial class ThatJsonElement
 					             {
 					             	foo = (string?)null,
 					             },
-					             but it differed as $.foo was missing
+					             but it differed as $.foo had missing <null>
 
 					             JSON options:
 					              - ignore additional properties
@@ -1069,7 +1069,7 @@ public sealed partial class ThatJsonElement
 					             {
 					             	foo = It.Is<string?>().That.IsNull(),
 					             },
-					             but it differed as $.foo was missing
+					             but it differed as $.foo had missing is string
 
 					             JSON options:
 					              - ignore additional properties

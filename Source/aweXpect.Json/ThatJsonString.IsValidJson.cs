@@ -4,9 +4,9 @@ using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
-using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Json;
+using aweXpect.Json.Options;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -19,10 +19,15 @@ public static partial class ThatJsonString
 	/// <summary>
 	///     Verifies that the subject is a valid JSON string.
 	/// </summary>
+	/// <remarks>
+	///     Only the document options of the <paramref name="options" /> apply, set with
+	///     <see cref="JsonOptionsExtensions.WithDocumentOptions" />. The comparison options are ignored, as there is no
+	///     expected JSON to compare with.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<string, IThat<string?>> IsValidJson(
 		this IThat<string?> subject,
-		Func<JsonDocumentOptions, JsonDocumentOptions>? options = null)
+		Func<JsonOptions, JsonOptions>? options = null)
 		=> new(AddIsValidJsonConstraint(subject, GetDocumentOptions(options)), subject);
 
 	/// <summary>
@@ -32,12 +37,16 @@ public static partial class ThatJsonString
 	/// <remarks>
 	///     A subject that is no valid JSON fails also when negated, as the <paramref name="expectations" /> cannot be
 	///     verified.
+	///     <para />
+	///     Only the document options of the <paramref name="options" /> apply, set with
+	///     <see cref="JsonOptionsExtensions.WithDocumentOptions" />. The comparison options are ignored, as there is no
+	///     expected JSON to compare with.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<string, IThat<string?>> IsValidJson(
 		this IThat<string?> subject,
 		Action<IThatSubject<JsonElement>> expectations,
-		Func<JsonDocumentOptions, JsonDocumentOptions>? options = null)
+		Func<JsonOptions, JsonOptions>? options = null)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		JsonDocumentOptions documentOptions = GetDocumentOptions(options);
@@ -56,24 +65,21 @@ public static partial class ThatJsonString
 	/// <summary>
 	///     Verifies that the subject is not a valid JSON string.
 	/// </summary>
+	/// <remarks>
+	///     Only the document options of the <paramref name="options" /> apply, set with
+	///     <see cref="JsonOptionsExtensions.WithDocumentOptions" />. The comparison options are ignored, as there is no
+	///     expected JSON to compare with.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<string, IThat<string?>> IsNotValidJson(
 		this IThat<string?> subject,
-		Func<JsonDocumentOptions, JsonDocumentOptions>? options = null)
+		Func<JsonOptions, JsonOptions>? options = null)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint(GetDocumentOptions(options),
 				static (o, it, grammar) => new IsValidJsonConstraint(it, grammar, o).Invert()),
 			subject);
 
-	private static JsonDocumentOptions GetDocumentOptions(Func<JsonDocumentOptions, JsonDocumentOptions>? options)
-	{
-		JsonDocumentOptions defaultOptions = Customize.aweXpect.Json().DefaultJsonDocumentOptions.Get();
-		if (options != null)
-		{
-			defaultOptions = options(defaultOptions);
-		}
-
-		return defaultOptions;
-	}
+	private static JsonDocumentOptions GetDocumentOptions(Func<JsonOptions, JsonOptions>? options)
+		=> (options?.Invoke(JsonOptions.Default) ?? JsonOptions.Default).DocumentOptions;
 
 	private static ExpectationBuilder AddIsValidJsonConstraint(IThat<string?> subject, JsonDocumentOptions options)
 		=> subject.Get().ExpectationBuilder.AddConstraint(options,

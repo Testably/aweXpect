@@ -12,6 +12,7 @@ using aweXpect.Core.Extending;
 using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Json;
+using aweXpect.Json.Options;
 using aweXpect.Results;
 
 namespace aweXpect;

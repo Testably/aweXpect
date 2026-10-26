@@ -490,7 +490,7 @@ public sealed partial class ThatJsonString
 						             but it differed as
 						               $.foo was 1.1 instead of 2.1 and
 						               $.bar was "baz" instead of "bart" and
-						               $.baz was missing and
+						               $.baz had missing True and
 						               $.something had unexpected "else"
 
 						             Actual:
@@ -607,7 +607,7 @@ public sealed partial class ThatJsonString
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {"title": "Let It Be", "album": null},
-						             but it differed as $.album was missing
+						             but it differed as $.album had missing <null>
 
 						             Actual:
 						             {"title": "Let It Be"}
@@ -760,7 +760,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected)
 							.AsJson(o => o.IgnoringMember("id").IgnoringMember("meta.createdAt")
-								.Ignoring(path => path.EndsWith(".etag")));
+								.IgnoringMembers(path => path.EndsWith(".etag")));
 
 					await That(Act).DoesNotThrow();
 				}

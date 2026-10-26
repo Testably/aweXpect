@@ -34,7 +34,7 @@ internal static class Checks
 			() => ShouldPass(async () => await That(XElement.Parse("<a x=\"1\" y=\"2\"><b/></a>")).Matches("<a x=\"1\"/>"))),
 		new("a document whose root has additional nodes does not match exactly",
 			() => ShouldFail(async () => await That(XDocument.Parse("<a x=\"1\"/>")).MatchesExactly("<a/>"),
-				"matches <a/> exactly", "/a/@x was unexpected")),
+				"matches <a/> exactly", "/a/@x had unexpected \"1\"")),
 		new("a valid XML string that differs from the expected XML fails",
 			() => ShouldFail(async () => await That("<a x=\"2\"/>").IsValidXmlMatching("<a x=\"1\"/>"),
 				"is valid XML which matches", "/a/@x was \"2\" instead of \"1\"")),
@@ -62,7 +62,7 @@ internal static class Checks
 				"does not have attribute \"x\"", "had no root element")),
 		new("XML strings that only differ in ignored members pass",
 			() => ShouldPass(async () => await That("<a id=\"1\" etag=\"x\"><b/></a>").IsEqualTo("<a id=\"2\"><b/></a>")
-				.AsXml(o => o.IgnoringMember("/a/@id").Ignoring(path => path.EndsWith("/@etag"))))),
+				.AsXml(o => o.IgnoringMember("/a/@id").IgnoringMembers(path => path.EndsWith("/@etag"))))),
 		new("a failure lists the ignored members",
 			() => ShouldFail(async () => await That(XElement.Parse("<a id=\"1\" x=\"1\"/>"))
 					.Matches("<a id=\"2\" x=\"2\"/>", o => o.IgnoringMember("@id")),

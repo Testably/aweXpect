@@ -416,9 +416,9 @@ public sealed partial class ThatJsonObject
 						             	Album = (string?)null,
 						             },
 						             but it differed as
-						               $.Title was missing and
-						               $.Genre was missing and
-						               $.Album was missing and
+						               $.Title had missing "Let It Be" and
+						               $.Genre had missing 2 and
+						               $.Album had missing <null> and
 						               $.title had unexpected "Let It Be" and
 						               $.genre had unexpected 2 and
 						               $.album had unexpected <null>

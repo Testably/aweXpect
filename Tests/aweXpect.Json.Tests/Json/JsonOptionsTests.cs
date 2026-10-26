@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using aweXpect.Json.Options;
 
 namespace aweXpect.Json.Tests;
 
@@ -83,46 +84,6 @@ public class JsonOptionsTests
 	}
 
 	[Test]
-	public async Task Ignoring_ShouldDescribeThePredicateWithoutCommonWhiteSpace()
-	{
-		JsonElement subject = JsonDocument.Parse("{\"name\": \"x\"}").RootElement;
-
-		async Task Act()
-			=> await That(subject).MatchesExactly(new
-			{
-				name = "y",
-			}, o => o.Ignoring(path
-				=> path.EndsWith(".etag")));
-
-		await That(Act).Throws<FailException>()
-			.WithMessage("""
-			             Expected that subject
-			             matches new
-			             {
-			             	name = "y",
-			             } exactly,
-			             but it differed as $.name was "x" instead of "y"
-
-			             JSON options:
-			              - ignore members: [path*\n=> path.EndsWith(".etag")]
-			             """).AsWildcard()
-			.Because("the line break of the predicate is escaped and depends on the line endings of the source");
-	}
-
-	[Test]
-	public async Task Ignoring_WhenPredicateIsNull_ShouldThrowArgumentNullException()
-	{
-		JsonElement subject = JsonDocument.Parse("1").RootElement;
-
-		async Task Act()
-			=> await That(subject).MatchesExactly(1, o => o.Ignoring(null!));
-
-		await That(Act).Throws<ArgumentNullException>()
-			.WithParamName("predicate").And
-			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
-	}
-
-	[Test]
 	public async Task IgnoringMember_ShouldAccumulateTheMembersWithoutChangingTheOriginalOptions()
 	{
 		JsonElement subject = JsonDocument.Parse("{\"id\": 1, \"etag\": \"a\", \"name\": \"x\"}").RootElement;
@@ -135,12 +96,12 @@ public class JsonOptionsTests
 
 		async Task ActWithResult()
 			=> await That(subject).MatchesExactly(expected,
-				o => o.IgnoringMember("id").Ignoring(path => path.EndsWith(".etag")));
+				o => o.IgnoringMember("id").IgnoringMembers(path => path.EndsWith(".etag")));
 
 		async Task ActWithOriginal()
 			=> await That(subject).MatchesExactly(expected, o =>
 			{
-				_ = o.IgnoringMember("id").Ignoring(path => path.EndsWith(".etag"));
+				_ = o.IgnoringMember("id").IgnoringMembers(path => path.EndsWith(".etag"));
 				return o;
 			});
 
@@ -154,7 +115,7 @@ public class JsonOptionsTests
 			               $.id was 1 instead of 2 and
 			               $.etag was "a" instead of "b"
 			             """)
-			.Because("IgnoringMember and Ignoring return new options instead of changing the original ones");
+			.Because("IgnoringMember and IgnoringMembers return new options instead of changing the original ones");
 	}
 
 	[Test]
@@ -181,6 +142,46 @@ public class JsonOptionsTests
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("memberToIgnore").And
 			.WithMessage("The 'memberToIgnore' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task IgnoringMembers_ShouldDescribeThePredicateWithoutCommonWhiteSpace()
+	{
+		JsonElement subject = JsonDocument.Parse("{\"name\": \"x\"}").RootElement;
+
+		async Task Act()
+			=> await That(subject).MatchesExactly(new
+			{
+				name = "y",
+			}, o => o.IgnoringMembers(path
+				=> path.EndsWith(".etag")));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             matches new
+			             {
+			             	name = "y",
+			             } exactly,
+			             but it differed as $.name was "x" instead of "y"
+
+			             JSON options:
+			              - ignore members: [path*\n=> path.EndsWith(".etag")]
+			             """).AsWildcard()
+			.Because("the line break of the predicate is escaped and depends on the line endings of the source");
+	}
+
+	[Test]
+	public async Task IgnoringMembers_WhenPredicateIsNull_ShouldThrowArgumentNullException()
+	{
+		JsonElement subject = JsonDocument.Parse("1").RootElement;
+
+		async Task Act()
+			=> await That(subject).MatchesExactly(1, o => o.IgnoringMembers(null!));
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("predicate").And
+			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
 	[Test]

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
+using aweXpect.Json.Options;
 
 namespace aweXpect.Json;
 
@@ -396,7 +397,7 @@ internal static class JsonElementValidator
 					continue;
 				}
 
-				result.AddError(memberPath, "was missing");
+				result.AddError(memberPath, $"had missing {FormatExpected(item.Value, converter)}");
 				continue;
 			}
 

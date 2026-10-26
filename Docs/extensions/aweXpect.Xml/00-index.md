@@ -66,7 +66,7 @@ Expectations for `XElement` and `XDocument`:
 | [`HasValue().EqualTo(…)`, …](./03-navigation.md#values)          |                        | the value is compared with a string operator, e.g. `EndingWith` or `Containing(…).AtLeast(2)` |
 
 The comparisons can be relaxed with the options `IgnoringAdditionalNodes()`, `IgnoringElementOrder()` and
-`IgnoringMember(path)` or `Ignoring(path => …)`, see [Matching XML](./02-matching.md#options).
+`IgnoringMember(path)` or `IgnoringMembers(path => …)`, see [Matching XML](./02-matching.md#options).
 
 ## Documentation
 

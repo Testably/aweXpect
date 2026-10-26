@@ -91,9 +91,12 @@ table of `00-index.md`.
 - `ThatJsonElement.*`, `ThatNullableJsonElement.*`, `ThatJsonNode.*`: the same expectations for `JsonElement`,
   `JsonElement?` and `JsonNode` (`Matches`, `MatchesExactly`, `IsObject`, `IsArray`, ...); the file without a suffix
   holds the shared constraints. `ThatJsonObject.*`: `IsJsonSerializable`, `IsJsonSerializedAs` on any object.
-- `Json/` (namespace `aweXpect.Json`): `JsonOptions` and its extensions; a new option must be copied in the internal
-  copy constructor and listed in the "JSON options" context of a failure; `JsonElementValidator` reports each
-  difference by its JSON path; `ExpectationJsonConverter` serializes
+- `Options/` (namespace `aweXpect.Json.Options`): `JsonOptions`; a new option must be copied in the internal copy
+  constructor and listed in the "JSON options" context of a failure. `JsonLookupOptions` holds the options of
+  `HasProperty` and `HasValueAt`.
+- `Json/` (namespace `aweXpect.Json`): `JsonOptionsExtensions` and `JsonLookupOptionsHolderExtensions` with the
+  option methods; `JsonElementValidator`
+  reports each difference by its JSON path; `ExpectationJsonConverter` serializes
   expected values and the `It.Is...` expectations inside them, anything but JSON values by reflection behind
   `ReflectionFallback.IsSupported`; `Customize.aweXpect.Json()` with the default document and serializer options.
 - On `netstandard2.0` the `System.Text.Json` package is used, on `net8.0`/`net10.0` the framework, so behaviour can
@@ -126,8 +129,9 @@ table of `00-index.md`.
   processing instructions ignored, text and CDATA as one text. Differences are reported by path, e.g.
   `/order/item[2]/@price`. `MatchesXmlConstraint<TNode>` parses the expected XML once when the expectation is written;
   `HasNodeConstraint<TSubject, TNode>` stores the found node for nested expectations.
-- `XmlOptions` is immutable: a new option must be copied in the internal copy constructor and listed in the "XML
-  options" failure context. `MembersToIgnoreTracker` names ignored members that matched nothing.
+- `Options/XmlOptions` (namespace `aweXpect.Xml.Options`) is immutable, its option methods are in
+  `Xml/XmlOptionsExtensions` (namespace `aweXpect.Xml`): a new option must be copied in the internal copy constructor
+  and listed in the "XML options" failure context. `MembersToIgnoreTracker` names ignored members that matched nothing.
 - `Helpers/SecureXml` is the only place that parses XML: DTDs are prohibited and no resolver is set. Never parse with
   `XDocument.Parse` or default `XmlReaderSettings`.
 
@@ -175,7 +179,8 @@ User code picks a source, navigates to a member kind, filters and expects:
   reporters (never on a build server).
 - `aweXpect.Snapshots.PublicApi`: `PublicApiDeclarations` reads an assembly with Roslyn from its metadata and writes
   its public API as C# declarations; missing dependencies are resolved from the `deps.json` and the NuGet packages
-  folder. Not trimmable.
+  folder. Not trimmable. `Options/` (namespace `aweXpect.Snapshots.PublicApi.Options`) holds the immutable
+  `PublicApiOptions` and its selectors `Ignoring`, `Within` and `Formatting`, whose methods each return new options.
 - `aweXpect.Snapshots.DiffEngine`: `DiffEngineReporter` opens a diff tool. Its `buildTransitive` targets let the
   generated module initializer call `DiffEngineReporter.Register()` in consuming projects, which
   `<AweXpectSnapshotsDiffEngine>false</AweXpectSnapshotsDiffEngine>` turns off.

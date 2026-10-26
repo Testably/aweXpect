@@ -6,7 +6,7 @@ using aweXpect.Core;
 using aweXpect.Core.Extending;
 using aweXpect.Customization;
 
-namespace aweXpect.Json;
+namespace aweXpect.Json.Options;
 
 /// <summary>
 ///     Options for strings as JSON.

@@ -1,4 +1,5 @@
 ﻿using aweXpect.Core;
+using aweXpect.Json.Options;
 using aweXpect.Results;
 
 namespace aweXpect.Json.Results;

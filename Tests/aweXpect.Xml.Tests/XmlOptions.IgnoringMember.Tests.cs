@@ -59,7 +59,7 @@ public sealed partial class XmlOptionsTests
 
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected)
-					.AsXml(o => o.IgnoringMember("@createdAt").Ignoring(path => path.EndsWith("/@etag")));
+					.AsXml(o => o.IgnoringMember("@createdAt").IgnoringMembers(path => path.EndsWith("/@etag")));
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -193,7 +193,7 @@ public sealed partial class XmlOptionsTests
 		public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 		{
 			async Task Act()
-				=> await That("<a/>").IsEqualTo("<a/>").AsXml(o => o.Ignoring(null!));
+				=> await That("<a/>").IsEqualTo("<a/>").AsXml(o => o.IgnoringMembers(null!));
 
 			await That(Act).Throws<ArgumentNullException>()
 				.WithParamName("predicate");

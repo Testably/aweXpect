@@ -518,7 +518,7 @@ public sealed partial class ThatJsonString
 			}
 
 			[Test]
-			[Arguments("{}", "$.foo was missing")]
+			[Arguments("{}", "$.foo had missing 2")]
 			[Arguments("{\"foo\": 2}")]
 			public async Task ShouldFailIfPropertyIsMissing(string subject,
 				string? errorMessage = null)

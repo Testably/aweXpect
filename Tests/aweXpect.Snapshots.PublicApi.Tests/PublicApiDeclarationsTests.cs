@@ -6,6 +6,7 @@ using System.Reflection.Emit;
 using System.Text.RegularExpressions;
 using aweXpect.Customization;
 using aweXpect.Snapshots.PublicApi.Fixture;
+using aweXpect.Snapshots.PublicApi.Options;
 using aweXpect.Snapshots.PublicApi.Tests.TestHelpers;
 using Microsoft.CodeAnalysis;
 using static aweXpect.Snapshots.PublicApi.Tests.TestHelpers.Compiler;

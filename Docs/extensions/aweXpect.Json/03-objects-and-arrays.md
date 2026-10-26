@@ -96,7 +96,7 @@ JSON options ($.artist.origin):
 <summary>Paths, other kinds and negation</summary>
 
 The paths of a nested `Matches` continue the path in the same way, also for the members to ignore, e.g.
-`Ignoring(path => path == "$.artist.origin.city")`. In the JSON path of a failure, a name that is no plain identifier
+`IgnoringMembers(path => path == "$.artist.origin.city")`. In the JSON path of a failure, a name that is no plain identifier
 is written in brackets, e.g. `$['@odata.context']`, so that it cannot be read as several segments.
 
 A subject that is no JSON object fails `HasProperty` and `DoesNotHaveProperty` alike, e.g. with

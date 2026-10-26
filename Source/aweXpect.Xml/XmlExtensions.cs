@@ -3,6 +3,7 @@ using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Results;
 using aweXpect.Xml;
+using aweXpect.Xml.Options;
 
 namespace aweXpect;
 

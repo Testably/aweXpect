@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Json.Options;
 
 namespace aweXpect.Json;
 

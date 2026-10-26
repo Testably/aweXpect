@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using aweXpect.Core;
 using aweXpect.Formatting;
 using aweXpect.Helpers;
+using aweXpect.Xml.Options;
 using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Xml;

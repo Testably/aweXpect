@@ -1,6 +1,6 @@
 ﻿using aweXpect.Core;
 
-namespace aweXpect.Json;
+namespace aweXpect.Json.Options;
 
 /// <summary>
 ///     The options of <c>HasProperty</c>, <c>DoesNotHaveProperty</c>, <c>HasValueAt</c> and <c>DoesNotHaveValueAt</c>

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using aweXpect.Core;
 
-namespace aweXpect.Snapshots.PublicApi;
+namespace aweXpect.Snapshots.PublicApi.Options;
 
 /// <summary>
 ///     Selects what the public API is restricted to, e.g. <c>o => o.Within.Namespace("MyLibrary")</c>.
@@ -28,10 +28,11 @@ public sealed class PublicApiWithin
 	///     <paramref name="namespace" /> is the global namespace.
 	/// </remarks>
 	public PublicApiOptions Namespace(string @namespace)
-	{
-		_options.NamespacesToRestrictTo.Add(ArgumentChecks.ThrowIfNull(@namespace, nameof(@namespace)));
-		return _options;
-	}
+		=> new PublicApiOptions(_options)
+		{
+			NamespacesToRestrictTo = PublicApiOptions.Add(_options.NamespacesToRestrictTo,
+				ArgumentChecks.ThrowIfNull(@namespace, nameof(@namespace))),
+		};
 
 	/// <summary>
 	///     Restricts the public API to the type <typeparamref name="TType" /> with its nested types, for a generic type
@@ -61,7 +62,9 @@ public sealed class PublicApiWithin
 				nameof(fullName)));
 		}
 
-		_options.TypesToRestrictTo.Add(fullName);
-		return _options;
+		return new PublicApiOptions(_options)
+		{
+			TypesToRestrictTo = PublicApiOptions.Add(_options.TypesToRestrictTo, fullName),
+		};
 	}
 }
