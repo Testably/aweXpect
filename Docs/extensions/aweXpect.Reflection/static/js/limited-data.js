@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
-        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
-      },
-      {
         "sha": "053d313478a1d092203f83113386d7eab61de1a1",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
         "message": "docs: link the extension docs instead of the archived repositories (#2083)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
-      "411dfe77",
       "053d3134",
       "22b71d85",
       "487b869a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "0f3856d6",
       "cb617241",
       "7294afca",
-      "20357097"
+      "20357097",
+      "1dc71bae"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          749.2761193055373,
           425.31231810496405,
           726.8025828679403,
           712.0349316279094,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           502.4869992392404,
           715.4485103062221,
           656.0633188247681,
-          356.174617099762
+          356.174617099762,
+          704.3644876480103
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -449,7 +449,6 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
-          680,
           592,
           592,
           592,
@@ -463,6 +462,7 @@ window.BENCHMARK_DATA = {
           592,
           592,
           592,
+          464,
           464,
           464,
           464,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          932.9730427815364,
           508.68624890645344,
           883.4874388149807,
           916.2251561482748,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           692.9500990595136,
           794.6288106918335,
           888.5572644869486,
-          536.8183043162028
+          536.8183043162028,
+          926.7215559823172
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
-        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
-      },
-      {
         "sha": "053d313478a1d092203f83113386d7eab61de1a1",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
         "message": "docs: link the extension docs instead of the archived repositories (#2083)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
-      "411dfe77",
       "053d3134",
       "22b71d85",
       "487b869a",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "0f3856d6",
       "cb617241",
       "7294afca",
-      "20357097"
+      "20357097",
+      "1dc71bae"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          155.72861753191268,
           70.83842553411212,
           142.92735702650887,
           151.62605946404594,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           76.32721045811971,
           112.69869488080343,
           114.66328901510973,
-          58.143421300819945
+          58.143421300819945,
+          104.04969412088394
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1070,7 +1070,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
-          296,
+          168,
           168,
           168,
           168,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          238.63771850722176,
           129.16618806521097,
           201.9518550078074,
           236.02032203674315,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           165.79196189244587,
           257.97272974650065,
           215.35406255722046,
-          122.15644100734166
+          122.15644100734166,
+          215.77363429750716
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
-        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
-      },
-      {
         "sha": "053d313478a1d092203f83113386d7eab61de1a1",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
         "message": "docs: link the extension docs instead of the archived repositories (#2083)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
-      "411dfe77",
       "053d3134",
       "22b71d85",
       "487b869a",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "0f3856d6",
       "cb617241",
       "7294afca",
-      "20357097"
+      "20357097",
+      "1dc71bae"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2047.0730746132988,
           1069.8902866656963,
           2055.6503170558385,
           2049.9847272237143,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1463.3685356140136,
           1411.1039389201574,
           1838.6320939745221,
-          877.4776200612386
+          877.4776200612386,
+          1863.7854092461723
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2008,
           2008,
           2008,
           2008,
@@ -1685,6 +1684,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1808,
           1808
         ],
         "borderColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1505.7171404702324,
           872.5869185583932,
           1456.1909824371337,
           1500.995586268107,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1060.8135719299316,
           1312.3308497111002,
           1354.369742711385,
-          790.3319710413615
+          790.3319710413615,
+          1452.0054513386317
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1864,
           1953,
           1953,
           1953,
@@ -1809,6 +1808,7 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1952,
+          1864,
           1864,
           1864
         ],
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
-        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
-      },
       {
         "sha": "053d313478a1d092203f83113386d7eab61de1a1",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
         "message": "docs: link the extension docs instead of the archived repositories (#2083)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
-      "411dfe77",
       "053d3134",
       "22b71d85",
       "487b869a",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "0f3856d6",
       "cb617241",
       "7294afca",
-      "20357097"
+      "20357097",
+      "1dc71bae"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2773.519156864711,
           1399.525321667011,
           2787.1265342712404,
           2960.0839465005056,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2034.700079697829,
           2151.8225588117325,
           2642.3334612165177,
-          1403.0971938451132
+          1403.0971938451132,
+          2742.6894027165004
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2880,
           2880,
           2880,
           2936,
@@ -2293,6 +2292,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3104,
           3104
         ],
         "borderColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3969.400400797526,
           2316.0214854649134,
           3882.7427925109864,
           3907.7729588826496,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           2906.4009140559606,
           3378.733670454759,
           3859.4906572614395,
-          2185.3293940226235
+          2185.3293940226235,
+          3875.937665499174
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3980,
           3980,
           3980,
           3980,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           3981,
           3977,
           3980,
+          3981,
           3981
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
-        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
-      },
       {
         "sha": "053d313478a1d092203f83113386d7eab61de1a1",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
         "message": "docs: link the extension docs instead of the archived repositories (#2083)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
-      "411dfe77",
       "053d3134",
       "22b71d85",
       "487b869a",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "0f3856d6",
       "cb617241",
       "7294afca",
-      "20357097"
+      "20357097",
+      "1dc71bae"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          400.68615396206195,
           181.66628491083782,
           375.9836460627042,
           399.74061816533407,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           266.5842892101833,
           355.14465500758246,
           339.7191134770711,
-          186.8432778040568
+          186.8432778040568,
+          397.83714217406055
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2881,7 +2881,6 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
-          552,
           696,
           696,
           696,
@@ -2895,6 +2894,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2398.626402446202,
           1393.3115966503437,
           2240.1842733110702,
           2340.9311060587565,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1691.443691117423,
           1988.174253845215,
           2213.8134574890137,
-          1231.1973390579224
+          1231.1973390579224,
+          2321.012066432408
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
-        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
-      },
-      {
         "sha": "053d313478a1d092203f83113386d7eab61de1a1",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
         "message": "docs: link the extension docs instead of the archived repositories (#2083)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
-      "411dfe77",
       "053d3134",
       "22b71d85",
       "487b869a",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "0f3856d6",
       "cb617241",
       "7294afca",
-      "20357097"
+      "20357097",
+      "1dc71bae"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3506.04370198931,
           1858.380207334246,
           3404.654327392578,
           3555.4454658508303,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2206.4882451375324,
           2327.8528725550723,
           2930.2676840562085,
-          1460.6088209885818
+          1460.6088209885818,
+          2941.172984568278
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3032,
           3032,
           3032,
           3032,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           3232,
           3232,
           3232,
+          3232,
           3232
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          282585.4908203125,
           170873.35857747396,
           281964.36495535716,
           285186.0317220052,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           241591.6001674107,
           260116.4959716797,
           298482.9997907366,
-          169174.7233561198
+          169174.7233561198,
+          283718.9447265625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17576,
           17577,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17707,
           17528,
           17577,
-          17576
+          17576,
+          17577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
