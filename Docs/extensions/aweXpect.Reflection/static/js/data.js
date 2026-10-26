@@ -828,6 +828,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
         "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
+      },
+      {
+        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
+        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
       }
     ],
     "labels": [
@@ -968,7 +974,8 @@ window.BENCHMARK_DATA = {
       "be28a12e",
       "a7c1c18e",
       "35cd9bf1",
-      "7a6dec57"
+      "7a6dec57",
+      "0f3856d6"
     ],
     "datasets": [
       {
@@ -1112,7 +1119,8 @@ window.BENCHMARK_DATA = {
           739.1604601542155,
           666.1251465252468,
           681.5917372022357,
-          667.73224903987
+          667.73224903987,
+          502.4869992392404
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1259,6 +1267,7 @@ window.BENCHMARK_DATA = {
           592,
           592,
           592,
+          464,
           464,
           464,
           464
@@ -1413,7 +1422,8 @@ window.BENCHMARK_DATA = {
           919.4542154947917,
           878.8707562226516,
           919.635594177246,
-          839.5925099509103
+          839.5925099509103,
+          692.9500990595136
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1425,6 +1435,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -2404,6 +2415,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
         "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
+      },
+      {
+        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
+        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
       }
     ],
     "labels": [
@@ -2544,7 +2561,8 @@ window.BENCHMARK_DATA = {
       "be28a12e",
       "a7c1c18e",
       "35cd9bf1",
-      "7a6dec57"
+      "7a6dec57",
+      "0f3856d6"
     ],
     "datasets": [
       {
@@ -2688,7 +2706,8 @@ window.BENCHMARK_DATA = {
           143.14115254084268,
           95.40810291583722,
           113.804558467865,
-          121.59816252390543
+          121.59816252390543,
+          76.32721045811971
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2835,6 +2854,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168
@@ -2989,7 +3009,8 @@ window.BENCHMARK_DATA = {
           199.99008261362712,
           194.2811522117028,
           206.95528313318889,
-          200.0570366382599
+          200.0570366382599,
+          165.79196189244587
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3001,6 +3022,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -3980,6 +4002,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
         "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
+      },
+      {
+        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
+        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
       }
     ],
     "labels": [
@@ -4120,7 +4148,8 @@ window.BENCHMARK_DATA = {
       "be28a12e",
       "a7c1c18e",
       "35cd9bf1",
-      "7a6dec57"
+      "7a6dec57",
+      "0f3856d6"
     ],
     "datasets": [
       {
@@ -4264,7 +4293,8 @@ window.BENCHMARK_DATA = {
           1962.1086298624675,
           1753.2441694895426,
           1819.4027413686117,
-          1894.5421292231633
+          1894.5421292231633,
+          1463.3685356140136
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4411,6 +4441,7 @@ window.BENCHMARK_DATA = {
           1888,
           1888,
           1888,
+          1808,
           1808,
           1808,
           1808
@@ -4565,7 +4596,8 @@ window.BENCHMARK_DATA = {
           1453.9501083374023,
           1450.8811801910401,
           1527.9401044209799,
-          1483.6678530375164
+          1483.6678530375164,
+          1060.8135719299316
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4712,6 +4744,7 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1864,
+          1953,
           1953,
           1953,
           1953
@@ -5496,6 +5529,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
         "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
+      },
+      {
+        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
+        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
       }
     ],
     "labels": [
@@ -5626,7 +5665,8 @@ window.BENCHMARK_DATA = {
       "be28a12e",
       "a7c1c18e",
       "35cd9bf1",
-      "7a6dec57"
+      "7a6dec57",
+      "0f3856d6"
     ],
     "datasets": [
       {
@@ -5760,7 +5800,8 @@ window.BENCHMARK_DATA = {
           2693.8259791056316,
           2678.464265696208,
           2719.236819131034,
-          2771.6956988743373
+          2771.6956988743373,
+          2034.700079697829
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5897,6 +5938,7 @@ window.BENCHMARK_DATA = {
           3184,
           3184,
           3184,
+          3104,
           3104,
           3104,
           3104
@@ -6041,7 +6083,8 @@ window.BENCHMARK_DATA = {
           3745.0930099487305,
           3654.145457903544,
           3800.112295423235,
-          3704.700168355306
+          3704.700168355306,
+          2906.4009140559606
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6180,6 +6223,7 @@ window.BENCHMARK_DATA = {
           3981,
           3981,
           3980,
+          3981,
           3981
         ],
         "borderColor": "#FF671B",
@@ -6962,6 +7006,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
         "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
+      },
+      {
+        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
+        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
       }
     ],
     "labels": [
@@ -7092,7 +7142,8 @@ window.BENCHMARK_DATA = {
       "be28a12e",
       "a7c1c18e",
       "35cd9bf1",
-      "7a6dec57"
+      "7a6dec57",
+      "0f3856d6"
     ],
     "datasets": [
       {
@@ -7226,7 +7277,8 @@ window.BENCHMARK_DATA = {
           403.7545188585917,
           385.26661993662515,
           387.92745672861736,
-          364.816552734375
+          364.816552734375,
+          266.5842892101833
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7363,6 +7415,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568
@@ -7507,7 +7560,8 @@ window.BENCHMARK_DATA = {
           2263.6409190041677,
           2228.0702811649867,
           2345.3910257975263,
-          2224.275225575765
+          2224.275225575765,
+          1691.443691117423
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7519,6 +7573,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -8428,6 +8483,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
         "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
+      },
+      {
+        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
+        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
       }
     ],
     "labels": [
@@ -8558,7 +8619,8 @@ window.BENCHMARK_DATA = {
       "be28a12e",
       "a7c1c18e",
       "35cd9bf1",
-      "7a6dec57"
+      "7a6dec57",
+      "0f3856d6"
     ],
     "datasets": [
       {
@@ -8692,7 +8754,8 @@ window.BENCHMARK_DATA = {
           2897.169204711914,
           2709.6661731175013,
           2873.708875020345,
-          2957.8502721150717
+          2957.8502721150717,
+          2206.4882451375324
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8829,6 +8892,7 @@ window.BENCHMARK_DATA = {
           3312,
           3312,
           3312,
+          3232,
           3232,
           3232,
           3232
@@ -8973,7 +9037,8 @@ window.BENCHMARK_DATA = {
           281821.78837890626,
           277930.8960367839,
           279789.09524739586,
-          282710.95253208705
+          282710.95253208705,
+          241591.6001674107
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9112,7 +9177,8 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17577,
-          17577
+          17577,
+          17707
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
