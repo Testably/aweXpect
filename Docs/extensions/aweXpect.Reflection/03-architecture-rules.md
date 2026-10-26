@@ -276,7 +276,7 @@ but
 ]
 ```
 
-Exemptions to a rule use the [`Except` filter](./02-filters.md) on the subject selection:
+Exemptions to a rule use the [`Except` filter](./02-filters.md#custom-predicates) on the subject selection:
 
 ```csharp
 await Expect.That(domainTypes.Except<LegacyImportService>()).DoNotDependOn(infrastructureTypes);

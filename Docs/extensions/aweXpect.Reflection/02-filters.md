@@ -6,7 +6,6 @@ each other: a filter has an `Is…`/`Are…` expectation counterpart for the sam
 
 | Section                                                     | Applies to                    | Filters / expectations                                                                                               |
 |-------------------------------------------------------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| [Inheritance](#inheritance)                                 | types and members             | `Directly`, `IncludingInherited`, `IncludingObjectMembers`                                                           |
 | [Access modifiers](#access-modifiers)                       | types and members             | `WhichArePublic` / `IsPublic`, `WhichAre(AccessModifiers)` / `Is(AccessModifiers)`, …                                |
 | [Attributes](#attributes)                                   | types, members and assemblies | `With<TAttribute>` / `Has<TAttribute>`, `Without<TAttribute>` / `DoesNotHave<TAttribute>`                            |
 | [Obsolete](#obsolete)                                       | types and members             | `WhichAreObsolete` / `IsObsolete`, `WhichAreNotObsolete` / `IsNotObsolete`                                           |
@@ -18,89 +17,31 @@ each other: a filter has an `Is…`/`Are…` expectation counterpart for the sam
 | [Events](#events)                                           | events                        | `OfType<T>` / `IsOfType<T>`, `WhichAreStatic` / `IsStatic`, `WhichAreNullable` / `IsNullable`                        |
 | [Constructors](#constructors)                               | constructors                  | `WithoutParameters` / `HasNoParameters`, `WithParameter<T>` / `HasParameter<T>`                                      |
 | [Assemblies](#assemblies)                                   | assemblies                    | `WhichTarget` / `Targets`, `WithVersion` / `HasVersion`, `WhichDependOn` / `DependsOn`                               |
+| [Custom predicates](#custom-predicates)                     | types, members and assemblies | `Which` / `Satisfies`, `Except`                                                                                      |
 | [Combining filters](#combining-filters)                     | filters                       | `OrWith<TAttribute>`, `OrReturn<T>`, `OrOfType<T>`                                                                   |
+| [Inheritance](#inheritance)                                 | types and members             | `Directly`, `IncludingInherited`, `IncludingObjectMembers`                                                           |
 | [String matching options](#string-matching-options)         | names and namespaces          | `AsPrefix`, `AsSuffix`, `AsWildcard`, `AsRegex`, `IgnoringCase`                                                      |
 | [Collections and quantifiers](#collections-and-quantifiers) | all subjects                  | `Satisfies`, `All().Satisfy`, `Any().Satisfy`                                                                        |
 
-The tables in the sections below pair them up. The **Filter** column is used inside `In.…`; the
-**Expect (single)** column applies to one subject; the **Expect (many)** column applies to a collection.
-
-The custom `.Which(…)` filter has a universal expectation counterpart that works for **every** subject kind
-(types, members and assemblies): use aweXpect's `.Satisfies(…)` on a single subject and `.All().Satisfy(…)`
-(or `.Any().Satisfy(…)`) on a collection. See
-[Collections and quantifiers](#collections-and-quantifiers).
-
-The custom `.Except(…)` filter is the inverse of `.Which(…)`: it **removes** the items that match the
-predicate. This is handy for defining exemptions to a rule (e.g. *all async methods except this one*). Like
-`.Which(…)` it is available on **every** collection (assemblies, types and members). For types there is also a
-typed `.Except<T>()` overload that excludes exactly the type `T`.
-
-## Inheritance
-
-A check on a type considers what the type inherits: inherited attributes, operators, members and relations count by
-default, and `.Directly()` restricts the check to what is declared on the item itself, or to a direct relation.
-Listing the members of types (`Types().Methods()`, …) only includes the members declared on each type, as an
-inherited member would otherwise be listed once for each type that inherits it; `.IncludingInherited()` adds the
-inherited members.
-
-The members declared on `System.Object`, `System.ValueType` and `System.Enum` are excluded, as every type would
-otherwise have `ToString`, `Equals`, `GetHashCode`, …; `.IncludingObjectMembers()` adds them.
-
-| Area                                                                                          | Default                                                                         | Options                                                                                                         |
-|-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| [Attributes](#attributes) of types, methods, properties and events                            | also the attributes inherited from a base type or an overridden member          | `.Directly()`: only the attributes declared on the item                                                         |
-| [Operators](#operators) and conversion operators of types                                     | also the operators of base types                                                | `.Directly()`: only the operators declared on the type                                                          |
-| Relations (`InheritsFrom<T>()`, `Implements<T>()`, their filters and negations)               | the base class anywhere in the base-class chain, or any implemented interface   | `.Directly()`: only the direct base class or a directly implemented interface                                   |
-| Member checks (`ContainsMethods(…)`, `WhichContainMethods(…)`, `OnlyHasNullableMembers()`, …) | also the inherited members                                                      | `.Directly()`: only the declared members, or `.IncludingObjectMembers()`: also the members of the three roots   |
-| Member listings of types (`Types().Methods()`, `In.Type<T>().Properties()`, …)                | only the declared members                                                       | `.IncludingInherited()`: also the inherited members, `.IncludingObjectMembers()`: also those of the three roots |
-| Member listings of assemblies (`In.AssemblyContaining<T>().Methods()`, …)                     | each member once, on the type that declares it                                  | -                                                                                                               |
-| Constructors, and the attributes of assemblies, constructors and fields                       | no inheritance                                                                  | -                                                                                                               |
-
-```csharp
-await Expect.That(typeof(AlbumController)).InheritsFrom<ControllerBase>().Directly();
-await Expect.That(typeof(AlbumRepository)).Implements<IRepository>().Directly();
-await Expect.That(typeof(TrackDuration)).HasOperator(Operator.Addition).Directly();
-await Expect.That(typeof(Album)).Has<SerializableAttribute>().Directly();
-await Expect.That(typeof(Album)).ContainsMethods(methods => methods.WithName("Play")).Directly();
-
-// The declared methods of the album types, also the inherited ones, and also those of System.Object
-await Expect.That(In.AssemblyContaining<Album>().Types().Methods()).AreNotObsolete();
-await Expect.That(In.AssemblyContaining<Album>().Types().Methods().IncludingInherited()).AreNotObsolete();
-await Expect.That(In.AssemblyContaining<Album>().Types().Methods().IncludingObjectMembers()).AreNotObsolete();
-```
-
-The options apply to the whole result, e.g. to all attributes of `.With<T1>().OrWith<T2>().Directly()`. On a member
-listing, set them directly after selecting the members, e.g. `Types().Methods().IncludingInherited().WhichArePublic()`.
-
-<details>
-<summary>Inherited members in detail</summary>
-
-Inherited members never include those a derived type cannot access: the `private` members of base types and the
-`internal` members of base types in another assembly (`InternalsVisibleTo` is not considered). Only the
-[immutability](#types) check considers all fields and properties of base types, including those a derived type
-cannot access, as they hold the state of an instance. An interface inherits the members of its base interfaces.
-
-On a member check, `.Directly()` and `.IncludingObjectMembers()` exclude each other, so only one of them can be set.
-On the `WhichContain…` filters, set them before or after the quantifier. Inside a member check,
-`.Directly()` on an attribute filter only restricts the attributes: in
-`ContainsMethods(m => m.With<FactAttribute>().Directly())` the method may still be inherited.
-
-</details>
+The tables in the sections below pair them up. The **Filter** column is used on a selection (`In.…` or
+`Types.…`); the **Expect (single)** column applies to one subject; the **Expect (many)** column applies to a
+collection. The **Negated** column lists the negations in the same order (filter, single, many), leaving out a form
+that has none; a row without a negation shows `-`.
 
 ## Access modifiers
 
 Shared by all types and members: these names are identical for types, methods, properties, fields,
 events and constructors.
 
-| Modifier           | Filter                                                 | Expect (single)          | Expect (many)             |
-|--------------------|--------------------------------------------------------|--------------------------|---------------------------|
-| public             | `.WhichArePublic()` / `.Public`                        | `.IsPublic()`            | `.ArePublic()`            |
-| internal           | `.WhichAreInternal()` / `.Internal`                    | `.IsInternal()`          | `.AreInternal()`          |
-| private            | `.WhichArePrivate()` / `.Private`                      | `.IsPrivate()`           | `.ArePrivate()`           |
-| protected          | `.WhichAreProtected()` / `.Protected`                  | `.IsProtected()`         | `.AreProtected()`         |
-| private protected  | `.WhichArePrivateProtected()` / `.Private.Protected`   | `.IsPrivateProtected()`  | `.ArePrivateProtected()`  |
-| protected internal | `.WhichAreProtectedInternal()` / `.Protected.Internal` | `.IsProtectedInternal()` | `.AreProtectedInternal()` |
-| as a value         | `.WhichAre(AccessModifiers)`                           | `.Is(AccessModifiers)`   | `.Are(AccessModifiers)`   |
+| Modifier           | Filter                                                 | Expect (single)          | Expect (many)             | Negated                                                                             |
+|--------------------|--------------------------------------------------------|--------------------------|---------------------------|-------------------------------------------------------------------------------------|
+| public             | `.WhichArePublic()` / `.Public`                        | `.IsPublic()`            | `.ArePublic()`            | `WhichAreNotPublic`, `IsNotPublic`, `AreNotPublic`                                  |
+| internal           | `.WhichAreInternal()` / `.Internal`                    | `.IsInternal()`          | `.AreInternal()`          | `WhichAreNotInternal`, `IsNotInternal`, `AreNotInternal`                            |
+| private            | `.WhichArePrivate()` / `.Private`                      | `.IsPrivate()`           | `.ArePrivate()`           | `WhichAreNotPrivate`, `IsNotPrivate`, `AreNotPrivate`                               |
+| protected          | `.WhichAreProtected()` / `.Protected`                  | `.IsProtected()`         | `.AreProtected()`         | `WhichAreNotProtected`, `IsNotProtected`, `AreNotProtected`                         |
+| private protected  | `.WhichArePrivateProtected()` / `.Private.Protected`   | `.IsPrivateProtected()`  | `.ArePrivateProtected()`  | `WhichAreNotPrivateProtected`, `IsNotPrivateProtected`, `AreNotPrivateProtected`    |
+| protected internal | `.WhichAreProtectedInternal()` / `.Protected.Internal` | `.IsProtectedInternal()` | `.AreProtectedInternal()` | `WhichAreNotProtectedInternal`, `IsNotProtectedInternal`, `AreNotProtectedInternal` |
+| as a value         | `.WhichAre(AccessModifiers)`                           | `.Is(AccessModifiers)`   | `.Are(AccessModifiers)`   | `WhichAreNot(AccessModifiers)`, `IsNot(AccessModifiers)`, `AreNot(AccessModifiers)` |
 
 ```csharp
 // Filter, then verify
@@ -111,10 +52,8 @@ await Expect.That(method).IsPublic();
 await Expect.That(methods).ArePublic();
 ```
 
-To pass the modifier as a value, e.g. in a parameterized test, use `.WhichAre(AccessModifiers)` /
-`.WhichAreNot(AccessModifiers)` on types and on every member kind, `.Is(AccessModifiers)` /
-`.IsNot(AccessModifiers)` and `.Are(AccessModifiers)` / `.AreNot(AccessModifiers)`. Combined flags are met by any
-of them, e.g. `AccessModifiers.Public | AccessModifiers.Internal` reads "is public or internal", and
+To pass the modifier as a value, e.g. in a parameterized test, use the *as a value* row, on types and on every
+member kind. Combined flags are met by any of them, e.g. `AccessModifiers.Public | AccessModifiers.Internal` reads "is public or internal", and
 `AccessModifiers.Any` is met by every type and member.
 
 ```csharp
@@ -142,12 +81,11 @@ await Expect.That(methods).AreNot(AccessModifiers.Private | AccessModifiers.Priv
 
 Shared by all types, members, and assemblies.
 
-|                                    | Filter                      | Expect (single)              | Expect (many)               |
-|------------------------------------|-----------------------------|------------------------------|-----------------------------|
-| has attribute                      | `.With<TAttribute>()`       | `.Has<TAttribute>()`         | `.Have<TAttribute>()`       |
-| has attribute matching a predicate | `.With<TAttribute>(a => …)` | `.Has<TAttribute>(a => …)`   | `.Have<TAttribute>(a => …)` |
-| any of several attributes          | `.With<T1>().OrWith<T2>()`  | -                            | -                           |
-| does not have attribute            | `.Without<TAttribute>()`    | `.DoesNotHave<TAttribute>()` | `.DoNotHave<TAttribute>()`  |
+|                                    | Filter                      | Expect (single)            | Expect (many)               | Negated                                                                   |
+|------------------------------------|-----------------------------|----------------------------|-----------------------------|---------------------------------------------------------------------------|
+| has attribute                      | `.With<TAttribute>()`       | `.Has<TAttribute>()`       | `.Have<TAttribute>()`       | `Without<TAttribute>`, `DoesNotHave<TAttribute>`, `DoNotHave<TAttribute>` |
+| has attribute matching a predicate | `.With<TAttribute>(a => …)` | `.Has<TAttribute>(a => …)` | `.Have<TAttribute>(a => …)` | -                                                                         |
+| any of several attributes          | `.With<T1>().OrWith<T2>()`  | -                          | -                           | -                                                                         |
 
 For types, methods, properties and events, attributes inherited from a base type or an overridden member are
 considered as well; append `.Directly()` to only consider the attributes declared on the item itself, e.g.
@@ -164,10 +102,9 @@ await Expect.That(methods).Have<FactAttribute>();
 Shared by all types and members: a self-documenting shorthand for the `ObsoleteAttribute` (so that
 `.WhichAreObsolete()` reads better than `.With<ObsoleteAttribute>()` in architecture rules).
 
-|              | Filter                   | Expect (single)    | Expect (many)       |
-|--------------|--------------------------|--------------------|---------------------|
-| obsolete     | `.WhichAreObsolete()`    | `.IsObsolete()`    | `.AreObsolete()`    |
-| not obsolete | `.WhichAreNotObsolete()` | `.IsNotObsolete()` | `.AreNotObsolete()` |
+|          | Filter                | Expect (single) | Expect (many)    | Negated                                                  |
+|----------|-----------------------|-----------------|------------------|----------------------------------------------------------|
+| obsolete | `.WhichAreObsolete()` | `.IsObsolete()` | `.AreObsolete()` | `WhichAreNotObsolete`, `IsNotObsolete`, `AreNotObsolete` |
 
 ```csharp
 // Verify that nothing public is marked [Obsolete]
@@ -179,19 +116,15 @@ await Expect.That(In.AssemblyContaining<PlaylistService>().Types().WhichArePubli
 
 Shared by all types and members.
 
-|                                 | Filter                          | Expect (single)              | Expect (many)              |
-|---------------------------------|---------------------------------|------------------------------|----------------------------|
-| by name                         | `.WithName("x")`                | `.HasName("x")`              | `.HaveName("x")`           |
-| not by name                     | `.WithoutName("x")`             | `.DoesNotHaveName("x")`      | `.DoNotHaveName("x")`      |
-| by namespace *(types only)*     | `.WithNamespace("x")`           | `.HasNamespace("x")`         | `.HaveNamespace("x")`      |
-| not by namespace *(types only)* | `.WithoutNamespace("x")`        | `.DoesNotHaveNamespace("x")` | `.DoNotHaveNamespace("x")` |
-| within namespace *(types only)* | `.WhichAreWithinNamespace("x")` | `.IsWithinNamespace("x")`    | `.AreWithinNamespace("x")` |
+|                                 | Filter                          | Expect (single)           | Expect (many)              | Negated                                                                       |
+|---------------------------------|---------------------------------|---------------------------|----------------------------|-------------------------------------------------------------------------------|
+| by name                         | `.WithName("x")`                | `.HasName("x")`           | `.HaveName("x")`           | `WithoutName`, `DoesNotHaveName`, `DoNotHaveName`                             |
+| by namespace *(types only)*     | `.WithNamespace("x")`           | `.HasNamespace("x")`      | `.HaveNamespace("x")`      | `WithoutNamespace`, `DoesNotHaveNamespace`, `DoNotHaveNamespace`              |
+| within namespace *(types only)* | `.WhichAreWithinNamespace("x")` | `.IsWithinNamespace("x")` | `.AreWithinNamespace("x")` | `WhichAreNotWithinNamespace`, `IsNotWithinNamespace`, `AreNotWithinNamespace` |
 
-`WithoutName`/`DoesNotHaveName`/`DoNotHaveName` are the negations of the name filter and expectations:
-`WithoutName` keeps the items whose name does *not* match, `DoesNotHaveName` verifies a single item is
-*not* named the given value, and `DoNotHaveName` verifies that *none* of the items in a collection are.
-`WithoutNamespace`/`DoesNotHaveNamespace`/`DoNotHaveNamespace` do the same for the namespace of types.
-They accept the same [string matching options](#string-matching-options) as their positive
+The negated filter keeps the items whose name does *not* match, the single expectation verifies an item is *not*
+named the given value, and the collection expectation verifies that *none* of the items are; the same holds for the
+namespace of types. They accept the same [string matching options](#string-matching-options) as their positive
 counterparts:
 
 ```csharp
@@ -213,41 +146,39 @@ await Expect.That(methods).HaveName(m => "On" + m.GetParameters()[0].ParameterTy
 
 The `WhichAreWithinNamespace`/`IsWithinNamespace`/`AreWithinNamespace` variants match a namespace and all
 its sub-namespaces (so `MusicStore.Data` includes `MusicStore.Data.Sql` but not `MusicStore.DataImport`). They
-compare the namespace exactly and case-sensitively. Each
-has a negated form (`WhichAreNotWithinNamespace`, `IsNotWithinNamespace` and `AreNotWithinNamespace`) that matches
-types outside the namespace. Unlike `DoesNotHaveNamespace`, which compares the whole namespace as a string with the
+compare the namespace exactly and case-sensitively. Their negations match types outside the namespace. Unlike `DoesNotHaveNamespace`, which compares the whole namespace as a string with the
 string matching options, `IsNotWithinNamespace` also excludes all sub-namespaces.
 
 ## Types
 
-| Kind                      | Filter                                          | Expect (single)                | Expect (many)                   |
-|---------------------------|-------------------------------------------------|--------------------------------|---------------------------------|
-| class                     | `.WhichAreClasses()` / `.Classes()`             | `.IsAClass()`                  | `.AreClasses()`                 |
-| interface                 | `.WhichAreInterfaces()` / `.Interfaces()`       | `.IsAnInterface()`             | `.AreInterfaces()`              |
-| enum                      | `.WhichAreEnums()` / `.Enums()`                 | `.IsAnEnum()`                  | `.AreEnums()`                   |
-| struct                    | `.WhichAreStructs()` / `.Structs()`             | `.IsAStruct()`                 | `.AreStructs()`                 |
-| record                    | `.WhichAreRecords()` / `.Records()`             | `.IsARecord()`                 | `.AreRecords()`                 |
-| record struct             | `.WhichAreRecordStructs()` / `.RecordStructs()` | `.IsARecordStruct()`           | `.AreRecordStructs()`           |
-| readonly struct           | `.WhichAreReadOnly()`                           | `.IsReadOnly()`                | `.AreReadOnly()`                |
-| ref struct                | `.WhichAreRefStructs()`                         | `.IsARefStruct()`              | `.AreRefStructs()`              |
-| delegate                  | `.WhichAreDelegates()`                          | `.IsADelegate()`               | `.AreDelegates()`               |
-| exception                 | `.WhichAreExceptions()`                         | `.IsAnException()`             | `.AreExceptions()`              |
-| attribute                 | `.WhichAreAttributes()`                         | `.IsAnAttribute()`             | `.AreAttributes()`              |
-| abstract                  | `.WhichAreAbstract()` / `.Abstract`             | `.IsAbstract()`                | `.AreAbstract()`                |
-| sealed                    | `.WhichAreSealed()` / `.Sealed`                 | `.IsSealed()`                  | `.AreSealed()`                  |
-| static                    | `.WhichAreStatic()` / `.Static`                 | `.IsStatic()`                  | `.AreStatic()`                  |
-| generic                   | `.WhichAreGeneric()` / `.Generic`               | `.IsGeneric()`                 | `.AreGeneric()`                 |
-| nested                    | `.WhichAreNested()` / `.Nested`                 | `.IsNested()`                  | `.AreNested()`                  |
-| inherits from             | `.WhichInheritFrom<T>()`                        | `.InheritsFrom<T>()`           | `.InheritFrom<T>()`             |
-| implements                | `.WhichImplement<T>()`                          | `.Implements<T>()`             | `.Implement<T>()`               |
-| assignable to             | `.WhichAreAssignableTo<T>()`                    | `.IsAssignableTo<T>()`         | `.AreAssignableTo<T>()`         |
-| assignable from           | `.WhichAreAssignableFrom<T>()`                  | `.IsAssignableFrom<T>()`       | `.AreAssignableFrom<T>()`       |
-| instantiable              | `.WhichAreInstantiable()`                       | `.IsInstantiable()`            | `.AreInstantiable()`            |
-| immutable                 | `.WhichAreImmutable()`                          | `.IsImmutable()`               | `.AreImmutable()`               |
-| default constructor       | `.WhichHaveADefaultConstructor()`               | `.HasADefaultConstructor()`    | `.HaveADefaultConstructor()`    |
-| only nullable members     | `.WhichOnlyHaveNullableMembers()`               | `.OnlyHasNullableMembers()`    | `.OnlyHaveNullableMembers()`    |
-| only non-nullable members | `.WhichOnlyHaveNonNullableMembers()`            | `.OnlyHasNonNullableMembers()` | `.OnlyHaveNonNullableMembers()` |
-| custom predicate          | `.Which(t => …)`                                | `.Satisfies(t => …)`           | `.All().Satisfy(t => …)`        |
+| Kind                      | Filter                                          | Expect (single)                | Expect (many)                   | Negated                                                                                               |
+|---------------------------|-------------------------------------------------|--------------------------------|---------------------------------|-------------------------------------------------------------------------------------------------------|
+| class                     | `.WhichAreClasses()` / `.Classes()`             | `.IsAClass()`                  | `.AreClasses()`                 | `WhichAreNotClasses`, `IsNotAClass`, `AreNotClasses`                                                  |
+| interface                 | `.WhichAreInterfaces()` / `.Interfaces()`       | `.IsAnInterface()`             | `.AreInterfaces()`              | `WhichAreNotInterfaces`, `IsNotAnInterface`, `AreNotInterfaces`                                       |
+| enum                      | `.WhichAreEnums()` / `.Enums()`                 | `.IsAnEnum()`                  | `.AreEnums()`                   | `WhichAreNotEnums`, `IsNotAnEnum`, `AreNotEnums`                                                      |
+| struct                    | `.WhichAreStructs()` / `.Structs()`             | `.IsAStruct()`                 | `.AreStructs()`                 | `WhichAreNotStructs`, `IsNotAStruct`, `AreNotStructs`                                                 |
+| record                    | `.WhichAreRecords()` / `.Records()`             | `.IsARecord()`                 | `.AreRecords()`                 | `WhichAreNotRecords`, `IsNotARecord`, `AreNotRecords`                                                 |
+| record struct             | `.WhichAreRecordStructs()` / `.RecordStructs()` | `.IsARecordStruct()`           | `.AreRecordStructs()`           | `WhichAreNotRecordStructs`, `IsNotARecordStruct`, `AreNotRecordStructs`                               |
+| readonly struct           | `.WhichAreReadOnly()`                           | `.IsReadOnly()`                | `.AreReadOnly()`                | `WhichAreNotReadOnly`, `IsNotReadOnly`, `AreNotReadOnly`                                              |
+| ref struct                | `.WhichAreRefStructs()`                         | `.IsARefStruct()`              | `.AreRefStructs()`              | `WhichAreNotRefStructs`, `IsNotARefStruct`, `AreNotRefStructs`                                        |
+| delegate                  | `.WhichAreDelegates()`                          | `.IsADelegate()`               | `.AreDelegates()`               | `WhichAreNotDelegates`, `IsNotADelegate`, `AreNotDelegates`                                           |
+| exception                 | `.WhichAreExceptions()`                         | `.IsAnException()`             | `.AreExceptions()`              | `WhichAreNotExceptions`, `IsNotAnException`, `AreNotExceptions`                                       |
+| attribute                 | `.WhichAreAttributes()`                         | `.IsAnAttribute()`             | `.AreAttributes()`              | `WhichAreNotAttributes`, `IsNotAnAttribute`, `AreNotAttributes`                                       |
+| abstract                  | `.WhichAreAbstract()` / `.Abstract`             | `.IsAbstract()`                | `.AreAbstract()`                | `WhichAreNotAbstract`, `IsNotAbstract`, `AreNotAbstract`                                              |
+| sealed                    | `.WhichAreSealed()` / `.Sealed`                 | `.IsSealed()`                  | `.AreSealed()`                  | `WhichAreNotSealed`, `IsNotSealed`, `AreNotSealed`                                                    |
+| static                    | `.WhichAreStatic()` / `.Static`                 | `.IsStatic()`                  | `.AreStatic()`                  | `WhichAreNotStatic`, `IsNotStatic`, `AreNotStatic`                                                    |
+| generic                   | `.WhichAreGeneric()` / `.Generic`               | `.IsGeneric()`                 | `.AreGeneric()`                 | `WhichAreNotGeneric`, `IsNotGeneric`, `AreNotGeneric`                                                 |
+| nested                    | `.WhichAreNested()` / `.Nested`                 | `.IsNested()`                  | `.AreNested()`                  | `WhichAreNotNested`, `IsNotNested`, `AreNotNested`                                                    |
+| inherits from             | `.WhichInheritFrom<T>()`                        | `.InheritsFrom<T>()`           | `.InheritFrom<T>()`             | `WhichDoNotInheritFrom<T>`, `DoesNotInheritFrom<T>`, `DoNotInheritFrom<T>`                            |
+| implements                | `.WhichImplement<T>()`                          | `.Implements<T>()`             | `.Implement<T>()`               | `WhichDoNotImplement<T>`, `DoesNotImplement<T>`, `DoNotImplement<T>`                                  |
+| assignable to             | `.WhichAreAssignableTo<T>()`                    | `.IsAssignableTo<T>()`         | `.AreAssignableTo<T>()`         | `WhichAreNotAssignableTo<T>`, `IsNotAssignableTo<T>`, `AreNotAssignableTo<T>`                         |
+| assignable from           | `.WhichAreAssignableFrom<T>()`                  | `.IsAssignableFrom<T>()`       | `.AreAssignableFrom<T>()`       | `WhichAreNotAssignableFrom<T>`, `IsNotAssignableFrom<T>`, `AreNotAssignableFrom<T>`                   |
+| instantiable              | `.WhichAreInstantiable()`                       | `.IsInstantiable()`            | `.AreInstantiable()`            | `WhichAreNotInstantiable`, `IsNotInstantiable`, `AreNotInstantiable`                                  |
+| immutable                 | `.WhichAreImmutable()`                          | `.IsImmutable()`               | `.AreImmutable()`               | `WhichAreNotImmutable`, `IsNotImmutable`, `AreNotImmutable`                                           |
+| default constructor       | `.WhichHaveADefaultConstructor()`               | `.HasADefaultConstructor()`    | `.HaveADefaultConstructor()`    | `WhichDoNotHaveADefaultConstructor`, `DoesNotHaveADefaultConstructor`, `DoNotHaveADefaultConstructor` |
+| only nullable members     | `.WhichOnlyHaveNullableMembers()`               | `.OnlyHasNullableMembers()`    | `.OnlyHaveNullableMembers()`    | -                                                                                                     |
+| only non-nullable members | `.WhichOnlyHaveNonNullableMembers()`            | `.OnlyHasNonNullableMembers()` | `.OnlyHaveNonNullableMembers()` | -                                                                                                     |
+| custom predicate          | `.Which(t => …)`                                | `.Satisfies(t => …)`           | `.All().Satisfy(t => …)`        | `Except(t => …)`, `Except<T>()`                                                                       |
 
 `WhichInheritFrom` / `InheritsFrom` consider only the **base-class chain** (not implemented interfaces) and
 accept a generic argument or a `Type`. Append `.Directly()` to require the base class to be the *direct* parent.
@@ -255,7 +186,8 @@ For interfaces, use `Implements`.
 
 `WhichImplement` / `Implements` consider only implemented **interfaces**. With
 `.Directly()`, an interface reached only through a base class or through another implemented interface does not
-count as *directly* implemented.
+count as *directly* implemented. The negations accept `.Directly()` as well (e.g.
+`WhichDoNotInheritFrom<T>().Directly()`, `DoesNotImplement<T>().Directly()`).
 
 ```csharp
 await Expect.That(typeof(AlbumController)).InheritsFrom<ControllerBase>().Directly();
@@ -295,15 +227,6 @@ await Expect.That(In.AssemblyContaining<AddTrackRequest>()
     .OnlyHaveNullableMembers();
 ```
 
-:::note[Negation]
-Every kind/modifier row above has a negated form. Most use `WhichAreNot…` on filters and
-`IsNot…` / `AreNot…` on expectations (e.g. `WhichAreNotSealed()`, `IsNotAClass()`, `AreNotStatic()`,
-`IsNotInstantiable()`). The *default constructor* row uses `WhichDoNotHaveADefaultConstructor()`,
-`DoesNotHaveADefaultConstructor()` and `DoNotHaveADefaultConstructor()`. The *inherits* and *implements* rows
-use `WhichDoNot…`, `DoesNot…` and `DoNot…` (e.g. `WhichDoNotInheritFrom<T>().Directly()`,
-`DoesNotImplement<T>().Directly()`, `DoNotImplement<T>()`).
-:::
-
 ### Types containing specific members
 
 You can select types based on their members. The lambda receives the members of each individual type, including
@@ -324,7 +247,8 @@ In.AllLoadedAssemblies().Types()
 ```
 
 By default a type matches when it contains **at least one** matching member. Append a quantifier (the same
-quantifiers as in [`aweXpect`](https://docs.testably.org/aweXpect)) to require a specific count:
+quantifiers as in [aweXpect](https://docs.testably.org/aweXpect/collections/items#quantifiers)) to require a
+specific count:
 
 ```csharp
 In.AllLoadedAssemblies().Types()
@@ -343,13 +267,13 @@ The same five member kinds are available as **expectations** on a single `Type` 
 collection of types (`Contain…`), using the same member-filter lambdas and the same quantifiers (default:
 _at least one_ matching member):
 
-| Member kind  | Filter                         | Expect (single)            | Expect (many)             |
-|--------------|--------------------------------|----------------------------|---------------------------|
-| methods      | `.WhichContainMethods(…)`      | `.ContainsMethods(…)`      | `.ContainMethods(…)`      |
-| properties   | `.WhichContainProperties(…)`   | `.ContainsProperties(…)`   | `.ContainProperties(…)`   |
-| fields       | `.WhichContainFields(…)`       | `.ContainsFields(…)`       | `.ContainFields(…)`       |
-| events       | `.WhichContainEvents(…)`       | `.ContainsEvents(…)`       | `.ContainEvents(…)`       |
-| constructors | `.WhichContainConstructors(…)` | `.ContainsConstructors(…)` | `.ContainConstructors(…)` |
+| Member kind  | Filter                         | Expect (single)            | Expect (many)             | Negated        |
+|--------------|--------------------------------|----------------------------|---------------------------|----------------|
+| methods      | `.WhichContainMethods(…)`      | `.ContainsMethods(…)`      | `.ContainMethods(…)`      | use `.Never()` |
+| properties   | `.WhichContainProperties(…)`   | `.ContainsProperties(…)`   | `.ContainProperties(…)`   | use `.Never()` |
+| fields       | `.WhichContainFields(…)`       | `.ContainsFields(…)`       | `.ContainFields(…)`       | use `.Never()` |
+| events       | `.WhichContainEvents(…)`       | `.ContainsEvents(…)`       | `.ContainEvents(…)`       | use `.Never()` |
+| constructors | `.WhichContainConstructors(…)` | `.ContainsConstructors(…)` | `.ContainConstructors(…)` | use `.Never()` |
 
 ```csharp
 // A single type contains at least one [Fact] or [Theory] method
@@ -397,32 +321,28 @@ In addition to [access modifiers](#access-modifiers),
 [attributes](#attributes) and
 [names](#names-and-namespaces):
 
-|                                      | Filter                                              | Expect (single)                                                 | Expect (many)                |
-|--------------------------------------|-----------------------------------------------------|-----------------------------------------------------------------|------------------------------|
-| static / abstract / sealed / generic | `.WhichAreStatic()` …                               | `.IsStatic()` …                                                 | `.AreStatic()` …             |
-| async                                | `.WhichAreAsync()`                                  | `.IsAsync()`                                                    | `.AreAsync()`                |
-| extension method                     | `.WhichAreExtensionMethods()`                       | `.IsAnExtensionMethod()`                                        | `.AreExtensionMethods()`     |
-| operator                             | `.WhichAreOperators()`                              | `.IsAnOperator()`                                               | `.AreOperators()`            |
-| virtual                              | `.WhichAreVirtual()`                                | `.IsVirtual()`                                                  | `.AreVirtual()`              |
-| overrides a base method              | `.WhichOverride()`                                  | `.Overrides()`                                                  | `.Override()`                |
-| returns type (or a subtype)          | `.WhichReturn<T>()`                                 | `.Returns<T>()`                                                 | `.Return<T>()`               |
-| returns exactly                      | `.WhichReturnExactly<T>()`                          | `.ReturnsExactly<T>()`                                          | `.ReturnExactly<T>()`        |
-| returns void                         | `.WhichReturnVoid()`                                | `.ReturnsVoid()`                                                | `.ReturnVoid()`              |
-| does not return type (or a subtype)  | `.WhichDoNotReturn<T>()`                            | `.DoesNotReturn<T>()`                                           | `.DoNotReturn<T>()`          |
-| does not return exactly              | `.WhichDoNotReturnExactly<T>()`                     | `.DoesNotReturnExactly<T>()`                                    | `.DoNotReturnExactly<T>()`   |
-| does not return void                 | `.WhichDoNotReturnVoid()`                           | `.DoesNotReturnVoid()`                                          | `.DoNotReturnVoid()`         |
-| no parameters                        | `.WithoutParameters()`                              | `.HasNoParameters()`                                            | `.HaveNoParameters()`        |
-| parameter of type (or subtype)       | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")`               | `.HaveParameter<T>()`        |
-| no parameter of type (or subtype)    | `.WithoutParameter<T>()`                            | `.DoesNotHaveParameter<T>()`                                    | `.DoNotHaveParameter<T>()`   |
-| parameter of exact type              | `.WithParameterExactly<T>()`                        | `.HasParameterExactly<T>()` / `.HasParameterExactly<T>("name")` | `.HaveParameterExactly<T>()` |
-| parameter count                      | `.WithParameterCount(n)`                            | `.HasParameterCount(n)`                                         | `.HaveParameterCount(n)`     |
-| `ref` parameter                      | `.WithRefParameter()`                               | `.HasRefParameter()`                                            | `.HaveRefParameter()`        |
-| `out` parameter                      | `.WithOutParameter()`                               | `.HasOutParameter()`                                            | `.HaveOutParameter()`        |
-| `in` parameter                       | `.WithInParameter()`                                | `.HasInParameter()`                                             | `.HaveInParameter()`         |
-| `params` parameter                   | `.WithParamsParameter()`                            | `.HasParamsParameter()`                                         | `.HaveParamsParameter()`     |
-| optional parameter                   | `.WithOptionalParameter()`                          | `.HasOptionalParameter()`                                       | `.HaveOptionalParameter()`   |
-| parameter matching a predicate       | `.WithParameter<T>().Matching(p => …)`              | `.HasParameter<T>().Matching(p => …)`                           | `.HaveParameter<T>().Matching(p => …)` |
-| custom predicate                     | `.Which(m => …)`                                    | `.Satisfies(m => …)`                                            | `.All().Satisfy(m => …)`     |
+|                                      | Filter                                              | Expect (single)                                                 | Expect (many)                          | Negated                                                                           |
+|--------------------------------------|-----------------------------------------------------|-----------------------------------------------------------------|----------------------------------------|-----------------------------------------------------------------------------------|
+| static / abstract / sealed / generic | `.WhichAreStatic()` …                               | `.IsStatic()` …                                                 | `.AreStatic()` …                       | `WhichAreNotStatic`, `IsNotStatic`, `AreNotStatic` …                              |
+| async                                | `.WhichAreAsync()`                                  | `.IsAsync()`                                                    | `.AreAsync()`                          | `WhichAreNotAsync`, `IsNotAsync`, `AreNotAsync`                                   |
+| extension method                     | `.WhichAreExtensionMethods()`                       | `.IsAnExtensionMethod()`                                        | `.AreExtensionMethods()`               | `WhichAreNotExtensionMethods`, `IsNotAnExtensionMethod`, `AreNotExtensionMethods` |
+| operator                             | `.WhichAreOperators()`                              | `.IsAnOperator()`                                               | `.AreOperators()`                      | `WhichAreNotOperators`, `IsNotAnOperator`, `AreNotOperators`                      |
+| virtual                              | `.WhichAreVirtual()`                                | `.IsVirtual()`                                                  | `.AreVirtual()`                        | `WhichAreNotVirtual`, `IsNotVirtual`, `AreNotVirtual`                             |
+| overrides a base method              | `.WhichOverride()`                                  | `.Overrides()`                                                  | `.Override()`                          | `WhichDoNotOverride`, `DoesNotOverride`, `DoNotOverride`                          |
+| returns type (or a subtype)          | `.WhichReturn<T>()`                                 | `.Returns<T>()`                                                 | `.Return<T>()`                         | `WhichDoNotReturn<T>`, `DoesNotReturn<T>`, `DoNotReturn<T>`                       |
+| returns exactly                      | `.WhichReturnExactly<T>()`                          | `.ReturnsExactly<T>()`                                          | `.ReturnExactly<T>()`                  | `WhichDoNotReturnExactly<T>`, `DoesNotReturnExactly<T>`, `DoNotReturnExactly<T>`  |
+| returns void                         | `.WhichReturnVoid()`                                | `.ReturnsVoid()`                                                | `.ReturnVoid()`                        | `WhichDoNotReturnVoid`, `DoesNotReturnVoid`, `DoNotReturnVoid`                    |
+| no parameters                        | `.WithoutParameters()`                              | `.HasNoParameters()`                                            | `.HaveNoParameters()`                  | -                                                                                 |
+| parameter of type (or subtype)       | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")`               | `.HaveParameter<T>()`                  | `WithoutParameter<T>`, `DoesNotHaveParameter<T>`, `DoNotHaveParameter<T>`         |
+| parameter of exact type              | `.WithParameterExactly<T>()`                        | `.HasParameterExactly<T>()` / `.HasParameterExactly<T>("name")` | `.HaveParameterExactly<T>()`           | -                                                                                 |
+| parameter count                      | `.WithParameterCount(n)`                            | `.HasParameterCount(n)`                                         | `.HaveParameterCount(n)`               | -                                                                                 |
+| `ref` parameter                      | `.WithRefParameter()`                               | `.HasRefParameter()`                                            | `.HaveRefParameter()`                  | -                                                                                 |
+| `out` parameter                      | `.WithOutParameter()`                               | `.HasOutParameter()`                                            | `.HaveOutParameter()`                  | -                                                                                 |
+| `in` parameter                       | `.WithInParameter()`                                | `.HasInParameter()`                                             | `.HaveInParameter()`                   | -                                                                                 |
+| `params` parameter                   | `.WithParamsParameter()`                            | `.HasParamsParameter()`                                         | `.HaveParamsParameter()`               | -                                                                                 |
+| optional parameter                   | `.WithOptionalParameter()`                          | `.HasOptionalParameter()`                                       | `.HaveOptionalParameter()`             | -                                                                                 |
+| parameter matching a predicate       | `.WithParameter<T>().Matching(p => …)`              | `.HasParameter<T>().Matching(p => …)`                           | `.HaveParameter<T>().Matching(p => …)` | `WithoutParameter<T>().Matching(p => …)`, …                                       |
+| custom predicate                     | `.Which(m => …)`                                    | `.Satisfies(m => …)`                                            | `.All().Satisfy(m => …)`               | `Except(m => …)`                                                                  |
 
 `WhichReturn<Task>()` and `Returns<Task>()` also match `Task<T>`; the `…Exactly` variants match only the
 exact type. Use `OrReturn(s)<T>()` / `OrReturn(s)Exactly<T>()` to allow several return types (the single-subject
@@ -501,13 +421,13 @@ The `Operator` enum maps each C# operator to its compiler-emitted `op_*` metadat
 on magic strings. It covers unary, binary, comparison and conversion operators, including the C# 11 `checked`
 variants and `>>>` (`UnsignedRightShift`).
 
-| Scope               | Filter                         | Expect (single)                                      | Expect (many)                                         |
-|---------------------|--------------------------------|------------------------------------------------------|-------------------------------------------------------|
-| any operator method | `.WhichAreOperators()`         | `.IsAnOperator()`                                    | `.AreOperators()`                                     |
-| specific operator   | `.WhichAreOperators(Operator)` | `.IsAnOperator(Operator)`                            | `.AreOperators(Operator)`                             |
-| type has operator   | n/a                            | `.HasOperator(Operator)`                             | `.HaveOperator(Operator)`                             |
-| implicit conversion | n/a                            | `.HasImplicitConversionOperator<TSource, TTarget>()` | `.HaveImplicitConversionOperator<TSource, TTarget>()` |
-| explicit conversion | n/a                            | `.HasExplicitConversionOperator<TSource, TTarget>()` | `.HaveExplicitConversionOperator<TSource, TTarget>()` |
+| Scope               | Filter                         | Expect (single)                                      | Expect (many)                                         | Negated                                                                                                            |
+|---------------------|--------------------------------|------------------------------------------------------|-------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| any operator method | `.WhichAreOperators()`         | `.IsAnOperator()`                                    | `.AreOperators()`                                     | `WhichAreNotOperators`, `IsNotAnOperator`, `AreNotOperators`                                                       |
+| specific operator   | `.WhichAreOperators(Operator)` | `.IsAnOperator(Operator)`                            | `.AreOperators(Operator)`                             | `WhichAreNotOperators(Operator)`, `IsNotAnOperator(Operator)`, `AreNotOperators(Operator)`                         |
+| type has operator   | n/a                            | `.HasOperator(Operator)`                             | `.HaveOperator(Operator)`                             | `DoesNotHaveOperator(Operator)`, `DoNotHaveOperator(Operator)`                                                     |
+| implicit conversion | n/a                            | `.HasImplicitConversionOperator<TSource, TTarget>()` | `.HaveImplicitConversionOperator<TSource, TTarget>()` | `DoesNotHaveImplicitConversionOperator<TSource, TTarget>`, `DoNotHaveImplicitConversionOperator<TSource, TTarget>` |
+| explicit conversion | n/a                            | `.HasExplicitConversionOperator<TSource, TTarget>()` | `.HaveExplicitConversionOperator<TSource, TTarget>()` | `DoesNotHaveExplicitConversionOperator<TSource, TTarget>`, `DoNotHaveExplicitConversionOperator<TSource, TTarget>` |
 
 ```csharp
 // Method-level: narrow an operator method to a specific operator
@@ -528,7 +448,8 @@ await Expect.That(typeof(TrackDuration)).HasExplicitConversionOperator(typeof(Tr
 ```
 
 `HasOperator` / conversion operators also match the operators inherited from base types; append `.Directly()` to only
-match the operators declared on the type itself. Conversion source/target types are matched exactly.
+match the operators declared on the type itself. Conversion source/target types are matched exactly. The negations
+also come with the operand overloads, e.g. `DoesNotHaveOperator<int>(Operator)`.
 
 :::note[Operators are hidden by default]
 Operators are special-name members that are
@@ -537,12 +458,6 @@ plain `.Methods()` collection excludes them unless opted in via `IncludedSpecial
 `.WhichAreOperators(Operator)` filter implicitly re-includes operators for its query, so it works without
 that configuration. The negative `.WhichAreNotOperators(Operator)` filter does **not** re-include operators; if you
 want the other operators in that result, opt in via `IncludedSpecialNameMembers`.
-:::
-
-:::note[Negation]
-`IsNotAnOperator(Operator)`, `AreNotOperators(Operator)`, `DoesNotHaveOperator(Operator)` / `DoNotHaveOperator(Operator)`
-(including the operand overloads, e.g. `DoesNotHaveOperator<int>(Operator)`),
-`DoesNotHave…ConversionOperator…` / `DoNotHave…ConversionOperator…` and `WhichAreNotOperators(Operator)`.
 :::
 
 <details>
@@ -559,45 +474,35 @@ In addition to [access modifiers](#access-modifiers),
 [attributes](#attributes) and
 [names](#names-and-namespaces):
 
-|                                        | Filter                                      | Expect (single)                 | Expect (many)                     |
-|----------------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|
-| of type (or a subtype)                 | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 |
-| of exact type                          | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
-| not of type (or a subtype)             | `.NotOfType<T>()`                           | `.IsNotOfType<T>()`             | `.AreNotOfType<T>()`              |
-| not of exact type                      | `.NotOfExactType<T>()`                      | `.IsNotOfExactType<T>()`        | `.AreNotOfExactType<T>()`         |
-| static *(properties & fields)*         | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    |
-| nullable *(properties & fields)*       | `.WhichAreNullable()`                       | `.IsNullable()`                 | `.AreNullable()`                  |
-| abstract / sealed *(properties only)*  | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
-| virtual *(properties only)*            | `.WhichAreVirtual()`                        | `.IsVirtual()`                  | `.AreVirtual()`                   |
-| override *(properties only)*           | `.WhichOverride()`                          | `.Overrides()`                  | `.Override()`                     |
-| required *(properties & fields)*       | `.WhichAreRequired()`                       | `.IsRequired()`                 | `.AreRequired()`                  |
-| readable *(properties only)*           | `.WhichAreReadable()`                       | `.IsReadable()`                 | `.AreReadable()`                  |
-| writable *(properties only)*           | `.WhichAreWritable()`                       | `.IsWritable()`                 | `.AreWritable()`                  |
-| read-only *(properties only)*          | `.WhichAreReadOnly()`                       | `.IsReadOnly()`                 | `.AreReadOnly()`                  |
-| write-only *(properties only)*         | `.WhichAreWriteOnly()`                      | `.IsWriteOnly()`                | `.AreWriteOnly()`                 |
-| read-write *(properties only)*         | `.WhichAreReadWrite()`                      | `.IsReadWrite()`                | `.AreReadWrite()`                 |
-| has getter *(properties only)*         | `.WhichHaveAGetter()`                       | `.HasAGetter()`                 | `.HaveAGetter()`                  |
-| has setter *(properties only)*         | `.WhichHaveASetter()`                       | `.HasASetter()`                 | `.HaveASetter()`                  |
-| has init setter *(properties only)*    | `.WhichHaveAnInitSetter()`                  | `.HasAnInitSetter()`            | `.HaveAnInitSetter()`             |
-| indexer *(properties only)*            | `.WhichAreIndexers()`                       | `.IsAnIndexer()`                | `.AreIndexers()`                  |
-| extension property *(properties only)* | `.WhichAreExtensionProperties()`            | `.IsAnExtensionProperty()`      | `.AreExtensionProperties()`       |
-| read-only *(fields only)*              | `.WhichAreReadOnly()`                       | `.IsReadOnly()`                 | `.AreReadOnly()`                  |
-| constant *(fields only)*               | `.WhichAreConstant()`                       | `.IsConstant()`                 | `.AreConstant()`                  |
+|                                        | Filter                                      | Expect (single)                 | Expect (many)                     | Negated                                                                                                       |
+|----------------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|---------------------------------------------------------------------------------------------------------------|
+| of type (or a subtype)                 | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 | `NotOfType<T>`, `IsNotOfType<T>`, `AreNotOfType<T>`                                                           |
+| of exact type                          | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            | `NotOfExactType<T>`, `IsNotOfExactType<T>`, `AreNotOfExactType<T>`                                            |
+| static *(properties & fields)*         | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    | `WhichAreNotStatic`, `IsNotStatic`, `AreNotStatic`                                                            |
+| nullable *(properties & fields)*       | `.WhichAreNullable()`                       | `.IsNullable()`                 | `.AreNullable()`                  | `WhichAreNotNullable`, `IsNotNullable`, `AreNotNullable`                                                      |
+| abstract / sealed *(properties only)*  | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` | `WhichAreNotAbstract`, `IsNotAbstract`, `AreNotAbstract` / `WhichAreNotSealed`, `IsNotSealed`, `AreNotSealed` |
+| virtual *(properties only)*            | `.WhichAreVirtual()`                        | `.IsVirtual()`                  | `.AreVirtual()`                   | `WhichAreNotVirtual`, `IsNotVirtual`, `AreNotVirtual`                                                         |
+| override *(properties only)*           | `.WhichOverride()`                          | `.Overrides()`                  | `.Override()`                     | `WhichDoNotOverride`, `DoesNotOverride`, `DoNotOverride`                                                      |
+| required *(properties & fields)*       | `.WhichAreRequired()`                       | `.IsRequired()`                 | `.AreRequired()`                  | `WhichAreNotRequired`, `IsNotRequired`, `AreNotRequired`                                                      |
+| readable *(properties only)*           | `.WhichAreReadable()`                       | `.IsReadable()`                 | `.AreReadable()`                  | use *write-only*                                                                                              |
+| writable *(properties only)*           | `.WhichAreWritable()`                       | `.IsWritable()`                 | `.AreWritable()`                  | use *read-only*                                                                                               |
+| read-only *(properties only)*          | `.WhichAreReadOnly()`                       | `.IsReadOnly()`                 | `.AreReadOnly()`                  | use *writable*                                                                                                |
+| write-only *(properties only)*         | `.WhichAreWriteOnly()`                      | `.IsWriteOnly()`                | `.AreWriteOnly()`                 | use *readable*                                                                                                |
+| read-write *(properties only)*         | `.WhichAreReadWrite()`                      | `.IsReadWrite()`                | `.AreReadWrite()`                 | -                                                                                                             |
+| has getter *(properties only)*         | `.WhichHaveAGetter()`                       | `.HasAGetter()`                 | `.HaveAGetter()`                  | -                                                                                                             |
+| has setter *(properties only)*         | `.WhichHaveASetter()`                       | `.HasASetter()`                 | `.HaveASetter()`                  | `WhichDoNotHaveASetter`, `DoesNotHaveASetter`, `DoNotHaveASetter`                                             |
+| has init setter *(properties only)*    | `.WhichHaveAnInitSetter()`                  | `.HasAnInitSetter()`            | `.HaveAnInitSetter()`             | `WhichDoNotHaveAnInitSetter`, `DoesNotHaveAnInitSetter`, `DoNotHaveAnInitSetter`                              |
+| indexer *(properties only)*            | `.WhichAreIndexers()`                       | `.IsAnIndexer()`                | `.AreIndexers()`                  | `WhichAreNotIndexers`, `IsNotAnIndexer`, `AreNotIndexers`                                                     |
+| extension property *(properties only)* | `.WhichAreExtensionProperties()`            | `.IsAnExtensionProperty()`      | `.AreExtensionProperties()`       | `WhichAreNotExtensionProperties`, `IsNotAnExtensionProperty`, `AreNotExtensionProperties`                     |
+| read-only *(fields only)*              | `.WhichAreReadOnly()`                       | `.IsReadOnly()`                 | `.AreReadOnly()`                  | `WhichAreNotReadOnly`, `IsNotReadOnly`, `AreNotReadOnly`                                                      |
+| constant *(fields only)*               | `.WhichAreConstant()`                       | `.IsConstant()`                 | `.AreConstant()`                  | `WhichAreNotConstant`, `IsNotConstant`, `AreNotConstant`                                                      |
 
-:::note[Negation]
-The `static`, `nullable`, `abstract`, `sealed`, `virtual`, `required`, `indexer`,
-`extension property`, `read-only` *(fields)* and `constant` rows have a negated form: `WhichAreNot…` on filters
-and `IsNot…` / `AreNot…` on expectations (e.g. `WhichAreNotConstant()`, `IsNotConstant()`, `AreNotConstant()`);
-`override` uses `WhichDoNotOverride()` / `DoesNotOverride()` / `DoNotOverride()`, `has setter` uses
-`WhichDoNotHaveASetter()` / `DoesNotHaveASetter()` / `DoNotHaveASetter()` and `has init setter` uses
-`WhichDoNotHaveAnInitSetter()` / `DoesNotHaveAnInitSetter()` / `DoNotHaveAnInitSetter()`. An init-only setter
-is not a (regular) setter: a property with only an init-only setter has no setter.
+An init-only setter is not a (regular) setter: a property with only an init-only setter has no setter.
 
 The `readable`, `writable`, `read-only` and `write-only` rows of properties have no negated form, as each
 negation is another row: for *not read-only* use `IsWritable`, for *not writable* use `IsReadOnly`, for
 *not readable* use `IsWriteOnly` and for *not write-only* use `IsReadable` (the same holds for the filters and
 the plural forms). A property that is *not read-write* is either read-only or write-only.
-:::
 
 ### Nullability
 
@@ -652,17 +557,15 @@ In addition to [access modifiers](#access-modifiers),
 [attributes](#attributes) and
 [names](#names-and-namespaces):
 
-|                                | Filter                                      | Expect (single)                 | Expect (many)                     |
-|--------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|
-| handler of type (or a subtype) | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 |
-| handler of exact type          | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
-| handler not of type            | `.NotOfType<T>()`                           | `.IsNotOfType<T>()`             | `.AreNotOfType<T>()`              |
-| handler not of exact type      | `.NotOfExactType<T>()`                      | `.IsNotOfExactType<T>()`        | `.AreNotOfExactType<T>()`         |
-| abstract / sealed              | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
-| static                         | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    |
-| virtual                        | `.WhichAreVirtual()`                        | `.IsVirtual()`                  | `.AreVirtual()`                   |
-| override                       | `.WhichOverride()`                          | `.Overrides()`                  | `.Override()`                     |
-| nullable                       | `.WhichAreNullable()`                       | `.IsNullable()`                 | `.AreNullable()`                  |
+|                                | Filter                                      | Expect (single)                 | Expect (many)                     | Negated                                                                                                       |
+|--------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|---------------------------------------------------------------------------------------------------------------|
+| handler of type (or a subtype) | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 | `NotOfType<T>`, `IsNotOfType<T>`, `AreNotOfType<T>`                                                           |
+| handler of exact type          | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            | `NotOfExactType<T>`, `IsNotOfExactType<T>`, `AreNotOfExactType<T>`                                            |
+| abstract / sealed              | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` | `WhichAreNotAbstract`, `IsNotAbstract`, `AreNotAbstract` / `WhichAreNotSealed`, `IsNotSealed`, `AreNotSealed` |
+| static                         | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    | `WhichAreNotStatic`, `IsNotStatic`, `AreNotStatic`                                                            |
+| virtual                        | `.WhichAreVirtual()`                        | `.IsVirtual()`                  | `.AreVirtual()`                   | `WhichAreNotVirtual`, `IsNotVirtual`, `AreNotVirtual`                                                         |
+| override                       | `.WhichOverride()`                          | `.Overrides()`                  | `.Override()`                     | `WhichDoNotOverride`, `DoesNotOverride`, `DoNotOverride`                                                      |
+| nullable                       | `.WhichAreNullable()`                       | `.IsNullable()`                 | `.AreNullable()`                  | `WhichAreNotNullable`, `IsNotNullable`, `AreNotNullable`                                                      |
 
 The `OfType` / `IsOfType` / `AreOfType` filters and expectations match the event's handler type (its
 `EventHandlerType`, e.g. `EventHandler<T>`); the `…ExactType` variants match only the exact handler type.
@@ -672,12 +575,6 @@ Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several handler types, and c
 An event counts as *nullable* when its handler type is annotated as nullable
 (e.g. `event EventHandler? Changed;`), following the same [nullability](#nullability) rules as
 properties and fields.
-
-:::note[Negation]
-The `abstract`, `sealed`, `static`, `virtual` and `nullable` rows have a negated form: `WhichAreNot…` on
-filters and `IsNot…` / `AreNot…` on expectations (e.g. `WhichAreNotSealed()`, `IsNotSealed()`,
-`AreNotSealed()`); `override` uses `WhichDoNotOverride()` / `DoesNotOverride()` / `DoNotOverride()`.
-:::
 
 ```csharp
 // Every event must use the generic EventHandler<T> pattern
@@ -695,21 +592,19 @@ In.AllLoadedAssemblies().Public.Events()
 In addition to [access modifiers](#access-modifiers) and
 [attributes](#attributes):
 
-|                                | Filter                                              | Expect (single)                                                 | Expect (many)                |
-|--------------------------------|-----------------------------------------------------|-----------------------------------------------------------------|------------------------------|
-| static                         | `.WhichAreStatic()`                                 | `.IsStatic()`                                                   | `.AreStatic()`               |
-| no parameters                  | `.WithoutParameters()`                              | `.HasNoParameters()`                                            | `.HaveNoParameters()`        |
-| parameter of type (or subtype) | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")`               | `.HaveParameter<T>()`        |
-| no parameter of type           | `.WithoutParameter<T>()`                            | `.DoesNotHaveParameter<T>()`                                    | `.DoNotHaveParameter<T>()`   |
-| parameter of exact type        | `.WithParameterExactly<T>()`                        | `.HasParameterExactly<T>()` / `.HasParameterExactly<T>("name")` | `.HaveParameterExactly<T>()` |
-| parameter count                | `.WithParameterCount(n)`                            | `.HasParameterCount(n)`                                         | `.HaveParameterCount(n)`     |
-| `ref` parameter                | `.WithRefParameter()`                               | `.HasRefParameter()`                                            | `.HaveRefParameter()`        |
-| `out` parameter                | `.WithOutParameter()`                               | `.HasOutParameter()`                                            | `.HaveOutParameter()`        |
-| `in` parameter                 | `.WithInParameter()`                                | `.HasInParameter()`                                             | `.HaveInParameter()`         |
-| `params` parameter             | `.WithParamsParameter()`                            | `.HasParamsParameter()`                                         | `.HaveParamsParameter()`     |
-| optional parameter             | `.WithOptionalParameter()`                          | `.HasOptionalParameter()`                                       | `.HaveOptionalParameter()`   |
-| parameter matching a predicate | `.WithParameter<T>().Matching(p => …)`              | `.HasParameter<T>().Matching(p => …)`                           | `.HaveParameter<T>().Matching(p => …)` |
-
+|                                | Filter                                              | Expect (single)                                                 | Expect (many)                          | Negated                                                                   |
+|--------------------------------|-----------------------------------------------------|-----------------------------------------------------------------|----------------------------------------|---------------------------------------------------------------------------|
+| static                         | `.WhichAreStatic()`                                 | `.IsStatic()`                                                   | `.AreStatic()`                         | `WhichAreNotStatic`, `IsNotStatic`, `AreNotStatic`                        |
+| no parameters                  | `.WithoutParameters()`                              | `.HasNoParameters()`                                            | `.HaveNoParameters()`                  | -                                                                         |
+| parameter of type (or subtype) | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")`               | `.HaveParameter<T>()`                  | `WithoutParameter<T>`, `DoesNotHaveParameter<T>`, `DoNotHaveParameter<T>` |
+| parameter of exact type        | `.WithParameterExactly<T>()`                        | `.HasParameterExactly<T>()` / `.HasParameterExactly<T>("name")` | `.HaveParameterExactly<T>()`           | -                                                                         |
+| parameter count                | `.WithParameterCount(n)`                            | `.HasParameterCount(n)`                                         | `.HaveParameterCount(n)`               | -                                                                         |
+| `ref` parameter                | `.WithRefParameter()`                               | `.HasRefParameter()`                                            | `.HaveRefParameter()`                  | -                                                                         |
+| `out` parameter                | `.WithOutParameter()`                               | `.HasOutParameter()`                                            | `.HaveOutParameter()`                  | -                                                                         |
+| `in` parameter                 | `.WithInParameter()`                                | `.HasInParameter()`                                             | `.HaveInParameter()`                   | -                                                                         |
+| `params` parameter             | `.WithParamsParameter()`                            | `.HasParamsParameter()`                                         | `.HaveParamsParameter()`               | -                                                                         |
+| optional parameter             | `.WithOptionalParameter()`                          | `.HasOptionalParameter()`                                       | `.HaveOptionalParameter()`             | -                                                                         |
+| parameter matching a predicate | `.WithParameter<T>().Matching(p => …)`              | `.HasParameter<T>().Matching(p => …)`                           | `.HaveParameter<T>().Matching(p => …)` | `WithoutParameter<T>().Matching(p => …)`, …                               |
 The `ref` / `out` / `in` / `params` / optional parameter filters and expectations accept the same
 `<T>()`, `(Type)`, `<T>("name")` and `…Exactly<T>()` overloads as `WithParameter`, and all parameter filters and
 expectations accept `Matching(p => …)` (see [Methods](#methods)).
@@ -726,21 +621,16 @@ In.AllLoadedAssemblies().Public.Constructors()
 Assemblies are usually used as a [source](./01-sources.md#sources-the-in-helper), but you can also filter
 and verify them directly:
 
-|                             | Filter                       | Expect (single)              | Expect (many)              |
-|-----------------------------|------------------------------|------------------------------|----------------------------|
-| by name                     | `.WithName("x")`             | `.HasName("x")`              | `.HaveName("x")`           |
-| not by name                 | `.WithoutName("x")`          | `.DoesNotHaveName("x")`      | `.DoNotHaveName("x")`      |
-| by target framework         | `.WhichTarget("net8.0")`     | `.Targets("net8.0")`         | `.Target("net8.0")`        |
-| not by target framework     | `.WhichDoNotTarget("net48")` | `.DoesNotTarget("net48")`    | `.DoNotTarget("net48")`    |
-| by version                  | `.WithVersion(…)`            | `.HasVersion(…)`             | `.HaveVersion(…)`          |
-| strong named                | `.WhichAreStrongNamed()`     | `.IsStrongNamed()`           | `.AreStrongNamed()`        |
-| not strong named            | `.WhichAreNotStrongNamed()`  | `.IsNotStrongNamed()`        | `.AreNotStrongNamed()`     |
-| has attribute               | `.With<TAttribute>()`        | `.Has<TAttribute>()`         | `.Have<TAttribute>()`      |
-| does not have attribute     | `.Without<TAttribute>()`     | `.DoesNotHave<TAttribute>()` | `.DoNotHave<TAttribute>()` |
-| depends on assembly         | `.WhichDependOn("x")`        | `.DependsOn("x")`            | `.DependOn("x")`           |
-| does not depend on assembly | `.WhichDoNotDependOn("x")`   | `.DoesNotDependOn("x")`      | `.DoNotDependOn("x")`      |
-| depends only on set         | `.WhichDependOnlyOn("x", …)` | `.DependsOnlyOn("x", …)`     | `.DependOnlyOn("x", …)`    |
-| custom predicate            | `.Which(a => …)`             | `.Satisfies(a => …)`         | `.All().Satisfy(a => …)`   |
+|                     | Filter                       | Expect (single)          | Expect (many)            | Negated                                                                   |
+|---------------------|------------------------------|--------------------------|--------------------------|---------------------------------------------------------------------------|
+| by name             | `.WithName("x")`             | `.HasName("x")`          | `.HaveName("x")`         | `WithoutName`, `DoesNotHaveName`, `DoNotHaveName`                         |
+| by target framework | `.WhichTarget("net8.0")`     | `.Targets("net8.0")`     | `.Target("net8.0")`      | `WhichDoNotTarget`, `DoesNotTarget`, `DoNotTarget`                        |
+| by version          | `.WithVersion(…)`            | `.HasVersion(…)`         | `.HaveVersion(…)`        | -                                                                         |
+| strong named        | `.WhichAreStrongNamed()`     | `.IsStrongNamed()`       | `.AreStrongNamed()`      | `WhichAreNotStrongNamed`, `IsNotStrongNamed`, `AreNotStrongNamed`         |
+| has attribute       | `.With<TAttribute>()`        | `.Has<TAttribute>()`     | `.Have<TAttribute>()`    | `Without<TAttribute>`, `DoesNotHave<TAttribute>`, `DoNotHave<TAttribute>` |
+| depends on assembly | `.WhichDependOn("x")`        | `.DependsOn("x")`        | `.DependOn("x")`         | `WhichDoNotDependOn`, `DoesNotDependOn`, `DoNotDependOn`                  |
+| depends only on set | `.WhichDependOnlyOn("x", …)` | `.DependsOnlyOn("x", …)` | `.DependOnlyOn("x", …)`  | -                                                                         |
+| custom predicate    | `.Which(a => …)`             | `.Satisfies(a => …)`     | `.All().Satisfy(a => …)` | `Except(a => …)`                                                          |
 
 ```csharp
 Assembly subject = Assembly.GetEntryAssembly();
@@ -790,6 +680,34 @@ assembly without a version never matches a version filter or expectation. The `B
 
 </details>
 
+## Custom predicates
+
+When no filter or expectation covers your rule, pass your own predicate. Like the other filters, they are available
+on **every** selection (assemblies, types and members):
+
+|                  | Filter           | Expect (single)      | Expect (many)                                       | Negated                                        |
+|------------------|------------------|----------------------|-----------------------------------------------------|------------------------------------------------|
+| custom predicate | `.Which(x => …)` | `.Satisfies(x => …)` | `.All().Satisfy(x => …)` / `.Any().Satisfy(x => …)` | `Except(x => …)`, `Except<T>()` *(types only)* |
+
+The custom `.Which(…)` filter has a universal expectation counterpart that works for **every** subject kind
+(types, members and assemblies): use aweXpect's `.Satisfies(…)` on a single subject and `.All().Satisfy(…)`
+(or `.Any().Satisfy(…)`) on a collection. See
+[Collections and quantifiers](#collections-and-quantifiers).
+
+The custom `.Except(…)` filter is the inverse of `.Which(…)`: it **removes** the items that match the
+predicate. This is handy for defining exemptions to a rule (e.g. *all async methods except this one*). For types
+there is also a typed `.Except<T>()` overload that excludes exactly the type `T`.
+
+```csharp
+// Methods with a single parameter, except the event handlers
+In.AllLoadedAssemblies().Methods()
+    .Which(method => method.GetParameters().Length == 1)
+    .Except(method => method.Name.StartsWith("On"))
+
+// All types of the album assembly, except one legacy type
+In.AssemblyContaining<Album>().Types().Except<LegacyImportService>()
+```
+
 ## Combining filters
 
 Filters chain naturally (each narrows the previous result). Several filters offer an `Or…` companion to
@@ -809,11 +727,64 @@ In.AllLoadedAssemblies().Properties()
     .OfType<string>().OrOfType<Guid>()
 ```
 
+## Inheritance
+
+A check on a type considers what the type inherits: inherited attributes, operators, members and relations count by
+default, and `.Directly()` restricts the check to what is declared on the item itself, or to a direct relation.
+Listing the members of types (`Types().Methods()`, …) only includes the members declared on each type, as an
+inherited member would otherwise be listed once for each type that inherits it; `.IncludingInherited()` adds the
+inherited members.
+
+The members declared on `System.Object`, `System.ValueType` and `System.Enum` are excluded, as every type would
+otherwise have `ToString`, `Equals`, `GetHashCode`, …; `.IncludingObjectMembers()` adds them.
+
+| Area                                                                                          | Default                                                                         | Options                                                                                                         |
+|-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+| [Attributes](#attributes) of types, methods, properties and events                            | also the attributes inherited from a base type or an overridden member          | `.Directly()`: only the attributes declared on the item                                                         |
+| [Operators](#operators) and conversion operators of types                                     | also the operators of base types                                                | `.Directly()`: only the operators declared on the type                                                          |
+| Relations (`InheritsFrom<T>()`, `Implements<T>()`, their filters and negations)               | the base class anywhere in the base-class chain, or any implemented interface   | `.Directly()`: only the direct base class or a directly implemented interface                                   |
+| Member checks (`ContainsMethods(…)`, `WhichContainMethods(…)`, `OnlyHasNullableMembers()`, …) | also the inherited members                                                      | `.Directly()`: only the declared members, or `.IncludingObjectMembers()`: also the members of the three roots   |
+| Member listings of types (`Types().Methods()`, `In.Type<T>().Properties()`, …)                | only the declared members                                                       | `.IncludingInherited()`: also the inherited members, `.IncludingObjectMembers()`: also those of the three roots |
+| Member listings of assemblies (`In.AssemblyContaining<T>().Methods()`, …)                     | each member once, on the type that declares it                                  | -                                                                                                               |
+| Constructors, and the attributes of assemblies, constructors and fields                       | no inheritance                                                                  | -                                                                                                               |
+
+```csharp
+await Expect.That(typeof(AlbumController)).InheritsFrom<ControllerBase>().Directly();
+await Expect.That(typeof(AlbumRepository)).Implements<IRepository>().Directly();
+await Expect.That(typeof(TrackDuration)).HasOperator(Operator.Addition).Directly();
+await Expect.That(typeof(Album)).Has<SerializableAttribute>().Directly();
+await Expect.That(typeof(Album)).ContainsMethods(methods => methods.WithName("Play")).Directly();
+
+// The declared methods of the album types, also the inherited ones, and also those of System.Object
+await Expect.That(In.AssemblyContaining<Album>().Types().Methods()).AreNotObsolete();
+await Expect.That(In.AssemblyContaining<Album>().Types().Methods().IncludingInherited()).AreNotObsolete();
+await Expect.That(In.AssemblyContaining<Album>().Types().Methods().IncludingObjectMembers()).AreNotObsolete();
+```
+
+The options apply to the whole result, e.g. to all attributes of `.With<T1>().OrWith<T2>().Directly()`. On a member
+listing, set them directly after selecting the members, e.g. `Types().Methods().IncludingInherited().WhichArePublic()`.
+
+<details>
+<summary>Inherited members in detail</summary>
+
+Inherited members never include those a derived type cannot access: the `private` members of base types and the
+`internal` members of base types in another assembly (`InternalsVisibleTo` is not considered). Only the
+[immutability](#types) check considers all fields and properties of base types, including those a derived type
+cannot access, as they hold the state of an instance. An interface inherits the members of its base interfaces.
+
+On a member check, `.Directly()` and `.IncludingObjectMembers()` exclude each other, so only one of them can be set.
+On the `WhichContain…` filters, set them before or after the quantifier. Inside a member check,
+`.Directly()` on an attribute filter only restricts the attributes: in
+`ContainsMethods(m => m.With<FactAttribute>().Directly())` the method may still be inherited.
+
+</details>
+
 ## String matching options
 
 Every filter and expectation that compares a name, a namespace, a target framework or a dependency, including
-the parameter and generic argument names, uses the string matching options of the core aweXpect library (see
-[the docs](https://docs.testably.org/aweXpect/values/string#equality) and the
+the parameter and generic argument names, uses the string matching options of the core aweXpect library (see the
+[string options](https://docs.testably.org/aweXpect/values/string#string-options), the
+[match types](https://docs.testably.org/aweXpect/values/string#match-types) and the
 [general option rules](https://docs.testably.org/aweXpect/how-it-works/options)):
 
 | Option                                                           | Effect                                            |

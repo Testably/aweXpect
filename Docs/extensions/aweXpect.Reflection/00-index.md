@@ -93,7 +93,6 @@ Each filter narrows a selection and its expectation counterpart verifies it, e.g
 
 | Topic                                                                 | Applies to                    | Filters / expectations                                                                                               |
 |-----------------------------------------------------------------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| [Inheritance](./02-filters.md#inheritance)                   | types and members             | `Directly`, `IncludingInherited`, `IncludingObjectMembers`                                                           |
 | [Access modifiers](./02-filters.md#access-modifiers)         | types and members             | `WhichArePublic` / `IsPublic`, `WhichAre(AccessModifiers)` / `Is(AccessModifiers)`, …                                |
 | [Attributes](./02-filters.md#attributes)                     | types, members and assemblies | `With<TAttribute>` / `Has<TAttribute>`, `Without<TAttribute>` / `DoesNotHave<TAttribute>`                            |
 | [Obsolete](./02-filters.md#obsolete)                         | types and members             | `WhichAreObsolete` / `IsObsolete`, `WhichAreNotObsolete` / `IsNotObsolete`                                           |
@@ -105,12 +104,14 @@ Each filter narrows a selection and its expectation counterpart verifies it, e.g
 | [Events](./02-filters.md#events)                             | events                        | `OfType<T>` / `IsOfType<T>`, `WhichAreStatic` / `IsStatic`, `WhichAreNullable` / `IsNullable`                        |
 | [Constructors](./02-filters.md#constructors)                 | constructors                  | `WithoutParameters` / `HasNoParameters`, `WithParameter<T>` / `HasParameter<T>`                                      |
 | [Assemblies](./02-filters.md#assemblies)                     | assemblies                    | `WhichTarget` / `Targets`, `WithVersion` / `HasVersion`, `WhichDependOn` / `DependsOn`                               |
+| [Custom predicates](./02-filters.md#custom-predicates)       | types, members and assemblies | `Which` / `Satisfies`, `Except`                                                                                      |
+| [Inheritance](./02-filters.md#inheritance)                   | types and members             | `Directly`, `IncludingInherited`, `IncludingObjectMembers`                                                           |
 
 Each filter and expectation has its negation where it makes sense, e.g. `WithoutName` / `DoesNotHaveName`,
 `WithoutNamespace` / `DoesNotHaveNamespace`, `NotOfType<T>` / `IsNotOfType<T>`, `WhichDoNotReturn<T>` /
 `DoesNotReturn<T>`, `WithoutParameter<T>` / `DoesNotHaveParameter<T>` or `WhichDoNotTarget` / `DoesNotTarget`.
 On a collection, a negated expectation (`DoNotReturn<T>`, `AreNotOfType<T>`, …) verifies that *none* of the items
-match.
+match. The tables in [Filters and expectations](./02-filters.md) list every negation in a **Negated** column.
 
 The name filters and expectations accept the
 [string matching options](./02-filters.md#string-matching-options) like `AsPrefix()`, `AsSuffix()` or
