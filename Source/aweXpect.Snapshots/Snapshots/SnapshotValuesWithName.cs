@@ -28,12 +28,18 @@ public sealed class SnapshotValuesWithName<TResult, TValue> : SnapshotValues<TRe
 
 	internal SnapshotValuesWithName(Func<SnapshotRule, TResult> add, ValueSelection source, string name,
 		StringEqualityOptions options)
+		: this(add, source, name, new OptionsHolder<StringEqualityOptions>(options))
+	{
+	}
+
+	private SnapshotValuesWithName(Func<SnapshotRule, TResult> add, ValueSelection source, string name,
+		OptionsHolder<StringEqualityOptions> options)
 		: base(add, source.WithName(name, options))
 	{
 		_add = add;
 		_source = source;
 		_name = name;
-		_options = new OptionsHolder<StringEqualityOptions>(options);
+		_options = options;
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />

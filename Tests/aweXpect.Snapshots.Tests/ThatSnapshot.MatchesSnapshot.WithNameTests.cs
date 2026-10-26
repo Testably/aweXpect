@@ -160,6 +160,31 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task OnValues_WhenAnOptionChangesTheHolderDirectly_ShouldApplyIt()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				Dictionary<string, int> subject = new()
+				{
+					["Abbey Road"] = 1969,
+					["Let It Be"] = 1970,
+				};
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Values().WithName("[LET IT BE]").IgnoringCaseInPlace().Mask("{year}");
+
+				await That(Act).Throws<FailException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           {
+				                                             ["Abbey Road"] = 1969,
+				                                             ["Let It Be"] = {year}
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("the selection reads its holder when it matches a name");
+			}
+
+			[Test]
 			public async Task OnValues_WhenAnOptionIsAppliedAfterTheRuleWasCreated_ShouldNotChangeTheRule()
 			{
 				InMemorySnapshotStore store = new();
@@ -222,6 +247,29 @@ public sealed partial class ThatSnapshot
 				                                           }
 				                                           """).IgnoringNewlineStyle()
 					.Because("each rule keeps the options applied to it, and the second one only ignores a value named exactly \"p\"");
+			}
+
+			[Test]
+			public async Task WhenAnOptionChangesTheHolderDirectly_ShouldApplyIt()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				RuleTrack subject = RuleTrack.ComeTogether();
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WithName("previewurl").IgnoringCaseInPlace().Ignore()
+						.For.Members().WithName("TITLE").IgnoringCaseInPlace().Ignore();
+
+				await That(Act).Throws<FailException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleTrack {
+				                                             Duration = 259,
+				                                             Id = 11,
+				                                             Price = 1.29
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("the selection reads its holder when it matches a name");
 			}
 
 			[Test]

@@ -29,15 +29,25 @@ public sealed class SnapshotLinesContaining<TResult> : SnapshotLines<TResult>,
 
 	internal SnapshotLinesContaining(Func<SnapshotRule, TResult> add, Func<string, ValueTask<bool>>[] sourceFilters,
 		Action[] sourceValidations, string text, StringEqualityOptions options)
+		: this(add, sourceFilters, sourceValidations, text, new OptionsHolder<StringEqualityOptions>(options))
+	{
+	}
+
+	/// <remarks>
+	///     The filter and the validation read the <paramref name="options" /> from the holder, so that an option that
+	///     changes the holder directly also applies.
+	/// </remarks>
+	private SnapshotLinesContaining(Func<SnapshotRule, TResult> add, Func<string, ValueTask<bool>>[] sourceFilters,
+		Action[] sourceValidations, string text, OptionsHolder<StringEqualityOptions> options)
 		: base(add,
-			[.. sourceFilters, line => StringRules.Contains(options, line, text, nameof(text)),],
-			[.. sourceValidations, () => options.ValidateExpected(text, nameof(text)),])
+			[.. sourceFilters, line => StringRules.Contains(options.Value, line, text, nameof(text)),],
+			[.. sourceValidations, () => options.Value.ValidateExpected(text, nameof(text)),])
 	{
 		_add = add;
 		_sourceFilters = sourceFilters;
 		_sourceValidations = sourceValidations;
 		_text = text;
-		_options = new OptionsHolder<StringEqualityOptions>(options);
+		_options = options;
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
