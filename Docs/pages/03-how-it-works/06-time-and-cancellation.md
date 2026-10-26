@@ -7,7 +7,7 @@ how long such an expectation may take, and every expectation reports them [the s
 ## Timeout
 
 You can set a global timeout that is applied for all expectations, e.g. in an assembly-level setup (see
-[global defaults](./07-configuration.md#global-defaults)):
+[global defaults](../08-setup/02-configuration.md#global-defaults)):
 
 ```csharp
 using aweXpect.Customization;
@@ -106,8 +106,9 @@ follows:
 | [`Signaled()`](#callbacks)                                            | waits until the callback is signaled, at most `DefaultSignalerTimeout` (30 s)     |
 | [`DidNotSignal()`](#callbacks)                                        | waits the full `DefaultSignalerTimeout` (30 s), unless the callback is signaled   |
 
-Both defaults can be changed in the [settings](./07-configuration.md#settings). When a default applied, the failure
-message names the wait, e.g. `has never recorded the callback within 0:30` or `eventually is equal to 2 within 0:30`.
+Both defaults can be changed in the [settings](../08-setup/02-configuration.md#settings). When a default applied, the
+failure message names the wait, e.g. `has never recorded the callback within 0:30` or `eventually is equal to 2 within
+0:30`.
 
 To wait on a virtual clock instead of in real time, use the experimental
 [`WithTimeSystem(…)`](../08-analyzers.md#experimental-apis).
@@ -129,8 +130,8 @@ await Expect.That(track).Satisfies(x => x.IsPlayed).Within(2.Seconds());
 await Expect.That(playlist).CompliesWith(x => x.HasCount().GreaterThanOrEqualTo(4)).Within(2.Seconds());
 ```
 
-The condition is checked again every [`DefaultCheckInterval`](./07-configuration.md#settings) (defaults to `100ms`).
-Append `CheckEvery(…)` after `Within(…)` to change the interval for a single expectation:
+The condition is checked again every [`DefaultCheckInterval`](../08-setup/02-configuration.md#settings) (defaults to
+`100ms`). Append `CheckEvery(…)` after `Within(…)` to change the interval for a single expectation:
 
 ```csharp
 using aweXpect.Chronology; // from the aweXpect.Chronology package
@@ -163,9 +164,10 @@ await Expect.That(() => track.PlayCount).Eventually().IsGreaterThan(5);
 await Expect.That(() => track.Title).Eventually().IsNotNull().And.StartsWith("Let");
 ```
 
-The delegate is re-evaluated every [`DefaultCheckInterval`](./07-configuration.md#settings) (defaults to `100ms`)
-until the timeout configured in [`DefaultEventuallyTimeout`](./07-configuration.md#settings) (defaults to `30s`)
-expires. You can overwrite the timeout per expectation with `Within` and the interval with `CheckEvery`:
+The delegate is re-evaluated every [`DefaultCheckInterval`](../08-setup/02-configuration.md#settings) (defaults to
+`100ms`) until the timeout configured in [`DefaultEventuallyTimeout`](../08-setup/02-configuration.md#settings)
+(defaults to `30s`) expires. You can overwrite the timeout per expectation with `Within` and the interval with
+`CheckEvery`:
 
 ```csharp
 using aweXpect.Chronology; // from the aweXpect.Chronology package
@@ -185,7 +187,7 @@ An exception thrown by the delegate counts as an unmet expectation and is retrie
 delegate is still throwing, the expectation fails and the last exception is reported as the cause of the failure.
 
 In addition to `Func<T>`, the asynchronous variant `Func<Task<T>>` is supported, and
-[on .NET 8 or later](../02-getting-started.md#target-frameworks) also `Func<ValueTask<T>>`; each of them also accepts a
+[on .NET 8 or later](../08-setup/03-target-frameworks.md) also `Func<ValueTask<T>>`; each of them also accepts a
 `CancellationToken` (see the [delegates](../06-behaviour/01-delegates.md) page):
 
 ```csharp
@@ -300,7 +302,7 @@ events, or retries with `Within(…)` or [`Eventually()`](#eventually):
   wait.
 
 An inconclusive expectation throws the exception that your test framework uses for this outcome, see
-[inconclusive](./09-test-frameworks.md#inconclusive).
+[inconclusive](../08-setup/01-test-frameworks.md#inconclusive).
 
 <details>
 <summary>An `OperationCanceledException` from the delegate itself</summary>

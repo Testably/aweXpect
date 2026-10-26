@@ -108,14 +108,14 @@ public async Task IsActive()
 
 xUnit (v2 and v3), NUnit (v3, v4 and v5), MSTest and TUnit are detected automatically: a failure usually throws the
 assertion exception of the test framework, see
-[test frameworks](./03-how-it-works/09-test-frameworks.md#failed-expectations) for the exact types. `Fail` and `Skip`
-[fail or skip a test](./03-how-it-works/09-test-frameworks.md#failing-a-test) without an expectation.
+[test frameworks](./08-setup/01-test-frameworks.md#failed-expectations) for the exact types. `Fail` and `Skip`
+[fail or skip a test](./08-setup/01-test-frameworks.md#failing-a-test) without an expectation.
 
 </TabItem>
 <TabItem value="aot" label="Native AOT">
 
 `aweXpect` and `aweXpect.Core` are trimmable and AOT compatible on .NET 8 and later, see
-[Native AOT and trimming](./03-how-it-works/08-native-aot.md).
+[Native AOT and trimming](./08-setup/04-native-aot.md).
 
 </TabItem>
 </Tabs>
@@ -132,7 +132,8 @@ walkthrough.
 - **[Find the expectation you need](./02-getting-started.md#find-the-expectation-you-need)**: the page that lists the
   expectations for your subject, from values and collections to delegates, events and the extension packages.
 - **[Migration](/aweXpect/migration)**: automated code fixes for moving from FluentAssertions or `xunit.Assert`.
-- **[How aweXpect works](./03-how-it-works/index.md)**: awaiting, negation, combining, `null`, options, time and
-  configuration.
+- **[Concepts](./03-how-it-works/index.md)**: awaiting, negation, combining, `null`, options, time and
+  cancellation.
+- **[Setup and integration](./08-setup/index.md)**: test frameworks, configuration, target frameworks and Native AOT.
 - **[Extending aweXpect](./11-extending/index.md)**: add expectations for your own types using
   `aweXpect.Core`.

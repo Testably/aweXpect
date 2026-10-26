@@ -59,7 +59,7 @@ Tabs and other invisible characters are shown as escape sequences.
 <summary>Which differences are listed</summary>
 
 Lines that only differ in what the [string options](#string-options) ignore are not listed. At most
-`MaximumNumberOfCollectionItems` differences are listed (see [formatting](../03-how-it-works/07-configuration.md#formatting)).
+`MaximumNumberOfCollectionItems` differences are listed (see [formatting](../08-setup/02-configuration.md#formatting)).
 With a custom comparer (`Using(…)`), which compares whole values, no differences are listed.
 
 </details>
@@ -238,7 +238,7 @@ await Expect.That(title).IsEqualTo("Road").AsSuffix();
 - A wildcard or regex pattern is matched by the regex engine, which can't use a custom comparer, so combining
   `Using(…)` with `AsWildcard()` or `AsRegex()` throws an `InvalidOperationException`.
 - Matching a pattern is limited to the
-  [`DefaultRegexTimeout`](../03-how-it-works/07-configuration.md#settings), one second by default. A pattern that
+  [`DefaultRegexTimeout`](../08-setup/02-configuration.md#settings), one second by default. A pattern that
   takes longer, e.g. because of catastrophic backtracking, throws an `ArgumentException` that names the timeout and
   asks you to simplify the pattern.
 

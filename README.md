@@ -52,12 +52,12 @@ the [benchmarks](https://docs.testably.org/aweXpect/benchmarks) for more details
 
 xUnit (v2 and v3), NUnit (v3, v4 and v5), MSTest and TUnit are detected automatically: a failed expectation usually
 throws the assertion exception of the test framework. `Fail` and `Skip` fail or skip a test without an expectation.
-More information can be found in the [test frameworks guide](https://docs.testably.org/aweXpect/how-it-works/test-frameworks).
+More information can be found in the [test frameworks guide](https://docs.testably.org/aweXpect/setup/test-frameworks).
 
 ### Native AOT and trimming
 
 `aweXpect` and `aweXpect.Core` are trimmable and AOT compatible on .NET 8 and later, see the
-[Native AOT guide](https://docs.testably.org/aweXpect/how-it-works/native-aot).
+[Native AOT guide](https://docs.testably.org/aweXpect/setup/native-aot).
 
 ### Extensible
 

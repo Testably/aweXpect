@@ -1,7 +1,7 @@
 # Customization
 
 Describes the customization values of aweXpect.Json. They work like the
-[customization of aweXpect](https://docs.testably.org/aweXpect/how-it-works/configuration).
+[customization of aweXpect](https://docs.testably.org/aweXpect/setup/configuration).
 
 | Value                          | Default                      | Used to                                                                                                                                                          |
 |--------------------------------|------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -24,7 +24,7 @@ using (Customize.aweXpect.Json().DefaultJsonDocumentOptions.Set(new JsonDocument
 ```
 
 To change a value for all tests, set it on `Customize.aweXpect.Global.Json()` instead, see
-[global defaults](https://docs.testably.org/aweXpect/how-it-works/configuration#global-defaults).
+[global defaults](https://docs.testably.org/aweXpect/setup/configuration#global-defaults).
 
 To use other `JsonDocumentOptions` for a single expectation, pass them to
 [`IsValidJson(o => …)`](./01-strings.md#validation) or, wherever [`JsonOptions`](./02-matching.md#options) are

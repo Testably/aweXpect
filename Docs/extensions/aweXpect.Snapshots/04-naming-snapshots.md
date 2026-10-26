@@ -151,7 +151,7 @@ name holds the exception like a snapshot would.
 </details>
 
 The running test is only known when the test framework exposes it, see
-[the running test](https://docs.testably.org/aweXpect/how-it-works/test-frameworks#the-running-test) for the
+[the running test](https://docs.testably.org/aweXpect/setup/test-frameworks#the-running-test) for the
 supported test frameworks.
 
 MSTest 4 marks `TestContext.Current` as experimental, so it is only used when the test project opts in, which also

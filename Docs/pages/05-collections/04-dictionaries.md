@@ -146,7 +146,7 @@ use `Values.All().AreUnique()`.
 <details>
 <summary>`ConcurrentDictionary` on .NET Framework</summary>
 
-On [.NET Framework](../02-getting-started.md#target-frameworks), the comparer of a
+On [.NET Framework](../08-setup/03-target-frameworks.md), the comparer of a
 `ConcurrentDictionary<TKey, TValue>` is not read.
 
 </details>

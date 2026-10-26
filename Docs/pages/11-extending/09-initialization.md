@@ -105,7 +105,7 @@ again has no effect.
 
 aweXpect reports a failed, skipped or inconclusive expectation by throwing the exception of the test framework. For
 MSTest, NUnit, TUnit and xUnit (v2 and v3), the `aweXpect` package generates an adapter into the test project and
-registers it ([test frameworks](../03-how-it-works/09-test-frameworks.md) lists the exceptions it throws). To support
+registers it ([test frameworks](../08-setup/01-test-frameworks.md) lists the exceptions it throws). To support
 another test framework, implement `ITestFrameworkAdapter` and register it with
 `TestFrameworkRegistry.Register` from a module initializer in the test project itself, as the generated adapters are.
 A module initializer only runs when its assembly is first used, and the tests never use an assembly that only contains
@@ -177,7 +177,7 @@ namespace MyTests
   wins, independent of the order in which the module initializers run.
 - Without any registration, aweXpect throws its own `FailException`, `SkipException` or `InconclusiveException`.
   Only below .NET 8, e.g. on .NET Framework, it first scans the loaded assemblies for a type that implements
-  `ITestFrameworkAdapter`, see [settings](../03-how-it-works/07-configuration.md#settings).
+  `ITestFrameworkAdapter`, see [settings](../08-setup/02-configuration.md#settings).
 - The generated registration is a module initializer, which needs C# 9 or later. On .NET 8 or later, a test project
   with an older `<LangVersion>` has to register the generated adapter itself, which the warning
   [aweXpect2002](../08-analyzers.md#test-framework-adapter) points out.
@@ -209,7 +209,7 @@ internal static class MyCaseNames
 
 It returns `false` when the test framework does not expose the running test, or when no test is running, e.g. in a
 setup of the whole assembly. Handle that case, as not every test framework exposes the running test; the
-[test frameworks](../03-how-it-works/09-test-frameworks.md#the-running-test) page lists what each of them supports.
+[test frameworks](../08-setup/01-test-frameworks.md#the-running-test) page lists what each of them supports.
 
 `TestFrameworkRegistry.TryGetCancellationToken` returns the token with which the test framework cancels the running
 test. Expectations only observe it when `Settings().TestCancellation` is set to

@@ -119,7 +119,7 @@ Some results are written for you:
 ## Formatting values
 
 Format every value with `Formatter.Format` from `aweXpect.Formatting.Format`, so that it looks the same as in the
-built-in messages and respects the [formatting settings](../03-how-it-works/07-configuration.md#formatting):
+built-in messages and respects the [formatting settings](../08-setup/02-configuration.md#formatting):
 
 | Value         | Formatted as                                                                                                  |
 |---------------|---------------------------------------------------------------------------------------------------------------|
@@ -196,7 +196,7 @@ Nested objects, collections and tuples are written up to 20 levels deep and up t
 their content is left out as `{ … }`, `[ … ]` or `( … )`, so that a long chain or a graph that shares its nodes on
 every level neither overflows the stack nor grows without bound. An object or collection that contains itself is
 written as `{ *recursive* }` or `[ *recursive* ]` where it repeats. Snapshot options lift these limits and those of the
-[formatting settings](../03-how-it-works/07-configuration.md#formatting); a value that is nested too deeply for the
+[formatting settings](../08-setup/02-configuration.md#formatting); a value that is nested too deeply for the
 remaining stack then throws an `InsufficientExecutionStackException` instead.
 
 </details>

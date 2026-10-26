@@ -81,7 +81,8 @@ something that is not available:
 Fail.Inconclusive("the music service did not respond");
 ```
 
-It throws the same exception as an expectation that was [canceled](./06-time-and-cancellation.md#outcome):
+It throws the same exception as an expectation that was
+[canceled](../03-how-it-works/06-time-and-cancellation.md#outcome):
 
 | Test framework | Thrown exception                    | Reported as                      |
 |----------------|-------------------------------------|----------------------------------|
@@ -128,7 +129,7 @@ test framework exposes it:
 - the running test case with its arguments, e.g. to
   [name a snapshot after the test case](/aweXpect/extensions/aweXpect.Snapshots/naming-snapshots#naming-after-the-test-case),
 - the cancellation token of the test, e.g. to cancel the expectations with
-  [`TestCancellation.FromCancellationToken(…)`](./06-time-and-cancellation.md#cancellationtoken),
+  [`TestCancellation.FromCancellationToken(…)`](../03-how-it-works/06-time-and-cancellation.md#cancellationtoken),
 - and attachments to the result of the test, e.g. the
   [pending file of a snapshot](/aweXpect/extensions/aweXpect.Snapshots/matching-snapshots#encoding-line-breaks-and-attachments).
 

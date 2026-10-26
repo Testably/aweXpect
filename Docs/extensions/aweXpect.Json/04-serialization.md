@@ -139,7 +139,7 @@ await Expect.That(track).IsJsonSerializedAs(new { title = "Let It Be" }, seriali
 
 :::note[Trimming and Native AOT]
 Unless a `JsonTypeInfo<T>` is passed, the subject is serialized by reflection, which is switched off when publishing
-with trimming or [Native AOT](https://docs.testably.org/aweXpect/how-it-works/native-aot). In such an application, pass
+with trimming or [Native AOT](https://docs.testably.org/aweXpect/setup/native-aot). In such an application, pass
 the source-generated `JsonTypeInfo<T>` of the subject together with the expected value as a JSON string:
 
 ```csharp
@@ -156,7 +156,7 @@ await Expect.That(track).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2
 
 `IsJsonSerializable` takes the `JsonTypeInfo<T>` as well, and then serializes and deserializes the subject as `T`. It
 also compares the deserialized object with the subject by
-[equivalency](https://docs.testably.org/aweXpect/how-it-works/native-aot#equivalency), which needs the members of the
+[equivalency](https://docs.testably.org/aweXpect/setup/native-aot#equivalency), which needs the members of the
 subject type registered. The source generator of aweXpect registers them at the call site, but it cannot see the
 properties that the `System.Text.Json` source generator adds to the context. Pass the type info from a variable of type
 `JsonTypeInfo<T>` instead, or name the type in `[assembly: GenerateMetadata(typeof(Track))]`:

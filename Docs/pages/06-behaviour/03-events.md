@@ -39,7 +39,7 @@ events with the given names.
 <details>
 <summary>Events that cannot be recorded</summary>
 
-Without a registration from the [source generator](../03-how-it-works/08-native-aot.md#events), the handler is bound
+Without a registration from the [source generator](../08-setup/04-native-aot.md#events), the handler is bound
 reflectively. Such a handler must take at most four parameters, must return nothing and must take no parameter by
 reference. Recording all events skips an event whose handler does not fit, so that the other events of the subject are
 still recorded, and an expectation on the skipped event throws a `NotSupportedException` with the reason; recording it
