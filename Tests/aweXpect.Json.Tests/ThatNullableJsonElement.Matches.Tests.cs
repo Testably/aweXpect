@@ -94,8 +94,8 @@ public sealed partial class ThatNullableJsonElement
 			}
 
 			[Test]
-			[Arguments("\"foo\"", "foo", true)]
-			[Arguments("\"foo\"", "bar", false)]
+			[Arguments("\"foo\"", "\"foo\"", true)]
+			[Arguments("\"foo\"", "\"bar\"", false)]
 			public async Task StringValue_ShouldSucceedWhenMatching(string json, string expected, bool isMatch)
 			{
 				JsonElement? subject = FromString(json);
@@ -107,7 +107,7 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              matches expected,
-					              but it differed as $ was {json} instead of "{expected}"
+					              but it differed as $ was {json} instead of {expected}
 
 					              JSON options:
 					               - ignore additional properties
@@ -364,8 +364,8 @@ public sealed partial class ThatNullableJsonElement
 			}
 
 			[Test]
-			[Arguments("\"foo\"", "foo", true)]
-			[Arguments("\"foo\"", "bar", false)]
+			[Arguments("\"foo\"", "\"foo\"", true)]
+			[Arguments("\"foo\"", "\"bar\"", false)]
 			public async Task StringValue_ShouldFailWhenMatching(string json, string expected, bool isMatch)
 			{
 				JsonElement? subject = FromString(json);

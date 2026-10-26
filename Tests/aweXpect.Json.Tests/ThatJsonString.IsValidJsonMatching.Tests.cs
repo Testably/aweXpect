@@ -162,8 +162,8 @@ public sealed partial class ThatJsonString
 			}
 
 			[Test]
-			[Arguments("\"foo\"", "foo", true)]
-			[Arguments("\"foo\"", "bar", false)]
+			[Arguments("\"foo\"", "\"foo\"", true)]
+			[Arguments("\"foo\"", "\"bar\"", false)]
 			public async Task StringValue_ShouldSucceedWhenMatching(string subject, string expected, bool isMatch)
 			{
 				async Task Act()
@@ -173,7 +173,7 @@ public sealed partial class ThatJsonString
 					.WithMessage($"""
 					              Expected that subject
 					              is valid JSON which matches expected,
-					              but it differed as $ was {subject} instead of "{expected}"
+					              but it differed as $ was {subject} instead of {expected}
 
 					              JSON options:
 					               - ignore additional properties

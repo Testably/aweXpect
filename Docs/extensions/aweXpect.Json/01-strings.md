@@ -130,7 +130,10 @@ string track = """{"title": "Let It Be", "artist": "The Beatles"}""";
 
 await Expect.That(track).IsValidJsonMatching(new { title = "Let It Be" });
 await Expect.That(track).IsValidJsonMatchingExactly(new { title = "Let It Be", artist = "The Beatles" });
+await Expect.That(track).IsValidJsonMatching("""{"title": "Let It Be"}""");
 ```
+
+An expected `string` is [JSON text](./02-matching.md#expected-json), like in `Matches`.
 
 `IsValidJsonMatching(new { title = "Yesterday" })` would fail with:
 

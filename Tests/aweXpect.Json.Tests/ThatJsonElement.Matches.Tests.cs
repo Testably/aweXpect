@@ -71,12 +71,12 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString("\"a\\\"b\"");
 
 				async Task Act()
-					=> await That(subject).Matches("c");
+					=> await That(subject).Matches("\"c\"");
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             matches "c",
+					             matches "\"c\"",
 					             but it differed as $ was "a\"b" instead of "c"
 
 					             JSON options:
@@ -190,8 +190,8 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Test]
-			[Arguments("\"foo\"", "foo", true)]
-			[Arguments("\"foo\"", "bar", false)]
+			[Arguments("\"foo\"", "\"foo\"", true)]
+			[Arguments("\"foo\"", "\"bar\"", false)]
 			public async Task StringValue_ShouldSucceedWhenMatching(string json, string expected, bool isMatch)
 			{
 				JsonElement subject = FromString(json);
@@ -203,7 +203,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              matches expected,
-					              but it differed as $ was {json} instead of "{expected}"
+					              but it differed as $ was {json} instead of {expected}
 
 					              JSON options:
 					               - ignore additional properties
@@ -386,8 +386,8 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Test]
-			[Arguments("\"foo\"", "foo", true)]
-			[Arguments("\"foo\"", "bar", false)]
+			[Arguments("\"foo\"", "\"foo\"", true)]
+			[Arguments("\"foo\"", "\"bar\"", false)]
 			public async Task StringValue_ShouldFailWhenMatching(string json, string expected, bool isMatch)
 			{
 				JsonElement subject = FromString(json);

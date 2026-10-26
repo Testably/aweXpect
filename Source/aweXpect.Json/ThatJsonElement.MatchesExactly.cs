@@ -36,6 +36,35 @@ public static partial class ThatJsonElement
 	}
 
 	/// <summary>
+	///     Verifies that the subject <see cref="JsonElement" /> matches the <paramref name="expected" /> JSON exactly.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="expected" /> value is parsed as JSON text, and <see langword="null" /> is the JSON
+	///     <c>null</c>. A JSON string is written with quotes, e.g. <c>"\"Let It Be\""</c>.
+	/// </remarks>
+	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid JSON.</exception>
+	public static AndOrResult<JsonElement, IThat<JsonElement>> MatchesExactly(
+		this IThat<JsonElement> subject,
+		string? expected,
+		Func<JsonOptions, JsonOptions>? options = null,
+		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		JsonOptions jsonOptions = new();
+		if (options != null)
+		{
+			jsonOptions = options(jsonOptions);
+		}
+
+		return new AndOrResult<JsonElement, IThat<JsonElement>>(
+			subject.Get().ExpectationBuilder.AddConstraint(
+				(Expected: ExpectationJsonConverter.FromJsonText(expected, jsonOptions.DocumentOptions),
+					Expression: doNotPopulateThisValue, Options: jsonOptions),
+				static IAsyncContextConstraint<JsonElement> (s, it, grammar) =>
+					new MatchesConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
+			subject);
+	}
+
+	/// <summary>
 	///     Verifies that the subject <see cref="JsonElement" /> matches the <paramref name="expected" /> array exactly.
 	/// </summary>
 	public static AndOrResult<JsonElement, IThat<JsonElement>> MatchesExactly<T>(

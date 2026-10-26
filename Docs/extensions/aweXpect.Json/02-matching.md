@@ -58,11 +58,23 @@ JSON options:
 You can also verify that a `JsonElement` matches a primitive value:
 
 ```csharp
-await Expect.That(JsonDocument.Parse("\"Let It Be\"").RootElement).Matches("Let It Be");
 await Expect.That(JsonDocument.Parse("4.05").RootElement).Matches(4.05);
 await Expect.That(JsonDocument.Parse("true").RootElement).Matches(true);
 await Expect.That(JsonDocument.Parse("null").RootElement).Matches(null);
 ```
+
+An expected `string` is [JSON text](#expected-json), so `Matches("42")` expects the number `42`. To match a JSON
+string, write it with quotes or as an `It.Is<string>()` expectation:
+
+```csharp
+JsonElement title = JsonDocument.Parse("\"Let It Be\"").RootElement;
+
+await Expect.That(title).Matches("\"Let It Be\"");
+await Expect.That(title).Matches(It.Is<string>().That.IsEqualTo("Let It Be"));
+```
+
+A string inside an expected object or array, e.g. `new { title = "Let It Be" }`, and a string typed as `object`, e.g.
+`(object)"Let It Be"`, stay JSON strings.
 
 Any expected value, also a nested one, can be an `It.Is<T>()` expectation instead, e.g.
 `Matches(new { duration = It.Is<long>().That.IsGreaterThan(200) })`.
@@ -78,23 +90,27 @@ fraction or an exponent, e.g. `2.5` or `1e3`.
 
 ## Expected JSON
 
-The expected value can also be a `JsonElement`, a `JsonDocument` or a `JsonNode`, whose JSON is used as it is, e.g. to
-match an expected JSON text:
+An expected `string` is parsed as JSON text:
 
 ```csharp
 JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
 
-await Expect.That(track).Matches(JsonDocument.Parse("""{"title": "Let It Be"}"""));
+await Expect.That(track).Matches("""{"title": "Let It Be"}""");
 ```
 
-`MatchesExactly(JsonDocument.Parse("""{"title": "Let It Be"}"""))` would fail because of the additional `artist`
-property:
+`MatchesExactly("""{"title": "Let It Be"}""")` would fail because of the additional `artist` property:
 
 ```text title="Failure message"
 Expected that track
-matches JsonDocument.Parse("""{"title": "Let It Be"}""") exactly,
+matches """{"title": "Let It Be"}""" exactly,
 but it differed as $.artist had unexpected "The Beatles"
 ```
+
+The JSON text is parsed with the `JsonDocumentOptions` of [`WithDocumentOptions(…)`](./06-customization.md), and
+`WithSerializerOptions(…)` does not apply to it. Invalid JSON throws an `ArgumentException` when the expectation is
+written, so that also a negated expectation, e.g. within `DoesNotComplyWith(…)`, cannot pass.
+
+The expected value can also be a `JsonElement`, a `JsonDocument` or a `JsonNode`, whose JSON is used as it is.
 
 ## Options
 

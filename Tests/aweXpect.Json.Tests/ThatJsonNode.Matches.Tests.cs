@@ -126,12 +126,12 @@ public sealed partial class ThatJsonNode
 				JsonValue subject = JsonValue.Create("foo");
 
 				async Task Act()
-					=> await That(subject).Matches("bar");
+					=> await That(subject).Matches("\"bar\"");
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             matches "bar",
+					             matches "\"bar\"",
 					             but it differed as $ was "foo" instead of "bar"
 
 					             JSON options:
