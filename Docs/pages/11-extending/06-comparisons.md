@@ -1,5 +1,9 @@
 # Comparisons
 
+An expectation that compares the subject with an expected value can use the comparisons of aweXpect, so that the
+caller chooses the comparison with the same options as for the built-in expectations, e.g. `Using(comparer)`,
+`Equivalent()` or `IgnoringCase()`.
+
 <details>
 <summary>Namespaces used on this page</summary>
 
@@ -12,10 +16,6 @@ using static aweXpect.Formatting.Format;
 ```
 
 </details>
-
-An expectation that compares the subject with an expected value can use the comparisons of aweXpect, so that the
-caller chooses the comparison with the same options as for the built-in expectations, e.g. `Using(comparer)`,
-`Equivalent()` or `IgnoringCase()`.
 
 ## Equality expectations
 
@@ -92,8 +92,16 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
 - `Match` decides whether two values match, and `GetFailure` writes the result text of a mismatch.
 - `Phrase` holds the words of the comparison, from which Core writes the expectation text in every grammar, e.g. "is
   titled like …", "are not titled like …" or "has item titled like …".
+- When the result text of `GetFailure` spans several lines, indent the lines after the first by the `indentation`,
+  e.g. with `FormattingOptions.Indented(indentation)` for a formatted value, so that it stays aligned inside
+  `Expect.ThatAll`.
 - For strings, derive from `StringMatchType` instead and set it with `SetMatchType(matchType, nameof(AsTitle))` on the
   `StringEqualityOptions`, which takes the name of your option, as a string match type carries none.
+- Declare the settings that a string match type honours in `SupportedSettings`: Core rejects every other one, e.g.
+  "IgnoringCase cannot be combined with AsTitle.". The whitespace options are supported unless you leave them out.
+- Throw in `ValidateExpected(expected, parameterName)` of a string match type for an expected value that it cannot
+  use, with an `ArgumentException` for the `parameterName` it receives, as neither the match type nor the options know
+  the parameter of the expectation.
 
 <details>
 <summary>Matchers, results, phrases and string match types in detail</summary>
@@ -124,26 +132,19 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
   `AppendContexts` with `options.AppendContexts(contexts)`, on the options of its evaluation.
 - The `ForEvaluation` of a `StringMatchType` also receives the `StringMatchSettings`, i.e. whether the casing is ignored
   and the comparer of the caller, and its `StringMatcher` compares the values after the whitespace options are applied.
-  Core appends these options to the expectation text, e.g. "starts with "Let it" ignoring case". Declare the settings
-  that the match type honours in `SupportedSettings`: Core rejects every other one, e.g. "IgnoringCase cannot be
-  combined with AsTitle.". The whitespace options are supported unless you leave them out. Throw in its
-  `ValidateExpected(expected, parameterName)` for an expected value that it cannot use, with an `ArgumentException` for
-  the `parameterName` it receives.
+  Core appends these options to the expectation text, e.g. "starts with "Let it" ignoring case".
 - A string match type can also tell Core where its expected value lines up with the subject (`Anchors`, e.g. a prefix
   only at the start), count the occurrences of the expected value for a quantified `Contains` (`CountOccurrences` of
   the matcher), and whether a failure lists the differing lines or hints at a different newline style.
 
 Through its name, the same option again replaces the earlier match type, and combining it with another comparison
 throws, e.g. "ByTitle cannot be combined with Equivalent.". Core rejects an unsupported setting of a string match type
-at the call that specifies the conflict, in either order. Its `ValidateExpected` receives the `parameterName`, as
-neither the match type nor the options know the parameter of the expectation: it is called for every subject, also
+at the call that specifies the conflict, in either order. Its `ValidateExpected` is called for every subject, also
 when nothing is compared with the expected value, e.g. for an empty collection.
 
 The items of a collection are compared one after the other with the matcher of the evaluation, so a matcher may keep
 state across them, e.g. which options matched nothing in any comparison, and report it in `AppendContexts`. Keep what a
 single comparison found in its `MatchExplanation` instead, as a collection compares many items before it explains one.
-When the result text spans several lines, indent the lines after the first by the `indentation`, e.g. with
-`FormattingOptions.Indented(indentation)` for a formatted value, so that it stays aligned inside `Expect.ThatAll`.
 
 An `EquivalencyMatchType<T>` compares like `IsEquivalentTo`. A constraint compares with the matcher that
 `ForEvaluation(new MatchEnvironment(context, cancellationToken))` returns for its evaluation, e.g. with

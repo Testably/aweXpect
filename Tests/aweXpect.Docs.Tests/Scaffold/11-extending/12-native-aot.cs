@@ -6,7 +6,7 @@ namespace Snippets
 
 namespace System.Runtime.CompilerServices
 {
-	// The "Initialization" page tells to declare this attribute on targets that miss it, and on the others it only
+	// The "Extending aweXpect" page tells to declare this attribute on targets that miss it, and on the others it only
 	// causes a warning.
 	[AttributeUsage(AttributeTargets.Method)]
 	internal sealed class ModuleInitializerAttribute : Attribute;

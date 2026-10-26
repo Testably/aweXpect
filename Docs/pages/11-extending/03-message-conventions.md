@@ -27,8 +27,9 @@ Expected that <subject>
 but <result>
 ```
 
-Your constraint only writes its expectation text (`AppendExpectation`) and its result text (`AppendResult`); the rest
-is added around them. For the `IsRadioFriendly` expectation from
+Your constraint only writes its expectation text in `AppendNormalExpectation` and `AppendNegatedExpectation`, and its
+result text in `AppendNormalResult` and `AppendNegatedResult` (`AppendExpectation` and `AppendResult` when it derives
+from `ConstraintResult` directly); the rest is added around them. For the `IsRadioFriendly` expectation from
 [your first expectation](./index.md#the-constraint), `await Expect.That(track).IsRadioFriendly()` fails for
 "Hey Jude" with:
 
@@ -79,8 +80,8 @@ public static AndOrResult<Track, IThat<Track?>> HasTitleMatching(
 ```
 
 For `HasTitleMatching(title => title.StartsWith("Let"))`, the expectation text can then read
-`has a title matching title => title.StartsWith("Let")`. `CallerArgumentExpressionAttribute` requires C# 10 and is missing
-in `netstandard2.0` and `net48`. Declare it as an `internal` type in your own package there.
+`has a title matching title => title.StartsWith("Let")`. On `netstandard2.0` and `net48`, declare the attribute in your
+own package, see [polyfills for older targets](./index.md#polyfills-for-older-targets).
 
 ## Result text
 
@@ -89,6 +90,7 @@ in `netstandard2.0` and `net48`. Declare it as an `internal` type in your own pa
   `it` or the name of a member, so never write the subject yourself.
 - Describe what was found instead, without repeating the expectation. A short elliptical result is normal:
   `it was`, `it did`, `it was not`.
+- Format every value with `Formatter.Format`, as described in [formatting](./04-formatting.md).
 - Add a detail after a comma: `, which differs at index 12`, `, which differs by 2`.
 - Put longer information, such as the items of a collection, in a context below the message instead (see
   [contexts](#contexts)).
@@ -116,91 +118,6 @@ Some results are written for you:
 | the evaluation was canceled | `it could not be verified, because the evaluation was already canceled` | `AppendCanceledResult`, the default of `AppendUndecidedResult`          |
 | code of the caller threw    | `the predicate did throw an InvalidOperationException`                  | [`UserCode.Invoke`](./02-constraints-and-results.md#code-of-the-caller) |
 
-## Formatting values
-
-Format every value with `Formatter.Format` from `aweXpect.Formatting.Format`, so that it looks the same as in the
-built-in messages and respects the [formatting settings](../03-how-it-works/07-configuration.md#formatting):
-
-| Value         | Formatted as                                                                                                  |
-|---------------|---------------------------------------------------------------------------------------------------------------|
-| `null`        | `<null>`                                                                                                      |
-| `string`      | `"Let It Be"`, in quotes and truncated after `MaximumStringLength` characters                                 |
-| `char`        | `'a'`                                                                                                         |
-| numbers       | `42` or `-3.5`, independent of the current culture                                                            |
-| `TimeSpan`    | `0:02` or `0:00.015`                                                                                          |
-| `DateTime`    | `2024-12-24T13:15:00.0000000`                                                                                 |
-| `Type`        | its C# name without namespace, e.g. `int` or `List<string>`                                                   |
-| `enum`        | `Read`, or `Read \| Write` for a combination of flags                                                         |
-| `Exception`   | its type and message, e.g. `InvalidOperationException: Yesterday`                                             |
-| collection    | `["Help!", "Revolver"]`, with `(… and 2 more)` after `MaximumNumberOfCollectionItems` items                   |
-| other objects | their `ToString()` if it is overridden, otherwise their public members, e.g. `Album { Title = "Abbey Road" }` |
-
-The `FormattingOptions` change the layout: `FormattingOptions.MultipleLines` puts every item of a collection on its
-own line, e.g. for a context, `FormattingOptions.WithType` prefixes the type (`int[] [1, 2]`), and
-`FormattingOptions.Indented(indentation)` indents the following lines. Without options, an object that is not an item
-of a collection puts each member on its own line; `FormattingOptions.SingleLine` keeps it on one line as in the table.
-`FormattingOptions.Snapshot`, or `IsSnapshot = true` on any other options, writes the value for a snapshot: without
-shortening it, and the items of collections whose order depends on hash codes or threads, like a `HashSet<T>` or a
-`ConcurrentDictionary<TKey, TValue>`, sorted by their formatted text or key, so that it is the same in every run.
-Register an `IValueFormatter` to format your own types, see [value formatters](./09-initialization.md#value-formatters).
-
-`FormatValue` on the `FormattingOptions` decides for every nested value whether it is written
-(`ValueFormatting.Write`), left out (`ValueFormatting.Omit`) or replaced by another value that is formatted in its
-place (`ValueFormatting.Replace(value)`), e.g. to leave out values that change from run to run in a snapshot. It is
-offered the members of objects that are written member-wise, the items of tuples and collections, and the values of
-dictionary entries, as a `FormattedValue` with its `Kind`, `Name`, `Type`, `DeclaringType` and `Path`. The path has the
-format of an equivalency comparison (`Artist.Name`, `Tracks[0].Id`, `Ratings[4.5]`, `Seats[0,1]`), with `[*]` as the
-index of an item of a collection whose order depends on hash codes or threads, like a `HashSet<T>`, so that the rules
-to ignore members in an equivalency comparison can be reused:
-
-```csharp
-using aweXpect.Equivalency;
-
-MemberToIgnore ignoreDuration = new MemberToIgnore.ByName("Duration");
-FormattingOptions options = FormattingOptions.Indented("") with
-{
-    IsSnapshot = true,
-    FormatValue = value => ignoreDuration.IgnoreMember(value.Path, value.Type)
-        ? ValueFormatting.Omit
-        : value.Name == "Title"
-            ? ValueFormatting.Replace("{title}")
-            : ValueFormatting.Write,
-};
-string snapshot = Formatter.Format(new Track("Let It Be", TimeSpan.FromSeconds(243)), options);
-```
-
-<details>
-<summary>Exceptions in snapshots, FormatValue, escaping and limits</summary>
-
-A snapshot writes an exception member-wise, e.g. `ArgumentException { Message = "…", ParamName = "track" }`, with its
-message, its own public members, its `Data` when it is not empty and its inner exceptions (all of them for an
-`AggregateException`), but without `StackTrace`, `TargetSite`, `Source`, `HelpLink` and `HResult`, which change between
-builds, runtimes and Native AOT.
-
-`FormatValue` is not offered the value itself, nor the keys of a dictionary, nor anything inside a value that a
-registered `IValueFormatter` or its own `ToString()` renders. A member is only read when it is written or when
-`GetValue()` asks for it, so a member that is left out is not read at all. Leaving out an item of a tuple shifts the
-following items, so that their position in the parentheses no longer matches their position in the tuple. A getter
-that throws is written as the usual placeholder, while an exception of `FormatValue` itself is thrown out of the
-formatting. Without `FormatValue`, nothing changes.
-
-Chars and strings are always written on a single line and escaped like C# literals, so that every character can be
-told apart: a backslash, the enclosing quote, line breaks, tabs, control characters, invisible characters (like a
-non-breaking or a zero-width space), combining marks in text that is not normalized (like the accent of a decomposed
-`é`) and unpaired surrogates are shown as `\\`, `\"` (or `\'` in a char), `\n`, `\r`, `\t`, `\0` or `\uXXXX`.
-Exception messages and the `ToString()` of other objects are not quoted, so only their line breaks, control and
-invisible characters are escaped when they are written on a single line. A multi-dimensional array is written with a
-nested collection per dimension, e.g. `[[1, 2], [3, 4]]` for an `int[2,2]`.
-
-Nested objects, collections and tuples are written up to 20 levels deep and up to 1000 of them per value. Beyond that,
-their content is left out as `{ … }`, `[ … ]` or `( … )`, so that a long chain or a graph that shares its nodes on
-every level neither overflows the stack nor grows without bound. An object or collection that contains itself is
-written as `{ *recursive* }` or `[ *recursive* ]` where it repeats. Snapshot options lift these limits and those of the
-[formatting settings](../03-how-it-works/07-configuration.md#formatting); a value that is nested too deeply for the
-remaining stack then throws an `InsufficientExecutionStackException` instead.
-
-</details>
-
 ## Vocabulary
 
 Name the expectation methods like the built-in ones, so that the whole chain reads like a sentence:
@@ -217,7 +134,7 @@ Name the expectation methods like the built-in ones, so that the whole chain rea
 
 `With…` continues the sentence of the previous expectation, "throws a `CustomException` with message …", while `Has…`
 starts a new sentence about the subject. Offer both when your subject can appear in both positions, like the
-[exception expectations](../06-behaviour/01-delegates.md#with-after-throws-has-on-the-exception) do.
+[exception expectations](../06-behaviour/01-delegates.md#exception-details) do.
 
 ## Grammar
 

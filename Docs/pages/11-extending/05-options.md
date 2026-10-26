@@ -1,5 +1,9 @@
 # Options
 
+The options, such as `.AtLeast(2)`, `.IgnoringCase()` or `.InAnyOrder()`, are extension methods in the `aweXpect`
+namespace. They apply to every result that provides the matching options and follow the
+[general rules for options](../03-how-it-works/05-options.md).
+
 <details>
 <summary>Namespaces used on this page</summary>
 
@@ -15,9 +19,6 @@ using static aweXpect.Formatting.Format;
 ```
 
 </details>
-
-The options, such as `.AtLeast(2)`, `.IgnoringCase()` or `.InAnyOrder()`, are extension methods in the `aweXpect`
-namespace. They apply to every result that provides the matching options, so they can be chained in any order.
 
 ## An expectation with options
 
@@ -86,7 +87,7 @@ await Expect.That(track).HasTitle("let it be").IgnoringCase();
 - The string options write the expectation text with the options, e.g. "has title equal to "let it be" ignoring
   case".
 - The constraint compares with the options of its evaluation, see
-  [comparing with the options](./05-comparisons.md#comparing-with-the-options).
+  [comparing with the options](./06-comparisons.md#comparing-with-the-options).
 
 ## One holder per expectation
 
@@ -159,16 +160,15 @@ discarded, e.g. `options.AtLeast(2);`, compiles and changes nothing. The analyze
 [aweXpect0009](../08-analyzers.md#awexpect0009) reports it in a project that references `aweXpect`.
 :::
 
-The rules for the options are the same everywhere:
+The [general rules for options](../03-how-it-works/05-options.md) apply to the options of `aweXpect.Core` as well as to
+those of your own. For an extension, two more details matter:
 
-- A repeated option replaces the earlier one, e.g. `AtLeast(2).AtLeast(3)` requires three.
-- An option set to `false` is the same as not set, e.g. `IgnoringCase(false)`.
-- Options that set the same thing in different ways throw an `InvalidOperationException` at the call, e.g.
-  `AtMost cannot be combined with AtLeast.` or `AsSuffix cannot be combined with AsPrefix.`
+- Options that set the same thing in different ways throw an `InvalidOperationException` at the call, with a message
+  like `AtMost cannot be combined with AtLeast.` or `AsSuffix cannot be combined with AsPrefix.`
 - The hooks for a strategy of your own are named `Set…` and take the name of your option, e.g.
   `SetMatchType(matchType, nameof(AsTitle))` on the `StringEqualityOptions` or `SetMatch(match, nameof(AtTrackNumber))`
   on the `CollectionIndexOptions`, so that a competing option throws with that name, while the same name again
-  replaces the earlier strategy. An [object match type](./05-comparisons.md#custom-match-types) carries its name itself.
+  replaces the earlier strategy. An [object match type](./06-comparisons.md#custom-match-types) carries its name itself.
 
 ## Options of your own
 

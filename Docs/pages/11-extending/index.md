@@ -7,90 +7,8 @@ This library will never be able to cope with all ideas and use cases. Therefore,
 This package aims to be more stable than the main aweXpect package, to reduce the risk of version conflicts between
 different extensions.
 
-| Page                                                                               | Topics                                                                           |
-|------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| [Generated expectations](./01-generated-expectations.md)                           | expectations generated from a method that checks a condition                     |
-| [Constraints and results](./02-constraints-and-results.md)                         | constraints, asynchronous constraints, result helpers, negation, `null` subjects |
-| [Message conventions](./03-message-conventions.md)                                 | how the failure messages of an extension should read                             |
-| [Options](./04-options.md)                                                         | options of your own results, time tolerances                                     |
-| [Comparisons](./05-comparisons.md)                                                 | equality expectations, custom match types, property comparisons                  |
-| [Collections and nested expectations](./06-collections-and-nested-expectations.md) | collection subjects, expectations on collection items and on members             |
-| [Repeated checks and synchronous boundaries](./07-repeated-checks.md)              | waiting for a condition, calling asynchronous code synchronously                 |
-| [Customization values](./08-customization-values.md)                               | customization values of your own, with lifetimes                                 |
-| [Initialization](./09-initialization.md)                                           | value formatters and test framework adapters                                     |
-| [Native AOT for extensions](./10-native-aot.md)                                    | the metadata your expectations need under Native AOT                             |
-
-## Setting up the package
-
-### Referencing aweXpect.Core
-
-Reference `aweXpect.Core` in your extension, not `aweXpect`, and use the lowest version that contains the API you
-need, so that the extension works together with as many versions of `aweXpect` as possible. The namespace
-`aweXpect.Core.Internal` may change in any version, so don't use it in the code that your extension ships. The
-compiler reminds you of this with the diagnostic `aweXpect5001`.
-
-Reference it with `PrivateAssets="contentfiles;build"`, so that the source generators of `aweXpect.Core` also run in
-the projects that use your extension, see [Native AOT for extensions](./10-native-aot.md):
-
-```xml
-<ItemGroup>
-  <PackageReference Include="aweXpect.Core" Version="…" PrivateAssets="contentfiles;build" />
-</ItemGroup>
-```
-
-### Target frameworks
-
-`aweXpect.Core` targets `netstandard2.0`, `net8.0` and `net10.0`, like the extension packages of aweXpect. Include
-`netstandard2.0` in the targets of your extension, so that it also works in test projects on .NET Framework.
-
-Keep your extensions trimmable and AOT compatible like aweXpect itself, as described in
-[Native AOT for extensions](./10-native-aot.md).
-
-### Namespace and class names
-
-Declare your expectations in the namespace `aweXpect`, which the users import for `Expect.That` anyway, so that they
-need no further `using` for your extension. Name the class after the subject type, e.g. `ThatTrack` for the
-expectations on a `Track`, and make it `partial`, so that each expectation can have a file of its own, like
-`ThatJsonElement.HasProperty.cs` in `aweXpect.Json`:
-
-```csharp no-compile
-namespace aweXpect;
-
-public static partial class ThatTrack
-{
-    // the expectations on a Track
-}
-```
-
-### Polyfills for older targets
-
-Some attributes that an extension uses are compiler features that are missing in `netstandard2.0` and `net48`. Declare
-them as `internal` types in your own package there:
-
-- `CallerArgumentExpressionAttribute` (C# 10) shows the code of the caller in the expectation text, see
-  [message conventions](./03-message-conventions.md#code-of-the-caller-in-the-expectation-text).
-- `ModuleInitializerAttribute` (C# 9) runs code before the first expectation, see
-  [initialization](./09-initialization.md). The source generators of `aweXpect.Core` also need it, see
-  [Native AOT for extensions](./10-native-aot.md).
-
-```csharp no-compile
-namespace System.Runtime.CompilerServices
-{
-    [AttributeUsage(AttributeTargets.Parameter)]
-    internal sealed class CallerArgumentExpressionAttribute(string parameterName) : Attribute
-    {
-        public string ParameterName { get; } = parameterName;
-    }
-
-    [AttributeUsage(AttributeTargets.Method)]
-    internal sealed class ModuleInitializerAttribute : Attribute;
-}
-```
-
-## Your first expectation
-
 <details>
-<summary>Namespaces used in this section</summary>
+<summary>Namespaces used on this page</summary>
 
 ```csharp
 using System.Text;
@@ -102,6 +20,23 @@ using static aweXpect.Formatting.Format;
 ```
 
 </details>
+
+| Page                                                                  | Topics                                                                                                                                                                                         |
+|-----------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Generated expectations](./01-generated-expectations.md)              | the method, name and texts, `null` subjects, questions that cannot be answered, collections, diagnostics                                                                                       |
+| [Constraints and results](./02-constraints-and-results.md)            | constraints, results, negated expectations, `null` subjects, argument validation, continuing with the value, code of the caller, failing both ways, side effects, constraints without closures |
+| [Message conventions](./03-message-conventions.md)                    | shape of a failure message, expectation text, result text, vocabulary, grammar, contexts, exceptions                                                                                           |
+| [Formatting](./04-formatting.md)                                      | formatting values, value formatters, formatters of an expectation                                                                                                                              |
+| [Options](./05-options.md)                                            | an expectation with options, one holder per expectation, setting options in your own code, options of your own, results that are stored, time tolerances                                       |
+| [Comparisons](./06-comparisons.md)                                    | equality expectations, custom match types, comparing with the options, property comparisons                                                                                                    |
+| [Collections](./07-collections.md)                                    | collection subjects, expectations on collection items, expected collections                                                                                                                    |
+| [Nested expectations](./08-nested-expectations.md)                    | expectations on a member, continuing with a new subject, members that need the evaluation, expectations in expected values                                                                     |
+| [Repeated checks and synchronous boundaries](./09-repeated-checks.md) | repeated checks, synchronous boundaries                                                                                                                                                        |
+| [Customization values](./10-customization-values.md)                  | simple values, list values, customization groups, values in a built-in group, excluded assemblies                                                                                              |
+| [Test frameworks and initialization](./11-initialization.md)          | module initializers, test framework adapter, registration from the test project                                                                                                                |
+| [Native AOT for extensions](./12-native-aot.md)                       | generic parameters, registering metadata yourself, the source generator, reflection in an extension                                                                                            |
+
+## Your first expectation
 
 The samples on this and the following pages verify tracks of the following type, such as "Love Me Do" (2:22) or
 "Hey Jude" (7:11):
@@ -228,7 +163,8 @@ private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars gr
 ### Using it in a test
 
 A test project that references your extension and aweXpect calls the expectation like a built-in one. As `ThatTrack`
-is in the namespace `aweXpect`, the test needs no further `using`:
+is in the namespace `aweXpect` (see [namespace and class names](#namespace-and-class-names)), the test needs no
+further `using`:
 
 ```csharp
 [Test]
@@ -246,4 +182,75 @@ For "Hey Jude", the test fails with:
 Expected that track
 is radio friendly,
 but it was 7:11 long
+```
+
+## Publishing as a package
+
+A test project that declares expectations for its own types needs none of this setup: it is for an extension that you
+publish as a package.
+
+### Referencing aweXpect.Core
+
+Reference `aweXpect.Core` in your extension, not `aweXpect`, and use the lowest version that contains the API you
+need, so that the extension works together with as many versions of `aweXpect` as possible. The namespace
+`aweXpect.Core.Internal` may change in any version, so don't use it in the code that your extension ships. The
+compiler reminds you of this with the diagnostic `aweXpect5001`.
+
+By default, a package marks the analyzers of its dependencies as private (`exclude="Analyzers"` in its `.nuspec`).
+Reference `aweXpect.Core` with `PrivateAssets="contentfiles;build"`, so that its source generators also run in the
+projects that use your extension, see [Native AOT for extensions](./12-native-aot.md#the-source-generator):
+
+```xml
+<ItemGroup>
+  <PackageReference Include="aweXpect.Core" Version="…" PrivateAssets="contentfiles;build" />
+</ItemGroup>
+```
+
+### Target frameworks
+
+`aweXpect.Core` targets `netstandard2.0`, `net8.0` and `net10.0`, like the extension packages of aweXpect. Include
+`netstandard2.0` in the targets of your extension, so that it also works in test projects on .NET Framework.
+
+Keep your extensions trimmable and AOT compatible like aweXpect itself, as described in
+[Native AOT for extensions](./12-native-aot.md).
+
+### Namespace and class names
+
+Declare your expectations in the namespace `aweXpect`, which the users import for `Expect.That` anyway, so that they
+need no further `using` for your extension. Name the class after the subject type, e.g. `ThatTrack` for the
+expectations on a `Track`, and make it `partial`, so that each expectation can have a file of its own, like
+`ThatJsonElement.HasProperty.cs` in `aweXpect.Json`:
+
+```csharp no-compile
+namespace aweXpect;
+
+public static partial class ThatTrack
+{
+    // the expectations on a Track
+}
+```
+
+### Polyfills for older targets
+
+Some attributes that an extension uses are compiler features that are missing in `netstandard2.0` and `net48`. Declare
+them as `internal` types in your own package there:
+
+- `CallerArgumentExpressionAttribute` (C# 10) shows the code of the caller in the expectation text, see
+  [message conventions](./03-message-conventions.md#code-of-the-caller-in-the-expectation-text).
+- `ModuleInitializerAttribute` (C# 9) runs code before the first expectation, see
+  [module initializers](./11-initialization.md#module-initializers). The source generators of `aweXpect.Core` also
+  need it, see [the source generator](./12-native-aot.md#the-source-generator).
+
+```csharp no-compile
+namespace System.Runtime.CompilerServices
+{
+    [AttributeUsage(AttributeTargets.Parameter)]
+    internal sealed class CallerArgumentExpressionAttribute(string parameterName) : Attribute
+    {
+        public string ParameterName { get; } = parameterName;
+    }
+
+    [AttributeUsage(AttributeTargets.Method)]
+    internal sealed class ModuleInitializerAttribute : Attribute;
+}
 ```

@@ -1,9 +1,25 @@
 # Native AOT for extensions
 
-aweXpect reflects over a type only when it has no registration in `TypeMetadataRegistry`, and switches that fallback
-off when an application is published with trimming or Native AOT enabled, so that a comparison or recording never
-silently verifies less than it claims to (see [Native AOT and trimming](../08-setup/03-native-aot.md)). An
-extension takes part in this in two ways.
+Under trimming or Native AOT, aweXpect compares and records only the types that have a registration (see
+[Native AOT and trimming](../08-setup/03-native-aot.md)). An extension takes part in this in two ways:
+
+- It marks a generic parameter whose argument reaches an equivalency comparison or an event recording with
+  `[RequiresMemberMetadata]` or `[RequiresEventMetadata]`, see [generic parameters](#generic-parameters).
+- It registers the types that it declares itself, see [registering metadata yourself](#registering-metadata-yourself).
+
+<details>
+<summary>Namespaces used on this page</summary>
+
+```csharp
+using System.Runtime.CompilerServices;
+using aweXpect.Core.Extending;
+using aweXpect.Core.Metadata;
+using aweXpect.Recording;
+```
+
+</details>
+
+## Generic parameters
 
 An extension method whose argument reaches an equivalency comparison or an event recording only reveals an open type
 parameter at its own call site, so it has to carry the marker that lets the source generator register the type at the
@@ -11,9 +27,6 @@ consumer's call site: `[RequiresMemberMetadata]` for a value that is compared, `
 that is recorded:
 
 ```csharp
-using aweXpect.Core.Metadata;
-using aweXpect.Recording;
-
 public static IEventRecording<T> Watch<T>([RequiresEventMetadata] this T subject)
     where T : notnull
     => subject.Record().Events();
@@ -27,32 +40,14 @@ public static AndOrResult<T, IThat<T>> IsEquivalentToTrack<T>(this IThat<T> subj
     => // ...
 ```
 
-The source generator that follows these markers ships in the `aweXpect.Core` package. It runs when the consumer's
-project is compiled, and only if that project gets the analyzers of `aweXpect.Core`, is compiled with C# 9 or later
-and has the `ModuleInitializerAttribute` (.NET 5 or later, or an own `internal` declaration). A project gets them by
-referencing `aweXpect.Core`, `aweXpect` or one of the extension packages of aweXpect, which all pass them on. By
-default, a package marks the analyzers of its dependencies as private (`exclude="Analyzers"` in its `.nuspec`), so
-reference `aweXpect.Core` with `PrivateAssets="contentfiles;build"` to pass them on to the consumers of your extension
-as well.
-
-<details>
-<summary>Several packages that pass the analyzers on</summary>
-
-NuGet restores `aweXpect.Core` only once, however many packages pass its analyzers on, so the generator runs once per
-project.
-
-</details>
-
 ## Registering metadata yourself
 
 For the types that your extension declares itself, you don't depend on the source generator: register their public
-members in `TypeMetadataRegistry` from a module initializer (see [initialization](./09-initialization.md)).
+members in `TypeMetadataRegistry` from a [module initializer](./11-initialization.md#module-initializers).
 `RegisterBatch` publishes the registrations together, so that no comparison sees a type with only some of them:
 
 ```csharp
-using System.Runtime.CompilerServices;
-
-internal static class MyExtensionMetadata
+internal static class MusicStoreMetadata
 {
 #pragma warning disable CA2255 // The initializer of a class library is intended here
     [ModuleInitializer]
@@ -81,6 +76,27 @@ that it should compare. The other methods cover the other kinds of metadata:
   `PrintMembers` of its own.
 - `RegisterDictionary` and `RegisterSet` register the dictionaries and sets of the given type arguments, so that a
   comparison reads their key comparer or comparer.
+
+## The source generator
+
+aweXpect reflects over a type only when it has no registration in `TypeMetadataRegistry`, and switches that fallback
+off when an application is published with trimming or Native AOT enabled, so that a comparison or recording never
+silently verifies less than it claims to.
+
+The source generator that follows the markers ships in the `aweXpect.Core` package. It runs when the consumer's
+project is compiled, and only if that project gets the analyzers of `aweXpect.Core`, is compiled with C# 9 or later
+and has the `ModuleInitializerAttribute` (.NET 5 or later, or an own `internal` declaration). A project gets them by
+referencing `aweXpect.Core`, `aweXpect` or one of the extension packages of aweXpect, which all pass them on. Your
+extension passes them on when it references `aweXpect.Core` as shown in
+[referencing aweXpect.Core](./index.md#referencing-awexpectcore).
+
+<details>
+<summary>Several packages that pass the analyzers on</summary>
+
+NuGet restores `aweXpect.Core` only once, however many packages pass its analyzers on, so the generator runs once per
+project.
+
+</details>
 
 ## Reflection in an extension
 

@@ -1,105 +1,45 @@
-# Initialization
+# Test frameworks and initialization
 
-An extension often has to run code once before its first expectation is evaluated, e.g. to register a custom value
-formatter. Use a
+An extension can run code before its first expectation, support a test framework of its own and read the running test.
+This page also shows how the test project passes values and code to your extension before the first test.
+
+<details>
+<summary>Namespaces used on this page</summary>
+
+```csharp
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using aweXpect.Core.Adapters;
+using aweXpect.Core.Extending;
+using aweXpect.Formatting;
+```
+
+</details>
+
+## Module initializers
+
+An extension often has to run code once before its first expectation is evaluated, e.g. to register a
+[value formatter](./04-formatting.md#value-formatters). Use a
 [module initializer](https://learn.microsoft.com/dotnet/csharp/language-reference/proposals/csharp-9.0/module-initializers),
 which runs before any other code of your assembly, i.e. when a test first uses the extension. In a class library, the
 attribute triggers the warning CA2255, so suppress it as shown:
 
 ```csharp
-using System.Runtime.CompilerServices;
-using aweXpect.Formatting;
-
-namespace MyExtension
+namespace MusicStore
 {
-    internal static class MyExtensionInitializer
+    internal static class MusicStoreInitializer
     {
 #pragma warning disable CA2255 // The initializer of a class library is intended here
         [ModuleInitializer]
         internal static void Initialize()
-            => ValueFormatter.Register(new MyValueFormatter());
+            => ValueFormatter.Register(new TrackFormatter());
 #pragma warning restore CA2255
     }
 }
 ```
 
-## Value formatters
-
-A value formatter returns `false` for every value it does not format, so that the next formatter or the built-in
-formatting applies. The `MyValueFormatter` registered above writes a `Track` with its title and duration:
-
-```csharp
-using System.Text;
-
-internal sealed class MyValueFormatter : IValueFormatter
-{
-    public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
-    {
-        if (value is not Track track)
-        {
-            return false;
-        }
-
-        stringBuilder.Append(track.Title).Append(" (");
-        Format.Formatter.Format(stringBuilder, track.Duration);
-        stringBuilder.Append(')');
-        return true;
-    }
-}
-```
-
-A registered formatter applies process-wide, to all threads and async flows, until the returned `IDisposable` is
-disposed. It is asked for every value that is not `null`, including built-in types such as `DateTime` or `int`,
-whether the value is formatted on its own, as an item of a collection or as a member of an object. When several
-registered formatters can format a value, the most recently registered one is used.
-
-Register a formatter only for the types that your extension declares. The module initializer runs before any of them
-is used, so their messages never depend on the order of the tests. A formatter for a type that your extension does not
-own, e.g. `System.Version`, would only apply to the tests that run after the first test that used your extension, and
-would change how other tests format it. Add such a formatter to your expectations instead.
-
-:::note[Older target frameworks]
-`ModuleInitializerAttribute` is a compiler feature requiring C# 9, not a specific target framework. Where it is missing
-(e.g. `netstandard2.0` or `net48`), declare it as an `internal` type in your own package.
-:::
-
-### Formatters of an expectation
-
-`ExpectationBuilder.AddFormatter` formats the values of one expectation with a formatter, before the registered ones.
-It applies while the expectation is evaluated and while its failure message is created, also to the expectations
-chained to it, e.g. collection expectations on the items of a member, but never outside of the expectation:
-
-```csharp
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Formatting;
-
-internal static class MyExtensionFormatting
-{
-    private static readonly IValueFormatter VersionFormatter = new MyVersionFormatter();
-
-    internal static ExpectationBuilder WithVersionFormatter(this ExpectationBuilder expectationBuilder)
-        => expectationBuilder.AddFormatter(VersionFormatter);
-
-    private sealed class MyVersionFormatter : IValueFormatter
-    {
-        public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
-        {
-            if (value is not Version version)
-            {
-                return false;
-            }
-
-            stringBuilder.Append('v').Append(version.ToString(3));
-            return true;
-        }
-    }
-}
-```
-
-When the expectation is nested in another one, e.g. with `ComplyWith`, or combined with others in `Expect.ThatAll` or
-`Expect.ThatAny`, the whole failure message uses the formatter. Pass a cached instance, as adding the same formatter
-again has no effect.
+`ModuleInitializerAttribute` is missing in `netstandard2.0` and `net48`: declare it in your own package there, see
+[polyfills for older targets](./index.md#polyfills-for-older-targets).
 
 ## Test framework adapter
 
@@ -112,11 +52,6 @@ A module initializer only runs when its assembly is first used, and the tests ne
 an adapter, so a registration in a separate package would never run:
 
 ```csharp
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using aweXpect.Core.Adapters;
-
 namespace MyTests
 {
     internal sealed class MyTestFrameworkAdapter : ITestFrameworkAdapter
@@ -195,9 +130,7 @@ An extension reads the running test with `TestFrameworkRegistry.TryGetCurrentTes
 parameterized test apart, as `aweXpect.Snapshots` does with `NamedAfterTestArguments`:
 
 ```csharp
-using aweXpect.Core.Adapters;
-
-internal static class MyCaseNames
+internal static class TrackCaseNames
 {
     internal static string? GetCaseName()
         => TestFrameworkRegistry.TryGetCurrentTest(out RunningTest? currentTest) &&
@@ -219,9 +152,7 @@ test. Expectations only observe it when `Settings().TestCancellation` is set to
 `aweXpect.Snapshots` does with a recorded mismatch when `AttachPendingFiles` is set:
 
 ```csharp
-using aweXpect.Core.Adapters;
-
-internal static class MyReports
+internal static class PlaylistReports
 {
     internal static void Attach(string reportFile)
         => _ = TestFrameworkRegistry.TryAddAttachment(reportFile, "The report of the test");
@@ -273,8 +204,6 @@ visible to the generator:
 process, in the order of their registration:
 
 ```csharp
-using aweXpect.Core.Extending;
-
 namespace MusicStore
 {
     public static class MusicStoreSetup
@@ -290,13 +219,12 @@ namespace MusicStore
 <details>
 <summary>Projects without module initializers</summary>
 
-- The generator runs under the same conditions as the one for the [type metadata](./10-native-aot.md): the project
-  gets the analyzers of `aweXpect.Core`, is compiled with C# 9 or later and has the `ModuleInitializerAttribute`
-  (.NET 5 or later, or an own `internal` declaration).
+- The generator runs under the same [conditions](./12-native-aot.md#the-source-generator) as the one for the type
+  metadata.
 - Otherwise, e.g. on .NET Framework with C# 7.3, or for a test project in F# or Visual Basic, nothing is registered
   and no initializer is called. Tell your users to call the initializer themselves, e.g. in an assembly-level setup of
   the test framework, and read the values from the loaded assemblies as a fallback, but only from those that
-  [`AssemblyPrefixes.IsExcluded`](./08-customization-values.md#exclude-the-framework-assemblies) does not exclude.
+  [`AssemblyPrefixes.IsExcluded`](./10-customization-values.md#excluded-assemblies) does not exclude.
 - One process can load assemblies of both kinds, e.g. an F# test project that calls a helper library in C#. Decide for
   each assembly whether it registered its values: let your build targets also record the assembly name, e.g. as
   `$(AssemblyName)`, register it with the values, and skip the assemblies with a registered name in the fallback.

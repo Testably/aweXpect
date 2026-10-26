@@ -6,9 +6,18 @@ generator in the `aweXpect.Core` package writes the extension methods, the const
 runs in every project that references `aweXpect.Core`, directly or through `aweXpect`, so an extension package can use it
 as well as a test project.
 
-```csharp no-compile
-using aweXpect.Core.Extending;
+<details>
+<summary>Namespaces used on this page</summary>
 
+```csharp
+using System.Diagnostics.CodeAnalysis;
+using aweXpect.Core;
+using aweXpect.Core.Extending;
+```
+
+</details>
+
+```csharp no-compile
 public static partial class ThatTrack
 {
     [GenerateExpectation("Is{Not}LongerThan", "is {not} longer than {minimum}")]
@@ -96,7 +105,7 @@ private static string DescribeDuration(Track track)
     => $"was {track.Duration:m\\:ss} long";
 ```
 
-```
+```text title="Failure message"
 Expected that track
 is longer than 3:00,
 but it was 2:22 long
@@ -154,7 +163,7 @@ private static PredicateResult IsLongerThan(Track track, TimeSpan minimum)
         : track.Duration > minimum;
 ```
 
-```
+```text title="Failure message"
 Expected that track
 is not longer than 3:00,
 but it had no duration
@@ -194,7 +203,7 @@ await Expect.That(tracks).None().AreLongerThan(TimeSpan.FromMinutes(5));
 - The method follows the rules above, and its first parameter is the item.
 - The expectation text describes a single item, e.g. "is longer than … for all items". The plural text is used
   where the quantifier is the subject, e.g. "has values of which at least 2 are longer than …". The quantifier
-  carries the negation, so neither text contains `{not}`.
+  carries the negation.
 - The result counts the items, e.g. "but only 1 of 3 were", with "did" instead of "were" when the text does not start
   with a form of "be". The failure message lists the matching or not matching items and the collection.
 - A `null` item does not match, unless the item parameter is nullable: then the method decides. `[DisallowNull]` and
@@ -256,7 +265,7 @@ await Expect.That(tracks).AreNotLongerThan(TimeSpan.FromMinutes(5));
 ### Formatting the items
 
 The failure message lists the items with their formatter. To show something else for them, e.g. a wrapper that a
-[formatter of your own](./09-initialization.md#value-formatters) formats, name a `static` method in the same class in
+[formatter of your own](./04-formatting.md#value-formatters) formats, name a `static` method in the same class in
 `FormattedItem`. It takes the item, which can be `null` for a reference type, and its result stands for the item in
 the listed items and in the collection:
 

@@ -3,6 +3,14 @@ namespace Snippets
 	// The type that the "Extending aweXpect" page declares.
 	public record Track(string Title, TimeSpan Duration);
 
+	// The formatter that the "Formatting" page declares, and the module initializer on the page registers.
+	internal sealed class TrackFormatter : aweXpect.Formatting.IValueFormatter
+	{
+		public bool TryFormat(System.Text.StringBuilder stringBuilder, object value,
+			aweXpect.Formatting.FormattingOptions? options)
+			=> false;
+	}
+
 	// The exceptions of the test framework that the adapter on the page throws.
 	internal sealed class MyTestFailedException(string message, Exception? innerException = null)
 		: Exception(message, innerException);
@@ -28,7 +36,8 @@ namespace Snippets
 
 namespace System.Runtime.CompilerServices
 {
-	// The page tells to declare this attribute on targets that miss it, and on the others it only causes a warning.
+	// The "Extending aweXpect" page tells to declare this attribute on targets that miss it, and on the others it only
+	// causes a warning.
 	[AttributeUsage(AttributeTargets.Method)]
 	internal sealed class ModuleInitializerAttribute : Attribute;
 

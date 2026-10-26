@@ -1,5 +1,8 @@
 # Constraints and results
 
+A constraint decides whether the subject meets the expectation, and its result writes the failure message. This page
+shows the kinds of constraints and results, and the rules they follow for negation, `null` subjects and side effects.
+
 <details>
 <summary>Namespaces used on this page</summary>
 
@@ -22,15 +25,14 @@ using static aweXpect.Formatting.Format;
 The basis for expectations are constraints. You can add different constraints to the `ExpectationBuilder` that is
 available for the `IThat<T>`. They differ in the input and output parameters for the `IsMetBy` method:
 
-| Constraint                                            | `IsMetBy` receives                         | Use it                                          |
-|-------------------------------------------------------|--------------------------------------------|-------------------------------------------------|
-| `IValueConstraint<T>`                                 | the actual value                           | for a synchronous check                         |
-| `IAsyncConstraint<T>`                                 | the actual value and a `CancellationToken` | for asynchronous work or to observe the timeout |
-| `IContextConstraint<T>`, `IAsyncContextConstraint<T>` | additionally an `IEvaluationContext`       | to share data between constraints               |
+| Constraint                                            | `IsMetBy` receives                         | Use it                                                                                                                   |
+|-------------------------------------------------------|--------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| `IValueConstraint<T>`                                 | the actual value                           | for a synchronous check                                                                                                  |
+| `IAsyncConstraint<T>`                                 | the actual value and a `CancellationToken` | for asynchronous work or to observe the timeout                                                                          |
+| `IContextConstraint<T>`, `IAsyncContextConstraint<T>` | additionally an `IEvaluationContext`       | to share data, to read a [collection](./07-collections.md#collection-subjects) once or for [side effects](#side-effects) |
 
 `IsMetBy` returns a `ConstraintResult`, which decides the outcome and writes the expectation and the result texts of
-the failure message. The `IEvaluationContext` shares data between the constraints of an evaluation, e.g. a
-[materialized collection](./06-collections-and-nested-expectations.md#collection-subjects).
+the failure message.
 
 <details>
 <summary>The evaluation context</summary>
@@ -99,9 +101,8 @@ additionally takes a flag indicating if the expected value is `null`.
 The `IsRadioFriendlyConstraint` of [your first expectation](./index.md#the-constraint) derives from
 `ConstraintResult.WithNotNullValue<Track>`, as it inspects the subject.
 
-Pass `it` to the base class and use the inherited `It` property: capturing the parameter as well stores it twice,
-which the compiler warns about (CS9107). The helper classes also let `.And` combine the result texts like the built-in
-expectations, e.g. "it was 2 and was not even" instead of "it was 2 and it was not even".
+The helper classes let `.And` combine the result texts like the built-in expectations, e.g. "it was 2 and was not
+even" instead of "it was 2 and it was not even". Pass `it` to the base class and use the inherited `It` property.
 
 <details>
 <summary>Deriving from ConstraintResult directly</summary>
@@ -296,7 +297,7 @@ was met. `TryGetValue<TValue>` builds on it and only returns `true` for a value 
 
 A result of your own that derives from `AndOrResult<TType, TThat>` reaches the `ExpectationBuilder` through the
 protected property of the same name, e.g. to continue with `ExpectationBuilder.And()` or `ExpectationBuilder.Or()`.
-For the options a result offers, see [options](./04-options.md).
+For the options a result offers, see [options](./05-options.md).
 
 ## Code of the caller
 
