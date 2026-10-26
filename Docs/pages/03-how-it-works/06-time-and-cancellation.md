@@ -109,6 +109,9 @@ follows:
 Both defaults can be changed in the [settings](./07-configuration.md#settings). When a default applied, the failure
 message names the wait, e.g. `has never recorded the callback within 0:30` or `eventually is equal to 2 within 0:30`.
 
+To wait on a virtual clock instead of in real time, use the experimental
+[`WithTimeSystem(…)`](../08-analyzers.md#experimental-apis).
+
 ### A condition
 
 When an object changes in the background, `Within(…)` lets [`Satisfies`](../04-values/12-object.md#condition) or

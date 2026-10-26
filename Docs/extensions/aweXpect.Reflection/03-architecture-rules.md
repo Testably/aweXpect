@@ -3,8 +3,8 @@
 An architecture rule restricts which other types a type may reference: its *dependencies*.
 [Type dependencies](#type-dependencies) introduces the dependency filters and expectations (including
 [dependency cycles](#dependency-cycles)), and [Layers as type selections](#layers-as-type-selections) shows
-how to combine them into a full architecture test suite. The examples use a music store application with the
-namespaces `MusicStore.Domain`, `MusicStore.Data`, `MusicStore.Infrastructure` and `MusicStore.Presentation`.
+how to combine them into a full architecture test suite. The examples use a music store application with the layers
+`MusicStore.Api`, `MusicStore.Application`, `MusicStore.Domain`, `MusicStore.Data` and `MusicStore.Infrastructure`.
 
 ## Type dependencies
 
@@ -18,8 +18,8 @@ The dependency filters and expectations follow the familiar filter/expect pairin
 | has dependencies outside set | `.WhichHaveDependenciesOutside("x", …)` | `.HasDependenciesOutside("x", …)` | `.HaveDependenciesOutside("x", …)` |
 
 ```csharp
-// Presentation must not reference the data layer
-await Expect.That(Types.InNamespace("MusicStore.Presentation"))
+// The API layer must not reference the data layer
+await Expect.That(Types.InNamespace("MusicStore.Api"))
     .DoNotDependOn("MusicStore.Data");
 
 // The API layer may only reference the application and domain layers
@@ -230,7 +230,7 @@ await Expect.That(domainTypes).DoNotDependOn(infrastructureTypes);
 await Expect.That(infrastructureTypes).DoNotDependOn(domainTypes);
 
 // Allowed set as union of selections (own namespace + framework stay allowed):
-await Expect.That(domainTypes).DependOnlyOn(repositoryTypes).OrOn(infrastructureTypes);
+await Expect.That(repositoryTypes).DependOnlyOn(domainTypes).OrOn(infrastructureTypes);
 ```
 
 Combine several rules into a single verification with aweXpect's `Expect.ThatAll(…)` (see
@@ -241,7 +241,7 @@ dependency ones, so naming conventions or sealing rules live in the same check:
 ```csharp
 await Expect.ThatAll(
     Expect.That(domainTypes).DoNotDependOn(infrastructureTypes),
-    Expect.That(domainTypes).DependOnlyOn(repositoryTypes).OrOn(infrastructureTypes),
+    Expect.That(repositoryTypes).DependOnlyOn(domainTypes).OrOn(infrastructureTypes),
     Expect.That(domainTypes).AreSealed());
 ```
 
@@ -251,7 +251,7 @@ infrastructure layer, and `Album` and `Track` are not sealed:
 ```text title="Failure message"
 Expected all of the following to succeed:
  [01] Expected that types within namespace "MusicStore.Domain" in all loaded assemblies all do not depend on types within namespace "MusicStore.Infrastructure" in all loaded assemblies
- [02] Expected that types within namespace "MusicStore.Domain" in all loaded assemblies all depend only on types within namespace "MusicStore.Data" with name ending with "Repository" in all loaded assemblies or types within namespace "MusicStore.Infrastructure" in all loaded assemblies
+ [02] Expected that types within namespace "MusicStore.Data" with name ending with "Repository" in all loaded assemblies all depend only on types within namespace "MusicStore.Domain" in all loaded assemblies or types within namespace "MusicStore.Infrastructure" in all loaded assemblies
  [03] Expected that types within namespace "MusicStore.Domain" in all loaded assemblies all are sealed
 but
  [01] it contained types with the dependency

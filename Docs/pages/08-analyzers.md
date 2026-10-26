@@ -254,3 +254,15 @@ the first expectation, see [initialization](./11-extending/08-initialization.md)
 ```csharp no-compile
 TestFrameworkRegistry.Register(new aweXpect.Frameworks.NunitAdapter());
 ```
+
+## Experimental APIs
+
+`WithTimeSystem(…)` in `aweXpect.Core.Internal` lets an expectation wait and measure on a virtual clock instead of in
+real time, e.g. with a time system of a mocking library. It is marked as experimental with the diagnostic
+`aweXpect5001`, as it may change in any version. Suppress it in a test project that uses a virtual time system:
+
+```xml
+<PropertyGroup>
+  <NoWarn>$(NoWarn);aweXpect5001</NoWarn>
+</PropertyGroup>
+```

@@ -235,3 +235,5 @@ await Expect.That(startTime).HasMillisecond(189);
 </Tabs>
 
 <PropertyComparisons example="HasYear(1969)" />
+
+`HasDayOfWeek` only offers `EqualTo` and `NotEqualTo`.

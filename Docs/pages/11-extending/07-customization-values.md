@@ -8,7 +8,6 @@ class by adding extension methods.
 
 ```csharp
 using System.Reflection;
-using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Core.Extending;
 using aweXpect.Customization;
@@ -63,10 +62,10 @@ For a list, use `CustomizationListValue<TItem>` instead of a `CustomizationValue
 ```csharp
 public static class MyListCustomizationExtensions
 {
-    public static ICustomizationValueSetter<IReadOnlyList<string>> MyIgnoredNames(
+    public static ICustomizationValueSetter<IReadOnlyList<string>> IgnoredTrackTitles(
         this AwexpectCustomization awexpectCustomization)
-        => new CustomizationListValue<string>(awexpectCustomization, "MyExtension.MyIgnoredNames",
-            Array.AsReadOnly<string>(["foo", "bar"]));
+        => new CustomizationListValue<string>(awexpectCustomization, "MyExtension.IgnoredTrackTitles",
+            Array.AsReadOnly<string>(["Intro", "Outro"]));
 }
 ```
 
@@ -80,23 +79,23 @@ To offer several related values, add a group: a class that exposes one `ICustomi
 Each value is stored under its own key, so it can be set and restored independently of the other values of the group:
 
 ```csharp
-public static class JsonCustomizationExtensions
+public static class MusicStoreCustomizationExtensions
 {
-    public static JsonCustomization Json(this AwexpectCustomization awexpectCustomization)
+    public static MusicStoreCustomization MusicStore(this AwexpectCustomization awexpectCustomization)
         => new(awexpectCustomization);
 
-    public class JsonCustomization
+    public class MusicStoreCustomization
     {
-        internal JsonCustomization(IAwexpectCustomization awexpectCustomization)
+        internal MusicStoreCustomization(IAwexpectCustomization awexpectCustomization)
         {
-            DefaultJsonDocumentOptions = new CustomizationValue<JsonDocumentOptions>(
+            MaximumRadioDuration = new CustomizationValue<TimeSpan>(
                 awexpectCustomization,
-                "MyExtension.Json.DefaultJsonDocumentOptions",
-                new JsonDocumentOptions { AllowTrailingCommas = true });
-            DefaultJsonSerializerOptions = new CustomizationValue<JsonSerializerOptions>(
+                "MyExtension.MusicStore.MaximumRadioDuration",
+                TimeSpan.FromMinutes(3));
+            DefaultGenre = new CustomizationValue<string>(
                 awexpectCustomization,
-                "MyExtension.Json.DefaultJsonSerializerOptions",
-                new JsonSerializerOptions { AllowTrailingCommas = true },
+                "MyExtension.MusicStore.DefaultGenre",
+                "Rock",
                 value =>
                 {
                     if (value is null)
@@ -107,8 +106,8 @@ public static class JsonCustomizationExtensions
                 });
         }
 
-        public ICustomizationValueSetter<JsonDocumentOptions> DefaultJsonDocumentOptions { get; }
-        public ICustomizationValueSetter<JsonSerializerOptions> DefaultJsonSerializerOptions { get; }
+        public ICustomizationValueSetter<TimeSpan> MaximumRadioDuration { get; }
+        public ICustomizationValueSetter<string> DefaultGenre { get; }
     }
 }
 ```
@@ -117,24 +116,23 @@ The `validate` callback checks a value before `Set` stores it, so that `Set(null
 Expectations access each value on its own:
 
 ```csharp
- // will return the default value 'true'
-bool allowTrailingCommas = Customize.aweXpect.Json().DefaultJsonDocumentOptions.Get().AllowTrailingCommas;
+ // will return the default value of 3 minutes
+TimeSpan maximumRadioDuration = Customize.aweXpect.MusicStore().MaximumRadioDuration.Get();
 ```
 
 And users customize each value on its own:
 
 ```csharp
-JsonSerializerOptions mySerializerOptions = new();
-using (Customize.aweXpect.Json().DefaultJsonSerializerOptions.Set(mySerializerOptions))
+using (Customize.aweXpect.MusicStore().DefaultGenre.Set("Pop"))
 {
-    // will use `mySerializerOptions` for the `JsonSerializerOptions`
-    // but keep any configured `JsonDocumentOptions`
+    // will use "Pop" as the default genre
+    // but keep any configured maximum radio duration
 }
 ```
 
 Both kinds of customizations work with [global defaults](../03-how-it-works/07-configuration.md#global-defaults)
 without any change: `Customize.aweXpect.Global.MyCustomization().Set(43)` or
-`Customize.aweXpect.Global.Json().DefaultJsonSerializerOptions.Set(…)` stores the value for all async flows, because
+`Customize.aweXpect.Global.MusicStore().DefaultGenre.Set(…)` stores the value for all async flows, because
 `Global` is an `AwexpectCustomization` as well. Their
 [lifetimes](../03-how-it-works/07-configuration.md#lifetimes-and-async-flows) behave like the ones of the built-in
 values, also when they are disposed out of order.

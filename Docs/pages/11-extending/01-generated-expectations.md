@@ -256,7 +256,7 @@ await Expect.That(tracks).AreNotLongerThan(TimeSpan.FromMinutes(5));
 ### Formatting the items
 
 The failure message lists the items with their formatter. To show something else for them, e.g. a wrapper that a
-[formatter of your own](./07-customization-values.md) formats, name a `static` method in the same class in
+[formatter of your own](./08-initialization.md#value-formatters) formats, name a `static` method in the same class in
 `FormattedItem`. It takes the item, which can be `null` for a reference type, and its result stands for the item in
 the listed items and in the collection:
 

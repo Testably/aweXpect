@@ -288,3 +288,5 @@ await Expect.That(importedAt).HasOffset().GreaterThan(TimeSpan.Zero);
 </Tabs>
 
 <PropertyComparisons example="HasYear(2024)" />
+
+`HasDayOfWeek` and `HasKind` only offer `EqualTo` and `NotEqualTo`.

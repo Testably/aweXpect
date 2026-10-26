@@ -234,8 +234,8 @@ The `grammars` a constraint receives tell it how its texts are used in the sente
 
 `ExpectationGrammarsExtensions` checks them with `IsNegated()`, `IsNested()`, `IsPlural()`, `IsActive()` or
 `IsIntroduced()`, and toggles the negation with `Negate()`. Use the plural form of the verb in the expectation text
-when the grammars are plural, but keep the singular form in the result text as long as the subject is the pronoun
-`it`:
+when the grammars are plural. In the result text, `SubjectVerb(It, singular, plural)` picks the verb, as the singular
+form is required as long as the subject is the pronoun `it`:
 
 ```csharp
 private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars grammars)
@@ -254,7 +254,7 @@ private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars gr
 
     protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
     {
-        stringBuilder.Append(It).Append(Grammars.IsPlural() && It != "it" ? " were " : " was ");
+        stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
         Formatter.Format(stringBuilder, Actual?.Duration);
         stringBuilder.Append(" long");
     }

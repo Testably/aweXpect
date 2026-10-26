@@ -96,4 +96,4 @@ await Expect.That(duration).IsBetween(43.Seconds()).And(45.Seconds()).Within(1.S
   .Because("it expands the interval by 1 second");
 ```
 
-Without `Within`, the [default tolerance](./10-datetime-offset.md#default-tolerance) applies.
+Without `Within`, the [default tolerance](./10-datetime-offset.md#default-tolerance) applies, if one is configured.

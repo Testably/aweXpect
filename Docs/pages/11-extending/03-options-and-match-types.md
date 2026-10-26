@@ -454,10 +454,7 @@ private sealed class ByTitleMatchType<TSubject>() : ObjectMatchType<TSubject>("B
 
         public override string GetFailure(string it, ExpectationGrammars grammars, TSubject? actual,
             Track expected, MatchResult result, string? indentation)
-        {
-            string verb = grammars.IsPlural() && it != "it" ? " were" : " was";
-            return $"{it}{verb} titled {Formatter.Format((actual as Track)?.Title)}";
-        }
+            => $"{it}{grammars.SubjectVerb(it, " was", " were")} titled {Formatter.Format((actual as Track)?.Title)}";
     }
 }
 ```
