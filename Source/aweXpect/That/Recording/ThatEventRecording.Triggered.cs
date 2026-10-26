@@ -19,7 +19,7 @@ public static partial class ThatEventRecording
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> Triggered<TSubject>(
-		this IThat<IEventRecording<TSubject>> subject,
+		this IThat<IEventRecording<TSubject>?> subject,
 		string eventName)
 		where TSubject : notnull
 	{
@@ -51,7 +51,7 @@ public static partial class ThatEventRecording
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> DidNotTrigger<TSubject>(
-		this IThat<IEventRecording<TSubject>> subject,
+		this IThat<IEventRecording<TSubject>?> subject,
 		string eventName)
 		where TSubject : notnull
 	{

@@ -13,14 +13,14 @@ namespace aweXpect.Results;
 ///     <see cref="SignalCountResult" /> to count how often a callback was signaled.
 /// </remarks>
 public class DidNotSignalResult
-	: AndOrResult<SignalerResult, IThat<Signaler>, DidNotSignalResult>,
+	: AndOrResult<SignalerResult, IThat<Signaler?>, DidNotSignalResult>,
 		IOptionsProvider<SignalerOptions>
 {
 	private readonly OptionsHolder<SignalerOptions> _options;
 
 	internal DidNotSignalResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<Signaler> returnValue,
+		IThat<Signaler?> returnValue,
 		OptionsHolder<SignalerOptions> options)
 		: base(expectationBuilder, returnValue)
 	{
@@ -40,7 +40,7 @@ public class DidNotSignalResult
 ///     <see cref="SignalCountWhoseResult{TParameter}" /> to count how often a callback was signaled.
 /// </remarks>
 public class DidNotSignalResult<TParameter>
-	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>, DidNotSignalResult<TParameter>>,
+	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>?>, DidNotSignalResult<TParameter>>,
 		IOptionsProvider<SignalerOptions>,
 		ISignalerResult<DidNotSignalResult<TParameter>, TParameter>
 {
@@ -49,7 +49,7 @@ public class DidNotSignalResult<TParameter>
 
 	internal DidNotSignalResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<Signaler<TParameter>> returnValue,
+		IThat<Signaler<TParameter>?> returnValue,
 		OptionsHolder<SignalerOptions> options,
 		OptionsHolder<SignalerPredicateOptions<TParameter>> predicates)
 		: base(expectationBuilder, returnValue)

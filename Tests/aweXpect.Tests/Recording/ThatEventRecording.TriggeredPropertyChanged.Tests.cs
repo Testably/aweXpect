@@ -114,7 +114,7 @@ public sealed partial class ThatEventRecording
 				IEventRecording<PropertyChangedClass>? subject = null;
 
 				async Task Act()
-					=> await That(subject!).TriggeredPropertyChanged();
+					=> await That(subject).TriggeredPropertyChanged();
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -165,6 +165,23 @@ public sealed partial class ThatEventRecording
 					                 })
 					             ]
 					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				IEventRecording<PropertyChangedClass>? subject = null;
+
+				async Task Act() =>
+					await That(subject).DoesNotComplyWith(n => n.TriggeredPropertyChanged());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has never recorded the PropertyChanged event,
+					             but it was <null>
+					             """)
+					.Because("a null recording cannot be inspected, so the negation fails as well");
 			}
 		}
 	}

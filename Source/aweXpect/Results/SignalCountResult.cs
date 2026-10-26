@@ -11,7 +11,7 @@ namespace aweXpect.Results;
 ///     The options are specified via <see cref="QuantifierExtensions" /> and <see cref="SignalerOptionsExtensions" />.
 /// </remarks>
 public class SignalCountResult
-	: AndOrResult<SignalerResult, IThat<Signaler>, SignalCountResult>,
+	: AndOrResult<SignalerResult, IThat<Signaler?>, SignalCountResult>,
 		IOptionsProvider<Quantifier>,
 		IOptionsProvider<SignalerOptions>
 {
@@ -20,7 +20,7 @@ public class SignalCountResult
 
 	internal SignalCountResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<Signaler> returnValue,
+		IThat<Signaler?> returnValue,
 		OptionsHolder<Quantifier> quantifier,
 		OptionsHolder<SignalerOptions> options)
 		: base(expectationBuilder, returnValue)

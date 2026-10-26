@@ -16,7 +16,7 @@ public static partial class ThatEventRecording
 	/// </summary>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> TriggeredPropertyChanged<TSubject>(
-		this IThat<IEventRecording<TSubject>> subject)
+		this IThat<IEventRecording<TSubject>?> subject)
 		where TSubject : INotifyPropertyChanged
 	{
 		OptionsHolder<Options.Quantifier> quantifier = new(new Options.Quantifier());
@@ -45,7 +45,7 @@ public static partial class ThatEventRecording
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> DidNotTriggerPropertyChanged<TSubject>(
-		this IThat<IEventRecording<TSubject>> subject)
+		this IThat<IEventRecording<TSubject>?> subject)
 		where TSubject : INotifyPropertyChanged
 	{
 		OptionsHolder<Options.Quantifier> quantifier = new(new Options.Quantifier());

@@ -13,14 +13,14 @@ namespace aweXpect.Results;
 ///     <see cref="SignalCountResult" /> to specify how often a callback must be signaled.
 /// </remarks>
 public class SignaledResult
-	: AndOrResult<SignalerResult, IThat<Signaler>, SignaledResult>,
+	: AndOrResult<SignalerResult, IThat<Signaler?>, SignaledResult>,
 		IOptionsProvider<SignalerOptions>
 {
 	private readonly OptionsHolder<SignalerOptions> _options;
 
 	internal SignaledResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<Signaler> returnValue,
+		IThat<Signaler?> returnValue,
 		OptionsHolder<SignalerOptions> options)
 		: base(expectationBuilder, returnValue)
 	{

@@ -260,6 +260,8 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   the expectation is evaluated.
 - The predicates of a `Signaler<TParameter>` moved from `SignalerOptions<TParameter>` to
   `SignalerPredicateOptions<TParameter>`, where `WithPredicate` is `AddPredicate`, like on the `TriggerEventFilter`.
+- The signaler and event recording expectations extend the nullable `IThat<Signaler?>`, `IThat<Signaler<TParameter>?>`
+  and `IThat<IEventRecording<TSubject>?>`, and their results continue on it, so your own expectations on these subjects extend it as well.
 - `ConstraintResult` creates a result that fails both ways with `FailureBothWays` instead of `Fail`.
 - A `ConstraintResult` negates itself in `protected override void NegateInPlace()` instead of
   `public override ConstraintResult Negate()`, so a negation can no longer return a new result that is then ignored.

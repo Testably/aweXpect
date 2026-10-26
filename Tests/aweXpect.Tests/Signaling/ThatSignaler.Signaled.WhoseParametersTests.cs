@@ -50,7 +50,7 @@ public sealed partial class ThatSignaler
 				Signaler<int>? subject = null;
 
 				async Task Act()
-					=> await That(subject!).Signaled().WhoseParameters.HasCount().EqualTo(0);
+					=> await That(subject).Signaled().WhoseParameters.HasCount().EqualTo(0);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

@@ -21,7 +21,7 @@ public static partial class ThatSignaler
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SignalCountResult Signaled(
-		this IThat<Signaler> subject)
+		this IThat<Signaler?> subject)
 	{
 		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
@@ -39,7 +39,7 @@ public static partial class ThatSignaler
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SignalCountWhoseResult<TParameter> Signaled<TParameter>(
-		this IThat<Signaler<TParameter>> subject)
+		this IThat<Signaler<TParameter>?> subject)
 	{
 		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
@@ -61,7 +61,7 @@ public static partial class ThatSignaler
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SignaledResult Signaled(
-		this IThat<Signaler> subject,
+		this IThat<Signaler?> subject,
 		Times times)
 	{
 		ThrowHelper.ThrowIfTimesIsNotPositive(times);
@@ -82,7 +82,7 @@ public static partial class ThatSignaler
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SignaledWhoseResult<TParameter> Signaled<TParameter>(
-		this IThat<Signaler<TParameter>> subject,
+		this IThat<Signaler<TParameter>?> subject,
 		Times times)
 	{
 		ThrowHelper.ThrowIfTimesIsNotPositive(times);
@@ -112,7 +112,7 @@ public static partial class ThatSignaler
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static DidNotSignalResult DidNotSignal(
-		this IThat<Signaler> subject)
+		this IThat<Signaler?> subject)
 	{
 		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
@@ -137,7 +137,7 @@ public static partial class ThatSignaler
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static DidNotSignalResult<TParameter> DidNotSignal<TParameter>(
-		this IThat<Signaler<TParameter>> subject)
+		this IThat<Signaler<TParameter>?> subject)
 	{
 		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		OptionsHolder<SignalerOptions> options = new(SignalerOptions.Default);
@@ -165,7 +165,7 @@ public static partial class ThatSignaler
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static DidNotSignalResult DidNotSignal(
-		this IThat<Signaler> subject,
+		this IThat<Signaler?> subject,
 		Times times)
 	{
 		ThrowHelper.ThrowIfTimesIsNotPositive(times);
@@ -195,7 +195,7 @@ public static partial class ThatSignaler
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static DidNotSignalResult<TParameter> DidNotSignal<TParameter>(
-		this IThat<Signaler<TParameter>> subject,
+		this IThat<Signaler<TParameter>?> subject,
 		Times times)
 	{
 		ThrowHelper.ThrowIfTimesIsNotPositive(times);
@@ -295,15 +295,14 @@ public static partial class ThatSignaler
 		ExpectationGrammars grammars,
 		OptionsHolder<Quantifier> quantifier,
 		OptionsHolder<SignalerOptions> options)
-		: ConstraintResult.WithNotNullValue<SignalerResult>(it, grammars), IAsyncContextConstraint<Signaler>
+		: ConstraintResult.WithNotNullValue<SignalerResult>(it, grammars), IAsyncContextConstraint<Signaler?>
 	{
 		private TimeSpan? _defaultTimeout;
 		private TimeSpan? _waitedTime;
 
-		public async ValueTask<ConstraintResult> IsMetBy(Signaler actual, IEvaluationContext context,
+		public async ValueTask<ConstraintResult> IsMetBy(Signaler? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 			if (actual == null)
 			{
 				Actual = null;
@@ -353,18 +352,17 @@ public static partial class ThatSignaler
 		OptionsHolder<SignalerOptions> options,
 		OptionsHolder<SignalerPredicateOptions<TParameter>> predicates)
 		: ConstraintResult.WithNotNullValue<SignalerResult<TParameter>>(it, grammars),
-			IAsyncContextConstraint<Signaler<TParameter>>
+			IAsyncContextConstraint<Signaler<TParameter>?>
 	{
 		private int _actualCount;
 		private TimeSpan? _defaultTimeout;
 		private TimeSpan? _waitedTime;
 
 		public async ValueTask<ConstraintResult> IsMetBy(
-			Signaler<TParameter> actual,
+			Signaler<TParameter>? actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 			if (actual == null)
 			{
 				Actual = null;

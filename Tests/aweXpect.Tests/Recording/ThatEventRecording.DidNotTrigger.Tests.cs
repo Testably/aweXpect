@@ -98,7 +98,7 @@ public sealed partial class ThatEventRecording
 				IEventRecording<CustomEventWithoutParametersClass>? subject = null;
 
 				async Task Act()
-					=> await That(subject!).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent));
+					=> await That(subject).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -142,6 +142,24 @@ public sealed partial class ThatEventRecording
 						.DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent)));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				IEventRecording<CustomEventWithoutParametersClass>? subject = null;
+
+				async Task Act() =>
+					await That(subject).DoesNotComplyWith(r => r
+						.DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent)));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has recorded the CustomEvent event at least once,
+					             but it was <null>
+					             """)
+					.Because("a null recording cannot be inspected, so the negation fails as well");
 			}
 		}
 	}

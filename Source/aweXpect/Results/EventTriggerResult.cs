@@ -16,7 +16,7 @@ namespace aweXpect.Results;
 ///     The number of times is specified via <see cref="QuantifierExtensions" />.
 /// </remarks>
 public class EventTriggerResult<TSubject>
-	: AndOrResult<IEventRecording<TSubject>, IThat<IEventRecording<TSubject>>, EventTriggerResult<TSubject>>,
+	: AndOrResult<IEventRecording<TSubject>, IThat<IEventRecording<TSubject>?>, EventTriggerResult<TSubject>>,
 		EventTriggerResult<TSubject>.ICustomParameterFilter,
 		IOptionsProvider<Quantifier>,
 		IOptionsProvider<RepeatedCheckOptions>
@@ -28,7 +28,7 @@ public class EventTriggerResult<TSubject>
 
 	internal EventTriggerResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<IEventRecording<TSubject>> returnValue,
+		IThat<IEventRecording<TSubject>?> returnValue,
 		OptionsHolder<TriggerEventFilter> filter,
 		OptionsHolder<Quantifier> quantifier,
 		OptionsHolder<RepeatedCheckOptions> options)

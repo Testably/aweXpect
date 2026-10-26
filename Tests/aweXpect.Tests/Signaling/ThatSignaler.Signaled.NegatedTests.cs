@@ -137,6 +137,40 @@ public sealed partial class ThatSignaler
 					.Because("the count lies inside the range, so it is not too low");
 			}
 
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Signaler? subject = null;
+
+				async Task Act() =>
+					await That(subject).DoesNotComplyWith(s => s.Signaled());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has never recorded the callback,
+					             but it was <null>
+					             """)
+					.Because("a null signaler cannot be inspected, so the negation fails as well");
+			}
+
+			[Test]
+			public async Task WhenSubjectWithParameterIsNull_ShouldFail()
+			{
+				Signaler<int>? subject = null;
+
+				async Task Act() =>
+					await That(subject).DoesNotComplyWith(s => s.Signaled());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has never recorded the callback,
+					             but it was <null>
+					             """)
+					.Because("a null signaler cannot be inspected, so the negation fails as well");
+			}
+
 			private static SignalCountResult Quantify(SignalCountResult result, string quantifier)
 				=> quantifier switch
 				{

@@ -69,7 +69,7 @@ public sealed partial class ThatSignaler
 				Signaler? subject = null;
 
 				async Task Act()
-					=> await That(subject!).DidNotSignal();
+					=> await That(subject).DidNotSignal();
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -156,7 +156,7 @@ public sealed partial class ThatSignaler
 				Signaler<int>? subject = null;
 
 				async Task Act()
-					=> await That(subject!).DidNotSignal();
+					=> await That(subject).DidNotSignal();
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

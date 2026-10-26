@@ -17,7 +17,7 @@ namespace aweXpect.Results;
 ///     are specified via <see cref="SignalerOptionsExtensions" />.
 /// </remarks>
 public class SignaledWhoseResult<TParameter>
-	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>, SignaledWhoseResult<TParameter>>,
+	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>?>, SignaledWhoseResult<TParameter>>,
 		IOptionsProvider<SignalerOptions>,
 		ISignalerResult<SignaledWhoseResult<TParameter>, TParameter>
 {
@@ -26,7 +26,7 @@ public class SignaledWhoseResult<TParameter>
 
 	internal SignaledWhoseResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<Signaler<TParameter>> returnValue,
+		IThat<Signaler<TParameter>?> returnValue,
 		OptionsHolder<SignalerOptions> options,
 		OptionsHolder<SignalerPredicateOptions<TParameter>> predicates)
 		: base(expectationBuilder, returnValue)
