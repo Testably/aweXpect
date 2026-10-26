@@ -11,18 +11,29 @@ namespace aweXpect.Snapshots;
 ///     The text is compared ordinally, unless <see cref="IgnoringCase" />, <see cref="AsWildcard" /> or
 ///     <see cref="AsRegex" /> follow. A pattern uses the timeout of
 ///     <c>Customize.aweXpect.Settings().DefaultRegexTimeout</c>, and a pattern that times out fails the expectation.
+///     Each option returns a new selection, so a stored selection can be continued more than once and never changes a
+///     rule created from it.
 /// </remarks>
 /// <typeparam name="TResult">What an action returns.</typeparam>
 public sealed class SnapshotText<TResult> : SnapshotPattern<TResult>
 {
+	private readonly Func<SnapshotRule, TResult> _add;
+	private readonly bool _ignoreCase;
+	private readonly Kind _kind;
 	private readonly string _text;
-	private bool _ignoreCase;
-	private Kind _kind;
 
 	internal SnapshotText(Func<SnapshotRule, TResult> add, string text)
+		: this(add, text, false, Kind.Literal)
+	{
+	}
+
+	private SnapshotText(Func<SnapshotRule, TResult> add, string text, bool ignoreCase, Kind kind)
 		: base(add, null)
 	{
+		_add = add;
 		_text = text;
+		_ignoreCase = ignoreCase;
+		_kind = kind;
 	}
 
 	/// <summary>
@@ -34,10 +45,7 @@ public sealed class SnapshotText<TResult> : SnapshotPattern<TResult>
 	///     own, use <see cref="SnapshotFor{TResult}.Regex" /> instead.
 	/// </remarks>
 	public SnapshotText<TResult> AsRegex()
-	{
-		_kind = Kind.Regex;
-		return this;
-	}
+		=> new(_add, _text, _ignoreCase, Kind.Regex);
 
 	/// <summary>
 	///     Interprets the text as a wildcard pattern, where <c>*</c> matches zero or more characters and <c>?</c> exactly
@@ -48,19 +56,13 @@ public sealed class SnapshotText<TResult> : SnapshotPattern<TResult>
 	///     the rest of the snapshot.
 	/// </remarks>
 	public SnapshotText<TResult> AsWildcard()
-	{
-		_kind = Kind.Wildcard;
-		return this;
-	}
+		=> new(_add, _text, _ignoreCase, Kind.Wildcard);
 
 	/// <summary>
 	///     Ignores the case of the text when <paramref name="ignoreCase" /> is <see langword="true" />.
 	/// </summary>
 	public SnapshotText<TResult> IgnoringCase(bool ignoreCase = true)
-	{
-		_ignoreCase = ignoreCase;
-		return this;
-	}
+		=> new(_add, _text, ignoreCase, _kind);
 
 	private protected override TextMasking CreateMasking(string template)
 	{
