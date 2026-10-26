@@ -615,11 +615,13 @@ public class ObjectMatchTypeSlotExtensionsTests
 		public int Seconds { get; } = seconds;
 	}
 
+#pragma warning disable CA1859 // The ObjectMatcher implements AreConsideredEqual explicitly, so the tests need the interface
 	private static IEqualityEvaluator<T> DefaultEvaluator<T>()
 		=> ObjectMatchType<T>.Default.ForEvaluation(default);
 
 	private static IEqualityEvaluator<T> Evaluator<T>(OptionsSlot<ObjectMatchType<T>> sut)
 		=> sut.Value.ForEvaluation(default);
+#pragma warning restore CA1859
 
 	private sealed class DummyMatchType() : ObjectMatchType<object>("Custom")
 	{

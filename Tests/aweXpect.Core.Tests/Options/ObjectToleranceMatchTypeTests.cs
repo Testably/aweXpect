@@ -426,8 +426,10 @@ public class ObjectToleranceMatchTypeTests
 		=> new(ObjectMatchType<int>.WithTolerance<int>((a, e, t) => Math.Abs(a - e) <= t,
 			validation: validation, defaultTolerance: defaultTolerance));
 
+#pragma warning disable CA1859 // The ObjectMatcher implements AreConsideredEqual explicitly, so the tests need the interface
 	private static IEqualityEvaluator<T> Evaluator<T>(OptionsSlot<ObjectMatchType<T>> sut)
 		=> sut.Value.ForEvaluation(default);
+#pragma warning restore CA1859
 
 	private static void RequireEven(int t)
 	{

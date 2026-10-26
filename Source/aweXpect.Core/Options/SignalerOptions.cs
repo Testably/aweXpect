@@ -50,11 +50,13 @@ public readonly struct SignalerOptions
 	///     A later timeout replaces the earlier one.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
+#pragma warning disable CA1822 // An instance method like the option methods of the other options, so that options.Within(…) compiles
 	public SignalerOptions Within(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
 		return new SignalerOptions(~timeout.Ticks);
 	}
+#pragma warning restore CA1822
 
 	/// <inheritdoc cref="object.ToString()" />
 	/// <remarks>
