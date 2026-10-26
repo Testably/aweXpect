@@ -13,6 +13,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="System.Collections.Immutable" />
 		<ProjectReference Include="..\aweXpect.Analyzers\aweXpect.Analyzers.csproj"/>
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
 			<PrivateAssets>all</PrivateAssets>
