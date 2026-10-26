@@ -271,7 +271,7 @@ public sealed partial class ThatXmlString
 						=> await That("<a/>").IsEqualTo(expected).AsXml();
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage($"The expected XML is invalid: {errorMessage}");
+						.WithMessage($"The 'expected' XML is invalid: {errorMessage}").AsPrefix();
 				}
 
 				[Test]
@@ -281,7 +281,7 @@ public sealed partial class ThatXmlString
 						=> await That("<a>x</a>").IsEqualTo("<!DOCTYPE a [<!ENTITY e \"x\">]><a>&e;</a>").AsXml();
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("The expected XML is invalid, because it contains a document type definition (DTD), which is prohibited for security reasons.");
+						.WithMessage("The 'expected' XML is invalid, because it contains a document type definition (DTD), which is prohibited for security reasons.").AsPrefix();
 				}
 
 				[Test]
@@ -292,7 +292,7 @@ public sealed partial class ThatXmlString
 
 					await That(Act).Throws<ArgumentNullException>()
 						.WithParamName("expected").And
-						.WithMessage("The expected XML cannot be null.*").AsWildcard();
+						.WithMessage("The 'expected' XML cannot be null.*").AsWildcard();
 				}
 
 				[Test]
@@ -406,7 +406,7 @@ public sealed partial class ThatXmlString
 						=> await That(subject).All().AreEqualTo("foo").AsXml();
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("The expected XML is invalid: *").AsWildcard()
+						.WithMessage("The 'expected' XML is invalid: *").AsWildcard()
 						.Because("an invalid expected XML is rejected also when no item is compared with it");
 				}
 
@@ -512,7 +512,7 @@ public sealed partial class ThatXmlString
 						=> await That("<a/>").IsNotEqualTo("foo").AsXml();
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("The expected XML is invalid: *").AsWildcard()
+						.WithMessage("The 'unexpected' XML is invalid: *").AsWildcard()
 						.Because("an invalid expected XML would let the negation pass for every subject");
 				}
 

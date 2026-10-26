@@ -34,7 +34,8 @@ internal static class SecureXml
 		=> Load(xml, DtdProhibitingSettings);
 
 	/// <summary>
-	///     Loads the <paramref name="expected" /> XML of an expectation.
+	///     Loads the <paramref name="expected" /> XML of an expectation, which the caller received as
+	///     <paramref name="parameterName" />.
 	/// </summary>
 	/// <remarks>
 	///     An expected value that is no XML is rejected, as it would differ from every subject, so that a negated
@@ -42,11 +43,12 @@ internal static class SecureXml
 	/// </remarks>
 	/// <exception cref="ArgumentNullException">The <paramref name="expected" /> value is <see langword="null" />.</exception>
 	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid XML.</exception>
-	public static XDocument LoadExpected(string? expected)
+	public static XDocument LoadExpected(string? expected, string parameterName)
 	{
 		if (expected is null)
 		{
-			throw Tracing.WriteException(new ArgumentNullException(nameof(expected), "The expected XML cannot be null."));
+			throw Tracing.WriteException(new ArgumentNullException(parameterName,
+				$"The '{parameterName}' XML cannot be null."));
 		}
 
 		try
@@ -56,8 +58,8 @@ internal static class SecureXml
 		catch (XmlException e)
 		{
 			throw Tracing.WriteException(new ArgumentException(IsCausedByDtd(expected, e)
-				? "The expected XML is invalid, because it contains a document type definition (DTD), which is prohibited for security reasons."
-				: $"The expected XML is invalid: {e.Message}", e));
+				? $"The '{parameterName}' XML is invalid, because it contains a document type definition (DTD), which is prohibited for security reasons."
+				: $"The '{parameterName}' XML is invalid: {e.Message}", parameterName, e));
 		}
 	}
 

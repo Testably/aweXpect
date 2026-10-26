@@ -34,7 +34,7 @@ public sealed partial class ThatHttpResponseMessage
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("expected").And
-					.WithMessage("The 'expected' cannot be null.").AsPrefix();
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
 			[Test]

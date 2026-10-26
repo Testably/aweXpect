@@ -25,7 +25,7 @@ public sealed partial class ThatJsonObject
 					=> await That(subject).IsJsonSerializedAs("{\"Title\":");
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("The expected JSON is invalid: *").AsWildcard();
+					.WithMessage("The 'expected' JSON is invalid: *").AsWildcard();
 			}
 
 			[Test]
@@ -37,7 +37,7 @@ public sealed partial class ThatJsonObject
 					=> await That(subject).IsJsonSerializedAs(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithMessage("The expected JSON cannot be null.*").AsWildcard()
+					.WithMessage("The 'expected' JSON cannot be null.*").AsWildcard()
 					.Because("a null string is no JSON, while the JSON null is written as \"null\"");
 			}
 

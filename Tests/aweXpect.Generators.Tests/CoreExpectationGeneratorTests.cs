@@ -474,7 +474,7 @@ public sealed class CoreExpectationGeneratorTests
 				{
 					if (unexpected is null)
 					{
-						throw global::aweXpect.Core.Tracing.WriteException(new global::System.ArgumentNullException(nameof(unexpected), "The 'unexpected' cannot be null."));
+						throw global::aweXpect.Core.Tracing.WriteException(new global::System.ArgumentNullException(nameof(unexpected), "The 'unexpected' value cannot be null."));
 					}
 
 					return new global::aweXpect.Results.AndOrResult<string, global::aweXpect.Core.IThat<string?>>(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint(unexpected, (__state, __it, __grammars) => global::aweXpect.Core.Constraints.ConstraintResultExtensions.Invert(new IsNamed_GeneratedConstraint(__it, __grammars, __state))),

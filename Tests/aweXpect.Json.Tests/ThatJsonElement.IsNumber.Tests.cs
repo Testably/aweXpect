@@ -595,7 +595,7 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).IsNumber().LessThan(null);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithMessage("The 'expected' cannot be null.").AsPrefix()
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix()
 					.Because("a JSON number is never null, so nothing can be compared with a null bound");
 			}
 

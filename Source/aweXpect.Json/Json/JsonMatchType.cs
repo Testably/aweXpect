@@ -36,18 +36,24 @@ internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 			return;
 		}
 
-		ParseExpected(expected, options.DocumentOptions).Dispose();
+		ParseExpected(expected, parameterName, options.DocumentOptions).Dispose();
 		_validatedExpected = expected;
 	}
 
+	/// <summary>
+	///     Parses the <paramref name="expected" /> JSON of an expectation, which the caller received as
+	///     <paramref name="parameterName" />.
+	/// </summary>
 	/// <remarks>
 	///     An expected value that is no JSON differs from every subject, so that a negated expectation could never fail.
 	/// </remarks>
-	internal static JsonDocument ParseExpected(string? expected, JsonDocumentOptions documentOptions)
+	internal static JsonDocument ParseExpected(string? expected, string parameterName,
+		JsonDocumentOptions documentOptions)
 	{
 		if (expected is null)
 		{
-			throw Tracing.WriteException(new ArgumentNullException(nameof(expected), "The expected JSON cannot be null."));
+			throw Tracing.WriteException(new ArgumentNullException(parameterName,
+				$"The '{parameterName}' JSON cannot be null."));
 		}
 
 		try
@@ -56,7 +62,8 @@ internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 		}
 		catch (JsonException e)
 		{
-			throw Tracing.WriteException(new ArgumentException($"The expected JSON is invalid: {e.Message}", e));
+			throw Tracing.WriteException(new ArgumentException(
+				$"The '{parameterName}' JSON is invalid: {e.Message}", parameterName, e));
 		}
 	}
 
@@ -72,7 +79,7 @@ internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 		/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid JSON.</exception>
 		public override async ValueTask<MatchResult> Match(string? actual, string? expected)
 		{
-			using JsonDocument expectedJson = ParseExpected(expected, options.DocumentOptions);
+			using JsonDocument expectedJson = ParseExpected(expected, nameof(expected), options.DocumentOptions);
 			if (actual is null)
 			{
 				return MatchResult.NoMatch;

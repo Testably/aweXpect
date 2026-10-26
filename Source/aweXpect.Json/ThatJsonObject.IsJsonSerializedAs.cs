@@ -109,7 +109,7 @@ public static partial class ThatJsonObject
 	{
 		JsonOptions jsonOptions = options?.Invoke(JsonOptions.Default) ?? JsonOptions.Default;
 		return AddIsJsonSerializedAs(source,
-			_ => JsonMatchType.ParseExpected(expected, jsonOptions.DocumentOptions),
+			_ => JsonMatchType.ParseExpected(expected, nameof(expected), jsonOptions.DocumentOptions),
 			expected, jsonOptions, serializerOptions, typeInfo);
 	}
 

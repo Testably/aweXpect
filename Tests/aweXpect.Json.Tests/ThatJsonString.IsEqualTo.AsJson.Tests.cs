@@ -99,7 +99,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).All().AreEqualTo("foo").AsJson();
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("The expected JSON is invalid: *").AsWildcard()
+						.WithMessage("The 'expected' JSON is invalid: *").AsWildcard()
 						.Because("an invalid expected JSON is rejected also when no item is compared with it");
 				}
 
@@ -112,7 +112,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).Contains("foo").AsJson();
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("The expected JSON is invalid: *").AsWildcard()
+						.WithMessage("The 'expected' JSON is invalid: *").AsWildcard()
 						.Because("an invalid expected JSON is rejected also when no item is compared with it");
 				}
 
@@ -125,7 +125,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).All().AreEqualTo(null).AsJson();
 
 					await That(Act).Throws<ArgumentNullException>()
-						.WithMessage("The expected JSON cannot be null.*").AsWildcard()
+						.WithMessage("The 'expected' JSON cannot be null.*").AsWildcard()
 						.Because("a null expected value is rejected also when no item is compared with it");
 				}
 
@@ -264,7 +264,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).IsEqualTo(expected).AsJson(o => o.IgnoringAdditionalProperties());
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage($"The expected JSON is invalid: {errorMessage}");
+						.WithMessage($"The 'expected' JSON is invalid: {errorMessage}").AsPrefix();
 				}
 
 				[Test]
@@ -276,7 +276,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).IsEqualTo(null).AsJson();
 
 					await That(Act).Throws<ArgumentNullException>()
-						.WithMessage("The expected JSON cannot be null.*").AsWildcard()
+						.WithMessage("The 'expected' JSON cannot be null.*").AsWildcard()
 						.Because("a null expected value is no JSON to compare with");
 				}
 
@@ -515,7 +515,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).IsEqualTo(expected).AsJson();
 
 					await That(Act).Throws<ArgumentNullException>()
-						.WithMessage("The expected JSON cannot be null.*").AsWildcard();
+						.WithMessage("The 'expected' JSON cannot be null.*").AsWildcard();
 				}
 
 				[Test]
@@ -1072,7 +1072,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).DoesNotContain("foo").AsJson();
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("The expected JSON is invalid: *").AsWildcard()
+						.WithMessage("The 'unexpected' JSON is invalid: *").AsWildcard()
 						.Because("an invalid expected JSON would let the negation pass for every collection");
 				}
 
@@ -1085,7 +1085,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).IsNotEqualTo("foo").AsJson();
 
 					await That(Act).Throws<ArgumentException>()
-						.WithMessage("The expected JSON is invalid: *").AsWildcard()
+						.WithMessage("The 'unexpected' JSON is invalid: *").AsWildcard()
 						.Because("an invalid expected JSON would let the negation pass for every subject");
 				}
 

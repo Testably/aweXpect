@@ -31,18 +31,18 @@ internal sealed class XmlMatchType(XmlOptions options) : StringMatchType
 	/// <exception cref="ArgumentNullException">The <paramref name="expected" /> value is <see langword="null" />.</exception>
 	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid XML.</exception>
 	public override void ValidateExpected(string? expected, string parameterName)
-		=> GetExpectedDocument(expected);
+		=> GetExpectedDocument(expected, parameterName);
 
 	/// <remarks>
 	///     The last parsed document is kept, because the expected value is validated and compared again for every item of
 	///     a collection, and in every evaluation.
 	/// </remarks>
-	private XDocument GetExpectedDocument(string? expected)
+	private XDocument GetExpectedDocument(string? expected, string parameterName)
 	{
 		ParsedExpected? parsedExpected = _parsedExpected;
 		if (parsedExpected is null || !string.Equals(expected, parsedExpected.Xml, StringComparison.Ordinal))
 		{
-			parsedExpected = new ParsedExpected(expected, SecureXml.LoadExpected(expected));
+			parsedExpected = new ParsedExpected(expected, SecureXml.LoadExpected(expected, parameterName));
 			_parsedExpected = parsedExpected;
 		}
 
@@ -70,7 +70,7 @@ internal sealed class XmlMatchType(XmlOptions options) : StringMatchType
 		/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid XML.</exception>
 		public override ValueTask<MatchResult> Match(string? actual, string? expected)
 		{
-			XDocument expectedDocument = matchType.GetExpectedDocument(expected);
+			XDocument expectedDocument = matchType.GetExpectedDocument(expected, nameof(expected));
 			if (actual is null)
 			{
 				return new ValueTask<MatchResult>(MatchResult.NoMatch);

@@ -273,7 +273,7 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).IsString().EqualTo(null);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithMessage("The 'expected' cannot be null.").AsPrefix()
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix()
 					.Because("a JSON string is never null");
 			}
 
@@ -485,7 +485,7 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).IsString((string)null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithMessage("The 'expected' cannot be null.").AsPrefix();
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
 			[Test]

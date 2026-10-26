@@ -135,10 +135,12 @@ internal static class ExpectationWriter
 		foreach (string name in parameters.Values.Where(p => p.RequiresNotNull).Select(p => p.GetName(negated)))
 		{
 			string rawName = name.TrimStart('@');
+			// Like the null message of aweXpect.Core, the polarity names, which are adjectives, are followed by a noun.
+			string description = rawName is "expected" or "unexpected" ? $"'{rawName}' value" : $"'{rawName}'";
 			sb.Append("\t\tif (").Append(name).AppendLine(" is null)");
 			sb.AppendLine("\t\t{");
 			sb.Append("\t\t\tthrow global::aweXpect.Core.Tracing.WriteException(new global::System.ArgumentNullException(nameof(")
-				.Append(name).Append("), \"The '").Append(rawName).AppendLine("' cannot be null.\"));");
+				.Append(name).Append("), \"The ").Append(description).AppendLine(" cannot be null.\"));");
 			sb.AppendLine("\t\t}");
 			sb.AppendLine();
 		}

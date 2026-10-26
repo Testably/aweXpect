@@ -96,7 +96,7 @@ public sealed partial class ThatXmlString
 					=> await That(subject).IsValidXmlMatching("<a>");
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("The expected XML is invalid: *").AsWildcard();
+					.WithMessage("The 'expected' XML is invalid: *").AsWildcard();
 			}
 		}
 
@@ -112,7 +112,7 @@ public sealed partial class ThatXmlString
 					=> await That(subject).DoesNotComplyWith(it => it.IsValidXmlMatching("<a>"));
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("The expected XML is invalid: *").AsWildcard()
+					.WithMessage("The 'expected' XML is invalid: *").AsWildcard()
 					.Because("an invalid expected XML is an error in the test, not a failure of the subject");
 			}
 
