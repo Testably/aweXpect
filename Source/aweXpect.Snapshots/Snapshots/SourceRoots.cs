@@ -18,8 +18,9 @@ namespace aweXpect.Snapshots;
 ///     Each recorded value has the form <c>&lt;MappedPath&gt;=&lt;SourceRoot&gt;</c>, where the mapped path is the
 ///     source root itself, or the prefix such as <c>/_/</c> that a deterministic build emits instead of it. A module
 ///     initializer that the source generator of aweXpect.Core emits into the test project registers the recorded values
-///     in the <see cref="ExtensionRegistry" />. Where the test project cannot compile a module initializer, nothing is
-///     registered, and the loaded assemblies are searched for the recorded values instead.<br />
+///     in the <see cref="ExtensionRegistry" />, together with the name of the assembly. Where a project cannot compile a
+///     module initializer, nothing is registered, so the loaded assemblies that registered nothing are searched for the
+///     recorded values as well.<br />
 ///     The directories of the test projects are recorded as well, so that <see cref="OrphanedSnapshots" /> only lists
 ///     the snapshots of these projects, each with its target framework for <c>.UniqueFor.TargetFramework()</c>.
 /// </remarks>
@@ -28,19 +29,13 @@ internal static class SourceRoots
 	private const string MetadataKey = "aweXpect.Snapshots.SourceRoot";
 	private const string ProjectDirectoryKey = "aweXpect.Snapshots.ProjectDirectory";
 	private const string TargetFrameworkKey = "aweXpect.Snapshots.TargetFramework";
+	private const string AssemblyKey = "aweXpect.Snapshots.Assembly";
 
 	private static readonly ConcurrentQueue<Assembly> LoadedAssemblies = new();
 	private static readonly object RecordedLock = new();
 
-	/// <remarks>
-	///     Decided once, when the first snapshot needs the values, which is after the module initializer of the test
-	///     assembly registered its own, as it runs before any code of the test assembly.
-	/// </remarks>
-	private static readonly Lazy<bool> IsRegistered =
-		new(() => ExtensionRegistry.GetValues(ProjectDirectoryKey).Count > 0);
-
 	private static Records? _records;
-	private static RegisteredRecords? _registeredRecords;
+	private static CombinedRecords? _combinedRecords;
 
 	/// <summary>
 	///     The recorded source roots.
@@ -48,33 +43,38 @@ internal static class SourceRoots
 	private static KeyValuePair<string, string>[] Recorded => GetRecords().SourceRoots;
 
 	/// <summary>
-	///     The recorded values, from the <see cref="ExtensionRegistry" /> where the test assembly registers them, or
-	///     else read from the loaded assemblies.
+	///     The recorded values, from the <see cref="ExtensionRegistry" /> and from the loaded assemblies that registered
+	///     nothing.
 	/// </summary>
-	private static Records GetRecords()
-		=> IsRegistered.Value ? GetRegisteredRecords() : GetScannedRecords();
-
 	/// <remarks>
+	///     Each assembly is decided on its own, as the assemblies of one process can differ, e.g. a test project in F# or
+	///     for .NET Framework with C# 7.3 that calls a helper library in C# 9, which registers its values.<br />
 	///     A test assembly that is loaded later registers its values when it is loaded. The registry returns the same
-	///     lists until a value is added, so the records are only built again when one was added.
+	///     lists until a value is added, so the records are only built again when one was added or an assembly was read.
 	/// </remarks>
-	private static Records GetRegisteredRecords()
+	private static Records GetRecords()
 	{
 		IReadOnlyList<string> sourceRoots = ExtensionRegistry.GetValues(MetadataKey);
 		IReadOnlyList<string> projectDirectories = ExtensionRegistry.GetValues(ProjectDirectoryKey);
 		IReadOnlyList<string> targetFrameworks = ExtensionRegistry.GetValues(TargetFrameworkKey);
-		RegisteredRecords? registered = Volatile.Read(ref _registeredRecords);
-		if (registered is null ||
-		    !ReferenceEquals(registered.SourceRoots, sourceRoots) ||
-		    !ReferenceEquals(registered.ProjectDirectories, projectDirectories) ||
-		    !ReferenceEquals(registered.TargetFrameworks, targetFrameworks))
+		Records scanned = GetScannedRecords();
+		CombinedRecords? combined = Volatile.Read(ref _combinedRecords);
+		if (combined is null ||
+		    !ReferenceEquals(combined.SourceRoots, sourceRoots) ||
+		    !ReferenceEquals(combined.ProjectDirectories, projectDirectories) ||
+		    !ReferenceEquals(combined.TargetFrameworks, targetFrameworks) ||
+		    !ReferenceEquals(combined.Scanned, scanned))
 		{
-			registered = new RegisteredRecords(sourceRoots, projectDirectories, targetFrameworks,
-				Parse(sourceRoots, projectDirectories, targetFrameworks));
-			Volatile.Write(ref _registeredRecords, registered);
+			Records registered = Parse(sourceRoots, projectDirectories, targetFrameworks);
+			combined = new CombinedRecords(sourceRoots, projectDirectories, targetFrameworks, scanned,
+				new Records(
+					[.. registered.SourceRoots, .. scanned.SourceRoots,],
+					[.. registered.ProjectDirectories, .. scanned.ProjectDirectories,],
+					[.. registered.TargetFrameworks, .. scanned.TargetFrameworks,]));
+			Volatile.Write(ref _combinedRecords, combined);
 		}
 
-		return registered.Records;
+		return combined.Records;
 	}
 
 	/// <summary>
@@ -82,7 +82,9 @@ internal static class SourceRoots
 	///     loaded afterwards.
 	/// </summary>
 	/// <remarks>
-	///     The assemblies that the <c>ExcludedAssemblyPrefixes</c> of the settings exclude are not read.<br />
+	///     The assemblies that registered their values in the <see cref="ExtensionRegistry" /> and those that the
+	///     <c>ExcludedAssemblyPrefixes</c> of the settings exclude are not read. An assembly that is read before its
+	///     module initializer registered its values only records the same values twice.<br />
 	///     The event is subscribed before the loaded assemblies are read, so that no assembly is missed in between; one
 	///     that is read twice only records the same value twice, which counts as one.<br />
 	///     An assembly loaded afterwards is only queued by the event and read on the next access, as the event of a
@@ -273,14 +275,18 @@ internal static class SourceRoots
 	///     A path that a deterministic build emitted, e.g. <c>/_/Tests/MyTests.cs</c>, only remains when its source root
 	///     was not recorded. A relative path is ambiguous when several source roots are recorded and the test file exists
 	///     under none or more than one of them. The test file is checked instead of its directory, as a directory like
-	///     <c>Tests</c> commonly exists in several repositories, and a test file always exists where it was compiled.
+	///     <c>Tests</c> commonly exists in several repositories, and a test file always exists where it was compiled.<br />
+	///     A test assembly whose name matches one of the <c>ExcludedAssemblyPrefixes</c>, e.g. <c>Microsoft.MyApp.Tests</c>,
+	///     is not read when it cannot register its values, which the message then names.
 	/// </remarks>
 	public static void ThrowIfUnresolvable(string sourceFile)
 	{
 		if (IsDeterministic(sourceFile))
 		{
-			throw new DirectoryNotFoundException(
-				$"The path \"{sourceFile}\" comes from a deterministic build, but the test assembly records no source root for it, which the build targets of aweXpect.Snapshots add.");
+			string[] excludedAssemblies = GetExcludedAssembliesRecording(sourceFile);
+			throw new DirectoryNotFoundException(excludedAssemblies.Length > 0
+				? $"The path \"{sourceFile}\" comes from a deterministic build, but the ExcludedAssemblyPrefixes of the settings exclude the assemblies that record a source root for it: {string.Join(", ", excludedAssemblies.Select(name => $"\"{name}\""))}. Remove the prefix that matches them from Customize.aweXpect.Settings().ExcludedAssemblyPrefixes."
+				: $"The path \"{sourceFile}\" comes from a deterministic build, but the test assembly records no source root for it, which the build targets of aweXpect.Snapshots add.");
 		}
 
 		if (Path.IsPathRooted(sourceFile))
@@ -351,11 +357,39 @@ internal static class SourceRoots
 	private static Records Read(IEnumerable<Assembly> assemblies)
 	{
 		IReadOnlyList<string> excludedPrefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
+		IReadOnlyList<string> registeredAssemblies = ExtensionRegistry.GetValues(AssemblyKey);
 		AssemblyMetadataAttribute[] attributes = assemblies
-			.SelectMany(assembly => GetMetadata(assembly, excludedPrefixes))
+			.Where(assembly =>
+			{
+				string? name = assembly.GetName().Name;
+				return !registeredAssemblies.Contains(name) && !AssemblyPrefixes.IsExcluded(name, excludedPrefixes);
+			})
+			.SelectMany(GetMetadata)
 			.ToArray();
 		return Parse(GetValues(attributes, MetadataKey), GetValues(attributes, ProjectDirectoryKey),
 			GetValues(attributes, TargetFrameworkKey));
+	}
+
+	/// <summary>
+	///     Returns the name of each loaded assembly that the <c>ExcludedAssemblyPrefixes</c> of the settings exclude, and
+	///     that records a source root whose mapped path the <paramref name="sourceFile" /> starts with.
+	/// </summary>
+	/// <remarks>
+	///     Only used to explain a failure, so the excluded assemblies are not read before.
+	/// </remarks>
+	private static string[] GetExcludedAssembliesRecording(string sourceFile)
+	{
+		IReadOnlyList<string> excludedPrefixes = Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get();
+		IReadOnlyList<string> registeredAssemblies = ExtensionRegistry.GetValues(AssemblyKey);
+		return AppDomain.CurrentDomain.GetAssemblies()
+			.Select(assembly => (Assembly: assembly, assembly.GetName().Name))
+			.Where(item => !registeredAssemblies.Contains(item.Name) &&
+			               AssemblyPrefixes.IsExcluded(item.Name, excludedPrefixes) &&
+			               SplitAtSeparator(GetValues(GetMetadata(item.Assembly), MetadataKey))
+				               .Any(recorded => sourceFile.StartsWith(recorded.Key, FileSystemPaths.Comparison)))
+			.Select(item => item.Name!)
+			.Distinct(StringComparer.Ordinal)
+			.ToArray();
 	}
 
 	private static IEnumerable<string> GetValues(AssemblyMetadataAttribute[] attributes, string key)
@@ -391,13 +425,11 @@ internal static class SourceRoots
 	///     Reading the attributes of an assembly whose dependencies cannot be loaded throws, but such an assembly is not
 	///     the test assembly, so it is skipped.
 	/// </remarks>
-	private static AssemblyMetadataAttribute[] GetMetadata(Assembly assembly, IReadOnlyList<string> excludedPrefixes)
+	private static AssemblyMetadataAttribute[] GetMetadata(Assembly assembly)
 	{
 		try
 		{
-			return AssemblyPrefixes.IsExcluded(assembly.GetName().Name, excludedPrefixes)
-				? []
-				: assembly.GetCustomAttributes<AssemblyMetadataAttribute>().ToArray();
+			return assembly.GetCustomAttributes<AssemblyMetadataAttribute>().ToArray();
 		}
 		catch (Exception)
 		{
@@ -416,11 +448,13 @@ internal static class SourceRoots
 		KeyValuePair<string, string>[] TargetFrameworks);
 
 	/// <summary>
-	///     The <paramref name="Records" /> built from the lists that the <see cref="ExtensionRegistry" /> returned.
+	///     The <paramref name="Records" /> built from the lists that the <see cref="ExtensionRegistry" /> returned and
+	///     from the <paramref name="Scanned" /> records.
 	/// </summary>
-	private sealed record RegisteredRecords(
+	private sealed record CombinedRecords(
 		IReadOnlyList<string> SourceRoots,
 		IReadOnlyList<string> ProjectDirectories,
 		IReadOnlyList<string> TargetFrameworks,
+		Records Scanned,
 		Records Records);
 }

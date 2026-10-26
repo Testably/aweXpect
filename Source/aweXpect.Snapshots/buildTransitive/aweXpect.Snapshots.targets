@@ -2,11 +2,12 @@
 
 	<!--
 	    Registers the recorded values below from a module initializer that the source generator of aweXpect.Core emits
-	    into the test project, so that they are read without scanning the loaded assemblies. Where the project cannot
-	    compile a module initializer, nothing is registered, and the values are read from the loaded assemblies instead.
+	    into the test project, so that they are read without scanning the assembly. The name of the assembly is
+	    registered with them. Where the project cannot compile a module initializer, nothing is registered, and the values
+	    are read from the assembly instead.
 	-->
 	<PropertyGroup>
-		<AweXpectRegisteredMetadataKeys>$(AweXpectRegisteredMetadataKeys),aweXpect.Snapshots.SourceRoot,aweXpect.Snapshots.ProjectDirectory,aweXpect.Snapshots.TargetFramework</AweXpectRegisteredMetadataKeys>
+		<AweXpectRegisteredMetadataKeys>$(AweXpectRegisteredMetadataKeys),aweXpect.Snapshots.SourceRoot,aweXpect.Snapshots.ProjectDirectory,aweXpect.Snapshots.TargetFramework,aweXpect.Snapshots.Assembly</AweXpectRegisteredMetadataKeys>
 	</PropertyGroup>
 	<ItemGroup>
 		<CompilerVisibleProperty Remove="AweXpectRegisteredMetadataKeys"/>
@@ -42,6 +43,8 @@
 	    root, it is the path on the machine that builds and runs the tests.
 	    The target framework is recorded with it as `<TargetFramework>=<ProjectDirectory>`, so that
 	    `.UniqueFor.TargetFramework()` names the snapshot after the target framework of the project of the test file.
+	    The name of the assembly is recorded only to be registered, so that an assembly that registered its values is not
+	    read again.
 	-->
 	<Target Name="_AweXpectSnapshotsRecordProjectDirectory"
 			BeforeTargets="GetAssemblyAttributes">
@@ -54,6 +57,10 @@
 							   Condition="'$(TargetFramework)' != ''">
 				<_Parameter1>aweXpect.Snapshots.TargetFramework</_Parameter1>
 				<_Parameter2>$(TargetFramework)=$(MSBuildProjectDirectory)</_Parameter2>
+			</AssemblyAttribute>
+			<AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+				<_Parameter1>aweXpect.Snapshots.Assembly</_Parameter1>
+				<_Parameter2>$(AssemblyName)</_Parameter2>
 			</AssemblyAttribute>
 		</ItemGroup>
 	</Target>

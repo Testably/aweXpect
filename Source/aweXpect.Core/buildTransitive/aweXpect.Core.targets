@@ -22,4 +22,17 @@
 										Trim="true"/>
 	</ItemGroup>
 
+	<!--
+	    The registration hook for extensions reads the lists `AweXpectRegisteredMetadataKeys` and `AweXpectModuleInitializers`
+	    from the `.editorconfig` that the compiler receives, where a `;` starts a comment and would silently drop the rest
+	    of the list. So a `;`, as MSBuild lists are usually separated, is replaced with a `,` right before the file is
+	    written, after every project file and package added its names.
+	-->
+	<Target Name="_AweXpectNormalizeRegistrationLists" BeforeTargets="GenerateMSBuildEditorConfigFileCore">
+		<PropertyGroup>
+			<AweXpectRegisteredMetadataKeys>$(AweXpectRegisteredMetadataKeys.Replace(';', ','))</AweXpectRegisteredMetadataKeys>
+			<AweXpectModuleInitializers>$(AweXpectModuleInitializers.Replace(';', ','))</AweXpectModuleInitializers>
+		</PropertyGroup>
+	</Target>
+
 </Project>

@@ -7,3 +7,4 @@
  aweXpect4002 | aweXpect.Core.Generators | Error    | A marked method or its texts are not supported.                     
  aweXpect4003 | aweXpect.Core.Generators | Error    | The `Result` of a `GenerateExpectation` names no suitable method.   
  aweXpect4004 | aweXpect.Core.Generators | Error    | The `FormattedItem` of a collection expectation names no method.    
+ aweXpect4005 | aweXpect.Core.Generators | Error    | A name in `AweXpectModuleInitializers` names no callable method.    

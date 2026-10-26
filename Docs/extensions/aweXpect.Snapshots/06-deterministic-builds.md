@@ -15,9 +15,11 @@ This needs two things, which a usual setup provides:
 - The repository provides source control information, which the .NET SDK does for a git repository.
 
 The recorded path is registered when the test assembly is loaded, by a module initializer that the source generator of
-aweXpect.Core adds to the test project. A test project that cannot compile a module initializer, e.g. for .NET
-Framework with C# 7.3, reads it from the loaded assemblies instead, except from those that the
-[`ExcludedAssemblyPrefixes`](https://docs.testably.org/aweXpect/how-it-works/configuration#settings) exclude.
+aweXpect.Core adds to the test project. From a test assembly that cannot compile a module initializer, e.g. for .NET
+Framework with C# 7.3 or in F#, it is read when the first snapshot needs it, unless the
+[`ExcludedAssemblyPrefixes`](https://docs.testably.org/aweXpect/how-it-works/configuration#settings) exclude the
+assembly, e.g. `Microsoft.MyApp.Tests` by the prefix `Microsoft`. The failure below then names the excluded assembly,
+so that you can remove its prefix.
 
 Without them, a snapshot is identified by the full path of its test file, and in a deterministic build the expectation
 fails with:

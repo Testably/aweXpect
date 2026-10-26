@@ -207,6 +207,13 @@ The source generator in `aweXpect.Core` reports an error for a method marked wit
 | `aweXpect4003` | the `Result` names no `static` method that returns a `string` and takes the subject                       |
 | `aweXpect4004` | the `FormattedItem` names no `static` method that returns a value and takes the item                      |
 
+## Registration generator
+
+The source generator in `aweXpect.Core` reports the error `aweXpect4005` when a name in the MSBuild property
+`AweXpectModuleInitializers` names no accessible `static` method without parameters, and leaves the call out of the
+module initializer. The build targets of an extension set this property, see
+[registration from the test project](./11-extending/08-initialization.md#registration-from-the-test-project).
+
 ## Test framework adapter
 
 The source generator warns with `aweXpect2002` when a test project on .NET 8 or later sets `<LangVersion>` below 9.

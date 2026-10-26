@@ -163,8 +163,8 @@ User code picks a source, navigates to a member kind, filters and expects:
 - `Snapshots/` (namespace `aweXpect.Snapshots`): identity and storage (`SnapshotId`, `SnapshotStore`,
   `DiskSnapshotStore` next to the test file); `SourceRoots` reads the source root, project directory and target
   framework that `buildTransitive/aweXpect.Snapshots.targets` records in the test assembly, so that snapshots are found
-  in deterministic builds (from `ExtensionRegistry`, or by scanning the loaded assemblies where the test project cannot
-  compile a module initializer); the rules (`SnapshotMembers*`, `SnapshotLines*`, `SnapshotText`, ...), whose surface
+  in deterministic builds (from `ExtensionRegistry`, and by scanning the loaded assemblies that registered nothing, as
+  a project cannot always compile a module initializer); the rules (`SnapshotMembers*`, `SnapshotLines*`, `SnapshotText`, ...), whose surface
   `SnapshotRule` repeats for all snapshots (`For_ShouldOfferTheSameRulesAsForAllSnapshots` keeps both equal); the
   extension points `SnapshotComparer` and `SnapshotReporter`, abstract classes so that members can get a default;
   `SnapshotAcceptance` and `AcceptEnvironment` (`AWEXPECT_ACCEPT_SNAPSHOTS`, build server detection); and

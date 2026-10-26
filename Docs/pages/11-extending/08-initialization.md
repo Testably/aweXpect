@@ -173,8 +173,8 @@ build targets of your package (in its `buildTransitive` folder) only pass names 
 - `AweXpectModuleInitializers`: the public static methods without parameters that are called afterwards, so that
   they can already read the registered values.
 
-Both are lists separated by `,`, as the compiler receives them in an `.editorconfig`, where a `;` starts a comment.
-Append your names to the value that other packages set, and make the property visible to the generator:
+Both are lists separated by `,` or `;`. Append your names to the value that other packages set, and make the property
+visible to the generator:
 
 ```xml
 <Project>
@@ -200,6 +200,9 @@ Append your names to the value that other packages set, and make the property vi
 `ExtensionRegistry.GetValues` returns the values that are registered under a key, from every test assembly in the
 process, in the order of their registration:
 
+A name in `AweXpectModuleInitializers` that names no accessible `static` method without parameters is reported as the
+error [`aweXpect4005`](../08-analyzers.md#registration-generator).
+
 ```csharp
 using aweXpect.Core.Extending;
 
@@ -221,11 +224,13 @@ namespace MusicStore
 - The generator runs under the same conditions as the one for the [type metadata](./09-native-aot.md): the project
   gets the analyzers of `aweXpect.Core`, is compiled with C# 9 or later and has the `ModuleInitializerAttribute`
   (.NET 5 or later, or an own `internal` declaration).
-- Otherwise, e.g. on .NET Framework with C# 7.3, nothing is registered and no initializer is called. Tell your users
-  to call the initializer themselves, e.g. in an assembly-level setup of the test framework, and read the values from
-  the loaded assemblies as a fallback, but only from those that
+- Otherwise, e.g. on .NET Framework with C# 7.3, or for a test project in F# or Visual Basic, nothing is registered
+  and no initializer is called. Tell your users to call the initializer themselves, e.g. in an assembly-level setup of
+  the test framework, and read the values from the loaded assemblies as a fallback, but only from those that
   [`AssemblyPrefixes.IsExcluded`](./07-customization-values.md#exclude-the-framework-assemblies) does not exclude.
-  A value that your build targets always record tells whether the test project registered its values.
+- One process can load assemblies of both kinds, e.g. an F# test project that calls a helper library in C#. Decide for
+  each assembly whether it registered its values: let your build targets also record the assembly name, e.g. as
+  `$(AssemblyName)`, register it with the values, and skip the assemblies with a registered name in the fallback.
 - The registered values stay for the lifetime of the process. The list that `GetValues` returns does not change, and
   it is the same instance until another value is registered under the key, so you can keep what you derived from it.
 

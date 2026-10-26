@@ -45,6 +45,13 @@ internal static class RecordedSourceRoots
 		=> LoadAssembly(assemblyName, MetadataKey, $"{mappedPath}={sourceRoot}");
 
 	/// <summary>
+	///     Registers the <paramref name="assemblyName" /> like the module initializer of a test assembly does, which
+	///     registers its values.
+	/// </summary>
+	public static void RegisterAssembly(string assemblyName)
+		=> ExtensionRegistry.Register("aweXpect.Snapshots.Assembly", assemblyName);
+
+	/// <summary>
 	///     Records the <paramref name="targetFramework" /> for the test project in the <paramref name="projectDirectory" />.
 	/// </summary>
 	public static void RecordTargetFramework(string targetFramework, string projectDirectory)
