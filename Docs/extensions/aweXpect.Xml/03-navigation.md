@@ -148,13 +148,20 @@ await Expect.That(document).DoesNotHaveElement("bonusTrack");
 
 `HasElement` looks up a child element of the root element, so `HasElement("album")` fails for this document, unlike
 [`XDocument.Element(name)`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xcontainer.element), which
-returns the root element itself. A document without a root element fails, also when the expectation is negated:
+returns the root element itself.
+
+<details>
+<summary>Documents without a root element</summary>
+
+A document without a root element fails, also when the expectation is negated:
 
 ```text title="Failure message"
 Expected that document
 has attribute "id",
 but it had no root element
 ```
+
+</details>
 
 ## Names and namespaces
 

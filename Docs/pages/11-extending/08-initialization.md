@@ -297,9 +297,6 @@ namespace MusicStore
 }
 ```
 
-A name in `AweXpectModuleInitializers` that names no accessible `static` method without parameters is reported as the
-error [`aweXpect4005`](../08-analyzers.md#registration-generator).
-
 <details>
 <summary>Projects without module initializers</summary>
 

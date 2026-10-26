@@ -34,24 +34,13 @@ A type *depends on* every type referenced in its **declared signature**: the bas
 implemented interfaces, generic arguments and parameter constraints, field/property/event types, indexer
 parameters, method return/parameter/generic-argument types, constructor parameters and the types of attributes
 applied to the type, its members, their parameters and return values (including `typeof(…)` and enum attribute
-arguments). Element types of
-arrays/pointers/by-ref and generic type arguments are unwrapped (`List<Data.Album>` depends on `List<Data.Album>`,
-which also matches a `List<>` target, and on `Data.Album`; a closed-generic target like `List<Data.Track>`
-only matches that exact construction). Purely synthetic references that you never wrote are ignored:
-compiler-generated members, the implicit `object`/`ValueType`/`Enum` base type, interfaces inherited from the
-base type, records' synthesized `IEquatable<T>`, delegates' runtime infrastructure (only the `Invoke`
-signature counts), enums' underlying-value plumbing and the attributes the compiler emits onto authored code
-(nullability metadata, required members, async/iterator state machines, …), so the compiler's own plumbing
-never counts. Should a future compiler version emit a marker attribute this library does not know about yet,
-exclude it yourself via `Customize.aweXpect.Reflection().ExcludedAttributeTypes` (full attribute type names;
-extends the built-in set). Types you write in authored signatures always do count, including primitives and
-`void` return types (namespace `System`); in practice, almost every type with members *does* depend on
-`System`.
+arguments). Purely synthetic references that you never wrote, like the compiler's own plumbing, are ignored.
+Types you write in authored signatures always do count, including primitives and `void` return types (namespace
+`System`); in practice, almost every type with members *does* depend on `System`.
 
 :::warning[Signature-level only]
 Dependencies are computed from reflection metadata, so body-level references such
-as `new Data.AlbumRepository()`, static calls and local variables are **not** detected. Function-pointer signatures
-(`delegate*<…>`) are not decomposed either; the types inside them are invisible to dependency expectations.
+as `new Data.AlbumRepository()`, static calls and local variables are **not** detected.
 Nested types are separate types with their own dependency surface: verifying `typeof(Outer)` does not
 include what `Outer.Inner` references. The collection-based expectations (e.g. over `Types.InNamespace(…)`)
 enumerate nested types as their own items and therefore cover them. For IL/body-level accuracy, plug in
@@ -73,7 +62,7 @@ await Expect.That(types).DoNotDependOn("MusicStore.Data").ExcludingSubNamespaces
 ```
 
 For `DependsOnlyOn` a type's own namespace is always allowed, and by default so are its sub-namespaces. Use
-`.ExcludingOwnSubNamespaces()` (only available on the *only-on* and *outside* families) to also forbid
+`.ExcludingOwnSubNamespaces()` to also forbid
 references into a type's own sub-namespaces:
 
 ```csharp
@@ -121,10 +110,8 @@ All dependency families additionally accept a reusable `Filtered.Types` selectio
 
 :::warning[Framework dependencies are ignored unless you name one explicitly]
 `DependOnlyOn` ignores dependencies whose assembly name matches one of the
-[`ExcludedAssemblyPrefixes`](./04-configuration.md#assembly-exclusions) at a name-segment boundary: `System`
-covers `System` and `System.Text.Json`, but not an assembly named `SystemsBiology` (so you never have to
-whitelist `System.*` and unrelated assemblies are never swallowed by a prefix), while a
-type's **own namespace** is always allowed. `DependsOn` / `DoesNotDependOn` / `WhichDependOn` still match a
+[`ExcludedAssemblyPrefixes`](./04-configuration.md#assembly-exclusions) (e.g. `System` covers `System` and
+`System.Text.Json`), so you never have to whitelist `System.*`, while a type's **own namespace** is always allowed. `DependsOn` / `DoesNotDependOn` / `WhichDependOn` still match a
 framework namespace when you name it explicitly (e.g. `DoesNotDependOn("System.Data")`).
 
 The default prefixes include `Microsoft`, so `DependOnlyOn` also ignores dependencies on e.g.
@@ -134,6 +121,23 @@ them explicitly (`DoesNotDependOn<DbContext>()` or `DoNotDependOn("Microsoft.Ent
 customize the [`ExcludedAssemblyPrefixes`](./04-configuration.md#assembly-exclusions). Note that the
 customization also affects assembly scanning and assembly-level dependency expectations.
 :::
+
+<details>
+<summary>What counts as a dependency in detail</summary>
+
+Element types of arrays/pointers/by-ref and generic type arguments are unwrapped (`List<Data.Album>` depends on
+`List<Data.Album>`, which also matches a `List<>` target, and on `Data.Album`; a closed-generic target like
+`List<Data.Track>` only matches that exact construction). Function-pointer signatures (`delegate*<…>`) are not
+decomposed; the types inside them are invisible to dependency expectations.
+
+The ignored synthetic references are compiler-generated members, the implicit `object`/`ValueType`/`Enum` base type,
+interfaces inherited from the base type, records' synthesized `IEquatable<T>`, delegates' runtime infrastructure
+(only the `Invoke` signature counts), enums' underlying-value plumbing and the attributes the compiler emits onto
+authored code (nullability metadata, required members, async/iterator state machines, …). Should a future compiler
+version emit a marker attribute this library does not know about yet, exclude it yourself via
+`Customize.aweXpect.Reflection().ExcludedAttributeTypes` (full attribute type names; extends the built-in set).
+
+</details>
 
 ### Dependency cycles
 
@@ -147,21 +151,13 @@ await Expect.That(Types.InNamespace("MusicStore"))
 ```
 
 A namespace `A` *depends on* a namespace `B` when some type in `A` references a type in `B` (in its
-[signature](#type-dependencies), read through the same resolver as the other dependency expectations). The
-namespaces of the analyzed types form the nodes of a directed graph, and each
-[strongly-connected component](https://en.wikipedia.org/wiki/Strongly_connected_component) with more than one
-node is reported as a cycle, e.g. `MusicStore.Billing -> MusicStore.Catalog -> MusicStore.Billing`. Only
-namespaces present in the analyzed set form nodes, so dependencies on framework or otherwise out-of-set namespaces
-never create an edge, and a namespace referencing itself is not a cycle.
+[signature](#type-dependencies)). Each cycle is reported, e.g.
+`MusicStore.Billing -> MusicStore.Catalog -> MusicStore.Billing`.
 
-By default a namespace and its sub-namespaces collapse into a single node (a family), consistent with how the
-other dependency expectations treat a type's own sub-namespaces. So a reference between a namespace and its
-ancestor/descendant (e.g. `MusicStore.Catalog` ↔ `MusicStore.Catalog.Domain`) never creates an edge and cannot by
-itself form a cycle. But because the family is one node (not just a suppressed pair of edges), a cycle that leaves
-the family and returns through a *different* member of it (e.g.
-`MusicStore.Catalog -> MusicStore.Billing -> MusicStore.Catalog.Domain`) is still detected. Use
-`ExcludingSubNamespaces()` to treat every namespace as its own node, so that such a parent/child reference
-becomes an edge (and can form a cycle):
+By default a namespace and its sub-namespaces count as a single namespace, consistent with how the other dependency
+expectations treat a type's own sub-namespaces. So a reference between a namespace and its ancestor/descendant (e.g.
+`MusicStore.Catalog` ↔ `MusicStore.Catalog.Domain`) cannot by itself form a cycle. Use `ExcludingSubNamespaces()` to
+treat every namespace on its own, so that such a parent/child reference can form a cycle:
 
 ```csharp
 // Treat every namespace as its own node (MusicStore.Catalog ↔ MusicStore.Catalog.Domain can now form a cycle)
@@ -188,10 +184,24 @@ Dependency cycles:
 MusicStore.Billing -> MusicStore.Catalog -> MusicStore.Billing
 ```
 
-Because the edges come from the same dependency resolution as the other dependency expectations, configuring a
-[custom dependency resolver](./04-configuration.md#dependency-resolver) (e.g. an IL-level one) also sharpens
-cycle detection: body-level references it surfaces can complete a cycle that the signature-level default
+<details>
+<summary>How cycles are detected</summary>
+
+The dependencies are read through the same resolver as the other dependency expectations. The namespaces of the
+analyzed types form the nodes of a directed graph, and each
+[strongly-connected component](https://en.wikipedia.org/wiki/Strongly_connected_component) with more than one node is
+reported as a cycle. Only namespaces present in the analyzed set form nodes, so dependencies on framework or otherwise
+out-of-set namespaces never create an edge, and a namespace referencing itself is not a cycle.
+
+By default a namespace and its sub-namespaces collapse into a single node (a family). Because the family is one node
+(not just a suppressed pair of edges), a cycle that leaves the family and returns through a *different* member of it
+(e.g. `MusicStore.Catalog -> MusicStore.Billing -> MusicStore.Catalog.Domain`) is still detected.
+
+Configuring a [custom dependency resolver](./04-configuration.md#dependency-resolver) (e.g. an IL-level one) also
+sharpens cycle detection: body-level references it surfaces can complete a cycle that the signature-level default
 cannot see.
+
+</details>
 
 ## Layers as type selections
 
@@ -208,15 +218,9 @@ The dependency expectations and filters accept such a selection as a **target**,
 specific-type forms: `DependsOn` / `DoesNotDependOn` / `DependsOnlyOn` / `HasDependenciesOutside` (and the
 plural `DependOn` / `DoNotDependOn` / `DependOnlyOn` / `HaveDependenciesOutside` and the `WhichDependOn` /
 `WhichDoNotDependOn` / `WhichDependOnlyOn` / `WhichHaveDependenciesOutside`
-filters) take one or more `Filtered.Types` arguments. Each target selection is resolved once per expectation;
-a dependency matches when it is a member of the union of the resolved selections. Matching is by type
-identity, where a generic type definition in the selection (e.g. a scanned `Repository<>`) matches any of
-its constructions.
-Multiple targets and `.OrOn(…)` mean *any of*; for the *only-on* and *outside* families the union is the
-allowed set, while the own-namespace and framework rules apply unchanged, including the
-`.ExcludingOwnSubNamespaces()` opt-out (an empty selection thus allows only the own namespace
-and framework dependencies). A selection is an explicit target, so framework types contained in it are
-matched normally by `DependsOn` / `DoesNotDependOn`.
+filters) take one or more `Filtered.Types` arguments. Multiple targets and `.OrOn(…)` mean *any of*; for the
+*only-on* and *outside* families the union is the allowed set, while the own-namespace and framework rules apply
+unchanged, including the `.ExcludingOwnSubNamespaces()` opt-out.
 
 ```csharp
 // Outgoing rule with a selection as target:
@@ -282,3 +286,14 @@ await Expect.That(domainTypes.Except(type => type.Name.StartsWith("Generated")))
 A layer spanning several namespaces is built by widening a dependency *target* with additional selections
 (or `.OrOn(…)`); for a *subject* spanning several namespaces, verify each namespace selection as its own
 rule inside the same `Expect.ThatAll(…)`.
+
+<details>
+<summary>How a selection is matched as a target</summary>
+
+Each target selection is resolved once per expectation; a dependency matches when it is a member of the union of the
+resolved selections. Matching is by type identity, where a generic type definition in the selection (e.g. a scanned
+`Repository<>`) matches any of its constructions. For the *only-on* and *outside* families, an empty selection allows
+only the own namespace and framework dependencies. A selection is an explicit target, so framework types contained in it are matched normally by
+`DependsOn` / `DoesNotDependOn`.
+
+</details>

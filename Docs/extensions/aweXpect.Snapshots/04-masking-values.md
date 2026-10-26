@@ -48,13 +48,11 @@ The actions that each selection offers:
 | `MachineName()`, `UserName()`   |     –      | `{MachineName}`, `{UserName}`    |      ✅      | –                       |    –     |
 | `Paths()`                       |     –      | –                                |      –      | –                       |    ✅     |
 
-A selection only offers the actions that fit it, so e.g. `.For.Paths().Mask()` or `.For.Text("…").Ignore()` does not
-compile. The filters are combined, so a value has to match all of them. After the action, the next rule starts with
+The filters are combined, so a value has to match all of them. After the action, the next rule starts with
 `.For` again, or the expectation continues with `.Named(…)`, `.UniqueFor` or `.Accepting(…)`.
 
 `.For.Members()` and `.For.Values()` only apply to a [snapshot of an object](01-matching-snapshots.md#objects), and
-`.For.Lines()` only to a snapshot of a `string`; written on the other kind of subject, the action throws an
-`InvalidOperationException`. The text selections apply to every snapshot.
+`.For.Lines()` only to a snapshot of a `string`. The text selections apply to every snapshot.
 
 ### Mask texts are templates
 
@@ -70,9 +68,6 @@ await Expect.That(album).MatchesSnapshot()
 `Mask()` is the shorthand for the template named after the selection: `Mask("{Id_{0}}")` for a member named `Id`,
 `Mask("{Guid_{0}}")` for `.For.Guids()` and `.For.Values().OfType<Guid>()`, `Mask("{Item_{0}}")` for an item of a
 collection. That is why a `Guid` member masked by its type and the same `Guid` in a string get the same number.
-
-`{0}` is replaced as plain text, not with `string.Format`, so braces need no escaping: `Mask("{{Artist_{0}}}")` writes
-`{{Artist_1}}`, not `{Artist_1}`.
 
 For members and values, the template can also depend on the value, e.g. to link ids that belong together:
 
@@ -103,6 +98,14 @@ Label {
 
 A value for which the function returns `null` is kept.
 
+<details>
+<summary>Braces in a template</summary>
+
+`{0}` is replaced as plain text, not with `string.Format`, so braces need no escaping: `Mask("{{Artist_{0}}}")` writes
+`{{Artist_1}}`, not `{Artist_1}`.
+
+</details>
+
 ## Members and values
 
 `.For.Members()` selects the members of the objects in the snapshot, at any depth. `.For.Values()` selects the members
@@ -111,7 +114,7 @@ too, and also the items of tuples, collections and dictionaries:
 - `WithName("Id")` compares the name of the member itself, exactly and case-sensitive, so it matches `Id`, `Artist.Id`
   and `Tracks[0].Id`, but not `TrackId` or `id`. The options of aweXpect's string comparison that follow apply to the
   name only: `.IgnoringCase()`, `.AsPrefix()`, `.AsSuffix()`, `.AsWildcard()` or `.AsRegex()`, e.g.
-  `.WithName("Url").AsSuffix()`. An invalid pattern throws an `ArgumentException` at the action. For a value, the name
+  `.WithName("Url").AsSuffix()`. For a value, the name
   of a tuple item is `Item1`, and that of a collection item or dictionary value its index or key in brackets, e.g. `[0]`.
 - `WithPath("Artist.Id")` matches the end of the path on whole segments, compared ordinally: it matches the `Id` of an
   `Artist` at any depth, e.g. `Albums[0].Artist.Id`, but not `Artist.CatalogId`. The path has the format of
@@ -127,7 +130,7 @@ too, and also the items of tuples, collections and dictionaries:
   tracks.
 - `Which(predicate)` and `Except(predicate)` decide for each value, which they get as a `FormattedValue` with its
   `Kind`, `Name`, `Path`, declared `Type` and `DeclaringType`; the value itself is only read when the predicate calls
-  `GetValue()`. An exception of the predicate is thrown.
+  `GetValue()`.
 
 ```csharp
 await Expect.That(album).MatchesSnapshot()
@@ -142,10 +145,18 @@ collections and dictionaries, so `.For.Values().OfType<DateTime>().Ignore()` wri
 list. Select members only with `.For.Members()`, mask the items instead, or leave out a single item by its path, e.g.
 `.For.Values().WithPath("Dates[0]").Ignore()`.
 
-`Mask()` and `Mask("…")` replace the value, see [the templates](#mask-texts-are-templates). The placeholder of `Mask()`
-is named after the type when the selection is filtered by `OfType<T>()` or `OfExactType<T>()` but not by
-`WithName` or `WithPath`, e.g. `{Guid_1}`, or with alternative types after the first one that the value matches, and otherwise after the member or tuple item, or `Item` for an item of a collection or a dictionary value. A `null`
-value is neither masked nor converted, as it does not change from run to run.
+`Mask()` and `Mask("…")` replace the value, see [the templates](#mask-texts-are-templates). A `null` value is neither
+masked nor converted, as it does not change from run to run.
+
+<details>
+<summary>How the placeholder of Mask() is named</summary>
+
+The placeholder of `Mask()` is named after the type when the selection is filtered by `OfType<T>()` or
+`OfExactType<T>()` but not by `WithName` or `WithPath`, e.g. `{Guid_1}`, or with alternative types after the first one
+that the value matches, and otherwise after the member or tuple item, or `Item` for an item of a collection or a
+dictionary value.
+
+</details>
 
 ### Alternative types
 
@@ -208,8 +219,14 @@ Album {
   `.For.Members().DeclaredIn<Album>().WhichAreEmptyCollections().Ignore()`.
 - A `null` value and an empty `string` are kept, and so are empty items of a collection or values of a dictionary,
   which keep their place.
-- A sequence that does not know its count, like a LINQ query or an iterator, is kept as well and only enumerated once
-  to be written, as it might only be enumerable once.
+
+<details>
+<summary>Sequences without a count</summary>
+
+A sequence that does not know its count, like a LINQ query or an iterator, is kept as well and only enumerated once to
+be written, as it might only be enumerable once.
+
+</details>
 
 ### Converting values
 
@@ -241,9 +258,15 @@ Album {
 - The converted value is written by the formatter like any other value, e.g. a `string` in quotes, a number in the
   invariant culture and an object member-wise. The member and value rules do not apply to the values nested in it, but
   the text rules do. A converted `null` is written as `<null>`.
-- A `null` value, or one that is no `T`, is not converted, and an exception of the converter is thrown.
-- Under Native AOT, the source generator of aweXpect.Core registers the members of the result type, so that e.g. an
-  anonymous type is also written member-wise.
+- A `null` value, or one that is no `T`, is not converted.
+
+<details>
+<summary>Converted values under Native AOT</summary>
+
+Under Native AOT, the source generator of aweXpect.Core registers the members of the result type, so that e.g. an
+anonymous type is also written member-wise.
+
+</details>
 
 ## Lines of a string
 
@@ -262,19 +285,23 @@ await Expect.That(log).MatchesSnapshot()
 
 - `Containing(text)` selects each line that contains the text anywhere, compared ordinally like aweXpect's `Contains`.
   `.IgnoringCase()`, `.AsWildcard()` and `.AsRegex()` directly after it apply to this filter only, not to the comparison
-  with the snapshot. A pattern uses the regex timeout of aweXpect; a pattern that times out fails the expectation, and an
-  invalid pattern throws an `ArgumentException` at the action.
+  with the snapshot.
 - `Which(predicate)` and `Except(predicate)` decide for each line.
 - `Ignore()` leaves out the line, `Mask("…")` replaces the whole line with a [template](#mask-texts-are-templates), and
   `Convert(…)` with the text that the converter returns for it, or leaves it out for `null`.
-- A line ends with `\r\n`, `\n` or `\r` and is checked without it. A replaced line keeps its line break. A removed line
-  takes its line break with it, and removing the last line also removes the line break before it; the other lines keep
-  their newline style.
 - The lines are handled before the text rules, so a removed line does not use up a numbered placeholder like
   `{Guid_1}`.
 
-An object is written by the formatter, so a line rule on any other subject than a `string` throws an
-`InvalidOperationException`; select its members instead.
+<details>
+<summary>Line breaks and regex timeouts</summary>
+
+A line ends with `\r\n`, `\n` or `\r` and is checked without it. A replaced line keeps its line break. A removed line
+takes its line break with it, and removing the last line also removes the line break before it; the other lines keep
+their newline style.
+
+A pattern uses the regex timeout of aweXpect; a pattern that times out fails the expectation.
+
+</details>
 
 ## Text
 
@@ -296,9 +323,7 @@ await Expect.That(json).MatchesSnapshot()
 - `.AsRegex()` interprets it as a regex pattern, and the mask can use the substitutions of `Regex.Replace`, e.g. `$1` for
   the first group (`$$` inserts a `$`). The substitutions are applied first, then `{0}`, so `Mask("$1:{0}")` counts per
   value of the group. Any other mask is inserted literally.
-- A pattern uses the regex timeout of aweXpect, `Customize.aweXpect.Settings().DefaultRegexTimeout` (one second by
-  default); a pattern that times out fails the expectation, and an invalid pattern throws an `ArgumentException` at the
-  action. An empty mask removes the text.
+- An empty mask removes the text.
 
 `.For.Regex(regex)` takes a `Regex` instead, for `RegexOptions`, a timeout of its own or a reused `static` or
 `[GeneratedRegex]` instance, e.g.
@@ -317,6 +342,14 @@ In the other order, the general rule would already have replaced today's date wi
 The snapshot, the pending and the accepted snapshot and the failure contain the masked value, as it is what is compared.
 Two values that only differ in a masked part count as the same value for the check of [named
 snapshots](03-naming-snapshots.md).
+
+<details>
+<summary>Regex timeouts</summary>
+
+A pattern uses the regex timeout of aweXpect, `Customize.aweXpect.Settings().DefaultRegexTimeout` (one second by
+default); a pattern that times out fails the expectation.
+
+</details>
 
 ## Guids and dates
 
@@ -362,15 +395,6 @@ Cache: C:\Users\paul\AppData\Local\Temp\abbey.tmp      Cache: {TempPath}\abbey.t
 | `{TempPath}`         | `Path.GetTempPath()`                                                                     |
 | `{UserProfile}`      | `Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)`, on every system      |
 
-- The longest path is masked first, as they are nested in each other, e.g. the output directory in the project directory
-  in the source root.
-- On Windows, a path matches with `\` or `/` as separator, also with escaped backslashes (`C:\\Music`), as in JSON or in
-  a string of a [snapshot of an object](01-matching-snapshots.md#objects); elsewhere only with `/`, as a backslash is part
-  of a file name there. The rest of the path keeps its separators.
-- Only whole segments match, so `C:\Music\Album` does not match inside `C:\Music\Albums`.
-- The case is ignored on Windows and macOS, but not on Linux.
-- A root of the file system, such as `C:\` or `/`, is never masked.
-
 The paths are masked before all other text rules, so these see the placeholders. Keep them for one expectation with
 `.For.Paths().Keep()`, or for all snapshots with `SnapshotRule.For.Paths().Keep()` in the
 [rules for all snapshots](#for-all-snapshots). An expectation cannot mask them again while a rule for all snapshots keeps
@@ -383,6 +407,20 @@ the paths, also by a rule for all snapshots, so a path in the user profile becom
 ```csharp
 await Expect.That(log).MatchesSnapshot().For.MachineName().Mask().For.UserName().Mask();
 ```
+
+<details>
+<summary>How paths are matched</summary>
+
+- The longest path is masked first, as they are nested in each other, e.g. the output directory in the project directory
+  in the source root.
+- On Windows, a path matches with `\` or `/` as separator, also with escaped backslashes (`C:\\Music`), as in JSON or in
+  a string of a [snapshot of an object](01-matching-snapshots.md#objects); elsewhere only with `/`, as a backslash is part
+  of a file name there. The rest of the path keeps its separators.
+- Only whole segments match, so `C:\Music\Album` does not match inside `C:\Music\Albums`.
+- The case is ignored on Windows and macOS, but not on Linux.
+- A root of the file system, such as `C:\` or `/`, is never masked.
+
+</details>
 
 ## For all snapshots
 

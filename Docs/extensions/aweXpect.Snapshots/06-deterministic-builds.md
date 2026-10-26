@@ -23,9 +23,14 @@ matches the snapshot "/_/Tests/AlbumTests.Describes.awexpect-snapshot.txt",
 but the snapshot could not be read: The path "/_/Tests/AlbumTests.cs" comes from a deterministic build, but the test assembly records no source root for it, which the build targets of aweXpect.Snapshots add.
 ```
 
+<details>
+<summary>How the recorded path is found</summary>
+
 The recorded path is registered when the test assembly is loaded, by a module initializer that the source generator of
 aweXpect.Core adds to the test project. From a test assembly that cannot compile a module initializer, e.g. for .NET
 Framework with C# 7.3 or in F#, it is read when a snapshot needs it, unless the
 [`ExcludedAssemblyPrefixes`](https://docs.testably.org/aweXpect/how-it-works/configuration#settings) exclude the
 assembly, e.g. `Microsoft.MyApp.Tests` by the prefix `Microsoft`. The expectation then fails with a message that names
 the excluded assembly, so that you can remove the prefix that matches it.
+
+</details>

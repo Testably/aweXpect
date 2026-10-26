@@ -57,11 +57,6 @@ is in subnet 10.0.0.0/8,
 but it was 192.168.0.1
 ```
 
-:::warning
-The subnet must be a valid CIDR notation without host bits set beyond the prefix, so `"10.0.0.1/8"` throws an
-`ArgumentException`.
-:::
-
 An IPv4 address is in an IPv6 subnet if its IPv4-mapped address is, and an IPv4-mapped address is in an IPv4 subnet if
 its IPv4 address is:
 
@@ -107,6 +102,5 @@ but it was ::ffff:10.0.0.2
 ```
 
 :::note
-The other options for comparing objects, e.g. `Using(comparer)`, are also available, but only one of them can be
-specified.
+The other options for comparing objects, e.g. `Using(comparer)`, are also available.
 :::

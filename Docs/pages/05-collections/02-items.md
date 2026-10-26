@@ -80,9 +80,6 @@ await Expect.That([1, 2, 3]).Exactly(1).ComplyWith(item => item.IsEqualTo(2));
 await Expect.That([1, 2, 3]).None().ComplyWith(item => item.IsNegative());
 ```
 
-A nested expectation that throws, or a `null` item or member it cannot evaluate, fails both the expectation and its
-negation.
-
 <details>
 <summary>Items the nested expectation cannot answer</summary>
 
@@ -160,11 +157,7 @@ await Expect.That(albums).All().AreUnique().Using(new AlbumComparer());
 await Expect.That(["Help!", "Revolver"]).All().AreUnique().IgnoringCase();
 ```
 
-A [set](./index.md#sets) that was created with a custom comparer never holds two items that its comparer considers
-equal, so its items are unique, unless a custom comparer or a string option such as `IgnoringCase()` changes the
-comparison.
-
-For dictionaries, verify the [values](./04-dictionaries.md#keys-and-values) instead, as the keys are unique by design.
+For dictionaries, verify the [values](./04-dictionaries.md#as-collections) instead, as the keys are unique by design.
 
 ## Single item
 
@@ -194,9 +187,6 @@ await Expect.That(artists).HasSingle().Matching<Band>(band => band.Members.Count
 await Expect.That(artists).HasSingle().MatchingExactly<Band>();
 await Expect.That(artists).HasSingle().MatchingExactly<Band>(band => band.Members.Count == 4);
 ```
-
-Only one filter can be applied, so restrict the type and add a condition in the same call, e.g.
-`Matching<Band>(band => …)`.
 
 The awaited result is the single item:
 

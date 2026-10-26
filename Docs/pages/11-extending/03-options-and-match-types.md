@@ -178,8 +178,7 @@ A result that can be stored and continued more than once, e.g. a filter of `aweX
 a continuation sets an option. Such a result implements `ICopyOnOption<StringEqualityOptions, TSelf>` in addition to
 `IOptionsProvider<StringEqualityOptions>`: the string options then pass its options with the new option to
 `WithOptions(options)`, which returns a new result with them in a new holder, while the result they were called on stays
-unchanged. The new options carry every option set so far, so a repeated option replaces the earlier one and a
-competing option still throws. The quantifiers, e.g. `Once()`, and the index options `AtIndex(…)` and
+unchanged. The quantifiers, e.g. `Once()`, and the index options `AtIndex(…)` and
 `AtIndexFromEnd(…)` do the same for a result that implements `ICopyOnOption<Quantifier, TSelf>` or
 `ICopyOnOption<CollectionIndexOptions, TSelf>`. A string option of your own, e.g. a preset of several options, does the same, so
 that it keeps a stored result unchanged as well:
@@ -198,8 +197,14 @@ public static TResult IgnoringCaseAndIndentation<TResult>(this TResult result)
 }
 ```
 
-Like every constraint, such a result reads its holder when it evaluates: an option that sets the holder directly, without
-`WithOptions`, still applies, but it changes the result it was called on.
+<details>
+<summary>Options on a stored result</summary>
+
+The new options carry every option set so far, so a repeated option replaces the earlier one and a competing option
+still throws. Like every constraint, such a result reads its holder when it evaluates: an option that sets the holder
+directly, without `WithOptions`, still applies, but it changes the result it was called on.
+
+</details>
 
 ### Comparing with the options
 
@@ -259,8 +264,8 @@ public class DurationResult(IThat<Track?> subject)
 An expectation that returns this result, e.g. `HasDuration()`, then reads
 `Expect.That(track).HasDuration().Between(TimeSpan.FromMinutes(2)).And(TimeSpan.FromMinutes(4))`.
 
-In the constraint, `comparison.Evaluate(actual)` returns the `Outcome`, with `Outcome.FailureBothWays` for an ordering
-against `null`, and `comparison.AppendExpectation(stringBuilder)` writes the comparison, e.g. "between" and both values.
+In the constraint, `comparison.Evaluate(actual)` returns the `Outcome`, and `comparison.AppendExpectation(stringBuilder)` writes the
+comparison, e.g. "between" and both values.
 `IsNegated` tells that the operator is a negated one, e.g. `NotGreaterThan`: the outcome already includes the negation,
 but the text does not, so that you can place the "not" where your sentence needs it, e.g. "has duration not greater
 than …" or "does not have duration greater than …".
@@ -269,8 +274,15 @@ The equality operators of a `double` or `decimal` property, `EqualTo` and `NotEq
 `PropertyEqualityComparison<T>` to `CompareEquality` instead, which returns `TToleranceResult`. The tolerance is set
 after the operator returned, e.g. `.EqualTo(4.5).Within(0.1)` or `.Within(1).Percent()`, so pass
 `comparison.Options` to the result you return, e.g. a `NumberToleranceResult<TType, TThat, TNumber>`, which offers
-`Within`. The comparison compares like `IsEqualTo(…).Within(…)`, e.g. `NaN` is equal to `NaN`, and its text
-includes the tolerance, e.g. "equal to 4.5 ± 0.1". The ordering operators reject a `NaN` bound.
+`Within`. Its text includes the tolerance, e.g. "equal to 4.5 ± 0.1".
+
+<details>
+<summary>`null` and `NaN` in property comparisons</summary>
+
+An ordering against `null` returns `Outcome.FailureBothWays`. The equality operators of a `double` or `decimal`
+property compare like `IsEqualTo(…).Within(…)`, e.g. `NaN` is equal to `NaN`.
+
+</details>
 
 ### String properties
 
@@ -310,14 +322,20 @@ In the constraint, call `comparison.ValidateExpected()` before you look at the s
 value, e.g. an invalid regex pattern, throws whichever value the subject has. Then
 `await comparison.Evaluate(actual, context, cancellationToken)` compares the value with the options of the evaluation
 and returns a `StringPropertyOutcome`, whose `Outcome` already includes the negation of an operator like
-`NotStartingWith`. A `null` value fails a comparison that looks into the value, e.g. a prefix or an occurrence, both
-ways. `comparison.AppendExpectation(stringBuilder, grammars)` writes the comparison with its options, e.g.
+`NotStartingWith`. `comparison.AppendExpectation(stringBuilder, grammars)` writes the comparison with its options, e.g.
 "starting with "let" ignoring case", or "starts with …" with `ExpectationGrammars.Active`, and
 `outcome.AppendResult(stringBuilder, "title", grammars, indentation)` writes the result, e.g. "title was "Yesterday",
 which differs at index 0: …". Like for the other property types, neither text includes the negation of the operator,
 so that you can place it where your sentence needs it: for a comparison that `IsNegated`, add
 `ExpectationGrammars.Negated` to the grammars, e.g. `grammars.Negate()`, which writes "not starting with …" or
 "does not start with …". `outcome.AppendContexts(contexts)` adds the contexts of the options.
+
+<details>
+<summary>A `null` string property</summary>
+
+A `null` value fails a comparison that looks into the value, e.g. a prefix or an occurrence, both ways.
+
+</details>
 
 ### Custom operators
 
@@ -348,8 +366,7 @@ argument once and reuse it, as it is immutable.
 A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the holder of the `TimeTolerance` options
 you pass to it and to your constraint; start the holder with `TimeTolerance.Default`. For a date without a time of day,
 such as the release date of an album as a `DateOnly`, start it with `TimeTolerance.Days` instead, as the built-in
-expectations do: it rejects a tolerance that is not a whole number of days with an `ArgumentOutOfRangeException`,
-instead of silently dropping the part below one day.
+expectations do.
 
 ```csharp no-compile
 public static TimeToleranceResult<DateOnly, IThat<DateOnly>> IsOnSameDayAs(
@@ -399,15 +416,20 @@ public static ObjectEqualityResult<Track?, IThat<Track?>, Track?> IsEqualTo(
 For `IsNotEqualTo`, pass `isNegated: true`. A `null` subject is never equal to an expected value that is not `null`,
 whatever the comparison. To show the code of the caller instead of the formatted value, e.g. "is equivalent to
 expected" like `IsEquivalentTo`, pass the value of a `[CallerArgumentExpression]` parameter as `expectedExpression`.
+
+<details>
+<summary>How the expected expression is shown</summary>
+
 Its common leading whitespace is removed, and an expected `null` is still shown as `<null>`.
+
+</details>
 
 ## Custom match types
 
 `IsEqualTo` compares two values with `Equals`, unless the caller chooses another comparison, e.g. with `.Equivalent()`.
 You can offer a comparison of your own: derive from `ObjectMatchType<TSubject>`, pass the name of your option to its
-base constructor and set it on the options of the result with `SetMatchType(matchType)`, which reads that name: the
-same option again replaces the earlier match type, and combining it with another comparison throws, e.g. "ByTitle
-cannot be combined with Equivalent.". `SetMatchType` rejects a match type without a name. For example, two tracks with the same title can count as equal:
+base constructor and set it on the options of the result with `SetMatchType(matchType)`, which reads that name. For
+example, two tracks with the same title can count as equal:
 
 ```csharp
 public static TSelf ByTitle<TSelf, TElement>(this IObjectEqualityResult<TSelf, TElement> result)
@@ -446,60 +468,56 @@ Track track = new("Hey Jude", new TimeSpan(0, 7, 11));
 await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4))).ByTitle();
 ```
 
-- The match type is configured once and serves every evaluation of the expectation. `ForEvaluation` creates the
-  `ObjectMatcher<TSubject>` for one evaluation, with the context and the cancellation of the evaluation in the
-  `MatchEnvironment`. A matcher without state is shared, as above, so that an evaluation allocates nothing.
+- `ForEvaluation` returns the matcher for one evaluation. A matcher without state can be shared, as above.
+- `Match` decides whether two values match, and `GetFailure` writes the result text of a mismatch.
+- `Phrase` holds the words of the comparison, from which Core writes the expectation text in every grammar, e.g. "is
+  titled like …", "are not titled like …" or "has item titled like …".
+- For strings, derive from `StringMatchType` instead and set it with `SetMatchType(matchType, nameof(AsTitle))` on the
+  `StringEqualityOptions`, which takes the name of your option, as a string match type carries none.
+
+<details>
+<summary>Matchers, results, phrases and string match types in detail</summary>
+
+- `ForEvaluation` receives the context and the cancellation of the evaluation in the `MatchEnvironment`.
 - `ObjectMatcher<TSubject, TExpected>` compares with expected values of a known type, e.g. a `Track`, and an expected
   value of another type never matches. Derive from `ObjectMatcher<TSubject>` instead when the type of the expected
   value varies, e.g. an anonymous object for an equivalency, and implement the generic `Match<TExpected>`.
-- `Match` compares two values and returns a `MatchResult`: `MatchResult.Match`, `MatchResult.NoMatch`, or
-  `MatchResult.NotComparable(reason)` for a subject that it cannot compare at all. The expectation and its negation then
-  both fail, with the reason as the result. Like
+- `Match` returns `MatchResult.Match`, `MatchResult.NoMatch`, or `MatchResult.NotComparable(reason)` for a subject that
+  it cannot compare at all. The expectation and its negation then both fail, with the reason as the result. Like
   [`PredicateResult.FailureBothWays`](./01-generated-expectations.md#questions-that-cannot-be-answered), the reason
   follows "it". Inside `Whose` it follows the member name instead, and in a collection "an item", so name the value in
   the reason as well.
-- `GetFailure` writes the result text of a mismatch. A comparison that finds more than the values show, e.g. the
-  differences of two documents, returns `MatchResult.NoMatchBecause(explanation)` with a `MatchExplanation` of its own,
-  which the default `GetFailure` writes. `MatchWithExplanation` compares for a failure message, while `Match` only
-  decides, e.g. for each item of a collection; override it when explaining costs more than deciding.
-- `Phrase` holds the words of the comparison, from which Core writes the expectation text for every grammar, e.g. "is
-  titled like …", "are not titled like …" or "has item titled like …". `MatchPhrase.Being(comparison)` reads "is …",
-  `MatchPhrase.Verb(singular, plural, participle)` has a verb of its own, e.g. "starts with", and `MatchPhrase.EqualTo`
-  is the equality, which the text of a single item may leave out, e.g. "contains 3". `WithName` names the match type in a
-  short description of the options, and `WithSuffix` follows the expected value, e.g. " using TitleComparer". For a
-  string match type, `WithPattern(kind, noun)` marks the expected value as a pattern, e.g. `wildcard "Let*"` for an
-  expected item, and `WithUnformattedExpected()` writes it as it is instead of quoting it, e.g. a JSON document.
+- A comparison that finds more than the values show, e.g. the differences of two documents, returns
+  `MatchResult.NoMatchBecause(explanation)` with a `MatchExplanation` of its own, which the default `GetFailure` writes.
+  `MatchWithExplanation` compares for a failure message, while `Match` only decides, e.g. for each item of a
+  collection; override it when explaining costs more than deciding.
+- `MatchPhrase.Being(comparison)` reads "is …", `MatchPhrase.Verb(singular, plural, participle)` has a verb of its own,
+  e.g. "starts with", and `MatchPhrase.EqualTo` is the equality, which the text of a single item may leave out, e.g.
+  "contains 3". `WithName` names the match type in a short description of the options, and `WithSuffix` follows the
+  expected value, e.g. " using TitleComparer". For a string match type, `WithPattern(kind, noun)` marks the expected
+  value as a pattern, e.g. `wildcard "Let*"` for an expected item, and `WithUnformattedExpected()` writes it as it is
+  instead of quoting it, e.g. a JSON document.
 - The matcher can add [contexts](./06-message-conventions.md#contexts) that explain a failure in `AppendContexts`, e.g.
-  the options of the comparison.
-- For strings, derive from `StringMatchType` instead and set it with `SetMatchType(matchType, nameof(AsTitle))` on the
-  `StringEqualityOptions`, which takes the name of your option, as a string match type carries none.
-  Its `ForEvaluation` also receives the `StringMatchSettings`, i.e. whether the casing is ignored and the comparer of the
-  caller, and its `StringMatcher` compares the values after the whitespace options are applied. Core appends these
-  options to the expectation text, e.g. "starts with "Let it" ignoring case". Declare the settings that the match type
-  honours in `SupportedSettings`: Core rejects every other one with the same message, e.g. "IgnoringCase cannot be
-  combined with AsTitle.", at the call that specifies the conflict, in either order. The whitespace options are
-  supported unless you leave them out. Throw in its `ValidateExpected(expected, parameterName)` for an expected value
-  that it cannot use, with an `ArgumentException` for the `parameterName` it receives, as neither the match type nor the
-  options know the parameter of the expectation: it is called for every subject, also when nothing is compared with the
-  expected value, e.g. for an empty collection.
+  the options of the comparison. A string matcher only adds them to a failure of the string comparison, also for an
+  item of a collection or a member inside `Whose`, and not to a failure of another expectation on the same subject.
+  A constraint of your own that compares strings with `StringEqualityOptions` forwards these contexts from its
+  `AppendContexts` with `options.AppendContexts(contexts)`, on the options of its evaluation.
+- The `ForEvaluation` of a `StringMatchType` also receives the `StringMatchSettings`, i.e. whether the casing is ignored
+  and the comparer of the caller, and its `StringMatcher` compares the values after the whitespace options are applied.
+  Core appends these options to the expectation text, e.g. "starts with "Let it" ignoring case". Declare the settings
+  that the match type honours in `SupportedSettings`: Core rejects every other one, e.g. "IgnoringCase cannot be
+  combined with AsTitle.". The whitespace options are supported unless you leave them out. Throw in its
+  `ValidateExpected(expected, parameterName)` for an expected value that it cannot use, with an `ArgumentException` for
+  the `parameterName` it receives.
 - A string match type can also tell Core where its expected value lines up with the subject (`Anchors`, e.g. a prefix
   only at the start), count the occurrences of the expected value for a quantified `Contains` (`CountOccurrences` of
   the matcher), and whether a failure lists the differing lines or hints at a different newline style.
 
-A string matcher adds its contexts in `AppendContexts` too. They are only added to a failure of the string comparison,
-also for an item of a collection or a member inside `Whose`, and not to a failure of another expectation on the same
-subject. Leave the method empty when the expectation text already explains the comparison:
-
-```csharp no-compile
-public override void AppendContexts(ResultContextCollector contexts)
-    => contexts.Add(new ResultContext.Fixed("Title options", " - ignore leading articles"));
-```
-
-A constraint of your own that compares strings with `StringEqualityOptions` forwards these contexts from its
-`AppendContexts` with `options.AppendContexts(contexts)`, on the options of its evaluation.
-
-<details>
-<summary>State per evaluation, multi-line texts and equivalency</summary>
+Through its name, the same option again replaces the earlier match type, and combining it with another comparison
+throws, e.g. "ByTitle cannot be combined with Equivalent.". Core rejects an unsupported setting of a string match type
+at the call that specifies the conflict, in either order. Its `ValidateExpected` receives the `parameterName`, as
+neither the match type nor the options know the parameter of the expectation: it is called for every subject, also
+when nothing is compared with the expected value, e.g. for an empty collection.
 
 The items of a collection are compared one after the other with the matcher of the evaluation, so a matcher may keep
 state across them, e.g. which options matched nothing in any comparison, and report it in `AppendContexts`. Keep what a

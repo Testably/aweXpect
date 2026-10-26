@@ -41,10 +41,14 @@ await Expect.That(track).IsNotLongerThan(TimeSpan.FromMinutes(3));
   ```
 - It is declared in a top-level, non-generic, `static partial` class that is not `file`-local, which receives the
   generated extension methods. The method itself can be `private`.
-- The generated extension methods are `public`, unless the class, the subject or a parameter type is `internal`: then
-  they are `internal` as well.
-- A reference type parameter that is not nullable is checked in the generated method, so `null` throws an
-  `ArgumentNullException` where the caller passes it.
+
+<details>
+<summary>Accessibility of the generated methods</summary>
+
+The generated extension methods are `public`, unless the class, the subject or a parameter type is `internal`: then
+they are `internal` as well.
+
+</details>
 
 ## Name and texts
 
@@ -193,18 +197,24 @@ await Expect.That(tracks).None().AreLongerThan(TimeSpan.FromMinutes(5));
   carries the negation, so neither text contains `{not}`.
 - The result counts the items, e.g. "but only 1 of 3 were", with "did" instead of "were" when the text does not start
   with a form of "be". The failure message lists the matching or not matching items and the collection.
+- A `null` item does not match, unless the item parameter is nullable: then the method decides. `[DisallowNull]` and
+  `NullableOverload` work like for a subject.
+- An item that the method [cannot answer](#questions-that-cannot-be-answered) fails the expectation and its negation,
+  e.g. "but for the item at index 1, it had no duration", unless the items before already determine the outcome.
+- `Summary` and `Remarks` replace or extend the XML documentation, which is derived from the plural text.
+
+<details>
+<summary>Which collections and item types are extended</summary>
+
 - The expectation extends the items of every kind of collection that can hold the item: an `IEnumerable<T>`, an
   `ImmutableArray<T>` and, on .NET 8 or later, an `IAsyncEnumerable<T>`. The items of a reference type are extended
   as nullable, so that the expectation applies to a `List<Track>`, a `List<Track?>` and a collection of a type
   derived from `Track`.
-- A `null` item does not match, unless the item parameter is nullable: then the method decides. `[DisallowNull]` and
-  `NullableOverload` work like for a subject.
 - The type of the item can be the only type parameter of the method, when a constraint restricts it to reference
   types and no other parameter uses it, e.g. `IsLive<TRecording>(TRecording recording) where TRecording : Recording`.
   The expectations are then generic as well and keep the type of the items, e.g. for a collection of albums.
-- An item that the method [cannot answer](#questions-that-cannot-be-answered) fails the expectation and its negation,
-  e.g. "but for the item at index 1, it had no duration", unless the items before already determine the outcome.
-- `Summary` and `Remarks` replace or extend the XML documentation, which is derived from the plural text.
+
+</details>
 
 ### On the collection
 
@@ -225,17 +235,23 @@ await Expect.That(tracks).AreLongerThan(TimeSpan.FromMinutes(2));
 await Expect.That(tracks).AreNotLongerThan(TimeSpan.FromMinutes(5));
 ```
 
-- They extend an `IEnumerable<T>` and, on .NET 8 or later, an `IAsyncEnumerable<T>` of the item, and a `null`
-  collection fails them and their negations.
 - The quantifier is the subject of the text, e.g. "all are longer than …" and "none are longer than …", whose
   negations read "not all are longer than …" and "at least one is longer than …". The result counts the items like
   above, e.g. "but only 2 of 3 were".
 - The collection is read to its end, so that the failure message lists every item that does not meet the expectation,
   or that meets it for the `NegatedName`. Use a quantifier like `All()` instead on a collection that never ends.
+
+<details>
+<summary>Extended collections, XML documentation and parameter names</summary>
+
+- They extend an `IEnumerable<T>` and, on .NET 8 or later, an `IAsyncEnumerable<T>` of the item, and a `null`
+  collection fails them and their negations.
 - The summary of the XML documentation is derived from the plural text, e.g. "Verifies that all items are longer
   than …" and "Verifies that no items are longer than …"; the `Remarks` apply to them as well.
 - A parameter marked with `[NegatedParameterName]` has that name in the `NegatedName` expectation, also in a
   `<paramref>` of the `Remarks`, and keeps its name in all other expectations.
+
+</details>
 
 ### Formatting the items
 

@@ -29,8 +29,7 @@ Customize.aweXpect.Global.Snapshots().Reporters.Set([
 Like the pending file, a mismatch is only reported when the whole expectation fails, e.g. not when another branch of an
 `.Or` is met, and not for a negated snapshot. An accepted change is not reported, as it needs no review. Several
 reporters are called in the order of the list, and never on a build server, the same detection as for
-[accepting changes](02-accepting-snapshots.md). An exception of a reporter never changes the result of the test: it is
-written to the trace writer of `Customize.aweXpect.EnableTracing(…)` and otherwise ignored.
+[accepting changes](02-accepting-snapshots.md). An exception of a reporter never changes the result of the test.
 
 `SnapshotMismatch` has the `Id` and the `Store` of the snapshot, the reviewed `Snapshot` (`null` when it did not exist)
 and the `Actual` value, after the rules of the expectation were applied, e.g. with masked GUIDs. Both are a
@@ -48,3 +47,11 @@ if (mismatch.Store is IFileSnapshotStore files)
     Console.WriteLine($"Review {files.GetPendingFile(mismatch.Id)}");
 }
 ```
+
+<details>
+<summary>Exceptions of a reporter</summary>
+
+An exception of a reporter is written to the trace writer of `Customize.aweXpect.EnableTracing(…)` and otherwise
+ignored.
+
+</details>

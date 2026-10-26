@@ -136,11 +136,17 @@ await Expect.That(() => Act()).DoesNotThrow();            // reported on targets
 await Expect.That(() => Act().AsTask()).DoesNotThrow();   // fixed
 ```
 
-These older targets are affected because they use the .NET Standard 2.0 build of aweXpect. On any target, the rule
-also reports a delegate whose `ValueTask` is given explicitly as the type argument, as in
+On any target, the rule also reports a delegate whose `ValueTask` is given explicitly as the type argument, as in
 `Expect.That<ValueTask>(() => Act())`. An explicit `Task` type argument has the same effect and is reported as well,
 as in `Expect.That<Task>(() => ActAsync())`: remove the type argument, so that the task is awaited. See
 [Delegates](./06-behaviour/01-delegates.md).
+
+<details>
+<summary>Why targets before .NET 8 are affected</summary>
+
+These older targets use the .NET Standard 2.0 build of aweXpect, which has no `ValueTask` delegate overloads.
+
+</details>
 
 ## aweXpect0008
 

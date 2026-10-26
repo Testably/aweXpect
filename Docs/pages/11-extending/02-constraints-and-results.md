@@ -118,7 +118,7 @@ expectations, e.g. "it was 2 and was not even" instead of "it was 2 and it was n
 <summary>Deriving from ConstraintResult directly</summary>
 
 A constraint can also derive from `ConstraintResult` directly. It then writes the texts in `AppendExpectation` and
-`AppendResult`, returns the value in `TryGetStoredValue` and implements `NegateInPlace()` itself. This example does not
+`AppendResult`, returns the value in `TryGetStoredValue` and implements `Negate()` itself. This example does not
 support the negated case:
 
 ```csharp
@@ -156,15 +156,16 @@ private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars gr
         return typeof(TValue).IsAssignableFrom(typeof(Track));
     }
 
-    protected override void NegateInPlace()
+    public override ConstraintResult Negate()
         => throw Tracing.WriteException(
             new NotSupportedException("Negation of IsRadioFriendly is not supported."));
 }
 ```
 
-`NegateInPlace()` is called whenever the expectation is negated, e.g. by `DoesNotComplyWith(x => x.IsRadioFriendly())`,
-and negates the result itself. Doing nothing would silently check the non-negated expectation instead, so a constraint
-that cannot be negated throws, like the built-in `ExecutesIn()`.
+`Negate()` is called whenever the expectation is negated, e.g. by `DoesNotComplyWith(x => x.IsRadioFriendly())`. It
+negates the result in place and returns the same instance: `.Invert()` ignores the returned value and relies on the
+negation in place, so do not return a new result. Returning `this` without negating it would silently check the
+non-negated expectation instead, so a constraint that cannot be negated throws, like the built-in `ExecutesIn()`.
 
 To combine the result texts with `.And` like the helper classes, override `LeadingSubject` and `TrailingSubject` with
 `GetSubjectOfResult(it)`.
@@ -243,11 +244,17 @@ catch (Exception exception)
 
 - `Outcome.FailureBothWays` fails the expectation like `Outcome.Failure`, but a negation keeps it.
   `WithNotNullValue<T>` reports it for a `null` subject.
-- When you derive from `ConstraintResult` directly, swap only `Success` and `Failure` in your `NegateInPlace()` and keep
+- When you derive from `ConstraintResult` directly, swap only `Success` and `Failure` in your `Negate()` and keep
   `FailureBothWays`.
-- Code that reads an outcome treats `Outcome.Failure` and `Outcome.FailureBothWays` alike as a failed expectation. An
-  expectation that evaluates nested expectations, e.g. on the items of a collection, checks for
-  `Outcome.FailureBothWays` to find out whether an item was answered.
+
+<details>
+<summary>Reading an outcome</summary>
+
+Code that reads an outcome treats `Outcome.Failure` and `Outcome.FailureBothWays` alike as a failed expectation. An
+expectation that evaluates nested expectations, e.g. on the items of a collection, checks for
+`Outcome.FailureBothWays` to find out whether an item was answered.
+
+</details>
 
 ## Negated expectations
 
@@ -264,9 +271,6 @@ public static AndOrResult<Track, IThat<Track?>> IsNotRadioFriendly(
             => new IsRadioFriendlyConstraint(it, grammars).Invert()),
         subject);
 ```
-
-`.InvertIf(isNegated)` negates the constraint only when `isNegated` is `true`, so that an expectation and its negation
-can share one implementation.
 
 ## Side effects
 
@@ -320,10 +324,17 @@ private sealed class IsArchivedConstraint(string it, ExpectationGrammars grammar
 - The `CompletedEvaluation` has the `Outcome` of the whole expectation: `Success`, `Failure` (also after a timeout)
   or `Undecided`, when the evaluation was canceled. The constraint itself knows its own `Outcome`, which already
   includes the negation, and whether it `IsNegated`.
-- A constraint that derives from `ConstraintResult` directly tracks its negation by overriding `NegateInPlace()`, which
-  is called for every negation that applies to it, also within `.And`, `.Or`, `Whose` and `Which`:
+- Each delegate runs once, even when the constraint is evaluated several times, e.g. for each item of a collection or
+  each check of `Eventually()` or `Within(…)`, so register a method of the constraint, as above. Its state is then the
+  one of the last evaluation.
+
+<details>
+<summary>Negation in a constraint of your own, order and cancellation of the callbacks</summary>
+
+- A constraint that derives from `ConstraintResult` directly tracks its negation by overriding `Negate()`, which is
+  called for every negation that applies to it, also within `.And`, `.Or`, `Whose` and `Which`:
   ```csharp no-compile
-  protected override void NegateInPlace()
+  public override ConstraintResult Negate()
   {
       _isNegated = !_isNegated;
       Outcome = Outcome switch
@@ -332,17 +343,12 @@ private sealed class IsArchivedConstraint(string it, ExpectationGrammars grammar
           Outcome.Failure => Outcome.Success,
           _ => Outcome,
       };
+      return this;
   }
   ```
-- Each delegate runs once, even when the constraint is evaluated several times, e.g. for each item of a collection or
-  each check of `Eventually()` or `Within(…)`, so register a method of the constraint, as above. Its state is then the
-  one of the last evaluation.
 - The callbacks run in the order in which they were registered first. An exception they throw is thrown by the
   expectation.
 - They receive the cancellation token of the caller, which a timeout of the expectation does not cancel.
-
-<details>
-<summary>Constraints that do not negate the items</summary>
 
 A quantifier, e.g. in `All().ComplyWith(…)`, counts the items that meet the item expectations without negating them,
 so a constraint on the items is never negated, not even in `DoesNotComplyWith(c => c.All().ComplyWith(…))` or for

@@ -15,13 +15,16 @@ same way for an `IAsyncEnumerable<T>`. The expectation enumerates it asynchronou
 [cancellation token](../03-how-it-works/06-time-and-cancellation.md#async-enumerables).
 :::
 
-:::info[C# 13 or later]
+<details>
+<summary>CS0121 or an unexpected overload with C# 12 or older</summary>
+
 Some overloads rely on `[OverloadResolutionPriority]` to bind as described here, e.g. so that a `string` is expected
 as a single item and not as a sequence of characters, or that a `params` list or a collection expression `[…]` is the
 expected collection. The attribute only takes effect with C# 13 or later, which is the default only for .NET 9 and
 later. With an older language version, such a call can bind to a different overload or fail with CS0121, so set
 `<LangVersion>` to `13` or `latest` in a project that targets an older framework.
-:::
+
+</details>
 
 ## Spans
 
@@ -97,9 +100,7 @@ expected string.
 
 The expectations that compare items with an expected value accept a tolerance for numbers such as `int`, `long`,
 `double` or `decimal`, for `DateTime`, `DateTimeOffset` and `TimeSpan` items, and
-[on .NET 8 or later](../02-getting-started.md#target-frameworks) also for `DateOnly`, whose tolerance must be a whole
-number of days, and `TimeOnly`, whose items are compared on the clock face, so that `23:59` and `00:01` are two minutes
-apart:
+[on .NET 8 or later](../02-getting-started.md#target-frameworks) also for `DateOnly` and `TimeOnly`:
 
 ```csharp
 IEnumerable<double> durations = [1.01, 2.02, 3.04];
@@ -115,8 +116,7 @@ await Expect.That([2.04, 2.02, 2.01]).All().AreEqualTo(2.0).Within(0.1);
 await Expect.That([9, 20, 31]).Contains(10).Within(1);
 ```
 
-A tolerance takes precedence over the comparer of a set. The values of a [dictionary](./04-dictionaries.md#values)
-accept the same tolerance.
+The values of a [dictionary](./04-dictionaries.md#contained) accept the same tolerance.
 
 For `double`, `float` and `decimal` items, `Percent()` directly after `Within` interprets the tolerance as a
 [percentage](../04-values/02-number.md#tolerance) of each expected item:
@@ -127,3 +127,11 @@ await Expect.That([104.0, 209.0]).IsEqualTo([100.0, 200.0]).Within(5).Percent();
 
 Without `Within`, the items of the time types use the
 [default tolerance](../04-values/10-datetime-offset.md#default-tolerance), if one is set.
+
+<details>
+<summary>`DateOnly` and `TimeOnly` tolerances</summary>
+
+The tolerance for `DateOnly` items must be a whole number of days. `TimeOnly` items are compared on the clock face, so
+that `23:59` and `00:01` are two minutes apart.
+
+</details>

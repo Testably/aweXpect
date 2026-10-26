@@ -90,12 +90,17 @@ least `MinimumNumberOfCharactersAfterStringDifference` characters after the firs
 
 The items of a collection beyond the maximum are summarized at the end of the list: `(… and 7 more)` when the total
 number of items is known, and `(… and maybe more)` when it is not, e.g. for a lazy sequence or when the expectation
-stopped enumerating early. For a multi-dimensional array the maximum applies to the items of all dimensions together.
-
-The maximum number of collection items must be positive, and the other two values must not be negative.
+stopped enumerating early.
 
 To format your own types, register an `IValueFormatter` with `ValueFormatter.Register(…)`, which returns an
 `IDisposable` that removes it again, see [initialization](../11-extending/08-initialization.md).
+
+<details>
+<summary>Multi-dimensional arrays</summary>
+
+For a multi-dimensional array the maximum number of collection items applies to the items of all dimensions together.
+
+</details>
 
 ## Settings
 
@@ -113,12 +118,11 @@ Under `Customize.aweXpect.Settings()`:
 
 See [time and cancellation](./06-time-and-cancellation.md#cancellationtoken) for how to create a `TestCancellation`.
 
-The interval must be positive, and the timeouts must not be negative. `Timeout.InfiniteTimeSpan` retries or waits
-without a limit. See [waiting](./06-time-and-cancellation.md#waiting) for which expectations use the timeouts.
+`Timeout.InfiniteTimeSpan` retries or waits without a limit. See [waiting](./06-time-and-cancellation.md#waiting) for
+which expectations use the timeouts.
 
-The `DefaultRegexTimeout` protects against catastrophic backtracking. Like the `Regex` constructor, it accepts a
-positive value or `Regex.InfiniteMatchTimeout`, and rejects zero. It is read when a pattern is matched, so a scope can
-allow more time for a large subject on a slow build server:
+The `DefaultRegexTimeout` protects against catastrophic backtracking. `Regex.InfiniteMatchTimeout` switches it off. A
+scope can allow more time for a large subject on a slow build server:
 
 ```csharp
 using aweXpect.Customization;
@@ -135,19 +139,24 @@ a `DefaultTimeComparisonTolerance` of about 15 ms avoids brittle comparisons of 
 :::
 
 `ExcludedAssemblyPrefixes` defaults to `mscorlib`, `System`, `Microsoft`, `netstandard`, `WindowsBase`, `JetBrains`,
-`xunit`, `TUnit`, `Castle` and `DynamicProxyGenAssembly2`. A prefix matches at a segment boundary of the assembly name,
-so `System` excludes `System.Net.Http`, but not an assembly named `Systemics`. A prefix that ends with a `.`, e.g.
-`MyCompany.`, excludes all assemblies whose name starts with it, and an empty prefix excludes nothing. Extensions such
-as aweXpect.Reflection use the same prefixes with the same matching, which
+`xunit`, `TUnit`, `Castle` and `DynamicProxyGenAssembly2`. Extensions such as aweXpect.Reflection use the same
+prefixes.
+
+<details>
+<summary>How the prefixes are matched and when they are used</summary>
+
+A prefix matches at a segment boundary of the assembly name, so `System` excludes `System.Net.Http`, but not an
+assembly named `Systemics`. A prefix that ends with a `.`, e.g. `MyCompany.`, excludes all assemblies whose name starts
+with it, and an empty prefix excludes nothing. Extensions use the same matching, which
 [`AssemblyPrefixes.IsExcluded`](../11-extending/07-customization-values.md#exclude-the-framework-assemblies) offers to
 your own extension.
 
-:::note
 The loaded assemblies are only scanned for a test framework adapter below .NET 8, e.g. on .NET Framework. On .NET 8 or
 later the generated adapter registers itself when the test assembly is loaded, so `ExcludedAssemblyPrefixes` has no
 effect on the test framework detection there. This registration needs C# 9 or later, see
 [aweXpect2002](../08-analyzers.md#test-framework-adapter).
-:::
+
+</details>
 
 ## Tracing
 

@@ -16,10 +16,17 @@ public async Task Describes(string title)
 ```
 
 The name is appended to the file names, e.g. `AlbumTests.Describes.Abbey Road.awexpect-snapshot.txt`. The same
-applies to several snapshots in one test method. Characters that a file name cannot hold on every operating system
-(`< > : " / \ | ? *` and control characters), as well as `%` and `.`, are escaped as `%XX` in the file name, e.g.
-`.Named("AC/DC")` is stored in `ArtistTests.Describes.AC%2FDC.awexpect-snapshot.txt`. The same holds for `@`, which
-separates the environment (see below).
+applies to several snapshots in one test method.
+
+<details>
+<summary>Characters that are escaped</summary>
+
+Characters that a file name cannot hold on every operating system (`< > : " / \ | ? *` and control characters), as well
+as `%` and `.`, are escaped as `%XX` in the file name, e.g. `.Named("AC/DC")` is stored in
+`ArtistTests.Describes.AC%2FDC.awexpect-snapshot.txt`. The same holds for `@`, which separates the environment (see
+below).
+
+</details>
 
 A name longer than 64 characters in the file name, where each escaped character takes three, is shortened to 55
 characters, followed by `~` and a hash of the whole name, e.g.
@@ -40,6 +47,9 @@ framework reports retries (NUnit and TUnit), a retry may also use another value 
 counts the runs of `[Repeat]` as retries, so while accepting, a repeated test whose value changes keeps the value of
 its last run instead of failing.
 
+<details>
+<summary>Names that only differ in case</summary>
+
 Names that only differ in case, e.g. `.Named("Live")` and `.Named("live")`, fail as well, also for the same value, as
 they are the same file on Windows and macOS but two files on Linux:
 
@@ -49,8 +59,7 @@ matches the snapshot "/src/Tests/AlbumTests.Describes.live.awexpect-snapshot.txt
 but the snapshot "/src/Tests/AlbumTests.Describes.Live.awexpect-snapshot.txt", whose id only differs in case, was already used in this test run, so give them names that differ in more than the case with .Named(…) or .NamedAfter(…)
 ```
 
-The test file and method are set by the compiler through optional parameters, so a name must not be passed as an
-argument: `MatchesSnapshot("login")` throws an `ArgumentException` that points to `.Named(…)`.
+</details>
 
 ## Naming after the arguments
 
@@ -174,19 +183,31 @@ The environment is appended to the file names after an `@`, e.g.
 The values always keep this order, whatever the order of the calls. A missing snapshot of the environment fails like
 any other missing snapshot; it does not fall back to the snapshot that every environment shares.
 
+A [custom store](07-storing-snapshots.md) receives the environment as `SnapshotId.Variant`, e.g. `net8.0@windows`.
+
+<details>
+<summary>How the environment is determined</summary>
+
 The target framework is the one the build knows (`$(TargetFramework)`), which the build targets of aweXpect.Snapshots
 record in the test assembly, so `.UniqueFor.TargetFramework()` throws an `InvalidOperationException` when they are
 missing. On another operating system, `.UniqueFor.OperatingSystem()` throws a `PlatformNotSupportedException`.
 
-A [custom store](07-storing-snapshots.md) receives the environment as `SnapshotId.Variant`, e.g. `net8.0@windows`.
+</details>
 
 ## Nesting in the IDE
 
 In a C# project, the build targets of aweXpect.Snapshots nest each snapshot and pending file under its test file, so
-that Rider and Visual Studio show them below it in the solution explorer. As the names of test files and snapshots can
-both contain dots, the test file is the longest prefix of the file name, of up to eight parts separated by a dot, for
-which a `.cs` file exists in the same directory, e.g. `AlbumTests.Describes.Abbey Road.awexpect-snapshot.txt` is nested
-under `AlbumTests.Describes.cs` if it exists, and under `AlbumTests.cs` otherwise.
+that Rider and Visual Studio show them below it in the solution explorer.
+
+<details>
+<summary>How the test file is found</summary>
+
+As the names of test files and snapshots can both contain dots, the test file is the longest prefix of the file name,
+of up to eight parts separated by a dot, for which a `.cs` file exists in the same directory, e.g.
+`AlbumTests.Describes.Abbey Road.awexpect-snapshot.txt` is nested under `AlbumTests.Describes.cs` if it exists, and
+under `AlbumTests.cs` otherwise.
+
+</details>
 
 A `DependentUpon` that you set yourself is kept, e.g. to nest the snapshots under another file:
 

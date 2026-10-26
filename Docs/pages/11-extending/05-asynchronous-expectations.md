@@ -124,16 +124,18 @@ await Expect.That(player).IsPlaying()
     .Within(TimeSpan.FromSeconds(5)).CheckEvery(TimeSpan.FromMilliseconds(100));
 ```
 
-- `CheckRepeatedly` makes the first check immediately. When `IsRepeated` is `true`, because `Within` set a positive
-  or an infinite timeout, it repeats the check in the interval until it succeeds, and makes the last check at the
-  timeout.
 - The check returns whether the expectation is met, so for a negated variant created with `.Invert()` it returns
   `true` when the player is *not* playing. The helper class inverts the stored `Outcome` itself.
+- When `CheckRepeatedly` returns `Undecided`, because the evaluation was canceled, set the `Outcome` of the constraint
+  to `Undecided` as well, as the sample does.
 - Appending the options writes " within …" to the expectation text when `Within` was specified.
 
 <details>
-<summary>Contexts, exceptions and cancellation</summary>
+<summary>Timing, contexts, exceptions and cancellation</summary>
 
+- `CheckRepeatedly` makes the first check immediately. When `IsRepeated` is `true`, because `Within` set a positive
+  or an infinite timeout, it repeats the check in the interval until it succeeds, and makes the last check at the
+  timeout.
 - The check receives the `IEvaluationContext` to use. The first check gets the context of the evaluation, every
   further check a new one, so that a collection taken with `UseMaterializedEnumerable` is read again instead of
   replaying the items that a previous check read.

@@ -35,13 +35,20 @@ without loading it, and named after its target framework:
 await Expect.That(new FileInfo(path)).MatchesPublicApiSnapshot().Named("netstandard2.0");
 ```
 
+A build for a newer .NET than the tests run on needs the .NET SDK of that version, which installs its reference
+assemblies.
+
+<details>
+<summary>How the types in the signatures are resolved</summary>
+
 The types in the signatures are resolved from the assemblies next to the assembly, in the output of the tests, of the
 .NET version it targets and of the current runtime. The NuGet packages of the library, which its build output does not
 contain, fill in the assemblies that are missing or only found in a lower version: they are read from the global packages
-folder with the versions that the `deps.json` next to the assembly lists. A build for a newer .NET than the tests run on
-needs the .NET SDK of that version, which installs its reference assemblies. When a referenced assembly cannot be
+folder with the versions that the `deps.json` next to the assembly lists. When a referenced assembly cannot be
 resolved, or only in a lower version, the expectation throws an `InvalidOperationException` that names it, instead of
 writing a public API that differs from machine to machine.
+
+</details>
 
 The types that the assembly forwards to another assembly are written as
 `[assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(…))]`, as removing a forward breaks the consumers
@@ -87,9 +94,8 @@ await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
 ```
 
 A type is selected by its type or by its full name like `Type.FullName`, for a generic type with any type arguments.
-A nested type is written with its containing type, so `Within.Type` throws an `ArgumentException` for one; the filters
-also apply to the forwarded types. An empty namespace is the global namespace, while an empty type or attribute name
-throws an `ArgumentException`, as it could never match.
+A nested type is written with its containing type. The filters also apply to the forwarded types. An empty namespace
+is the global namespace.
 
 Every declaration is written on a single line by default. To see a change of a single parameter as a change of a single
 line, write the parameters of methods, constructors, operators, delegates and indexers with more than one parameter on

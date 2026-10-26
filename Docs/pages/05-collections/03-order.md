@@ -36,11 +36,10 @@ await Expect.That(albums).IsInAscendingOrder(x => x.Title);
 Strings are compared ordinally by default, also in an untyped collection. A `SortedSet<T>` or `ImmutableSortedSet<T>`,
 and the keys of a sorted dictionary, are ordered by their own comparer, unless a comparer or a member is specified.
 
-A `DateTime` sequence that mixes `Utc` and `Local` values fails, also when negated, unless a custom comparer is used.
-
 <details>
 <summary>Mixed `DateTimeKind` values</summary>
 
+A `DateTime` sequence that mixes `Utc` and `Local` values fails, also when negated, unless a custom comparer is used.
 The order of `Utc` and `Local` values depends on the time zone, so such a sequence fails the check in both forms. This
 also applies to a `DateTime` member and to an untyped collection. Values with `DateTimeKind.Unspecified` are
 compatible with both kinds.

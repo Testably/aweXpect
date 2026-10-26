@@ -69,7 +69,7 @@ private sealed class HasRadioFriendlyTracksConstraint(string it, ExpectationGram
 `await Expect.That(tracks).IsNotEmpty().And.HasRadioFriendlyTracks(3)` then enumerates `tracks` only once.
 
 For an `IAsyncEnumerable<T>`, implement `IAsyncContextConstraint<T>` and call `UseMaterializedAsyncEnumerable` with its
-`CancellationToken`. This method is only available on .NET 8 or later.
+`CancellationToken`.
 
 <details>
 <summary>How the materialized collection behaves</summary>
@@ -214,19 +214,9 @@ public static AndOrResult<Track, IThat<Track?>> HasTitle(
 
 - The second argument of `ForMember` writes the text in front of the nested expectations.
 - The name of the member replaces `it` in their result texts ("title was …"), unless you pass `replaceIt: false`.
-- A member named by a path within the subject, like the JSON path `$.artist.origin`, uses
-  `MemberAccessor<TSource, TMember>.FromFuncWithPath(…, path, "$")`, so that the contexts of a nested path replace the
-  label of the enclosing one instead of repeating it, and follow the label of another member without the root, e.g.
-  `elements[1].origin`.
-- When the constraint from `Validate(…)` finds the member, e.g. a property that may be missing, `NegatedAsAlternative(…)`
-  writes the negation as an alternative, e.g. `does not have property "a" or $.a is not equal to 1`, and the result
-  of the member then explains a failed negation.
-- `AddExpectations` hands the caller's `expectations` to the `static` lambda, so that adding them allocates neither a
-  closure nor a delegate. An overload without this state takes a lambda that captures what it needs.
 - The function passed to `AddExpectations` sets the grammars of the nested expectations.
 - `Validate(…)` before `AddExpectations` adds a constraint on the subject itself, e.g. based on
   `ConstraintResult.WithNotNullValue<T>` to rule out a `null` subject, as `WithInner` does.
-- An exception that the member selector throws fails the nested expectations with "… did throw …".
 - `ForAsyncMember` does the same for a member that has to be awaited, returned as a `Task<T>` or a `ValueTask<T>`.
 
 A result that continues with a new subject after the expectation, like `HasSingle().Which`, uses `ForWhich` instead.
@@ -253,6 +243,22 @@ Hand out a new subject as `IThatSubject<T>`, both in an `Action<IThatSubject<T>>
 `Which`, so that the caller can narrow it with `Is<TType>()` and the other type checks. Unlike `Expect.That<T>(T)`,
 which returns an `IThatSubject<T>`, `Expect.That(bool)` returns a `ThatBoolSubject` that is only an `IThat<bool>`,
 because a type check cannot narrow a `bool`, so write expectations on booleans for `IThat<bool>`.
+
+<details>
+<summary>Member paths, negation as an alternative and allocations</summary>
+
+- A member named by a path within the subject, like the JSON path `$.artist.origin`, uses
+  `MemberAccessor<TSource, TMember>.FromFuncWithPath(…, path, "$")`, so that the contexts of a nested path replace the
+  label of the enclosing one instead of repeating it, and follow the label of another member without the root, e.g.
+  `elements[1].origin`.
+- When the constraint from `Validate(…)` finds the member, e.g. a property that may be missing, `NegatedAsAlternative(…)`
+  writes the negation as an alternative, e.g. `does not have property "a" or $.a is not equal to 1`, and the result
+  of the member then explains a failed negation.
+- `AddExpectations` hands the caller's `expectations` to the `static` lambda, so that adding them allocates neither a
+  closure nor a delegate. An overload without this state takes a lambda that captures what it needs.
+- An exception that the member selector throws fails the nested expectations with "… did throw …".
+
+</details>
 
 ### Members that need the evaluation
 
@@ -395,9 +401,7 @@ if (EquivalencyExpectations.TryGetBuilder(expectedValue, out EquivalencyExpectat
 An expectation on the items of a collection, i.e. an extension method on `IEnumerableItems<TItem>`, the items that
 `All()`, `AtLeast(2)` and the other quantifiers select, derives from `QuantifiedCollectionConstraint<TValue, TItem>`.
 `IEnumerableItems<TItem>` gives access to the quantifier and the subject. The built-in expectations on the items, like
-`Satisfy` or `AreEqualTo`, are such extension methods as well. The quantifiers return the derived
-`IQuantifiedEnumerableItems<TItem>`, which only adds the type checks `Are<TType>()` and `AreExactly<TType>()`, whose
-type argument cannot be inferred. For a condition on a single item,
+`Satisfy` or `AreEqualTo`, are such extension methods as well. For a condition on a single item,
 [`[GenerateCollectionExpectation]`](./01-generated-expectations.md#collections) generates such an expectation.
 
 ```csharp
@@ -451,8 +455,7 @@ await Expect.That(tracks).All().AreRadioFriendly();
 - The other collections have their own interfaces: `INonGenericEnumerableItems<TCollection>` for a non-generic
   `IEnumerable`, `IStructEnumerableItems<TCollection, TItem>` for an `ImmutableArray` and
   `IAsyncEnumerableItems<TItem>` for an `IAsyncEnumerable`. Strings have no interface of their own: an expectation
-  only for strings extends `IEnumerableItems<string?>`, and overload resolution prefers it over an expectation on
-  `IEnumerableItems<TItem>`.
+  only for strings extends `IEnumerableItems<string?>`.
 - The interfaces are covariant in `TItem`, so an expectation on the items of `Track?` also applies to the items of a
   `List<Track>` or of a collection of a type derived from `Track`. Extend `IEnumerableItems<Track?>` to cover both
   nullabilities.
@@ -464,8 +467,11 @@ of 3 were", followed by the "Matching items". Unlike the built-in expectations, 
 context.
 
 <details>
-<summary>Early completion, nested item results and the base class</summary>
+<summary>Early completion, nested item results, the base class and overloads</summary>
 
+- The quantifiers return the derived `IQuantifiedEnumerableItems<TItem>`, which only adds the type checks
+  `Are<TType>()` and `AreExactly<TType>()`, whose type argument cannot be inferred.
+- Overload resolution prefers an expectation on `IEnumerableItems<string?>` over one on `IEnumerableItems<TItem>`.
 - Call `CompleteEarly()` instead of `Complete()` as soon as `IsDetermined`, to stop reading the items once they
   decide the outcome.
 - When the items are verified by nested expectations, record the result of each item with `Record(item, itemResult)`,

@@ -86,9 +86,15 @@ player.Play("Yesterday");
 await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Twice();
 ```
 
+Disposing detaches the handlers, so an event that is triggered afterwards is not recorded any more.
+
+<details>
+<summary>Stopped or disposed recordings</summary>
+
 Call `.UntilDisposed()` before the first expectation: on a recording that an expectation already stopped, it throws an
-`InvalidOperationException`. Disposing detaches the handlers, so an event that is triggered afterwards is not recorded
-any more and an expectation on the disposed recording throws as well.
+`InvalidOperationException`. An expectation on a disposed recording throws as well.
+
+</details>
 
 ## Triggering
 
@@ -150,7 +156,7 @@ await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).AtMost().Twi
 
 ## Filtering
 
-You can filter the recorded events based on their parameters:
+You can filter the recorded events based on their parameters, and [count](#counting) only the matching ones:
 
 ```csharp
 IEventRecording<Player> recording = player.Record().Events();
@@ -160,6 +166,8 @@ player.Play("Yesterday");
 
 await Expect.That(recording).Triggered(nameof(Player.TrackStarted))
   .WithParameter<TrackStartedEventArgs>(e => e.Title == "Yesterday");
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted))
+  .WithParameter<TrackStartedEventArgs>(e => e.Title == "Yesterday").Once();
 ```
 
 This matches an event when any of its parameters is of the given type and satisfies the predicate. To check the
@@ -181,7 +189,7 @@ An event whose parameter at that position is missing or of another type does not
 
 A parameter that is `null` is passed to the predicate, unless the given type is a non-nullable value type; without a
 position, `null` parameters are ignored. The predicates for the sender and for the `EventArgs` below also receive a
-value that is `null`. A negative position throws an `ArgumentOutOfRangeException`.
+value that is `null`.
 
 </details>
 
@@ -228,10 +236,8 @@ await Expect.That(recording).TriggeredPropertyChangedFor(x => x.Title)
   .Because("it should trigger the PropertyChanged event for the 'Title' property name");
 ```
 
-The expression has to access a property directly on the subject, as in `x => x.Title`. A nested access like
-`x => x.Artist.Name`, a property of another object or a computed value like `x => !x.IsFavorite` throws an
-`ArgumentException`. For any other name, use the overload with the property name, e.g.
-`TriggeredPropertyChangedFor("Title")`.
+The expression has to access a property directly on the subject, as in `x => x.Title`. For any other name, use the
+overload with the property name, e.g. `TriggeredPropertyChangedFor("Title")`.
 
 The negated expectations verify that the event was not triggered:
 

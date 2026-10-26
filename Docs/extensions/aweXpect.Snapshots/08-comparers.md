@@ -48,12 +48,19 @@ order of the list, and otherwise the built-in comparison.
   changes, and a leftover pending snapshot is deleted. Otherwise the failure shows its description, e.g.
   `but it differed: only 97.2% of the pixels are the same`, and the value is recorded for review or accepted like any
   other difference.
-- A snapshot that is used again in the same test run for a value with other bytes, e.g. by a repeated test, is no
-  conflict when the comparer considers both values equal: it gets the first value of the test run as `Snapshot`. The
-  first value is only kept while a comparer is set for the expectation or in the setting. Tests run in parallel, so a
-  comparer can be called concurrently and must be thread-safe.
-- An exception of a comparer or of its condition fails the expectation both ways, with the exception as its cause, and
-  neither records nor accepts the value.
+- Tests run in parallel, so a comparer can be called concurrently and must be thread-safe.
+
+<details>
+<summary>Repeated snapshots and exceptions</summary>
+
+A snapshot that is used again in the same test run for a value with other bytes, e.g. by a repeated test, is no
+conflict when the comparer considers both values equal: it gets the first value of the test run as `Snapshot`. The
+first value is only kept while a comparer is set for the expectation or in the setting.
+
+An exception of a comparer or of its condition fails the expectation both ways, with the exception as its cause, and
+neither records nor accepts the value.
+
+</details>
 
 <details>
 <summary>Testing a comparer</summary>

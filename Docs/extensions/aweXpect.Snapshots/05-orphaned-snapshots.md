@@ -65,10 +65,7 @@ running all tests, e.g. to delete the orphaned snapshots together with `AWEXPECT
 await OrphanedSnapshots.CheckAsync(force: true);
 ```
 
-Only the directory of the test project is searched, without `bin`, `obj`, hidden directories and the directories of
-other projects in it, and only for files with the marker `.awexpect-snapshot.`, so that files of other tools are never
-reported or deleted. A snapshot counts as used as soon as `MatchesSnapshot()` is called for it, even if it is not
-compared, e.g. after `.Or` was already met. The check cannot know about tests that did not reach `MatchesSnapshot()`:
+The check cannot know about tests that did not reach `MatchesSnapshot()`:
 
 - A skipped test, or one that fails before calling `MatchesSnapshot()`, leaves its snapshot unused.
 - A test that only exists for some target frameworks, e.g. behind `#if NET8_0_OR_GREATER`, leaves its snapshot unused
@@ -76,6 +73,15 @@ compared, e.g. after `.Or` was already met. The check cannot know about tests th
 - A snapshot per environment (see [Snapshots per environment](03-naming-snapshots.md#snapshots-per-environment)), e.g.
   `AlbumTests.Describes@net48@windows.awexpect-snapshot.txt`, is only checked by a test run in that environment, here
   on Windows for `net48`; the test runs of the other environments skip it.
-- A file name that only differs in case from a used snapshot counts as used, as it is the same file on Windows and
-  macOS.
 - Test projects that share a directory see each other's snapshots, so give each test project its own directory.
+
+<details>
+<summary>Which files are checked</summary>
+
+Only the directory of the test project is searched, without `bin`, `obj`, hidden directories and the directories of
+other projects in it, and only for files with the marker `.awexpect-snapshot.`, so that files of other tools are never
+reported or deleted. A snapshot counts as used as soon as `MatchesSnapshot()` is called for it, even if it is not
+compared, e.g. after `.Or` was already met. A file name that only differs in case from a used snapshot counts as used,
+as it is the same file on Windows and macOS.
+
+</details>

@@ -63,9 +63,16 @@ await Expect.That(track).IsJsonSerializable(
 ```
 
 Without `JsonSerializerOptions`, the subject is serialized with the default options of the
-[customization](./05-customization.md). It is serialized and deserialized as its runtime type, so that the members of
-a derived type survive the round trip as well, and keeps its declared type for further expectations after `.And`. A
-`null` subject fails the expectation.
+[customization](./05-customization.md).
+
+<details>
+<summary>Runtime type and `null` subjects</summary>
+
+The subject is serialized and deserialized as its runtime type, so that the members of a derived type survive the
+round trip as well, and keeps its declared type for further expectations after `.And`. A `null` subject fails the
+expectation.
+
+</details>
 
 ## Serialized as JSON
 
@@ -104,10 +111,9 @@ Unlike [`IsJsonSerializable`](#json-serializable), which verifies that an object
 serializer, `IsJsonSerializedAs` verifies the JSON itself: the property names and their casing, the representation of
 enums, omitted `null` values and the effect of converters.
 
-The expected value is either a JSON string, which must be valid JSON (otherwise an `ArgumentException` is thrown), or
-an object that is compared like in [`Matches`](./02-matching.md), including `It.Is…` expectations. Without
-`JsonSerializerOptions`, the subject is serialized with the default options of the
-[customization](./05-customization.md). A `null` subject is serialized as `null`, and a subject that cannot be
+The expected value is either a JSON string or an object that is compared like in [`Matches`](./02-matching.md),
+including `It.Is…` expectations. Without `JsonSerializerOptions`, the subject is serialized with the default options of
+the [customization](./05-customization.md). A `null` subject is serialized as `null`, and a subject that cannot be
 serialized, e.g. because of a reference cycle, fails the expectation with the message of the exception.
 
 The `JsonSerializerOptions` parameter only serializes the subject. An expected object is serialized with the default
@@ -143,6 +149,10 @@ internal partial class TrackContext : JsonSerializerContext;
 await Expect.That(track).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2}""",
     TrackContext.Default.Track, o => o.TreatingNullAsAbsent());
 ```
+:::
+
+<details>
+<summary>More on trimming and Native AOT</summary>
 
 `IsJsonSerializable` takes the `JsonTypeInfo<T>` as well, and then serializes and deserializes the subject as `T`. It
 also compares the deserialized object with the subject by
@@ -169,4 +179,5 @@ context, whose options are passed with [`WithSerializerOptions(…)`](./02-match
 await Expect.That(element).Matches(new Track("Let It Be", Genre.Rock),
     o => o.WithSerializerOptions(TrackContext.Default.Options));
 ```
-:::
+
+</details>

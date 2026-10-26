@@ -36,13 +36,20 @@ for some test projects, turn this off in the project file:
 </PropertyGroup>
 ```
 
-A module initializer needs C# 9 and the `ModuleInitializerAttribute`, which .NET 5 and later provide, and which a
-project for .NET Framework can declare as an `internal` type itself. Without them, the reporter is not registered
-automatically. Register it in an assembly-level setup of the test framework instead, e.g. in the constructor of an
-xunit fixture or a `[SetUpFixture]` of NUnit:
+Then register it in an assembly-level setup of the test framework, e.g. in the constructor of an xunit fixture or a
+`[SetUpFixture]` of NUnit:
 
 ```csharp
 DiffEngineReporter.Register();
 ```
 
 `Register` adds the reporter to the reporters that are already set, unless one is added already.
+
+<details>
+<summary>Projects without module initializers</summary>
+
+A module initializer needs C# 9 and the `ModuleInitializerAttribute`, which .NET 5 and later provide, and which a
+project for .NET Framework can declare as an `internal` type itself. Without them, the reporter is not registered
+automatically; register it yourself as shown above.
+
+</details>

@@ -36,8 +36,7 @@ By default, assemblies whose name matches one of the following prefixes are excl
 Both the assembly scanning and the dependency expectations (`DependsOnlyOn` / `DependOnlyOn` /
 `WhichDependOnlyOn`, on both assemblies and types) use the same prefixes with the same matching: a prefix
 matches at a name-segment boundary, so `System` covers `System` and `System.Text.Json`, but not an assembly
-named `SystemsBiology`. A prefix written with a trailing dot (e.g. `MusicStore.`) is boundary-safe by
-construction and covers everything starting with it. Empty prefixes are ignored.
+named `SystemsBiology`.
 
 Customize this via `Customize.aweXpect.Settings().ExcludedAssemblyPrefixes`. `Set(…)` replaces the
 list and returns a scope that restores the previous value when disposed:
@@ -49,6 +48,14 @@ using (Customize.aweXpect.Settings().ExcludedAssemblyPrefixes
     // In.AllLoadedAssemblies() applies the custom prefixes within this scope
 }
 ```
+
+<details>
+<summary>Prefixes with a trailing dot</summary>
+
+A prefix written with a trailing dot (e.g. `MusicStore.`) is boundary-safe by construction and covers everything
+starting with it.
+
+</details>
 
 ## Compiler-generated members
 
@@ -92,9 +99,9 @@ dependency on it; reference the package yourself), for IL/body-level accuracy:
 ```csharp
 // Replace the resolver within a scope
 using (Customize.aweXpect.Reflection().DependencyResolver
-    .Set(type => MyCecilResolver.GetUsedTypes(type)))
+    .Set(type => MyCecilResolver.GetBodyTypes(type)))
 {
-    // body-level references now count as dependencies
+    // only the body-level references count as dependencies
 }
 
 // Or augment instead of replace: compose on the current default
@@ -116,23 +123,87 @@ using (Customize.aweXpect.Reflection().DependencyResolver.Set(null))
 `Get()` always returns the resolver currently in effect (the built-in default when none is configured),
 so composing on it works regardless of what an outer scope has set up.
 
-A Mono.Cecil-backed resolver boils down to reading the type's assembly and mapping the IL references
-back to runtime types:
+<details>
+<summary>Example: a resolver backed by Mono.Cecil</summary>
+
+`MyCecilResolver.GetBodyTypes` reads the IL of the methods of a type with Mono.Cecil and returns the types that their
+bodies reference: the types of local variables, created or cast types, and the types of called methods and accessed
+fields. Combine it with the built-in resolver as shown above to keep the signature dependencies. It reads the assembly
+file, so it does not work for an assembly that was loaded from memory or bundled into a single-file app.
 
 ```csharp
-public static IEnumerable<Type> GetUsedTypes(Type type)
+using System.Collections.Concurrent;
+using System.Reflection;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
+
+public static class MyCecilResolver
 {
-    using var assembly = Mono.Cecil.AssemblyDefinition.ReadAssembly(type.Assembly.Location);
-    var definition = assembly.MainModule.GetType(type.FullName!.Replace('+', '/'));
-    foreach (var instruction in definition.Methods
-                 .Where(method => method.HasBody)
-                 .SelectMany(method => method.Body.Instructions))
+    private static readonly ConcurrentDictionary<Assembly, ModuleDefinition> Modules = new();
+
+    public static IEnumerable<Type> GetBodyTypes(Type type)
+        => GetBodyReferences(type).Select(ToType).OfType<Type>();
+
+    private static IEnumerable<TypeReference> GetBodyReferences(Type type)
     {
-        // map the method/field/type references in instruction.Operand back to System.Type
-        // (and also walk the signature surface: base type, interfaces, fields, …)
+        ModuleDefinition module = Modules.GetOrAdd(type.Assembly, a => ModuleDefinition.ReadModule(a.Location));
+        TypeDefinition? definition = module.GetType(type.FullName!.Replace('+', '/'));
+        if (definition is null)
+        {
+            yield break;
+        }
+
+        foreach (MethodDefinition method in WithGeneratedTypes(definition)
+                     .SelectMany(t => t.Methods)
+                     .Where(m => m.HasBody))
+        {
+            foreach (VariableDefinition variable in method.Body.Variables)
+            {
+                yield return variable.VariableType;
+            }
+
+            foreach (Instruction instruction in method.Body.Instructions)
+            {
+                switch (instruction.Operand)
+                {
+                    case TypeReference typeReference:
+                        yield return typeReference;
+                        break;
+                    case MemberReference memberReference: // a called method or an accessed field
+                        yield return memberReference.DeclaringType;
+                        break;
+                }
+            }
+        }
+    }
+
+    // Lambdas, async methods and iterators are compiled into nested types, whose bodies belong to the type.
+    private static IEnumerable<TypeDefinition> WithGeneratedTypes(TypeDefinition type)
+        => type.NestedTypes
+            .Where(IsCompilerGenerated)
+            .SelectMany(WithGeneratedTypes)
+            .Prepend(type);
+
+    private static bool IsCompilerGenerated(TypeReference type)
+        => type.Name.StartsWith("<");
+
+    private static Type? ToType(TypeReference reference)
+    {
+        reference = reference.GetElementType(); // strips arrays, by-refs, pointers and generic arguments
+        string? assemblyName = reference.Scope switch
+        {
+            AssemblyNameReference name => name.FullName,
+            ModuleDefinition module => module.Assembly.FullName,
+            _ => null,
+        };
+        return reference is GenericParameter || IsCompilerGenerated(reference) || assemblyName is null
+            ? null
+            : Type.GetType($"{reference.FullName.Replace('/', '+')}, {assemblyName}", throwOnError: false);
     }
 }
 ```
+
+</details>
 
 :::warning[The resolver must be pure]
 Every resolver's output is normalized like the built-in's (array/by-ref/pointer element types and

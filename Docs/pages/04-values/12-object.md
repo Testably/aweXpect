@@ -195,9 +195,6 @@ static WeakReference CreateReleasedReference()
   => new(new Album("Abbey Road"));
 ```
 
-Both force full blocking garbage collections before they check the target, and repeat them a few times, as
-finalizers can release further objects.
-
 :::warning[A reference held by the test keeps the target alive]
 A strong reference that the test itself still holds keeps the target alive, e.g. a local variable or the temporary
 object in `new WeakReference(new Album(…))`, which a Debug build keeps until the end of the method, even when it is no
@@ -206,3 +203,11 @@ creates itself, use
 [`IsCollectedAfter`](../06-behaviour/01-delegates.md#memory-leaks) instead, which creates the object where no
 reference to it remains.
 :::
+
+<details>
+<summary>How the garbage collection is triggered</summary>
+
+Both force full blocking garbage collections before they check the target, and repeat them a few times, as
+finalizers can release further objects.
+
+</details>

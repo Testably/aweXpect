@@ -69,25 +69,7 @@ Actual:
 }
 ```
 
-The name is taken literally, so that names like `"@odata.context"` or `"user.name"` can be addressed. In the JSON path
-of a failure, a name that is no plain identifier is written in brackets, e.g. `$['@odata.context']`, so that it cannot
-be read as several segments. A subject that is no JSON object fails `HasProperty` and `DoesNotHaveProperty` alike, e.g.
-with `but it was an array`.
-
-Negated, e.g. within `DoesNotComplyWith(…)`, the expectations on a property are an alternative: the negation is met
-when the property does not exist or its value does not satisfy them. Negating
-`HasProperty("title", t => t.IsString("Let It Be"))` would fail for the track with:
-
-```text title="Failure message"
-Expected that track
-does not have property "title" or $.title is not a string equal to "Let It Be",
-but $.title was "Let It Be"
-
-Actual ($.title):
-"Let It Be"
-```
-
-The same applies to [`HasValueAt`](#values-at-a-path) and [`HasElementAt`](#elements).
+The name is taken literally, so that names like `"@odata.context"` or `"user.name"` can be addressed.
 
 The expectations can be nested, and the JSON path in the failure continues with each level:
 
@@ -110,8 +92,32 @@ JSON options ($.artist.origin):
  - ignore additional properties
 ```
 
+<details>
+<summary>Paths, other kinds and negation</summary>
+
 The paths of a nested `Matches` continue the path in the same way, also for the members to ignore, e.g.
-`Ignoring(path => path == "$.artist.origin.city")`.
+`Ignoring(path => path == "$.artist.origin.city")`. In the JSON path of a failure, a name that is no plain identifier
+is written in brackets, e.g. `$['@odata.context']`, so that it cannot be read as several segments.
+
+A subject that is no JSON object fails `HasProperty` and `DoesNotHaveProperty` alike, e.g. with
+`but it was an array`.
+
+Negated, e.g. within `DoesNotComplyWith(…)`, the expectations on a property are an alternative: the negation is met
+when the property does not exist or its value does not satisfy them. Negating
+`HasProperty("title", t => t.IsString("Let It Be"))` would fail for the track with:
+
+```text title="Failure message"
+Expected that track
+does not have property "title" or $.title is not a string equal to "Let It Be",
+but $.title was "Let It Be"
+
+Actual ($.title):
+"Let It Be"
+```
+
+The same applies to [`HasValueAt`](#values-at-a-path) and [`HasElementAt`](#elements).
+
+</details>
 
 ### `null` and missing properties
 
@@ -181,9 +187,7 @@ Actual:
 }
 ```
 
-A value on the way that has another kind than the next segment requires fails with e.g.
-`but $.artist was a string instead of an object`. `TreatingNullAsAbsent()` is available like for
-[`HasProperty`](#null-and-missing-properties).
+`TreatingNullAsAbsent()` is available like for [`HasProperty`](#null-and-missing-properties).
 
 Without expectations, `HasValueAt` only verifies that the value exists, and `DoesNotHaveValueAt` that it does not:
 
@@ -197,8 +201,15 @@ await Expect.That(album)
     .DoesNotHaveValueAt("tracks[1].title");
 ```
 
-A missing property or index on the way satisfies `DoesNotHaveValueAt`, while a value of another kind on the way fails
-it like `HasValueAt`, as the path cannot be looked up in it.
+<details>
+<summary>Values of another kind on the way</summary>
+
+A value on the way that has another kind than the next segment requires fails with e.g.
+`but $.artist was a string instead of an object`. A missing property or index on the way satisfies
+`DoesNotHaveValueAt`, while a value of another kind on the way fails it like `HasValueAt`, as the path cannot be looked
+up in it.
+
+</details>
 
 ## Elements
 
@@ -244,8 +255,7 @@ await Expect.That(track).IsObject();
 You can verify the properties of an object regardless of their name with `WhoseProperties`. Like
 [`WhoseElements`](#isarray) for arrays, it provides all
 [collection expectations](https://docs.testably.org/aweXpect/collections/items) of aweXpect, here on the
-`JsonProperty` items in the order of the document, e.g. `HasCount(2)` for the number of properties. A name that occurs
-more than once in the object is kept as often as it occurs:
+`JsonProperty` items in the order of the document, e.g. `HasCount(2)` for the number of properties:
 
 ```csharp
 JsonElement track = JsonDocument.Parse(
@@ -289,6 +299,13 @@ A `JsonProperty` has no value equality, so verify the properties with predicates
 `Satisfy(p => …)` or `Contains(p => …)`, or with expectations on their value, like
 `ComplyWith(p => p.Whose(x => x.Value, v => …))`.
 :::
+
+<details>
+<summary>Duplicate property names</summary>
+
+A name that occurs more than once in the object is kept in `WhoseProperties` as often as it occurs.
+
+</details>
 
 ## IsArray
 
@@ -409,7 +426,7 @@ Actual ($.rating):
 ```
 
 Like `IsString()`, a value of another kind fails the expectation, e.g. `IsString("4.5")` on the rating fails with
-`but $.rating was a number`, and satisfies its negation, so it succeeds within `DoesNotComplyWith(…)`.
+`but $.rating was a number`.
 
 `IsString()` and `IsNumber()` also offer operators on their result, which compare the value in the same sentence. A
 string offers `EqualTo`, `StartingWith`, `EndingWith` and `Containing`, their negations and `NotContaining`, with the
@@ -438,12 +455,8 @@ Actual ($.rating):
 6
 ```
 
-Only one operator can follow `IsString()` or `IsNumber()`, a second one on the same result throws an
-`InvalidOperationException`; chain further checks with `.And`, e.g.
-`IsString().StartingWith("Let").And.IsString().EndingWith("Be")`. A value of another kind fails the expectation and
-satisfies its negation, like for `IsString()`. A number that does not fit into a `double`, which `IsNumber()` alone
-accepts, fails both the expectation and its negation, as whether it is e.g. greater than 3 cannot be answered; the
-same holds for `IsNumber(n => …)`. An invalid pattern, e.g. of `AsRegex()`, throws whichever value the subject has.
+Only one operator can follow `IsString()` or `IsNumber()`; chain further checks with `.And`, e.g.
+`IsString().StartingWith("Let").And.IsString().EndingWith("Be")`.
 
 For richer checks, `IsString`, `IsNumber` and `IsBoolean` accept expectations on the value as a `string`, a `double`
 or a `bool`, so that all expectations of aweXpect apply to it:
@@ -463,13 +476,23 @@ For a nullable `JsonElement?`, `IsNull()` is the general expectation of aweXpect
 is `null`, so `IsString()`, `IsNumber()` and `IsBoolean()` are available, but not a JSON-specific `IsNull()`.
 :::
 
+<details>
+<summary>Negation, operators and very large numbers</summary>
+
+A value of another kind satisfies the negation of `IsString`, `IsNumber` and `IsBoolean`, so it succeeds within
+`DoesNotComplyWith(…)`. A second operator on the same result of `IsString()` or `IsNumber()` throws an
+`InvalidOperationException`. A number that does not fit into a `double`, which `IsNumber()` alone accepts, fails both
+an operator and its negation, as whether it is e.g. greater than 3 cannot be answered; the same holds for
+`IsNumber(n => …)`. An invalid pattern, e.g. of `AsRegex()`, throws whichever value the subject has.
+
+</details>
+
 ### Numbers
 
 `IsNumber<TNumber>()` verifies that a number fits into the number type, e.g. that it is an integer within the range of
 an `int`, and `IsNumber<TNumber>(n => …)` verifies the value as this type. The supported types are `byte`, `sbyte`,
 `short`, `ushort`, `int`, `uint`, `long`, `ulong`, `BigInteger`, `float`, `double` and `decimal`, and on .NET 8 or
-later also `nint`, `nuint`, `Int128`, `UInt128` and `Half`. A type that is no number does not compile, and any other
-number type, e.g. `char`, throws a `NotSupportedException`. `IsNumber(n => …)` without a type argument verifies the
+later also `nint`, `nuint`, `Int128`, `UInt128` and `Half`. `IsNumber(n => …)` without a type argument verifies the
 number as `double`:
 
 ```csharp
@@ -551,9 +574,15 @@ The node is verified in the state it has when the expectation is awaited, so cha
 included.
 :::
 
-The expectations on a property, a value at a path or an element receive the node itself, e.g. for `IsSameAs(…)`. A
-`null` node is the JSON value `null`, as `JsonNode.Parse("null")` returns it. `Matches(null)` succeeds for it, while
-`IsObject()` would fail with:
+A `null` node is the JSON value `null`, as `JsonNode.Parse("null")` returns it. Use the general `IsNull()` expectation
+of aweXpect to verify that a node is the JSON value `null`, e.g. `HasProperty("label", l => l.IsNull())`, so there is
+no JSON-specific `IsNull()` for a `JsonNode`.
+
+<details>
+<summary>Nested nodes and `null` nodes</summary>
+
+The expectations on a property, a value at a path or an element receive the node itself, e.g. for `IsSameAs(…)`.
+`Matches(null)` succeeds for a `null` node, while `IsObject()` would fail with:
 
 ```text title="Failure message"
 Expected that node
@@ -561,19 +590,4 @@ is an object,
 but it was null
 ```
 
-Use the general `IsNull()` expectation of aweXpect to verify that a node is the JSON value `null`, e.g.
-`HasProperty("label", l => l.IsNull())`, so there is no JSON-specific `IsNull()` for a `JsonNode`.
-
-## Newtonsoft.Json
-
-There are no expectations for a `JToken` of Newtonsoft.Json. Convert it to a `JsonElement` through its JSON text to
-use all expectations of a `JsonElement`:
-
-```csharp
-JObject token = JObject.Parse("""{"title": "Let It Be"}""");
-JsonElement track = JsonDocument.Parse(token.ToString()).RootElement;
-
-await Expect.That(track).Matches(new { title = "Let It Be" });
-```
-
-The values are compared as their JSON text, so e.g. a date token is a JSON string.
+</details>

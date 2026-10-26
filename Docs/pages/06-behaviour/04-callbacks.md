@@ -70,9 +70,8 @@ await Expect.That(signaler).Signaled().Twice();
 await Expect.That(signaler).Signaled().Never();
 ```
 
-`Signaled(3.Times())` is the shorthand for `Signaled().AtLeast(3.Times())` and allows no further quantifier, and
-`DidNotSignal(3.Times())` expects the callback to be signaled fewer than three times. `DidNotSignal(times)` requires
-at least one time, because no callback can be signaled fewer than zero times.
+`Signaled(3.Times())` is the shorthand for `Signaled().AtLeast(3.Times())`, and `DidNotSignal(3.Times())` expects
+the callback to be signaled fewer than three times.
 
 ### Parameters
 
@@ -140,9 +139,7 @@ Signals that were received before the wait count as well, so a callback that was
 <details>
 <summary>Details of waiting</summary>
 
-- The `amount` of a wait must be greater than zero and the `timeout` must not be negative, otherwise an
-  `ArgumentOutOfRangeException` is thrown. `TimeSpan.Zero` does not wait at all, and `Timeout.InfiniteTimeSpan` waits
-  without a limit.
+- A `timeout` of `TimeSpan.Zero` does not wait at all, and `Timeout.InfiniteTimeSpan` waits without a limit.
 - When the timeout expires or the `CancellationToken` is canceled, the wait returns without throwing an exception.
 - An exception of the `predicate` ends the wait and is thrown by `Wait` or `WaitAsync`, also when the predicate ran
   on the thread that signaled.

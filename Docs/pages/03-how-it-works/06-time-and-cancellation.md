@@ -30,14 +30,20 @@ await Expect.That(playlist).All().Satisfy(track => track.PlayCount > 0)
 
 :::note
 The tighter timeout wins. A local timeout that is longer than the global one, or than the limit of the expectation
-itself (e.g. `ExecutesIn().AtMost(…)` or `Throws().Within(…)`), does not loosen it, and calling `WithTimeout` more
-than once applies the shortest timeout. `Timeout.InfiniteTimeSpan` imposes no limit, and a negative timeout is
-rejected when the expectation is built.
+itself (e.g. `ExecutesIn().AtMost(…)` or `Throws().Within(…)`), does not loosen it.
 :::
 
 On a [combination](./03-combining.md#on-different-subjects) of `Expect.ThatAll` or `Expect.ThatAny`, `WithTimeout`
 limits the whole combination: its expectations are evaluated one after another and each one only gets the time that is
 left.
+
+<details>
+<summary>Repeated and infinite timeouts</summary>
+
+Unlike other options, calling `WithTimeout` more than once applies the shortest timeout. `Timeout.InfiniteTimeSpan`
+imposes no limit.
+
+</details>
 
 ## `CancellationToken`
 
@@ -131,10 +137,13 @@ Track track = new();
 await Expect.That(track).Satisfies(x => x.IsPlayed).Within(2.Seconds()).CheckEvery(50.Milliseconds());
 ```
 
-The interval must be positive, and a later `Within` or `CheckEvery` replaces the earlier one.
+<details>
+<summary>Timeouts and cancellation while checking</summary>
 
 As for [`Eventually()`](#eventually), a shorter `WithTimeout` or global timeout ends the checks with "did not finish
 within …", and a cancellation makes the expectation inconclusive.
+
+</details>
 
 ### Eventually
 
@@ -153,8 +162,7 @@ await Expect.That(() => track.Title).Eventually().IsNotNull().And.StartsWith("Le
 
 The delegate is re-evaluated every [`DefaultCheckInterval`](./07-configuration.md#settings) (defaults to `100ms`)
 until the timeout configured in [`DefaultEventuallyTimeout`](./07-configuration.md#settings) (defaults to `30s`)
-expires. You can overwrite the timeout per expectation with `Within` and the interval with `CheckEvery`, in either
-order:
+expires. You can overwrite the timeout per expectation with `Within` and the interval with `CheckEvery`:
 
 ```csharp
 using aweXpect.Chronology; // from the aweXpect.Chronology package
@@ -168,11 +176,20 @@ await Expect.That(() => track.PlayCount).Eventually().Within(5.Seconds()).CheckE
 
 When the play count never exceeds 3, the retries end after 2 seconds, because the timeout is shorter than `Within`.
 
-`Within(Timeout.InfiniteTimeSpan)` retries until the expectations are met or the expectation is canceled. A negative
-timeout or an interval that is not positive is rejected, and a later `Within` or `CheckEvery` replaces the earlier one.
+`Within(Timeout.InfiniteTimeSpan)` retries until the expectations are met or the expectation is canceled.
 
 An exception thrown by the delegate counts as an unmet expectation and is retried. When the timeout expires while the
 delegate is still throwing, the expectation fails and the last exception is reported as the cause of the failure.
+
+In addition to `Func<T>`, the asynchronous variant `Func<Task<T>>` is supported, and
+[on .NET 8 or later](../02-getting-started.md#target-frameworks) also `Func<ValueTask<T>>`; each of them also accepts a
+`CancellationToken` (see the [delegates](../06-behaviour/01-delegates.md) page):
+
+```csharp
+Func<Task<int>> loadPlayCountAsync = () => Task.FromResult(6);
+
+await Expect.That(() => loadPlayCountAsync()).Eventually().IsGreaterThan(5);
+```
 
 <details>
 <summary>How timeouts bound the retries</summary>
@@ -194,17 +211,6 @@ interrupted, so an evaluation that returns after that point fails the same way, 
 delegate alike; a `WithTimeout` or a global timeout still does.
 
 </details>
-
-In addition to `Func<T>`, the asynchronous variant `Func<Task<T>>` is supported, and
-[on .NET 8 or later](../02-getting-started.md#target-frameworks) also `Func<ValueTask<T>>`; each of them also accepts a
-`CancellationToken`. Returning the task directly also works with a
-language version older than C# 13 (see the [delegates](../06-behaviour/01-delegates.md) page):
-
-```csharp
-Func<Task<int>> loadPlayCountAsync = () => Task.FromResult(6);
-
-await Expect.That(() => loadPlayCountAsync()).Eventually().IsGreaterThan(5);
-```
 
 ### Events
 
@@ -289,12 +295,18 @@ events, or retries with `Within(…)` or [`Eventually()`](#eventually):
   expectation is inconclusive: "could not be verified, because the evaluation was already canceled". It neither passes
   nor throws the `OperationCanceledException`, so e.g. `DidNotSignal()` does not pass because the cancellation ended the
   wait.
-- An `OperationCanceledException` that a delegate throws for its own reasons, while neither the timeout elapsed nor the
-  `CancellationToken` was canceled, is an ordinary exception: e.g. `DoesNotThrow()` fails with "did throw an
-  OperationCanceledException".
 
 An inconclusive expectation throws the exception that your test framework uses for this outcome, see
 [inconclusive](./09-test-frameworks.md#inconclusive).
+
+<details>
+<summary>An `OperationCanceledException` from the delegate itself</summary>
+
+An `OperationCanceledException` that a delegate throws for its own reasons, while neither the timeout elapsed nor the
+`CancellationToken` was canceled, is an ordinary exception: e.g. `DoesNotThrow()` fails with "did throw an
+OperationCanceledException".
+
+</details>
 
 ## Awaited tasks
 

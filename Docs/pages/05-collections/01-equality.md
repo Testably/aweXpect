@@ -75,9 +75,6 @@ await Expect.That(values).Contains(1).AtLeast().Twice();
 await Expect.That(values).Contains(5).Never();
 ```
 
-Only one count can be given, so write `Between(2).And(5.Times())` instead of `AtLeast(2.Times()).AtMost(5.Times())`,
-which throws.
-
 ### Predicate
 
 You can verify that the collection contains an item that satisfies a condition, with the same occurrence constraints:
@@ -106,12 +103,18 @@ await Expect.That(values).Contains([1, 3]).IgnoringInterspersedItems();
 
 Without `InAnyOrder` the values must appear in the subject in the same order and contiguous, i.e. without other
 items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unless `IgnoringInterspersedItems` is used.
-`InAnyOrder` and `IgnoringInterspersedItems` exclude each other, here and for `IsContainedIn`: specifying the second one
-throws an `InvalidOperationException`.
 
 `IgnoringDuplicates()` works as for [equality](#equality), except that only the expected items have to be matched.
 
 To check for a proper subset, append `.Properly()` (which would fail for equal collections).
+
+<details>
+<summary>`InAnyOrder` together with `IgnoringInterspersedItems`</summary>
+
+`InAnyOrder` and `IgnoringInterspersedItems` exclude each other, here and for `IsContainedIn`: specifying the second one
+throws an `InvalidOperationException`.
+
+</details>
 
 ### Superset
 
@@ -168,9 +171,6 @@ await Expect.That(songs).IsEqualTo([
 await Expect.That(songs).Contains([x => x == "Something", x => x.EndsWith("Be")]);
 ```
 
-Predicates and expectations are never compared with each other. With `IgnoringDuplicates()`, one item may therefore
-match several of them, e.g. `[5]` is equal to `[x => x > 0, x => x > 1]` in any order ignoring duplicates.
-
 The failure message lists the predicates or expectations as the expected items:
 
 ```csharp
@@ -202,6 +202,14 @@ Expected:
   x => (x == "d")
 ]
 ```
+
+<details>
+<summary>Predicates with `IgnoringDuplicates()`</summary>
+
+Predicates and expectations are never compared with each other. With `IgnoringDuplicates()`, one item may therefore
+match several of them, e.g. `[5]` is equal to `[x => x > 0, x => x > 1]` in any order ignoring duplicates.
+
+</details>
 
 ## Comparing items
 

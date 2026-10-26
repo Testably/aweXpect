@@ -15,7 +15,7 @@ await Expect.That(title).DoesNotComplyWith(it => it.StartsWith("Let").And.EndsWi
 
 `DoesNotComplyWith` is the exact inverse: it succeeds as soon as the nested expectation fails, except for a `null`
 subject (see below). A named negation can be stricter, e.g.
-[`DoesNotContainKeys`](../05-collections/04-dictionaries.md#values).
+[`DoesNotContainKeys`](../05-collections/04-dictionaries.md#contained).
 
 A `null` subject fails most expectations and their negations alike, also inside `DoesNotComplyWith`, see
 [`null` subjects](./04-null-subjects.md).

@@ -4,10 +4,6 @@ A missing or different snapshot writes the actual value to `<Class>.<Method>.awe
 the snapshot. Review it and rename it to `<Class>.<Method>.awexpect-snapshot.txt` to accept it. The next run that
 matches the snapshot deletes a leftover pending file.
 
-The pending snapshot is only written, and a change only accepted, when the whole expectation fails. When the snapshot
-is combined with other expectations and another branch is met, e.g. `.Or.IsEqualTo(…)` or `Expect.ThatAny(…)`, the
-test passes and nothing is written, so that a passing test never changes a snapshot.
-
 Add the pending files to your `.gitignore`, so that they are not committed by accident; the pattern also covers
 snapshots with [another extension](01-matching-snapshots.md#file-extension), e.g. `.awexpect-snapshot.pending.json`:
 
@@ -24,9 +20,7 @@ To accept many snapshots at once, set the environment variable `AWEXPECT_ACCEPT_
 | `New`  | `new`                   | is accepted                  | writes the pending file      |
 | `All`  | `all`, `1` or `true`    | is accepted                  | is accepted                  |
 
-The value ignores case and surrounding whitespace; an empty or unset variable accepts nothing, and with any other value
-a snapshot that does not match throws an `InvalidOperationException` that names the allowed values, so that a typo
-does not silently accept nothing.
+An empty or unset variable accepts nothing.
 `New` adds the snapshots of new tests without touching the reviewed ones. An accepted snapshot is replaced by the
 actual value, and the expectation still fails, so that it never goes unnoticed:
 
@@ -60,4 +54,12 @@ Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.New);          
 `Accepting(…)` takes precedence over `Customize.aweXpect.Snapshots().Acceptance`, which takes precedence over the
 environment variable, so `Accepting(SnapshotAcceptance.None)` keeps a snapshot from being accepted while the variable
 is set. The setting defaults to `null`, which leaves it to the environment variable.
-`Accepting(…)` is always the last option of the expectation, so that it is easy to find and remove again.
+
+<details>
+<summary>Snapshots combined with other expectations</summary>
+
+The pending snapshot is only written, and a change only accepted, when the whole expectation fails. When the snapshot
+is combined with other expectations and another branch is met, e.g. `.Or.IsEqualTo(…)` or `Expect.ThatAny(…)`, the
+test passes and nothing is written, so that a passing test never changes a snapshot.
+
+</details>

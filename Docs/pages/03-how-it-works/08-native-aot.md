@@ -13,8 +13,19 @@ silently verify less than it claims to.
 A source generator that ships with the `aweXpect.Core` package closes this gap: for every call site that passes a
 value to `IsEquivalentTo`, `IsNotEquivalentTo`, `AreEquivalentTo` or switches to `Equivalent()`, it registers the public
 fields and properties of the argument's type, of the subject's type and of every type reachable through their
-members. The registration runs when your assembly is loaded and needs no configuration. A type without any
-comparable member fails loudly instead of passing without verifying anything.
+members. This needs no configuration. A type without any comparable member fails loudly instead of passing without
+verifying anything.
+
+The generator only sees the types declared in your source. In a project that enables trimming or Native AOT
+(`PublishTrimmed` or `PublishAot`), also when its tests run under the JIT, e.g. in `dotnet test`, a comparison that
+reaches another type, e.g. the runtime type behind a member declared as `object`, fails with an error that names the
+type and asks you to register it:
+
+```csharp
+using aweXpect.Core.Metadata;
+
+[assembly: GenerateMetadata(typeof(Track))]
+```
 
 <details>
 <summary>Types the generator cannot see, and how reflection is switched off</summary>
@@ -32,7 +43,7 @@ For a collection type, the generator registers the members that the type declare
 [compared in addition to its items](../04-values/13-equivalency.md#collections-and-dictionaries). Where reflection is
 switched off, a collection type without such a registration is compared by its items alone, because an iterator or
 another collection that only exists as a runtime type cannot be registered. Name a collection type the generator did
-not see in `GenerateMetadata`, as described below, to compare its own members as well.
+not see in `GenerateMetadata`, as shown above, to compare its own members as well.
 
 Some types cannot be seen by the generator, because it works from the types declared in your source:
 
@@ -44,13 +55,7 @@ Some types cannot be seen by the generator, because it works from the types decl
   parameter or type parameter carries `[RequiresMemberMetadata]`.
 
 A type the generator merely did not see, such as the runtime type behind an `object` member or a value passed through
-an unmarked extension, can be named explicitly to register it anyway:
-
-```csharp
-using aweXpect.Core.Metadata;
-
-[assembly: GenerateMetadata(typeof(Track))]
-```
+an unmarked extension, can be named explicitly with `GenerateMetadata`, as shown above, to register it anyway.
 
 A type the generated code cannot reference stays on reflection regardless, and the generator warns with `aweXpect2001`
 when a named type yields no registration.
@@ -63,12 +68,10 @@ The walk follows every member type the comparison would visit, including framewo
 `Exception`, for example, registers the types reachable from its properties, because reflection would compare them
 too.
 
-Reflection over a type without a registration is switched off in a project that enables trimming or Native AOT
-(`PublishTrimmed` or `PublishAot`), because the trimmer removes members that only reflection reaches, and a comparison
-would silently verify less than it claims to. This also applies when such a project runs under the JIT, e.g. in
-`dotnet test`. Such a comparison fails with an error that names the type and asks you to register it. The same applies
-to a comparison that requests `IncludeMembers.Internal`, because only public members are registered. The
-`aweXpect.ReflectionFallback.IsSupported` runtime switch forces the fallback either way, and the
+Reflection over a type without a registration is switched off in a project that enables trimming or Native AOT,
+because the trimmer removes members that only reflection reaches, and a comparison would silently verify less than it
+claims to. The same applies to a comparison that requests `IncludeMembers.Internal`, because only public members are
+registered. The `aweXpect.ReflectionFallback.IsSupported` runtime switch forces the fallback either way, and the
 `AweXpectReflectionFallback` property of your project sets that switch:
 
 ```xml
@@ -95,12 +98,13 @@ and the handler for an event with value-type parameters cannot be bound without 
 
 The source generator that ships with the `aweXpect.Core` package closes this gap: for every call site of `Record()`, it
 registers the public events of the subject's static type together with a handler factory, so the recording neither
-looks the events up nor binds a handler reflectively. The registration runs when your assembly is loaded and needs no
-configuration. A subject whose runtime type has a registration is recorded through it, every other subject is
-reflected over under the JIT, and a registered handler takes any number of parameters.
+looks the events up nor binds a handler reflectively. This needs no configuration.
 
 <details>
 <summary>Types the generator cannot see, and how reflection is switched off</summary>
+
+A subject whose runtime type has a registration is recorded through it, every other subject is reflected over under the
+JIT, and a registered handler takes any number of parameters.
 
 The generator works from the declared type, so the same limits apply as for
 [equivalency](#equivalency):

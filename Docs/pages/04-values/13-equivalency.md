@@ -44,8 +44,7 @@ await Expect.That(tracks).All().AreEquivalentTo(expected);
 await Expect.That(tracks).AtLeast(2).AreEquivalentTo(expected, o => o.IgnoringMember("Title"));
 ```
 
-The equivalency options go into `AreEquivalentTo` itself, which offers no `.Equivalent(...)` or `.Using(comparer)`
-afterwards. To compare the items with a custom comparer, use `AreEqualTo(expected).Using(comparer)`.
+The equivalency options go into `AreEquivalentTo` itself. To compare the items with a custom comparer, use `AreEqualTo(expected).Using(comparer)`.
 
 ### As a modifier of equality
 
@@ -88,11 +87,13 @@ of the same name on the actual object, recursing into nested objects. How a valu
 - Only the members of the *expected* object are compared; additional members of the actual object are ignored.
 - A member that the actual object doesn't have is reported as missing instead of being compared against `null`.
 - A field and a property of the same name match each other, so a class with public fields can be compared against an
-  anonymous object, which only has properties. The same kind is preferred, and only included kinds are considered:
-  with `IncludingFields(IncludeMembers.None)` an expected property no longer matches a field.
+  anonymous object, which only has properties.
 
 <details>
-<summary>Explicitly implemented interface properties</summary>
+<summary>Fields, properties and explicitly implemented interface properties</summary>
+
+When a field and a property of the same name match, the same kind is preferred, and only included kinds are
+considered: with `IncludingFields(IncludeMembers.None)` an expected property no longer matches a field.
 
 An expected member that the actual object doesn't have is also matched against a property that the actual type
 implements explicitly for an interface (`int IHasId.Id => 1;`), by its short name. A public field or property of that
@@ -118,11 +119,7 @@ reported as ambiguous. Failures name the kind of the *expected* member.
   [ignoring collection order](#ignoring-collection-order), so a `HashSet<T>` can be compared against an array.
 - A multi-dimensional array is only equivalent to an array of the same rank with the same length in every dimension,
   as for [`IsEqualTo`](../05-collections/01-equality.md#equality).
-- An actual set that was created with a custom comparer, e.g. a `HashSet<T>` or a `SortedSet<T>`, uses that comparer
-  to decide which items are the same.
-- A dictionary reports a differing, missing or superfluous entry under its key. Each expected key is looked up through
-  the actual dictionary, so its key comparer decides which keys are the same, as it does for
-  [`IsEqualTo`](../05-collections/04-dictionaries.md#equality).
+- A dictionary reports a differing, missing or superfluous entry under its key.
 - A collection or dictionary type that declares members itself is compared by its items or entries and, in addition,
   by these members, so two pages with the same items but a different `TotalCount` are not equivalent. They are
   compared like the members of any other object: they come from the *expected* type, so against an array, which
@@ -158,6 +155,10 @@ registration limits the rule to the collection type, or compare the type
 
 <details>
 <summary>Sets and dictionaries with a custom comparer</summary>
+
+An actual set that was created with a custom comparer, e.g. a `HashSet<T>` or a `SortedSet<T>`, uses that comparer to
+decide which items are the same. Each expected key is looked up through the actual dictionary, so its key comparer
+decides which keys are the same, as it does for [`IsEqualTo`](../05-collections/04-dictionaries.md#equality).
 
 An expected item that the comparer of the actual set finds in it is matched, whatever its members are, and only the
 remaining items are matched by the equivalency comparison. This also holds for an `ImmutableHashSet<T>`, an
@@ -248,10 +249,6 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
   .IgnoringMembers(memberType => memberType == typeof(DateTime)));
 ```
 
-A field or property is matched by its declared type, with `Nullable<T>` unwrapped, so the last example also ignores a
-`DateTime?` member, but not an `object` member that holds a `DateTime`. A collection item or a dictionary value is
-matched by the runtime type of its value, or by `object` when it is `null`.
-
 Use `IgnoringFields` or `IgnoringProperties` instead of `IgnoringMembers` to restrict a predicate to one kind of member.
 They take the same member path and type, and are never applied to collection items, which are neither a field nor a
 property:
@@ -260,6 +257,15 @@ property:
 await Expect.That(album).IsEquivalentTo(expected, o => o
   .IgnoringProperties((memberPath, _) => memberPath.EndsWith("PlayCount")));
 ```
+
+<details>
+<summary>Which type is passed to the predicate</summary>
+
+A field or property is matched by its declared type, with `Nullable<T>` unwrapped, so the last `IgnoringMembers`
+example also ignores a `DateTime?` member, but not an `object` member that holds a `DateTime`. A collection item or a
+dictionary value is matched by the runtime type of its value, or by `object` when it is `null`.
+
+</details>
 
 ### Including fields and properties
 
@@ -307,8 +313,8 @@ await Expect.That(tracks).IsEquivalentTo(chart, o => o
 ```
 
 The predicate applies wherever an actual `TActual` meets an expected `TExpected`, at any depth and also for derived
-types, and decides instead of the comparison by value or by members. A `null` value is never passed to it. A pair that
-doesn't match is reported with its path and the predicate:
+types, and decides instead of the comparison by value or by members. A pair that doesn't match is reported with its
+path and the predicate:
 
 ```text title="Failure message"
 Expected that tracks
@@ -323,9 +329,14 @@ Equivalency options:
  - compare Track with ChartEntry by (track, entry) => track.Title == entry.Song
 ```
 
-When several predicates apply to a pair, the one that was added last decides. Within
-[`For<T>`](#per-type-options-with-fort), a predicate only applies to values of type `T` and to the values nested in
-them.
+<details>
+<summary>When a predicate applies</summary>
+
+A `null` value is never passed to the predicate. When several predicates apply to a pair, the one that was added last
+decides. Within [`For<T>`](#per-type-options-with-fort), a predicate only applies to values of type `T` and to the
+values nested in them.
+
+</details>
 
 ### Mapping differently named members
 
@@ -339,9 +350,8 @@ await Expect.That(tracks).IsEquivalentTo(chart, o => o
 ```
 
 The mapping applies wherever an actual `TActual` meets an expected `TExpected`. Failures and
-[members to ignore](#ignoring-members-by-name) name the expected member, e.g. `Property Song differed`. The expressions
-are only read for the names of their members, so they also work with trimming or Native AOT. Without the types, a
-mapping matches the expected member by name, like `IgnoringMember`, at any depth:
+[members to ignore](#ignoring-members-by-name) name the expected member, e.g. `Property Song differed`. Without the
+types, a mapping matches the expected member by name, like `IgnoringMember`, at any depth:
 
 ```csharp
 await Expect.That(tracks).IsEquivalentTo(chart, o => o
@@ -359,7 +369,9 @@ await Expect.That(releaseDto).IsEquivalentTo(release, o => o
 ```
 
 <details>
-<summary>How nested mappings are compared</summary>
+<summary>How mappings are applied</summary>
+
+The expressions are only read for the names of their members, so they also work with trimming or Native AOT.
 
 - A `null` value on the way to the actual member reads as `null`. A `null` value on the way to the expected member, for
   which the actual object has no member, makes each mapped actual member below it compare with `null`.
@@ -385,10 +397,10 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
   .For<List<Track>>(x => x.IgnoringCollectionOrder()));
 ```
 
-`For<T>` throws an `ArgumentException` for an interface; register the implementing class or struct instead.
-
 <details>
 <summary>How registrations are applied</summary>
+
+`For<T>` throws an `ArgumentException` for an interface; register the implementing class or struct instead.
 
 Like the other fluent methods, `For<T>` returns a copy and leaves the options it was called on unchanged. The callback
 is applied to the final options of the expectation, so every other option applies to `T` as well, no matter whether it
@@ -417,16 +429,6 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
   .For<TrackId>(x => x with { ComparisonType = EquivalencyComparisonType.ByValue }));
 ```
 
-<details>
-<summary>Which comparison type a member uses</summary>
-
-Unlike the other type-specific options, the comparison type applies to the type itself and not to its members: a member
-without a registration of its own falls back to the comparison type of the top-level options or, if none is set, to the
-`DefaultComparisonTypeSelector`, so a string member of a type compared by members is still compared by value. When only
-the expectation is compared by value, the expectation's `Equals` decides.
-
-</details>
-
 To change the global rule, replace the `DefaultComparisonTypeSelector`:
 
 ```csharp
@@ -437,6 +439,16 @@ await Expect.That(album).IsEquivalentTo(expected, o => o with
     : EquivalencyDefaults.DefaultComparisonType(type),
 });
 ```
+
+<details>
+<summary>Which comparison type a member uses</summary>
+
+Unlike the other type-specific options, the comparison type applies to the type itself and not to its members: a member
+without a registration of its own falls back to the comparison type of the top-level options or, if none is set, to the
+`DefaultComparisonTypeSelector`, so a string member of a type compared by members is still compared by value. When only
+the expectation is compared by value, the expectation's `Equals` decides.
+
+</details>
 
 ### Limiting the recursion depth
 
@@ -461,19 +473,17 @@ Use `LimitingRecursionDepth` to raise or lower the limit:
 await Expect.That(album).IsEquivalentTo(expected, o => o.LimitingRecursionDepth(500));
 ```
 
-It is equivalent to setting `MaxRecursionDepth` directly.
+It is equivalent to setting `MaxRecursionDepth` directly. A limit other than the default is listed in the failure
+message under `Equivalency options:`.
 
 <details>
 <summary>How the depth is counted</summary>
 
 The depth is counted per path, so two members on the same level are both at the same depth, and members that are
 compared [by value](#comparing-by-value-or-by-members) do not add to it. A cyclic reference is caught by the cycle
-detection and never reaches the limit. A depth below one, which could not even compare the root, throws an
-`ArgumentOutOfRangeException`.
+detection and never reaches the limit.
 
 </details>
-
-A limit other than the default is listed in the failure message under `Equivalency options:`.
 
 ### Customizing the global defaults
 
@@ -528,12 +538,15 @@ await Expect.That(midnight).IsEquivalentTo(new
 
 `It.Is<T>()` (without `.That`) only asserts that the property has the given type.
 
-:::note
+<details>
+<summary>Properties that are `null`</summary>
+
 The type of `null` cannot be determined, so for a `null` property the expectations are verified against `null` when
 `T` is a reference type or a nullable value type: `It.Is<string>().That.IsNull()` succeeds, while e.g.
 `It.Is<string>().That.IsEmpty()` fails. For a non-nullable value type `T`, such as `int`, a `null` property always
 fails.
-:::
+
+</details>
 
 ## Failure messages
 

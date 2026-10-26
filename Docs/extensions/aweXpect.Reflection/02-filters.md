@@ -43,11 +43,8 @@ Listing the members of types (`Types().Methods()`, …) only includes the member
 inherited member would otherwise be listed once for each type that inherits it; `.IncludingInherited()` adds the
 inherited members.
 
-Inherited members never include those a derived type cannot access: the `private` members of base types and the
-`internal` members of base types in another assembly (`InternalsVisibleTo` is not considered). The members declared
-on `System.Object`, `System.ValueType` and `System.Enum` are excluded as well, as every type would otherwise have
-`ToString`, `Equals`, `GetHashCode`, …; `.IncludingObjectMembers()` adds them. An interface inherits the members of
-its base interfaces.
+The members declared on `System.Object`, `System.ValueType` and `System.Enum` are excluded, as every type would
+otherwise have `ToString`, `Equals`, `GetHashCode`, …; `.IncludingObjectMembers()` adds them.
 
 | Area                                                                                          | Default                                                                         | Options                                                                                                         |
 |-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
@@ -72,14 +69,23 @@ await Expect.That(In.AssemblyContaining<Album>().Types().Methods().IncludingInhe
 await Expect.That(In.AssemblyContaining<Album>().Types().Methods().IncludingObjectMembers()).AreNotObsolete();
 ```
 
-On a member check, `.Directly()` and `.IncludingObjectMembers()` exclude each other, so only one of them can be set.
-The options apply to the whole result, e.g. to all attributes of `.With<T1>().OrWith<T2>().Directly()`. On the
-`WhichContain…` filters, set them before or after the quantifier. On a member listing, set them directly
-after selecting the members, e.g. `Types().Methods().IncludingInherited().WhichArePublic()`, as a filter returns a
-plain listing. Inside a member check, `.Directly()` on an attribute filter only restricts the attributes: in
-`ContainsMethods(m => m.With<FactAttribute>().Directly())` the method may still be inherited. Only the
+The options apply to the whole result, e.g. to all attributes of `.With<T1>().OrWith<T2>().Directly()`. On a member
+listing, set them directly after selecting the members, e.g. `Types().Methods().IncludingInherited().WhichArePublic()`.
+
+<details>
+<summary>Inherited members in detail</summary>
+
+Inherited members never include those a derived type cannot access: the `private` members of base types and the
+`internal` members of base types in another assembly (`InternalsVisibleTo` is not considered). Only the
 [immutability](#types) check considers all fields and properties of base types, including those a derived type
-cannot access, as they hold the state of an instance.
+cannot access, as they hold the state of an instance. An interface inherits the members of its base interfaces.
+
+On a member check, `.Directly()` and `.IncludingObjectMembers()` exclude each other, so only one of them can be set.
+On the `WhichContain…` filters, set them before or after the quantifier. Inside a member check,
+`.Directly()` on an attribute filter only restricts the attributes: in
+`ContainsMethods(m => m.With<FactAttribute>().Directly())` the method may still be inherited.
+
+</details>
 
 ## Access modifiers
 
@@ -145,9 +151,7 @@ Shared by all types, members, and assemblies.
 
 For types, methods, properties and events, attributes inherited from a base type or an overridden member are
 considered as well; append `.Directly()` to only consider the attributes declared on the item itself, e.g.
-`.With<TAttribute>().Directly()` or `.Has<TAttribute>().Directly()` (see [Inheritance](#inheritance)). The
-attributes of assemblies, constructors and fields cannot be inherited, so their attribute filters and expectations
-do not offer `.Directly()`. Chain multiple `.Without<TAttribute>()` calls to exclude several attributes (an item
+`.With<TAttribute>().Directly()` or `.Has<TAttribute>().Directly()` (see [Inheritance](#inheritance)). Chain multiple `.Without<TAttribute>()` calls to exclude several attributes (an item
 must have none of them).
 
 ```csharp
@@ -209,7 +213,7 @@ await Expect.That(methods).HaveName(m => "On" + m.GetParameters()[0].ParameterTy
 
 The `WhichAreWithinNamespace`/`IsWithinNamespace`/`AreWithinNamespace` variants match a namespace and all
 its sub-namespaces (so `MusicStore.Data` includes `MusicStore.Data.Sql` but not `MusicStore.DataImport`). They
-compare the namespace exactly and case-sensitively and do not support any of the string matching options. Each
+compare the namespace exactly and case-sensitively. Each
 has a negated form (`WhichAreNotWithinNamespace`, `IsNotWithinNamespace` and `AreNotWithinNamespace`) that matches
 types outside the namespace. Unlike `DoesNotHaveNamespace`, which compares the whole namespace as a string with the
 string matching options, `IsNotWithinNamespace` also excludes all sub-namespaces.
@@ -247,9 +251,9 @@ string matching options, `IsNotWithinNamespace` also excludes all sub-namespaces
 
 `WhichInheritFrom` / `InheritsFrom` consider only the **base-class chain** (not implemented interfaces) and
 accept a generic argument or a `Type`. Append `.Directly()` to require the base class to be the *direct* parent.
-Passing an interface throws; use `Implements` for that.
+For interfaces, use `Implements`.
 
-`WhichImplement` / `Implements` consider only implemented **interfaces**; passing a non-interface throws. With
+`WhichImplement` / `Implements` consider only implemented **interfaces**. With
 `.Directly()`, an interface reached only through a base class or through another implemented interface does not
 count as *directly* implemented.
 
@@ -260,7 +264,7 @@ await Expect.That(typeof(AlbumRepository)).Implements<IRepository>().Directly();
 
 `IsAssignableTo` / `IsAssignableFrom` (and their `WhichAre…` / `Are…` forms) use runtime assignability, which
 covers base classes *and* interfaces in one step, treats a type as assignable to itself, and honors closed
-generic variance. Open generic type definitions (e.g. `typeof(IRepository<>)`) are not supported and throw.
+generic variance.
 
 ```csharp
 In.AllLoadedAssemblies().Types()
@@ -471,8 +475,7 @@ await Expect.That(In.AssemblyContaining<PlaylistService>().Public.Methods()
 
 `WhichAreExtensionMethods()`, `IsAnExtensionMethod()` and `AreExtensionMethods()` match both classic `this`-parameter
 extension methods and extension methods declared with the C# extension block syntax (`extension(...) { … }`), including
-static extension methods. The compiler-generated grouping types backing the extension block syntax are excluded from the
-reflected members.
+static extension methods.
 
 ```csharp
 In.AllLoadedAssemblies().Methods()
@@ -484,6 +487,13 @@ In.AllLoadedAssemblies().Methods()
 await Expect.That(method).HasParameter<int>("count");
 await Expect.That(methods).Return<Task>().OrReturn<ValueTask>();
 ```
+
+<details>
+<summary>Extension block internals</summary>
+
+The compiler-generated grouping types backing the extension block syntax are excluded from the reflected members.
+
+</details>
 
 ## Operators
 
@@ -526,10 +536,8 @@ Operators are special-name members that are
 [hidden by default](./04-configuration.md#compiler-generated-members), so the
 plain `.Methods()` collection excludes them unless opted in via `IncludedSpecialNameMembers`. The
 `.WhichAreOperators(Operator)` filter implicitly re-includes operators for its query, so it works without
-that configuration. The negative `.WhichAreNotOperators(Operator)` filter deliberately does **not** re-include
-operators: a "not this operator" filter over `.Methods()` is meant to narrow regular methods, and force-including
-every *other* operator would surprise more than help. If you want the other operators in that result, opt in via
-`IncludedSpecialNameMembers`.
+that configuration. The negative `.WhichAreNotOperators(Operator)` filter does **not** re-include operators; if you
+want the other operators in that result, opt in via `IncludedSpecialNameMembers`.
 :::
 
 :::note[Negation]
@@ -537,6 +545,14 @@ every *other* operator would surprise more than help. If you want the other oper
 (including the operand overloads, e.g. `DoesNotHaveOperator<int>(Operator)`),
 `DoesNotHave…ConversionOperator…` / `DoNotHave…ConversionOperator…` and `WhichAreNotOperators(Operator)`.
 :::
+
+<details>
+<summary>Why WhichAreNotOperators does not re-include operators</summary>
+
+A "not this operator" filter over `.Methods()` is meant to narrow regular methods, and force-including every
+*other* operator would surprise more than help.
+
+</details>
 
 ## Properties & Fields
 
@@ -589,10 +605,7 @@ the plural forms). A property that is *not read-write* is either read-only or wr
 A property or field counts as *nullable* when its type is a `Nullable<T>` value type (e.g. `int?`) or a
 reference type annotated as nullable (e.g. `string?`, based on the nullable reference type metadata emitted
 by the compiler). The same applies to [events](#events), whose handler type is always a delegate (reference)
-type. The check follows the declared annotation on every target framework: reference types
-without nullability annotations (oblivious code compiled without `<Nullable>enable</Nullable>`) and
-unconstrained generic type parameters (`T`, as opposed to `T?`) count as non-nullable, and post-condition
-attributes like `[AllowNull]` or `[MaybeNull]` are ignored.
+type.
 
 ```csharp
 // All properties and fields of the request types must be nullable
@@ -603,9 +616,7 @@ await Expect.That(In.AssemblyContaining<AddTrackRequest>()
 ```
 
 `WhichAreExtensionProperties()`, `IsAnExtensionProperty()` and `AreExtensionProperties()` match extension properties
-declared with the C# extension block syntax (`extension(...) { … }`), both instance and static. The real properties
-live on the compiler-generated grouping types backing the extension block, so they are surfaced from there, while the
-public accessor methods they emit are excluded from the reflected methods.
+declared with the C# extension block syntax (`extension(...) { … }`), both instance and static.
 
 Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several types. The negations `NotOfType` / `IsNotOfType` /
 `AreNotOfType` (and the `…ExactType` forms) have no `Or…` companion: chain `.NotOfType<T1>().NotOfType<T2>()` (or
@@ -622,6 +633,19 @@ In.AllLoadedAssemblies().Private.Fields()
     .OfType<ILogger>()
     .WithName("_").AsPrefix()
 ```
+
+<details>
+<summary>Nullability and extension properties in detail</summary>
+
+The nullability check follows the declared annotation on every target framework: reference types without
+nullability annotations (oblivious code compiled without `<Nullable>enable</Nullable>`) and unconstrained generic
+type parameters (`T`, as opposed to `T?`) count as non-nullable, and post-condition attributes like `[AllowNull]` or
+`[MaybeNull]` are ignored.
+
+The real extension properties live on the compiler-generated grouping types backing the extension block, so they are
+surfaced from there, while the public accessor methods they emit are excluded from the reflected methods.
+
+</details>
 
 ## Events
 
@@ -732,8 +756,7 @@ await Expect.That(subject).Targets("net8.0");
 ```
 
 The target framework is matched against the short moniker form (e.g. `net8.0`, `netstandard2.0`, `net48`),
-derived from the assembly's `[TargetFramework]` attribute. Assemblies without that attribute are treated as
-having no target framework and never match. The negations `WhichDoNotTarget` / `DoesNotTarget` / `DoNotTarget`
+derived from the assembly's `[TargetFramework]` attribute. The negations `WhichDoNotTarget` / `DoesNotTarget` / `DoNotTarget`
 accept the same [string matching options](#string-matching-options), and `DoNotTarget` verifies that *none* of
 the assemblies targets the framework.
 
@@ -744,8 +767,7 @@ version, or omit it to compare individual components (`WithMajor`, `WithMinor`, 
 The filter and the expectations compare a component with the same operators as the `int` properties of core aweXpect,
 e.g. `HasLength()`: `EqualTo`, `GreaterThan`, `GreaterThanOrEqualTo`, `LessThan`, `LessThanOrEqualTo`,
 `Between(…).And(…)` and their negations `NotEqualTo`, `NotGreaterThan`, `NotBetween(…).And(…)`, and so on. Component
-comparisons chain (all must hold), and an assembly without a version never matches. The `Build` and `Revision`
-components are `-1` when absent from the version.
+comparisons chain (all must hold).
 
 ```csharp
 // Predicate form
@@ -759,6 +781,15 @@ await Expect.That(subject).HasVersion().WithMajor.GreaterThanOrEqualTo(2);
 await Expect.That(subjects).HaveVersion().WithMajor.EqualTo(1);
 await Expect.That(subject).HasVersion().WithMajor.Between(2).And(4).WithMinor.NotEqualTo(0);
 ```
+
+<details>
+<summary>Assemblies without a target framework or version</summary>
+
+Assemblies without a `[TargetFramework]` attribute are treated as having no target framework and never match. An
+assembly without a version never matches a version filter or expectation. The `Build` and `Revision` components are
+`-1` when absent from the version.
+
+</details>
 
 ## Combining filters
 
@@ -783,8 +814,8 @@ In.AllLoadedAssemblies().Properties()
 
 Every filter and expectation that compares a name, a namespace, a target framework or a dependency, including
 the parameter and generic argument names, uses the string matching options of the core aweXpect library (see
-[the docs](https://docs.testably.org/aweXpect/values/string#equality)). The options chain in any order, a repeated
-option replaces the earlier one, and a second match type, e.g. `.AsPrefix().AsSuffix()`, throws:
+[the docs](https://docs.testably.org/aweXpect/values/string#equality) and the
+[general option rules](https://docs.testably.org/aweXpect/how-it-works/options)):
 
 | Option                                                           | Effect                                            |
 |------------------------------------------------------------------|---------------------------------------------------|

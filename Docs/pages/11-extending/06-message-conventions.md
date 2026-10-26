@@ -142,10 +142,6 @@ of a collection puts each member on its own line; `FormattingOptions.SingleLine`
 `FormattingOptions.Snapshot`, or `IsSnapshot = true` on any other options, writes the value for a snapshot: without
 shortening it, and the items of collections whose order depends on hash codes or threads, like a `HashSet<T>` or a
 `ConcurrentDictionary<TKey, TValue>`, sorted by their formatted text or key, so that it is the same in every run.
-A snapshot writes an exception member-wise, e.g. `ArgumentException { Message = "…", ParamName = "track" }`, with its
-message, its own public members, its `Data` when it is not empty and its inner exceptions (all of them for an
-`AggregateException`), but without `StackTrace`, `TargetSite`, `Source`, `HelpLink` and `HResult`, which change between
-builds, runtimes and Native AOT.
 Register an `IValueFormatter` to format your own types, see [value formatters](./08-initialization.md#value-formatters).
 
 `FormatValue` on the `FormattingOptions` decides for every nested value whether it is written
@@ -173,14 +169,20 @@ FormattingOptions options = FormattingOptions.Indented("") with
 string snapshot = Formatter.Format(new Track("Let It Be", TimeSpan.FromSeconds(243)), options);
 ```
 
-The value itself is not offered, nor the keys of a dictionary, nor anything inside a value that a registered
-`IValueFormatter` or its own `ToString()` renders. A member is only read when it is written or when `GetValue()` asks
-for it, so a member that is left out is not read at all. Leaving out an item of a tuple shifts the following items, so
-that their position in the parentheses no longer matches their position in the tuple. A getter that throws is written as the usual placeholder,
-while an exception of `FormatValue` itself is thrown out of the formatting. Without `FormatValue`, nothing changes.
-
 <details>
-<summary>Escaping and limits</summary>
+<summary>Exceptions in snapshots, FormatValue, escaping and limits</summary>
+
+A snapshot writes an exception member-wise, e.g. `ArgumentException { Message = "…", ParamName = "track" }`, with its
+message, its own public members, its `Data` when it is not empty and its inner exceptions (all of them for an
+`AggregateException`), but without `StackTrace`, `TargetSite`, `Source`, `HelpLink` and `HResult`, which change between
+builds, runtimes and Native AOT.
+
+`FormatValue` is not offered the value itself, nor the keys of a dictionary, nor anything inside a value that a
+registered `IValueFormatter` or its own `ToString()` renders. A member is only read when it is written or when
+`GetValue()` asks for it, so a member that is left out is not read at all. Leaving out an item of a tuple shifts the
+following items, so that their position in the parentheses no longer matches their position in the tuple. A getter
+that throws is written as the usual placeholder, while an exception of `FormatValue` itself is thrown out of the
+formatting. Without `FormatValue`, nothing changes.
 
 Chars and strings are always written on a single line and escaped like C# literals, so that every character can be
 told apart: a backslash, the enclosing quote, line breaks, tabs, control characters, invisible characters (like a
@@ -230,10 +232,6 @@ The `grammars` a constraint receives tell it how its texts are used in the sente
 | `Active`     | the expectation continues a `With…` clause, which drops the verb, e.g. `with message equal to "Yesterday"`    |
 | `Introduced` | the subject was already introduced by a connector like the `that` of `has item that`                          |
 
-`Active` has the opposite meaning for the expectation text of a string comparison (`StringEqualityOptions.GetExpectation`):
-there it asks for the text with the verb (`is equal to "Yesterday"`), and without it the text starts with the
-comparison (`equal to "Yesterday"`). Core writes both from the `MatchPhrase` of the match type.
-
 `ExpectationGrammarsExtensions` checks them with `IsNegated()`, `IsNested()`, `IsPlural()`, `IsActive()` or
 `IsIntroduced()`, and toggles the negation with `Negate()`. Use the plural form of the verb in the expectation text
 when the grammars are plural, but keep the singular form in the result text as long as the subject is the pronoun
@@ -268,6 +266,15 @@ private sealed class IsRadioFriendlyConstraint(string it, ExpectationGrammars gr
         => AppendNormalResult(stringBuilder, indentation);
 }
 ```
+
+<details>
+<summary>The Active flag in string comparisons</summary>
+
+`Active` has the opposite meaning for the expectation text of a string comparison (`StringEqualityOptions.GetExpectation`):
+there it asks for the text with the verb (`is equal to "Yesterday"`), and without it the text starts with the
+comparison (`equal to "Yesterday"`). Core writes both from the `MatchPhrase` of the match type.
+
+</details>
 
 ## Contexts
 
@@ -317,18 +324,25 @@ private sealed class HasPlaylistConstraint(string it, ExpectationGrammars gramma
   `AppendContexts` on the final `Grammars` and `Outcome` instead of in `IsMetBy` or `NegateInPlace()`.
 - Capture the state in the callback when `AppendContexts` runs (`tracks` above), as the result of an item expectation
   is evaluated again for the next item before the content is created.
-- A context of a member is labelled with it, e.g. `Playlist (Albums):`. Contexts with the same title and member are
-  shown once when their content is the same, and are numbered otherwise, e.g. `Playlist #1:`.
 - A result that combines other results adds their contexts with `contexts.Visit(result)` for the parts that explain
   its outcome, or `contexts.VisitMember("name", result)` to label them with a member. `contexts.VisitItem(2, result)`
   labels them with the item of a collection, e.g. `Actual (item [2]):`, after the contexts of the collection.
 - To show the subject whenever any expectation on it fails, not only your own, register a callback once with
-  `expectationBuilder.AddSubjectContexts<T>((subject, contexts) => …)`, e.g. the HTTP request of a response. Its
-  contexts precede those of the expectations and are labelled with the member or item when added for one. Pass a
+  `expectationBuilder.AddSubjectContexts<T>((subject, contexts) => …)`, e.g. the HTTP request of a response. Pass a
   cached delegate, as the same callback is only added once per subject.
 - The contexts of the built-in expectations are available as extensions on the `ResultContextCollector`, so that a
   custom expectation shows them alike: `AddCollectionContext`, `AddDictionaryContext`, `AddExpectedValuesContext`,
   `AddStringContext`, `AddStringDifferencesContext`, `AddEqualityOptionsContexts` and `AddEquivalencyContext`.
+
+<details>
+<summary>Labels, order and duplicates of contexts</summary>
+
+- A context of a member is labelled with it, e.g. `Playlist (Albums):`. Contexts with the same title and member are
+  shown once when their content is the same, and are numbered otherwise, e.g. `Playlist #1:`.
+- The contexts of `AddSubjectContexts` precede those of the expectations and are labelled with the member or item when
+  added for one.
+
+</details>
 
 ## Exceptions
 

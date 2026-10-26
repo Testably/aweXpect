@@ -35,9 +35,6 @@ await Expect.That(initial).IsNotEqualTo('b');
 await Expect.That(initial).IsEqualTo('A').IgnoringCase();
 ```
 
-`IgnoringCase()` compares the characters the same way as `string`s with `IgnoringCase()`, i.e. with
-`StringComparison.OrdinalIgnoreCase`.
-
 ## One of
 
 You can verify that the `char` is one of many alternatives:
@@ -86,5 +83,8 @@ Each expectation follows the corresponding method of `char`:
 
 `IsUpperCased` and `IsLowerCased` differ from the [`string` casing expectations](./03-string.md#character-casing),
 which only look at cased letters: `'1'` is neither upper-cased nor lower-cased, while `"1"` is both.
+
+`IgnoringCase()` compares the characters the same way as `string`s with `IgnoringCase()`, i.e. with
+`StringComparison.OrdinalIgnoreCase`.
 
 </details>

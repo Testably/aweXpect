@@ -7,9 +7,9 @@ Describes the possible expectations for delegates and the exceptions they throw.
 | [`Throws`](#thrown-exception)          | `DoesNotThrow`           | throws an exception                                        |
 | [`Throws<T>`](#specific-exception)     | `DoesNotThrow<T>`        | throws a `T` or a derived exception                        |
 | [`ThrowsExactly<T>`](#exact-exception) | `DoesNotThrowExactly<T>` | throws exactly a `T`                                       |
+| [`Eventually`](#eventually)            |                          | re-evaluates the delegate until the expectations are met   |
 | [`ExecutesIn`](#execution-time)        |                          | completes within the expected time                         |
 | [`Allocates`](#allocations)            |                          | allocates the expected number of bytes                     |
-| [`Eventually`](#eventually)            |                          | re-evaluates the delegate until the expectations are met   |
 | [`IsCollectedAfter`](#memory-leaks)    |                          | the returned object is garbage collected after the cleanup |
 
 A delegate can be any of the following. Each of them can also take a `CancellationToken` parameter (e.g.
@@ -69,15 +69,22 @@ await Expect.That(Act).DoesNotThrow().WhoseResult.IsEqualTo(3);
 int result = await Expect.That(Act).DoesNotThrow();
 ```
 
-Awaiting `DoesNotThrow<TException>()`, `DoesNotThrowExactly<TException>()` or their `Type` overloads returns no value,
-because the delegate may have thrown an exception of another type instead. Their `WhoseResult` requires that no
-exception was thrown at all.
+Awaiting `DoesNotThrow<TException>()`, `DoesNotThrowExactly<TException>()` or their `Type` overloads returns no value.
 
 :::warning[An expectation must not be applied to the delegate itself]
 `Expect.That(Act).IsEqualTo(3)` compiles, but checks the delegate instead of what it returns, so it silently passes
 or fails with a message about the delegate. The analyzer rule [aweXpect0004](../08-analyzers.md#awexpect0004) reports
 it and offers to insert `.DoesNotThrow().WhoseResult`. A delegate without a return value has nothing to compare at all.
 :::
+
+<details>
+<summary>Why `DoesNotThrow<TException>()` returns no value</summary>
+
+The delegate may have thrown an exception of another type instead, so there may be no value to return. The
+`WhoseResult` of `DoesNotThrow<TException>()` and `DoesNotThrowExactly<TException>()` requires that no exception was
+thrown at all.
+
+</details>
 
 ## Thrown exception
 
@@ -134,8 +141,6 @@ await Expect.That(Act).Throws<CustomException>().OnlyIf(expectThrownException);
 
 This is especially useful with parameterized tests where it depends on a parameter if an exception is thrown or not.
 
-`OnlyIf` and [`Within`](#time-limit) follow directly after `Throws…`; a repeated one replaces the earlier one.
-
 ### Time limit
 
 You can verify that the exception is thrown within a given time:
@@ -187,11 +192,8 @@ await Expect.That(Act).Throws().WithMessage().EndingWith("far away");
 await Expect.That(Act).Throws().WithMessage().NotEndingWith("here to stay");
 ```
 
-`WithMessage(expected)` is the shorthand for `WithMessage().EqualTo(expected)`, so a `null` argument requires the
-message to be `null` as well. The same applies to `WithParamName(expected)`.
-
-Only `EqualTo` and `NotEqualTo` accept `null`; the other comparisons reject `null` and the empty string, because
-neither is a substring anything could meaningfully be checked against.
+`WithMessage(expected)` is the shorthand for `WithMessage().EqualTo(expected)`. The same applies to
+`WithParamName(expected)`.
 
 You can use the same [string options](../04-values/03-string.md#string-options) and
 [match types](../04-values/03-string.md#match-types) as when comparing strings:
@@ -212,6 +214,14 @@ await Expect.That(Act).Throws().WithMessage().Containing("help").IgnoringCase().
 await Expect.That(Act).Throws().WithMessage().Containing("?body").AsWildcard().AtLeast(2);
 await Expect.That(Act).Throws().WithMessage().Containing("yesterday").Never();
 ```
+
+<details>
+<summary>Expecting a `null` message</summary>
+
+A `null` argument to `WithMessage(expected)` or `WithParamName(expected)` requires the message or parameter name to be
+`null` as well.
+
+</details>
 
 ### Inner exceptions
 
@@ -310,6 +320,21 @@ message: `Has…` directly after `Throws` compiles, but reads "throws a CustomEx
 rule [aweXpect0003](../08-analyzers.md#awexpect0003) flags it and offers to switch to the `With…` twin or to insert
 `.Which`.
 
+## Eventually
+
+`Eventually()` re-evaluates a delegate with a return value until the expectations on the returned value are met, e.g.
+while a background task is still running:
+
+```csharp
+Track track = new();
+// Start a background task that plays the track
+
+await Expect.That(() => track.PlayCount).Eventually().IsGreaterThan(5);
+```
+
+See [Eventually](../03-how-it-works/06-time-and-cancellation.md#eventually) for how long and how often the delegate is
+re-evaluated, and how exceptions, timeouts and cancellation are handled.
+
 ## Execution time
 
 You can verify the execution time of a delegate:
@@ -356,8 +381,7 @@ misses the expected time.
 
 A timeout from `WithTimeout` or from the upper bound still fails the expectation with "did not finish within …", and a
 canceled `WithCancellation` token leaves it inconclusive. An `OperationCanceledException` that the delegate throws for
-its own reasons is allowed like any other exception. `AllowingExceptions(false)` behaves as if the option was not
-specified.
+its own reasons is allowed like any other exception.
 
 </details>
 
@@ -400,9 +424,8 @@ await Expect.That(JoinTitles).Allocates().Between(16).And(1024);
 `Nothing()` is the shorthand for `AtMost(0)`. There is no expectation on an exact number of bytes, because the size of
 an object changes between runtime versions and platforms, so prefer bounds with some margin.
 
-The bytes are read with `GC.GetAllocatedBytesForCurrentThread()` directly before and after a single invocation of the
-delegate, so the expectation only counts what the delegate allocates on the current thread. Allocations on other
-threads, e.g. of a started task, are not included.
+Only allocations on the current thread are counted; allocations on other threads, e.g. of a started task, are not
+included.
 
 :::warning[.NET 8 or later, synchronous delegates only]
 `Allocates()` is only available on .NET 8 or later. It supports `Action`, `Func<T>` and their variants with a
@@ -422,8 +445,15 @@ await Expect.That(Reject).Allocates().AllowingExceptions().AtMost(10_000)
 ```
 
 The delegate is invoked once for all expectations on it, so it can be combined with other delegate expectations, e.g.
-`Expect.That(JoinTitles).Allocates().AtMost(1024).And.ExecutesIn().AtMost(…)`. `Allocates()` can only be specified
-once per expectation.
+`Expect.That(JoinTitles).Allocates().AtMost(1024).And.ExecutesIn().AtMost(…)`.
+
+<details>
+<summary>How the allocations are measured</summary>
+
+The bytes are read with `GC.GetAllocatedBytesForCurrentThread()` directly before and after a single invocation of the
+delegate. `Allocates()` can only be specified once per expectation.
+
+</details>
 
 ### Warm-up
 
@@ -451,23 +481,13 @@ await Expect.That(() => GetTitle(7)).Allocates().AfterWarmUp().Nothing()
 The delegate then runs twice, and the other expectations on it, e.g. on the execution time, see the measured second
 invocation. Without `AfterWarmUp()`, the delegate runs exactly once.
 
+<details>
+<summary>Exceptions during the warm-up</summary>
+
 An exception in the warm-up fails the expectation like one in the measured invocation, which is then skipped. With
 `AllowingExceptions()`, it is ignored and the second invocation is measured.
 
-## Eventually
-
-`Eventually()` re-evaluates a delegate with a return value until the expectations on the returned value are met, e.g.
-while a background task is still running:
-
-```csharp
-Track track = new();
-// Start a background task that plays the track
-
-await Expect.That(() => track.PlayCount).Eventually().IsGreaterThan(5);
-```
-
-See [Eventually](../03-how-it-works/06-time-and-cancellation.md#eventually) for how long and how often the delegate is
-re-evaluated, and how exceptions, timeouts and cancellation are handled.
+</details>
 
 ## Memory leaks
 
@@ -481,17 +501,20 @@ await Expect.That(() => new ViewModel(bus)).IsCollectedAfter(vm => vm.Dispose())
   .Because("the view model must unsubscribe from the bus when it is disposed");
 ```
 
-aweXpect calls the delegate and the cleanup in a separate method that keeps only a weak reference to the object, and
-then forces full blocking garbage collections. The expectation fails with "it was still alive" when anything else still
-references the object, e.g. an event handler or a static collection that the cleanup did not remove. When no cleanup
-is needed, use `IsCollectedAfter(_ => { })`.
-
-An exception thrown by the delegate or by the cleanup fails the expectation, as does a delegate that returns `null`.
-An asynchronous delegate is awaited before the cleanup runs. The delegate must return a reference type, as a boxed
-value is always collectable.
+The expectation fails with "it was still alive" when anything else still references the object, e.g. an event handler
+or a static collection that the cleanup did not remove. When no cleanup is needed, use `IsCollectedAfter(_ => { })`.
 
 :::note[Create the object inside the delegate]
 The delegate must create the object: when it returns an instance that the test also holds, e.g. in a local variable,
 this reference keeps the object alive. To check an object you only have a `WeakReference` to, use
 [`IsCollected`](../04-values/12-object.md#garbage-collection).
 :::
+
+<details>
+<summary>How the object is collected</summary>
+
+aweXpect calls the delegate and the cleanup in a separate method that keeps only a weak reference to the object, and
+then forces full blocking garbage collections. An asynchronous delegate is awaited before the cleanup runs. An
+exception thrown by the delegate or by the cleanup fails the expectation, as does a delegate that returns `null`.
+
+</details>

@@ -60,15 +60,6 @@ await Expect.That(playCount).IsNotGreaterThan(42);
 await Expect.That(playCount).IsNotLessThan(42);
 ```
 
-<details>
-<summary>Comparing with `NaN`</summary>
-
-`NaN` is neither greater nor less than any number, so it satisfies `IsNotGreaterThan(5)` although it fails
-`IsLessThanOrEqualTo(5)`. A `NaN` expected value or `NaN` bound of `IsBetween` throws an
-`ArgumentOutOfRangeException`.
-
-</details>
-
 ## Between
 
 You can verify that the number is between two numbers:
@@ -80,8 +71,7 @@ await Expect.That(playCount).IsBetween(41).And(43);
 await Expect.That(playCount).IsNotBetween(43).And(50);
 ```
 
-Both bounds belong to the range, so `IsNotBetween(42).And(50)` fails for `42`. A maximum below the minimum throws an
-`ArgumentOutOfRangeException`.
+Both bounds belong to the range, so `IsNotBetween(42).And(50)` fails for `42`.
 
 ## Positive / negative
 
@@ -107,6 +97,9 @@ await Expect.That(42.0).IsFinite();
 await Expect.That(float.PositiveInfinity).IsInfinite();
 await Expect.That(double.NaN).IsNotFinite().And.IsNotInfinite();
 ```
+
+`NaN` is neither greater nor less than any number, so it satisfies `IsNotGreaterThan(5)` although it fails
+`IsLessThanOrEqualTo(5)`.
 
 ## Tolerance
 
@@ -138,4 +131,5 @@ await Expect.That(durationSeconds).IsBetween(1000).And(2000).Within(5).Percent()
   .Because("we accept values between 950 and 2100");
 ```
 
-An expected value of zero only accepts zero.
+The percentage is taken of the absolute value, so `IsEqualTo(-1000).Within(5).Percent()` accepts values between -1050
+and -950. An expected value of zero only accepts zero.

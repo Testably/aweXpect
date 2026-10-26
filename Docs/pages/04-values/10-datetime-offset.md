@@ -150,8 +150,7 @@ await Expect.That(releaseDate)
 </TabItem>
 </Tabs>
 
-Both bounds are included. A maximum below the minimum throws an `ArgumentOutOfRangeException` as soon as it is
-specified.
+Both bounds are included.
 
 ## Tolerance
 
@@ -289,5 +288,3 @@ await Expect.That(importedAt).HasOffset().GreaterThan(TimeSpan.Zero);
 </Tabs>
 
 <PropertyComparisons example="HasYear(2024)" />
-
-`HasDayOfWeek()` and `HasKind()` only support `EqualTo` and `NotEqualTo`.

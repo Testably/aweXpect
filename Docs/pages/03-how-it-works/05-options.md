@@ -1,10 +1,15 @@
 # Options
 
-Many expectations share the same options. An option is appended to the expectation it configures. Options can be
-chained in any order, and a repeated option replaces the earlier one, e.g. `IgnoringCase().IgnoringCase(false)`
-compares case-sensitively. Options that set the same thing in different ways, e.g. `AsPrefix().AsSuffix()`, throw. An
-option that switches something on, such as `IgnoringCase()`, takes an optional `bool`; with `false` it behaves as if it
-was not specified. The reference pages describe the details:
+Many expectations share the same options. An option is appended to the expectation it configures. These rules apply
+to all options:
+
+- Options can be chained in any order.
+- A repeated option replaces the earlier one, e.g. `IgnoringCase().IgnoringCase(false)` compares case-sensitively.
+- An option that switches something on, such as `IgnoringCase()`, takes an optional `bool`; with `false` it behaves as
+  if it was not specified.
+- Options that set the same thing in different ways, e.g. `AsPrefix().AsSuffix()`, throw.
+
+The reference pages describe the details:
 
 | Option                                                                | Configures                                      | Details                                                             |
 |-----------------------------------------------------------------------|-------------------------------------------------|---------------------------------------------------------------------|

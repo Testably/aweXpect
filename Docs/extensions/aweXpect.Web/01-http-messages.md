@@ -48,8 +48,8 @@ await Expect.That(request).HasRequestUri(new Uri("https://music.example.com/trac
 await Expect.That(request).DoesNotHaveRequestUri("https://music.example.com/admin");
 ```
 
-The expected URI must be absolute. Scheme and host are compared ignoring case; path, query and fragment are
-case-sensitive, unless you add `.IgnoringCase()`:
+Scheme and host are compared ignoring case; path, query and fragment are case-sensitive, unless you add
+`.IgnoringCase()`:
 
 ```csharp
 await Expect.That(request).HasRequestUri("https://music.example.com/Tracks/1").IgnoringCase();
@@ -365,9 +365,6 @@ await Expect.That(response)
     .WithInstance("/tracks/").AsPrefix();
 ```
 
-A pattern, prefix or suffix fails for an absent member, also with `DoesNotComplyWith`, as there is no value to
-inspect.
-
 There is no dedicated negation. `DoesNotComplyWith` succeeds when the content is a `ProblemDetails` object that differs
 in any of the given parts, and still fails when the content is no valid `ProblemDetails` object:
 
@@ -377,6 +374,14 @@ HttpResponseMessage response = await httpClient.GetAsync("https://music.example.
 await Expect.That(response).DoesNotComplyWith(it => it
     .HasProblemDetailsContent().WithStatus(500));
 ```
+
+<details>
+<summary>Absent members</summary>
+
+A pattern, prefix or suffix fails for an absent member, also with `DoesNotComplyWith`, as there is no value to
+inspect.
+
+</details>
 
 ### Request message
 

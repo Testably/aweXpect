@@ -33,8 +33,15 @@ and has the `ModuleInitializerAttribute` (.NET 5 or later, or an own `internal` 
 referencing `aweXpect.Core`, `aweXpect` or one of the extension packages of aweXpect, which all pass them on. By
 default, a package marks the analyzers of its dependencies as private (`exclude="Analyzers"` in its `.nuspec`), so
 reference `aweXpect.Core` with `PrivateAssets="contentfiles;build"` to pass them on to the consumers of your extension
-as well. NuGet restores `aweXpect.Core` only once, however many packages pass its analyzers on, so the generator runs
-once per project.
+as well.
+
+<details>
+<summary>Several packages that pass the analyzers on</summary>
+
+NuGet restores `aweXpect.Core` only once, however many packages pass its analyzers on, so the generator runs once per
+project.
+
+</details>
 
 ## Registering metadata yourself
 
