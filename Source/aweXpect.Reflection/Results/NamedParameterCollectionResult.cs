@@ -20,7 +20,7 @@ public sealed class NamedParameterCollectionResult<TType, TValue, TParameter>
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
 		OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
-		ParameterFilterOptions parameterFilterOptions,
+		OptionsHolder<ParameterFilterOptions> parameterFilterOptions,
 		OptionsHolder<StringEqualityOptions> options)
 		: base(expectationBuilder, subject, collectionIndexOptions, parameterFilterOptions)
 	{

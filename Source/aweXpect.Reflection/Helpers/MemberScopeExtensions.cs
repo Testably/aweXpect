@@ -1,4 +1,5 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using aweXpect.Core;
+using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Helpers;
 
@@ -41,5 +42,24 @@ internal static class MemberScopeExtensions
 		return memberScope.IncludesObjectMembers()
 			? $"declared and inherited {description}including object members "
 			: $"declared and inherited {description}";
+	}
+
+	/// <summary>
+	///     Restricts the scope in the <paramref name="holder" /> to declared elements or direct relations.
+	/// </summary>
+	public static OptionsHolder<MemberScopes> Directly(this OptionsHolder<MemberScopes> holder)
+	{
+		holder.Value |= MemberScopes.DeclaredOnly;
+		return holder;
+	}
+
+	/// <summary>
+	///     Adds the members declared on <see cref="object" />, <see cref="System.ValueType" /> and
+	///     <see cref="System.Enum" /> to the scope in the <paramref name="holder" />.
+	/// </summary>
+	public static OptionsHolder<MemberScopes> IncludingObjectMembers(this OptionsHolder<MemberScopes> holder)
+	{
+		holder.Value |= MemberScopes.IncludingObjectMembers;
+		return holder;
 	}
 }

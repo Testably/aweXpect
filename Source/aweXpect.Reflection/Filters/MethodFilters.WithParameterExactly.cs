@@ -17,7 +17,7 @@ public static partial class MethodFilters
 	{
 		Type parameterType = typeof(T);
 		CollectionIndexOptions collectionIndexOptions = CollectionIndexOptions.Default;
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
+		ParameterFilterOptions parameterFilterOptions = new ParameterFilterOptions(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		return new MethodsWithParameter<T>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
 	}
@@ -32,10 +32,10 @@ public static partial class MethodFilters
 		return new MethodsWithNamedParameter<T>(@this, WithParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions =>
 			{
-				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
-					() => $"of exact type {Formatter.Format(parameterType)}");
-				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
-					() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
+				ParameterFilterOptions parameterFilterOptions = new ParameterFilterOptions(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
+					() => $"of exact type {Formatter.Format(parameterType)}")
+					.WithPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
+						() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
 			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));
@@ -47,7 +47,7 @@ public static partial class MethodFilters
 	public static MethodsWithParameter<object?> WithParameterExactly(this Filtered.Methods @this, Type parameterType)
 	{
 		CollectionIndexOptions collectionIndexOptions = CollectionIndexOptions.Default;
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
+		ParameterFilterOptions parameterFilterOptions = new ParameterFilterOptions(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		return new MethodsWithParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
 	}
@@ -62,10 +62,10 @@ public static partial class MethodFilters
 		return new MethodsWithNamedParameter<object?>(@this, WithParameterFilter, CollectionIndexOptions.Default,
 			stringEqualityOptions =>
 			{
-				ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
-					() => $"of exact type {Formatter.Format(parameterType)}");
-				parameterFilterOptions.AddPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
-					() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
+				ParameterFilterOptions parameterFilterOptions = new ParameterFilterOptions(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
+					() => $"of exact type {Formatter.Format(parameterType)}")
+					.WithPredicate(p => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
+						() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 				return parameterFilterOptions;
 			},
 			new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));

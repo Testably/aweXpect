@@ -36,10 +36,9 @@ public static partial class ThatMethods
 	public static ReturnResult<IEnumerable<MethodInfo?>> Return(
 		this IThat<IEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(returnType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, false));
 		return new ReturnResult<IEnumerable<MethodInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<MethodInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -64,10 +63,9 @@ public static partial class ThatMethods
 	public static ReturnResult<IAsyncEnumerable<MethodInfo?>> Return(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(returnType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, false));
 		return new ReturnResult<IAsyncEnumerable<MethodInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -92,10 +90,9 @@ public static partial class ThatMethods
 	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> DoNotReturn(
 		this IThat<IEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(returnType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, false));
 		return new AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<MethodInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new DoNotReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject);
@@ -119,10 +116,9 @@ public static partial class ThatMethods
 	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> DoNotReturn(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(returnType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, false));
 		return new AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new DoNotReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject);
@@ -132,7 +128,7 @@ public static partial class ThatMethods
 	private sealed class ReturnConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeFilterOptions typeFilterOptions)
+		IReadOnlyOptionsHolder<TypeFilterOptions> typeFilterOptions)
 		: CollectionConstraintResult<MethodInfo?>(it, grammars),
 			IContextConstraint<IEnumerable<MethodInfo?>>
 #if NET8_0_OR_GREATER
@@ -143,16 +139,16 @@ public static partial class ThatMethods
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
 			IEvaluationContext context, CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				method => method is not null && typeFilterOptions.Matches(method.ReturnType), cancellationToken);
+				method => method is not null && typeFilterOptions.Value.Matches(method.ReturnType), cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, method => method is not null && typeFilterOptions.Matches(method.ReturnType));
+			=> SetValue(actual, context, method => method is not null && typeFilterOptions.Value.Matches(method.ReturnType));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all ");
-			typeFilterOptions.AppendExpectation(stringBuilder, Grammars);
+			typeFilterOptions.Value.AppendExpectation(stringBuilder, Grammars);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -161,7 +157,7 @@ public static partial class ThatMethods
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("not all ");
-			typeFilterOptions.AppendExpectation(stringBuilder, Grammars);
+			typeFilterOptions.Value.AppendExpectation(stringBuilder, Grammars);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -171,7 +167,7 @@ public static partial class ThatMethods
 	private sealed class DoNotReturnConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeFilterOptions typeFilterOptions)
+		IReadOnlyOptionsHolder<TypeFilterOptions> typeFilterOptions)
 		: CollectionConstraintResult<MethodInfo?>(it, grammars),
 			IContextConstraint<IEnumerable<MethodInfo?>>
 #if NET8_0_OR_GREATER
@@ -182,34 +178,34 @@ public static partial class ThatMethods
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
 			IEvaluationContext context, CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				method => method is not null && !typeFilterOptions.Matches(method.ReturnType), cancellationToken);
+				method => method is not null && !typeFilterOptions.Value.Matches(method.ReturnType), cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, method => method is not null && !typeFilterOptions.Matches(method.ReturnType));
+			=> SetValue(actual, context, method => method is not null && !typeFilterOptions.Value.Matches(method.ReturnType));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all do not ");
-			typeFilterOptions.AppendExpectation(stringBuilder, ExpectationGrammars.Plural);
+			typeFilterOptions.Value.AppendExpectation(stringBuilder, ExpectationGrammars.Plural);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" contained methods which ");
-			typeFilterOptions.AppendExpectation(stringBuilder, ExpectationGrammars.Plural);
+			typeFilterOptions.Value.AppendExpectation(stringBuilder, ExpectationGrammars.Plural);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("also contain a method which ");
-			typeFilterOptions.AppendExpectation(stringBuilder, ExpectationGrammars.None);
+			typeFilterOptions.Value.AppendExpectation(stringBuilder, ExpectationGrammars.None);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" only contained methods which do not ");
-			typeFilterOptions.AppendExpectation(stringBuilder, ExpectationGrammars.Plural);
+			typeFilterOptions.Value.AppendExpectation(stringBuilder, ExpectationGrammars.Plural);
 		}
 	}
 }

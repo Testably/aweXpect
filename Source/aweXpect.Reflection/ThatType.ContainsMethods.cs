@@ -42,10 +42,10 @@ public static partial class ThatType
 		Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersScopeResult<Type, Type?>(
-			AddContainsConstraint<TMember, TFiltered>(subject, types => navigate(types, scope.MemberScope), filter,
+			AddContainsConstraint<TMember, TFiltered>(subject, types => navigate(types, scope.Value), filter,
 				quantifier, scope),
 			subject,
 			quantifier,
@@ -70,7 +70,7 @@ public static partial class ThatType
 		Func<Filtered.Types, TFiltered> navigate,
 		Func<TFiltered, TFiltered> filter,
 		OptionsHolder<Quantifier> quantifier,
-		ScopeOptions? scope)
+		OptionsHolder<MemberScopes>? scope)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		IContainedMembersFilter memberFilter =
@@ -86,7 +86,7 @@ public static partial class ThatType
 		ExpectationGrammars grammars,
 		IContainedMembersFilter memberFilter,
 		OptionsHolder<Quantifier> quantifier,
-		ScopeOptions? scope)
+		OptionsHolder<MemberScopes>? scope)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IAsyncConstraint<Type?>
 	{
@@ -109,7 +109,7 @@ public static partial class ThatType
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendMembers(stringBuilder.Append(scope?.IsDirect == true ? "declares " : "contains "));
+			=> AppendMembers(stringBuilder.Append(scope?.Value.IsDirect() == true ? "declares " : "contains "));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -119,14 +119,14 @@ public static partial class ThatType
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendMembers(stringBuilder.Append(scope?.IsDirect == true ? "does not declare " : "does not contain "));
+			=> AppendMembers(stringBuilder.Append(scope?.Value.IsDirect() == true ? "does not declare " : "does not contain "));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
 
 		private void AppendMembers(StringBuilder stringBuilder)
 			=> stringBuilder.Append(memberFilter.MembersDescription)
-				.Append(scope?.MemberScope.ObjectMembersText())
+				.Append(scope?.Value.ObjectMembersText())
 				.Append(quantifier);
 	}
 }

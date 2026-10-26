@@ -20,7 +20,7 @@ public static partial class ThatType
 	public static GenericArgumentCollectionResult<Type, Type?> IsGeneric(
 		this IThat<Type?> subject)
 	{
-		GenericArgumentsFilterOptions genericFilterOptions = new();
+		OptionsHolder<GenericArgumentsFilterOptions> genericFilterOptions = new(GenericArgumentsFilterOptions.Default);
 		return new GenericArgumentCollectionResult<Type, Type?>(subject.Get().ExpectationBuilder.AddConstraint(genericFilterOptions,
 				static (genericFilterOptions, it, grammars)
 				=> new IsGenericConstraint(it, grammars, genericFilterOptions)),
@@ -35,7 +35,7 @@ public static partial class ThatType
 	public static AndOrResult<Type, IThat<Type?>> IsNotGeneric(
 		this IThat<Type?> subject)
 	{
-		GenericArgumentsFilterOptions genericFilterOptions = new();
+		OptionsHolder<GenericArgumentsFilterOptions> genericFilterOptions = new(GenericArgumentsFilterOptions.Default);
 		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint(genericFilterOptions,
 				static (genericFilterOptions, it, grammars)
 				=> new IsGenericConstraint(it, grammars, genericFilterOptions).Invert()),
@@ -45,7 +45,7 @@ public static partial class ThatType
 	private sealed class IsGenericConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		GenericArgumentsFilterOptions options)
+		IReadOnlyOptionsHolder<GenericArgumentsFilterOptions> options)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IAsyncConstraint<Type?>
 	{
@@ -53,7 +53,7 @@ public static partial class ThatType
 		{
 			Actual = actual;
 			Outcome = actual?.IsGenericType == true &&
-			          await options.Matches(actual)
+			          await options.Value.Matches(actual)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -62,7 +62,7 @@ public static partial class ThatType
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("is generic");
-			stringBuilder.Append(options.GetDescription());
+			stringBuilder.Append(options.Value.GetDescription());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)

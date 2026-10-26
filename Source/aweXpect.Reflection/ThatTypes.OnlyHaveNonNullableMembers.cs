@@ -36,8 +36,8 @@ public static partial class ThatTypes
 	public static MemberScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> OnlyHaveNonNullableMembers(
 		this IThat<IEnumerable<Type?>?> subject)
 	{
-		ScopeOptions scope = new();
-		return new MemberScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<ScopeOptions, IEnumerable<Type?>>(scope,
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new MemberScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<MemberScopes>, IEnumerable<Type?>>(scope,
 				static (scope, it, grammars)
 				=> new OnlyHaveNonNullableMembersConstraint(it, grammars, scope)),
 			subject,
@@ -61,8 +61,8 @@ public static partial class ThatTypes
 	public static MemberScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> OnlyHaveNonNullableMembers(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
 	{
-		ScopeOptions scope = new();
-		return new MemberScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<ScopeOptions, IAsyncEnumerable<Type?>>(scope,
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new MemberScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<MemberScopes>, IAsyncEnumerable<Type?>>(scope,
 				static (scope, it, grammars)
 				=> new OnlyHaveNonNullableMembersConstraint(it, grammars, scope)),
 			subject,
@@ -73,7 +73,7 @@ public static partial class ThatTypes
 	private sealed class OnlyHaveNonNullableMembersConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -89,7 +89,7 @@ public static partial class ThatTypes
 				return false;
 			}
 
-			MemberInfo[] nullableMembers = type.GetNullableMembers(scope.MemberScope);
+			MemberInfo[] nullableMembers = type.GetNullableMembers(scope.Value);
 			if (nullableMembers.Length > 0)
 			{
 				_nullableMembers[type] = nullableMembers;
@@ -108,7 +108,7 @@ public static partial class ThatTypes
 			=> SetValue(actual, context, OnlyHasNonNullableMembers);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendScope(stringBuilder.Append(scope.IsDirect
+			=> AppendScope(stringBuilder.Append(scope.Value.IsDirect()
 				? "only declare non-nullable members"
 				: "only have non-nullable members"));
 
@@ -120,7 +120,7 @@ public static partial class ThatTypes
 				" with nullable members ");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendScope(stringBuilder.Append(scope.IsDirect
+			=> AppendScope(stringBuilder.Append(scope.Value.IsDirect()
 				? "not all only declare non-nullable members"
 				: "not all only have non-nullable members"));
 
@@ -129,7 +129,7 @@ public static partial class ThatTypes
 
 		private void AppendScope(StringBuilder stringBuilder)
 		{
-			if (scope.MemberScope.IncludesObjectMembers())
+			if (scope.Value.IncludesObjectMembers())
 			{
 				stringBuilder.Append(" including object members");
 			}

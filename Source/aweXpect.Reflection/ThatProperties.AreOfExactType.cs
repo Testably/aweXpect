@@ -26,10 +26,9 @@ public static partial class ThatProperties
 	public static OfTypeResult<IEnumerable<PropertyInfo?>> AreOfExactType(
 		this IThat<IEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(propertyType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(propertyType, true));
 		return new OfTypeResult<IEnumerable<PropertyInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<PropertyInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -52,10 +51,9 @@ public static partial class ThatProperties
 	public static OfTypeResult<IAsyncEnumerable<PropertyInfo?>> AreOfExactType(
 		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(propertyType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(propertyType, true));
 		return new OfTypeResult<IAsyncEnumerable<PropertyInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -81,10 +79,9 @@ public static partial class ThatProperties
 	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> AreNotOfExactType(
 		this IThat<IEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(propertyType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(propertyType, true));
 		return new AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<PropertyInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreNotOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject);
@@ -110,10 +107,9 @@ public static partial class ThatProperties
 		AreNotOfExactType(
 			this IThat<IAsyncEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(propertyType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(propertyType, true));
 		return new AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreNotOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject);

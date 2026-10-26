@@ -28,10 +28,9 @@ public static partial class ThatEvents
 	public static OfTypeResult<IEnumerable<EventInfo?>> AreOfExactType(
 		this IThat<IEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(handlerType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(handlerType, true));
 		return new OfTypeResult<IEnumerable<EventInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<EventInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -56,10 +55,9 @@ public static partial class ThatEvents
 	public static OfTypeResult<IAsyncEnumerable<EventInfo?>> AreOfExactType(
 		this IThat<IAsyncEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(handlerType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(handlerType, true));
 		return new OfTypeResult<IAsyncEnumerable<EventInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<EventInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -84,10 +82,9 @@ public static partial class ThatEvents
 	public static AndOrResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>?>> AreNotOfExactType(
 		this IThat<IEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(handlerType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(handlerType, true));
 		return new AndOrResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<EventInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreNotOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject);
@@ -113,10 +110,9 @@ public static partial class ThatEvents
 		AreNotOfExactType(
 			this IThat<IAsyncEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(handlerType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(handlerType, true));
 		return new AndOrResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<EventInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreNotOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject);

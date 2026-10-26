@@ -28,10 +28,9 @@ public static partial class ThatMethods
 	public static ReturnResult<IEnumerable<MethodInfo?>> ReturnExactly(
 		this IThat<IEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(returnType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, true));
 		return new ReturnResult<IEnumerable<MethodInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<MethodInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -56,10 +55,9 @@ public static partial class ThatMethods
 	public static ReturnResult<IAsyncEnumerable<MethodInfo?>> ReturnExactly(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(returnType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, true));
 		return new ReturnResult<IAsyncEnumerable<MethodInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -82,10 +80,9 @@ public static partial class ThatMethods
 	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> DoNotReturnExactly(
 		this IThat<IEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(returnType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, true));
 		return new AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<MethodInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new DoNotReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject);
@@ -108,10 +105,9 @@ public static partial class ThatMethods
 	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> DoNotReturnExactly(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(returnType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, true));
 		return new AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new DoNotReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject);

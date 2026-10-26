@@ -21,13 +21,13 @@ public static partial class ThatType
 	public static InheritanceScopeResult<Type, Type?> DoesNotHave<TAttribute>(this IThat<Type?> subject)
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<Type?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.AddAttribute<TAttribute>();
-		return new InheritanceScopeResult<Type, Type?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
+		AttributeFilter<Type?> attributeFilter = new(
+			new AttributeFilterOptions<Type?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute<TAttribute>());
+		return new InheritanceScopeResult<Type, Type?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter).Invert()),
 			subject,
-			attributeFilterOptions.Scope);
+			attributeFilter.Scope);
 	}
 }

@@ -36,10 +36,9 @@ public static partial class ThatFields
 	public static OfTypeResult<IEnumerable<FieldInfo?>> AreOfType(
 		this IThat<IEnumerable<FieldInfo?>?> subject, Type fieldType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(fieldType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(fieldType, false));
 		return new OfTypeResult<IEnumerable<FieldInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<FieldInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<FieldInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -62,10 +61,9 @@ public static partial class ThatFields
 	public static OfTypeResult<IAsyncEnumerable<FieldInfo?>> AreOfType(
 		this IThat<IAsyncEnumerable<FieldInfo?>?> subject, Type fieldType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(fieldType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(fieldType, false));
 		return new OfTypeResult<IAsyncEnumerable<FieldInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<FieldInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<FieldInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -90,10 +88,9 @@ public static partial class ThatFields
 	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreNotOfType(
 		this IThat<IEnumerable<FieldInfo?>?> subject, Type fieldType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(fieldType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(fieldType, false));
 		return new AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<FieldInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<FieldInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreNotOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject);
@@ -117,10 +114,9 @@ public static partial class ThatFields
 	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> AreNotOfType(
 		this IThat<IAsyncEnumerable<FieldInfo?>?> subject, Type fieldType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(fieldType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(fieldType, false));
 		return new AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<FieldInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<FieldInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreNotOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject);
@@ -130,7 +126,7 @@ public static partial class ThatFields
 	private sealed class AreOfTypeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeFilterOptions typeFilterOptions)
+		IReadOnlyOptionsHolder<TypeFilterOptions> typeFilterOptions)
 		: CollectionConstraintResult<FieldInfo?>(it, grammars),
 			IContextConstraint<IEnumerable<FieldInfo?>>
 #if NET8_0_OR_GREATER
@@ -141,16 +137,16 @@ public static partial class ThatFields
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<FieldInfo?> actual,
 			IEvaluationContext context, CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				field => typeFilterOptions.Matches(field?.FieldType), cancellationToken);
+				field => typeFilterOptions.Value.Matches(field?.FieldType), cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, field => typeFilterOptions.Matches(field?.FieldType));
+			=> SetValue(actual, context, field => typeFilterOptions.Value.Matches(field?.FieldType));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("are all ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -159,7 +155,7 @@ public static partial class ThatFields
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("are not all ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -169,7 +165,7 @@ public static partial class ThatFields
 	private sealed class AreNotOfTypeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeFilterOptions typeFilterOptions)
+		IReadOnlyOptionsHolder<TypeFilterOptions> typeFilterOptions)
 		: CollectionConstraintResult<FieldInfo?>(it, grammars),
 			IContextConstraint<IEnumerable<FieldInfo?>>
 #if NET8_0_OR_GREATER
@@ -180,34 +176,34 @@ public static partial class ThatFields
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<FieldInfo?> actual,
 			IEvaluationContext context, CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				field => field is not null && !typeFilterOptions.Matches(field.FieldType), cancellationToken);
+				field => field is not null && !typeFilterOptions.Value.Matches(field.FieldType), cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, field => field is not null && !typeFilterOptions.Matches(field.FieldType));
+			=> SetValue(actual, context, field => field is not null && !typeFilterOptions.Value.Matches(field.FieldType));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("are all not ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" contained fields ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("also contain a field ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" only contained fields not ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 	}
 }

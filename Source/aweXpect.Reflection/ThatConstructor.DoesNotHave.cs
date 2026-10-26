@@ -20,12 +20,12 @@ public static partial class ThatConstructor
 		this IThat<ConstructorInfo?> subject)
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.AddAttribute<TAttribute>();
-		return new AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
+		AttributeFilter<ConstructorInfo?> attributeFilter = new(
+			new AttributeFilterOptions<ConstructorInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute<TAttribute>());
+		return new AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter).Invert()),
 			subject);
 	}
 }

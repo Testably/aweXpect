@@ -5,6 +5,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
@@ -32,8 +33,8 @@ public static partial class ThatTypes
 		this IThat<IEnumerable<Type?>?> subject,
 		Operator @operator)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, ScopeOptions Scope), IEnumerable<Type?>>((@operator, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, OptionsHolder<MemberScopes> Scope), IEnumerable<Type?>>((@operator, scope),
 				static (s, it, grammars)
 				=> new HaveOperatorConstraint(it, grammars, s.Operator, null, s.Scope)),
 			subject,
@@ -54,8 +55,8 @@ public static partial class ThatTypes
 		Operator @operator,
 		Type operand)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, ScopeOptions Scope), IEnumerable<Type?>>((@operator, operand, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, OptionsHolder<MemberScopes> Scope), IEnumerable<Type?>>((@operator, operand, scope),
 				static (s, it, grammars)
 				=> new HaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Scope)),
 			subject,
@@ -90,8 +91,8 @@ public static partial class ThatTypes
 		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Operator @operator)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, ScopeOptions Scope), IAsyncEnumerable<Type?>>((@operator, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, OptionsHolder<MemberScopes> Scope), IAsyncEnumerable<Type?>>((@operator, scope),
 				static (s, it, grammars)
 				=> new HaveOperatorConstraint(it, grammars, s.Operator, null, s.Scope)),
 			subject,
@@ -112,8 +113,8 @@ public static partial class ThatTypes
 		Operator @operator,
 		Type operand)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, ScopeOptions Scope), IAsyncEnumerable<Type?>>((@operator, operand, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, OptionsHolder<MemberScopes> Scope), IAsyncEnumerable<Type?>>((@operator, operand, scope),
 				static (s, it, grammars)
 				=> new HaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Scope)),
 			subject,
@@ -148,8 +149,8 @@ public static partial class ThatTypes
 		this IThat<IEnumerable<Type?>?> subject,
 		Operator @operator)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, ScopeOptions Scope), IEnumerable<Type?>>((@operator, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, OptionsHolder<MemberScopes> Scope), IEnumerable<Type?>>((@operator, scope),
 				static (s, it, grammars)
 				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, null, s.Scope)),
 			subject,
@@ -170,8 +171,8 @@ public static partial class ThatTypes
 		Operator @operator,
 		Type operand)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, ScopeOptions Scope), IEnumerable<Type?>>((@operator, operand, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, OptionsHolder<MemberScopes> Scope), IEnumerable<Type?>>((@operator, operand, scope),
 				static (s, it, grammars)
 				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Scope)),
 			subject,
@@ -206,8 +207,8 @@ public static partial class ThatTypes
 		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Operator @operator)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, ScopeOptions Scope), IAsyncEnumerable<Type?>>((@operator, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, OptionsHolder<MemberScopes> Scope), IAsyncEnumerable<Type?>>((@operator, scope),
 				static (s, it, grammars)
 				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, null, s.Scope)),
 			subject,
@@ -228,8 +229,8 @@ public static partial class ThatTypes
 		Operator @operator,
 		Type operand)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, ScopeOptions Scope), IAsyncEnumerable<Type?>>((@operator, operand, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, OptionsHolder<MemberScopes> Scope), IAsyncEnumerable<Type?>>((@operator, operand, scope),
 				static (s, it, grammars)
 				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Scope)),
 			subject,
@@ -256,7 +257,7 @@ public static partial class ThatTypes
 		ExpectationGrammars grammars,
 		Operator @operator,
 		Type? operand,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -276,27 +277,27 @@ public static partial class ThatTypes
 
 		private bool Matches(Type? type)
 			=> operand is null
-				? type.HasOperator(@operator, !scope.IsDirect)
-				: type.HasOperator(@operator, operand, !scope.IsDirect);
+				? type.HasOperator(@operator, !scope.Value.IsDirect())
+				: type.HasOperator(@operator, operand, !scope.Value.IsDirect());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(scope.IsDirect ? "all declare the operator " : "all have the operator ")
+			=> stringBuilder.Append(scope.Value.IsDirect() ? "all declare the operator " : "all have the operator ")
 				.Append(_operatorText);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It)
-				.Append(scope.IsDirect
+				.Append(scope.Value.IsDirect()
 					? " contained types not declaring the operator "
 					: " contained types without the operator ")
 				.Append(_operatorText);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(scope.IsDirect ? "not all declare the operator " : "not all have the operator ")
+			=> stringBuilder.Append(scope.Value.IsDirect() ? "not all declare the operator " : "not all have the operator ")
 				.Append(_operatorText);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It)
-				.Append(scope.IsDirect
+				.Append(scope.Value.IsDirect()
 					? " only contained types declaring the operator "
 					: " only contained types with the operator ")
 				.Append(_operatorText);
@@ -307,7 +308,7 @@ public static partial class ThatTypes
 		ExpectationGrammars grammars,
 		Operator @operator,
 		Type? operand,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -327,29 +328,29 @@ public static partial class ThatTypes
 
 		private bool Matches(Type? type)
 			=> operand is null
-				? type.HasOperator(@operator, !scope.IsDirect)
-				: type.HasOperator(@operator, operand, !scope.IsDirect);
+				? type.HasOperator(@operator, !scope.Value.IsDirect())
+				: type.HasOperator(@operator, operand, !scope.Value.IsDirect());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(scope.IsDirect ? "all do not declare the operator " : "all do not have the operator ")
+			=> stringBuilder.Append(scope.Value.IsDirect() ? "all do not declare the operator " : "all do not have the operator ")
 				.Append(_operatorText);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It)
-				.Append(scope.IsDirect
+				.Append(scope.Value.IsDirect()
 					? " contained types declaring the operator "
 					: " contained types with the operator ")
 				.Append(_operatorText);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(scope.IsDirect
+			=> stringBuilder.Append(scope.Value.IsDirect()
 					? "also contain a type declaring the operator "
 					: "also contain a type with the operator ")
 				.Append(_operatorText);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It)
-				.Append(scope.IsDirect
+				.Append(scope.Value.IsDirect()
 					? " only contained types not declaring the operator "
 					: " only contained types without the operator ")
 				.Append(_operatorText);

@@ -3,6 +3,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
 
@@ -54,7 +55,7 @@ public static partial class ThatType
 		Type interfaceType)
 	{
 		interfaceType.EnsureIsInterface();
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		return new InheritanceScopeResult<Type, Type?>(subject.Get().ExpectationBuilder.AddConstraint(
 				(InterfaceType: interfaceType, Scope: scope),
 				static (s, it, grammars)
@@ -99,7 +100,7 @@ public static partial class ThatType
 		Type interfaceType)
 	{
 		interfaceType.EnsureIsInterface();
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		return new InheritanceScopeResult<Type, Type?>(subject.Get().ExpectationBuilder.AddConstraint(
 				(InterfaceType: interfaceType, Scope: scope),
 				static (s, it, grammars)
@@ -112,14 +113,14 @@ public static partial class ThatType
 		string it,
 		ExpectationGrammars grammars,
 		Type interfaceType,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IValueConstraint<Type?>
 	{
 		public ConstraintResult IsMetBy(Type? actual)
 		{
 			Actual = actual;
-			Outcome = actual?.Implements(interfaceType, scope.IsDirect) == true ? Outcome.Success : Outcome.Failure;
+			Outcome = actual?.Implements(interfaceType, scope.Value.IsDirect()) == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -133,18 +134,18 @@ public static partial class ThatType
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(scope.IsDirect ? "directly implements " : "implements ");
+			stringBuilder.Append(scope.Value.IsDirect() ? "directly implements " : "implements ");
 			Formatter.Format(stringBuilder, interfaceType);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(scope.IsDirect && Actual?.Implements(interfaceType) == true
+			=> stringBuilder.Append(It).Append(scope.Value.IsDirect() && Actual?.Implements(interfaceType) == true
 				? " did only indirectly"
 				: " did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(scope.IsDirect ? "does not directly implement " : "does not implement ");
+			stringBuilder.Append(scope.Value.IsDirect() ? "does not directly implement " : "does not implement ");
 			Formatter.Format(stringBuilder, interfaceType);
 		}
 

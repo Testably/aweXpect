@@ -19,12 +19,12 @@ public static partial class ThatAssembly
 		this IThat<Assembly?> subject)
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<Assembly?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.AddAttribute<TAttribute>();
-		return new AndOrResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
+		AttributeFilter<Assembly?> attributeFilter = new(
+			new AttributeFilterOptions<Assembly?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute<TAttribute>());
+		return new AndOrResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter).Invert()),
 			subject);
 	}
 }

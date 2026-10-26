@@ -3,6 +3,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
 
@@ -46,7 +47,7 @@ public static partial class ThatType
 		Type baseType)
 	{
 		baseType.EnsureIsClass();
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		return new InheritanceScopeResult<Type, Type?>(subject.Get().ExpectationBuilder.AddConstraint(
 				(BaseType: baseType, Scope: scope),
 				static (s, it, grammars)
@@ -89,7 +90,7 @@ public static partial class ThatType
 		Type baseType)
 	{
 		baseType.EnsureIsClass();
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		return new InheritanceScopeResult<Type, Type?>(subject.Get().ExpectationBuilder.AddConstraint(
 				(BaseType: baseType, Scope: scope),
 				static (s, it, grammars)
@@ -102,14 +103,14 @@ public static partial class ThatType
 		string it,
 		ExpectationGrammars grammars,
 		Type baseType,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IValueConstraint<Type?>
 	{
 		public ConstraintResult IsMetBy(Type? actual)
 		{
 			Actual = actual;
-			Outcome = actual?.InheritsFromClass(baseType, scope.IsDirect) == true ? Outcome.Success : Outcome.Failure;
+			Outcome = actual?.InheritsFromClass(baseType, scope.Value.IsDirect()) == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -124,19 +125,19 @@ public static partial class ThatType
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("inherits ");
-			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
+			AppendDirectlyFrom(stringBuilder, scope.Value.IsDirect());
 			Formatter.Format(stringBuilder, baseType);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(scope.IsDirect && Actual?.InheritsFromClass(baseType) == true
+			=> stringBuilder.Append(It).Append(scope.Value.IsDirect() && Actual?.InheritsFromClass(baseType) == true
 				? " did only indirectly"
 				: " did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("does not inherit ");
-			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
+			AppendDirectlyFrom(stringBuilder, scope.Value.IsDirect());
 			Formatter.Format(stringBuilder, baseType);
 		}
 

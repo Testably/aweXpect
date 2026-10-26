@@ -13,15 +13,15 @@ namespace aweXpect.Reflection.Results;
 public sealed class HasAttributeResult<TType, TMember>
 	: AndOrResult<TType, IThat<TMember>, HasAttributeResult<TType, TMember>>
 {
-	private readonly AttributeFilterOptions<TMember> _attributeFilterOptions;
+	private readonly AttributeFilter<TMember> _attributeFilter;
 
 	internal HasAttributeResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TMember> subject,
-		AttributeFilterOptions<TMember> attributeFilterOptions)
+		AttributeFilter<TMember> attributeFilter)
 		: base(expectationBuilder, subject)
 	{
-		_attributeFilterOptions = attributeFilterOptions;
+		_attributeFilter = attributeFilter;
 	}
 
 	/// <summary>
@@ -30,7 +30,7 @@ public sealed class HasAttributeResult<TType, TMember>
 	public HasAttributeResult<TType, TMember> OrHas<TAttribute>()
 		where TAttribute : Attribute
 	{
-		_attributeFilterOptions.AddAttribute<TAttribute>();
+		_attributeFilter.Options.Value = _attributeFilter.Options.Value.WithAttribute<TAttribute>();
 		return this;
 	}
 
@@ -44,7 +44,7 @@ public sealed class HasAttributeResult<TType, TMember>
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		_attributeFilterOptions.AddAttribute(predicate, doNotPopulateThisValue.TrimExpression());
+		_attributeFilter.Options.Value = _attributeFilter.Options.Value.WithAttribute(predicate, doNotPopulateThisValue.TrimExpression());
 		return this;
 	}
 
@@ -57,7 +57,7 @@ public sealed class HasAttributeResult<TType, TMember>
 	/// </remarks>
 	public HasAttributeResult<TType, TMember> Directly()
 	{
-		_attributeFilterOptions.Scope.Directly();
+		_attributeFilter.Scope.Directly();
 		return this;
 	}
 }

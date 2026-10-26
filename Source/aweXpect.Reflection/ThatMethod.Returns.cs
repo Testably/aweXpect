@@ -27,8 +27,7 @@ public static partial class ThatMethod
 	public static ReturnsResult<MethodInfo> Returns(
 		this IThat<MethodInfo?> subject, Type returnType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(returnType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, false));
 		return new ReturnsResult<MethodInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -52,8 +51,7 @@ public static partial class ThatMethod
 	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> DoesNotReturn(
 		this IThat<MethodInfo?> subject, Type returnType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(returnType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, false));
 		return new AndOrResult<MethodInfo, IThat<MethodInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -64,21 +62,21 @@ public static partial class ThatMethod
 	private sealed class ReturnsConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeFilterOptions typeFilterOptions)
+		IReadOnlyOptionsHolder<TypeFilterOptions> typeFilterOptions)
 		: ConstraintResult.WithNotNullValue<MethodInfo?>(it, grammars),
 			IValueConstraint<MethodInfo?>
 	{
 		public ConstraintResult IsMetBy(MethodInfo? actual)
 		{
 			Actual = actual;
-			Outcome = typeFilterOptions.Matches(actual?.ReturnType)
+			Outcome = typeFilterOptions.Value.Matches(actual?.ReturnType)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> typeFilterOptions.AppendExpectation(stringBuilder, Grammars);
+			=> typeFilterOptions.Value.AppendExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("it returned ").Append(Formatter.Format(Actual?.ReturnType));

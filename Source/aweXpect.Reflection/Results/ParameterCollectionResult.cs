@@ -19,7 +19,7 @@ public sealed class ParameterCollectionResult<TType, TValue, TParameter>
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
 		OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
-		ParameterFilterOptions parameterFilterOptions)
+		OptionsHolder<ParameterFilterOptions> parameterFilterOptions)
 		: base(expectationBuilder, subject, collectionIndexOptions, parameterFilterOptions)
 	{
 	}
@@ -38,13 +38,13 @@ public class ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 	where TSelf : ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 {
 	private readonly OptionsHolder<CollectionIndexOptions> _collectionIndexOptions;
-	private readonly ParameterFilterOptions _parameterFilterOptions;
+	private readonly OptionsHolder<ParameterFilterOptions> _parameterFilterOptions;
 
 	internal ParameterCollectionResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
 		OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
-		ParameterFilterOptions parameterFilterOptions)
+		OptionsHolder<ParameterFilterOptions> parameterFilterOptions)
 		: base(expectationBuilder, subject)
 	{
 		_collectionIndexOptions = collectionIndexOptions;
@@ -55,14 +55,14 @@ public class ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 
 	/// <inheritdoc cref="IParameterFilterOptionsProvider.ParameterFilterOptions" />
-	ParameterFilterOptions IParameterFilterOptionsProvider.ParameterFilterOptions => _parameterFilterOptions;
+	OptionsHolder<ParameterFilterOptions> IParameterFilterOptionsProvider.ParameterFilterOptions => _parameterFilterOptions;
 
 	/// <summary>
 	///     …without a default value.
 	/// </summary>
 	public TSelf WithoutDefaultValue()
 	{
-		_parameterFilterOptions.AddPredicate(p => !p.HasDefaultValue, () => "without a default value");
+		_parameterFilterOptions.Value = _parameterFilterOptions.Value.WithPredicate(p => !p.HasDefaultValue, () => "without a default value");
 		return (TSelf)this;
 	}
 
@@ -71,7 +71,7 @@ public class ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 	/// </summary>
 	public TSelf WithDefaultValue()
 	{
-		_parameterFilterOptions.AddPredicate(p => p.HasDefaultValue, () => "with a default value");
+		_parameterFilterOptions.Value = _parameterFilterOptions.Value.WithPredicate(p => p.HasDefaultValue, () => "with a default value");
 		return (TSelf)this;
 	}
 
@@ -81,7 +81,7 @@ public class ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 	public TSelf WithDefaultValue<TDefault>(TDefault expected)
 		where TDefault : TParameter
 	{
-		_parameterFilterOptions.AddPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
+		_parameterFilterOptions.Value = _parameterFilterOptions.Value.WithPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
 			() => $"with default value {Formatter.Format(expected)}");
 		return (TSelf)this;
 	}
@@ -93,7 +93,7 @@ public class ParameterCollectionResult<TType, TValue, TParameter, TSelf>
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
-		_parameterFilterOptions.AddMatching(predicate, doNotPopulateThisValue);
+		_parameterFilterOptions.Value = _parameterFilterOptions.Value.WithMatching(predicate, doNotPopulateThisValue);
 		return (TSelf)this;
 	}
 }

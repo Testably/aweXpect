@@ -23,13 +23,13 @@ public static partial class ThatMethod
 		this IThat<MethodInfo?> subject)
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.AddAttribute<TAttribute>();
-		return new InheritanceScopeResult<MethodInfo, MethodInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
+		AttributeFilter<MethodInfo?> attributeFilter = new(
+			new AttributeFilterOptions<MethodInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute<TAttribute>());
+		return new InheritanceScopeResult<MethodInfo, MethodInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter).Invert()),
 			subject,
-			attributeFilterOptions.Scope);
+			attributeFilter.Scope);
 	}
 }

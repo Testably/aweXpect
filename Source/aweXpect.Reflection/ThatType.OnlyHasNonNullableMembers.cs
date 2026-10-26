@@ -27,7 +27,7 @@ public static partial class ThatType
 	public static MemberScopeResult<Type, Type?> OnlyHasNonNullableMembers(
 		this IThat<Type?> subject)
 	{
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		return new MemberScopeResult<Type, Type?>(subject.Get().ExpectationBuilder.AddConstraint(scope,
 				static (scope, it, grammars)
 				=> new OnlyHasNonNullableMembersConstraint(it, grammars, scope)),
@@ -38,7 +38,7 @@ public static partial class ThatType
 	private sealed class OnlyHasNonNullableMembersConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IValueConstraint<Type?>
 	{
@@ -50,7 +50,7 @@ public static partial class ThatType
 			Actual = actual;
 			if (actual is not null)
 			{
-				(_nullableMembers, _notNullableMembers) = actual.GetMembersByNullability(scope.MemberScope);
+				(_nullableMembers, _notNullableMembers) = actual.GetMembersByNullability(scope.Value);
 			}
 
 			Outcome = actual is not null && _nullableMembers.Length == 0 ? Outcome.Success : Outcome.Failure;
@@ -58,7 +58,7 @@ public static partial class ThatType
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendScope(stringBuilder.Append(scope.IsDirect
+			=> AppendScope(stringBuilder.Append(scope.Value.IsDirect()
 				? "only declares non-nullable members"
 				: "only has non-nullable members"));
 
@@ -66,7 +66,7 @@ public static partial class ThatType
 			=> stringBuilder.Append(It).Append(" contained nullable members");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendScope(stringBuilder.Append(scope.IsDirect
+			=> AppendScope(stringBuilder.Append(scope.Value.IsDirect()
 				? "does not only declare non-nullable members"
 				: "does not only have non-nullable members"));
 
@@ -75,7 +75,7 @@ public static partial class ThatType
 
 		private void AppendScope(StringBuilder stringBuilder)
 		{
-			if (scope.MemberScope.IncludesObjectMembers())
+			if (scope.Value.IncludesObjectMembers())
 			{
 				stringBuilder.Append(" including object members");
 			}

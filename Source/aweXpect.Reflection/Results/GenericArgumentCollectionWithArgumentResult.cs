@@ -13,7 +13,7 @@ public sealed class GenericArgumentCollectionWithArgumentResult<TType, TValue>
 	internal GenericArgumentCollectionWithArgumentResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		GenericArgumentsFilterOptions genericArgumentsFilterOptions,
+		OptionsHolder<GenericArgumentsFilterOptions> genericArgumentsFilterOptions,
 		OptionsHolder<CollectionIndexOptions> collectionIndexOptions)
 		: base(expectationBuilder, subject, genericArgumentsFilterOptions, collectionIndexOptions)
 	{
@@ -36,7 +36,7 @@ public class GenericArgumentCollectionWithArgumentResult<TType, TValue, TSelf>
 	internal GenericArgumentCollectionWithArgumentResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		GenericArgumentsFilterOptions genericArgumentsFilterOptions,
+		OptionsHolder<GenericArgumentsFilterOptions> genericArgumentsFilterOptions,
 		OptionsHolder<CollectionIndexOptions> collectionIndexOptions)
 		: base(expectationBuilder, subject, genericArgumentsFilterOptions)
 	{

@@ -26,8 +26,7 @@ public static partial class ThatProperty
 	public static OfTypeResult<PropertyInfo> IsOfExactType(
 		this IThat<PropertyInfo?> subject, Type propertyType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(propertyType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(propertyType, true));
 		return new OfTypeResult<PropertyInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -51,8 +50,7 @@ public static partial class ThatProperty
 	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsNotOfExactType(
 		this IThat<PropertyInfo?> subject, Type propertyType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(propertyType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(propertyType, true));
 		return new AndOrResult<PropertyInfo, IThat<PropertyInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)

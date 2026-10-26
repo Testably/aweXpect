@@ -26,8 +26,7 @@ public static partial class ThatMethod
 	public static ReturnsResult<MethodInfo> ReturnsExactly(
 		this IThat<MethodInfo?> subject, Type returnType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(returnType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, true));
 		return new ReturnsResult<MethodInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -51,8 +50,7 @@ public static partial class ThatMethod
 	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> DoesNotReturnExactly(
 		this IThat<MethodInfo?> subject, Type returnType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(returnType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, true));
 		return new AndOrResult<MethodInfo, IThat<MethodInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)

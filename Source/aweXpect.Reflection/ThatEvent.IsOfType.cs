@@ -27,8 +27,7 @@ public static partial class ThatEvent
 	public static OfTypeResult<EventInfo> IsOfType(
 		this IThat<EventInfo?> subject, Type handlerType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(handlerType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(handlerType, false));
 		return new OfTypeResult<EventInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -54,8 +53,7 @@ public static partial class ThatEvent
 	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsNotOfType(
 		this IThat<EventInfo?> subject, Type handlerType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(handlerType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(handlerType, false));
 		return new AndOrResult<EventInfo, IThat<EventInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -66,14 +64,14 @@ public static partial class ThatEvent
 	private sealed class IsOfTypeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeFilterOptions typeFilterOptions)
+		IReadOnlyOptionsHolder<TypeFilterOptions> typeFilterOptions)
 		: ConstraintResult.WithNotNullValue<EventInfo?>(it, grammars),
 			IValueConstraint<EventInfo?>
 	{
 		public ConstraintResult IsMetBy(EventInfo? actual)
 		{
 			Actual = actual;
-			Outcome = typeFilterOptions.Matches(actual?.EventHandlerType)
+			Outcome = typeFilterOptions.Value.Matches(actual?.EventHandlerType)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -82,7 +80,7 @@ public static partial class ThatEvent
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.HasFlag(ExpectationGrammars.Negated) ? "is not " : "is ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)

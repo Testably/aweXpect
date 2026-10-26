@@ -5,6 +5,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
 #if NET8_0_OR_GREATER
@@ -46,8 +47,8 @@ public static partial class ThatTypes
 		Type source,
 		Type target)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, ScopeOptions Scope), IEnumerable<Type?>>((source, target, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, OptionsHolder<MemberScopes> Scope), IEnumerable<Type?>>((source, target, scope),
 				static (s, it, grammars)
 				=> new HaveConversionOperatorConstraint(it, grammars, true, s.Source, s.Target, s.Scope)),
 			subject,
@@ -83,8 +84,8 @@ public static partial class ThatTypes
 		Type source,
 		Type target)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, ScopeOptions Scope), IAsyncEnumerable<Type?>>((source, target, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, OptionsHolder<MemberScopes> Scope), IAsyncEnumerable<Type?>>((source, target, scope),
 				static (s, it, grammars)
 				=> new HaveConversionOperatorConstraint(it, grammars, true, s.Source, s.Target, s.Scope)),
 			subject,
@@ -120,8 +121,8 @@ public static partial class ThatTypes
 		Type source,
 		Type target)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, ScopeOptions Scope), IEnumerable<Type?>>((source, target, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, OptionsHolder<MemberScopes> Scope), IEnumerable<Type?>>((source, target, scope),
 				static (s, it, grammars)
 				=> new DoNotHaveConversionOperatorConstraint(it, grammars, true, s.Source, s.Target, s.Scope)),
 			subject,
@@ -157,8 +158,8 @@ public static partial class ThatTypes
 		Type source,
 		Type target)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, ScopeOptions Scope), IAsyncEnumerable<Type?>>((source, target, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, OptionsHolder<MemberScopes> Scope), IAsyncEnumerable<Type?>>((source, target, scope),
 				static (s, it, grammars)
 				=> new DoNotHaveConversionOperatorConstraint(it, grammars, true, s.Source, s.Target, s.Scope)),
 			subject,
@@ -200,8 +201,8 @@ public static partial class ThatTypes
 		Type source,
 		Type target)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, ScopeOptions Scope), IEnumerable<Type?>>((source, target, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, OptionsHolder<MemberScopes> Scope), IEnumerable<Type?>>((source, target, scope),
 				static (s, it, grammars)
 				=> new HaveConversionOperatorConstraint(it, grammars, false, s.Source, s.Target, s.Scope)),
 			subject,
@@ -243,8 +244,8 @@ public static partial class ThatTypes
 		Type source,
 		Type target)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, ScopeOptions Scope), IAsyncEnumerable<Type?>>((source, target, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, OptionsHolder<MemberScopes> Scope), IAsyncEnumerable<Type?>>((source, target, scope),
 				static (s, it, grammars)
 				=> new HaveConversionOperatorConstraint(it, grammars, false, s.Source, s.Target, s.Scope)),
 			subject,
@@ -286,8 +287,8 @@ public static partial class ThatTypes
 		Type source,
 		Type target)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, ScopeOptions Scope), IEnumerable<Type?>>((source, target, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, OptionsHolder<MemberScopes> Scope), IEnumerable<Type?>>((source, target, scope),
 				static (s, it, grammars)
 				=> new DoNotHaveConversionOperatorConstraint(it, grammars, false, s.Source, s.Target, s.Scope)),
 			subject,
@@ -329,8 +330,8 @@ public static partial class ThatTypes
 		Type source,
 		Type target)
 	{
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, ScopeOptions Scope), IAsyncEnumerable<Type?>>((source, target, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, OptionsHolder<MemberScopes> Scope), IAsyncEnumerable<Type?>>((source, target, scope),
 				static (s, it, grammars)
 				=> new DoNotHaveConversionOperatorConstraint(it, grammars, false, s.Source, s.Target, s.Scope)),
 			subject,
@@ -344,7 +345,7 @@ public static partial class ThatTypes
 		bool isImplicit,
 		Type source,
 		Type target,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -357,27 +358,27 @@ public static partial class ThatTypes
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				type => type.GetConversionOperator(isImplicit, source, target, !scope.IsDirect) is not null, cancellationToken);
+				type => type.GetConversionOperator(isImplicit, source, target, !scope.Value.IsDirect()) is not null, cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
 			=> SetValue(actual, context,
-				type => type.GetConversionOperator(isImplicit, source, target, !scope.IsDirect) is not null);
+				type => type.GetConversionOperator(isImplicit, source, target, !scope.Value.IsDirect()) is not null);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(scope.IsDirect ? "all declare " : "all have ").Append(_conversionText);
+			=> stringBuilder.Append(scope.Value.IsDirect() ? "all declare " : "all have ").Append(_conversionText);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It)
-				.Append(scope.IsDirect ? " contained types not declaring " : " contained types without ")
+				.Append(scope.Value.IsDirect() ? " contained types not declaring " : " contained types without ")
 				.Append(_conversionText);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(scope.IsDirect ? "not all declare " : "not all have ").Append(_conversionText);
+			=> stringBuilder.Append(scope.Value.IsDirect() ? "not all declare " : "not all have ").Append(_conversionText);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It)
-				.Append(scope.IsDirect ? " only contained types declaring " : " only contained types with ")
+				.Append(scope.Value.IsDirect() ? " only contained types declaring " : " only contained types with ")
 				.Append(_conversionText);
 	}
 
@@ -387,7 +388,7 @@ public static partial class ThatTypes
 		bool isImplicit,
 		Type source,
 		Type target,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -400,28 +401,28 @@ public static partial class ThatTypes
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				type => type.GetConversionOperator(isImplicit, source, target, !scope.IsDirect) is null, cancellationToken);
+				type => type.GetConversionOperator(isImplicit, source, target, !scope.Value.IsDirect()) is null, cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
 			=> SetValue(actual, context,
-				type => type.GetConversionOperator(isImplicit, source, target, !scope.IsDirect) is null);
+				type => type.GetConversionOperator(isImplicit, source, target, !scope.Value.IsDirect()) is null);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(scope.IsDirect ? "all do not declare " : "all do not have ").Append(_conversionText);
+			=> stringBuilder.Append(scope.Value.IsDirect() ? "all do not declare " : "all do not have ").Append(_conversionText);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It)
-				.Append(scope.IsDirect ? " contained types declaring " : " contained types with ")
+				.Append(scope.Value.IsDirect() ? " contained types declaring " : " contained types with ")
 				.Append(_conversionText);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(scope.IsDirect ? "also contain a type declaring " : "also contain a type with ")
+			=> stringBuilder.Append(scope.Value.IsDirect() ? "also contain a type declaring " : "also contain a type with ")
 				.Append(_conversionText);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It)
-				.Append(scope.IsDirect ? " only contained types not declaring " : " only contained types without ")
+				.Append(scope.Value.IsDirect() ? " only contained types not declaring " : " only contained types without ")
 				.Append(_conversionText);
 	}
 

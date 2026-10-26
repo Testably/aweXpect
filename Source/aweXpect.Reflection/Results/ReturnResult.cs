@@ -12,12 +12,12 @@ namespace aweXpect.Reflection.Results;
 public sealed class ReturnResult<TType>
 	: AndOrResult<TType, IThat<TType?>>
 {
-	private readonly TypeFilterOptions _typeFilterOptions;
+	private readonly OptionsHolder<TypeFilterOptions> _typeFilterOptions;
 
 	internal ReturnResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TType?> subject,
-		TypeFilterOptions typeFilterOptions)
+		OptionsHolder<TypeFilterOptions> typeFilterOptions)
 		: base(expectationBuilder, subject)
 	{
 		_typeFilterOptions = typeFilterOptions;
@@ -34,7 +34,7 @@ public sealed class ReturnResult<TType>
 	/// </summary>
 	public ReturnResult<TType> OrReturn(Type returnType)
 	{
-		_typeFilterOptions.AddType(returnType, false);
+		_typeFilterOptions.Value = _typeFilterOptions.Value.WithType(returnType, false);
 		return this;
 	}
 
@@ -49,7 +49,7 @@ public sealed class ReturnResult<TType>
 	/// </summary>
 	public ReturnResult<TType> OrReturnExactly(Type returnType)
 	{
-		_typeFilterOptions.AddType(returnType, true);
+		_typeFilterOptions.Value = _typeFilterOptions.Value.WithType(returnType, true);
 		return this;
 	}
 }

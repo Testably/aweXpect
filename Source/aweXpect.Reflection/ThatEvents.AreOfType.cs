@@ -38,10 +38,9 @@ public static partial class ThatEvents
 	public static OfTypeResult<IEnumerable<EventInfo?>> AreOfType(
 		this IThat<IEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(handlerType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(handlerType, false));
 		return new OfTypeResult<IEnumerable<EventInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<EventInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -66,10 +65,9 @@ public static partial class ThatEvents
 	public static OfTypeResult<IAsyncEnumerable<EventInfo?>> AreOfType(
 		this IThat<IAsyncEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(handlerType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(handlerType, false));
 		return new OfTypeResult<IAsyncEnumerable<EventInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<EventInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -94,10 +92,9 @@ public static partial class ThatEvents
 	public static AndOrResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>?>> AreNotOfType(
 		this IThat<IEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(handlerType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(handlerType, false));
 		return new AndOrResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<EventInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreNotOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject);
@@ -122,10 +119,9 @@ public static partial class ThatEvents
 	public static AndOrResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>?>> AreNotOfType(
 		this IThat<IAsyncEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.AddType(handlerType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(handlerType, false));
 		return new AndOrResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<EventInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<EventInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreNotOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject);
@@ -135,7 +131,7 @@ public static partial class ThatEvents
 	private sealed class AreOfTypeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeFilterOptions typeFilterOptions)
+		IReadOnlyOptionsHolder<TypeFilterOptions> typeFilterOptions)
 		: CollectionConstraintResult<EventInfo?>(it, grammars),
 			IContextConstraint<IEnumerable<EventInfo?>>
 #if NET8_0_OR_GREATER
@@ -146,16 +142,16 @@ public static partial class ThatEvents
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<EventInfo?> actual,
 			IEvaluationContext context, CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				@event => typeFilterOptions.Matches(@event?.EventHandlerType), cancellationToken);
+				@event => typeFilterOptions.Value.Matches(@event?.EventHandlerType), cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<EventInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, @event => typeFilterOptions.Matches(@event?.EventHandlerType));
+			=> SetValue(actual, context, @event => typeFilterOptions.Value.Matches(@event?.EventHandlerType));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("are all ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -164,7 +160,7 @@ public static partial class ThatEvents
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("are not all ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -174,7 +170,7 @@ public static partial class ThatEvents
 	private sealed class AreNotOfTypeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeFilterOptions typeFilterOptions)
+		IReadOnlyOptionsHolder<TypeFilterOptions> typeFilterOptions)
 		: CollectionConstraintResult<EventInfo?>(it, grammars),
 			IContextConstraint<IEnumerable<EventInfo?>>
 #if NET8_0_OR_GREATER
@@ -185,36 +181,36 @@ public static partial class ThatEvents
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<EventInfo?> actual,
 			IEvaluationContext context, CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				@event => @event is not null && !typeFilterOptions.Matches(@event.EventHandlerType),
+				@event => @event is not null && !typeFilterOptions.Value.Matches(@event.EventHandlerType),
 				cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<EventInfo?> actual, IEvaluationContext context)
 			=> SetValue(actual, context,
-				@event => @event is not null && !typeFilterOptions.Matches(@event.EventHandlerType));
+				@event => @event is not null && !typeFilterOptions.Value.Matches(@event.EventHandlerType));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("are all not ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" contained events ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("also contain an event ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" only contained events not ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 	}
 }

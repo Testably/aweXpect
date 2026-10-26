@@ -25,9 +25,9 @@ public static partial class ThatTypes
 	public static GenericArgumentCollectionResult<IEnumerable<Type?>, IEnumerable<Type?>?> AreGeneric(
 		this IThat<IEnumerable<Type?>?> subject)
 	{
-		GenericArgumentsFilterOptions genericFilterOptions = new();
+		OptionsHolder<GenericArgumentsFilterOptions> genericFilterOptions = new(GenericArgumentsFilterOptions.Default);
 		return new GenericArgumentCollectionResult<IEnumerable<Type?>, IEnumerable<Type?>?>(
-			subject.Get().ExpectationBuilder.AddConstraint<GenericArgumentsFilterOptions, IEnumerable<Type?>>(genericFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<GenericArgumentsFilterOptions>, IEnumerable<Type?>>(genericFilterOptions,
 				static (genericFilterOptions, it, grammars)
 				=> new AreGenericConstraint(it, grammars, genericFilterOptions)),
 			subject,
@@ -42,9 +42,9 @@ public static partial class ThatTypes
 	public static GenericArgumentCollectionResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> AreGeneric(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
 	{
-		GenericArgumentsFilterOptions genericFilterOptions = new();
+		OptionsHolder<GenericArgumentsFilterOptions> genericFilterOptions = new(GenericArgumentsFilterOptions.Default);
 		return new GenericArgumentCollectionResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(
-			subject.Get().ExpectationBuilder.AddConstraint<GenericArgumentsFilterOptions, IAsyncEnumerable<Type?>>(genericFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<GenericArgumentsFilterOptions>, IAsyncEnumerable<Type?>>(genericFilterOptions,
 				static (genericFilterOptions, it, grammars)
 				=> new AreGenericConstraint(it, grammars, genericFilterOptions)),
 			subject,
@@ -77,7 +77,7 @@ public static partial class ThatTypes
 	private sealed class AreGenericConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		GenericArgumentsFilterOptions options)
+		IReadOnlyOptionsHolder<GenericArgumentsFilterOptions> options)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -87,17 +87,17 @@ public static partial class ThatTypes
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, options.Matches, cancellationToken);
+			=> await SetAsyncValue(actual, context, options.Value.Matches, cancellationToken);
 #endif
 
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetValue(actual, context, options.Matches, cancellationToken);
+			=> await SetValue(actual, context, options.Value.Matches, cancellationToken);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("are all generic");
-			stringBuilder.Append(options.GetDescription());
+			stringBuilder.Append(options.Value.GetDescription());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)

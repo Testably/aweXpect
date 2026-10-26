@@ -5,6 +5,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
 #if NET8_0_OR_GREATER
@@ -175,8 +176,8 @@ public static partial class ThatTypes
 		Type interfaceType)
 	{
 		interfaceType.EnsureIsInterface();
-		ScopeOptions scope = new();
-		return new InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, ScopeOptions Scope), IEnumerable<Type?>>((interfaceType, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, OptionsHolder<MemberScopes> Scope), IEnumerable<Type?>>((interfaceType, scope),
 				static (s, it, grammars)
 				=> new ImplementConstraint(it, grammars | ExpectationGrammars.Plural, s.InterfaceType, s.Scope)),
 			subject,
@@ -189,8 +190,8 @@ public static partial class ThatTypes
 		Type interfaceType)
 	{
 		interfaceType.EnsureIsInterface();
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, ScopeOptions Scope), IAsyncEnumerable<Type?>>((interfaceType, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, OptionsHolder<MemberScopes> Scope), IAsyncEnumerable<Type?>>((interfaceType, scope),
 				static (s, it, grammars)
 				=> new ImplementConstraint(it, grammars | ExpectationGrammars.Plural, s.InterfaceType, s.Scope)),
 			subject,
@@ -203,8 +204,8 @@ public static partial class ThatTypes
 		Type interfaceType)
 	{
 		interfaceType.EnsureIsInterface();
-		ScopeOptions scope = new();
-		return new InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, ScopeOptions Scope), IEnumerable<Type?>>((interfaceType, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, OptionsHolder<MemberScopes> Scope), IEnumerable<Type?>>((interfaceType, scope),
 				static (s, it, grammars)
 				=> new DoNotImplementConstraint(it, grammars | ExpectationGrammars.Plural, s.InterfaceType, s.Scope)),
 			subject,
@@ -217,8 +218,8 @@ public static partial class ThatTypes
 		Type interfaceType)
 	{
 		interfaceType.EnsureIsInterface();
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, ScopeOptions Scope), IAsyncEnumerable<Type?>>((interfaceType, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type InterfaceType, OptionsHolder<MemberScopes> Scope), IAsyncEnumerable<Type?>>((interfaceType, scope),
 				static (s, it, grammars)
 				=> new DoNotImplementConstraint(it, grammars | ExpectationGrammars.Plural, s.InterfaceType, s.Scope)),
 			subject,
@@ -230,7 +231,7 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		Type interfaceType,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -241,21 +242,21 @@ public static partial class ThatTypes
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				type => type?.Implements(interfaceType, scope.IsDirect) == true, cancellationToken);
+				type => type?.Implements(interfaceType, scope.Value.IsDirect()) == true, cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => type?.Implements(interfaceType, scope.IsDirect) == true);
+			=> SetValue(actual, context, type => type?.Implements(interfaceType, scope.Value.IsDirect()) == true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(scope.IsDirect ? "all directly implement " : "all implement ");
+			stringBuilder.Append(scope.Value.IsDirect() ? "all directly implement " : "all implement ");
 			Formatter.Format(stringBuilder, interfaceType);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(scope.IsDirect
+			stringBuilder.Append(It).Append(scope.Value.IsDirect()
 				? " contained types that do not directly implement "
 				: " contained types that do not implement ");
 			Formatter.Format(stringBuilder, interfaceType);
@@ -263,13 +264,13 @@ public static partial class ThatTypes
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(scope.IsDirect ? "not all directly implement " : "not all implement ");
+			stringBuilder.Append(scope.Value.IsDirect() ? "not all directly implement " : "not all implement ");
 			Formatter.Format(stringBuilder, interfaceType);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(scope.IsDirect
+			stringBuilder.Append(It).Append(scope.Value.IsDirect()
 				? " only contained types that directly implement "
 				: " only contained types that implement ");
 			Formatter.Format(stringBuilder, interfaceType);
@@ -280,7 +281,7 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		Type interfaceType,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -291,21 +292,21 @@ public static partial class ThatTypes
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				type => type?.Implements(interfaceType, scope.IsDirect) != true, cancellationToken);
+				type => type?.Implements(interfaceType, scope.Value.IsDirect()) != true, cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => type?.Implements(interfaceType, scope.IsDirect) != true);
+			=> SetValue(actual, context, type => type?.Implements(interfaceType, scope.Value.IsDirect()) != true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(scope.IsDirect ? "all do not directly implement " : "all do not implement ");
+			stringBuilder.Append(scope.Value.IsDirect() ? "all do not directly implement " : "all do not implement ");
 			Formatter.Format(stringBuilder, interfaceType);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(scope.IsDirect
+			stringBuilder.Append(It).Append(scope.Value.IsDirect()
 				? " contained types that directly implement "
 				: " contained types that implement ");
 			Formatter.Format(stringBuilder, interfaceType);
@@ -313,13 +314,13 @@ public static partial class ThatTypes
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(scope.IsDirect ? "at least one directly implements " : "at least one implements ");
+			stringBuilder.Append(scope.Value.IsDirect() ? "at least one directly implements " : "at least one implements ");
 			Formatter.Format(stringBuilder, interfaceType);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(scope.IsDirect
+			stringBuilder.Append(It).Append(scope.Value.IsDirect()
 				? " only contained types that do not directly implement "
 				: " only contained types that do not implement ");
 			Formatter.Format(stringBuilder, interfaceType);
