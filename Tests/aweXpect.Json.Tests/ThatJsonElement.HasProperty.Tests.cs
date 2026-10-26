@@ -166,6 +166,32 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Test]
+			public async Task WhenPropertyIsNull_WhenTreatingNullAsAbsent_ShouldAllowFurtherExpectations()
+			{
+				JsonElement subject = FromString("{\"foo\": null, \"bar\": 1}");
+
+				async Task Act()
+					=> await That(subject).HasProperty("foo").TreatingNullAsAbsent().And.HasProperty("bar");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has property "foo" and has property "bar",
+					             but property $.foo did not exist
+
+					             Actual:
+					             {
+					               "foo": null,
+					               "bar": 1
+					             }
+
+					             JSON options:
+					              - treat null as absent
+					             """)
+					.Because("the option still applies, when another expectation follows it");
+			}
+
+			[Test]
 			public async Task WhenPropertyIsNull_WhenTreatingNullAsAbsent_ShouldFail()
 			{
 				JsonElement subject = FromString("{\"foo\": null}");
@@ -577,6 +603,17 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Test]
+			public async Task WhenPropertyIsNull_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"foo\": null}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasProperty("foo").TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNoObject_ShouldFail()
 			{
 				JsonElement subject = FromString("\"foo\"");
@@ -756,6 +793,30 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).DoesNotComplyWith(it => it.DoesNotHaveProperty("foo"));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenPropertyIsNull_WhenTreatingNullAsAbsent_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": null}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.DoesNotHaveProperty("foo").TreatingNullAsAbsent());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has property "foo",
+					             but property $.foo did not exist
+
+					             Actual:
+					             {
+					               "foo": null
+					             }
+
+					             JSON options:
+					              - treat null as absent
+					             """);
 			}
 		}
 	}

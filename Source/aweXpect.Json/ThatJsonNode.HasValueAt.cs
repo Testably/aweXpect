@@ -26,10 +26,12 @@ public static partial class ThatJsonNode
 		where TNode : JsonNode
 	{
 		JsonValueTarget target = JsonValueTarget.ValueAt(path);
+		OptionsHolder<JsonLookupOptions> options = new(JsonLookupOptions.Default);
 		return new JsonPropertyResult<TNode, IThat<TNode?>>(
-			subject.Get().ExpectationBuilder.AddConstraint(target,
-				static (target, it, grammars) => new JsonNodeConstraint<TNode>(target.CreateConstraint(it, grammars))),
-			subject, target);
+			subject.Get().ExpectationBuilder.AddConstraint((Target: target, Options: options),
+				static (state, it, grammars)
+					=> new JsonNodeConstraint<TNode>(state.Target.CreateConstraint(it, grammars, state.Options))),
+			subject, options);
 	}
 
 	/// <summary>
@@ -54,11 +56,13 @@ public static partial class ThatJsonNode
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		JsonValueTarget target = JsonValueTarget.ValueAt(path);
+		OptionsHolder<JsonLookupOptions> options = new(JsonLookupOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		expectationBuilder.AddConstraint(target,
-			static (target, it, grammars) => new JsonNodeConstraint<TNode>(target.CreateConstraint(it, grammars)));
+		expectationBuilder.AddConstraint((Target: target, Options: options),
+			static (state, it, grammars)
+				=> new JsonNodeConstraint<TNode>(state.Target.CreateConstraint(it, grammars, state.Options)));
 		JsonValueExpectations.AddOnTarget(expectationBuilder, target, expectations);
-		return new JsonPropertyResult<TNode, IThat<TNode?>>(expectationBuilder, subject, target);
+		return new JsonPropertyResult<TNode, IThat<TNode?>>(expectationBuilder, subject, options);
 	}
 
 	/// <summary>
@@ -78,10 +82,11 @@ public static partial class ThatJsonNode
 		where TNode : JsonNode
 	{
 		JsonValueTarget target = JsonValueTarget.ValueAt(path);
+		OptionsHolder<JsonLookupOptions> options = new(JsonLookupOptions.Default);
 		return new JsonPropertyResult<TNode, IThat<TNode?>>(
-			subject.Get().ExpectationBuilder.AddConstraint(target,
-				static (target, it, grammars)
-					=> new JsonNodeConstraint<TNode>(target.CreateConstraint(it, grammars).Invert())),
-			subject, target);
+			subject.Get().ExpectationBuilder.AddConstraint((Target: target, Options: options),
+				static (state, it, grammars)
+					=> new JsonNodeConstraint<TNode>(state.Target.CreateConstraint(it, grammars, state.Options).Invert())),
+			subject, options);
 	}
 }

@@ -9,26 +9,26 @@ namespace aweXpect.Json.Results;
 /// <remarks>
 ///     <seealso cref="AndOrResult{TType,TThat}" />
 /// </remarks>
-public class JsonPropertyResult<TType, TThat> : AndOrResult<TType, TThat>
+public class JsonPropertyResult<TType, TThat> : AndOrResult<TType, TThat>, IOptionsProvider<JsonLookupOptions>
 {
-	private readonly JsonValueTarget _target;
+	private readonly OptionsHolder<JsonLookupOptions> _options;
 
 	internal JsonPropertyResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		JsonValueTarget target)
+		OptionsHolder<JsonLookupOptions> options)
 		: base(expectationBuilder, returnValue)
 	{
-		_target = target;
+		_options = options;
 	}
 
-	/// <summary>
-	///     Treats a property with the value <see langword="null" /> as if it was absent, also on the way to a value at a
-	///     path.
-	/// </summary>
-	public AndOrResult<TType, TThat> TreatingNullAsAbsent(bool treatNullAsAbsent = true)
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	OptionsHolder<JsonLookupOptions> IOptionsProvider<JsonLookupOptions>.Options => _options;
+
+	/// <inheritdoc cref="JsonLookupOptions.TreatingNullAsAbsent(bool)" />
+	public JsonPropertyResult<TType, TThat> TreatingNullAsAbsent(bool treatNullAsAbsent = true)
 	{
-		_target.TreatNullAsAbsent = treatNullAsAbsent;
+		_options.TreatingNullAsAbsent(treatNullAsAbsent);
 		return this;
 	}
 }

@@ -18,10 +18,12 @@ public static partial class ThatNullableJsonElement
 	{
 		ThrowHelper.ThrowIfNull(name, nameof(name));
 		JsonValueTarget target = JsonValueTarget.Property(name);
+		OptionsHolder<JsonLookupOptions> options = new(JsonLookupOptions.Default);
 		return new JsonPropertyResult<JsonElement, IThat<JsonElement?>>(
-			subject.Get().ExpectationBuilder.AddConstraint(target,
-				static IValueConstraint<JsonElement?> (target, it, grammars) => target.CreateConstraint(it, grammars)),
-			subject, target);
+			subject.Get().ExpectationBuilder.AddConstraint((Target: target, Options: options),
+				static IValueConstraint<JsonElement?> (state, it, grammars)
+					=> state.Target.CreateConstraint(it, grammars, state.Options)),
+			subject, options);
 	}
 
 	/// <inheritdoc cref="ThatJsonElement.HasProperty(IThat{JsonElement}, string, Action{IThatSubject{JsonElement}})" />
@@ -33,11 +35,13 @@ public static partial class ThatNullableJsonElement
 		ThrowHelper.ThrowIfNull(name, nameof(name));
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		JsonValueTarget target = JsonValueTarget.Property(name);
+		OptionsHolder<JsonLookupOptions> options = new(JsonLookupOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		expectationBuilder.AddConstraint(target,
-			static IValueConstraint<JsonElement?> (target, it, grammars) => target.CreateConstraint(it, grammars));
+		expectationBuilder.AddConstraint((Target: target, Options: options),
+			static IValueConstraint<JsonElement?> (state, it, grammars)
+				=> state.Target.CreateConstraint(it, grammars, state.Options));
 		JsonValueExpectations.AddOnTarget(expectationBuilder, target, expectations);
-		return new JsonPropertyResult<JsonElement, IThat<JsonElement?>>(expectationBuilder, subject, target);
+		return new JsonPropertyResult<JsonElement, IThat<JsonElement?>>(expectationBuilder, subject, options);
 	}
 
 	/// <inheritdoc cref="ThatJsonElement.DoesNotHaveProperty(IThat{JsonElement}, string)" />
@@ -48,10 +52,11 @@ public static partial class ThatNullableJsonElement
 	{
 		ThrowHelper.ThrowIfNull(name, nameof(name));
 		JsonValueTarget target = JsonValueTarget.Property(name);
+		OptionsHolder<JsonLookupOptions> options = new(JsonLookupOptions.Default);
 		return new JsonPropertyResult<JsonElement, IThat<JsonElement?>>(
-			subject.Get().ExpectationBuilder.AddConstraint(target,
-				static IValueConstraint<JsonElement?> (target, it, grammars)
-					=> target.CreateConstraint(it, grammars).Invert()),
-			subject, target);
+			subject.Get().ExpectationBuilder.AddConstraint((Target: target, Options: options),
+				static IValueConstraint<JsonElement?> (state, it, grammars)
+					=> state.Target.CreateConstraint(it, grammars, state.Options).Invert()),
+			subject, options);
 	}
 }
