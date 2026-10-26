@@ -900,6 +900,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:09:50 2026 \u002B0100",
         "message": "fix: mark ITimeSystem as experimental like WithTimeSystem (#2091)"
+      },
+      {
+        "sha": "958434060b2fcc417535464eac15b519dfc70d5c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
+        "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
       }
     ],
     "labels": [
@@ -1052,7 +1058,8 @@ window.BENCHMARK_DATA = {
       "1b028951",
       "f34312fa",
       "37b17490",
-      "faf8259e"
+      "faf8259e",
+      "95843406"
     ],
     "datasets": [
       {
@@ -1208,7 +1215,8 @@ window.BENCHMARK_DATA = {
           599.6616459574018,
           778.0331335067749,
           789.3783072744097,
-          823.6600642571083
+          823.6600642571083,
+          720.7505145072937
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1356,6 +1364,7 @@ window.BENCHMARK_DATA = {
           1080,
           1056,
           1056,
+          1008,
           1008,
           1008,
           1008,
@@ -1533,7 +1542,8 @@ window.BENCHMARK_DATA = {
           537.1623347827366,
           692.5956457578219,
           794.2806167602539,
-          733.9759694417318
+          733.9759694417318,
+          699.0403919855754
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1545,6 +1555,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2608,6 +2619,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:09:50 2026 \u002B0100",
         "message": "fix: mark ITimeSystem as experimental like WithTimeSystem (#2091)"
+      },
+      {
+        "sha": "958434060b2fcc417535464eac15b519dfc70d5c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
+        "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
       }
     ],
     "labels": [
@@ -2760,7 +2777,8 @@ window.BENCHMARK_DATA = {
       "1b028951",
       "f34312fa",
       "37b17490",
-      "faf8259e"
+      "faf8259e",
+      "95843406"
     ],
     "datasets": [
       {
@@ -2916,7 +2934,8 @@ window.BENCHMARK_DATA = {
           3429.4591941833496,
           4389.39433992826,
           5144.677450452532,
-          4602.692454783121
+          4602.692454783121,
+          3762.914385114397
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3069,6 +3088,7 @@ window.BENCHMARK_DATA = {
           24179,
           24179,
           24175,
+          24179,
           24179,
           24179,
           24179,
@@ -3241,7 +3261,8 @@ window.BENCHMARK_DATA = {
           4036.759121486119,
           5217.599169049944,
           5847.896211751302,
-          5159.636680094401
+          5159.636680094401,
+          4442.46385345459
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3253,6 +3274,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -4256,6 +4278,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:09:50 2026 \u002B0100",
         "message": "fix: mark ITimeSystem as experimental like WithTimeSystem (#2091)"
+      },
+      {
+        "sha": "958434060b2fcc417535464eac15b519dfc70d5c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
+        "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
       }
     ],
     "labels": [
@@ -4398,7 +4426,8 @@ window.BENCHMARK_DATA = {
       "1b028951",
       "f34312fa",
       "37b17490",
-      "faf8259e"
+      "faf8259e",
+      "95843406"
     ],
     "datasets": [
       {
@@ -4544,7 +4573,8 @@ window.BENCHMARK_DATA = {
           1978.0306309291295,
           2577.20334777832,
           2927.8861260047324,
-          2813.3554763793945
+          2813.3554763793945,
+          2405.323668416341
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4695,7 +4725,8 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654
+          12654,
+          12728
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4849,7 +4880,8 @@ window.BENCHMARK_DATA = {
           2729.80792754037,
           3432.7574435642787,
           3787.619366709391,
-          3688.876964569092
+          3688.876964569092,
+          3448.5059834798176
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4861,6 +4893,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -5854,6 +5887,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:09:50 2026 \u002B0100",
         "message": "fix: mark ITimeSystem as experimental like WithTimeSystem (#2091)"
+      },
+      {
+        "sha": "958434060b2fcc417535464eac15b519dfc70d5c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
+        "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
       }
     ],
     "labels": [
@@ -5996,7 +6035,8 @@ window.BENCHMARK_DATA = {
       "1b028951",
       "f34312fa",
       "37b17490",
-      "faf8259e"
+      "faf8259e",
+      "95843406"
     ],
     "datasets": [
       {
@@ -6142,7 +6182,8 @@ window.BENCHMARK_DATA = {
           10126.097521972657,
           13908.609259033203,
           14813.281683858235,
-          14230.985331944057
+          14230.985331944057,
+          11986.123805745443
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6293,7 +6334,8 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367
+          25367,
+          25440
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6447,7 +6489,8 @@ window.BENCHMARK_DATA = {
           245279.27818885216,
           354137.95567103795,
           365790.61756310094,
-          372146.5599609375
+          372146.5599609375,
+          276980.59231770836
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6590,6 +6633,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544299,
+          544335,
           544335,
           544335,
           544335,
