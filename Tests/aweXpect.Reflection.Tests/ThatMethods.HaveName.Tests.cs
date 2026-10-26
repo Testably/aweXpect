@@ -46,7 +46,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all have name matching method => method.Name + "X",
-					             but it contained not matching items
+					             but none of 2 did
 
 					             Not matching items:
 					             [
@@ -75,7 +75,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all have name matching method => method.Name + "X",
-					             but it contained not matching items
+					             but none of 2 did
 
 					             Not matching items:
 					             [
@@ -102,7 +102,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             not all have name matching method => method.Name,
-					             but it only contained matching items
+					             but all 1 did
 
 					             Collection:
 					             [
@@ -210,11 +210,36 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithMethods
 					             all have name equal to "PublicMethod",
-					             but it contained not matching items
+					             but only 1 of 12 did
 
 					             Not matching items:
 					             [
-					               *
+					               int ThatMethod.ClassWithMethods.InternalMethod(),
+					               int ThatMethod.ClassWithMethods.ProtectedMethod(),
+					               int ThatMethod.ClassWithMethods.PrivateMethod(),
+					               int ThatMethod.ClassWithMethods.ProtectedInternalMethod(),
+					               int ThatMethod.ClassWithMethods.PrivateProtectedMethod(),
+					               T ThatMethod.ClassWithMethods.GenericMethod<T>(T value),
+					               void ThatMethod.ClassWithMethods.AnotherGenericMethod<T, U>(T first, U second),
+					               int ThatMethod.ClassWithMethods.NonGenericMethod(),
+					               void ThatMethod.ClassWithMethods.VoidMethod(),
+					               void ThatMethod.ClassWithMethods.GenericWithUnrestrictedArgumentMethod<TFoo>(),
+					               (… and 1 more)
+					             ]
+
+					             Collection:
+					             [
+					               int ThatMethod.ClassWithMethods.PublicMethod(),
+					               int ThatMethod.ClassWithMethods.InternalMethod(),
+					               int ThatMethod.ClassWithMethods.ProtectedMethod(),
+					               int ThatMethod.ClassWithMethods.PrivateMethod(),
+					               int ThatMethod.ClassWithMethods.ProtectedInternalMethod(),
+					               int ThatMethod.ClassWithMethods.PrivateProtectedMethod(),
+					               T ThatMethod.ClassWithMethods.GenericMethod<T>(T value),
+					               void ThatMethod.ClassWithMethods.AnotherGenericMethod<T, U>(T first, U second),
+					               int ThatMethod.ClassWithMethods.NonGenericMethod(),
+					               void ThatMethod.ClassWithMethods.VoidMethod(),
+					               (… and 2 more)
 					             ]
 					             """).AsWildcard();
 			}
@@ -298,7 +323,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithSingleMethod
 					             all have name matching method => method.Name + "X",
-					             but it contained not matching items
+					             but none of 1 did
 
 					             Not matching items:
 					             [
@@ -350,7 +375,12 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithSingleMethod
 					             not all have name equal to "MyMethod",
-					             but it only contained matching items*
+					             but all 1 did
+
+					             Collection:
+					             [
+					               int ThatMethod.ClassWithSingleMethod.MyMethod()
+					             ]
 					             """).AsWildcard();
 			}
 
@@ -368,7 +398,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithSingleMethod
 					             not all have name matching method => method.Name,
-					             but it only contained matching items*
+					             but all 1 did*
 					             """).AsWildcard();
 			}
 

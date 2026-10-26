@@ -18,6 +18,8 @@ public class ExpectationGenerator : IIncrementalGenerator
 	private const string CollectionAttribute = "aweXpect.Core.Extending.GenerateCollectionExpectationAttribute";
 	private const string TokenAttribute = "aweXpect.Core.Extending.EvaluationCancellationTokenAttribute";
 	private const string TokenAttributeName = "EvaluationCancellationToken";
+	private const string OptionsAttribute = "aweXpect.Core.Extending.ExpectationOptionsAttribute";
+	private const string OptionsAttributeName = "ExpectationOptions";
 	private const string NegatedParameterNameAttribute ="aweXpect.Core.Extending.NegatedParameterNameAttribute";
 	private const string NegatedParameterNameAttributeName = "NegatedParameterName";
 	private const string HelpLink = "https://docs.testably.org/aweXpect/analyzers#expectation-generator";
@@ -121,6 +123,12 @@ public class ExpectationGenerator : IIncrementalGenerator
 			return new ExpectationResult(null, signatureProblem);
 		}
 
+		if (signature.OptionsParameter is { } optionsParameter)
+		{
+			return signature.Fail(
+				$"the parameter '{optionsParameter.Name}' is marked with [{OptionsAttributeName}], which only [GenerateCollectionExpectation] supports");
+		}
+
 		AttributeData attribute = context.Attributes[0];
 		if (attribute.ConstructorArguments.Length != 2 ||
 		    attribute.ConstructorArguments[0].Value is not string name ||
@@ -202,21 +210,16 @@ public class ExpectationGenerator : IIncrementalGenerator
 				"the expectation text is required, unless the method is also marked with [GenerateExpectation]");
 		}
 
-		if (!SyntaxFacts.IsValidIdentifier(name))
+		string? negatedName = GetNamedArgument<string>(attribute, "NegatedName");
+		if (GetCollectionNameProblem(name, negatedName) is { } nameProblem)
 		{
-			return signature.FailCollection($"the name '{name}' is not a valid method name");
+			return signature.FailCollection(nameProblem);
 		}
 
 		if (GetCollectionTextProblem(expectationText, pluralExpectationText, signature.GetParameterNames(),
 			    out EquatableArray<TextPart> text, out EquatableArray<TextPart> pluralText) is { } textProblem)
 		{
 			return signature.FailCollection(textProblem);
-		}
-
-		string? negatedName = GetNamedArgument<string>(attribute, "NegatedName");
-		if (GetCollectionNegatedNameProblem(name, negatedName) is { } negatedNameProblem)
-		{
-			return signature.FailCollection(negatedNameProblem);
 		}
 
 		string? formattedItem = GetNamedArgument<string>(attribute, "FormattedItem");
@@ -235,6 +238,11 @@ public class ExpectationGenerator : IIncrementalGenerator
 		if (GetNullItemFailsBothWaysProblem(nullItemFailsBothWays, signature.Subject, items) is { } nullItemProblem)
 		{
 			return signature.FailCollection(nullItemProblem);
+		}
+
+		if (GetOptionsProblem(signature, out OptionsModel? options) is { } optionsProblem)
+		{
+			return signature.FailCollection(optionsProblem);
 		}
 
 		ITypeParameterSymbol? itemTypeParameter = GetItemTypeParameter(signature.Method);
@@ -256,7 +264,8 @@ public class ExpectationGenerator : IIncrementalGenerator
 			formattedItemMethod,
 			itemTypeParameter is null ? null : Escape(itemTypeParameter.Name),
 			itemTypeParameter is null ? null : GetConstraints(itemTypeParameter),
-			false), null);
+			false,
+			options), null);
 	}
 
 	/// <summary>
@@ -295,6 +304,43 @@ public class ExpectationGenerator : IIncrementalGenerator
 			? text.Replace("{not}", "").Replace("  ", " ").Trim()
 			: null;
 
+	/// <summary>
+	///     The result that exposes the options of the <paramref name="type" />, when it is an options type of
+	///     aweXpect.Core that a parameter marked with the <c>ExpectationOptionsAttribute</c> supports.
+	/// </summary>
+	private static string? GetOptionsResult(ITypeSymbol type)
+		=> type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) switch
+		{
+			"global::aweXpect.Options.StringEqualityOptions" => "global::aweXpect.Results.StringEqualityTypeResult",
+			_ => null,
+		};
+
+	/// <summary>
+	///     Finds the options parameter and the <see langword="string" /> parameter that the options compare with.
+	/// </summary>
+	private static string? GetOptionsProblem(Signature signature, out OptionsModel? options)
+	{
+		options = null;
+		if (signature.OptionsParameter is not { } parameter)
+		{
+			return null;
+		}
+
+		List<int> patterns = signature.ExpectationParameters
+			.Select((p, i) => (p, i))
+			.Where(x => x.p.Type.SpecialType == SpecialType.System_String)
+			.Select(x => x.i)
+			.ToList();
+		if (patterns.Count != 1)
+		{
+			return $"the options parameter '{parameter.Name}' needs exactly one string parameter to compare with";
+		}
+
+		options = new OptionsModel(parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+			GetOptionsResult(parameter.Type)!, parameter.Ordinal - 1, patterns[0]);
+		return null;
+	}
+
 	private static bool IsCancellationToken(ITypeSymbol type)
 		=> type is { Name: "CancellationToken", ContainingNamespace: var ns, } &&
 		   ns.ToDisplayString() == "System.Threading";
@@ -319,6 +365,28 @@ public class ExpectationGenerator : IIncrementalGenerator
 		return IsCancellationToken(token.Type)
 			? null
 			: $"the parameter '{token.Name}' is marked with [{TokenAttributeName}], but is no CancellationToken";
+	}
+
+	private static string? GetOptionsMarkerProblem(List<IParameterSymbol> markedOptions)
+	{
+		if (markedOptions.Count > 1)
+		{
+			return $"more than one parameter is marked with [{OptionsAttributeName}]";
+		}
+
+		if (markedOptions.FirstOrDefault() is not { } parameter)
+		{
+			return null;
+		}
+
+		if (parameter.Ordinal == 0)
+		{
+			return $"the subject cannot be marked with [{OptionsAttributeName}]";
+		}
+
+		return GetOptionsResult(parameter.Type) is not null
+			? null
+			: $"the parameter '{parameter.Name}' is marked with [{OptionsAttributeName}], but '{parameter.Type.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)}' is no supported options type";
 	}
 
 	/// <summary>
@@ -348,6 +416,11 @@ public class ExpectationGenerator : IIncrementalGenerator
 		if (GetTokenProblem(signature.MarkedTokens) is { } tokenProblem)
 		{
 			return new Problem(InvalidMethod, location, methodName, tokenProblem);
+		}
+
+		if (GetOptionsMarkerProblem(signature.MarkedOptions) is { } optionsMarkerProblem)
+		{
+			return new Problem(InvalidMethod, location, methodName, optionsMarkerProblem);
 		}
 
 		if (signature.ExpectationParameters.FirstOrDefault(p => p.Name == "subject") is { } clash)
@@ -397,8 +470,11 @@ public class ExpectationGenerator : IIncrementalGenerator
 
 			if (!signature.ExpectationParameters.Contains(parameter, SymbolEqualityComparer.Default))
 			{
+				string marker = signature.MarkedOptions.Contains(parameter, SymbolEqualityComparer.Default)
+					? OptionsAttributeName
+					: TokenAttributeName;
 				return
-					$"the parameter '{parameter.Name}' is marked with [{TokenAttributeName}] and cannot be marked with [{NegatedParameterNameAttributeName}]";
+					$"the parameter '{parameter.Name}' is marked with [{marker}] and cannot be marked with [{NegatedParameterNameAttributeName}]";
 			}
 
 			if (!SyntaxFacts.IsValidIdentifier(negatedName))
@@ -480,8 +556,13 @@ public class ExpectationGenerator : IIncrementalGenerator
 			? "NullItemFailsBothWays requires an item parameter that is not nullable or is marked with [DisallowNull]"
 			: null;
 
-	private static string? GetCollectionNegatedNameProblem(string name, string? negatedName)
+	private static string? GetCollectionNameProblem(string name, string? negatedName)
 	{
+		if (!SyntaxFacts.IsValidIdentifier(name))
+		{
+			return $"the name '{name}' is not a valid method name";
+		}
+
 		if (negatedName is not null && (!SyntaxFacts.IsValidIdentifier(negatedName) || negatedName == name))
 		{
 			return $"the negated name '{negatedName}' is not a valid method name that differs from the name";
@@ -876,7 +957,8 @@ public class ExpectationGenerator : IIncrementalGenerator
 		=> SyntaxFacts.GetKeywordKind(name) != SyntaxKind.None ? "@" + name : name;
 
 	/// <summary>
-	///     The marked method, split into the subject, the parameters of the expectation and the cancellation token.
+	///     The marked method, split into the subject, the parameters of the expectation, the cancellation token and the
+	///     options.
 	/// </summary>
 	private sealed class Signature
 	{
@@ -892,9 +974,14 @@ public class ExpectationGenerator : IIncrementalGenerator
 				.ToList();
 			IParameterSymbol? token = MarkedTokens.Count == 1 && MarkedTokens[0].Ordinal > 0 ? MarkedTokens[0] : null;
 			CancellationTokenIndex = token is null ? -1 : token.Ordinal - 1;
+			MarkedOptions = parameters
+				.Where(p => p.GetAttributes().Any(a => a.AttributeClass?.ToDisplayString() == OptionsAttribute))
+				.ToList();
+			OptionsParameter = MarkedOptions.Count == 1 && MarkedOptions[0].Ordinal > 0 ? MarkedOptions[0] : null;
 			ExpectationParameters = parameters
 				.Skip(1)
-				.Where(p => !SymbolEqualityComparer.Default.Equals(p, token))
+				.Where(p => !SymbolEqualityComparer.Default.Equals(p, token) &&
+				            !SymbolEqualityComparer.Default.Equals(p, OptionsParameter))
 				.ToList();
 			SignatureParameters = parameters.Take(1).Concat(ExpectationParameters).ToList();
 			int overloadIndex = classSymbol.GetMembers(method.Name).OfType<IMethodSymbol>().ToList()
@@ -922,7 +1009,17 @@ public class ExpectationGenerator : IIncrementalGenerator
 		public IParameterSymbol Subject => Method.Parameters[0];
 
 		/// <summary>
-		///     The parameters after the subject, without the cancellation token.
+		///     The parameters marked with the <c>ExpectationOptionsAttribute</c>.
+		/// </summary>
+		public List<IParameterSymbol> MarkedOptions { get; }
+
+		/// <summary>
+		///     The parameter that receives the options, which the generated expectation creates, if any.
+		/// </summary>
+		public IParameterSymbol? OptionsParameter { get; }
+
+		/// <summary>
+		///     The parameters after the subject, without the cancellation token and the options.
 		/// </summary>
 		public List<IParameterSymbol> ExpectationParameters { get; }
 

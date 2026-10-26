@@ -20,44 +20,14 @@ namespace aweXpect;
 
 public static partial class ThatMembers
 {
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> have
-	///     the <paramref name="expected" /> name.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> HaveName<TMember>(
-		this IThat<IEnumerable<TMember>?> subject, string expected)
-		where TMember : MemberInfo?
-	{
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Expected, OptionsHolder<StringEqualityOptions> Options), IEnumerable<TMember>>((expected, options),
-					static (s, it, grammars)
-					=> new HaveNameConstraint<TMember>(it, grammars, s.Expected, s.Options)),
-			subject,
-			options);
-	}
+	[GenerateCollectionExpectation("HaveName", "has name {expected}", "have name {expected}",
+		CollectionOverload = true, NegatedName = "DoNotHaveName", FormattedItem = nameof(ToFormattable))]
+	private static ValueTask<bool> HasName<TMember>(TMember? member, [NegatedParameterName("unexpected")] string expected,
+		[ExpectationOptions] StringEqualityOptions options)
+		where TMember : MemberInfo
+		=> options.AreConsideredEqual(member?.Name, expected, nameof(expected));
 
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> have
-	///     the <paramref name="expected" /> name.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>
-		HaveName<TMember>(
-			this IThat<IAsyncEnumerable<TMember>?> subject, string expected)
-		where TMember : MemberInfo?
-	{
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string Expected, OptionsHolder<StringEqualityOptions> Options), IAsyncEnumerable<TMember>>((expected, options),
-					static (s, it, grammars)
-					=> new HaveNameConstraint<TMember>(it, grammars, s.Expected, s.Options)),
-			subject,
-			options);
-	}
-#endif
+	private static object? ToFormattable(MemberInfo? member) => FormattableMember.From(member);
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> have the name
@@ -108,60 +78,6 @@ public static partial class ThatMembers
 	}
 #endif
 
-	private sealed class HaveNameConstraint<TMember>(
-		string it,
-		ExpectationGrammars grammars,
-		string expected,
-		OptionsHolder<StringEqualityOptions> options)
-		: CollectionConstraintResult<TMember>(it, grammars),
-			IAsyncContextConstraint<IEnumerable<TMember>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<TMember>>
-#endif
-		where TMember : MemberInfo?
-	{
-		private StringEqualityOptions? _evaluationOptions;
-
-		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options.Value;
-
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-			return await SetAsyncValue(actual, context,
-				memberInfo => EvaluationOptions.AreConsideredEqual(memberInfo?.Name, expected, nameof(expected)), cancellationToken);
-		}
-#endif
-
-		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<TMember> actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
-			return await SetValue(actual, context,
-				memberInfo => EvaluationOptions.AreConsideredEqual(memberInfo?.Name, expected, nameof(expected)), cancellationToken);
-		}
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			base.AppendContexts(contexts);
-			EvaluationOptions.AppendContexts(contexts);
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all have name ").Append(options.Value.GetExpectation(expected, Grammars));
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained not matching items");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all have name ").Append(options.Value.GetExpectation(expected, Grammars));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained matching items");
-	}
-
 	private sealed class HaveNameFromSelectorConstraint<TMember>(
 		string it,
 		ExpectationGrammars grammars,
@@ -211,14 +127,14 @@ public static partial class ThatMembers
 				.Append(expectedNameSelectorExpression.TrimExpression());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained not matching items");
+			=> AppendMatchingCount(stringBuilder);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all have name matching ")
 				.Append(expectedNameSelectorExpression.TrimExpression());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained matching items");
+			=> AppendMatchingCount(stringBuilder);
 
 		protected override Func<string?> FormatItems(TMember[] items)
 			=> IsNegated ? base.FormatItems(items) : () => FormatMismatches(items);

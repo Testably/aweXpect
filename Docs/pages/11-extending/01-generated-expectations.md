@@ -265,6 +265,39 @@ await Expect.That(tracks).AreNotLongerThan(TimeSpan.FromMinutes(5));
 
 </details>
 
+### String options
+
+A `StringEqualityOptions` parameter marked with `[ExpectationOptions]` gives the expectation the string options, e.g.
+`AsPrefix()`, `IgnoringCase()` or `AsRegex()`, which compare with the `string` parameter of the method:
+
+```csharp no-compile
+[GenerateCollectionExpectation("HaveTitle", "has title {expected}", "have title {expected}",
+    CollectionOverload = true, NegatedName = "DoNotHaveTitle")]
+private static ValueTask<bool> HasTitle(Track track, [NegatedParameterName("unexpected")] string expected,
+    [ExpectationOptions] StringEqualityOptions options)
+    => options.AreConsideredEqual(track.Title, expected, nameof(expected));
+```
+
+```csharp no-compile
+await Expect.That(tracks).HaveTitle("Intro").AsPrefix().IgnoringCase();
+await Expect.That(tracks).AtLeast(2).HaveTitle("*live*").AsWildcard();
+```
+
+The options are not a parameter of the expectation: every generated form returns a `StringEqualityTypeResult` with
+the option methods and passes the chosen options to the method. The options also describe the compared value in the
+failure message, e.g. "has title starting with "Intro" ignoring case for at least 2 items".
+
+<details>
+<summary>When the options are prepared and the expected value is validated</summary>
+
+The generated constraints override `OnEvaluating` of `GeneratedCollectionConstraint<TCollection, TItem>` and
+`GeneratedAsyncCollectionConstraint<TItem>`, which is called when an evaluation starts, before the collection is read.
+There they get the options of the evaluation and validate the expected value, so that an unusable value, e.g. an
+invalid regex pattern, is rejected also for an empty collection and names the parameter of the expectation, e.g.
+`unexpected` for the `NegatedName`.
+
+</details>
+
 ### Formatting the items
 
 The failure message lists the items with their formatter. To show something else for them, e.g. a wrapper that a

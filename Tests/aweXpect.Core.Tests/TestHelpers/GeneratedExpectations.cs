@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using aweXpect.Core.Extending;
+using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.TestHelpers;
 
@@ -40,6 +41,12 @@ internal static partial class ThatMember
 
 internal static partial class ThatAccount
 {
+	[GenerateCollectionExpectation("HaveName", "has name {expected}", "have name {expected}",
+		CollectionOverload = true, NegatedName = "DoNotHaveName")]
+	private static ValueTask<bool> HasName(Account account, [NegatedParameterName("unexpected")] string expected,
+		[ExpectationOptions] StringEqualityOptions options)
+		=> options.AreConsideredEqual(account.Name, expected, nameof(expected));
+
 	[GenerateCollectionExpectation("HaveOwner", "have owner {owner}")]
 	[GenerateExpectation("HasOwner", "has owner {owner}",
 		NegatedName = "DoesNotHaveOwner", NegatedExpectationText = "does not have owner {owner}")]

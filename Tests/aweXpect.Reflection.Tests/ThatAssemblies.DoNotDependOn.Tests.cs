@@ -22,10 +22,15 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
-					             all have no dependency on assembly equal to "aweXpect.Core",
-					             but it contained assemblies with the unexpected dependency
+					             none have dependency on assembly equal to "aweXpect.Core",
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -58,10 +63,15 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
-					             all have no dependency on assembly starting with "System",
-					             but it contained assemblies with the unexpected dependency
+					             none have dependency on assembly starting with "System",
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -81,10 +91,15 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
-					             all have no dependency on assembly equal to "AWExPECT.cORE" ignoring case,
-					             but it contained assemblies with the unexpected dependency
+					             none have dependency on assembly equal to "AWExPECT.cORE" ignoring case,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -120,8 +135,8 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
-					             not all have no dependency on assembly equal to "NonExistentAssembly",
-					             but it only contained assemblies without the unexpected dependency
+					             at least one has dependency on assembly equal to "NonExistentAssembly",
+					             but none of 1 did
 
 					             Collection:
 					             [

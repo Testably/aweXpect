@@ -57,11 +57,12 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have namespace not equal to "aweXpect",
-					             but it contained not matching types
+					             none have namespace equal to "aweXpect",
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               ThatTypes,
 					               <null>
 					             ]
 					             """);
@@ -80,7 +81,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have namespace not equal to "aweXpect",
+					             none have namespace equal to "aweXpect",
 					             but it was <null>
 					             """);
 			}
@@ -101,11 +102,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have namespace not equal to "aweXpect.Reflection.Tests.Test…",
-					             but it contained not matching types
+					             none have namespace equal to "aweXpect.Reflection.Tests.Test…",
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               PublicClass
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes,
 					               PublicClass
 					             ]
 					             """);
@@ -127,10 +134,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with namespace ending with "ToVerifyingTheNamespaceOfIt" in assembly containing type ThatTypes.DoNotHaveNamespace.Tests
-					             all have namespace not equal to "AWEXPECT.REFLECTION.TESTS.TEST…" ignoring case,
-					             but it contained not matching types
+					             none have namespace equal to "AWEXPECT.REFLECTION.TESTS.TEST…" ignoring case,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               SomeClassToVerifyTheNamespaceOfIt
+					             ]
+
+					             Collection:
 					             [
 					               SomeClassToVerifyTheNamespaceOfIt
 					             ]
@@ -151,10 +163,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with namespace ending with "ToVerifyingTheNamespaceOfIt" in assembly containing type ThatTypes.DoNotHaveNamespace.Tests
-					             all have namespace not starting with "aweXpect.Reflection.Tests",
-					             but it contained not matching types
+					             none have namespace starting with "aweXpect.Reflection.Tests",
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               SomeClassToVerifyTheNamespaceOfIt
+					             ]
+
+					             Collection:
 					             [
 					               SomeClassToVerifyTheNamespaceOfIt
 					             ]
@@ -180,8 +197,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             not all have namespace not equal to "aweXpect",
-					             but it only contained matching types
+					             at least one has namespace equal to "aweXpect",
+					             but none of 1 did
 
 					             Collection:
 					             [
@@ -243,11 +260,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have namespace not equal to "aweXpect.Reflection.Tests.Test…",
-					             but it contained not matching types
+					             none have namespace equal to "aweXpect.Reflection.Tests.Test…",
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               PublicClass
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes,
 					               PublicClass
 					             ]
 					             """);

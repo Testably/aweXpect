@@ -71,6 +71,27 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 	protected T[] NotMatching => _notMatching?.ToArray() ?? [];
 
 	/// <summary>
+	///     Appends how many items matched in the wording of the generated expectations, e.g. "only 1 of 3 did".
+	/// </summary>
+	protected void AppendMatchingCount(StringBuilder stringBuilder)
+	{
+		int matching = _matching?.Count ?? 0;
+		int total = matching + (_notMatching?.Count ?? 0);
+		if (IsNegated)
+		{
+			stringBuilder.Append("all ").Append(total).Append(" did");
+		}
+		else if (matching == 0)
+		{
+			stringBuilder.Append("none of ").Append(total).Append(" did");
+		}
+		else
+		{
+			stringBuilder.Append("only ").Append(matching).Append(" of ").Append(total).Append(" did");
+		}
+	}
+
+	/// <summary>
 	///     Splits the <paramref name="items" /> according to the <paramref name="predicate" /> into
 	///     <see cref="Matching" /> and <see cref="NotMatching" />.
 	/// </summary>

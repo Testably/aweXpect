@@ -989,6 +989,11 @@ namespace aweXpect.Core.Extending
         public static aweXpect.Core.ExpectationBuilder AddEqualityConstraint<TSubject, TExpected>(this aweXpect.Core.ExpectationBuilder expectationBuilder, TExpected expected, aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TSubject>> options, bool isNegated = false, string? expectedExpression = null) { }
         public static aweXpect.Core.ExpectationBuilder AddStringOccurrenceConstraint(this aweXpect.Core.ExpectationBuilder expectationBuilder, string expected, aweXpect.Core.OptionsHolder<aweXpect.Options.Quantifier> quantifier, aweXpect.Core.OptionsHolder<aweXpect.Options.StringEqualityOptions> options, bool isNegated = false) { }
     }
+    [System.AttributeUsage(System.AttributeTargets.Parameter)]
+    public sealed class ExpectationOptionsAttribute : System.Attribute
+    {
+        public ExpectationOptionsAttribute() { }
+    }
     public static class ExtensionRegistry
     {
         public static System.Collections.Generic.IReadOnlyList<string> GetValues(string key) { }
@@ -1035,6 +1040,7 @@ namespace aweXpect.Core.Extending
         protected override void AppendNormalExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
         protected abstract System.Threading.Tasks.ValueTask<aweXpect.Core.Extending.PredicateResult> IsMatch(TItem item, System.Threading.CancellationToken cancellationToken);
         public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy(System.Collections.Generic.IAsyncEnumerable<TItem>? actual, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
+        protected virtual void OnEvaluating(aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
     }
     public abstract class GeneratedCollectionConstraint<TCollection, TItem> : aweXpect.Core.Extending.QuantifiedCollectionConstraintBase<TCollection, TItem>, aweXpect.Core.Constraints.IAsyncContextConstraint<TCollection>, aweXpect.Core.Constraints.IConstraint where TCollection : System.Collections.Generic.IEnumerable<TItem>?
     {
@@ -1048,6 +1054,7 @@ namespace aweXpect.Core.Extending
         protected override void AppendNormalResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
         protected abstract System.Threading.Tasks.ValueTask<aweXpect.Core.Extending.PredicateResult> IsMatch(TItem item, System.Threading.CancellationToken cancellationToken);
         public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy(TCollection actual, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
+        protected virtual void OnEvaluating(aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
     }
     [System.AttributeUsage(System.AttributeTargets.Parameter)]
     public sealed class NegatedParameterNameAttribute : System.Attribute

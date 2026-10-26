@@ -61,6 +61,7 @@ public abstract class GeneratedAsyncCollectionConstraint<TItem>(
 	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
+		OnEvaluating(context, cancellationToken);
 		StartEvaluation();
 		Actual = actual;
 		_collection = null;
@@ -114,6 +115,14 @@ public abstract class GeneratedAsyncCollectionConstraint<TItem>(
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	///     Called when an evaluation starts, before the collection is read, e.g. to get the options of the
+	///     evaluation from the <paramref name="context" /> or to reject an unusable expected value.
+	/// </summary>
+	protected virtual void OnEvaluating(IEvaluationContext context, CancellationToken cancellationToken)
+	{
 	}
 
 	/// <summary>

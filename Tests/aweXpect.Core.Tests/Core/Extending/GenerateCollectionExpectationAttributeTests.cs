@@ -968,6 +968,59 @@ public sealed class GenerateCollectionExpectationAttributeTests
 	}
 
 	[Test]
+	public async Task StringOptions_NegatedName_WhenPatternIsInvalid_ShouldThrowForAnEmptyCollection()
+	{
+		Account[] subject = [];
+
+		async Task Act()
+			=> await That(subject).DoNotHaveName("[").AsRegex();
+
+		await That(Act).Throws<ArgumentException>()
+			.WithMessage("The 'unexpected' regex pattern is invalid: *").AsWildcard().And
+			.WithParamName("unexpected")
+			.Because("the pattern is validated before any item is read, against the name in the expectation");
+	}
+
+	[Test]
+	public async Task StringOptions_ShouldApplyTheOptionsOfTheResult()
+	{
+		Account[] subject = [new("Alice", 1), new("alina", 2), new("Bob", 3),];
+
+		async Task Act()
+			=> await That(subject).AtLeast(3).HaveName("AL").AsPrefix().IgnoringCase();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             has name starting with "AL" ignoring case for at least 3 items,
+			             but only 2 of 3 did
+
+			             Not matching items:
+			             [
+			               Bob
+			             ]
+
+			             Collection:
+			             [
+			               Alice,
+			               alina,
+			               Bob
+			             ]
+			             """);
+	}
+
+	[Test]
+	public async Task StringOptions_WhenMet_ShouldSucceed()
+	{
+		Account[] subject = [new("Alice", 1), new("alina", 2),];
+
+		async Task Act()
+			=> await That(subject).HaveName("a*").AsWildcard().IgnoringCase();
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Test]
 	public async Task Strings_ShouldExtendTheItemsOfStrings()
 	{
 		string?[] subject = ["A", "b", null,];

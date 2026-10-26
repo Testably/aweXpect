@@ -22,6 +22,12 @@ namespace aweXpect.Core.Extending;
 ///     with <see cref="NullItemFailsBothWays" />, unless the item parameter is nullable: then the method decides, and
 ///     <c>[DisallowNull]</c> on the parameter restores that a <see langword="null" /> item does not match.
 ///     <para />
+///     A <see cref="aweXpect.Options.StringEqualityOptions" /> parameter marked with
+///     <see cref="ExpectationOptionsAttribute" /> is not a parameter of the expectation: the expectation returns a
+///     <see cref="aweXpect.Results.StringEqualityTypeResult{TType, TThat}" /> to configure the options and passes the
+///     options of the evaluation to the method. The method then needs exactly one other <see langword="string" />
+///     parameter, which the options compare with and describe in the text.
+///     <para />
 ///     Unlike for <see cref="GenerateExpectationAttribute" />, the type of the item can be the only type parameter of
 ///     the method, when a constraint restricts it to reference types and no other parameter uses it. The expectations
 ///     are then generic over the type of the items.

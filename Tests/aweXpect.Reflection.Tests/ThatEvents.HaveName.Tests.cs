@@ -22,11 +22,25 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that events in types matching t => t == typeof(T) in assembly containing type ThatEvent.ClassWithEvents
 					             all have name equal to "PublicEvent",
-					             but it contained not matching items
+					             but only 1 of 6 did
 
 					             Not matching items:
 					             [
-					               *
+					               event EventHandler ThatEvent.ClassWithEvents.InternalEvent,
+					               event EventHandler ThatEvent.ClassWithEvents.ProtectedEvent,
+					               event EventHandler ThatEvent.ClassWithEvents.ProtectedInternalEvent,
+					               event EventHandler ThatEvent.ClassWithEvents.PrivateEvent,
+					               event EventHandler ThatEvent.ClassWithEvents.PrivateProtectedEvent
+					             ]
+
+					             Collection:
+					             [
+					               event EventHandler ThatEvent.ClassWithEvents.PublicEvent,
+					               event EventHandler ThatEvent.ClassWithEvents.InternalEvent,
+					               event EventHandler ThatEvent.ClassWithEvents.ProtectedEvent,
+					               event EventHandler ThatEvent.ClassWithEvents.ProtectedInternalEvent,
+					               event EventHandler ThatEvent.ClassWithEvents.PrivateEvent,
+					               event EventHandler ThatEvent.ClassWithEvents.PrivateProtectedEvent
 					             ]
 					             """).AsWildcard();
 			}
@@ -100,7 +114,12 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that events in types matching t => t == typeof(T) in assembly containing type ThatEvent.ClassWithSingleEvent
 					             not all have name equal to "MyEvent",
-					             but it only contained matching items*
+					             but all 1 did
+
+					             Collection:
+					             [
+					               event EventHandler ThatEvent.ClassWithSingleEvent.MyEvent
+					             ]
 					             """).AsWildcard();
 			}
 		}

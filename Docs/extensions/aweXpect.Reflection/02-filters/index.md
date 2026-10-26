@@ -104,11 +104,13 @@ var managers = publicClasses.Where(type => type!.GetInterfaces().Length > 2);
 await Expect.That(managers).HaveName("Manager").AsSuffix();
 ```
 
-The plural expectations that only check a condition on each item, like `AreSealed()`, `AreNotStatic()` or
-`HaveADefaultConstructor()`, read the whole collection and list every item that violates them. They also follow
-aweXpect's quantifiers, which only read the items until the outcome is determined:
+The plural expectations that only check a condition on each item, like `AreSealed()`, `AreNotStatic()`,
+`HaveADefaultConstructor()` or `HaveNamespace(…)`, read the whole collection and list every item that violates them.
+They also follow aweXpect's quantifiers, which only read the items until the outcome is determined, and keep their
+string options:
 
 ```csharp
 await Expect.That(types).AtLeast(2).AreSealed();
 await Expect.That(methods).AtMost(1).AreAsync();
+await Expect.That(types).AtLeast(2).HaveNamespace("MusicStore").AsPrefix();
 ```

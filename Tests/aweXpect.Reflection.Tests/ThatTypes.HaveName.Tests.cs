@@ -23,11 +23,32 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types with name starting with "Some" in assembly containing type ThatTypes.HaveName.Tests
 					             all have name equal to "SomeOtherClassName",
-					             but it contained not matching items
+					             but none of 9 did
 
 					             Not matching items:
 					             [
-					               *SomeClassToTestHaveNameForTypes*
+					               SomeClassToVerifyTheNamespaceOfIt,
+					               ConstructorFilters.SomeClassToVerifyTheConstructorNameOfIt,
+					               EventFilters.SomeClassToVerifyTheEventNameOfIt,
+					               FieldFilters.SomeClassToVerifyTheFieldNameOfIt,
+					               MethodFilters.SomeClassToVerifyTheMethodNameOfIt,
+					               PropertyFilters.SomeClassToVerifyThePropertyNameOfIt,
+					               ThatTypes.HaveName.Tests.SomeClassToTestHaveNameForTypes,
+					               TypeFilters.Which.Tests.SomeClassToVerifyViaAPredicate,
+					               TypeFilters.WithName.Tests.SomeClassToVerifyTheNameOfIt
+					             ]
+
+					             Collection:
+					             [
+					               SomeClassToVerifyTheNamespaceOfIt,
+					               ConstructorFilters.SomeClassToVerifyTheConstructorNameOfIt,
+					               EventFilters.SomeClassToVerifyTheEventNameOfIt,
+					               FieldFilters.SomeClassToVerifyTheFieldNameOfIt,
+					               MethodFilters.SomeClassToVerifyTheMethodNameOfIt,
+					               PropertyFilters.SomeClassToVerifyThePropertyNameOfIt,
+					               ThatTypes.HaveName.Tests.SomeClassToTestHaveNameForTypes,
+					               TypeFilters.Which.Tests.SomeClassToVerifyViaAPredicate,
+					               TypeFilters.WithName.Tests.SomeClassToVerifyTheNameOfIt
 					             ]
 					             """).AsWildcard();
 			}
@@ -108,11 +129,11 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types with name equal to "SomeClassToTestHaveNameForType…" in assembly containing type ThatTypes.HaveName.Tests
 					             not all have name equal to "SomeClassToTestHaveNameForType…",
-					             but it only contained matching items
+					             but all 1 did
 
 					             Collection:
 					             [
-					               *SomeClassToTestHaveNameForTypes*
+					               ThatTypes.HaveName.Tests.SomeClassToTestHaveNameForTypes
 					             ]
 					             """).AsWildcard();
 			}
