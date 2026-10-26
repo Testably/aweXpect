@@ -62,6 +62,11 @@ public readonly partial struct CollectionMatchOptions
 	private readonly bool _inAnyOrder;
 
 	/// <summary>
+	///     The options of an unspecified collection match: equivalent items in the same order.
+	/// </summary>
+	public static CollectionMatchOptions Default => default;
+
+	/// <summary>
 	///     Options for matching a collection with the <paramref name="equivalenceRelations" />.
 	/// </summary>
 	public CollectionMatchOptions(EquivalenceRelations equivalenceRelations = EquivalenceRelations.Equivalent)

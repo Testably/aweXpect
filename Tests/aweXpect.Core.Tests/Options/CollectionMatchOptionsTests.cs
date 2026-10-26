@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
+using aweXpect.Core.Constraints;
 using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
@@ -394,6 +395,34 @@ public class CollectionMatchOptionsTests
 
 			public void AppendContexts(ResultContextCollector contexts)
 				=> options.AppendContexts(contexts);
+		}
+	}
+
+	public class DefaultTests
+	{
+		[Test]
+		public async Task WhenTheSubjectHasAnAdditionalItem_ShouldFail()
+		{
+			(Outcome outcome, string? failure) = await CollectionMatchOptions.Default
+				.GetCollectionMatcher<int, int>([1, 2,])
+				.VerifyItems("it", [1, 2, 3,], ObjectMatchType<int>.Default.ForEvaluation(default),
+					CancellationToken.None);
+
+			await That(outcome).IsEqualTo(Outcome.Failure)
+				.Because("the default options match equivalent collections, not a superset");
+			await That(failure).IsEqualTo("it contained item 3 at index 2 that was not expected");
+		}
+
+		[Test]
+		public async Task WhenTheSubjectHasTheItemsInAnotherOrder_ShouldFail()
+		{
+			(Outcome outcome, _) = await CollectionMatchOptions.Default
+				.GetCollectionMatcher<int, int>([1, 2,])
+				.VerifyItems("it", [2, 1,], ObjectMatchType<int>.Default.ForEvaluation(default),
+					CancellationToken.None);
+
+			await That(outcome).IsEqualTo(Outcome.Failure)
+				.Because("the default options match the items in the same order");
 		}
 	}
 

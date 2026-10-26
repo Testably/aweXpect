@@ -70,7 +70,7 @@ public class HasQueryParameterValueResult
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		string[] expectedValues = expected.ToArray();
 		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions());
+		OptionsSlot<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
 		_expectationBuilder.And("").AddConstraint((expectedValues, _name, options, matchOptions),
 			static (state, it, grammars) => new WithValuesConstraint(
 				it, grammars, state.expectedValues, state._name, state.options, state.matchOptions));

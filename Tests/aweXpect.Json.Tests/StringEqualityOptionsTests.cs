@@ -91,6 +91,22 @@ public sealed class StringEqualityOptionsTests
 	}
 
 	[Test]
+	public async Task WhenTheResultCopiesOnOption_ShouldSetAsJsonOnACopy()
+	{
+		CopyingResult sut = new(StringEqualityOptions.Default);
+		string unchangedOptions = sut.Options.Value.ToString();
+
+		CopyingResult result = sut.AsJson();
+
+		await That(result).IsNotSameAs(sut);
+		await That(result.Options.Value.ToString()).IsNotEqualTo(unchangedOptions);
+		await That(sut.Options.Value.ToString()).IsEqualTo(unchangedOptions)
+			.Because("a stored result must not be changed by an option on its copy");
+		await That(() => sut.IgnoringCase()).DoesNotThrow()
+			.Because("the stored result has no JSON match type that the option could compete with");
+	}
+
+	[Test]
 	public async Task WhenUsingComparerAfterAsJson_ShouldThrowAtUsing()
 	{
 		StringEqualityResult result = new StringEqualityResult().AsJson();
@@ -112,6 +128,16 @@ public sealed class StringEqualityOptionsTests
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("Using cannot be combined with AsJson.")
 			.Because("the conflict is rejected at the call that specifies it, not only when the expectation is evaluated");
+	}
+
+	private sealed class CopyingResult(StringEqualityOptions options)
+		: IOptionsProvider<StringEqualityOptions>,
+			IStringMatchTypeOptions,
+			ICopyOnOption<StringEqualityOptions, CopyingResult>
+	{
+		public OptionsSlot<StringEqualityOptions> Options { get; } = new(options);
+
+		public CopyingResult WithOptions(StringEqualityOptions copiedOptions) => new(copiedOptions);
 	}
 
 	private sealed class StringEqualityResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions

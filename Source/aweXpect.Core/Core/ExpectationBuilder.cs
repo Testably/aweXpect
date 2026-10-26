@@ -1769,7 +1769,10 @@ public abstract class ExpectationBuilder
 
 		/// <remarks>
 		///     The ticks of the timeout, or <see cref="long.MinValue" /> for none, instead of a nullable
-		///     <see cref="TimeSpan" />, so that the <see cref="TimeoutBound" /> fits into the same size.
+		///     <see cref="TimeSpan" />, so that the <see cref="TimeoutBound" /> fits into the same size.<br />
+		///     <see cref="long.MinValue" /> are the ticks of <see cref="TimeSpan.MinValue" />, which cannot be confused with
+		///     a timeout: <see cref="WithTimeout(TimeSpan)" /> rejects negative timeouts, and the only negative one it
+		///     accepts, <see cref="System.Threading.Timeout.InfiniteTimeSpan" />, has other ticks.
 		/// </remarks>
 		private long _timeoutTicks = long.MinValue;
 

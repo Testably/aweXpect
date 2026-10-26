@@ -23,7 +23,13 @@ public static class JsonExtensions
 		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
 		JsonOptions jsonOptions = options?.Invoke(JsonOptions.Default) ?? JsonOptions.Default;
-		result.Options.SetMatchType(new JsonMatchType(jsonOptions), nameof(AsJson));
+		JsonMatchType matchType = new(jsonOptions);
+		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		{
+			return copyOnOption.WithOptions(result.Options.Value.SetMatchType(matchType, nameof(AsJson)));
+		}
+
+		result.Options.SetMatchType(matchType, nameof(AsJson));
 		return result;
 	}
 }

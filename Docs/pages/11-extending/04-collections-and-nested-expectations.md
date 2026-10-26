@@ -123,7 +123,7 @@ public static StringCollectionMatchResult<IEnumerable<Track>, IThat<IEnumerable<
     this IThat<IEnumerable<Track>?> subject, params string[] expected)
 {
     OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-    OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions());
+    OptionsSlot<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
     return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new HasTitlesConstraint(it, grammars, expected, options, matchOptions)),
         subject, options, matchOptions);

@@ -67,7 +67,7 @@ public class HasHeaderValueResult<TType, TThat>
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		OptionsSlot<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		OptionsSlot<CollectionMatchOptions> matchOptions = new(new CollectionMatchOptions());
+		OptionsSlot<CollectionMatchOptions> matchOptions = new(CollectionMatchOptions.Default);
 		_expectationBuilder.And("").AddConstraint(
 			(expected: expected.ToArray(), _headerValueAccessor, options, matchOptions),
 			static (state, it, grammars) => new WithHeaderValuesConstraint(

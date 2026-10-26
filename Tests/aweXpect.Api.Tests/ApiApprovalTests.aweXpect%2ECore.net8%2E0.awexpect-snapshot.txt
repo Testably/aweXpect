@@ -1669,6 +1669,7 @@ namespace aweXpect.Options
     public readonly struct CollectionMatchOptions
     {
         public CollectionMatchOptions(aweXpect.Options.CollectionMatchOptions.EquivalenceRelations equivalenceRelations = aweXpect.Options.CollectionMatchOptions.EquivalenceRelations.Equivalent) { }
+        public static aweXpect.Options.CollectionMatchOptions Default { get; }
         public aweXpect.Core.ICollectionMatcher<TItem, TMatch> GetCollectionMatcher<TItem, TMatch>(System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<TItem, bool>>> expected) where TItem : TMatch { }
         public aweXpect.Core.ICollectionMatcher<TItem, TMatch> GetCollectionMatcher<TItem, TMatch>(System.Collections.Generic.IEnumerable<TItem> expected) where TItem : TMatch { }
         public aweXpect.Core.ICollectionMatcher<TItem, TMatch> GetCollectionMatcher<TItem, TMatch>(System.Collections.Generic.IEnumerable<TItem> expected, int[]? dimensions) where TItem : TMatch { }
