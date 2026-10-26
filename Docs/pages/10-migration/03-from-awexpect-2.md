@@ -151,14 +151,14 @@ A value set with `Customize.aweXpect` stays in the async flow that set it, so it
 parallel. It is also no longer visible to the caller of an `async` helper method that set it. Set defaults for all
 tests on `Customize.aweXpect.Global`. Each value is set on its own: the group-wide `Get()` and `Update(…)` are gone, so
 replace e.g. `Settings().Update(s => s with { DefaultCheckInterval = … })` with
-`Settings().DefaultCheckInterval.Set(…)`. See [Configuration](../08-setup/02-configuration.md).
+`Settings().DefaultCheckInterval.Set(…)`. See [Configuration](../03-how-it-works/07-configuration.md).
 
 ## Trimming and Native AOT
 
 `aweXpect` and `aweXpect.Core` are trimmable and AOT compatible for `net8.0` and later. Test projects need no changes:
 a source generator registers the members and events that equivalency, failure messages and event recording need.
 In a project with `PublishTrimmed` or `PublishAot`, a type without a registration fails with an error that tells you
-to add `[assembly: GenerateMetadata(typeof(MyType))]`. See [Native AOT](../08-setup/04-native-aot.md).
+to add `[assembly: GenerateMetadata(typeof(MyType))]`. See [Native AOT](../08-setup/03-native-aot.md).
 
 ## New expectations
 

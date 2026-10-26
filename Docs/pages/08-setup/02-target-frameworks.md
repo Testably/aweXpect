@@ -10,7 +10,7 @@ exist there.
 | .NET Framework 4.8              | all expectations except the ones [listed below](#net-8-or-later) |
 | .NET Standard 2.0, e.g. .NET 6  | all expectations except the ones [listed below](#net-8-or-later) |
 
-A test project on .NET 8 or later can also be published with [Native AOT and trimming](./04-native-aot.md).
+A test project on .NET 8 or later can also be published with [Native AOT and trimming](./03-native-aot.md).
 
 ## .NET 8 or later
 

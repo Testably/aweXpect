@@ -240,7 +240,7 @@ suppressed; the null state of the compiler is unchanged.
 
 The source generator warns with `aweXpect2001` when a type named in
 `[assembly: GenerateMetadata(typeof(…))]` yields no registration and stays on the reflection path. See
-[Native AOT and trimming](./08-setup/04-native-aot.md#equivalency).
+[Native AOT and trimming](./08-setup/03-native-aot.md#equivalency).
 
 ## Test framework adapter
 

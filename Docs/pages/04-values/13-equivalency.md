@@ -16,7 +16,7 @@ Equivalency instead compares the public state of two objects field by field and 
 nested objects and collections. Two objects are equivalent when every included member compares as equivalent.
 
 When you publish with trimming or Native AOT, see
-[Native AOT and trimming](../08-setup/04-native-aot.md#equivalency).
+[Native AOT and trimming](../08-setup/03-native-aot.md#equivalency).
 
 ### On objects
 
@@ -162,7 +162,7 @@ decides which keys are the same, as it does for [`IsEqualTo`](../05-collections/
 
 An expected item that the comparer of the actual set finds in it is matched, whatever its members are, and only the
 remaining items are matched by the equivalency comparison. This also holds for an `ImmutableHashSet<T>`, an
-`ImmutableSortedSet<T>` and a `FrozenSet<T>` [on .NET 8 or later](../08-setup/03-target-frameworks.md). A
+`ImmutableSortedSet<T>` and a `FrozenSet<T>` [on .NET 8 or later](../08-setup/02-target-frameworks.md). A
 sorted set considers two items the same when its comparer orders neither before the other. The comparer of an expected
 set is not used.
 
@@ -487,7 +487,7 @@ detection and never reaches the limit.
 
 ### Customizing the global defaults
 
-You can change the default `EquivalencyOptions` via the [configuration](../08-setup/02-configuration.md).
+You can change the default `EquivalencyOptions` via the [configuration](../03-how-it-works/07-configuration.md).
 Every equivalency expectation starts from them: they are used as they are when no callback is provided, and a callback
 receives them as its starting point:
 
@@ -501,7 +501,7 @@ using IDisposable scope = Customize.aweXpect.Equivalency().DefaultEquivalencyOpt
 ```
 
 To change the default for all async flows, e.g. in an assembly-level setup, set it on
-[`Customize.aweXpect.Global`](../08-setup/02-configuration.md#global-defaults):
+[`Customize.aweXpect.Global`](../03-how-it-works/07-configuration.md#global-defaults):
 
 ```csharp
 using aweXpect.Customization;

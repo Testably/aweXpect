@@ -81,7 +81,7 @@ await Expect.That(albums).Contains(new Album("Let It Be")).Equivalent();
 
 `Within(tolerance)` accepts a value that differs from the expected one by at most the tolerance. It is available for
 numbers, `TimeSpan`, `DateTime`, `DateTimeOffset`, `DateOnly` and `TimeOnly` (the latter two
-[on .NET 8 or later](../08-setup/03-target-frameworks.md)), and for the items of a collection of
+[on .NET 8 or later](../08-setup/02-target-frameworks.md)), and for the items of a collection of
 them:
 
 ```csharp

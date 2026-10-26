@@ -83,7 +83,7 @@ The expectations are grouped by the type of the subject:
 ## Target frameworks
 
 aweXpect supports .NET Framework 4.8, .NET Standard 2.0 and .NET 8 or later; some features need .NET 8 or later, see
-[target frameworks](./08-setup/03-target-frameworks.md).
+[target frameworks](./08-setup/02-target-frameworks.md).
 
 ## Next steps
 

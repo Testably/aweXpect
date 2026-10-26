@@ -135,7 +135,7 @@ test framework exposes it:
 
 | Test framework       | Test case | Arguments of the test class | Retries                    | Cancellation token | Attachments |
 |----------------------|-----------|-----------------------------|----------------------------|--------------------|-------------|
-| MSTest 4             | opt-in    | no                          | no                         | opt-in             | opt-in      |
+| MSTest 4\*           | opt-in    | no                          | no                         | opt-in             | opt-in      |
 | MSTest 3             | no        | no                          | no                         | no                 | no          |
 | NUnit 4 or later     | yes       | yes                         | yes, also `[Repeat]` runs  | yes                | yes         |
 | NUnit 3              | yes       | no                          | yes, also `[Repeat]` runs  | no                 | yes         |
@@ -144,7 +144,8 @@ test framework exposes it:
 | xUnit v2             | no        | no                          | no                         | no                 | no          |
 | none detected        | no        | no                          | no                         | no                 | no          |
 
-MSTest 4 marks the API for the running test as experimental, so the adapter only uses it when the test project opts in:
+\* MSTest 4 marks the API for the running test as experimental, so the adapter only uses it when the test project
+opts in:
 
 ```xml
 <PropertyGroup>

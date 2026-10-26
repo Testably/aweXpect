@@ -2,7 +2,7 @@
 
 aweXpect reflects over a type only when it has no registration in `TypeMetadataRegistry`, and switches that fallback
 off when an application is published with trimming or Native AOT enabled, so that a comparison or recording never
-silently verifies less than it claims to (see [Native AOT and trimming](../08-setup/04-native-aot.md)). An
+silently verifies less than it claims to (see [Native AOT and trimming](../08-setup/03-native-aot.md)). An
 extension takes part in this in two ways.
 
 An extension method whose argument reaches an equivalency comparison or an event recording only reveals an open type

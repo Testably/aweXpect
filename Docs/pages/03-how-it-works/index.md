@@ -1,8 +1,8 @@
 # Concepts
 
 Describes the concepts that all expectations share: how an expectation is built and evaluated, and how it is negated,
-combined, configured and limited in time. How aweXpect fits into your test project, e.g. its test frameworks and
-global configuration, is described in [setup and integration](../08-setup/index.md).
+combined, configured and limited in time, and how to change their defaults. How aweXpect fits into your test project,
+e.g. its test frameworks and target frameworks, is described in [setup and integration](../08-setup/index.md).
 
 | Page                                                    | Topics                                                             |
 |---------------------------------------------------------|--------------------------------------------------------------------|
@@ -12,6 +12,7 @@ global configuration, is described in [setup and integration](../08-setup/index.
 | [`null` subjects](./04-null-subjects.md)                | how expectations and their negations treat a `null` subject        |
 | [Options](./05-options.md)                              | `Because`, string options, comparers, equivalency, tolerance       |
 | [Time and cancellation](./06-time-and-cancellation.md)  | timeouts, cancellation, waiting, execution time                    |
+| [Configuration](./07-configuration.md)                  | customization lifetimes, global defaults, formatting, settings     |
 
 ## Anatomy of an expectation
 

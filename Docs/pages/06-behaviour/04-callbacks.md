@@ -49,7 +49,7 @@ await Expect.That(titleSignaler).DidNotSignal();
 
 :::note
 Without `Within(…)`, a signaler expectation waits up to the
-[`DefaultSignalerTimeout`](../08-setup/02-configuration.md#settings) (30 s). `DidNotSignal()` always waits the
+[`DefaultSignalerTimeout`](../03-how-it-works/07-configuration.md#settings) (30 s). `DidNotSignal()` always waits the
 full timeout to succeed, see [waiting for callbacks](../03-how-it-works/06-time-and-cancellation.md#callbacks).
 :::
 
@@ -130,7 +130,7 @@ All parameters are optional and have the same meaning for `Wait` and `WaitAsync`
 |---------------------|---------------------------------------------------------------------------------------------------|
 | `amount`            | waits for one signal; `IsSignaled` checks for at least one signal                                 |
 | `predicate`         | counts every signal; only a `Signaler<T>` has it, to count the signals that match                 |
-| `timeout`           | waits for at most the [`DefaultSignalerTimeout`](../08-setup/02-configuration.md#settings) (30 s) |
+| `timeout`           | waits for at most the [`DefaultSignalerTimeout`](../03-how-it-works/07-configuration.md#settings) (30 s) |
 | `cancellationToken` | only the timeout ends the wait                                                                    |
 
 Signals that were received before the wait count as well, so a callback that was already signaled is not missed.

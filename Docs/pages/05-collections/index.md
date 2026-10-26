@@ -117,7 +117,7 @@ expected string.
 
 The expectations that compare items with an expected value accept a tolerance for numbers such as `int`, `long`,
 `double` or `decimal`, for `DateTime`, `DateTimeOffset` and `TimeSpan` items, and
-[on .NET 8 or later](../08-setup/03-target-frameworks.md) also for `DateOnly` and `TimeOnly`:
+[on .NET 8 or later](../08-setup/02-target-frameworks.md) also for `DateOnly` and `TimeOnly`:
 
 ```csharp
 IEnumerable<double> durations = [1.01, 2.02, 3.04];
