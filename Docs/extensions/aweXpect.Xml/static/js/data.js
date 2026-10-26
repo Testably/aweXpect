@@ -840,6 +840,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
@@ -982,7 +988,8 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "1dc71bae"
     ],
     "datasets": [
       {
@@ -1128,7 +1135,8 @@ window.BENCHMARK_DATA = {
           433.94076572145735,
           749.1065245355878,
           819.1615207036336,
-          803.175195149013
+          803.175195149013,
+          751.3339807646615
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1276,6 +1284,7 @@ window.BENCHMARK_DATA = {
           1080,
           1056,
           1056,
+          1008,
           1008,
           1008,
           1008,
@@ -1433,7 +1442,8 @@ window.BENCHMARK_DATA = {
           371.71485872268676,
           668.1787499109904,
           677.2513563156128,
-          716.8160043716431
+          716.8160043716431,
+          676.437979221344
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1445,6 +1455,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2438,6 +2449,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
@@ -2580,7 +2597,8 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "1dc71bae"
     ],
     "datasets": [
       {
@@ -2726,7 +2744,8 @@ window.BENCHMARK_DATA = {
           3133.5036712646483,
           4185.185319010417,
           4525.739538574218,
-          4923.606315867106
+          4923.606315867106,
+          4909.633810933431
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2877,7 +2896,8 @@ window.BENCHMARK_DATA = {
           24179,
           24175,
           24179,
-          24179
+          24179,
+          24175
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3031,7 +3051,8 @@ window.BENCHMARK_DATA = {
           3276.262582045335,
           4817.09371478741,
           4971.011318206787,
-          5742.8470591227215
+          5742.8470591227215,
+          5738.127156066895
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3043,6 +3064,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -3976,6 +3998,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
@@ -4108,7 +4136,8 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "1dc71bae"
     ],
     "datasets": [
       {
@@ -4244,7 +4273,8 @@ window.BENCHMARK_DATA = {
           1516.442612330119,
           2395.6621576944985,
           2466.0909585219165,
-          2623.187070465088
+          2623.187070465088,
+          2449.924624809852
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4381,6 +4411,7 @@ window.BENCHMARK_DATA = {
           12780,
           12856,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -4529,7 +4560,8 @@ window.BENCHMARK_DATA = {
           2064.044240134103,
           3346.5760072980606,
           3394.108688672384,
-          3814.5801503499347
+          3814.5801503499347,
+          3403.5513272603353
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4541,6 +4573,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -5464,6 +5497,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 4 updates (#2081)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
@@ -5596,7 +5635,8 @@ window.BENCHMARK_DATA = {
       "7a6dec57",
       "0f3856d6",
       "cb617241",
-      "7294afca"
+      "7294afca",
+      "1dc71bae"
     ],
     "datasets": [
       {
@@ -5732,7 +5772,8 @@ window.BENCHMARK_DATA = {
           7882.12202758789,
           13924.880419921876,
           14179.080033874512,
-          14257.425786336264
+          14257.425786336264,
+          13570.198004586357
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5869,6 +5910,7 @@ window.BENCHMARK_DATA = {
           25494,
           25568,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -6017,7 +6059,8 @@ window.BENCHMARK_DATA = {
           184878.30885532923,
           344812.82732282364,
           361123.6000325521,
-          366726.12884114584
+          366726.12884114584,
+          318818.31982421875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6158,7 +6201,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544335
+          544335,
+          544299
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
