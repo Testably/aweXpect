@@ -321,7 +321,7 @@ await Expect.That(response).DoesNotHaveContent("*error*").AsWildcard().IgnoringC
 The content supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
 [match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. To negate the nested
 expectations, use `DoesNotComplyWith(it => it.HasContent(content => ...))`. With
-[aweXpect.Json](https://github.com/Testably/aweXpect.Json), the nested expectations can also verify JSON content:
+[aweXpect.Json](/aweXpect/extensions/aweXpect.Json), the nested expectations can also verify JSON content:
 
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");

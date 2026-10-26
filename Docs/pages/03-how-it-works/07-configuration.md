@@ -175,7 +175,7 @@ class ConsoleTraceWriter : ITraceWriter
 ## Extensions
 
 Extensions can add their own groups. For example, the
-[`aweXpect.Json`](https://github.com/aweXpect/aweXpect.Json) package adds `Customize.aweXpect.Json()` with the default
+[`aweXpect.Json`](/aweXpect/extensions/aweXpect.Json) package adds `Customize.aweXpect.Json()` with the default
 [`JsonDocumentOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsondocumentoptions) and
 [`JsonSerializerOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions). See
 [customization values](../11-extending/07-customization-values.md) to add a group yourself.
