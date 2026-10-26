@@ -1084,7 +1084,7 @@ public sealed partial class PropertyResultTests
 			[Test]
 			public async Task WhenActive_ShouldUseTheActiveVoice()
 			{
-				PropertyResult.TimeSpan<MyClass?, MyClass?, IThat<MyClass?>> sut =
+				PropertyResult.TimeSpan<MyClass?, IThat<MyClass?>, MyClass?> sut =
 					MyClass.HasTimeSpanValue(42.Seconds(), ExpectationGrammars.Active);
 
 				async Task Act()
@@ -1135,7 +1135,7 @@ public sealed partial class PropertyResultTests
 			[Test]
 			public async Task WhenNested_ShouldNameTheProperty()
 			{
-				PropertyResult.TimeSpan<MyClass?, MyClass?, IThat<MyClass?>> sut =
+				PropertyResult.TimeSpan<MyClass?, IThat<MyClass?>, MyClass?> sut =
 					MyClass.HasTimeSpanValue(42.Seconds(), ExpectationGrammars.Nested);
 
 				async Task Act()

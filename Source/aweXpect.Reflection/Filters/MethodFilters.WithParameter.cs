@@ -292,7 +292,7 @@ public static partial class MethodFilters
 		OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options
 			=> new(_collectionIndexOptions);
 
-		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
 		MethodsWithParameter<T> ICopyOnOption<CollectionIndexOptions, MethodsWithParameter<T>>.WithOptions(
 			CollectionIndexOptions options)
 			=> new(_source, _createFilter, options, _parameterFilterOptions);
@@ -332,12 +332,12 @@ public static partial class MethodFilters
 		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 		OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
-		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
 		MethodsWithNamedParameter<T> ICopyOnOption<CollectionIndexOptions, MethodsWithNamedParameter<T>>.WithOptions(
 			CollectionIndexOptions options)
 			=> new(_source, _createFilter, options, _createParameterFilterOptions, new OptionsHolder<StringEqualityOptions>(_options.Value));
 
-		/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
 		MethodsWithNamedParameter<T> ICopyOnOption<StringEqualityOptions, MethodsWithNamedParameter<T>>.WithOptions(
 			StringEqualityOptions options)
 			=> new(_source, _createFilter, _collectionIndexOptions, _createParameterFilterOptions, new OptionsHolder<StringEqualityOptions>(options));

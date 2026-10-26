@@ -12,9 +12,9 @@ public sealed class StringBlockHasItemResultTests
 	public async Task AsBlock_ShouldInterpretExpectedAsBlock()
 	{
 		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		StringHasItemResult<IEnumerable<string>> sut = CreateSut(options);
+		StringHasItemResult<IEnumerable<string>, IThat<IEnumerable<string>?>> sut = CreateSut(options);
 
-		StringBlockHasItemResult<IEnumerable<string>> result = sut.AsBlock();
+		StringBlockHasItemResult<IEnumerable<string>, IThat<IEnumerable<string>?>> result = sut.AsBlock();
 
 		await That(options.ToString()).IsEqualTo(" as block");
 		await That(result).IsNot<IOptionsProvider<StringEqualityOptions>>()
@@ -59,9 +59,9 @@ public sealed class StringBlockHasItemResultTests
 	public async Task IgnoringCase_ShouldSetOption()
 	{
 		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		StringBlockHasItemResult<IEnumerable<string>> sut = CreateSut(options).AsBlock();
+		StringBlockHasItemResult<IEnumerable<string>, IThat<IEnumerable<string>?>> sut = CreateSut(options).AsBlock();
 
-		StringBlockHasItemResult<IEnumerable<string>> result = sut.IgnoringCase();
+		StringBlockHasItemResult<IEnumerable<string>, IThat<IEnumerable<string>?>> result = sut.IgnoringCase();
 
 		await That(result).IsSameAs(sut);
 		await That(options.ToString()).IsEqualTo(" as block ignoring case");
@@ -71,20 +71,20 @@ public sealed class StringBlockHasItemResultTests
 	public async Task Using_ShouldSetComparer()
 	{
 		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		StringBlockHasItemResult<IEnumerable<string>> sut = CreateSut(options).AsBlock();
+		StringBlockHasItemResult<IEnumerable<string>, IThat<IEnumerable<string>?>> sut = CreateSut(options).AsBlock();
 
-		StringBlockHasItemResult<IEnumerable<string>> result = sut.Using(StringComparer.OrdinalIgnoreCase);
+		StringBlockHasItemResult<IEnumerable<string>, IThat<IEnumerable<string>?>> result = sut.Using(StringComparer.OrdinalIgnoreCase);
 
 		await That(result).IsSameAs(sut);
 		await That(options.ToString()).StartsWith(" as block using ");
 	}
 
-	private static StringHasItemResult<IEnumerable<string>> CreateSut(OptionsHolder<StringEqualityOptions> options)
+	private static StringHasItemResult<IEnumerable<string>, IThat<IEnumerable<string>?>> CreateSut(OptionsHolder<StringEqualityOptions> options)
 	{
 #pragma warning disable aweXpect0001
 		IThat<IEnumerable<string>?> source = That<IEnumerable<string>?>(Array.Empty<string>());
 #pragma warning restore aweXpect0001
-		return new StringHasItemResult<IEnumerable<string>>(source.Get().ExpectationBuilder.AddConstraint((it, _) => new DummyConstraint(it)),
+		return new StringHasItemResult<IEnumerable<string>, IThat<IEnumerable<string>?>>(source.Get().ExpectationBuilder.AddConstraint((it, _) => new DummyConstraint(it)),
 			source,
 			new OptionsHolder<CollectionIndexOptions>(CollectionIndexOptions.Default),
 			options);

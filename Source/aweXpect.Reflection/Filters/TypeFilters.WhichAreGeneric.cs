@@ -133,7 +133,7 @@ public static partial class TypeFilters
 			OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options
 				=> new(_collectionIndexOptions);
 
-			/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+			/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
 			GenericTypesWithArgument ICopyOnOption<CollectionIndexOptions, GenericTypesWithArgument>.WithOptions(
 				CollectionIndexOptions options)
 				=> new(_source, _createFilter, options);
@@ -170,12 +170,12 @@ public static partial class TypeFilters
 			/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 			OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
-			/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+			/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
 			GenericTypesWithNamedArgument ICopyOnOption<CollectionIndexOptions, GenericTypesWithNamedArgument>.WithOptions(
 				CollectionIndexOptions options)
 				=> new(_source, _createFilter, options, new OptionsHolder<StringEqualityOptions>(_options.Value));
 
-			/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+			/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
 			GenericTypesWithNamedArgument ICopyOnOption<StringEqualityOptions, GenericTypesWithNamedArgument>.WithOptions(
 				StringEqualityOptions options)
 				=> new(_source, _createFilter, _collectionIndexOptions, new OptionsHolder<StringEqualityOptions>(options));

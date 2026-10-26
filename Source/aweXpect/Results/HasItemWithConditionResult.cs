@@ -38,55 +38,55 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	/// <summary>
 	///     …that satisfies the <paramref name="predicate" />.
 	/// </summary>
-	public HasItemResult<TCollection> Matching(Func<TItem, bool> predicate,
+	public HasItemResult<TCollection, IThat<TCollection?>> Matching(Func<TItem, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
 		_options.Value = new PredicateOptions<TItem>(predicate,
 			$"matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
-		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
+		return new HasItemResult<TCollection, IThat<TCollection?>>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
 
 	/// <summary>
 	///     …of type <typeparamref name="T" />.
 	/// </summary>
-	public HasItemResult<TCollection> Matching<T>()
+	public HasItemResult<TCollection, IThat<TCollection?>> Matching<T>()
 	{
 		_options.Value = new PredicateOptions<TItem>(item => item is T,
 			$"of type {Formatter.Format(typeof(T))}");
-		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
+		return new HasItemResult<TCollection, IThat<TCollection?>>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
 
 	/// <summary>
 	///     …of type <typeparamref name="T" /> that satisfies the <paramref name="predicate" />.
 	/// </summary>
-	public HasItemResult<TCollection> Matching<T>(Func<T, bool> predicate,
+	public HasItemResult<TCollection, IThat<TCollection?>> Matching<T>(Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
 		_options.Value = new PredicateOptions<TItem>(item => item is T typed && predicate(typed),
 			$"of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
-		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
+		return new HasItemResult<TCollection, IThat<TCollection?>>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
 
 	/// <summary>
 	///     …exactly of type <typeparamref name="T" />.
 	/// </summary>
-	public HasItemResult<TCollection> MatchingExactly<T>()
+	public HasItemResult<TCollection, IThat<TCollection?>> MatchingExactly<T>()
 	{
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
 		_options.Value = new PredicateOptions<TItem>(item => item is T && item.GetType() == exactType,
 			$"exactly of type {Formatter.Format(typeof(T))}");
 
-		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
+		return new HasItemResult<TCollection, IThat<TCollection?>>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
 
 	/// <summary>
 	///     …exactly of type <typeparamref name="T" /> that satisfies the <paramref name="predicate" />.
 	/// </summary>
-	public HasItemResult<TCollection> MatchingExactly<T>(Func<T, bool> predicate,
+	public HasItemResult<TCollection, IThat<TCollection?>> MatchingExactly<T>(Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
@@ -94,6 +94,6 @@ public class HasItemWithConditionResult<TCollection, TItem>
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
 		_options.Value = new PredicateOptions<TItem>(item => item is T typed && item.GetType() == exactType && predicate(typed),
 			$"exactly of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
-		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
+		return new HasItemResult<TCollection, IThat<TCollection?>>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
 }

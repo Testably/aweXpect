@@ -12,24 +12,24 @@ namespace aweXpect.Results;
 ///     The options are specified via <see cref="CollectionIndexOptionsExtensions" /> and
 ///     <see cref="ObjectMatchTypeExtensions" />.
 /// </remarks>
-public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
-	: AndOrResult<TCollection, IThat<TCollection?>, ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>>,
+public class ObjectHasItemWithToleranceResult<TCollection, TThat, TItem, TTolerance>
+	: AndOrResult<TCollection, TThat, ObjectHasItemWithToleranceResult<TCollection, TThat, TItem, TTolerance>>,
 		IOptionsProvider<CollectionIndexOptions>,
-		IObjectEqualityWithToleranceResult<ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>, TItem,
+		IObjectEqualityWithToleranceResult<ObjectHasItemWithToleranceResult<TCollection, TThat, TItem, TTolerance>, TItem,
 			TTolerance>
 {
-	private readonly IThat<TCollection?> _collection;
+	private readonly TThat _returnValue;
 	private readonly OptionsHolder<CollectionIndexOptions> _collectionIndexOptions;
 	private readonly OptionsHolder<ObjectMatchType<TItem>> _options;
 
 	internal ObjectHasItemWithToleranceResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TCollection?> collection,
+		TThat returnValue,
 		OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
 		OptionsHolder<ObjectMatchType<TItem>> options)
-		: base(expectationBuilder, collection)
+		: base(expectationBuilder, returnValue)
 	{
-		_collection = collection;
+		_returnValue = returnValue;
 		_collectionIndexOptions = collectionIndexOptions;
 		_options = options;
 	}
@@ -44,7 +44,7 @@ public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
 	public WithinResult Within(TTolerance tolerance)
 	{
 		_options.Within(tolerance);
-		return new WithinResult(ExpectationBuilder, _collection, _collectionIndexOptions, _options);
+		return new WithinResult(ExpectationBuilder, _returnValue, _collectionIndexOptions, _options);
 	}
 
 	/// <summary>
@@ -52,21 +52,21 @@ public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
 	///     the expected value, e.g. via <c>Percent()</c>.
 	/// </summary>
 	public sealed class WithinResult
-		: ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>,
-			IWithinToleranceResult<ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>, TTolerance>
+		: ObjectHasItemWithToleranceResult<TCollection, TThat, TItem, TTolerance>,
+			IWithinToleranceResult<ObjectHasItemWithToleranceResult<TCollection, TThat, TItem, TTolerance>, TTolerance>
 	{
 		internal WithinResult(
 			ExpectationBuilder expectationBuilder,
-			IThat<TCollection?> collection,
+			TThat returnValue,
 			OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
 			OptionsHolder<ObjectMatchType<TItem>> options)
-			: base(expectationBuilder, collection, collectionIndexOptions, options)
+			: base(expectationBuilder, returnValue, collectionIndexOptions, options)
 		{
 		}
 
 		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.SetRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
-		ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
-			IWithinToleranceResult<ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>, TTolerance>.SetRelativeTolerance(
+		ObjectHasItemWithToleranceResult<TCollection, TThat, TItem, TTolerance>
+			IWithinToleranceResult<ObjectHasItemWithToleranceResult<TCollection, TThat, TItem, TTolerance>, TTolerance>.SetRelativeTolerance(
 				Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
 		{
 			((IOptionsProvider<ObjectMatchType<TItem>>)this).Options

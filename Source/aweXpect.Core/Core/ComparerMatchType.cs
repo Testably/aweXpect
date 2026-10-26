@@ -8,11 +8,11 @@ namespace aweXpect.Core;
 /// <summary>
 ///     The match type of <c>Using</c>, which compares values with an <see cref="IEqualityComparer{T}" />.
 /// </summary>
-internal sealed class ComparerMatchType<TSubject> : ObjectMatchType<TSubject>
+internal sealed class ComparerMatchType<TElement> : ObjectMatchType<TElement>
 {
-	private readonly ObjectMatcher<TSubject> _matcher;
+	private readonly ObjectMatcher<TElement> _matcher;
 
-	private ComparerMatchType(ObjectMatcher<TSubject> matcher, Type comparerType) : base("Using")
+	private ComparerMatchType(ObjectMatcher<TElement> matcher, Type comparerType) : base("Using")
 	{
 		_matcher = matcher;
 		string name = $" using {Formatter.Format(comparerType)}";
@@ -25,35 +25,35 @@ internal sealed class ComparerMatchType<TSubject> : ObjectMatchType<TSubject>
 	/// <summary>
 	///     Compares values of any type with the <paramref name="comparer" />.
 	/// </summary>
-	public static ComparerMatchType<TSubject> For(IEqualityComparer<object> comparer)
+	public static ComparerMatchType<TElement> For(IEqualityComparer<object> comparer)
 		=> new(new UntypedMatcher(comparer), comparer.GetType());
 
 	/// <summary>
-	///     Compares <typeparamref name="TSubject" /> values with the <paramref name="comparer" />.
+	///     Compares <typeparamref name="TElement" /> values with the <paramref name="comparer" />.
 	/// </summary>
 	/// <remarks>
-	///     A value that is not a <typeparamref name="TSubject" /> never matches.
+	///     A value that is not a <typeparamref name="TElement" /> never matches.
 	/// </remarks>
-	public static ComparerMatchType<TSubject> For(IEqualityComparer<TSubject> comparer)
+	public static ComparerMatchType<TElement> For(IEqualityComparer<TElement> comparer)
 		=> new(new TypedMatcher(comparer), comparer.GetType());
 
 	/// <inheritdoc />
-	public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
+	public override ObjectMatcher<TElement> ForEvaluation(MatchEnvironment environment)
 		=> _matcher;
 
-	private sealed class TypedMatcher(IEqualityComparer<TSubject> comparer) : ObjectMatcher<TSubject, TSubject>
+	private sealed class TypedMatcher(IEqualityComparer<TElement> comparer) : ObjectMatcher<TElement, TElement>
 	{
 		/// <inheritdoc />
-		public override ValueTask<MatchResult> Match(TSubject actual, TSubject expected)
+		public override ValueTask<MatchResult> Match(TElement actual, TElement expected)
 			=> new(MatchResult.From(UserCode.Invoke(
 				static values => values.Comparer.Equals(values.Actual, values.Expected),
 				(Comparer: comparer, Actual: actual, Expected: expected), "the comparer")));
 	}
 
-	private sealed class UntypedMatcher(IEqualityComparer<object> comparer) : ObjectMatcher<TSubject>
+	private sealed class UntypedMatcher(IEqualityComparer<object> comparer) : ObjectMatcher<TElement>
 	{
 		/// <inheritdoc />
-		public override ValueTask<MatchResult> Match<TExpected>(TSubject actual, TExpected expected)
+		public override ValueTask<MatchResult> Match<TExpected>(TElement actual, TExpected expected)
 			=> new(MatchResult.From(UserCode.Invoke(
 				static values => values.Comparer.Equals(values.Actual, values.Expected),
 				(Comparer: comparer, Actual: (object?)actual, Expected: (object?)expected), "the comparer")));

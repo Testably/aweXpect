@@ -11,8 +11,8 @@ namespace aweXpect.Results;
 /// <summary>
 ///     Result for a delegate with a value that does not throw.
 /// </summary>
-public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
-	: ExpectationResult<T, DelegateWithValueResult<T>>(expectationBuilder)
+public class DelegateWithValueResult<TValue>(ExpectationBuilder expectationBuilder)
+	: ExpectationResult<TValue, DelegateWithValueResult<TValue>>(expectationBuilder)
 {
 	/// <summary>
 	///     Returns the result returned from the delegate.
@@ -21,26 +21,26 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 	///     The result only exists when the delegate did not throw, so a negation only applies to the expectations on the
 	///     result: "throws an exception or its result is not …".
 	/// </remarks>
-	public IThatSubject<T> WhoseResult => ContinueWithResult(ExpectationBuilder);
+	public IThatSubject<TValue> WhoseResult => ContinueWithResult(ExpectationBuilder);
 
 	/// <summary>
 	///     Continues the <paramref name="expectationBuilder" /> with the result returned from the delegate.
 	/// </summary>
-	internal static IThatSubject<T> ContinueWithResult(ExpectationBuilder expectationBuilder)
+	internal static IThatSubject<TValue> ContinueWithResult(ExpectationBuilder expectationBuilder)
 	{
 		expectationBuilder.And(" and its result ")
 			.AddConstraint((it, grammars) => new DoesNotThrowAnyExceptionConstraint(it, grammars))
-			.ForWhich<DelegateValue<T>, T?>(d => d.Value, "", "it", negateMemberOnly: true);
-		return new ThatSubject<T>(expectationBuilder);
+			.ForWhich<DelegateValue<TValue>, TValue?>(d => d.Value, "", "it", negateMemberOnly: true);
+		return new ThatSubject<TValue>(expectationBuilder);
 	}
 
 	private sealed class DoesNotThrowAnyExceptionConstraint(
 		string it,
 		ExpectationGrammars grammars)
 		: ConstraintResult(grammars),
-			IValueConstraint<DelegateValue<T>>
+			IValueConstraint<DelegateValue<TValue>>
 	{
-		private DelegateValue<T>? _actual;
+		private DelegateValue<TValue>? _actual;
 
 		public override Exception? FailureCause
 			=> Outcome == Outcome.FailureBothWays ? _actual?.Exception : null;
@@ -49,7 +49,7 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 		/// <remarks>
 		///     The negation does not apply to this guard, so a delegate without a result fails it both ways.
 		/// </remarks>
-		public ConstraintResult IsMetBy(DelegateValue<T> value)
+		public ConstraintResult IsMetBy(DelegateValue<TValue> value)
 		{
 			_actual = value;
 			Outcome = value.IsNull || value.Exception is not null
@@ -81,16 +81,16 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 			}
 		}
 
-		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
+		public override bool TryGetStoredValue<T>(out T? value) where T : default
 		{
-			if (_actual is { Value: TValue typedValue, })
+			if (_actual is { Value: T typedValue, })
 			{
 				value = typedValue;
 				return true;
 			}
 
 			value = default;
-			return typeof(TValue).IsAssignableFrom(typeof(T));
+			return typeof(T).IsAssignableFrom(typeof(TValue));
 		}
 
 		protected internal override void NegateInPlace()

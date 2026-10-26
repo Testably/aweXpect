@@ -11,8 +11,8 @@ namespace aweXpect.Results;
 ///     The options are specified via <see cref="CollectionMatchOptionsExtensions" /> and
 ///     <see cref="StringEqualityOptionsExtensions" />.
 /// </remarks>
-public class StringProperCollectionMatchResult<TType, TThat>
-	: AndOrResult<TType, TThat, StringProperCollectionMatchResult<TType, TThat>>,
+public class StringProperCollectionMatchResult<TCollection, TThat>
+	: AndOrResult<TCollection, TThat, StringProperCollectionMatchResult<TCollection, TThat>>,
 		IOptionsProvider<CollectionMatchOptions>,
 		IOptionsProvider<StringEqualityOptions>,
 		IStringMatchTypeOptions,

@@ -10,18 +10,17 @@ namespace aweXpect.Results;
 ///     The options are specified via <see cref="CollectionIndexOptionsExtensions" /> and
 ///     <see cref="StringEqualityOptionsExtensions" />.
 /// </remarks>
-public class StringHasItemResult<TCollection>(
+public class StringHasItemResult<TCollection, TThat>(
 	ExpectationBuilder expectationBuilder,
-	IThat<TCollection?> collection,
+	TThat returnValue,
 	OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
 	OptionsHolder<StringEqualityOptions> options)
-	: AndOrResult<TCollection, IThat<TCollection?>, StringHasItemResult<TCollection>>(expectationBuilder,
-			collection),
+	: AndOrResult<TCollection, TThat, StringHasItemResult<TCollection, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<CollectionIndexOptions>,
 		IOptionsProvider<StringEqualityOptions>,
 		IStringMatchTypeOptions
 {
-	private readonly IThat<TCollection?> _collection = collection;
+	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
@@ -42,10 +41,10 @@ public class StringHasItemResult<TCollection>(
 	/// <exception cref="System.InvalidOperationException">
 	///     A match type or an option that changes the lines, e.g. the indentation, is already specified.
 	/// </exception>
-	public StringBlockHasItemResult<TCollection> AsBlock()
+	public StringBlockHasItemResult<TCollection, TThat> AsBlock()
 	{
 		options.AsBlock();
-		return new StringBlockHasItemResult<TCollection>(ExpectationBuilder, _collection, collectionIndexOptions,
+		return new StringBlockHasItemResult<TCollection, TThat>(ExpectationBuilder, _returnValue, collectionIndexOptions,
 			options);
 	}
 }

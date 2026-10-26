@@ -45,7 +45,7 @@ public sealed class SnapshotMembersWithName<TResult, TValue> : SnapshotMembers<T
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
-	/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+	/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
 	SnapshotMembersWithName<TResult, TValue>
 		ICopyOnOption<StringEqualityOptions, SnapshotMembersWithName<TResult, TValue>>.WithOptions(
 			StringEqualityOptions options)

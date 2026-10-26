@@ -10,7 +10,7 @@ public static partial class ThatNullableDateTime
 	///     Verifies that the kind of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Enum<DateTime?, DateTime, IThat<DateTime?>, DateTimeKind> HasKind(this IThat<DateTime?> subject)
+	public static PropertyResult.Enum<DateTime, IThat<DateTime?>, DateTime?, DateTimeKind> HasKind(this IThat<DateTime?> subject)
 		=> new(subject, a => a?.Kind, "kind");
 
 	/// <summary>

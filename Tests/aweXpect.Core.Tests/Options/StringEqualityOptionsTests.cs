@@ -1876,7 +1876,7 @@ public sealed partial class StringEqualityOptionsTests
 
 		/// <remarks>
 		///     The options are a type parameter constrained to the interface, so that the call goes through
-		///     <see cref="IEqualityOptions{TSubject}.ValidateExpected(TSubject, string)" /> as in a collection expectation,
+		///     <see cref="IEqualityOptions{TElement}.ValidateExpected(TElement, string)" /> as in a collection expectation,
 		///     while a cast to the interface would be redundant for the sealed options.
 		/// </remarks>
 		private static void ValidateThroughTheEqualityOptions<TOptions>(TOptions options, string? expected,

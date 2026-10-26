@@ -16,7 +16,7 @@ public static partial class ThatNullableEnum
 	///     of them. Use <c>IsNotNull()</c> to verify only that the subject has a value.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static EnumValueResult<TEnum?, TEnum> HasValue<TEnum>(this IThat<TEnum?> subject)
+	public static EnumValueResult<TEnum, TEnum?> HasValue<TEnum>(this IThat<TEnum?> subject)
 		where TEnum : struct, Enum
 		=> new(subject, a => a?.ToUnderlyingValue(), "value");
 

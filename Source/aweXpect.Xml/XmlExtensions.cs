@@ -23,14 +23,14 @@ public static class XmlExtensions
 	///     <para />
 	///     The active <paramref name="options" /> are listed in the "XML options" context of a failed comparison.
 	/// </remarks>
-	public static TResult AsXml<TResult>(
-		this TResult result,
+	public static TSelf AsXml<TSelf>(
+		this TSelf result,
 		Func<XmlOptions, XmlOptions>? options = null)
-		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
+		where TSelf : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
 		XmlOptions xmlOptions = options?.Invoke(new XmlOptions()) ?? new XmlOptions();
 		XmlMatchType matchType = new(xmlOptions);
-		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
 		{
 			return copyOnOption.WithOptions(result.Options.Value.SetMatchType(matchType, nameof(AsXml)));
 		}

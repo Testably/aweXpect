@@ -11,7 +11,7 @@ public static partial class ThatStream
 	///     Verifies that the length of the <see cref="Stream" /> subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Long<Stream?, TStream, IThat<TStream?>> HasLength<TStream>(
+	public static PropertyResult.Long<TStream, IThat<TStream?>, Stream?> HasLength<TStream>(
 		this IThat<TStream?> subject)
 		where TStream : Stream
 		=> new(subject, a => a?.Length, "length", (value, paramName) =>

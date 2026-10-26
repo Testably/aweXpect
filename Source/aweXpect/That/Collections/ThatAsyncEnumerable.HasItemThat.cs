@@ -18,13 +18,13 @@ public static partial class ThatAsyncEnumerable
 	///     Verifies that the collection has an item that complies with the <paramref name="expectations" />…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HasItemResult<IAsyncEnumerable<TItem>> HasItemThat<TItem>(
+	public static HasItemResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>> HasItemThat<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		expectations.ThrowIfNull();
 		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<IAsyncEnumerable<TItem>>(
+		return new HasItemResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
 				static (state, it, grammars)
 					=> new AsyncHasItemThatConstraint<TItem>(it, grammars, state.Expectations, state.IndexOptions)),
@@ -36,13 +36,13 @@ public static partial class ThatAsyncEnumerable
 	///     Verifies that the collection does not have an item that complies with the <paramref name="expectations" />…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HasItemResult<IAsyncEnumerable<TItem>> DoesNotHaveItemThat<TItem>(
+	public static HasItemResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>> DoesNotHaveItemThat<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		expectations.ThrowIfNull();
 		OptionsHolder<CollectionIndexOptions> indexOptions = new(CollectionIndexOptions.Default);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new HasItemResult<IAsyncEnumerable<TItem>>(
+		return new HasItemResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
 				static (state, it, grammars)
 					=> new AsyncHasItemThatConstraint<TItem>(it, grammars, state.Expectations, state.IndexOptions)

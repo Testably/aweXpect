@@ -6,7 +6,7 @@ namespace aweXpect.Results;
 /// <summary>
 ///     The result for verifying how often a <see langword="string" /> occurs, which in addition to the options of a
 ///     <see cref="StringCountResult{TType,TThat}" /> allows specifying the match type, e.g. via
-///     <see cref="StringEqualityOptionsExtensions.AsWildcard{TResult}(TResult)" />.
+///     <see cref="StringEqualityOptionsExtensions.AsWildcard{TSelf}(TSelf)" />.
 /// </summary>
 public class StringEqualityTypeCountResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,

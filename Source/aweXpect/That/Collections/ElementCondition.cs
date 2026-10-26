@@ -29,7 +29,7 @@ internal abstract class ElementCondition<TItem>
 	/// </summary>
 	/// <remarks>
 	///     A condition that compares by options keeps the evaluator of the evaluation, see
-	///     <see cref="IEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />, or returns
+	///     <see cref="IEqualityOptions{TElement}.ForEvaluation(IEvaluationContext, CancellationToken)" />, or returns
 	///     another condition for it.
 	/// </remarks>
 	public virtual ElementCondition<TItem> ForEvaluation(IEvaluationContext context,

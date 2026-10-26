@@ -9,7 +9,7 @@ internal static class EqualityOptionsContextHelpers
 {
 	/// <summary>
 	///     Returns the evaluator for all comparisons of the evaluation in the <paramref name="context" />, see
-	///     <see cref="IEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />, from the
+	///     <see cref="IEqualityOptions{TElement}.ForEvaluation(IEvaluationContext, CancellationToken)" />, from the
 	///     current value of the <paramref name="options" />.
 	/// </summary>
 	/// <remarks>
@@ -37,7 +37,7 @@ internal static class EqualityOptionsContextHelpers
 	/// <summary>
 	///     Rejects the first of the <paramref name="expected" /> items, which the caller received as
 	///     <paramref name="parameterName" />, that the <paramref name="options" /> cannot use, e.g. an invalid regex
-	///     pattern, see <see cref="IEqualityOptions{TSubject}.ValidateExpected(TSubject, string)" />.
+	///     pattern, see <see cref="IEqualityOptions{TElement}.ValidateExpected(TElement, string)" />.
 	/// </summary>
 	/// <remarks>
 	///     The options only validate an item that an item of the subject is compared with, so an expectation calls

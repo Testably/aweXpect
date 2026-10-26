@@ -17,14 +17,14 @@ public static class JsonExtensions
 	/// <remarks>
 	///     The active <paramref name="options" /> are listed in the "JSON options" context of a failed comparison.
 	/// </remarks>
-	public static TResult AsJson<TResult>(
-		this TResult result,
+	public static TSelf AsJson<TSelf>(
+		this TSelf result,
 		Func<JsonOptions, JsonOptions>? options = null)
-		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
+		where TSelf : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
 		JsonOptions jsonOptions = options?.Invoke(JsonOptions.Default) ?? JsonOptions.Default;
 		JsonMatchType matchType = new(jsonOptions);
-		if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
 		{
 			return copyOnOption.WithOptions(result.Options.Value.SetMatchType(matchType, nameof(AsJson)));
 		}

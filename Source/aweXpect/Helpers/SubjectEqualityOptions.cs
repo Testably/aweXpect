@@ -73,13 +73,13 @@ internal sealed class SubjectEqualityOptions<TItem, TMatch>
 	/// </summary>
 	private IEqualityEvaluator<TMatch> Evaluator => _evaluator ??= _options.WithoutEvaluation();
 
-	/// <inheritdoc cref="IEqualityEvaluator{TSubject}.AreConsideredEqual{TExpected}(TSubject, TExpected)" />
+	/// <inheritdoc cref="IEqualityEvaluator{TElement}.AreConsideredEqual{TExpected}(TElement, TExpected)" />
 	public ValueTask<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
 		=> Comparer is null
 			? Evaluator.AreConsideredEqual(actual, expected)
 			: new ValueTask<bool>(Comparer.AreEqual(actual, expected));
 
-	/// <inheritdoc cref="IEqualityEvaluator{TSubject}.AppendContexts(ResultContextCollector)" />
+	/// <inheritdoc cref="IEqualityEvaluator{TElement}.AppendContexts(ResultContextCollector)" />
 	public void AppendContexts(ResultContextCollector contexts)
 		=> Evaluator.AppendContexts(contexts);
 

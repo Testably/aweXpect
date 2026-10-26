@@ -4,7 +4,7 @@ namespace aweXpect;
 
 /// <summary>
 ///     The comparison of the items of a collection by <see cref="object.Equals(object)" />, like
-///     <see cref="ObjectMatchType{TSubject}.Default" />, which the comparer of a set subject may replace.
+///     <see cref="ObjectMatchType{TElement}.Default" />, which the comparer of a set subject may replace.
 /// </summary>
 /// <remarks>
 ///     A separate value, so that an expectation tells that it still compares its items with the comparison it started

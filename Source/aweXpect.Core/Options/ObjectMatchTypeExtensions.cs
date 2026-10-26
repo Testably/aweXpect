@@ -6,7 +6,7 @@ using aweXpect.Results;
 namespace aweXpect;
 
 /// <summary>
-///     Extension methods for results that compare objects with an <see cref="ObjectMatchType{TSubject}" />.
+///     Extension methods for results that compare objects with an <see cref="ObjectMatchType{TElement}" />.
 /// </summary>
 /// <remarks>
 ///     These options all specify how two objects are compared, so only one of them can be specified; the same option

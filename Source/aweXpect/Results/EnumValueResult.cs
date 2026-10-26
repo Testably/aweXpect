@@ -8,11 +8,11 @@ using aweXpect.Helpers;
 namespace aweXpect.Results;
 
 /// <summary>
-///     Result for the underlying value of an enum that continues on the <see cref="IThat{TItem}" /> subject.
+///     Result for the underlying value of an enum that continues on the <see cref="IThat{TType}" /> subject.
 /// </summary>
-public class EnumValueResult<TItem> : EnumValueResult<TItem, TItem>
+public class EnumValueResult<TType> : EnumValueResult<TType, TType>
 {
-	internal EnumValueResult(IThat<TItem> subject, Func<TItem, decimal?> mapper, string propertyExpression)
+	internal EnumValueResult(IThat<TType> subject, Func<TType, decimal?> mapper, string propertyExpression)
 		: base(subject, mapper, propertyExpression)
 	{
 	}
@@ -32,7 +32,7 @@ public class EnumValueResult<TItem> : EnumValueResult<TItem, TItem>
 ///     arguments, so a comparison can be driven from an <c>[InlineData]</c>; a bare <see langword="null" /> binds to
 ///     the <see langword="long" /> flavour.
 /// </remarks>
-public class EnumValueResult<TValue, TType>
+public class EnumValueResult<TType, TValue>
 {
 	private readonly Func<TValue, decimal?> _mapper;
 	private readonly string _propertyExpression;

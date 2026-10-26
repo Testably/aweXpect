@@ -10,7 +10,7 @@ public static partial class ThatNullableDateTimeOffset
 	///     Verifies that the day of the week of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Enum<DateTimeOffset?, DateTimeOffset, IThat<DateTimeOffset?>, DayOfWeek> HasDayOfWeek(this IThat<DateTimeOffset?> subject)
+	public static PropertyResult.Enum<DateTimeOffset, IThat<DateTimeOffset?>, DateTimeOffset?, DayOfWeek> HasDayOfWeek(this IThat<DateTimeOffset?> subject)
 		=> new(subject, a => a?.DayOfWeek, "day of week");
 
 	/// <summary>

@@ -101,7 +101,7 @@ public static partial class Filtered
 			/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 			OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
 
-			/// <inheritdoc cref="ICopyOnOption{TOptions, TResult}.WithOptions(TOptions)" />
+			/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
 			StringEqualityResult ICopyOnOption<StringEqualityOptions, StringEqualityResult>.WithOptions(
 				StringEqualityOptions options)
 				=> new(_source, _createFilter, new OptionsHolder<StringEqualityOptions>(options));

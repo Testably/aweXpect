@@ -12,10 +12,10 @@ namespace aweXpect.Results;
 ///     The options are specified via <see cref="QuantifierExtensions" /> and
 ///     <see cref="ObjectMatchTypeExtensions" />.
 /// </remarks>
-public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
-	: AndOrResult<TType, TThat, ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>>,
+public class ObjectCountWithToleranceResult<TCollection, TThat, TItem, TTolerance>
+	: AndOrResult<TCollection, TThat, ObjectCountWithToleranceResult<TCollection, TThat, TItem, TTolerance>>,
 		IOptionsProvider<Quantifier>,
-		IObjectEqualityWithToleranceResult<ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>,
+		IObjectEqualityWithToleranceResult<ObjectCountWithToleranceResult<TCollection, TThat, TItem, TTolerance>,
 			TItem, TTolerance>
 {
 	private readonly OptionsHolder<ObjectMatchType<TItem>> _options;
@@ -52,8 +52,8 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 	///     the expected value, e.g. via <c>Percent()</c>.
 	/// </summary>
 	public sealed class WithinResult
-		: ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>,
-			IWithinToleranceResult<ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>, TTolerance>
+		: ObjectCountWithToleranceResult<TCollection, TThat, TItem, TTolerance>,
+			IWithinToleranceResult<ObjectCountWithToleranceResult<TCollection, TThat, TItem, TTolerance>, TTolerance>
 	{
 		internal WithinResult(
 			ExpectationBuilder expectationBuilder,
@@ -65,8 +65,8 @@ public class ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
 		}
 
 		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.SetRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
-		ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>
-			IWithinToleranceResult<ObjectCountWithToleranceResult<TType, TThat, TItem, TTolerance>, TTolerance>.SetRelativeTolerance(
+		ObjectCountWithToleranceResult<TCollection, TThat, TItem, TTolerance>
+			IWithinToleranceResult<ObjectCountWithToleranceResult<TCollection, TThat, TItem, TTolerance>, TTolerance>.SetRelativeTolerance(
 				Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
 		{
 			((IOptionsProvider<ObjectMatchType<TItem>>)this).Options

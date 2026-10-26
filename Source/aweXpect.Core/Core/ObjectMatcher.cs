@@ -5,20 +5,20 @@ namespace aweXpect.Core;
 
 /// <summary>
 ///     Compares the subjects of one evaluation, created by
-///     <see cref="ObjectMatchType{TSubject}.ForEvaluation(MatchEnvironment)" />, with expected values of any type.
+///     <see cref="ObjectMatchType{TElement}.ForEvaluation(MatchEnvironment)" />, with expected values of any type.
 /// </summary>
 /// <remarks>
 ///     The items of a collection are compared one after the other with the matcher of the evaluation, so it may keep
 ///     state across them, e.g. which options matched nothing in any comparison.<br />
-///     Derive from <see cref="ObjectMatcher{TSubject, TExpected}" /> instead, when the expected value has a known type.
+///     Derive from <see cref="ObjectMatcher{TElement, TExpected}" /> instead, when the expected value has a known type.
 /// </remarks>
-public abstract class ObjectMatcher<TSubject> : IEqualityEvaluator<TSubject>
+public abstract class ObjectMatcher<TElement> : IEqualityEvaluator<TElement>
 {
-	/// <inheritdoc cref="IEqualityEvaluator{TSubject}.AreConsideredEqual{TExpected}(TSubject, TExpected)" />
+	/// <inheritdoc cref="IEqualityEvaluator{TElement}.AreConsideredEqual{TExpected}(TElement, TExpected)" />
 	/// <remarks>
 	///     A subject that the matcher cannot compare throws, so that every collection fails for it in both polarities.
 	/// </remarks>
-	ValueTask<bool> IEqualityEvaluator<TSubject>.AreConsideredEqual<TExpected>(TSubject actual, TExpected expected)
+	ValueTask<bool> IEqualityEvaluator<TElement>.AreConsideredEqual<TExpected>(TElement actual, TExpected expected)
 	{
 		ValueTask<MatchResult> result = Match(actual, expected);
 		if (!result.IsCompletedSuccessfully)
@@ -35,15 +35,15 @@ public abstract class ObjectMatcher<TSubject> : IEqualityEvaluator<TSubject>
 	/// <summary>
 	///     Compares the <paramref name="actual" /> with the <paramref name="expected" /> value for a constraint, which
 	///     keeps the result to explain a failure with
-	///     <see cref="GetFailure{TExpected}(string, ExpectationGrammars, TSubject, TExpected, MatchResult, string?)" />.
+	///     <see cref="GetFailure{TExpected}(string, ExpectationGrammars, TElement, TExpected, MatchResult, string?)" />.
 	/// </summary>
 	/// <remarks>
 	///     This is the entry point that constraints call, so it cannot be overridden; a matcher overrides the
 	///     <c>Match…</c> methods instead.<br />
-	///     Compares with <see cref="MatchWithExplanation{TExpected}(TSubject, TExpected)" />. Unlike it, a subject that the
+	///     Compares with <see cref="MatchWithExplanation{TExpected}(TElement, TExpected)" />. Unlike it, a subject that the
 	///     matcher cannot compare throws, so that the expectation fails in both polarities.
 	/// </remarks>
-	public ValueTask<MatchResult> CompareWithExplanation<TExpected>(TSubject actual, TExpected expected)
+	public ValueTask<MatchResult> CompareWithExplanation<TExpected>(TElement actual, TExpected expected)
 	{
 		ValueTask<MatchResult> result = MatchWithExplanation(actual, expected);
 		if (!result.IsCompletedSuccessfully)
@@ -66,17 +66,17 @@ public abstract class ObjectMatcher<TSubject> : IEqualityEvaluator<TSubject>
 	///     Return <see cref="MatchResult.NotComparable(string, System.Exception)" /> when the
 	///     <paramref name="actual" /> value cannot be compared at all, so that the expectation fails in both polarities.
 	/// </remarks>
-	public abstract ValueTask<MatchResult> Match<TExpected>(TSubject actual, TExpected expected);
+	public abstract ValueTask<MatchResult> Match<TExpected>(TElement actual, TExpected expected);
 
 	/// <summary>
 	///     Compares the <paramref name="actual" /> value with the <paramref name="expected" /> value like
-	///     <see cref="Match{TExpected}(TSubject, TExpected)" />, for a comparison whose failure is explained.
+	///     <see cref="Match{TExpected}(TElement, TExpected)" />, for a comparison whose failure is explained.
 	/// </summary>
 	/// <remarks>
 	///     Override it when explaining a mismatch costs more than deciding it, e.g. to collect all differences of an
 	///     equivalency comparison into a <see cref="MatchExplanation" />.
 	/// </remarks>
-	public virtual ValueTask<MatchResult> MatchWithExplanation<TExpected>(TSubject actual, TExpected expected)
+	public virtual ValueTask<MatchResult> MatchWithExplanation<TExpected>(TElement actual, TExpected expected)
 		=> Match(actual, expected);
 
 	/// <summary>
@@ -96,7 +96,7 @@ public abstract class ObjectMatcher<TSubject> : IEqualityEvaluator<TSubject>
 	///     The default writes the <see cref="MatchResult.Explanation" /> of the <paramref name="result" />, or else the
 	///     <paramref name="actual" /> value.
 	/// </remarks>
-	public virtual string GetFailure<TExpected>(string it, ExpectationGrammars grammars, TSubject? actual,
+	public virtual string GetFailure<TExpected>(string it, ExpectationGrammars grammars, TElement? actual,
 		TExpected expected, MatchResult result, string? indentation)
 		=> result.Explanation?.GetFailure(it, grammars, indentation) ??
 		   $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented(indentation))}";
@@ -130,7 +130,7 @@ public abstract class ObjectMatcher<TSubject> : IEqualityEvaluator<TSubject>
 ///     An expected value of another type never matches. A <see langword="null" /> expected value is compared when
 ///     <typeparamref name="TExpected" /> admits it.
 /// </remarks>
-public abstract class ObjectMatcher<TSubject, TExpected> : ObjectMatcher<TSubject>
+public abstract class ObjectMatcher<TElement, TExpected> : ObjectMatcher<TElement>
 {
 	/// <summary>
 	///     Decides whether the <paramref name="actual" /> value matches the <paramref name="expected" /> value.
@@ -139,27 +139,27 @@ public abstract class ObjectMatcher<TSubject, TExpected> : ObjectMatcher<TSubjec
 	///     Return <see cref="MatchResult.NotComparable(string, System.Exception)" /> when the
 	///     <paramref name="actual" /> value cannot be compared at all, so that the expectation fails in both polarities.
 	/// </remarks>
-	public abstract ValueTask<MatchResult> Match(TSubject actual, TExpected expected);
+	public abstract ValueTask<MatchResult> Match(TElement actual, TExpected expected);
 
 	/// <inheritdoc />
-	public sealed override ValueTask<MatchResult> Match<TOther>(TSubject actual, TOther expected)
+	public sealed override ValueTask<MatchResult> Match<TOther>(TElement actual, TOther expected)
 		=> TryCast(expected, out TExpected typedExpected)
 			? Match(actual, typedExpected)
 			: new ValueTask<MatchResult>(MatchResult.NoMatch);
 
 	/// <summary>
 	///     Compares the <paramref name="actual" /> value with the <paramref name="expected" /> value like
-	///     <see cref="Match(TSubject, TExpected)" />, for a comparison whose failure is explained.
+	///     <see cref="Match(TElement, TExpected)" />, for a comparison whose failure is explained.
 	/// </summary>
 	/// <remarks>
 	///     Override it when explaining a mismatch costs more than deciding it, e.g. to collect all differences into a
 	///     <see cref="MatchExplanation" />.
 	/// </remarks>
-	public virtual ValueTask<MatchResult> MatchWithExplanation(TSubject actual, TExpected expected)
+	public virtual ValueTask<MatchResult> MatchWithExplanation(TElement actual, TExpected expected)
 		=> Match(actual, expected);
 
 	/// <inheritdoc />
-	public sealed override ValueTask<MatchResult> MatchWithExplanation<TOther>(TSubject actual, TOther expected)
+	public sealed override ValueTask<MatchResult> MatchWithExplanation<TOther>(TElement actual, TOther expected)
 		=> TryCast(expected, out TExpected typedExpected)
 			? MatchWithExplanation(actual, typedExpected)
 			: new ValueTask<MatchResult>(MatchResult.NoMatch);
@@ -172,12 +172,12 @@ public abstract class ObjectMatcher<TSubject, TExpected> : ObjectMatcher<TSubjec
 	///     The default writes the <see cref="MatchResult.Explanation" /> of the <paramref name="result" />, or else the
 	///     <paramref name="actual" /> value.
 	/// </remarks>
-	public virtual string GetFailure(string it, ExpectationGrammars grammars, TSubject? actual, TExpected expected,
+	public virtual string GetFailure(string it, ExpectationGrammars grammars, TElement? actual, TExpected expected,
 		MatchResult result, string? indentation)
 		=> base.GetFailure(it, grammars, actual, expected, result, indentation);
 
 	/// <inheritdoc />
-	public sealed override string GetFailure<TOther>(string it, ExpectationGrammars grammars, TSubject? actual,
+	public sealed override string GetFailure<TOther>(string it, ExpectationGrammars grammars, TElement? actual,
 		TOther expected, MatchResult result, string? indentation)
 		=> TryCast(expected, out TExpected typedExpected)
 			? GetFailure(it, grammars, actual, typedExpected, result, indentation)

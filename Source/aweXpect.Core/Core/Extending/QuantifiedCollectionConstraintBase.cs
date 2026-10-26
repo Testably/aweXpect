@@ -14,7 +14,7 @@ namespace aweXpect.Core.Extending;
 /// </summary>
 /// <remarks>
 ///     For an expectation text that only depends on the grammars, derive from
-///     <see cref="QuantifiedCollectionConstraint{TValue,TItem}" /> instead. Derive from this class when the text or the
+///     <see cref="QuantifiedCollectionConstraint{TCollection,TItem}" /> instead. Derive from this class when the text or the
 ///     verb in the result are only known while the failure message is created, e.g. because they come from nested
 ///     expectations.
 ///     <para />
@@ -29,10 +29,10 @@ namespace aweXpect.Core.Extending;
 ///     "has values of which at least 2 are …") like the built-in expectations and adds the matching or not matching
 ///     items as context, as far as the quantifier requires them, together with the contexts of the first such item.
 /// </remarks>
-/// <typeparam name="TValue">The type of the collection.</typeparam>
+/// <typeparam name="TCollection">The type of the collection.</typeparam>
 /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
-public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
-	: ConstraintResult.WithNotNullValue<TValue>
+public abstract class QuantifiedCollectionConstraintBase<TCollection, TItem>
+	: ConstraintResult.WithNotNullValue<TCollection>
 {
 	private bool? _couldShowMatchingItems;
 	private bool? _couldShowNotMatchingItems;
@@ -220,7 +220,7 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 		bool isIncomplete = _isIncomplete;
 		int matchingCount = _matchingCount;
 		int notMatchingCount = _notMatchingCount;
-		TValue? actual = Actual;
+		TCollection? actual = Actual;
 		EnumerableQuantifier.QuantifierContexts shown = Grammars.IsNegated()
 			? Quantifier.GetNegatedQuantifierContext()
 			: Quantifier.GetQuantifierContext();

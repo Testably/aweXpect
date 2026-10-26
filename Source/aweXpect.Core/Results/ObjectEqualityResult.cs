@@ -7,7 +7,7 @@ namespace aweXpect.Results;
 ///     The result of an expectation with an underlying value of type <typeparamref name="TType" />.
 ///     <para />
 ///     In addition to the combinations from <see cref="AndOrResult{TType,TThat}" />, allows specifying
-///     options on the <see cref="ObjectMatchType{TSubject}" /> via <see cref="ObjectMatchTypeExtensions" />.
+///     options on the <see cref="ObjectMatchType{TElement}" /> via <see cref="ObjectMatchTypeExtensions" />.
 /// </summary>
 public class ObjectEqualityResult<TType, TThat, TElement>(
 	ExpectationBuilder expectationBuilder,

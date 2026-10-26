@@ -50,7 +50,7 @@ Its common leading whitespace is removed, and an expected `null` is still shown 
 ## Custom match types
 
 `IsEqualTo` compares two values with `Equals`, unless the caller chooses another comparison, e.g. with `.Equivalent()`.
-You can offer a comparison of your own: derive from `ObjectMatchType<TSubject>`, pass the name of your option to its
+You can offer a comparison of your own: derive from `ObjectMatchType<TElement>`, pass the name of your option to its
 base constructor and set it on the options of the result with `SetMatchType(matchType)`, which reads that name. For
 example, two tracks with the same title can count as equal:
 
@@ -62,20 +62,20 @@ public static TSelf ByTitle<TSelf, TElement>(this IObjectEqualityResult<TSelf, T
     return (TSelf)result;
 }
 
-private sealed class ByTitleMatchType<TSubject>() : ObjectMatchType<TSubject>("ByTitle")
+private sealed class ByTitleMatchType<TElement>() : ObjectMatchType<TElement>("ByTitle")
 {
     private static readonly ByTitleMatcher Matcher = new();
 
     public override MatchPhrase Phrase { get; } = MatchPhrase.Being("titled like").WithName(" by title");
 
-    public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment) => Matcher;
+    public override ObjectMatcher<TElement> ForEvaluation(MatchEnvironment environment) => Matcher;
 
-    private sealed class ByTitleMatcher : ObjectMatcher<TSubject, Track>
+    private sealed class ByTitleMatcher : ObjectMatcher<TElement, Track>
     {
-        public override ValueTask<MatchResult> Match(TSubject actual, Track expected)
+        public override ValueTask<MatchResult> Match(TElement actual, Track expected)
             => new(MatchResult.From(actual is Track track && track.Title == expected.Title));
 
-        public override string GetFailure(string it, ExpectationGrammars grammars, TSubject? actual,
+        public override string GetFailure(string it, ExpectationGrammars grammars, TElement? actual,
             Track expected, MatchResult result, string? indentation)
             => $"{it}{grammars.SubjectVerb(it, " was", " were")} titled {Formatter.Format((actual as Track)?.Title)}";
     }
@@ -107,8 +107,8 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
 <summary>Matchers, results, phrases and string match types in detail</summary>
 
 - `ForEvaluation` receives the context and the cancellation of the evaluation in the `MatchEnvironment`.
-- `ObjectMatcher<TSubject, TExpected>` compares with expected values of a known type, e.g. a `Track`, and an expected
-  value of another type never matches. Derive from `ObjectMatcher<TSubject>` instead when the type of the expected
+- `ObjectMatcher<TElement, TExpected>` compares with expected values of a known type, e.g. a `Track`, and an expected
+  value of another type never matches. Derive from `ObjectMatcher<TElement>` instead when the type of the expected
   value varies, e.g. an anonymous object for an equivalency, and implement the generic `Match<TExpected>`.
 - `Match` returns `MatchResult.Match`, `MatchResult.NoMatch`, or `MatchResult.NotComparable(reason)` for a subject that
   it cannot compare at all. The expectation and its negation then both fail, with the reason as the result. Like

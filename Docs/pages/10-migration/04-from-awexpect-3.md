@@ -205,8 +205,8 @@ Results of the extension packages are in `aweXpect.<Package>.Results` and their 
 
 If you wrote your own expectations on `aweXpect.Core`, the compiler points out most of the changes. The important ones:
 
-- Match types have one lifecycle: `StringMatchType` and `ObjectMatchType<TSubject>` create a matcher per evaluation
-  (`StringMatcher`, `ObjectMatcher<TSubject>`) that returns a `MatchResult`. They replace `IStringMatchType` and
+- Match types have one lifecycle: `StringMatchType` and `ObjectMatchType<TElement>` create a matcher per evaluation
+  (`StringMatcher`, `ObjectMatcher<TElement>`) that returns a `MatchResult`. They replace `IStringMatchType` and
   `IObjectMatchType`. See [Custom match types](../11-extending/06-comparisons.md#custom-match-types).
 - The operators of property results are extension methods on one interface per property type, such as
   `IIntPropertyResult<TResult>` or `IEnumPropertyResult<TEnum, TResult>`, so a result of your own gets them by
@@ -214,7 +214,7 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   `IDecimalPropertyResult<TResult, TToleranceResult>` with `PropertyResult.Double` and `PropertyResult.Decimal` are new,
   and their `EqualTo` offers a tolerance, e.g. `EqualTo(4.5).Within(0.1)`. The `string` operators are split over `IStringEqualityPropertyResult<TResult>`,
   `IStringAffixPropertyResult<TResult>` and `IStringOccurrencePropertyResult<TResult>`, which
-  `PropertyResult.String<TValue, TType, TThat>` implements instead of offering them as instance methods. Calls such as
+  `PropertyResult.String<TType, TThat, TValue>` implements instead of offering them as instance methods. Calls such as
   `HasMessage().EqualTo(…)` compile unchanged, but have to be compiled again.
 - The expectations on quantified items extend the Core interfaces `IEnumerableItems<TItem>`,
   `IAsyncEnumerableItems<TItem>`, `IStructEnumerableItems<TCollection, TItem>` and
@@ -224,7 +224,7 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   `new OptionsHolder<Quantifier>(Quantifier.Default)`, pass it to your constraint and your result, and read
   `holder.Value` when the constraint evaluates. A constraint that only reads the options can take an
   `IReadOnlyOptionsHolder<TOptions>`. See [Options](../11-extending/05-options.md).
-- `Quantifier`, `CollectionMatchOptions`, `CollectionIndexOptions`, `CollectionOrderOptions<TItem>`,
+- `Quantifier`, `CollectionMatchOptions`, `CollectionIndexOptions`, `CollectionOrderOptions<TElement>`,
   `NumberTolerance<TNumber>`, `TimeTolerance`, `SignalerOptions`, `RepeatedCheckOptions` and `ExecutionTimeOptions`
   are `readonly struct`s, and `StringEqualityOptions` is a sealed immutable class. Start from their `Default`, e.g.
   `StringEqualityOptions.Default`, instead of a parameterless constructor, and for a date from `TimeTolerance.Days`.
@@ -236,15 +236,15 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   holder, e.g. `result.Options.AtLeast(2)`. Import `aweXpect.Options` where you call them: without it, the compiler
   finds only the user-facing option of the same name and reports `CS0311`.
 - `ObjectEqualityOptions<TSubject>` and `ObjectEqualityWithToleranceOptions<TSubject, TTolerance>` are removed. Object
-  comparisons keep their `ObjectMatchType<TSubject>` in an `OptionsHolder<ObjectMatchType<TSubject>>`, also with a
-  tolerance, for which `ObjectMatchType<TSubject>.WithTolerance(…)` creates an
-  `ObjectToleranceMatchType<TSubject, TTolerance>`. `ObjectEqualityOptionsExtensions` is renamed to
+  comparisons keep their `ObjectMatchType<TElement>` in an `OptionsHolder<ObjectMatchType<TElement>>`, also with a
+  tolerance, for which `ObjectMatchType<TElement>.WithTolerance(…)` creates an
+  `ObjectToleranceMatchType<TElement, TTolerance>`. `ObjectEqualityOptionsExtensions` is renamed to
   `ObjectMatchTypeExtensions`.
-- An `ObjectMatchType<TSubject>` passes the name of its option to its base constructor, and `SetMatchType(matchType)`
+- An `ObjectMatchType<TElement>` passes the name of its option to its base constructor, and `SetMatchType(matchType)`
   reads it, so that the same option again replaces the match type and another one throws. A match type without a name
   is rejected.
-- `IOptionsEquality<TSubject>` is renamed to `IEqualityEvaluator<TSubject>`. The new `IEqualityOptions<TSubject>`
-  returns the evaluator for one evaluation with `ForEvaluation(…)`, and `ObjectMatcher<TSubject>` is such an evaluator.
+- `IOptionsEquality<TSubject>` is renamed to `IEqualityEvaluator<TElement>`. The new `IEqualityOptions<TElement>`
+  returns the evaluator for one evaluation with `ForEvaluation(…)`, and `ObjectMatcher<TElement>` is such an evaluator.
 - `DayTolerance` is removed; `TimeTolerance.Days` rejects a tolerance that is not a whole number of days.
   `IRelativeToleranceOptions<T>` is removed as well: `Percent()` calls the new `SetRelativeTolerance(…)` of
   `IWithinToleranceResult<TResult, TTolerance>`, which a result of your own implements: it makes the tolerance
@@ -280,8 +280,13 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   is public, so that an extension throws the same error as the built-in expectations when reflection is switched off.
   aweXpect.Json and aweXpect.Reflection use it too, so their wording of this error changed slightly. The runtime switch
   `aweXpect.ReflectionFallback.IsSupported` and the `AweXpectReflectionFallback` property keep their names.
-- The type parameters of results follow one scheme: `TType` for the subject, `TThat` for the subject wrapper, and
-  `TResult` for the type returned after an option, e.g. `CollectionOrderResult<TType, TThat, TMember>`.
+- The type parameters of results follow one scheme: `TType` for the subject, `TThat` for the subject wrapper, `TSelf`
+  for the result itself, `TResult` for the result a call continues with, `TCollection` and `TItem` for a collection
+  and its items and `TElement` for the value an option compares, e.g. `CollectionOrderResult<TCollection, TThat, TElement>`. Code that names a result changes where the
+  order or the number of type parameters changed: `PropertyResult.Int<TType, TThat, TValue>`, its siblings and
+  `EnumValueResult<TType, TValue>` start with the subject type, `HasItemResult`, `ObjectHasItemResult`,
+  `ObjectHasItemWithToleranceResult`, `StringHasItemResult` and `StringBlockHasItemResult` take a `TThat` after the
+  collection, and `ContainsKeyResult` and `ContainsKeysResult` have no `TKey`.
 - `[GenerateCollectionExpectation]` also generates the expectation directly on a collection with `CollectionOverload`
   and `NegatedName`.
 - `ITestFrameworkAdapter` has the new members `TryGetCurrentTest`, `TryGetCancellationToken` and `TryAddAttachment`,

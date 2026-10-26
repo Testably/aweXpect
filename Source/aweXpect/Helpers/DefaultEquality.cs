@@ -15,7 +15,7 @@ internal static class DefaultEquality
 	/// <remarks>
 	///     An object comparison was not changed while it has no option name, i.e. it is still the value that the
 	///     expectation started with, e.g. <see cref="ItemEqualsMatchType{TItem}" /> or the default tolerance. An
-	///     expectation that starts with <see cref="ObjectMatchType{TSubject}.Default" /> never lets the comparer of the
+	///     expectation that starts with <see cref="ObjectMatchType{TElement}.Default" /> never lets the comparer of the
 	///     subject decide.
 	/// </remarks>
 	public static bool IsUsedBy<T>(IEqualityOptions<T> options)

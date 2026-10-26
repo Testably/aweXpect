@@ -86,7 +86,7 @@ public static partial class ThatJsonObject
 			: callback(Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get());
 
 	/// <remarks>
-	///     Compares with the matcher of an <see cref="EquivalencyMatchType{TSubject}" />
+	///     Compares with the matcher of an <see cref="EquivalencyMatchType{TElement}" />
 	///     like <c>IsEquivalentTo</c>, so that the comparison is part of the evaluation and the failure lists the
 	///     equivalency options with a hint for every member to ignore that matched no member.
 	/// </remarks>

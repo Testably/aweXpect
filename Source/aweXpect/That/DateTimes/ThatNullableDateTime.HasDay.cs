@@ -10,7 +10,7 @@ public static partial class ThatNullableDateTime
 	///     Verifies that the day of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<DateTime?, DateTime, IThat<DateTime?>> HasDay(this IThat<DateTime?> subject)
+	public static PropertyResult.Int<DateTime, IThat<DateTime?>, DateTime?> HasDay(this IThat<DateTime?> subject)
 		=> new(subject, a => a?.Day, "day");
 
 	/// <summary>

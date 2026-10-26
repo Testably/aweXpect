@@ -17,7 +17,7 @@ public static partial class ThatHttpResponseMessage
 	///     <c>ClientError()</c>, which are extension methods in <see cref="HttpStatusCodePropertyResultExtensions" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static PropertyResult.Enum<HttpResponseMessage?, HttpResponseMessage, IThat<HttpResponseMessage?>,
+	public static PropertyResult.Enum<HttpResponseMessage, IThat<HttpResponseMessage?>, HttpResponseMessage?,
 		HttpStatusCode> HasStatusCode(this IThat<HttpResponseMessage?> subject)
 	{
 		subject.Get().ExpectationBuilder.AddSubjectContexts(ResultContextExtensions.ResponseContexts);

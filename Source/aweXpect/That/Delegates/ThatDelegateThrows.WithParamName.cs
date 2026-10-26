@@ -9,7 +9,7 @@ public static partial class ThatDelegateThrows
 	/// <summary>
 	///     Verifies that the param name of the thrown <see cref="ArgumentException" />…
 	/// </summary>
-	public static PropertyResult.String<Exception?, TException, IThatDelegateThrows<TException>>
+	public static PropertyResult.String<TException, IThatDelegateThrows<TException>, Exception?>
 		WithParamName<TException>(
 			this IThatDelegateThrows<TException> subject)
 		where TException : ArgumentException?

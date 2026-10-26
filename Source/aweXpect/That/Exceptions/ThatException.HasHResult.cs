@@ -11,7 +11,7 @@ public static partial class ThatException
 	///     Verifies that the HResult of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<Exception?, TException, IThat<TException?>> HasHResult<TException>(
+	public static PropertyResult.Int<TException, IThat<TException?>, Exception?> HasHResult<TException>(
 		this IThat<TException?> subject)
 		where TException : Exception
 		=> new(subject, e => e?.HResult, "HResult");

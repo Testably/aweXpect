@@ -11,7 +11,7 @@ public static partial class ThatNullableTimeOnly
 	///     Verifies that the second of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<TimeOnly?, TimeOnly, IThat<TimeOnly?>> HasSecond(this IThat<TimeOnly?> subject)
+	public static PropertyResult.Int<TimeOnly, IThat<TimeOnly?>, TimeOnly?> HasSecond(this IThat<TimeOnly?> subject)
 		=> new(subject, a => a?.Second, "second");
 
 	/// <summary>

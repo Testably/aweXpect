@@ -227,8 +227,8 @@ The user-facing option extends every result that provides the options and return
 with the result, e.g. `.HasTracks(12).IgnoringBonusTracks()`:
 
 ```csharp
-public static TResult IgnoringBonusTracks<TResult>(this TResult result, bool ignoreBonusTracks = true)
-    where TResult : IOptionsProvider<PlaylistOptions>
+public static TSelf IgnoringBonusTracks<TSelf>(this TSelf result, bool ignoreBonusTracks = true)
+    where TSelf : IOptionsProvider<PlaylistOptions>
 {
     result.Options.IgnoringBonusTracks(ignoreBonusTracks);
     return result;
@@ -252,10 +252,10 @@ unchanged. The quantifiers, e.g. `Once()`, and the index options `AtIndex(…)` 
 that it keeps a stored result unchanged as well:
 
 ```csharp
-public static TResult IgnoringCaseAndIndentation<TResult>(this TResult result)
-    where TResult : IOptionsProvider<StringEqualityOptions>
+public static TSelf IgnoringCaseAndIndentation<TSelf>(this TSelf result)
+    where TSelf : IOptionsProvider<StringEqualityOptions>
 {
-    if (result is ICopyOnOption<StringEqualityOptions, TResult> copyOnOption)
+    if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
     {
         return copyOnOption.WithOptions(result.Options.Value.IgnoringCase().IgnoringIndentation());
     }

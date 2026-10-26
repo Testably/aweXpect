@@ -30,7 +30,7 @@ internal abstract class ContainedItem<TItem>
 	/// </summary>
 	/// <remarks>
 	///     An item that compares by options keeps the evaluator of the evaluation, see
-	///     <see cref="IEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />, or returns
+	///     <see cref="IEqualityOptions{TElement}.ForEvaluation(IEvaluationContext, CancellationToken)" />, or returns
 	///     another item for it.
 	/// </remarks>
 	public virtual ContainedItem<TItem> ForEvaluation(IEvaluationContext context,

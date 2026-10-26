@@ -2,7 +2,7 @@ namespace aweXpect.Core;
 
 /// <summary>
 ///     Marks a result that stays unchanged when an option is applied to it: it returns a new
-///     <typeparamref name="TResult" /> with the new <typeparamref name="TOptions" />.
+///     <typeparamref name="TSelf" /> with the new <typeparamref name="TOptions" />.
 /// </summary>
 /// <remarks>
 ///     A result usually belongs to a single expectation, so an option changes the options in the
@@ -12,7 +12,7 @@ namespace aweXpect.Core;
 ///     called on.<br />
 ///     It is only used when an option is applied, never per evaluation.
 /// </remarks>
-public interface ICopyOnOption<in TOptions, out TResult>
+public interface ICopyOnOption<in TOptions, out TSelf>
 {
 	/// <summary>
 	///     Returns a copy of this result that uses the <paramref name="options" /> instead of its own.
@@ -24,5 +24,5 @@ public interface ICopyOnOption<in TOptions, out TResult>
 	///     its own options were used for, e.g. its matches and its description, and keep the rest of this result; it
 	///     offers them in a new <see cref="OptionsHolder{TOptions}" />, so that the holder of this result stays unchanged.
 	/// </remarks>
-	TResult WithOptions(TOptions options);
+	TSelf WithOptions(TOptions options);
 }

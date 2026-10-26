@@ -9,7 +9,7 @@ public static partial class ThatDelegateThrows
 	/// <summary>
 	///     Verifies that the message of the thrown exception…
 	/// </summary>
-	public static PropertyResult.String<Exception?, TException, IThatDelegateThrows<TException>> WithMessage<TException>(
+	public static PropertyResult.String<TException, IThatDelegateThrows<TException>, Exception?> WithMessage<TException>(
 		this IThatDelegateThrows<TException> subject)
 		where TException : Exception?
 		=> new(subject, e => e?.Message, "message",

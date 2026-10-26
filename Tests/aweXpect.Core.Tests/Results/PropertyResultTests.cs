@@ -14,7 +14,7 @@ public sealed partial class PropertyResultTests
 		Action<string?, string>? validation = null,
 		ExpectationGrammars grammars = ExpectationGrammars.None,
 		bool includeValueInContext = false)
-		: PropertyResult.String<MyClass?, MyClass?, IThat<MyClass?>>(subject, mapper, propertyExpression, validation,
+		: PropertyResult.String<MyClass?, IThat<MyClass?>, MyClass?>(subject, mapper, propertyExpression, validation,
 			grammars, includeValueInContext);
 
 	private class MyBaseClass
@@ -40,7 +40,7 @@ public sealed partial class PropertyResultTests
 		public string? StringValue { get; private init; }
 		public TimeSpan TimeSpanValue { get; private init; }
 
-		public static PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> HasDateTimeKindValue(
+		public static PropertyResult.Enum<MyClass?, IThat<MyClass?>, MyClass?, DateTimeKind> HasDateTimeKindValue(
 			DateTimeKind dateTimeKindValue, ExpectationGrammars grammars)
 		{
 			MyClass subject = new()
@@ -50,11 +50,11 @@ public sealed partial class PropertyResultTests
 #pragma warning disable aweXpect0001
 			IThat<MyClass> source = That(subject);
 #pragma warning restore aweXpect0001
-			return new PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind>(
+			return new PropertyResult.Enum<MyClass?, IThat<MyClass?>, MyClass?, DateTimeKind>(
 				source, a => a?.DateTimeKindValue, "kind value", grammars);
 		}
 
-		public static PropertyResult.Enum<MyClass?, MyClass?, IThat<MyClass?>, DateTimeKind> DateTimeKindValueOf(
+		public static PropertyResult.Enum<MyClass?, IThat<MyClass?>, MyClass?, DateTimeKind> DateTimeKindValueOf(
 			IThat<MyClass?> source, ExpectationGrammars grammars)
 			=> new(source, a => a?.DateTimeKindValue, "kind value", grammars);
 
@@ -142,7 +142,7 @@ public sealed partial class PropertyResultTests
 			return new PropertyResult.Decimal<MyClass?>(source, a => a?.DecimalValue, "decimal value");
 		}
 
-		public static PropertyResult.Decimal<MyClass?, MyClass?, IThat<MyClass?>> DecimalValueOf(
+		public static PropertyResult.Decimal<MyClass?, IThat<MyClass?>, MyClass?> DecimalValueOf(
 			IThat<MyClass?> source, ExpectationGrammars grammars)
 			=> new(source, a => a?.DecimalValue, "decimal value", grammars: grammars);
 
@@ -167,7 +167,7 @@ public sealed partial class PropertyResultTests
 			return new PropertyResult.Double<MyClass?>(source, a => a?.DoubleValue, "double value");
 		}
 
-		public static PropertyResult.Double<MyClass?, MyClass?, IThat<MyClass?>> DoubleValueOf(
+		public static PropertyResult.Double<MyClass?, IThat<MyClass?>, MyClass?> DoubleValueOf(
 			IThat<MyClass?> source, ExpectationGrammars grammars)
 			=> new(source, a => a?.DoubleValue, "double value", grammars: grammars);
 
@@ -183,7 +183,7 @@ public sealed partial class PropertyResultTests
 			return new PropertyResult.Int<MyClass?>(source, a => a?.IntValue, "int value");
 		}
 
-		public static PropertyResult.Int<MyClass?, MyClass?, IThat<MyClass?>> HasIntValue(int intValue,
+		public static PropertyResult.Int<MyClass?, IThat<MyClass?>, MyClass?> HasIntValue(int intValue,
 			ExpectationGrammars grammars)
 		{
 			MyClass subject = new()
@@ -193,11 +193,11 @@ public sealed partial class PropertyResultTests
 #pragma warning disable aweXpect0001
 			IThat<MyClass> source = That(subject);
 #pragma warning restore aweXpect0001
-			return new PropertyResult.Int<MyClass?, MyClass?, IThat<MyClass?>>(
+			return new PropertyResult.Int<MyClass?, IThat<MyClass?>, MyClass?>(
 				source, a => a?.IntValue, "int value", grammars: grammars);
 		}
 
-		public static PropertyResult.Int<MyClass?, MyClass?, IThat<MyClass?>> IntValueOf(IThat<MyClass?> source,
+		public static PropertyResult.Int<MyClass?, IThat<MyClass?>, MyClass?> IntValueOf(IThat<MyClass?> source,
 			ExpectationGrammars grammars)
 			=> new(source, a => a?.IntValue, "int value", grammars: grammars);
 
@@ -205,7 +205,7 @@ public sealed partial class PropertyResultTests
 		///     The mapper is typed at <see cref="MyBaseClass" /> while the result keeps <see cref="MyDerivedClass" />,
 		///     which is the shape a delegate produces when it narrows the exception type only at the result.
 		/// </summary>
-		public static PropertyResult.Int<MyBaseClass?, MyDerivedClass?, IThat<MyDerivedClass?>>
+		public static PropertyResult.Int<MyDerivedClass?, IThat<MyDerivedClass?>, MyBaseClass?>
 			HasIntValueOfNarrowedSubject(int intValue)
 		{
 			MyDerivedClass subject = new()
@@ -215,7 +215,7 @@ public sealed partial class PropertyResultTests
 #pragma warning disable aweXpect0001
 			IThat<MyDerivedClass> source = That(subject);
 #pragma warning restore aweXpect0001
-			return new PropertyResult.Int<MyBaseClass?, MyDerivedClass?, IThat<MyDerivedClass?>>(
+			return new PropertyResult.Int<MyDerivedClass?, IThat<MyDerivedClass?>, MyBaseClass?>(
 				source, a => a?.IntValue, "int value");
 		}
 
@@ -240,7 +240,7 @@ public sealed partial class PropertyResultTests
 			return new PropertyResult.Long<MyClass?>(source, a => a?.LongValue, "long value");
 		}
 
-		public static PropertyResult.Long<MyClass?, MyClass?, IThat<MyClass?>> HasLongValue(long longValue,
+		public static PropertyResult.Long<MyClass?, IThat<MyClass?>, MyClass?> HasLongValue(long longValue,
 			ExpectationGrammars grammars)
 		{
 			MyClass subject = new()
@@ -250,11 +250,11 @@ public sealed partial class PropertyResultTests
 #pragma warning disable aweXpect0001
 			IThat<MyClass> source = That(subject);
 #pragma warning restore aweXpect0001
-			return new PropertyResult.Long<MyClass?, MyClass?, IThat<MyClass?>>(
+			return new PropertyResult.Long<MyClass?, IThat<MyClass?>, MyClass?>(
 				source, a => a?.LongValue, "long value", grammars: grammars);
 		}
 
-		public static PropertyResult.Long<MyClass?, MyClass?, IThat<MyClass?>> LongValueOf(IThat<MyClass?> source,
+		public static PropertyResult.Long<MyClass?, IThat<MyClass?>, MyClass?> LongValueOf(IThat<MyClass?> source,
 			ExpectationGrammars grammars)
 			=> new(source, a => a?.LongValue, "long value", grammars: grammars);
 
@@ -310,7 +310,7 @@ public sealed partial class PropertyResultTests
 		///     The mapper is typed at <see cref="MyBaseClass" /> while the result keeps <see cref="MyDerivedClass" />,
 		///     which is the shape a delegate produces when it narrows the exception type only at the result.
 		/// </summary>
-		public static PropertyResult.String<MyBaseClass?, MyDerivedClass?, IThat<MyDerivedClass?>>
+		public static PropertyResult.String<MyDerivedClass?, IThat<MyDerivedClass?>, MyBaseClass?>
 			HasStringValueOfNarrowedSubject(string stringValue)
 		{
 			MyDerivedClass subject = new()
@@ -320,7 +320,7 @@ public sealed partial class PropertyResultTests
 #pragma warning disable aweXpect0001
 			IThat<MyDerivedClass> source = That(subject);
 #pragma warning restore aweXpect0001
-			return new PropertyResult.String<MyBaseClass?, MyDerivedClass?, IThat<MyDerivedClass?>>(
+			return new PropertyResult.String<MyDerivedClass?, IThat<MyDerivedClass?>, MyBaseClass?>(
 				source, a => a?.StringValue, "string value");
 		}
 
@@ -345,7 +345,7 @@ public sealed partial class PropertyResultTests
 			return new PropertyResult.TimeSpan<MyClass?>(source, a => a?.TimeSpanValue, "TimeSpan value");
 		}
 
-		public static PropertyResult.TimeSpan<MyClass?, MyClass?, IThat<MyClass?>> HasTimeSpanValue(
+		public static PropertyResult.TimeSpan<MyClass?, IThat<MyClass?>, MyClass?> HasTimeSpanValue(
 			TimeSpan timeSpanValue, ExpectationGrammars grammars)
 		{
 			MyClass subject = new()
@@ -355,7 +355,7 @@ public sealed partial class PropertyResultTests
 #pragma warning disable aweXpect0001
 			IThat<MyClass> source = That(subject);
 #pragma warning restore aweXpect0001
-			return new PropertyResult.TimeSpan<MyClass?, MyClass?, IThat<MyClass?>>(
+			return new PropertyResult.TimeSpan<MyClass?, IThat<MyClass?>, MyClass?>(
 				source, a => a?.TimeSpanValue, "TimeSpan value", grammars: grammars);
 		}
 
@@ -368,7 +368,7 @@ public sealed partial class PropertyResultTests
 			return new PropertyResult.TimeSpan<MyClass?>(source, a => a?.TimeSpanValue, "TimeSpan value");
 		}
 
-		public static PropertyResult.TimeSpan<MyClass?, MyClass?, IThat<MyClass?>> TimeSpanValueOf(
+		public static PropertyResult.TimeSpan<MyClass?, IThat<MyClass?>, MyClass?> TimeSpanValueOf(
 			IThat<MyClass?> source, ExpectationGrammars grammars)
 			=> new(source, a => a?.TimeSpanValue, "TimeSpan value", grammars: grammars);
 
