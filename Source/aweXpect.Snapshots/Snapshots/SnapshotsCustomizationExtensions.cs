@@ -36,6 +36,8 @@ public static class SnapshotsCustomizationExtensions
 				});
 			Acceptance = new CustomizationValue<SnapshotAcceptance?>(awexpectCustomization,
 				"aweXpect.Snapshots.Acceptance", null);
+			AttachPendingFiles = new CustomizationValue<bool>(awexpectCustomization,
+				"aweXpect.Snapshots.AttachPendingFiles", false);
 			NamedAfterTestArguments = new CustomizationValue<bool>(awexpectCustomization,
 				"aweXpect.Snapshots.NamedAfterTestArguments", false);
 			Comparers = new CustomizationListValue<SnapshotComparerRegistration>(awexpectCustomization,
@@ -56,6 +58,17 @@ public static class SnapshotsCustomizationExtensions
 		///     is detected, so that a forgotten variable cannot change the snapshots on a build server.
 		/// </remarks>
 		public ICustomizationValueSetter<SnapshotAcceptance?> Acceptance { get; }
+
+		/// <summary>
+		///     Whether the pending file of a recorded mismatch is attached to the result of the test, so that it can be
+		///     reviewed after a run on a build server.
+		/// </summary>
+		/// <remarks>
+		///     Defaults to <see langword="false" />. It only applies when the test framework supports attachments, see
+		///     <see cref="aweXpect.Core.Adapters.TestFrameworkRegistry.TryAddAttachment" />, and to a store that records
+		///     the mismatch in a file, like the default one.
+		/// </remarks>
+		public ICustomizationValueSetter<bool> AttachPendingFiles { get; }
 
 		/// <summary>
 		///     The comparers for the snapshots that their condition selects, e.g.
@@ -85,7 +98,8 @@ public static class SnapshotsCustomizationExtensions
 		///     The arguments are written like those of <c>.NamedAfter(…)</c>: in the invariant culture and separated by
 		///     <c>_</c>, <see langword="null" /> as <c>null</c>, an empty string as <c>""</c>, a <see cref="double" /> or
 		///     <see cref="float" /> with the fewest digits that round-trip, and a collection, tuple, record or other object
-		///     like in a snapshot, e.g. <c>[1, 2, 3]</c>; a <see cref="System.Threading.CancellationToken" /> is skipped. Like every name, a name longer than 64 characters in the file name, where each escaped character
+		///     like in a snapshot, e.g. <c>[1, 2, 3]</c>; a <see cref="System.Threading.CancellationToken" /> is skipped. The
+		///     arguments of a parameterized test class come first, but only values, so that an injected fixture is skipped. Like every name, a name longer than 64 characters in the file name, where each escaped character
 		///     takes three, is shortened and ends with <c>~</c> and a hash of the whole name, so that it stays unique.<br />
 		///     An argument that is written differently in each run, e.g. a new <see cref="System.Guid" />, gives the snapshot
 		///     another name in each run, so name such a test with <c>.Named(…)</c> or <c>.NamedAfter(…)</c> instead.

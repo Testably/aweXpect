@@ -689,7 +689,7 @@ public static partial class ThatSnapshot
 				return;
 			}
 
-			if (settings.Store is IFileSnapshotStore fileStore)
+			if (settings.AttachPendingFiles && settings.Store is IFileSnapshotStore fileStore)
 			{
 				// So that the recorded mismatch can be reviewed after a run on a build server; attaching never throws.
 				_ = TestFrameworkRegistry.TryAddAttachment(fileStore.GetPendingFile(id), "The received snapshot");

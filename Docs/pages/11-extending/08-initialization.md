@@ -136,7 +136,8 @@ namespace MyTests
             MyTestContext? context = MyTestContext.Current;
             currentTest = context is null
                 ? null
-                : new RunningTest(new TestIdentity(context.ClassName, context.MethodName, context.Arguments),
+                : new RunningTest(new TestIdentity(context.ClassName, context.ClassArguments, context.MethodName,
+                    context.Arguments),
                     context.Id, context.DisplayName, context.RetryCount);
             return currentTest is not null;
         }
@@ -185,8 +186,8 @@ namespace MyTests
 ### The running test
 
 The `TryGetCurrentTest` of an adapter returns the `RunningTest`, or `false` when its test framework does not expose it.
-Its `Identity` holds what identifies the test in every run: the full name of the test class, the name of the test
-method and the arguments of the test case. When the test framework reports them, the `RunningTest` also holds the `Id`
+Its `Identity` holds what identifies the test in every run: the full name of the test class and its arguments, the name
+of the test method and the arguments of the test case. When the test framework reports them, the `RunningTest` also holds the `Id`
 and the `DisplayName` of the test case and its `RetryAttempt`, which counts the runs of the test before, e.g. by a
 retry: `0` for the first run. The `Id` is only unique within one test run, so it does not belong in a persisted name.
 An extension reads the running test with `TestFrameworkRegistry.TryGetCurrentTest`, e.g. to tell the cases of a
@@ -208,15 +209,20 @@ internal static class MyCaseNames
 - It returns `false` when the test framework does not expose the running test, or when no test is running, e.g. in a
   setup of the whole assembly. Handle that case, as not every test framework exposes the running test.
 - The generated adapters return it for NUnit, TUnit and xUnit v3. MSTest 4 marks its `TestContext.Current` as
-  experimental and MSTest 3 lacks it, and xUnit v2 has no context of the running test, so their adapters return
-  `false`. xUnit v3 has no retries, so its `RetryAttempt` is always `0`, and NUnit also counts the runs of `[Repeat]`.
+  experimental, so its adapter only uses it when the test project sets
+  `<AweXpectExperimentalMSTest>true</AweXpectExperimentalMSTest>`, and then suppresses the diagnostic `MSTESTEXP` in
+  its own code. MSTest 3 lacks it and xUnit v2 has no context of the running test, so their adapters return `false`.
+- The arguments of the test class are those of a parameterized fixture of NUnit 4 or later and of a TUnit test class,
+  including the objects that the test framework injects, e.g. a shared fixture. They are empty for the other test
+  frameworks.
+- xUnit v3 has no retries, so its `RetryAttempt` is always `0`, and NUnit also counts the runs of `[Repeat]`.
 
 `TestFrameworkRegistry.TryGetCancellationToken` returns the token with which the test framework cancels the running
 test. Expectations only observe it when `Settings().TestCancellation` is set to
 `TestCancellation.FromCancellationToken(…)` with it, see
 [time and cancellation](../03-how-it-works/06-time-and-cancellation.md#cancellationtoken).
 `TestFrameworkRegistry.TryAddAttachment(filePath, description)` attaches a file to the result of the running test, as
-`aweXpect.Snapshots` does with a recorded mismatch:
+`aweXpect.Snapshots` does with a recorded mismatch when `AttachPendingFiles` is set:
 
 ```csharp
 using aweXpect.Core.Adapters;
@@ -231,8 +237,9 @@ internal static class MyReports
 - Both return `false` when the test framework does not support it, no test is running or the test framework fails,
   e.g. because the file does not exist. Like `TryGetCurrentTest`, they never throw: the registry also returns `false`
   when an adapter throws, but an adapter of your own should still return `false` instead. The generated adapters
-  support both for TUnit and xUnit v3, and NUnit 4 or later; NUnit 3 only supports attachments.
-- NUnit and TUnit only read the file when the test ends, so it must still exist then. xUnit v3 attaches the content of
+  support both for TUnit and xUnit v3, NUnit 4 or later, and MSTest 4 with `AweXpectExperimentalMSTest`; NUnit 3 only
+  supports attachments.
+- MSTest, NUnit and TUnit only read the file when the test ends, so it must still exist then. xUnit v3 attaches the content of
   the file immediately, under its name.
 
 ## Registration from the test project

@@ -225,7 +225,7 @@ public sealed class AweXpectInitializationTests
 	public async Task TryAddAttachment_WhenFrameworkSupportsAttachments_ShouldAttachTheFile()
 	{
 		TestContextFrameworkAdapter adapter = new(
-			new RunningTest(new TestIdentity("MyTests.AlbumTests", "Album", []), null, null, 0),
+			new RunningTest(new TestIdentity("MyTests.AlbumTests", [], "Album", []), null, null, 0),
 			CancellationToken.None);
 		AweXpectInitialization.InitializationState state = new(adapter);
 
@@ -264,7 +264,7 @@ public sealed class AweXpectInitializationTests
 		using CancellationTokenSource cts = new();
 		AweXpectInitialization.InitializationState state = new(
 			new TestContextFrameworkAdapter(
-				new RunningTest(new TestIdentity("MyTests.AlbumTests", "Album", []), null, null, 0), cts.Token));
+				new RunningTest(new TestIdentity("MyTests.AlbumTests", [], "Album", []), null, null, 0), cts.Token));
 
 		bool hasToken = state.TryGetCancellationToken(out CancellationToken cancellationToken);
 
@@ -300,7 +300,7 @@ public sealed class AweXpectInitializationTests
 	public async Task TryGetCurrentTest_WhenFrameworkExposesTheRunningTest_ShouldReturnItsTest()
 	{
 		RunningTest runningTest = new(
-			new TestIdentity("MyTests.AlbumTests", "Album_MatchesSnapshot", ["Abbey Road",]), null, null, 0);
+			new TestIdentity("MyTests.AlbumTests", [], "Album_MatchesSnapshot", ["Abbey Road",]), null, null, 0);
 		AweXpectInitialization.InitializationState state = new(
 			new TestContextFrameworkAdapter(runningTest, CancellationToken.None));
 

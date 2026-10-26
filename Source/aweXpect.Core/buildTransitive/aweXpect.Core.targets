@@ -35,4 +35,14 @@
 		</PropertyGroup>
 	</Target>
 
+	<!--
+	    MSTest marks `TestContext.Current` as experimental, so the generated adapter of MSTest only reads the running
+	    test, its cancellation token and attachments when `AweXpectExperimentalMSTest` is `true`, and then suppresses
+	    the diagnostic MSTESTEXP in its own code.
+	-->
+	<ItemGroup>
+		<CompilerVisibleProperty Remove="AweXpectExperimentalMSTest"/>
+		<CompilerVisibleProperty Include="AweXpectExperimentalMSTest"/>
+	</ItemGroup>
+
 </Project>

@@ -76,6 +76,7 @@ parameter keeps the snapshot, and it is escaped and shortened like any other nam
 - `null` is written as `null` and an empty string as `""`.
 - A `double` or `float` is written with the fewest digits that round-trip, the same on .NET Framework and .NET, e.g.
   `0.3333333333333333` for `1.0 / 3`.
+- A date or time is written in ISO 8601, e.g. `1969-09-26T00:00:00.0000000`.
 - A collection, tuple, record or other object is written like in a snapshot, e.g. `[1, 2, 3]` or
   `(4.5, "Something")`, with the items of a set sorted. An object with its own `ToString()` is written by it, any other
   one with its members.
@@ -110,6 +111,11 @@ The arguments are written like those of `.NamedAfter(…)`, e.g.
 `AlbumTests.Describes.Abbey Road_1969.awexpect-snapshot.txt`, and an injected `CancellationToken` is skipped. A test
 without parameters keeps its snapshot.
 
+The arguments of a parameterized test class come first, e.g. `de-DE_Abbey Road` for NUnit `[TestFixture("de-DE")]` or
+TUnit `[Arguments("de-DE")]` on the class, so that its instances are kept apart as well. Only values are included, e.g.
+strings, numbers, dates or collections of them, so that an object that the test framework injects, e.g. a shared
+fixture, is skipped. xUnit v3 and MSTest have no arguments of the test class, and NUnit 3 does not expose them.
+
 `.Named(…)` is appended to the arguments, e.g. `.Named("cover")` gives `Abbey Road_1969_cover`, so that each case can
 hold several snapshots, while `.NamedAfter(…)` replaces them. Two cases whose arguments are written alike, e.g. two
 objects whose own `ToString()` returns the same text, share a snapshot and fail like any snapshot that is used for
@@ -118,18 +124,27 @@ another value.
 The name has to be the same in every run, so name a test with `.Named(…)` or `.NamedAfter(…)` instead when one of its
 arguments is written differently each time, e.g. a `Guid.NewGuid()`, a `DateTime.Now`, a mock or any other object whose
 `ToString()` contains a random value or a hash code. Otherwise each run looks for another snapshot and fails, as it
-does not exist yet. When the `ToString()` of an argument throws, the name holds the exception like a snapshot would,
-but `MatchesSnapshot()` throws it for a number, a date or another `IFormattable` argument.
+does not exist yet. When the `ToString()` of an argument throws, the name holds the exception like a snapshot would.
 
 The running test is only known when the test framework exposes it:
 
-| Test framework | Supported | Reason                                                                     |
-|----------------|-----------|----------------------------------------------------------------------------|
-| NUnit 3 to 5   | yes       | `TestContext.CurrentContext.Test`                                          |
-| TUnit          | yes       | `TestContext.Current`                                                      |
-| xUnit v3       | yes       | `TestContext.Current.Test`                                                 |
-| MSTest         | no        | `TestContext.Current` is experimental in MSTest 4 and missing in MSTest 3 |
-| xUnit v2       | no        | there is no context of the running test                                    |
+| Test framework | Supported    | Reason                                                                         |
+|----------------|--------------|--------------------------------------------------------------------------------|
+| NUnit 3 to 5   | yes          | `TestContext.CurrentContext.Test`                                              |
+| TUnit          | yes          | `TestContext.Current`                                                          |
+| xUnit v3       | yes          | `TestContext.Current.Test`                                                     |
+| MSTest 4       | when enabled | `TestContext.Current` is experimental, see below                               |
+| MSTest 3       | no           | `TestContext.Current` is missing                                               |
+| xUnit v2       | no           | there is no context of the running test                                        |
+
+MSTest 4 marks `TestContext.Current` as experimental, so it is only used when the test project opts in, which also
+suppresses the diagnostic `MSTESTEXP` in the generated code:
+
+```xml
+<PropertyGroup>
+  <AweXpectExperimentalMSTest>true</AweXpectExperimentalMSTest>
+</PropertyGroup>
+```
 
 Without it, the snapshot keeps the name of the test method, as without the setting.
 

@@ -7,7 +7,7 @@ public sealed class RunningTestTests
 	[Test]
 	public async Task ShouldKeepTheIdentityTheIdTheDisplayNameAndTheRetryAttempt()
 	{
-		TestIdentity identity = new("MyTests.AlbumTests", "Album_MatchesSnapshot", ["Abbey Road",]);
+		TestIdentity identity = new("MyTests.AlbumTests", [], "Album_MatchesSnapshot", ["Abbey Road",]);
 
 		RunningTest runningTest = new(identity, "1001", "Album_MatchesSnapshot(\"Abbey Road\")", 2);
 
@@ -20,7 +20,7 @@ public sealed class RunningTestTests
 	[Test]
 	public async Task WithNegativeRetryAttempt_ShouldThrowArgumentOutOfRangeException()
 	{
-		TestIdentity identity = new("MyTests.AlbumTests", "Album_MatchesSnapshot", []);
+		TestIdentity identity = new("MyTests.AlbumTests", [], "Album_MatchesSnapshot", []);
 
 		void Act() => _ = new RunningTest(identity, null, null, -1);
 
@@ -40,7 +40,7 @@ public sealed class RunningTestTests
 	[Test]
 	public async Task WithoutIdAndDisplayName_ShouldKeepThemNull()
 	{
-		RunningTest runningTest = new(new TestIdentity("MyTests.AlbumTests", "Album_MatchesSnapshot", []), null,
+		RunningTest runningTest = new(new TestIdentity("MyTests.AlbumTests", [], "Album_MatchesSnapshot", []), null,
 			null, 0);
 
 		await That(runningTest.Id).IsNull();

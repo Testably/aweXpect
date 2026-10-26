@@ -183,8 +183,8 @@ a virtual time system.
   `ExcludingForwardedTypes`, and needs no extra `using`.
 - `MatchesPublicApiSnapshot` has one overload per subject with an optional `options` parameter instead of one with and
   one without options. Calls compile unchanged, but have to be compiled again.
-- A recorded mismatch is attached to the result of the test, when the test framework supports attachments, and a retry
-  of a test no longer conflicts with the value of its failed attempt.
+- With `AttachPendingFiles`, a recorded mismatch is attached to the result of the test, when the test framework
+  supports attachments, and a retry of a test no longer conflicts with the value of its failed attempt.
 
 ### aweXpect.Web
 

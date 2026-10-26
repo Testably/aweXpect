@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -45,6 +46,10 @@ internal static class SnapshotTestArguments
 	///     Returns the name of the arguments of the running test, before it is shortened, or <see langword="null" /> when
 	///     the setting is off, the test framework does not expose the running test, or the test has no arguments.
 	/// </summary>
+	/// <remarks>
+	///     The arguments of the test class come first, but only those that are values, as a test framework also injects
+	///     shared fixtures into the constructor, whose members can change from run to run.
+	/// </remarks>
 	public static string? GetName()
 	{
 		if (!Customize.aweXpect.Snapshots().NamedAfterTestArguments.Get() ||
@@ -55,10 +60,21 @@ internal static class SnapshotTestArguments
 
 		// A CancellationToken parameter is injected by the test framework and is the same in every case, so it is skipped,
 		// and a test whose only parameter is a token keeps the snapshot of a test without parameters.
-		object?[] arguments = currentTest.Identity.Arguments.Where(argument => argument is not CancellationToken)
+		object?[] arguments = currentTest.Identity.ClassArguments.Where(IsValue)
+			.Concat(currentTest.Identity.Arguments.Where(argument => argument is not CancellationToken))
 			.ToArray();
 		return arguments.Length == 0 ? null : Format(arguments);
 	}
+
+	/// <summary>
+	///     Whether the <paramref name="argument" /> is a value, or a collection of values, rather than an injected object.
+	/// </summary>
+	private static bool IsValue(object? argument)
+		=> IsScalar(argument) ||
+		   (argument is IEnumerable items && items.Cast<object?>().All(IsScalar));
+
+	private static bool IsScalar(object? value)
+		=> value is null or string or bool or char or IFormattable;
 
 	/// <summary>
 	///     Writes the <paramref name="values" /> in the invariant culture, separated by <c>_</c>.
@@ -84,9 +100,10 @@ internal static class SnapshotTestArguments
 
 	/// <remarks>
 	///     A <see cref="double" /> or <see cref="float" /> is written with the fewest digits that round-trip, see
-	///     <see cref="RoundTripNumber" />. A collection, tuple, record or other object is written like in a snapshot, as its
-	///     <see cref="object.ToString()" /> is often the name of its type or uses the current culture, and so that a set is
-	///     sorted and a collection that contains itself does not overflow the stack.
+	///     <see cref="RoundTripNumber" />. A date, time, collection, tuple, record or other object is written like in a
+	///     snapshot, as its <see cref="object.ToString()" /> is often the name of its type or uses the current culture, so
+	///     that a date is written in ISO 8601, a set is sorted and a collection that contains itself does not overflow the
+	///     stack.
 	/// </remarks>
 	private static void Append(StringBuilder stringBuilder, object? value)
 	{
@@ -104,8 +121,8 @@ internal static class SnapshotTestArguments
 			case float number:
 				RoundTripNumber.Append(stringBuilder, number, true);
 				break;
-			case IFormattable formattable:
-				stringBuilder.Append(formattable.ToString(null, CultureInfo.InvariantCulture));
+			case byte or sbyte or short or ushort or int or uint or long or ulong or decimal or Enum:
+				stringBuilder.Append(((IFormattable)value).ToString(null, CultureInfo.InvariantCulture));
 				break;
 			case bool or char:
 				stringBuilder.Append(value);

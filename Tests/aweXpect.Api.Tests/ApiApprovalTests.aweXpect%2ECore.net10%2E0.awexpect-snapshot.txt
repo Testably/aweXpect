@@ -788,8 +788,9 @@ namespace aweXpect.Core.Adapters
     }
     public sealed class TestIdentity
     {
-        public TestIdentity(string className, string methodName, System.Collections.Generic.IReadOnlyList<object?> arguments) { }
+        public TestIdentity(string className, System.Collections.Generic.IReadOnlyList<object?> classArguments, string methodName, System.Collections.Generic.IReadOnlyList<object?> arguments) { }
         public System.Collections.Generic.IReadOnlyList<object?> Arguments { get; }
+        public System.Collections.Generic.IReadOnlyList<object?> ClassArguments { get; }
         public string ClassName { get; }
         public string MethodName { get; }
     }

@@ -6,6 +6,7 @@ using aweXpect.Core.Generators;
 using aweXpect.Core.Metadata;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Emit;
 
 namespace aweXpect.Generators.Tests;
@@ -18,6 +19,16 @@ internal static class GeneratorRunner
 
 	public static GeneratorResult Run(IIncrementalGenerator generator, string[] sources, bool referenceCore = true,
 		LanguageVersion languageVersion = LanguageVersion.Latest, params MetadataReference[] additionalReferences)
+		=> Run(generator, sources, new Dictionary<string, string>(), referenceCore, languageVersion,
+			additionalReferences);
+
+	/// <summary>
+	///     Runs the <paramref name="generator" /> with the <paramref name="globalOptions" />, e.g.
+	///     <c>build_property.X</c> for an MSBuild property <c>X</c> that is visible to the compiler.
+	/// </summary>
+	public static GeneratorResult Run(IIncrementalGenerator generator, string[] sources,
+		Dictionary<string, string> globalOptions, bool referenceCore = true,
+		LanguageVersion languageVersion = LanguageVersion.Latest, params MetadataReference[] additionalReferences)
 	{
 		CSharpParseOptions parseOptions = new(languageVersion);
 		List<SyntaxTree> trees = Parse(sources, parseOptions);
@@ -26,7 +37,7 @@ internal static class GeneratorRunner
 			parseOptions.LanguageVersion >= LanguageVersion.CSharp8);
 
 		GeneratorDriver driver = CSharpGeneratorDriver.Create([generator.AsSourceGenerator(),],
-			parseOptions: parseOptions);
+			parseOptions: parseOptions, optionsProvider: new GlobalOptionsProvider(globalOptions));
 		driver.RunGeneratorsAndUpdateCompilation(compilation, out Compilation output,
 			out ImmutableArray<Diagnostic> generatorDiagnostics);
 
@@ -139,6 +150,22 @@ internal static class GeneratorRunner
 		}
 
 		return paths.Values.Select(path => MetadataReference.CreateFromFile(path));
+	}
+
+	private sealed class GlobalOptionsProvider(Dictionary<string, string> globalOptions)
+		: AnalyzerConfigOptionsProvider
+	{
+		public override AnalyzerConfigOptions GlobalOptions { get; } = new Options(globalOptions);
+
+		public override AnalyzerConfigOptions GetOptions(SyntaxTree tree) => new Options([]);
+
+		public override AnalyzerConfigOptions GetOptions(AdditionalText textFile) => new Options([]);
+
+		private sealed class Options(Dictionary<string, string> options) : AnalyzerConfigOptions
+		{
+			public override bool TryGetValue(string key, out string value)
+				=> options.TryGetValue(key, out value!);
+		}
 	}
 
 	public readonly record struct GeneratorResult(

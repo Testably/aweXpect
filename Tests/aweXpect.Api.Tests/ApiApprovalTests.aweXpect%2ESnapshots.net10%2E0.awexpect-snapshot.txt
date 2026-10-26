@@ -221,6 +221,7 @@ namespace aweXpect.Snapshots
         public class SnapshotsCustomization
         {
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotAcceptance?> Acceptance { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<bool> AttachPendingFiles { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotComparerRegistration>> Comparers { get; }
             public aweXpect.Customization.ICustomizationValueSetter<bool> NamedAfterTestArguments { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotReporter>> Reporters { get; }

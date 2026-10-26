@@ -16,7 +16,24 @@ public sealed partial class ThatSnapshot
 			private static int _retriedAttempts;
 
 			[Test]
-			public async Task WhenMismatchIsRecordedInAFile_ShouldAttachThePendingFileToTheTest()
+			public async Task WhenAttachingPendingFiles_ShouldAttachThePendingFileToTheTest()
+			{
+				using SnapshotDirectory directory = new();
+				directory.WriteSnapshot("outdated");
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AttachPendingFiles.Set(true);
+
+				async Task Act()
+					=> await That("foo").MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("*Pending snapshot:*").AsWildcard();
+				await That(TestContext.Current!.Output.Artifacts.Select(x => x.File.FullName))
+					.Contains(directory.PendingPath)
+					.Because("the recorded mismatch can be reviewed in the results of the test, e.g. on a build server");
+			}
+
+			[Test]
+			public async Task WhenMismatchIsRecordedInAFile_ShouldNotAttachThePendingFileByDefault()
 			{
 				using SnapshotDirectory directory = new();
 				directory.WriteSnapshot("outdated");
@@ -27,8 +44,8 @@ public sealed partial class ThatSnapshot
 				await That(Act).Throws<FailException>()
 					.WithMessage("*Pending snapshot:*").AsWildcard();
 				await That(TestContext.Current!.Output.Artifacts.Select(x => x.File.FullName))
-					.Contains(directory.PendingPath)
-					.Because("the recorded mismatch can be reviewed in the results of the test, e.g. on a build server");
+					.DoesNotContain(directory.PendingPath)
+					.Because("attaching the pending file is opt-in");
 			}
 
 			[Test]

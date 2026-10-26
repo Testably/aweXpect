@@ -16,6 +16,7 @@ namespace Snippets
 	{
 		public static MyTestContext? Current => null;
 		public string ClassName { get; } = className;
+		public object?[] ClassArguments { get; } = [];
 		public string MethodName { get; } = methodName;
 		public object?[] Arguments { get; } = arguments;
 		public string? Id => null;

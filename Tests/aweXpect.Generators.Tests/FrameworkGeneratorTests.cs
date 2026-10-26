@@ -68,7 +68,17 @@ public sealed class FrameworkGeneratorTests
 		                                                                            			public object?[] Arguments => [];
 		                                                                            			public string ID => "";
 		                                                                            			public string Name => "";
+		                                                                            			public NUnit.Framework.Interfaces.ITest? Parent => null;
 		                                                                            		}
+		                                                                            	}
+		                                                                            }
+		                                                                            namespace NUnit.Framework.Interfaces
+		                                                                            {
+		                                                                            	public interface ITest
+		                                                                            	{
+		                                                                            		ITest? Parent { get; }
+		                                                                            		object? Method { get; }
+		                                                                            		object?[] Arguments { get; }
 		                                                                            	}
 		                                                                            }
 		                                                                            """),
@@ -93,6 +103,7 @@ public sealed class FrameworkGeneratorTests
 		                                                                  		public System.Type ClassType => typeof(object);
 		                                                                  		public string MethodName => "";
 		                                                                  		public object?[] TestMethodArguments => [];
+		                                                                  		public object?[] TestClassArguments => [];
 		                                                                  		public string TestId => "";
 		                                                                  	}
 		                                                                  }
@@ -448,6 +459,20 @@ public sealed class FrameworkGeneratorTests
 	}
 
 	[Test]
+	[Arguments("NunitAdapter", "nunit.framework", "fixture.Arguments")]
+	[Arguments("TUnitAdapter", "TUnit.Core", "details.TestClassArguments")]
+	public async Task WhenFrameworkExposesTheClassArguments_ShouldPassThem(string adapter, string framework,
+		string classArguments)
+	{
+		GeneratorRunner.GeneratorResult result = Run(framework, LanguageVersion.Latest);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains($"class {adapter} ").And
+			.Contains(classArguments)
+			.Because("the arguments of a parameterized test class tell its instances apart");
+	}
+
+	[Test]
 	[Arguments("MsTestAdapter", "MSTest.TestFramework")]
 	[Arguments("NunitAdapter", "nunit.framework")]
 	[Arguments("TUnitAdapter", "TUnit.Core")]
@@ -461,6 +486,51 @@ public sealed class FrameworkGeneratorTests
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated).Contains($"class {adapter} ").And
 			.Contains("new global::aweXpect.Core.Adapters.TestIdentity(");
+	}
+
+	[Test]
+	[Arguments("true", true)]
+	[Arguments("True", true)]
+	[Arguments("false", false)]
+	[Arguments("", false)]
+	public async Task WhenMsTestIsExperimental_ShouldOnlyUseItWhenAllowed(string allowsExperimental, bool isUsed)
+	{
+		MetadataReference msTest = GeneratorRunner.CompileToReference("MSTest.TestFramework", """
+			namespace Microsoft.VisualStudio.TestTools.UnitTesting
+			{
+				public class AssertFailedException : System.Exception
+				{
+					public AssertFailedException(string message) : base(message) { }
+					public AssertFailedException(string message, System.Exception inner) : base(message, inner) { }
+				}
+				public class AssertInconclusiveException(string message) : System.Exception(message);
+				public class TestContext
+				{
+					[System.Diagnostics.CodeAnalysis.Experimental("MSTESTEXP")]
+					public static TestContext? Current => null;
+					public string? FullyQualifiedTestClassName => null;
+					public string? TestName => null;
+					public object?[]? TestData => null;
+					public System.Threading.CancellationToken CancellationToken => default;
+					public void AddResultFile(string fileName) { }
+				}
+			}
+			""");
+
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new FrameworkGenerator(),
+			["public class Foo { }",],
+			new Dictionary<string, string>
+			{
+				["build_property.AweXpectExperimentalMSTest"] = allowsExperimental,
+			}, true, LanguageVersion.Latest, msTest, Xunit2Assert);
+
+		await That(result.Errors).IsEmpty()
+			.Because("the generated code suppresses the diagnostic of the experimental API it uses");
+		await That(result.Generated.Contains("new global::aweXpect.Core.Adapters.TestIdentity(")).IsEqualTo(isUsed);
+		await That(result.Generated.Contains("cancellationToken = context.CancellationToken;")).IsEqualTo(isUsed);
+		await That(result.Generated.Contains("context.AddResultFile(filePath);")).IsEqualTo(isUsed);
+		await That(result.Generated.Contains("#pragma warning disable MSTESTEXP")).IsEqualTo(isUsed)
+			.Because("the experimental API of MSTest is only used when the consumer opts in");
 	}
 
 	[Test]

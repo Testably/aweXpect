@@ -122,9 +122,9 @@ public sealed partial class ThatSnapshot
 					decimal price = 12.99m;
 					DateTime released = new(1969, 9, 26);
 
-					await ShouldBeNamed("12.99_09/26/1969 00:00:00",
+					await ShouldBeNamed("12.99_1969-09-26T00:00:00.0000000",
 						result => result.NamedAfter(price, released),
-						"the snapshot must have the same name on every machine");
+						"the snapshot must have the same name on every machine, with a date in ISO 8601");
 				}
 				finally
 				{
