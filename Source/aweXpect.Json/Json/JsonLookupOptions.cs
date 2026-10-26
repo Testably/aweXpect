@@ -10,6 +10,7 @@ namespace aweXpect.Json;
 ///     An immutable value: the option methods return new options, and <see langword="default" /> is like
 ///     <see cref="Default" />.
 /// </remarks>
+[ImmutableOptions]
 public readonly struct JsonLookupOptions
 {
 	/// <summary>

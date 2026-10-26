@@ -15,6 +15,7 @@ namespace aweXpect.Xml;
 /// <remarks>
 ///     The options are immutable: each extension method in <see cref="XmlOptionsExtensions" /> returns a modified copy.
 /// </remarks>
+[ImmutableOptions]
 public sealed class XmlOptions
 {
 	/// <summary>

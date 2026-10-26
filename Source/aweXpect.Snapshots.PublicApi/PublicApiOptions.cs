@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using aweXpect.Core;
 
 namespace aweXpect.Snapshots.PublicApi;
 
@@ -10,6 +11,7 @@ namespace aweXpect.Snapshots.PublicApi;
 ///     The options are selected like the rules of a snapshot, e.g.
 ///     <c>o => o.Within.Namespace("MyLibrary").Ignoring.Type&lt;Legacy&gt;()</c>.
 /// </remarks>
+[ImmutableOptions]
 public sealed class PublicApiOptions
 {
 	/// <summary>

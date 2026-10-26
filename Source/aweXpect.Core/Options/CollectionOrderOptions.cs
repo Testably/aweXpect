@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using aweXpect.Core;
 using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
@@ -11,6 +12,7 @@ namespace aweXpect.Options;
 ///     An immutable value: <see cref="SetComparer(IComparer{TElement})" /> returns new options, and
 ///     <see langword="default" /> uses the default comparer, like <see cref="Default" />.
 /// </remarks>
+[ImmutableOptions]
 public readonly struct CollectionOrderOptions<TElement>
 {
 	private readonly IComparer<TElement>? _comparer;

@@ -10,6 +10,7 @@ namespace aweXpect.Options;
 ///     An immutable value: a new predicate creates new options, and
 ///     <see langword="default" /> matches every item, like <see cref="Default" />.
 /// </remarks>
+[ImmutableOptions]
 internal readonly struct PredicateOptions<TItem>
 {
 	private readonly Func<TItem, bool>? _predicate;

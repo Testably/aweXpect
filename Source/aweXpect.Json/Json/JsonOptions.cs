@@ -14,6 +14,7 @@ namespace aweXpect.Json;
 /// <remarks>
 ///     The options are immutable: each extension method in <see cref="JsonOptionsExtensions" /> returns a modified copy.
 /// </remarks>
+[ImmutableOptions]
 public class JsonOptions
 {
 	/// <summary>

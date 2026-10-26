@@ -204,9 +204,11 @@ quantifier.AtLeast(2);                             // fixed: the option method o
 ```
 
 The options are immutable values, so an option method returns new options and leaves the ones it is called on
-unchanged. A call that is the whole body of a lambda or local function written with `=>` is not reported, as it is
-usually there to check that the option throws. This mostly concerns the authors of extensions, see
-[Options](./11-extending/05-options.md).
+unchanged. The rule covers every options type marked with `[ImmutableOptions]`: those of aweXpect, those of the
+extension packages, e.g. the `JsonOptions`, also in a lambda with a block body like
+`o => { o.IgnoringMember("id"); return o; }`, and those of other extensions that mark their own. A call that is the
+whole body of a lambda or local function written with `=>` is not reported, as it is usually there to check that the
+option throws. Authors of extensions find more in [Options](./11-extending/05-options.md#options-of-your-own).
 
 ## Nullability suppressor
 

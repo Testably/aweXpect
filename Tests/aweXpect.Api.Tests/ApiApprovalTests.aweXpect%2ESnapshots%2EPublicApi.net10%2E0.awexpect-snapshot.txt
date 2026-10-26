@@ -32,6 +32,7 @@ namespace aweXpect.Snapshots.PublicApi
         public aweXpect.Snapshots.PublicApi.PublicApiOptions Type(string fullName) { }
         public aweXpect.Snapshots.PublicApi.PublicApiOptions Type<TType>() { }
     }
+    [aweXpect.Core.ImmutableOptions]
     public sealed class PublicApiOptions
     {
         public PublicApiOptions() { }

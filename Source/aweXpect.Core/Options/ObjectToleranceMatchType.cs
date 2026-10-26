@@ -14,6 +14,7 @@ namespace aweXpect.Options;
 ///     applies its default tolerance, and <see cref="Within(TTolerance)" /> returns a new value with the specified
 ///     tolerance, so that a stored value never changes.
 /// </remarks>
+[ImmutableOptions]
 public sealed class ObjectToleranceMatchType<TElement, TTolerance> : ObjectMatchType<TElement>
 {
 	private readonly Func<TTolerance, TTolerance, TTolerance>? _absoluteTolerance;

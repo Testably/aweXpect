@@ -129,7 +129,7 @@
 		<value>The value of an expectation combined with "Or" can be the default value</value>
 	</data>
 	<data name="aweXpect0009Description" xml:space="preserve">
-		<value>The options of aweXpect, e.g. a Quantifier or the StringEqualityOptions, are immutable values: an option method returns new options and leaves the options it is called on unchanged. A call whose returned value is discarded therefore has no effect. Use the returned value, e.g. assign it to the Value of the options holder, or call the option method on the holder itself.</value>
+		<value>The options of aweXpect and of its extension packages, e.g. a Quantifier, the StringEqualityOptions or the JsonOptions, are immutable values: an option method returns new options and leaves the options it is called on unchanged. A call whose returned value is discarded therefore has no effect. Use the returned value, e.g. assign it to the Value of the options holder, or call the option method on the holder itself.</value>
 	</data>
 	<data name="aweXpect0009MessageFormat" xml:space="preserve">
 		<value>"{0}" returns new options and does not change the "{1}" it is called on, so the call has no effect; use the returned value</value>

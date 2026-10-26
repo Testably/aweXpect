@@ -456,6 +456,11 @@ namespace aweXpect.Core
         [aweXpect.Core.GuaranteesNotNull]
         aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>> IsNotExactly<TType>();
     }
+    [System.AttributeUsage(System.AttributeTargets.Class | System.AttributeTargets.Struct, Inherited = false)]
+    public sealed class ImmutableOptionsAttribute : System.Attribute
+    {
+        public ImmutableOptionsAttribute() { }
+    }
     public static class KeyComparers
     {
         public static System.Collections.Generic.ISet<TKey> CreateKeySet<TKey, TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> dictionary) { }
@@ -1598,6 +1603,7 @@ namespace aweXpect.Formatting
 }
 namespace aweXpect.Options
 {
+    [aweXpect.Core.ImmutableOptions]
     public readonly struct CollectionIndexOptions
     {
         public aweXpect.Options.CollectionIndexOptions.IMatch Match { get; }
@@ -1627,6 +1633,7 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.CollectionIndexOptions> AtIndexFromEnd(this aweXpect.Core.OptionsHolder<aweXpect.Options.CollectionIndexOptions> holder, int index) { }
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.CollectionIndexOptions> SetMatch(this aweXpect.Core.OptionsHolder<aweXpect.Options.CollectionIndexOptions> holder, aweXpect.Options.CollectionIndexOptions.IMatch match, string optionName) { }
     }
+    [aweXpect.Core.ImmutableOptions]
     public readonly struct CollectionMatchOptions
     {
         public CollectionMatchOptions(aweXpect.Options.CollectionMatchOptions.EquivalenceRelations equivalenceRelations = aweXpect.Options.CollectionMatchOptions.EquivalenceRelations.Equivalent) { }
@@ -1668,6 +1675,7 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.CollectionMatchOptions> InAnyOrder(this aweXpect.Core.OptionsHolder<aweXpect.Options.CollectionMatchOptions> holder) { }
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.CollectionMatchOptions> Properly(this aweXpect.Core.OptionsHolder<aweXpect.Options.CollectionMatchOptions> holder) { }
     }
+    [aweXpect.Core.ImmutableOptions]
     public readonly struct CollectionOrderOptions<TElement>
     {
         public bool HasComparer { get; }
@@ -1705,6 +1713,7 @@ namespace aweXpect.Options
             NotMatchingItems = 4,
         }
     }
+    [aweXpect.Core.ImmutableOptions]
     public readonly struct ExecutionTimeOptions
     {
         public static aweXpect.Options.ExecutionTimeOptions Default { get; }
@@ -1723,6 +1732,7 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.ExecutionTimeOptions> Between(this aweXpect.Core.OptionsHolder<aweXpect.Options.ExecutionTimeOptions> holder, System.TimeSpan minimum, System.TimeSpan maximum) { }
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.ExecutionTimeOptions> Within(this aweXpect.Core.OptionsHolder<aweXpect.Options.ExecutionTimeOptions> holder, System.TimeSpan duration) { }
     }
+    [aweXpect.Core.ImmutableOptions]
     public readonly struct NumberTolerance<TNumber> where TNumber : struct, System.IComparable<TNumber>
     {
         public NumberTolerance(System.Func<TNumber, TNumber, TNumber?> calculateDifference) { }
@@ -1746,6 +1756,7 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TElement>> Using<TElement>(this aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TElement>> holder, System.Collections.Generic.IEqualityComparer<object> comparer) { }
         public static aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TElement>> Within<TElement, TTolerance>(this aweXpect.Core.OptionsHolder<aweXpect.Core.ObjectMatchType<TElement>> holder, TTolerance tolerance) { }
     }
+    [aweXpect.Core.ImmutableOptions]
     public sealed class ObjectToleranceMatchType<TElement, TTolerance> : aweXpect.Core.ObjectMatchType<TElement>
     {
         public override aweXpect.Core.MatchPhrase Phrase { get; }
@@ -1753,6 +1764,7 @@ namespace aweXpect.Options
         public aweXpect.Options.ObjectToleranceMatchType<TElement, TTolerance> SetRelativeTolerance(System.Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit) { }
         public aweXpect.Options.ObjectToleranceMatchType<TElement, TTolerance> Within(TTolerance tolerance) { }
     }
+    [aweXpect.Core.ImmutableOptions]
     public readonly struct Quantifier
     {
         public int DeterminableAmount { get; }
@@ -1781,6 +1793,7 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.Quantifier> Once(this aweXpect.Core.OptionsHolder<aweXpect.Options.Quantifier> holder) { }
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.Quantifier> Twice(this aweXpect.Core.OptionsHolder<aweXpect.Options.Quantifier> holder) { }
     }
+    [aweXpect.Core.ImmutableOptions]
     public readonly struct RepeatedCheckOptions
     {
         public System.TimeSpan Interval { get; }
@@ -1797,6 +1810,7 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.RepeatedCheckOptions> CheckEvery(this aweXpect.Core.OptionsHolder<aweXpect.Options.RepeatedCheckOptions> holder, System.TimeSpan interval) { }
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.RepeatedCheckOptions> Within(this aweXpect.Core.OptionsHolder<aweXpect.Options.RepeatedCheckOptions> holder, System.TimeSpan timeout) { }
     }
+    [aweXpect.Core.ImmutableOptions]
     public readonly struct SignalerOptions
     {
         public System.TimeSpan? Timeout { get; }
@@ -1808,6 +1822,7 @@ namespace aweXpect.Options
     {
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.SignalerOptions> Within(this aweXpect.Core.OptionsHolder<aweXpect.Options.SignalerOptions> holder, System.TimeSpan timeout) { }
     }
+    [aweXpect.Core.ImmutableOptions]
     public sealed class SignalerPredicateOptions<TParameter>
     {
         public static aweXpect.Options.SignalerPredicateOptions<TParameter> Default { get; }
@@ -1819,6 +1834,7 @@ namespace aweXpect.Options
     {
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.SignalerPredicateOptions<TParameter>> AddPredicate<TParameter>(this aweXpect.Core.OptionsHolder<aweXpect.Options.SignalerPredicateOptions<TParameter>> holder, System.Func<TParameter, bool> predicate, string predicateExpression) { }
     }
+    [aweXpect.Core.ImmutableOptions]
     public sealed class StringEqualityOptions : aweXpect.Core.IEqualityEvaluator<string?>, aweXpect.Core.IEqualityOptions<string?>
     {
         public bool ComparesByOrdinalEquality { get; }
@@ -1871,6 +1887,7 @@ namespace aweXpect.Options
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.StringEqualityOptions> SetMatchType(this aweXpect.Core.OptionsHolder<aweXpect.Options.StringEqualityOptions> holder, aweXpect.Core.StringMatchType matchType, string optionName) { }
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.StringEqualityOptions> Using(this aweXpect.Core.OptionsHolder<aweXpect.Options.StringEqualityOptions> holder, System.Collections.Generic.IEqualityComparer<string> comparer) { }
     }
+    [aweXpect.Core.ImmutableOptions]
     public readonly struct TimeTolerance
     {
         public System.TimeSpan? Tolerance { get; }
@@ -1885,6 +1902,7 @@ namespace aweXpect.Options
     {
         public static aweXpect.Core.OptionsHolder<aweXpect.Options.TimeTolerance> Within(this aweXpect.Core.OptionsHolder<aweXpect.Options.TimeTolerance> holder, System.TimeSpan tolerance) { }
     }
+    [aweXpect.Core.ImmutableOptions]
     public sealed class TriggerEventFilter
     {
         public static aweXpect.Options.TriggerEventFilter Default { get; }
