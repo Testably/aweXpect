@@ -1176,6 +1176,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -1374,7 +1380,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -1576,7 +1583,8 @@ window.BENCHMARK_DATA = {
           10468.664557902019,
           5491.4457444411055,
           7906.8652002970375,
-          7915.713247445913
+          7915.713247445913,
+          10955.662481689453
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1781,6 +1789,7 @@ window.BENCHMARK_DATA = {
           2208,
           2080,
           2080,
+          1976,
           1976,
           1976,
           1976
@@ -1993,7 +2002,8 @@ window.BENCHMARK_DATA = {
           387782.98270089284,
           200362.56557992788,
           287171.0289713542,
-          268575.1516927083
+          268575.1516927083,
+          367762.19635416666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2200,7 +2210,8 @@ window.BENCHMARK_DATA = {
           590292,
           590288,
           590225,
-          590288
+          590288,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2410,7 +2421,8 @@ window.BENCHMARK_DATA = {
           19372.97481282552,
           10254.006737342248,
           16728.899876185827,
-          14496.265505981446
+          14496.265505981446,
+          19380.427803548177
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2422,6 +2434,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -3765,6 +3778,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -3956,7 +3975,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -4151,7 +4171,8 @@ window.BENCHMARK_DATA = {
           284.9057840619768,
           122.20057151998792,
           206.53874822457632,
-          169.25952644348143
+          169.25952644348143,
+          217.86012371948786
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4347,6 +4368,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -4554,7 +4576,8 @@ window.BENCHMARK_DATA = {
           539.5590498606364,
           286.6073488167354,
           470.47868493398033,
-          420.5617467880249
+          420.5617467880249,
+          502.9713155110677
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4566,6 +4589,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -4957,7 +4981,8 @@ window.BENCHMARK_DATA = {
           406.1387935320536,
           215.53262084325155,
           339.47094917297363,
-          311.7180825551351
+          311.7180825551351,
+          374.73012695993697
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4969,6 +4994,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -10925,6 +10951,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -11886,7 +11918,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -12851,7 +12884,8 @@ window.BENCHMARK_DATA = {
           112.94191292354039,
           63.243998901049295,
           105.47038387457529,
-          88.98330756028493
+          88.98330756028493,
+          110.73874127070108
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13817,6 +13851,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          320,
           320,
           320,
           320,
@@ -14794,7 +14829,8 @@ window.BENCHMARK_DATA = {
           289.97976512908934,
           143.2748692376273,
           241.2753296216329,
-          198.85524131570543
+          198.85524131570543,
+          252.3986278942653
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14987,6 +15023,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -16018,7 +16055,8 @@ window.BENCHMARK_DATA = {
           258.76096906661985,
           135.71365235646564,
           188.27976996558053,
-          185.35275945663452
+          185.35275945663452,
+          240.21556018193561
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -16030,6 +16068,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -17459,6 +17498,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -17657,7 +17702,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -17859,7 +17905,8 @@ window.BENCHMARK_DATA = {
           238.21715008417766,
           121.35808997154236,
           188.04342010815938,
-          164.5293819586436
+          164.5293819586436,
+          216.16956661542255
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18064,6 +18111,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344
@@ -18276,7 +18324,8 @@ window.BENCHMARK_DATA = {
           568.3464195251465,
           294.03948596545627,
           482.1153251012166,
-          404.6645504747118
+          404.6645504747118,
+          502.2572592417399
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18288,6 +18337,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -18693,7 +18743,8 @@ window.BENCHMARK_DATA = {
           352.8021542867025,
           195.6602102279663,
           279.5498057683309,
-          254.54359267552692
+          254.54359267552692,
+          318.3590198516846
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -18705,6 +18756,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -24668,6 +24720,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -25629,7 +25687,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -26594,7 +26653,8 @@ window.BENCHMARK_DATA = {
           640.5272113164266,
           353.6511313365056,
           486.09848121007286,
-          506.6420232772827
+          506.6420232772827,
+          581.884910329183
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27562,6 +27622,7 @@ window.BENCHMARK_DATA = {
           784,
           656,
           656,
+          600,
           600,
           600,
           600
@@ -28537,7 +28598,8 @@ window.BENCHMARK_DATA = {
           1466.160671488444,
           791.5358533859253,
           1174.384094365438,
-          1149.5763567515783
+          1149.5763567515783,
+          1358.4963293075562
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28730,6 +28792,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -29761,7 +29824,8 @@ window.BENCHMARK_DATA = {
           700.6149618148804,
           368.6400900908879,
           535.4785130818685,
-          511.58400605519614
+          511.58400605519614,
+          646.5051962534586
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -29773,6 +29837,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -35780,6 +35845,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -36741,7 +36812,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -37706,7 +37778,8 @@ window.BENCHMARK_DATA = {
           629.6575691223145,
           345.00533215204877,
           485.5935690879822,
-          500.09684352874757
+          500.09684352874757,
+          608.1424456376296
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38674,6 +38747,7 @@ window.BENCHMARK_DATA = {
           832,
           704,
           704,
+          648,
           648,
           648,
           648
@@ -39649,7 +39723,8 @@ window.BENCHMARK_DATA = {
           28276.666804722376,
           12114.740824018207,
           15019.257575480144,
-          16773.884531656902
+          16773.884531656902,
+          26959.205622746395
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40619,6 +40694,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -40873,7 +40949,8 @@ window.BENCHMARK_DATA = {
           819.8868623097737,
           447.6194096883138,
           656.6504780695989,
-          604.250842666626
+          604.250842666626,
+          778.085631779262
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -40885,6 +40962,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -42662,6 +42740,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -42918,7 +43002,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -43178,7 +43263,8 @@ window.BENCHMARK_DATA = {
           681.3898660024007,
           383.54556646347044,
           571.7110706738064,
-          483.47044447490146
+          483.47044447490146,
+          667.6606920878093
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43441,6 +43527,7 @@ window.BENCHMARK_DATA = {
           1688,
           1608,
           1608,
+          1576,
           1576,
           1576,
           1576
@@ -43711,7 +43798,8 @@ window.BENCHMARK_DATA = {
           82923.11419270834,
           30383.891235351562,
           29673.0777457101,
-          52573.857552664624
+          52573.857552664624,
+          82907.11733398438
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43976,7 +44064,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45514,6 +45603,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -45770,7 +45865,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -46030,7 +46126,8 @@ window.BENCHMARK_DATA = {
           158.22656288146973,
           73.4884712270328,
           128.69756037394205,
-          108.3018255551656
+          108.3018255551656,
+          131.92439699172974
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46293,6 +46390,7 @@ window.BENCHMARK_DATA = {
           464,
           336,
           336,
+          320,
           320,
           320,
           320
@@ -46563,7 +46661,8 @@ window.BENCHMARK_DATA = {
           32038.67316080729,
           10907.116225106376,
           15748.704760037936,
-          14806.016510009766
+          14806.016510009766,
+          31713.796785481773
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46828,7 +46927,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47082,7 +47182,8 @@ window.BENCHMARK_DATA = {
           256.5847792625427,
           134.99284466107687,
           189.39960290590923,
-          189.53538091977438
+          189.53538091977438,
+          238.38132561170139
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47094,6 +47195,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -48523,6 +48625,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -48721,7 +48829,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -48923,7 +49032,8 @@ window.BENCHMARK_DATA = {
           325.7908929075514,
           162.398949439709,
           258.8895969390869,
-          236.938819536796
+          236.938819536796,
+          305.01585477193197
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49128,6 +49238,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480
@@ -49340,7 +49451,8 @@ window.BENCHMARK_DATA = {
           402.95216245651244,
           237.63967427185602,
           392.04839430536543,
-          348.04568696022034
+          348.04568696022034,
+          387.9568435668945
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49352,6 +49464,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -49757,7 +49870,8 @@ window.BENCHMARK_DATA = {
           418.51870768410816,
           237.11043994767326,
           353.90791508129666,
-          351.59310181935626
+          351.59310181935626,
+          407.4541376187251
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -49769,6 +49883,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -51154,6 +51269,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -51352,7 +51473,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -51554,7 +51676,8 @@ window.BENCHMARK_DATA = {
           798.6627096811931,
           404.85324110303605,
           651.7659897168477,
-          621.7618253072103
+          621.7618253072103,
+          759.4984950338091
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51759,6 +51882,7 @@ window.BENCHMARK_DATA = {
           1448,
           1376,
           1376,
+          1280,
           1280,
           1280,
           1280
@@ -51971,7 +52095,8 @@ window.BENCHMARK_DATA = {
           1973.935766092936,
           1115.8966710017278,
           1811.8693857192993,
-          1475.25877732497
+          1475.25877732497,
+          1919.2298202514648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51983,6 +52108,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -52388,7 +52514,8 @@ window.BENCHMARK_DATA = {
           949.0666627248128,
           514.0888624191284,
           787.2436121622721,
-          762.5776799519857
+          762.5776799519857,
+          915.2124812943595
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -52400,6 +52527,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -53785,6 +53913,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -53983,7 +54117,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -54185,7 +54320,8 @@ window.BENCHMARK_DATA = {
           12090.172103881836,
           6275.5289946336015,
           8566.123110453287,
-          8379.147083827427
+          8379.147083827427,
+          11994.10329261193
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54390,6 +54526,7 @@ window.BENCHMARK_DATA = {
           1680,
           1752,
           1752,
+          1712,
           1712,
           1712,
           1712
@@ -54602,7 +54739,8 @@ window.BENCHMARK_DATA = {
           42066.998994954425,
           20257.633784702844,
           27050.677248128257,
-          26592.765899658203
+          26592.765899658203,
+          39807.47630615234
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54809,6 +54947,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18393,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -55019,7 +55158,8 @@ window.BENCHMARK_DATA = {
           10575.449668884277,
           5988.141926105206,
           7935.928465706961,
-          7849.425181070964
+          7849.425181070964,
+          10638.686572265626
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -55031,6 +55171,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -56416,6 +56557,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -56614,7 +56761,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -56816,7 +56964,8 @@ window.BENCHMARK_DATA = {
           11485.044587355394,
           5898.010075378418,
           7997.887224324544,
-          7865.697028605143
+          7865.697028605143,
+          11665.528007507324
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57021,6 +57170,7 @@ window.BENCHMARK_DATA = {
           2160,
           2232,
           2232,
+          2192,
           2192,
           2192,
           2192
@@ -57233,7 +57383,8 @@ window.BENCHMARK_DATA = {
           60831.250915527344,
           29003.43760579427,
           40175.053322928296,
-          37590.07022329477
+          37590.07022329477,
+          57689.95354352678
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57438,6 +57589,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553
@@ -57650,7 +57802,8 @@ window.BENCHMARK_DATA = {
           20813.65186720628,
           11504.56551185021,
           15533.245310856746,
-          15302.575561523438
+          15302.575561523438,
+          20853.548797607422
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -57662,6 +57815,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
