@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
-        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
-      },
-      {
         "sha": "22b71d85b1ed298b1fda3b24979a24e8f7d97cb2",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
         "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
+      },
+      {
+        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
+        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
       }
     ],
     "labels": [
-      "053d3134",
       "22b71d85",
       "487b869a",
       "f19d2281",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "20357097",
-      "1dc71bae"
+      "1dc71bae",
+      "5520582a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          425.31231810496405,
           726.8025828679403,
           712.0349316279094,
           746.9840441544851,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           715.4485103062221,
           656.0633188247681,
           356.174617099762,
-          704.3644876480103
+          704.3644876480103,
+          535.3990122721746
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -448,7 +448,6 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
-          680,
           592,
           592,
           592,
@@ -462,6 +461,7 @@ window.BENCHMARK_DATA = {
           592,
           592,
           592,
+          464,
           464,
           464,
           464,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          508.68624890645344,
           883.4874388149807,
           916.2251561482748,
           910.6728055318197,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           794.6288106918335,
           888.5572644869486,
           536.8183043162028,
-          926.7215559823172
+          926.7215559823172,
+          599.25021387736
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
-        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
-      },
-      {
         "sha": "22b71d85b1ed298b1fda3b24979a24e8f7d97cb2",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
         "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
+      },
+      {
+        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
+        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
       }
     ],
     "labels": [
-      "053d3134",
       "22b71d85",
       "487b869a",
       "f19d2281",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "20357097",
-      "1dc71bae"
+      "1dc71bae",
+      "5520582a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          70.83842553411212,
           142.92735702650887,
           151.62605946404594,
           135.8884880145391,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           112.69869488080343,
           114.66328901510973,
           58.143421300819945,
-          104.04969412088394
+          104.04969412088394,
+          76.7723245529028
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1069,7 +1069,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
-          296,
+          168,
           168,
           168,
           168,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          129.16618806521097,
           201.9518550078074,
           236.02032203674315,
           204.05078193119593,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           257.97272974650065,
           215.35406255722046,
           122.15644100734166,
-          215.77363429750716
+          215.77363429750716,
+          208.96221241950988
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
-        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
-      },
-      {
         "sha": "22b71d85b1ed298b1fda3b24979a24e8f7d97cb2",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
         "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
+      },
+      {
+        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
+        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
       }
     ],
     "labels": [
-      "053d3134",
       "22b71d85",
       "487b869a",
       "f19d2281",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "20357097",
-      "1dc71bae"
+      "1dc71bae",
+      "5520582a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1069.8902866656963,
           2055.6503170558385,
           2049.9847272237143,
           1885.7440124511718,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1411.1039389201574,
           1838.6320939745221,
           877.4776200612386,
-          1863.7854092461723
+          1863.7854092461723,
+          1032.0853875967173
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2008,
           2008,
           2008,
           2008,
@@ -1685,6 +1684,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1808,
           1808
         ],
         "borderColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          872.5869185583932,
           1456.1909824371337,
           1500.995586268107,
           1453.8216957092286,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1312.3308497111002,
           1354.369742711385,
           790.3319710413615,
-          1452.0054513386317
+          1452.0054513386317,
+          948.3869262422834
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1766,7 +1766,6 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1953,
-          1953,
           1864,
           1864,
           1953,
@@ -1808,6 +1807,7 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1952,
+          1864,
           1864,
           1864,
           1864
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
-        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
-      },
       {
         "sha": "22b71d85b1ed298b1fda3b24979a24e8f7d97cb2",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
         "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
+      },
+      {
+        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
+        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
       }
     ],
     "labels": [
-      "053d3134",
       "22b71d85",
       "487b869a",
       "f19d2281",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "20357097",
-      "1dc71bae"
+      "1dc71bae",
+      "5520582a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1399.525321667011,
           2787.1265342712404,
           2960.0839465005056,
           2682.351673634847,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2151.8225588117325,
           2642.3334612165177,
           1403.0971938451132,
-          2742.6894027165004
+          2742.6894027165004,
+          1625.616120147705
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2880,
           2880,
           2936,
           2880,
@@ -2293,6 +2292,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3104,
           3104
         ],
         "borderColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2316.0214854649134,
           3882.7427925109864,
           3907.7729588826496,
           3784.9534599304197,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3378.733670454759,
           3859.4906572614395,
           2185.3293940226235,
-          3875.937665499174
+          3875.937665499174,
+          2474.9843826293945
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3980,
           3980,
           3980,
           3981,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3977,
           3980,
           3981,
-          3981
+          3981,
+          3977
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
-        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
-      },
       {
         "sha": "22b71d85b1ed298b1fda3b24979a24e8f7d97cb2",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
         "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
+      },
+      {
+        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
+        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
       }
     ],
     "labels": [
-      "053d3134",
       "22b71d85",
       "487b869a",
       "f19d2281",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "20357097",
-      "1dc71bae"
+      "1dc71bae",
+      "5520582a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          181.66628491083782,
           375.9836460627042,
           399.74061816533407,
           387.0455864906311,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           355.14465500758246,
           339.7191134770711,
           186.8432778040568,
-          397.83714217406055
+          397.83714217406055,
+          258.73817995616366
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2880,7 +2880,6 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
-          552,
           696,
           696,
           696,
@@ -2894,6 +2893,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1393.3115966503437,
           2240.1842733110702,
           2340.9311060587565,
           2319.5028477986652,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1988.174253845215,
           2213.8134574890137,
           1231.1973390579224,
-          2321.012066432408
+          2321.012066432408,
+          1513.0686894734702
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "053d313478a1d092203f83113386d7eab61de1a1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
-        "message": "refactor!: make the result type shapes consistent for extension authors (#1997)"
-      },
-      {
         "sha": "22b71d85b1ed298b1fda3b24979a24e8f7d97cb2",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:44:12 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
         "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
+      },
+      {
+        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
+        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
       }
     ],
     "labels": [
-      "053d3134",
       "22b71d85",
       "487b869a",
       "f19d2281",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "20357097",
-      "1dc71bae"
+      "1dc71bae",
+      "5520582a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1858.380207334246,
           3404.654327392578,
           3555.4454658508303,
           3260.063937868391,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2327.8528725550723,
           2930.2676840562085,
           1460.6088209885818,
-          2941.172984568278
+          2941.172984568278,
+          1744.8773065294538
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3032,
           3032,
           3032,
           3032,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           3232,
           3232,
           3232,
+          3232,
           3232
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          170873.35857747396,
           281964.36495535716,
           285186.0317220052,
           279246.5155552455,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           260116.4959716797,
           298482.9997907366,
           169174.7233561198,
-          283718.9447265625
+          283718.9447265625,
+          184646.6104561942
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17576,
           17577,
           17577,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17528,
           17577,
           17576,
-          17577
+          17577,
+          17528
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
