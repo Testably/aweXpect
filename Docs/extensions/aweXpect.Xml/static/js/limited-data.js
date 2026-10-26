@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
-        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
-      },
-      {
         "sha": "053d313478a1d092203f83113386d7eab61de1a1",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
         "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
+      },
+      {
+        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
+        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
       }
     ],
     "labels": [
-      "411dfe77",
       "053d3134",
       "22b71d85",
       "487b869a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "1dc71bae",
-      "5520582a"
+      "5520582a",
+      "a2e430d0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          779.7650643666585,
           762.3856522242228,
           592.1281709035237,
           693.4531310888437,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           819.1615207036336,
           803.175195149013,
           751.3339807646615,
-          423.0407907622201
+          423.0407907622201,
+          757.389442716326
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -439,7 +439,6 @@ window.BENCHMARK_DATA = {
           1120,
           1120,
           1120,
-          1120,
           1152,
           1152,
           1152,
@@ -464,6 +463,7 @@ window.BENCHMARK_DATA = {
           1080,
           1056,
           1056,
+          1008,
           1008,
           1008,
           1008,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          741.6271563212077,
           727.8606748580933,
           535.6765387398856,
           686.1571727752686,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           677.2513563156128,
           716.8160043716431,
           676.437979221344,
-          364.67658478418986
+          364.67658478418986,
+          702.906018597739
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
-        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
-      },
-      {
         "sha": "053d313478a1d092203f83113386d7eab61de1a1",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
         "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
+      },
+      {
+        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
+        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
       }
     ],
     "labels": [
-      "411dfe77",
       "053d3134",
       "22b71d85",
       "487b869a",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "1dc71bae",
-      "5520582a"
+      "5520582a",
+      "a2e430d0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4706.623884347769,
           4584.967638833182,
           3420.4489669799805,
           4332.873940981352,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           4525.739538574218,
           4923.606315867106,
           4909.633810933431,
-          2421.9910411834717
+          2421.9910411834717,
+          4660.759248097737
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24119,
           24119,
           24119,
           24119,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           24179,
           24179,
           24175,
+          24179,
           24179
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5525.883353169759,
           5441.745738728841,
           3948.8288567860923,
           4877.977931722005,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4971.011318206787,
           5742.8470591227215,
           5738.127156066895,
-          2676.908480580648
+          2676.908480580648,
+          5138.730927022299
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
-        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
-      },
-      {
         "sha": "053d313478a1d092203f83113386d7eab61de1a1",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
         "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
+      },
+      {
+        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
+        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
       }
     ],
     "labels": [
-      "411dfe77",
       "053d3134",
       "22b71d85",
       "487b869a",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "1dc71bae",
-      "5520582a"
+      "5520582a",
+      "a2e430d0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2859.18658803304,
           2731.0879467555455,
           1945.5363647460938,
           2655.1142957051593,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2466.0909585219165,
           2623.187070465088,
           2449.924624809852,
-          1467.1964839935304
+          1467.1964839935304,
+          2556.9837643759593
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          12780,
           12856,
           12780,
           12856,
@@ -1685,6 +1684,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
+          12654,
           12654
         ],
         "borderColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3715.2947812398274,
           3613.441419328962,
           2751.7069584773135,
           3476.176357269287,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3394.108688672384,
           3814.5801503499347,
           3403.5513272603353,
-          1850.3905015672956
+          1850.3905015672956,
+          3580.242729695638
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "411dfe779733a402f1d44dcb03b4d5fb39b04ea3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:47:46 2026 \u002B0200",
-        "message": "chore: nest the snapshot files in the IDE and review API changes in a diff tool (#2003)"
-      },
-      {
         "sha": "053d313478a1d092203f83113386d7eab61de1a1",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 11:43:49 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
         "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
+      },
+      {
+        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
+        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
       }
     ],
     "labels": [
-      "411dfe77",
       "053d3134",
       "22b71d85",
       "487b869a",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "1dc71bae",
-      "5520582a"
+      "5520582a",
+      "a2e430d0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          14359.36597442627,
           13871.827653151293,
           10039.635759626117,
           13874.288659159343,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           14179.080033874512,
           14257.425786336264,
           13570.198004586357,
-          7504.652938842773
+          7504.652938842773,
+          13980.394966712365
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          25494,
           25568,
           25494,
           25568,
@@ -2293,6 +2292,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
+          25367,
           25367
         ],
         "borderColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          365749.13505859376,
           372307.96435546875,
           244790.0293719952,
           355157.88362630206,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           361123.6000325521,
           366726.12884114584,
           318818.31982421875,
-          164229.29052734375
+          164229.29052734375,
+          363288.4744140625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544329,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544299,
+          544335,
           544335
         ],
         "borderColor": "#FF671B",
