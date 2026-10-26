@@ -3,6 +3,8 @@
 	<PropertyGroup>
 		<Description>Core package for writing extensions for aweXpect.</Description>
 		<RootNamespace>aweXpect</RootNamespace>
+		<!-- The experimental time system is meant to warn other assemblies, but the compiler also reports its use in Core itself. -->
+		<NoWarn>$(NoWarn);aweXpect5001</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

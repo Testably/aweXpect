@@ -1050,6 +1050,7 @@ namespace aweXpect.Core.Extending
 }
 namespace aweXpect.Core.Internal
 {
+    [System.Diagnostics.CodeAnalysis.Experimental("aweXpect5001")]
     public interface ITimeSystem
     {
         void CancelAfter(System.Threading.CancellationTokenSource cancellationTokenSource, System.TimeSpan delay);
