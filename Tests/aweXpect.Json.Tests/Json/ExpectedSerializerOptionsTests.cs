@@ -242,6 +242,19 @@ public sealed partial class ExpectedSerializerOptionsTests
 	}
 
 	[Test]
+	public async Task JsonText_WithSourceGeneratedContext_ShouldBeParsedWithoutTheSerializer()
+	{
+		JsonElement subject = Parse("{\"Title\": \"Let It Be\"}");
+
+		async Task Act()
+			=> await That(subject).MatchesExactly("{\"Title\": \"Let It Be\"}",
+				o => o.WithSerializerOptions(TrackContext.Default.Options));
+
+		await That(Act).DoesNotThrow()
+			.Because("JSON text is parsed, so the serializer options do not apply to it");
+	}
+
+	[Test]
 	public async Task MissingTypeInObjectMember_ShouldThrowNotSupportedException()
 	{
 		JsonElement subject = Parse("{}");

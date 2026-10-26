@@ -99,6 +99,10 @@ internal static partial class Checks
 			{
 				a = 1,
 			}))),
+		new("an element matching expected JSON text passes",
+			() => ShouldPass(async () => await That(Parse("{\"a\": [1, 2]}")).Matches("{\"a\": [1, 2]}"))),
+		new("a JSON string matching expected JSON text passes",
+			() => ShouldPass(async () => await That("{\"a\": 1}").IsValidJsonMatchingExactly("{\"a\": 1}"))),
 		new("an element matching an expected node passes",
 			() => ShouldPass(async () => await That(Parse("{\"a\": [1, 2]}"))
 				.Matches(new JsonObject { ["a"] = new JsonArray(1, 2), }))),

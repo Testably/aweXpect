@@ -111,7 +111,7 @@ Unlike [`IsJsonSerializable`](#json-serializable), which verifies that an object
 serializer, `IsJsonSerializedAs` verifies the JSON itself: the property names and their casing, the representation of
 enums, omitted `null` values and the effect of converters.
 
-The expected value is either a JSON string or an object that is compared like in [`Matches`](./02-matching.md),
+The expected value is either JSON text or an object that is compared like in [`Matches`](./02-matching.md),
 including `It.Is…` expectations. Without `JsonSerializerOptions`, the subject is serialized with the default options of
 the [customization](./06-customization.md). A `null` subject is serialized as `null`, and a subject that cannot be
 serialized, e.g. because of a reference cycle, fails the expectation with the message of the exception.

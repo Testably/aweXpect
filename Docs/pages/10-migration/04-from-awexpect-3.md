@@ -141,6 +141,10 @@ Suppress it in test projects that use a virtual time system.
   affects code that names the result type.
 - `Matches` and `IsValidJsonMatching` report additional array elements. Add
   `o => o.IgnoringAdditionalArrayElements()` to allow them.
+- An expected `string` in `Matches`, `MatchesExactly`, `IsValidJsonMatching` and `IsValidJsonMatchingExactly` is JSON
+  text, like in `IsJsonSerializedAs`, and invalid JSON throws an `ArgumentException`. A string that is a valid JSON
+  scalar, e.g. `"42"`, `"true"` or `"null"`, silently changes its meaning. Pass `"\"Let It Be\""` or
+  `(object)"Let It Be"` for a JSON string.
 - `JsonOptions` is immutable like `XmlOptions` and configured only through its methods.
 
 ### aweXpect.Reflection

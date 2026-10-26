@@ -53,6 +53,11 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 	public JsonDocument ParseExpected(object? expected, JsonDocumentOptions documentOptions,
 		JsonSerializerOptions? serializerOptions)
 	{
+		if (expected is JsonText jsonText)
+		{
+			return JsonDocument.Parse(jsonText.Json, documentOptions);
+		}
+
 		if (serializerOptions is null &&
 		    TryParseWithoutSerializer(expected, documentOptions, out JsonDocument? document))
 		{
@@ -88,6 +93,27 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 		}
 
 		return JsonDocument.Parse(json, documentOptions);
+	}
+
+	/// <summary>
+	///     Wraps the <paramref name="expected" /> JSON text of an expectation, so that <see cref="ParseExpected" /> parses
+	///     it instead of writing it as a JSON string.
+	/// </summary>
+	/// <remarks>
+	///     The JSON is validated when the expectation is written, because JSON that cannot be parsed differs from every
+	///     subject, so that a negated expectation could never fail. A <see langword="null" /> value stays the JSON
+	///     <c>null</c>, like an expected <see langword="null" /> object.
+	/// </remarks>
+	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid JSON.</exception>
+	public static object? FromJsonText(string? expected, JsonDocumentOptions documentOptions)
+	{
+		if (expected is null)
+		{
+			return null;
+		}
+
+		JsonMatchType.ParseExpected(expected, nameof(expected), documentOptions).Dispose();
+		return new JsonText(expected);
 	}
 
 	private static JsonSerializerOptions GetDefaultReflectionOptions(JsonSerializerOptions defaultOptions)
@@ -351,6 +377,11 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 
 		equivalencyExpectationBuilder = null;
 		return false;
+	}
+
+	private sealed class JsonText(string json)
+	{
+		public string Json => json;
 	}
 
 	/// <summary>
