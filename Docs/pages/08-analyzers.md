@@ -22,7 +22,7 @@ The analyzers and the source generators need Roslyn 4.8 or later, which ships wi
 | [`aweXpect2002`](#test-framework-adapter)                   | Warning     | a test project on .NET 8 or later sets `<LangVersion>` below 9    |
 | [`aweXpect4001` to `aweXpect4004`](#expectation-generator)  | Error       | a method cannot be turned into a generated expectation            |
 | [`aweXpect4005`](#registration-generator)                   | Error       | a module initializer of an extension cannot be called             |
-| [`aweXpect5001`](#experimental-apis)                        | Error       | the experimental `WithTimeSystem(…)` is used                      |
+| [`aweXpect5001`](#experimental-apis)                        | Error       | the experimental `WithTimeSystem(…)` or `ITimeSystem` is used     |
 
 ## aweXpect0001
 
@@ -256,9 +256,11 @@ TestFrameworkRegistry.Register(new aweXpect.Frameworks.NunitAdapter());
 
 ## Experimental APIs
 
-`WithTimeSystem(…)` in `aweXpect.Core.Internal` lets an expectation wait and measure on a virtual clock instead of in
-real time, see [on a virtual clock](./03-how-it-works/06-time-and-cancellation.md#on-a-virtual-clock). It is marked as experimental with the diagnostic
-`aweXpect5001`, as it may change in any version. Suppress it in a test project that uses a virtual time system:
+`WithTimeSystem(…)` and the `ITimeSystem` it takes, both in `aweXpect.Core.Internal`, let an expectation wait and
+measure on a virtual clock instead of in real time, see
+[on a virtual clock](./03-how-it-works/06-time-and-cancellation.md#on-a-virtual-clock). They are marked as
+experimental with the diagnostic `aweXpect5001`, as they may change in any version. Suppress it in a test project
+that uses a virtual time system:
 
 ```xml
 <PropertyGroup>
@@ -275,12 +277,12 @@ These rules are reported while you build an extension package on `aweXpect.Core`
 The source generator in `aweXpect.Core` reports an error for a method marked with `[GenerateExpectation]` or
 `[GenerateCollectionExpectation]` that it cannot turn into an expectation, see [generated expectations](./11-extending/01-generated-expectations.md):
 
-| Rule           | Reported when                                                                                             |
-|----------------|-----------------------------------------------------------------------------------------------------------|
-| `aweXpect4001` | the class of the method is not a top-level, non-generic, `static partial` class or is `file`-local        |
-| `aweXpect4002` | the method, its parameters, the name or the expectation text are not supported, with the reason           |
-| `aweXpect4003` | the `Result` names no `static` method that returns a `string` and takes the subject                       |
-| `aweXpect4004` | the `FormattedItem` names no `static` method that returns a value and takes the item                      |
+| Rule           | Reported when                                                                                      |
+|----------------|----------------------------------------------------------------------------------------------------|
+| `aweXpect4001` | the class of the method is not a top-level, non-generic, `static partial` class or is `file`-local |
+| `aweXpect4002` | the method, its parameters, the name or the expectation text are not supported, with the reason    |
+| `aweXpect4003` | the `Result` names no `static` method that returns a `string` and takes the subject                |
+| `aweXpect4004` | the `FormattedItem` names no `static` method that returns a value and takes the item               |
 
 ### Registration generator
 
