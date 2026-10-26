@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
-        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
-      },
-      {
         "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
-      "67eb3ff5",
       "46bf8489",
       "411dfe77",
       "053d3134",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          416.48378423282077,
           209.29368393237775,
           190.08521599428994,
           415.74522270475114,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           249.19009194007288,
           466.92680530548097,
           471.2498177119664,
-          451.5183933258057
+          451.5183933258057,
+          446.6067923545837
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -441,7 +441,6 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
-          608,
           640,
           640,
           640,
@@ -467,6 +466,7 @@ window.BENCHMARK_DATA = {
           640,
           712,
           712,
+          664,
           664,
           664,
           664
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1097.9800065994264,
           508.6536352975028,
           496.8043264609117,
           980.2075965881347,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           545.8322916712079,
           1035.8629913330078,
           1068.1593735558647,
-          946.2378022120549
+          946.2378022120549,
+          973.9919999929575
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
-        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
-      },
-      {
         "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
-      "67eb3ff5",
       "46bf8489",
       "411dfe77",
       "053d3134",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          196.80501375198364,
           114.82823797861735,
           94.19032332726887,
           196.60169038772582,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           124.77876938184103,
           253.95046892166138,
           268.7785805922288,
-          214.4095104376475
+          214.4095104376475,
+          249.3118230819702
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1070,9 +1070,9 @@ window.BENCHMARK_DATA = {
           440,
           440,
           440,
-          440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          271.6400808606829,
           134.90528260866802,
           121.7067118883133,
           249.69177545819963,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           137.21731553077697,
           262.26263230641683,
           276.06841046469555,
-          260.7723628452846
+          260.7723628452846,
+          249.41070439020794
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
-        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
-      },
-      {
         "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
-      "67eb3ff5",
       "46bf8489",
       "411dfe77",
       "053d3134",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          607.3748012270246,
           355.3106013933818,
           299.2932434082031,
           630.90242597035,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           375.26465316613513,
           729.624892616272,
           788.2864138285319,
-          668.1025075276692
+          668.1025075276692,
+          771.3073598997934
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1657,7 +1657,6 @@ window.BENCHMARK_DATA = {
           976,
           976,
           976,
-          976,
           1008,
           1008,
           1008,
@@ -1683,6 +1682,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1039.7940177281698,
           505.6420774459839,
           436.1283644676208,
           927.8510630289713,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           487.8286143620809,
           955.65826365153,
           1042.3638690948487,
-          905.5831069946289
+          905.5831069946289,
+          929.9089051564534
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
-        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
-      },
-      {
         "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
-      "67eb3ff5",
       "46bf8489",
       "411dfe77",
       "053d3134",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1769.8177486419677,
           1074.1256467183432,
           950.6582899093628,
           1703.5985194614955,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1154.616456440517,
           1845.8018004099529,
           1964.9316997528076,
-          1925.049166752742
+          1925.049166752742,
+          1842.5138240227332
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2265,7 +2265,6 @@ window.BENCHMARK_DATA = {
           1672,
           1672,
           1672,
-          1672,
           1688,
           1688,
           1688,
@@ -2291,6 +2290,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          19042.2948832194,
           10391.593965802875,
           10325.057322910854,
           21162.549704996745,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           10577.21393737793,
           21650.66208089193,
           22129.781467982702,
-          17848.629412841798
+          17848.629412841798,
+          20983.919543457032
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2372,7 +2372,6 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34713,
           34713,
@@ -2408,6 +2407,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
-        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
-      },
       {
         "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
-      "67eb3ff5",
       "46bf8489",
       "411dfe77",
       "053d3134",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          665.4601954142253,
           383.1473029576815,
           332.8823712666829,
           653.8054423014323,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           428.5768095334371,
           851.7625869115194,
           808.4831566810608,
-          705.1771821294512
+          705.1771821294512,
+          765.41995375497
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2873,7 +2873,6 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
-          1080,
           1112,
           1112,
           1112,
@@ -2899,6 +2898,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1374.1340159098306,
           720.5601240158081,
           645.5856139500936,
           1320.345009613037,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           708.8148473739624,
           1401.0271640777587,
           1456.255123011271,
-          1265.2470620228694
+          1265.2470620228694,
+          1293.543425486638
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "67eb3ff5e046256769ff0192d160cd9e8b1e7f7c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 10:02:21 2026 \u002B0200",
-        "message": "refactor!: make the plumbing constructors of StatusCodeResult and the filtered collections internal (#1990)"
-      },
-      {
         "sha": "46bf84894afe2a845638c1a81955c125b715b63b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 10:25:07 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
-      "67eb3ff5",
       "46bf8489",
       "411dfe77",
       "053d3134",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1086.208152516683,
           703.7574090276446,
           571.6579988919772,
           1082.3052084786552,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           746.5965579577854,
           1287.0904276711601,
           1415.3086838355432,
-          1233.8007663999285
+          1233.8007663999285,
+          1254.384162012736
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3481,7 +3481,6 @@ window.BENCHMARK_DATA = {
           1424,
           1424,
           1424,
-          1424,
           1456,
           1456,
           1456,
@@ -3507,6 +3506,7 @@ window.BENCHMARK_DATA = {
           1440,
           1512,
           1512,
+          1464,
           1464,
           1464,
           1464
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          808.1741786956787,
           440.42451333999634,
           380.09171823660535,
           751.4006300608318,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           434.13460098902385,
           791.2830004374187,
           856.0742458615985,
-          750.9815040588379
+          750.9815040588379,
+          730.2304495297946
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
