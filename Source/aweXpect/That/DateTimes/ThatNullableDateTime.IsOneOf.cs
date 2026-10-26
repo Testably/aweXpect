@@ -141,8 +141,5 @@ public static partial class ThatNullableDateTime
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 			stringBuilder.Append(tolerance);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

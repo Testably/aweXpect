@@ -91,9 +91,6 @@ public static partial class ThatNullableDateOnly
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance.Value.ToDayString());
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }
 #endif

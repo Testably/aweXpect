@@ -17,7 +17,8 @@ public abstract partial class ConstraintResult
 	///     - <see cref="WithValue{T}.AppendNormalExpectation" /> / <see cref="WithValue{T}.AppendNegatedExpectation" />
 	///     which add the normal and negated expectation strings<br />
 	///     - <see cref="WithValue{T}.AppendNormalResult" /> / <see cref="WithValue{T}.AppendNegatedResult" />
-	///     which add the normal and negated result strings.
+	///     which add the normal and negated result strings; the negated result is described like the normal one,
+	///     unless <see cref="WithValue{T}.AppendNegatedResult" /> is overwritten.
 	/// </remarks>
 	public abstract class WithNotNullValue<T>(string it, ExpectationGrammars grammars)
 		: WithValue<T>(it, grammars)

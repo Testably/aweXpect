@@ -36,8 +36,7 @@ public static partial class ThatGeneric
 			.ForMember(
 				MemberAccessor<T, TMember?>.FromFuncWithCallerExpression(memberAccessor, doNotPopulateThisValue),
 				GetMemberText(grammars))
-			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
-				GetMemberGrammars<TMember>(grammars));
+			.AddExpectations(expectations, GetMemberGrammars<TMember>(grammars));
 		return new AndOrResult<T, IThat<T?>>(expectationBuilder, subject);
 	}
 

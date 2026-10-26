@@ -370,6 +370,7 @@ namespace aweXpect.Core
         public class MemberExpectationBuilder<TSource, TMember>
         {
             public aweXpect.Core.ExpectationBuilder AddExpectations(System.Action<aweXpect.Core.ExpectationBuilder> expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) { }
+            public aweXpect.Core.ExpectationBuilder AddExpectations(System.Action<aweXpect.Core.IThatSubject<TMember>> expectations, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) { }
             public aweXpect.Core.ExpectationBuilder AddExpectations<TNarrowed>(System.Action<aweXpect.Core.ExpectationBuilder> expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) where TNarrowed : TMember { }
             public aweXpect.Core.ExpectationBuilder AddExpectations<TState>(TState state, System.Action<TState, aweXpect.Core.ExpectationBuilder> expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) { }
             public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TMember> NegatedAsAlternative(System.Action<aweXpect.Core.MemberAccessor, System.Text.StringBuilder> negatedExpectationTextGenerator) { }
@@ -846,7 +847,7 @@ namespace aweXpect.Core.Constraints
             public override string? TrailingSubject { get; }
             public override sealed void AppendExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
             protected abstract void AppendNegatedExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null);
-            protected abstract void AppendNegatedResult(System.Text.StringBuilder stringBuilder, string? indentation = null);
+            protected virtual void AppendNegatedResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
             protected abstract void AppendNormalExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null);
             protected abstract void AppendNormalResult(System.Text.StringBuilder stringBuilder, string? indentation = null);
             public override sealed void AppendResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }

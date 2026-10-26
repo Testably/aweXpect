@@ -1289,6 +1289,71 @@ public class ExpectationBuilderTests
 	}
 
 	[Test]
+	public async Task ForMember_WithSubjectExpectations_ShouldApplyThemToTheMember()
+	{
+		Track subject = new("Yesterday");
+
+		async Task Act()
+			=> await HasTitle(That(subject), title => title.IsEqualTo("Let It Be"));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose title is equal to "Let It Be",
+			             but title was "Yesterday", which differs at index 0:
+			                ↓ (actual)
+			               "Yesterday"
+			               "Let It Be"
+			                ↑ (expected)
+			             """);
+	}
+
+	[Test]
+	public async Task ForMember_WithSubjectExpectations_WhenNegated_ShouldApplyThemToTheMember()
+	{
+		Track subject = new("Yesterday");
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(track => HasTitle(track, title => title.IsEqualTo("Yesterday")));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose title is not equal to "Yesterday",
+			             but title was "Yesterday"
+			             """);
+	}
+
+	[Test]
+	public async Task ForMember_WithSubjectExpectations_WithMethodGroup_ShouldPassTheMemberAsSubject()
+	{
+		ManualExpectationBuilder<string> sut = new();
+
+		sut.ForMember(MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "length "))
+			.AddExpectations(IsThree);
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Success);
+		await That(constraintResult.GetExpectationText()).IsEqualTo("length is equal to 3");
+	}
+
+	[Test]
+	public async Task ForMember_WithSubjectExpectations_WithStaticLambda_ShouldPassTheMemberAsSubject()
+	{
+		ManualExpectationBuilder<string> sut = new();
+
+		sut.ForMember(MemberAccessor<string, int>.FromFuncWithName(x => x.Length, "length "))
+			.AddExpectations(static length => { length.IsGreaterThan(3); }, _ => ExpectationGrammars.Nested);
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
+		await That(constraintResult.GetExpectationText()).IsEqualTo("length is greater than 3");
+		await That(constraintResult.GetResultText()).IsEqualTo("length was 3");
+	}
+
+	[Test]
 	public async Task ForMember_WithSucceedingExpectation_ShouldReturnSuccessConstraintResult()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -1959,6 +2024,15 @@ public class ExpectationBuilderTests
 		=> isAsync
 			? expectationBuilder.ForAsyncWhich<string, char>(s => Task.FromResult(s[0]), " whose first ")
 			: expectationBuilder.ForWhich<string, char>(s => s[0], " whose first ");
+
+	private static AndOrResult<Track, IThat<Track>> HasTitle(IThat<Track> subject,
+		Action<IThatSubject<string?>> expectations)
+		=> new(subject.Get().ExpectationBuilder
+			.ForMember(MemberAccessor<Track, string?>.FromFuncWithName(track => track.Title, "title "),
+				(member, stringBuilder) => stringBuilder.Append("whose ").Append(member))
+			.AddExpectations(expectations, grammars => grammars | ExpectationGrammars.Nested), subject);
+
+	private static void IsThree(IThatSubject<int> length) => length.IsEqualTo(3);
 
 	private static ExpectationResult ThatAwaiting(int subject)
 		=> new(That(subject).Get().ExpectationBuilder.AddConstraint((_, _) => new AwaitingConstraint()));

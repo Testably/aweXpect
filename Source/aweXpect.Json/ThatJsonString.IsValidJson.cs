@@ -49,8 +49,7 @@ public static partial class ThatJsonString
 						return jsonDocument.RootElement.Clone();
 					}, "it"),
 					(_, stringBuilder) => stringBuilder.Append(" which "))
-				.AddExpectations(expectations,
-					static (expectations, e) => expectations(new ThatSubject<JsonElement>(e))),
+				.AddExpectations(expectations),
 			subject);
 	}
 

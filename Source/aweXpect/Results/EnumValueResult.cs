@@ -306,9 +306,6 @@ public class EnumValueResult<TValue, TType>
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> Append(stringBuilder, !isNegative);
 
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
-
 		private void Append(StringBuilder stringBuilder, bool isNegated)
 		{
 			string negation = isNegated ? "not " : "";

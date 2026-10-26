@@ -91,9 +91,6 @@ public static partial class ThatNumber
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotFinite, ExpectAreNotFinite));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsFiniteConstraint<TNumber>(
@@ -123,9 +120,6 @@ public static partial class ThatNumber
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotFinite, ExpectAreNotFinite));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #else
 	private const string IsFiniteSummary = "Verifies that the subject is finite.";
@@ -187,9 +181,6 @@ public static partial class ThatNumber
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotFinite, ExpectAreNotFinite));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsFiniteConstraint<TNumber>(
@@ -218,9 +209,6 @@ public static partial class ThatNumber
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotFinite, ExpectAreNotFinite));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #endif
 }

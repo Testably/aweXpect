@@ -197,8 +197,12 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 	///     Appends the result to the <paramref name="stringBuilder" /> when the <see cref="ExpectationGrammars" /> are
 	///     negated.
 	/// </summary>
+	/// <remarks>
+	///     By default, the result is described like the normal one, see <see cref="AppendNormalResult" />.
+	/// </remarks>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	protected abstract void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null);
+	protected virtual void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+		=> AppendNormalResult(stringBuilder, indentation);
 
 	/// <inheritdoc cref="ConstraintResult.AppendExpectation(StringBuilder, string?)" />
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]

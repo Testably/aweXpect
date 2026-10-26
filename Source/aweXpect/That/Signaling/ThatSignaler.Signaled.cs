@@ -344,9 +344,6 @@ public static partial class ThatSignaler
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendCallbackExpectation(stringBuilder, quantifier.Value, true, null, options.Value, _defaultTimeout);
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class SignaledConstraint<TParameter>(
@@ -420,8 +417,5 @@ public static partial class ThatSignaler
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendCallbackExpectation(stringBuilder, quantifier.Value, true, predicates.Value, options.Value, _defaultTimeout);
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

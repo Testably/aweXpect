@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Results;
 
 namespace aweXpect.Core.Tests.Core.Constraints;
 
@@ -78,6 +80,35 @@ public partial class ConstraintResultTests
 
 			await That(sut.Outcome).IsEqualTo(Outcome.Undecided);
 			await That(resultText).IsEqualTo("Items could not be verified, because the evaluation was already canceled");
+		}
+
+		[Test]
+		public async Task AppendResult_WithoutNegatedResult_ShouldAppendTheNormalResultWhenNegated()
+		{
+			ConstraintResult sut = new MyWithValueWithoutNegatedResultDummy(4);
+			sut.Invert();
+
+			string resultText = sut.GetResultText();
+
+			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
+			await That(resultText).IsEqualTo("it was 4")
+				.Because("a constraint that does not override AppendNegatedResult describes the result like the normal one");
+		}
+
+		[Test]
+		public async Task AppendResult_WithoutNegatedResult_WhenANegatedExpectationFails_ShouldDescribeTheResultLikeTheNormalOne()
+		{
+			int subject = 4;
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => IsEven(it));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is odd,
+				             but it was 4
+				             """);
 		}
 
 		[Test]
@@ -276,6 +307,35 @@ public partial class ConstraintResultTests
 
 				base.AppendUndecidedResult(stringBuilder, indentation);
 			}
+		}
+
+		private static AndOrResult<int, IThat<int>> IsEven(IThat<int> subject)
+			=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new MyWithValueWithoutNegatedResultDummy(it, grammars)), subject);
+
+		private sealed class MyWithValueWithoutNegatedResultDummy(string it, ExpectationGrammars grammars)
+			: ConstraintResult.WithValue<int>(it, grammars), IValueConstraint<int>
+		{
+			public MyWithValueWithoutNegatedResultDummy(int value) : this("it", ExpectationGrammars.None)
+			{
+				IsMetBy(value);
+			}
+
+			public ConstraintResult IsMetBy(int actual)
+			{
+				Actual = actual;
+				Outcome = actual % 2 == 0 ? Outcome.Success : Outcome.Failure;
+				return this;
+			}
+
+			protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+				=> stringBuilder.Append("is even");
+
+			protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+				=> stringBuilder.Append(It).Append(" was ").Append(Actual);
+
+			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+				=> stringBuilder.Append("is odd");
 		}
 
 		private sealed class MyWithValueWithItDummy(string it)

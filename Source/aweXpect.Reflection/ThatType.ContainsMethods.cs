@@ -121,9 +121,6 @@ public static partial class ThatType
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendMembers(stringBuilder.Append(scope?.Value.IsDirect() == true ? "does not declare " : "does not contain "));
 
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
-
 		private void AppendMembers(StringBuilder stringBuilder)
 			=> stringBuilder.Append(memberFilter.MembersDescription)
 				.Append(scope?.Value.ObjectMembersText())

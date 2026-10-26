@@ -98,7 +98,7 @@ public class HasQueryParameterValueResult
 					return values[0];
 				}, "the value "),
 				(_, stringBuilder) => stringBuilder.Append(" whose value "))
-			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?>(e)));
+			.AddExpectations(expectations);
 		return this;
 	}
 
@@ -113,7 +113,7 @@ public class HasQueryParameterValueResult
 			.ForMember(
 				MemberAccessor<Uri, string?[]?>.FromFuncWithName(u => u.GetQueryParameterValues(_name), "the values "),
 				(_, stringBuilder) => stringBuilder.Append(" whose values "))
-			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?[]?>(e)),
+			.AddExpectations(expectations,
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural);
 		return this;
 	}
@@ -254,8 +254,5 @@ public class HasQueryParameterValueResult
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalExpectation(stringBuilder, indentation);
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

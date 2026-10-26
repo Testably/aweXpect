@@ -1865,6 +1865,21 @@ public abstract class ExpectationBuilder
 				expectationGrammars, _sourceConstraintBuilder);
 
 		/// <summary>
+		///     Add the <paramref name="expectations" /> for the current <typeparamref name="TMember" />, which receive it
+		///     as <see cref="IThatSubject{T}" />.
+		/// </summary>
+		/// <remarks>
+		///     Pass the nested expectations of the caller directly, instead of wrapping the
+		///     <see cref="ExpectationBuilder" /> in a <see cref="ThatSubject{T}" />.
+		/// </remarks>
+		public ExpectationBuilder AddExpectations(
+			Action<IThatSubject<TMember>> expectations,
+			Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars = null)
+			=> _expectationBuilder.AddMemberExpectations(CreateMappingNode<TMember>(), _replaceIt, expectations,
+				static (expectations, expectationBuilder) => expectations(new ThatSubject<TMember>(expectationBuilder)),
+				expectationGrammars, _sourceConstraintBuilder);
+
+		/// <summary>
 		///     Add expectations for the current <typeparamref name="TMember" />, which receive the
 		///     <paramref name="state" />.
 		/// </summary>

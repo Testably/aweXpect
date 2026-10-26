@@ -85,9 +85,6 @@ public static partial class ThatNumber
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotNaN, ExpectAreNotNaN));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsNaNConstraint<TNumber>(
@@ -115,9 +112,6 @@ public static partial class ThatNumber
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotNaN, ExpectAreNotNaN));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #else
 	private const string IsNaNSummary = "Verifies that the subject is not a number (<see cref=\"double.IsNaN(double)\">NaN</see>).";
@@ -175,9 +169,6 @@ public static partial class ThatNumber
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotNaN, ExpectAreNotNaN));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsNaNConstraint<TNumber>(
@@ -206,9 +197,6 @@ public static partial class ThatNumber
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb(ExpectIsNotNaN, ExpectAreNotNaN));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #endif
 }

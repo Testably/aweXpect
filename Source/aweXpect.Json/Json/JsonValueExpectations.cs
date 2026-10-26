@@ -21,8 +21,7 @@ internal static class JsonValueExpectations
 					static found => found.Value, target.Path, "$"),
 				static (_, stringBuilder) => stringBuilder.Append(" which "))
 			.NegatedAsAlternative(static (member, stringBuilder) => stringBuilder.Append(" or ").Append(member).Append(' '))
-			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TValue>(e)),
-				Singular);
+			.AddExpectations(expectations, Singular);
 	}
 
 	/// <summary>
@@ -43,6 +42,5 @@ internal static class JsonValueExpectations
 				static (_, stringBuilder) => stringBuilder.Append(" which "),
 				false)
 			.NegatedAsAlternative(static (_, stringBuilder) => stringBuilder.Append(" or its value "))
-			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TValue>(e)),
-				Singular);
+			.AddExpectations(expectations, Singular);
 }

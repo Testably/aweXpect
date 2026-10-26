@@ -85,8 +85,5 @@ public static partial class ThatGuid
 			stringBuilder.Append(Grammars.Verb("is not one of ", "are not one of "));
 			stringBuilder.Append(expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected));
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

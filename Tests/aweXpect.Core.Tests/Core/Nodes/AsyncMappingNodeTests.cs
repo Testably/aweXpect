@@ -556,7 +556,7 @@ public class AsyncMappingNodeTests
 		Action<IThat<int>> expectations)
 		=> new(subject.Get().ExpectationBuilder
 				.ForAsyncMember(MemberAccessor<string?, Task<int>>.FromFuncWithName(length, "length "))
-				.AddExpectations(e => expectations(new ThatSubject<int>(e))),
+				.AddExpectations(expectations),
 			subject);
 
 	private static AndOrResult<string?, IThat<string?>> HasValueTaskLength(
@@ -565,7 +565,7 @@ public class AsyncMappingNodeTests
 		Action<IThat<int>> expectations)
 		=> new(subject.Get().ExpectationBuilder
 				.ForAsyncMember(MemberAccessor<string?, ValueTask<int>>.FromFuncWithName(length, "length "))
-				.AddExpectations(e => expectations(new ThatSubject<int>(e))),
+				.AddExpectations(expectations),
 			subject);
 
 	private static AndOrResult<string?, IThat<string?>> HasLength(
@@ -576,7 +576,7 @@ public class AsyncMappingNodeTests
 					MemberAccessor<string?, Task<int>>.FromFuncWithName(s => Task.FromResult(s!.Length), " which "),
 					replaceIt: false)
 				.Validate((it, grammars) => new HasLengthConstraint(it, grammars))
-				.AddExpectations(e => expectations(new ThatSubject<int>(e))),
+				.AddExpectations(expectations),
 			subject);
 
 	private sealed class HasLengthConstraint(string it, ExpectationGrammars grammars)

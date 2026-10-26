@@ -72,8 +72,5 @@ public static partial class ThatNullableChar
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

@@ -31,9 +31,7 @@ public static AndOrResult<Track, IThat<Track?>> HasTitle(
             .ForMember(
                 MemberAccessor<Track?, string?>.FromFuncWithName(track => track?.Title, "title "),
                 (member, stringBuilder) => stringBuilder.Append("has ").Append(member).Append("that "))
-            .AddExpectations(expectations,
-                static (expectations, e) => expectations(new ThatSubject<string?>(e)),
-                grammars => grammars | ExpectationGrammars.Nested),
+            .AddExpectations(expectations, grammars => grammars | ExpectationGrammars.Nested),
         subject);
 ```
 
@@ -56,8 +54,8 @@ public static AndOrResult<Track, IThat<Track?>> HasTitle(
 - When the constraint from `Validate(…)` finds the member, e.g. a property that may be missing, `NegatedAsAlternative(…)`
   writes the negation as an alternative, e.g. `does not have property "a" or $.a is not equal to 1`, and the result
   of the member then explains a failed negation.
-- `AddExpectations` hands the caller's `expectations` to the `static` lambda, so that adding them allocates neither a
-  closure nor a delegate. An overload without this state takes a lambda that captures what it needs.
+- The other overloads of `AddExpectations` hand the nested expectations the `ExpectationBuilder` instead of an
+  `IThatSubject<T>`, optionally with a state, so that a `static` lambda adds them without allocating a closure.
 - An exception that the member selector throws fails the nested expectations with "… did throw …".
 
 </details>
@@ -113,9 +111,7 @@ public static AndOrResult<Track, IThat<Track?>> HasLyrics(
                     (track, context, cancellationToken) => LoadLyrics(source, track, context, cancellationToken),
                     "lyrics "),
                 (member, stringBuilder) => stringBuilder.Append("has ").Append(member).Append("that "))
-            .AddExpectations(expectations,
-                static (expectations, e) => expectations(new ThatSubject<string?>(e)),
-                grammars => grammars | ExpectationGrammars.Nested),
+            .AddExpectations(expectations, grammars => grammars | ExpectationGrammars.Nested),
         subject);
 
 private static async Task<string?> LoadLyrics(ILyricsSource source, Track track, IEvaluationContext context,

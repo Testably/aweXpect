@@ -24,7 +24,8 @@ public abstract partial class ConstraintResult
 	///     - <see cref="AppendNormalExpectation" /> / <see cref="AppendNegatedExpectation" />
 	///     which add the normal and negated expectation strings<br />
 	///     - <see cref="AppendNormalResult" /> / <see cref="AppendNegatedResult" />
-	///     which add the normal and negated result strings.
+	///     which add the normal and negated result strings; the negated result is described like the normal one,
+	///     unless <see cref="AppendNegatedResult" /> is overwritten.
 	/// </remarks>
 	public abstract class WithValue<T>(string it, ExpectationGrammars grammars) : ConstraintResult(grammars)
 	{
@@ -117,8 +118,12 @@ public abstract partial class ConstraintResult
 		///     Appends the result to the <paramref name="stringBuilder" /> when the <see cref="ExpectationGrammars" /> are
 		///     negated.
 		/// </summary>
+		/// <remarks>
+		///     By default, the result is described like the normal one, see <see cref="AppendNormalResult" />.
+		/// </remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		protected abstract void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null);
+		protected virtual void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> AppendNormalResult(stringBuilder, indentation);
 
 		/// <summary>
 		///     Appends the result to the <paramref name="stringBuilder" /> when the <see cref="Outcome" />

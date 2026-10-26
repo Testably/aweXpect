@@ -1504,9 +1504,6 @@ public sealed class WhichNodeTests
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("does not start with \"bar\"");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class ContextConstraintResult() : ConstraintResult(FurtherProcessingStrategy.Continue)

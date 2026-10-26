@@ -70,9 +70,6 @@ private sealed class HasTitleConstraint(
     protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("does not have title ")
             .Append(options.Value.GetExpectation(expected, ExpectationGrammars.None));
-
-    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-        => AppendNormalResult(stringBuilder, indentation);
 }
 ```
 

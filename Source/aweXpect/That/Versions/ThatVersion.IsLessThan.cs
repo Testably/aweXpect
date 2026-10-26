@@ -68,8 +68,5 @@ public static partial class ThatVersion
 			stringBuilder.Append(Grammars.Verb("is not less than ", "are not less than "));
 			Formatter.Format(stringBuilder, expected);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

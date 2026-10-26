@@ -144,9 +144,6 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsLessThanConstraint<TNumber>(
@@ -191,9 +188,6 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #else
 	private const string IsLessThanSummary =
@@ -295,9 +289,6 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsLessThanConstraint<TNumber>(
@@ -342,9 +333,6 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(options);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #endif
 }

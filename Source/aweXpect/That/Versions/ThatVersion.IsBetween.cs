@@ -97,8 +97,5 @@ public static partial class ThatVersion
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, maximum);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

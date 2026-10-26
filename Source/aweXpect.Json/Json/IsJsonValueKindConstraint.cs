@@ -131,9 +131,6 @@ internal abstract class IsJsonValueKindConstraint<TValue>(
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> AppendExpectation(stringBuilder);
 
-	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		=> AppendNormalResult(stringBuilder, indentation);
-
 	/// <summary>
 	///     Appends the value as it is written in the JSON document, e.g. <c>it was 2.5</c>.
 	/// </summary>
