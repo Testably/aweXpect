@@ -33,9 +33,9 @@ public static partial class ThatTypes
 	public static NamespaceDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DependOn(
 		this IThat<IEnumerable<Type?>?> subject, IEnumerable<string> namespaces)
 	{
-		NamespaceDependencyOptions options = new(namespaces);
+		OptionsHolder<NamespaceDependencyOptions> options = new(new NamespaceDependencyOptions(namespaces));
 		return new NamespaceDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<NamespaceDependencyOptions, IEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<NamespaceDependencyOptions>, IEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new DependOnConstraint(it, grammars, options)),
 			subject,
@@ -57,9 +57,9 @@ public static partial class ThatTypes
 	public static NamespaceDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DependOn(
 		this IThat<IAsyncEnumerable<Type?>?> subject, IEnumerable<string> namespaces)
 	{
-		NamespaceDependencyOptions options = new(namespaces);
+		OptionsHolder<NamespaceDependencyOptions> options = new(new NamespaceDependencyOptions(namespaces));
 		return new NamespaceDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<NamespaceDependencyOptions, IAsyncEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<NamespaceDependencyOptions>, IAsyncEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new DependOnConstraint(it, grammars, options)),
 			subject,
@@ -84,9 +84,9 @@ public static partial class ThatTypes
 	public static TypeDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DependOn(
 		this IThat<IEnumerable<Type?>?> subject, Type type)
 	{
-		TypeDependencyOptions options = new(type);
+		OptionsHolder<TypeDependencyOptions> options = new(new TypeDependencyOptions(type));
 		return new TypeDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<TypeDependencyOptions, IEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<TypeDependencyOptions>, IEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new DependOnConstraint(it, grammars, options)),
 			subject,
@@ -111,9 +111,9 @@ public static partial class ThatTypes
 	public static TypeDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DependOn(
 		this IThat<IAsyncEnumerable<Type?>?> subject, Type type)
 	{
-		TypeDependencyOptions options = new(type);
+		OptionsHolder<TypeDependencyOptions> options = new(new TypeDependencyOptions(type));
 		return new TypeDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<TypeDependencyOptions, IAsyncEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<TypeDependencyOptions>, IAsyncEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new DependOnConstraint(it, grammars, options)),
 			subject,
@@ -135,9 +135,9 @@ public static partial class ThatTypes
 	public static TypeSetDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DependOn(
 		this IThat<IEnumerable<Type?>?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
-		TypeSetDependencyOptions options = new(target, additional);
+		OptionsHolder<TypeSetDependencyOptions> options = new(new TypeSetDependencyOptions(target, additional));
 		return new TypeSetDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<TypeSetDependencyOptions, IEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<TypeSetDependencyOptions>, IEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new DependOnTypeSetConstraint(it, grammars, options)),
 			subject,
@@ -159,9 +159,9 @@ public static partial class ThatTypes
 	public static TypeSetDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DependOn(
 		this IThat<IAsyncEnumerable<Type?>?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
-		TypeSetDependencyOptions options = new(target, additional);
+		OptionsHolder<TypeSetDependencyOptions> options = new(new TypeSetDependencyOptions(target, additional));
 		return new TypeSetDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<TypeSetDependencyOptions, IAsyncEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<TypeSetDependencyOptions>, IAsyncEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new DependOnTypeSetConstraint(it, grammars, options)),
 			subject,
@@ -183,9 +183,9 @@ public static partial class ThatTypes
 	public static NamespaceDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotDependOn(
 		this IThat<IEnumerable<Type?>?> subject, IEnumerable<string> namespaces)
 	{
-		NamespaceDependencyOptions options = new(namespaces);
+		OptionsHolder<NamespaceDependencyOptions> options = new(new NamespaceDependencyOptions(namespaces));
 		return new NamespaceDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<NamespaceDependencyOptions, IEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<NamespaceDependencyOptions>, IEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new DoNotDependOnConstraint(it, grammars, options)),
 			subject,
@@ -207,9 +207,9 @@ public static partial class ThatTypes
 	public static NamespaceDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotDependOn(
 		this IThat<IAsyncEnumerable<Type?>?> subject, IEnumerable<string> namespaces)
 	{
-		NamespaceDependencyOptions options = new(namespaces);
+		OptionsHolder<NamespaceDependencyOptions> options = new(new NamespaceDependencyOptions(namespaces));
 		return new NamespaceDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<NamespaceDependencyOptions, IAsyncEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<NamespaceDependencyOptions>, IAsyncEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new DoNotDependOnConstraint(it, grammars, options)),
 			subject,
@@ -234,9 +234,9 @@ public static partial class ThatTypes
 	public static TypeDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotDependOn(
 		this IThat<IEnumerable<Type?>?> subject, Type type)
 	{
-		TypeDependencyOptions options = new(type);
+		OptionsHolder<TypeDependencyOptions> options = new(new TypeDependencyOptions(type));
 		return new TypeDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<TypeDependencyOptions, IEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<TypeDependencyOptions>, IEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new DoNotDependOnConstraint(it, grammars, options)),
 			subject,
@@ -261,9 +261,9 @@ public static partial class ThatTypes
 	public static TypeDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotDependOn(
 		this IThat<IAsyncEnumerable<Type?>?> subject, Type type)
 	{
-		TypeDependencyOptions options = new(type);
+		OptionsHolder<TypeDependencyOptions> options = new(new TypeDependencyOptions(type));
 		return new TypeDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<TypeDependencyOptions, IAsyncEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<TypeDependencyOptions>, IAsyncEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new DoNotDependOnConstraint(it, grammars, options)),
 			subject,
@@ -285,9 +285,9 @@ public static partial class ThatTypes
 	public static TypeSetDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotDependOn(
 		this IThat<IEnumerable<Type?>?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
-		TypeSetDependencyOptions options = new(target, additional);
+		OptionsHolder<TypeSetDependencyOptions> options = new(new TypeSetDependencyOptions(target, additional));
 		return new TypeSetDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<TypeSetDependencyOptions, IEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<TypeSetDependencyOptions>, IEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new DoNotDependOnTypeSetConstraint(it, grammars, options)),
 			subject,
@@ -309,9 +309,9 @@ public static partial class ThatTypes
 	public static TypeSetDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotDependOn(
 		this IThat<IAsyncEnumerable<Type?>?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
-		TypeSetDependencyOptions options = new(target, additional);
+		OptionsHolder<TypeSetDependencyOptions> options = new(new TypeSetDependencyOptions(target, additional));
 		return new TypeSetDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<TypeSetDependencyOptions, IAsyncEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<TypeSetDependencyOptions>, IAsyncEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new DoNotDependOnTypeSetConstraint(it, grammars, options)),
 			subject,
@@ -338,7 +338,7 @@ public static partial class ThatTypes
 	private sealed class DependOnConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		IDependencyTarget options)
+		IReadOnlyOptionsHolder<IDependencyTarget> options)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -348,20 +348,20 @@ public static partial class ThatTypes
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, type => DependsOnTarget(type, options), cancellationToken);
+			=> await SetAsyncValue(actual, context, type => DependsOnTarget(type, options.Value), cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => DependsOnTarget(type, options));
+			=> SetValue(actual, context, type => DependsOnTarget(type, options.Value));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all depend on ").Append(options.Describe());
+			=> stringBuilder.Append("all depend on ").Append(options.Value.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained types without the dependency");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all depend on ").Append(options.Describe());
+			=> stringBuilder.Append("not all depend on ").Append(options.Value.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained types with the dependency");
@@ -370,7 +370,7 @@ public static partial class ThatTypes
 	private sealed class DoNotDependOnConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		IDependencyTarget options)
+		IReadOnlyOptionsHolder<IDependencyTarget> options)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -380,20 +380,20 @@ public static partial class ThatTypes
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, type => DoesNotDependOnTarget(type, options), cancellationToken);
+			=> await SetAsyncValue(actual, context, type => DoesNotDependOnTarget(type, options.Value), cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => DoesNotDependOnTarget(type, options));
+			=> SetValue(actual, context, type => DoesNotDependOnTarget(type, options.Value));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all do not depend on ").Append(options.Describe());
+			=> stringBuilder.Append("all do not depend on ").Append(options.Value.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained types with the dependency");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all do not depend on ").Append(options.Describe());
+			=> stringBuilder.Append("not all do not depend on ").Append(options.Value.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained types without the dependency");
@@ -402,7 +402,7 @@ public static partial class ThatTypes
 	private sealed class DependOnTypeSetConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeSetDependencyOptions options)
+		IReadOnlyOptionsHolder<TypeSetDependencyOptions> options)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -413,7 +413,7 @@ public static partial class ThatTypes
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			ResolvedTypeSet targetSet = await options.Resolve(cancellationToken);
+			ResolvedTypeSet targetSet = await options.Value.Resolve(cancellationToken);
 			return await SetAsyncValue(actual, context, type => DependsOnTypeSet(type, targetSet), cancellationToken);
 		}
 #endif
@@ -421,18 +421,18 @@ public static partial class ThatTypes
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			ResolvedTypeSet targetSet = await options.Resolve(cancellationToken);
+			ResolvedTypeSet targetSet = await options.Value.Resolve(cancellationToken);
 			return SetValue(actual, context, type => DependsOnTypeSet(type, targetSet));
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all depend on ").Append(options.Describe());
+			=> stringBuilder.Append("all depend on ").Append(options.Value.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained types without the dependency");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all depend on ").Append(options.Describe());
+			=> stringBuilder.Append("not all depend on ").Append(options.Value.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained types with the dependency");
@@ -441,7 +441,7 @@ public static partial class ThatTypes
 	private sealed class DoNotDependOnTypeSetConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeSetDependencyOptions options)
+		IReadOnlyOptionsHolder<TypeSetDependencyOptions> options)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -452,7 +452,7 @@ public static partial class ThatTypes
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			ResolvedTypeSet targetSet = await options.Resolve(cancellationToken);
+			ResolvedTypeSet targetSet = await options.Value.Resolve(cancellationToken);
 			return await SetAsyncValue(actual, context,
 				type => DoesNotDependOnTypeSet(type, targetSet), cancellationToken);
 		}
@@ -461,18 +461,18 @@ public static partial class ThatTypes
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			ResolvedTypeSet targetSet = await options.Resolve(cancellationToken);
+			ResolvedTypeSet targetSet = await options.Value.Resolve(cancellationToken);
 			return SetValue(actual, context, type => DoesNotDependOnTypeSet(type, targetSet));
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all do not depend on ").Append(options.Describe());
+			=> stringBuilder.Append("all do not depend on ").Append(options.Value.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained types with the dependency");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all do not depend on ").Append(options.Describe());
+			=> stringBuilder.Append("not all do not depend on ").Append(options.Value.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained types without the dependency");

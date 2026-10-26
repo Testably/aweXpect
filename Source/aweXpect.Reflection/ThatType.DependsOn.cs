@@ -30,7 +30,7 @@ public static partial class ThatType
 	public static NamespaceDependencyResult<Type, Type?> DependsOn(
 		this IThat<Type?> subject, IEnumerable<string> namespaces)
 	{
-		NamespaceDependencyOptions options = new(namespaces);
+		OptionsHolder<NamespaceDependencyOptions> options = new(new NamespaceDependencyOptions(namespaces));
 		return new NamespaceDependencyResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint(options,
 					static (options, it, grammars)
@@ -54,7 +54,7 @@ public static partial class ThatType
 	public static TypeDependencyResult<Type, Type?> DependsOn(
 		this IThat<Type?> subject, Type type)
 	{
-		TypeDependencyOptions options = new(type);
+		OptionsHolder<TypeDependencyOptions> options = new(new TypeDependencyOptions(type));
 		return new TypeDependencyResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint(options,
 					static (options, it, grammars)
@@ -76,7 +76,7 @@ public static partial class ThatType
 	public static TypeSetDependencyResult<Type, Type?> DependsOn(
 		this IThat<Type?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
-		TypeSetDependencyOptions options = new(target, additional);
+		OptionsHolder<TypeSetDependencyOptions> options = new(new TypeSetDependencyOptions(target, additional));
 		return new TypeSetDependencyResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint(options,
 					static (options, it, grammars)
@@ -99,7 +99,7 @@ public static partial class ThatType
 	public static NamespaceDependencyResult<Type, Type?> DoesNotDependOn(
 		this IThat<Type?> subject, IEnumerable<string> namespaces)
 	{
-		NamespaceDependencyOptions options = new(namespaces);
+		OptionsHolder<NamespaceDependencyOptions> options = new(new NamespaceDependencyOptions(namespaces));
 		return new NamespaceDependencyResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint(options,
 					static (options, it, grammars)
@@ -125,7 +125,7 @@ public static partial class ThatType
 	public static TypeDependencyResult<Type, Type?> DoesNotDependOn(
 		this IThat<Type?> subject, Type type)
 	{
-		TypeDependencyOptions options = new(type);
+		OptionsHolder<TypeDependencyOptions> options = new(new TypeDependencyOptions(type));
 		return new TypeDependencyResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint(options,
 					static (options, it, grammars)
@@ -147,7 +147,7 @@ public static partial class ThatType
 	public static TypeSetDependencyResult<Type, Type?> DoesNotDependOn(
 		this IThat<Type?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
-		TypeSetDependencyOptions options = new(target, additional);
+		OptionsHolder<TypeSetDependencyOptions> options = new(new TypeSetDependencyOptions(target, additional));
 		return new TypeSetDependencyResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint(options,
 					static (options, it, grammars)
@@ -159,7 +159,7 @@ public static partial class ThatType
 	private sealed class DependsOnNamespaceConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		NamespaceDependencyOptions options)
+		IReadOnlyOptionsHolder<NamespaceDependencyOptions> options)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IValueConstraint<Type?>
 	{
@@ -175,7 +175,7 @@ public static partial class ThatType
 			}
 
 			_dependencies = actual.ResolveDependencies();
-			Outcome = _dependencies.Any(dependency => options.Matches(dependency.Namespace))
+			Outcome = _dependencies.Any(dependency => options.Value.Matches(dependency.Namespace))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -191,13 +191,13 @@ public static partial class ThatType
 				.ToArray();
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("depends on ").Append(options.Describe());
+			=> stringBuilder.Append("depends on ").Append(options.Value.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not depend on ").Append(options.Describe());
+			=> stringBuilder.Append("does not depend on ").Append(options.Value.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did");
@@ -213,7 +213,7 @@ public static partial class ThatType
 			if (IsNegated)
 			{
 				contexts.AddDependenciesContext("Matching dependencies",
-					ToSortedNamespaces(_dependencies.Where(dependency => options.Matches(dependency.Namespace))));
+					ToSortedNamespaces(_dependencies.Where(dependency => options.Value.Matches(dependency.Namespace))));
 			}
 			else
 			{
@@ -225,7 +225,7 @@ public static partial class ThatType
 	private sealed class DependsOnTypeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeDependencyOptions options)
+		IReadOnlyOptionsHolder<TypeDependencyOptions> options)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IValueConstraint<Type?>
 	{
@@ -241,18 +241,18 @@ public static partial class ThatType
 			}
 
 			_dependencies = actual.ResolveDependencies();
-			Outcome = _dependencies.Any(options.Matches) ? Outcome.Success : Outcome.Failure;
+			Outcome = _dependencies.Any(options.Value.Matches) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("depends on ").Append(options.Describe());
+			=> stringBuilder.Append("depends on ").Append(options.Value.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not depend on ").Append(options.Describe());
+			=> stringBuilder.Append("does not depend on ").Append(options.Value.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did");
@@ -264,7 +264,7 @@ public static partial class ThatType
 			{
 				// The sorted matching types are only needed for this failure message, so they are built lazily.
 				contexts.AddDependenciesContext("Matching dependencies", _dependencies
-					.Where(options.Matches)
+					.Where(options.Value.Matches)
 					.Distinct()
 					.OrderBy(type => type.FullName ?? type.Name, StringComparer.Ordinal)
 					.ToArray());
@@ -275,7 +275,7 @@ public static partial class ThatType
 	private sealed class DependsOnTypeSetConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeSetDependencyOptions options)
+		IReadOnlyOptionsHolder<TypeSetDependencyOptions> options)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IAsyncConstraint<Type?>
 	{
@@ -291,7 +291,7 @@ public static partial class ThatType
 				return this;
 			}
 
-			ResolvedTypeSet targetSet = await options.Resolve(cancellationToken);
+			ResolvedTypeSet targetSet = await options.Value.Resolve(cancellationToken);
 			_targetSet = targetSet;
 			_dependencies = actual.ResolveDependencies();
 			Outcome = _dependencies.Any(targetSet.Matches) ? Outcome.Success : Outcome.Failure;
@@ -299,13 +299,13 @@ public static partial class ThatType
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("depends on ").Append(options.Describe());
+			=> stringBuilder.Append("depends on ").Append(options.Value.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not depend on ").Append(options.Describe());
+			=> stringBuilder.Append("does not depend on ").Append(options.Value.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did");

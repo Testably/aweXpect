@@ -14,8 +14,9 @@ namespace aweXpect.Reflection.Options;
 ///     (<see cref="Filtered.Types" />).
 /// </summary>
 /// <remarks>
-///     The instance is shared between the chainable result and the underlying constraint/filter, so that
-///     <c>OrOn(…)</c> and <c>ExcludingOwnSubNamespaces(…)</c> widen or refine the (lazily evaluated) expression.
+///     An immutable value: <c>OrOn(…)</c> and <c>ExcludingOwnSubNamespaces(…)</c> return new options that widen or
+///     refine the (lazily evaluated) expression. An expectation shares them in an
+///     <see cref="OptionsHolder{TOptions}" /> with its result and its constraint, a filter keeps them.
 ///     <para />
 ///     The target collections are resolved once per assertion via <see cref="Resolve" /> (the union of all
 ///     collections); matching happens on the returned <see cref="ResolvedTypeSet" />, so it cannot be used
@@ -23,21 +24,25 @@ namespace aweXpect.Reflection.Options;
 /// </remarks>
 internal sealed class TypeSetDependencyOptions
 {
-	private readonly List<Filtered.Types> _targets = [];
-	private bool _excludeOwnSubNamespaces;
+	private readonly bool _excludeOwnSubNamespaces;
+	private readonly Filtered.Types[] _targets;
+
+	/// <summary>
+	///     The union set of the target collections, resolved when first needed.
+	/// </summary>
+	/// <remarks>
+	///     A cache of these options, which never change, so a race only resolves the set twice.
+	/// </remarks>
 	private ResolvedTypeSet? _resolved;
 
 	public TypeSetDependencyOptions(Filtered.Types target, Filtered.Types[] additional)
+		: this([ValidateTarget(target), .. Validate(additional, nameof(additional)),], false)
 	{
-		ThrowHelper.ThrowIfNull(target, nameof(target));
-		ThrowHelper.ThrowIfNull(additional, nameof(additional));
-		_targets.Add(target);
-		Add(additional, nameof(additional));
 	}
 
-	private TypeSetDependencyOptions(IEnumerable<Filtered.Types> targets, bool excludeOwnSubNamespaces)
+	private TypeSetDependencyOptions(Filtered.Types[] targets, bool excludeOwnSubNamespaces)
 	{
-		_targets.AddRange(targets);
+		_targets = targets;
 		_excludeOwnSubNamespaces = excludeOwnSubNamespaces;
 	}
 
@@ -52,15 +57,9 @@ internal sealed class TypeSetDependencyOptions
 	public bool IncludeOwnSubNamespaces => !_excludeOwnSubNamespaces;
 
 	/// <summary>
-	///     Creates an independent copy, so that refining a (reusable) filter does not mutate the shared instance.
+	///     Returns options that widen the set of targeted/allowed types by the given <paramref name="targets" />.
 	/// </summary>
-	public TypeSetDependencyOptions Copy()
-		=> new(_targets, _excludeOwnSubNamespaces);
-
-	/// <summary>
-	///     Widens the set of targeted/allowed types by the given <paramref name="targets" />.
-	/// </summary>
-	public void OrOn(Filtered.Types[] targets)
+	public TypeSetDependencyOptions OrOn(Filtered.Types[] targets)
 	{
 		ThrowHelper.ThrowIfNull(targets, nameof(targets));
 		if (targets.Length == 0)
@@ -69,31 +68,33 @@ internal sealed class TypeSetDependencyOptions
 				$"The '{nameof(targets)}' collection cannot be empty.", nameof(targets)));
 		}
 
-		Add(targets, nameof(targets));
+		return new TypeSetDependencyOptions([.. _targets, .. Validate(targets, nameof(targets)),],
+			_excludeOwnSubNamespaces);
 	}
 
 	/// <summary>
-	///     Excludes sub-namespaces of the type's own namespace from being implicitly allowed (for depends-only-on
-	///     and has-dependencies-outside).
+	///     Returns options that exclude sub-namespaces of the type's own namespace from being implicitly allowed (for
+	///     depends-only-on and has-dependencies-outside).
 	/// </summary>
-	/// <remarks>
-	///     Only the exemption rule changes, not the resolved target set, so a previously resolved set stays valid.
-	/// </remarks>
-	public void ExcludingOwnSubNamespaces()
-		=> _excludeOwnSubNamespaces = true;
+	public TypeSetDependencyOptions ExcludingOwnSubNamespaces()
+		=> new(_targets, true);
 
-	private void Add(Filtered.Types[] targets, string paramName)
+	private static Filtered.Types ValidateTarget(Filtered.Types target)
 	{
-		// Fully validate before mutating, so that a failed widening leaves the shared instance untouched.
+		ThrowHelper.ThrowIfNull(target, nameof(target));
+		return target;
+	}
+
+	private static Filtered.Types[] Validate(Filtered.Types[] targets, string paramName)
+	{
+		ThrowHelper.ThrowIfNull(targets, paramName);
 		if (targets.Contains(null!))
 		{
 			throw Tracing.WriteException(new ArgumentException(
 				$"The '{paramName}' collection cannot contain <null>.", paramName));
 		}
 
-		_targets.AddRange(targets);
-		// Widening invalidates a previously resolved set.
-		_resolved = null;
+		return targets;
 	}
 
 	/// <summary>

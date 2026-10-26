@@ -13,12 +13,12 @@ namespace aweXpect.Reflection.Results;
 public sealed class NamespaceDependencyOnlyOnResult<TType, TValue>
 	: AndOrResult<TType, IThat<TValue>, NamespaceDependencyOnlyOnResult<TType, TValue>>
 {
-	private readonly NamespaceDependencyOptions _options;
+	private readonly OptionsHolder<NamespaceDependencyOptions> _options;
 
 	internal NamespaceDependencyOnlyOnResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		NamespaceDependencyOptions options)
+		OptionsHolder<NamespaceDependencyOptions> options)
 		: base(expectationBuilder, subject)
 	{
 		_options = options;
@@ -37,7 +37,7 @@ public sealed class NamespaceDependencyOnlyOnResult<TType, TValue>
 	/// </summary>
 	public NamespaceDependencyOnlyOnResult<TType, TValue> OrOn(IEnumerable<string> namespaces)
 	{
-		_options.OrOn(namespaces);
+		_options.Value = _options.Value.OrOn(namespaces);
 		return this;
 	}
 
@@ -54,7 +54,7 @@ public sealed class NamespaceDependencyOnlyOnResult<TType, TValue>
 	/// </remarks>
 	public NamespaceDependencyOnlyOnResult<TType, TValue> ExcludingSubNamespaces()
 	{
-		_options.ExcludingSubNamespaces();
+		_options.Value = _options.Value.ExcludingSubNamespaces();
 		return this;
 	}
 
@@ -67,7 +67,7 @@ public sealed class NamespaceDependencyOnlyOnResult<TType, TValue>
 	/// </remarks>
 	public NamespaceDependencyOnlyOnResult<TType, TValue> ExcludingOwnSubNamespaces()
 	{
-		_options.ExcludingOwnSubNamespaces();
+		_options.Value = _options.Value.ExcludingOwnSubNamespaces();
 		return this;
 	}
 }

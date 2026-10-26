@@ -359,8 +359,7 @@ public static partial class Filtered
 			/// </summary>
 			public NamespaceDependencyFilterResult OrOn(IEnumerable<string> namespaces)
 			{
-				NamespaceDependencyOptions widened = _options.Copy();
-				widened.OrOn(namespaces);
+				NamespaceDependencyOptions widened = _options.OrOn(namespaces);
 				return new NamespaceDependencyFilterResult(widened, _build);
 			}
 
@@ -373,8 +372,7 @@ public static partial class Filtered
 			/// </remarks>
 			public NamespaceDependencyFilterResult ExcludingSubNamespaces()
 			{
-				NamespaceDependencyOptions refined = _options.Copy();
-				refined.ExcludingSubNamespaces();
+				NamespaceDependencyOptions refined = _options.ExcludingSubNamespaces();
 				return new NamespaceDependencyFilterResult(refined, _build);
 			}
 		}
@@ -417,8 +415,7 @@ public static partial class Filtered
 			/// </summary>
 			public NamespaceDependencyOnlyOnFilterResult OrOn(IEnumerable<string> namespaces)
 			{
-				NamespaceDependencyOptions widened = _options.Copy();
-				widened.OrOn(namespaces);
+				NamespaceDependencyOptions widened = _options.OrOn(namespaces);
 				return new NamespaceDependencyOnlyOnFilterResult(widened, _build);
 			}
 
@@ -435,8 +432,7 @@ public static partial class Filtered
 			/// </remarks>
 			public NamespaceDependencyOnlyOnFilterResult ExcludingSubNamespaces()
 			{
-				NamespaceDependencyOptions refined = _options.Copy();
-				refined.ExcludingSubNamespaces();
+				NamespaceDependencyOptions refined = _options.ExcludingSubNamespaces();
 				return new NamespaceDependencyOnlyOnFilterResult(refined, _build);
 			}
 
@@ -449,8 +445,7 @@ public static partial class Filtered
 			/// </remarks>
 			public NamespaceDependencyOnlyOnFilterResult ExcludingOwnSubNamespaces()
 			{
-				NamespaceDependencyOptions refined = _options.Copy();
-				refined.ExcludingOwnSubNamespaces();
+				NamespaceDependencyOptions refined = _options.ExcludingOwnSubNamespaces();
 				return new NamespaceDependencyOnlyOnFilterResult(refined, _build);
 			}
 		}
@@ -495,8 +490,7 @@ public static partial class Filtered
 			/// </summary>
 			public NamespaceDependencyOutsideFilterResult OrOn(IEnumerable<string> namespaces)
 			{
-				NamespaceDependencyOptions widened = _options.Copy();
-				widened.OrOn(namespaces);
+				NamespaceDependencyOptions widened = _options.OrOn(namespaces);
 				return new NamespaceDependencyOutsideFilterResult(widened, _build);
 			}
 
@@ -513,8 +507,7 @@ public static partial class Filtered
 			/// </remarks>
 			public NamespaceDependencyOutsideFilterResult ExcludingSubNamespaces()
 			{
-				NamespaceDependencyOptions refined = _options.Copy();
-				refined.ExcludingSubNamespaces();
+				NamespaceDependencyOptions refined = _options.ExcludingSubNamespaces();
 				return new NamespaceDependencyOutsideFilterResult(refined, _build);
 			}
 
@@ -527,8 +520,7 @@ public static partial class Filtered
 			/// </remarks>
 			public NamespaceDependencyOutsideFilterResult ExcludingOwnSubNamespaces()
 			{
-				NamespaceDependencyOptions refined = _options.Copy();
-				refined.ExcludingOwnSubNamespaces();
+				NamespaceDependencyOptions refined = _options.ExcludingOwnSubNamespaces();
 				return new NamespaceDependencyOutsideFilterResult(refined, _build);
 			}
 		}
@@ -616,8 +608,7 @@ public static partial class Filtered
 			/// </summary>
 			public TypeSetDependencyFilterResult OrOn(params Types[] targets)
 			{
-				TypeSetDependencyOptions widened = _options.Copy();
-				widened.OrOn(targets);
+				TypeSetDependencyOptions widened = _options.OrOn(targets);
 				return new TypeSetDependencyFilterResult(widened, _build);
 			}
 		}
@@ -652,8 +643,7 @@ public static partial class Filtered
 			/// </summary>
 			public TypeSetDependencyOnlyOnFilterResult OrOn(params Types[] targets)
 			{
-				TypeSetDependencyOptions widened = _options.Copy();
-				widened.OrOn(targets);
+				TypeSetDependencyOptions widened = _options.OrOn(targets);
 				return new TypeSetDependencyOnlyOnFilterResult(widened, _build);
 			}
 
@@ -667,8 +657,7 @@ public static partial class Filtered
 			/// </remarks>
 			public TypeSetDependencyOnlyOnFilterResult ExcludingOwnSubNamespaces()
 			{
-				TypeSetDependencyOptions refined = _options.Copy();
-				refined.ExcludingOwnSubNamespaces();
+				TypeSetDependencyOptions refined = _options.ExcludingOwnSubNamespaces();
 				return new TypeSetDependencyOnlyOnFilterResult(refined, _build);
 			}
 		}
@@ -704,8 +693,7 @@ public static partial class Filtered
 			/// </summary>
 			public TypeSetDependencyOutsideFilterResult OrOn(params Types[] targets)
 			{
-				TypeSetDependencyOptions widened = _options.Copy();
-				widened.OrOn(targets);
+				TypeSetDependencyOptions widened = _options.OrOn(targets);
 				return new TypeSetDependencyOutsideFilterResult(widened, _build);
 			}
 
@@ -719,8 +707,7 @@ public static partial class Filtered
 			/// </remarks>
 			public TypeSetDependencyOutsideFilterResult ExcludingOwnSubNamespaces()
 			{
-				TypeSetDependencyOptions refined = _options.Copy();
-				refined.ExcludingOwnSubNamespaces();
+				TypeSetDependencyOptions refined = _options.ExcludingOwnSubNamespaces();
 				return new TypeSetDependencyOutsideFilterResult(refined, _build);
 			}
 		}

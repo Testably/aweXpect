@@ -12,12 +12,12 @@ namespace aweXpect.Reflection.Results;
 public sealed class TypeSetDependencyResult<TType, TValue>
 	: AndOrResult<TType, IThat<TValue>, TypeSetDependencyResult<TType, TValue>>
 {
-	private readonly TypeSetDependencyOptions _options;
+	private readonly OptionsHolder<TypeSetDependencyOptions> _options;
 
 	internal TypeSetDependencyResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		TypeSetDependencyOptions options)
+		OptionsHolder<TypeSetDependencyOptions> options)
 		: base(expectationBuilder, subject)
 	{
 		_options = options;
@@ -28,7 +28,7 @@ public sealed class TypeSetDependencyResult<TType, TValue>
 	/// </summary>
 	public TypeSetDependencyResult<TType, TValue> OrOn(params Filtered.Types[] targets)
 	{
-		_options.OrOn(targets);
+		_options.Value = _options.Value.OrOn(targets);
 		return this;
 	}
 }

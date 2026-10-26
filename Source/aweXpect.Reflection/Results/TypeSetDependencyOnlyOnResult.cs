@@ -13,12 +13,12 @@ namespace aweXpect.Reflection.Results;
 public sealed class TypeSetDependencyOnlyOnResult<TType, TValue>
 	: AndOrResult<TType, IThat<TValue>, TypeSetDependencyOnlyOnResult<TType, TValue>>
 {
-	private readonly TypeSetDependencyOptions _options;
+	private readonly OptionsHolder<TypeSetDependencyOptions> _options;
 
 	internal TypeSetDependencyOnlyOnResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		TypeSetDependencyOptions options)
+		OptionsHolder<TypeSetDependencyOptions> options)
 		: base(expectationBuilder, subject)
 	{
 		_options = options;
@@ -29,7 +29,7 @@ public sealed class TypeSetDependencyOnlyOnResult<TType, TValue>
 	/// </summary>
 	public TypeSetDependencyOnlyOnResult<TType, TValue> OrOn(params Filtered.Types[] targets)
 	{
-		_options.OrOn(targets);
+		_options.Value = _options.Value.OrOn(targets);
 		return this;
 	}
 
@@ -43,7 +43,7 @@ public sealed class TypeSetDependencyOnlyOnResult<TType, TValue>
 	/// </remarks>
 	public TypeSetDependencyOnlyOnResult<TType, TValue> ExcludingOwnSubNamespaces()
 	{
-		_options.ExcludingOwnSubNamespaces();
+		_options.Value = _options.Value.ExcludingOwnSubNamespaces();
 		return this;
 	}
 }
