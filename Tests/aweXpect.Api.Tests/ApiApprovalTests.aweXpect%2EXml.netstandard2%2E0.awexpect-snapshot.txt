@@ -9,15 +9,17 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> DoesNotHaveElement(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, System.Xml.Linq.XName name) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> HasAttribute(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, System.Xml.Linq.XName name) { }
+        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> HasAttribute(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, System.Xml.Linq.XName name, System.Action<aweXpect.Core.IThatSubject<string>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> HasAttribute(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, System.Xml.Linq.XName name, System.Action<aweXpect.Core.IThatSubject<string?>> expectations) { }
+        public static aweXpect.Xml.Results.XmlValueResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> HasAttribute(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, System.Xml.Linq.XName name) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> HasElement(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, System.Xml.Linq.XName name) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> HasElement(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, System.Xml.Linq.XName name, System.Action<aweXpect.Core.IThatSubject<System.Xml.Linq.XElement?>> expectations) { }
+        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> HasElement(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, System.Xml.Linq.XName name, System.Action<aweXpect.Core.IThatSubject<System.Xml.Linq.XElement>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> HasValue(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, System.Action<aweXpect.Core.IThatSubject<string?>> expectations) { }
+        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> HasValue(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, System.Action<aweXpect.Core.IThatSubject<string>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Xml.Results.XmlValueResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> HasValue(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> Matches(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, string expected, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -30,15 +32,17 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> DoesNotHaveElement(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, System.Xml.Linq.XName name) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> HasAttribute(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, System.Xml.Linq.XName name) { }
+        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> HasAttribute(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, System.Xml.Linq.XName name, System.Action<aweXpect.Core.IThatSubject<string>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> HasAttribute(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, System.Xml.Linq.XName name, System.Action<aweXpect.Core.IThatSubject<string?>> expectations) { }
+        public static aweXpect.Xml.Results.XmlValueResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> HasAttribute(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, System.Xml.Linq.XName name) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> HasElement(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, System.Xml.Linq.XName name) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> HasElement(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, System.Xml.Linq.XName name, System.Action<aweXpect.Core.IThatSubject<System.Xml.Linq.XElement?>> expectations) { }
+        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> HasElement(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, System.Xml.Linq.XName name, System.Action<aweXpect.Core.IThatSubject<System.Xml.Linq.XElement>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> HasValue(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, System.Action<aweXpect.Core.IThatSubject<string?>> expectations) { }
+        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> HasValue(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, System.Action<aweXpect.Core.IThatSubject<string>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Xml.Results.XmlValueResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> HasValue(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> Matches(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, string expected, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -74,6 +78,12 @@ namespace aweXpect.Xml
         public static aweXpect.Xml.XmlOptions IgnoringAdditionalNodes(this aweXpect.Xml.XmlOptions @this, bool ignoreAdditionalNodes = true) { }
         public static aweXpect.Xml.XmlOptions IgnoringElementOrder(this aweXpect.Xml.XmlOptions @this, bool ignoreElementOrder = true) { }
         public static aweXpect.Xml.XmlOptions IgnoringMember(this aweXpect.Xml.XmlOptions @this, string memberToIgnore) { }
+    }
+}
+namespace aweXpect.Xml.Results
+{
+    public class XmlValueResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>, aweXpect.Results.IStringAffixPropertyResult<aweXpect.Results.StringEqualityResult<TType, TThat>>, aweXpect.Results.IStringEqualityPropertyResult<aweXpect.Results.StringEqualityTypeResult<TType, TThat>>, aweXpect.Results.IStringOccurrencePropertyResult<aweXpect.Results.StringOccurrenceCountResult<TType, TThat>>
+    {
     }
 }
 

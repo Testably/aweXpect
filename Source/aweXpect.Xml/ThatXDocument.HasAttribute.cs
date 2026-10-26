@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using aweXpect.Core;
 using aweXpect.Results;
 using aweXpect.Xml;
+using aweXpect.Xml.Results;
 
 namespace aweXpect;
 
@@ -13,14 +14,14 @@ public static partial class ThatXDocument
 	/// </summary>
 	/// <remarks>
 	///     The attribute is looked up on the root element like by
-	///     <see cref="ThatXElement.HasAttribute(IThat{XElement}, XName)" />. A document without a root element fails the
-	///     expectation, also when it is negated.
+	///     <see cref="ThatXElement.HasAttribute(IThat{XElement}, XName)" />, and its value can be compared on the result.
+	///     A document without a root element fails the expectation, also when it is negated.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<XDocument, IThat<XDocument?>> HasAttribute(
+	public static XmlValueResult<XDocument, IThat<XDocument?>> HasAttribute(
 		this IThat<XDocument?> subject,
 		XName name)
-		=> HasNodeConstraint.HasAttribute(subject, name, false, static document => document.Root);
+		=> HasNodeConstraint.HasAttribute(subject, name, static document => document.Root);
 
 	/// <summary>
 	///     Verifies that the root element of the subject has an attribute with the <paramref name="name" /> whose value
@@ -35,7 +36,7 @@ public static partial class ThatXDocument
 	public static AndOrResult<XDocument, IThat<XDocument?>> HasAttribute(
 		this IThat<XDocument?> subject,
 		XName name,
-		Action<IThatSubject<string?>> expectations)
+		Action<IThatSubject<string>> expectations)
 		=> HasNodeConstraint.HasAttribute(subject, name, expectations, static document => document.Root);
 
 	/// <summary>
@@ -50,5 +51,5 @@ public static partial class ThatXDocument
 	public static AndOrResult<XDocument, IThat<XDocument?>> DoesNotHaveAttribute(
 		this IThat<XDocument?> subject,
 		XName name)
-		=> HasNodeConstraint.HasAttribute(subject, name, true, static document => document.Root);
+		=> HasNodeConstraint.DoesNotHaveAttribute(subject, name, static document => document.Root);
 }

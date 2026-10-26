@@ -1,12 +1,16 @@
 using System;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Formatting;
 using aweXpect.Helpers;
 using aweXpect.Results;
+using aweXpect.Xml.Results;
 using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Xml;
@@ -16,24 +20,33 @@ namespace aweXpect.Xml;
 /// </summary>
 internal static class HasNodeConstraint
 {
-	public static AndOrResult<TSubject, IThat<TSubject?>> HasAttribute<TSubject>(IThat<TSubject?> source,
-		XName name, bool negated, Func<TSubject, XElement?> getElement)
+	public static AndOrResult<TSubject, IThat<TSubject?>> DoesNotHaveAttribute<TSubject>(IThat<TSubject?> source,
+		XName name, Func<TSubject, XElement?> getElement)
 		where TSubject : XNode
 	{
 		ThrowHelper.ThrowIfNull(name, nameof(name));
 		return new AndOrResult<TSubject, IThat<TSubject?>>(source.Get().ExpectationBuilder.AddConstraint(
-				(Name: name, Negated: negated, GetElement: getElement),
-				static (state, it, grammars) =>
-				{
-					HasNodeConstraint<TSubject, XAttribute> constraint =
-						CreateAttribute(it, grammars, state.Name, state.GetElement);
-					return state.Negated ? constraint.Invert() : constraint;
-				}),
+				(Name: name, GetElement: getElement),
+				static (state, it, grammars) => CreateAttribute(it, grammars, state.Name, state.GetElement).Invert()),
 			source);
 	}
 
+	public static XmlValueResult<TSubject, IThat<TSubject?>> HasAttribute<TSubject>(IThat<TSubject?> source,
+		XName name, Func<TSubject, XElement?> getElement)
+		where TSubject : XNode
+	{
+		ThrowHelper.ThrowIfNull(name, nameof(name));
+		XmlComparisonSlot slot = new("HasAttribute(name)");
+		return new XmlValueResult<TSubject, IThat<TSubject?>>(source.Get().ExpectationBuilder.AddConstraint(
+				(Name: name, GetElement: getElement, Slot: slot),
+				static (state, it, grammars) => CreateAttribute(it, grammars, state.Name, state.GetElement,
+					new NodeValueComparison<XAttribute>(state.Slot, static attribute => attribute.Value))),
+			source,
+			slot);
+	}
+
 	public static AndOrResult<TSubject, IThat<TSubject?>> HasAttribute<TSubject>(IThat<TSubject?> source,
-		XName name, Action<IThatSubject<string?>> expectations, Func<TSubject, XElement?> getElement)
+		XName name, Action<IThatSubject<string>> expectations, Func<TSubject, XElement?> getElement)
 		where TSubject : XNode
 	{
 		ThrowHelper.ThrowIfNull(name, nameof(name));
@@ -42,7 +55,7 @@ internal static class HasNodeConstraint
 		expectationBuilder.AddConstraint((Name: name, GetElement: getElement),
 			static (state, it, grammars) => CreateAttribute(it, grammars, state.Name, state.GetElement));
 		expectationBuilder
-			.ForMember(MemberAccessor<FoundNode<XAttribute>, string?>.FromFuncWithName(found => found.Node.Value,
+			.ForMember(MemberAccessor<FoundNode<XAttribute>, string>.FromFuncWithName(found => found.Node.Value,
 					$"value of attribute {Formatter.Format(name.ToString())}"),
 				(_, stringBuilder) => stringBuilder.Append(" whose value "))
 			.AddExpectations(expectations);
@@ -66,7 +79,7 @@ internal static class HasNodeConstraint
 	}
 
 	public static AndOrResult<TSubject, IThat<TSubject?>> HasElement<TSubject>(IThat<TSubject?> source,
-		XName name, Action<IThatSubject<XElement?>> expectations, Func<TSubject, XElement?> getElement)
+		XName name, Action<IThatSubject<XElement>> expectations, Func<TSubject, XElement?> getElement)
 		where TSubject : XNode
 	{
 		ThrowHelper.ThrowIfNull(name, nameof(name));
@@ -75,7 +88,7 @@ internal static class HasNodeConstraint
 		expectationBuilder.AddConstraint((Name: name, GetElement: getElement),
 			static (state, it, grammars) => CreateElement(it, grammars, state.Name, state.GetElement));
 		expectationBuilder
-			.ForMember(MemberAccessor<FoundNode<XElement>, XElement?>.FromFuncWithName(found => found.Node,
+			.ForMember(MemberAccessor<FoundNode<XElement>, XElement>.FromFuncWithName(found => found.Node,
 					$"element {Formatter.Format(name.ToString())}"),
 				(_, stringBuilder) => stringBuilder.Append(" which "))
 			.AddExpectations(expectations);
@@ -99,9 +112,11 @@ internal static class HasNodeConstraint
 	}
 
 	private static HasNodeConstraint<TSubject, XAttribute> CreateAttribute<TSubject>(string it,
-		ExpectationGrammars grammars, XName name, Func<TSubject, XElement?> getElement)
+		ExpectationGrammars grammars, XName name, Func<TSubject, XElement?> getElement,
+		NodeValueComparison<XAttribute>? comparison = null)
 		where TSubject : XNode
-		=> new(it, grammars, "attribute", name, getElement, static (element, name) => element.Attribute(name));
+		=> new(it, grammars, "attribute", name, getElement, static (element, name) => element.Attribute(name),
+			comparison);
 
 	private static HasNodeConstraint<TSubject, XElement> CreateElement<TSubject>(string it,
 		ExpectationGrammars grammars, XName name, Func<TSubject, XElement?> getElement)
@@ -111,7 +126,8 @@ internal static class HasNodeConstraint
 
 /// <summary>
 ///     Verifies that the element of a subject has the node that the <paramref name="find" /> function looks up, e.g. an
-///     attribute or a child element.
+///     attribute or a child element, and when an operator on the result handed a comparison to the
+///     <paramref name="comparison" />, that the value of the node satisfies it.
 /// </summary>
 /// <param name="it">The name of the subject.</param>
 /// <param name="grammars">The grammars of the expectation.</param>
@@ -122,6 +138,7 @@ internal static class HasNodeConstraint
 ///     Looks up the node with the <paramref name="name" /> in the element, or returns <see langword="null" /> if it does
 ///     not exist.
 /// </param>
+/// <param name="comparison">Compares the value of the found node, if the result offers operators.</param>
 /// <remarks>
 ///     The node is only described in a failure, so that a met expectation does not format its name.
 /// </remarks>
@@ -131,9 +148,10 @@ internal sealed class HasNodeConstraint<TSubject, TNode>(
 	string kind,
 	XName name,
 	Func<TSubject, XElement?> getElement,
-	Func<XElement, XName, TNode?> find)
+	Func<XElement, XName, TNode?> find,
+	NodeValueComparison<TNode>? comparison = null)
 	: ConstraintResult.WithNotNullValue<TSubject?>(it, grammars),
-		IValueConstraint<TSubject?>
+		IAsyncContextConstraint<TSubject?>
 	where TSubject : XNode
 	where TNode : XObject
 {
@@ -141,12 +159,14 @@ internal sealed class HasNodeConstraint<TSubject, TNode>(
 	private FoundNode<TNode>? _found;
 	private bool _hasNoElement;
 
-	public ConstraintResult IsMetBy(TSubject? actual)
+	public async ValueTask<ConstraintResult> IsMetBy(TSubject? actual, IEvaluationContext context,
+		CancellationToken cancellationToken)
 	{
 		Actual = actual;
 		_element = null;
 		_found = null;
 		_hasNoElement = false;
+		comparison?.Reset();
 		if (actual is null)
 		{
 			Outcome = Outcome.Failure;
@@ -163,8 +183,16 @@ internal sealed class HasNodeConstraint<TSubject, TNode>(
 
 		_element = element;
 		TNode? found = find(element, name);
-		_found = found is null ? null : new FoundNode<TNode>(found);
-		Outcome = found is not null ? Outcome.Success : Outcome.Failure;
+		if (found is null)
+		{
+			Outcome = Outcome.Failure;
+			return this;
+		}
+
+		_found = new FoundNode<TNode>(found);
+		Outcome = comparison is null
+			? Outcome.Success
+			: await comparison.Evaluate(found, context, cancellationToken);
 		return this;
 	}
 
@@ -184,6 +212,7 @@ internal sealed class HasNodeConstraint<TSubject, TNode>(
 
 	public override void AppendContexts(ResultContextCollector contexts)
 	{
+		comparison?.AppendContexts(contexts);
 		if (Outcome != Outcome.Success)
 		{
 			HasNodeConstraint.AddActualContext(contexts, _element);
@@ -191,22 +220,28 @@ internal sealed class HasNodeConstraint<TSubject, TNode>(
 	}
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> AppendNode(stringBuilder.Append(Grammars.Verb("has ", "have ")));
+	{
+		AppendNode(stringBuilder.Append(Grammars.Verb("has ", "have ")));
+		comparison?.AppendExpectation(stringBuilder);
+	}
 
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 	{
-		if (!TryAppendMissingElement(stringBuilder))
+		if (!TryAppendMissingElement(stringBuilder) && !TryAppendComparedValue(stringBuilder, indentation))
 		{
 			AppendNode(stringBuilder.Append(It).Append(" did not have "));
 		}
 	}
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> AppendNode(stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")));
+	{
+		AppendNode(stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")));
+		comparison?.AppendExpectation(stringBuilder);
+	}
 
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 	{
-		if (!TryAppendMissingElement(stringBuilder))
+		if (!TryAppendMissingElement(stringBuilder) && !TryAppendComparedValue(stringBuilder, indentation))
 		{
 			stringBuilder.Append(It).Append(" did");
 		}
@@ -214,6 +249,18 @@ internal sealed class HasNodeConstraint<TSubject, TNode>(
 
 	private void AppendNode(StringBuilder stringBuilder)
 		=> Formatter.Format(stringBuilder.Append(kind).Append(' '), name.ToString());
+
+	private bool TryAppendComparedValue(StringBuilder stringBuilder, string? indentation)
+	{
+		if (comparison is not { IsCompared: true, })
+		{
+			return false;
+		}
+
+		comparison.AppendResult(stringBuilder, $"value of {kind} {Formatter.Format(name.ToString())}", Grammars,
+			indentation);
+		return true;
+	}
 
 	private bool TryAppendMissingElement(StringBuilder stringBuilder)
 	{

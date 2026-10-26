@@ -121,5 +121,73 @@ public sealed partial class ThatXDocument
 					.Because("the value is taken from the root element, including the text of its descendants");
 			}
 		}
+
+		public sealed class WithOperatorTests
+		{
+			[Test]
+			public async Task WhenDocumentHasNoRoot_ShouldFail()
+			{
+				XDocument document = new();
+
+				async Task Act()
+					=> await That(document).HasValue().EqualTo("Let It Be");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that document
+					             has a value equal to "Let It Be",
+					             but it had no root element
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNegatedAndDocumentHasNoRoot_ShouldFail()
+			{
+				XDocument document = new();
+
+				async Task Act()
+					=> await That(document).DoesNotComplyWith(it => it.HasValue().EqualTo("Let It Be"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that document
+					             does not have a value equal to "Let It Be",
+					             but it had no root element
+					             """);
+			}
+
+			[Test]
+			public async Task WhenValueDiffers_ShouldFail()
+			{
+				XDocument document = XDocument.Parse("<title>Yesterday</title>");
+
+				async Task Act()
+					=> await That(document).HasValue().EndingWith("Be");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that document
+					             has a value ending with "Be",
+					             but value of the root element was "Yesterday", which differs at index 8:
+					                        ↓ (actual)
+					               "Yesterday"
+					                      "Be"
+					                        ↑ (expected suffix)
+
+					             Actual:
+					             <title>Yesterday</title>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenValueMatches_ShouldContinueOnTheDocument()
+			{
+				XDocument document = XDocument.Parse("<title>Let It Be</title>");
+
+				XDocument result = await That(document).HasValue().StartingWith("Let");
+
+				await That(result).IsSameAs(document);
+			}
+		}
 	}
 }
