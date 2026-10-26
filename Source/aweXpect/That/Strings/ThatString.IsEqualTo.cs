@@ -58,9 +58,7 @@ public static partial class ThatString
 
 		/// <remarks>
 		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, cannot answer for a
-		///     <see langword="null" /> subject, because it has no content.
-		/// </remarks>
-		/// <remarks>
+		///     <see langword="null" /> subject, because it has no content.<br />
 		///     Most comparisons complete synchronously, so the result is returned without a state machine; an exception is
 		///     returned in the task, like from an asynchronous method.
 		/// </remarks>
@@ -72,9 +70,12 @@ public static partial class ThatString
 				Actual = actual;
 				_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 				ValueTask<MatchResult> match = _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
-				return match.IsCompletedSuccessfully
-					? new ValueTask<ConstraintResult>(Complete(match.Result))
-					: CompleteAsync(match);
+				if (match.IsCompletedSuccessfully)
+				{
+					return new ValueTask<ConstraintResult>(Complete(match.Result));
+				}
+
+				return CompleteAsync(match);
 			}
 			catch (Exception exception)
 			{
@@ -85,7 +86,7 @@ public static partial class ThatString
 		private async ValueTask<ConstraintResult> CompleteAsync(ValueTask<MatchResult> match)
 			=> Complete(await match);
 
-		private ConstraintResult Complete(MatchResult matchResult)
+		private IsEqualToConstraint Complete(MatchResult matchResult)
 		{
 			_matchResult = matchResult;
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;

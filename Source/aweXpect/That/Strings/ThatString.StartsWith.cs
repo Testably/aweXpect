@@ -85,9 +85,12 @@ public static partial class ThatString
 				Actual = actual;
 				_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
 				ValueTask<MatchResult> match = _evaluationOptions.MatchWithExplanation(actual, expected, parameterName);
-				return match.IsCompletedSuccessfully
-					? new ValueTask<ConstraintResult>(Complete(match.Result))
-					: CompleteAsync(match);
+				if (match.IsCompletedSuccessfully)
+				{
+					return new ValueTask<ConstraintResult>(Complete(match.Result));
+				}
+
+				return CompleteAsync(match);
 			}
 			catch (Exception exception)
 			{
@@ -98,7 +101,7 @@ public static partial class ThatString
 		private async ValueTask<ConstraintResult> CompleteAsync(ValueTask<MatchResult> match)
 			=> Complete(await match);
 
-		private ConstraintResult Complete(MatchResult matchResult)
+		private StartsWithConstraint Complete(MatchResult matchResult)
 		{
 			_matchResult = matchResult;
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
