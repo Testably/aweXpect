@@ -852,6 +852,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
         "message": "docs: link the extension docs instead of the archived repositories (#2083)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
@@ -996,7 +1002,8 @@ window.BENCHMARK_DATA = {
       "0f3856d6",
       "cb617241",
       "7294afca",
-      "20357097"
+      "20357097",
+      "1dc71bae"
     ],
     "datasets": [
       {
@@ -1144,7 +1151,8 @@ window.BENCHMARK_DATA = {
           471.2498177119664,
           451.5183933258057,
           446.6067923545837,
-          476.62060131345476
+          476.62060131345476,
+          452.4477687065418
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1293,6 +1301,7 @@ window.BENCHMARK_DATA = {
           640,
           712,
           712,
+          664,
           664,
           664,
           664,
@@ -1453,7 +1462,8 @@ window.BENCHMARK_DATA = {
           1068.1593735558647,
           946.2378022120549,
           973.9919999929575,
-          1040.2450190226236
+          1040.2450190226236,
+          1027.0318613052368
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1465,6 +1475,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2472,6 +2483,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
         "message": "docs: link the extension docs instead of the archived repositories (#2083)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
@@ -2616,7 +2633,8 @@ window.BENCHMARK_DATA = {
       "0f3856d6",
       "cb617241",
       "7294afca",
-      "20357097"
+      "20357097",
+      "1dc71bae"
     ],
     "datasets": [
       {
@@ -2764,7 +2782,8 @@ window.BENCHMARK_DATA = {
           268.7785805922288,
           214.4095104376475,
           249.3118230819702,
-          254.19710245132447
+          254.19710245132447,
+          232.00475084781647
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2911,6 +2930,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -3073,7 +3093,8 @@ window.BENCHMARK_DATA = {
           276.06841046469555,
           260.7723628452846,
           249.41070439020794,
-          253.95475301742553
+          253.95475301742553,
+          264.6599634806315
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3085,6 +3106,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -4032,6 +4054,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
         "message": "docs: link the extension docs instead of the archived repositories (#2083)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
@@ -4166,7 +4194,8 @@ window.BENCHMARK_DATA = {
       "0f3856d6",
       "cb617241",
       "7294afca",
-      "20357097"
+      "20357097",
+      "1dc71bae"
     ],
     "datasets": [
       {
@@ -4304,7 +4333,8 @@ window.BENCHMARK_DATA = {
           788.2864138285319,
           668.1025075276692,
           771.3073598997934,
-          749.3013362248738
+          749.3013362248738,
+          669.8444964545114
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4443,6 +4473,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032,
@@ -4593,7 +4624,8 @@ window.BENCHMARK_DATA = {
           1042.3638690948487,
           905.5831069946289,
           929.9089051564534,
-          975.6534481048584
+          975.6534481048584,
+          962.4267501149859
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4605,6 +4637,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -5542,6 +5575,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
         "message": "docs: link the extension docs instead of the archived repositories (#2083)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
@@ -5676,7 +5715,8 @@ window.BENCHMARK_DATA = {
       "0f3856d6",
       "cb617241",
       "7294afca",
-      "20357097"
+      "20357097",
+      "1dc71bae"
     ],
     "datasets": [
       {
@@ -5814,7 +5854,8 @@ window.BENCHMARK_DATA = {
           1964.9316997528076,
           1925.049166752742,
           1842.5138240227332,
-          1900.1002059664045
+          1900.1002059664045,
+          1896.937804882343
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5953,6 +5994,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -6103,7 +6145,8 @@ window.BENCHMARK_DATA = {
           22129.781467982702,
           17848.629412841798,
           20983.919543457032,
-          21228.796875
+          21228.796875,
+          18475.970909705527
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6234,6 +6277,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -7052,6 +7096,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
         "message": "docs: link the extension docs instead of the archived repositories (#2083)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
@@ -7186,7 +7236,8 @@ window.BENCHMARK_DATA = {
       "0f3856d6",
       "cb617241",
       "7294afca",
-      "20357097"
+      "20357097",
+      "1dc71bae"
     ],
     "datasets": [
       {
@@ -7324,7 +7375,8 @@ window.BENCHMARK_DATA = {
           808.4831566810608,
           705.1771821294512,
           765.41995375497,
-          795.979282506307
+          795.979282506307,
+          708.7724781769973
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7463,6 +7515,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -7613,7 +7666,8 @@ window.BENCHMARK_DATA = {
           1456.255123011271,
           1265.2470620228694,
           1293.543425486638,
-          1356.6411356244769
+          1356.6411356244769,
+          1340.6348939259847
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7625,6 +7679,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -8562,6 +8617,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
         "message": "docs: link the extension docs instead of the archived repositories (#2083)"
+      },
+      {
+        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
+        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
       }
     ],
     "labels": [
@@ -8696,7 +8757,8 @@ window.BENCHMARK_DATA = {
       "0f3856d6",
       "cb617241",
       "7294afca",
-      "20357097"
+      "20357097",
+      "1dc71bae"
     ],
     "datasets": [
       {
@@ -8834,7 +8896,8 @@ window.BENCHMARK_DATA = {
           1415.3086838355432,
           1233.8007663999285,
           1254.384162012736,
-          1321.079565556844
+          1321.079565556844,
+          1269.305921681722
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8973,6 +9036,7 @@ window.BENCHMARK_DATA = {
           1440,
           1512,
           1512,
+          1464,
           1464,
           1464,
           1464,
@@ -9123,7 +9187,8 @@ window.BENCHMARK_DATA = {
           856.0742458615985,
           750.9815040588379,
           730.2304495297946,
-          775.6313112258911
+          775.6313112258911,
+          795.8693497339884
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9135,6 +9200,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
