@@ -840,6 +840,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -982,7 +988,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -1128,7 +1135,8 @@ window.BENCHMARK_DATA = {
           249.19009194007288,
           466.92680530548097,
           471.2498177119664,
-          451.5183933258057
+          451.5183933258057,
+          446.6067923545837
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1277,6 +1285,7 @@ window.BENCHMARK_DATA = {
           640,
           712,
           712,
+          664,
           664,
           664,
           664
@@ -1433,7 +1442,8 @@ window.BENCHMARK_DATA = {
           545.8322916712079,
           1035.8629913330078,
           1068.1593735558647,
-          946.2378022120549
+          946.2378022120549,
+          973.9919999929575
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1445,6 +1455,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2438,6 +2449,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -2580,7 +2597,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -2726,7 +2744,8 @@ window.BENCHMARK_DATA = {
           124.77876938184103,
           253.95046892166138,
           268.7785805922288,
-          214.4095104376475
+          214.4095104376475,
+          249.3118230819702
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2873,6 +2892,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -3031,7 +3051,8 @@ window.BENCHMARK_DATA = {
           137.21731553077697,
           262.26263230641683,
           276.06841046469555,
-          260.7723628452846
+          260.7723628452846,
+          249.41070439020794
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3043,6 +3064,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -3976,6 +3998,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -4108,7 +4136,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -4244,7 +4273,8 @@ window.BENCHMARK_DATA = {
           375.26465316613513,
           729.624892616272,
           788.2864138285319,
-          668.1025075276692
+          668.1025075276692,
+          771.3073598997934
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4383,6 +4413,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032
@@ -4529,7 +4560,8 @@ window.BENCHMARK_DATA = {
           487.8286143620809,
           955.65826365153,
           1042.3638690948487,
-          905.5831069946289
+          905.5831069946289,
+          929.9089051564534
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4541,6 +4573,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -5464,6 +5497,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -5596,7 +5635,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -5732,7 +5772,8 @@ window.BENCHMARK_DATA = {
           1154.616456440517,
           1845.8018004099529,
           1964.9316997528076,
-          1925.049166752742
+          1925.049166752742,
+          1842.5138240227332
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5871,6 +5912,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592
@@ -6017,7 +6059,8 @@ window.BENCHMARK_DATA = {
           10577.21393737793,
           21650.66208089193,
           22129.781467982702,
-          17848.629412841798
+          17848.629412841798,
+          20983.919543457032
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6148,6 +6191,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -6952,6 +6996,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -7084,7 +7134,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -7220,7 +7271,8 @@ window.BENCHMARK_DATA = {
           428.5768095334371,
           851.7625869115194,
           808.4831566810608,
-          705.1771821294512
+          705.1771821294512,
+          765.41995375497
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7359,6 +7411,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040
@@ -7505,7 +7558,8 @@ window.BENCHMARK_DATA = {
           708.8148473739624,
           1401.0271640777587,
           1456.255123011271,
-          1265.2470620228694
+          1265.2470620228694,
+          1293.543425486638
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7517,6 +7571,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -8440,6 +8495,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
         "message": "ci: run the docs tests in the API job (#2080)"
+      },
+      {
+        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 4 updates (#2081)"
       }
     ],
     "labels": [
@@ -8572,7 +8633,8 @@ window.BENCHMARK_DATA = {
       "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
-      "cb617241"
+      "cb617241",
+      "7294afca"
     ],
     "datasets": [
       {
@@ -8708,7 +8770,8 @@ window.BENCHMARK_DATA = {
           746.5965579577854,
           1287.0904276711601,
           1415.3086838355432,
-          1233.8007663999285
+          1233.8007663999285,
+          1254.384162012736
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8847,6 +8910,7 @@ window.BENCHMARK_DATA = {
           1440,
           1512,
           1512,
+          1464,
           1464,
           1464,
           1464
@@ -8993,7 +9057,8 @@ window.BENCHMARK_DATA = {
           434.13460098902385,
           791.2830004374187,
           856.0742458615985,
-          750.9815040588379
+          750.9815040588379,
+          730.2304495297946
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9005,6 +9070,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
