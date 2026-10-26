@@ -485,6 +485,17 @@ public sealed partial class ThatJsonNode
 			}
 
 			[Test]
+			public async Task WhenPropertyIsNull_WhenTreatingNullAsAbsent_ShouldAllowFurtherExpectations()
+			{
+				JsonNode? subject = FromString("{\"foo\": null, \"bar\": 1}");
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveProperty("foo").TreatingNullAsAbsent().And.HasProperty("bar");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task WhenPropertyIsNull_WhenTreatingNullAsAbsent_ShouldSucceed()
 			{
 				JsonNode? subject = FromString("{\"foo\": null}");

@@ -8,7 +8,8 @@ namespace aweXpect.Json;
 ///     The value that <c>HasProperty</c>, <c>HasValueAt</c> or <c>HasElementAt</c> look up in the subject.
 /// </summary>
 /// <remarks>
-///     It is created for a single expectation and holds its options, so that a result can still change them.
+///     It is created for a single expectation, as it learns the JSON path of the subject when its constraint is
+///     created.
 /// </remarks>
 internal sealed class JsonValueTarget
 {
@@ -31,11 +32,6 @@ internal sealed class JsonValueTarget
 	public IReadOnlyList<JsonPathSegment> Segments { get; }
 
 	/// <summary>
-	///     Flag indicating, if a property with the value <see langword="null" /> should be treated as if it was absent.
-	/// </summary>
-	public bool TreatNullAsAbsent { get; set; }
-
-	/// <summary>
 	///     The JSON path of the value, which continues the JSON path of the subject, when the subject is a value that an
 	///     enclosing expectation found.
 	/// </summary>
@@ -53,10 +49,14 @@ internal sealed class JsonValueTarget
 	public static JsonValueTarget ElementAt(int index)
 		=> new([JsonPathSegment.Element(index),], null, null, index);
 
-	public HasJsonValueConstraint CreateConstraint(string it, ExpectationGrammars grammars)
+	/// <summary>
+	///     Creates the constraint, which reads the <paramref name="lookupOptions" />, if any, when it evaluates.
+	/// </summary>
+	public HasJsonValueConstraint CreateConstraint(string it, ExpectationGrammars grammars,
+		IReadOnlyOptionsHolder<JsonLookupOptions>? lookupOptions = null)
 	{
 		_rootPath = ThatJsonElement.GetPath(it);
-		return new HasJsonValueConstraint(it, grammars, this);
+		return new HasJsonValueConstraint(it, grammars, this, lookupOptions);
 	}
 
 	/// <summary>

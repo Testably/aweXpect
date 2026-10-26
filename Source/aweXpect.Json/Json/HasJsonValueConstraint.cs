@@ -14,7 +14,11 @@ namespace aweXpect.Json;
 ///     A subject or a value on the way to the target, which has another kind than the next segment requires, fails the
 ///     expectation and its negation alike, as the target cannot be looked up in it.
 /// </remarks>
-internal sealed class HasJsonValueConstraint(string it, ExpectationGrammars grammars, JsonValueTarget target)
+internal sealed class HasJsonValueConstraint(
+	string it,
+	ExpectationGrammars grammars,
+	JsonValueTarget target,
+	IReadOnlyOptionsHolder<JsonLookupOptions>? lookupOptions)
 	: ConstraintResult.WithNotNullValue<JsonElement?>(it, grammars),
 		IValueConstraint<JsonElement>,
 		IValueConstraint<JsonElement?>,
@@ -32,6 +36,8 @@ internal sealed class HasJsonValueConstraint(string it, ExpectationGrammars gram
 	///     It is a single field, so that a constraint on a <see cref="JsonElement" /> allocates nothing for nodes.
 	/// </remarks>
 	private object? _found;
+
+	private bool TreatNullAsAbsent => lookupOptions?.Value.TreatNullAsAbsent == true;
 
 	public ConstraintResult IsMetBy(JsonElement actual)
 		=> IsMetBy((JsonElement?)actual);
@@ -173,10 +179,7 @@ internal sealed class HasJsonValueConstraint(string it, ExpectationGrammars gram
 
 		ConvertDecidedNode();
 		ThatJsonElement.AddActualContext(contexts, Actual);
-		if (target.TreatNullAsAbsent)
-		{
-			contexts.Add(new ResultContext.Fixed("JSON options", " - treat null as absent", int.MinValue));
-		}
+		lookupOptions?.Value.AddContext(contexts);
 	}
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -242,7 +245,7 @@ internal sealed class HasJsonValueConstraint(string it, ExpectationGrammars gram
 		}
 
 		return current.TryGetProperty(segment.PropertyName, out value) &&
-		       !(target.TreatNullAsAbsent && value.ValueKind == JsonValueKind.Null);
+		       !(TreatNullAsAbsent && value.ValueKind == JsonValueKind.Null);
 	}
 
 	/// <summary>
@@ -324,7 +327,7 @@ internal sealed class HasJsonValueConstraint(string it, ExpectationGrammars gram
 			return NodeLookup.Unknown;
 		}
 
-		return target.TreatNullAsAbsent && (value is null || value.GetValueKind() == JsonValueKind.Null)
+		return TreatNullAsAbsent && (value is null || value.GetValueKind() == JsonValueKind.Null)
 			? NodeLookup.Missing
 			: NodeLookup.Found;
 	}

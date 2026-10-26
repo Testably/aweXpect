@@ -632,6 +632,31 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Test]
+			public async Task WhenValueIsNull_WhenTreatingNullAsAbsent_ShouldAllowFurtherExpectations()
+			{
+				JsonElement subject = FromString("{\"artist\": {\"label\": null}}");
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveValueAt("artist.label").TreatingNullAsAbsent()
+						.And.HasValueAt("artist.name");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value at "artist.label" and has value at "artist.name",
+					             but property $.artist.name did not exist
+
+					             Actual:
+					             {
+					               "artist": {
+					                 "label": null
+					               }
+					             }
+					             """)
+					.Because("the option only applies to the expectation it follows");
+			}
+
+			[Test]
 			public async Task WhenValueIsNull_WhenTreatingNullAsAbsent_ShouldSucceed()
 			{
 				JsonElement subject = FromString("{\"artist\": {\"label\": null}}");

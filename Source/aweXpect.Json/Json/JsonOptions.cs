@@ -16,6 +16,11 @@ namespace aweXpect.Json;
 /// </remarks>
 public class JsonOptions
 {
+	/// <summary>
+	///     The line of the "JSON options" context for <see cref="TreatNullAsAbsent" />.
+	/// </summary>
+	internal const string TreatNullAsAbsentOption = " - treat null as absent";
+
 	private readonly JsonDocumentOptions? _options;
 
 	/// <summary>
@@ -119,9 +124,18 @@ public class JsonOptions
 		AppendOptions(sb, unmatchedMembersToIgnore);
 		if (sb.Length > 0)
 		{
-			contexts.Add(new ResultContext.Fixed("JSON options", sb.ToString().TrimEnd(), int.MinValue));
+			AddContext(contexts, sb.ToString().TrimEnd());
 		}
 	}
+
+	/// <summary>
+	///     Adds the "JSON options" context with the <paramref name="options" /> to the <paramref name="contexts" />.
+	/// </summary>
+	/// <remarks>
+	///     Also used by <see cref="JsonLookupOptions" />, so that both name their options under the same heading.
+	/// </remarks>
+	internal static void AddContext(ResultContextCollector contexts, string options)
+		=> contexts.Add(new ResultContext.Fixed("JSON options", options, int.MinValue));
 
 	private void AppendOptions(StringBuilder sb, IReadOnlyDictionary<string, string?>? unmatchedMembersToIgnore)
 	{
@@ -142,7 +156,7 @@ public class JsonOptions
 
 		if (TreatNullAsAbsent)
 		{
-			sb.AppendLine(" - treat null as absent");
+			sb.AppendLine(TreatNullAsAbsentOption);
 		}
 
 		if (NumberTolerance is not null)
