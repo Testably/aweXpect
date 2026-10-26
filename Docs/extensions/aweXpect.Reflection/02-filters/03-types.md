@@ -72,7 +72,7 @@ properties (including inherited ones) have no setter or an `init`-only setter. S
 immutability. Failure messages list the offending mutable members for actionable feedback.
 
 `OnlyHasNullableMembers` / `OnlyHaveNullableMembers` (and the non-nullable counterparts) verify the
-[nullability](./04-properties-fields-and-events.md#nullability) of all fields, properties and events of the type, including the inherited ones unless
+[nullability](./05-properties-fields-and-events.md#nullability) of all fields, properties and events of the type, including the inherited ones unless
 `.Directly()` is appended; the failure message lists the non-compliant members per type:
 
 ```csharp
@@ -183,7 +183,7 @@ otherwise have `ToString`, `Equals`, `GetHashCode`, …; `.IncludingObjectMember
 | Area                                                                                          | Default                                                                       | Options                                                                                                         |
 |-----------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
 | [Attributes](./01-common-filters.md#attributes) of types, methods, properties and events      | also the attributes inherited from a base type or an overridden member        | `.Directly()`: only the attributes declared on the item                                                         |
-| [Operators](./03-methods.md#operators) and conversion operators of types                      | also the operators of base types                                              | `.Directly()`: only the operators declared on the type                                                          |
+| [Operators](./04-methods.md#operators) and conversion operators of types                      | also the operators of base types                                              | `.Directly()`: only the operators declared on the type                                                          |
 | Relations (`InheritsFrom<T>()`, `Implements<T>()`, their filters and negations)               | the base class anywhere in the base-class chain, or any implemented interface | `.Directly()`: only the direct base class or a directly implemented interface                                   |
 | Member checks (`ContainsMethods(…)`, `WhichContainMethods(…)`, `OnlyHasNullableMembers()`, …) | also the inherited members                                                    | `.Directly()`: only the declared members, or `.IncludingObjectMembers()`: also the members of the three roots   |
 | Member listings of types (`Types().Methods()`, `In.Type<T>().Properties()`, …)                | only the declared members                                                     | `.IncludingInherited()`: also the inherited members, `.IncludingObjectMembers()`: also those of the three roots |

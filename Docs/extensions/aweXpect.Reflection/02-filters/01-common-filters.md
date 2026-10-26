@@ -65,7 +65,7 @@ Shared by all types, members, and assemblies.
 
 For types, methods, properties and events, attributes inherited from a base type or an overridden member are
 considered as well; append `.Directly()` to only consider the attributes declared on the item itself, e.g.
-`.With<TAttribute>().Directly()` or `.Has<TAttribute>().Directly()` (see [Inheritance](./02-types.md#inheritance)). Chain multiple `.Without<TAttribute>()` calls to exclude several attributes (an item
+`.With<TAttribute>().Directly()` or `.Has<TAttribute>().Directly()` (see [Inheritance](./03-types.md#inheritance)). Chain multiple `.Without<TAttribute>()` calls to exclude several attributes (an item
 must have none of them).
 
 ```csharp
