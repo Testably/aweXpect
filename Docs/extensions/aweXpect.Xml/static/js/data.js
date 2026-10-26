@@ -882,6 +882,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
         "message": "chore: Bump System.Collections.Immutable from 10.0.13 to 10.0.14 (#2087)"
+      },
+      {
+        "sha": "f34312fa49a5887092f8d2afb46b06d8091b6490",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
+        "message": "feat!: honour ICopyOnOption in the quantifier and index options (#2089)"
       }
     ],
     "labels": [
@@ -1031,7 +1037,8 @@ window.BENCHMARK_DATA = {
       "705c8132",
       "2068b12b",
       "2ce286e6",
-      "1b028951"
+      "1b028951",
+      "f34312fa"
     ],
     "datasets": [
       {
@@ -1184,7 +1191,8 @@ window.BENCHMARK_DATA = {
           743.7215798695883,
           842.3052647272746,
           865.4015184811184,
-          599.6616459574018
+          599.6616459574018,
+          778.0331335067749
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1332,6 +1340,7 @@ window.BENCHMARK_DATA = {
           1080,
           1056,
           1056,
+          1008,
           1008,
           1008,
           1008,
@@ -1503,7 +1512,8 @@ window.BENCHMARK_DATA = {
           664.7485465367635,
           689.9199606577555,
           773.099484761556,
-          537.1623347827366
+          537.1623347827366,
+          692.5956457578219
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1515,6 +1525,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2557,6 +2568,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
         "message": "chore: Bump System.Collections.Immutable from 10.0.13 to 10.0.14 (#2087)"
+      },
+      {
+        "sha": "f34312fa49a5887092f8d2afb46b06d8091b6490",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
+        "message": "feat!: honour ICopyOnOption in the quantifier and index options (#2089)"
       }
     ],
     "labels": [
@@ -2706,7 +2723,8 @@ window.BENCHMARK_DATA = {
       "705c8132",
       "2068b12b",
       "2ce286e6",
-      "1b028951"
+      "1b028951",
+      "f34312fa"
     ],
     "datasets": [
       {
@@ -2859,7 +2877,8 @@ window.BENCHMARK_DATA = {
           4242.255674997966,
           4538.059919993083,
           4807.307649739583,
-          3429.4591941833496
+          3429.4591941833496,
+          4389.39433992826
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3012,6 +3031,7 @@ window.BENCHMARK_DATA = {
           24179,
           24179,
           24175,
+          24179,
           24179,
           24179,
           24179,
@@ -3178,7 +3198,8 @@ window.BENCHMARK_DATA = {
           4891.060064697265,
           5244.327220662435,
           5529.193363952637,
-          4036.759121486119
+          4036.759121486119,
+          5217.599169049944
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3190,6 +3211,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -4172,6 +4194,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
         "message": "chore: Bump System.Collections.Immutable from 10.0.13 to 10.0.14 (#2087)"
+      },
+      {
+        "sha": "f34312fa49a5887092f8d2afb46b06d8091b6490",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
+        "message": "feat!: honour ICopyOnOption in the quantifier and index options (#2089)"
       }
     ],
     "labels": [
@@ -4311,7 +4339,8 @@ window.BENCHMARK_DATA = {
       "705c8132",
       "2068b12b",
       "2ce286e6",
-      "1b028951"
+      "1b028951",
+      "f34312fa"
     ],
     "datasets": [
       {
@@ -4454,7 +4483,8 @@ window.BENCHMARK_DATA = {
           2384.145187886556,
           2745.321823883057,
           2843.648427200317,
-          1978.0306309291295
+          1978.0306309291295,
+          2577.20334777832
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4591,6 +4621,7 @@ window.BENCHMARK_DATA = {
           12780,
           12856,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -4753,7 +4784,8 @@ window.BENCHMARK_DATA = {
           3240.98959174523,
           3771.275675455729,
           3831.218851216634,
-          2729.80792754037
+          2729.80792754037,
+          3432.7574435642787
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4765,6 +4797,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -5737,6 +5770,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
         "message": "chore: Bump System.Collections.Immutable from 10.0.13 to 10.0.14 (#2087)"
+      },
+      {
+        "sha": "f34312fa49a5887092f8d2afb46b06d8091b6490",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
+        "message": "feat!: honour ICopyOnOption in the quantifier and index options (#2089)"
       }
     ],
     "labels": [
@@ -5876,7 +5915,8 @@ window.BENCHMARK_DATA = {
       "705c8132",
       "2068b12b",
       "2ce286e6",
-      "1b028951"
+      "1b028951",
+      "f34312fa"
     ],
     "datasets": [
       {
@@ -6019,7 +6059,8 @@ window.BENCHMARK_DATA = {
           13582.273166111538,
           14345.860057576498,
           14692.999977698693,
-          10126.097521972657
+          10126.097521972657,
+          13908.609259033203
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6156,6 +6197,7 @@ window.BENCHMARK_DATA = {
           25494,
           25568,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -6318,7 +6360,8 @@ window.BENCHMARK_DATA = {
           337938.72810246394,
           367296.8670898437,
           373907.7444986979,
-          245279.27818885216
+          245279.27818885216,
+          354137.95567103795
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6461,6 +6504,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544299,
+          544335,
           544335,
           544335,
           544335,
