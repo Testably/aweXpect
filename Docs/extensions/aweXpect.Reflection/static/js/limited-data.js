@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
-        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
-      },
-      {
         "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
         "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
+      },
+      {
+        "sha": "a7c1c18ed2c6f161942c3ac84ca558485235cea9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 22:05:09 2026 \u002B0100",
+        "message": "perf: a fast path for single expectations in aweXpect.Core (#2072)"
       }
     ],
     "labels": [
-      "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "6224bbce",
       "359002f3",
       "f760ae08",
-      "be28a12e"
+      "be28a12e",
+      "a7c1c18e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          753.2203694857084,
           734.1047382354736,
           773.4644398008074,
           706.7569433848063,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           673.9879998524983,
           714.901829401652,
           359.6314206123352,
-          739.1604601542155
+          739.1604601542155,
+          666.1251465252468
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -456,7 +456,6 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
-          680,
           592,
           592,
           592,
@@ -469,7 +468,8 @@ window.BENCHMARK_DATA = {
           592,
           592,
           592,
-          592
+          592,
+          464
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          947.5330730438233,
           1005.9056048075358,
           962.1057693774884,
           875.9277635574341,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           872.8901927471161,
           897.9556278082041,
           504.9373365402222,
-          919.4542154947917
+          919.4542154947917,
+          878.8707562226516
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
-        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
-      },
-      {
         "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
         "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
+      },
+      {
+        "sha": "a7c1c18ed2c6f161942c3ac84ca558485235cea9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 22:05:09 2026 \u002B0100",
+        "message": "perf: a fast path for single expectations in aweXpect.Core (#2072)"
       }
     ],
     "labels": [
-      "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "6224bbce",
       "359002f3",
       "f760ae08",
-      "be28a12e"
+      "be28a12e",
+      "a7c1c18e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          139.95416668256124,
           136.01847139994302,
           147.47769470214843,
           126.37143219312033,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           137.79236728804452,
           128.80642360051473,
           71.08562221697399,
-          143.14115254084268
+          143.14115254084268,
+          95.40810291583722
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1077,7 +1077,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
-          296
+          168
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          223.96829500198365,
           245.577839578901,
           238.1439798672994,
           194.47578207651773,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           215.16724274953205,
           186.6126681248347,
           119.76266268583444,
-          199.99008261362712
+          199.99008261362712,
+          194.2811522117028
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
-        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
-      },
-      {
         "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
         "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
+      },
+      {
+        "sha": "a7c1c18ed2c6f161942c3ac84ca558485235cea9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 22:05:09 2026 \u002B0100",
+        "message": "perf: a fast path for single expectations in aweXpect.Core (#2072)"
       }
     ],
     "labels": [
-      "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "6224bbce",
       "359002f3",
       "f760ae08",
-      "be28a12e"
+      "be28a12e",
+      "a7c1c18e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2024.5734389168877,
           1918.4849609375,
           2075.7388264792307,
           1908.19892578125,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1913.4658996582032,
           1796.7781720842634,
           967.8895690100534,
-          1962.1086298624675
+          1962.1086298624675,
+          1753.2441694895426
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2080,
           2080,
           2080,
           2080,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           1888,
           1888,
           1888,
-          1888
+          1888,
+          1808
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1516.7792696271624,
           1378.9539744513374,
           1552.9948095594134,
           1428.3426189422607,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1406.2905220304217,
           1448.1816564287458,
           787.9122326533,
-          1453.9501083374023
+          1453.9501083374023,
+          1450.8811801910401
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1953,
           1864,
           1953,
           1864,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           1953,
           1864,
           1864,
-          1864
+          1864,
+          1953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
-        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
-      },
       {
         "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
         "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
+      },
+      {
+        "sha": "a7c1c18ed2c6f161942c3ac84ca558485235cea9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 22:05:09 2026 \u002B0100",
+        "message": "perf: a fast path for single expectations in aweXpect.Core (#2072)"
       }
     ],
     "labels": [
-      "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "6224bbce",
       "359002f3",
       "f760ae08",
-      "be28a12e"
+      "be28a12e",
+      "a7c1c18e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3002.2336112431117,
           2672.4381687457744,
           2862.674478149414,
           2868.1801869319033,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2624.8519121805825,
           2778.9553159077964,
           1396.671679360526,
-          2693.8259791056316
+          2693.8259791056316,
+          2678.464265696208
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2992,
           3048,
           3048,
           2992,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           3184,
           3184,
           3184,
-          3184
+          3184,
+          3104
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3821.642232767741,
           3905.2490615844727,
           3942.6075803316558,
           3773.184170314244,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3851.6836260282075,
           3737.37167263031,
           2116.9674554552353,
-          3745.0930099487305
+          3745.0930099487305,
+          3654.145457903544
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3980,
           3978,
           3980,
           3980,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3980,
+          3981,
           3981
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
-        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
-      },
       {
         "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
         "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
+      },
+      {
+        "sha": "a7c1c18ed2c6f161942c3ac84ca558485235cea9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 22:05:09 2026 \u002B0100",
+        "message": "perf: a fast path for single expectations in aweXpect.Core (#2072)"
       }
     ],
     "labels": [
-      "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "6224bbce",
       "359002f3",
       "f760ae08",
-      "be28a12e"
+      "be28a12e",
+      "a7c1c18e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          399.9740211623056,
           489.12750384012855,
           387.1612222875868,
           355.4702772299449,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           388.91071122487386,
           413.511580212911,
           197.72969339688618,
-          403.7545188585917
+          403.7545188585917,
+          385.26661993662515
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2888,7 +2888,6 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
-          552,
           696,
           696,
           696,
@@ -2901,7 +2900,8 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696
+          696,
+          568
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2366.4956885746547,
           2444.136717224121,
           2403.185688018799,
           2262.9301157633463,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2212.8919108254568,
           2230.904120036534,
           1270.2852588066687,
-          2263.6409190041677
+          2263.6409190041677,
+          2228.0702811649867
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
-        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
-      },
-      {
         "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
         "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
+      },
+      {
+        "sha": "a7c1c18ed2c6f161942c3ac84ca558485235cea9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 22:05:09 2026 \u002B0100",
+        "message": "perf: a fast path for single expectations in aweXpect.Core (#2072)"
       }
     ],
     "labels": [
-      "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "6224bbce",
       "359002f3",
       "f760ae08",
-      "be28a12e"
+      "be28a12e",
+      "a7c1c18e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3740.77112696721,
           3542.6098185947963,
           3501.956970487322,
           3281.3380301339284,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2887.77127632728,
           2809.5059566497803,
           1567.33477935791,
-          2897.169204711914
+          2897.169204711914,
+          2709.6661731175013
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3705,
           3704,
           3104,
           3104,
@@ -3509,7 +3508,8 @@ window.BENCHMARK_DATA = {
           3312,
           3312,
           3312,
-          3312
+          3312,
+          3232
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          283586.32272135414,
           272130.8645019531,
           285723.4803385417,
           275263.8832356771,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           302177.4151436942,
           279956.10302734375,
           163951.69403948102,
-          281821.78837890626
+          281821.78837890626,
+          277930.8960367839
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17558,
           17577,
           17577,
@@ -3634,6 +3633,7 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17574,
+          17577,
           17577
         ],
         "borderColor": "#FF671B",
