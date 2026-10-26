@@ -41,9 +41,9 @@ public sealed class OptionsHolderTests
 	public async Task Value_ShouldBeReadableAsReadOnlyHolderOfABaseType()
 	{
 		StringEqualityOptions options = StringEqualityOptions.Default;
-		OptionsHolder<StringEqualityOptions> sut = new(options);
+		IReadOnlyOptionsHolder<object> sut = new OptionsHolder<StringEqualityOptions>(options);
 
-		object? result = ReadAsBaseType(sut);
+		object? result = sut.Value;
 
 		await That(result).IsSameAs(options);
 	}
@@ -144,7 +144,6 @@ public sealed class OptionsHolderTests
 		await That(preset.ToString()).IsEqualTo(" ± 2");
 		await That(first.Value.ToString()).IsEqualTo(" ± 3");
 	}
-	private static object? ReadAsBaseType(IReadOnlyOptionsHolder<object> holder) => holder.Value;
 
 	private sealed class MyMatch : CollectionIndexOptions.IMatch
 	{
