@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
-        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
-      },
-      {
         "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "1945e0a4",
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          535.1321917374929,
           371.48939200810025,
           731.1171910921732,
           578.5845244481013,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           733.8927498499553,
           556.6532575167142,
           409.9796852043697,
-          726.7930959701538
+          726.7930959701538,
+          743.9194248835246
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -448,7 +448,6 @@ window.BENCHMARK_DATA = {
           1120,
           1120,
           1120,
-          1120,
           1152,
           1152,
           1152,
@@ -464,6 +463,7 @@ window.BENCHMARK_DATA = {
           1152,
           1152,
           1152,
+          1080,
           1080,
           1080,
           1080,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          579.5811695371356,
           333.49723625183105,
           732.5181983947754,
           562.030303700765,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           783.5919907251994,
           526.1884100987361,
           377.02296912670135,
-          760.9886703491211
+          760.9886703491211,
+          768.2881415230887
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
-        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
-      },
-      {
         "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "1945e0a4",
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3260.9461220961352,
           2635.628235880534,
           4892.531984965007,
           3439.1511510213218,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           5033.549484761556,
           3335.5453368595668,
           2987.065302335299,
-          5165.6495735168455
+          5165.6495735168455,
+          4399.229815419515
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1056,7 +1056,6 @@ window.BENCHMARK_DATA = {
           24119,
           24119,
           24119,
-          24119,
           24320,
           24320,
           24320,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24321,
           24320,
           24320,
-          24320
+          24320,
+          24321
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3922.5485727945966,
           2845.152089436849,
           5567.349698893229,
           3817.41641671317,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           5963.410941060384,
           3740.684619394938,
           3033.248120625814,
-          5786.943173726399
+          5786.943173726399,
+          5125.238162994385
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
-        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
-      },
-      {
         "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "1945e0a4",
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1876.2194380078997,
           1369.043931520902,
           2737.9994013468427,
           2082.167187030499,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           3023.9696243286135,
           1866.8709212711879,
           1601.7549558367048,
-          2804.4334988911946
+          2804.4334988911946,
+          2733.1737197875977
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1638,7 +1638,6 @@ window.BENCHMARK_DATA = {
         "data": [
           12780,
           12780,
-          12780,
           12856,
           12780,
           12780,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           12856,
           12780,
           12856,
-          12780
+          12780,
+          12856
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2579.708838242751,
           1842.628172047933,
           3720.0865071614585,
           2863.505627187093,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3969.5252009073893,
           2530.741511027018,
           2059.767382558187,
-          3629.5616887410483
+          3629.5616887410483,
+          3667.0052350362143
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "1945e0a42f2d55cc1d2bd2fcdc33be098135f411",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 06:32:21 2026 \u002B0200",
-        "message": "refactor: make the constructor of \u0060Expectation\u0060 private protected (#1985)"
-      },
-      {
         "sha": "c6264268457122e22f36a09f956caa4cfb539e08",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:20:18 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 18:13:43 2026 \u002B0100",
         "message": "feat: add a public matcher for the excluded assembly prefixes (#2069)"
+      },
+      {
+        "sha": "be28a12e727dbafc81d4308c275ef423bc992cec",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
+        "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
       }
     ],
     "labels": [
-      "1945e0a4",
       "c6264268",
       "c61c4c1b",
       "d7ba0a7a",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "9f98f729",
       "7d0dbd4c",
       "6224bbce",
-      "359002f3"
+      "359002f3",
+      "be28a12e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10664.058569771903,
           7648.511424255371,
           14355.400197347006,
           10510.61460571289,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           14718.640434773763,
           9840.119656154087,
           8028.292962646485,
-          14126.528017316547
+          14126.528017316547,
+          14680.194589233399
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2246,7 +2246,6 @@ window.BENCHMARK_DATA = {
         "data": [
           25494,
           25494,
-          25494,
           25568,
           25494,
           25494,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           25568,
           25494,
           25568,
-          25494
+          25494,
+          25568
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          211837.90339006696,
           180366.3747639974,
           373493.0899414063,
           252144.77561848957,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           363687.6955078125,
           237700.49888392858,
           178568.9136230469,
-          371800.84294782364
+          371800.84294782364,
+          353536.9967447917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544245,
           544335,
           544335,
           544335,
@@ -2414,6 +2413,7 @@ window.BENCHMARK_DATA = {
           544335,
           544268,
           544247,
+          544335,
           544335,
           544335,
           544335,
