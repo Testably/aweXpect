@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
-        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
-      },
-      {
         "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 22:05:09 2026 \u002B0100",
         "message": "perf: a fast path for single expectations in aweXpect.Core (#2072)"
+      },
+      {
+        "sha": "35cd9bf1a3c916122072cb044a222c4f197b3922",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
+        "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
       }
     ],
     "labels": [
-      "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "6224bbce",
       "359002f3",
       "be28a12e",
-      "a7c1c18e"
+      "a7c1c18e",
+      "35cd9bf1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          731.1171910921732,
           578.5845244481013,
           603.2817399842398,
           682.6754199345906,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           409.9796852043697,
           726.7930959701538,
           743.9194248835246,
-          589.6166384036725
+          589.6166384036725,
+          707.1361719540188
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -446,7 +446,6 @@ window.BENCHMARK_DATA = {
           1120,
           1120,
           1120,
-          1120,
           1152,
           1152,
           1152,
@@ -469,6 +468,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
+          1056,
           1056
         ],
         "borderColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          732.5181983947754,
           562.030303700765,
           553.2956221262614,
           695.2853548049927,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           377.02296912670135,
           760.9886703491211,
           768.2881415230887,
-          532.0120504243033
+          532.0120504243033,
+          823.7679045200348
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
-        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
-      },
-      {
         "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 22:05:09 2026 \u002B0100",
         "message": "perf: a fast path for single expectations in aweXpect.Core (#2072)"
+      },
+      {
+        "sha": "35cd9bf1a3c916122072cb044a222c4f197b3922",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
+        "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
       }
     ],
     "labels": [
-      "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "6224bbce",
       "359002f3",
       "be28a12e",
-      "a7c1c18e"
+      "a7c1c18e",
+      "35cd9bf1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4892.531984965007,
           3439.1511510213218,
           3620.760728200277,
           4225.2101800101145,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           2987.065302335299,
           5165.6495735168455,
           4399.229815419515,
-          3219.487490790231
+          3219.487490790231,
+          5246.296889750162
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1054,7 +1054,6 @@ window.BENCHMARK_DATA = {
           24119,
           24119,
           24119,
-          24119,
           24320,
           24320,
           24320,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24320,
           24320,
           24321,
-          24191
+          24191,
+          24192
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5567.349698893229,
           3817.41641671317,
           3984.3653884887694,
           4938.080196674054,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           3033.248120625814,
           5786.943173726399,
           5125.238162994385,
-          3747.4670186723984
+          3747.4670186723984,
+          6177.443899972098
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
-        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
-      },
-      {
         "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 22:05:09 2026 \u002B0100",
         "message": "perf: a fast path for single expectations in aweXpect.Core (#2072)"
+      },
+      {
+        "sha": "35cd9bf1a3c916122072cb044a222c4f197b3922",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
+        "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
       }
     ],
     "labels": [
-      "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "6224bbce",
       "359002f3",
       "be28a12e",
-      "a7c1c18e"
+      "a7c1c18e",
+      "35cd9bf1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2737.9994013468427,
           2082.167187030499,
           1924.5130320328933,
           2393.0661022479717,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1601.7549558367048,
           2804.4334988911946,
           2733.1737197875977,
-          1799.7057131358556
+          1799.7057131358556,
+          2908.219232559204
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          12780,
           12856,
           12780,
           12780,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           12856,
           12780,
           12856,
-          12728
+          12728,
+          12654
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3720.0865071614585,
           2863.505627187093,
           2696.716030629476,
           3386.680041503906,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2059.767382558187,
           3629.5616887410483,
           3667.0052350362143,
-          2596.542069753011
+          2596.542069753011,
+          3894.6099230448403
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "c61c4c1bdaf0ad889204ef411a8f2cb129447dfa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 07:21:18 2026 \u002B0200",
-        "message": "refactor!: shorten the customization extension class names of the extension packages (#1989)"
-      },
-      {
         "sha": "d7ba0a7ae7aa48690d7a2ab3eb38eaec998ac35b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 07:45:59 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 22:05:09 2026 \u002B0100",
         "message": "perf: a fast path for single expectations in aweXpect.Core (#2072)"
+      },
+      {
+        "sha": "35cd9bf1a3c916122072cb044a222c4f197b3922",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
+        "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
       }
     ],
     "labels": [
-      "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
       "5b99ffec",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "6224bbce",
       "359002f3",
       "be28a12e",
-      "a7c1c18e"
+      "a7c1c18e",
+      "35cd9bf1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          14355.400197347006,
           10510.61460571289,
           10588.259856160481,
           14314.15000806536,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           8028.292962646485,
           14126.528017316547,
           14680.194589233399,
-          9775.958566938129
+          9775.958566938129,
+          14201.949337005615
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          25494,
           25568,
           25494,
           25494,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           25568,
           25494,
           25568,
-          25440
+          25440,
+          25367
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          373493.0899414063,
           252144.77561848957,
           247419.63115234376,
           352722.9095703125,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           178568.9136230469,
           371800.84294782364,
           353536.9967447917,
-          242567.34856770834
+          242567.34856770834,
+          289402.56798377406
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544335,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544335
+          544335,
+          544247
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
