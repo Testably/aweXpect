@@ -157,11 +157,6 @@ but
 Where awaiting is impossible, a combination can be [verified synchronously](./index.md#when-you-cannot-await) like a
 single expectation.
 
-:::tip
-The samples write durations like `5.Seconds()` with the [aweXpect.Chronology](https://docs.testably.org/Chronology)
-package for readability; `TimeSpan.FromSeconds(5)` works as well.
-:::
-
 A combination offers the same `Because`, `WithTimeout` and `WithCancellation` as a single expectation:
 
 ```csharp

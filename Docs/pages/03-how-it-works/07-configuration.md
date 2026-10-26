@@ -93,7 +93,7 @@ number of items is known, and `(… and maybe more)` when it is not, e.g. for a 
 stopped enumerating early.
 
 To format your own types, register an `IValueFormatter` with `ValueFormatter.Register(…)`, which returns an
-`IDisposable` that removes it again, see [initialization](../11-extending/09-initialization.md).
+`IDisposable` that removes it again, see [value formatters](../11-extending/04-formatting.md#value-formatters).
 
 <details>
 <summary>Multi-dimensional arrays</summary>
@@ -113,7 +113,7 @@ Under `Customize.aweXpect.Settings()`:
 | `DefaultEventuallyTimeout`       | `TimeSpan`              | 30 s      | How long [`Eventually()`](./06-time-and-cancellation.md#eventually) retries until the expectations must be met. |
 | `DefaultRegexTimeout`            | `TimeSpan`              | 1 s       | How long a [wildcard or regex pattern](../04-values/03-string.md#match-types) may take to match.                                 |
 | `DefaultSignalerTimeout`         | `TimeSpan`              | 30 s      | How long a [`Signaler`](../06-behaviour/04-callbacks.md) expectation waits without `Within(…)`.                                  |
-| `DefaultTimeComparisonTolerance` | `TimeSpan`              | 0         | The [tolerance](../04-values/10-datetime-offset.md#default-tolerance) for date and time values without `Within(…)`.              |
+| `DefaultTimeComparisonTolerance` | `TimeSpan`              | 0         | The [tolerance](./05-options.md#default-tolerance) for date and time values without `Within(…)`.                                 |
 | `ExcludedAssemblyPrefixes`       | `IReadOnlyList<string>` | see below | The assemblies that are not scanned for a test framework adapter, matched by name prefix.                                        |
 
 See [time and cancellation](./06-time-and-cancellation.md#cancellationtoken) for how to create a
@@ -149,13 +149,11 @@ prefixes.
 A prefix matches at a segment boundary of the assembly name, so `System` excludes `System.Net.Http`, but not an
 assembly named `Systemics`. A prefix that ends with a `.`, e.g. `MyCompany.`, excludes all assemblies whose name starts
 with it, and an empty prefix excludes nothing. Extensions use the same matching, which
-[`AssemblyPrefixes.IsExcluded`](../11-extending/08-customization-values.md#exclude-the-framework-assemblies) offers to
+[`AssemblyPrefixes.IsExcluded`](../11-extending/10-customization-values.md#excluded-assemblies) offers to
 your own extension.
 
-The loaded assemblies are only scanned for a test framework adapter below .NET 8, e.g. on .NET Framework. On .NET 8 or
-later the generated adapter registers itself when the test assembly is loaded, so `ExcludedAssemblyPrefixes` has no
-effect on the test framework detection there. This registration needs C# 9 or later, see
-[aweXpect2002](../08-analyzers.md#test-framework-adapter).
+The test framework detection only uses `ExcludedAssemblyPrefixes` below .NET 8, see
+[test frameworks](../08-setup/01-test-frameworks.md#failed-expectations).
 
 </details>
 
@@ -188,4 +186,4 @@ Extensions can add their own groups. For example, the
 [`aweXpect.Json`](/aweXpect/extensions/aweXpect.Json) package adds `Customize.aweXpect.Json()` with the default
 [`JsonDocumentOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsondocumentoptions) and
 [`JsonSerializerOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions). See
-[customization values](../11-extending/08-customization-values.md) to add a group yourself.
+[customization values](../11-extending/10-customization-values.md) to add a group yourself.

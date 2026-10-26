@@ -24,6 +24,11 @@
    //    ↑ With global static
    ```
 
+4. Write durations more readably (optional)  
+   The samples in this documentation write durations like `5.Seconds()` with the
+   [aweXpect.Chronology](https://docs.testably.org/Chronology) package, marked with the comment
+   `// from the aweXpect.Chronology package`; `TimeSpan.FromSeconds(5)` works as well.
+
 ## Write your first expectation
 
 Every expectation starts with `Expect.That(subject)`, continues with what you expect and is awaited:
@@ -37,6 +42,11 @@ public async Task IsInLibrary_WhenAlbumIsMissing_ShouldReturnFalse()
   await Expect.That(result).IsFalse();
 }
 ```
+
+:::warning
+An expectation is only evaluated when it is awaited: without `await` it never fails. The analyzer
+[aweXpect0001](./08-analyzers.md#awexpect0001) reports a missing `await` as an error.
+:::
 
 If it fails, it throws [an exception that fails the test](./08-setup/01-test-frameworks.md#failed-expectations)
 with the following message:
@@ -73,12 +83,13 @@ but it was True
 
 The expectations are grouped by the type of the subject:
 
-| What you test                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Where to look                                  |
-|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
-| [`bool`](./04-values/01-boolean.md), [numbers](./04-values/02-number.md), [`string`](./04-values/03-string.md), [`char`](./04-values/04-char.md), [enums](./04-values/05-enum.md), [`Guid`](./04-values/06-guid.md), [`Version`](./04-values/07-version.md), [`Stream`](./04-values/08-stream.md), [`TimeSpan`](./04-values/09-timespan.md), [`DateTime`](./04-values/10-datetime-offset.md), [any object](./04-values/12-object.md), [equivalency](./04-values/13-equivalency.md) | [Values](./04-values/index.md)                 |
-| `IEnumerable<T>`, arrays, [dictionaries](./05-collections/04-dictionaries.md)                                                                                                                                                                                                                                                                                                                                                                                                      | [Collections](./05-collections/index.md)       |
-| [delegates and exceptions](./06-behaviour/01-delegates.md), [`Task`](./06-behaviour/02-tasks.md), [events](./06-behaviour/03-events.md), [callbacks](./06-behaviour/04-callbacks.md)                                                                                                                                                                                                                                                                                               | [Behaviour](./06-behaviour/index.md)           |
-| JSON, XML, HTTP, `Uri`, `IPAddress`, reflection, snapshots                                                                                                                                                                                                                                                                                                                                                                                                                         | [Extension packages](./07-extensions/index.md) |
+| What you test                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Where to look                                       |
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
+| [`bool`](./04-values/01-boolean.md), [numbers](./04-values/02-number.md), [`string`](./04-values/03-string.md), [`char`](./04-values/04-char.md), [enums](./04-values/05-enum.md), [`Guid`](./04-values/06-guid.md), [`Version`](./04-values/07-version.md), [`Stream`](./04-values/08-stream.md), [`TimeSpan`](./04-values/09-timespan.md), [`DateTime`](./04-values/10-datetime-offset.md), [`DateOnly`, `TimeOnly`](./04-values/11-date-time-only.md), [any object](./04-values/12-object.md), [equivalency](./04-values/13-equivalency.md) | [Values](./04-values/index.md)                      |
+| `IEnumerable<T>`, arrays, [dictionaries](./05-collections/04-dictionaries.md)                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | [Collections](./05-collections/index.md)            |
+| [delegates and exceptions](./06-behaviour/01-delegates.md), [`Task`](./06-behaviour/02-tasks.md), [events](./06-behaviour/03-events.md), [callbacks](./06-behaviour/04-callbacks.md)                                                                                                                                                                                                                                                                                                                                                           | [Behaviour](./06-behaviour/index.md)                |
+| JSON, XML, HTTP, `Uri`, `IPAddress`, reflection, snapshots                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | [Extension packages](./07-extensions/index.md)      |
+| fail, skip or end a test without an expectation: `Fail`, `Skip`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | [Test frameworks](./08-setup/01-test-frameworks.md) |
 
 ## Target frameworks
 
@@ -89,7 +100,5 @@ aweXpect supports test projects on .NET Framework 4.8 and on .NET 6 or later; so
 
 - [Concepts](./03-how-it-works/index.md) explains how expectations are evaluated, negated and combined,
   how they treat `null`, the options they share and how to configure their defaults.
-- [Find the expectation you need](#find-the-expectation-you-need) leads you to the page that lists the expectations
-  for your subject: values, collections, behaviour or an extension package.
 - [Setup and integration](./08-setup/index.md) covers the test frameworks, the target frameworks and Native AOT.
 - [Extending aweXpect](./11-extending/index.md) shows how to add expectations for your own types.

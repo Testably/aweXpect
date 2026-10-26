@@ -1,9 +1,9 @@
 # Test frameworks
 
 aweXpect reports a failed, skipped or inconclusive test by throwing an exception that your test framework understands.
-For MSTest, NUnit, TUnit and xUnit (v2 and v3), the `aweXpect` package generates an adapter into the test project that
-throws these exceptions. Another test framework needs an adapter of its own, see
-[test framework adapter](../11-extending/09-initialization.md#test-framework-adapter).
+It supports MSTest 3 and 4, NUnit 3, 4 and 5, TUnit, and xUnit v2 and v3: for them, the `aweXpect` package generates
+an adapter into the test project that throws these exceptions. Another test framework needs an adapter of its own, see
+[test framework adapter](../11-extending/11-initialization.md#test-framework-adapter).
 
 ## Failed expectations
 
@@ -34,6 +34,11 @@ Each of them fails the test, and has the exception that caused the failure, if a
 - xUnit v2 is detected by `xunit.assert`, which the `xunit` package includes. A test project that only references
   `xunit.core` counts as "none detected".
 - "None detected" also applies when the generated adapter is not registered, see
+  [aweXpect2002](../08-analyzers.md#test-framework-adapter).
+- The loaded assemblies are only scanned for a test framework adapter below .NET 8, e.g. on .NET Framework, skipping
+  the [`ExcludedAssemblyPrefixes`](../03-how-it-works/07-configuration.md#settings). On .NET 8 or later the generated
+  adapter registers itself when the test assembly is loaded, so `ExcludedAssemblyPrefixes` has no effect on the test
+  framework detection there. This registration needs C# 9 or later, see
   [aweXpect2002](../08-analyzers.md#test-framework-adapter).
 
 </details>
@@ -72,7 +77,7 @@ catch (IOException exception)
 }
 ```
 
-### Inconclusive
+## Ending a test as inconclusive {#inconclusive}
 
 `Fail.Inconclusive` ends the running test as inconclusive, i.e. as neither passed nor failed, e.g. when it depends on
 something that is not available:
@@ -131,7 +136,7 @@ test framework exposes it:
 - the cancellation token of the test, e.g. to cancel the expectations with
   [`TestCancellation.FromCancellationToken(…)`](../03-how-it-works/06-time-and-cancellation.md#cancellationtoken),
 - and attachments to the result of the test, e.g. the
-  [pending file of a snapshot](/aweXpect/extensions/aweXpect.Snapshots/matching-snapshots#encoding-line-breaks-and-attachments).
+  [pending file of a snapshot](/aweXpect/extensions/aweXpect.Snapshots/accepting-snapshots#on-a-build-server).
 
 | Test framework       | Test case | Arguments of the test class | Retries                    | Cancellation token | Attachments |
 |----------------------|-----------|-----------------------------|----------------------------|--------------------|-------------|

@@ -33,9 +33,8 @@ The tighter timeout wins. A local timeout that is longer than the global one, or
 itself (e.g. `ExecutesIn().AtMost(…)` or `Throws().Within(…)`), does not loosen it.
 :::
 
-On a [combination](./03-combining.md#on-different-subjects) of `Expect.ThatAll` or `Expect.ThatAny`, `WithTimeout`
-limits the whole combination: its expectations are evaluated one after another and each one only gets the time that is
-left.
+How `WithTimeout` applies to `Expect.ThatAll` and `Expect.ThatAny` is described in
+[combining expectations](./03-combining.md#on-different-subjects).
 
 <details>
 <summary>Repeated and infinite timeouts</summary>
@@ -87,11 +86,58 @@ A local `CancellationToken` replaces the global one instead of being applied add
 [linked cancellation token](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtokensource.createlinkedtokensource).
 :::
 
-On a [combination](./03-combining.md#on-different-subjects), `WithCancellation` passes the `CancellationToken` to every
-combined expectation; one with a `CancellationToken` of its own observes both.
+How `WithCancellation` applies to `Expect.ThatAll` and `Expect.ThatAny` is described in
+[combining expectations](./03-combining.md#on-different-subjects).
 
 The timeout and the `CancellationToken` are also forwarded to a [delegate](../06-behaviour/01-delegates.md) that
 accepts a `CancellationToken` parameter.
+
+## Outcome
+
+A timeout and a cancellation are reported the same way by every expectation, whether it awaits a `Task<T>` subject, an
+asynchronous `Whose` member or delegate, enumerates an `IAsyncEnumerable<T>`, waits for a `Signaler` or for recorded
+events, or retries with `Within(…)` or [`Eventually()`](#eventually):
+
+- When a **timeout** elapses (`WithTimeout` or `TestCancellation.FromTimeout`), the expectation fails with "did not
+  finish within …" and a `TimeoutException` as inner exception.
+- When the **`CancellationToken`** is canceled (`WithCancellation` or `TestCancellation.FromCancellationToken`), the
+  expectation is inconclusive: "could not be verified, because the evaluation was already canceled". It neither passes
+  nor throws the `OperationCanceledException`, so e.g. `DidNotSignal()` does not pass because the cancellation ended the
+  wait.
+
+An inconclusive expectation throws the exception that your test framework uses for this outcome, see
+[inconclusive](../08-setup/01-test-frameworks.md#inconclusive).
+
+<details>
+<summary>Awaited tasks, async enumerables and cancellations from the delegate itself</summary>
+
+A timeout or a cancellation also stops waiting for a task that the expectation awaits, such as a `Task<T>` subject or
+the task returned by an asynchronous delegate, even if it ignores the `CancellationToken`. A synchronous delegate
+cannot be abandoned and runs to completion. The outcome is the same whether the task was abandoned or reacted to the
+cancellation itself. With [`Eventually()`](#eventually), the timeout bounds each evaluation in the same way.
+
+The `CancellationToken` of the expectation, which includes the timeout, is passed to an `IAsyncEnumerable<T>` subject,
+and the expectation stops waiting for the next item once it is canceled, even if the enumerable ignores the token.
+After that, the enumerable is not advanced any further.
+
+An expectation that needs an item after the cancellation never reads the cancellation as the end of the enumerable,
+regardless of whether it occurs while waiting for an item or between two items. Expectations like `HasCount` or
+`IsEmpty` list the items received so far.
+
+The enumerator is disposed when the expectation ends. A timeout or a cancellation also stops waiting for a
+`DisposeAsync` that does not complete. The outcome is already decided at that point and does not change: a met
+expectation stays met, and a failure is reported as it is.
+
+A timeout or a cancellation only stops reading the items that still have to come from a collection, e.g. from a lazily
+evaluated `IEnumerable<T>`. A collection that is already complete in memory, such as an array or a `List<T>`, is
+evaluated completely like any other value, even when the timeout elapsed while a delegate created it. The same applies
+to a collection whose items an earlier expectation on the same subject has already read to the end.
+
+An `OperationCanceledException` that a delegate throws for its own reasons, while neither the timeout elapsed nor the
+`CancellationToken` was canceled, is an ordinary exception: e.g. `DoesNotThrow()` fails with "did throw an
+OperationCanceledException".
+
+</details>
 
 ## Waiting
 
@@ -241,6 +287,8 @@ Expectations with an upper bound (`DidNotTrigger`, `Never()`, `AtMost(…)`, `Ex
 and only return early when one event too many is recorded:
 
 ```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
 IEventRecording<Player> recording = player.Record().Events();
 
 // Waits for 3 seconds and expects that no TrackStarted event is triggered in that time
@@ -272,6 +320,7 @@ time, so that a test of a long wait does not take long. Pass an `ITimeSystem` fr
 adapter to the virtual clock of a mocking library:
 
 ```csharp no-compile
+using aweXpect.Chronology; // from the aweXpect.Chronology package
 using aweXpect.Core.Internal; // experimental, see aweXpect5001
 
 ITimeSystem timeSystem = new MyVirtualTimeSystem();
@@ -302,61 +351,5 @@ accept a `CancellationToken`, and the expectation fails the same way. A synchron
 runs to completion, however long that takes; neither `WithTimeout` nor `WithCancellation` changes that. If it returns
 after the timeout elapsed, the expectation fails the same way. `ExecutesIn()` and `Throws().Within(…)` report the
 duration it took instead, when the timeout is their own upper bound or the duration also violates their limit.
-
-</details>
-
-## Outcome
-
-A timeout and a cancellation are reported the same way by every expectation, whether it awaits a `Task<T>` subject, an
-asynchronous `Whose` member or delegate, enumerates an `IAsyncEnumerable<T>`, waits for a `Signaler` or for recorded
-events, or retries with `Within(…)` or [`Eventually()`](#eventually):
-
-- When a **timeout** elapses (`WithTimeout` or `TestCancellation.FromTimeout`), the expectation fails with "did not
-  finish within …" and a `TimeoutException` as inner exception.
-- When the **`CancellationToken`** is canceled (`WithCancellation` or `TestCancellation.FromCancellationToken`), the
-  expectation is inconclusive: "could not be verified, because the evaluation was already canceled". It neither passes
-  nor throws the `OperationCanceledException`, so e.g. `DidNotSignal()` does not pass because the cancellation ended the
-  wait.
-
-An inconclusive expectation throws the exception that your test framework uses for this outcome, see
-[inconclusive](../08-setup/01-test-frameworks.md#inconclusive).
-
-<details>
-<summary>An `OperationCanceledException` from the delegate itself</summary>
-
-An `OperationCanceledException` that a delegate throws for its own reasons, while neither the timeout elapsed nor the
-`CancellationToken` was canceled, is an ordinary exception: e.g. `DoesNotThrow()` fails with "did throw an
-OperationCanceledException".
-
-</details>
-
-## Awaited tasks
-
-A timeout or a cancellation also stops waiting for a task that the expectation awaits, such as a `Task<T>` subject or
-the task returned by an asynchronous delegate, even if it ignores the `CancellationToken`. A synchronous delegate
-cannot be abandoned and runs to completion. The outcome is the same whether the task was abandoned or reacted to the
-cancellation itself. With [`Eventually()`](#eventually), the timeout bounds each evaluation in the same way.
-
-## Async enumerables
-
-The `CancellationToken` of the expectation, which includes the timeout, is passed to an `IAsyncEnumerable<T>` subject,
-and the expectation stops waiting for the next item once it is canceled, even if the enumerable ignores the token.
-After that, the enumerable is not advanced any further.
-
-<details>
-<summary>Partial enumerations, disposal and complete collections</summary>
-
-An expectation that needs an item after the cancellation never reads the cancellation as the end of the enumerable,
-regardless of whether it occurs while waiting for an item or between two items. Expectations like `HasCount` or
-`IsEmpty` list the items received so far.
-
-The enumerator is disposed when the expectation ends. A timeout or a cancellation also stops waiting for a
-`DisposeAsync` that does not complete. The outcome is already decided at that point and does not change: a met
-expectation stays met, and a failure is reported as it is.
-
-A timeout or a cancellation only stops reading the items that still have to come from a collection, e.g. from a lazily
-evaluated `IEnumerable<T>`. A collection that is already complete in memory, such as an array or a `List<T>`, is
-evaluated completely like any other value, even when the timeout elapsed while a delegate created it. The same applies
-to a collection whose items an earlier expectation on the same subject has already read to the end.
 
 </details>

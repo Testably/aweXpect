@@ -8,6 +8,20 @@
 
 Assert unit tests in natural language using awesome expectations.
 
+```csharp
+await Expect.That(message).IsEqualTo("It's a compliment");
+```
+
+```text
+Expected that message
+is equal to "It's a compliment",
+but it was "It's a complement", which differs at index 12:
+           ↓ (actual)
+  "…a complement"
+  "…a compliment"
+           ↑ (expected)
+```
+
 ## Getting started
 
 1. Install the [`aweXpect`](https://www.nuget.org/packages/aweXpect) nuget package
@@ -35,8 +49,7 @@ By using async assertions per default, we have a consistent API and other perks:
   [aweXpect.Web](https://docs.testably.org/aweXpect/extensions/aweXpect.Web)) or similar async types
 - No need to distinguish between `action.Throws()` and `await asyncAction.ThrowsAsync()`
 - The evaluation is only triggered after the complete fluent chain is loaded, which has some nice benefits:
-	- `Because` can be registered once as a general method that can be applied at the end of the expectation instead of
-	  cluttering all methods with the `because` and `becauseArgs` parameters
+	- `Because` is applied once at the end of the expectation instead of being a parameter of every method
 	- `WithCancellation` can also be registered at the end and applies a `CancellationToken` to all async methods which
 	  allows cancellation of `IAsyncEnumerable` evaluations
 	- Expectations can be combined directly (via `Expect.ThatAll`) instead of relying on global state
@@ -50,9 +63,9 @@ the [benchmarks](https://docs.testably.org/aweXpect/benchmarks) for more details
 
 ### Any runner
 
-xUnit (v2 and v3), NUnit (v3, v4 and v5), MSTest and TUnit are detected automatically: a failed expectation usually
-throws the assertion exception of the test framework. `Fail` and `Skip` fail or skip a test without an expectation.
-More information can be found in the [test frameworks guide](https://docs.testably.org/aweXpect/setup/test-frameworks).
+xUnit, NUnit, MSTest and TUnit are detected automatically: a failed expectation usually throws the assertion exception
+of the test framework. `Fail` and `Skip` fail or skip a test without an expectation. The supported versions and more
+information can be found in the [test frameworks guide](https://docs.testably.org/aweXpect/setup/test-frameworks).
 
 ### Native AOT and trimming
 

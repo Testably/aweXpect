@@ -1,8 +1,8 @@
 # Concepts
 
-Describes the concepts that all expectations share: how an expectation is built and evaluated, and how it is negated,
-combined, configured and limited in time, and how to change their defaults. How aweXpect fits into your test project,
-e.g. its test frameworks and target frameworks, is described in [setup and integration](../08-setup/index.md).
+Describes the concepts that all expectations share: how they are built, evaluated, negated, combined, configured and
+limited in time, and how to change their defaults. How aweXpect fits into your test project, e.g. its test frameworks
+and target frameworks, is described in [setup and integration](../08-setup/index.md).
 
 | Page                                                    | Topics                                                             |
 |---------------------------------------------------------|--------------------------------------------------------------------|
@@ -21,7 +21,7 @@ Every expectation starts with `Expect.That(subject)`, continues with what you ex
 ```csharp
 string title = "Let It Be";
 
-await Expect.That(title).StartsWith("Abbey").Because("it is the album title");
+await Expect.That(title).StartsWith("Abbey").Because("the playlist starts with Abbey Road");
 ```
 
 A failure throws an exception that fails the test, usually the
@@ -30,7 +30,7 @@ that reads like a sentence. The expectation above fails with:
 
 ```text title="Failure message"
 Expected that title
-starts with "Abbey", because it is the album title,
+starts with "Abbey", because the playlist starts with Abbey Road,
 but it was "Let It Be", which differs at index 0:
    ↓ (actual)
   "Let It Be"
