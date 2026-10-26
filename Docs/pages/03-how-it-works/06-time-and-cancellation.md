@@ -110,8 +110,6 @@ Both defaults can be changed in the [settings](./07-configuration.md#settings). 
 failure message names the wait, e.g. `has never recorded the callback within 0:30` or `eventually is equal to 2 within
 0:30`.
 
-To wait on a virtual clock instead of in real time, use the experimental
-[`WithTimeSystem(…)`](../08-analyzers.md#experimental-apis).
 
 ### A condition
 
@@ -266,6 +264,25 @@ An expectation without an upper bound (e.g. `AtLeast`) succeeds as soon as enoug
 Expectations with an upper bound, including `DidNotSignal()`, wait out the whole timeout and only return early when one
 signal too many is received. A canceled `CancellationToken` makes the expectation [inconclusive](#outcome), so use
 `Within(…)` to limit how long to wait.
+
+### On a virtual clock
+
+`WithTimeSystem(timeSystem)` lets an expectation wait, time out and measure on a virtual clock instead of in real
+time, so that a test of a long wait does not take long. Pass an `ITimeSystem` from `aweXpect.Core.Internal`, e.g. an
+adapter to the virtual clock of a mocking library:
+
+```csharp no-compile
+using aweXpect.Core.Internal; // experimental, see aweXpect5001
+
+ITimeSystem timeSystem = new MyVirtualTimeSystem();
+
+await Expect.That(track).Satisfies(x => x.IsPlayed).Within(2.Seconds())
+  .WithTimeSystem(timeSystem);
+```
+
+It applies to the waits, timeouts and measured durations of the expectation, also to all expectations combined in
+`Expect.ThatAll` or `Expect.ThatAny`, but not to code that waits outside of it, e.g. in the subject. The API is
+[experimental](../08-analyzers.md#experimental-apis) and may change in any version.
 
 ## Execution time
 

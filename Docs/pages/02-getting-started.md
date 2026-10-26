@@ -82,15 +82,14 @@ The expectations are grouped by the type of the subject:
 
 ## Target frameworks
 
-aweXpect supports .NET Framework 4.8, .NET Standard 2.0 and .NET 8 or later; some features need .NET 8 or later, see
+aweXpect supports test projects on .NET Framework 4.8 and on .NET 6 or later; some features need .NET 8 or later, see
 [target frameworks](./08-setup/02-target-frameworks.md).
 
 ## Next steps
 
 - [Concepts](./03-how-it-works/index.md) explains how expectations are evaluated, negated and combined,
-  how they treat `null`, and the options they share.
+  how they treat `null`, the options they share and how to configure their defaults.
 - [Find the expectation you need](#find-the-expectation-you-need) leads you to the page that lists the expectations
   for your subject: values, collections, behaviour or an extension package.
-- [Setup and integration](./08-setup/index.md) covers the test frameworks, the global configuration, the target
-  frameworks and Native AOT.
+- [Setup and integration](./08-setup/index.md) covers the test frameworks, the target frameworks and Native AOT.
 - [Extending aweXpect](./11-extending/index.md) shows how to add expectations for your own types.

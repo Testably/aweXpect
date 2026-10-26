@@ -39,21 +39,6 @@ negation is another row: for *not read-only* use `IsWritable`, for *not writable
 *not readable* use `IsWriteOnly` and for *not write-only* use `IsReadable` (the same holds for the filters and
 the plural forms). A property that is *not read-write* is either read-only or write-only.
 
-### Nullability
-
-A property or field counts as *nullable* when its type is a `Nullable<T>` value type (e.g. `int?`) or a
-reference type annotated as nullable (e.g. `string?`, based on the nullable reference type metadata emitted
-by the compiler). The same applies to [events](#events), whose handler type is always a delegate (reference)
-type.
-
-```csharp
-// All properties and fields of the request types must be nullable
-await Expect.That(In.AssemblyContaining<AddTrackRequest>()
-        .Types().WithName("Request").AsSuffix()
-        .Properties())
-    .AreNullable();
-```
-
 `WhichAreExtensionProperties()`, `IsAnExtensionProperty()` and `AreExtensionProperties()` match extension properties
 declared with the C# extension block syntax (`extension(...) { … }`), both instance and static.
 
@@ -71,6 +56,21 @@ In.AllLoadedAssemblies().Public.Properties()
 In.AllLoadedAssemblies().Private.Fields()
     .OfType<ILogger>()
     .WithName("_").AsPrefix()
+```
+
+### Nullability
+
+A property or field counts as *nullable* when its type is a `Nullable<T>` value type (e.g. `int?`) or a
+reference type annotated as nullable (e.g. `string?`, based on the nullable reference type metadata emitted
+by the compiler). The same applies to [events](#events), whose handler type is always a delegate (reference)
+type.
+
+```csharp
+// All properties and fields of the request types must be nullable
+await Expect.That(In.AssemblyContaining<AddTrackRequest>()
+        .Types().WithName("Request").AsSuffix()
+        .Properties())
+    .AreNullable();
 ```
 
 <details>

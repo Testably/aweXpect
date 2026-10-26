@@ -9,7 +9,7 @@ Describes the possible expectations for delegates and the exceptions they throw.
 | [`ThrowsExactly<T>`](#exact-exception) | `DoesNotThrowExactly<T>` | throws exactly a `T`                                       |
 | [`Eventually`](#eventually)            |                          | re-evaluates the delegate until the expectations are met   |
 | [`ExecutesIn`](#execution-time)        |                          | completes within the expected time                         |
-| [`Allocates`](#allocations)            |                          | allocates the expected number of bytes                     |
+| [`Allocates`](#allocations)            |                          | allocates at most or at least the given number of bytes    |
 | [`IsCollectedAfter`](#memory-leaks)    |                          | the returned object is garbage collected after the cleanup |
 
 A delegate can be any of the following. Each of them can also take a `CancellationToken` parameter (e.g.

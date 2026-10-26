@@ -14,7 +14,7 @@ Describes the possible expectations for strings that contain XML.
 You can verify that a string is equal to the expected XML, compared by its content instead of its formatting:
 
 ```csharp
-string album = """<album id="42"><track title="Come Together" durationSeconds="259.0"/></album>""";
+string album = """<album id="42"><track title="Come Together" durationSeconds="259"/></album>""";
 string expected = """
                   <album id="42">
                     <track durationSeconds="259" title="Come Together" />
@@ -24,7 +24,7 @@ string expected = """
 await Expect.That(album).IsEqualTo(expected).AsXml();
 ```
 
-As the duration differs, the expectation fails with:
+If the duration was `259.0` instead, the expectation would fail with:
 
 ```text title="Failure message"
 Expected that album

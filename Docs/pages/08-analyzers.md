@@ -257,7 +257,7 @@ TestFrameworkRegistry.Register(new aweXpect.Frameworks.NunitAdapter());
 ## Experimental APIs
 
 `WithTimeSystem(…)` in `aweXpect.Core.Internal` lets an expectation wait and measure on a virtual clock instead of in
-real time, e.g. with a time system of a mocking library. It is marked as experimental with the diagnostic
+real time, see [on a virtual clock](./03-how-it-works/06-time-and-cancellation.md#on-a-virtual-clock). It is marked as experimental with the diagnostic
 `aweXpect5001`, as it may change in any version. Suppress it in a test project that uses a virtual time system:
 
 ```xml

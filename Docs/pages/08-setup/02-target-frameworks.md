@@ -1,14 +1,13 @@
 # Target frameworks
 
-aweXpect supports test projects on .NET Framework 4.8, .NET Standard 2.0 and .NET 8 or later. Most expectations work
-the same on all of them, but some need .NET 8 or later, because they build on types or language features that only
-exist there.
+aweXpect supports test projects on .NET Framework 4.8 and on .NET 6 or later. Most expectations work the same on all
+of them, but some need .NET 8 or later, because they build on types or language features that only exist there.
 
-| Target framework                | Support                                                    |
-|---------------------------------|------------------------------------------------------------|
-| .NET 8 or later                 | all expectations                                           |
-| .NET Framework 4.8              | all expectations except the ones [listed below](#net-8-or-later) |
-| .NET Standard 2.0, e.g. .NET 6  | all expectations except the ones [listed below](#net-8-or-later) |
+| Target framework of the test project | Support                                                                       |
+|--------------------------------------|-------------------------------------------------------------------------------|
+| .NET 8 or later                      | all expectations                                                              |
+| .NET 6 and .NET 7                    | the .NET Standard 2.0 build, without the ones [listed below](#net-8-or-later) |
+| .NET Framework 4.8                   | the .NET Standard 2.0 build, without the ones [listed below](#net-8-or-later) |
 
 A test project on .NET 8 or later can also be published with [Native AOT and trimming](./03-native-aot.md).
 
