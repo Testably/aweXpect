@@ -90,7 +90,7 @@ public abstract partial class ThatDelegate
 		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 			=> TryGetDelegateValue(_actual, valueType, out value);
 
-		public override ConstraintResult Negate()
+		protected internal override void NegateInPlace()
 			=> throw Tracing.WriteException(
 				new NotSupportedException($"Negation of {nameof(WithoutValue.Allocates)} is not supported."));
 

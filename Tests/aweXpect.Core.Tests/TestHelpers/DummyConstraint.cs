@@ -39,8 +39,7 @@ internal class DummyConstraint<T>(
 
 	public override void AppendResult(StringBuilder stringBuilder, string? indentation = null) { }
 
-	public override ConstraintResult Negate()
-		=> this;
+	protected internal override void NegateInPlace() { }
 
 	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 	{

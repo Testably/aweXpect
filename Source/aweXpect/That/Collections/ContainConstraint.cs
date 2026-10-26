@@ -199,7 +199,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 		return typeof(TValue).IsAssignableFrom(CollectionType);
 	}
 
-	public override ConstraintResult Negate()
+	protected override void NegateInPlace()
 	{
 		_isNegated = !_isNegated;
 		Outcome = Outcome switch
@@ -208,7 +208,6 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 			Outcome.Success => Outcome.Failure,
 			_ => Outcome,
 		};
-		return this;
 	}
 }
 

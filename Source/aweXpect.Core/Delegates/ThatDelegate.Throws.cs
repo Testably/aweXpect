@@ -211,15 +211,13 @@ public abstract partial class ThatDelegate
 		///     the outcome is updated as well. A delegate that is <see langword="null" /> or did not finish fails in both
 		///     cases.
 		/// </remarks>
-		public override ConstraintResult Negate()
+		protected internal override void NegateInPlace()
 		{
 			options.IsNegated = !options.IsNegated;
 			if (_actual is { IsNull: false, ExceededTimeout: null, })
 			{
 				Outcome = Outcome == Outcome.Success ? Outcome.Failure : Outcome.Success;
 			}
-
-			return this;
 		}
 	}
 }

@@ -435,46 +435,45 @@ internal class WhichNode<TSource, TMember> : Node
 			return typeof(TValue).IsAssignableFrom(typeof(TMember));
 		}
 
-		public override ConstraintResult Negate()
+		protected internal override void NegateInPlace()
 		{
 			if (_isMemberSkipped)
 			{
-				return NegateWithoutMember();
+				NegateWithoutMember();
+				return;
 			}
 
 			if (_negateMemberOnly)
 			{
 				// The parent keeps its positive form, so a failed parent still fails the combination.
-				Right = Right.Negate();
+				Right.NegateInPlace();
 				Outcome = CombineOutcomes();
-				return this;
+				return;
 			}
 
 			IsNegated = !IsNegated;
-			Left = Left.Negate();
+			Left.NegateInPlace();
 			_negatedRightExpectation = IsNegated ? GetRightExpectation() : null;
-			Right = Right.Negate();
+			Right.NegateInPlace();
 			Outcome = CombineOutcomes();
-			return this;
 		}
 
 		/// <remarks>
 		///     Without a member, the parent alone decides the outcome, also when it stays failed under negation.
 		/// </remarks>
-		private WhichConstraintResult NegateWithoutMember()
+		private void NegateWithoutMember()
 		{
 			if (_negateMemberOnly)
 			{
-				Right = Right.Negate();
+				Right.NegateInPlace();
 			}
 			else
 			{
-				Left = Left.Negate();
+				Left.NegateInPlace();
 				IsNegated = !IsNegated;
 			}
 
 			Outcome = Left.Outcome;
-			return this;
 		}
 
 		private string GetRightExpectation()

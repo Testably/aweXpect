@@ -47,7 +47,7 @@ public interface IEvaluationContext
 	///     evaluation whether it is negated or whether another branch of an <c>Or</c> decides the expectation. The
 	///     <see cref="CompletedEvaluation" /> holds the outcome of the whole expectation, also when it is
 	///     <see cref="Constraints.Outcome.Undecided" />, while the constraint knows its own outcome and, by overriding
-	///     <see cref="ConstraintResult.Negate()" />, its own negation.
+	///     <see cref="ConstraintResult.NegateInPlace()" />, its own negation.
 	///     <para />
 	///     Each delegate runs once, however often it is registered (e.g. for each item of a collection or each check of
 	///     <c>Within</c>), so register a method of the constraint, which is equal on every registration. The callbacks run

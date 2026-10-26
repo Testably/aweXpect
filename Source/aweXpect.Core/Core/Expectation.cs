@@ -711,7 +711,10 @@ public abstract class Expectation
 				return false;
 			}
 
-			public override ConstraintResult Negate() => this;
+			protected internal override void NegateInPlace()
+			{
+				// A combination of expectations is never negated.
+			}
 
 			/// <remarks>
 			///     The contexts of each failed expectation are numbered like it, while a nested combination numbers its own.

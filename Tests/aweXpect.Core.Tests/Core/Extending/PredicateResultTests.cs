@@ -81,7 +81,7 @@ public sealed class PredicateResultTests
 	{
 		PredicateResult.UnansweredItem subject = new(-1, "was negative");
 
-		ConstraintResult negated = subject.Negate();
+		ConstraintResult negated = subject.Invert();
 
 		await That(negated).IsSameAs(subject);
 		await That(negated.Outcome).IsEqualTo(Outcome.FailureBothWays);

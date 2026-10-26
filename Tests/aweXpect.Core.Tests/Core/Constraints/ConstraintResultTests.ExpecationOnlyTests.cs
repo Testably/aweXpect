@@ -197,7 +197,7 @@ public partial class ConstraintResultTests
 			node.AddNode(new DummyNode("", () => derived));
 
 			ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
-			result.Negate();
+			result.Invert();
 
 			await That(result.Outcome).IsEqualTo(Outcome.Success)
 				.Because("the negation of a failed operand is met");

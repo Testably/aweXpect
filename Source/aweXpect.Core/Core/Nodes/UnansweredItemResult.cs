@@ -111,9 +111,8 @@ internal sealed class UnansweredItemResult : ConstraintResult
 	}
 
 	/// <inheritdoc />
-	public override ConstraintResult Negate()
+	protected internal override void NegateInPlace()
 	{
-		_inner.Negate();
-		return this;
+		_inner.NegateInPlace();
 	}
 }

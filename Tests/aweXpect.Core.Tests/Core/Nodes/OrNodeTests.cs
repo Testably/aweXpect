@@ -298,7 +298,7 @@ public sealed class OrNodeTests
 		node.AddNode(new DummyNode("", () => new DummyConstraintResult(node2)));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
@@ -314,7 +314,7 @@ public sealed class OrNodeTests
 		node.AddNode(new DummyNode("", () => new DummyConstraintResult(other)));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome)
 			.Because("the negated other operand decides whether the negation could be answered");
@@ -331,7 +331,7 @@ public sealed class OrNodeTests
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
 		result.AppendExpectation(sb1);
 
-		result.Negate();
+		result.Invert();
 
 		result.AppendExpectation(sb2);
 		await That(sb1.ToString()).IsEqualTo("foo or bar");
@@ -353,7 +353,7 @@ public sealed class OrNodeTests
 		node.AddNode(new DummyNode("", () => new DummyConstraintResult(node2, "right", "r")));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.GetResultText()).IsEqualTo(expectedResultText)
 			.Because("an undecided operand only explains the combination when no operand failed");
@@ -372,7 +372,7 @@ public sealed class OrNodeTests
 		node.AddNode(new DummyNode("", () => new DummyConstraintResult(right, "right", "r")));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.GetResultText()).IsEqualTo("r")
 			.Because("the strategy of the left operand only suppresses the right result after the left result");
@@ -570,7 +570,7 @@ public sealed class OrNodeTests
 			new DummyConstraintResult(Outcome.Failure, "bar", "r2"), new Exception("baz"), "it")));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
-		result.Negate();
+		result.Invert();
 
 		await That(result.Outcome).IsEqualTo(Outcome.Failure);
 		await That(result.GetExpectationText()).IsEqualTo("foo and bar");

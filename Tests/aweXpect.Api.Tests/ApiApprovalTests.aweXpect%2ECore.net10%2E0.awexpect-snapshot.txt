@@ -811,7 +811,7 @@ namespace aweXpect.Core.Constraints
         public abstract void AppendExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null);
         public abstract void AppendResult(System.Text.StringBuilder stringBuilder, string? indentation = null);
         protected string? GetSubjectOfResult(string it) { }
-        public abstract aweXpect.Core.Constraints.ConstraintResult Negate();
+        protected internal abstract void NegateInPlace();
         public abstract bool TryGetStoredValue<TValue>(out TValue? value);
         public bool TryGetValue<TValue>([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out TValue? value) { }
         protected static void AppendCanceledResult(System.Text.StringBuilder stringBuilder, string it) { }
@@ -824,7 +824,7 @@ namespace aweXpect.Core.Constraints
             protected virtual void AppendNormalExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
             public override void AppendResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
             public aweXpect.Core.Constraints.ConstraintResult IsMetBy(T actual) { }
-            public override aweXpect.Core.Constraints.ConstraintResult Negate() { }
+            protected internal override void NegateInPlace() { }
             public override bool TryGetStoredValue<TValue>(out TValue? value) { }
         }
         public abstract class WithEqualToValue<T> : aweXpect.Core.Constraints.ConstraintResult.WithValue<T>
@@ -851,7 +851,7 @@ namespace aweXpect.Core.Constraints
             protected abstract void AppendNormalResult(System.Text.StringBuilder stringBuilder, string? indentation = null);
             public override sealed void AppendResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
             protected virtual void AppendUndecidedResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
-            public override aweXpect.Core.Constraints.ConstraintResult Negate() { }
+            protected internal override void NegateInPlace() { }
             public override bool TryGetStoredValue<TValue>(out TValue? value) { }
         }
     }
@@ -861,6 +861,7 @@ namespace aweXpect.Core.Constraints
         public static aweXpect.Core.Constraints.ConstraintResult FailureBothWays<T>(this aweXpect.Core.Constraints.ConstraintResult inner, string failure, T value) { }
         public static bool HasSameResultTextAs(this aweXpect.Core.Constraints.ConstraintResult left, aweXpect.Core.Constraints.ConstraintResult right) { }
         public static T Invert<T>(this T constraintResult) where T : aweXpect.Core.Constraints.ConstraintResult { }
+        public static T InvertIf<T>(this T constraintResult, bool isNegated) where T : aweXpect.Core.Constraints.ConstraintResult { }
         public static aweXpect.Core.Constraints.ConstraintResult PrependExpectationText(this aweXpect.Core.Constraints.ConstraintResult inner, System.Action<System.Text.StringBuilder>? prefix) { }
         public static aweXpect.Core.Constraints.ConstraintResult UseValue<T>(this aweXpect.Core.Constraints.ConstraintResult inner, T value) { }
     }

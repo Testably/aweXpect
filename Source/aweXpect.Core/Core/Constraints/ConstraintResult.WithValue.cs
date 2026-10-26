@@ -176,11 +176,10 @@ public abstract partial class ConstraintResult
 			return typeof(TValue).IsAssignableFrom(typeof(T));
 		}
 
-		/// <inheritdoc cref="ConstraintResult.Negate()" />
-		public override ConstraintResult Negate()
+		/// <inheritdoc cref="ConstraintResult.NegateInPlace()" />
+		protected internal override void NegateInPlace()
 		{
 			Grammars = Grammars.Negate();
-			return this;
 		}
 	}
 }

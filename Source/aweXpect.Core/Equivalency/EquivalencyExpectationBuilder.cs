@@ -137,7 +137,10 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 			return false;
 		}
 
-		public override ConstraintResult Negate() => this;
+		protected internal override void NegateInPlace()
+		{
+			// A value of another type fails in both polarities.
+		}
 	}
 }
 

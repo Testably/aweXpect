@@ -145,12 +145,10 @@ public abstract partial class ConstraintResult
 	/// <summary>
 	///     Negates the current <see cref="ConstraintResult" /> in place.
 	/// </summary>
-	/// <returns>The same instance, after it was negated.</returns>
 	/// <remarks>
-	///     <see cref="ConstraintResultExtensions.Invert{T}(T)" /> ignores the returned value and relies on the negation in
-	///     place, so an implementation must negate itself and return <see langword="this" /> instead of a new result.
+	///     Callers negate a result with <see cref="ConstraintResultExtensions.Invert{T}(T)" />, which calls this method.
 	/// </remarks>
-	public abstract ConstraintResult Negate();
+	protected internal abstract void NegateInPlace();
 
 	/// <summary>
 	///     Adds the contexts that explain the failure of this result, e.g. the items of a collection, to the

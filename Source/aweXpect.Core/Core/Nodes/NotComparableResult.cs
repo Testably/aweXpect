@@ -81,9 +81,8 @@ internal sealed class NotComparableResult<T> : ConstraintResult
 		=> contexts.Visit(_inner);
 
 	/// <inheritdoc />
-	public override ConstraintResult Negate()
+	protected internal override void NegateInPlace()
 	{
-		_inner.Negate();
-		return this;
+		_inner.NegateInPlace();
 	}
 }

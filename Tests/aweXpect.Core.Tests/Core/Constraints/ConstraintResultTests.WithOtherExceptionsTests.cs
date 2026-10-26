@@ -38,7 +38,7 @@ public partial class ConstraintResultTests
 			inner.IsMetBy(true);
 			ConstraintResult sut = new ConstraintResult.WithOtherExceptions(inner, [new Exception("bar"),]);
 
-			ConstraintResult negated = sut.Negate();
+			ConstraintResult negated = sut.Invert();
 
 			await That(negated).IsSameAs(sut);
 			await That(negated.Outcome).IsEqualTo(Outcome.Failure)

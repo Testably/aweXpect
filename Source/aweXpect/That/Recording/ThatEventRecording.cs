@@ -135,7 +135,7 @@ public static partial class ThatEventRecording
 			return typeof(TValue).IsAssignableFrom(typeof(IEventRecording<TSubject>));
 		}
 
-		public override ConstraintResult Negate()
+		protected override void NegateInPlace()
 		{
 			_isNegated = !_isNegated;
 			Outcome = Outcome switch
@@ -144,7 +144,6 @@ public static partial class ThatEventRecording
 				Outcome.Success => Outcome.Failure,
 				_ => Outcome,
 			};
-			return this;
 		}
 	}
 }

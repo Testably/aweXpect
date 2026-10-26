@@ -45,5 +45,7 @@ internal sealed class ReadsFirstItemConstraint(DisposeTrackingEnumerable source,
 		return false;
 	}
 
-	public override ConstraintResult Negate() => this;
+	protected internal override void NegateInPlace()
+	{
+	}
 }

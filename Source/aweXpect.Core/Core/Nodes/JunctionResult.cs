@@ -162,12 +162,11 @@ internal sealed class JunctionResult : CombinedResult
 		=> (!Right.IsExpectationOnly && Right.TryGetStoredValue(out value)) || base.TryGetStoredValue(out value);
 
 	/// <inheritdoc />
-	public override ConstraintResult Negate()
+	protected internal override void NegateInPlace()
 	{
 		IsNegated = !IsNegated;
-		Left.Negate();
-		Right.Negate();
+		Left.NegateInPlace();
+		Right.NegateInPlace();
 		Outcome = CombineOutcomes();
-		return this;
 	}
 }

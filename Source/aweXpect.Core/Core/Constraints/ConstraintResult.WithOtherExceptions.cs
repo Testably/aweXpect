@@ -42,11 +42,10 @@ public abstract partial class ConstraintResult
 		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 			=> inner.TryGetStoredValue(out value);
 
-		/// <inheritdoc cref="ConstraintResult.Negate()" />
-		public override ConstraintResult Negate()
+		/// <inheritdoc cref="ConstraintResult.NegateInPlace()" />
+		protected internal override void NegateInPlace()
 		{
-			inner.Negate();
-			return this;
+			inner.NegateInPlace();
 		}
 
 		/// <inheritdoc cref="ConstraintResult.AppendContexts(ResultContextCollector)" />

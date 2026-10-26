@@ -478,11 +478,10 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 			=> contexts.VisitOptionalMember(_prefix?.ContextMember, GetContextsResult(),
 				_prefix?.MemberAccessor.PathRoot);
 
-		public override ConstraintResult Negate()
+		protected internal override void NegateInPlace()
 		{
-			Inner.Negate();
+			Inner.NegateInPlace();
 			Outcome = Inner.Outcome;
-			return this;
 		}
 
 		/// <summary>

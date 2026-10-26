@@ -122,11 +122,10 @@ internal static class ImmutableArrayHelpers
 		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 			=> _inner.TryGetStoredValue(out value);
 
-		public override ConstraintResult Negate()
+		protected override void NegateInPlace()
 		{
-			_inner.Negate();
+			_inner.Invert();
 			Grammars = _inner.Grammars;
-			return this;
 		}
 	}
 }

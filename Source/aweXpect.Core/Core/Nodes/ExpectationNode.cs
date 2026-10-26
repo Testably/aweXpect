@@ -480,6 +480,9 @@ internal class ExpectationNode : Node
 			return false;
 		}
 
-		public override ConstraintResult Negate() => this;
+		protected internal override void NegateInPlace()
+		{
+			// The constraint was not evaluated, so there is no outcome to negate.
+		}
 	}
 }

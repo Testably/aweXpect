@@ -58,7 +58,7 @@ public sealed class DummyConstraintResult : ConstraintResult
 		return false;
 	}
 
-	public override ConstraintResult Negate()
+	protected internal override void NegateInPlace()
 	{
 		Outcome = Outcome switch
 		{
@@ -66,7 +66,6 @@ public sealed class DummyConstraintResult : ConstraintResult
 			Outcome.Success => Outcome.Failure,
 			_ => Outcome,
 		};
-		return this;
 	}
 }
 
@@ -117,7 +116,7 @@ public sealed class DummyConstraintResult<T> : ConstraintResult
 		return false;
 	}
 
-	public override ConstraintResult Negate()
+	protected internal override void NegateInPlace()
 	{
 		Outcome = Outcome switch
 		{
@@ -125,6 +124,5 @@ public sealed class DummyConstraintResult<T> : ConstraintResult
 			Outcome.Success => Outcome.Failure,
 			_ => Outcome,
 		};
-		return this;
 	}
 }

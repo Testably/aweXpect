@@ -113,7 +113,7 @@ public sealed class CombinedResultTests
 			isAnd, isAnd ? " and " : " or ", FurtherProcessingStrategy.Continue);
 
 		Outcome outcome = sut.Outcome;
-		sut.Negate();
+		sut.Invert();
 
 		await That(outcome).IsEqualTo(expected);
 		await That(sut.Outcome).IsEqualTo(expectedWhenNegated);
@@ -125,7 +125,7 @@ public sealed class CombinedResultTests
 		ConstraintResult sut = new MappingResult(new DummyConstraintResult(Success, "parent"),
 			new DummyConstraintResult(Failure, "member"), CreateMappingNode(" whose value "));
 
-		sut.Negate().Negate();
+		sut.Invert().Invert();
 
 		await That(sut.Outcome).IsEqualTo(Failure);
 		await That(sut.GetExpectationText()).IsEqualTo("parent whose value member");
@@ -140,7 +140,7 @@ public sealed class CombinedResultTests
 		ConstraintResult sut = new MappingResult(new DummyConstraintResult(parentOutcome),
 			new DummyConstraintResult(FailureBothWays), CreateMappingNode(" whose member "));
 
-		sut.Negate();
+		sut.Invert();
 
 		await That(sut.Outcome).IsEqualTo(expectedWhenNegated)
 			.Because("a failed parent meets the negation of the mapping, even when the member could not be answered");
@@ -226,7 +226,9 @@ public sealed class CombinedResultTests
 			return false;
 		}
 
-		public override ConstraintResult Negate() => this;
+		protected internal override void NegateInPlace()
+		{
+		}
 	}
 
 	private sealed class SubjectResult(Outcome outcome, string subject, string result)
@@ -251,6 +253,8 @@ public sealed class CombinedResultTests
 			return false;
 		}
 
-		public override ConstraintResult Negate() => this;
+		protected internal override void NegateInPlace()
+		{
+		}
 	}
 }

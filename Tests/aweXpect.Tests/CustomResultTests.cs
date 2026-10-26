@@ -157,7 +157,7 @@ static file class CustomResultExtensions
 			return false;
 		}
 
-		public override ConstraintResult Negate()
+		protected override void NegateInPlace()
 			=> throw new NotSupportedException();
 	}
 }

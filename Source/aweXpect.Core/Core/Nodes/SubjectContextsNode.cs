@@ -128,7 +128,7 @@ internal sealed class SubjectContextsNode(
 	{
 		private readonly SubjectContext _subjectContexts;
 		private readonly TValue? _value;
-		private ConstraintResult _inner;
+		private readonly ConstraintResult _inner;
 
 		public SubjectContextsResult(ConstraintResult inner, TValue? value, SubjectContext subjectContexts)
 			: base(inner.FurtherProcessingStrategy)
@@ -168,11 +168,10 @@ internal sealed class SubjectContextsNode(
 		public override bool TryGetStoredValue<T>(out T? value) where T : default
 			=> _inner.TryGetStoredValue(out value);
 
-		/// <inheritdoc cref="ConstraintResult.Negate()" />
-		public override ConstraintResult Negate()
+		/// <inheritdoc cref="ConstraintResult.NegateInPlace()" />
+		protected internal override void NegateInPlace()
 		{
-			_inner = _inner.Negate();
-			return this;
+			_inner.NegateInPlace();
 		}
 
 		/// <inheritdoc cref="ConstraintResult.AppendContexts(ResultContextCollector)" />

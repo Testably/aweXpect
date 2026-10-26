@@ -40,10 +40,9 @@ internal sealed class NotApplicableConstraintResult(ConstraintResult expectation
 		return false;
 	}
 
-	/// <inheritdoc cref="ConstraintResult.Negate()" />
-	public override ConstraintResult Negate()
+	/// <inheritdoc cref="ConstraintResult.NegateInPlace()" />
+	protected internal override void NegateInPlace()
 	{
-		expectationResult.Negate();
-		return this;
+		expectationResult.NegateInPlace();
 	}
 }
