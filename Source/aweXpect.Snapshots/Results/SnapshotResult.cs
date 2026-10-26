@@ -168,6 +168,18 @@ public class SnapshotResult<TType, TThat, TSelf> : AndOrResult<TType, TThat, TSe
 	public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4)
 		=> SetNameAfter(argument1, argument2, argument3, argument4);
 
+	/// <inheritdoc cref="NamedAfter(object)" />
+	/// <remarks>
+	///     The values are written like those of <see cref="NamedAfter(object)" />. The further arguments start after the
+	///     fourth one, so that a single array is passed to <see cref="NamedAfter(object)" /> and written as <c>[…]</c>,
+	///     like an array argument of the running test. Only an array of a reference type as the fifth and last argument is
+	///     passed as the further arguments themselves, like to any <see langword="params" /> parameter, so its items are
+	///     written one by one. A single <see langword="null" /> as the fifth argument is written as <c>null</c>.
+	/// </remarks>
+	public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4,
+		params object?[]? moreArguments)
+		=> SetNameAfter([argument1, argument2, argument3, argument4, .. moreArguments ?? [null,],]);
+
 	private TSelf SetNameAfter(params object?[] arguments)
 	{
 		_options.Name = SnapshotTestArguments.Format(arguments);

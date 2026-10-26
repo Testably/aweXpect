@@ -54,8 +54,8 @@ argument: `MatchesSnapshot("login")` throws an `ArgumentException` that points t
 
 ## Naming after the arguments
 
-`.NamedAfter(…)` names the snapshot after up to four arguments of the test, which works with every test framework and
-under Native AOT:
+`.NamedAfter(…)` names the snapshot after any number of arguments of the test, which works with every test framework
+and under Native AOT:
 
 ```csharp
 [Theory]

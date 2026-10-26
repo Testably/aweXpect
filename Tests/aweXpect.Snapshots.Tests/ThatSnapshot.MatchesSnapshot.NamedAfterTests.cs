@@ -164,6 +164,16 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task WhenArgumentIsStringArray_ShouldWriteItsItems()
+			{
+				string[] titles = ["Abbey Road", "Let It Be",];
+
+				await ShouldBeNamed("[\"Abbey Road\", \"Let It Be\"]",
+					result => result.NamedAfter(titles),
+					"a single array is one argument, like an array argument of the running test, and is not spread into the further arguments");
+			}
+
+			[Test]
 			public async Task WhenArgumentIsTuple_ShouldUseTheInvariantCulture()
 			{
 				CultureInfo previousCulture = CultureInfo.CurrentCulture;
@@ -203,6 +213,47 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task WhenFifthArgumentIsNull_ShouldWriteNull()
+			{
+				string artist = "The Beatles";
+				string title = "Abbey Road";
+				int year = 1969;
+				int tracks = 17;
+
+				await ShouldBeNamed("The Beatles_Abbey Road_1969_17_null",
+					result => result.NamedAfter(artist, title, year, tracks, null),
+					"a single null is passed as the array of the further arguments");
+			}
+
+			[Test]
+			public async Task WhenFifthArgumentIsStringArray_ShouldWriteItsItemsOneByOne()
+			{
+				string artist = "The Beatles";
+				string title = "Abbey Road";
+				int year = 1969;
+				int tracks = 17;
+				string[] labels = ["Apple", "EMI",];
+
+				await ShouldBeNamed("The Beatles_Abbey Road_1969_17_Apple_EMI",
+					result => result.NamedAfter(artist, title, year, tracks, labels),
+					"an array of a reference type as the fifth and last argument is passed as the further arguments themselves");
+			}
+
+			[Test]
+			public async Task WhenNamedAfterFiveArguments_ShouldUseAllOfThem()
+			{
+				string artist = "The Beatles";
+				string title = "Abbey Road";
+				int year = 1969;
+				int tracks = 17;
+				string label = "Apple";
+
+				await ShouldBeNamed("The Beatles_Abbey Road_1969_17_Apple",
+					result => result.NamedAfter(artist, title, year, tracks, label),
+					"each argument adds its value");
+			}
+
+			[Test]
 			public async Task WhenNamedAfterFourArguments_ShouldUseAllOfThem()
 			{
 				string artist = "The Beatles";
@@ -223,6 +274,21 @@ public sealed partial class ThatSnapshot
 				await ShouldBeNamed("Abbey Road",
 					result => result.NamedAfter(title),
 					"the value of the argument names the snapshot");
+			}
+
+			[Test]
+			public async Task WhenNamedAfterSixArguments_ShouldUseAllOfThem()
+			{
+				string artist = "The Beatles";
+				string title = "Abbey Road";
+				int year = 1969;
+				int tracks = 17;
+				string label = "Apple";
+				bool isRemastered = true;
+
+				await ShouldBeNamed("The Beatles_Abbey Road_1969_17_Apple_True",
+					result => result.NamedAfter(artist, title, year, tracks, label, isRemastered),
+					"each argument adds its value");
 			}
 
 			[Test]

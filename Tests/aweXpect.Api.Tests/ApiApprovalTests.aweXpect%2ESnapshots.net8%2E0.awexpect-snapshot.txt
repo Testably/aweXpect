@@ -255,6 +255,7 @@ namespace aweXpect.Snapshots.Results
         public TSelf NamedAfter(object? argument1, object? argument2) { }
         public TSelf NamedAfter(object? argument1, object? argument2, object? argument3) { }
         public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4) { }
+        public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4, params object?[]? moreArguments) { }
     }
     public sealed class SnapshotUniqueFor<TResult>
     {
