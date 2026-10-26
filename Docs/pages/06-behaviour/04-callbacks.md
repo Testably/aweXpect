@@ -9,8 +9,7 @@ Describes the possible expectations for working with callbacks.
 
 ## Signaler
 
-First, you have to start recording callback signals using the `Signaler` class. This class is available in the
-`aweXpect.Signaling` namespace:
+You can verify that a callback was called. Create a `Signaler` from the `aweXpect.Signaling` namespace:
 
 ```csharp
 using aweXpect.Signaling;
@@ -21,7 +20,7 @@ Signaler<string> titleSignaler = new();
 // ↑ Counts signals from callbacks with a string parameter
 ```
 
-Then, you can signal the callback on the recording:
+Call `Signal` from the callback:
 
 ```csharp
 class Player
@@ -35,27 +34,29 @@ class Player
 player.Play("Let It Be", title => titleSignaler.Signal(title));
 ```
 
-At last, you can wait for the callback to be signaled:
+Then verify that the callback was signaled, and limit with `Within(…)` how long to wait for it:
 
 ```csharp
-await Expect.That(titleSignaler).Signaled();
+await Expect.That(titleSignaler).Signaled().Within(TimeSpan.FromSeconds(5));
 ```
 
-You can also verify that the callback will not be signaled:
+You can also verify that the callback was not signaled within the given time:
 
 ```csharp
-await Expect.That(titleSignaler).DidNotSignal();
+await Expect.That(titleSignaler).DidNotSignal().Within(TimeSpan.FromSeconds(1));
 ```
 
-:::note
+:::warning[Without `Within(…)`, a test can wait 30 seconds]
 Without `Within(…)`, a signaler expectation waits up to the
-[`DefaultSignalerTimeout`](../03-how-it-works/07-configuration.md#settings) (30 s). `DidNotSignal()` always waits the
-full timeout to succeed, see [waiting for callbacks](../03-how-it-works/06-time-and-cancellation.md#callbacks).
+[`DefaultSignalerTimeout`](../03-how-it-works/07-configuration.md#settings) (30 s). `DidNotSignal()` and a count with
+an upper bound, such as `AtMost(3)` or `Never()`, always wait the full timeout to succeed, and a count that is not
+reached waits the full timeout before it fails, see
+[waiting for callbacks](../03-how-it-works/06-time-and-cancellation.md#callbacks).
 :::
 
 ### Amount
 
-You can specify how often a callback must be signaled:
+You can verify that a callback was signaled a number of times:
 
 ```csharp
 await Expect.That(signaler).Signaled().AtLeast(3);
@@ -86,7 +87,7 @@ signaler.Signal("Yesterday");
 await Expect.That(signaler).Signaled().AtLeast(2).With(p => p == "Yesterday");
 ```
 
-`WhoseParameters` continues with expectations on the collection of recorded parameters that match the filter from
+`WhoseParameters` continues with expectations on the collection of received parameters that match the filter from
 `With`:
 
 ```csharp
@@ -98,7 +99,7 @@ signaler.Signal("Let It Be");
 await Expect.That(signaler).Signaled().AtLeast(2).WhoseParameters.Contains("Let It Be");
 ```
 
-A failure message lists the recorded parameters.
+A failure message lists the received parameters.
 
 ## Waiting without an expectation
 

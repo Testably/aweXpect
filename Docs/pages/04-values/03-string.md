@@ -77,6 +77,7 @@ The expectations that compare the `string` with an expected string (`IsEqualTo`,
 | `IgnoringLeadingWhiteSpace()`  | ignores whitespace at the start of the strings                             |
 | `IgnoringTrailingWhiteSpace()` | ignores whitespace at the end of the strings                               |
 | `NormalizingWhiteSpace()`      | collapses whitespace runs to a space and trims (see [below](#whitespace))  |
+| `AsBlock()`                    | matches an indented block of lines (see [below](#blocks))                  |
 | `Using(comparer)`              | compares with a custom `IEqualityComparer<string>`                         |
 
 ```csharp
@@ -176,6 +177,64 @@ counts, e.g. also a non-breaking space.
 - A failure shows the values with normalized whitespace and the position of the first difference refers to them.
   Where the failure shows the normalized subject, the original one is listed below it. No differences per line are
   listed.
+
+</details>
+
+### Blocks
+
+While `IgnoringIndentation` removes the leading whitespace from every line, `AsBlock` keeps the relative
+indentation within the expected block and only allows the block as a whole to be indented in the subject.
+This is stricter, as a line that is indented differently from the rest of the block does not match:
+
+```csharp
+string code = """
+              public class Beatles
+              {
+                  public string Album
+                  {
+                      get;
+                  }
+              }
+              """;
+
+await Expect.That(code).Contains("""
+                                 public string Album
+                                 {
+                                     get;
+                                 }
+                                 """).AsBlock();
+```
+
+The block must start and end at line boundaries, and all its lines must share the same whitespace prefix in the
+subject.
+
+`AsBlock` also works with `IsEqualTo`, where the whole text has to be the block, e.g. for an XML element that keeps
+the indentation of the document it was taken from, and with the expectations on a collection of strings, such as
+`HasItem`:
+
+```csharp
+string album = """
+                   <album>
+                     <title>Abbey Road</title>
+                     <length>47:03</length>
+                   </album>
+               """;
+
+await Expect.That(album).IsEqualTo("""
+                                   <album>
+                                     <title>Abbey Road</title>
+                                     <length>47:03</length>
+                                   </album>
+                                   """).AsBlock();
+```
+
+<details>
+<summary>Whitespace lines, newlines and other options in a block</summary>
+
+A line that consists only of whitespace matches any line that consists only of whitespace. The newline style is always
+ignored, and a single trailing line terminator does not start a new line, so `"a\nb\n"` has the same two lines as
+`"a\nb"` (as for [lines](#lines)). `AsBlock` can be combined with `IgnoringCase`, `Using` and the count quantifiers;
+the whitespace, newline and indentation options throw an `InvalidOperationException` after it.
 
 </details>
 
@@ -382,64 +441,6 @@ await Expect.That(lyrics).Contains("help").Never();
 await Expect.That(lyrics).Contains("where").Once();
 await Expect.That(lyrics).Contains("back").AtLeast().Twice();
 ```
-
-### Blocks
-
-While `IgnoringIndentation` removes the leading whitespace from every line, `AsBlock` keeps the relative
-indentation within the expected block and only allows the block as a whole to be indented in the subject.
-This is stricter, as a line that is indented differently from the rest of the block does not match:
-
-```csharp
-string code = """
-              public class Beatles
-              {
-                  public string Album
-                  {
-                      get;
-                  }
-              }
-              """;
-
-await Expect.That(code).Contains("""
-                                 public string Album
-                                 {
-                                     get;
-                                 }
-                                 """).AsBlock();
-```
-
-The block must start and end at line boundaries, and all its lines must share the same whitespace prefix in the
-subject.
-
-`AsBlock` also works with `IsEqualTo`, where the whole text has to be the block, e.g. for an XML element that keeps
-the indentation of the document it was taken from, and with the expectations on a collection of strings, such as
-`HasItem`:
-
-```csharp
-string album = """
-                   <album>
-                     <title>Abbey Road</title>
-                     <length>47:03</length>
-                   </album>
-               """;
-
-await Expect.That(album).IsEqualTo("""
-                                   <album>
-                                     <title>Abbey Road</title>
-                                     <length>47:03</length>
-                                   </album>
-                                   """).AsBlock();
-```
-
-<details>
-<summary>Whitespace lines, newlines and other options in a block</summary>
-
-A line that consists only of whitespace matches any line that consists only of whitespace. The newline style is always
-ignored, and a single trailing line terminator does not start a new line, so `"a\nb\n"` has the same two lines as
-`"a\nb"` (as for [lines](#lines)). `AsBlock` can be combined with `IgnoringCase`, `Using` and the count quantifiers;
-the whitespace, newline and indentation options throw an `InvalidOperationException` after it.
-
-</details>
 
 ## Character casing
 

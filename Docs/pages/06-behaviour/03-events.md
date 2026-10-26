@@ -25,16 +25,23 @@ class Player
 }
 Player player = new Player();
 
-// ↓ Records all events
 IEventRecording<Player> recording = player.Record().Events();
-IEventRecording<Player> trackRecording = player.Record().Events(nameof(Player.TrackStarted));
-// ↑ Records only the TrackStarted event
 ```
 
 ## Recording
 
 `.Record().Events()` in the `aweXpect.Recording` namespace starts a recording of all events of the subject, or of the
-events with the given names.
+events with the given names:
+
+```csharp
+IEventRecording<Player> recording = player.Record().Events(nameof(Player.TrackStarted));
+
+player.Play("Let It Be");
+
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted));
+```
+
+An [expectation stops the recording](#lifetime-of-a-recording), unless you keep it running with `.UntilDisposed()`.
 
 <details>
 <summary>Events that cannot be recorded</summary>
@@ -44,55 +51,6 @@ reflectively. Such a handler must take at most four parameters, must return noth
 reference. Recording all events skips an event whose handler does not fit, so that the other events of the subject are
 still recorded, and an expectation on the skipped event throws a `NotSupportedException` with the reason; recording it
 by name throws right away.
-
-</details>
-
-### Stopping
-
-An expectation stops the recording: it detaches the handlers from the subject as soon as it is evaluated. Until then,
-every constraint of that one expectation sees the recorded events, including the ones that arrive while it waits with
-`Within(…)`, because `.And` and `.Or` combine into a single expectation. A further expectation on the same recording
-throws an `InvalidOperationException`, so that it cannot silently answer from the events that were recorded until then:
-
-```csharp
-IEventRecording<Player> recording = player.Record().Events();
-
-player.Play("Let It Be");
-await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Once();
-
-player.Play("Yesterday");
-// ↓ throws, because the previous expectation already stopped the recording
-await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Twice();
-```
-
-<details>
-<summary>`Expect.ThatAll(…)` and `Expect.ThatAny(…)`</summary>
-
-The expectations within one `Expect.ThatAll(…)` or `Expect.ThatAny(…)`, including nested ones, share the recording: it
-is stopped when the whole combination was evaluated. They are evaluated one after the other, so the events that arrive
-while one of them waits with `Within(…)` also count for the following ones, as with `.And`.
-
-</details>
-
-`.UntilDisposed()` keeps the recording running across multiple expectations and hands its lifetime to you:
-
-```csharp
-using IDisposableEventRecording<Player> recording = player.Record().Events().UntilDisposed();
-
-player.Play("Let It Be");
-await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Once();
-
-player.Play("Yesterday");
-await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Twice();
-```
-
-Disposing detaches the handlers, so an event that is triggered afterwards is not recorded any more.
-
-<details>
-<summary>Stopped or disposed recordings</summary>
-
-Call `.UntilDisposed()` before the first expectation: on a recording that an expectation already stopped, it throws an
-`InvalidOperationException`. An expectation on a disposed recording throws as well.
 
 </details>
 
@@ -217,9 +175,9 @@ await Expect.That(recording).Triggered(nameof(Player.TrackStarted))
 
 ## Special events
 
-aweXpect includes overloads for the
+You can verify that an object triggered the
 [`INotifyPropertyChanged.PropertyChanged`](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged.propertychanged)
-event:
+event, for any property or for a specific one:
 
 ```csharp
 AlbumViewModel album = // ...implements INotifyPropertyChanged
@@ -263,5 +221,54 @@ fail for every property name. A whitespace-only name is a name like any other. E
 property name itself, e.g. `TriggeredPropertyChangedFor((string?)null)`, matches only the events that notify that all
 properties changed, but no named one, and without distinguishing the two spellings, which the contract allows
 interchangeably. The expectation then reads "for all properties".
+
+</details>
+
+## Lifetime of a recording
+
+An expectation stops the recording: it detaches the handlers from the subject as soon as it is evaluated. Until then,
+every constraint of that one expectation sees the recorded events, including the ones that arrive while it waits with
+`Within(…)`, because `.And` and `.Or` combine into a single expectation. A further expectation on the same recording
+throws an `InvalidOperationException`, so that it cannot silently answer from the events that were recorded until then:
+
+```csharp
+IEventRecording<Player> recording = player.Record().Events();
+
+player.Play("Let It Be");
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Once();
+
+player.Play("Yesterday");
+// ↓ throws, because the previous expectation already stopped the recording
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Twice();
+```
+
+<details>
+<summary>`Expect.ThatAll(…)` and `Expect.ThatAny(…)`</summary>
+
+The expectations within one `Expect.ThatAll(…)` or `Expect.ThatAny(…)`, including nested ones, share the recording: it
+is stopped when the whole combination was evaluated. They are evaluated one after the other, so the events that arrive
+while one of them waits with `Within(…)` also count for the following ones, as with `.And`.
+
+</details>
+
+`.UntilDisposed()` keeps the recording running across multiple expectations and hands its lifetime to you:
+
+```csharp
+using IDisposableEventRecording<Player> recording = player.Record().Events().UntilDisposed();
+
+player.Play("Let It Be");
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Once();
+
+player.Play("Yesterday");
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Twice();
+```
+
+Disposing detaches the handlers, so an event that is triggered afterwards is not recorded any more.
+
+<details>
+<summary>Stopped or disposed recordings</summary>
+
+Call `.UntilDisposed()` before the first expectation: on a recording that an expectation already stopped, it throws an
+`InvalidOperationException`. An expectation on a disposed recording throws as well.
 
 </details>

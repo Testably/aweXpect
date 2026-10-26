@@ -9,8 +9,6 @@ strictly equal. Equivalency walks both objects recursively and compares them mem
 | [`AreEquivalentTo`](#on-collection-items)    | use `None()`                  | the selected items are equivalent to the expected value |
 | [`Equivalent()`](#as-a-modifier-of-equality) |                               | switches an equality expectation to equivalency         |
 
-## Overview
-
 Equality (`IsEqualTo`) delegates to `object.Equals`, which for most reference types means *reference* equality.
 Equivalency instead compares the public state of two objects field by field and property by property, recursing into
 nested objects and collections. Two objects are equivalent when every included member compares as equivalent.
@@ -18,10 +16,10 @@ nested objects and collections. Two objects are equivalent when every included m
 When you publish with trimming or Native AOT, see
 [Native AOT and trimming](../08-setup/03-native-aot.md#equivalency).
 
-### On objects
+## On objects
 
-`IsEquivalentTo` and `IsNotEquivalentTo` are extension methods on any object. They accept an optional callback to
-configure the comparison via [`EquivalencyOptions<TExpected>`](#configuration):
+You can verify that any object is equivalent to an expected object with `IsEquivalentTo`, or that it is not with
+`IsNotEquivalentTo`. Both accept an optional callback to configure the comparison via [`EquivalencyOptions<TExpected>`](#configuration):
 
 ```csharp
 using aweXpect.Equivalency; // for the options, e.g. `IgnoringMember`
@@ -31,10 +29,10 @@ await Expect.That(album).IsEquivalentTo(expected, o => o.IgnoringMember("PlayCou
 await Expect.That(album).IsNotEquivalentTo(unexpected);
 ```
 
-### On collection items
+## On collection items
 
-`AreEquivalentTo` checks every selected item of an `IEnumerable<T>` (or `IAsyncEnumerable<T>`) against a single
-expected value, using the same equivalency comparison:
+You can verify that the selected items of an `IEnumerable<T>` (or `IAsyncEnumerable<T>`) are equivalent to a single
+expected value with `AreEquivalentTo`, using the same equivalency comparison:
 
 ```csharp
 IEnumerable<Track> tracks = //...
@@ -46,7 +44,7 @@ await Expect.That(tracks).AtLeast(2).AreEquivalentTo(expected, o => o.IgnoringMe
 
 The equivalency options go into `AreEquivalentTo` itself. To compare the items with a custom comparer, use `AreEqualTo(expected).Using(comparer)`.
 
-### As a modifier of equality
+## As a modifier of equality
 
 For expectations that accept a custom equality comparer (`IsEqualTo`, `Contains`, `StartsWith`, `EndsWith`, `HasItem`,
 `All().AreEqualTo(...)`, …), append `.Equivalent()` to switch the comparison from `Equals` to structural equivalency:

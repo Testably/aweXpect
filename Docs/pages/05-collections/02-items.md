@@ -37,7 +37,7 @@ await Expect.That(new[] { "Let It Be" }).IsNotEmpty();
 
 ## Quantifiers
 
-You can add expectations that a certain number of items must meet. A quantifier selects how many:
+You can verify that a certain number of items meet an expectation. A quantifier selects how many:
 
 | Quantifier              | Succeeds when the expectation is met by             |
 |-------------------------|-----------------------------------------------------|
@@ -71,13 +71,15 @@ An empty collection satisfies `All()`, like it does `Enumerable.All`, so
 You can verify that items in a collection comply with an expectation on the individual items:
 
 ```csharp
-await Expect.That([1, 2, 3]).All().ComplyWith(item => item.IsLessThan(4));
-await Expect.That([1, 2, 3]).Any().ComplyWith(item => item.IsEqualTo(2));
-await Expect.That([1, 2, 3]).AtLeast(2).ComplyWith(item => item.IsGreaterThanOrEqualTo(2));
-await Expect.That([1, 2, 3]).AtMost(1).ComplyWith(item => item.IsNegative());
-await Expect.That([1, 2, 3]).Between(2).And(3).ComplyWith(item => item.IsPositive());
-await Expect.That([1, 2, 3]).Exactly(1).ComplyWith(item => item.IsEqualTo(2));
-await Expect.That([1, 2, 3]).None().ComplyWith(item => item.IsNegative());
+IEnumerable<int> playCounts = [1, 2, 3];
+
+await Expect.That(playCounts).All().ComplyWith(item => item.IsLessThan(4));
+await Expect.That(playCounts).Any().ComplyWith(item => item.IsEqualTo(2));
+await Expect.That(playCounts).AtLeast(2).ComplyWith(item => item.IsGreaterThanOrEqualTo(2));
+await Expect.That(playCounts).AtMost(1).ComplyWith(item => item.IsNegative());
+await Expect.That(playCounts).Between(2).And(3).ComplyWith(item => item.IsPositive());
+await Expect.That(playCounts).Exactly(1).ComplyWith(item => item.IsEqualTo(2));
+await Expect.That(playCounts).None().ComplyWith(item => item.IsNegative());
 ```
 
 <details>
@@ -111,7 +113,9 @@ await Expect.That(tracks).None().Satisfy(track => track.Title == null);
 You can verify that the items in the collection are equal to the `expected` value:
 
 ```csharp
-await Expect.That([1, 1, 1]).All().AreEqualTo(1);
+IEnumerable<string> playlist = ["Let It Be", "Let It Be", "Let It Be"];
+
+await Expect.That(playlist).All().AreEqualTo("Let It Be");
 ```
 
 The items are [compared](./01-equality.md#comparing-items) like in the other collection expectations, so you can
@@ -144,10 +148,10 @@ await Expect.That(notifications).None().Are(typeof(TrackRemovedNotification));
 You can verify how many items in a collection occur exactly once:
 
 ```csharp
-await Expect.That([1, 2, 3]).All().AreUnique();
-await Expect.That([1, 2, 3, 1]).AtLeast(1).AreNotUnique();
-await Expect.That([1, 2, 1, 2]).None().AreUnique();
-await Expect.That([1, 2, 3, 4, 5, 5]).AtLeast(4).AreUnique();
+await Expect.That(["Help!", "Yesterday", "Let It Be"]).All().AreUnique();
+await Expect.That(["Help!", "Yesterday", "Let It Be", "Help!"]).AtLeast(1).AreNotUnique();
+await Expect.That(["Help!", "Yesterday", "Help!", "Yesterday"]).None().AreUnique();
+await Expect.That(["Help!", "Yesterday", "Let It Be", "Get Back", "Michelle", "Michelle"]).AtLeast(4).AreUnique();
 ```
 
 For objects, you can also verify the uniqueness of a member, and you can use a
@@ -168,18 +172,18 @@ For dictionaries, verify the [values](./04-dictionaries.md#as-collections) inste
 You can verify that the collection contains a single item, and continue with expectations on it with `Which`:
 
 ```csharp
-IEnumerable<int> values = [42];
+IEnumerable<int> playCounts = [42];
 
-await Expect.That(values).HasSingle();
-await Expect.That(values).HasSingle().Which.IsGreaterThan(41);
+await Expect.That(playCounts).HasSingle();
+await Expect.That(playCounts).HasSingle().Which.IsGreaterThan(41);
 ```
 
 You can also apply filters for the items:
 
 ```csharp
-IEnumerable<int> values = [1, 2, 3];
+IEnumerable<int> playCounts = [1, 2, 3];
 
-await Expect.That(values).HasSingle().Matching(it => it > 2);
+await Expect.That(playCounts).HasSingle().Matching(it => it > 2);
 
 // Or with generic type:
 IEnumerable<Artist> artists = //...

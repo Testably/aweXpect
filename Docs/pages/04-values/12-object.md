@@ -143,7 +143,7 @@ await Expect.That(album).IsNotExactly(typeof(Track));
 
 ## Null
 
-You can verify if the `object` is `null` or not:
+You can verify that the `object` is `null` or not:
 
 ```csharp
 object? album = null;

@@ -32,8 +32,8 @@ string title = "Let It Be";
 await Expect.That(title).IsEqualTo("Let It Be").Because("it is the title of the last album");
 ```
 
-On a [combination](./03-combining.md#on-different-subjects) of `Expect.ThatAll` or `Expect.ThatAny`, the reason is
-added to the first line of the failure message.
+How `Because` applies to `Expect.ThatAll` and `Expect.ThatAny` is described in
+[combining expectations](./03-combining.md#on-different-subjects).
 
 ## String options
 
@@ -93,7 +93,42 @@ await Expect.That(releaseDate).IsEqualTo(new DateTime(1970, 5, 8)).Within(TimeSp
 await Expect.That([3.98, 4.01]).All().AreEqualTo(4.0).Within(0.05);
 ```
 
-For the time types, a [default tolerance](../04-values/10-datetime-offset.md#default-tolerance) can be configured.
+### Default tolerance
+
+On Windows the `DateTime` resolution is [about 10 to 15 milliseconds](https://stackoverflow.com/q/3140826/4003370), so
+comparing them as exact values might result in brittle tests. Therefore, it is possible to specify a default tolerance
+that is used when a `DateTime`, `DateTimeOffset`, `DateOnly`, `TimeOnly` or `TimeSpan` subject is compared directly
+(e.g. with `IsEqualTo`, `IsOneOf`, `IsBefore` or `IsBetween`) and no explicit tolerance is given:
+
+```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+using aweXpect.Customization;
+
+using IDisposable lifetime = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
+```
+
+It also applies to the items of a collection of these types. An explicit `Within` always replaces the default
+tolerance. The applied default tolerance is part of the failure message, for example
+`is equal to 2024-12-24T13:15:00.0000000 ± 0:00.015`, unless it is zero. For a `DateOnly`, see
+[tolerance](../04-values/11-date-time-only.md#tolerance).
+
+<details>
+<summary>Where the default tolerance applies</summary>
+
+It applies to the items of a collection of `DateTime`, `DateTimeOffset`, `DateOnly`, `TimeOnly` or `TimeSpan` values
+(or their nullable counterparts) in every expectation that compares them with expected items, e.g. `IsEqualTo`,
+`Contains`, `IsContainedIn`, `StartsWith`, `EndsWith`, `HasItem` or `All().AreEqualTo`, and in their negations. The same
+holds for the values of a dictionary in `Contains(key, value)`, `ContainsValue`, `ContainsValues` and `IsEqualTo`, and in
+their negations.
+
+The default tolerance is not used for:
+- property verifications like `HasOffset()`
+- collection expectations that don't compare items with expected items, like `IsInAscendingOrder` or `AreUnique`
+- the keys of a dictionary, which are looked up through its key comparer, e.g. in `ContainsKey`
+- values and members compared by `IsEquivalentTo`
+- values compared as `object`
+
+</details>
 
 ## Collection options
 

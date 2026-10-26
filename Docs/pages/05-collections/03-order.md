@@ -9,11 +9,14 @@ Describes how to verify that the items of a collection are sorted.
 
 ## Ascending / descending
 
-You can verify if a collection is (or is not) sorted in ascending or descending order:
+You can verify that a collection is (or is not) sorted in ascending or descending order:
 
 ```csharp
-await Expect.That([1, 2, 3]).IsInAscendingOrder();
-await Expect.That([1, 3, 2]).IsNotInAscendingOrder();
+IEnumerable<int> trackNumbers = [1, 2, 3];
+IEnumerable<int> shuffledTrackNumbers = [1, 3, 2];
+
+await Expect.That(trackNumbers).IsInAscendingOrder();
+await Expect.That(shuffledTrackNumbers).IsNotInAscendingOrder();
 await Expect.That(["Let It Be", "Help!", "Abbey Road"]).IsInDescendingOrder();
 await Expect.That(["Help!", "Abbey Road", "Let It Be"]).IsNotInDescendingOrder();
 ```

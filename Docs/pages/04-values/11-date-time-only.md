@@ -171,8 +171,9 @@ await Expect.That(startTime).IsOneOf([new TimeOnly(14, 15, 17)]).Within(TimeSpan
 <details>
 <summary>Tolerance for a `DateOnly`</summary>
 
-A `DateOnly` tolerance is a whole number of days. Of the [default tolerance](./10-datetime-offset.md#default-tolerance)
-only the whole days apply, so a default below one day has no effect on a `DateOnly`.
+A `DateOnly` tolerance is a whole number of days. Of the
+[default tolerance](../03-how-it-works/05-options.md#default-tolerance) only the whole days apply, so a default below
+one day has no effect on a `DateOnly`.
 
 </details>
 

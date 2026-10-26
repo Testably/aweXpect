@@ -99,7 +99,7 @@ await Expect.That(playCounts).ContainsKeys("Let It Be", "Yesterday")
 ```
 
 The values, also the value of an [entry](#entry), are compared with the same options as the items of a collection,
-e.g. `IgnoringCase()` for strings or a [tolerance](./index.md#tolerance) with `Within`:
+e.g. `IgnoringCase()` for strings or a [tolerance](./01-equality.md#tolerance) with `Within`:
 
 ```csharp
 Dictionary<int, string> titles = new() { { 1, "Let It Be" }, { 2, "Yesterday" } };

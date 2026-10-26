@@ -162,8 +162,8 @@ The duration is applied as timeout, see
 
 ## Exception details
 
-After `Throws`, the following expectations verify the thrown exception. The same checks exist with the `Has…`
-vocabulary for an exception that is the subject itself:
+After `Throws`, the following expectations verify the thrown exception, and their `Has…` twins verify an
+[exception that is the subject itself](#on-an-exception-subject):
 
 | After `Throws`                                                | On an exception subject        | Verifies                                  |
 |---------------------------------------------------------------|--------------------------------|-------------------------------------------|
@@ -175,18 +175,23 @@ vocabulary for an exception that is the subject itself:
 | [`Whose`](#other-members)                                     | `Whose`                        | any other member                          |
 | [`Which`](#other-members)                                     |                                | continues with the exception as subject   |
 
-An exception is the subject itself, e.g. when a method returns it or a callback receives it:
+Directly after `Throws`, an expectation continues the sentence "throws a `CustomException`", so it uses the `With…`
+vocabulary. For an exception that is the subject itself, the `Has…` twins start a new sentence. After `.Which` the
+thrown exception becomes the subject, so `Has…` applies again:
 
 ```csharp
-Exception exception = new CustomException("Yesterday", new CustomException("Let It Be"), hResult: 12345);
-ArgumentException argumentException = new ArgumentNullException("album");
+void Act() => throw new CustomException("Yesterday");
+Exception exception = new CustomException("Yesterday");
 
+await Expect.That(Act).Throws<CustomException>().WithMessage("Yesterday");
+await Expect.That(Act).Throws<CustomException>().Which.HasMessage("Yesterday");
 await Expect.That(exception).HasMessage("Yesterday");
-await Expect.That(exception).HasHResult().GreaterThan(12340);
-await Expect.That(exception).HasInner<CustomException>(inner => inner.HasMessage("Let It Be"));
-await Expect.That(exception).HasRecursiveInnerExceptions(innerExceptions => innerExceptions.All().Are<CustomException>());
-await Expect.That(argumentException).HasParamName("album");
 ```
+
+All three verify the same thing, but only the vocabulary that matches its position produces a readable failure
+message: `Has…` directly after `Throws` compiles, but reads "throws a CustomException has message …". The analyzer
+rule [aweXpect0003](../08-analyzers.md#awexpect0003) flags it and offers to switch to the `With…` twin or to insert
+`.Which`.
 
 ### Exception message
 
@@ -313,30 +318,27 @@ await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().NotEqualT
 await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().StartingWith("al");
 ```
 
-### `With…` after `Throws`, `Has…` on the exception
+### On an exception subject
 
-Directly after `Throws`, an expectation continues the sentence "throws a `CustomException`", so it uses the
-`With…` vocabulary. For an exception that is the subject itself, the `Has…` twins start a new sentence. After `.Which`
-the thrown exception becomes the subject, so `Has…` applies again:
+You can verify an exception that is the subject itself, e.g. when a method returns it or a callback receives it, with
+the `Has…` twins:
 
 ```csharp
-void Act() => throw new CustomException("Yesterday");
-Exception exception = new CustomException("Yesterday");
+Exception exception = new CustomException("Yesterday", new CustomException("Let It Be"), hResult: 12345);
+ArgumentException argumentException = new ArgumentNullException("album");
 
-await Expect.That(Act).Throws<CustomException>().WithMessage("Yesterday");
-await Expect.That(Act).Throws<CustomException>().Which.HasMessage("Yesterday");
 await Expect.That(exception).HasMessage("Yesterday");
+await Expect.That(exception).HasHResult().GreaterThan(12340);
+await Expect.That(exception).HasInner<CustomException>(inner => inner.HasMessage("Let It Be"));
+await Expect.That(exception).HasRecursiveInnerExceptions(innerExceptions => innerExceptions.All().Are<CustomException>());
+await Expect.That(argumentException).HasParamName("album");
 ```
-
-All three verify the same thing, but only the vocabulary that matches its position produces a readable failure
-message: `Has…` directly after `Throws` compiles, but reads "throws a CustomException has message …". The analyzer
-rule [aweXpect0003](../08-analyzers.md#awexpect0003) flags it and offers to switch to the `With…` twin or to insert
-`.Which`.
 
 ## Eventually
 
-`Eventually()` re-evaluates a delegate with a return value until the expectations on the returned value are met, e.g.
-while a background task is still running:
+You can verify that the value a delegate returns eventually meets the expectations: `Eventually()` re-evaluates a
+delegate with a return value until the expectations on the returned value are met, e.g. while a background task is
+still running:
 
 ```csharp
 Track track = new();
@@ -405,6 +407,10 @@ With `AtMost(…)`, a delegate that throws immediately also passes. If the deleg
 
 ## Allocations
 
+:::note[.NET 8 or later]
+`Allocates()` is only available on .NET 8 or later.
+:::
+
 You can verify how many bytes a synchronous delegate allocates:
 
 ```csharp
@@ -440,10 +446,9 @@ an object changes between runtime versions and platforms, so prefer bounds with 
 Only allocations on the current thread are counted; allocations on other threads, e.g. of a started task, are not
 included.
 
-:::warning[.NET 8 or later, synchronous delegates only]
-`Allocates()` is only available on .NET 8 or later. It supports `Action`, `Func<T>` and their variants with a
-`CancellationToken`. An asynchronous delegate can continue on another thread after an `await`, whose allocations would
-be missed, so `Allocates()` throws a `NotSupportedException` for an asynchronous delegate or a task.
+:::warning[Synchronous delegates only]
+`Allocates()` supports `Action`, `Func<T>` and their variants with a `CancellationToken`. An asynchronous delegate
+can continue on another thread after an `await`, whose allocations would be missed, so `Allocates()` throws a `NotSupportedException` for an asynchronous delegate or a task.
 :::
 
 Like for the [execution time](#execution-time), a delegate that throws an exception fails the expectation, unless
@@ -504,8 +509,8 @@ An exception in the warm-up fails the expectation like one in the measured invoc
 
 ## Memory leaks
 
-`IsCollectedAfter` verifies that the object a delegate creates is garbage collected after a cleanup, e.g. that a view
-model no longer listens to a long-lived message bus once it is disposed:
+You can verify that the object a delegate creates is garbage collected after a cleanup with `IsCollectedAfter`, e.g.
+that a view model no longer listens to a long-lived message bus once it is disposed:
 
 ```csharp
 MessageBus bus = new();
