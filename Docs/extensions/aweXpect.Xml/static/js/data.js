@@ -804,6 +804,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
         "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
+      },
+      {
+        "sha": "a7c1c18ed2c6f161942c3ac84ca558485235cea9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 22:05:09 2026 \u002B0100",
+        "message": "perf: a fast path for single expectations in aweXpect.Core (#2072)"
       }
     ],
     "labels": [
@@ -940,7 +946,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "be28a12e"
+      "be28a12e",
+      "a7c1c18e"
     ],
     "datasets": [
       {
@@ -1080,7 +1087,8 @@ window.BENCHMARK_DATA = {
           556.6532575167142,
           409.9796852043697,
           726.7930959701538,
-          743.9194248835246
+          743.9194248835246,
+          589.6166384036725
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1225,7 +1233,8 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
-          1080
+          1080,
+          1056
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1373,7 +1382,8 @@ window.BENCHMARK_DATA = {
           526.1884100987361,
           377.02296912670135,
           760.9886703491211,
-          768.2881415230887
+          768.2881415230887,
+          532.0120504243033
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1385,6 +1395,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2336,6 +2347,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
         "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
+      },
+      {
+        "sha": "a7c1c18ed2c6f161942c3ac84ca558485235cea9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 22:05:09 2026 \u002B0100",
+        "message": "perf: a fast path for single expectations in aweXpect.Core (#2072)"
       }
     ],
     "labels": [
@@ -2472,7 +2489,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "be28a12e"
+      "be28a12e",
+      "a7c1c18e"
     ],
     "datasets": [
       {
@@ -2612,7 +2630,8 @@ window.BENCHMARK_DATA = {
           3335.5453368595668,
           2987.065302335299,
           5165.6495735168455,
-          4399.229815419515
+          4399.229815419515,
+          3219.487490790231
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2757,7 +2776,8 @@ window.BENCHMARK_DATA = {
           24320,
           24320,
           24320,
-          24321
+          24321,
+          24191
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2905,7 +2925,8 @@ window.BENCHMARK_DATA = {
           3740.684619394938,
           3033.248120625814,
           5786.943173726399,
-          5125.238162994385
+          5125.238162994385,
+          3747.4670186723984
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2917,6 +2938,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -3808,6 +3830,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
         "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
+      },
+      {
+        "sha": "a7c1c18ed2c6f161942c3ac84ca558485235cea9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 22:05:09 2026 \u002B0100",
+        "message": "perf: a fast path for single expectations in aweXpect.Core (#2072)"
       }
     ],
     "labels": [
@@ -3934,7 +3962,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "be28a12e"
+      "be28a12e",
+      "a7c1c18e"
     ],
     "datasets": [
       {
@@ -4064,7 +4093,8 @@ window.BENCHMARK_DATA = {
           1866.8709212711879,
           1601.7549558367048,
           2804.4334988911946,
-          2733.1737197875977
+          2733.1737197875977,
+          1799.7057131358556
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4199,7 +4229,8 @@ window.BENCHMARK_DATA = {
           12780,
           12856,
           12780,
-          12856
+          12856,
+          12728
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4337,7 +4368,8 @@ window.BENCHMARK_DATA = {
           2530.741511027018,
           2059.767382558187,
           3629.5616887410483,
-          3667.0052350362143
+          3667.0052350362143,
+          2596.542069753011
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4349,6 +4381,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -5230,6 +5263,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 21:49:28 2026 \u002B0100",
         "message": "feat: add a driver for collection matchers to Core and explain the WithValues failures in Web (#2068)"
+      },
+      {
+        "sha": "a7c1c18ed2c6f161942c3ac84ca558485235cea9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 25 22:05:09 2026 \u002B0100",
+        "message": "perf: a fast path for single expectations in aweXpect.Core (#2072)"
       }
     ],
     "labels": [
@@ -5356,7 +5395,8 @@ window.BENCHMARK_DATA = {
       "7d0dbd4c",
       "6224bbce",
       "359002f3",
-      "be28a12e"
+      "be28a12e",
+      "a7c1c18e"
     ],
     "datasets": [
       {
@@ -5486,7 +5526,8 @@ window.BENCHMARK_DATA = {
           9840.119656154087,
           8028.292962646485,
           14126.528017316547,
-          14680.194589233399
+          14680.194589233399,
+          9775.958566938129
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5621,7 +5662,8 @@ window.BENCHMARK_DATA = {
           25494,
           25568,
           25494,
-          25568
+          25568,
+          25440
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5759,7 +5801,8 @@ window.BENCHMARK_DATA = {
           237700.49888392858,
           178568.9136230469,
           371800.84294782364,
-          353536.9967447917
+          353536.9967447917,
+          242567.34856770834
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5889,6 +5932,7 @@ window.BENCHMARK_DATA = {
           544335,
           544268,
           544247,
+          544335,
           544335,
           544335,
           544335,
