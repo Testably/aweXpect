@@ -864,6 +864,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
         "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
+      },
+      {
+        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
       }
     ],
     "labels": [
@@ -1010,7 +1016,8 @@ window.BENCHMARK_DATA = {
       "1dc71bae",
       "5520582a",
       "a2e430d0",
-      "705c8132"
+      "705c8132",
+      "2068b12b"
     ],
     "datasets": [
       {
@@ -1160,7 +1167,8 @@ window.BENCHMARK_DATA = {
           751.3339807646615,
           423.0407907622201,
           757.389442716326,
-          743.7215798695883
+          743.7215798695883,
+          842.3052647272746
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1308,6 +1316,7 @@ window.BENCHMARK_DATA = {
           1080,
           1056,
           1056,
+          1008,
           1008,
           1008,
           1008,
@@ -1473,7 +1482,8 @@ window.BENCHMARK_DATA = {
           676.437979221344,
           364.67658478418986,
           702.906018597739,
-          664.7485465367635
+          664.7485465367635,
+          689.9199606577555
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1485,6 +1495,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2506,6 +2517,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
         "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
+      },
+      {
+        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
       }
     ],
     "labels": [
@@ -2652,7 +2669,8 @@ window.BENCHMARK_DATA = {
       "1dc71bae",
       "5520582a",
       "a2e430d0",
-      "705c8132"
+      "705c8132",
+      "2068b12b"
     ],
     "datasets": [
       {
@@ -2802,7 +2820,8 @@ window.BENCHMARK_DATA = {
           4909.633810933431,
           2421.9910411834717,
           4660.759248097737,
-          4242.255674997966
+          4242.255674997966,
+          4538.059919993083
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2955,6 +2974,7 @@ window.BENCHMARK_DATA = {
           24179,
           24179,
           24175,
+          24179,
           24179,
           24179,
           24179
@@ -3115,7 +3135,8 @@ window.BENCHMARK_DATA = {
           5738.127156066895,
           2676.908480580648,
           5138.730927022299,
-          4891.060064697265
+          4891.060064697265,
+          5244.327220662435
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3127,6 +3148,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -4088,6 +4110,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
         "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
+      },
+      {
+        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
       }
     ],
     "labels": [
@@ -4224,7 +4252,8 @@ window.BENCHMARK_DATA = {
       "1dc71bae",
       "5520582a",
       "a2e430d0",
-      "705c8132"
+      "705c8132",
+      "2068b12b"
     ],
     "datasets": [
       {
@@ -4364,7 +4393,8 @@ window.BENCHMARK_DATA = {
           2449.924624809852,
           1467.1964839935304,
           2556.9837643759593,
-          2384.145187886556
+          2384.145187886556,
+          2745.321823883057
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4501,6 +4531,7 @@ window.BENCHMARK_DATA = {
           12780,
           12856,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -4657,7 +4688,8 @@ window.BENCHMARK_DATA = {
           3403.5513272603353,
           1850.3905015672956,
           3580.242729695638,
-          3240.98959174523
+          3240.98959174523,
+          3771.275675455729
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4669,6 +4701,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -5620,6 +5653,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
         "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
+      },
+      {
+        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
       }
     ],
     "labels": [
@@ -5756,7 +5795,8 @@ window.BENCHMARK_DATA = {
       "1dc71bae",
       "5520582a",
       "a2e430d0",
-      "705c8132"
+      "705c8132",
+      "2068b12b"
     ],
     "datasets": [
       {
@@ -5896,7 +5936,8 @@ window.BENCHMARK_DATA = {
           13570.198004586357,
           7504.652938842773,
           13980.394966712365,
-          13582.273166111538
+          13582.273166111538,
+          14345.860057576498
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6033,6 +6074,7 @@ window.BENCHMARK_DATA = {
           25494,
           25568,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -6189,7 +6231,8 @@ window.BENCHMARK_DATA = {
           318818.31982421875,
           164229.29052734375,
           363288.4744140625,
-          337938.72810246394
+          337938.72810246394,
+          367296.8670898437
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6332,6 +6375,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544299,
+          544335,
           544335,
           544335,
           544335
