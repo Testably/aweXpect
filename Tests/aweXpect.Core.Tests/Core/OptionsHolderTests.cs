@@ -41,9 +41,9 @@ public sealed class OptionsHolderTests
 	public async Task Value_ShouldBeReadableAsReadOnlyHolderOfABaseType()
 	{
 		StringEqualityOptions options = StringEqualityOptions.Default;
-		IReadOnlyOptionsHolder<object> sut = new OptionsHolder<StringEqualityOptions>(options);
+		OptionsHolder<StringEqualityOptions> sut = new(options);
 
-		object? result = sut.Value;
+		object? result = ((IReadOnlyOptionsHolder<object>)sut).Value;
 
 		await That(result).IsSameAs(options);
 	}
