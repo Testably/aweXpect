@@ -29,13 +29,13 @@ public static partial class ThatConstructors
 		this IThat<IEnumerable<ConstructorInfo?>?> subject)
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		AttributeFilter<ConstructorInfo?> attributeFilter = new(
+			new AttributeFilterOptions<ConstructorInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute<TAttribute>());
 		return new AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<ConstructorInfo?>, IEnumerable<ConstructorInfo?>>(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
+			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<ConstructorInfo?>, IEnumerable<ConstructorInfo?>>(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
 			subject);
 	}
 
@@ -50,13 +50,13 @@ public static partial class ThatConstructors
 			this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject)
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		AttributeFilter<ConstructorInfo?> attributeFilter = new(
+			new AttributeFilterOptions<ConstructorInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute<TAttribute>());
 		return new AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>>(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
+			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>>(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
 			subject);
 	}
 #endif
@@ -64,7 +64,7 @@ public static partial class ThatConstructors
 	private sealed class DoNotHaveAttributeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions)
+		AttributeFilter<ConstructorInfo?> attributeFilter)
 		: CollectionConstraintResult<ConstructorInfo?>(it, grammars),
 			IContextConstraint<IEnumerable<ConstructorInfo?>>
 #if NET8_0_OR_GREATER
@@ -75,16 +75,16 @@ public static partial class ThatConstructors
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<ConstructorInfo?> actual,
 			IEvaluationContext context, CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				member => !attributeFilterOptions.Matches(member), cancellationToken);
+				member => !attributeFilter.Matches(member), cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<ConstructorInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, member => !attributeFilterOptions.Matches(member));
+			=> SetValue(actual, context, member => !attributeFilter.Matches(member));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars.Negate());
+			attributeFilter.AppendExpectation(stringBuilder, Grammars.Negate());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -93,7 +93,7 @@ public static partial class ThatConstructors
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("not all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars.Negate());
+			attributeFilter.AppendExpectation(stringBuilder, Grammars.Negate());
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

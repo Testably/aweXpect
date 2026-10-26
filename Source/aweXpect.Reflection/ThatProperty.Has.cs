@@ -25,14 +25,14 @@ public static partial class ThatProperty
 	public static HasAttributeResult<PropertyInfo, PropertyInfo?> Has<TAttribute>(this IThat<PropertyInfo?> subject)
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
-		return new HasAttributeResult<PropertyInfo, PropertyInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
+		AttributeFilter<PropertyInfo?> attributeFilter = new(
+			new AttributeFilterOptions<PropertyInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute<TAttribute>());
+		return new HasAttributeResult<PropertyInfo, PropertyInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter)),
 			subject,
-			attributeFilterOptions);
+			attributeFilter);
 	}
 
 	/// <summary>
@@ -51,32 +51,32 @@ public static partial class ThatProperty
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
-		return new HasAttributeResult<PropertyInfo, PropertyInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
+		AttributeFilter<PropertyInfo?> attributeFilter = new(
+			new AttributeFilterOptions<PropertyInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
+		return new HasAttributeResult<PropertyInfo, PropertyInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter)),
 			subject,
-			attributeFilterOptions);
+			attributeFilter);
 	}
 
 	private sealed class HasAttributeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions)
+		AttributeFilter<PropertyInfo?> attributeFilter)
 		: ConstraintResult.WithNotNullValue<PropertyInfo?>(it, grammars),
 			IValueConstraint<PropertyInfo?>
 	{
 		public ConstraintResult IsMetBy(PropertyInfo? actual)
 		{
 			Actual = actual;
-			Outcome = attributeFilterOptions.Matches(actual) ? Outcome.Success : Outcome.Failure;
+			Outcome = attributeFilter.Matches(actual) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			=> attributeFilter.AppendExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -85,7 +85,7 @@ public static partial class ThatProperty
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			=> attributeFilter.AppendExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

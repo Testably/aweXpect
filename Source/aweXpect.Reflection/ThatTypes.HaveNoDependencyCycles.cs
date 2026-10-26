@@ -39,9 +39,9 @@ public static partial class ThatTypes
 	public static DependencyCyclesResult<IEnumerable<Type?>> HaveNoDependencyCycles(
 		this IThat<IEnumerable<Type?>?> subject)
 	{
-		DependencyCyclesOptions options = new(null);
+		OptionsHolder<DependencyCyclesOptions> options = new(new DependencyCyclesOptions(null));
 		return new DependencyCyclesResult<IEnumerable<Type?>>(subject.Get().ExpectationBuilder
-				.AddConstraint<DependencyCyclesOptions, IEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<DependencyCyclesOptions>, IEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new HaveNoDependencyCyclesConstraint(it, grammars, options)),
 			subject,
@@ -65,9 +65,9 @@ public static partial class ThatTypes
 	public static DependencyCyclesResult<IEnumerable<Type?>> HaveNoDependencyCycles(
 		this IThat<IEnumerable<Type?>?> subject, string sliceRoot)
 	{
-		DependencyCyclesOptions options = new(sliceRoot);
+		OptionsHolder<DependencyCyclesOptions> options = new(new DependencyCyclesOptions(sliceRoot));
 		return new DependencyCyclesResult<IEnumerable<Type?>>(subject.Get().ExpectationBuilder
-				.AddConstraint<DependencyCyclesOptions, IEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<DependencyCyclesOptions>, IEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new HaveNoDependencyCyclesConstraint(it, grammars, options)),
 			subject,
@@ -80,9 +80,9 @@ public static partial class ThatTypes
 	public static DependencyCyclesResult<IAsyncEnumerable<Type?>> HaveNoDependencyCycles(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
 	{
-		DependencyCyclesOptions options = new(null);
+		OptionsHolder<DependencyCyclesOptions> options = new(new DependencyCyclesOptions(null));
 		return new DependencyCyclesResult<IAsyncEnumerable<Type?>>(subject.Get().ExpectationBuilder
-				.AddConstraint<DependencyCyclesOptions, IAsyncEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<DependencyCyclesOptions>, IAsyncEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new HaveNoDependencyCyclesConstraint(it, grammars, options)),
 			subject,
@@ -94,9 +94,9 @@ public static partial class ThatTypes
 	public static DependencyCyclesResult<IAsyncEnumerable<Type?>> HaveNoDependencyCycles(
 		this IThat<IAsyncEnumerable<Type?>?> subject, string sliceRoot)
 	{
-		DependencyCyclesOptions options = new(sliceRoot);
+		OptionsHolder<DependencyCyclesOptions> options = new(new DependencyCyclesOptions(sliceRoot));
 		return new DependencyCyclesResult<IAsyncEnumerable<Type?>>(subject.Get().ExpectationBuilder
-				.AddConstraint<DependencyCyclesOptions, IAsyncEnumerable<Type?>>(options,
+				.AddConstraint<OptionsHolder<DependencyCyclesOptions>, IAsyncEnumerable<Type?>>(options,
 					static (options, it, grammars)
 					=> new HaveNoDependencyCyclesConstraint(it, grammars, options)),
 			subject,
@@ -107,7 +107,7 @@ public static partial class ThatTypes
 	private sealed class HaveNoDependencyCyclesConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		DependencyCyclesOptions options)
+		IReadOnlyOptionsHolder<DependencyCyclesOptions> options)
 		: ConstraintResult.WithNotNullValue<IEnumerable<Type?>>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -158,7 +158,7 @@ public static partial class ThatTypes
 
 		private HaveNoDependencyCyclesConstraint SetResult(IEnumerable<Type?> types)
 		{
-			_cycles = NamespaceDependencyGraph.Build(types, options.SliceRoot, options.ExcludeSubNamespaces).Cycles
+			_cycles = NamespaceDependencyGraph.Build(types, options.Value.SliceRoot, options.Value.ExcludeSubNamespaces).Cycles
 				.Select(cycle => string.Join(" -> ", cycle))
 				.ToList();
 			Outcome = _cycles.Count == 0 ? Outcome.Success : Outcome.Failure;
@@ -205,9 +205,9 @@ public static partial class ThatTypes
 
 		private void AppendSliceInfo(StringBuilder stringBuilder)
 		{
-			if (options.SliceRoot is not null)
+			if (options.Value.SliceRoot is not null)
 			{
-				stringBuilder.Append(" when grouped into slices under ").Append(Formatter.Format(options.SliceRoot));
+				stringBuilder.Append(" when grouped into slices under ").Append(Formatter.Format(options.Value.SliceRoot));
 			}
 		}
 	}

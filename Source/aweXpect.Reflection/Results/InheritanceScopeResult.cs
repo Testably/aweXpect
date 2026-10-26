@@ -1,4 +1,5 @@
 ﻿using aweXpect.Core;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
@@ -11,12 +12,12 @@ namespace aweXpect.Reflection.Results;
 public class InheritanceScopeResult<TType, TValue>
 	: AndOrResult<TType, IThat<TValue>, InheritanceScopeResult<TType, TValue>>
 {
-	private readonly ScopeOptions _scope;
+	private readonly OptionsHolder<MemberScopes> _scope;
 
 	internal InheritanceScopeResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: base(expectationBuilder, subject)
 	{
 		_scope = scope;

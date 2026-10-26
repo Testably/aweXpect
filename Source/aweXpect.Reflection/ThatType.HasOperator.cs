@@ -3,6 +3,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
@@ -26,7 +27,7 @@ public static partial class ThatType
 		this IThat<Type?> subject,
 		Operator @operator)
 	{
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((Operator: @operator, Scope: scope),
 				static (s, it, grammars)
 				=> new HasOperatorConstraint(it, grammars, s.Operator, null, s.Scope)),
@@ -68,7 +69,7 @@ public static partial class ThatType
 		Operator @operator,
 		Type operand)
 	{
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((Operator: @operator, Operand: operand, Scope: scope),
 				static (s, it, grammars)
 				=> new HasOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Scope)),
@@ -91,7 +92,7 @@ public static partial class ThatType
 		this IThat<Type?> subject,
 		Operator @operator)
 	{
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((Operator: @operator, Scope: scope),
 				static (s, it, grammars)
 				=> new HasOperatorConstraint(it, grammars, s.Operator, null, s.Scope).Invert()),
@@ -133,7 +134,7 @@ public static partial class ThatType
 		Operator @operator,
 		Type operand)
 	{
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((Operator: @operator, Operand: operand, Scope: scope),
 				static (s, it, grammars)
 				=> new HasOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Scope).Invert()),
@@ -146,7 +147,7 @@ public static partial class ThatType
 		ExpectationGrammars grammars,
 		Operator @operator,
 		Type? operand,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IValueConstraint<Type?>
 	{
@@ -156,18 +157,18 @@ public static partial class ThatType
 		{
 			Actual = actual;
 			bool hasOperator = operand is null
-				? actual.HasOperator(@operator, !scope.IsDirect)
-				: actual.HasOperator(@operator, operand, !scope.IsDirect);
+				? actual.HasOperator(@operator, !scope.Value.IsDirect())
+				: actual.HasOperator(@operator, operand, !scope.Value.IsDirect());
 			Outcome = hasOperator ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendOperatorExpectation(stringBuilder, scope.IsDirect ? "declares the operator " : "has the operator ");
+			=> AppendOperatorExpectation(stringBuilder, scope.Value.IsDirect() ? "declares the operator " : "has the operator ");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(scope.IsDirect ? " did not declare the operator " : " did not have the operator ")
+			stringBuilder.Append(It).Append(scope.Value.IsDirect() ? " did not declare the operator " : " did not have the operator ")
 				.Append(_name);
 			AppendOperand(stringBuilder);
 			stringBuilder.Append(' ');
@@ -176,11 +177,11 @@ public static partial class ThatType
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendOperatorExpectation(stringBuilder,
-				scope.IsDirect ? "does not declare the operator " : "does not have the operator ");
+				scope.Value.IsDirect() ? "does not declare the operator " : "does not have the operator ");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(scope.IsDirect ? " declared the operator " : " had the operator ").Append(_name);
+			stringBuilder.Append(It).Append(scope.Value.IsDirect() ? " declared the operator " : " had the operator ").Append(_name);
 			AppendOperand(stringBuilder);
 			stringBuilder.Append(' ');
 			Formatter.Format(stringBuilder, Actual);

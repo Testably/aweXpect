@@ -25,14 +25,14 @@ public static partial class ThatEvent
 	public static HasAttributeResult<EventInfo, EventInfo?> Has<TAttribute>(this IThat<EventInfo?> subject)
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
-		return new HasAttributeResult<EventInfo, EventInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
+		AttributeFilter<EventInfo?> attributeFilter = new(
+			new AttributeFilterOptions<EventInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute<TAttribute>());
+		return new HasAttributeResult<EventInfo, EventInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter)),
 			subject,
-			attributeFilterOptions);
+			attributeFilter);
 	}
 
 	/// <summary>
@@ -51,32 +51,32 @@ public static partial class ThatEvent
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
-		return new HasAttributeResult<EventInfo, EventInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
+		AttributeFilter<EventInfo?> attributeFilter = new(
+			new AttributeFilterOptions<EventInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
+		return new HasAttributeResult<EventInfo, EventInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter)),
 			subject,
-			attributeFilterOptions);
+			attributeFilter);
 	}
 
 	private sealed class HasAttributeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		AttributeFilterOptions<EventInfo?> attributeFilterOptions)
+		AttributeFilter<EventInfo?> attributeFilter)
 		: ConstraintResult.WithNotNullValue<EventInfo?>(it, grammars),
 			IValueConstraint<EventInfo?>
 	{
 		public ConstraintResult IsMetBy(EventInfo? actual)
 		{
 			Actual = actual;
-			Outcome = attributeFilterOptions.Matches(actual) ? Outcome.Success : Outcome.Failure;
+			Outcome = attributeFilter.Matches(actual) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			=> attributeFilter.AppendExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -85,7 +85,7 @@ public static partial class ThatEvent
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			=> attributeFilter.AppendExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

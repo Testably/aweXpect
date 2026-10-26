@@ -3,6 +3,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
 
@@ -37,7 +38,7 @@ public static partial class ThatType
 		Type source,
 		Type target)
 	{
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((Source: source, Target: target, Scope: scope),
 				static (s, it, grammars)
 				=> new HasConversionOperatorConstraint(it, grammars, true, s.Source, s.Target, s.Scope)),
@@ -72,7 +73,7 @@ public static partial class ThatType
 		Type source,
 		Type target)
 	{
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((Source: source, Target: target, Scope: scope),
 				static (s, it, grammars)
 				=> new HasConversionOperatorConstraint(it, grammars, true, s.Source, s.Target, s.Scope).Invert()),
@@ -113,7 +114,7 @@ public static partial class ThatType
 		Type source,
 		Type target)
 	{
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((Source: source, Target: target, Scope: scope),
 				static (s, it, grammars)
 				=> new HasConversionOperatorConstraint(it, grammars, false, s.Source, s.Target, s.Scope)),
@@ -154,7 +155,7 @@ public static partial class ThatType
 		Type source,
 		Type target)
 	{
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		return new(subject.Get().ExpectationBuilder.AddConstraint((Source: source, Target: target, Scope: scope),
 				static (s, it, grammars)
 				=> new HasConversionOperatorConstraint(it, grammars, false, s.Source, s.Target, s.Scope).Invert()),
@@ -168,36 +169,36 @@ public static partial class ThatType
 		bool isImplicit,
 		Type source,
 		Type target,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IValueConstraint<Type?>
 	{
 		public ConstraintResult IsMetBy(Type? actual)
 		{
 			Actual = actual;
-			Outcome = actual.GetConversionOperator(isImplicit, source, target, !scope.IsDirect) is not null
+			Outcome = actual.GetConversionOperator(isImplicit, source, target, !scope.Value.IsDirect()) is not null
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendConversion(stringBuilder, scope.IsDirect ? "declares " : "has ");
+			=> AppendConversion(stringBuilder, scope.Value.IsDirect() ? "declares " : "has ");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(scope.IsDirect ? " did not declare " : " did not have ");
+			stringBuilder.Append(It).Append(scope.Value.IsDirect() ? " did not declare " : " did not have ");
 			AppendConversionDescription(stringBuilder);
 			stringBuilder.Append(' ');
 			Formatter.Format(stringBuilder, Actual);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendConversion(stringBuilder, scope.IsDirect ? "does not declare " : "does not have ");
+			=> AppendConversion(stringBuilder, scope.Value.IsDirect() ? "does not declare " : "does not have ");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(scope.IsDirect ? " declared " : " had ");
+			stringBuilder.Append(It).Append(scope.Value.IsDirect() ? " declared " : " had ");
 			AppendConversionDescription(stringBuilder);
 			stringBuilder.Append(' ');
 			Formatter.Format(stringBuilder, Actual);

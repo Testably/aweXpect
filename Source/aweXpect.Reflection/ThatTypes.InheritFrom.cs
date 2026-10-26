@@ -5,6 +5,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
 #if NET8_0_OR_GREATER
@@ -175,8 +176,8 @@ public static partial class ThatTypes
 		Type baseType)
 	{
 		baseType.EnsureIsClass();
-		ScopeOptions scope = new();
-		return new InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, ScopeOptions Scope), IEnumerable<Type?>>((baseType, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, OptionsHolder<MemberScopes> Scope), IEnumerable<Type?>>((baseType, scope),
 				static (s, it, grammars)
 				=> new InheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.Scope)),
 			subject,
@@ -189,8 +190,8 @@ public static partial class ThatTypes
 		Type baseType)
 	{
 		baseType.EnsureIsClass();
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, ScopeOptions Scope), IAsyncEnumerable<Type?>>((baseType, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, OptionsHolder<MemberScopes> Scope), IAsyncEnumerable<Type?>>((baseType, scope),
 				static (s, it, grammars)
 				=> new InheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.Scope)),
 			subject,
@@ -203,8 +204,8 @@ public static partial class ThatTypes
 		Type baseType)
 	{
 		baseType.EnsureIsClass();
-		ScopeOptions scope = new();
-		return new InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, ScopeOptions Scope), IEnumerable<Type?>>((baseType, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, OptionsHolder<MemberScopes> Scope), IEnumerable<Type?>>((baseType, scope),
 				static (s, it, grammars)
 				=> new DoNotInheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.Scope)),
 			subject,
@@ -217,8 +218,8 @@ public static partial class ThatTypes
 		Type baseType)
 	{
 		baseType.EnsureIsClass();
-		ScopeOptions scope = new();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, ScopeOptions Scope), IAsyncEnumerable<Type?>>((baseType, scope),
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, OptionsHolder<MemberScopes> Scope), IAsyncEnumerable<Type?>>((baseType, scope),
 				static (s, it, grammars)
 				=> new DoNotInheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.Scope)),
 			subject,
@@ -230,7 +231,7 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		Type baseType,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -241,23 +242,23 @@ public static partial class ThatTypes
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				type => type?.InheritsFromClass(baseType, scope.IsDirect) == true, cancellationToken);
+				type => type?.InheritsFromClass(baseType, scope.Value.IsDirect()) == true, cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => type?.InheritsFromClass(baseType, scope.IsDirect) == true);
+			=> SetValue(actual, context, type => type?.InheritsFromClass(baseType, scope.Value.IsDirect()) == true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all inherit ");
-			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
+			AppendDirectlyFrom(stringBuilder, scope.Value.IsDirect());
 			Formatter.Format(stringBuilder, baseType);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" contained types that do not inherit ");
-			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
+			AppendDirectlyFrom(stringBuilder, scope.Value.IsDirect());
 			Formatter.Format(stringBuilder, baseType);
 
 		}
@@ -265,14 +266,14 @@ public static partial class ThatTypes
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("not all inherit ");
-			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
+			AppendDirectlyFrom(stringBuilder, scope.Value.IsDirect());
 			Formatter.Format(stringBuilder, baseType);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" only contained types that inherit ");
-			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
+			AppendDirectlyFrom(stringBuilder, scope.Value.IsDirect());
 			Formatter.Format(stringBuilder, baseType);
 		}
 
@@ -291,7 +292,7 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		Type baseType,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -302,23 +303,23 @@ public static partial class ThatTypes
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				type => type?.InheritsFromClass(baseType, scope.IsDirect) != true, cancellationToken);
+				type => type?.InheritsFromClass(baseType, scope.Value.IsDirect()) != true, cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => type?.InheritsFromClass(baseType, scope.IsDirect) != true);
+			=> SetValue(actual, context, type => type?.InheritsFromClass(baseType, scope.Value.IsDirect()) != true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all do not inherit ");
-			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
+			AppendDirectlyFrom(stringBuilder, scope.Value.IsDirect());
 			Formatter.Format(stringBuilder, baseType);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" contained types that inherit ");
-			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
+			AppendDirectlyFrom(stringBuilder, scope.Value.IsDirect());
 			Formatter.Format(stringBuilder, baseType);
 
 		}
@@ -326,14 +327,14 @@ public static partial class ThatTypes
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("at least one inherits ");
-			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
+			AppendDirectlyFrom(stringBuilder, scope.Value.IsDirect());
 			Formatter.Format(stringBuilder, baseType);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" only contained types that do not inherit ");
-			AppendDirectlyFrom(stringBuilder, scope.IsDirect);
+			AppendDirectlyFrom(stringBuilder, scope.Value.IsDirect());
 			Formatter.Format(stringBuilder, baseType);
 
 		}

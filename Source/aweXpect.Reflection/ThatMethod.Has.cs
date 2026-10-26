@@ -25,14 +25,14 @@ public static partial class ThatMethod
 	public static HasAttributeResult<MethodInfo, MethodInfo?> Has<TAttribute>(this IThat<MethodInfo?> subject)
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
-		return new HasAttributeResult<MethodInfo, MethodInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
+		AttributeFilter<MethodInfo?> attributeFilter = new(
+			new AttributeFilterOptions<MethodInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute<TAttribute>());
+		return new HasAttributeResult<MethodInfo, MethodInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter)),
 			subject,
-			attributeFilterOptions);
+			attributeFilter);
 	}
 
 	/// <summary>
@@ -51,32 +51,32 @@ public static partial class ThatMethod
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
-		return new HasAttributeResult<MethodInfo, MethodInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
+		AttributeFilter<MethodInfo?> attributeFilter = new(
+			new AttributeFilterOptions<MethodInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
+		return new HasAttributeResult<MethodInfo, MethodInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter)),
 			subject,
-			attributeFilterOptions);
+			attributeFilter);
 	}
 
 	private sealed class HasAttributeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		AttributeFilterOptions<MethodInfo?> attributeFilterOptions)
+		AttributeFilter<MethodInfo?> attributeFilter)
 		: ConstraintResult.WithNotNullValue<MethodInfo?>(it, grammars),
 			IValueConstraint<MethodInfo?>
 	{
 		public ConstraintResult IsMetBy(MethodInfo? actual)
 		{
 			Actual = actual;
-			Outcome = attributeFilterOptions.Matches(actual) ? Outcome.Success : Outcome.Failure;
+			Outcome = attributeFilter.Matches(actual) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			=> attributeFilter.AppendExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -85,7 +85,7 @@ public static partial class ThatMethod
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			=> attributeFilter.AppendExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

@@ -44,7 +44,7 @@ public static partial class ThatAssembly
 	private sealed class HasVersionComponentsConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		List<VersionComponentCheck> checks)
+		IReadOnlyOptionsHolder<VersionComponentCheck[]> checks)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
 			IValueConstraint<Assembly?>
 	{
@@ -63,7 +63,7 @@ public static partial class ThatAssembly
 			}
 
 			Outcome = Outcome.Success;
-			foreach (VersionComponentCheck check in checks)
+			foreach (VersionComponentCheck check in checks.Value)
 			{
 				Outcome outcome = check.Comparison.Evaluate(check.Selector(_version));
 				if (outcome == Outcome.FailureBothWays)
@@ -85,7 +85,7 @@ public static partial class ThatAssembly
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (checks.Count == 0)
+			if (checks.Value.Length == 0)
 			{
 				stringBuilder.Append("has a version");
 				return;
@@ -115,7 +115,7 @@ public static partial class ThatAssembly
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (checks.Count == 0)
+			if (checks.Value.Length == 0)
 			{
 				stringBuilder.Append("does not have a version");
 				return;
@@ -130,20 +130,20 @@ public static partial class ThatAssembly
 
 		private void AppendComponents(StringBuilder stringBuilder)
 		{
-			for (int i = 0; i < checks.Count; i++)
+			for (int i = 0; i < checks.Value.Length; i++)
 			{
 				if (i > 0)
 				{
 					stringBuilder.Append(" and ");
 				}
 
-				stringBuilder.Append(checks[i].Component).Append(' ');
-				if (checks[i].Comparison.IsNegated)
+				stringBuilder.Append(checks.Value[i].Component).Append(' ');
+				if (checks.Value[i].Comparison.IsNegated)
 				{
 					stringBuilder.Append("not ");
 				}
 
-				checks[i].Comparison.AppendExpectation(stringBuilder);
+				checks.Value[i].Comparison.AppendExpectation(stringBuilder);
 			}
 		}
 	}

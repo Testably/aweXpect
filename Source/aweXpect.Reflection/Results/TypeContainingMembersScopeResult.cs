@@ -1,5 +1,6 @@
 ﻿using aweXpect.Core;
 using aweXpect.Options;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Results;
@@ -18,13 +19,13 @@ namespace aweXpect.Reflection.Results;
 /// </remarks>
 public sealed class TypeContainingMembersScopeResult<TType, TValue> : TypeContainingMembersResult<TType, TValue>
 {
-	private readonly ScopeOptions _scope;
+	private readonly OptionsHolder<MemberScopes> _scope;
 
 	internal TypeContainingMembersScopeResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
 		OptionsHolder<Quantifier> quantifier,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: base(expectationBuilder, subject, quantifier)
 	{
 		_scope = scope;

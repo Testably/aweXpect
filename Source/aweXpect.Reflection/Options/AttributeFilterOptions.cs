@@ -1,43 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using aweXpect.Core;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Options;
 
 /// <summary>
-///     Options for adding additional predicates to filter the parameter list.
+///     Options for filtering for a list of alternative attributes.
 /// </summary>
 /// <remarks>
-///     Inherited attributes are considered, unless the result restricts the check to the attributes declared directly
-///     on the member.
+///     An immutable value: <see cref="WithAttribute{TAttribute}()" /> returns new options. Inherited attributes are
+///     considered, unless the scope passed to <see cref="Matches" /> restricts the check to the attributes declared
+///     directly on the member.
 /// </remarks>
-internal class AttributeFilterOptions<TMember>
+internal sealed class AttributeFilterOptions<TMember>
 {
-	private readonly List<Action<StringBuilder>> _descriptions = [];
+	private readonly Alternative[] _alternatives;
 	private readonly Func<TMember, Type, Func<Attribute, bool>, bool, bool> _memberHasAttribute;
-	private readonly List<(Type, Func<Attribute, bool>)> _predicates = [];
 
 	internal AttributeFilterOptions(Func<TMember, Type, Func<Attribute, bool>, bool, bool> memberHasAttribute)
+		: this(memberHasAttribute, [])
+	{
+	}
+
+	private AttributeFilterOptions(Func<TMember, Type, Func<Attribute, bool>, bool, bool> memberHasAttribute,
+		Alternative[] alternatives)
 	{
 		_memberHasAttribute = memberHasAttribute;
+		_alternatives = alternatives;
 	}
 
 	/// <summary>
-	///     The inheritance scope of the attributes.
+	///     Verifies that the <paramref name="member" /> has any of the attributes in the <paramref name="scope" />.
 	/// </summary>
-	internal ScopeOptions Scope { get; } = new();
-
-	/// <summary>
-	///     Verifies that the <paramref name="member" /> matches any registered attribute.
-	/// </summary>
-	public bool Matches(TMember member)
+	public bool Matches(TMember member, MemberScopes scope)
 	{
-		bool inherit = !Scope.IsDirect;
-		foreach ((Type? attributeType, Func<Attribute, bool>? predicate) in _predicates)
+		bool inherit = !scope.IsDirect();
+		foreach (Alternative alternative in _alternatives)
 		{
-			if (_memberHasAttribute(member, attributeType, predicate, inherit))
+			if (_memberHasAttribute(member, alternative.AttributeType, alternative.Predicate, inherit))
 			{
 				return true;
 			}
@@ -47,9 +49,10 @@ internal class AttributeFilterOptions<TMember>
 	}
 
 	/// <summary>
-	///     Returns the combination of all descriptions joined by <c>" and "</c>.
+	///     Appends the expectation for the attributes in the <paramref name="scope" />, joined by <c>" or "</c>, to the
+	///     <paramref name="stringBuilder" />.
 	/// </summary>
-	public void AppendDescription(StringBuilder stringBuilder, ExpectationGrammars grammar)
+	public void AppendExpectation(StringBuilder stringBuilder, ExpectationGrammars grammar, MemberScopes scope)
 	{
 		string prefix = grammar.HasFlag(ExpectationGrammars.Plural) ? "have " : "has ";
 		if (grammar.HasFlag(ExpectationGrammars.Negated))
@@ -59,34 +62,33 @@ internal class AttributeFilterOptions<TMember>
 
 		stringBuilder.Append(prefix);
 		int index = 0;
-		foreach (Action<StringBuilder> description in _descriptions)
+		foreach (Alternative alternative in _alternatives)
 		{
 			if (index++ > 0)
 			{
 				stringBuilder.Append(" or ");
 			}
 
-			if (Scope.IsDirect)
+			if (scope.IsDirect())
 			{
 				stringBuilder.Append("direct ");
 			}
 
-			description(stringBuilder);
+			alternative.Description(stringBuilder);
 		}
 	}
 
 	/// <summary>
-	///     Registers an <typeparamref name="TAttribute" />
+	///     Returns options with the alternative <typeparamref name="TAttribute" />.
 	/// </summary>
-	public void RegisterAttribute<TAttribute>()
+	public AttributeFilterOptions<TMember> WithAttribute<TAttribute>()
 		where TAttribute : Attribute
-	{
-		_descriptions.Add(sb => Formatter.Format(sb, typeof(TAttribute)));
-		_predicates.Add((typeof(TAttribute), AttributePredicates.IsOfType<TAttribute>()));
-	}
+		=> With(new Alternative(typeof(TAttribute), AttributePredicates.IsOfType<TAttribute>(),
+			sb => Formatter.Format(sb, typeof(TAttribute))));
 
 	/// <summary>
-	///     Registers an <typeparamref name="TAttribute" />
+	///     Returns options with the alternative <typeparamref name="TAttribute" /> that matches the
+	///     <paramref name="predicate" />.
 	/// </summary>
 	/// <param name="predicate">
 	///     (optional) A predicate to check the attribute values.
@@ -94,19 +96,34 @@ internal class AttributeFilterOptions<TMember>
 	///     If not set (<see langword="null" />), will only check if the attribute is present.
 	/// </param>
 	/// <param name="predicateExpression">The expression of the predicate to use in the description message.</param>
-	public void RegisterAttribute<TAttribute>(
+	public AttributeFilterOptions<TMember> WithAttribute<TAttribute>(
 		Func<TAttribute, bool> predicate,
 		string predicateExpression)
 		where TAttribute : Attribute
-	{
-		_descriptions.Add(sb =>
-		{
-			Formatter.Format(sb, typeof(TAttribute));
-			sb.Append(" matching ");
-			sb.Append(predicateExpression);
-		});
+		=> With(new Alternative(typeof(TAttribute),
+			a => a is TAttribute value && (predicate is null || UserCode.Invoke(predicate, value, "the predicate")),
+			sb =>
+			{
+				Formatter.Format(sb, typeof(TAttribute));
+				sb.Append(" matching ");
+				sb.Append(predicateExpression);
+			}));
 
-		_predicates.Add((typeof(TAttribute),
-			a => a is TAttribute value && (predicate is null || UserCode.Invoke(predicate, value, "the predicate"))));
+	private AttributeFilterOptions<TMember> With(Alternative alternative)
+	{
+		Alternative[] alternatives = new Alternative[_alternatives.Length + 1];
+		_alternatives.CopyTo(alternatives, 0);
+		alternatives[_alternatives.Length] = alternative;
+		return new AttributeFilterOptions<TMember>(_memberHasAttribute, alternatives);
+	}
+
+	private sealed class Alternative(
+		Type attributeType,
+		Func<Attribute, bool> predicate,
+		Action<StringBuilder> description)
+	{
+		public Type AttributeType { get; } = attributeType;
+		public Func<Attribute, bool> Predicate { get; } = predicate;
+		public Action<StringBuilder> Description { get; } = description;
 	}
 }

@@ -67,12 +67,12 @@ public static partial class TypeFilters
 			return new GenericTypesWithNamedArgument(this,
 				stringEqualityOptions =>
 				{
-					GenericArgumentFilterOptions genericArgumentFilterOptions = new(
+					GenericArgumentFilterOptions genericArgumentFilterOptions = new GenericArgumentFilterOptions(
 						(type, name) => argumentType == (name is null ? type.BaseType : type),
-						() => $"of type {Formatter.Format(typeof(T))}");
-					genericArgumentFilterOptions.AddPredicate(
-						(type, name) => stringEqualityOptions.Value.AreConsideredEqual(name ?? type.Name, expected, nameof(expected)),
-						() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
+						() => $"of type {Formatter.Format(typeof(T))}")
+						.WithPredicate(
+							(type, name) => stringEqualityOptions.Value.AreConsideredEqual(name ?? type.Name, expected, nameof(expected)),
+							() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
 				},
 				CollectionIndexOptions.Default, new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));

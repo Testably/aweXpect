@@ -24,13 +24,13 @@ public static partial class ThatProperty
 		this IThat<PropertyInfo?> subject)
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
-		return new InheritanceScopeResult<PropertyInfo, PropertyInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
+		AttributeFilter<PropertyInfo?> attributeFilter = new(
+			new AttributeFilterOptions<PropertyInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute<TAttribute>());
+		return new InheritanceScopeResult<PropertyInfo, PropertyInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter).Invert()),
 			subject,
-			attributeFilterOptions.Scope);
+			attributeFilter.Scope);
 	}
 }

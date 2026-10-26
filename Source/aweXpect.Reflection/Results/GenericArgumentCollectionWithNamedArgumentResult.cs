@@ -19,7 +19,7 @@ public sealed class GenericArgumentCollectionWithNamedArgumentResult<TType, TVal
 	internal GenericArgumentCollectionWithNamedArgumentResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		GenericArgumentsFilterOptions genericArgumentsFilterOptions,
+		OptionsHolder<GenericArgumentsFilterOptions> genericArgumentsFilterOptions,
 		OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
 		OptionsHolder<StringEqualityOptions> options)
 		: base(expectationBuilder, subject, genericArgumentsFilterOptions, collectionIndexOptions)

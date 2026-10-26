@@ -9,16 +9,21 @@ namespace aweXpect.Reflection.Options;
 ///     Options for a specific-type dependency assertion.
 /// </summary>
 /// <remarks>
-///     The instance is shared between the chainable result and the underlying constraint, so that
-///     <c>OrOn&lt;T&gt;()</c> / <c>OrOn(Type)</c> widen the (lazily evaluated) expression.
+///     An immutable value: <c>OrOn(Type)</c> returns new options that widen the (lazily evaluated) expression. The
+///     expectation shares them in an <see cref="Core.OptionsHolder{TOptions}" /> with its result and its constraint.
 /// </remarks>
 internal sealed class TypeDependencyOptions : IDependencyTarget
 {
-	private readonly List<Type> _types = [];
+	private readonly Type[] _types;
 
 	public TypeDependencyOptions(Type type)
+		: this([Validate(type),])
 	{
-		OrOn(type);
+	}
+
+	private TypeDependencyOptions(Type[] types)
+	{
+		_types = types;
 	}
 
 	/// <summary>
@@ -27,12 +32,15 @@ internal sealed class TypeDependencyOptions : IDependencyTarget
 	public IReadOnlyList<Type> Types => _types;
 
 	/// <summary>
-	///     Widens the set of targeted types by the given <paramref name="type" />.
+	///     Returns options that widen the set of targeted types by the given <paramref name="type" />.
 	/// </summary>
-	public void OrOn(Type type)
+	public TypeDependencyOptions OrOn(Type type)
+		=> new([.. _types, Validate(type),]);
+
+	private static Type Validate(Type type)
 	{
 		ThrowHelper.ThrowIfNull(type, nameof(type));
-		_types.Add(type);
+		return type;
 	}
 
 	/// <summary>

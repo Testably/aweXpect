@@ -67,10 +67,10 @@ public static partial class ThatTypes
 			Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(
-			AddContainConstraint<TMember, TFiltered>(subject, types => navigate(types, scope.MemberScope), filter,
+			AddContainConstraint<TMember, TFiltered>(subject, types => navigate(types, scope.Value), filter,
 				quantifier, scope),
 			subject,
 			quantifier,
@@ -85,10 +85,10 @@ public static partial class ThatTypes
 			Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
-		ScopeOptions scope = new();
+		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
 		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		return new TypeContainingMembersScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(
-			AddContainConstraint<TMember, TFiltered>(subject, types => navigate(types, scope.MemberScope), filter,
+			AddContainConstraint<TMember, TFiltered>(subject, types => navigate(types, scope.Value), filter,
 				quantifier, scope),
 			subject,
 			quantifier,
@@ -130,13 +130,13 @@ public static partial class ThatTypes
 		Func<Filtered.Types, TFiltered> navigate,
 		Func<TFiltered, TFiltered> filter,
 		OptionsHolder<Quantifier> quantifier,
-		ScopeOptions? scope)
+		OptionsHolder<MemberScopes>? scope)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		IContainedMembersFilter memberFilter =
 			TypeFilters.ContainedMembers<TMember, TFiltered>(navigate, filter, quantifier);
 		return subject.Get().ExpectationBuilder
-			.AddConstraint<(IContainedMembersFilter MemberFilter, OptionsHolder<Quantifier> Quantifier, ScopeOptions? Scope),
+			.AddConstraint<(IContainedMembersFilter MemberFilter, OptionsHolder<Quantifier> Quantifier, OptionsHolder<MemberScopes>? Scope),
 				IEnumerable<Type?>>(
 				(memberFilter, quantifier, scope),
 				static (s, it, grammars)
@@ -149,13 +149,13 @@ public static partial class ThatTypes
 		Func<Filtered.Types, TFiltered> navigate,
 		Func<TFiltered, TFiltered> filter,
 		OptionsHolder<Quantifier> quantifier,
-		ScopeOptions? scope)
+		OptionsHolder<MemberScopes>? scope)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		IContainedMembersFilter memberFilter =
 			TypeFilters.ContainedMembers<TMember, TFiltered>(navigate, filter, quantifier);
 		return subject.Get().ExpectationBuilder
-			.AddConstraint<(IContainedMembersFilter MemberFilter, OptionsHolder<Quantifier> Quantifier, ScopeOptions? Scope),
+			.AddConstraint<(IContainedMembersFilter MemberFilter, OptionsHolder<Quantifier> Quantifier, OptionsHolder<MemberScopes>? Scope),
 				IAsyncEnumerable<Type?>>(
 				(memberFilter, quantifier, scope),
 				static (s, it, grammars)
@@ -168,7 +168,7 @@ public static partial class ThatTypes
 		ExpectationGrammars grammars,
 		IContainedMembersFilter memberFilter,
 		OptionsHolder<Quantifier> quantifier,
-		ScopeOptions? scope)
+		OptionsHolder<MemberScopes>? scope)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -189,20 +189,20 @@ public static partial class ThatTypes
 			=> type is null ? new ValueTask<bool>(false) : memberFilter.Applies(type);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendMembers(stringBuilder.Append(scope?.IsDirect == true ? "all declare " : "all contain "));
+			=> AppendMembers(stringBuilder.Append(scope?.Value.IsDirect() == true ? "all declare " : "all contain "));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained not matching types");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendMembers(stringBuilder.Append(scope?.IsDirect == true ? "do not all declare " : "do not all contain "));
+			=> AppendMembers(stringBuilder.Append(scope?.Value.IsDirect() == true ? "do not all declare " : "do not all contain "));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained matching types");
 
 		private void AppendMembers(StringBuilder stringBuilder)
 			=> stringBuilder.Append(memberFilter.MembersDescription)
-				.Append(scope?.MemberScope.ObjectMembersText())
+				.Append(scope?.Value.ObjectMembersText())
 				.Append(quantifier);
 	}
 }

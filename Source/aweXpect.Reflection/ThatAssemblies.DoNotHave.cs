@@ -29,13 +29,13 @@ public static partial class ThatAssemblies
 		this IThat<IEnumerable<Assembly?>?> subject)
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<Assembly?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		AttributeFilter<Assembly?> attributeFilter = new(
+			new AttributeFilterOptions<Assembly?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute<TAttribute>());
 		return new AndOrResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<Assembly?>, IEnumerable<Assembly?>>(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
+			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<Assembly?>, IEnumerable<Assembly?>>(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
 			subject);
 	}
 
@@ -49,13 +49,13 @@ public static partial class ThatAssemblies
 		this IThat<IAsyncEnumerable<Assembly?>?> subject)
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<Assembly?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
+		AttributeFilter<Assembly?> attributeFilter = new(
+			new AttributeFilterOptions<Assembly?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute<TAttribute>());
 		return new AndOrResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<Assembly?>, IAsyncEnumerable<Assembly?>>(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
+			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<Assembly?>, IAsyncEnumerable<Assembly?>>(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
 			subject);
 	}
 #endif
@@ -63,7 +63,7 @@ public static partial class ThatAssemblies
 	private sealed class DoNotHaveAttributeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		AttributeFilterOptions<Assembly?> attributeFilterOptions)
+		AttributeFilter<Assembly?> attributeFilter)
 		: CollectionConstraintResult<Assembly?>(it, grammars),
 			IContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER
@@ -74,16 +74,16 @@ public static partial class ThatAssemblies
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				member => !attributeFilterOptions.Matches(member), cancellationToken);
+				member => !attributeFilter.Matches(member), cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, member => !attributeFilterOptions.Matches(member));
+			=> SetValue(actual, context, member => !attributeFilter.Matches(member));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars.Negate());
+			attributeFilter.AppendExpectation(stringBuilder, Grammars.Negate());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -92,7 +92,7 @@ public static partial class ThatAssemblies
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("not all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars.Negate());
+			attributeFilter.AppendExpectation(stringBuilder, Grammars.Negate());
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

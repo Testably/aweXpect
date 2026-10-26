@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -9,49 +8,47 @@ namespace aweXpect.Reflection.Options;
 /// <summary>
 ///     Options for adding additional predicates to filter the generic arguments.
 /// </summary>
-internal class GenericArgumentFilterOptions
+/// <remarks>
+///     An immutable value: <see cref="WithPredicate(Func{Type, string?, ValueTask{bool}}, Func{string})" /> returns new
+///     options.
+/// </remarks>
+internal sealed class GenericArgumentFilterOptions
 {
-	private readonly List<Func<string>> _descriptions;
-	private readonly List<Func<Type, string?, ValueTask<bool>>> _predicates;
+	private readonly Func<string>[] _descriptions;
+	private readonly Func<Type, string?, ValueTask<bool>>[] _predicates;
 
 	/// <inheritdoc cref="GenericArgumentFilterOptions" />
 	public GenericArgumentFilterOptions(Func<Type, string?, ValueTask<bool>> predicate, Func<string> description)
+		: this([predicate,], [description,])
 	{
-		_descriptions = [description,];
-		_predicates = [predicate,];
 	}
 
 	/// <inheritdoc cref="GenericArgumentFilterOptions" />
 	public GenericArgumentFilterOptions(Func<Type, string?, bool> predicate, Func<string> description)
+		: this([ToAsyncPredicate(predicate),], [description,])
 	{
-		_descriptions = [description,];
-		_predicates = [ToAsyncPredicate(predicate),];
+	}
+
+	private GenericArgumentFilterOptions(Func<Type, string?, ValueTask<bool>>[] predicates,
+		Func<string>[] descriptions)
+	{
+		_predicates = predicates;
+		_descriptions = descriptions;
 	}
 
 	/// <summary>
-	///     Adds an additional <paramref name="predicate" /> with the <paramref name="description" />.
+	///     Returns options with the additional <paramref name="predicate" /> and <paramref name="description" />.
 	/// </summary>
-	public void AddPredicate(Func<Type, string?, bool> predicate, Func<string> description)
-	{
-		_predicates.Add(ToAsyncPredicate(predicate));
-		_descriptions.Add(description);
-	}
-
-	/// <summary>
-	///     Adds an additional <paramref name="predicate" /> with the <paramref name="description" />.
-	/// </summary>
-	public void AddPredicate(Func<Type, string?, ValueTask<bool>> predicate, Func<string> description)
-	{
-		_predicates.Add(predicate);
-		_descriptions.Add(description);
-	}
+	public GenericArgumentFilterOptions WithPredicate(Func<Type, string?, ValueTask<bool>> predicate,
+		Func<string> description)
+		=> new([.. _predicates, predicate,], [.. _descriptions, description,]);
 
 	/// <summary>
 	///     Verifies that the <paramref name="argument" /> matches all predicates.
 	/// </summary>
 	public ValueTask<bool> Matches(Type argument, string? genericArgumentName = null)
 	{
-		if (_predicates.Count == 0)
+		if (_predicates.Length == 0)
 		{
 			return new ValueTask<bool>(true);
 		}

@@ -14,15 +14,15 @@ namespace aweXpect.Reflection.Results;
 public sealed class HasAttributeWithoutInheritResult<TType, TMember>
 	: AndOrResult<TType, IThat<TMember>, HasAttributeWithoutInheritResult<TType, TMember>>
 {
-	private readonly AttributeFilterOptions<TMember> _attributeFilterOptions;
+	private readonly AttributeFilter<TMember> _attributeFilter;
 
 	internal HasAttributeWithoutInheritResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TMember> subject,
-		AttributeFilterOptions<TMember> attributeFilterOptions)
+		AttributeFilter<TMember> attributeFilter)
 		: base(expectationBuilder, subject)
 	{
-		_attributeFilterOptions = attributeFilterOptions;
+		_attributeFilter = attributeFilter;
 	}
 
 	/// <summary>
@@ -31,7 +31,7 @@ public sealed class HasAttributeWithoutInheritResult<TType, TMember>
 	public HasAttributeWithoutInheritResult<TType, TMember> OrHas<TAttribute>()
 		where TAttribute : Attribute
 	{
-		_attributeFilterOptions.RegisterAttribute<TAttribute>();
+		_attributeFilter.Options.Value = _attributeFilter.Options.Value.WithAttribute<TAttribute>();
 		return this;
 	}
 
@@ -45,7 +45,7 @@ public sealed class HasAttributeWithoutInheritResult<TType, TMember>
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		_attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
+		_attributeFilter.Options.Value = _attributeFilter.Options.Value.WithAttribute(predicate, doNotPopulateThisValue.TrimExpression());
 		return this;
 	}
 }

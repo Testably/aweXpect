@@ -11,12 +11,12 @@ namespace aweXpect.Reflection.Results;
 public sealed class DependencyCyclesResult<TType>
 	: AndOrResult<TType, IThat<TType?>, DependencyCyclesResult<TType>>
 {
-	private readonly DependencyCyclesOptions _options;
+	private readonly OptionsHolder<DependencyCyclesOptions> _options;
 
 	internal DependencyCyclesResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TType?> subject,
-		DependencyCyclesOptions options)
+		OptionsHolder<DependencyCyclesOptions> options)
 		: base(expectationBuilder, subject)
 	{
 		_options = options;
@@ -32,7 +32,7 @@ public sealed class DependencyCyclesResult<TType>
 	/// </remarks>
 	public DependencyCyclesResult<TType> ExcludingSubNamespaces()
 	{
-		_options.ExcludingSubNamespaces();
+		_options.Value = _options.Value.ExcludingSubNamespaces();
 		return this;
 	}
 }

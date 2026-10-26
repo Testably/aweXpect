@@ -68,12 +68,12 @@ public static partial class MethodFilters
 			return new GenericMethodsWithNamedArgument(this,
 				stringEqualityOptions =>
 				{
-					GenericArgumentFilterOptions genericArgumentFilterOptions = new(
+					GenericArgumentFilterOptions genericArgumentFilterOptions = new GenericArgumentFilterOptions(
 						(p, _) => argumentType == p.BaseType,
-						() => $"of type {Formatter.Format(typeof(T))}");
-					genericArgumentFilterOptions.AddPredicate(
-						(p, _) => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
-						() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
+						() => $"of type {Formatter.Format(typeof(T))}")
+						.WithPredicate(
+							(p, _) => stringEqualityOptions.Value.AreConsideredEqual(p.Name, expected, nameof(expected)),
+							() => $"name {stringEqualityOptions.Value.GetExpectation(expected, ExpectationGrammars.None)}");
 					return collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions);
 				},
 				CollectionIndexOptions.Default, new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default));

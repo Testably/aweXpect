@@ -12,7 +12,7 @@ internal static class Filter
 	/// <summary>
 	///     Creates a new prefix <see cref="IFilter{TEntity}" /> from the given <paramref name="predicate" />.
 	/// </summary>
-	public static IAsyncChangeableFilter<TEntity> Prefix<TEntity>(Func<TEntity, ValueTask<bool>> predicate,
+	public static IFilter<TEntity> Prefix<TEntity>(Func<TEntity, ValueTask<bool>> predicate,
 		string prefix)
 		=> new GenericAsyncPrefixFilter<TEntity>(predicate, prefix);
 
@@ -25,7 +25,7 @@ internal static class Filter
 	/// <summary>
 	///     Creates a new suffix <see cref="IFilter{TEntity}" /> from the given <paramref name="predicate" />.
 	/// </summary>
-	public static IAsyncChangeableFilter<TEntity> Suffix<TEntity>(Func<TEntity, ValueTask<bool>> predicate,
+	public static IFilter<TEntity> Suffix<TEntity>(Func<TEntity, ValueTask<bool>> predicate,
 		string suffix)
 		=> new GenericAsyncSuffixFilter<TEntity>(predicate, suffix);
 
@@ -44,63 +44,27 @@ internal static class Filter
 	/// <summary>
 	///     Creates a new <see cref="IFilter{TEntity}" /> from the given <paramref name="predicate" />.
 	/// </summary>
-	public static IAsyncChangeableFilter<TEntity> Suffix<TEntity>(Func<TEntity, ValueTask<bool>> predicate,
+	public static IFilter<TEntity> Suffix<TEntity>(Func<TEntity, ValueTask<bool>> predicate,
 		Func<string> suffix)
 		=> new GenericAsyncSuffixFuncFilter<TEntity>(predicate, suffix);
 
-	private abstract class GenericAsyncFilter<TEntity>(Func<TEntity, ValueTask<bool>> filter)
-		: IAsyncChangeableFilter<TEntity>
+	private abstract class GenericAsyncFilter<TEntity>(Func<TEntity, ValueTask<bool>> filter) : IFilter<TEntity>
 	{
-		private List<Func<string, string>>? _descriptions;
-		private List<Func<bool, TEntity, ValueTask<bool>>>? _predicates;
-
 		/// <inheritdoc cref="IFilter{TEntity}.Applies(TEntity)" />
-		public async ValueTask<bool> Applies(TEntity value)
-		{
-			bool result = await filter(value);
-			if (_predicates != null)
-			{
-				foreach (Func<bool, TEntity, ValueTask<bool>> predicate in _predicates)
-				{
-					result = await predicate(result, value);
-				}
-			}
-
-			return result;
-		}
+		public ValueTask<bool> Applies(TEntity value)
+			=> filter(value);
 
 		/// <inheritdoc cref="IFilter{TEntity}.Describes(string)" />
 		public string Describes(string text)
-		{
-			string result = DescribeCore(text);
-			if (_descriptions != null)
-			{
-				foreach (Func<string, string> description in _descriptions)
-				{
-					result = description(result);
-				}
-			}
-
-			return result;
-		}
-
-		/// <inheritdoc
-		///     cref="IAsyncChangeableFilter{TEntity}.UpdateFilter(Func{bool, TEntity, ValueTask{bool}}, Func{string, string})" />
-		public void UpdateFilter(Func<bool, TEntity, ValueTask<bool>> predicate, Func<string, string> description)
-		{
-			_predicates ??= [];
-			_predicates.Add(predicate);
-			_descriptions ??= [];
-			_descriptions.Add(description);
-		}
+			=> DescribeCore(text);
 
 		protected abstract string DescribeCore(string text);
 	}
 
 	/// <summary>
-	///     A synchronous <see cref="IChangeableFilter{TEntity}" /> that can also be extended without changing it.
+	///     A synchronous <see cref="IFilter{TEntity}" /> that can be extended without changing it.
 	/// </summary>
-	internal abstract class GenericFilter<TEntity>(Func<TEntity, bool> filter) : IChangeableFilter<TEntity>
+	internal abstract class GenericFilter<TEntity>(Func<TEntity, bool> filter) : IFilter<TEntity>
 	{
 		private List<Func<string, string>>? _descriptions;
 		private List<Func<bool, TEntity, bool>>? _predicates;
@@ -133,15 +97,6 @@ internal static class Filter
 			}
 
 			return result;
-		}
-
-		/// <inheritdoc cref="IChangeableFilter{TEntity}.UpdateFilter(Func{bool, TEntity, bool}, Func{string, string})" />
-		public void UpdateFilter(Func<bool, TEntity, bool> predicate, Func<string, string> description)
-		{
-			_predicates ??= [];
-			_predicates.Add(predicate);
-			_descriptions ??= [];
-			_descriptions.Add(description);
 		}
 
 		/// <summary>

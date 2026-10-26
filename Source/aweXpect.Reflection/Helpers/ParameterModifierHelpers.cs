@@ -6,7 +6,7 @@ using aweXpect.Reflection.Options;
 namespace aweXpect.Reflection.Helpers;
 
 /// <summary>
-///     Helper to append a parameter modifier predicate to an existing parameter filter/assertion result.
+///     Helper to append a parameter modifier predicate to an existing parameter assertion result.
 /// </summary>
 internal static class ParameterModifierHelpers
 {
@@ -20,21 +20,9 @@ internal static class ParameterModifierHelpers
 		string description)
 		where TResult : IParameterFilterOptionsProvider
 	{
-		result.ParameterFilterOptions.AddModifier(predicate, () => description);
+		result.ParameterFilterOptions.Value =
+			result.ParameterFilterOptions.Value.WithModifier(predicate, () => description);
 		return result;
-	}
-
-	/// <summary>
-	///     Adds the custom <paramref name="predicate" /> to the <paramref name="options" />, described by its caller
-	///     argument <paramref name="expression" />.
-	/// </summary>
-	public static void AddMatching(
-		this ParameterFilterOptions options,
-		Func<ParameterInfo, bool> predicate,
-		string expression)
-	{
-		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
-		options.AddModifier(predicate, () => $"matching {expression.TrimExpression()}");
 	}
 
 	/// <summary>

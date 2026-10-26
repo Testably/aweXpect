@@ -40,7 +40,7 @@ public static partial class ThatType
 	public static NamespaceDependencyOnlyOnResult<Type, Type?> DependsOnlyOn(
 		this IThat<Type?> subject, IEnumerable<string> namespaces)
 	{
-		NamespaceDependencyOptions options = new(namespaces);
+		OptionsHolder<NamespaceDependencyOptions> options = new(new NamespaceDependencyOptions(namespaces));
 		return new NamespaceDependencyOnlyOnResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint(options,
 					static (options, it, grammars)
@@ -73,7 +73,7 @@ public static partial class ThatType
 	public static TypeSetDependencyOnlyOnResult<Type, Type?> DependsOnlyOn(
 		this IThat<Type?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
-		TypeSetDependencyOptions options = new(target, additional);
+		OptionsHolder<TypeSetDependencyOptions> options = new(new TypeSetDependencyOptions(target, additional));
 		return new TypeSetDependencyOnlyOnResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint(options,
 					static (options, it, grammars)
@@ -85,7 +85,7 @@ public static partial class ThatType
 	private sealed class DependsOnlyOnConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		NamespaceDependencyOptions options)
+		IReadOnlyOptionsHolder<NamespaceDependencyOptions> options)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IValueConstraint<Type?>
 	{
@@ -100,19 +100,19 @@ public static partial class ThatType
 				return this;
 			}
 
-			_violations = actual.GetDependencyNamespaceViolations(options);
+			_violations = actual.GetDependencyNamespaceViolations(options.Value);
 			Outcome = _violations.Count == 0 ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("depends only on ").Append(options.Describe());
+			=> stringBuilder.Append("depends only on ").Append(options.Value.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" had disallowed dependencies");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not depend only on ").Append(options.Describe());
+			=> stringBuilder.Append("does not depend only on ").Append(options.Value.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only depended on the allowed namespaces");
@@ -130,7 +130,7 @@ public static partial class ThatType
 	private sealed class DependsOnlyOnTypeSetConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeSetDependencyOptions options)
+		IReadOnlyOptionsHolder<TypeSetDependencyOptions> options)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IAsyncConstraint<Type?>
 	{
@@ -145,20 +145,20 @@ public static partial class ThatType
 				return this;
 			}
 
-			ResolvedTypeSet allowed = await options.Resolve(cancellationToken);
+			ResolvedTypeSet allowed = await options.Value.Resolve(cancellationToken);
 			_violations = actual.GetDependencyTypeSetViolations(allowed);
 			Outcome = _violations.Count == 0 ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("depends only on ").Append(options.Describe());
+			=> stringBuilder.Append("depends only on ").Append(options.Value.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" had disallowed dependencies");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not depend only on ").Append(options.Describe());
+			=> stringBuilder.Append("does not depend only on ").Append(options.Value.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only depended on the allowed types");

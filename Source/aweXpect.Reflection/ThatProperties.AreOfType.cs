@@ -36,10 +36,9 @@ public static partial class ThatProperties
 	public static OfTypeResult<IEnumerable<PropertyInfo?>> AreOfType(
 		this IThat<IEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(propertyType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(propertyType, false));
 		return new OfTypeResult<IEnumerable<PropertyInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<PropertyInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -62,10 +61,9 @@ public static partial class ThatProperties
 	public static OfTypeResult<IAsyncEnumerable<PropertyInfo?>> AreOfType(
 		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(propertyType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(propertyType, false));
 		return new OfTypeResult<IAsyncEnumerable<PropertyInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -90,10 +88,9 @@ public static partial class ThatProperties
 	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> AreNotOfType(
 		this IThat<IEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(propertyType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(propertyType, false));
 		return new AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<PropertyInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreNotOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject);
@@ -118,10 +115,9 @@ public static partial class ThatProperties
 	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>> AreNotOfType(
 		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(propertyType, false);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(propertyType, false));
 		return new AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
+			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
 				=> new AreNotOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject);
@@ -131,7 +127,7 @@ public static partial class ThatProperties
 	private sealed class AreOfTypeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeFilterOptions typeFilterOptions)
+		IReadOnlyOptionsHolder<TypeFilterOptions> typeFilterOptions)
 		: CollectionConstraintResult<PropertyInfo?>(it, grammars),
 			IContextConstraint<IEnumerable<PropertyInfo?>>
 #if NET8_0_OR_GREATER
@@ -142,16 +138,16 @@ public static partial class ThatProperties
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<PropertyInfo?> actual,
 			IEvaluationContext context, CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				property => typeFilterOptions.Matches(property?.PropertyType), cancellationToken);
+				property => typeFilterOptions.Value.Matches(property?.PropertyType), cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, property => typeFilterOptions.Matches(property?.PropertyType));
+			=> SetValue(actual, context, property => typeFilterOptions.Value.Matches(property?.PropertyType));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("are all ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -160,7 +156,7 @@ public static partial class ThatProperties
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("are not all ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -170,7 +166,7 @@ public static partial class ThatProperties
 	private sealed class AreNotOfTypeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		TypeFilterOptions typeFilterOptions)
+		IReadOnlyOptionsHolder<TypeFilterOptions> typeFilterOptions)
 		: CollectionConstraintResult<PropertyInfo?>(it, grammars),
 			IContextConstraint<IEnumerable<PropertyInfo?>>
 #if NET8_0_OR_GREATER
@@ -181,36 +177,36 @@ public static partial class ThatProperties
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<PropertyInfo?> actual,
 			IEvaluationContext context, CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				property => property is not null && !typeFilterOptions.Matches(property.PropertyType),
+				property => property is not null && !typeFilterOptions.Value.Matches(property.PropertyType),
 				cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual, IEvaluationContext context)
 			=> SetValue(actual, context,
-				property => property is not null && !typeFilterOptions.Matches(property.PropertyType));
+				property => property is not null && !typeFilterOptions.Value.Matches(property.PropertyType));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("are all not ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" contained properties ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("also contain a property ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" only contained properties not ");
-			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
 		}
 	}
 }

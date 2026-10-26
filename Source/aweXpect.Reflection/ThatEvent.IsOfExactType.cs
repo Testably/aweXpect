@@ -26,8 +26,7 @@ public static partial class ThatEvent
 	public static OfTypeResult<EventInfo> IsOfExactType(
 		this IThat<EventInfo?> subject, Type handlerType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(handlerType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(handlerType, true));
 		return new OfTypeResult<EventInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -53,8 +52,7 @@ public static partial class ThatEvent
 	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsNotOfExactType(
 		this IThat<EventInfo?> subject, Type handlerType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(handlerType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(handlerType, true));
 		return new AndOrResult<EventInfo, IThat<EventInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)

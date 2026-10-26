@@ -66,7 +66,7 @@ public static partial class ThatAssemblies
 	[GuaranteesNotNull]
 	public static VersionResult<IEnumerable<Assembly?>> HaveVersion(this IThat<IEnumerable<Assembly?>?> subject)
 		=> new(subject, (expectationBuilder, checks)
-			=> expectationBuilder.AddConstraint<List<VersionComponentCheck>, IEnumerable<Assembly?>>(checks,
+			=> expectationBuilder.AddConstraint<IReadOnlyOptionsHolder<VersionComponentCheck[]>, IEnumerable<Assembly?>>(checks,
 				static (checks, it, grammars)
 				=> new HaveVersionComponentsConstraint(it, grammars, checks)));
 
@@ -79,7 +79,7 @@ public static partial class ThatAssemblies
 	public static VersionResult<IAsyncEnumerable<Assembly?>> HaveVersion(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject)
 		=> new(subject, (expectationBuilder, checks)
-			=> expectationBuilder.AddConstraint<List<VersionComponentCheck>, IAsyncEnumerable<Assembly?>>(checks,
+			=> expectationBuilder.AddConstraint<IReadOnlyOptionsHolder<VersionComponentCheck[]>, IAsyncEnumerable<Assembly?>>(checks,
 				static (checks, it, grammars)
 				=> new HaveVersionComponentsConstraint(it, grammars, checks)));
 #endif
@@ -87,7 +87,7 @@ public static partial class ThatAssemblies
 	private sealed class HaveVersionComponentsConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		List<VersionComponentCheck> checks)
+		IReadOnlyOptionsHolder<VersionComponentCheck[]> checks)
 		: CollectionConstraintResult<Assembly?>(it, grammars),
 			IContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER
@@ -120,7 +120,7 @@ public static partial class ThatAssemblies
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (checks.Count == 0)
+			if (checks.Value.Length == 0)
 			{
 				stringBuilder.Append("all have a version");
 				return;
@@ -135,7 +135,7 @@ public static partial class ThatAssemblies
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (checks.Count == 0)
+			if (checks.Value.Length == 0)
 			{
 				stringBuilder.Append("not all have a version");
 				return;
@@ -165,7 +165,7 @@ public static partial class ThatAssemblies
 			}
 
 			bool isMatching = true;
-			foreach (VersionComponentCheck check in checks)
+			foreach (VersionComponentCheck check in checks.Value)
 			{
 				Outcome outcome = check.Comparison.Evaluate(check.Selector(version));
 				if (outcome == Outcome.FailureBothWays)
@@ -182,20 +182,20 @@ public static partial class ThatAssemblies
 
 		private void AppendComponents(StringBuilder stringBuilder)
 		{
-			for (int i = 0; i < checks.Count; i++)
+			for (int i = 0; i < checks.Value.Length; i++)
 			{
 				if (i > 0)
 				{
 					stringBuilder.Append(" and ");
 				}
 
-				stringBuilder.Append(checks[i].Component).Append(' ');
-				if (checks[i].Comparison.IsNegated)
+				stringBuilder.Append(checks.Value[i].Component).Append(' ');
+				if (checks.Value[i].Comparison.IsNegated)
 				{
 					stringBuilder.Append("not ");
 				}
 
-				checks[i].Comparison.AppendExpectation(stringBuilder);
+				checks.Value[i].Comparison.AppendExpectation(stringBuilder);
 			}
 		}
 	}

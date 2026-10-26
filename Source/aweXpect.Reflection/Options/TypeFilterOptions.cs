@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using aweXpect.Core;
@@ -10,20 +9,33 @@ namespace aweXpect.Reflection.Options;
 /// <summary>
 ///     Options for filtering for a list of alternative types.
 /// </summary>
-internal class TypeFilterOptions
+/// <remarks>
+///     An immutable value: <see cref="WithType(Type, bool)" /> returns new options. Start from <see cref="Default" />.
+/// </remarks>
+internal sealed class TypeFilterOptions
 {
-	private readonly List<(Type, bool)> _types = [];
+	private readonly (Type Type, bool IsExact)[] _types;
+
+	private TypeFilterOptions((Type Type, bool IsExact)[] types)
+	{
+		_types = types;
+	}
 
 	/// <summary>
-	///     Verifies that the <paramref name="type" /> matches any registered type.
+	///     The options without any type.
+	/// </summary>
+	public static TypeFilterOptions Default { get; } = new([]);
+
+	/// <summary>
+	///     Verifies that the <paramref name="type" /> matches any of the types.
 	/// </summary>
 	public bool Matches(Type? type)
-		=> _types.Any(t => type?.IsOrInheritsFrom(t.Item1, t.Item2) == true);
+		=> _types.Any(t => type?.IsOrInheritsFrom(t.Type, t.IsExact) == true);
 
 	/// <summary>
-	///     Returns the combination of all descriptions joined by <c>" or "</c>.
+	///     Appends the expectation for the types, joined by <c>" or "</c>, to the <paramref name="stringBuilder" />.
 	/// </summary>
-	public void AppendDescription(StringBuilder stringBuilder, ExpectationGrammars grammar)
+	public void AppendExpectation(StringBuilder stringBuilder, ExpectationGrammars grammar)
 	{
 		if (grammar.IsPlural())
 		{
@@ -37,14 +49,14 @@ internal class TypeFilterOptions
 		}
 
 		int index = 0;
-		foreach ((Type? type, bool isDirect) in _types)
+		foreach ((Type type, bool isExact) in _types)
 		{
 			if (index++ > 0)
 			{
 				stringBuilder.Append(" or ");
 			}
 
-			if (isDirect)
+			if (isExact)
 			{
 				stringBuilder.Append("exactly ");
 			}
@@ -54,26 +66,33 @@ internal class TypeFilterOptions
 	}
 
 	/// <summary>
-	///     Appends the registered types as <c>"of type {type}"</c> (or <c>"of exact type {type}"</c> for exact
-	///     matches), joined by <c>" or "</c>.
+	///     Appends the types as <c>"of type {type}"</c> (or <c>"of exact type {type}"</c> for exact matches), joined by
+	///     <c>" or "</c>.
 	/// </summary>
 	internal void AppendOfTypeDescription(StringBuilder stringBuilder)
 	{
 		int index = 0;
-		foreach ((Type type, bool isDirect) in _types)
+		foreach ((Type type, bool isExact) in _types)
 		{
 			if (index++ > 0)
 			{
 				stringBuilder.Append(" or ");
 			}
 
-			stringBuilder.Append(isDirect ? "of exact type " : "of type ");
+			stringBuilder.Append(isExact ? "of exact type " : "of type ");
 			Formatter.Format(stringBuilder, type);
 		}
 	}
 
 	/// <summary>
-	///     Registers a <paramref name="type" />.
+	///     Returns options with the alternative <paramref name="type" />, matched exactly when
+	///     <paramref name="exactly" /> is <see langword="true" />.
 	/// </summary>
-	public void RegisterType(Type type, bool exactly) => _types.Add((type, exactly));
+	public TypeFilterOptions WithType(Type type, bool exactly)
+	{
+		(Type, bool)[] types = new (Type, bool)[_types.Length + 1];
+		_types.CopyTo(types, 0);
+		types[_types.Length] = (type, exactly);
+		return new TypeFilterOptions(types);
+	}
 }

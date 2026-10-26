@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Core;
 using aweXpect.Core.Extending;
@@ -14,16 +13,16 @@ namespace aweXpect.Reflection.Results;
 /// </summary>
 public sealed class VersionResult<TType> : AndOrResult<TType, IThat<TType?>>
 {
-	private readonly List<VersionComponentCheck> _checks = [];
+	private readonly OptionsHolder<VersionComponentCheck[]> _checks = new([]);
 
 	internal VersionResult(IThat<TType?> subject,
-		Func<ExpectationBuilder, List<VersionComponentCheck>, ExpectationBuilder> addConstraint)
+		Func<ExpectationBuilder, IReadOnlyOptionsHolder<VersionComponentCheck[]>, ExpectationBuilder> addConstraint)
 		: this(subject, subject.Get().ExpectationBuilder, addConstraint)
 	{
 	}
 
 	private VersionResult(IThat<TType?> subject, ExpectationBuilder expectationBuilder,
-		Func<ExpectationBuilder, List<VersionComponentCheck>, ExpectationBuilder> addConstraint)
+		Func<ExpectationBuilder, IReadOnlyOptionsHolder<VersionComponentCheck[]>, ExpectationBuilder> addConstraint)
 		: base(expectationBuilder, subject)
 	{
 		addConstraint(expectationBuilder, _checks);
@@ -55,7 +54,7 @@ public sealed class VersionResult<TType> : AndOrResult<TType, IThat<TType?>>
 	internal VersionResult<TType> Add(string component, Func<Version, int> selector,
 		PropertyComparison<int> comparison)
 	{
-		_checks.Add(new VersionComponentCheck(component, selector, comparison));
+		_checks.Value = [.. _checks.Value, new VersionComponentCheck(component, selector, comparison),];
 		return this;
 	}
 }

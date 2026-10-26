@@ -26,8 +26,7 @@ public static partial class ThatField
 	public static OfTypeResult<FieldInfo> IsOfExactType(
 		this IThat<FieldInfo?> subject, Type fieldType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(fieldType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(fieldType, true));
 		return new OfTypeResult<FieldInfo>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)
@@ -51,8 +50,7 @@ public static partial class ThatField
 	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsNotOfExactType(
 		this IThat<FieldInfo?> subject, Type fieldType)
 	{
-		TypeFilterOptions typeFilterOptions = new();
-		typeFilterOptions.RegisterType(fieldType, true);
+		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(fieldType, true));
 		return new AndOrResult<FieldInfo, IThat<FieldInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
 				static (typeFilterOptions, it, grammars)

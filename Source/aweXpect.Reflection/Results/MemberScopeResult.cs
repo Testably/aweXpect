@@ -1,4 +1,5 @@
 ﻿using aweXpect.Core;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
@@ -17,13 +18,13 @@ namespace aweXpect.Reflection.Results;
 /// </remarks>
 public sealed class MemberScopeResult<TType, TValue> : InheritanceScopeResult<TType, TValue>
 {
-	private readonly ScopeOptions _scope;
+	private readonly OptionsHolder<MemberScopes> _scope;
 	private readonly IThat<TValue> _subject;
 
 	internal MemberScopeResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<TValue> subject,
-		ScopeOptions scope)
+		OptionsHolder<MemberScopes> scope)
 		: base(expectationBuilder, subject, scope)
 	{
 		_subject = subject;

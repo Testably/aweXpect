@@ -18,12 +18,12 @@ public static partial class ThatField
 	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> DoesNotHave<TAttribute>(this IThat<FieldInfo?> subject)
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
-		return new AndOrResult<FieldInfo, IThat<FieldInfo?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
+		AttributeFilter<FieldInfo?> attributeFilter = new(
+			new AttributeFilterOptions<FieldInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute<TAttribute>());
+		return new AndOrResult<FieldInfo, IThat<FieldInfo?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter).Invert()),
 			subject);
 	}
 }

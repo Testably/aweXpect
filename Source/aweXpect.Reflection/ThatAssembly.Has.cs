@@ -20,14 +20,14 @@ public static partial class ThatAssembly
 	public static HasAttributeWithoutInheritResult<Assembly, Assembly?> Has<TAttribute>(this IThat<Assembly?> subject)
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<Assembly?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>();
-		return new HasAttributeWithoutInheritResult<Assembly, Assembly?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
+		AttributeFilter<Assembly?> attributeFilter = new(
+			new AttributeFilterOptions<Assembly?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute<TAttribute>());
+		return new HasAttributeWithoutInheritResult<Assembly, Assembly?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter)),
 			subject,
-			attributeFilterOptions);
+			attributeFilter);
 	}
 
 	/// <summary>
@@ -42,32 +42,32 @@ public static partial class ThatAssembly
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		AttributeFilterOptions<Assembly?> attributeFilterOptions =
-			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(predicate, doNotPopulateThisValue.TrimExpression());
-		return new HasAttributeWithoutInheritResult<Assembly, Assembly?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
-				static (attributeFilterOptions, it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
+		AttributeFilter<Assembly?> attributeFilter = new(
+			new AttributeFilterOptions<Assembly?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
+		return new HasAttributeWithoutInheritResult<Assembly, Assembly?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter)),
 			subject,
-			attributeFilterOptions);
+			attributeFilter);
 	}
 
 	private sealed class HasAttributeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		AttributeFilterOptions<Assembly?> attributeFilterOptions)
+		AttributeFilter<Assembly?> attributeFilter)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
 			IValueConstraint<Assembly?>
 	{
 		public ConstraintResult IsMetBy(Assembly? actual)
 		{
 			Actual = actual;
-			Outcome = attributeFilterOptions.Matches(actual) ? Outcome.Success : Outcome.Failure;
+			Outcome = attributeFilter.Matches(actual) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			=> attributeFilter.AppendExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -76,7 +76,7 @@ public static partial class ThatAssembly
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
+			=> attributeFilter.AppendExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
