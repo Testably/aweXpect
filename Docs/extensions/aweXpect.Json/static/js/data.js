@@ -852,6 +852,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
         "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
+      },
+      {
+        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
+        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
       }
     ],
     "labels": [
@@ -996,7 +1002,8 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "20357097",
-      "1dc71bae"
+      "1dc71bae",
+      "5520582a"
     ],
     "datasets": [
       {
@@ -1144,7 +1151,8 @@ window.BENCHMARK_DATA = {
           1998.5301905314127,
           1144.5054862682637,
           2047.760078938802,
-          1743.8749532699585
+          1743.8749532699585,
+          1555.8806336266655
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1290,6 +1298,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -1453,7 +1462,8 @@ window.BENCHMARK_DATA = {
           14742.2350189209,
           7176.637215169271,
           16381.57700805664,
-          12821.364896501813
+          12821.364896501813,
+          10373.62582724435
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1465,6 +1475,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -2472,6 +2483,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
         "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
+      },
+      {
+        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
+        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
       }
     ],
     "labels": [
@@ -2616,7 +2633,8 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "20357097",
-      "1dc71bae"
+      "1dc71bae",
+      "5520582a"
     ],
     "datasets": [
       {
@@ -2764,7 +2782,8 @@ window.BENCHMARK_DATA = {
           1627.0530489408052,
           938.326703291673,
           1715.6842297871908,
-          1370.1837903431483
+          1370.1837903431483,
+          1237.6183641873872
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2910,6 +2929,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -3073,7 +3093,8 @@ window.BENCHMARK_DATA = {
           13581.928694588798,
           6760.275062561035,
           14844.47417195638,
-          12044.597059122721
+          12044.597059122721,
+          9507.562659630408
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3085,6 +3106,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -4032,6 +4054,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
         "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
+      },
+      {
+        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
+        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
       }
     ],
     "labels": [
@@ -4166,7 +4194,8 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "20357097",
-      "1dc71bae"
+      "1dc71bae",
+      "5520582a"
     ],
     "datasets": [
       {
@@ -4304,7 +4333,8 @@ window.BENCHMARK_DATA = {
           5163.1312185014995,
           3051.8622027079264,
           5443.847474161784,
-          4173.6183504377095
+          4173.6183504377095,
+          3929.077146911621
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4440,6 +4470,7 @@ window.BENCHMARK_DATA = {
           3736,
           3736,
           3736,
+          3712,
           3712,
           3712,
           3712,
@@ -4593,7 +4624,8 @@ window.BENCHMARK_DATA = {
           40533.5778902494,
           19434.500352125902,
           48195.047912597656,
-          36000.69462702824
+          36000.69462702824,
+          29005.375069754464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4736,7 +4768,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
-          61925
+          61925,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5542,6 +5575,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
         "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
+      },
+      {
+        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
+        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
       }
     ],
     "labels": [
@@ -5676,7 +5715,8 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "20357097",
-      "1dc71bae"
+      "1dc71bae",
+      "5520582a"
     ],
     "datasets": [
       {
@@ -5814,7 +5854,8 @@ window.BENCHMARK_DATA = {
           9605.55645106389,
           5083.516858237131,
           9829.43128306071,
-          8322.804649353027
+          8322.804649353027,
+          7380.94525381235
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5950,6 +5991,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -6103,7 +6145,8 @@ window.BENCHMARK_DATA = {
           287268.4398925781,
           141520.58675711494,
           305976.151297433,
-          249743.68704427083
+          249743.68704427083,
+          209206.36682942708
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6246,7 +6289,8 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
-          521541
+          521541,
+          521594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7052,6 +7096,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
         "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
+      },
+      {
+        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
+        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
       }
     ],
     "labels": [
@@ -7186,7 +7236,8 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "20357097",
-      "1dc71bae"
+      "1dc71bae",
+      "5520582a"
     ],
     "datasets": [
       {
@@ -7324,7 +7375,8 @@ window.BENCHMARK_DATA = {
           2874.9522822243825,
           1593.3387859344482,
           2859.910303388323,
-          2629.9251869746618
+          2629.9251869746618,
+          2213.655953816005
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7462,6 +7514,7 @@ window.BENCHMARK_DATA = {
           1488,
           1360,
           1360,
+          1288,
           1288,
           1288,
           1288,
@@ -7613,7 +7666,8 @@ window.BENCHMARK_DATA = {
           1999.9706717899867,
           1061.9097052982875,
           2061.7027366638185,
-          1917.626728602818
+          1917.626728602818,
+          1560.3824951171875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7625,6 +7679,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -8562,6 +8617,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
         "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
+      },
+      {
+        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
+        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
       }
     ],
     "labels": [
@@ -8696,7 +8757,8 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "20357097",
-      "1dc71bae"
+      "1dc71bae",
+      "5520582a"
     ],
     "datasets": [
       {
@@ -8834,7 +8896,8 @@ window.BENCHMARK_DATA = {
           2732.7821927751816,
           1365.1781311035156,
           2739.7035283406576,
-          2207.171106719971
+          2207.171106719971,
+          2106.5819759368896
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8972,6 +9035,7 @@ window.BENCHMARK_DATA = {
           2832,
           2832,
           2832,
+          2776,
           2776,
           2776,
           2776,
@@ -9123,7 +9187,8 @@ window.BENCHMARK_DATA = {
           2032.941022491455,
           856.7953752108982,
           1977.3048049926758,
-          2056.406147548131
+          2056.406147548131,
+          1397.956110127767
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9135,6 +9200,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -9370,6 +9436,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
         "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
+      },
+      {
+        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
+        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
       }
     ],
     "labels": [
@@ -9387,7 +9459,8 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "20357097",
-      "1dc71bae"
+      "1dc71bae",
+      "5520582a"
     ],
     "datasets": [
       {
@@ -9408,7 +9481,8 @@ window.BENCHMARK_DATA = {
           2150.017341359456,
           1131.88678755079,
           2103.64189453125,
-          1855.3363744099936
+          1855.3363744099936,
+          1632.067563756307
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9420,6 +9494,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2888,
           2888,
           2888,
           2888,
@@ -9463,7 +9538,8 @@ window.BENCHMARK_DATA = {
           1347.3144874572754,
           595.3509517033895,
           1178.3722721099853,
-          1470.8178543090821
+          1470.8178543090821,
+          956.542239634196
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9475,6 +9551,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -9593,6 +9670,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
         "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
+      },
+      {
+        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
+        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
       }
     ],
     "labels": [
@@ -9610,7 +9693,8 @@ window.BENCHMARK_DATA = {
       "cb617241",
       "7294afca",
       "20357097",
-      "1dc71bae"
+      "1dc71bae",
+      "5520582a"
     ],
     "datasets": [
       {
@@ -9631,7 +9715,8 @@ window.BENCHMARK_DATA = {
           2966.209689839681,
           1508.3880148569742,
           3074.059043629964,
-          2663.779745992025
+          2663.779745992025,
+          2288.356576283773
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9650,6 +9735,7 @@ window.BENCHMARK_DATA = {
           3768,
           3768,
           3768,
+          3744,
           3744,
           3744,
           3744,
@@ -9686,7 +9772,8 @@ window.BENCHMARK_DATA = {
           1547.9981408800397,
           667.9071994145711,
           1448.817500559489,
-          1690.9243260792323
+          1690.9243260792323,
+          1050.104055404663
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9698,6 +9785,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
