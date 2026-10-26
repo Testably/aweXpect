@@ -7,7 +7,7 @@ You can verify that a string matches the snapshot that is stored next to the tes
 ```csharp
 public class AlbumTests
 {
-    [Fact]
+    [Test]
     public async Task Describes()
     {
         string description = Describe(new Album("Abbey Road"));

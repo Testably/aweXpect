@@ -9,6 +9,9 @@ Describes the possible expectations for collections, e.g. arrays, lists, sets or
 | [Sort order](./03-order.md)                  | `IsInAscendingOrder`, `IsInDescendingOrder`                                         |
 | [Dictionaries](./04-dictionaries.md)         | `ContainsKey`, `ContainsValue`, `Keys`, `Values` and dictionary equality            |
 
+In the overview tables of these pages, "negated comparison" marks a `Has…` expectation without a negated twin, such as
+`HasCount()`: negate the comparison instead, e.g. `HasCount().NotEqualTo(3)`.
+
 :::note[.NET 8 or later: `IAsyncEnumerable<T>`]
 On .NET 8 or later, every collection expectation, except the ones for [dictionaries](./04-dictionaries.md), works the
 same way for an `IAsyncEnumerable<T>`. The expectation enumerates it asynchronously and passes its
@@ -25,6 +28,20 @@ later. With an older language version, such a call can bind to a different overl
 `<LangVersion>` to `13` or `latest` in a project that targets an older framework.
 
 </details>
+
+## Choosing an expectation
+
+Several expectations verify that some item matches. They differ in what you can add to them:
+
+| Expectation                                               | Use it when                                                                                     |
+|-----------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| [`Contains(predicate)`](./01-equality.md#predicate)       | a predicate is enough, optionally with how often it matches, e.g. `.AtLeast(2)`                 |
+| [`Any().Satisfy(…)`](./02-items.md#condition)             | the same with a quantifier, which also offers `All()` and `None()`                              |
+| [`Any().ComplyWith(…)`](./02-items.md#nested-expectation) | the item needs an expectation instead of a predicate, e.g. `IsEquivalentTo` or a string option  |
+| [`HasItem`, `HasItemThat`](./02-items.md#item-at-index)   | the position matters (`AtIndex(…)`); a failure then names the item that was found at the index |
+
+A failure message shows the predicate as written, while for a nested expectation it describes the expectation, e.g.
+`is greater than 2 for at least one item`.
 
 ## Spans
 

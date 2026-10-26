@@ -19,7 +19,7 @@ The reference pages describe the details:
 | [`Equivalent()`](#equivalency)                                        | a comparison by equivalency instead of equality | [Equivalency](../04-values/13-equivalency.md)                       |
 | [`Within(tolerance)`](#tolerance)                                     | a tolerance for numbers and times               | [Number](../04-values/02-number.md#tolerance)                       |
 | [`InAnyOrder()`, `IgnoringDuplicates()`, …](#collection-options)      | how collections are compared                    | [Collections](../05-collections/01-equality.md)                     |
-| `Once()`, `Never()`, `AtLeast(2.Times())`, `AtLeast().Twice()`, …     | how often an item must occur                    | [Contained items](../05-collections/01-equality.md#contained-items) |
+| `Once()`, `Never()`, `AtLeast(2)`, `AtLeast().Twice()`, …             | how often an item must occur                    | [Contained items](../05-collections/01-equality.md#contained-items) |
 | [`Within(timeout)`, `WithTimeout(…)`, `WithCancellation(…)`](#time)   | how long an expectation may take or wait        | [Time and cancellation](./06-time-and-cancellation.md)              |
 
 ## Because

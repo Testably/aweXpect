@@ -119,8 +119,8 @@ await Expect.That(recording).DidNotTrigger(nameof(Player.TrackStarted));
 ```
 
 `Triggered` expects the event at least once, and `DidNotTrigger` is equivalent to `Triggered(…).Never()`. A count
-negates the expectation, so `DidNotTrigger(nameof(Player.TrackStarted)).AtLeast(2.Times())` expects the event to be
-triggered less than twice.
+negates the expectation, so `DidNotTrigger(nameof(Player.TrackStarted)).AtLeast(2)` expects the event to be triggered
+less than twice.
 
 Without `Within(…)`, only the events recorded so far count. To wait for events that are triggered in the background,
 see [waiting for events](../03-how-it-works/06-time-and-cancellation.md#events).
@@ -130,21 +130,18 @@ see [waiting for events](../03-how-it-works/06-time-and-cancellation.md#events).
 You can verify that an event was recorded a specific number of times:
 
 ```csharp
-using aweXpect.Core; // for `Times()`
-
 IEventRecording<Player> recording = player.Record().Events();
 
 player.Play("Let It Be");
 player.Play("Yesterday");
 
-await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Between(1).And(2.Times());
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Between(1).And(2);
 ```
 
 The same occurrence constraints as for [`Contains`](../05-collections/01-equality.md#contained-items) are available:
-`AtLeast(2.Times())`, `AtMost(3.Times())`, `Between(1).And(4.Times())`, `Exactly(0.Times())`, `MoreThan(1.Times())`,
-`LessThan(3.Times())`, `Once()`, `Twice()` and `Never()`. `AtLeast`, `AtMost`, `MoreThan` and `LessThan` can also be
-followed by `Once()` or `Twice()`, as in `AtLeast().Once()`, `AtMost().Twice()`, `MoreThan().Once()` and
-`LessThan().Twice()`:
+`AtLeast(2)`, `AtMost(3)`, `Between(1).And(4)`, `Exactly(0)`, `MoreThan(1)`, `LessThan(3)`, `Once()`, `Twice()` and
+`Never()`. `AtLeast`, `AtMost`, `MoreThan` and `LessThan` can also be followed by `Once()` or `Twice()`, as in
+`AtLeast().Once()`, `AtMost().Twice()`, `MoreThan().Once()` and `LessThan().Twice()`:
 
 ```csharp
 IEventRecording<Player> recording = player.Record().Events();

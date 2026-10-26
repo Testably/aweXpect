@@ -175,6 +175,19 @@ vocabulary for an exception that is the subject itself:
 | [`Whose`](#other-members)                                     | `Whose`                        | any other member                          |
 | [`Which`](#other-members)                                     |                                | continues with the exception as subject   |
 
+An exception is the subject itself, e.g. when a method returns it or a callback receives it:
+
+```csharp
+Exception exception = new CustomException("Yesterday", new CustomException("Let It Be"), hResult: 12345);
+ArgumentException argumentException = new ArgumentNullException("album");
+
+await Expect.That(exception).HasMessage("Yesterday");
+await Expect.That(exception).HasHResult().GreaterThan(12340);
+await Expect.That(exception).HasInner<CustomException>(inner => inner.HasMessage("Let It Be"));
+await Expect.That(exception).HasRecursiveInnerExceptions(innerExceptions => innerExceptions.All().Are<CustomException>());
+await Expect.That(argumentException).HasParamName("album");
+```
+
 ### Exception message
 
 You can verify the message of the thrown exception:

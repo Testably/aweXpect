@@ -1,4 +1,4 @@
-# Configuration
+# Customization
 
 The customizations of this library live under `Customize.aweXpect.Reflection()`, which this library provides in the
 namespace `aweXpect.Reflection`, together with the enums `CompilerGeneratedMembers` and `SpecialNameMembers`. The

@@ -6,6 +6,25 @@
 snapshots, which are stored next to the tests or in a store of your own, e.g. to verify generated text or a complex
 result without writing out the expected value.
 
+## Installation
+
+```ps
+dotnet add package aweXpect.Snapshots
+```
+
+- [aweXpect.Snapshots](https://www.nuget.org/packages/aweXpect.Snapshots): `MatchesSnapshot` for strings, objects,
+  binary data and files. The other two packages bring it with them.
+- [aweXpect.Snapshots.DiffEngine](https://www.nuget.org/packages/aweXpect.Snapshots.DiffEngine): add it to open a diff
+  tool for a missing or different snapshot when the tests run locally; it registers itself, see
+  [Diff tools](./10-diff-tools.md).
+- [aweXpect.Snapshots.PublicApi](https://www.nuget.org/packages/aweXpect.Snapshots.PublicApi): add it to verify the
+  public API of an assembly with `MatchesPublicApiSnapshot`, see [Public API](./11-public-api.md).
+
+The packages bring `Expect.That` with them, but not the expectations for strings, numbers or collections, so reference
+[`aweXpect`](https://www.nuget.org/packages/aweXpect) as well. `MatchesSnapshot` and `MatchesPublicApiSnapshot` live in
+the namespace `aweXpect`; `OrphanedSnapshots`, `SnapshotAcceptance`, `SnapshotRule` and the
+[customization](#customization) need `using aweXpect.Snapshots;`.
+
 ## At a glance
 
 ```csharp
@@ -63,12 +82,32 @@ the change can be taken over into the snapshot; see [Diff tools](./10-diff-tools
 
 ## Overview
 
-| Expectation                                                                      | Subject  | Summary                                                 |
-|----------------------------------------------------------------------------------|----------|---------------------------------------------------------|
-| [`MatchesSnapshot`](./01-matching-snapshots.md#strings)              | `string` | matches the snapshot stored next to the test            |
-| [`MatchesSnapshot`](./01-matching-snapshots.md#objects) | any `T`  | matches the snapshot of the object, written by aweXpect |
-| [`MatchesPublicApiSnapshot`](./11-public-api.md) | `Assembly` | matches the snapshot of the public API of the assembly |
-| [`MatchesPublicApiSnapshot`](./11-public-api.md) | `FileInfo` | matches the snapshot of the public API of the assembly in the file |
+Expectations for `string` and any other object:
+
+| Expectation                                             | Negated | Summary                                               |
+|---------------------------------------------------------|---------|-------------------------------------------------------|
+| [`MatchesSnapshot`](./01-matching-snapshots.md#strings) |         | a string matches the snapshot stored next to the test |
+| [`MatchesSnapshot`](./01-matching-snapshots.md#objects) |         | an object matches its snapshot, written by aweXpect   |
+
+Expectations for `Assembly` and `FileInfo`, from aweXpect.Snapshots.PublicApi:
+
+| Expectation                                      | Negated | Summary                                                                              |
+|--------------------------------------------------|---------|--------------------------------------------------------------------------------------|
+| [`MatchesPublicApiSnapshot`](./11-public-api.md) |         | the public API of the assembly, or of the assembly in the file, matches the snapshot |
+
+## Customization
+
+The settings live under `Customize.aweXpect.Snapshots()` in the namespace `aweXpect.Snapshots`. A value set there
+applies to the current async flow, e.g. a single test; set it on `Customize.aweXpect.Global.Snapshots()` to apply it
+to all tests:
+
+| Value                                               | Default                                                  | Summary                                                      |
+|-----------------------------------------------------|----------------------------------------------------------|--------------------------------------------------------------|
+| [`Acceptance`](./02-accepting-snapshots.md)         | `null`, left to the variable `AWEXPECT_ACCEPT_SNAPSHOTS` | which missing or changed snapshots are accepted              |
+| [`Rules`](./04-masking-values.md#for-all-snapshots) | none                                                     | the rules to mask or ignore values in every snapshot         |
+| [`Store`](./07-storing-snapshots.md)                | a file next to the test file                             | where the snapshots are kept                                 |
+| [`Comparers`](./08-comparers.md)                    | none                                                     | decide whether a value matches its snapshot, e.g. for images |
+| [`Reporters`](./09-reporters.md)                    | none                                                     | are told about every missing, different or matching snapshot |
 
 ## Documentation
 

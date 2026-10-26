@@ -9,7 +9,7 @@ index.
 |-------------------------------------|-----------------------|-------------------------------------------------------------------|
 | [`HasCount`](#count)                | negated comparison    | has the expected number of items                                  |
 | [`IsEmpty`](#count)                 | `IsNotEmpty`          | has no items                                                      |
-| [`All()`, `Any()`, …](#quantifiers) | `None()`              | the selected number of items meet an expectation                  |
+| [`All()`, `Any()`, …](#quantifiers) | use `None()`          | the selected number of items meet an expectation                  |
 | [`HasSingle`](#single-item)         |                       | has exactly one (matching) item                                   |
 | [`HasItem`](#item-at-index)         | `DoesNotHaveItem`     | has the expected item at an index or at any index                 |
 | [`HasItemThat`](#item-at-index)     | `DoesNotHaveItemThat` | has an item that meets an expectation at an index or at any index |
@@ -101,6 +101,10 @@ Track[] tracks = [new() { Title = "Let It Be", PlayCount = 3 }, new() { Title = 
 await Expect.That(tracks).Any().Satisfy(track => track.PlayCount > 0);
 await Expect.That(tracks).None().Satisfy(track => track.Title == null);
 ```
+
+[`Contains(predicate)`](./01-equality.md#predicate) verifies the same as `Any().Satisfy(…)`, and
+[`HasItem`](#item-at-index) verifies the item at an index, see
+[choosing an expectation](./index.md#choosing-an-expectation).
 
 ### Equality
 
@@ -231,6 +235,9 @@ IEnumerable<string> songs = ["Two of Us", "Dig a Pony", "Across the Universe", "
 await Expect.That(songs).HasItemThat(it => it.IsEqualTo("Dig a Pony")).AtIndex(1);
 await Expect.That(songs).HasItemThat(it => it.StartsWith("Across").And.EndsWith("Universe")); // at any index
 ```
+
+At any index, `HasItem(predicate)` and `HasItemThat` verify the same as `Any().Satisfy(…)` and
+`Any().ComplyWith(…)`, see [choosing an expectation](./index.md#choosing-an-expectation).
 
 Each of these expectations has a negated counterpart. It is satisfied when the index holds a different item, and also
 when the collection is too short to have an item at that index:

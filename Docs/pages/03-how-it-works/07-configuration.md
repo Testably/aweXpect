@@ -1,6 +1,6 @@
 # Configuration
 
-You can customize certain behavior or specify default values to use globally.
+You can customize certain behaviour or specify default values to use globally.
 
 All customizations are located in the static `Customize.aweXpect` class. Groups such as `Formatting()` bundle related
 customization values, and each value is stored on its own with a dedicated `Get` and `Set` method. The `Set` method

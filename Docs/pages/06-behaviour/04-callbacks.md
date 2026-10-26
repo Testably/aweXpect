@@ -2,9 +2,10 @@
 
 Describes the possible expectations for working with callbacks.
 
-| Expectation             | Negated        | Summary                                       |
-|-------------------------|----------------|-----------------------------------------------|
-| [`Signaled`](#signaler) | `DidNotSignal` | the callback was signaled (a number of times) |
+| Expectation                                                          | Negated        | Summary                                            |
+|----------------------------------------------------------------------|----------------|----------------------------------------------------|
+| [`Signaled`](#signaler)                                              | `DidNotSignal` | the callback was signaled (a number of times)      |
+| [`Wait`, `WaitAsync`, `IsSignaled`](#waiting-without-an-expectation) |                | waits for or checks signals without an expectation |
 
 ## Signaler
 
@@ -57,21 +58,19 @@ full timeout to succeed, see [waiting for callbacks](../03-how-it-works/06-time-
 You can specify how often a callback must be signaled:
 
 ```csharp
-using aweXpect.Core; // for `Times()`
-
-await Expect.That(signaler).Signaled().AtLeast(3.Times());
-await Expect.That(signaler).Signaled().Exactly(3.Times());
-await Expect.That(signaler).Signaled().AtMost(3.Times());
-await Expect.That(signaler).Signaled().MoreThan(2.Times());
-await Expect.That(signaler).Signaled().LessThan(3.Times());
-await Expect.That(signaler).Signaled().Between(2).And(4.Times());
+await Expect.That(signaler).Signaled().AtLeast(3);
+await Expect.That(signaler).Signaled().Exactly(3);
+await Expect.That(signaler).Signaled().AtMost(3);
+await Expect.That(signaler).Signaled().MoreThan(2);
+await Expect.That(signaler).Signaled().LessThan(3);
+await Expect.That(signaler).Signaled().Between(2).And(4);
 await Expect.That(signaler).Signaled().Once();
 await Expect.That(signaler).Signaled().Twice();
 await Expect.That(signaler).Signaled().Never();
 ```
 
-`Signaled(3.Times())` is the shorthand for `Signaled().AtLeast(3.Times())`, and `DidNotSignal(3.Times())` expects
-the callback to be signaled fewer than three times.
+`Signaled(3)` is the shorthand for `Signaled().AtLeast(3)`, and `DidNotSignal(3)` expects the callback to be
+signaled fewer than three times.
 
 ### Parameters
 
@@ -84,7 +83,7 @@ signaler.Signal("Yesterday");
 signaler.Signal("Let It Be");
 signaler.Signal("Yesterday");
 
-await Expect.That(signaler).Signaled().AtLeast(2.Times()).With(p => p == "Yesterday");
+await Expect.That(signaler).Signaled().AtLeast(2).With(p => p == "Yesterday");
 ```
 
 `WhoseParameters` continues with expectations on the collection of recorded parameters that match the filter from
@@ -96,7 +95,7 @@ Signaler<string> signaler = new();
 signaler.Signal("Yesterday");
 signaler.Signal("Let It Be");
 
-await Expect.That(signaler).Signaled().AtLeast(2.Times()).WhoseParameters.Contains("Let It Be");
+await Expect.That(signaler).Signaled().AtLeast(2).WhoseParameters.Contains("Let It Be");
 ```
 
 A failure message lists the recorded parameters.
@@ -121,8 +120,8 @@ Fail.Unless(result.IsSuccess, $"only {result.Count} tracks completed: {completed
 ```csharp
 Signaler<string> signaler = new();
 
-bool isSignaled = signaler.IsSignaled(2.Times());
-SignalerResult<string> result = signaler.Wait(2.Times(), title => title.StartsWith("Let"));
+bool isSignaled = signaler.IsSignaled(2);
+SignalerResult<string> result = signaler.Wait(2, title => title.StartsWith("Let"));
 ```
 
 All parameters are optional and have the same meaning for `Wait` and `WaitAsync`:

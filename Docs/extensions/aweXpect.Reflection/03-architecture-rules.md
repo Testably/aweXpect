@@ -45,7 +45,7 @@ Nested types are separate types with their own dependency surface: verifying `ty
 include what `Outer.Inner` references. The collection-based expectations (e.g. over `Types.InNamespace(…)`)
 enumerate nested types as their own items and therefore cover them. For IL/body-level accuracy, plug in
 your own resolver via `Customize.aweXpect.Reflection().DependencyResolver` (see
-[Configuration](./04-configuration.md#dependency-resolver)).
+[Customization](./04-configuration.md#dependency-resolver)).
 :::
 
 Namespace matching is ordinal and case-sensitive and, like `WhichAreWithinNamespace`, includes sub-namespaces by

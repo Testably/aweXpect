@@ -5,6 +5,16 @@
 [aweXpect.Web](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Web) contains expectations for `HttpRequestMessage`,
 `HttpResponseMessage`, `Uri` and `IPAddress`, e.g. to verify the responses of an `HttpClient`.
 
+## Installation
+
+```ps
+dotnet add package aweXpect.Web
+```
+
+The package brings `Expect.That` with it, but not the expectations for strings, numbers or collections, so reference
+[`aweXpect`](https://www.nuget.org/packages/aweXpect) as well. The expectations live in the namespace `aweXpect`, so
+`using aweXpect;` is all you need; only the [customization](./04-customization.md) lives in `aweXpect.Web`.
+
 ## At a glance
 
 ```csharp

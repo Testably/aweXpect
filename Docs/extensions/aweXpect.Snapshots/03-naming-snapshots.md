@@ -4,9 +4,9 @@ The cases of a parameterized test share the name of the test method, so give eac
 `.Named(…)`:
 
 ```csharp
-[Theory]
-[InlineData("Abbey Road")]
-[InlineData("Let It Be")]
+[Test]
+[Arguments("Abbey Road")]
+[Arguments("Let It Be")]
 public async Task Describes(string title)
 {
     string description = Describe(new Album(title));
@@ -67,9 +67,9 @@ but the snapshot "/src/Tests/AlbumTests.Describes.Live.awexpect-snapshot.txt", w
 and under Native AOT:
 
 ```csharp
-[Theory]
-[InlineData("Abbey Road", 1969)]
-[InlineData("Let It Be", 1970)]
+[Test]
+[Arguments("Abbey Road", 1969)]
+[Arguments("Let It Be", 1970)]
 public async Task Describes(string title, int year)
 {
     string description = Describe(new Album(title, year));

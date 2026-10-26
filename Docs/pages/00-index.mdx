@@ -30,32 +30,7 @@ but it was "It's a complement", which differs at index 12:
 ## Why aweXpect?
 
 <Tabs groupId="aweXpectFeatures">
-<TabItem value="extensible" label="Extensible" default>
-
-The [`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core) package is intentionally kept stable so extensions
-don't fight over versions. Ready-made [extension packages](./07-extensions/index.md) cover JSON
-([aweXpect.Json](/aweXpect/extensions/aweXpect.Json)), HTTP ([aweXpect.Web](/aweXpect/extensions/aweXpect.Web)),
-architecture tests ([aweXpect.Reflection](/aweXpect/extensions/aweXpect.Reflection)), file and time systems
-([aweXpect.Testably](/aweXpect/extensions/aweXpect.Testably)) and mocks
-([aweXpect.Mockolate](/aweXpect/extensions/aweXpect.Mockolate)).
-
-Add expectations for any other type with extension methods on `IThat<TType>`:
-
-```csharp
-public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(
-    this IThat<Track?> subject)
-    => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new IsRadioFriendlyConstraint(it, grammars)),
-        subject);
-
-// usage
-await Expect.That(track).IsRadioFriendly();
-```
-
-The full walkthrough is at [Extending aweXpect](./11-extending/index.md).
-
-</TabItem>
-<TabItem value="async" label="Async-first">
+<TabItem value="async" label="Async-first" default>
 
 Every expectation is awaited. The same fluent chain works for sync values, `Task`, `IAsyncEnumerable`, exceptions and
 HTTP responses (with the separate [aweXpect.Web](/aweXpect/extensions/aweXpect.Web) package): there is no
@@ -82,6 +57,33 @@ await Expect.That(() => _player.SetVolumeAsync(-1))
 Because the chain is awaited, `Because(...)` and `WithCancellation(...)` attach once at the end instead of being
 threaded through every method. Multiple expectations compose directly via `Expect.ThatAll(...)`, without a
 thread-static assertion scope.
+
+</TabItem>
+<TabItem value="extensible" label="Extensible">
+
+The [`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core) package is intentionally kept stable so extensions
+don't fight over versions. Ready-made [extension packages](./07-extensions/index.md) cover JSON
+([aweXpect.Json](/aweXpect/extensions/aweXpect.Json)), HTTP ([aweXpect.Web](/aweXpect/extensions/aweXpect.Web)),
+architecture tests ([aweXpect.Reflection](/aweXpect/extensions/aweXpect.Reflection)), file and time systems
+([aweXpect.Testably](/aweXpect/extensions/aweXpect.Testably)) and mocks
+([aweXpect.Mockolate](/aweXpect/extensions/aweXpect.Mockolate)).
+
+Add expectations for any other type as extension methods on `IThat<T>`. For a simple condition, a source generator
+writes the expectation, its negation and the failure messages for you:
+
+```csharp no-compile
+public static partial class ThatTrack
+{
+    [GenerateExpectation("Is{Not}RadioFriendly", "is {not} radio friendly")]
+    private static bool IsRadioFriendly(Track track)
+        => track.Duration < TimeSpan.FromMinutes(4);
+}
+
+// usage
+await Expect.That(track).IsRadioFriendly();
+```
+
+The full walkthrough is at [Extending aweXpect](./11-extending/index.md).
 
 </TabItem>
 <TabItem value="performant" label="Performant">
@@ -112,21 +114,8 @@ assertion exception of the test framework, see
 </TabItem>
 <TabItem value="aot" label="Native AOT">
 
-`aweXpect` and `aweXpect.Core` are trimmable and AOT compatible for `net8.0` and later, so a test project can be
-published with Native AOT:
-
-```xml title="Tests.csproj"
-<PropertyGroup>
-  <PublishAot>true</PublishAot>
-</PropertyGroup>
-```
-
-Equivalency and event recording need the members and events of your types. A source generator that ships with the
-`aweXpect.Core` package registers them for each call site when your project is compiled, so they work without
-reflection. A comparison or recording of a type the generator could not see fails with an error that names the type
-and tells you how to register it, instead of silently verifying less.
-
-The details are in [Native AOT and trimming](./03-how-it-works/08-native-aot.md).
+`aweXpect` and `aweXpect.Core` are trimmable and AOT compatible on .NET 8 and later, see
+[Native AOT and trimming](./03-how-it-works/08-native-aot.md).
 
 </TabItem>
 </Tabs>
@@ -140,10 +129,10 @@ walkthrough.
 ## Where to go next
 
 - **[Getting Started](./02-getting-started.md)**: install the package and write your first expectation.
+- **[Find the expectation you need](./02-getting-started.md#find-the-expectation-you-need)**: the page that lists the
+  expectations for your subject, from values and collections to delegates, events and the extension packages.
 - **[Migration](/aweXpect/migration)**: automated code fixes for moving from FluentAssertions or `xunit.Assert`.
 - **[How aweXpect works](./03-how-it-works/index.md)**: awaiting, negation, combining, `null`, options, time and
   configuration.
-- **[Native AOT and trimming](./03-how-it-works/08-native-aot.md)**: how equivalency and event recording work in a
-  test project published with trimming or Native AOT.
 - **[Extending aweXpect](./11-extending/index.md)**: add expectations for your own types using
   `aweXpect.Core`.

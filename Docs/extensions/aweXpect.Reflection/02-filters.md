@@ -123,7 +123,7 @@ of them, e.g. `AccessModifiers.Public | AccessModifiers.Internal` reads "is publ
 [Arguments(AccessModifiers.Public | AccessModifiers.Internal)]
 public async Task TypesAreNotNested(AccessModifiers modifier)
 {
-    await Expect.That(In.AssemblyContaining<Foo>().Types().WhichAre(modifier))
+    await Expect.That(In.AssemblyContaining<PlaylistService>().Types().WhichAre(modifier))
         .AreNotNested();
 }
 
@@ -336,9 +336,8 @@ In.AllLoadedAssemblies().Types()
 
 Each quantifier applies only to the condition it directly follows; all other conditions implicitly require
 the member to occur _at least once_. The available quantifiers are `Exactly`, `AtLeast`, `AtMost`,
-`MoreThan`, `LessThan`, `Between(…).And(…)`, `Never`, `Once` and `Twice`. The counts are `Times` values, which
-an `int` converts to implicitly, so `.Exactly(1)` and `.Exactly(1.Times())` are the same, both on filters and on
-expectations.
+`MoreThan`, `LessThan`, `Between(…).And(…)`, `Never`, `Once` and `Twice`. The counts are plain `int` values, both on
+filters and on expectations.
 
 The same five member kinds are available as **expectations** on a single `Type` (`Contains…`) and on a
 collection of types (`Contain…`), using the same member-filter lambdas and the same quantifiers (default:
@@ -359,11 +358,11 @@ await Expect.That(typeof(PlaylistServiceTests))
 
 // …with exactly one parameterless constructor
 await Expect.That(typeof(PlaylistService))
-    .ContainsConstructors(constructors => constructors.WithoutParameters()).Exactly(1.Times());
+    .ContainsConstructors(constructors => constructors.WithoutParameters()).Exactly(1);
 
 // Every type in a collection contains a matching property
 await Expect.That(types)
-    .ContainProperties(properties => properties.With<RequiredAttribute>()).AtLeast(1.Times());
+    .ContainProperties(properties => properties.With<RequiredAttribute>()).AtLeast(1);
 ```
 
 ### Generic type arguments
@@ -747,10 +746,10 @@ and verify them directly:
 Assembly subject = Assembly.GetEntryAssembly();
 Assembly[] subjects = AppDomain.CurrentDomain.GetAssemblies();
 
-await Expect.That(subject).HasName("aweXpect").AsPrefix();
+await Expect.That(subject).HasName("MusicStore").AsPrefix();
 await Expect.That(subject).DependsOn("System.Core");
 await Expect.That(subject).DoesNotDependOn("UnwantedDependency");
-await Expect.That(subject).DependsOnlyOn("aweXpect.Core", "aweXpect");
+await Expect.That(subject).DependsOnlyOn("MusicStore.Domain");
 await Expect.That(subjects).Have<AssemblyTitleAttribute>();
 await Expect.That(subject).Targets("net8.0");
 ```

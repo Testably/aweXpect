@@ -69,10 +69,26 @@ is False, because the album is not in the library,
 but it was True
 ```
 
+## Find the expectation you need
+
+The expectations are grouped by the type of the subject:
+
+| What you test                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Where to look                                  |
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
+| [`bool`](./04-values/01-boolean.md), [numbers](./04-values/02-number.md), [`string`](./04-values/03-string.md), [`char`](./04-values/04-char.md), [enums](./04-values/05-enum.md), [`Guid`](./04-values/06-guid.md), [`Version`](./04-values/07-version.md), [`Stream`](./04-values/08-stream.md), [`TimeSpan`](./04-values/09-timespan.md), [`DateTime`](./04-values/10-datetime-offset.md), [any object](./04-values/12-object.md), [equivalency](./04-values/13-equivalency.md) | [Values](./04-values/index.md)                 |
+| `IEnumerable<T>`, arrays, [dictionaries](./05-collections/04-dictionaries.md)                                                                                                                                                                                                                                                                                                                                                                                                      | [Collections](./05-collections/index.md)       |
+| [delegates and exceptions](./06-behaviour/01-delegates.md), [`Task`](./06-behaviour/02-tasks.md), [events](./06-behaviour/03-events.md), [callbacks](./06-behaviour/04-callbacks.md)                                                                                                                                                                                                                                                                                               | [Behaviour](./06-behaviour/index.md)           |
+| JSON, XML, HTTP, `Uri`, `IPAddress`, reflection, snapshots                                                                                                                                                                                                                                                                                                                                                                                                                         | [Extension packages](./07-extensions/index.md) |
+
 ## Target frameworks
 
-aweXpect supports .NET Framework 4.8 and .NET Standard 2.0 as well as .NET 8 and later. The following features are
-only available on .NET 8 or later:
+aweXpect supports .NET Framework 4.8, .NET Standard 2.0 and .NET 8 or later; some features need .NET 8 or later.
+A test project can also be published with [Native AOT and trimming](./03-how-it-works/08-native-aot.md).
+
+<details>
+<summary>Differences between the target frameworks</summary>
+
+Only on .NET 8 or later:
 
 - expectations for [`IAsyncEnumerable<T>`](./05-collections/index.md);
 - [`DateOnly` and `TimeOnly`](./04-values/11-date-time-only.md);
@@ -84,13 +100,7 @@ only available on .NET 8 or later:
   `ushort`, `int`, `uint`, `long`, `ulong`, `float`, `double` and `decimal`, e.g. `nint`, `Half`, `Int128` or
   `BigInteger`;
 - [`IsPositive` and `IsNegative`](./04-values/02-number.md#positive--negative) for unsigned numbers;
-- [delegates](./06-behaviour/01-delegates.md) that return a `ValueTask` or `ValueTask<T>`.
-
-<details>
-<summary>Further differences below .NET 8</summary>
-
-Only on .NET 8 or later:
-
+- [delegates](./06-behaviour/01-delegates.md) that return a `ValueTask` or `ValueTask<T>`;
 - a `Half`, `Int128` or `UInt128` typed as `object` is [equal](./04-values/12-object.md#equality) to a number of
   another numeric type with the same value;
 - failure messages show the names `Half.MinValue`, `Half.MaxValue`, `NFloat.MinValue` and `NFloat.MaxValue` instead of
@@ -101,21 +111,10 @@ so its keys are compared with their own `Equals`, as for a dictionary whose comp
 
 </details>
 
-## Native AOT and trimming
-
-On .NET 8 and later, aweXpect needs no configuration when your test framework supports publishing a test project with
-trimming or Native AOT: a source generator that ships with the `aweXpect.Core` package registers the members and events
-that equivalency and event recording need. You only have to act when a comparison or recording reaches a type the
-generator cannot see, for example the runtime type behind a member declared as `object`. The expectation then fails
-with an error that names the type and tells you how to register it, see
-[Native AOT and trimming](./03-how-it-works/08-native-aot.md).
-
 ## Next steps
 
 - [How aweXpect works](./03-how-it-works/index.md) explains how expectations are evaluated, negated and combined,
   how they treat `null`, and the options they share.
-- The pages for [values](./04-values/index.md), [collections](./05-collections/index.md),
-  [delegates](./06-behaviour/01-delegates.md), [events](./06-behaviour/03-events.md) and
-  [equivalency](./04-values/13-equivalency.md) list the available expectations.
-- [Native AOT and trimming](./03-how-it-works/08-native-aot.md) describes which types the source generator registers
-  and how to register the others.
+- [Find the expectation you need](#find-the-expectation-you-need) leads you to the page that lists the expectations
+  for your subject: values, collections, behaviour or an extension package.
+- [Extending aweXpect](./11-extending/index.md) shows how to add expectations for your own types.

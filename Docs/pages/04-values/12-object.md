@@ -15,6 +15,7 @@ Describes the possible expectations for any object.
 | [`Satisfies`](#condition)                                               | `DoesNotSatisfy`    | satisfies a predicate                                 |
 | [`CompliesWith`](#nested-expectation)                                   | `DoesNotComplyWith` | meets a nested expectation                            |
 | [`Whose`](../03-how-it-works/03-combining.md#on-members-of-the-subject) |                     | a member meets a nested expectation                   |
+| [`IsCollected`](#garbage-collection)                                    | `IsNotCollected`    | the target of a `WeakReference` is garbage collected  |
 
 ## Equality
 
@@ -99,6 +100,11 @@ await Expect.That(album).IsEquivalentTo(new Album("Abbey Road"));
 await Expect.That(album).IsNotEquivalentTo(new Album("Revolver"));
 ```
 
+Use `IsEqualTo` when the type defines what equal means, e.g. a record or a type that overrides `Equals`. Use
+`IsEquivalentTo` when it does not, e.g. for a class that only has reference equality, or when some members should be
+ignored. `.Equivalent()` switches an expectation that compares with `Equals`, e.g. `Contains` or `All().AreEqualTo` on
+a collection, to the same [equivalency](./13-equivalency.md#as-a-modifier-of-equality).
+
 ## One of
 
 You can verify that the `object` is one of many alternatives:
@@ -173,6 +179,14 @@ await Expect.That(tracks).DoesNotComplyWith(x => x.HasCount().GreaterThan(0));
 
 `DoesNotComplyWith` succeeds when the nested expectation fails. Like `Satisfies`, `CompliesWith` can
 [wait for the object](../03-how-it-works/06-time-and-cancellation.md#a-condition) with `Within(…)`.
+
+Which one to use:
+
+- `Satisfies` for a quick check with a predicate; a failure only shows the predicate and the object.
+- `CompliesWith` to reuse other expectations, e.g. `IsEmpty()` or a string option; a failure explains what the nested
+  expectation found.
+- [`Whose`](../03-how-it-works/03-combining.md#on-members-of-the-subject) to verify a member of the object; a failure
+  names the member and its value.
 
 ## Garbage collection
 

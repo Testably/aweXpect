@@ -6,7 +6,7 @@ strictly equal. Equivalency walks both objects recursively and compares them mem
 | Expectation                                  | Negated                       | Summary                                                 |
 |----------------------------------------------|-------------------------------|---------------------------------------------------------|
 | [`IsEquivalentTo`](#on-objects)              | `IsNotEquivalentTo`           | structurally equal to the expected object               |
-| [`AreEquivalentTo`](#on-collection-items)    | a quantifier such as `None()` | the selected items are equivalent to the expected value |
+| [`AreEquivalentTo`](#on-collection-items)    | use `None()`                  | the selected items are equivalent to the expected value |
 | [`Equivalent()`](#as-a-modifier-of-equality) |                               | switches an equality expectation to equivalency         |
 
 ## Overview

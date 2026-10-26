@@ -60,20 +60,20 @@ await Expect.That(songs).DoesNotContain("Yesterday");
 You can also set occurrence constraints on `Contains`:
 
 ```csharp
-using aweXpect.Core; // for `Times()`
-
 IEnumerable<int> values = [1, 1, 1, 2];
 
-await Expect.That(values).Contains(1).MoreThan(1.Times());
-await Expect.That(values).Contains(1).AtLeast(2.Times());
-await Expect.That(values).Contains(1).Exactly(3.Times());
-await Expect.That(values).Contains(1).AtMost(4.Times());
-await Expect.That(values).Contains(1).LessThan(5.Times());
-await Expect.That(values).Contains(1).Between(1).And(5.Times());
+await Expect.That(values).Contains(1).MoreThan(1);
+await Expect.That(values).Contains(1).AtLeast(2);
+await Expect.That(values).Contains(1).Exactly(3);
+await Expect.That(values).Contains(1).AtMost(4);
+await Expect.That(values).Contains(1).LessThan(5);
+await Expect.That(values).Contains(1).Between(1).And(5);
 await Expect.That(values).Contains(2).Once();
 await Expect.That(values).Contains(1).AtLeast().Twice();
 await Expect.That(values).Contains(5).Never();
 ```
+
+`AtLeast(2.Times())` with the `Times()` extension from `aweXpect.Core` reads the same, but the plain number is enough.
 
 ### Predicate
 
@@ -83,9 +83,13 @@ You can verify that the collection contains an item that satisfies a condition, 
 IEnumerable<int> values = [1, 1, 1, 2];
 
 await Expect.That(values).Contains(x => x > 1);
-await Expect.That(values).Contains(x => x == 1).Exactly(3.Times());
+await Expect.That(values).Contains(x => x == 1).Exactly(3);
 await Expect.That(values).DoesNotContain(x => x >= 42);
 ```
+
+A [quantifier](./02-items.md#quantifiers) such as `Any().Satisfy(…)` verifies the same and also accepts a nested
+expectation, and [`HasItem`](./02-items.md#item-at-index) verifies the item at an index, see
+[choosing an expectation](./index.md#choosing-an-expectation).
 
 ### Subset
 
