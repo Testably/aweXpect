@@ -63,20 +63,21 @@ public static partial class ThatEnumerable
 
 	[CreateExpectationFamily("AreEqualTo", Priority = -1, Summary = ItemsAreEqualTo,
 		Remarks = UntypedSetComparerRemarks)]
-	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>
-		AreEqualToForEnumerableCore(
-			INonGenericEnumerableItems<IEnumerable> items,
+	internal static ObjectEqualityResult<TCollection, IThat<TCollection?>, object?>
+		AreEqualToForEnumerableCore<TCollection>(
+			INonGenericEnumerableItems<TCollection> items,
 			object? expected)
+		where TCollection : IEnumerable?
 	{
 		OptionsHolder<ObjectMatchType<object?>> options = new(ItemEqualsMatchType<object?>.Instance);
 		ExpectationBuilder expectationBuilder = items.Subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>(
+		return new ObjectEqualityResult<TCollection, IThat<TCollection?>, object?>(
 			expectationBuilder.AddConstraint((Options: options, Expected: expected, items.Quantifier),
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<object?, object?> itemOptions =
 						new(state.Options, state.Expected is not null);
-					return new CollectionConstraint<IEnumerable, object?>(
+					return new CollectionConstraint<TCollection, object?>(
 						it, grammars,
 						state.Quantifier,
 						new ElementEqualTo<object?, object?>(itemOptions, state.Expected, true),
