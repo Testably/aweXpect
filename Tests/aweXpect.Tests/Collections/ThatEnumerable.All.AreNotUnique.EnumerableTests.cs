@@ -100,6 +100,20 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Test]
+				public async Task WhenAllNullableMembersAreNull_ShouldSucceed()
+				{
+					IEnumerable subject = new string?[]
+					{
+						null, null,
+					};
+
+					async Task Act()
+						=> await That(subject).All().AreNotUnique(x => (string?)x).IgnoringCase();
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
 				public async Task WhenSomeMembersAreUnique_ShouldFail()
 				{
 					IEnumerable subject = new[]

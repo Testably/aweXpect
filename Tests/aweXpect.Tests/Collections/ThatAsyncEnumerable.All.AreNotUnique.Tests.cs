@@ -36,6 +36,18 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Test]
+				public async Task WhenAllNullableMembersAreNull_ShouldSucceed()
+				{
+					IAsyncEnumerable<MyNullableStringClass> subject =
+						ToAsyncEnumerable<MyNullableStringClass>([new(null), new(null),]);
+
+					async Task Act()
+						=> await That(subject).All().AreNotUnique(x => x.Value).IgnoringCase();
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
 				public async Task WhenAllStringMembersAreDuplicated_ShouldSucceed()
 				{
 					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable([1, 2,], x => new MyClass(x, "a"));

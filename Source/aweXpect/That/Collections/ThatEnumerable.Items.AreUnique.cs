@@ -52,7 +52,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static StringEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>> AreUnique<TItem>(
 		this IEnumerableItems<TItem> items,
-		Func<TItem, string> memberAccessor,
+		Func<TItem, string?> memberAccessor,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 		=> AreUniqueCore(items, memberAccessor, doNotPopulateThisValue, true);
@@ -86,7 +86,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static StringEqualityResult<TCollection, IThat<TCollection?>> AreUnique<TCollection>(
 		this INonGenericEnumerableItems<TCollection> items,
-		Func<object?, string> memberAccessor,
+		Func<object?, string?> memberAccessor,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 		where TCollection : IEnumerable?
@@ -116,7 +116,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static StringEqualityResult<TCollection, IThat<TCollection>> AreUnique<TCollection, TItem>(
 		this IStructEnumerableItems<TCollection, TItem> items,
-		Func<TItem, string> memberAccessor,
+		Func<TItem, string?> memberAccessor,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 		where TCollection : struct, IEnumerable<TItem>
@@ -168,7 +168,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static StringEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>> AreNotUnique<TItem>(
 		this IEnumerableItems<TItem> items,
-		Func<TItem, string> memberAccessor,
+		Func<TItem, string?> memberAccessor,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 		=> AreUniqueCore(items, memberAccessor, doNotPopulateThisValue, false);
@@ -202,7 +202,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static StringEqualityResult<TCollection, IThat<TCollection?>> AreNotUnique<TCollection>(
 		this INonGenericEnumerableItems<TCollection> items,
-		Func<object?, string> memberAccessor,
+		Func<object?, string?> memberAccessor,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 		where TCollection : IEnumerable?
@@ -233,7 +233,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static StringEqualityResult<TCollection, IThat<TCollection>> AreNotUnique<TCollection, TItem>(
 		this IStructEnumerableItems<TCollection, TItem> items,
-		Func<TItem, string> memberAccessor,
+		Func<TItem, string?> memberAccessor,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 		where TCollection : struct, IEnumerable<TItem>
@@ -326,7 +326,7 @@ public static partial class ThatEnumerable
 
 	private static StringEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>> AreUniqueCore<TItem>(
 		IEnumerableItems<TItem> items,
-		Func<TItem, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
+		Func<TItem, string?> memberAccessor, string memberAccessorExpression, bool expectUnique)
 	{
 		memberAccessor.ThrowIfNull();
 		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
@@ -337,7 +337,7 @@ public static partial class ThatEnumerable
 					MemberAccessorExpression: memberAccessorExpression, Options: options,
 					MemberAccessor: memberAccessor),
 				static (state, it, grammars)
-					=> new AreUniqueConstraint<IEnumerable<TItem>?, TItem, string>(
+					=> new AreUniqueConstraint<IEnumerable<TItem>?, TItem, string?>(
 						it, grammars,
 						state.Quantifier,
 						state.MemberAccessor,
@@ -401,7 +401,7 @@ public static partial class ThatEnumerable
 
 	private static StringEqualityResult<TCollection, IThat<TCollection?>> AreUniqueCore<TCollection>(
 		INonGenericEnumerableItems<TCollection> items,
-		Func<object?, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
+		Func<object?, string?> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		where TCollection : IEnumerable?
 	{
 		memberAccessor.ThrowIfNull();
@@ -413,7 +413,7 @@ public static partial class ThatEnumerable
 					MemberAccessorExpression: memberAccessorExpression, Options: options,
 					MemberAccessor: memberAccessor),
 				static (state, it, grammars)
-					=> new AreUniqueConstraint<TCollection, object?, string>(
+					=> new AreUniqueConstraint<TCollection, object?, string?>(
 						it, grammars,
 						state.Quantifier,
 						state.MemberAccessor,
@@ -473,7 +473,7 @@ public static partial class ThatEnumerable
 
 	private static StringEqualityResult<TCollection, IThat<TCollection>> AreUniqueCore<TCollection, TItem>(
 		IStructEnumerableItems<TCollection, TItem> items,
-		Func<TItem, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
+		Func<TItem, string?> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		where TCollection : struct, IEnumerable<TItem>
 	{
 		memberAccessor.ThrowIfNull();
@@ -485,7 +485,7 @@ public static partial class ThatEnumerable
 					MemberAccessorExpression: memberAccessorExpression, Options: options,
 					MemberAccessor: memberAccessor),
 				static (state, it, grammars)
-					=> new AreUniqueConstraint<TCollection, object?, string>(
+					=> new AreUniqueConstraint<TCollection, object?, string?>(
 						it, grammars,
 						state.Quantifier,
 						a => state.MemberAccessor((TItem)a!),

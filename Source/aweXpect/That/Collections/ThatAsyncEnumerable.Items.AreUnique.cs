@@ -42,7 +42,7 @@ public static partial class ThatAsyncEnumerable
 	/// </summary>
 	public static StringEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>> AreUnique<TItem>(
 		this IAsyncEnumerableItems<TItem> items,
-		Func<TItem, string> memberAccessor,
+		Func<TItem, string?> memberAccessor,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 		=> AreUniqueCore(items, memberAccessor, doNotPopulateThisValue, true);
@@ -77,7 +77,7 @@ public static partial class ThatAsyncEnumerable
 	/// </summary>
 	public static StringEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>> AreNotUnique<TItem>(
 		this IAsyncEnumerableItems<TItem> items,
-		Func<TItem, string> memberAccessor,
+		Func<TItem, string?> memberAccessor,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 		=> AreUniqueCore(items, memberAccessor, doNotPopulateThisValue, false);
@@ -151,7 +151,7 @@ public static partial class ThatAsyncEnumerable
 
 	private static StringEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>> AreUniqueCore<TItem>(
 		IAsyncEnumerableItems<TItem> items,
-		Func<TItem, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
+		Func<TItem, string?> memberAccessor, string memberAccessorExpression, bool expectUnique)
 	{
 		memberAccessor.ThrowIfNull();
 		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
@@ -162,7 +162,7 @@ public static partial class ThatAsyncEnumerable
 					MemberAccessorExpression: memberAccessorExpression, Options: options,
 					MemberAccessor: memberAccessor),
 				static (state, it, grammars)
-					=> new AsyncAreUniqueConstraint<TItem, string>(
+					=> new AsyncAreUniqueConstraint<TItem, string?>(
 						it, grammars,
 						state.Quantifier,
 						state.MemberAccessor,
