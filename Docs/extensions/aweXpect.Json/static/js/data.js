@@ -948,6 +948,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
         "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
+      },
+      {
+        "sha": "5d21419fb2ba6f674a806757db52eb5f25e8c39d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
+        "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
       }
     ],
     "labels": [
@@ -1108,7 +1114,8 @@ window.BENCHMARK_DATA = {
       "a9c742d3",
       "ce025baa",
       "1690b3ad",
-      "4af90a17"
+      "4af90a17",
+      "5d21419f"
     ],
     "datasets": [
       {
@@ -1272,7 +1279,8 @@ window.BENCHMARK_DATA = {
           2060.2367048997144,
           1561.1389947255452,
           1994.8989089965821,
-          1959.5529726468599
+          1959.5529726468599,
+          1952.158845583598
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1418,6 +1426,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -1613,7 +1622,8 @@ window.BENCHMARK_DATA = {
           14879.199791463216,
           10796.284393310547,
           15649.225950113932,
-          13506.207710266113
+          13506.207710266113,
+          13440.439089965821
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1625,6 +1635,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -2744,6 +2755,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
         "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
+      },
+      {
+        "sha": "5d21419fb2ba6f674a806757db52eb5f25e8c39d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
+        "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
       }
     ],
     "labels": [
@@ -2904,7 +2921,8 @@ window.BENCHMARK_DATA = {
       "a9c742d3",
       "ce025baa",
       "1690b3ad",
-      "4af90a17"
+      "4af90a17",
+      "5d21419f"
     ],
     "datasets": [
       {
@@ -3068,7 +3086,8 @@ window.BENCHMARK_DATA = {
           1631.8603441874186,
           1271.496812547956,
           1581.1493995984395,
-          1565.2540854045324
+          1565.2540854045324,
+          1571.804591623942
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3214,6 +3233,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -3409,7 +3429,8 @@ window.BENCHMARK_DATA = {
           13516.134973144532,
           10628.388557434082,
           14286.818372453961,
-          12319.175088735727
+          12319.175088735727,
+          12444.189442443847
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3421,6 +3442,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -4480,6 +4502,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
         "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
+      },
+      {
+        "sha": "5d21419fb2ba6f674a806757db52eb5f25e8c39d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
+        "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
       }
     ],
     "labels": [
@@ -4630,7 +4658,8 @@ window.BENCHMARK_DATA = {
       "a9c742d3",
       "ce025baa",
       "1690b3ad",
-      "4af90a17"
+      "4af90a17",
+      "5d21419f"
     ],
     "datasets": [
       {
@@ -4784,7 +4813,8 @@ window.BENCHMARK_DATA = {
           5310.258602142334,
           3994.0535608927407,
           5343.130387526292,
-          4905.762284342448
+          4905.762284342448,
+          5016.275821940104
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4920,6 +4950,7 @@ window.BENCHMARK_DATA = {
           3736,
           3736,
           3736,
+          3712,
           3712,
           3712,
           3712,
@@ -5105,7 +5136,8 @@ window.BENCHMARK_DATA = {
           44942.078938802086,
           29800.301461356026,
           46421.414322916666,
-          36869.56129807692
+          36869.56129807692,
+          37431.86021071214
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5256,6 +5288,7 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61925,
+          61926,
           61926,
           61926,
           61926,
@@ -6166,6 +6199,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
         "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
+      },
+      {
+        "sha": "5d21419fb2ba6f674a806757db52eb5f25e8c39d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
+        "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
       }
     ],
     "labels": [
@@ -6316,7 +6355,8 @@ window.BENCHMARK_DATA = {
       "a9c742d3",
       "ce025baa",
       "1690b3ad",
-      "4af90a17"
+      "4af90a17",
+      "5d21419f"
     ],
     "datasets": [
       {
@@ -6470,7 +6510,8 @@ window.BENCHMARK_DATA = {
           9225.527822222028,
           7455.602329508463,
           9361.770928519112,
-          9289.273645019532
+          9289.273645019532,
+          9551.038673909505
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6606,6 +6647,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -6791,7 +6833,8 @@ window.BENCHMARK_DATA = {
           278570.9146484375,
           222758.7924967448,
           305768.065359933,
-          257777.4066731771
+          257777.4066731771,
+          264192.2839355469
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6935,6 +6978,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521541,
+          521594,
           521594,
           521594,
           521594,
@@ -7852,6 +7896,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
         "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
+      },
+      {
+        "sha": "5d21419fb2ba6f674a806757db52eb5f25e8c39d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
+        "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
       }
     ],
     "labels": [
@@ -8002,7 +8052,8 @@ window.BENCHMARK_DATA = {
       "a9c742d3",
       "ce025baa",
       "1690b3ad",
-      "4af90a17"
+      "4af90a17",
+      "5d21419f"
     ],
     "datasets": [
       {
@@ -8156,7 +8207,8 @@ window.BENCHMARK_DATA = {
           2789.196468671163,
           2218.7206720205454,
           2875.2551705496653,
-          2788.385491884672
+          2788.385491884672,
+          2842.5007768358505
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8294,6 +8346,7 @@ window.BENCHMARK_DATA = {
           1488,
           1360,
           1360,
+          1288,
           1288,
           1288,
           1288,
@@ -8477,7 +8530,8 @@ window.BENCHMARK_DATA = {
           1922.7620389302572,
           1525.2256462914604,
           1898.9493497212727,
-          1870.9672266153189
+          1870.9672266153189,
+          1938.5604802449545
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8489,6 +8543,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -9538,6 +9593,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
         "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
+      },
+      {
+        "sha": "5d21419fb2ba6f674a806757db52eb5f25e8c39d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
+        "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
       }
     ],
     "labels": [
@@ -9688,7 +9749,8 @@ window.BENCHMARK_DATA = {
       "a9c742d3",
       "ce025baa",
       "1690b3ad",
-      "4af90a17"
+      "4af90a17",
+      "5d21419f"
     ],
     "datasets": [
       {
@@ -9842,7 +9904,8 @@ window.BENCHMARK_DATA = {
           2629.3242574419296,
           1947.215661730085,
           2720.019955268273,
-          2648.1790784200034
+          2648.1790784200034,
+          2593.3188910851113
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9980,6 +10043,7 @@ window.BENCHMARK_DATA = {
           2832,
           2832,
           2832,
+          2776,
           2776,
           2776,
           2776,
@@ -10163,7 +10227,8 @@ window.BENCHMARK_DATA = {
           1751.0224673407417,
           1347.7595267977033,
           1826.4594035829816,
-          1801.3541812896729
+          1801.3541812896729,
+          1835.1480749570405
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10175,6 +10240,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -10522,6 +10588,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
         "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
+      },
+      {
+        "sha": "5d21419fb2ba6f674a806757db52eb5f25e8c39d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
+        "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
       }
     ],
     "labels": [
@@ -10555,7 +10627,8 @@ window.BENCHMARK_DATA = {
       "a9c742d3",
       "ce025baa",
       "1690b3ad",
-      "4af90a17"
+      "4af90a17",
+      "5d21419f"
     ],
     "datasets": [
       {
@@ -10592,7 +10665,8 @@ window.BENCHMARK_DATA = {
           2074.231459753854,
           1568.562493387858,
           2114.7358540126256,
-          2073.8892018454417
+          2073.8892018454417,
+          2050.7261090596517
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10604,6 +10678,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2888,
           2888,
           2888,
           2888,
@@ -10679,7 +10754,8 @@ window.BENCHMARK_DATA = {
           1126.184746170044,
           921.2033727509635,
           1162.358382542928,
-          1237.052924601237
+          1237.052924601237,
+          1171.4105795542398
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10691,6 +10767,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -10921,6 +10998,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
         "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
+      },
+      {
+        "sha": "5d21419fb2ba6f674a806757db52eb5f25e8c39d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
+        "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
       }
     ],
     "labels": [
@@ -10954,7 +11037,8 @@ window.BENCHMARK_DATA = {
       "a9c742d3",
       "ce025baa",
       "1690b3ad",
-      "4af90a17"
+      "4af90a17",
+      "5d21419f"
     ],
     "datasets": [
       {
@@ -10991,7 +11075,8 @@ window.BENCHMARK_DATA = {
           2866.3042668660482,
           2195.1029897417343,
           2957.44679914202,
-          2751.5475101470947
+          2751.5475101470947,
+          2782.5566696166993
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11010,6 +11095,7 @@ window.BENCHMARK_DATA = {
           3768,
           3768,
           3768,
+          3744,
           3744,
           3744,
           3744,
@@ -11078,7 +11164,8 @@ window.BENCHMARK_DATA = {
           1300.8055637359619,
           1051.4106652577718,
           1305.5889602661132,
-          1394.8823061625162
+          1394.8823061625162,
+          1335.8880700331467
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11090,6 +11177,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
