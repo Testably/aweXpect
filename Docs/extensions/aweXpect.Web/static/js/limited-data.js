@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          427.04913772855485,
           441.7383098602295,
           197.09644128481548,
           237.03243230183918,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           478.10790654591153,
           242.22095757264358,
           375.13996621540616,
-          466.0779568354289
+          466.0779568354289,
+          465.34659481048584
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -441,9 +441,9 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640,
           712,
           712,
+          664,
           664,
           664,
           664,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1095.1248126711164,
           1051.4852393014091,
           465.59640319006786,
           553.4100657871792,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           1121.403552500407,
           565.3780004183451,
           838.691475613912,
-          1043.5027585710798
+          1043.5027585710798,
+          1003.1831247965495
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          217.8148368358612,
           195.56705468041557,
           96.77477845350901,
           110.76540613969168,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           277.216663424174,
           128.84613723754882,
           175.41801625887553,
-          261.6131752899715
+          261.6131752899715,
+          253.12911984125773
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1047,9 +1047,9 @@ window.BENCHMARK_DATA = {
           440,
           440,
           440,
-          440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          300.6612787564596,
           253.9131111462911,
           126.46421005175664,
           138.03799764315286,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           286.5512698491414,
           139.38395086356573,
           217.27103929519654,
-          279.8982596056802
+          279.8982596056802,
+          279.40837100346886
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          679.1501848856608,
           696.585135714213,
           327.20646064098065,
           356.2824078968593,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           753.6174801508586,
           407.0770764350891,
           522.8357938766479,
-          788.2841656366984
+          788.2841656366984,
+          675.4387560571943
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1650,7 +1650,6 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
-          1008,
           1016,
           1016,
           1016,
@@ -1660,6 +1659,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1045.7701305976282,
           918.3562835546641,
           455.71107921600344,
           530.345237323216,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1034.2771195002965,
           544.5601271901812,
           773.9067679087321,
-          1053.388213634491
+          1053.388213634491,
+          932.5688414255778
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1656.950244631086,
           1869.5108689626059,
           1008.5420797892979,
           1126.2308639798846,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1925.9357095445905,
           1162.4828885885386,
           1474.9206541606359,
-          1950.0860214233398
+          1950.0860214233398,
+          1916.9496900118315
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2265,9 +2265,9 @@ window.BENCHMARK_DATA = {
           1688,
           1688,
           1688,
-          1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16767.260748291017,
           21194.11416407994,
           9075.038046264648,
           10628.155768839519,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           21780.955592854818,
           10316.021313476562,
           14162.28881632487,
-          22872.52804347447
+          22872.52804347447,
+          18003.7796081543
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          34712,
           34713,
           34713,
           34713,
@@ -2385,6 +2384,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "QueryParameter": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          688.7043160711016,
           698.3473978678386,
           408.229736105601,
           405.8385760784149,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           851.074105199178,
           423.1351883252462,
           575.106980641683,
-          844.0996187073844
+          844.0996187073844,
+          712.0765828352708
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2866,7 +2866,6 @@ window.BENCHMARK_DATA = {
           1112,
           1112,
           1112,
-          1112,
           1120,
           1120,
           1120,
@@ -2876,6 +2875,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1439.0487446418176,
           1304.6153146107993,
           690.7396616617839,
           707.860317843301,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1400.8582097462245,
           720.7310439109802,
           1015.6596185139248,
-          1433.901644007365
+          1433.901644007365,
+          1294.1110699517387
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1019.5895253499349,
           1127.406762940543,
           625.6795992170062,
           652.1580921581814,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1413.3025028522197,
           822.4387990951539,
           988.6311305999756,
-          1391.9356756210327
+          1391.9356756210327,
+          1265.7013289133708
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3474,7 +3474,6 @@ window.BENCHMARK_DATA = {
           1456,
           1456,
           1456,
-          1456,
           1440,
           1440,
           1440,
@@ -3484,6 +3483,7 @@ window.BENCHMARK_DATA = {
           1440,
           1512,
           1512,
+          1464,
           1464,
           1464,
           1464,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          878.1836088725498,
           741.7094178199768,
           398.45541872297014,
           426.4561672846476,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           832.694110806783,
           425.77224942616056,
           617.5446417672293,
-          855.5677131925311
+          855.5677131925311,
+          811.6032245635986
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
