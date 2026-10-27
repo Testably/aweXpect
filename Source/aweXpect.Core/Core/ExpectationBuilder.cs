@@ -265,8 +265,10 @@ public abstract class ExpectationBuilder
 	///     <see cref="OptionsHolder{TOptions}" /> is only created when an option is set, see
 	///     <see cref="IOptionsHolderSource{TOptions}" />.
 	/// </remarks>
-	public ExpectationBuilder AddConstraint<TState, TConstraint>(TState state,
-		Func<TState, string, ExpectationGrammars, TConstraint> constraintBuilder, out TConstraint constraint)
+	public ExpectationBuilder AddConstraint<TState, TConstraint>(
+		TState state,
+		Func<TState, string, ExpectationGrammars, TConstraint> constraintBuilder,
+		out TConstraint constraint)
 		where TConstraint : IConstraint
 	{
 		constraint = constraintBuilder(state, _it, ExpectationGrammars);

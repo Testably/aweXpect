@@ -75,8 +75,10 @@ public static class ExpectationBuilderExtensions
 	/// </remarks>
 	public static ExpectationBuilder AddEqualityConstraint<TSubject, TExpected>(
 		this ExpectationBuilder expectationBuilder,
-		TExpected expected, ObjectMatchType<TSubject> options,
-		out IOptionsHolderSource<ObjectMatchType<TSubject>> optionsSource, bool isNegated = false,
+		TExpected expected,
+		ObjectMatchType<TSubject> options,
+		out IOptionsHolderSource<ObjectMatchType<TSubject>> optionsSource,
+		bool isNegated = false,
 		string? expectedExpression = null)
 	{
 		expectationBuilder.AddConstraint(
@@ -146,8 +148,11 @@ public static class ExpectationBuilderExtensions
 	///     Return a <see cref="Results.StringOccurrenceCountResult{TType,TThat}" /> with both providers, so that the
 	///     quantifier and the options can be specified on it.
 	/// </remarks>
-	public static ExpectationBuilder AddStringOccurrenceConstraint(this ExpectationBuilder expectationBuilder,
-		string expected, Quantifier quantifier, StringEqualityOptions options,
+	public static ExpectationBuilder AddStringOccurrenceConstraint(
+		this ExpectationBuilder expectationBuilder,
+		string expected,
+		Quantifier quantifier,
+		StringEqualityOptions options,
 		out IOptionsHolderSource<Quantifier> quantifierSource,
 		out IOptionsHolderSource<StringEqualityOptions> optionsSource,
 		bool isNegated = false)
