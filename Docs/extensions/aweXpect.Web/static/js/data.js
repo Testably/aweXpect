@@ -978,6 +978,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
@@ -1143,7 +1149,8 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
@@ -1312,7 +1319,8 @@ window.BENCHMARK_DATA = {
           478.10790654591153,
           242.22095757264358,
           375.13996621540616,
-          466.0779568354289
+          466.0779568354289,
+          465.34659481048584
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1461,6 +1469,7 @@ window.BENCHMARK_DATA = {
           640,
           712,
           712,
+          664,
           664,
           664,
           664,
@@ -1663,7 +1672,8 @@ window.BENCHMARK_DATA = {
           1121.403552500407,
           565.3780004183451,
           838.691475613912,
-          1043.5027585710798
+          1043.5027585710798,
+          1003.1831247965495
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1675,6 +1685,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2829,6 +2840,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
@@ -2994,7 +3011,8 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
@@ -3163,7 +3181,8 @@ window.BENCHMARK_DATA = {
           277.216663424174,
           128.84613723754882,
           175.41801625887553,
-          261.6131752899715
+          261.6131752899715,
+          253.12911984125773
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3310,6 +3329,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -3514,7 +3534,8 @@ window.BENCHMARK_DATA = {
           286.5512698491414,
           139.38395086356573,
           217.27103929519654,
-          279.8982596056802
+          279.8982596056802,
+          279.40837100346886
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3526,6 +3547,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -4620,6 +4642,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
@@ -4775,7 +4803,8 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
@@ -4934,7 +4963,8 @@ window.BENCHMARK_DATA = {
           753.6174801508586,
           407.0770764350891,
           522.8357938766479,
-          788.2841656366984
+          788.2841656366984,
+          675.4387560571943
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5073,6 +5103,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032,
@@ -5265,7 +5296,8 @@ window.BENCHMARK_DATA = {
           1034.2771195002965,
           544.5601271901812,
           773.9067679087321,
-          1053.388213634491
+          1053.388213634491,
+          932.5688414255778
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5277,6 +5309,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -6361,6 +6394,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
@@ -6516,7 +6555,8 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
@@ -6675,7 +6715,8 @@ window.BENCHMARK_DATA = {
           1925.9357095445905,
           1162.4828885885386,
           1474.9206541606359,
-          1950.0860214233398
+          1950.0860214233398,
+          1916.9496900118315
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6814,6 +6855,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -7006,7 +7048,8 @@ window.BENCHMARK_DATA = {
           21780.955592854818,
           10316.021313476562,
           14162.28881632487,
-          22872.52804347447
+          22872.52804347447,
+          18003.7796081543
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7137,6 +7180,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -8102,6 +8146,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
@@ -8257,7 +8307,8 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
@@ -8416,7 +8467,8 @@ window.BENCHMARK_DATA = {
           851.074105199178,
           423.1351883252462,
           575.106980641683,
-          844.0996187073844
+          844.0996187073844,
+          712.0765828352708
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8555,6 +8607,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -8747,7 +8800,8 @@ window.BENCHMARK_DATA = {
           1400.8582097462245,
           720.7310439109802,
           1015.6596185139248,
-          1433.901644007365
+          1433.901644007365,
+          1294.1110699517387
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8759,6 +8813,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -9843,6 +9898,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
@@ -9998,7 +10059,8 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
@@ -10157,7 +10219,8 @@ window.BENCHMARK_DATA = {
           1413.3025028522197,
           822.4387990951539,
           988.6311305999756,
-          1391.9356756210327
+          1391.9356756210327,
+          1265.7013289133708
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10296,6 +10359,7 @@ window.BENCHMARK_DATA = {
           1440,
           1512,
           1512,
+          1464,
           1464,
           1464,
           1464,
@@ -10488,7 +10552,8 @@ window.BENCHMARK_DATA = {
           832.694110806783,
           425.77224942616056,
           617.5446417672293,
-          855.5677131925311
+          855.5677131925311,
+          811.6032245635986
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10500,6 +10565,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
