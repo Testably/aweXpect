@@ -1,4 +1,9 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Threading;
+using aweXpect.Reflection.Collections;
+#if NET8_0_OR_GREATER
+using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests.Collections;
 
@@ -94,9 +99,48 @@ public sealed partial class Filtered
 				await SingleThreadedSynchronizationContext.Run(async () => await That(types).IsNotEmpty());
 			}
 
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task Which_WhenEnumeratedWithACancellationToken_ShouldPassTheTokenToTheFilter()
+			{
+				using CancellationTokenSource cts = new();
+				TokenRecordingFilter<Type> filter = new();
+				Reflection.Collections.Filtered.Types types = In.Type<Tests>().Which(filter);
+
+				List<Type> result = [];
+				await foreach (Type type in types.WithCancellation(cts.Token))
+				{
+					result.Add(type);
+				}
+
+				await That(result).IsEqualTo([typeof(Tests),]);
+				await That(filter.Tokens).IsEqualTo([cts.Token,]);
+			}
+
+			[Test]
+			public async Task Which_WhenTheTokenIsCanceledDuringTheEnumeration_ShouldStopTheEnumeration()
+			{
+				using CancellationTokenSource cts = new();
+				TokenRecordingFilter<Type> filter = new(cts.Cancel);
+				Reflection.Collections.Filtered.Types types = In.AssemblyContaining<Tests>().Types().Which(filter);
+
+				async Task Act()
+				{
+					await foreach (Type type in types.WithCancellation(cts.Token))
+					{
+						await That(type).IsNotNull();
+					}
+				}
+
+				await That(Act).Throws<OperationCanceledException>().WithMessage("The operation was canceled.");
+				await That(filter.Tokens).HasCount(1)
+					.Because("no further type may reach the filter after the token was canceled");
+			}
+#endif
+
 			private sealed class YieldingFilter : IFilter<Type>
 			{
-				public async ValueTask<bool> Applies(Type value)
+				public async ValueTask<bool> Applies(Type value, CancellationToken cancellationToken)
 				{
 					await Task.Yield();
 					return true;

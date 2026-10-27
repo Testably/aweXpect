@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace aweXpect.Reflection.Collections;
@@ -14,7 +15,7 @@ internal static class Filter
 	/// </summary>
 	public static IFilter<TEntity> Prefix<TEntity>(Func<TEntity, ValueTask<bool>> predicate,
 		string prefix)
-		=> new GenericAsyncPrefixFilter<TEntity>(predicate, prefix);
+		=> new GenericAsyncPrefixFilter<TEntity>((value, _) => predicate(value), prefix);
 
 	/// <summary>
 	///     Creates a new prefix <see cref="IFilter{TEntity}" /> from the given <paramref name="predicate" />.
@@ -27,7 +28,7 @@ internal static class Filter
 	/// </summary>
 	public static IFilter<TEntity> Suffix<TEntity>(Func<TEntity, ValueTask<bool>> predicate,
 		string suffix)
-		=> new GenericAsyncSuffixFilter<TEntity>(predicate, suffix);
+		=> new GenericAsyncSuffixFilter<TEntity>((value, _) => predicate(value), suffix);
 
 	/// <summary>
 	///     Creates a new suffix <see cref="IFilter{TEntity}" /> from the given <paramref name="predicate" />.
@@ -46,13 +47,22 @@ internal static class Filter
 	/// </summary>
 	public static IFilter<TEntity> Suffix<TEntity>(Func<TEntity, ValueTask<bool>> predicate,
 		Func<string> suffix)
+		=> new GenericAsyncSuffixFuncFilter<TEntity>((value, _) => predicate(value), suffix);
+
+	/// <summary>
+	///     Creates a new <see cref="IFilter{TEntity}" /> from the given <paramref name="predicate" />, which receives the
+	///     token of the enumeration.
+	/// </summary>
+	public static IFilter<TEntity> Suffix<TEntity>(Func<TEntity, CancellationToken, ValueTask<bool>> predicate,
+		Func<string> suffix)
 		=> new GenericAsyncSuffixFuncFilter<TEntity>(predicate, suffix);
 
-	private abstract class GenericAsyncFilter<TEntity>(Func<TEntity, ValueTask<bool>> filter) : IFilter<TEntity>
+	private abstract class GenericAsyncFilter<TEntity>(Func<TEntity, CancellationToken, ValueTask<bool>> filter)
+		: IFilter<TEntity>
 	{
-		/// <inheritdoc cref="IFilter{TEntity}.Applies(TEntity)" />
-		public ValueTask<bool> Applies(TEntity value)
-			=> filter(value);
+		/// <inheritdoc cref="IFilter{TEntity}.Applies(TEntity, CancellationToken)" />
+		public ValueTask<bool> Applies(TEntity value, CancellationToken cancellationToken)
+			=> filter(value, cancellationToken);
 
 		/// <inheritdoc cref="IFilter{TEntity}.Describes(string)" />
 		public string Describes(string text)
@@ -69,8 +79,8 @@ internal static class Filter
 		private List<Func<string, string>>? _descriptions;
 		private List<Func<bool, TEntity, bool>>? _predicates;
 
-		/// <inheritdoc cref="IFilter{TEntity}.Applies(TEntity)" />
-		public ValueTask<bool> Applies(TEntity value)
+		/// <inheritdoc cref="IFilter{TEntity}.Applies(TEntity, CancellationToken)" />
+		public ValueTask<bool> Applies(TEntity value, CancellationToken cancellationToken)
 		{
 			bool result = filter(value);
 			if (_predicates != null)
@@ -114,7 +124,9 @@ internal static class Filter
 		protected abstract string DescribeCore(string text);
 	}
 
-	private sealed class GenericAsyncPrefixFilter<TEntity>(Func<TEntity, ValueTask<bool>> filter, string prefix)
+	private sealed class GenericAsyncPrefixFilter<TEntity>(
+		Func<TEntity, CancellationToken, ValueTask<bool>> filter,
+		string prefix)
 		: GenericAsyncFilter<TEntity>(filter)
 	{
 		/// <inheritdoc cref="GenericAsyncFilter{TEntity}.DescribeCore(string)" />
@@ -126,7 +138,9 @@ internal static class Filter
 			=> prefix;
 	}
 
-	private sealed class GenericAsyncSuffixFilter<TEntity>(Func<TEntity, ValueTask<bool>> filter, string suffix)
+	private sealed class GenericAsyncSuffixFilter<TEntity>(
+		Func<TEntity, CancellationToken, ValueTask<bool>> filter,
+		string suffix)
 		: GenericAsyncFilter<TEntity>(filter)
 	{
 		/// <inheritdoc cref="GenericAsyncFilter{TEntity}.DescribeCore(string)" />
@@ -139,7 +153,7 @@ internal static class Filter
 	}
 
 	private sealed class GenericAsyncSuffixFuncFilter<TEntity>(
-		Func<TEntity, ValueTask<bool>> filter,
+		Func<TEntity, CancellationToken, ValueTask<bool>> filter,
 		Func<string> suffix)
 		: GenericAsyncFilter<TEntity>(filter)
 	{

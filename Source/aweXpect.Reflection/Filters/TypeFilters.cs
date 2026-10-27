@@ -219,8 +219,8 @@ public static partial class TypeFilters
 		}
 #endif
 
-		public async ValueTask<bool> Applies(Type value)
-			=> _quantifier.Value.Check(await CountMatchingMembers(value, CancellationToken.None), true) ?? false;
+		public async ValueTask<bool> Applies(Type value, CancellationToken cancellationToken)
+			=> _quantifier.Value.Check(await CountMatchingMembers(value, cancellationToken), true) ?? false;
 
 		private TFiltered Filter(Type value)
 			=> UserCode.Invoke(_filter, _navigate(new Filtered.Types([value,], static () => "")), "the filter");

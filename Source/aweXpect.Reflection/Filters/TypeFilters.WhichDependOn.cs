@@ -52,9 +52,9 @@ public static partial class TypeFilters
 		this Filtered.Types @this, Filtered.Types target, params Filtered.Types[] additional)
 		=> new(new TypeSetDependencyOptions(target, additional),
 			options => @this.Which(Filter.Suffix<Type>(
-				async type =>
+				async (type, cancellationToken) =>
 				{
-					ResolvedTypeSet targetSet = await options.Resolve();
+					ResolvedTypeSet targetSet = await options.Resolve(cancellationToken);
 					return targetSet.IsMatchedBy(type);
 				},
 				// The parentheses delimit the target description (which ends in the target's source scope,
@@ -106,9 +106,9 @@ public static partial class TypeFilters
 		this Filtered.Types @this, Filtered.Types target, params Filtered.Types[] additional)
 		=> new(new TypeSetDependencyOptions(target, additional),
 			options => @this.Which(Filter.Suffix<Type>(
-				async type =>
+				async (type, cancellationToken) =>
 				{
-					ResolvedTypeSet targetSet = await options.Resolve();
+					ResolvedTypeSet targetSet = await options.Resolve(cancellationToken);
 					return !targetSet.IsMatchedBy(type);
 				},
 				// The parentheses delimit the target description (which ends in the target's source scope,

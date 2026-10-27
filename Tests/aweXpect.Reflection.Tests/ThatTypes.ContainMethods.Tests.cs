@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
 #if NET8_0_OR_GREATER
+using System.Reflection;
+using System.Threading;
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
 
@@ -172,6 +174,19 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenCancellationTokenIsSet_ShouldPassItToTheInnerFilter()
+			{
+				using CancellationTokenSource cts = new();
+				TokenRecordingFilter<MethodInfo> filter = new();
+				Filtered.Types subject = In.Type<ClassWithMarkedMethod>();
+
+				await That(subject).ContainMethods(methods => methods.Which(filter)).WithCancellation(cts.Token);
+
+				await That(filter.Tokens).IsNotEmpty();
+				await That(filter.Tokens).All().AreEqualTo(cts.Token);
 			}
 #endif
 

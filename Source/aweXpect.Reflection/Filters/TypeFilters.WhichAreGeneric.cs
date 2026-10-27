@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Reflection.Collections;

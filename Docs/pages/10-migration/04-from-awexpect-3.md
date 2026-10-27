@@ -179,6 +179,8 @@ Suppress it in test projects that use a virtual time system.
 - `Customize.aweXpect.Reflection()` and its settings need `using aweXpect.Reflection;`.
 - `AccessModifiers` moved from `aweXpect.Reflection.Collections` to `aweXpect.Reflection`; replace the `using` where
   you name it.
+- `IFilter<TEntity>.Applies` receives the `CancellationToken` of the enumeration; add the parameter to your own
+  filters and pass it on to asynchronous work.
 
 ### aweXpect.Snapshots (from 0.x)
 

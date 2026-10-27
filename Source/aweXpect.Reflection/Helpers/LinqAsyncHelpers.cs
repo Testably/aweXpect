@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+#if NET8_0_OR_GREATER
+using System.Runtime.CompilerServices;
+using System.Threading;
+#endif
 using System.Threading.Tasks;
 
-// ReSharper disable once CheckNamespace
-namespace System.Linq;
+namespace aweXpect.Reflection.Helpers;
 
 #pragma warning disable S3267
 internal static class LinqAsyncHelpers
@@ -79,9 +83,10 @@ internal static class LinqAsyncHelpers
 #if NET8_0_OR_GREATER
 	public static async IAsyncEnumerable<TSource> Where<TSource>(
 		this IAsyncEnumerable<TSource> source,
-		Func<TSource, bool> predicate)
+		Func<TSource, bool> predicate,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
-		await foreach (TSource item in source)
+		await foreach (TSource item in source.WithCancellation(cancellationToken))
 		{
 			if (predicate(item))
 			{
@@ -93,9 +98,10 @@ internal static class LinqAsyncHelpers
 
 #if NET8_0_OR_GREATER
 	public static async IAsyncEnumerable<TSource> WhereNotNull<TSource>(
-		this IAsyncEnumerable<TSource?> source)
+		this IAsyncEnumerable<TSource?> source,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
-		await foreach (TSource? item in source)
+		await foreach (TSource? item in source.WithCancellation(cancellationToken))
 		{
 			if (item is not null)
 			{
@@ -105,10 +111,12 @@ internal static class LinqAsyncHelpers
 	}
 
 	public static async IAsyncEnumerable<TSource> WhereNotNull<TSource>(
-		this IEnumerable<TSource?> source)
+		this IEnumerable<TSource?> source,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
 		foreach (TSource? item in source)
 		{
+			cancellationToken.ThrowIfCancellationRequested();
 			if (item is not null)
 			{
 				yield return item;
@@ -132,9 +140,10 @@ internal static class LinqAsyncHelpers
 #if NET8_0
 	public static async IAsyncEnumerable<TResult> Select<TSource, TResult>(
 		this IAsyncEnumerable<TSource> source,
-		Func<TSource, TResult> selector)
+		Func<TSource, TResult> selector,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
-		await foreach (TSource item in source)
+		await foreach (TSource item in source.WithCancellation(cancellationToken))
 		{
 			yield return selector(item);
 		}
@@ -144,9 +153,10 @@ internal static class LinqAsyncHelpers
 #if NET8_0
 	public static async IAsyncEnumerable<TResult> SelectMany<TSource, TResult>(
 		this IAsyncEnumerable<TSource> source,
-		Func<TSource, IEnumerable<TResult>> selector)
+		Func<TSource, IEnumerable<TResult>> selector,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
-		await foreach (TSource item in source)
+		await foreach (TSource item in source.WithCancellation(cancellationToken))
 		{
 			foreach (TResult result in selector(item))
 			{
@@ -159,7 +169,8 @@ internal static class LinqAsyncHelpers
 #if NET8_0_OR_GREATER
 	public static async IAsyncEnumerable<TResult> SelectManyNotNull<TSource, TResult>(
 		this IEnumerable<TSource?> source,
-		Func<TSource, IEnumerable<TResult>> selector)
+		Func<TSource, IEnumerable<TResult>> selector,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
 		foreach (TSource? item in source)
 		{
@@ -170,6 +181,7 @@ internal static class LinqAsyncHelpers
 
 			foreach (TResult result in selector(item))
 			{
+				cancellationToken.ThrowIfCancellationRequested();
 				yield return result;
 			}
 		}
@@ -194,12 +206,13 @@ internal static class LinqAsyncHelpers
 	}
 #endif
 
-#if NET8_0_OR_GREATER
+#if NET8_0
 	public static async IAsyncEnumerable<TSource> Distinct<TSource>(
-		this IAsyncEnumerable<TSource> source)
+		this IAsyncEnumerable<TSource> source,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
 		HashSet<TSource> hashSet = new();
-		await foreach (TSource item in source)
+		await foreach (TSource item in source.WithCancellation(cancellationToken))
 		{
 			if (hashSet.Add(item))
 			{
