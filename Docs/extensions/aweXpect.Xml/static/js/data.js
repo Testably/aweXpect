@@ -1038,6 +1038,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
         "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
+      },
+      {
+        "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
+        "message": "feat: report discarded option calls of the extension packages (#2106)"
       }
     ],
     "labels": [
@@ -1213,7 +1219,8 @@ window.BENCHMARK_DATA = {
       "2e0f7001",
       "fa3e0676",
       "144c7b56",
-      "b091e811"
+      "b091e811",
+      "84c8c5e0"
     ],
     "datasets": [
       {
@@ -1392,7 +1399,8 @@ window.BENCHMARK_DATA = {
           914.548518385206,
           821.276523844401,
           894.2884833472116,
-          991.1092564900716
+          991.1092564900716,
+          910.2304321016584
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1573,6 +1581,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -1763,7 +1772,8 @@ window.BENCHMARK_DATA = {
           752.0956639562335,
           677.9159244390635,
           701.3189781188964,
-          727.8085537637983
+          727.8085537637983,
+          710.2752144495646
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1775,6 +1785,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2999,6 +3010,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
         "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
+      },
+      {
+        "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
+        "message": "feat: report discarded option calls of the extension packages (#2106)"
       }
     ],
     "labels": [
@@ -3174,7 +3191,8 @@ window.BENCHMARK_DATA = {
       "2e0f7001",
       "fa3e0676",
       "144c7b56",
-      "b091e811"
+      "b091e811",
+      "84c8c5e0"
     ],
     "datasets": [
       {
@@ -3353,7 +3371,8 @@ window.BENCHMARK_DATA = {
           4719.634000651042,
           4364.461219787598,
           4540.665985107422,
-          4842.084578450521
+          4842.084578450521,
+          4266.367202758789
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3537,7 +3556,8 @@ window.BENCHMARK_DATA = {
           24172,
           24179,
           24178,
-          24172
+          24172,
+          24179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3724,7 +3744,8 @@ window.BENCHMARK_DATA = {
           5541.623286655971,
           4863.353251902262,
           5281.758043729342,
-          5589.4507507324215
+          5589.4507507324215,
+          5012.110445022583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3736,6 +3757,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -4900,6 +4922,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
         "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
+      },
+      {
+        "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
+        "message": "feat: report discarded option calls of the extension packages (#2106)"
       }
     ],
     "labels": [
@@ -5065,7 +5093,8 @@ window.BENCHMARK_DATA = {
       "2e0f7001",
       "fa3e0676",
       "144c7b56",
-      "b091e811"
+      "b091e811",
+      "84c8c5e0"
     ],
     "datasets": [
       {
@@ -5234,7 +5263,8 @@ window.BENCHMARK_DATA = {
           2629.016909154256,
           2367.8149983542307,
           2572.0728040059407,
-          2783.576471455892
+          2783.576471455892,
+          2551.2896525065103
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5408,7 +5438,8 @@ window.BENCHMARK_DATA = {
           12654,
           12728,
           12654,
-          12654
+          12654,
+          12728
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5585,7 +5616,8 @@ window.BENCHMARK_DATA = {
           3840.422245319073,
           3378.5948941548663,
           3589.527540588379,
-          3886.4850867135183
+          3886.4850867135183,
+          3441.3160074869793
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5597,6 +5629,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -6751,6 +6784,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
         "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
+      },
+      {
+        "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
+        "message": "feat: report discarded option calls of the extension packages (#2106)"
       }
     ],
     "labels": [
@@ -6916,7 +6955,8 @@ window.BENCHMARK_DATA = {
       "2e0f7001",
       "fa3e0676",
       "144c7b56",
-      "b091e811"
+      "b091e811",
+      "84c8c5e0"
     ],
     "datasets": [
       {
@@ -7085,7 +7125,8 @@ window.BENCHMARK_DATA = {
           14267.907149251301,
           13138.657448323567,
           13801.574124145507,
-          14078.57225748698
+          14078.57225748698,
+          13505.70010732015
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7259,7 +7300,8 @@ window.BENCHMARK_DATA = {
           25367,
           25440,
           25367,
-          25367
+          25367,
+          25440
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7436,7 +7478,8 @@ window.BENCHMARK_DATA = {
           371167.7600097656,
           313904.3671123798,
           360950.58902994794,
-          363622.49820963544
+          363622.49820963544,
+          354125.66834435094
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7607,6 +7650,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544178,
+          544335,
           544335,
           544335,
           544335,
