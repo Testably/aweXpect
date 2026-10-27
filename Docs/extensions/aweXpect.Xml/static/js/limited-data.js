@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
-        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
-      },
-      {
         "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
         "message": "refactor!: accept optional options in PublicApiDeclarations.GenerateFrom (#2114)"
+      },
+      {
+        "sha": "144c7b566ef277dafd988bff3a188151004e9ea8",
+        "author": "dependabot[bot]",
+        "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
+        "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
       }
     ],
     "labels": [
-      "3378cc72",
       "90516b35",
       "ddec9e0e",
       "5357eeb1",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "031fdf5a",
       "67f30838",
       "2e0f7001",
-      "fa3e0676"
+      "fa3e0676",
+      "144c7b56"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          579.6192891938346,
           721.0687050138201,
           556.9036045755659,
           723.0359685604388,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           892.7094680241177,
           558.5206277211507,
           914.548518385206,
-          821.276523844401
+          821.276523844401,
+          894.2884833472116
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -420,7 +420,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1152,
           1152,
           1152,
           1152,
@@ -469,6 +468,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           1000,
+          1000,
           1000
         ],
         "borderColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          593.7331276673538,
           710.7634363174438,
           536.8590538161142,
           819.3194525792048,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           687.0703350067139,
           574.5839573996408,
           752.0956639562335,
-          677.9159244390635
+          677.9159244390635,
+          701.3189781188964
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
-        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
-      },
-      {
         "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
         "message": "refactor!: accept optional options in PublicApiDeclarations.GenerateFrom (#2114)"
+      },
+      {
+        "sha": "144c7b566ef277dafd988bff3a188151004e9ea8",
+        "author": "dependabot[bot]",
+        "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
+        "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
       }
     ],
     "labels": [
-      "3378cc72",
       "90516b35",
       "ddec9e0e",
       "5357eeb1",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "031fdf5a",
       "67f30838",
       "2e0f7001",
-      "fa3e0676"
+      "fa3e0676",
+      "144c7b56"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3466.810075124105,
           4485.6264572143555,
           3369.1946081433975,
           5287.1284739176435,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           4105.226925986154,
           3322.3321614583333,
           4719.634000651042,
-          4364.461219787598
+          4364.461219787598,
+          4540.665985107422
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24320,
           24321,
           24320,
           24320,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24178,
           24172,
           24172,
-          24179
+          24179,
+          24178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          4212.467302958171,
           5186.509382629394,
           3771.373131615775,
           6042.507995605469,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4752.00021307809,
           3923.565017191569,
           5541.623286655971,
-          4863.353251902262
+          4863.353251902262,
+          5281.758043729342
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
-        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
-      },
-      {
         "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
         "message": "refactor!: accept optional options in PublicApiDeclarations.GenerateFrom (#2114)"
+      },
+      {
+        "sha": "144c7b566ef277dafd988bff3a188151004e9ea8",
+        "author": "dependabot[bot]",
+        "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
+        "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
       }
     ],
     "labels": [
-      "3378cc72",
       "90516b35",
       "ddec9e0e",
       "5357eeb1",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "031fdf5a",
       "67f30838",
       "2e0f7001",
-      "fa3e0676"
+      "fa3e0676",
+      "144c7b56"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1966.9533726828438,
           2585.2072432381765,
           1889.9165905543737,
           2922.6299258640834,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2350.903139659337,
           1950.4946624210902,
           2629.016909154256,
-          2367.8149983542307
+          2367.8149983542307,
+          2572.0728040059407
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1637,7 +1637,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           12856,
-          12856,
           12780,
           12856,
           12780,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12728
+          12728,
+          12654
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2713.8504156385147,
           3345.572557721819,
           2628.119952901204,
           3858.8307413373673,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3239.4659388405935,
           2665.141414097377,
           3840.422245319073,
-          3378.5948941548663
+          3378.5948941548663,
+          3589.527540588379
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
-        "message": "refactor!: offer the quantified collection items through the Core interfaces (#2026)"
-      },
-      {
         "sha": "90516b35d0382b568e5d6932c0df9d4e5040b317",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:02:54 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
         "message": "refactor!: accept optional options in PublicApiDeclarations.GenerateFrom (#2114)"
+      },
+      {
+        "sha": "144c7b566ef277dafd988bff3a188151004e9ea8",
+        "author": "dependabot[bot]",
+        "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
+        "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
       }
     ],
     "labels": [
-      "3378cc72",
       "90516b35",
       "ddec9e0e",
       "5357eeb1",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "031fdf5a",
       "67f30838",
       "2e0f7001",
-      "fa3e0676"
+      "fa3e0676",
+      "144c7b56"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11292.020663670131,
           13641.327713521321,
           10029.750903789814,
           14144.61555480957,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           13121.56071879069,
           10673.236022949219,
           14267.907149251301,
-          13138.657448323567
+          13138.657448323567,
+          13801.574124145507
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2245,7 +2245,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           25568,
-          25568,
           25494,
           25568,
           25494,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25440
+          25440,
+          25367
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          227062.4200358073,
           342623.75895182294,
           239298.7164776142,
           284605.6375450721,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           339471.9620535714,
           212926.37643229167,
           371167.7600097656,
-          313904.3671123798
+          313904.3671123798,
+          360950.58902994794
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544246,
           544335,
           544335,
           544246,
@@ -2417,6 +2416,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544178,
+          544335,
           544335,
           544335
         ],
