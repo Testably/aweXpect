@@ -68,6 +68,7 @@ namespace aweXpect
 }
 namespace aweXpect.Xml
 {
+    [aweXpect.Core.ImmutableOptions]
     public sealed class XmlOptions
     {
         public XmlOptions() { }

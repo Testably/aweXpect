@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using aweXpect.Core;
 using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
@@ -13,6 +14,7 @@ namespace aweXpect.Options;
 ///     The quantifier carries no negation, as several evaluations can share it; a negated expectation passes its
 ///     negation to <see cref="Check(int, bool, bool)" />, <see cref="IsNever" /> and <see cref="ToString(bool)" />.
 /// </remarks>
+[ImmutableOptions]
 public readonly struct Quantifier
 {
 	private static readonly string?[] OptionNames =

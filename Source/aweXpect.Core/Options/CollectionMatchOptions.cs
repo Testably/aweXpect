@@ -19,6 +19,7 @@ namespace aweXpect.Options;
 ///     An immutable value: the option methods return new options, and <see langword="default" /> matches an
 ///     <see cref="EquivalenceRelations.Equivalent" /> collection in order.
 /// </remarks>
+[ImmutableOptions]
 public readonly partial struct CollectionMatchOptions
 {
 #pragma warning disable S4070 // Non-flags enums should not be marked with "FlagsAttribute"

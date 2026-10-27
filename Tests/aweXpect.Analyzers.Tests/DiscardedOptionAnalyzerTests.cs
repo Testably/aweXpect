@@ -4,6 +4,153 @@ namespace aweXpect.Analyzers.Tests;
 
 public class DiscardedOptionAnalyzerTests
 {
+	private const string ExtensionOptions = """
+	                                        namespace aweXpect.Json
+	                                        {
+	                                            [aweXpect.Core.ImmutableOptions]
+	                                            public readonly struct JsonOptionsStruct
+	                                            {
+	                                                public JsonOptionsStruct IgnoringX() => this;
+	                                            }
+	                                        }
+
+	                                        namespace aweXpect.Xml
+	                                        {
+	                                            [aweXpect.Core.ImmutableOptions]
+	                                            public sealed class XmlOptions
+	                                            {
+	                                            }
+
+	                                            public sealed class UnmarkedOptions
+	                                            {
+	                                            }
+
+	                                            public static class XmlOptionsExtensions
+	                                            {
+	                                                public static XmlOptions IgnoringX(this XmlOptions options) => options;
+
+	                                                public static UnmarkedOptions IgnoringX(this UnmarkedOptions options)
+	                                                    => options;
+
+	                                                public static T Log<T>(this T value) => value;
+	                                            }
+	                                        }
+
+	                                        namespace aweXpect.Options
+	                                        {
+	                                            public readonly struct UnmarkedStruct
+	                                            {
+	                                                public UnmarkedStruct IgnoringX() => this;
+	                                            }
+	                                        }
+
+	                                        namespace Other.Core
+	                                        {
+	                                            public sealed class ImmutableOptionsAttribute : System.Attribute
+	                                            {
+	                                            }
+	                                        }
+
+	                                        namespace Other
+	                                        {
+	                                            [aweXpect.Core.ImmutableOptions]
+	                                            public readonly struct OtherOptions
+	                                            {
+	                                                public OtherOptions IgnoringX() => this;
+	                                            }
+
+	                                            public static class Outer
+	                                            {
+	                                                [aweXpect.Core.ImmutableOptions]
+	                                                public readonly struct Nested
+	                                                {
+	                                                    public Nested IgnoringX() => this;
+	                                                }
+	                                            }
+
+	                                            [Other.Core.ImmutableOptions]
+	                                            public readonly struct OtherMarkedOptions
+	                                            {
+	                                                public OtherMarkedOptions IgnoringX() => this;
+	                                            }
+
+	                                            [aweXpect.Core.ImmutableOptions]
+	                                            public class BaseOptions
+	                                            {
+	                                            }
+
+	                                            public class DerivedOptions : BaseOptions
+	                                            {
+	                                                public DerivedOptions IgnoringX() => this;
+	                                            }
+	                                        }
+	                                        """;
+
+	[Test]
+	[Arguments("json.{|#0:IgnoringX|}();", "IgnoringX", "JsonOptionsStruct")]
+	[Arguments("nullableJson?.{|#0:IgnoringX|}();", "IgnoringX", "JsonOptionsStruct")]
+	[Arguments("xml.{|#0:IgnoringX|}();", "IgnoringX", "XmlOptions")]
+	[Arguments("XmlOptionsExtensions.{|#0:IgnoringX|}(xml);", "IgnoringX", "XmlOptions")]
+	[Arguments("nullableXml?.{|#0:IgnoringX|}();", "IgnoringX", "XmlOptions")]
+	[Arguments("Func<XmlOptions, XmlOptions> f = o => { o.{|#0:IgnoringX|}(); return o; };", "IgnoringX",
+		"XmlOptions")]
+	[Arguments("other.{|#0:IgnoringX|}();", "IgnoringX", "OtherOptions")]
+	[Arguments("nested.{|#0:IgnoringX|}();", "IgnoringX", "Nested")]
+	public async Task WhenTheReturnedExtensionOptionsAreDiscarded_ShouldBeFlagged(string statement, string method,
+		string type) => await Verifier
+		.VerifyAnalyzerAsync(
+			$$"""
+			  #nullable enable
+			  using System;
+			  using aweXpect.Json;
+			  using aweXpect.Xml;
+			  using Other;
+
+			  public class MyClass
+			  {
+			      public void MyMethod(JsonOptionsStruct json, JsonOptionsStruct? nullableJson, XmlOptions xml,
+			          XmlOptions? nullableXml, OtherOptions other, Outer.Nested nested)
+			      {
+			          {{statement}}
+			      }
+			  }
+
+			  {{ExtensionOptions}}
+			  """,
+			Verifier.Diagnostic(Rules.DiscardedOptionRule)
+				.WithLocation(0)
+				.WithArguments(method, type)
+		);
+
+	[Test]
+	[Arguments("xml = xml.IgnoringX();")]
+	[Arguments("json = json.IgnoringX();")]
+	[Arguments("Consume(xml.IgnoringX());")]
+	[Arguments("Func<XmlOptions, XmlOptions> f = o => o.IgnoringX();")]
+	[Arguments("Func<XmlOptions, XmlOptions> f = o => { return o.IgnoringX(); };")]
+	public async Task WhenTheReturnedExtensionOptionsAreUsed_ShouldNotBeFlagged(string statement) => await Verifier
+		.VerifyAnalyzerAsync(
+			$$"""
+			  using System;
+			  using aweXpect.Json;
+			  using aweXpect.Xml;
+
+			  public class MyClass
+			  {
+			      public void MyMethod(JsonOptionsStruct json, XmlOptions xml)
+			      {
+			          {{statement}}
+			      }
+
+			      private static void Consume(XmlOptions value)
+			      {
+			      }
+			  }
+
+			  {{ExtensionOptions}}
+			  """
+		);
+
 	[Test]
 	[Arguments("Quantifier.Default.{|#0:AtLeast|}(2);", "AtLeast", "Quantifier")]
 	[Arguments("quantifier.{|#0:AtLeast|}(2);", "AtLeast", "Quantifier")]
@@ -75,6 +222,32 @@ public class DiscardedOptionAnalyzerTests
 			      {
 			      }
 			  }
+			  """
+		);
+
+	[Test]
+	[Arguments("unmarked.IgnoringX();")]
+	[Arguments("unmarkedStruct.IgnoringX();")]
+	[Arguments("otherMarked.IgnoringX();")]
+	[Arguments("derived.IgnoringX();")]
+	[Arguments("xml.Log();")]
+	public async Task WhenTheTypeIsNoImmutableOption_ShouldNotBeFlagged(string statement) => await Verifier
+		.VerifyAnalyzerAsync(
+			$$"""
+			  using aweXpect.Options;
+			  using aweXpect.Xml;
+			  using Other;
+
+			  public class MyClass
+			  {
+			      public void MyMethod(UnmarkedOptions unmarked, UnmarkedStruct unmarkedStruct,
+			          OtherMarkedOptions otherMarked, DerivedOptions derived, XmlOptions xml)
+			      {
+			          {{statement}}
+			      }
+			  }
+
+			  {{ExtensionOptions}}
 			  """
 		);
 }

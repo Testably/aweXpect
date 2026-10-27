@@ -239,6 +239,7 @@ return a new value, and an extension method on its holder per option. For exampl
 the bonus tracks and compare in album order or shuffled, but not both:
 
 ```csharp
+[ImmutableOptions]
 public readonly struct PlaylistOptions
 {
     private readonly string? _orderOption;
@@ -297,7 +298,10 @@ public static TSelf IgnoringBonusTracks<TSelf>(this TSelf result, bool ignoreBon
 }
 ```
 
-`Default` is the value of `default(PlaylistOptions)`, so that an options field that was never set is valid. Throw
+Mark the options type with `[ImmutableOptions]`, so that the analyzer rule
+[aweXpect0009](../08-analyzers.md#awexpect0009) reports a call whose returned options are discarded, also for an
+option method that is an extension method on the type. `Default` is the value of `default(PlaylistOptions)`, so that
+an options field that was never set is valid. Throw
 with `Tracing.WriteException`, so that it is written to the trace writer of
 `Customize.aweXpect.EnableTracing(…)` like the built-in exceptions, and word the message like the built-in ones. When the expectation text names the options, write that text in `ToString()`: an
 `OptionsHolder<TOptions>` returns the same text, so that the expectation can append the holder itself.

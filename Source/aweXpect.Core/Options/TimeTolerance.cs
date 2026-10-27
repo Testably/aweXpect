@@ -1,4 +1,5 @@
 ﻿using System;
+using aweXpect.Core;
 using aweXpect.Core.Helpers;
 using aweXpect.Customization;
 
@@ -12,6 +13,7 @@ namespace aweXpect.Options;
 ///     the <see cref="Default" /> tolerance. For date values without a time of day, such as <c>DateOnly</c>, start
 ///     from <see cref="Days" /> instead, which rejects a tolerance that is not a whole number of days.
 /// </remarks>
+[ImmutableOptions]
 public readonly struct TimeTolerance
 {
 	private const long UnsetDays = 1;

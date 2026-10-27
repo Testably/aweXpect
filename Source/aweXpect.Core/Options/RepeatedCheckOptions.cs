@@ -20,6 +20,7 @@ namespace aweXpect.Options;
 ///     An immutable value: the option methods return new options, and <see langword="default" /> checks once with the
 ///     default interval, like <see cref="Default" />.
 /// </remarks>
+[ImmutableOptions]
 public readonly struct RepeatedCheckOptions
 {
 	/// <summary>

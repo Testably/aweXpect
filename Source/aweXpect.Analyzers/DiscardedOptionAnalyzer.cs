@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,16 +11,13 @@ namespace aweXpect.Analyzers;
 ///     An analyzer that checks that the value returned by an option method of an immutable option, e.g.
 ///     <c>Quantifier.AtLeast(2)</c>, is used: the option itself never changes, so the call alone has no effect.
 /// </summary>
+/// <remarks>
+///     The option types are marked with the <c>aweXpect.Core.ImmutableOptionsAttribute</c>, and the option methods are
+///     their instance methods and the extension methods on them that return the same type.
+/// </remarks>
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class DiscardedOptionAnalyzer : DiagnosticAnalyzer
 {
-	/// <summary>
-	///     The classes of <c>aweXpect.Options</c> that are immutable like its <see langword="readonly" /> structs.
-	/// </summary>
-	private static readonly ImmutableHashSet<string> ImmutableOptionClasses =
-		ImmutableHashSet.Create("StringEqualityOptions", "SignalerPredicateOptions", "ObjectToleranceMatchType",
-			"TriggerEventFilter");
-
 	/// <inheritdoc />
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
 		ImmutableArray.Create(Rules.DiscardedOptionRule);
@@ -35,10 +33,24 @@ public class DiscardedOptionAnalyzer : DiagnosticAnalyzer
 
 	private static void AnalyzeInvocation(OperationAnalysisContext context)
 	{
-		if (context.Operation is not IInvocationOperation { TargetMethod: { IsStatic: false, } method, } invocation ||
-		    !IsDiscarded(invocation) ||
-		    !IsImmutableOption(method.ContainingType) ||
-		    !SymbolEqualityComparer.Default.Equals(method.ReturnType, method.ContainingType))
+		if (context.Operation is not IInvocationOperation { TargetMethod: var method, } invocation ||
+		    !IsDiscarded(invocation))
+		{
+			return;
+		}
+
+		// IOperation presents an extension method in its static form, also when it is called like an instance method.
+		// One that takes any type, e.g. `T Log<T>(this T value)`, is no option method and can have an effect.
+		ITypeSymbol? optionType = method switch
+		{
+			{ IsStatic: false, } => method.ContainingType,
+			{ IsExtensionMethod: true, } when method.OriginalDefinition.Parameters[0].Type is INamedTypeSymbol
+				=> method.Parameters[0].Type,
+			_ => null,
+		};
+		if (optionType is not INamedTypeSymbol namedOptionType ||
+		    !SymbolEqualityComparer.Default.Equals(method.ReturnType, optionType) ||
+		    !IsImmutableOption(namedOptionType))
 		{
 			return;
 		}
@@ -50,7 +62,7 @@ public class DiscardedOptionAnalyzer : DiagnosticAnalyzer
 				MemberBindingExpressionSyntax memberBinding => memberBinding.Name.GetLocation(),
 				_ => invocation.Syntax.GetLocation(),
 			},
-			method.Name, method.ContainingType.Name));
+			method.Name, optionType.Name));
 	}
 
 	/// <summary>
@@ -70,19 +82,17 @@ public class DiscardedOptionAnalyzer : DiagnosticAnalyzer
 	}
 
 	/// <summary>
-	///     A <see langword="readonly" /> struct cannot change itself, and the immutable option classes return a new
-	///     instance from each option method.
+	///     The options declare themselves immutable with the <c>aweXpect.Core.ImmutableOptionsAttribute</c>, so that the
+	///     options of the extension packages and of other extensions are covered as well.
 	/// </summary>
-	private static bool IsImmutableOption(INamedTypeSymbol? type)
-		=> type is
-		   {
-			   ContainingType: null,
-			   ContainingNamespace:
-			   {
-				   Name: "Options",
-				   ContainingNamespace: { Name: "aweXpect", ContainingNamespace.IsGlobalNamespace: true, },
-			   },
-		   } &&
-		   (type is { IsValueType: true, IsReadOnly: true, } ||
-		    (type.TypeKind == TypeKind.Class && ImmutableOptionClasses.Contains(type.Name)));
+	private static bool IsImmutableOption(INamedTypeSymbol type)
+		=> type.GetAttributes().Any(attribute => attribute.AttributeClass is
+		{
+			Name: "ImmutableOptionsAttribute",
+			ContainingNamespace:
+			{
+				Name: "Core",
+				ContainingNamespace: { Name: "aweXpect", ContainingNamespace.IsGlobalNamespace: true, },
+			},
+		});
 }

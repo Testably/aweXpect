@@ -23,6 +23,7 @@ namespace aweXpect.Options;
 ///     The options do not know the name of the expected value; the members that can reject it, e.g.
 ///     <see cref="ValidateExpected(string?, string)" />, receive it as <c>parameterName</c>.
 /// </remarks>
+[ImmutableOptions]
 public sealed partial class StringEqualityOptions : IEqualityOptions<string?>, IEqualityEvaluator<string?>
 {
 	private const int DefaultMaxLength = 30;

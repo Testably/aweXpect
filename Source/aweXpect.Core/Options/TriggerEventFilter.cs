@@ -10,6 +10,7 @@ namespace aweXpect.Options;
 ///     Immutable: <see cref="AddPredicate(Func{object?[], bool}, string)" /> returns a new filter, so that
 ///     <see cref="Default" /> can be shared.
 /// </remarks>
+[ImmutableOptions]
 public sealed class TriggerEventFilter
 {
 	private readonly Func<object?[], bool>[] _predicates;

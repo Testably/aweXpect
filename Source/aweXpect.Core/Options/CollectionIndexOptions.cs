@@ -11,6 +11,7 @@ namespace aweXpect.Options;
 ///     An immutable value: the option methods return new options, and <see langword="default" /> matches every index,
 ///     like <see cref="Default" />.
 /// </remarks>
+[ImmutableOptions]
 public readonly struct CollectionIndexOptions
 {
 	private static readonly IMatch DefaultMatch = new AlwaysMatch();

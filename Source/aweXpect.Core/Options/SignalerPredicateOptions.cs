@@ -1,4 +1,5 @@
 ﻿using System;
+using aweXpect.Core;
 using aweXpect.Signaling;
 
 namespace aweXpect.Options;
@@ -11,6 +12,7 @@ namespace aweXpect.Options;
 ///     <see cref="Default" /> can be shared.<br />
 ///     The timeout is in the <see cref="SignalerOptions" />.
 /// </remarks>
+[ImmutableOptions]
 public sealed class SignalerPredicateOptions<TParameter>
 {
 	private readonly Func<TParameter, bool>[] _predicates;

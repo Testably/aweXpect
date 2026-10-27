@@ -1,4 +1,5 @@
 ﻿using System;
+using aweXpect.Core;
 using aweXpect.Core.Helpers;
 #if NET8_0_OR_GREATER
 using System.Numerics;
@@ -15,6 +16,7 @@ namespace aweXpect.Options;
 ///     An immutable value: the option methods return a new tolerance. The <see langword="default" /> value has no
 ///     difference function, so it only considers equal numbers to be within any tolerance.
 /// </remarks>
+[ImmutableOptions]
 public readonly struct NumberTolerance<TNumber>
 #if NET8_0_OR_GREATER
 	where TNumber : struct, INumber<TNumber>

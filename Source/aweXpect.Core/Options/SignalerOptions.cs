@@ -1,4 +1,5 @@
 ﻿using System;
+using aweXpect.Core;
 using aweXpect.Core.Helpers;
 using aweXpect.Signaling;
 
@@ -13,6 +14,7 @@ namespace aweXpect.Options;
 ///     The predicates that filter the signals of a <see cref="Signaler{TParameter}" /> are in the
 ///     <see cref="SignalerPredicateOptions{TParameter}" />.
 /// </remarks>
+[ImmutableOptions]
 public readonly struct SignalerOptions
 {
 	/// <summary>

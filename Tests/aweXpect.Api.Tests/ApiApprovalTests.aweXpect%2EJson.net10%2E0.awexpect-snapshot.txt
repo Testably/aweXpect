@@ -199,6 +199,7 @@ namespace aweXpect.Json
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.Json.JsonElement? value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Text.Json.JsonElement? value, aweXpect.Formatting.FormattingOptions? options = null) { }
     }
+    [aweXpect.Core.ImmutableOptions]
     public readonly struct JsonLookupOptions
     {
         public static aweXpect.Json.JsonLookupOptions Default { get; }
@@ -211,6 +212,7 @@ namespace aweXpect.Json
     public sealed class JsonNumbersWithinOptions : aweXpect.Json.JsonOptions, aweXpect.Results.IWithinToleranceResult<aweXpect.Json.JsonOptions, double>
     {
     }
+    [aweXpect.Core.ImmutableOptions]
     public class JsonOptions
     {
     }
