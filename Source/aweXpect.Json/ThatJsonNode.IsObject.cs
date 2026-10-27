@@ -32,7 +32,7 @@ public static partial class ThatJsonNode
 	///     <see cref="JsonObject" /> that contains a name more than once, which it throws for when it is enumerated,
 	///     while its <see cref="JsonElement" /> keeps every property.
 	/// </remarks>
-	private static IEnumerable<KeyValuePair<string, JsonNode?>> GetProperties(JsonNode node)
+	private static KeyValuePair<string, JsonNode?>[] GetProperties(JsonNode node)
 		=> node is JsonObject jsonObject && TryGetProperties(jsonObject, out KeyValuePair<string, JsonNode?>[]? properties)
 			? properties
 			: ToJsonElement(node).EnumerateObject()

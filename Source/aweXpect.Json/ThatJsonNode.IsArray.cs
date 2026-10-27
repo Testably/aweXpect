@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using aweXpect.Core;
@@ -28,7 +27,7 @@ public static partial class ThatJsonNode
 	///     A <see cref="JsonValue" /> can also represent an array, e.g. one that holds a .NET array, whose elements are
 	///     no nodes of their own, so that they are parsed as new nodes then.
 	/// </remarks>
-	private static IEnumerable<JsonNode?> GetElements(JsonNode node)
+	private static JsonNode?[] GetElements(JsonNode node)
 		=> node is JsonArray jsonArray
 			? jsonArray.ToArray()
 			: ToJsonElement(node).EnumerateArray().Select(ToJsonNode).ToArray();
