@@ -1086,6 +1086,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
         "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
+      },
+      {
+        "sha": "dfdf7bc1c10168eb950b8f7a189da4fc77f183b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 10:26:30 2026 \u002B0100",
+        "message": "feat!: align the package options of Json, Xml and PublicApi (#2113)"
       }
     ],
     "labels": [
@@ -1269,7 +1275,8 @@ window.BENCHMARK_DATA = {
       "9ea73f6f",
       "057732a7",
       "cda17b83",
-      "3c243dad"
+      "3c243dad",
+      "dfdf7bc1"
     ],
     "datasets": [
       {
@@ -1456,7 +1463,8 @@ window.BENCHMARK_DATA = {
           223.5864475795201,
           462.89923133850095,
           352.1508848508199,
-          334.1013118823369
+          334.1013118823369,
+          446.9169069358281
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,6 +1644,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -1843,7 +1852,8 @@ window.BENCHMARK_DATA = {
           512.6541816847665,
           963.3389231363932,
           807.728419303894,
-          752.383396911621
+          752.383396911621,
+          974.1474817276
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1855,6 +1865,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3135,6 +3146,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
         "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
+      },
+      {
+        "sha": "dfdf7bc1c10168eb950b8f7a189da4fc77f183b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 10:26:30 2026 \u002B0100",
+        "message": "feat!: align the package options of Json, Xml and PublicApi (#2113)"
       }
     ],
     "labels": [
@@ -3318,7 +3335,8 @@ window.BENCHMARK_DATA = {
       "9ea73f6f",
       "057732a7",
       "cda17b83",
-      "3c243dad"
+      "3c243dad",
+      "dfdf7bc1"
     ],
     "datasets": [
       {
@@ -3505,7 +3523,8 @@ window.BENCHMARK_DATA = {
           123.39553442001343,
           273.8161085764567,
           179.8098295688629,
-          169.15943902333578
+          169.15943902333578,
+          264.4845407803853
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3652,6 +3671,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -3892,7 +3912,8 @@ window.BENCHMARK_DATA = {
           130.65717989206314,
           249.7723609606425,
           210.57789204915363,
-          203.72975311960494
+          203.72975311960494,
+          240.6578016678492
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3904,6 +3925,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -5124,6 +5146,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
         "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
+      },
+      {
+        "sha": "dfdf7bc1c10168eb950b8f7a189da4fc77f183b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 10:26:30 2026 \u002B0100",
+        "message": "feat!: align the package options of Json, Xml and PublicApi (#2113)"
       }
     ],
     "labels": [
@@ -5297,7 +5325,8 @@ window.BENCHMARK_DATA = {
       "9ea73f6f",
       "057732a7",
       "cda17b83",
-      "3c243dad"
+      "3c243dad",
+      "dfdf7bc1"
     ],
     "datasets": [
       {
@@ -5474,7 +5503,8 @@ window.BENCHMARK_DATA = {
           374.3287629347581,
           797.5961325963339,
           515.6820469636184,
-          517.1180922826131
+          517.1180922826131,
+          726.4629237835223
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5613,6 +5643,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032,
@@ -5841,7 +5872,8 @@ window.BENCHMARK_DATA = {
           472.1112215360006,
           988.8625738961356,
           742.9681043624878,
-          746.5553225003756
+          746.5553225003756,
+          994.1840599060058
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5853,6 +5885,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -7063,6 +7096,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
         "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
+      },
+      {
+        "sha": "dfdf7bc1c10168eb950b8f7a189da4fc77f183b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 10:26:30 2026 \u002B0100",
+        "message": "feat!: align the package options of Json, Xml and PublicApi (#2113)"
       }
     ],
     "labels": [
@@ -7236,7 +7275,8 @@ window.BENCHMARK_DATA = {
       "9ea73f6f",
       "057732a7",
       "cda17b83",
-      "3c243dad"
+      "3c243dad",
+      "dfdf7bc1"
     ],
     "datasets": [
       {
@@ -7413,7 +7453,8 @@ window.BENCHMARK_DATA = {
           1058.938818522862,
           1859.921594619751,
           1489.384662882487,
-          1458.4528450012208
+          1458.4528450012208,
+          1833.6947093376746
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7552,6 +7593,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -7780,7 +7822,8 @@ window.BENCHMARK_DATA = {
           9506.014527384441,
           21547.44328090123,
           13856.134032185872,
-          14278.819517008464
+          14278.819517008464,
+          21090.26869506836
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7954,6 +7997,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -9002,6 +9046,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
         "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
+      },
+      {
+        "sha": "dfdf7bc1c10168eb950b8f7a189da4fc77f183b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 10:26:30 2026 \u002B0100",
+        "message": "feat!: align the package options of Json, Xml and PublicApi (#2113)"
       }
     ],
     "labels": [
@@ -9175,7 +9225,8 @@ window.BENCHMARK_DATA = {
       "9ea73f6f",
       "057732a7",
       "cda17b83",
-      "3c243dad"
+      "3c243dad",
+      "dfdf7bc1"
     ],
     "datasets": [
       {
@@ -9352,7 +9403,8 @@ window.BENCHMARK_DATA = {
           389.4335874239604,
           834.0550672824567,
           575.5524276097616,
-          553.629864011492
+          553.629864011492,
+          806.9628481183734
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9491,6 +9543,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -9719,7 +9772,8 @@ window.BENCHMARK_DATA = {
           666.4958557764689,
           1314.3172190348307,
           1041.6467595418294,
-          1005.5401215871175
+          1005.5401215871175,
+          1263.6000592367989
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9731,6 +9785,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -10941,6 +10996,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
         "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
+      },
+      {
+        "sha": "dfdf7bc1c10168eb950b8f7a189da4fc77f183b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 10:26:30 2026 \u002B0100",
+        "message": "feat!: align the package options of Json, Xml and PublicApi (#2113)"
       }
     ],
     "labels": [
@@ -11114,7 +11175,8 @@ window.BENCHMARK_DATA = {
       "9ea73f6f",
       "057732a7",
       "cda17b83",
-      "3c243dad"
+      "3c243dad",
+      "dfdf7bc1"
     ],
     "datasets": [
       {
@@ -11291,7 +11353,8 @@ window.BENCHMARK_DATA = {
           728.2057986940656,
           1281.492359161377,
           1023.9611812319074,
-          988.8656174341837
+          988.8656174341837,
+          1256.6393885294597
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11461,6 +11524,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -11658,7 +11722,8 @@ window.BENCHMARK_DATA = {
           404.8780078206743,
           734.9104886054993,
           647.6953303997333,
-          614.9810211181641
+          614.9810211181641,
+          725.9248662312825
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11670,6 +11735,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
