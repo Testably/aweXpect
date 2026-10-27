@@ -212,6 +212,10 @@ public static partial class ThatSnapshot
 	///     <c>txt</c>, e.g. <c>json</c> in <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.json</c>, so that editors
 	///     and diff tools highlight it.
 	/// </summary>
+	/// <typeparam name="TType">
+	///     The type that awaiting the result returns, which is nullable for a string that a snapshot expectation of
+	///     another subject continues on, e.g. the public API of an assembly.
+	/// </typeparam>
 	/// <param name="result">The snapshot expectation of a string.</param>
 	/// <param name="extension">The file extension without a leading dot, e.g. <c>json</c>, <c>html</c> or <c>xml</c>.</param>
 	/// <remarks>
@@ -222,8 +226,8 @@ public static partial class ThatSnapshot
 	///     <c>&lt; &gt; : " / \ | ? * % @</c>, or be <c>pending</c>.<br />
 	///     A snapshot that was already used with another extension in the same test run fails.
 	/// </remarks>
-	public static SnapshotResult<string, IThat<string?>> WithExtension(
-		this SnapshotResult<string, IThat<string?>> result, string extension)
+	public static SnapshotResult<TType, IThat<string?>> WithExtension<TType>(
+		this SnapshotResult<TType, IThat<string?>> result, string extension)
 	{
 		SnapshotExtension.ThrowIfInvalid(extension);
 		result.Options.Extension = extension;

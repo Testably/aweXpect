@@ -1,5 +1,7 @@
 using System.Reflection;
+using aweXpect.Customization;
 using aweXpect.Snapshots.PublicApi.Fixture;
+using aweXpect.Snapshots.PublicApi.Tests.TestHelpers;
 using static aweXpect.Snapshots.PublicApi.Tests.TestHelpers.Compiler;
 
 namespace aweXpect.Snapshots.PublicApi.Tests;
@@ -43,6 +45,27 @@ public sealed partial class ThatPublicApi
 					             has a public API which matches the snapshot "*",
 					             but it was <null>
 					             """).AsWildcard().IgnoringNewlineStyle();
+			}
+
+			[Test]
+			public async Task WithExtension_ShouldPassItToTheStore()
+			{
+				RecordingSnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				Assembly subject = typeof(Album).Assembly;
+
+				async Task Act()
+					=> await That(subject).MatchesPublicApiSnapshot().WithExtension("cs")
+						.Accepting(SnapshotAcceptance.None);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a public API which matches the snapshot "ThatPublicApi.MatchesPublicApiSnapshot.Tests.WithExtension_ShouldPassItToTheStore",
+					             but the snapshot did not exist
+					             *
+					             """).AsWildcard().IgnoringNewlineStyle();
+				await That(store.Mismatch?.Extension).IsEqualTo("cs");
 			}
 		}
 	}
