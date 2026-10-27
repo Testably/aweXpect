@@ -960,6 +960,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
         "message": "refactor!: name the type parameters of results consistently (#2104)"
+      },
+      {
+        "sha": "7649b140c45108e1ba88a6357920b4c104edc29e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
+        "message": "feat!: support string options in generated collection expectations (#2096)"
       }
     ],
     "labels": [
@@ -1122,7 +1128,8 @@ window.BENCHMARK_DATA = {
       "1690b3ad",
       "4af90a17",
       "5d21419f",
-      "e09c66b4"
+      "e09c66b4",
+      "7649b140"
     ],
     "datasets": [
       {
@@ -1288,7 +1295,8 @@ window.BENCHMARK_DATA = {
           1994.8989089965821,
           1959.5529726468599,
           1952.158845583598,
-          1919.824794769287
+          1919.824794769287,
+          1080.2099618911743
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1434,6 +1442,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -1633,7 +1642,8 @@ window.BENCHMARK_DATA = {
           15649.225950113932,
           13506.207710266113,
           13440.439089965821,
-          14837.160940551757
+          14837.160940551757,
+          6799.475921122233
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1645,6 +1655,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -2778,6 +2789,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
         "message": "refactor!: name the type parameters of results consistently (#2104)"
+      },
+      {
+        "sha": "7649b140c45108e1ba88a6357920b4c104edc29e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
+        "message": "feat!: support string options in generated collection expectations (#2096)"
       }
     ],
     "labels": [
@@ -2940,7 +2957,8 @@ window.BENCHMARK_DATA = {
       "1690b3ad",
       "4af90a17",
       "5d21419f",
-      "e09c66b4"
+      "e09c66b4",
+      "7649b140"
     ],
     "datasets": [
       {
@@ -3106,7 +3124,8 @@ window.BENCHMARK_DATA = {
           1581.1493995984395,
           1565.2540854045324,
           1571.804591623942,
-          1582.2391945975166
+          1582.2391945975166,
+          891.7719541549683
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3252,6 +3271,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -3451,7 +3471,8 @@ window.BENCHMARK_DATA = {
           14286.818372453961,
           12319.175088735727,
           12444.189442443847,
-          14022.666897583007
+          14022.666897583007,
+          6247.761223929269
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3463,6 +3484,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -4536,6 +4558,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
         "message": "refactor!: name the type parameters of results consistently (#2104)"
+      },
+      {
+        "sha": "7649b140c45108e1ba88a6357920b4c104edc29e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
+        "message": "feat!: support string options in generated collection expectations (#2096)"
       }
     ],
     "labels": [
@@ -4688,7 +4716,8 @@ window.BENCHMARK_DATA = {
       "1690b3ad",
       "4af90a17",
       "5d21419f",
-      "e09c66b4"
+      "e09c66b4",
+      "7649b140"
     ],
     "datasets": [
       {
@@ -4844,7 +4873,8 @@ window.BENCHMARK_DATA = {
           5343.130387526292,
           4905.762284342448,
           5016.275821940104,
-          5181.571557851938
+          5181.571557851938,
+          2820.6038772583006
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4980,6 +5010,7 @@ window.BENCHMARK_DATA = {
           3736,
           3736,
           3736,
+          3712,
           3712,
           3712,
           3712,
@@ -5169,7 +5200,8 @@ window.BENCHMARK_DATA = {
           46421.414322916666,
           36869.56129807692,
           37431.86021071214,
-          44939.22609049479
+          44939.22609049479,
+          19689.206085205078
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5330,7 +5362,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
-          61926
+          61926,
+          61925
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6244,6 +6277,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
         "message": "refactor!: name the type parameters of results consistently (#2104)"
+      },
+      {
+        "sha": "7649b140c45108e1ba88a6357920b4c104edc29e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
+        "message": "feat!: support string options in generated collection expectations (#2096)"
       }
     ],
     "labels": [
@@ -6396,7 +6435,8 @@ window.BENCHMARK_DATA = {
       "1690b3ad",
       "4af90a17",
       "5d21419f",
-      "e09c66b4"
+      "e09c66b4",
+      "7649b140"
     ],
     "datasets": [
       {
@@ -6552,7 +6592,8 @@ window.BENCHMARK_DATA = {
           9361.770928519112,
           9289.273645019532,
           9551.038673909505,
-          9244.469947306316
+          9244.469947306316,
+          4860.644812950721
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6688,6 +6729,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -6877,7 +6919,8 @@ window.BENCHMARK_DATA = {
           305768.065359933,
           257777.4066731771,
           264192.2839355469,
-          283257.12418619794
+          283257.12418619794,
+          132819.52260044642
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7021,6 +7064,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521541,
+          521594,
           521594,
           521594,
           521594,
@@ -7952,6 +7996,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
         "message": "refactor!: name the type parameters of results consistently (#2104)"
+      },
+      {
+        "sha": "7649b140c45108e1ba88a6357920b4c104edc29e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
+        "message": "feat!: support string options in generated collection expectations (#2096)"
       }
     ],
     "labels": [
@@ -8104,7 +8154,8 @@ window.BENCHMARK_DATA = {
       "1690b3ad",
       "4af90a17",
       "5d21419f",
-      "e09c66b4"
+      "e09c66b4",
+      "7649b140"
     ],
     "datasets": [
       {
@@ -8260,7 +8311,8 @@ window.BENCHMARK_DATA = {
           2875.2551705496653,
           2788.385491884672,
           2842.5007768358505,
-          2773.1535029093425
+          2773.1535029093425,
+          1525.9469441005162
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8398,6 +8450,7 @@ window.BENCHMARK_DATA = {
           1488,
           1360,
           1360,
+          1288,
           1288,
           1288,
           1288,
@@ -8585,7 +8638,8 @@ window.BENCHMARK_DATA = {
           1898.9493497212727,
           1870.9672266153189,
           1938.5604802449545,
-          1892.4782450358073
+          1892.4782450358073,
+          1054.2686029161725
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8597,6 +8651,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -9660,6 +9715,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
         "message": "refactor!: name the type parameters of results consistently (#2104)"
+      },
+      {
+        "sha": "7649b140c45108e1ba88a6357920b4c104edc29e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
+        "message": "feat!: support string options in generated collection expectations (#2096)"
       }
     ],
     "labels": [
@@ -9812,7 +9873,8 @@ window.BENCHMARK_DATA = {
       "1690b3ad",
       "4af90a17",
       "5d21419f",
-      "e09c66b4"
+      "e09c66b4",
+      "7649b140"
     ],
     "datasets": [
       {
@@ -9968,7 +10030,8 @@ window.BENCHMARK_DATA = {
           2720.019955268273,
           2648.1790784200034,
           2593.3188910851113,
-          2721.2580242156982
+          2721.2580242156982,
+          1452.236800511678
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10106,6 +10169,7 @@ window.BENCHMARK_DATA = {
           2832,
           2832,
           2832,
+          2776,
           2776,
           2776,
           2776,
@@ -10293,7 +10357,8 @@ window.BENCHMARK_DATA = {
           1826.4594035829816,
           1801.3541812896729,
           1835.1480749570405,
-          1672.1682736714681
+          1672.1682736714681,
+          902.1269260406494
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10305,6 +10370,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -10666,6 +10732,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
         "message": "refactor!: name the type parameters of results consistently (#2104)"
+      },
+      {
+        "sha": "7649b140c45108e1ba88a6357920b4c104edc29e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
+        "message": "feat!: support string options in generated collection expectations (#2096)"
       }
     ],
     "labels": [
@@ -10701,7 +10773,8 @@ window.BENCHMARK_DATA = {
       "1690b3ad",
       "4af90a17",
       "5d21419f",
-      "e09c66b4"
+      "e09c66b4",
+      "7649b140"
     ],
     "datasets": [
       {
@@ -10740,7 +10813,8 @@ window.BENCHMARK_DATA = {
           2114.7358540126256,
           2073.8892018454417,
           2050.7261090596517,
-          2105.8552178602954
+          2105.8552178602954,
+          1169.2232639312745
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10752,6 +10826,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2888,
           2888,
           2888,
           2888,
@@ -10831,7 +10906,8 @@ window.BENCHMARK_DATA = {
           1162.358382542928,
           1237.052924601237,
           1171.4105795542398,
-          1074.3531423715444
+          1074.3531423715444,
+          586.274728161948
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10843,6 +10919,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -11087,6 +11164,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
         "message": "refactor!: name the type parameters of results consistently (#2104)"
+      },
+      {
+        "sha": "7649b140c45108e1ba88a6357920b4c104edc29e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
+        "message": "feat!: support string options in generated collection expectations (#2096)"
       }
     ],
     "labels": [
@@ -11122,7 +11205,8 @@ window.BENCHMARK_DATA = {
       "1690b3ad",
       "4af90a17",
       "5d21419f",
-      "e09c66b4"
+      "e09c66b4",
+      "7649b140"
     ],
     "datasets": [
       {
@@ -11161,7 +11245,8 @@ window.BENCHMARK_DATA = {
           2957.44679914202,
           2751.5475101470947,
           2782.5566696166993,
-          2797.3843754359655
+          2797.3843754359655,
+          1506.340566253662
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11180,6 +11265,7 @@ window.BENCHMARK_DATA = {
           3768,
           3768,
           3768,
+          3744,
           3744,
           3744,
           3744,
@@ -11252,7 +11338,8 @@ window.BENCHMARK_DATA = {
           1305.5889602661132,
           1394.8823061625162,
           1335.8880700331467,
-          1211.6317358016968
+          1211.6317358016968,
+          639.7746554888212
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11264,6 +11351,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
