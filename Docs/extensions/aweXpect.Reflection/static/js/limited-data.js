@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
-        "message": "feat: verify that types depend on a runtime type (#2031)"
-      },
-      {
         "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
         "message": "feat: report discarded option calls of the extension packages (#2106)"
+      },
+      {
+        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
+        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
       }
     ],
     "labels": [
-      "44ad4465",
       "9dc4e7bb",
       "b7024c3c",
       "9f98f729",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "fa3e0676",
       "144c7b56",
       "b091e811",
-      "84c8c5e0"
+      "84c8c5e0",
+      "e2339ca9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          676.1633385022482,
           696.8964576721191,
           390.2847415850713,
           414.9462034702301,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           492.81475518544516,
           484.72664880752563,
           338.12206854139055,
-          668.9751103719076
+          668.9751103719076,
+          677.3221646717617
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -428,7 +428,6 @@ window.BENCHMARK_DATA = {
           592,
           592,
           592,
-          592,
           464,
           464,
           464,
@@ -438,6 +437,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
+          368,
           368,
           368,
           368,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          880.3888893127441,
           918.6337985311236,
           535.3275960922241,
           535.7304812944852,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           722.1100611368815,
           687.895776612418,
           470.3614543279012,
-          874.3199213027954
+          874.3199213027954,
+          899.9544789240911
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
-        "message": "feat: verify that types depend on a runtime type (#2031)"
-      },
-      {
         "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
         "message": "feat: report discarded option calls of the extension packages (#2106)"
+      },
+      {
+        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
+        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
       }
     ],
     "labels": [
-      "44ad4465",
       "9dc4e7bb",
       "b7024c3c",
       "9f98f729",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "fa3e0676",
       "144c7b56",
       "b091e811",
-      "84c8c5e0"
+      "84c8c5e0",
+      "e2339ca9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          141.197344149862,
           148.9260809788337,
           74.94456945146833,
           80.29966062307358,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           82.99340411594936,
           78.25070672829946,
           56.3144095659256,
-          107.21382932479565
+          107.21382932479565,
+          105.81736228295735
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1036,7 +1036,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
-          296,
+          168,
           168,
           168,
           168,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          214.1556692490211,
           209.3827139230875,
           133.6875028292338,
           130.46587387720743,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           173.7929592927297,
           170.34959718159266,
           130.78059196472168,
-          220.85847078959148
+          220.85847078959148,
+          207.8133637223925
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
-        "message": "feat: verify that types depend on a runtime type (#2031)"
-      },
-      {
         "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
         "message": "feat: report discarded option calls of the extension packages (#2106)"
+      },
+      {
+        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
+        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
       }
     ],
     "labels": [
-      "44ad4465",
       "9dc4e7bb",
       "b7024c3c",
       "9f98f729",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "fa3e0676",
       "144c7b56",
       "b091e811",
-      "84c8c5e0"
+      "84c8c5e0",
+      "e2339ca9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1910.8503578186035,
           1820.626187769572,
           1041.751329421997,
           995.7361735026042,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1381.538098199027,
           1363.3655841827392,
           908.0967491785685,
-          1837.593967144306
+          1837.593967144306,
+          1865.7873246119573
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1808,
           1800,
           1888,
           1888,
@@ -1645,6 +1644,7 @@ window.BENCHMARK_DATA = {
           1888,
           1888,
           1888,
+          1808,
           1808,
           1808,
           1808,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1366.0192668621357,
           1438.6167323248726,
           835.3079631169637,
           834.8698577245076,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1150.8693572998047,
           1129.8047323226929,
           790.750996653239,
-          1461.6903575897218
+          1461.6903575897218,
+          1431.6957876841227
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1864,
           1953,
           1953,
           1864,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1953,
+          1864,
           1864
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
-        "message": "feat: verify that types depend on a runtime type (#2031)"
-      },
       {
         "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
         "message": "feat: report discarded option calls of the extension packages (#2106)"
+      },
+      {
+        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
+        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
       }
     ],
     "labels": [
-      "44ad4465",
       "9dc4e7bb",
       "b7024c3c",
       "9f98f729",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "fa3e0676",
       "144c7b56",
       "b091e811",
-      "84c8c5e0"
+      "84c8c5e0",
+      "e2339ca9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2761.2615197988657,
           2665.9691129831167,
           1518.6339042370137,
           1468.103524017334,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1954.4825080871583,
           2061.2373196919757,
           1339.6654103597004,
-          2711.781241280692
+          2711.781241280692,
+          2700.6533147176106
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3016,
           3008,
           3184,
           3184,
@@ -2253,6 +2252,7 @@ window.BENCHMARK_DATA = {
           3184,
           3184,
           3184,
+          3104,
           3104,
           3104,
           3104,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3767.3582730611165,
           3713.240572520665,
           2235.4746020180837,
           2315.7253766377767,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3018.369997660319,
           3062.191277430608,
           2097.339874812535,
-          3693.858551297869
+          3693.858551297869,
+          3766.2877437046595
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3981,
           3980,
           3981,
           3980,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3981,
           3981,
           3981,
-          3981
+          3981,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
-        "message": "feat: verify that types depend on a runtime type (#2031)"
-      },
       {
         "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
         "message": "feat: report discarded option calls of the extension packages (#2106)"
+      },
+      {
+        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
+        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
       }
     ],
     "labels": [
-      "44ad4465",
       "9dc4e7bb",
       "b7024c3c",
       "9f98f729",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "fa3e0676",
       "144c7b56",
       "b091e811",
-      "84c8c5e0"
+      "84c8c5e0",
+      "e2339ca9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          386.2103663512639,
           395.25831361917346,
           225.76909025510153,
           217.1549676014827,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           289.5612061182658,
           295.33603828293934,
           182.87367059389751,
-          380.3301629066467
+          380.3301629066467,
+          391.31976725260415
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2860,7 +2860,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
+          568,
           568,
           568,
           568,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2217.5441766466415,
           2296.1132569994247,
           1362.5206458227974,
           1409.5500555038452,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1820.7837827046712,
           1839.6418684445894,
           1224.9972310384114,
-          2209.320582707723
+          2209.320582707723,
+          2311.799169100248
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
-        "message": "feat: verify that types depend on a runtime type (#2031)"
-      },
-      {
         "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
         "message": "feat: report discarded option calls of the extension packages (#2106)"
+      },
+      {
+        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
+        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
       }
     ],
     "labels": [
-      "44ad4465",
       "9dc4e7bb",
       "b7024c3c",
       "9f98f729",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "fa3e0676",
       "144c7b56",
       "b091e811",
-      "84c8c5e0"
+      "84c8c5e0",
+      "e2339ca9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2883.9860046931676,
           2870.9504817326865,
           1638.7766861234393,
           1623.9279898234777,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2237.2564651489256,
           2220.8905308063213,
           1494.520046488444,
-          2887.684476852417
+          2887.684476852417,
+          2838.7573070526123
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3232,
           3224,
           3312,
           3312,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           3200,
           3200,
           3200,
+          3200,
           3200
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          302448.46456473216,
           276975.9881310096,
           165553.58056640625,
           172382.05252278646,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           240180.7374093192,
           239549.76911808894,
           160814.23063777044,
-          280257.90891927085
+          280257.90891927085,
+          277900.56604003906
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17577,
           17574,
           17576,
@@ -3634,6 +3633,7 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17574,
+          17577,
           17577
         ],
         "borderColor": "#FF671B",
