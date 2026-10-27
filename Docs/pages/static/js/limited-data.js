@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10819.993436686198,
           7850.708253043039,
           10935.875943697416,
           5721.499927520752,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           6802.314890180315,
           10538.726154872349,
           10879.34755052839,
-          7644.063738141741
+          7644.063738141741,
+          10581.412791325496
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -441,7 +441,6 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
-          2208,
           2080,
           2080,
           1976,
@@ -463,6 +462,7 @@ window.BENCHMARK_DATA = {
           1976,
           1976,
           1976,
+          1984,
           1984,
           1984,
           1984,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          376904.3015625,
           285624.6185546875,
           368869.8690011161,
           189578.99270833333,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           231774.32708333334,
           363326.84401041665,
           386400.8951822917,
-          243142.2232142857
+          243142.2232142857,
+          365305.12552083336
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590225,
           590292,
           590288,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590225,
           590292,
           590292,
-          590288
+          590288,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19675.743173217772,
           17103.925648280554,
           18918.340416541465,
           11105.188434855143,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           15496.647686549595,
           19672.621939086916,
           18567.48267691476,
-          14344.44981842041
+          14344.44981842041,
+          19794.830808512368
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          269.6310506184896,
           281.51181885174344,
           337.30064961115517,
           154.07971792954666,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           192.3836533864339,
           218.18747185071308,
           237.43441995552607,
-          169.23475948969522
+          169.23475948969522,
+          228.96083014806112
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1174,7 +1174,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
-          512,
+          384,
           384,
           384,
           384,
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          531.9543848718915,
           595.7835202534993,
           531.6792983327593,
           275.93991112709045,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           444.89528022493636,
           529.1383274078369,
           540.3584190368653,
-          440.66393086115517
+          440.66393086115517,
+          495.4892208099365
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          384.20419179476227,
           412.538426228932,
           404.2638649622599,
           227.3167655638286,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           318.43022983414784,
           398.31770318349203,
           400.50136593409945,
-          318.1578845977783
+          318.1578845977783,
+          381.1960420290629
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          154.01753026644388,
           160.18989767347063,
           146.76250166893004,
           79.67166854937871,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           100.36527586778006,
           114.02293352286021,
           115.05628143946329,
-          83.58269666773933
+          83.58269666773933,
+          110.28347622553507
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1907,7 +1907,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
-          448,
+          320,
           320,
           320,
           320,
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          248.53880775891818,
           317.75524735450745,
           254.01669887396005,
           142.53167236768283,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           230.383254803144,
           253.53078285853067,
           269.7045420964559,
-          202.53495570591517
+          202.53495570591517,
+          260.4626083714621
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          242.16973872184752,
           240.29952802658082,
           245.06869980494182,
           134.35179636875787,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           184.59641208648682,
           246.2931913693746,
           261.7322593688965,
-          184.43108247007643
+          184.43108247007643,
+          235.94709606170653
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          273.1392585833867,
           273.57603366034374,
           272.68647687775746,
           147.1580267270406,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           168.2110378061022,
           207.7527398109436,
           210.3318054505757,
-          157.7567696387951
+          157.7567696387951,
+          194.56592253049214
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2640,9 +2640,9 @@ window.BENCHMARK_DATA = {
           520,
           520,
           520,
-          520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          541.2379095713297,
           639.1399256161282,
           527.8042952855428,
           288.91567357381183,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           472.717945988973,
           543.7893135070801,
           495.2053418159485,
-          434.84695298331127
+          434.84695298331127,
+          512.584239074162
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          327.6180678049723,
           333.1519235542842,
           360.419606367747,
           188.6802423477173,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           264.96855508364166,
           370.6078098932902,
           329.5606877962748,
-          260.1433410962423
+          260.1433410962423,
+          324.95653203328453
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          663.5414233888898,
           562.2961301167805,
           736.5180493672689,
           386.21916573388233,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           512.1646082217877,
           739.2471934000652,
           788.196247614347,
-          615.5140971403855
+          615.5140971403855,
+          698.3727942148845
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3373,7 +3373,6 @@ window.BENCHMARK_DATA = {
           784,
           784,
           784,
-          784,
           656,
           656,
           600,
@@ -3395,6 +3394,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1369.853746287028,
           1458.4457029978435,
           1382.1063294410706,
           779.859889348348,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1145.9090396336146,
           1476.1285327031062,
           1359.3000378926595,
-          1201.9872515542168
+          1201.9872515542168,
+          1321.7672046661378
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          651.5242075602214,
           628.7224450747173,
           683.7318405738243,
           377.2479679584503,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           517.7112626295823,
           673.2420337041219,
           663.8814027150472,
-          541.6714281717937
+          541.6714281717937,
+          652.4206226212638
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          655.5912373860677,
           583.329655793997,
           762.2530645370483,
           386.95850493357733,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           505.76607608795166,
           735.8788118362427,
           789.0815663655599,
-          544.812426408132
+          544.812426408132,
+          691.4463864839994
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4106,7 +4106,6 @@ window.BENCHMARK_DATA = {
           832,
           832,
           832,
-          832,
           704,
           704,
           648,
@@ -4128,6 +4127,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27804.928094046456,
           17776.075563703263,
           28040.494338989258,
           11821.530853271484,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           14123.841658528645,
           28382.848071758563,
           27429.822721354165,
-          16785.562154134113
+          16785.562154134113,
+          27927.812162272134
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33465,
           33471,
           33471,
@@ -4257,6 +4256,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          773.9134428841727,
           777.8966722488403,
           798.0264763465294,
           473.3609799702962,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           616.7730066935221,
           798.6557955060687,
           796.6028650283813,
-          623.7725174585978
+          623.7725174585978,
+          799.3256331125896
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          760.545000893729,
           675.2924857457479,
           683.789671643575,
           384.7544829686483,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           526.9579750696818,
           672.5873224894206,
           712.9318862915039,
-          499.9716724982628
+          499.9716724982628,
+          637.2004993302481
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4839,9 +4839,9 @@ window.BENCHMARK_DATA = {
           1688,
           1688,
           1688,
-          1688,
           1608,
           1608,
+          1576,
           1576,
           1576,
           1576,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          84509.61543782552,
           32144.485799153645,
           84359.80682779948,
           30622.19600830078,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           34967.66512407576,
           85416.7746826172,
           86122.8102783203,
-          52393.03833414714
+          52393.03833414714,
+          84099.49988606772
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5256,
           5252,
           5256,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
       {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          192.95799272400993,
           212.19009349896356,
           190.57390955516271,
           99.79156540234884,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           126.49396435419719,
           141.8376863513674,
           138.93826500007086,
-          107.30956517060598
+          107.30956517060598,
+          144.67254877090454
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5447,9 +5447,9 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
-          464,
           336,
           336,
+          320,
           320,
           320,
           320,
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          32253.267848423548,
           16514.752351888023,
           31970.51017979213,
           10940.065628051758,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           14530.27349308559,
           32181.0542195638,
           31502.859174455916,
-          15072.095670259916
+          15072.095670259916,
+          31119.76460484096
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5553,7 +5553,6 @@ window.BENCHMARK_DATA = {
         "data": [
           5614,
           5614,
-          5614,
           5615,
           5614,
           5615,
@@ -5593,6 +5592,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5615,
+          5614,
           5614,
           5614,
           5614,
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          256.09153067270915,
           240.53950812021893,
           250.23788868586223,
           135.06546886761984,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           181.9119541828449,
           242.30101455052693,
           234.40683587959833,
-          182.47843200819833
+          182.47843200819833,
+          241.93862899144492
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          418.20421228408816,
           344.6028942108154,
           347.2625845028804,
           178.89576663970948,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           243.04579127629597,
           290.29678942362466,
           345.0790417671204,
-          236.14796368281046
+          236.14796368281046,
+          299.4226346651713
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6180,9 +6180,9 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
-          656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          380.51365480422976,
           476.26176540668195,
           380.05393174978406,
           206.72981369495392,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           338.2688860098521,
           400.42635482152303,
           497.4099553181575,
-          313.1273292382558
+          313.1273292382558,
+          375.23115253448486
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          420.9128182729085,
           397.31449949741364,
           430.54265243666515,
           222.11069360801153,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           316.8610441868122,
           410.4248814264933,
           456.8209021432059,
-          316.385296855654
+          316.385296855654,
+          407.862704149882
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          749.2389082590739,
           702.1195759455363,
           746.8102166493734,
           413.66975189844766,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           586.296238558633,
           739.7714654922486,
           760.0010831197103,
-          577.9359088625226
+          577.9359088625226,
+          895.6542508443197
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6913,9 +6913,9 @@ window.BENCHMARK_DATA = {
           1448,
           1448,
           1448,
-          1448,
           1376,
           1376,
+          1280,
           1280,
           1280,
           1280,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1937.3687474177434,
           2155.702299118042,
           1976.6210983276367,
           1115.4675449643817,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1639.9969753265382,
           1945.4502791086832,
           1973.8495313008627,
-          1693.933135732015
+          1693.933135732015,
+          1959.7608161926269
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          942.9916570027669,
           911.1171915054322,
           980.0802248441256,
           506.6507584253947,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           715.4458729426066,
           970.0866402943929,
           920.6282898357937,
-          768.2212657292683
+          768.2212657292683,
+          925.4548778533936
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11432.820071880635,
           8920.967366536459,
           11581.712854657855,
           6222.157293047224,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           8155.714149475098,
           12068.01067679269,
           11877.742451259068,
-          8428.033424886067
+          8428.033424886067,
+          12047.208184378487
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7639,7 +7639,6 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
-          1608,
           1680,
           1680,
           1680,
@@ -7649,6 +7648,7 @@ window.BENCHMARK_DATA = {
           1680,
           1752,
           1752,
+          1712,
           1712,
           1712,
           1712,
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          40837.57575770787,
           30859.240657552084,
           40334.57229614258,
           19948.935899000902,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           26444.53381565639,
           40499.11569448618,
           41192.86674281529,
-          26161.476050240653
+          26161.476050240653,
+          40729.31407674154
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,7 +7798,8 @@ window.BENCHMARK_DATA = {
           18608,
           18609,
           18609,
-          18393
+          18393,
+          18609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10677.911750284831,
           8690.192250569662,
           10707.274149968074,
           6047.947702135359,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           7469.099488394601,
           10637.142882127027,
           10653.796071733746,
-          7910.940778459822
+          7910.940778459822,
+          10593.507609049479
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "8b73c040a7dc6e136dd59d2a37c2bbc9a2aba03c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:50:48 2026 \u002B0200",
-        "message": "fix: explain IsNotOneOf with the candidate that matched (#2016)"
-      },
-      {
         "sha": "54813a41a05f14c3af14bbd635002b1eb01b94f5",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:51:43 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
         "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
+      },
+      {
+        "sha": "69ead4c355e918932603cbce8d175808d988620a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
+        "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
       }
     ],
     "labels": [
-      "8b73c040",
       "54813a41",
       "5d7202bd",
       "584ec3ed",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "5d21419f",
       "e09c66b4",
       "7649b140",
-      "f2444178"
+      "f2444178",
+      "69ead4c3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11135.929899949293,
           8490.381401062012,
           11204.479612077985,
           5904.101990919847,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           7685.613923292894,
           11774.496982029506,
           11585.93898664202,
-          7971.89616394043
+          7971.89616394043,
+          11463.452015177409
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8372,7 +8372,6 @@ window.BENCHMARK_DATA = {
           2088,
           2088,
           2088,
-          2088,
           2160,
           2160,
           2160,
@@ -8382,6 +8381,7 @@ window.BENCHMARK_DATA = {
           2160,
           2232,
           2232,
+          2192,
           2192,
           2192,
           2192,
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          58555.70687866211,
           43501.072692871094,
           58444.683414713545,
           28779.471254621232,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           38276.865170992336,
           60294.73805454799,
           59686.068123953686,
-          38644.9162882487
+          38644.9162882487,
+          58865.85324968611
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8488,7 +8488,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23554,
           23553,
@@ -8531,6 +8530,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553
         ],
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          21066.284143066405,
           16626.454798380535,
           21058.878653893105,
           12019.13029683431,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           14907.455971854073,
           21107.473101298016,
           21142.788088285008,
-          15322.755537766676
+          15322.755537766676,
+          21210.880385335287
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
