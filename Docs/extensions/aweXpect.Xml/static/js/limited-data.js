@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
         "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
+      },
+      {
+        "sha": "67f3083889edf9f648841e1a1483eb9bdf9350b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
+        "message": "refactor!: move AccessModifiers to the aweXpect.Reflection namespace (#2111)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
-      "031fdf5a"
+      "031fdf5a",
+      "67f30838"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          598.1428965159824,
           757.722552172343,
           737.5256697972616,
           579.6192891938346,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           464.48995033899945,
           771.5664036432902,
           484.6863160814558,
-          892.7094680241177
+          892.7094680241177,
+          558.5206277211507
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -420,7 +420,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1152,
           1152,
           1152,
           1152,
@@ -469,6 +468,7 @@ window.BENCHMARK_DATA = {
           1008,
           1016,
           992,
+          992,
           992
         ],
         "borderColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          579.3780968348185,
           734.6008099147251,
           706.4235350063869,
           593.7331276673538,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           364.3465259756361,
           919.9354384740194,
           411.4539412180583,
-          687.0703350067139
+          687.0703350067139,
+          574.5839573996408
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
         "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
+      },
+      {
+        "sha": "67f3083889edf9f648841e1a1483eb9bdf9350b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
+        "message": "refactor!: move AccessModifiers to the aweXpect.Reflection namespace (#2111)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
-      "031fdf5a"
+      "031fdf5a",
+      "67f30838"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3305.900071951059,
           4530.398605053241,
           4749.574486796061,
           3466.810075124105,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           2521.2735341389975,
           5118.012402670724,
           2713.70579401652,
-          4105.226925986154
+          4105.226925986154,
+          3322.3321614583333
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24320,
           24320,
           24320,
           24320,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24178,
           24179,
           24178,
-          24178
+          24178,
+          24172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3713.931270345052,
           5409.940688578287,
           5302.561442057292,
           4212.467302958171,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2896.413189479283,
           5993.014304097494,
           3171.290367126465,
-          4752.00021307809
+          4752.00021307809,
+          3923.565017191569
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
         "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
+      },
+      {
+        "sha": "67f3083889edf9f648841e1a1483eb9bdf9350b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
+        "message": "refactor!: move AccessModifiers to the aweXpect.Reflection namespace (#2111)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
-      "031fdf5a"
+      "031fdf5a",
+      "67f30838"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2114.5056076049805,
           2694.736139043172,
           2760.3796997070312,
           1966.9533726828438,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1424.7426387786866,
           2829.9095585162822,
           1479.986473083496,
-          2350.903139659337
+          2350.903139659337,
+          1950.4946624210902
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          12780,
           12856,
           12856,
           12856,
@@ -1673,6 +1672,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2871.812665666853,
           3700.7730458577475,
           3626.562834603446,
           2713.8504156385147,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1992.9139753488394,
           3791.0432393391925,
           2013.7089848836263,
-          3239.4659388405935
+          3239.4659388405935,
+          2665.141414097377
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
         "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
+      },
+      {
+        "sha": "67f3083889edf9f648841e1a1483eb9bdf9350b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
+        "message": "refactor!: move AccessModifiers to the aweXpect.Reflection namespace (#2111)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
-      "031fdf5a"
+      "031fdf5a",
+      "67f30838"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10547.197037833077,
           13855.930011494955,
           14609.016122436524,
           11292.020663670131,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7591.0876958211265,
           13915.1745060512,
           7689.950396728515,
-          13121.56071879069
+          13121.56071879069,
+          10673.236022949219
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          25494,
           25568,
           25568,
           25568,
@@ -2281,6 +2280,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          243926.90266927084,
           379323.70234375,
           378302.3233468192,
           227062.4200358073,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           174336.07709960936,
           288986.64533342636,
           183401.78305664062,
-          339471.9620535714
+          339471.9620535714,
+          212926.37643229167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544246,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           544335,
           544247,
           544335,
-          544335
+          544335,
+          544178
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
