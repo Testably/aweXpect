@@ -10,6 +10,12 @@ namespace aweXpect.Core.Nodes;
 /// </summary>
 internal sealed class MappingResult : CombinedResult
 {
+	/// <summary>
+	///     The formatters of the evaluation that created this result, which format the expectation text of the member
+	///     also when the result is negated after that evaluation, e.g. by <c>DoesNotComplyWith</c>.
+	/// </summary>
+	private readonly IValueFormatter[]? _formatters = ValueFormatter.ScopedFormatters;
+
 	private readonly MappingNode _mappingNode;
 
 	/// <summary>
@@ -122,6 +128,7 @@ internal sealed class MappingResult : CombinedResult
 
 	private string GetRightExpectation()
 	{
+		using ValueFormatter.FormatterScope _ = ValueFormatter.UseScopedFormatters(_formatters);
 		StringBuilder stringBuilder = new();
 		AppendRightExpectation(stringBuilder, null);
 		return stringBuilder.ToString();

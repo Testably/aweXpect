@@ -234,6 +234,69 @@ public class ExpectationBuilderTests
 	}
 
 	[Test]
+	public async Task AddFormatter_InANegatedExpectationOnAMember_ShouldFormatTheValuesOfTheMember()
+	{
+		Exception subject = new("outer", new AlbumException(new Album("Help!")));
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(exception => exception.WithFormatter(AlbumFormatter.Instance)
+				.HasInner<AlbumException>(inner => inner.Whose(e => e.Album, album => album.IsEqualTo(new Album("Help!")))));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             does not have an inner ExpectationBuilderTests.AlbumException whose Album is equal to album "Help!",
+			             but it had an inner ExpectationBuilderTests.AlbumException:
+			               album "Help!" was found
+			             """)
+			.Because("the negation renders the expectation on the member after the nested evaluation");
+	}
+
+	[Test]
+	public async Task AddFormatter_InANegatedExpectationOnAnItem_ShouldFormatTheValuesOfTheItem()
+	{
+		Album[] subject = [new("Help!"),];
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(albums => albums.WithFormatter(AlbumFormatter.Instance)
+				.HasSingle().Which.IsEqualTo(new Album("Help!")));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             does not have a single item that is equal to album "Help!",
+			             but it had the single item album "Help!"
+
+			             Collection:
+			             [
+			               album "Help!"
+			             ]
+			             """)
+			.Because("the negation renders the expectation on the item after the nested evaluation");
+	}
+
+	[Test]
+	public async Task AddFormatter_InANegatedExpectationOnItemsThatAreNotEvaluated_ShouldFormatTheValuesOfTheItems()
+	{
+		Album[][] subject = [];
+
+		async Task Act()
+			=> await That(subject).Exactly(1).ComplyWith(item => item.DoesNotComplyWith(albums
+				=> albums.WithFormatter(AlbumFormatter.Instance).HasSingle().Which.IsEqualTo(new Album("Help!"))));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             does not have a single item that is equal to album "Help!" for exactly one item,
+			             but none of 0 did
+
+			             Collection:
+			             []
+			             """)
+			.Because("the expectation text of the items is prepared without an item to evaluate");
+	}
+
+	[Test]
 	public async Task AddFormatter_InANestedExpectation_ShouldFormatTheValuesOfTheWholeExpectation()
 	{
 		Album[] subject = [new("Help!"),];
@@ -2070,6 +2133,11 @@ public class ExpectationBuilderTests
 	}
 
 	private record Album(string Title);
+
+	private sealed class AlbumException(Album album) : Exception("album \"Help!\" was found")
+	{
+		public Album Album { get; } = album;
+	}
 
 	private sealed class AlbumFormatter : IValueFormatter
 	{
