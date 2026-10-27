@@ -936,6 +936,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
         "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
+      },
+      {
+        "sha": "ce025baa6e15ad4ec3bc9e3f662c4c7dbefe024b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
+        "message": "feat: let the equality options validate an expected value (#2090)"
       }
     ],
     "labels": [
@@ -1094,7 +1100,8 @@ window.BENCHMARK_DATA = {
       "95843406",
       "71904262",
       "eea60aeb",
-      "a9c742d3"
+      "a9c742d3",
+      "ce025baa"
     ],
     "datasets": [
       {
@@ -1256,7 +1263,8 @@ window.BENCHMARK_DATA = {
           486.2570652280535,
           243.11349118550618,
           366.0022515517015,
-          479.20609823862713
+          479.20609823862713,
+          242.85460563806387
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1405,6 +1413,7 @@ window.BENCHMARK_DATA = {
           640,
           712,
           712,
+          664,
           664,
           664,
           664,
@@ -1593,7 +1602,8 @@ window.BENCHMARK_DATA = {
           1037.2135566711427,
           522.3913921943077,
           721.9450086593628,
-          987.3341917310443
+          987.3341917310443,
+          520.2494353514451
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1605,6 +1615,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2710,6 +2721,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
         "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
+      },
+      {
+        "sha": "ce025baa6e15ad4ec3bc9e3f662c4c7dbefe024b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
+        "message": "feat: let the equality options validate an expected value (#2090)"
       }
     ],
     "labels": [
@@ -2868,7 +2885,8 @@ window.BENCHMARK_DATA = {
       "95843406",
       "71904262",
       "eea60aeb",
-      "a9c742d3"
+      "a9c742d3",
+      "ce025baa"
     ],
     "datasets": [
       {
@@ -3030,7 +3048,8 @@ window.BENCHMARK_DATA = {
           265.3763427734375,
           138.0016256911414,
           172.27613118489583,
-          248.35408636728923
+          248.35408636728923,
+          123.42481372906612
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3177,6 +3196,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -3367,7 +3387,8 @@ window.BENCHMARK_DATA = {
           265.7293525060018,
           147.66373621622722,
           200.98934360912867,
-          256.0922216006688
+          256.0922216006688,
+          134.6471348206202
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3379,6 +3400,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -4424,6 +4446,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
         "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
+      },
+      {
+        "sha": "ce025baa6e15ad4ec3bc9e3f662c4c7dbefe024b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
+        "message": "feat: let the equality options validate an expected value (#2090)"
       }
     ],
     "labels": [
@@ -4572,7 +4600,8 @@ window.BENCHMARK_DATA = {
       "95843406",
       "71904262",
       "eea60aeb",
-      "a9c742d3"
+      "a9c742d3",
+      "ce025baa"
     ],
     "datasets": [
       {
@@ -4724,7 +4753,8 @@ window.BENCHMARK_DATA = {
           749.7643460591634,
           373.58027042661394,
           514.1039806774685,
-          782.788984489441
+          782.788984489441,
+          386.00081157684326
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4863,6 +4893,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032,
@@ -5041,7 +5072,8 @@ window.BENCHMARK_DATA = {
           1017.278343963623,
           510.09454917907715,
           737.2106490135193,
-          995.3872695650373
+          995.3872695650373,
+          496.2667764663696
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5053,6 +5085,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -6088,6 +6121,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
         "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
+      },
+      {
+        "sha": "ce025baa6e15ad4ec3bc9e3f662c4c7dbefe024b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
+        "message": "feat: let the equality options validate an expected value (#2090)"
       }
     ],
     "labels": [
@@ -6236,7 +6275,8 @@ window.BENCHMARK_DATA = {
       "95843406",
       "71904262",
       "eea60aeb",
-      "a9c742d3"
+      "a9c742d3",
+      "ce025baa"
     ],
     "datasets": [
       {
@@ -6388,7 +6428,8 @@ window.BENCHMARK_DATA = {
           1897.902670451573,
           1163.7652222951253,
           1458.05278137752,
-          1959.0115190233503
+          1959.0115190233503,
+          1105.8887264545147
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6527,6 +6568,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -6705,7 +6747,8 @@ window.BENCHMARK_DATA = {
           21659.06239827474,
           10220.081864493233,
           13634.141950167143,
-          21642.35054321289
+          21642.35054321289,
+          10142.197319030762
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6836,6 +6879,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -7752,6 +7796,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
         "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
+      },
+      {
+        "sha": "ce025baa6e15ad4ec3bc9e3f662c4c7dbefe024b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
+        "message": "feat: let the equality options validate an expected value (#2090)"
       }
     ],
     "labels": [
@@ -7900,7 +7950,8 @@ window.BENCHMARK_DATA = {
       "95843406",
       "71904262",
       "eea60aeb",
-      "a9c742d3"
+      "a9c742d3",
+      "ce025baa"
     ],
     "datasets": [
       {
@@ -8052,7 +8103,8 @@ window.BENCHMARK_DATA = {
           782.1341785430908,
           400.0812046686808,
           563.9472856521606,
-          826.9175990649632
+          826.9175990649632,
+          397.07221364974976
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8191,6 +8243,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -8369,7 +8422,8 @@ window.BENCHMARK_DATA = {
           1346.114484914144,
           694.5454277311053,
           1028.383648463658,
-          1501.9412724812826
+          1501.9412724812826,
+          643.3150248527527
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8381,6 +8435,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -9416,6 +9471,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
         "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
+      },
+      {
+        "sha": "ce025baa6e15ad4ec3bc9e3f662c4c7dbefe024b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
+        "message": "feat: let the equality options validate an expected value (#2090)"
       }
     ],
     "labels": [
@@ -9564,7 +9625,8 @@ window.BENCHMARK_DATA = {
       "95843406",
       "71904262",
       "eea60aeb",
-      "a9c742d3"
+      "a9c742d3",
+      "ce025baa"
     ],
     "datasets": [
       {
@@ -9716,7 +9778,8 @@ window.BENCHMARK_DATA = {
           1303.206131108602,
           775.3494510650635,
           958.8750595092773,
-          1286.1388671875
+          1286.1388671875,
+          739.2131657600403
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9855,6 +9918,7 @@ window.BENCHMARK_DATA = {
           1440,
           1512,
           1512,
+          1464,
           1464,
           1464,
           1464,
@@ -10033,7 +10097,8 @@ window.BENCHMARK_DATA = {
           815.6388447443644,
           454.82737851142883,
           596.2715656573956,
-          758.4231937953404
+          758.4231937953404,
+          407.213606766292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10045,6 +10110,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
